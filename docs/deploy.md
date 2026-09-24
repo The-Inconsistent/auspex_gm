@@ -55,7 +55,7 @@ Then, in Clerk:
    the proxy.
 6. Re-create the session-token claims and the `creator` role ([development.md](development.md#clerk)).
 
-In GitHub (`JunMaxwell/glory_gm`):
+In GitHub (`JunMaxwell/auspex_gm`):
 
 7. In the **`prod` environment** (Settings → Environments → prod), add the **variable** `CLERK_PUBLISHABLE_KEY` =
    `pk_live_…`. It must be a variable, not a secret: the workflow reads `vars.`.
@@ -63,7 +63,7 @@ In GitHub (`JunMaxwell/glory_gm`):
 
 In Dockhand:
 
-9. Add a git stack for `JunMaxwell/glory_gm` with compose file `docker-compose.prod.yml`, and set its env:
+9. Add a git stack for `JunMaxwell/auspex_gm` with compose file `docker-compose.prod.yml`, and set its env:
 
    | Var | Value |
    |---|---|
