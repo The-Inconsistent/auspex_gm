@@ -242,29 +242,35 @@ server charges the cost; see [game-logic.md](game-logic.md).
 - `COUNTER_ACTIONS` (`lib/command/constants.ts`, shared with the command line) maps each key to a `field` and a `sign`. Wounds count up, so HEAL is a negative Wounds delta.
 
 **Side panel** (`.tracker-side`):
-- A selected threat shows its snapshotted `StatBlock`. If the stat block has Personal Ruin, the panel also has a
-  counter with SPEND (−1) and +1 (`combatant.adjust { personalRuin }`).
+- A selected threat shows its class rule chips (`THREAT_CLASS_RULES`, pp.323–324), then its snapshotted `StatBlock`.
+  If the stat block has Personal Ruin, the panel also has a counter with SPEND (−1) and +1
+  (`combatant.adjust { personalRuin }`).
 - A selected PC shows archetype and keywords; DEF, RES, Determination and Resolve; Wrath; Traumatic `n/max` with a
-  +TRAUMATIC button (`character.adjust { traumatic: 1 }`); and weapon lines.
+  +TRAUMATIC button (`character.adjust { traumatic: 1 }`); ANNIHILATED with a RESTORE button when set; and weapon
+  lines.
 - Below either one sits the **vox log**.
 
 **Vox log and undo.**
 - `run(action, text)` (the `Run` type in `tracker/types.ts`) wraps `send`. On success it pushes a `LogEntry` to the
   top of the log, capped at `LOG_LIMIT` (40). On refusal it sets the tracker's error line.
-- Each entry carries `undo = inverse({ action, state })`, read against the state at tap time. Only
-  `character.adjust`, `combatant.adjust` and `pool.adjust` have an inverse, and it negates every delta, except where
-  the server doesn't apply the delta as sent:
-  - Damage on a Dying PC was a Traumatic Injury, so its undo is `traumatic: -1`. Healing a Dying PC has no undo.
-  - Shock on a Mob removed one member or nothing, so its undo is `wounds: -1` (one member back) or none.
+- Each entry carries `undo` and a `note` from `preview({ action, state })`, read against the state at tap time. For
+  `character.adjust` and `combatant.adjust` it runs the same rules as the api (`pcHit`, `exhaustedShock`, the Mob
+  member count) and the undo is the exact difference, sent back as `raw: true` (GM only; the api skips the rules).
+  `pool.adjust` negates its delta.
+  - The note tells the GM when a tap didn't do what it said: `→ MORTAL WOUNDS (p.199)`, `→ TRAUMATIC INJURY (p.193)`,
+    `→ ANNIHILATED (p.194)`. An Annihilation's undo is `character.update { annihilated: false }`; the side panel also has
+    a RESTORE button for it.
 - Turns, Conditions, reveals and adds get no UNDO button.
 - UNDO sends the inverse and logs `UNDO: …`. It drops the original entry only if the undo went through; a refused undo
   keeps its button.
-- The inverse is inexact if the server clamped the counter at 0, or if healing ended Dying (a `ponytail:` note in
-  `tracker.tsx`). The log is client-only: it's per tab and lost on reload.
+- The undo doesn't take back an automatic Prone, and a tap that raced another client's diffs the older state (a
+  `ponytail:` note in `tracker.tsx`). The log is client-only: it's per tab and lost on reload.
 
 **Condition reminders.** After a successful START TURN or SEIZE, `remind()` checks the combatant's Conditions against
 `TURN_START_REMINDERS`. After END TURN, it checks the combatant that was acting against `TURN_END_REMINDERS`. Each
-match is pushed to the log as an amber (`warn`) entry. Typed `start`, `seize` and `end` commands go through the same
+match is pushed to the log as an amber (`warn`) entry. START TURN also lists the timed Conditions (`isTimed`) that the
+api will remove at the end of this Turn. When END TURN ends the Round (no one left `canAct`) or the GM presses NEW
+ROUND, `roundEndReminders` adds the Mob Resolve Tests. Typed `start`, `seize` and `end` commands go through the same
 handlers (`runCommand`), so they fire the same reminders. What the reminders say is covered in
 [game-logic.md](game-logic.md).
 
@@ -659,8 +665,7 @@ The player app works the same way, through `PLAYER_TABS` in `components/player/p
 1. **Alias:** add `alias: "canonical"` entries to `VERBS` in `lib/command/command.ts`.
 2. **Counter verb** (a signed delta on a field the adjust actions already take): add it to `COUNTER_ACTIONS` in
    `lib/command/constants.ts`. The command line, the key bar button and the amount pad all pick it up.
-   If the field is new, negate it in `inverse()` in `tracker.tsx` too, or UNDO will repeat the change instead of
-   reversing it.
+   If the field is new, add its difference to `preview()` in `tracker.tsx` too, or UNDO won't reverse it.
 3. **Any other verb:** add a `case` to the `switch` at the end of `parseCommand` that returns `{ actions: [...] }` or
    `{ error }`. Use `t.characterId` for character actions and `t.combatantId` for combatant actions.
 4. **Turn verb:** route it through `runCommand` in `tracker.tsx`, so it fires the Condition reminders the buttons do.

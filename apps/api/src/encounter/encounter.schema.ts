@@ -34,5 +34,6 @@ export const combatant = pgTable("combatant", {
   wounds: integer().notNull().default(0),
   shock: integer().notNull().default(0),
   conditions: conditions(),
+  expiring: conditions(), // timed Conditions held when this Turn started; they end with it (§11.8)
   revealed: boolean().notNull().default(false),
 });

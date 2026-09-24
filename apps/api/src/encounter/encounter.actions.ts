@@ -1,8 +1,9 @@
 import { and, eq, max, sql } from "drizzle-orm";
 import { threats } from "@wg/data";
 import {
-  EncounterEntry, canAct, canSeize, isOut, sideOf, sideOfKind, sideUpNext, threatClassAt,
-  type Action, type ActionResult, type Marker, type Side, type Threat,
+  EncounterEntry, MONSTROUS_IMMUNE, canAct, canSeize, exhaustedShock, isExhausted, isOut, isTimed, sideOf, sideOfKind, sideUpNext,
+  threatClassAt,
+  type Action, type ActionResult, type Combatant, type LiveState, type Marker, type Side, type Threat,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -28,6 +29,10 @@ async function liveTable(tx: Tx, campaignId: string) {
   const enc = state?.encounter ?? fail("No active encounter");
   return { state: state!, enc }; // an encounter implies the campaign row was found
 }
+
+// PCs' Conditions live on their character; threats' on the combatant row.
+const conditionsOf = (state: LiveState, c: Combatant) =>
+  c.kind === "pc" ? state.characters.find((x) => x.id === c.characterId)?.conditions ?? [] : c.conditions;
 
 async function activeEncounter(tx: Tx, campaignId: string) {
   const [enc] = await tx.select().from(encounter).where(and(eq(encounter.campaignId, campaignId), eq(encounter.active, true)));
@@ -130,6 +135,8 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         if (side !== up) fail(`It's the ${sideName(up ?? side)}' turn; Seize to go out of order`);
         await tx.update(encounter).set({ currentId: a.id }).where(eq(encounter.id, enc.id));
       }
+      // Timed Conditions held now end with this Turn; ones gained during it last until the end of the next (§11.8).
+      await tx.update(combatant).set({ expiring: conditionsOf(state, c).filter(isTimed) }).where(eq(combatant.id, a.id));
       return { ok: true };
     }
 
@@ -137,7 +144,14 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       const { state, enc } = await liveTable(tx, cid);
       const current = enc.combatants.find((x) => x.id === enc.currentId) ?? fail("No one is taking a turn");
       const side = sideOf(current);
-      await tx.update(combatant).set({ acted: true }).where(eq(combatant.id, current.id));
+      // "Until the end of your next Turn" (pp.199-200): drop the timed Conditions armed at turn.start.
+      // ponytail: one that was removed and gained again this Turn ends too; per-Condition start times if that matters.
+      const [{ expiring } = { expiring: [] }] = await tx.select({ expiring: combatant.expiring }).from(combatant).where(eq(combatant.id, current.id));
+      const left = conditionsOf(state, current).filter((k) => !expiring.includes(k));
+      if (current.kind === "pc" && expiring.length) await tx.update(character).set({ conditions: left }).where(eq(character.id, current.characterId));
+      await tx.update(combatant)
+        .set({ acted: true, expiring: [], ...(current.kind === "threat" && expiring.length ? { conditions: left } : {}) })
+        .where(eq(combatant.id, current.id));
       // A Seize holds until the other side acts.
       await tx.update(encounter)
         .set({ currentId: null, lastSide: side, seizedSide: enc.seizedSide === side ? side : null })
@@ -172,6 +186,11 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         const r = await tx.update(combatant).set({ ambushed }).where(where).returning({ id: combatant.id });
         if (!r.length) fail("Combatant not found");
       }
+      if (threatOnly.conditions) {
+        const [row] = await tx.select({ threatClass: combatant.threatClass, conditions: combatant.conditions }).from(combatant).where(where);
+        const immune = row?.threatClass === "M" && threatOnly.conditions.find((k) => !row.conditions.includes(k) && (MONSTROUS_IMMUNE as readonly string[]).includes(k));
+        if (immune) fail(`Monstrous Creatures are immune to ${immune} (p.323)`);
+      }
       if (Object.keys(threatOnly).length) {
         // Setting a Mob's size by hand raises its starting size too, so the half-slain prompt and the healing cap
         // (p.325) follow; null turns it back into a single Threat.
@@ -189,15 +208,18 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id), eq(combatant.kind, "threat")));
       if (!c) fail("Threat combatant not found");
       // Threat rows always carry a stat snapshot (see addThreat).
-      if (a.shock && c.statSnapshot!.shock === null) fail("This Threat never suffers Shock (p.324)");
+      const maxShock = c.statSnapshot!.shock;
+      if (a.shock && maxShock === null) fail("This Threat never suffers Shock (p.324)");
       // Mob (p.325): every member has 1 Wound, so Wounds remove members and healing restores them, up to the starting
       // size. More Shock in one hit than the members' Maximum Shock removes one member; less has no effect, and a Mob
       // keeps no Shock track.
-      const maxShock = c.statSnapshot!.shock;
-      const mobLoss = (a.wounds ?? 0) + (a.shock !== undefined && maxShock !== null && a.shock > maxShock ? 1 : 0);
+      const mobLoss = (a.wounds ?? 0) + (!a.raw && a.shock !== undefined && maxShock !== null && a.shock > maxShock ? 1 : 0);
+      // A single Threat's Shock while Exhausted is Mortal Wounds (p.199).
+      const hit = a.raw ? { wounds: a.wounds, shock: a.shock }
+        : exhaustedShock({ exhausted: isExhausted({ shock: c.shock, maxShock, conditions: c.conditions }), wounds: a.wounds, shock: a.shock });
       const damage = c.mobCount !== null
         ? { mobCount: sql`least(${c.mobStart ?? c.mobCount}, greatest(0, ${combatant.mobCount} - ${mobLoss}))` }
-        : { wounds: bump(combatant.wounds, a.wounds), shock: bump(combatant.shock, a.shock) };
+        : { wounds: bump(combatant.wounds, hit.wounds), shock: bump(combatant.shock, hit.shock) };
       await tx.update(combatant)
         .set({ ...damage, personalRuin: bump(combatant.personalRuin, a.personalRuin) })
         .where(eq(combatant.id, a.id));

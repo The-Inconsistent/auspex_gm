@@ -30,7 +30,8 @@ function authorize(ctx: Ctx, a: Action) {
   if ((a.type === "character.update" || a.type === "character.adjust" || a.type === "character.respite") && a.id !== ctx.characterId)
     fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
-  if (a.type === "character.adjust" && a.traumatic !== undefined) fail("GM only");
+  if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
+  if (a.type === "character.adjust" && (a.traumatic !== undefined || a.raw)) fail("GM only");
   if (a.type === "pool.adjust" && a.pool !== "glory") fail("GM only");
 }
 

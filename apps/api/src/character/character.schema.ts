@@ -1,4 +1,4 @@
-import { integer, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
 
@@ -13,6 +13,7 @@ export const character = pgTable("character", {
   shock: integer().notNull().default(0),
   wrath: integer().notNull().default(2),
   traumatic: integer().notNull().default(0),
+  annihilated: boolean().notNull().default(false), // one hit over 2 × Max Wounds (p.194)
   xp: integer().notNull().default(0),
   conditions: conditions(),
   createdAt: createdAt(),

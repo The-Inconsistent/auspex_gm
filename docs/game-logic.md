@@ -17,7 +17,7 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
 | | `apps/api/src/campaign/campaign.actions.ts` | pools, `session.start`, `session.end` |
-| | `apps/api/src/character/character.actions.ts` | `character.adjust` (Dying → Traumatic, Prone), `character.respite` |
+| | `apps/api/src/character/character.actions.ts` | `character.adjust` (runs `pcHit`: Exhausted, Dying, Annihilation), `character.respite` |
 | | `apps/api/src/encounter/encounter.actions.ts` | turns, Seize, ambush, threat and Mob damage, `beat.startEncounter` |
 | | `apps/api/src/codex/codex.actions.ts` | `codex.save` reference and threat checks |
 | | `apps/api/src/core/sql.ts` | `bump`: every counter delta is `greatest(0, col + d)` |
@@ -99,9 +99,9 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 | `pool.adjust` Glory | yes | yes, ± any delta |
 | `pool.adjust` Ruin | yes | no ("GM only") |
 | `character.adjust` Wounds / Shock / Wrath | any character | own character only |
-| `character.adjust` Traumatic | yes | no |
+| `character.adjust` Traumatic, `raw` (the tracker's undo) | yes | no |
 | `character.update` stats, name, conditions | any | own only |
-| `character.update` overrides | yes | no |
+| `character.update` overrides, `annihilated` | yes | no |
 | `character.respite` | any | own only |
 | everything else (turns, Seize, awareness, threats, sessions) | yes | no |
 
@@ -124,14 +124,23 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 **Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the
 tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1).
 
-**Dying in `character.adjust`** (p.193). `healthOf()` reads the row's `pcStatus` before the write:
+**One hit in `character.adjust`** (`pcHit` in `state.ts`, pp.193–199). `healthOf()` reads the row, `pcHit` returns the
+counters after the hit, and the api writes them (safe: one action per campaign at a time). In order:
 
-- Crossing into Dying (Wounds past max) adds the `Prone` Condition if it's missing.
-- While Dying, a positive Wounds delta adds **1** Traumatic Injury instead of Wounds, whatever its size (house §11.11).
-  This applies to a player's own DMG tap too; the "no `traumatic`" rule in `authorize` covers only the explicit field.
-- While Dying, a negative Wounds delta sets Wounds to `least(maxWounds, wounds + delta)`, so any healing ends Dying.
+1. **Exhausted** (p.199, house §11.12): if the character is already Exhausted (Shock > max, or the Exhausted
+   Condition), positive Shock becomes Mortal Wounds (`exhaustedShock`), which ignore Resilience (p.193). The hit that
+   takes Shock past max stays Shock.
+2. **Annihilation** (p.194, house §11.7): Wounds > 2 × Max Wounds in the one hit → `annihilated = true`, counters
+   untouched; `pcStatus` says Dead. The GM clears it with `character.update { annihilated: false }` (RESTORE).
+3. **Dying** (p.193): a positive Wounds delta adds **1** Traumatic Injury instead of Wounds, whatever its size (house
+   §11.11); a negative one sets Wounds to `min(maxWounds, wounds + delta)`, so any healing ends Dying.
+4. Otherwise Wounds move by the delta (floor 0); crossing into Dying adds `Prone` if it's missing.
 
-Example (Max Wounds 8): DMG 9 → Wounds 9, Dying, Prone. DMG 3 → Traumatic +1, Wounds stay 9. HEAL 1 → Wounds 8.
+This applies to a player's own taps too. `raw: true` (GM only; the tracker's undo) skips all of it and bumps the deltas
+as sent.
+
+Example (Max Wounds 8, Max Shock 5): SHOCK 6 → Shock 6, Exhausted. SHOCK 2 → Wounds 2. DMG 7 → Wounds 9, Dying, Prone.
+DMG 3 → Traumatic +1, Wounds stay 9. HEAL 1 → Wounds 8. DMG 17 → Annihilated.
 
 ## 4. Combat state machine (`encounter.actions.ts`, pp.176–178)
 
@@ -141,9 +150,9 @@ null at Round start), `seizedSide` (side that Seized and can't again yet). Per c
 | Action | Checks | Writes |
 |---|---|---|
 | `encounter.start` | — | deactivates any active encounter, inserts an empty one (add PCs and threats after) |
-| `turn.start` (id) | no one is acting; combatant is in this encounter; not `isOut` ("Dead: no more Turns" / "Slain: no more Turns"); not `acted`; not ambushed in Round 1; its side is `sideUpNext` | `currentId` |
-| `turn.seize` (id) | same first five checks; `canSeize(state, side)`; 1 Glory (Agent) / 1 Ruin (Threat) via `spend()` | `currentId`, `seizedSide = side` |
-| `turn.end` | someone is acting | combatant `acted = true`; `lastSide = side`; `seizedSide` kept if it's this side, else cleared; **auto rollover** if no combatant `canAct` |
+| `turn.start` (id) | no one is acting; combatant is in this encounter; not `isOut` ("Dead: no more Turns" / "Slain: no more Turns"); not `acted`; not ambushed in Round 1; its side is `sideUpNext` | `currentId`; combatant `expiring` = its timed Conditions (§7) |
+| `turn.seize` (id) | same first five checks; `canSeize(state, side)`; 1 Glory (Agent) / 1 Ruin (Threat) via `spend()` | `currentId`, `seizedSide = side`, `expiring` |
+| `turn.end` | someone is acting | removes the `expiring` Conditions (character or combatant), clears `expiring`; combatant `acted = true`; `lastSide = side`; `seizedSide` kept if it's this side, else cleared; **auto rollover** if no combatant `canAct` |
 | `encounter.newRound` | — | manual rollover (same `newRound()`) |
 | `encounter.end` | — | `active = false` |
 
@@ -232,6 +241,14 @@ Wounds win over Shock: a Threat over both shows only the Wounds outcome. Mobs ne
 **Shock "–"** (p.324): `shock: null` in the JSON → `maxShock: null`. `combatant.adjust` refuses any non-zero `shock`
 delta on it ("This Threat never suffers Shock").
 
+**Exhausted Threats** (p.199): on a single Threat that is already Exhausted (Shock > max, or the Condition), positive
+Shock becomes Wounds (`exhaustedShock`), as for Agents. `raw: true` (the tracker's undo) skips it.
+
+**Class rules** (pp.323–324): `THREAT_CLASS_RULES` in `threat.ts` lists what each class changes (Troop: no Crits or
+Complications, Determination costs 1 Ruin, no Ammo; Elite: Determination 1 Ruin, 3 Ammo; Adversary and Monstrous:
+free Determination, unlimited Ammo; Monstrous: immune to Fear, Pinned, Staggered, causes Terror). The tracker shows
+them as chips above the stat block. `combatant.update` refuses to add a `MONSTROUS_IMMUNE` Condition to class M.
+
 **Mobs** (pp.202–203, p.325)
 
 - Created by `combatant.addThreat { mobCount ≥ 2 }` or a prepared `asMob` entry. `mobStart = mobCount`; label
@@ -241,8 +258,9 @@ delta on it ("This Threat never suffers Shock").
   above the starting size.
 - Shock: one hit of more Shock than the members' max Shock adds 1 to `loss` (removes one member). A smaller hit has no
   effect (house §11.9), and a Mob keeps no Shock track: its `shock` counter isn't written.
-- Half-slain prompt: the `threatStatus` chip above, visible to GM and players while it holds. It's a prompt only; the
-  test and the flight are the table's.
+- Half-slain prompt: the `threatStatus` chip above, visible to GM and players while it holds, and a vox-log line from
+  `roundEndReminders` whenever a Round ends (the last END TURN, or NEW ROUND) (p.325, house §11.13). It's a prompt
+  only; the test and the flight are the table's.
 - Setting `mobCount` directly with `combatant.update` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`,
   so a Threat turned into a Mob this way gets the half-slain prompt and the healing cap. `mobCount: null` turns it back
   into a single Threat and nulls `mobStart`.
@@ -254,20 +272,27 @@ when the block has `personalRuin`. It's separate from the GM's Ruin pool.
 
 | Status | Condition in code | Page |
 |---|---|---|
-| Dead | `traumatic > maxTraumatic` (Tier + 1) | p.193–194 |
+| Dead | `annihilated`, or `traumatic > maxTraumatic` (Tier + 1) | p.193–194 |
 | Dying | else `wounds > maxWounds` | p.193 |
 | Wounded | else `wounds > 0` | p.193 |
-| Exhausted | `shock > maxShock` (independent, can show with any of the above) | p.196 |
+| Exhausted | `shock > maxShock` (independent, can show with any of the above) | p.196, p.199 |
 
-Wounds equal to max is Wounded, not Dying (tested). Annihilation (p.193–194) isn't detected. Counters have no upper
-cap, so the hit that makes a PC Dying can take Wounds past max + 1; later hits become Traumatic Injuries (§3).
+Wounds equal to max is Wounded, not Dying (tested). Counters have no upper cap, so the hit that makes a PC Dying can
+take Wounds past max + 1; later hits become Traumatic Injuries (§3). `isExhausted` (used by `pcHit`) also counts the
+manual Exhausted Condition.
 
 ## 7. Conditions (pp.197–200)
 
 `CONDITIONS` in `state.ts` is the picker list: Bleeding, Blinded, Exhausted, Fear, Frenzied, Hindered, On Fire, Pinned,
 Poisoned, Prone, Restrained, Staggered, Terror, Vulnerable. Stored as a plain string array (`character.conditions` or
-`combatant.conditions`); the schema accepts any string, and stack values like `Hindered (2)` aren't modelled. The
-automatic Exhausted status comes from `pcStatus` / `threatStatus`, separately from the manual Condition.
+`combatant.conditions`); the schema accepts any string, and stack values like `Hindered (2)` aren't modelled beyond
+the name. The automatic Exhausted status comes from `pcStatus` / `threatStatus`, separately from the manual Condition.
+
+**Timed Conditions** (pp.199–200, house §11.8): `TIMED_CONDITIONS` = Hindered, Staggered, Vulnerable, which last "until
+the end of your next Turn". `isTimed` also matches `Hindered (2)` etc. `turn.start` / `turn.seize` copy the ones the
+combatant holds into `combatant.expiring`; `turn.end` removes those from its Conditions. One gained during its own Turn
+isn't armed, so it lasts to the end of the next one. The tracker logs "… ends at the end of this Turn" at START TURN.
+`ponytail:` a timed Condition removed and gained again within the same Turn ends with it anyway.
 
 **Turn reminders** (pp.198–200)
 
@@ -277,7 +302,7 @@ automatic Exhausted status comes from `pcStatus` / `threatStatus`, separately fr
 | `TURN_END_REMINDERS` | Bleeding | tracker `endTurn`, after a successful `turn.end` |
 
 They're amber lines in the GM tablet's VOX LOG only: client-side, not stored or broadcast, and they fire only for
-turns started or ended from that tablet (buttons or the command line). No Condition expires on its own.
+turns started or ended from that tablet (buttons or the command line). Timed Conditions expire server-side (above).
 
 ## 8. Hidden information
 
@@ -319,15 +344,17 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 |---|---|---|
 | 1 | Seize once per handoff | `canSeize` + `encounter.seizedSide`, kept/cleared in `turn.end` |
 | 2 | GM Round-start Seize costs 1 Ruin, same once-per-turn limit | `canSeize` (`lastSide` null → threats only), `spend()` in `turn.seize` |
-| 3 | Monstrous: free Determination, killed past Max Wounds | `threatStatus` (M → Slain). Determination is left to the table |
+| 3 | Monstrous: free Determination, killed past Max Wounds | `threatStatus` (M → Slain); `THREAT_CLASS_RULES` chip. Determination is left to the table |
 | 4 | Withstand repeatable while Ruin lasts | not coded; a manual Ruin spend and HEAL |
 | 5 | Corruption 11 = Contaminated | not coded (Corruption isn't tracked) |
 | 6 | Passive Awareness uses Awareness | `deriveStats().passiveAwareness` |
-| 7 | Annihilation after Resilience | not coded |
-| 8 | "End of next Turn" = the affected character's | not coded (Conditions don't expire) |
+| 7 | Annihilation after Resilience | `pcHit` (the entered Wounds are after Resilience) |
+| 8 | "End of next Turn" = the affected character's | `combatant.expiring`, armed in `turn.start` / `turn.seize`, removed in `turn.end` |
 | 9 | Mob Shock below max Shock has no effect | `combatant.adjust` (Mob `loss`) |
 | 10 | Adversary over max Wounds stays in the turn order | `isOut` (only Slain / Dead are out); the GM REMOVEs it |
-| 11 | A Wound while Dying = 1 Traumatic Injury per hit | `character.adjust` |
+| 11 | A Wound while Dying = 1 Traumatic Injury per hit | `pcHit` |
+| 12 | Exhausted conversion starts after the hit that Exhausts | `exhaustedShock` (in `pcHit` and `combatant.adjust`) |
+| 13 | Mob Resolve prompted at every Round end while half slain | `roundEndReminders`, tracker `endTurn` / NEW ROUND |
 
 Campaign-specific GM decisions are in [kill-team.md](kill-team.md); they live in the pack data, not in code.
 
@@ -338,5 +365,5 @@ Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / 
 Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
-Known gaps against the spec (not choices): Exhausted doesn't turn extra Shock into Mortal Wounds; timed Conditions
-don't expire; no per-class rule chips. The live list is [rules-flow.md](rules-flow.md) §12.
+Known gaps against the spec: none open; Pinned doesn't expire because the attacker isn't tracked. The live list is
+[rules-flow.md](rules-flow.md) §12.

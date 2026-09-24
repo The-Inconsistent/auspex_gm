@@ -140,18 +140,18 @@ stack — use the worst. Any may end at scene end (GM).
 |---|---|---|---|
 | Bleeding (n) | n Mortal Wounds at **end** of each of your Turns | DN 4 Toughness, or ally Medicae | reminder at end of Turn |
 | Blinded | +4 DN on sight tasks (incl. combat) | GM / appropriate action | — |
-| Exhausted | see §4 | Shock reduced | auto from Shock > max |
-| Fear | +2 DN all Tests | scene end, or ally Leadership DN 2 + Fear | player fail → +1 Ruin (p.320) |
+| Exhausted | see §4 | Shock reduced | auto from Shock > max; further Shock → Mortal Wounds (auto) |
+| Fear | +2 DN all Tests | scene end, or ally Leadership DN 2 + Fear | player fail → +1 Ruin (p.320); refused on Monstrous |
 | Frenzied | charge nearest enemy, All-Out Attack, +1 S, immune Fear/Pinned | DN 3 Willpower at start of Turn | reminder at start of Turn |
-| Hindered (n) | +n DN all Tests | end of next Turn | — |
+| Hindered (n) | +n DN all Tests | end of next Turn | auto-expires (§11.8) |
 | On Fire | 1d3 Mortal Wounds at **start** of each of your Turns | Action: go Prone + DN 3 Athletics | reminder at start of Turn |
-| Pinned | must move to/stay in cover; +2 DN BS vs the pinner | start of the attacker's next Turn | — |
+| Pinned | must move to/stay in cover; +2 DN BS vs the pinner | start of the attacker's next Turn | refused on Monstrous (the attacker isn't tracked, so it doesn't expire) |
 | Poisoned | +2 DN all Tests | Medicae, or Toughness Test at start of Turn | reminder at start of Turn |
 | Prone | −2 Defence vs attacks within 5 m, +1 beyond | stand (Free Action) | — |
 | Restrained | no Movement, −2 Defence | by source | — |
-| Staggered | ½ Speed, no Run/Sprint | end of next Turn | — |
+| Staggered | ½ Speed, no Run/Sprint | end of next Turn | auto-expires (§11.8); refused on Monstrous |
 | Terror | Fear + must flee | scene end, or ally Leadership DN 2 + Terror | — |
-| Vulnerable (n) | −n Defence | end of next Turn | — |
+| Vulnerable (n) | −n Defence | end of next Turn | auto-expires (§11.8) |
 
 ## 6. Derived traits (pp.36–37, sheet p.372)
 
@@ -225,6 +225,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     the GM's call (p.324).
 11. **Wounds while Dying** add one Traumatic Injury per hit, however many Wounds it deals (p.193 counts each time
     damage is taken, not its size).
+12. **Exhausted conversion** (p.199) applies to Shock suffered while already Exhausted. The hit that takes a character
+    past Max Shock stays Shock ("any Shock suffered by an Exhausted character"); the Exhausted Condition from another
+    source counts as Exhausted too.
+13. **Mob Resolve** (p.325) is prompted at every Round end while half or more are slain; whether the Mob still has to
+    test (it passed last Round, it fights to the death) is the GM's call. A tracker tap is one attack, for Annihilation
+    and §11.11 alike.
 
 ---
 
@@ -237,16 +243,17 @@ Implementation details: [game-logic.md](game-logic.md).
 | Seize limit | done | `canSeize` + `encounter.seizedSide`; set in `turn.seize`, kept or cleared in `turn.end` |
 | Round-start Seize | done | `canSeize` (`lastSide` null → threats only; never when that side is up next anyway); 1 Ruin via `spend()` in `turn.seize` |
 | Ambush | done | `combatant.ambushed`; `canAct`, `turn.start` guard, `turn.end` rollover; `combatant.aware` (1 Glory/Ruin); cleared by `newRound()` |
-| Mob damage | partial | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`). Missing: prompt isn't tied to Round end |
+| Mob damage | done | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`); `roundEndReminders` in the vox log when a Round ends (§11.13) |
 | Troop Shock | done | `threatStatus` (T over max Shock → Slain); `combatant.adjust` refuses Shock when `maxShock` is null |
 | Threat outcomes | done | `threatStatus` per class (A → Dying or dead, T/E/M → Slain; Exhausted for E/A/M) |
-| Traumatic Injuries | partial | `character.traumatic` (GM-only adjust); `pcStatus` Dead at > Tier + 1; `character.adjust` turns a Wound while Dying into 1 Traumatic Injury (§11.11), adds Prone on becoming Dying, and ends Dying on any healing. Missing: Annihilation |
+| Traumatic Injuries | done | `character.traumatic` (GM-only adjust); `pcStatus` Dead at > Tier + 1; `pcHit` (via `character.adjust`) turns a Wound while Dying into 1 Traumatic Injury (§11.11), adds Prone on becoming Dying, and ends Dying on any healing |
 | Traits minimum 1 | done | `deriveStats` clamps all Traits to ≥ 1; Influence added |
 | Session start | done | `session.start` (Wrath 2, Glory 0, Ruin = characters); `session.end` awards XP |
 | Respite | done | `character.respite` (refused while Dying or Dead) |
 | Personal Ruin | done | `combatant.personalRuin`, seeded from the stat block; tracker SPEND / +1 |
 | Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's vox log only |
 | Slain / Dead in turn order | done | `isOut` in `canAct` / `sideUpNext`; `turn.start` refuses them and the `turn.end` rollover skips them. An Adversary over max Wounds stays until the GM removes it (§11.10) |
-| Exhausted → Mortal Wounds | missing | extra Shock while Exhausted isn't converted (p.196) |
-| Timed Conditions | missing | "end of next Turn" Conditions don't expire (§11.8) |
-| Per-class rule chips | missing | §10's Troop chips (no crits, Determination costs Ruin) aren't shown; the tracker shows the class name only |
+| Annihilation | done | `pcHit`: one hit over 2 × Max Wounds sets `character.annihilated` → Dead (p.194, §11.7); GM RESTORE / undo clears it. Agents only: an Adversary over max Wounds is already the GM's call (§11.10) |
+| Exhausted → Mortal Wounds | done | `exhaustedShock` in `pcHit` and `combatant.adjust` (p.199, §11.12); single Threats too, Mobs keep no Shock track |
+| Timed Conditions | done | Hindered, Staggered, Vulnerable (`isTimed`): `turn.start` / `turn.seize` arm the ones held (`combatant.expiring`), `turn.end` removes them (§11.8). Pinned doesn't expire (the attacker isn't tracked) |
+| Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |

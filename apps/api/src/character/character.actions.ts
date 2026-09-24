@@ -1,5 +1,5 @@
-import { and, eq, isNull, sql } from "drizzle-orm";
-import { CharacterStats, Overrides, deriveStats, pcStatus, type Action, type ActionResult } from "@wg/shared";
+import { and, eq, isNull } from "drizzle-orm";
+import { CharacterStats, Overrides, deriveStats, pcHit, pcStatus, type Action, type ActionResult, type Character } from "@wg/shared";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -15,13 +15,12 @@ export async function ownCharacter(tx: Tx, { campaignId, id }: { campaignId: str
   return c ?? fail("Character not found");
 }
 
-// Max Wounds and the damage state (Dying, Dead) of a character row, at the campaign's Tier.
+// A character row with its derived Traits and damage state (Dying, Dead), at the campaign's Tier.
 async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: typeof character.$inferSelect }) {
-  const stats = CharacterStats.parse(row.stats);
-  const overrides = Overrides.parse(row.overrides);
-  const derived = deriveStats({ stats, overrides, tier: await campaignTier(tx, campaignId) });
-  const status = pcStatus({ ...row, stats, overrides }, derived);
-  return { derived, dying: status.includes("Dying"), dead: status.includes("Dead") };
+  const c: Character = { ...row, stats: CharacterStats.parse(row.stats), overrides: Overrides.parse(row.overrides) };
+  const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
+  const status = pcStatus(c, derived);
+  return { c, derived, dying: status.includes("Dying"), dead: status.includes("Dead") };
 }
 
 export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ctx; action: CharacterAction }): Promise<ActionResult> {
@@ -43,25 +42,20 @@ export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
 
     case "character.adjust": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
-      let wounds = bump(character.wounds, a.wounds);
-      let traumatic = bump(character.traumatic, a.traumatic);
-      let conditions: string[] | undefined;
-      // Reading the row first is safe: the gateway runs one action per campaign at a time.
-      const { derived, dying } = await healthOf(tx, { campaignId: cid, row });
-      if (dying && a.wounds !== undefined && a.wounds > 0) {
-        // A Wound while Dying is a Traumatic Injury instead, one per hit (p.193).
-        wounds = undefined;
-        traumatic = sql`greatest(0, ${character.traumatic} + ${(a.traumatic ?? 0) + 1})`;
-      } else if (dying && a.wounds !== undefined && a.wounds < 0) {
-        // Recovering any Wounds ends Dying (p.193).
-        wounds = sql`greatest(0, least(${derived.maxWounds}, ${character.wounds} + ${a.wounds}))`;
-      } else if (!dying && a.wounds !== undefined && row.wounds + a.wounds > derived.maxWounds && !row.conditions.includes("Prone")) {
-        // Becoming Dying: fall Prone (p.193).
-        conditions = [...row.conditions, "Prone"];
+      const wrath = bump(character.wrath, a.wrath);
+      if (a.raw) {
+        await tx.update(character).set({
+          wounds: bump(character.wounds, a.wounds), shock: bump(character.shock, a.shock), traumatic: bump(character.traumatic, a.traumatic), wrath,
+        }).where(eq(character.id, a.id));
+        return { ok: true };
       }
-      await tx.update(character)
-        .set({ wounds, shock: bump(character.shock, a.shock), wrath: bump(character.wrath, a.wrath), traumatic, conditions })
-        .where(eq(character.id, a.id));
+      // Writing counters read from the row is safe: the gateway runs one action per campaign at a time.
+      const { c, derived } = await healthOf(tx, { campaignId: cid, row });
+      const hit = pcHit({ c, d: derived, hit: a });
+      await tx.update(character).set({
+        wounds: hit.wounds, shock: hit.shock, traumatic: Math.max(0, hit.traumatic + (a.traumatic ?? 0)), annihilated: hit.annihilated, wrath,
+        conditions: hit.prone && !c.conditions.includes("Prone") ? [...c.conditions, "Prone"] : undefined,
+      }).where(eq(character.id, a.id));
       return { ok: true };
     }
 

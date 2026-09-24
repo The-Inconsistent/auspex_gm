@@ -84,3 +84,14 @@ export const Threat = z.object({
 export type Threat = z.infer<typeof Threat>;
 
 export const threatClassAt = (t: Threat, tier: number): ThreatClass => t.threat[Math.min(tier, t.threat.length) - 1]!;
+
+// What each class changes at the table (pp.323-324), shown to the GM as chips. Free Monstrous Determination is §11.3.
+export const THREAT_CLASS_RULES: Record<ThreatClass, string[]> = {
+  T: ["No Crits or Complications (bar abilities)", "Determination: 1 Ruin", "No Ammo or Salvo", "Forms Mobs"],
+  E: ["Determination: 1 Ruin", "3 Ammo, Salvo"],
+  A: ["Determination free", "Unlimited Ammo, Salvo"],
+  M: ["Determination free", "Unlimited Ammo, Salvo", "Immune: Fear, Pinned, Staggered", "Causes Terror"],
+};
+
+// Monstrous Creatures are immune to these Conditions (p.323).
+export const MONSTROUS_IMMUNE = ["Fear", "Pinned", "Staggered"] as const;

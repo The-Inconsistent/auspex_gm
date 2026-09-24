@@ -147,7 +147,7 @@ These are marked `ponytail:` in the code, with an upgrade path.
 | --- | --- | --- |
 | In-process action queue | one api instance | Postgres advisory locks |
 | Full-snapshot broadcast | fine at a few KB | patches if the payload grows |
-| Client undo = inverse delta, read against the state at tap time | inexact if a counter was clamped at 0, or healing ended Dying | server-side history |
+| Client undo = the exact difference (shared rules, `raw` adjust), read against the state at tap time | doesn't take back an automatic Prone; a raced tap diffs older state | server-side history |
 | Prepared-encounter row cap (`MAX_ENCOUNTER_ROWS`) | 60 combatants per beat, a Mob counts as 1 | raise it, or batch the inserts |
 
 ## Deployment

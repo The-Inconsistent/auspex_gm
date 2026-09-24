@@ -2,8 +2,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  Action, CharacterStats, Threat, canAct, canSeize, deriveStats, isOut, pcStatus, poolMax, sideUpNext, threatStatus, toPlayerCodex,
-  toPlayerView,
+  Action, CharacterStats, Threat, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
+  roundEndReminders, sideUpNext, threatStatus, toPlayerCodex, toPlayerView,
   type Character, type Codex, type Combatant, type Encounter, type LiveState, type ThreatCombatant,
 } from "./index.ts";
 
@@ -19,7 +19,7 @@ const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter =>
   ({ id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null, combatants, ...o });
 const noAccess: LiveState["access"] = { members: [], invites: [] };
 const char = (o: Partial<Character>): Character =>
-  ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, xp: 0, conditions: [], ...o });
+  ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, annihilated: false, xp: 0, conditions: [], ...o });
 // A Tier 1 table around an encounter; the turn rules need the characters to know who's Dead.
 const table = (e: Encounter, characters: Character[] = []): LiveState =>
   ({ campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" }, characters, encounter: e, access: noAccess });
@@ -114,6 +114,34 @@ test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries",
   assert.deepEqual(pcStatus(c({ wounds: 7 }), d), ["Dying"]);
   assert.deepEqual(pcStatus(c({ wounds: 7, traumatic: 3 }), d), ["Dead"]);
   assert.deepEqual(pcStatus(c({ shock: 5 }), d), ["Exhausted"]);
+});
+
+test("pcHit: Exhausted Shock → Mortal Wounds, Dying → Traumatic Injury, Annihilation (pp.193-199)", () => {
+  // Tier 1, T 4, Wil 3: Max Wounds 6, Max Shock 4.
+  const d = deriveStats({ stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }), overrides: {}, tier: 1 });
+  const hit = (o: Partial<Character>, h: { wounds?: number; shock?: number }) => pcHit({ c: char(o), d, hit: h });
+  assert.deepEqual(hit({ shock: 3 }, { shock: 2 }), { wounds: 0, shock: 5, traumatic: 0, prone: false, annihilated: false }, "the Shock that Exhausts stays Shock (§11.12)");
+  assert.equal(hit({ shock: 5 }, { shock: 2 }).wounds, 2, "Exhausted: Shock → Mortal Wounds (p.199)");
+  assert.equal(hit({ shock: 5 }, { shock: 2 }).shock, 5);
+  assert.equal(hit({ conditions: ["Exhausted"] }, { shock: 1 }).wounds, 1, "the Exhausted Condition from another source counts too");
+  assert.equal(hit({ shock: 5 }, { shock: -1 }).shock, 4, "recovering Shock is never converted");
+  assert.deepEqual(hit({ wounds: 5 }, { wounds: 2 }), { wounds: 7, shock: 0, traumatic: 0, prone: true, annihilated: false }, "becoming Dying: Prone");
+  assert.deepEqual(hit({ wounds: 7 }, { wounds: 4 }), { wounds: 7, shock: 0, traumatic: 1, prone: false, annihilated: false }, "one Traumatic Injury per hit");
+  assert.equal(hit({ wounds: 7, shock: 5 }, { shock: 3 }).traumatic, 1, "Mortal Wounds from Shock while Dying are a Traumatic Injury too");
+  assert.equal(hit({ wounds: 9 }, { wounds: -1 }).wounds, 6, "any healing ends Dying");
+  assert.equal(hit({}, { wounds: 12 }).annihilated, false, "exactly double is not Annihilation");
+  assert.deepEqual(hit({ wounds: 2 }, { wounds: 13 }), { wounds: 2, shock: 0, traumatic: 0, prone: false, annihilated: true }, "more than double: dead (p.194)");
+  assert.deepEqual(pcStatus(char({ annihilated: true }), d), ["Dead"]);
+});
+
+test("Threats: Exhausted Shock, timed Conditions, Round-end Mob Resolve", () => {
+  assert.equal(isExhausted(threat("e", { threatClass: "E", shock: 3 })), true);
+  assert.deepEqual(exhaustedShock({ exhausted: true, wounds: 1, shock: 2 }), { wounds: 3, shock: 0 });
+  assert.deepEqual(exhaustedShock({ exhausted: false, shock: 2 }), { wounds: 0, shock: 2 });
+  assert.deepEqual(["Hindered", "Hindered (2)", "Vulnerable (1)", "Staggered", "Pinned", "Prone"].filter(isTimed),
+    ["Hindered", "Hindered (2)", "Vulnerable (1)", "Staggered"]);
+  const e = enc([threat("m", { label: "Boyz ×10", mobCount: 5, mobStart: 10 }), threat("n", { mobCount: 6, mobStart: 10 }), threat("z", { mobCount: 0, mobStart: 10 })]);
+  assert.deepEqual(roundEndReminders(e).map((r) => r.split(":")[0]), ["Boyz ×10"], "half or more slain; a wiped Mob has no one left to flee");
 });
 
 test("codex.save validates per kind; player codex drops secrets and unrevealed entries", () => {

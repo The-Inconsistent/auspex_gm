@@ -2,8 +2,8 @@
 import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
-  CONDITIONS, Side, TURN_END_REMINDERS, TURN_START_REMINDERS, canAct, canSeize, deriveStats, effectiveStrength, pcStatus,
-  sideOf, sideUpNext, threatStatus,
+  CONDITIONS, Side, THREAT_CLASS_RULES, TURN_END_REMINDERS, TURN_START_REMINDERS, canAct, canSeize, deriveStats, effectiveStrength,
+  exhaustedShock, isExhausted, isTimed, pcHit, pcStatus, roundEndReminders, sideOf, sideUpNext, threatStatus,
   type ActionInput, type Character, type Combatant, type LiveState, type Threat,
 } from "@wg/shared";
 
@@ -21,24 +21,56 @@ import type { LogEntry, Run } from "./types";
 
 type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };
 
-// Undo = the inverse delta, read against the state at tap time, because some taps don't do what their delta says:
-// a Wound on a Dying PC is a Traumatic Injury (p.193), and Shock on a Mob removes one member or nothing (p.325).
-// ponytail: inexact if the counter was clamped at 0 (or healing ended Dying); server-side history if that bites.
-function inverse({ action: a, state }: { action: ActionInput; state: LiveState }): ActionInput | undefined {
+// What a tap will do, read against the state at tap time with the same rules the api runs, because some taps don't do
+// what their delta says: Shock while Exhausted is Mortal Wounds (p.199), a Wound on a Dying PC is a Traumatic Injury
+// (p.193), one huge hit Annihilates (p.194), Shock on a Mob removes one member or nothing (p.325). Undo sends the exact
+// difference back as a raw adjust (no rules), and `note` tells the GM what happened.
+// ponytail: undo doesn't take back an automatic Prone, and a tap that raced another client's diffs the older state;
+// server-side history if that bites.
+function preview({ action: a, state }: { action: ActionInput; state: LiveState }): { undo?: ActionInput; note: string } {
+  const back = (before: number, after: number) => before - after || undefined;
+  const converted = (exhausted: boolean, shock = 0) => (exhausted && shock > 0 ? " → MORTAL WOUNDS (p.199)" : "");
   const neg = (n?: number) => (n === undefined ? undefined : -n);
+  // An undo's own undo (redo): raw deltas go back as they came. ponytail: inexact if one was clamped at 0.
+  if (a.type === "character.adjust" && a.raw)
+    return { undo: { ...a, wounds: neg(a.wounds), shock: neg(a.shock), wrath: neg(a.wrath), traumatic: neg(a.traumatic) }, note: "" };
+  if (a.type === "combatant.adjust" && a.raw)
+    return { undo: { ...a, wounds: neg(a.wounds), shock: neg(a.shock), personalRuin: neg(a.personalRuin) }, note: "" };
   if (a.type === "character.adjust") {
     const ch = state.characters.find((c) => c.id === a.id);
-    const dying = ch && pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier })).includes("Dying");
-    if (dying && a.wounds) return a.wounds > 0 ? { type: "character.adjust", id: a.id, traumatic: -1 } : undefined;
-    return { ...a, wounds: neg(a.wounds), shock: neg(a.shock), wrath: neg(a.wrath), traumatic: neg(a.traumatic) };
+    if (!ch) return { note: "" };
+    const d = deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier });
+    const hit = pcHit({ c: ch, d, hit: a });
+    if (hit.annihilated && !ch.annihilated) return { undo: { type: "character.update", id: a.id, annihilated: false }, note: " → ANNIHILATED (p.194)" };
+    return {
+      undo: {
+        type: "character.adjust", id: a.id, raw: true, wounds: back(ch.wounds, hit.wounds), shock: back(ch.shock, hit.shock),
+        traumatic: back(ch.traumatic, Math.max(0, hit.traumatic + (a.traumatic ?? 0))), wrath: back(ch.wrath, Math.max(0, ch.wrath + (a.wrath ?? 0))),
+      },
+      note: hit.traumatic > ch.traumatic ? " → TRAUMATIC INJURY (p.193)" : converted(isExhausted({ ...ch, maxShock: d.maxShock }), a.shock),
+    };
   }
   if (a.type === "combatant.adjust") {
     const c = state.encounter?.combatants.find((x) => x.id === a.id);
-    if (c?.kind === "threat" && c.mobCount !== null && a.shock !== undefined)
-      return c.maxShock !== null && a.shock > c.maxShock ? { type: "combatant.adjust", id: a.id, wounds: -1 } : undefined;
-    return { ...a, wounds: neg(a.wounds), shock: neg(a.shock), personalRuin: neg(a.personalRuin) };
+    if (c?.kind !== "threat") return { note: "" };
+    const personalRuin = back(c.personalRuin, Math.max(0, c.personalRuin + (a.personalRuin ?? 0)));
+    if (c.mobCount !== null) {
+      const loss = (a.wounds ?? 0) + (a.shock !== undefined && c.maxShock !== null && a.shock > c.maxShock ? 1 : 0);
+      const after = Math.min(c.mobStart ?? c.mobCount, Math.max(0, c.mobCount - loss));
+      return { undo: { type: "combatant.adjust", id: a.id, raw: true, wounds: back(after, c.mobCount), personalRuin }, note: "" };
+    }
+    const exhausted = isExhausted(c);
+    const hit = exhaustedShock({ exhausted, wounds: a.wounds, shock: a.shock });
+    return {
+      undo: {
+        type: "combatant.adjust", id: a.id, raw: true, personalRuin,
+        wounds: back(c.wounds, Math.max(0, c.wounds + hit.wounds)), shock: back(c.shock, Math.max(0, c.shock + hit.shock)),
+      },
+      note: converted(exhausted, a.shock),
+    };
   }
-  if (a.type === "pool.adjust") return { ...a, delta: -a.delta };
+  if (a.type === "pool.adjust") return { undo: { ...a, delta: -a.delta }, note: "" };
+  return { note: "" };
 }
 
 // PCs' counters live on their character; threats' on the combatant row.
@@ -69,7 +101,8 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
       return r;
     }
     setError(null);
-    push({ text, undo: inverse({ action: a, state }) });
+    const { undo, note } = preview({ action: a, state });
+    push({ text: text + note, undo });
     return r;
   };
 
@@ -114,18 +147,35 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     setAmountFor(null);
   };
 
-  // START TURN / SEIZE: starts the combatant's turn, then lists Conditions that tick at turn start.
+  // START TURN / SEIZE: starts the combatant's turn, then lists Conditions that tick at turn start, and the timed ones
+  // the api will end with this Turn (§11.8).
   const startTurn = async (c: Combatant, seize: boolean) => {
     const r = await run({ type: seize ? "turn.seize" : "turn.start", id: c.id }, `${seize ? "SEIZE · " : ""}${nameOf(c).toUpperCase()} ACTING`);
-    if (r.ok) remind(c, TURN_START_REMINDERS);
+    if (!r.ok) return r;
+    remind(c, TURN_START_REMINDERS);
+    for (const k of conditionsOf(c).filter(isTimed)) push({ text: `${nameOf(c).toUpperCase()}: ${k} ends at the end of this Turn`, warn: true });
     return r;
   };
 
-  // END TURN: ends the current turn, then lists Conditions that tick at turn end.
+  // Round end: Mobs with half or more slain test Resolve (p.325).
+  const remindRoundEnd = () => {
+    for (const text of roundEndReminders(enc)) push({ text: text.toUpperCase(), warn: true });
+  };
+
+  // END TURN: ends the current turn, then lists Conditions that tick at turn end, and the Round-end Tests if this was the
+  // last Turn of the Round (the api rolls the Round over on the same rule, canAct).
   const endTurn = async () => {
+    const roundEnds = !enc.combatants.some((x) => canAct(state, x));
     const r = await run({ type: "turn.end" }, `${current ? nameOf(current).toUpperCase() : "TURN"} END TURN`);
     if (r.ok && current) remind(current, TURN_END_REMINDERS);
+    if (r.ok && roundEnds) remindRoundEnd();
     return r;
+  };
+
+  // NEW ROUND: the GM ends the Round early.
+  const newRound = async () => {
+    const r = await run({ type: "encounter.newRound" }, "NEW ROUND");
+    if (r.ok) remindRoundEnd();
   };
 
   // Typed turn commands go through the button handlers, so the same Condition reminders fire.
@@ -192,6 +242,12 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
   const handleTraumatic = () => {
     if (!selChar) return;
     void run({ type: "character.adjust", id: selChar.id, traumatic: 1 }, `${selChar.name.toUpperCase()} +TRAUMATIC INJURY`);
+  };
+
+  // RESTORE: takes back an Annihilation (a mistyped hit).
+  const handleRestore = () => {
+    if (!selChar) return;
+    void run({ type: "character.update", id: selChar.id, annihilated: false }, `${selChar.name.toUpperCase()} RESTORED`);
   };
 
   // UNDO: sends the inverse delta, then drops the entry from the log once it went through.
@@ -277,7 +333,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               <button className="btn danger" onClick={handleRemove}>REMOVE</button>
             </>}
             <span style={{ flex: 1 }} />
-            <button className="btn" onClick={() => run({ type: "encounter.newRound" }, "NEW ROUND")}>NEW ROUND</button>
+            <button className="btn" onClick={newRound}>NEW ROUND</button>
             <button className="btn danger" onClick={() => run({ type: "encounter.end" }, "ENCOUNTER ENDED")}>END ENC</button>
           </div>
         )}
@@ -290,6 +346,9 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
 
       <aside className="tracker-side">
         {sel?.kind === "threat" && sel.stats && <>
+          <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }} aria-label={`${THREAT_CLASS_LABEL[sel.threatClass]} rules (pp.323-324)`}>
+            {THREAT_CLASS_RULES[sel.threatClass].map((k) => <span key={k} className="chip">{k.toUpperCase()}</span>)}
+          </div>
           <StatBlock t={sel.stats} />
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {sel.stats.personalRuin !== undefined && <>
@@ -306,6 +365,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
             <div>DEF {selDerived.defence} · RES {selDerived.resilience} · DETERMINATION {selDerived.determination}d6 · RESOLVE {selDerived.resolve}</div>
             <div>WRATH {selChar.wrath} · TRAUMATIC {selChar.traumatic}/{selDerived.maxTraumatic}
               {" "}<button className="btn sm" onClick={handleTraumatic}>+TRAUMATIC</button></div>
+            {selChar.annihilated && <div className="red">ANNIHILATED (p.194) <button className="btn sm" onClick={handleRestore}>RESTORE</button></div>}
             {selChar.stats.weapons.map((w) => <div key={w.name}><b>{w.name}</b> <span className="dim">{weaponLine({ weapon: w, strength: effectiveStrength(selChar.stats) })}</span></div>)}
           </div>
         )}

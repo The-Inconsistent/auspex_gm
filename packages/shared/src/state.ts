@@ -124,6 +124,7 @@ export const Character = z.object({
   shock: z.number().int(),
   wrath: z.number().int(),
   traumatic: z.number().int(), // Traumatic Injuries while Dying (p.193)
+  annihilated: z.boolean(), // one hit over 2 × Max Wounds (p.194)
   xp: z.number().int(),
   conditions: z.array(z.string()),
 });
@@ -217,18 +218,46 @@ export function canSeize(s: LiveState, side: Side): boolean {
 // Automatic states from damage (pp.193-196, p.324).
 export function pcStatus(c: Character, d: DerivedStats): string[] {
   const out: string[] = [];
-  if (c.traumatic > d.maxTraumatic) out.push("Dead");
+  if (c.annihilated || c.traumatic > d.maxTraumatic) out.push("Dead");
   else if (c.wounds > d.maxWounds) out.push("Dying");
   else if (c.wounds > 0) out.push("Wounded");
   if (c.shock > d.maxShock) out.push("Exhausted");
   return out;
 }
 
-export function threatStatus(c: ThreatCombatant): string[] {
-  if (c.mobCount !== null) {
-    if (c.mobCount === 0) return ["Slain"];
-    return c.mobStart !== null && c.mobCount * 2 <= c.mobStart ? ["Resolve DN 3 at Round end"] : [];
+// Exhausted: over Max Shock, or the Condition from another source (p.199).
+export const isExhausted = ({ shock, maxShock, conditions }: { shock: number; maxShock: number | null; conditions: string[] }) =>
+  (maxShock !== null && shock > maxShock) || conditions.includes("Exhausted");
+
+// Shock suffered while Exhausted becomes Mortal Wounds (p.199), which ignore Resilience (p.193). The Shock that makes
+// you Exhausted stays Shock (§11.12).
+export function exhaustedShock({ exhausted, wounds = 0, shock = 0 }: { exhausted: boolean; wounds?: number; shock?: number }) {
+  return exhausted && shock > 0 ? { wounds: wounds + shock, shock: 0 } : { wounds, shock };
+}
+
+// An Agent's counters after one hit (one tap is one attack, §11.11), pp.193-199. The api writes these; the tracker diffs
+// them for its undo.
+export function pcHit({ c, d, hit }: { c: Character; d: DerivedStats; hit: { wounds?: number; shock?: number } }) {
+  const status = pcStatus(c, d);
+  const { wounds: w, shock: s } = exhaustedShock({ exhausted: isExhausted({ ...c, maxShock: d.maxShock }), ...hit });
+  // Annihilation (p.194): more than double Max Wounds from one attack, counted after Resilience (§11.7). Dead is dead.
+  if (w > 2 * d.maxWounds) return { wounds: c.wounds, shock: c.shock, traumatic: c.traumatic, prone: false, annihilated: true };
+  const out = { wounds: c.wounds, shock: Math.max(0, c.shock + s), traumatic: c.traumatic, prone: false, annihilated: c.annihilated };
+  if (status.includes("Dying")) {
+    if (w > 0) out.traumatic += 1; // a Wound while Dying is a Traumatic Injury instead, one per hit (p.193, §11.11)
+    else if (w < 0) out.wounds = Math.max(0, Math.min(d.maxWounds, c.wounds + w)); // recovering any Wounds ends Dying (p.193)
+  } else {
+    out.wounds = Math.max(0, c.wounds + w);
+    out.prone = c.wounds <= d.maxWounds && out.wounds > d.maxWounds; // becoming Dying: fall Prone (p.193)
   }
+  return out;
+}
+
+// Half or more of a Mob slain: a DN 3 Resolve Test at the end of the Round (p.325).
+const halfSlain = (c: ThreatCombatant) => c.mobCount !== null && c.mobCount > 0 && c.mobStart !== null && c.mobCount * 2 <= c.mobStart;
+
+export function threatStatus(c: ThreatCombatant): string[] {
+  if (c.mobCount !== null) return c.mobCount === 0 ? ["Slain"] : halfSlain(c) ? ["Resolve DN 3 at Round end"] : [];
   const overShock = c.maxShock !== null && c.shock > c.maxShock;
   if (c.wounds > c.maxWounds) return [c.threatClass === "A" ? "Dying or dead (GM)" : "Slain"];
   if (overShock) return [c.threatClass === "T" ? "Slain" : "Exhausted"];
@@ -264,3 +293,15 @@ export const TURN_START_REMINDERS: Record<string, string> = {
 export const TURN_END_REMINDERS: Record<string, string> = {
   Bleeding: "Bleeding: suffer 1 Mortal Wound per stack (DN 4 Toughness to stop)",
 };
+
+// Conditions that last "until the end of your next Turn" (Hindered p.199, Staggered and Vulnerable p.200), counted in the
+// affected character's own Turns (§11.8). The api arms the ones held at the start of a Turn and removes them at its end.
+// A stacked value such as "Hindered (2)" counts too.
+export const TIMED_CONDITIONS = ["Hindered", "Staggered", "Vulnerable"] as const;
+export const isTimed = (k: string) => TIMED_CONDITIONS.some((t) => k === t || k.startsWith(`${t} (`));
+
+// Reminders when a Round ends: each Mob with half or more slain tests Resolve (p.325).
+export const roundEndReminders = (e: Encounter): string[] =>
+  e.combatants.flatMap((c) => c.kind === "threat" && halfSlain(c)
+    ? [`${c.label}: half slain, DN 3 Resolve Test; fail = the Mob flees as if in Terror, a Complication slays 1d3 more (p.325)`]
+    : []);

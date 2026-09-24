@@ -31,10 +31,13 @@ export const Action = z.union([
       stats: CharacterStats.optional(),
       overrides: Overrides.optional(),
       conditions: conditions.optional(),
+      annihilated: z.boolean().optional(), // GM only: undoes an Annihilation (p.194)
     }),
+    // Wounds and Shock go through the damage rules (pcHit, pp.193-199). raw (GM only, the tracker's undo) skips them.
     z.object({
       type: z.literal("character.adjust"), id,
       wounds: delta.optional(), shock: delta.optional(), wrath: delta.optional(), traumatic: delta.optional(),
+      raw: z.boolean().optional(),
     }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),
@@ -77,9 +80,10 @@ export const Action = z.union([
       marker: Marker.nullable().optional(),
       ambushed: z.boolean().optional(),
     }),
+    // Same damage rules for Threats (Mob members p.325, Exhausted p.199); raw (the tracker's undo) skips them.
     z.object({
       type: z.literal("combatant.adjust"), id,
-      wounds: delta.optional(), shock: delta.optional(), personalRuin: delta.optional(),
+      wounds: delta.optional(), shock: delta.optional(), personalRuin: delta.optional(), raw: z.boolean().optional(),
     }),
     z.object({ type: z.literal("combatant.aware"), id }), // pay 1 Glory/Ruin to ignore an ambush (p.177)
     z.object({ type: z.literal("combatant.remove"), id }),

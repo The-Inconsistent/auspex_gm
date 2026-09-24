@@ -307,6 +307,56 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
     && s.encounter.combatants.filter((x) => x.kind === "pc").length === 3);
 });
 
+test("rule gaps: Exhausted Shock, Annihilation, timed Conditions, raw undo (pp.194, 199-200)", async (t) => {
+  const gm = await newCampaign("Gaps", 3);
+  t.after(() => gm.socket.close());
+  const hero = await gm.send({ type: "character.create", name: "Hero" });
+  assert.ok(hero.ok && hero.id);
+  const charOf = (s: LiveState) => s.characters.find((c) => c.id === hero.id)!;
+  const d = deriveStats({ stats: charOf(await gm.until((s) => s.characters.length === 1)).stats, overrides: {}, tier: 3 });
+
+  // Exhausted (p.199): the Shock that Exhausts stays Shock; any after it is Mortal Wounds.
+  await gm.send({ type: "character.adjust", id: hero.id, shock: d.maxShock + 1 });
+  await gm.send({ type: "character.adjust", id: hero.id, shock: 2 });
+  await gm.until((s) => charOf(s).shock === d.maxShock + 1 && charOf(s).wounds === 2);
+  // The tracker's undo skips the rules; players can't send it, nor take back an Annihilation.
+  await gm.send({ type: "character.adjust", id: hero.id, wounds: -2, shock: -(d.maxShock + 1), raw: true });
+  await gm.until((s) => charOf(s).shock === 0 && charOf(s).wounds === 0);
+  const issued = await gm.send({ type: "token.issue", characterId: hero.id });
+  assert.ok(issued.ok && issued.token);
+  const player = connect({ auth: { token: issued.token } });
+  t.after(() => player.socket.close());
+  assert.deepEqual(await player.send({ type: "character.adjust", id: hero.id, shock: 1, raw: true }), { ok: false, error: "GM only" });
+  assert.deepEqual(await player.send({ type: "character.update", id: hero.id, annihilated: false }), { ok: false, error: "GM only" });
+
+  // Annihilation (p.194): one hit over double Max Wounds; the GM can restore a mistyped one.
+  await gm.send({ type: "character.adjust", id: hero.id, wounds: 2 * d.maxWounds + 1 });
+  await gm.until((s) => charOf(s).annihilated && charOf(s).wounds === 0);
+  assert.ok((await gm.send({ type: "character.update", id: hero.id, annihilated: false })).ok);
+  await gm.until((s) => !charOf(s).annihilated);
+
+  // Timed Conditions (§11.8): held at the start of the Turn → gone at its end; gained during it → kept.
+  await gm.send({ type: "encounter.start" });
+  const heroC = await gm.send({ type: "combatant.addCharacter", characterId: hero.id });
+  const wraith = await gm.send({ type: "combatant.addThreat", threatId: "canoptek-wraith" }); // Elite at Tier 3
+  assert.ok(heroC.ok && heroC.id && wraith.ok && wraith.id);
+  await gm.send({ type: "character.update", id: hero.id, conditions: ["Vulnerable (2)", "Prone"] });
+  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
+  await gm.send({ type: "character.update", id: hero.id, conditions: ["Vulnerable (2)", "Prone", "Hindered"] });
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  await gm.until((s) => charOf(s).conditions.join() === "Prone,Hindered");
+  await gm.send({ type: "combatant.update", id: wraith.id, conditions: ["Staggered"] });
+  assert.ok((await gm.send({ type: "turn.start", id: wraith.id })).ok);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  await gm.until((s) => threatOf(s)?.conditions.length === 0);
+
+  // A single Threat Exhausted is hit by Mortal Wounds too.
+  const w0 = threatOf(await gm.until((s) => !!threatOf(s)))!;
+  await gm.send({ type: "combatant.adjust", id: wraith.id, shock: w0.maxShock! + 1 });
+  await gm.send({ type: "combatant.adjust", id: wraith.id, shock: 1 });
+  await gm.until((s) => threatOf(s)?.shock === w0.maxShock! + 1 && threatOf(s)?.wounds === 1);
+});
+
 test("accounts: lobby, room and character invites, guests, removing a member", async (t) => {
   const gm = await newCampaign("Invites", 2);
   t.after(() => gm.socket.close());
