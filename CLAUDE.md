@@ -16,14 +16,16 @@ This app encodes game rules. **Do not invent rules.** Every rule in code cites i
 (`// p.177`, `Core p.324`, `VoA p.43`, `TA p.8`). Where a book is ambiguous, the house decision is written down
 in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not silently in code.
 
-- **Specs:**
+- **Specs:** (index: `docs/README.md`; code-level docs: `architecture`, `backend`, `frontend`, `game-logic`, `data`,
+  `development`)
   - `docs/rules-flow.md`: game flow (session, pools, combat state machine, damage, conditions, traits).
   - `docs/campaign-model.md`: the campaign and codex model.
   - `docs/kill-team.md`: the current campaign's Deathwatch Kill Team mapping and GM decisions.
   - `docs/pregens.md`: its five Tier 4 characters.
-- **Books** are the PDFs in the repo root, gitignored. Page offsets:
+- **Books** are the PDFs in `books/`, gitignored. Page offsets:
   - Core rulebook: PDF page = printed + 1.
   - Vow of Absolution, Threat Assessment, Gutshiva's Kommandos: PDF page = printed.
+  - Threat Assessment: Daemons: PDF page = printed. It's image-only (no text layer), so read it from page renders. It has no `source` id yet.
 - **Reading the PDFs:**
   - Text: use `pdftotext -f N -l N "<pdf>" -` and filter the watermark with `grep -v "Order #"`.
   - Stat blocks and tables garble in text, so verify them against a page image. The Read tool refuses PDFs over
@@ -53,8 +55,8 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
 
 - **One mutation path.** Every change is a socket `action` event, validated against the zod `Action` union
   (`packages/shared/src/actions.ts`). The gateway (`apps/api/src/table/table.gateway.ts`) handles each one in order:
-  1. `authorize(ctx)` checks the caller's role and ownership.
-  2. `applyAction` runs inside a DB transaction.
+  1. `applyAction` runs inside a DB transaction.
+  2. It first calls `authorize(ctx)`, which checks the caller's role and ownership.
   3. The gateway rebroadcasts.
   Actions are serialised per campaign with an in-process queue, which assumes a single api instance.
 - **The server decides.** Counters take deltas (`+2 Wounds`), clamped at 0 and capped where the rules cap them,
@@ -111,7 +113,7 @@ apps/api/scripts/   seed.ts (load a content pack), create-campaign.ts
 apps/web/app/       page.tsx (Server Component: /api/me → GM or player app), join/[token]/route.ts (token → cookie)
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
-apps/web/components/ui/      bar, stat-block, status-chips, status-screen
+apps/web/components/ui/      bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
 packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, pack.ts

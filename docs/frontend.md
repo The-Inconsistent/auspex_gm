@@ -1,0 +1,596 @@
+# Frontend: `apps/web`
+
+How the web app works and how to change it safely. The system picture is in [architecture.md](architecture.md), the
+api in [backend.md](backend.md), the rules functions in [game-logic.md](game-logic.md), and setup and commands in
+[development.md](development.md). The binding style rules are in
+[`.claude/frontend-code-style.md`](../.claude/frontend-code-style.md).
+
+Stack: Next.js 16 (App Router), React 19, `socket.io-client`, `qrcode`, and plain CSS in `app/globals.css`. There is
+no UI framework, no client-side data fetching and no client router beyond tab state. One page (`/`) renders either
+the GM app or the player app.
+
+---
+
+## 1. Routes and entry
+
+| Path | File | Kind | Job |
+|---|---|---|---|
+| `/` | `app/page.tsx` | Server Component | Reads the cookie, asks `/api/me` who the caller is, and renders `GmApp`, `PlayerApp` or a `StatusScreen` |
+| `/join/<token>` | `app/join/[token]/route.ts` | Route handler (`GET`) | Swaps the token for the login cookie, then redirects to `/` with a 303 |
+| `/manifest.webmanifest` | `app/manifest.ts` | Metadata route | "Add to home screen": `display: standalone`, `start_url: /`, colours from `TOKENS.bg` |
+| `/api/*`, `/socket.io/*` | `next.config.ts` | Rewrites (dev only) | Proxied to the api |
+
+`app/layout.tsx` loads the fonts, sets `metadata` and `viewport` (`themeColor: TOKENS.bg`), and imports
+`globals.css`.
+
+### `/`: `app/page.tsx`
+
+The login cookie (`TOKEN_COOKIE` = `wg_token`, set by the api) is httpOnly, so only the server can read it and forward
+it. `apiGet` calls the api directly at `API_ORIGIN` (`app/constants.ts`, env `API_ORIGIN`, default
+`http://localhost:4000`) with `cache: "no-store"`.
+
+The checks run in this order, and the first one that matches decides what renders:
+
+| Condition | Renders |
+|---|---|
+| `?join=invalid` or `?join=nosignal` (checked **before** the cookie) | `JOIN_ERRORS[join]` |
+| No `wg_token` cookie | NO ACCESS |
+| `/api/me` returns 401 | NO ACCESS |
+| `/api/me` returns any other non-2xx | `JOIN_ERRORS.nosignal` |
+| `/api/me` body fails `Me.safeParse` | NO ACCESS |
+| The fetch throws (api down) | `JOIN_ERRORS.nosignal` |
+| `role: "gm"` | `<GmApp bestiary={…} />` |
+| A player with no `characterId` | NO ACCESS |
+| A player | `<PlayerApp characterId={…} />` |
+
+The messages:
+
+| Key | Text |
+|---|---|
+| NO ACCESS (`NO_ACCESS` in `page.tsx`) | `NO ACCESS. SCAN THE QR CODE ON THE GM'S TABLET.` |
+| `JOIN_ERRORS.invalid` | `LINK INVALID OR REVOKED. ASK YOUR GM FOR A NEW QR CODE.` |
+| `JOIN_ERRORS.nosignal` | `NO SIGNAL. CHECK THE CONNECTION AND RETRY.` |
+
+For the GM, `loadBestiary` fetches `/api/threats` on the server, parses it with `Threat.array()` and sorts it by name.
+Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop; the client
+never fetches it.
+
+### `/join/<token>`: `app/join/[token]/route.ts`
+
+The GM link and the player QR codes both point here. `GET` awaits `params` (a Promise in Next 16), then POSTs
+`{ token }` to `${API_ORIGIN}/api/join`.
+
+| api result | Response |
+|---|---|
+| 2xx | 303 to `/`, with every `Set-Cookie` from the api copied across (`getSetCookie()`) |
+| 400 or 401 (a rejected token) | 303 to `/?join=invalid` |
+| Any other status (5xx: the link may still be fine) | 303 to `/?join=nosignal` |
+| The fetch throws | 303 to `/?join=nosignal` |
+
+The `Location` header is relative (`/`), so the redirect stays on whatever host the phone used (Caddy in prod,
+`:3000` in dev). The error keys are the `JoinError` type from `JOIN_ERRORS` in `app/constants.ts`.
+
+### `next.config.ts`
+
+- `transpilePackages: ["@wg/shared"]`: shared is imported as TypeScript source.
+- `output: "standalone"`.
+- Rewrites send `/api/:path*`, `/socket.io/` and `/socket.io/:path*` to `API_ORIGIN`, so in dev the browser sees one
+  origin: the cookie is first-party and there's no CORS. In prod, Caddy routes these paths before Next sees them.
+- `skipTrailingSlashRedirect: true`: socket.io's path is `/socket.io/`. Without this, Next answers it with a 308 to
+  strip the slash and the handshake breaks. The explicit `/socket.io/` rewrite sits beside `/socket.io/:path*`
+  because, per `CLAUDE.md`, the handshake gets a 308 or a 404 without both. Keep both rules and the flag together.
+
+---
+
+## 2. `hooks/use-table/use-table.ts`
+
+`useTable()` is the only link to live state. Both apps call it once at the top and pass `state`, `codex` and `send`
+down as props.
+
+```ts
+const { state, codex, online, send } = useTable();
+```
+
+| Returns | Type | Meaning |
+|---|---|---|
+| `state` | `LiveState \| null` | The latest `state` snapshot (campaign, pools, characters, encounter). `null` until the first one arrives |
+| `codex` | `Codex \| null` | The latest `codex` snapshot. `null` until the first one arrives |
+| `online` | `boolean` | Set by socket `connect` / `disconnect` |
+| `send` | `Send = (a: ActionInput) => Promise<ActionResult>` | The only way to change anything |
+
+- **One socket per tab:** `io({ withCredentials: true })`, same origin. The browser sends the httpOnly cookie on the
+  handshake. The server pushes a full snapshot on connect and after every change, and the hook replaces its state
+  wholesale (`s.on("state", setState)`, `s.on("codex", setCodex)`). A reconnect needs no special logic. The players
+  room gets the filtered views; see [architecture.md](architecture.md).
+- **Snapshots are never cleared on disconnect.** The last state stays on screen under the offline badge.
+- **`connect_error`:**
+  - If `s.active` is true, it was a transport error and socket.io is already reconnecting, so the hook does nothing.
+  - If the server's auth middleware refused with `"unauthorized"` (a revoked or dead token), it calls
+    `location.reload()`, and the reload lands on the NO ACCESS screen.
+  - Any other refusal (a DB blip) retries `s.connect()` after `REFUSED_RETRY_MS` (3 s). socket.io doesn't retry
+    middleware refusals on its own.
+- **`send(action)`:**
+  - If the socket isn't connected, it returns `{ ok: false, error: "No signal" }` without sending.
+  - Otherwise it calls `emitWithAck("action", a)` with `ACK_TIMEOUT_MS` (5 s) and returns the server's
+    `ActionResult`: `{ ok: true, id?, token? }` or `{ ok: false, error }`. `id` is the new row for creates;
+    `token` is the join token from `token.issue`.
+  - On timeout it returns `{ ok: false, error: "No reply from server. Check before retrying" }`. The action may
+    still have been applied, and counters are deltas, so tapping again could double it.
+  - `send` never throws. Callers check `r.ok` and show `r.error`.
+- **Wake lock:** it requests `navigator.wakeLock.request("screen")` on mount and again on every `visibilitychange`
+  back to visible, and releases it on unmount. A denial is swallowed on purpose: the screen may dim, and nothing else
+  breaks.
+
+---
+
+## 3. GM app: `components/gm/`
+
+`gm-app/gm-app.tsx` (`GmApp`) is the tablet shell. It shows `SYNCING COGITATOR…` until both snapshots arrive.
+
+- **Header** (`.gm-head`):
+  - `AUSPEX // <CAMPAIGN> // T<tier>`.
+  - `RND nn` while an encounter is live.
+  - One `.pool` per `Pool.options` (Glory, Ruin). Each shows `current/max`, with the cap from `poolMax(p, players)`,
+    and has − / + buttons that send `pool.adjust` ±1. A refusal shows in the page's `Refusal` banner.
+- **Tabs:** `GM_TABS` in `gm-app/constants.ts` = TRACK, PREP, CODEX, PARTY. The selected tab is local state and
+  starts on TRACK.
+
+| Tab | Component | Files |
+|---|---|---|
+| TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
+| PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}` |
+| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}` |
+| PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx` |
+
+### 3.1 TRACK: live combat tracker
+
+With no encounter live, the tab shows NO ACTIVE ENCOUNTER and a START ENCOUNTER button (`encounter.start`). A beat's
+prepared encounter can also be started from PREP.
+
+**Status strip** (top panel):
+- The turn state: `▶ <NAME> ACTING`, `AWAITING: <SIDE> PICK` (from `sideUpNext`), or `ROUND COMPLETE`.
+- `NEXT: <side>` and `<SIDE> SEIZED`, when they apply.
+- The round, plus how many of each side have acted, as `AGENTS acted/total · THREATS acted/total`.
+
+**Rows** are grouped by `Side.options` (agents, then threats). Each row is a `<button>`, and tapping one
+toggles `selected`.
+
+| Column | Content |
+|---|---|
+| STATE | A word, never colour alone: `▶ ACTING`, `DONE`, `AMBUSHED` (Round 1 only), `READY` |
+| DESIGNATION | The name, with a marker swatch for threats that have a marker |
+| CLASS | `AGENT`, or `THREAT_CLASS_LABEL[threatClass]` (TROOP / ELITE / ADVERSARY / MONSTROUS) |
+| WOUNDS | A `Bar` (red once damaged). Mobs show `×count OF start` instead |
+| SHOCK | A `Bar`, or `—` when max Shock is `null` |
+| DEF / RES | PCs: from `deriveStats`. Threats: from the snapshotted `stats` |
+| STATUS | `StatusChips` from `pcStatus` / `threatStatus`, plus Condition chips |
+| PLAYERS | What the phones see: `FULL`, or `BAR ONLY` in red for an unrevealed threat |
+
+Row CSS classes: `.now` is the one acting (highlighted background), `.sel` is selected (fg border), and `.done` has
+acted (dimmed). Below 900px, the columns marked `.hide-sm` (CLASS, SHOCK, DEF, RES, PLAYERS) are hidden.
+
+**Key bar** (`.keys`). Which buttons show depends on the encounter and the selection:
+
+| Button | Shown when | Sends |
+|---|---|---|
+| END TURN | Someone is acting | `turn.end` |
+| START TURN | Nobody is acting and `canAct(enc, sel)` | `turn.start` |
+| SEIZE · 1 GLORY / 1 RUIN | As START TURN, and also `canSeize(enc, side)` | `turn.seize` |
+| DMG / HEAL / SHOCK / RECOVER | A row is selected | Opens the amount pad |
+| ±COND select | A row is selected | Toggles one of `CONDITIONS` (`character.update` or `combatant.update` with the full list) |
+| REVEAL / HIDE | A threat is selected | `combatant.update { revealed }` |
+| AMBUSH / AWARE · cost | Round 1, and the selected row hasn't acted | `combatant.update { ambushed: true }` / `combatant.aware` |
+| REMOVE | A row is selected | `combatant.remove`, then clears the selection |
+| NEW ROUND, END ENC | Always | `encounter.newRound`, `encounter.end` |
+
+The Seize and Aware cost label is `1 GLORY` when the selected combatant is an agent, and `1 RUIN` otherwise. The
+server charges the cost; see [game-logic.md](game-logic.md).
+
+**Amount pad.** DMG, HEAL, SHOCK and RECOVER set `amountFor` to a `CounterAction` key. The key bar is then replaced by
+`AMOUNTS` (1 2 3 4 5 6 8 10) and CANCEL. A tap sends one delta built by `counterAction`:
+
+- PCs send `character.adjust` on the character.
+- Threats send `combatant.adjust` on the row.
+- `COUNTER_ACTIONS` (`lib/command/constants.ts`, shared with the command line) maps each key to a `field` and a `sign`. Wounds count up, so HEAL is a negative Wounds delta.
+
+**Side panel** (`.tracker-side`):
+- A selected threat shows its snapshotted `StatBlock`. If the stat block has Personal Ruin, the panel also has a
+  counter with SPEND (−1) and +1 (`combatant.adjust { personalRuin }`).
+- A selected PC shows archetype and keywords; DEF, RES, Determination and Resolve; Wrath; Traumatic `n/max` with a
+  +TRAUMATIC button (`character.adjust { traumatic: 1 }`); and weapon lines.
+- Below either one sits the **vox log**.
+
+**Vox log and undo.**
+- `run(action, text)` (the `Run` type in `tracker/types.ts`) wraps `send`. On success it pushes a `LogEntry` to the
+  top of the log, capped at `LOG_LIMIT` (40). On refusal it sets the tracker's error line.
+- Each entry carries `undo = inverse(action)`. Only `character.adjust`, `combatant.adjust` and `pool.adjust` have an
+  inverse, and it negates every delta. Turns, Conditions, reveals and adds get no UNDO button.
+- UNDO sends the inverse, logs `UNDO: …`, and drops the original entry.
+- The inverse is inexact if the server clamped the counter at 0 (a `ponytail:` note in `tracker.tsx`). The log is
+  client-only: it's per tab and lost on reload.
+
+**Condition reminders.** After a successful START TURN or SEIZE, `remind()` checks the combatant's Conditions against
+`TURN_START_REMINDERS`. After END TURN, it checks the combatant that was acting against `TURN_END_REMINDERS`. Each
+match is pushed to the log as an amber (`warn`) entry. Typed `start`, `seize` and `end` commands go through the same
+handlers (`runCommand`), so they fire the same reminders. What the reminders say is covered in
+[game-logic.md](game-logic.md).
+
+**Add combatants** (`AddCombatants`, under the command line):
+- The `+ THREAT…` select lists the bestiary as `name (source p.N)`.
+- `MOB #` accepts digits only. A value of 2 or more adds the threat as a mob of that size.
+- An optional MARKER select.
+- ADD sends `combatant.addThreat`.
+- `+ PARTY (n)` sends one `combatant.addCharacter` for each character not yet in the fight, in order.
+- All of these go through `run`, so they are logged and their errors show on the tracker error line.
+
+### 3.2 The command line: `lib/command/command.ts`
+
+The `.cmd` form under the key bar. On submit, `parseCommand({ input, state, selected })` returns
+`{ actions: ActionInput[] }` or `{ error }`:
+- An error shows on the tracker error line, and the text stays in the box for editing.
+- Otherwise each action runs through `runCommand`: turn actions use the button handlers, and everything else goes
+  through `run` with the log text `> <COMMAND>`. The input clears only if every action succeeded.
+- Matching is case-insensitive, and the input is split on whitespace.
+
+**Globals.** These are checked first and need no target:
+
+| Input | Action |
+|---|---|
+| `end` (the only word) | `turn.end` |
+| `round` (the only word) | `encounter.newRound` |
+| `glory <n>`, `ruin <n>` (`n` = `3`, `+1`, `-2`) | `pool.adjust { pool, delta: n }`; any later words are ignored |
+
+**Verbs.** Aliases map to one canonical verb (`VERBS`). Only the first verb word counts; any later verb word is
+treated as part of the target name.
+
+| Verb | Aliases | PC target | Threat target | Amount |
+|---|---|---|---|---|
+| wounds | `dmg`, `d`, `wound`, `w` | `character.adjust { wounds: +n }` | `combatant.adjust { wounds: +n }` | default 1 |
+| heal | `heal`, `h` | `character.adjust { wounds: −n }` | `combatant.adjust { wounds: −n }` | default 1 |
+| shock | `shock`, `s` | `character.adjust { shock: +n }` | `combatant.adjust { shock: +n }` | default 1 |
+| recover | `rec`, `recover`, `r` | `character.adjust { shock: −n }` | `combatant.adjust { shock: −n }` | default 1 |
+| wrath | `wrath` | `character.adjust { wrath: n }` | error `Threats don't have Wrath` | default 1, signed (`wrath -1`) |
+| start | `start`, `go` | `turn.start` | `turn.start` | none |
+| seize | `seize` | `turn.seize` | `turn.seize` | none |
+| aware | `aware` | `combatant.aware` | `combatant.aware` | none |
+| ambush | `ambush` | `combatant.update { ambushed: true }` | same | none |
+| reveal / hide | `reveal`, `hide` | `combatant.update { revealed }` | same | none |
+| mob | `mob` | `combatant.update { mobCount: n }` | same | **required** (`mob needs a count: <name> mob 6`) |
+| remove | `remove` | `combatant.remove` | same | none |
+
+**Amounts:**
+- A signed number **before** any verb is itself the verb: `+n` means wounds n and `-n` means heal n. For example,
+  `+2` gives 2 Wounds to the selected row, and `-1 hollan` heals Hollan 1.
+- A number (signed or not) **after** a verb is its amount: `dmg 3`, `dmg +3`, `wrath -1`.
+- For the four counter verbs, the verb sets the direction and the amount's sign is ignored: `heal -2` still heals 2.
+  For `wrath`, the sign counts: `wrath -1` lowers Wrath.
+- An unsigned number before a verb is not an amount. It becomes part of the target name.
+
+**Conditions.** A word `+<name>` or `-<name>` whose `<name>` matches one of `CONDITIONS` turns that Condition on or
+off. The match is case-insensitive and ignores spaces, so `+onfire` means On Fire. The parser reads the target's
+current list and sends the whole new list: `character.update { conditions }` for a PC, `combatant.update { conditions }`
+for a threat. If a Condition word is present, it wins, and any verb in the same command is ignored.
+
+**Target resolution** (`resolve`). The target is every word left over once globals, verbs, amounts and Conditions are
+taken out:
+
+| Remaining words | Result |
+|---|---|
+| None | The selected row, or the error `No target: select a row or type a name` |
+| A query `q` (the words joined with spaces) | Matches every combatant whose name **equals** `q`, **starts with** `q`, or has a **word** (split on spaces, `×` and parentheses) that starts with `q` |
+| Exactly one match | That combatant. PCs route to their character, threats to their combatant row |
+| Several matches | `Ambiguous: <names>`, even when one of them is an exact match |
+| No match | `No combatant matches "<words>"` |
+
+The names come from `targetsOf(state)`: the character name for PCs and the combatant `label` for threats.
+
+A command with neither a verb nor a Condition returns
+`Unknown command. Try: <name> dmg 3 · <name> +2 · +Pinned <name> · end`.
+
+**Examples:**
+
+| Command | Result |
+|---|---|
+| `hollan dmg 3` | Preacher Hollan takes 3 Wounds |
+| `+2` | The selected row takes 2 Wounds |
+| `-1 hollan` / `hollan heal 1` | Hollan heals 1 Wound |
+| `iskra shock 2` | `character.adjust { shock: 2 }` on Iskra's character |
+| `iskra wrath -1` | Iskra spends 1 Wrath |
+| `+pinned iskra` / `hollan -prone` | Toggles a Condition |
+| `seize hollan` / `go iskra` | Seize, or start a turn, with the same reminders as the buttons |
+| `boyz mob 6` | Sets the mob to 6 members |
+| `ruin +1` / `glory -1` | Moves a pool |
+| `end` / `round` | Ends the turn, or starts a new round |
+| `kommando dmg 1` | `Ambiguous: Kommando ×6, Kommando Nob` |
+
+The tests are in `lib/command/command.test.ts`.
+
+### 3.3 PREP: adventures and beats
+
+`Prep`. The data model is in [campaign-model.md](campaign-model.md).
+
+- **Adventures** show as a row of buttons. Picking one closes any open editor. The inline NEW ADVENTURE form sends
+  `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`.
+- **Each beat in the list** shows:
+  - its number, title, type chip and status chip (amber when active)
+  - its read-aloud text
+  - a summary of its prepared encounter
+- **Beat controls:**
+  - ↑ / ↓ swap a beat with its neighbour and send the full `ids` order as `beat.reorder`.
+  - EDIT opens the beat editor.
+  - RUN BEAT, shown when the beat has a prepared encounter, sends `beat.startEncounter` and jumps to TRACK through
+    `onRun`.
+  - SET ACTIVE, shown when there is no prepared encounter, sets the status to active.
+  - DONE and SKIP set the status to done or skipped.
+  - Each status change is a `codex.save { kind: "beat" }` with `stripBeat(b)`: the beat without `id` and `order`,
+    which the server owns.
+- **`BeatEditor`** has these fields:
+  - title
+  - type (`BeatType.options`)
+  - read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`)
+  - location
+  - NPC and handout toggle chips (`aria-pressed`)
+  - the prepared encounter entries: threat, count (at least 1), a MOB checkbox and a marker
+
+  It also shows the Threat Assessment sizing guideline for the current party size and the current enemy count.
+  SAVE BEAT creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
+  error shown inline.
+
+### 3.4 CODEX: NPCs, locations, handouts, factions
+
+`CodexView`.
+- **Sub-tabs** come from `CODEX_KINDS`, each mapping a kind to its `Codex` collection: NPCS, LOCATIONS, HANDOUTS,
+  FACTIONS.
+- **List:** each entry shows its name or title and an EDIT button. Kinds that have a `revealed` field (every kind
+  except factions) also get a REVEALED / HIDDEN button. It flips `revealed` with a `codex.save` of the whole entry;
+  players get the entry the moment it's revealed.
+- **`CodexEditor`** is generic, driven by `fieldsFor(kind, codex)`:
+
+| Kind | Fields |
+|---|---|
+| npc | name, role, faction (select), attitude, description (players see it), GM notes, secrets, revealed |
+| location | name, inside (parent location), description (players see it), hazards, GM notes, revealed |
+| handout | title, text, sent to players |
+| faction | name, keywords (comma-separated list), stance, notes, secrets |
+
+  - The draft starts from the whole row, so fields that have no input in the editor (an NPC's `statSource`)
+    survive a save.
+  - On SAVE, an empty `…Id` select becomes `null`.
+  - A refusal shows inline and keeps the editor open.
+  - The page-level `Refusal` banner is used only for the reveal toggle.
+
+### 3.5 PARTY: session, framework, kill team
+
+`Party`.
+- **Session panel:**
+  - While a session is open: pick XP from `XP_AWARDS` (8 / 10 / 12, `DEFAULT_XP` 10) or type a number, write the
+    recap (players see it), then END SESSION (`session.end { xp, recap }`).
+  - Otherwise: START SESSION n (`session.start`).
+  - What the pools reset to is covered in [game-logic.md](game-logic.md).
+- **Framework panel:** patron and framework text, saved with `campaign.update`. Players see both on INTEL.
+- **Kill team list:** for each character, the name, archetype, `pcStatus` chips, XP, and a line of derived stats. The
+  per-character buttons:
+
+| Button | Sends | Notes |
+|---|---|---|
+| SHOW QR | `token.issue` | Builds `${location.origin}/join/<token>` into a `QR_SIZE` (320px) PNG with `qrcode`, using `TOKENS.bg` modules on `TOKENS.fg`, and shows it full-screen in `QrDialog` with the URL written underneath |
+| LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
+| RESPITE | `character.respite` | |
+| REVOKE LINKS | `token.revoke` | The server also kicks that player's live socket |
+
+- **ADD AGENT** sends `character.create { name }`.
+
+---
+
+## 4. Player app: `components/player/player-app/`
+
+`PlayerApp` is phone-first:
+- `SYNCING…` until both snapshots arrive, and `CHARACTER NOT FOUND. ASK YOUR GM.` if `characterId` isn't in `state`.
+- **Banner** (`.pl-banner`), one of:
+  - `NO COMBAT · STANDING BY`
+  - `▶ YOUR TURN`, on an amber background
+  - `RND nn · <NAME> ACTING` or `<SIDE> PICK`, with `· YOU: DONE` added once the player has acted
+- **Vibration:** when it becomes the player's turn, `navigator.vibrate(TURN_VIBRATION)` buzzes once. This is a
+  `useEffect` on `myTurn`, with a ref so it fires only on the change.
+- **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL) sit in a sticky bar at the bottom.
+
+| Tab | File | Shows | The player can change |
+|---|---|---|---|
+| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds, Shock, Wrath and PARTY GLORY; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions; armament (`weaponLine` with `effectiveStrength`) and armour; skill totals (`skillTotal`); abilities; talents; gear | Their own Wounds, Shock and Wrath (±1, `character.adjust`), party Glory (±1, `pool.adjust`), their own Conditions (`character.update`), RESPITE (`character.respite`) |
+| FIGHT | `components/fight/fight.tsx` | Every combatant as a card: `▶` on the one acting, dimmed once done, a Wounds block bar (mobs show `×count OF start`), threat status chips, and Conditions. Tapping a threat expands its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed | Nothing |
+| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
+
+**Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
+`@wg/shared`), not in these components:
+- An unrevealed threat's `stats` is `null`. Its bars, mob count and Conditions still come through.
+- Factions and adventures (with their beats) are never sent.
+- NPCs, locations and handouts are sent only once `revealed`. Even then, GM notes, secrets, hazards and an NPC's
+  stat source are blanked.
+
+The server's `authorize()` also limits which actions a player can send: only their own character, no `overrides`,
+no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `Refusal` banner. See
+[backend.md](backend.md).
+
+---
+
+## 5. Shared UI and libs
+
+### `components/ui/`
+
+| Component | Props | Job |
+|---|---|---|
+| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | Block bar plus `value/max`; `—` when `max` is `null`; red when `danger` and `value > 0` |
+| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat` | A threat stat block in terminal form: a source and page rule, attributes, DEF/RES/WND/SHK/SPD, skills, bonuses, abilities and weapons, Determination, Conviction/Resolve/Size/Personal Ruin, options and mob abilities |
+| `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (amber) |
+| `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
+| `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
+
+### `lib/`
+
+Each lib is a pure helper that takes an options object. Every one except `tokens` has a sibling `*.test.ts`, run
+with `bun test lib`.
+
+| Lib | Export | Job |
+|---|---|---|
+| `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | A `█░` bar scaled to at most 10 cells. Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
+| `weapon-line/weapon-line.ts` | `weaponLine({ weapon, strength? })` | A one-line weapon profile: `dmg +ED ED · AP · R short/med/long · S salvo · traits`. `addStrength` melee prints `S+X`, or a number when `strength` is given. A `salvo: null` prints `–`, and an absent salvo is omitted |
+| `tokens/tokens.ts` | `TOKENS` (`bg`, `fg`) | Raw colours for places CSS variables can't reach: the QR canvas, the viewport `themeColor` and the manifest. It mirrors `:root`, so change both together |
+| `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
+
+---
+
+## 6. How errors reach the user
+
+| Surface | Where | Looks like | Clears |
+|---|---|---|---|
+| Status screen | `page.tsx`, the apps before their first snapshot | A full-screen message (§1) | On navigation or reload |
+| Offline badge `.badge-offline` | `GmApp` (`NO SIGNAL · RECONNECTING`), `PlayerApp` (`NO SIGNAL`) | A red badge fixed top-right while `!online`; the last state stays on screen | On reconnect |
+| `Refusal` banner | `GmApp` (header pools), `CodexView` (the reveal toggle), `Sheet` (every player action) | A red alert bar fixed to the bottom, `! <error>`, with an OK button | On OK, or on the next success |
+| Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
+| Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
+| Inline editor error | `BeatEditor`, `CodexEditor` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
+
+The error text is either the server's `ActionError` message or one of the two client strings from `send`
+(`No signal`, and `No reply from server. Check before retrying`).
+
+---
+
+## 7. Styling
+
+The look is "Auspex": a green-phosphor cogitator terminal. Dark green background, phosphor-green text, faint scanlines
+(the `repeating-linear-gradient` on `body`), square borders, upper-case labels, box-drawing rules (`── NAME ──`) and
+`█░` bars. Everything is plain CSS in `app/globals.css`, using short utility and component classes plus inline
+`style` for one-offs.
+
+**Fonts** come from `next/font/google` in `app/layout.tsx` and are exposed as CSS variables on `<html>`:
+
+| Variable | Font | Use |
+|---|---|---|
+| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Body text, the default for everything |
+| `--font-display` → `--display` | VT323 | Big terminal numerals and titles: `.display`, `.bar`, vitals, trait values |
+
+**Tokens** (`:root`):
+
+| Token | Purpose |
+|---|---|
+| `--bg` | Page background (mirrored as `TOKENS.bg`) |
+| `--panel` | Panels, buttons, the command bar, the player banner |
+| `--panel-2` | Inputs, list items, the tracker side panel |
+| `--line` | Default borders and dividers |
+| `--line-dim` | Faint dividers (the vox log's dashed rules) |
+| `--fg` | Main phosphor text, focus borders, primary buttons, the selected tab (mirrored as `TOKENS.fg`) |
+| `--dim` | Secondary text, labels, rules |
+| `--done` | Text on rows that have acted |
+| `--amber` | Warnings, the acting combatant, reminders, success messages, your-turn banner |
+| `--red` | Errors, damage, Ruin, "hidden from players" |
+| `--red-line` | Red borders (danger buttons, Ruin pool, badges) |
+| `--red-bg` | Red surfaces (danger buttons, the offline badge, `Refusal`) |
+| `--row-active` | Background of the tracker row that is acting |
+| `--overlay` | Near-opaque backdrop for `.overlay` (the QR dialog) |
+| `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
+| `--mono`, `--display` | Font stacks |
+
+**Class vocabulary:**
+- Text: `.display`, `.dim`, `.amber`, `.red`, `.label`, `.rule`.
+- Controls: `.btn`, with `.primary`, `.danger`, `.sm` (32px) and `.sq` (44px square); `.input`; `.field`.
+- Chips: `.chip`, with `.warn` and `.bad`.
+- Tabs: `.tabs` / `.tab`, with `[aria-selected="true"]` inverted and bold.
+- Layout: `.panel`, `.item`, `.list`, `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`, `pre.text`.
+- Shells: `.gm*` for the GM, `.tracker*` and `.row*` for the tracker, `.cmd` for the command bar, `.pl*`, `.vitals`,
+  `.vital` and `.traits` for the player app.
+
+**Layout:**
+- **GM:** tablet-first. `.gm` is a full-height grid (header, tabs, scrolling body). The tracker is a two-column grid:
+  the main list, plus a 320px side panel.
+- **`@media (max-width: 900px)`** is the only breakpoint:
+  - The GM shell becomes one scrolling page instead of fixed-height panes.
+  - The title takes a full line.
+  - The pool controls shrink to 40px.
+  - The tracker stacks, with the side panel below the list.
+  - `.row` drops to 4 columns, and `.hide-sm` cells are hidden.
+- **Player:** phone-first single column. `.vitals` is 2 columns. `.cols` wraps at `minmax(280px, 1fr)`.
+- **Grid cells** get `min-width: 0` (`.row > *`) so bars shrink instead of spilling into the next column.
+
+---
+
+## 8. Conventions (summary)
+
+This section summarises the binding rules. The full text is in
+[`.claude/frontend-code-style.md`](../.claude/frontend-code-style.md).
+
+- **Folder layout:**
+  - Every component gets a kebab-case folder named after it (`tracker/tracker.tsx`), and there are no `index.tsx`
+    barrels.
+  - Children used only by that component live in its `components/`. Its `constants.ts`, `types.ts` and `utils.ts`
+    sit beside it.
+  - Shared building blocks go in `components/ui/<name>/`, hooks in `hooks/<use-name>/`, and pure helpers in
+    `lib/<name>/` with a test.
+  - Closed UI value sets are `as const` objects or tuples in `constants.ts` (`GM_TABS`, `COUNTER_ACTIONS`,
+    `CODEX_KINDS`). Domain sets (`Side`, `Pool`, `Marker`, `CONDITIONS`, `BeatType`) come from `@wg/shared`.
+- **Mutations only through `send`:**
+  - There are no Server Actions and no REST routes for game state.
+  - Actions are built as `ActionInput`, and counters send deltas.
+  - Every caller checks `r.ok` and shows `r.error`.
+  - Rules numbers (derived traits, pool caps, death states) come from `@wg/shared` and are never computed in the
+    UI.
+- **`useEffect` only for external systems.** There are exactly three, and each is commented:
+  - the socket
+  - the wake lock
+  - `navigator.vibrate`
+
+  There's no client-side fetching.
+- **Server-side identity.** The cookie is httpOnly, so `/api/me`, `/api/threats` and the `/join` exchange run on the
+  server (`page.tsx`, `route.ts`). Client components get the results as props (`bestiary`, `characterId`).
+- **Accessibility:**
+  - Touch targets are at least 44px (`.btn`); dense secondary buttons (`.btn.sm`) are 32px.
+  - Icon-only buttons have an `aria-label` naming the action and its target (`Decrease WOUNDS`, `Move <beat> up`).
+  - Inputs have a `<label htmlFor>` or an `aria-label`, and chip groups use `role="group"`.
+  - State is never shown by colour alone: row state is a word, tabs use weight plus `aria-selected`, and marker
+    swatches carry an `aria-label`.
+  - Focus stays visible: `.input:focus` switches the border to `--fg`, and `.cmd:focus-within` draws a ring.
+  - The smallest text is 12px.
+  - There's no hex in TSX; colours come from `var(--…)` or `TOKENS`.
+
+---
+
+## 9. Recipes
+
+### Add a GM tab or screen
+
+1. Add the name to `GM_TABS` in `components/gm/gm-app/constants.ts`. `GmTab` and the tab bar pick it up.
+2. Create `components/gm/<name>/<name>.tsx`: a `"use client"` component with typed props. It takes what it needs
+   from `state`, `codex` and `send`, and `bestiary` if it adds threats.
+3. Render it in `GmApp`'s `<main>`: `{tab === "<NAME>" && <Name … />}`.
+4. Show refusals with one of the patterns in §6. Use a message line for a form-heavy tab, and `Refusal` for a
+   tab with only a few buttons.
+
+The player app works the same way, through `PLAYER_TABS` in `components/player/player-app/constants.ts` and
+`PlayerApp`. Anything a player sees must already be in the filtered snapshots. Revealing more data is a change to
+`toPlayerView` / `toPlayerCodex` (see [backend.md](backend.md)), not to the component.
+
+### Add a component
+
+1. Decide where it belongs:
+   - used by one parent: `<parent>/components/<name>/<name>.tsx`
+   - used by both apps: `components/ui/<name>/<name>.tsx`
+   - pure logic: `lib/<name>/<name>.ts` plus `<name>.test.ts`
+2. Write it as a function component with an explicit `type <Name>Props`.
+3. Put UI value sets and magic numbers in a `constants.ts` beside it.
+4. Any handler with more than one statement is a named `const handleX` above `return`, with a one-line comment.
+5. Use only token colours and existing classes. Add a class to `globals.css` only when a pattern repeats.
+6. Import by file path. Order imports as external, then `@wg/*`, then `@/…`, then relative.
+
+### Add a tracker command verb
+
+1. **Alias:** add `alias: "canonical"` entries to `VERBS` in `lib/command/command.ts`.
+2. **Counter verb** (a signed delta on a field the adjust actions already take): add it to `COUNTER_ACTIONS` in
+   `lib/command/constants.ts`. The command line, the key bar button and the amount pad all pick it up.
+   If the field is new, negate it in `inverse()` in `tracker.tsx` too, or UNDO will repeat the change instead of
+   reversing it.
+3. **Any other verb:** add a `case` to the `switch` at the end of `parseCommand` that returns `{ actions: [...] }` or
+   `{ error }`. Use `t.characterId` for character actions and `t.combatantId` for combatant actions.
+4. **Turn verb:** route it through `runCommand` in `tracker.tsx`, so it fires the Condition reminders the buttons do.
+5. **New server action:** if the verb needs one, follow "Adding an action" in `CLAUDE.md` first.
+6. **Test:** add cases to `lib/command/command.test.ts`.
+7. **Docs:** update the verb table in §3.2, and the input's `placeholder` or the `Unknown command` hint if it's a
+   headline verb.

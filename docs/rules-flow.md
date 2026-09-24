@@ -224,17 +224,23 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 
 ## 12. Gap analysis — current code vs this spec
 
-| Area | Current | Needed | Where |
-|---|---|---|---|
-| Seize limit | can Seize repeatedly | block a second Seize until the other side acts | `turn.seize`, `encounter.seizedSide` |
-| Round-start Seize | refused (requires `lastSide`) | GM may Seize a Threat first for 1 Ruin | `turn.seize` |
-| Ambush | missing | `ambushed` flag; skipped in Round 1; clear for 1 Glory/Ruin | combatant + actions |
-| Mob damage | Wounds vs stat-block max | damage removes members (1 Wound each); remember start size; half-slain Resolve prompt | `combatant.adjust`, `mobStart` |
-| Troop Shock | only flagged | Troop with Shock > max = slain; Shock "–" can't take Shock | UI + adjust |
-| Threat outcomes | generic Dying/Exhausted | per-class: slain vs Dying/dead | `autoStatus` |
-| Traumatic Injuries | missing | count per character; dead at > Tier + 1 | character field |
-| Traits minimum 1 | Resolve can be 0 | clamp all traits to ≥ 1; add Influence | `deriveStats` |
-| Session start | missing | Wrath 2, Glory 0, Ruin = players | new action |
-| Respite | missing | Wounds 0, Shock 0, Wrath 2 (not while Dying) | new action |
-| Personal Ruin | only in stat block | tracked per Champion combatant | combatant field |
-| Turn reminders | missing | Bleeding/On Fire/Poisoned/Frenzied prompts | UI |
+Implementation details: [game-logic.md](game-logic.md).
+
+| Area | Status | Where / what's left |
+|---|---|---|
+| Seize limit | done | `canSeize` + `encounter.seizedSide`; set in `turn.seize`, kept or cleared in `turn.end` |
+| Round-start Seize | done | `canSeize` (`lastSide` null → threats only); 1 Ruin via `spend()` in `turn.seize` |
+| Ambush | done | `combatant.ambushed`; `canAct`, `turn.start` guard, `turn.end` rollover; `combatant.aware` (1 Glory/Ruin); cleared by `newRound()` |
+| Mob damage | partial | Wounds remove members, capped at `mobStart` (`combatant.adjust`); half-slain chip (`threatStatus`). Missing: Shock over max removing a member; prompt isn't tied to Round end |
+| Troop Shock | done | `threatStatus` (T over max Shock → Slain); `combatant.adjust` refuses Shock when `maxShock` is null |
+| Threat outcomes | done | `threatStatus` per class (A → Dying or dead, T/E/M → Slain; Exhausted for E/A/M) |
+| Traumatic Injuries | partial | `character.traumatic` (GM-only adjust); `pcStatus` Dead at > Tier + 1. Missing: Wounds while Dying → Traumatic; Annihilation |
+| Traits minimum 1 | done | `deriveStats` clamps all Traits to ≥ 1; Influence added |
+| Session start | done | `session.start` (Wrath 2, Glory 0, Ruin = characters); `session.end` awards XP |
+| Respite | done | `character.respite` (refused while Dying) |
+| Personal Ruin | done | `combatant.personalRuin`, seeded from the stat block; tracker SPEND / +1 |
+| Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's vox log only |
+| Slain / Dead in turn order | missing | `canAct`, `turn.start` and the `turn.end` rollover still count them; GM removes them |
+| Exhausted → Mortal Wounds | missing | extra Shock while Exhausted isn't converted (p.196) |
+| Timed Conditions | missing | "end of next Turn" Conditions don't expire (§11.8) |
+| Per-class rule chips | missing | §10's Troop chips (no crits, Determination costs Ruin) aren't shown; the tracker shows the class name only |

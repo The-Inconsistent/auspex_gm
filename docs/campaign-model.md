@@ -30,10 +30,11 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
 
 - **Beat types**: briefing, travel, investigation, social, combat, revelation, rest. The type only picks an icon and
   a checklist. There is no workflow engine: beats are an ordered list the GM can reorder, skip or add to mid-session.
-- **NPC statSource**: one of `bestiary:<threatId>` (any loaded book), `quick:<tier>` (Quick NPC table, core p.326), or
-  a `custom` stat block using the threat schema. The Mechanicus has no bestiary entries in the core book, so they
-  are Quick NPCs or custom blocks built from the Skitarius (p.101) and Tech-Priest (p.109) archetypes.
-- **Prepared encounter**: a list of `{statSource, count, asMob, marker, label}`. "Start encounter" on the beat
+- **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
+  core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
+  book, so for now they are Quick NPCs; custom blocks built from the Skitarius (p.101) and Tech-Priest (p.109)
+  archetypes would need a new `statSource` kind.
+- **Prepared encounter**: a list of `{threatId, count, asMob, marker, label}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
   loads it into the tracker. The builder shows the Threat Assessment p.8 guideline: *two Troops per Agent, half in a
   Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
@@ -54,7 +55,7 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
 
 ## Content packs
 
-Bestiary data stays per book (`packages/data/<book>/threats/*.json`). An adventure can be exported and imported as
+Bestiary data is one flat folder, `packages/data/threats/*.json`, with each file's book in its `source` field ([data.md](data.md)). An adventure can be exported and imported as
 JSON (factions, NPCs, locations, beats, handouts) so a new campaign can start from a prepared pack.
 
 ## First campaign (seed pack, editable)
@@ -67,5 +68,5 @@ they uncover a hidden tomb world. What lies beneath, and why are the Mechanicus 
 - **Kommandos**: Gutshiva's Kommandos (NPCs and hooks), Threat Assessment p.89, core p.355. At Tier 4 a Kommando is
   a **Troop** (Tier row E E T T), so they come in Mobs led by an Elite or Adversary.
 - **Tomb**: Necrons, Threat Assessment pp.131–156.
-- **Mechanicus**: Quick NPCs or custom blocks (see above).
+- **Mechanicus**: Quick NPCs for now (see above).
 - The session 1 beat outline is in the chat plan and gets written into the seed pack once the characters are settled.
