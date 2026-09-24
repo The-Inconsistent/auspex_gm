@@ -149,7 +149,7 @@ Always the full snapshot, never a diff.
 
 | Action | Extra player check | Refusal |
 |---|---|---|
-| `character.update`, `character.adjust`, `character.respite` | `a.id === ctx.characterId` | `"Not your character"` |
+| `character.update`, `character.adjust`, `character.supply`, `character.respite` | `a.id === ctx.characterId` | `"Not your character"` |
 | `character.update` | no `overrides` field | `"Overrides are GM only"` |
 | `character.adjust` | no `traumatic` field | `"GM only"` |
 | `pool.adjust` | `pool === "glory"` | `"GM only"` |
@@ -198,6 +198,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
 | `character.update` | GM; Own (no `overrides`) | Patch `name`, `stats`, `overrides`, `conditions`. `stats` and `overrides` replace the whole jsonb value | S | |
 | `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap. Crossing into Dying adds `Prone` if missing. While Dying, a positive `wounds` delta adds 1 Traumatic Injury instead (one per hit), and a negative one sets Wounds to `least(maxWounds, wounds + delta)`, which ends Dying | S | p.193 |
+| `character.supply` | GM; Own | Read-modify-write on `stats`: `wealth` delta floored at 0; `ammo: { kind, delta }` via `adjustAmmo` (floored at 0; −1 on an empty type removes it). Refused past `MAX_AMMO_TYPES` (12). No carry cap (§11.14) | S | p.206, p.229 |
 | `character.respite` | GM; Own | Wounds 0, Shock 0, Wrath 2. Refused while Dead or Dying (`pcStatus`, via `healthOf()`) | S | p.193, p.197 |
 | `character.delete` | GM | Delete. Cascades to tokens and combatant rows. Kicks the player | S | |
 | `token.issue` | GM | New guest token (the GUEST QR) for a character in this campaign. Returns `token` (plaintext, once) | S | |

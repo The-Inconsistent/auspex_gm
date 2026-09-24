@@ -221,6 +221,6 @@ These are binding; follow them when writing code and use them when reviewing:
 
 - Doctors of Doom character import
 - A full rules reference in the player app
-- Items and requisition tracker
+- Requisition helper and Wargear catalogue (Value, Rarity, Keywords; Core pp.205–245). Wealth and Ammo counters exist
 - Rate limiting
 - Server-side undo history (client undo is inverse deltas)

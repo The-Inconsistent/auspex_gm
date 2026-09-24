@@ -39,6 +39,11 @@ export const Action = z.union([
       wounds: delta.optional(), shock: delta.optional(), wrath: delta.optional(), traumatic: delta.optional(),
       raw: z.boolean().optional(),
     }),
+    // Wealth (p.206) and Ammo by type (p.229); players spend their own, the GM awards.
+    z.object({
+      type: z.literal("character.supply"), id,
+      wealth: delta.optional(), ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
+    }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),
 
@@ -99,7 +104,7 @@ export type ActionInput = z.input<typeof Action>; // what clients send: defaulte
 
 // Actions a player may send; each is further limited to their own character, or the Glory pool.
 export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
-  "character.update", "character.adjust", "character.respite", "pool.adjust",
+  "character.update", "character.adjust", "character.supply", "character.respite", "pool.adjust",
 ]);
 
 export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };

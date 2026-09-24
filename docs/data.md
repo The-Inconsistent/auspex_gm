@@ -272,7 +272,8 @@ Each file is `{ "name": "...", "stats": { ... } }`. Every field has a default.
 | `abilities[]`, `talents[]` | `{ name ≤ 100, text ≤ 2000, page?: string }`, ≤ 30 each | `page` is a free-text cite such as `"Core p.117"` or `"VoA p.35"` |
 | `weapons[]` | `Weapon` + `addStrength: bool` (default false), ≤ 20 | `addStrength: true` for melee "S + X": damage = effective Strength + `damage` |
 | `gear` | string[] ≤ 60 | |
-| `wealth` | int ≥ 0 | |
+| `wealth` | int ≥ 0 | Live counter (`character.supply`); starts at Tier (Core p.206) |
+| `ammo` | record of ammo type → count 0–99, ≤ 12 types | Live counter (`character.supply`). Per type, because each only reloads its own weapons (Core p.229): `{ "Bolt": 2, "Kraken Bolt": 1 }`. Describe special rounds in `gear` |
 
 GM `overrides` are not part of a pack; the GM sets them in the app, and they win over the derived value plus `mods`.
 The Volkus characters and their sources are in [pregens.md](pregens.md) and [kill-team.md](kill-team.md).

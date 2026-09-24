@@ -205,9 +205,12 @@
       "Omni-Scrambler (VoA p.75): +3 bonus dice to Tech (Int) or Intimidate (Wil) Tests to disrupt enemy communications within 500 metres",
       "Divinator-class Auspex (Auspex, Core p.236): Combat Action to detect energy emissions, motion, and other life signs within 50 metres",
       "Transpectral Combat Visor (Preysense Goggles, Core p.239): ignore any penalties to Tests due to visual conditions (also his own smoke)",
-      "Ammo: 1 Dragonfire Bolt (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)",
-      "Ammo: 2 Bolt"
+      "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
     ],
-    "wealth": 4
+    "wealth": 4,
+    "ammo": {
+      "Dragonfire Bolt": 1,
+      "Bolt": 2
+    }
   }
 }

@@ -445,6 +445,7 @@ The tests are in `lib/command/command.test.ts`.
 | GUEST QR | `token.issue` | A no-account guest QR to `/join/<token>` |
 | LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
 | RESPITE | `character.respite` | |
+| +1 WEALTH / −1 WEALTH | `character.supply { wealth: ±1 }` | The GM's award (Core p.206). The line above the buttons shows Wealth and Ammo |
 | REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
 
 Every code (room, invite, guest) goes through `showCode`: it builds `${location.origin}/…` into a `QR_SIZE` (320px) PNG
@@ -469,7 +470,7 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
-| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds, Shock, Wrath and PARTY GLORY; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions; armament (`weaponLine` with `effectiveStrength`) and armour; skill totals (`skillTotal`); abilities; talents; gear | Their own Wounds, Shock and Wrath (±1, `character.adjust`), party Glory (±1, `pool.adjust`), their own Conditions (`character.update`), RESPITE (`character.respite`) |
+| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds, Shock, Wrath and PARTY GLORY; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions; armament (`weaponLine` with `effectiveStrength`) and armour; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type, + AMMO with an `AMMO_TYPES` datalist) | Their own Wounds, Shock and Wrath (±1, `character.adjust`), Wealth and Ammo (±1, `character.supply`; × on an empty type removes it), party Glory (±1, `pool.adjust`), their own Conditions (`character.update`), RESPITE (`character.respite`) |
 | FIGHT | `components/fight/fight.tsx` | Every combatant as a card (`div.item`): `▶` on the one acting, dimmed once done, a Wounds block bar (mobs show `×count OF start`), threat status chips, and Conditions. A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed; a PC card's header is plain | Nothing |
 | INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
 

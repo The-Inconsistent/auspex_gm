@@ -1,5 +1,5 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { CharacterStats, Overrides, deriveStats, pcHit, pcStatus, type Action, type ActionResult, type Character } from "@wg/shared";
+import { CharacterStats, MAX_AMMO_TYPES, Overrides, adjustAmmo, deriveStats, pcHit, pcStatus, type Action, type ActionResult, type Character } from "@wg/shared";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -56,6 +56,16 @@ export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         wounds: hit.wounds, shock: hit.shock, traumatic: Math.max(0, hit.traumatic + (a.traumatic ?? 0)), annihilated: hit.annihilated, wrath,
         conditions: hit.prone && !c.conditions.includes("Prone") ? [...c.conditions, "Prone"] : undefined,
       }).where(eq(character.id, a.id));
+      return { ok: true };
+    }
+
+    case "character.supply": {
+      // Read-modify-write on stats is safe: the gateway runs one action per campaign at a time.
+      const stats = CharacterStats.parse((await ownCharacter(tx, { campaignId: cid, id: a.id })).stats);
+      if (a.wealth) stats.wealth = Math.max(0, stats.wealth + a.wealth);
+      if (a.ammo) stats.ammo = adjustAmmo(stats.ammo, a.ammo);
+      if (Object.keys(stats.ammo).length > MAX_AMMO_TYPES) fail(`At most ${MAX_AMMO_TYPES} ammo types`);
+      await tx.update(character).set({ stats }).where(eq(character.id, a.id));
       return { ok: true };
     }
 

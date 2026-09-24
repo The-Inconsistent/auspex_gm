@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  Action, CharacterStats, Threat, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
+  Action, CharacterStats, Threat, adjustAmmo, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
   roundEndReminders, sideUpNext, threatStatus, toPlayerCodex, toPlayerView,
   type Character, type Codex, type Combatant, type Encounter, type LiveState, type ThreatCombatant,
 } from "./index.ts";
@@ -166,4 +166,10 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
   assert.deepEqual(p.npcs.map((n) => n.name), ["Magos"]);
   assert.equal(p.npcs[0]!.gmNotes, "");
   assert.equal(p.factions.length, 0);
+});
+
+test("adjustAmmo: per type, clamped at 0, −1 on an empty type removes it (p.229)", () => {
+  assert.deepEqual(adjustAmmo({}, { kind: "Bolt", delta: 1 }), { Bolt: 1 });
+  assert.deepEqual(adjustAmmo({ Bolt: 1, Las: 2 }, { kind: "Bolt", delta: -3 }), { Bolt: 0, Las: 2 });
+  assert.deepEqual(adjustAmmo({ Bolt: 0, Las: 2 }, { kind: "Bolt", delta: -1 }), { Las: 2 });
 });

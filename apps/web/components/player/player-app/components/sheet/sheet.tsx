@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 import {
-  CONDITIONS, SKILLS, deriveStats, effectiveStrength, pcStatus, poolMax, skillTotal,
+  AMMO_TYPES, CONDITIONS, SKILLS, deriveStats, effectiveStrength, pcStatus, poolMax, skillTotal,
   type ActionInput, type Character, type LiveState, type Skill,
 } from "@wg/shared";
 
@@ -11,6 +11,7 @@ import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
+import { SupplyRow } from "./components/supply-row/supply-row";
 import { Vital } from "./components/vital/vital";
 import { SHEET_COUNTERS, type SheetCounter } from "./constants";
 
@@ -21,6 +22,7 @@ export function Sheet({ me, state, send }: SheetProps) {
   const d = deriveStats({ stats: s, overrides: me.overrides, tier: state.campaign.tier });
   const [pickCond, setPickCond] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [newAmmo, setNewAmmo] = useState("");
   const players = state.characters.length;
 
   // Sends an action; a refusal (e.g. no Respite while Dying, p.197) shows the server's reason.
@@ -34,6 +36,18 @@ export function Sheet({ me, state, send }: SheetProps) {
 
   // − / + on the shared Glory pool.
   const adjGlory = (delta: number) => run({ type: "pool.adjust", pool: "glory", delta });
+
+  // − / + on Wealth, or on one Ammo type.
+  const supply = (change: { wealth?: number; ammo?: { kind: string; delta: number } }) => run({ type: "character.supply", id: me.id, ...change });
+
+  // + AMMO: starts a new type (or tops up an existing one) at +1.
+  const handleAddAmmo = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const kind = newAmmo.trim();
+    if (!kind) return;
+    void supply({ ammo: { kind, delta: 1 } });
+    setNewAmmo("");
+  };
 
   // Condition chip: adds the Condition, or removes it if already on.
   const toggleCond = (k: string) =>
@@ -84,6 +98,23 @@ export function Sheet({ me, state, send }: SheetProps) {
         {s.weapons.map((w) => <div key={w.name}><b>{w.name.toUpperCase()}</b><div className="dim" style={{ fontSize: 13 }}>{weaponLine({ weapon: w, strength: effectiveStrength(s) })}</div></div>)}
         {s.armour.name && <div><b>{s.armour.name.toUpperCase()}</b> <span className="dim">AR {s.armour.ar}{s.armour.invulnerable ? "*" : ""}{s.armour.traits.length ? ` · ${s.armour.traits.join(", ")}` : ""}</span></div>}
       </div>}
+
+      <div className="stack" style={{ gap: 6 }}>
+        <div className="rule">── SUPPLY ──</div>
+        <SupplyRow label="Wealth" value={s.wealth} onMinus={() => supply({ wealth: -1 })} onPlus={() => supply({ wealth: 1 })} />
+        {Object.entries(s.ammo).map(([kind, n]) => (
+          <SupplyRow key={kind} label={`${kind} ammo`} value={n} removable
+            onMinus={() => supply({ ammo: { kind, delta: -1 } })} onPlus={() => supply({ ammo: { kind, delta: 1 } })} />
+        ))}
+        <form style={{ display: "flex", gap: 6 }} onSubmit={handleAddAmmo}>
+          <input className="input" list="ammo-types" aria-label="New ammo type" value={newAmmo} onChange={(e) => setNewAmmo(e.target.value)} placeholder="AMMO TYPE" />
+          <datalist id="ammo-types">{AMMO_TYPES.map((t) => <option key={t} value={t} />)}</datalist>
+          <button className="btn sm">+ AMMO</button>
+        </form>
+        <div className="dim" style={{ fontSize: 12 }}>
+          AMMO: 1 per Reload (p.185), each type fits its own weapons (p.229). WEALTH: 1 per Icon on an Influence Test (p.206).
+        </div>
+      </div>
 
       {Object.keys(s.skills).length > 0 && <div className="stack" style={{ gap: 4 }}>
         <div className="rule">── SKILLS (dice) ──</div>

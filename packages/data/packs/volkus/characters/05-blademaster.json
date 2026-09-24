@@ -181,9 +181,12 @@
     ],
     "gear": [
       "Grav-Chute (Core p.237): hover or control a fall for up to one hour; recharge the solar battery by leaving it in sunlight for one hour",
-      "Ammo: 1 Dragonfire Bolt (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)",
-      "Ammo: 2 Bolt"
+      "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
     ],
-    "wealth": 4
+    "wealth": 4,
+    "ammo": {
+      "Dragonfire Bolt": 1,
+      "Bolt": 2
+    }
   }
 }

@@ -57,6 +57,10 @@ const Mods = z
     determination: z.number().int() })
   .partial();
 
+// The Ammo table, Core p.229. Special rounds (Kraken Bolt, Dragonfire Bolt…) are typed in by name.
+export const AMMO_TYPES = ["Projectile", "Las", "Flame", "Bolt", "Plasma", "Melta", "Shuriken"] as const;
+export const MAX_AMMO_TYPES = 12;
+
 export const CharacterStats = z.object({
   species: z.string().max(60).default(""),
   archetype: z.string().max(100).default(""),
@@ -75,13 +79,24 @@ export const CharacterStats = z.object({
   talents: z.array(rule).max(30).default([]),
   weapons: z.array(Weapon.extend({ addStrength: z.boolean().default(false) })).max(20).default([]), // melee "S+X"
   gear: z.array(z.string().max(200)).max(60).default([]),
+  // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
+  // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),
+  ammo: z.record(z.string().min(1).max(60), z.number().int().min(0).max(99))
+    .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`).default({}),
 });
 export type CharacterStats = z.infer<typeof CharacterStats>;
 
 // GM overrides win over everything derived.
 export const Overrides = Mods.partial();
 export type Overrides = z.infer<typeof Overrides>;
+
+// −1 on an empty type removes it from the list; otherwise clamped at 0.
+export function adjustAmmo(ammo: Record<string, number>, { kind, delta }: { kind: string; delta: number }) {
+  const have = ammo[kind] ?? 0;
+  if (have === 0 && delta < 0) return Object.fromEntries(Object.entries(ammo).filter(([k]) => k !== kind));
+  return { ...ammo, [kind]: Math.max(0, have + delta) };
+}
 
 export const skillTotal = (s: CharacterStats, skill: Skill) => (s.skills[skill] ?? 0) + s.attributes[SKILLS[skill]];
 export const effectiveStrength = (s: CharacterStats) => s.attributes.S + s.armour.powered; // Powered (X), p.232

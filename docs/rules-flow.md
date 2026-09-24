@@ -231,6 +231,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 13. **Mob Resolve** (p.325) is prompted at every Round end while half or more are slain; whether the Mob still has to
     test (it passed last Round, it fights to the death) is the GM's call. A tracker tap is one attack, for Annihilation
     and §11.11 alike.
+14. **Ammo carry limit** (p.229: 3, or half Strength, whichever is higher, plus containers) is not enforced or shown:
+    containers are free-text gear, and whether Powered adds to that Strength isn't stated. The GM checks it.
 
 ---
 

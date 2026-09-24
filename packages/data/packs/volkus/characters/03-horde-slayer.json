@@ -180,9 +180,12 @@
     "gear": [
       "Spare armour: Mk X Tacticus (AR 5, Powered (4)); only one suit's AR counts at a time (Core p.231)",
       "Ballistic Appeasement Auto-Reliquary (Core p.236): clear a jammed weapon as a Free Action",
-      "Ammo: 1 Hellfire Bolt (+3 ED against organic targets, +2 against inorganic, Core p.230; BOLT weapons only)",
-      "Ammo: 2 Bolt"
+      "Hellfire Bolt rounds (+3 ED against organic targets, +2 against inorganic, Core p.230; BOLT weapons only)"
     ],
-    "wealth": 4
+    "wealth": 4,
+    "ammo": {
+      "Hellfire Bolt": 1,
+      "Bolt": 2
+    }
   }
 }

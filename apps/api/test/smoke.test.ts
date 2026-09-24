@@ -117,6 +117,11 @@ test("GM and player share a table", async (t) => {
   assert.deepEqual(await player.send({ type: "pool.adjust", pool: "ruin", delta: 1 }), { ok: false, error: "GM only" });
   assert.deepEqual(await player.send({ type: "combatant.remove", id: ork.id }), { ok: false, error: "GM only" });
   assert.deepEqual(await player.send({ type: "character.adjust", id: other.id, wounds: 1 }), { ok: false, error: "Not your character" });
+  // Supply (p.206, p.229): the player spends their own Wealth and Ammo, per type.
+  assert.ok((await player.send({ type: "character.supply", id: hero.id, wealth: 2, ammo: { kind: "Bolt", delta: 3 } })).ok);
+  await player.send({ type: "character.supply", id: hero.id, wealth: -5, ammo: { kind: "Bolt", delta: -1 } });
+  await gm.until((s) => { const st = s.characters.find((c) => c.id === hero.id)?.stats; return st?.wealth === 0 && st.ammo.Bolt === 2; });
+  assert.deepEqual(await player.send({ type: "character.supply", id: other.id, wealth: 1 }), { ok: false, error: "Not your character" });
   assert.equal((await player.send({ type: "nope" } as never)).ok, false, "invalid payloads are rejected");
 
   // Alternating turns: Agent, then Threat. Seize: the side that just acted pays 1 Glory to go again, once.

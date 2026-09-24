@@ -173,10 +173,13 @@
     ],
     "gear": [
       "Duelling Grip on the Power Sword (Rubicon Uncommon item, Core p.228): +1 bonus die on Attack Tests using this weapon",
-      "Ammo: 1 Kraken Bolt (AP −2, Core p.231; BOLT weapons only)",
-      "Ammo: 1 Bolt",
-      "Ammo: 1 Plasma (for the Plasma Pistol)"
+      "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
     ],
-    "wealth": 4
+    "wealth": 4,
+    "ammo": {
+      "Kraken Bolt": 1,
+      "Bolt": 1,
+      "Plasma": 1
+    }
   }
 }

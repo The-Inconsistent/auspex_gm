@@ -152,9 +152,12 @@
     ],
     "gear": [
       "Camo Cloak (Cameleoline Cloak, Core p.237): +1 bonus die to Stealth (A) Tests and +1 to Defence when in shadow or cover",
-      "Ammo: 1 Kraken Bolt (AP −2, Core p.231; BOLT weapons only)",
-      "Ammo: 2 Bolt"
+      "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
     ],
-    "wealth": 4
+    "wealth": 4,
+    "ammo": {
+      "Kraken Bolt": 1,
+      "Bolt": 2
+    }
   }
 }

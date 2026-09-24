@@ -97,6 +97,10 @@ export function Party({ state, codex, send }: PartyProps) {
   // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
   const respite = async (c: Character) => report(await send({ type: "character.respite", id: c.id }), `${c.name.toUpperCase()} RESPITE`);
 
+  // ±1 WEALTH: the GM's adventure award or loot (p.206); players spend their own from the sheet.
+  const adjWealth = async (c: Character, wealth: number) =>
+    report(await send({ type: "character.supply", id: c.id, wealth }), `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`);
+
   // REVOKE GUEST QR: kills every guest token (and guest socket) for the character; signed-in members keep their seat.
   const revoke = async (c: Character) => report(await send({ type: "token.revoke", characterId: c.id }), `${c.name.toUpperCase()} GUEST LINKS REVOKED`);
 
@@ -178,12 +182,15 @@ export function Party({ state, codex, send }: PartyProps) {
                 <span className="dim">XP {c.xp}</span>
               </div>
               <div className="dim">{seatOf(c.id) ? `PLAYED BY ${seatOf(c.id)!.name.toUpperCase()}` : "OPEN SEAT"}</div>
+              <div className="dim">WEALTH {c.stats.wealth} · AMMO {Object.entries(c.stats.ammo).map(([k, n]) => `${n} ${k}`).join(", ") || "NONE"}</div>
               <div className="dim">WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES {d.resilience}</div>
               <div className="keys">
                 <button className="btn sm" onClick={() => inviteCharacter(c)}>INVITE</button>
                 <button className="btn sm" onClick={() => showGuestQr(c)}>GUEST QR</button>
                 <button className="btn sm" onClick={() => toggleImport(c.id)}>LOAD STATS (JSON)</button>
                 <button className="btn sm" onClick={() => respite(c)}>RESPITE</button>
+                <button className="btn sm" onClick={() => adjWealth(c, 1)}>+1 WEALTH</button>
+                <button className="btn sm" onClick={() => adjWealth(c, -1)}>−1 WEALTH</button>
                 <button className="btn sm danger" onClick={() => revoke(c)}>REVOKE GUEST QR</button>
               </div>
               {importFor === c.id && (

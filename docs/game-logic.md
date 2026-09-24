@@ -102,6 +102,7 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 â†
 | `character.adjust` Traumatic, `raw` (the tracker's undo) | yes | no |
 | `character.update` stats, name, conditions | any | own only |
 | `character.update` overrides, `annihilated` | yes | no |
+| `character.supply` Wealth / Ammo | any | own only |
 | `character.respite` | any | own only |
 | everything else (turns, Seize, awareness, threats, sessions) | yes | no |
 
@@ -119,7 +120,10 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 â†
 
 - "Unless continuing mid-action" (p.162) is the GM's call: just don't press START SESSION.
 - Respite does **not** touch Traumatic Injuries or Conditions.
-- Not tracked: Objectives, Wealth awards, Rank from XP, Regroup healing (p.196). Regroup is a manual HEAL.
+- **Supply** (`character.supply`, p.206, p.229): Wealth and per-type Ammo live in `stats` (`wealth`, `ammo`) as counters.
+  Players spend their own from the sheet; the GM awards Wealth from PARTY. Nothing is spent automatically: Reloads
+  and Influence Tests happen at the table. `adjustAmmo` is the shared helper (tested).
+- Not tracked: Objectives, automatic Wealth awards, Rank from XP, Regroup healing (p.196). Regroup is a manual HEAL.
 
 **Traumatic Injuries** (p.193â€“194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the
 tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1).
