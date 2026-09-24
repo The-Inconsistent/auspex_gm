@@ -17,6 +17,7 @@ import { campaign } from "../campaign/campaign.schema.ts";
 import { isAdmin } from "../campaign/campaign.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
+import { clientIp, limiter } from "../core/rate-limit.ts";
 import { applyAction, kicks, touches, type Kick } from "./table.dispatch.ts";
 import { loadCodex, loadState } from "./table.state.ts";
 
@@ -30,6 +31,11 @@ const Handshake = z.object({
   clerkToken: z.string().max(5000).optional(),
   adminKey: z.string().max(500).optional(),
 });
+
+// Per IP for connects (a whole table shares one NAT, and all of it reconnects after an api restart), per socket for
+// actions: a GM tapping fast stays far below 2/s over a minute.
+const allowConnect = limiter({ max: 60, windowMs: 60_000 });
+const allowAction = limiter({ max: 120, windowMs: 60_000 });
 
 async function handshakeCtx({ auth, headers }: { auth: unknown; headers: { cookie?: string } }): Promise<Ctx | null> {
   const h = Handshake.safeParse(auth ?? {});
@@ -64,6 +70,10 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
   // Authenticate in middleware, before the connection is accepted, so no event can arrive without a ctx.
   afterInit(server: Server) {
     server.use(async (socket, next) => {
+      // Anything but "unauthorized" makes the client retry later (use-table), so a limited socket backs off.
+      if (!allowConnect(clientIp(socket.handshake.headers, socket.handshake.address))) {
+        return next(new Error("rate limited"));
+      }
       let ctx: Ctx | null;
       try {
         ctx = await handshakeCtx({ auth: socket.handshake.auth, headers: socket.handshake.headers });
@@ -90,6 +100,9 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
   @SubscribeMessage("action")
   async onAction(@ConnectedSocket() socket: Socket, @MessageBody() body: unknown): Promise<ActionResult> {
     const ctx = socket.data as Ctx;
+    // The admin key (seed.ts loads a whole pack through one socket) is exempt.
+    const admin = ctx.role === "gm" && ctx.userId === null;
+    if (!admin && !allowAction(socket.id)) return { ok: false, error: "Too many actions. Slow down." };
     const parsed = Action.safeParse(body);
     if (!parsed.success) return { ok: false, error: z.prettifyError(parsed.error) };
     const action = parsed.data;

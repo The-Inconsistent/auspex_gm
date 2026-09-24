@@ -7,13 +7,15 @@ const redirectHome = (path = "") => new Response(null, { status: 303, headers: {
 const redirectError = (error: JoinError) => redirectHome(`?join=${error}`);
 
 // A guest player QR lands here: trade the token for the api's httpOnly cookie, then go to the table.
-export async function GET(_request: Request, { params }: JoinContext) {
+export async function GET(request: Request, { params }: JoinContext) {
   const { token } = await params;
+  // The api rate-limits guest joins by the caller's IP (core/rate-limit.ts), not this server's.
+  const ip = request.headers.get("cf-connecting-ip");
   let res: Response;
   try {
     res = await fetch(`${API_ORIGIN}/api/join`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", ...(ip ? { "cf-connecting-ip": ip } : {}) },
       body: JSON.stringify({ token }),
       cache: "no-store",
     });

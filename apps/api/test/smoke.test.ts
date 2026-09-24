@@ -638,3 +638,11 @@ test("accounts: lobby, room and character invites, guests, removing a member", a
     error: "You can't remove yourself",
   });
 });
+
+test("the guest door is rate limited per caller IP", async () => {
+  // Unique IPs, so this doesn't eat into the other tests' (localhost) bucket.
+  const from = (ip: string) => get("/guest", { "cf-connecting-ip": ip });
+  for (let i = 0; i < 60; i++) assert.equal((await from("203.0.113.9")).status, 401);
+  assert.equal((await from("203.0.113.9")).status, 429);
+  assert.equal((await from("203.0.113.10")).status, 401, "another caller is unaffected");
+});

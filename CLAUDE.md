@@ -216,6 +216,9 @@ These are binding; follow them when writing code and use them when reviewing:
   depend only on the api.
 - **Next rewrites:** `skipTrailingSlashRedirect` plus an explicit `/socket.io/` rewrite are required, otherwise
   socket.io's handshake gets a 308 or 404.
+- **Rate limits** (`apps/api/src/core/rate-limit.ts`, in-process): 60/min per IP on `/api/join`, `/api/guest` and
+  `/api/invites`, 60 socket connects/min per IP, 120 actions/min per socket (the admin key is exempt, for `seed.ts`).
+  The IP is `CF-Connecting-IP`, so Next's server-side fetches to the api must forward it.
 - **Style:** match the surrounding code. Comments say *why*, with page cites. Deliberate shortcuts are marked
   `// ponytail: <ceiling>, <upgrade path>`.
 
@@ -223,5 +226,4 @@ These are binding; follow them when writing code and use them when reviewing:
 
 - Doctors of Doom character import
 - A full rules reference in the player app
-- Rate limiting
 - Server-side undo history (client undo is inverse deltas)
