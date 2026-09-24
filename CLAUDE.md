@@ -36,7 +36,9 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
 
 ## Stack
 
-**Bun** is the package manager, runtime and test runner. Don't use npm or pnpm.
+**Bun** is the package manager, runtime and test runner. Don't use npm or pnpm. **Turborepo** (`turbo.json`) runs
+the multi-package tasks (`bun run dev`, `bun run build`); it needs the root `packageManager` field (`bun@…`) to
+find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scripts.
 
 | Part | Tech |
 |---|---|
@@ -146,6 +148,7 @@ Run these from the repo root unless noted.
 
 ```bash
 bun install
+bun run dev                 # whole stack via Turborepo (turbo.json): dev:db first, then api + web in parallel
 bun run dev:db              # Postgres in Docker on localhost:5434 (5432/5433 are taken on this machine)
 bun run dev:api             # NestJS on :4000, watches src
 bun run dev:web             # Next on :3000; proxies /api and /socket.io to :4000

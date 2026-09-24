@@ -38,9 +38,7 @@ bun install
 cp apps/api/.env.example apps/api/.env      # set ADMIN_KEY to something private, and the Clerk keys
 cp apps/web/.env.example apps/web/.env.local  # the Clerk keys
 
-bun run dev:db                              # Postgres in Docker on localhost:5434
-bun run dev:api                             # API on :4000 (migrations run on startup)
-bun run dev:web                             # web on :3000
+bun run dev                                 # the whole stack (Turborepo): Postgres, then API :4000 + web :3000
 ```
 
 Sign-in runs on [Clerk](https://clerk.com). Set it up once (details in

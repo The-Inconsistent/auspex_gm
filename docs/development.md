@@ -19,6 +19,8 @@ Setup, day-to-day commands, testing and the gotchas that have already bitten. Fo
 bun install
 cp apps/api/.env.example apps/api/.env      # then set ADMIN_KEY and the Clerk keys
 cp apps/web/.env.example apps/web/.env.local  # then set the Clerk keys
+bun run dev                                 # everything, via Turborepo (below)
+# or one piece at a time:
 bun run dev:db                              # Postgres on 127.0.0.1:5434, waits until healthy
 bun run dev:api                             # :4000, bun --watch; runs migrations on startup
 bun run dev:web                             # :3000, proxies /api and /socket.io to :4000
@@ -90,7 +92,8 @@ Run these from the repo root unless noted.
 | `bun run test` | Unit tests (`bun test packages apps/web`): rules functions, command parser, libs |
 | `bun run validate` | Every threat and pack against its schema, plus bestiary progress |
 | `bun run test:smoke` | End-to-end GM, player, guest and invite sessions over Socket.IO. Needs `dev:db`, and `dev:api` running with `CLERK_TEST_SECRET` set |
-| `cd apps/web && bun run build` | Production build. Catches what `tsc` doesn't, such as Server/Client boundaries |
+| `bun run dev` | The whole stack: Turborepo runs the root `dev:db` task (Postgres, waits until healthy), then every workspace's `dev` in parallel (api and web). Ctrl-C stops the api and web; Postgres keeps running |
+| `bun run build` | `turbo run build`: today that's the web production build. Catches what `tsc` doesn't, such as Server/Client boundaries |
 | `cd apps/api && bun run seed <pack> --owner <clerk user id>` | New campaign from `packages/data/packs/<pack>`, with that user as GM. Prints `/c/<campaignId>` |
 | `cd apps/api && bun run db:generate` | Migration from the `src/**/*.schema.ts` files |
 
