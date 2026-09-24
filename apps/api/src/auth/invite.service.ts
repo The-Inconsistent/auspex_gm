@@ -1,4 +1,5 @@
 import { and, eq, gt, isNull, or, sql } from "drizzle-orm";
+import type { AuthUser } from "@wg/auth/api";
 import { AcceptInvite, type InvitePreview } from "@wg/shared";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -6,7 +7,6 @@ import { db, type Db, type Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { accessToken, invite, membership } from "./auth.schema.ts";
 import { hash, issueToken } from "./auth.service.ts";
-import type { ClerkUser } from "./clerk.ts";
 
 // A live invite by its code: not revoked, not expired, uses left.
 async function liveInvite(conn: Db, code: string) {
@@ -29,7 +29,7 @@ async function openCharacters(conn: Db, campaignId: string) {
   return chars.filter((c) => !claimed.has(c.id));
 }
 
-export async function previewInvite({ code, user }: { code: string; user: ClerkUser | null }): Promise<InvitePreview> {
+export async function previewInvite({ code, user }: { code: string; user: AuthUser | null }): Promise<InvitePreview> {
   const inv = await liveInvite(db, code);
   const [c] = await db.select({ name: campaign.name }).from(campaign).where(eq(campaign.id, inv.campaignId));
   const [ch] = inv.characterId
@@ -49,7 +49,7 @@ export async function previewInvite({ code, user }: { code: string; user: ClerkU
 // Accept: a signed-in user becomes a member; a guest gets a player token (the caller sets it as the guest cookie).
 // Runs in the campaign's action queue (TableGateway.mutate), so the claim checks can't race.
 export async function acceptInvite(
-  tx: Tx, { code, user, body }: { code: string; user: ClerkUser | null; body: unknown },
+  tx: Tx, { code, user, body }: { code: string; user: AuthUser | null; body: unknown },
 ): Promise<{ campaignId: string; guestToken?: string }> {
   const parsed = AcceptInvite.safeParse(body);
   if (!parsed.success) fail("Pick a character, or name a new one");

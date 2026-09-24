@@ -1,9 +1,9 @@
 import { timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
+import type { AuthUser } from "@wg/auth/api";
 import { threats } from "@wg/data";
 import type { Lobby, LobbyGame, Role, Threat } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
-import type { ClerkUser } from "../auth/clerk.ts";
 import { character } from "../character/character.schema.ts";
 import { db } from "../core/db.ts";
 import { campaign, session } from "./campaign.schema.ts";
@@ -30,7 +30,7 @@ export function createCampaign({ name, tier, owner }: { name: string; tier: numb
 }
 
 // The lobby: the caller's games, and every game with a session in progress (as cards only; opening one needs a seat).
-export async function lobby(user: ClerkUser): Promise<Lobby> {
+export async function lobby(user: AuthUser): Promise<Lobby> {
   const [mine, running] = await Promise.all([
     db.select({ campaignId: membership.campaignId, role: membership.role }).from(membership).where(eq(membership.userId, user.userId)),
     db.select({ campaignId: session.campaignId, number: session.number }).from(session).where(isNull(session.endedAt)),

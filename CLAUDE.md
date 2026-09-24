@@ -42,9 +42,10 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 
 | Part | Tech |
 |---|---|
-| `apps/web` | Next.js 16 (App Router), React 19, `@clerk/nextjs`, socket.io-client, `qrcode` |
-| `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17, `@clerk/backend` |
+| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode` |
+| `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
+| `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |
 | `packages/data` | threat stat blocks (`threats/*.json`), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
 
 TypeScript is pinned to **5.9**. TS 7 breaks the Next and Nest toolchains, so don't upgrade it.
@@ -74,7 +75,7 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
   - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
     member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user
     start games in the lobby. The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
-    `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `auth/clerk.ts`).
+    `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `packages/auth/src/api.ts`).
   - Guests hold a per-character player token (`access_token`) in the httpOnly `wg_token` cookie, from a GUEST QR
     (`/join/<token>`) or a guest-friendly invite.
   - The GM invites from PARTY: a room QR (`mode: "room"`, 12 h) or a single-use per-character link (`mode:
@@ -115,7 +116,7 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
 apps/api/src/
   main.ts, app.module.ts
   core/        db.ts (drizzle client, migrations), errors.ts (ActionError, fail), sql.ts (clamped deltas, column helpers)
-  auth/        clerk.ts (verify Clerk session tokens), auth.schema.ts (access_token, app_user, membership, invite),
+  auth/        auth.schema.ts (access_token, app_user, membership, invite),
                auth.service.ts (guest tokens, cookie, Ctx, resolveCtx), invite.service.ts (preview, accept),
                access.actions.ts (invite.create/revoke, member.remove)
   campaign/    campaign.controller.ts (REST: campaigns, lobby, me, threats, join, guest, invites), campaign.service.ts,
@@ -127,10 +128,10 @@ apps/api/src/
 apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
 apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM)
-apps/web/proxy.ts   clerkMiddleware(), protects nothing, skips /api and /socket.io
+apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
-                    server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (ClerkProvider)
+                    server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
 apps/web/components/lobby/   lobby-view (your games, running now, new game)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
@@ -139,6 +140,8 @@ apps/web/components/ui/      bar, stat-block, status-chips, status-screen, refus
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
 packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts
+packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
+                             src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, packs/<name>/, validate.ts, index.ts (loaders)
 ```
 
@@ -182,6 +185,8 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Conventions and gotchas
 
+- **Clerk only through `@wg/auth`.** Apps never list `@clerk/*` as a dependency. Bun's isolated linker then makes a
+  direct import fail typecheck and runtime. A new Clerk API gets a wrapper in `packages/auth`, in the subpath for its runtime.
 - **Adding an action** touches these places:
   1. its zod schema in `packages/shared/src/actions.ts`
   2. its handler in the owning feature's `*.actions.ts`

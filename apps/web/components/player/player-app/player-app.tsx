@@ -1,7 +1,7 @@
 "use client";
-import { Show, UserButton } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 
+import { Show, UserButton } from "@wg/auth/react";
 import { sideUpNext } from "@wg/shared";
 
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";

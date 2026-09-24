@@ -36,7 +36,7 @@ Accounts come from Clerk. Guests with a QR token don't need one, but the GM does
 
 1. Create a Clerk application on the free **Hobby** plan, and enable the sign-in methods you want.
 2. In the Dashboard, under **Sessions → Customize session token**, add these claims. The api reads the name and the
-   creator role from the session token, so it never calls Clerk (`apps/api/src/auth/clerk.ts`):
+   creator role from the session token, so it never calls Clerk (`packages/auth/src/api.ts`):
 
    ```json
    { "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }

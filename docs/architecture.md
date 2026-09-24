@@ -33,10 +33,13 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
                   Postgres 17 (Drizzle). All live state; the api keeps none in memory
 ```
 
-Both apps depend on two workspace packages:
+Both apps depend on these workspace packages:
 
 - **`packages/shared`**: zod schemas for everything that crosses the wire, plus the pure rules functions. It's
   imported as TypeScript source, so web and api run the same rules code.
+- **`packages/auth`**: the only package that depends on Clerk. It has one subpath per runtime: `api` (verify session
+  tokens), `next` (proxy, the caller's token), `react` (provider and Clerk components). Apps don't list `@clerk/*`, so
+  Bun's isolated linker rejects a direct import.
 - **`packages/data`**: threat stat blocks and content packs. Only the api loads it; the web gets threats from
   `/api/campaigns/:id/threats`.
 

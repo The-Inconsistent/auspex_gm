@@ -1,6 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
+import { signedInUserId } from "@wg/auth/next";
 import { Lobby, Me } from "@wg/shared";
 
 import { JOIN_ERRORS, type JoinError } from "@/app/constants";
@@ -28,7 +28,7 @@ export default async function Home({ searchParams }: HomeProps) {
   const { join } = await searchParams;
   if (isJoinError(join)) return <StatusScreen text={JOIN_ERRORS[join]} />;
 
-  const { userId } = await auth();
+  const userId = await signedInUserId();
   if (!userId) {
     const table = await guestTable();
     if (table) redirect(`/c/${table}`);

@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 const api = process.env.API_ORIGIN ?? "http://localhost:4000";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@wg/shared"],
+  transpilePackages: ["@wg/auth", "@wg/shared"],
   output: "standalone",
   skipTrailingSlashRedirect: true, // socket.io's path is "/socket.io/"; Next's slash-stripping 308 would break it
   async rewrites() {

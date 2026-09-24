@@ -1,9 +1,9 @@
 import { createHash, randomBytes } from "node:crypto";
 import { and, eq, isNull } from "drizzle-orm";
+import { SESSION_COOKIE, bearerOf, verifySession, type AuthUser } from "@wg/auth/api";
 import type { Role } from "@wg/shared";
 import { db, type Tx } from "../core/db.ts";
 import { accessToken, appUser, membership } from "./auth.schema.ts";
-import { CLERK_COOKIE, bearerOf, verifyClerk, type ClerkUser } from "./clerk.ts";
 
 // Guest login cookie (a player QR token). Signed-in users use Clerk's `__session` instead.
 export const COOKIE = "wg_token";
@@ -45,8 +45,8 @@ export function readCookie(header: string | undefined, name = COOKIE): string | 
 }
 
 // The signed-in Clerk user on a request, if any. Their display name is kept fresh for member lists and the lobby.
-export async function signedInUser(headers: { authorization?: string; cookie?: string }): Promise<ClerkUser | null> {
-  const user = await verifyClerk(bearerOf(headers.authorization) ?? readCookie(headers.cookie, CLERK_COOKIE));
+export async function signedInUser(headers: { authorization?: string; cookie?: string }): Promise<AuthUser | null> {
+  const user = await verifySession(bearerOf(headers.authorization) ?? readCookie(headers.cookie, SESSION_COOKIE));
   if (user) {
     await db.insert(appUser).values({ id: user.userId, name: user.name })
       .onConflictDoUpdate({ target: appUser.id, set: { name: user.name, updatedAt: new Date() } });

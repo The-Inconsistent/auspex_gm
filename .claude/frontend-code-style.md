@@ -115,7 +115,7 @@ system it syncs with.
 
 ### Server first for request-time work
 
-The guest cookie is httpOnly and Clerk's token is fetched server-side (`auth().getToken()`), so anything that depends on
+The guest cookie is httpOnly and Clerk's token is fetched server-side (`sessionToken()` from `@wg/auth/next`), so anything that depends on
 who the caller is (the `/api/campaigns/:id/me` check, the `/join/<token>` exchange) runs on the server, through
 `app/server-api.ts`: a Server Component or a route handler. Client components receive the result as props.
 Route `params` are Promises in Next 16; `await` them.

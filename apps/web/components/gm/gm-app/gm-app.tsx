@@ -1,7 +1,7 @@
 "use client";
-import { UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 
+import { UserButton } from "@wg/auth/react";
 import { Pool, poolMax, type Threat } from "@wg/shared";
 
 import { CodexView } from "@/components/gm/codex/codex";

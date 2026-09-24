@@ -5,7 +5,7 @@ api in [backend.md](backend.md), the rules functions in [game-logic.md](game-log
 [development.md](development.md). The binding style rules are in
 [`.claude/frontend-code-style.md`](../.claude/frontend-code-style.md).
 
-Stack: Next.js 16 (App Router), React 19, `@clerk/nextjs`, `socket.io-client`, `qrcode`, and plain CSS in
+Stack: Next.js 16 (App Router), React 19, Clerk through `@wg/auth`, `socket.io-client`, `qrcode`, and plain CSS in
 `app/globals.css`. There is no UI framework, no client-side data reads and no client router beyond tab state. `/` is the
 lobby, and one table page (`/c/<campaignId>`) renders either the GM app or the player app, depending on the caller's
 seat.
@@ -25,18 +25,18 @@ seat.
 | `/api/*`, `/socket.io/*` | `next.config.ts` | Rewrites (dev only) | Proxied to the api |
 
 `app/layout.tsx` loads the fonts, sets `metadata` and `viewport` (`themeColor: TOKENS.bg`), imports `globals.css`, and
-wraps the body in `<ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">`. Without
+wraps the body in `<AuthProvider>` (`@wg/auth/react`: `ClerkProvider` with `signInUrl="/sign-in" signUpUrl="/sign-up"`). Without
 `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` every page answers 500 with "Missing publishableKey" (see
 [development.md](development.md#clerk)).
 
 ### Identity: `proxy.ts` and `app/server-api.ts`
 
-- **`proxy.ts`** (Next 16's middleware file) runs `clerkMiddleware()` so Clerk can keep its session fresh. It protects
+- **`proxy.ts`** (Next 16's middleware file) runs `authMiddleware()` (`@wg/auth/next`, Clerk's `clerkMiddleware`) so Clerk can keep its session fresh. It protects
   nothing: each page decides whether it needs a signed-in user, because guests join without an account. Its matcher
   excludes `/api`, `/socket.io`, `_next` and static files; the api checks the Clerk token itself.
 - **`apiGet(path)`** calls the api directly at `API_ORIGIN` (`app/constants.ts`, env `API_ORIGIN`, default
   `http://localhost:4000`) with `cache: "no-store"`. It sends the Clerk session as `Authorization: Bearer
-  <auth().getToken()>`, and forwards the guest cookie (`TOKEN_COOKIE` = `wg_token`), which is httpOnly, so only the
+  <sessionToken()>` (`@wg/auth/next`), and forwards the guest cookie (`TOKEN_COOKIE` = `wg_token`), which is httpOnly, so only the
   server can read it.
 - **The browser** reaches the api through the rewrites, so the Clerk `__session` cookie and the guest cookie ride along
   on its own requests (NEW GAME, accepting an invite, the socket handshake).

@@ -3,12 +3,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { io, type Socket } from "socket.io-client";
+import { testSessionToken } from "@wg/auth/api";
 import { deriveStats, poolMax, type ActionInput, type ActionResult, type Codex, type LiveState, type ThreatCombatant } from "@wg/shared";
 
 const API = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
 
-// A test-only Clerk session token (apps/api/src/auth/clerk.ts) and the headers that carry one.
-const clerk = (userId: string, role: "creator" | "member" = "member") => `test.${process.env.CLERK_TEST_SECRET}.${userId}.${role}`;
+// A test-only Clerk session token (packages/auth/src/api.ts) and the headers that carry one.
+const clerk = (userId: string, role: "creator" | "member" = "member") =>
+  testSessionToken({ secret: process.env.CLERK_TEST_SECRET ?? "", userId, role });
 const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
 const get = (path: string, headers: Record<string, string> = {}) => fetch(`${API}/api${path}`, { headers });
 

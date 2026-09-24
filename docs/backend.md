@@ -32,7 +32,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | Folder | Owns | Key exports |
 |---|---|---|
 | `core/` | DB client, error type, SQL helpers | `db.ts`: `db`, `Tx`, `Db` (either), `runMigrations`. `errors.ts`: `ActionError`, `fail(msg): never`. `sql.ts`: `bump` (clamped delta), column builders `conditions`, `createdAt`, `body` |
-| `auth/` | Clerk users, seats, invites, guest tokens and the cookie | `clerk.ts`: `CLERK_COOKIE` (`"__session"`), `ClerkUser`, `verifyClerk`, `bearerOf`. `auth.schema.ts`: `accessToken`, `appUser`, `membership`, `invite`. `auth.service.ts`: `COOKIE` (`"wg_token"`), `Ctx`, `hash`, `newSecret`, `issueToken`, `resolveGuest`, `readCookie`, `signedInUser`, `resolveCtx`. `invite.service.ts`: `previewInvite`, `acceptInvite`. `access.actions.ts`: `AccessAction`, `applyAccessAction` |
+| `auth/` | Clerk users, seats, invites, guest tokens and the cookie | Clerk itself is in `@wg/auth/api` (`packages/auth/src/api.ts`): `SESSION_COOKIE` (`"__session"`), `AuthUser`, `verifySession`, `bearerOf`, `testSessionToken`. `auth.schema.ts`: `accessToken`, `appUser`, `membership`, `invite`. `auth.service.ts`: `COOKIE` (`"wg_token"`), `Ctx`, `hash`, `newSecret`, `issueToken`, `resolveGuest`, `readCookie`, `signedInUser`, `resolveCtx`. `invite.service.ts`: `previewInvite`, `acceptInvite`. `access.actions.ts`: `AccessAction`, `applyAccessAction` |
 | `campaign/` | Campaign row, pools, sessions; all REST | `campaign.controller.ts`: `CampaignController`. `campaign.service.ts`: `isAdmin`, `createCampaign`, `lobby`, `listThreats`. `campaign.actions.ts`: `CampaignAction`, `applyCampaignAction`, `campaignTier`. `campaign.schema.ts`: `campaign`, `session`, `owned()` |
 | `character/` | Characters and guest tokens | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character` |
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
@@ -321,19 +321,21 @@ A new field is visible to players unless one of these functions drops it. Decide
 Signed-in users hold a seat through `membership` (gm or player, plus a character). Guests hold a per-character player
 token in `access_token`. The admin key is for scripts only. There are no GM tokens: the GM is always a member.
 
-### Clerk (`clerk.ts`)
+### Clerk (`@wg/auth/api`, `packages/auth/src/api.ts`)
 
-- **Verify:** `verifyClerk(token)` calls `@clerk/backend`'s `verifyToken` with `jwtKey: CLERK_JWT_KEY` (no network
+- **Verify:** `verifySession(token)` calls `@clerk/backend`'s `verifyToken` with `jwtKey: CLERK_JWT_KEY` (no network
   call; `CLERK_SECRET_KEY` is the fallback) and `authorizedParties` from `WEB_ORIGIN`, split on commas. An expired,
   forged or wrong-origin token returns null, which reads as signed out.
 - **Claims:** the name comes from `name`, else `username`, else `"Player"`. `creator` is `metadata.role === "creator"`.
   These are custom claims: the Clerk Dashboard's session-token template must include
   `{ "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }`
-  ([development.md](development.md#clerk)). The creator role is set by hand in the user's public metadata.
+  ([development.md](development.md#clerk)). The creator role is set by hand in the user's public metadata. Both shapes
+  are typed once, as Clerk's global `UserPublicMetadata` (`role?: "creator"`) and `CustomJwtSessionClaims`, in
+  `packages/auth/type.d.ts`.
 - **Where the token comes from:** `bearerOf(Authorization)` first, else the `__session` cookie. `signedInUser()` also
   upserts `app_user` so member lists and the lobby show a current name.
 - **Test tokens:** with `CLERK_TEST_SECRET` set, `test.<secret>.<userId>.<creator|member>` is accepted without Clerk.
-  It's for the smoke test only, and the api refuses to start if it's set with `NODE_ENV=production`.
+  `testSessionToken({ secret, userId, role })` builds one. It's for the smoke test only, and the api refuses to start if it's set with `NODE_ENV=production`.
 
 ### Invites (`invite.service.ts`, `access.actions.ts`)
 

@@ -1,0 +1,25 @@
+{
+  "name": "@wg/auth",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./api": "./src/api.ts",
+    "./next": "./src/next.ts",
+    "./react": "./src/react.tsx"
+  },
+  "dependencies": {
+    "@clerk/backend": "^3.19.0",
+    "@clerk/nextjs": "^7.9.5"
+  },
+  "peerDependencies": {
+    "next": "^16.3.6",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0"
+  },
+  "scripts": {
+    "test": "bun test"
+  }
+}

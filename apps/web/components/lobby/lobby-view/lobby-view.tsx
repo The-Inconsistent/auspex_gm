@@ -1,8 +1,8 @@
 "use client";
-import { UserButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
+import { UserButton } from "@wg/auth/react";
 import { TIERS, type Lobby, type LobbyGame } from "@wg/shared";
 
 type LobbyViewProps = { lobby: Lobby };
