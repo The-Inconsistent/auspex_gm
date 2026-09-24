@@ -1,0 +1,47 @@
+{
+  "id": "possessed-chaos-space-marine",
+  "name": "Possessed Chaos Space Marine",
+  "page": 344,
+  "faction": "heretic",
+  "threat": ["A", "A", "A", "E"],
+  "keywords": ["CHAOS", "DAEMON", "HERETIC ASTARTES", "[LEGION]", "[MARK OF CHAOS]"],
+  "attributes": { "S": 9, "T": 8, "A": 6, "I": 6, "Wil": 5, "Int": 5, "Fel": 1 },
+  "resilience": { "value": 14, "note": "Mark V Power Armour: 5 AR" },
+  "defence": 5,
+  "wounds": 16,
+  "shock": 9,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 9 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 4 personal Ruin." },
+    { "name": "Writhing Tentacles", "text": "This Threat may Multi-Attack all enemies it is Engaged with without suffering a DN penalty." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Sea of Mutations",
+      "text": "The Daemon warps its host's form, preparing it for battle. At the start of any combat with this Threat, apply a Severe Mutation to this Threat. You can roll on the Severe Mutations table (p.288) when this Threat is encountered, or before the session."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Horrifying Mutatios", "damage": 13, "ed": 2, "ap": -2, "range": [1] }
+      ]
+    },
+    { "type": "RUIN", "name": "Veteran of the Long War", "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round." },
+    { "type": "ANNIHILATION", "name": "Painful Lessons", "text": "When this Threat dies, the GM gains 2 Ruin." }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 9d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 5,
+  "speed": 7,
+  "size": "Avg"
+}

@@ -1,0 +1,75 @@
+{
+  "id": "killa-kan",
+  "name": "Killa Kan",
+  "page": 359,
+  "faction": "ork",
+  "threat": ["A", "A", "E", "T"],
+  "keywords": ["GROT", "ORK"],
+  "attributes": { "S": 10, "T": 5, "A": 3, "I": 3, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 12, "note": "Kan Armour: 6 AR" },
+  "defence": 2,
+  "wounds": 9,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Grotzooka", "damage": 12, "ed": 2, "ap": -1, "range": [9, 18, 36], "salvo": 1, "traits": ["Brutal", "Spread"] },
+        { "name": "Buzz Saw", "damage": 17, "ed": 6, "ap": -2, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Kanned Rage",
+      "text": "Whenever a Killa Kan is Exhausted or fails a Resolve Test, roll 1d6. If you roll an Icon, the Killa Kan becomes Frenzied, ignoring any penalties and continuing to fight."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explosive",
+      "text": "When a Killa Kan dies, roll a d6. If you roll a Complication, the Killa Kan explodes. Killa Kan Explosion: 12 +5 ED / Blast (10)"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Kan Weapons (ranged)",
+      "text": "Each Killa Kan is a bespoke, hand-cobbled death machine. A Killa Kan may have the following ranged weapons instead of a Grotzooka:",
+      "weapons": [
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Rokkit Launcher", "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "traits": ["Blast (Small)", "3 Ammo"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Kan Weapons (melee)",
+      "text": "A Killa Kan may have the following melee weapons instead of the Buzz Saw:",
+      "weapons": [
+        { "name": "Drilla", "damage": 14, "ed": 3, "ap": -4, "range": [1], "traits": ["Brutal", "Rending (3)"] },
+        { "name": "Kan Klaw", "damage": 16, "ed": 5, "ap": -3, "range": [2], "traits": ["Brutal", "Unwieldy (3)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Scrag 'Em",
+      "text": "When a Mob of Killa Kans makes a melee attack Test, it gains a number of bonus dice equal to the Tier of the game."
+    },
+    {
+      "name": "Mob Confidence",
+      "text": "A Mob of Killa Kans gains +1 bonus dice to Resolve Tests for every individual in the Mob."
+    }
+  ]
+}

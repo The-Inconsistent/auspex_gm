@@ -1,0 +1,44 @@
+{
+  "id": "enforcer",
+  "name": "Enforcer",
+  "page": 331,
+  "faction": "imperial",
+  "threat": ["E", "T", "T", "T"],
+  "keywords": ["IMPERIUM"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 3, "Int": 3, "Fel": 3 },
+  "resilience": { "value": 7, "note": "Flak Armour: 3 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Intimidation", "dice": 7 },
+      { "name": "Investigation", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Brutal Discipline", "text": "+2 bonus dice to Tests made against targets with the SCUM or HERETIC Keywords." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Freeze, Scum!",
+      "text": "Make an Intimidation Interaction Attack against 2 targets with no penalty."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Combat Shotgun", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Assault", "Rapid-Fire (1)", "Spread"] },
+        { "name": "Shock Maul", "damage": 7, "ed": 4, "ap": -1, "range": [1], "traits": ["Agonising", "Brutal"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg"
+}

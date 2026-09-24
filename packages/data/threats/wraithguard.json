@@ -1,0 +1,45 @@
+{
+  "id": "wraithguard",
+  "name": "Wraithguard",
+  "page": 362,
+  "faction": "aeldari",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["AELDARI", "ASURYANI", "PSYKER", "WRAITH CONSTRUCT", "[CRAFTWORLD]"],
+  "attributes": { "S": 9, "T": 7, "A": 4, "I": 6, "Wil": 6, "Int": 8, "Fel": 2 },
+  "resilience": { "value": 12, "note": "Wraith Construct Body: 4 AR" },
+  "defence": 5,
+  "wounds": 15,
+  "shock": null,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Wraith Construct", "text": "This Threat is immune to the Bleeding, Exhausted, and Poisoned Conditions, and cannot Suffocate." },
+    { "name": "Wraithsight", "text": "This Threat is immune to vision penalties from any source other than the Warp." },
+    { "name": "Psyniscience", "text": "This Threat can automatically activate Psyniscience (p.267) as a Free Action." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Wraithcannon", "damage": 20, "ed": 2, "ap": -4, "range": [6, 12, 18], "salvo": 1, "traits": ["Assault", "Force", "Heavy (8)", "Warp Weapon"] },
+        { "name": "Wraithguard Fists", "damage": 9, "ed": 1, "ap": -1, "range": [1] }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Wraithsight Illusion",
+      "text": "If a Wraithguard rolls a Complication on any Test, they are immediately Blinded as the Warp clouds and muddles their vision. The Blinded penalty is applied to the Test that caused the Complication. This blindness can only be removed by succeeding on a DN 8 Willpower Test made as a Combat Action on the Wraithguard's turn, or through an Aeldari Psyker within 10 metres succeeding on a DN 4 Leadership (Wil) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 10d6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 5,
+  "size": "Large"
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "conditions",
+    "kind": "condition",
+    "name": "Conditions",
+    "source": "core",
+    "page": 197,
+    "text": "The brutal nature of combat, warfare, and adventure exposes you to a multitude of deadly ailments and painful side effects. Conditions represent the myriad ways you can be hurt outside of Wounds. These effects have an impact on your ability to fight effectively, and many can lead to death if not treated quickly.\n\nConditions may end at the conclusion of a scene at the GM’s discretion. However, some may remain until treated. The GM can increase a condition’s duration if it fits the narrative.\n\nYou can be subjected to the same Condition more than once. When this happens, the penalties stack:\n\n• If you’re Hindered (2), you make all Tests at +2DN.\n• If you’re Bleeding (3), you suffer an exsanguinating 3 Mortal Wounds at the end of each of your Turns.\n• If you’re unlucky enough to suffer more than one Condition at once, all the effects apply, but any similar penalties don’t stack — use only the worst Condition. If you’re Blinded and Hindered, you only have a +4DN to spot something, not +5DN — the additional +1 DN from Hindered does not stack with the +4DN from Blinded.\n\nSome Conditions suggest rules for treating them in their descriptions, while others are up to GM discretion and the needs of the narrative.\n\nReducing Defence\n\nDefence can be reduced to a minimum of 1 and cannot be further reduced beyond that point. A character can’t take an action that would voluntarily reduce their Defence below 1.\n\nExample: If an Ork Boy has a Defence of 1 due to being rendered Vulnerable by an Interaction Attack, he cannot use the All-Out Attack option in combat. Any further attempts to render the Ork Boy Vulnerable would not change his Defence, since it is already 1."
+  },
+  {
+    "id": "bleeding",
+    "kind": "condition",
+    "name": "Bleeding",
+    "source": "core",
+    "page": 199,
+    "text": "You’re bleeding, afflicted with a grievous wound that is difficult to treat. You suffer one Mortal Wound at the end of each of your Turns. Bleeding can be stopped with a successful Toughness Test (DN 4), or if another character aids you with the Medicae Skill. You can attempt to use Medicae on yourself (see p,124) but do so at +1DN."
+  },
+  {
+    "id": "blinded",
+    "kind": "condition",
+    "name": "Blinded",
+    "source": "core",
+    "page": 199,
+    "text": "You’re unable to see properly. Increase the DN for any sight-related task (including all combat Tests) by 4, replacing any lesser vision penalties.\n\nAt the GM’s discretion you may use a Combat Action to remove the Blinded condition, using a narratively appropriate Skill."
+  },
+  {
+    "id": "exhausted",
+    "kind": "condition",
+    "name": "Exhausted",
+    "source": "core",
+    "page": 199,
+    "text": "You are weary from battle or persistent effort and suffer from fatigue. On your Turn, you can only Walk or Crawl, perform a basic Combat Action (attack with no combat options, such as Aim or Multi-Attack), or Fall Back. Additionally, you may not roll Determination. Any Shock suffered by an Exhausted character is immediately converted into Mortal Wounds.\n\nCertain circumstances directly inflict Exhaustion. You are automatically Exhausted if your Shock increases beyond your Maximum Shock. Certain weapons, psychic powers, or Ruin Actions can also cause you to become Exhausted even while you are below your Maximum Shock.\n\nIf you are Exhausted from a source other than exceeding your Maximum Shock, that effect determines how you remove the Exhausted condition. Otherwise, the Exhausted condition is removed whenever you recover Shock."
+  },
+  {
+    "id": "fear",
+    "kind": "condition",
+    "name": "Fear",
+    "source": "core",
+    "page": 199,
+    "text": "You’re scared. Whatever is causing your Fear might also make you anxious, or trigger physical reactions like rapid breathing, shaking, and a lack of focus.\n\nWhen you encounter something that causes Fear, you roll your Resolve against a DN dictated by the source of Fear. Success allows you to act normally. If you fail, you suffer +2DN to all Tests. The penalty lasts until the end of the scene or until an ally passes a Leadership (Wil) Test of DN 2 + the source’s Fear value.\n\nA being that causes Fear is immune to Fear and Intimidation Interaction Attacks."
+  },
+  {
+    "id": "frenzied",
+    "kind": "condition",
+    "name": "Frenzied",
+    "source": "core",
+    "page": 199,
+    "text": "Whether whipped into a zealous fury or auto injecting Frenzon combat stims, you’re Frenzied. You lose all sense of self-preservation and throw yourself into the thick of combat.\n\nWhen you become Frenzied, you may choose to embrace the frenzy or attempt to resist it. If you choose to resist, at the start of your Turn make a DN 3 Willpower Test. If you pass, the rage subsides and you resist the frenzy.\n\nIf the effect is triggered, embraced, or otherwise not resisted, you are Frenzied and must try to get into close combat as quickly as possible, charging the nearest visible enemy. If you are in cover, you break cover and move towards the nearest enemy.\n\nWhile Frenzied, you are immune to Fear and cannot be Pinned and must always use the All-Out Attack option, if possible. You gain +1 to your Strength Attribute While Frenzied."
+  },
+  {
+    "id": "hindered",
+    "kind": "condition",
+    "name": "Hindered",
+    "source": "core",
+    "page": 199,
+    "text": "Something’s holding you back. While Hindered increase the DN for all Tests by +1, or higher if the rules of whatever is hindering you say so. Hindered lasts until the end of the next Turn, unless otherwise stated."
+  },
+  {
+    "id": "on-fire",
+    "kind": "condition",
+    "name": "On Fire",
+    "source": "core",
+    "page": 199,
+    "text": "You’re on fire! You take 1d3 Mortal Wounds at the start of each of your Turns. You may then use your Action to throw yourself Prone and roll around in an attempt to extinguish the fire with a DN 3 Athletics (S) Test. If you succeed you are no longer On Fire.\n\nAlternatively, you can attempt to ignore the flames and take your Turn as normal. Make a DN 3 Willpower Test; if you fail, you are Hindered."
+  },
+  {
+    "id": "pinned",
+    "kind": "condition",
+    "name": "Pinned",
+    "source": "core",
+    "page": 199,
+    "text": "You’re under heavy fire, and there’s a chance your Resolve will break under pressure. If you are targeted with a Pinning Attack, you may be Pinned.\n\nIf someone uses a Pinning Attack against you, they make a Ballistic Skill (A) Test against your Resolve. If they succeed you are Pinned until the start of the attacker’s next Turn. If you’re behind cover, you hunker down. If you aren’t behind cover, you immediately move to the nearest cover, using your Movement for your next Turn. While Pinned, you can’t leave cover, but may take other Actions as normal.\n\nYou suffer a +2 DN penalty to Ballistic Skill (A) Tests when you target an enemy using a Pinning Attacks against you.\n\nYou may attempt to rally Pinned comrades on your Turn by making a Leadership (Wil) Test as an Action, with a DN equal to the enemy weapon’s Salvo value, adding an extra +1 DN if a Pinned character has taken any damage (Shock or Wounds) during the combat. If the Test is successful, you rally any Pinned allies within 5 metres, ending the effect."
+  },
+  {
+    "id": "poisoned",
+    "kind": "condition",
+    "name": "Poisoned",
+    "source": "core",
+    "page": 200,
+    "text": "You’ve been inflicted with one of the galaxy’s countless pathogens, plagues, or viruses. You could be suffering from neurotoxins injected into your system, alien acid splashed on you, or Nurgle’s contagions. All of these dangers leave you Poisoned.\n\nYou suffer a +2 DN penalty to all Tests while Poisoned. Some poisons also inflict damage based on the poison. Some poisons may affect your ability to function instead of, or in addition to, causing damage. The Poisoned condition ends when you are treated using the Medicae Skill or you succeed on a Toughness Test (DN based on the poison) at the beginning of your Turn."
+  },
+  {
+    "id": "prone",
+    "kind": "condition",
+    "name": "Prone",
+    "source": "core",
+    "page": 200,
+    "text": "You’re knocked down on the ground. Your Defence is reduced by 2 against any attack made by a Threat within 5 metres of you. Your Defence is increased by 1 when you’re attacked from 6 or more metres away. If you become Prone while flying, you fall to the ground and suffer falling damage (p.201).\n\nStanding up when Prone is a Free Action on your Turn. If you stand up in this way, you can only use the Standard Movement option; you can’t use combat options such as Brace or Aim. An adjacent character may use a Simple Action to help you stand up immediately when you’re Prone."
+  },
+  {
+    "id": "restrained",
+    "kind": "condition",
+    "name": "Restrained",
+    "source": "core",
+    "page": 200,
+    "text": "You’re bound, possibly by some form of entangling attack such as an Genestealer Cultist Webber, a Barbed Strangler, or a good old-fashioned net.\n\nWhile Restrained you can’t use your Movement and your Defence is reduced by 2."
+  },
+  {
+    "id": "staggered",
+    "kind": "condition",
+    "name": "Staggered",
+    "source": "core",
+    "page": 200,
+    "text": "You’re off balance; you’ve run too fast over rough terrain, ordnance has impacted nearby, or you’ve been clipped by a stray bullet.\n\nWhen you move While Staggered, your Speed is reduced by half. You can’t Run or Sprint unless otherwise stated. The Staggered condition lasts until the end of your next Tun."
+  },
+  {
+    "id": "terror",
+    "kind": "condition",
+    "name": "Terror",
+    "source": "core",
+    "page": 200,
+    "text": "You’re overcome with a sense of intense dread and rational thought becomes impossible: this is all-consuming Terror.\n\nMake a Resolve Test against the DN of the source of Terror. If you pass, you may act normally on your Turn. If you fail, you suffer all of the effects of Fear, and you must use every action available on each of your Turns to move as far away as possible until you no longer have line of sight to the source of Terror.\n\nTerror lasts until the end of the scene or until an ally passes a Leadership (Wil) Test of DN 2 + the Terror value.\n\nAny effect that grants a bonus to Fear Tests also applies to Terror Tests. Any effect that grants immunity to Fear grants one extra Icon on your Resolve Test against Terror. A being that causes Terror is immune to Fear, Terror, and Intimidation Interaction Attacks."
+  },
+  {
+    "id": "vulnerable",
+    "kind": "condition",
+    "name": "Vulnerable",
+    "source": "core",
+    "page": 200,
+    "text": "Your defences are open! While Vulnerable, you suffer −1 to your Defence. Certain abilities and effects increase this penalty. Being Vulnerable lasts until the end of your next Turn."
+  }
+]

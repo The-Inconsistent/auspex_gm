@@ -1,0 +1,66 @@
+[
+  {
+    "id": "armour-traits",
+    "kind": "armour-trait",
+    "name": "Armour Traits",
+    "source": "core",
+    "page": 232,
+    "text": "Some pieces of armour have Traits that give them advantages or disadvantages over others. Some of the Traits listed below have (X) in their name, representing a rating. The pieces of armour with this Trait will have a number instead of ‘X’ which is used for any calculations."
+  },
+  {
+    "id": "invulnerable",
+    "kind": "armour-trait",
+    "name": "Invulnerable",
+    "source": "core",
+    "page": 232,
+    "text": "Any Armour Rating marked with an asterisk (*) is Invulnerable. If you are wearing Invulnerable Armour, AP does not affect your Resilience."
+  },
+  {
+    "id": "bulk",
+    "kind": "armour-trait",
+    "name": "Bulk (X)",
+    "source": "core",
+    "page": 232,
+    "text": "Heavy and restrictive armour possesses the Bulk trait.\n\nBulk reduces the Speed of the wearer by a number of metres equal to its rating."
+  },
+  {
+    "id": "cumbersome",
+    "kind": "armour-trait",
+    "name": "Cumbersome",
+    "source": "core",
+    "page": 232,
+    "text": "Large suits of armour can severely restrict movement.\n\nYou cannot Run or Sprint in Cumbersome armour."
+  },
+  {
+    "id": "ere-we-go",
+    "kind": "armour-trait",
+    "name": "’Ere We Go!",
+    "source": "core",
+    "page": 232,
+    "text": "The latent psychic power of an Ork empowers their armour, allowing them to fight harder when harmed.\n\nAn Ork wearing armour with this Trait ignores the Bulk and Cumbersome Traits when Wounded."
+  },
+  {
+    "id": "power-field",
+    "kind": "armour-trait",
+    "name": "Power Field",
+    "source": "core",
+    "page": 232,
+    "text": "Wonders of archeotech, personal Power Fields envelope their user in a protective barrier of energy.\n\nArmour with this Trait allows you to roll Determination against attacks that deal Mortal Wounds."
+  },
+  {
+    "id": "powered",
+    "kind": "armour-trait",
+    "name": "Powered (X)",
+    "source": "core",
+    "page": 232,
+    "text": "This armour is designed to augment the wearer’s might through the marvels of mechanisation.\n\nWhilst wearing armour with this Trait you gain a Strength bonus equal to the rating. Additionally, you are not knocked Prone when you roll a Complication while firing an unsecured Heavy weapon."
+  },
+  {
+    "id": "shield",
+    "kind": "armour-trait",
+    "name": "Shield",
+    "source": "core",
+    "page": 232,
+    "text": "Wielded like a defensive weapon, shields are carried instead of worn, and used to deflect incoming attacks.\n\nArmour with this Trait adds its AR to your Defence and Resilience, provided the GM agrees you can manoeuvre the shield to block the attack."
+  }
+]

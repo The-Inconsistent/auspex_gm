@@ -1,0 +1,72 @@
+{
+  "id": "chaos-space-marine",
+  "name": "Chaos Space Marine",
+  "page": 342,
+  "faction": "heretic",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["ADEPTUS ASTARTES", "CHAOS", "[LEGION]", "[MARK OF CHAOS]"],
+  "attributes": { "S": 8, "T": 6, "A": 5, "I": 5, "Wil": 4, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 12, "note": "Mark V Power Armour: 5 AR" },
+  "defence": 4,
+  "wounds": 10,
+  "shock": 6,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 1 personal Ruin." },
+    { "name": "Mark of Chaos", "text": "This Threat has a Mark of Chaos (p.136)" },
+    { "name": "Space Marine Implants", "text": "Gain bonus dice and options for actions from Space Marine Implants (p.75)" }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Bolt Pistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Brutal", "Pistol"] },
+        { "name": "Chainsword", "damage": 13, "ed": 4, "range": [1], "traits": ["Brutal", "Parry"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Veteran of the Long War", "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round." }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Aspiring Champion",
+      "text": "An Aspiring Champion is a Chaos Space Marine who leads a band of heretic Astartes. They have the following additional Wargear and Ruin Action.",
+      "weapons": [
+        { "name": "Power Sword", "damage": 13, "ed": 4, "ap": -3, "range": [1], "traits": ["Parry"] }
+      ],
+      "abilities": [
+        { "type": "RUIN", "name": "Death to the False Emperor!", "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test." }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Plague Marine (Legions of Chaos, p.343)",
+      "text": "A Plague Marine of the Death Guard is identical to a Chaos Space Marine, with the following changes: Toughness 8, Wounds 12, Resilience 14, Speed 5. DETERMINATION: Disgustingly Resilient. You do not need to spend Ruin to roll Determination for this Threat. Roll 8d6. This Threat can roll Determination against Mortal Wounds.",
+      "weapons": [
+        { "name": "Plague Belcher", "damage": 10, "ed": 1, "range": [5, 9, 15], "salvo": 1, "traits": ["Assault", "Inflict (Poison 4)"] },
+        { "name": "Plague Sword", "damage": 13, "ed": 5, "range": [1], "traits": ["Brutal", "Inflict (Poison 4)"] }
+      ],
+      "abilities": [
+        {
+          "type": "REACTION",
+          "name": "Noxious Discharge",
+          "text": "Whenever this Threat takes a Wound, roll a d6. If you roll an Icon, a mix of virulent gasses and toxic effluent spills from the Wound. The Noxious Discharge hits every target Engaged with the Death Guard. Noxious Discharge: 2 +4 ED / AP –4 / Blast (4), Inflict (Poison 4)"
+        }
+      ]
+    }
+  ]
+}

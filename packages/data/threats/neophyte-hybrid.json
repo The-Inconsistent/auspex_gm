@@ -1,0 +1,60 @@
+{
+  "id": "neophyte-hybrid",
+  "name": "Neophyte Hybrid",
+  "page": 369,
+  "faction": "genestealer",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 3, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 6, "note": "Worker's Fatigues: 2 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Neophyte Hybrid is not Human." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autogun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 3, "traits": ["Rapid Fire (1)"] },
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "You can activate this ability whenever a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of the Neophyte Hybrid is targeted by an attack. The Neophyte Hybrid interposes themself and becomes the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Three-Armed Discount",
+      "text": "Neophyte Hybrids and Acolyte Hybrids can replace any of their armaments with any Common weapon with the IMPERIUM Keyword. They may also use the following mining equipment as weapons (p.370). Printed: Blasting Charge 10 +2 ED / AP -4 / Thrown Sx4 / Blast (4); Heavy Rock Cutter (S)+6 +6 ED / AP -4 / Range 1 / Brutal, Heavy (6), Rending (2), Unwieldy (4); Heavy Rock Drill (S)+5 +5 ED / AP -3 / Range 1 / Brutal, Heavy (6), Rending (4), Unwieldy (4); Heavy Rock Saw (S)+6 +4 ED / AP 4 / Range 1 / Brutal, Heavy (4), Unwieldy (3). Profiles below use this Threat's Strength 3.",
+      "weapons": [
+        { "name": "Blasting Charge", "damage": 10, "ed": 2, "ap": -4, "range": [12], "traits": ["Blast (4)"] },
+        { "name": "Heavy Rock Cutter", "damage": 9, "ed": 6, "ap": -4, "range": [1], "traits": ["Brutal", "Heavy (6)", "Rending (2)", "Unwieldy (4)"] },
+        { "name": "Heavy Rock Drill", "damage": 8, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Heavy (6)", "Rending (4)", "Unwieldy (4)"] },
+        { "name": "Heavy Rock Saw", "damage": 9, "ed": 4, "ap": -4, "range": [1], "traits": ["Brutal", "Heavy (4)", "Unwieldy (3)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Broodmind", "text": "This Threat gains +3 bonus dice to Resolve Tests when within 20 metres of a Threat with the GENESTEALER CULT and PSYKER Keywords." }
+  ]
+}

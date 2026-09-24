@@ -1,0 +1,53 @@
+{
+  "id": "ranger",
+  "name": "Ranger",
+  "page": 363,
+  "faction": "aeldari",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["AELDARI", "ASURYANI", "[CRAFTWORLD]"],
+  "attributes": { "S": 2, "T": 3, "A": 7, "I": 4, "Wil": 3, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 7, "note": "Aeldari Mesh: 3 AR" },
+  "defence": 3,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Cameleoline Cloak", "text": "Gain +1 bonus die to Stealth (A) Tests and +1 Defence while in cover or shadows." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Ranger Long Rifle", "damage": 10, "ed": 1, "range": [18, 36, 54], "salvo": 0, "traits": ["Sniper (2)"] },
+        { "name": "Combat Knife", "damage": 4, "ed": 2, "range": [1] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Sniper",
+      "text": "When this Threat rolls a 6 on the Wrath Die as part of a ranged attack, all Wounds inflicted are Mortal Wounds."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Pathfinders",
+      "text": "Rarely, Rangers walk the Path of the Outcast for centuries, becoming especially adept at survival and infiltration. Pathfinders have the same statistics as an Aeldari Ranger, with the following improvements: SKILLS: Default 8, Awareness 10 (Passive 5), Ballistic Skill 10, Stealth 10, Survival 9, Weapon Skill 9. WOUNDS: 8. SHOCK: 8."
+    }
+  ]
+}

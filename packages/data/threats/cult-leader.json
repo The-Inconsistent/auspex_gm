@@ -1,0 +1,54 @@
+{
+  "id": "cult-leader",
+  "name": "Cult Leader",
+  "page": 339,
+  "faction": "heretic",
+  "threat": ["A", "E", "E", "T"],
+  "keywords": ["CHAOS", "HERETIC"],
+  "attributes": { "S": 3, "T": 4, "A": 3, "I": 4, "Wil": 5, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 6, "note": "Armoured Robe: 1 AR" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 7, "passive": 4 },
+      { "name": "Deception", "dice": 7 },
+      { "name": "Intimidate", "dice": 7 },
+      { "name": "Persuasion", "dice": 8 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Herald of Ruin", "text": "At the start of each Round this Threat is alive, the GM gains a point of Ruin for every 6 Cultists alive in the Scene." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 1 personal Ruin." },
+    { "name": "Priest of the Dark Gods", "text": "This Threat gains +2 bonus dice to all Interaction Attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Chainsword", "damage": 8, "ed": 4, "range": [1], "traits": ["Brutal", "Parry"] }
+      ]
+    },
+    {
+      "type": "BATTLECRY",
+      "name": "Kneel Before the Dark Gods!",
+      "text": "As an Action the Cult Leader makes an Interaction Attack against all targets within 15m who do not possess the CHAOS Keyword. Any target affected by the Interaction Attack is Prone in addition to the normal effects."
+    },
+    {
+      "type": "RUIN",
+      "name": "Kill Them ALL!",
+      "text": "Spend 1 Ruin. As a Free Action, the Cult Leader commands a Mob of Cultists within 3m to make one Combat Action immediately. The GM may spend 1 Ruin to have the Cult Leader use Kneel Before the Dark Gods! as a Ruin Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg"
+}

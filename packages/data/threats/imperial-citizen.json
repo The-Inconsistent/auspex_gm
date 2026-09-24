@@ -1,0 +1,33 @@
+{
+  "id": "imperial-citizen",
+  "name": "Imperial Citizen",
+  "page": 327,
+  "faction": "imperial",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM"],
+  "attributes": { "S": 2, "T": 2, "A": 3, "I": 2, "Wil": 3, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 3, "note": "Ragged Clothes: 0 AR" },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [{ "name": "Awareness", "dice": 3, "passive": 2 }]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Unarmed", "damage": 2, "ed": 1, "range": [1] }]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Cheap Augmetic",
+      "text": "Whenever this Threat rolls a Complication, one of their augmetics malfunctions. They are Hindered and unable to use the body part effectively until it is repaired by a DN 3 Tech (Int) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg"
+}

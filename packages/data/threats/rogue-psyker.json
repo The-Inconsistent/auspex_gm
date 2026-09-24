@@ -1,0 +1,62 @@
+{
+  "id": "rogue-psyker",
+  "name": "Rogue Psyker",
+  "page": 340,
+  "faction": "heretic",
+  "threat": ["A", "E", "E", "T"],
+  "keywords": ["CHAOS", "HERETIC", "PSYKER"],
+  "attributes": { "S": 2, "T": 3, "A": 2, "I": 5, "Wil": 5, "Int": 4, "Fel": 2 },
+  "resilience": { "value": 4, "note": "Ragged Clothes: 0 AR" },
+  "defence": 4,
+  "wounds": 7,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Psychic Mastery", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Warp Touched", "text": "Whenever a Rogue Psyker rolls a Psychic Mastery (Wil) Test, they gain bonus Wrath dice equal to the Tier of the game." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Maleficarum",
+      "text": "The Rogue Psyker attempts to activate Smite or a Maleficarum psychic power (p.280)."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Laspistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Reliable"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Psychic Storm",
+      "text": "Spend 1 Ruin. The Rogue Psyker attempts to activate a psychic power or Deny the Witch (p.267)."
+    }
+  ],
+  "determination": "Spend 1 Ruin to Roll 3d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Your Rogue Psyker",
+      "text": "A Rogue Psyker could focus on any of the Disciplines presented in Chapter 12 — use whatever best fits your sorcerer. You might also like to add the following ability to turn a Rogue Psyker into a potential recurring Threat (p.339).",
+      "abilities": [
+        {
+          "type": "ANNIHILATION",
+          "name": "Daemonic Possession",
+          "text": "When this Threat exceeds its Maximum Wounds, roll a Wrath Die. If you roll a Complication, a daemon possesses the Threat, turning it into a Possessed Mortal that has suffered 5 Wounds."
+        }
+      ]
+    }
+  ]
+}

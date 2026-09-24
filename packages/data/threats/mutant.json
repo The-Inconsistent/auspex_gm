@@ -1,0 +1,43 @@
+{
+  "id": "mutant",
+  "name": "Mutant",
+  "page": 333,
+  "faction": "imperial",
+  "threat": ["E", "T", "T", "T"],
+  "keywords": ["MUTANT", "SCUM"],
+  "attributes": { "S": 4, "T": 3, "A": 3, "I": 4, "Wil": 3, "Int": 2, "Fel": 2 },
+  "resilience": { "value": 5, "note": "Scavenged Armour: 1 AR" },
+  "defence": 3,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [{ "name": "Weapon Skill", "dice": 6 }]
+  },
+  "bonuses": [
+    { "name": "Mutative", "text": "Whenever a Mutant deals a Wound, the GM gains +1 Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Industrial Bludgeon", "damage": 8, "ed": 2, "range": [1], "traits": ["Brutal", "Unwieldy"] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Sticky Fingers",
+      "text": "A target within 2m must succeed on an opposed Strength Test or drop a random piece of Wargear."
+    },
+    {
+      "type": "REACTION",
+      "name": "Desperation",
+      "text": "Whenever a piece of Wargear is dropped within 18m of a Mutant, they Sprint toward it and pick it up as a Reflexive Action. Their Defence is reduced by 2 for the next Round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg"
+}

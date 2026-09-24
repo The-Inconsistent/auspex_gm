@@ -1,0 +1,57 @@
+{
+  "id": "painboy",
+  "name": "Painboy",
+  "page": 357,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 5, "T": 4, "A": 3, "I": 4, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 6, "note": "Dok's Gubbinz: 1 AR" },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Medicae", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "Bionik Boyz", "text": "A number of ORK Threats equal to the Tier of the game that accompany the Painboy may have Bioniks." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Wetwork",
+      "text": "The Painboy uses their Dok's Tools on an ally and makes an attack using one of its weapons, ignoring the Multi-Action DN penalty."
+    },
+    {
+      "type": "ACTION",
+      "name": "Dok's Tools",
+      "text": "The Painboy makes a DN 3 Medicae (Int) Test on an ally as a Simple Action. Every Shifted Exalted Icon causes the target to recover 1 additional Wound. If the Painboy rolls a Complication, the Test fails, and the target suffers an additional Wound."
+    },
+    {
+      "type": "ACTION",
+      "text": "'Urty Syringe is printed without a Range: \"8 +2 ED / Rending (6)\".",
+      "weapons": [
+        { "name": "Power Klaw", "damage": 11, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] },
+        { "name": "'Urty Syringe", "damage": 8, "ed": 2, "range": [1], "traits": ["Rending (6)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Kwik Fix",
+      "text": "The Painboy uses its Dok's Tools Simple Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg"
+}

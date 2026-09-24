@@ -1,0 +1,56 @@
+{
+  "id": "cult-magus",
+  "name": "Cult Magus",
+  "page": 371,
+  "faction": "genestealer",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 4, "T": 4, "A": 3, "I": 4, "Wil": 8, "Int": 6, "Fel": 6 },
+  "resilience": { "value": 5, "note": "Magus Robe: 0 AR" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 11,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Deception", "dice": 8 },
+      { "name": "Insight", "dice": 8 },
+      { "name": "Leadership", "dice": 10 },
+      { "name": "Persuasion", "dice": 10 },
+      { "name": "Psychic Mastery", "dice": 10 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may take Ruin actions and has 2 personal Ruin." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Neophyte Hybrid is not Human." },
+    { "name": "Spiritual Leader", "text": "Allied GENESTEALER CULT Threats within 10m of a Cult Magus gain +4 bonus dice to resist psychic powers." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Cult Recruitment",
+      "text": "The Genestealer Cult Magus attempts to activate Possession (p.281)."
+    },
+    {
+      "type": "ACTION",
+      "name": "Broodmind",
+      "text": "The Cult Magus may attempt to activate any of the following psychic powers: Smite p.272, Psyniscience p.267, Deny the Witch p.267, Compel p.268, Fog the Mind p.279, Psychic Shriek p.279, Terrify p.280.",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "traits": ["Pistol"] },
+        { "name": "Force Stave", "damage": 12, "ed": 2, "ap": -1, "range": [2], "traits": ["Brutal", "Force"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Broodmind",
+      "text": "Spend 1 Ruin. The Cult Magus attempts to activate a Psychic Power or Deny the Witch (p.267)."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 6,
+  "size": "Avg"
+}

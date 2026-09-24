@@ -1,0 +1,65 @@
+{
+  "id": "astra-militarum-trooper",
+  "name": "Astra Militarum Trooper",
+  "page": 328,
+  "faction": "imperial",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 2, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 7, "note": "Flak Armour: 3 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Lasgun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (1)", "Reliable"] },
+        { "name": "Frag Grenade", "count": 1, "damage": 10, "ed": 4, "range": [12], "salvo": null, "traits": ["Blast (6)"] },
+        { "name": "Knife or Bayonet", "damage": 5, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Ten-Strong Squad",
+      "text": "In a Mob of ten or more Astra Militarum Troopers, one Trooper can exchange their Lasgun for any of the following weapons. (As printed, the Plasma Gun profile is bulleted under the Grenade Launcher and ends with an unlabelled \"5 +2 ED / Range 1\".)",
+      "weapons": [
+        { "name": "Flamer", "damage": 10, "ed": 4, "range": [4, 8, 12], "salvo": 1, "traits": ["Assault", "Flamer"] },
+        { "name": "Melta Gun", "damage": 16, "ed": 2, "ap": -4, "range": [6, 12, 18], "salvo": 1, "traits": ["Assault", "Melta"] },
+        { "name": "Grenade Launcher (Frag)", "damage": 10, "ed": 1, "range": [12, 24, 36], "salvo": null, "traits": ["Assault", "Blast (6)"] },
+        { "name": "Grenade Launcher (Krak)", "damage": 14, "ed": 2, "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Assault", "Blast (4)"] },
+        { "name": "Plasma Gun", "damage": 15, "ed": 1, "ap": -3, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (1)", "Supercharge"] }
+      ]
+    },
+    {
+      "kind": "mob",
+      "name": "Twenty-Strong Squad",
+      "text": "In a Mob of twenty or more Astra Militarum Troopers, two Troopers can operate a heavy weapon carriage with one of the weapons below. The heavy weapon carriage negates the Heavy Trait.",
+      "weapons": [
+        { "name": "Autocannon", "damage": 16, "ed": 1, "ap": -1, "range": [24, 48, 72], "salvo": 3, "traits": ["Heavy (8)"] },
+        { "name": "Heavy Bolter", "damage": 12, "ed": 2, "ap": -1, "range": [18, 36, 54], "salvo": 3, "traits": ["Brutal", "Heavy (4)"] },
+        { "name": "Lascannon", "damage": 18, "ed": 3, "ap": -3, "range": [24, 48, 72], "salvo": 1, "traits": ["Reliable", "Heavy (8)"] },
+        { "name": "Missile Launcher (Frag Missile)", "damage": 12, "ed": 5, "range": [24, 48, 72], "salvo": null, "traits": ["Blast (10)", "Heavy (8)"] },
+        { "name": "Missile Launcher (Krak Missile)", "damage": 16, "ed": 6, "range": [24, 48, 72], "salvo": null, "traits": ["Blast (4)", "Heavy (8)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Human Waves", "text": "Whenever this Mob fails a Resolve Test or is destroyed the GM gains 1 Ruin." },
+    { "name": "Bring It Down!", "text": "This Mob gains +2 ED when all individuals attack the same target." }
+  ]
+}

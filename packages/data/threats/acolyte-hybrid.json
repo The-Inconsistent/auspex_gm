@@ -1,0 +1,60 @@
+{
+  "id": "acolyte-hybrid",
+  "name": "Acolyte Hybrid",
+  "page": 368,
+  "faction": "genestealer",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 5, "T": 4, "A": 4, "I": 4, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 7, "note": "Customised Worker's Fatigues: 2 AR" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Second Strike", "text": "This Threat reduces the Multi-Attack penalty by 2DN, as though it had the Dual Wield Talent (p.133)." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 3, "traits": ["Rapid Fire (1)"] },
+        { "name": "Cultist Knife", "damage": 6, "ed": 2, "range": [1] },
+        { "name": "Rending Claw", "damage": 11, "ed": 4, "ap": -2, "range": [1], "traits": ["Rending (2)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "You can activate this ability whenever a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of the Acolyte Hybrid is targeted by an attack. The Acolyte Hybrid interposes themself and becomes the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Three-Armed Discount",
+      "text": "Neophyte Hybrids and Acolyte Hybrids can replace any of their armaments with any Common weapon with the IMPERIUM Keyword. They may also use the following mining equipment as weapons (p.370). Printed: Blasting Charge 10 +2 ED / AP -4 / Thrown Sx4 / Blast (4); Heavy Rock Cutter (S)+6 +6 ED / AP -4 / Range 1 / Brutal, Heavy (6), Rending (2), Unwieldy (4); Heavy Rock Drill (S)+5 +5 ED / AP -3 / Range 1 / Brutal, Heavy (6), Rending (4), Unwieldy (4); Heavy Rock Saw (S)+6 +4 ED / AP 4 / Range 1 / Brutal, Heavy (4), Unwieldy (3). Profiles below use this Threat's Strength 5.",
+      "weapons": [
+        { "name": "Blasting Charge", "damage": 10, "ed": 2, "ap": -4, "range": [20], "traits": ["Blast (4)"] },
+        { "name": "Heavy Rock Cutter", "damage": 11, "ed": 6, "ap": -4, "range": [1], "traits": ["Brutal", "Heavy (6)", "Rending (2)", "Unwieldy (4)"] },
+        { "name": "Heavy Rock Drill", "damage": 10, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Heavy (6)", "Rending (4)", "Unwieldy (4)"] },
+        { "name": "Heavy Rock Saw", "damage": 11, "ed": 4, "ap": -4, "range": [1], "traits": ["Brutal", "Heavy (4)", "Unwieldy (3)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Broodmind", "text": "This Threat gains +3 bonus dice to Resolve Tests when within 20 metres of a Threat with the GENESTEALER CULT and PSYKER Keywords." }
+  ]
+}

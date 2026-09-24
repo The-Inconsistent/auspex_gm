@@ -1,0 +1,48 @@
+{
+  "id": "combat-servitor",
+  "name": "Combat Servitor",
+  "page": 334,
+  "faction": "mechanicus",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM", "SERVITOR"],
+  "attributes": { "S": 4, "T": 2, "A": 2, "I": 2, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7, "note": "Grafted Flak Plates: 4 AR" },
+  "defence": 1,
+  "wounds": 4,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [{ "name": "Weapon Skill", "dice": 5 }]
+  },
+  "bonuses": [
+    { "name": "Iron Soul", "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Servo Arm", "damage": 9, "ed": 2, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Error",
+      "text": "The Servitor is Exhausted for 1 Round. This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Gun Servitor",
+      "text": "The Adeptus Mechanicus also equips Combat Servitors for ranged combat. Gun Servitors have Ballistic Skill 5 and a Heavy Bolter instead of a Servo Arm. (p.335)",
+      "weapons": [
+        { "name": "Heavy Bolter", "damage": 12, "ed": 2, "ap": -1, "range": [18, 36, 54], "salvo": 3, "traits": ["Brutal", "Heavy (4)"] }
+      ]
+    }
+  ]
+}

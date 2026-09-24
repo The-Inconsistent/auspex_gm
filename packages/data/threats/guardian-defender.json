@@ -1,0 +1,53 @@
+{
+  "id": "guardian-defender",
+  "name": "Guardian Defender",
+  "page": 361,
+  "faction": "aeldari",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["AELDARI", "ASURYANI", "[CRAFTWORLD]"],
+  "attributes": { "S": 2, "T": 2, "A": 4, "I": 4, "Wil": 2, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 6, "note": "Aeldari Mesh: 3 AR" },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Shuriken Catapult", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 3, "traits": ["Assault", "Rending (3)"] },
+        { "name": "Plasma Grenade (1 Ammo)", "damage": 10, "ed": 5, "range": [8], "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Fire and Fade",
+      "text": "If a Guardian Defender rolls a Wrath Critical on any Test, they may move up to double their Speed after the Test resolves."
+    },
+    {
+      "type": "RUIN",
+      "text": "Spend 1 Ruin. The Guardian Defender may activate Fire and Fade as though they had rolled a Wrath Critical on a Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 3,
+  "resolve": 3,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Heavy Weapons Platform",
+      "text": "In a Mob of ten or more Guardian Defenders, two individuals can operate a heavy weapons platform with a Shuriken Cannon. The heavy weapons platform allows the Mob to ignore the Heavy (6) Trait of the Shuriken Cannon.",
+      "weapons": [
+        { "name": "Shuriken Cannon", "damage": 15, "ed": 2, "range": [12, 24, 36], "salvo": 1, "traits": ["Assault", "Heavy (6)", "Penetrating (3)"] }
+      ]
+    }
+  ]
+}

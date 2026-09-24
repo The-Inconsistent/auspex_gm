@@ -1,0 +1,58 @@
+{
+  "id": "genestealer-patriarch",
+  "name": "Genestealer Patriarch",
+  "page": 367,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "A"],
+  "keywords": ["GENESTEALER CULT", "PSYKER", "TYRANID"],
+  "attributes": { "S": 10, "T": 8, "A": 6, "I": 8, "Wil": 8, "Int": 4, "Fel": 2 },
+  "resilience": { "value": 9 },
+  "defence": 7,
+  "wounds": 18,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Athletics", "dice": 11 },
+      { "name": "Psychic Mastery", "dice": 10 },
+      { "name": "Stealth", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 12 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 4 personal Ruin." },
+    { "name": "Living Idol", "text": "Any Threats with GENESTEALER CULT within 10 metres gain +2 bonus dice to all Tests." },
+    { "name": "Second Strike", "text": "This Threat reduces the Multi-Attack penalty by 2DN, as though it had the Dual Wield Talent (p.133)." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Swift & Deadly",
+      "text": "The Threat Seizes the Initiative without spending a point of Ruin and Charges. It gains an additional +1 bonus die to its attack Test as part of the Charge."
+    },
+    {
+      "type": "ACTION",
+      "text": "The Genestealer Patriarch may use its Broodmind and Monstrous Rending Claws without suffering the -2DN Multi-Action penalty.",
+      "weapons": [
+        { "name": "Monstrous Rending Claws", "damage": 15, "ed": 4, "ap": -3, "range": [1], "traits": ["Rending (3)"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Broodmind",
+      "text": "The Genestealer Patriarch may attempt to activate any of the following psychic powers: Smite p.272, Psyniscience p.267, Deny the Witch p.267, Compel p.268, Fog the Mind p.279, Psychic Shriek p.279, Terrify p.280."
+    },
+    {
+      "type": "RUIN",
+      "name": "Broodmind",
+      "text": "Spend 1 Ruin. The Genestealer Patriarch attempts to activate a Psychic Power or Deny the Witch (p.267)."
+    }
+  ],
+  "determination": "Lightning Reflexes: Spend 1 Ruin to roll 8d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 8,
+  "size": "Large"
+}

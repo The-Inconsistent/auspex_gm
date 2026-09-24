@@ -1,0 +1,55 @@
+{
+  "id": "corsair",
+  "name": "Corsair",
+  "page": 364,
+  "faction": "aeldari",
+  "threat": ["E", "T", "T", "T"],
+  "keywords": ["AELDARI", "ANHRATHE", "[COTERIE]"],
+  "attributes": { "S": 2, "T": 2, "A": 4, "I": 4, "Wil": 1, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 6, "note": "Corsair Armour: 3 AR" },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Pilot", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Uncanny Balance", "text": "Corsairs gain +1 bonus die when they use Athletics (S) Interaction Attacks." },
+    { "name": "Reckless Abandon", "text": "Corsairs gain an extra +2 bonus dice when they All-Out Attack." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Lasblaster", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 4, "traits": ["Assault"] },
+        { "name": "Shuriken Pistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol", "Rending (3)"] },
+        { "name": "Corsair Sword", "damage": 5, "ed": 3, "range": [1], "traits": ["Parry"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Corsair Felarch",
+      "text": "A Felarch is an accomplished veteran warrior who may lead a Mob of Corsairs. They replace their Shuriken Pistol and Corsair Sword with a Fusion Gun and a Power Sword. Felarchs gain the following Attributes, Skills, and Special Abilities: SKILLS: Default 5, Athletics 7, Awareness 8 (Passive 4), Ballistic Skill 7, Deception 6, Weapon Skill 9. BONUSES: Champion: This Threat may use Ruin Actions.",
+      "weapons": [
+        { "name": "Fusion Gun", "damage": 16, "ed": 2, "ap": -4, "range": [6, 12, 18], "salvo": 1, "traits": ["Assault", "Melta"] },
+        { "name": "Power Sword", "damage": 7, "ed": 4, "ap": -3, "range": [1], "traits": ["Parry"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "type": "BATTLECRY", "name": "Cutting Camaraderie", "text": "A Mob of Corsairs gains +2 bonus dice to all Tests until they fail a Test or one of them is slain" }
+  ]
+}

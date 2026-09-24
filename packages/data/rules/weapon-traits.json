@@ -1,0 +1,202 @@
+[
+  {
+    "id": "weapon-traits",
+    "kind": "weapon-trait",
+    "name": "Weapon Traits",
+    "source": "core",
+    "page": 208,
+    "text": "Some weapons have Traits that give them advantages or disadvantages special modes, different ways to attack, and methods of dealing additional damage.\n\nSome of the Traits listed below have (X) in their name, representing a rating. Weapons with this Trait have a number instead of ‘X’ which is used for any calculations."
+  },
+  {
+    "id": "agonising",
+    "kind": "weapon-trait",
+    "name": "Agonising",
+    "source": "core",
+    "page": 208,
+    "text": "Designed to inflict maximum pain, these weapons damage mind and morale as much as body.\n\nEvery Wound inflicted by an Agonising weapon also inflicts 1 Shock."
+  },
+  {
+    "id": "arc",
+    "kind": "weapon-trait",
+    "name": "Arc (X)",
+    "source": "core",
+    "page": 208,
+    "text": "The deadly electrical discharge of Arc weapons scrambles vehicle technology.\n\nArc weapons gain +ED equal to their rating when you use them to attack a vehicle."
+  },
+  {
+    "id": "assault",
+    "kind": "weapon-trait",
+    "name": "Assault",
+    "source": "core",
+    "page": 208,
+    "text": "Optimised for firing whilst rushing righteously towards the enemy.\n\nYou can fire an Assault weapon as part of a Sprint (p.180), but take a +2 DN penalty to the attack."
+  },
+  {
+    "id": "blast",
+    "kind": "weapon-trait",
+    "name": "Blast (X)",
+    "source": "core",
+    "page": 208,
+    "text": "Explosive weapons can devastate multiple enemies with a single attack.\n\nWhen you fire or throw a Blast weapon, choose any point in range (including another character!), then make a DN 3 Ballistic Skill (A) Test. Apply Range effects as normal (p.184) unless you are using a thrown weapon like a grenade. If you fail the Test, the attack misses and Scatters (p,186). If you succeed, the explosion is centered on your target.\n\nIf you are measuring distance, the Blast rating determines the radius of the explosion in metres. Anyone inside this radius is hit by the attack.\n\nIf you are targeting a Mob or using a simplified theater of the mind approach, the number of nearby individuals hit by the explosive is equal to half the Blast rating.\n\nYou cannot Shift to increase the damage of a Blast weapon. If you inflict a Critical Hit with a Blast weapon, the effects apply to all targets hit by the attack.\n\nBLAST\nBlast Rating | Mob Targets | Examples\n2 | 1 | Micro Grenade\n6 | 3 | Frag Grenade\n10 | 5 | Frag Missile\n20 | 10 | Battle Cannon Shell\n30 | 15 | Quake Cannon Shell"
+  },
+  {
+    "id": "brutal",
+    "kind": "weapon-trait",
+    "name": "Brutal",
+    "source": "core",
+    "page": 209,
+    "text": "Brutal weapons inflict appalling, traumatic wounds.\n\nWhen you roll Extra Damage Dice for a Brutal weapon:\n\n• Results of 1 and 2 inflict 0 Damage.\n• Results of 3 and 4 inflict 1 Damage.\n• Results of 5 and 6 inflict 2 Damage."
+  },
+  {
+    "id": "force",
+    "kind": "weapon-trait",
+    "name": "Force",
+    "source": "core",
+    "page": 209,
+    "text": "Psykers can channel the power of the Warp through the etheric circuit patterns and psycho-reactive materials of these weapons.\n\nIf you have the PSYKER Keyword, you may add half of your (Wil) Rating to a Force weapon’s Damage Value. If you don’t have the PSYKER Keyword, a Force weapon’s damage is decreased by 2."
+  },
+  {
+    "id": "flamer",
+    "kind": "weapon-trait",
+    "name": "Flamer",
+    "source": "core",
+    "page": 209,
+    "text": "Flamers spew a stream of burning chemical liquid. The flowing torrent of flame can be guided by the wielder of a Flamer to set multiple foes ablaze.\n\nAttacks made with a Flamer ignore cover. If you hit a target with a Flamer, blazing liquid fills the space between you and your target in a straight line. Anything in that line is also hit by the attack.\n\nYou can Shift when you make a ranged attack Test with a Flamer to arc the stream of burning chemicals a number of metres equal to your Ballistic Skill Rating. Anything in this arc is hit by the attack.\n\nWhenever you hit multiple targets, roll damage once and apply that damage to all targets. Any target may attempt to reduce the damage using the rules for Dodging Area Effect Attacks on p.186.\n\nA weapon with the Flamer Trait is considered to have the Inflict (On Fire) Trait."
+  },
+  {
+    "id": "heavy",
+    "kind": "weapon-trait",
+    "name": "Heavy (X)",
+    "source": "core",
+    "page": 209,
+    "text": "Large and cumbersome weapons are difficult to wield accurately and effectively.\n\nYou must have a Strength equal to the Heavy weapon’s rating to fire it normally. All attacks with a Heavy weapon are made with a +2 DN penalty if you do not meet the minimum Strength, and rolling a Complication as part of an attack knocks you Prone in addition to any other effects.\n\nTaking the Brace (p.189) Action or securing a Heavy weapon to something like a tripod negates the Heavy Trait."
+  },
+  {
+    "id": "inflict",
+    "kind": "weapon-trait",
+    "name": "Inflict (Condition)",
+    "source": "core",
+    "page": 209,
+    "text": "These weapons are designed to harm the target in cruel and unusual ways.\n\nEvery Inflict weapon has a Condition that it imposes on the target if it deals a Wound. For example, if a weapon with Inflict (On Fire) deals a Wound to a target, the target is On Fire.\n\nIf an Inflict weapon has a number, that number determines the number of any Test made to remove the Condition. For example, if a weapon with Inflict (Poisoned 4) Wounds a target, they are Poisoned, and the target would need to make a DN 4 Toughness Test to recover at the beginning of their next turn."
+  },
+  {
+    "id": "kustom",
+    "kind": "weapon-trait",
+    "name": "Kustom",
+    "source": "core",
+    "page": 209,
+    "text": "You can replace this weapon Trait with any other Weapon Trait of your choice when you acquire a weapon with this Trait. If the Trait you select has a Rating (X), roll 1d3 to determine the Rating."
+  },
+  {
+    "id": "melta",
+    "kind": "weapon-trait",
+    "name": "Melta",
+    "source": "core",
+    "page": 209,
+    "text": "The sub-atomic bursts that spew from these weapons melt flesh and reduce armour to slag.\n\nWhen you roll Extra Damage Dice for a Melta weapon fired at Short Range:\n\n• Results of 1 and 2 inflict 0 Damage.\n• Results of 3 and 4 inflict 1 Damage.\n• Results of 5 and 6 inflict 2 Damage.\n\nWhen you roll Extra Damage Dice for a Melta weapon fired against a vehicle or fortification at Short range:\n\n• Results of 1, 2 and 3 inflict 1 Damage.\n• Results of 4, 5 and 6 inflict 2 Damage."
+  },
+  {
+    "id": "parry",
+    "kind": "weapon-trait",
+    "name": "Parry",
+    "source": "core",
+    "page": 209,
+    "text": "You can use these weapons to deflect blows.\n\nYou gain +1 Defence against melee attacks while wielding a Parry weapon."
+  },
+  {
+    "id": "pistol",
+    "kind": "weapon-trait",
+    "name": "Pistol",
+    "source": "core",
+    "page": 209,
+    "text": "Built light to be drawn quickly and used in close quarters.\n\nPistols can be fired while Engaged (p.184)."
+  },
+  {
+    "id": "rad",
+    "kind": "weapon-trait",
+    "name": "Rad (X)",
+    "source": "core",
+    "page": 210,
+    "text": "The dangerous radioactive materials fired by these weapons irrevocably damage flesh.\n\nWhen you roll Extra Damage Dice for a Rad weapon, you add the Rating to the results of the dice.\n\nExample: Sara fires a Radium Pistol at a Combat Servitor. She hits, and Shifts an Exalted Icon for an additional Extra Damage Die. She rolls the 2 ED with the following results: 2, 4. Just one Icon, so one extra Damage.\n\nBecause the Radium Pistol is Rad (2), she adds 2 to the result of each ED, meaning her final results are: 4, 6. An Icon and an Exalted Icon for 3 extra Damage!"
+  },
+  {
+    "id": "rapid-fire",
+    "kind": "weapon-trait",
+    "name": "Rapid Fire (X)",
+    "source": "core",
+    "page": 210,
+    "text": "These weapons are capable of quickly unleashing a hail of death at close range.\n\nIf you hit with a Rapid Fire weapon at Short Range, you gain Extra Damage Dice equal to the weapon’s Rapid Fire rating."
+  },
+  {
+    "id": "reliable",
+    "kind": "weapon-trait",
+    "name": "Reliable",
+    "source": "core",
+    "page": 210,
+    "text": "A rugged and easily maintained weapon.\n\nYou can ignore the first Complication related to this weapon per scene. Tests made to repair or maintain Reliable weapons are made with +1 bonus die."
+  },
+  {
+    "id": "rending",
+    "kind": "weapon-trait",
+    "name": "Rending (X)",
+    "source": "core",
+    "page": 210,
+    "text": "These powerful weapons punch through armour.\n\nWhen you Shift an Exalted Icon as part of an attack with a Rending weapon, the weapon’s AP improves by the Rending rating for that attack.\n\nExample: Fian fires his Shuriken Pistol at a Genestealer. Normally, a Shuriken Pistol has AP 0. Fian’s shot hits, and he Shifts an Exalted Icon for an additional Extra Damage Die. Because he Shifted an Exalted Icon, the Shuriken Pistol’s Rending (3) activates, meaning that for this attack the pistol has AP -3!"
+  },
+  {
+    "id": "silent",
+    "kind": "weapon-trait",
+    "name": "Silent",
+    "source": "core",
+    "page": 210,
+    "text": "These stealthy weapons are designed to deal damage as quietly as possible.\n\nWhen a weapon with this Trait is used as part of an attack, your Stealth Score is only reduced by 2."
+  },
+  {
+    "id": "sniper",
+    "kind": "weapon-trait",
+    "name": "Sniper (X)",
+    "source": "core",
+    "page": 210,
+    "text": "Weapons optimised for high accuracy over long range.\n\nWhen you Aim with a Sniper weapon you gain an additional + 1 bonus die to the attack, and gain +ED equal to the weapon’s Sniper rating."
+  },
+  {
+    "id": "spread",
+    "kind": "weapon-trait",
+    "name": "Spread",
+    "source": "core",
+    "page": 210,
+    "text": "These wide-bore weapons wreak havoc on closely packed combatants.\n\nWhen fired at Short Range, a Spread weapon can hit any number of targets as long as they are all within 3 metres of one another. When you fire a Spread Weapon at a Mob you gain +3 bonus dice.\n\nExample: Kira aims her Shotgun, waiting for the two Khornate Cultists charging her to get into Short Range. She fires, and as the two Cultists were close together and her weapon has Spread, the GM rules that both of them are hit by the wide blast of shot.\n\nEnemies in a Mob are assumed to be close together; if the Khornate Cultists had been in a Mob, Kira would have gained +Rank bonus dice, potentially hitting more targets."
+  },
+  {
+    "id": "supercharge",
+    "kind": "weapon-trait",
+    "name": "Supercharge",
+    "source": "core",
+    "page": 210,
+    "text": "The super-heated matter plasma weapons fire can be overcharged with undeniably deadly results for the target and, occasionally, the wielder.\n\nYou can choose to fire a weapon with this Trait in Supercharge mode. If you roll a Complication, you take 1d6 Mortal Wounds. If you hit, the weapon deals an additional +3 ED."
+  },
+  {
+    "id": "unwieldy",
+    "kind": "weapon-trait",
+    "name": "Unwieldy (X)",
+    "source": "core",
+    "page": 210,
+    "text": "Whether unbalanced or too large, some weapons are harder to use.\n\nAttacks made with Unwieldy weapons have their DN increased by an amount equal to their Unwieldy rating."
+  },
+  {
+    "id": "waaagh",
+    "kind": "weapon-trait",
+    "name": "Waaagh!",
+    "source": "core",
+    "page": 210,
+    "text": "Ork weapons defy understanding; they break the laws of mechanics and physics, but a Greenskin’s beliefs make them all the more deadly.\n\nIf you are an Ork, you gain +1 bonus die to attacks with a WAAAGH! weapon. If you are also Wounded (p.193), you deal an extra +1 ED."
+  },
+  {
+    "id": "warp-weapons",
+    "kind": "weapon-trait",
+    "name": "Warp Weapons",
+    "source": "core",
+    "page": 210,
+    "text": "Powered by psychic energy, xenos technology, or the raw force of Chaos, few can face these ungodly weapons and emerge unharmed.\n\nA Warp Weapon has a Damage value equal to the target’s Total Resilience –4, unless the weapon’s listed Damage is higher."
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "id": "daemonette",
+  "name": "Daemonette",
+  "page": 347,
+  "faction": "daemon",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["CHAOS", "DAEMON", "SLAANESH"],
+  "attributes": { "S": 5, "T": 4, "A": 7, "I": 7, "Wil": 4, "Int": 4, "Fel": 6 },
+  "resilience": { "value": 5 },
+  "defence": 6,
+  "wounds": 6,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Deception", "dice": 9 },
+      { "name": "Persuasion", "dice": 9 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Allure of Slaanesh",
+      "text": "Attack Tests made against Daemonettes use Willpower as their Attribute — ranged attacks use Ballistic Skill (Wil), melee attacks use Weapon Skill (Wil)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature & Quicksilver Swiftness",
+      "text": "Anyone that can see or hear a Daemonette must pass a DN3 Fear Test. The Daemonette then acts first in the Initiative order as though they had Seized the Initiative."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Piercing Claws", "damage": 11, "ed": 2, "ap": -1, "range": [1], "traits": ["Parry", "Penetrating (3)"] }
+      ]
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 4d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 6,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Alluress",
+      "text": "An Alluress may lead Daemonettes in battle, using the same statistics with the following adjustments: SKILLS: Default 9, Awareness 11 (Passive 6), Weapon Skill 10. BONUS: Alacrity of Speech: An Alluress gains +2 bonus dice to Interaction Attacks.",
+      "abilities": [
+        {
+          "type": "WRATH",
+          "name": "Wrathful Summoning",
+          "text": "Whenever an Alluress rolls a 6 on the Wrath Die, a Daemonette is summoned from the Warp."
+        }
+      ]
+    }
+  ]
+}

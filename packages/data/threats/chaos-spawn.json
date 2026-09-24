@@ -1,0 +1,54 @@
+{
+  "id": "chaos-spawn",
+  "name": "Chaos Spawn",
+  "page": 352,
+  "faction": "heretic",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["CHAOS", "HERETIC", "MUTANT"],
+  "attributes": { "S": 5, "T": 6, "A": 5, "I": 4, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7 },
+  "defence": 3,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Terrifying", "text": "Anyone that can see this Threat must make a DN 5 Terror Test." },
+    {
+      "type": "ACTION",
+      "name": "Hideous Mutations",
+      "text": "Roll 1d3 on the table below at the start of each of the Chaos Spawn's turns to determine the nature of its constantly shifting mutations. 1: Razor Claw: 12 +3 ED / AP –4 / Range 1. 2: Grasping Tendrils: 12 +3 ED / AP –2 / Range 4 (melee). 3: Dripping Poison: 12 +3 ED / AP –2 / Inflict (Poison 7) / Range 1.",
+      "weapons": [
+        { "name": "Razor Claw", "damage": 12, "ed": 3, "ap": -4, "range": [1] },
+        { "name": "Grasping Tendrils", "damage": 12, "ed": 3, "ap": -2, "range": [4] },
+        { "name": "Dripping Poison", "damage": 12, "ed": 3, "ap": -2, "range": [1], "traits": ["Inflict (Poison 7)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 7,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Winged Spawn",
+      "text": "Some Chaos Spawn manifest wings; these can endure for the Spawn's entire cursed existence, break after their first use, or mutate into something else entirely. Wings: This Threat may clumsily Fly at Speed 10; Athletics (S) Tests may be required for manoeuvring."
+    },
+    {
+      "kind": "variant",
+      "name": "Psychic Spawn",
+      "text": "Warp energy spills uncontrollably from some Chaos Spawn. On a Psychic Spawn's turn, you may roll on any of the tables on p.263 to attempt to trigger a psychic power. The Psychic Spawn has a Psychic Mastery Skill of 6, and always casts at the Transcendent Power Level."
+    }
+  ]
+}

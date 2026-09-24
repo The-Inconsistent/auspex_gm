@@ -1,0 +1,56 @@
+{
+  "id": "servo-skull",
+  "name": "Servo Skull",
+  "page": 336,
+  "faction": "mechanicus",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM", "SERVITOR"],
+  "attributes": { "S": 1, "T": 1, "A": 2, "I": 4, "Wil": 2, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 2 },
+  "defence": 5,
+  "wounds": 3,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Stealth", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Iron Soul", "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting." },
+    { "name": "Assistant", "text": "Any Elite or Adversary ally within 10m of the Servo-Skull gains +2 bonus dice to all Skill Tests." },
+    { "name": "Flight", "text": "Speed is printed as \"10 Flight\"." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Skull Bash", "damage": 3, "ed": 1, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Tiny",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Gun-Skull",
+      "text": "Some Servo-Skulls are upgraded to Gun-Skulls armed with pistol weapons. A Laspistol is the most common armament.",
+      "weapons": [
+        { "name": "Laspistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Reliable"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Dissector-Skull",
+      "text": "A few Servo-Skulls are equipped with medical or interrogation tools, suited for close combat if necessary.",
+      "weapons": [
+        { "name": "Mono Knife", "damage": 6, "ed": 2, "ap": -1, "range": [1], "traits": ["Rending (1)"] }
+      ]
+    }
+  ]
+}

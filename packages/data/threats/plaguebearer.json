@@ -1,0 +1,54 @@
+{
+  "id": "plaguebearer",
+  "name": "Plaguebearer",
+  "page": 350,
+  "faction": "daemon",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["CHAOS", "DAEMON", "NURGLE"],
+  "attributes": { "S": 4, "T": 8, "A": 3, "I": 4, "Wil": 3, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 9 },
+  "defence": 3,
+  "wounds": 12,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 7, "passive": 4 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Cloud of Flies",
+      "text": "A Plaguebearer is surrounded by a supernatural cloud of filth-blackened flies, obscuring it from view and threatening to choke enemies that get close. The Plaguebearer counts as being in Full Cover at all times (+2 bonus, already calculated in Defence above)."
+    }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Frightful Form", "text": "Anyone that can see this Threat must make a DN3 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Plaguesword", "damage": 11, "ed": 2, "range": [1], "traits": ["Inflict (Poison 7)", "Parry"] }
+      ]
+    }
+  ],
+  "determination": "Disgustingly Resilient Daemon: You do not need to spend Ruin to roll Determination. Roll 7d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Plagueridden",
+      "text": "A Plagueridden may lead Plaguebearers in battle, using the same statistics with the following adjustments: SKILLS: Default 9, Awareness 8 (Passive 4), Weapon Skill 10. BONUS: Harbinger of Rot: Any individual that dies within 10m of the Plagueridden is infested by the cloud of disease that exudes from its noxious form. The body bursts instantly (or whenever the GM deems it appropriate) with the following effect: Rotten Explosion: 2 +8 ED / Blast (6), Inflict (Poison 7)",
+      "abilities": [
+        {
+          "type": "WRATH",
+          "name": "Wrathful Summoning",
+          "text": "Whenever Plagueridden rolls a 6 on the Wrath Die, a Plaguebearer is summoned from the Warp."
+        }
+      ]
+    }
+  ]
+}
