@@ -1,0 +1,9 @@
+# The book PDFs are huge and copyrighted: they never enter an image. Secrets live in Dockhand, never in a layer.
+books
+*.pdf
+.git
+**/node_modules
+**/.next
+**/.turbo
+**/.env*
+!**/.env.example

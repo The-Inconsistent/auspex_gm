@@ -158,7 +158,6 @@ the local diff when there's no PR.
 
 ## Not built yet
 
-- Docker/Caddy deployment ([architecture.md](architecture.md#deployment-planned))
 - Doctors of Doom import
 - a rules reference in the player app
 - an items tracker

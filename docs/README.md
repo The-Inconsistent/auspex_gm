@@ -8,6 +8,7 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 | --- | --- |
 | [architecture.md](architecture.md) | getting the big picture: one mutation path, snapshots, access, deliberate limits |
 | [development.md](development.md) | setting up, running, testing, migrating, or stuck on a known gotcha |
+| [deploy.md](deploy.md) | deploying to the VPS, or checking a deploy |
 | [backend.md](backend.md) | changing the api: gateway, dispatch, every action, DB schema, scripts |
 | [frontend.md](frontend.md) | changing the web app: routes, the socket hook, GM and player screens, command line, styling |
 | [game-logic.md](game-logic.md) | changing a rule: where each one is implemented, its edge cases and page cites |

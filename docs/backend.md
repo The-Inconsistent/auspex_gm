@@ -23,7 +23,7 @@ and the bestiary.
 
 `@wg/data` loads and zod-parses every threat JSON at import time, so a malformed file fails at startup ([data.md](data.md)).
 
-REST has no CORS enabled: browsers reach it same-origin through the Next rewrites (dev) or Caddy (prod). The gateway sets
+REST has no CORS enabled: browsers reach it same-origin through the Next rewrites (dev and prod). The gateway sets
 `cors: { origin: <WEB_ORIGIN split on commas> ?? false, credentials: true }`, the same list Clerk verification uses for
 `authorizedParties` (§10).
 
@@ -479,7 +479,7 @@ REST is for things that can't be socket actions: setup, login, GM-only reads. **
 mutation path).
 
 1. Add a method to `CampaignController`, or add a new `@Controller()` to `AppModule.controllers`. The `api` prefix is
-   global. Dev rewrites and Caddy already forward `/api/*`.
+   global. The Next rewrites already forward `/api/*`.
 2. Parse the body with a zod schema. `parse()` in `campaign.controller.ts` turns a failure into a `400`.
 3. Resolve the caller with `resolveCtx({ campaignId, headers: headersOf(req) })` for a table route (`401` if null), or
    `signedInUser(headersOf(req))` for a route outside any table. Check `ctx.role` and throw `ForbiddenException` for the

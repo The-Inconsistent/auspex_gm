@@ -1,0 +1,50 @@
+# Production stack, deployed as its own Dockhand stack on the VPS (the killteam-gm pattern).
+#
+# Dockhand git-pulls this repo and runs plain `docker compose up -d`. So both services name a registry image and never
+# carry `build:`: plain `up -d` builds only when the tag is missing, so a `build:` would build once and then serve that
+# stale image forever. CI (.github/workflows/images.yml) pushes `:latest`; you then hit "Pull & redeploy" in Dockhand.
+#
+# It touches the green-orange stack in one place: the api joins that stack's `internal` network to reach its Postgres
+# (database and role `wg`, created by hand: docs/deploy.md). Only `web` is published; Pangolin terminates TLS for
+# auspex.ydothien.work and forwards to host :3004. The browser never reaches the api directly: Next's rewrites
+# (next.config.ts) proxy /api and /socket.io to it, websockets included, so the site stays one origin for the
+# httpOnly guest cookie.
+#
+# Secrets (set in the Dockhand stack env, never in git): WG_DB_PASSWORD, ADMIN_KEY, CLERK_SECRET_KEY, CLERK_JWT_KEY.
+# CLERK_JWT_KEY is the PEM on ONE line; Clerk strips the newlines anyway. Never set CLERK_TEST_SECRET here: the api
+# refuses to start with it in production.
+name: auspex
+
+services:
+  api:
+    image: ghcr.io/junmaxwell/glory-gm-api:latest
+    restart: unless-stopped
+    environment:
+      # WG_DB_PASSWORD must be URL-safe (hex): it's interpolated into a URL, and @ : / ? # % would mangle it.
+      DATABASE_URL: postgres://wg:${WG_DB_PASSWORD}@postgres:5432/wg
+      ADMIN_KEY: ${ADMIN_KEY}
+      WEB_ORIGIN: ${WEB_ORIGIN:-https://auspex.ydothien.work}
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
+      CLERK_JWT_KEY: ${CLERK_JWT_KEY}
+    # No `ports:` on purpose: only web reaches it, over the stack's default network.
+    networks: [default, internal]
+
+  web:
+    # Baked in at build: the Clerk publishable key and API_ORIGIN=http://api:4000 for the rewrites.
+    image: ghcr.io/junmaxwell/glory-gm-web:latest
+    restart: unless-stopped
+    depends_on: [api]
+    environment:
+      # Server-side apiGet (app/server-api.ts) calls the api directly over the stack network.
+      API_ORIGIN: http://api:4000
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
+    ports:
+      - '3004:3000'
+
+networks:
+  # The green-orange stack's network, so `postgres` resolves by alias. Its name is project-prefixed, so a local run
+  # points PG_NETWORK at the dev compose network instead (docs/deploy.md).
+  internal:
+    name: ${PG_NETWORK:-green-orange_internal}
+    external: true

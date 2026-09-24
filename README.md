@@ -126,7 +126,6 @@ Built:
 
 Not built yet:
 
-- Docker/Caddy deployment to a VPS
 - Doctors of Doom character import
 - a rules reference in the player app
 - an items and requisition tracker

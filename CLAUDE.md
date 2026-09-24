@@ -17,7 +17,7 @@ This app encodes game rules. **Do not invent rules.** Every rule in code cites i
 in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not silently in code.
 
 - **Specs:** (index: `docs/README.md`; code-level docs: `architecture`, `backend`, `frontend`, `game-logic`, `data`,
-  `development`)
+  `development`, `deploy`)
   - `docs/rules-flow.md`: game flow (session, pools, combat state machine, damage, conditions, traits).
   - `docs/campaign-model.md`: the campaign and codex model.
   - `docs/kill-team.md`: the current campaign's Deathwatch Kill Team mapping and GM decisions.
@@ -53,7 +53,7 @@ TypeScript is pinned to **5.9**. TS 7 breaks the Next and Nest toolchains, so do
 ## Architecture
 
 ```
-phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶ /api/*, /socket.io/* ──▶ NestJS ──▶ Postgres
+phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rewrites /api/*, /socket.io/*──▶ NestJS ──▶ Postgres
 ```
 
 - **One mutation path.** Every change is a socket `action` event, validated against the zod `Action` union
@@ -208,6 +208,8 @@ These are binding; follow them when writing code and use them when reviewing:
 - **Character stats** (`CharacterStats`) carry additive `mods`, e.g. Primaris +3 Wounds or Honour the Chapter
   +1 Resolve; GM `overrides` win over everything. Melee wargear uses `addStrength` (damage = S + X, including the
   armour's Powered bonus).
+- **Deploy** (`docs/deploy.md`): CI builds private GHCR images, then "Pull & redeploy" in Dockhand; the VPS never
+  builds, so `docker-compose.prod.yml` never gets `build:`. There's no Caddy: Next's rewrites proxy `/api` and `/socket.io` in prod too.
 - **Clerk needs internet at the table**, for sign-in and the session refresh about every 60 s. Guests on a QR token
   depend only on the api.
 - **Next rewrites:** `skipTrailingSlashRedirect` plus an explicit `/socket.io/` rewrite are required, otherwise
@@ -220,6 +222,5 @@ These are binding; follow them when writing code and use them when reviewing:
 - Doctors of Doom character import
 - A full rules reference in the player app
 - Items and requisition tracker
-- Docker/Caddy deployment to the VPS
 - Rate limiting
 - Server-side undo history (client undo is inverse deltas)

@@ -113,7 +113,7 @@ The GUEST QR codes point here. `GET` awaits `params` (a Promise in Next 16), the
 | Any other status (5xx: the link may still be fine) | 303 to `/?join=nosignal` |
 | The fetch throws | 303 to `/?join=nosignal` |
 
-The `Location` header is relative, so the redirect stays on whatever host the phone used (Caddy in prod,
+The `Location` header is relative, so the redirect stays on whatever host the phone used (`auspex.ydothien.work` in prod,
 `:3000` in dev). The error keys are the `JoinError` type from `JOIN_ERRORS` in `app/constants.ts`.
 
 ### `next.config.ts`
@@ -121,7 +121,7 @@ The `Location` header is relative, so the redirect stays on whatever host the ph
 - `transpilePackages: ["@wg/shared"]`: shared is imported as TypeScript source.
 - `output: "standalone"`.
 - Rewrites send `/api/:path*`, `/socket.io/` and `/socket.io/:path*` to `API_ORIGIN`, so in dev the browser sees one
-  origin: the cookie is first-party and there's no CORS. In prod, Caddy routes these paths before Next sees them.
+  origin: the cookie is first-party and there's no CORS. Prod uses the same rewrites, websockets included ([deploy.md](deploy.md)).
 - `skipTrailingSlashRedirect: true`: socket.io's path is `/socket.io/`. Without this, Next answers it with a 308 to
   strip the slash and the handshake breaks. The explicit `/socket.io/` rewrite sits beside `/socket.io/:path*`
   because, per `CLAUDE.md`, the handshake gets a 308 or a 404 without both. Keep both rules and the flag together.

@@ -2,7 +2,7 @@ import { API_ORIGIN, type JoinError } from "@/app/constants";
 
 type JoinContext = { params: Promise<{ token: string }> };
 
-// Relative Location, so the redirect stays on whatever host the phone used (Caddy in prod, :3000 in dev).
+// Relative Location, so the redirect stays on whatever host the phone used (auspex.ydothien.work in prod, :3000 in dev).
 const redirectHome = (path = "") => new Response(null, { status: 303, headers: { location: `/${path}` } });
 const redirectError = (error: JoinError) => redirectHome(`?join=${error}`);
 

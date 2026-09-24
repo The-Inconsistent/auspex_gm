@@ -20,7 +20,7 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
  phones / tablet (browser)
         │  HTTPS: pages, /api/*, /socket.io/*
         ▼
- Caddy (prod, not built yet)  or  Next rewrites (dev)
+ Pangolin (prod TLS) ─▶ Next rewrites (dev and prod)
         │
         ├──▶ apps/web   Next.js 16 + Clerk. Server Components resolve who you are; client apps render the table
         │
@@ -150,8 +150,8 @@ These are marked `ponytail:` in the code, with an upgrade path.
 | Client undo = inverse delta, read against the state at tap time | inexact if a counter was clamped at 0, or healing ended Dying | server-side history |
 | Prepared-encounter row cap (`MAX_ENCOUNTER_ROWS`) | 60 combatants per beat, a Mob counts as 1 | raise it, or batch the inserts |
 
-## Deployment (planned)
+## Deployment
 
-The target is a VPS running `docker compose` with Caddy (TLS), web (Next `output: "standalone"`), api and
-Postgres, plus a nightly `pg_dump`. In production Caddy routes `/api` and `/socket.io` to the api, so the Next
-rewrites only matter in development. This isn't built yet; see [development.md](development.md) for running it locally.
+Its own Dockhand stack on the green-orange VPS: web (Next `output: "standalone"`) published behind Pangolin's TLS, the
+api internal-only, and the green-orange Postgres. The Next rewrites route `/api` and `/socket.io` to the api in
+production too, websockets included, so there is no Caddy. See [deploy.md](deploy.md).
