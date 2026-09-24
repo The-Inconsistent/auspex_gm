@@ -12,13 +12,11 @@ import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { parseCommand } from "@/lib/command/command";
+import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterField } from "@/lib/command/constants";
 import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
-import {
-  AMOUNTS, COUNTER_ACTIONS, COUNTER_ACTION_KEYS, LOG_LIMIT, THREAT_CLASS_LABEL,
-  type CounterAction, type CounterField,
-} from "./constants";
+import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL } from "./constants";
 import type { LogEntry, Run } from "./types";
 
 type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };

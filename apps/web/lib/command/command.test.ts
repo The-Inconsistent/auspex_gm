@@ -33,6 +33,7 @@ test("damage, heal and shock resolve names to the right ids", () => {
   assert.deepEqual(ok("-1 hollan"), [{ type: "combatant.adjust", id: "t1", wounds: -1 }]);
   assert.deepEqual(ok("hollan heal 2"), [{ type: "combatant.adjust", id: "t1", wounds: -2 }]);
   assert.deepEqual(ok("hollan dmg +3"), [{ type: "combatant.adjust", id: "t1", wounds: 3 }], "signed amount after a verb");
+  assert.deepEqual(ok("hollan heal -2"), [{ type: "combatant.adjust", id: "t1", wounds: -2 }], "the verb sets the direction");
   assert.deepEqual(ok("iskra wrath -1"), [{ type: "character.adjust", id: "ch1", wrath: -1 }], "Wrath can be lowered");
 });
 

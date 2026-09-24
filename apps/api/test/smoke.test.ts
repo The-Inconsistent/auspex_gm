@@ -1,4 +1,4 @@
-// End-to-end check against a running api (pnpm start) + postgres (docker compose up -d postgres).
+// End-to-end check against a running api (bun run dev:api) + postgres (bun run dev:db).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { io, type Socket } from "socket.io-client";

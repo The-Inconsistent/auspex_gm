@@ -1,6 +1,6 @@
 import { CONDITIONS, type ActionInput, type LiveState } from "@wg/shared";
 
-import { COUNTER_ACTIONS, type CounterAction } from "@/components/gm/tracker/constants";
+import { COUNTER_ACTIONS, type CounterAction } from "./constants.ts";
 
 // The Auspex command line: `hollan dmg 3`, `boyz +2`, `iskra shock 1`, `+pinned iskra`, `end`, `ruin +1`.
 // Wounds count up in W&G, so `+3` = 3 Wounds taken and `-3` = heal 3. Without a target, the selected row is used.
@@ -80,7 +80,7 @@ export function parseCommand({ input, state: s, selected }: { input: string; sta
 
   if (verb && verb in COUNTER_ACTIONS) {
     const { field, sign } = COUNTER_ACTIONS[verb as CounterAction];
-    const delta = sign * n;
+    const delta = sign * Math.abs(n); // the verb sets the direction: `heal -2` still heals
     return {
       actions: [t.characterId
         ? { type: "character.adjust", id: t.characterId, [field]: delta }
