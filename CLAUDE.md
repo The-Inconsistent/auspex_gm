@@ -157,9 +157,9 @@ bun run dev:api             # NestJS on :4000, watches src
 bun run dev:web             # Next on :3000; proxies /api and /socket.io to :4000
 cd apps/api && bun run seed volkus --owner user_2abc…       # packages/data/packs/volkus, that Clerk user as GM; prints /c/<id>
 
-bun run typecheck           # shared + api + web
+bun run typecheck           # shared + api + web (with test, the Husky pre-commit hook: .husky/pre-commit)
 bun run lint                # ESLint (eslint.config.mjs): typescript-eslint everywhere, Next + React rules in apps/web
-bun run format              # Prettier, width 120; format:check for CI. Skips *.md and packages/data JSON
+bun run format              # Prettier, width 120 (format:check only checks). Skips *.md and packages/data JSON
 bun run test                # unit tests: rules functions, command parser
 bun run validate            # every threat JSON against the schema, with bestiary progress
 bun run test:smoke          # end-to-end; needs dev:db, and dev:api with CLERK_TEST_SECRET set
