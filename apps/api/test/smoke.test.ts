@@ -158,3 +158,13 @@ test("GM and player share a table", async (t) => {
   await kicked;
   assert.equal((await post("/join", { token: issued.token })).status, 401);
 });
+
+test("a malformed login cookie is refused, not fatal", async () => {
+  const bad = { cookie: "wg_token=%" }; // decodeURIComponent throws on this
+  assert.equal((await fetch(`${API}/api/me`, { headers: bad })).status, 401);
+  const socket = io(API, { transports: ["websocket"], reconnection: false, extraHeaders: bad });
+  const err = await new Promise<Error>((resolve) => socket.once("connect_error", resolve));
+  socket.close();
+  assert.equal(err.message, "unauthorized");
+  assert.equal((await fetch(`${API}/api/me`)).status, 401, "api still up");
+});

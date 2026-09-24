@@ -24,7 +24,7 @@ async function activeEncounter(tx: Tx, campaignId: string) {
   return enc ?? fail("No active encounter");
 }
 
-// Spend 1 Glory (Agents) or Ruin (Threats); fails if the pool is empty.
+// Spend 1 Glory (Agents) or Ruin (Threats) to Seize or ignore an ambush (p.177, p.320); fails if the pool is empty.
 async function spend(tx: Tx, { campaignId, side }: { campaignId: string; side: Side }) {
   const col = side === "agents" ? campaign.glory : campaign.ruin;
   const r = await tx.update(campaign).set({ [side === "agents" ? "glory" : "ruin"]: sql`${col} - 1` })
@@ -185,6 +185,7 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       return { ok: true };
     }
 
+    // Pay 1 Glory/Ruin so an ambushed combatant acts normally in Round 1 (p.177).
     case "combatant.aware": {
       const enc = await activeEncounter(tx, cid);
       const [c] = await tx.select().from(combatant).where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)));

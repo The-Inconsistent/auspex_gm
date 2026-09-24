@@ -134,7 +134,7 @@ bun run typecheck           # shared + api + web
 bun run test                # unit tests: rules functions, command parser
 bun run validate            # every threat JSON against the schema, with bestiary progress
 bun run test:smoke          # end-to-end; needs dev:db and dev:api running
-cd apps/api && bun run db:generate                           # after editing schema.ts
+cd apps/api && bun run db:generate                           # after editing any src/**/*.schema.ts
 ```
 
 - `apps/api/.env` holds `DATABASE_URL`, `ADMIN_KEY`, `WEB_ORIGIN`, `COOKIE_SECURE` and `PORT`. Bun loads it

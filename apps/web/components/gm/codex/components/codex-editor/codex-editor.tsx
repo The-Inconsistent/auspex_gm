@@ -54,7 +54,8 @@ function fieldsFor(kind: CodexKind, codex: Codex): Field[] {
 export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps) {
   const fields = fieldsFor(kind, codex);
   const [draft, setDraft] = useState<Record<string, unknown>>(() => {
-    const init: Record<string, unknown> = {};
+    // Start from the whole row, so fields with no input here (an NPC's statSource) survive a save; zod strips the rest.
+    const init: Record<string, unknown> = { ...row };
     for (const f of fields) init[f.key] = row?.[f.key] ?? (f.type === "select" ? f.options?.[0]?.[0] ?? "" : FIELD_TYPES[f.type].empty);
     return init;
   });
@@ -63,7 +64,7 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
   const setField = (key: string, value: unknown) => setDraft({ ...draft, [key]: value });
 
   // Comma-separated list input: stored as trimmed, non-empty entries.
-  const setListField = (key: string, text: string) => setField(key, text.split(",").map((s) => s.trim()).filter(Boolean));
+  const setListField = ({ key, text }: { key: string; text: string }) => setField(key, text.split(",").map((s) => s.trim()).filter(Boolean));
 
   // SAVE: empty id selects become null (no faction / no parent), then create or update.
   const save = async () => {
@@ -74,10 +75,11 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
     onDone();
   };
 
-  // DELETE: removes the entry, then closes the editor.
+  // DELETE: removes the entry, then closes the editor; a refusal stays open with the reason.
   const handleDelete = async () => {
     if (!row) return;
-    await send({ type: "codex.delete", kind, id: row.id });
+    const r = await send({ type: "codex.delete", kind, id: row.id });
+    if (!r.ok) return setError(r.error);
     onDone();
   };
 
@@ -88,7 +90,7 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
           <label className="label" htmlFor={`f-${f.key}`}>{f.label}</label>
           {f.type === "text" && <input id={`f-${f.key}`} className="input" value={String(draft[f.key] ?? "")} onChange={(e) => setField(f.key, e.target.value)} />}
           {f.type === "area" && <textarea id={`f-${f.key}`} className="input" value={String(draft[f.key] ?? "")} onChange={(e) => setField(f.key, e.target.value)} />}
-          {f.type === "list" && <input id={`f-${f.key}`} className="input" value={(draft[f.key] as string[]).join(", ")} onChange={(e) => setListField(f.key, e.target.value)} />}
+          {f.type === "list" && <input id={`f-${f.key}`} className="input" value={(draft[f.key] as string[]).join(", ")} onChange={(e) => setListField({ key: f.key, text: e.target.value })} />}
           {f.type === "bool" && <input id={`f-${f.key}`} type="checkbox" style={{ width: 24, height: 24, accentColor: "var(--fg)" }} checked={Boolean(draft[f.key])} onChange={(e) => setField(f.key, e.target.checked)} />}
           {f.type === "select" && (
             <select id={`f-${f.key}`} className="input" value={String(draft[f.key] ?? "")} onChange={(e) => setField(f.key, e.target.value)}>

@@ -94,6 +94,10 @@ test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries",
 test("codex.save validates per kind; player codex drops secrets and unrevealed entries", () => {
   assert.equal(Action.safeParse({ type: "codex.save", kind: "npc", data: { name: "Magos Vex" } }).success, true);
   assert.equal(Action.safeParse({ type: "codex.save", kind: "npc", data: {} }).success, false);
+  const beat = (encounter: unknown[]) =>
+    Action.safeParse({ type: "codex.save", kind: "beat", data: { adventureId: crypto.randomUUID(), title: "Ambush", encounter } }).success;
+  assert.equal(beat([{ threatId: "ork-boy", count: 61 }]), false, "too many individual combatants");
+  assert.equal(beat([{ threatId: "ork-boy", count: 500, asMob: true }]), true, "a Mob is one row");
   const codex: Codex = {
     factions: [{ id: "f", name: "Mechanicus", keywords: [], stance: "rival", notes: "", secrets: "wants the tomb" }],
     adventures: [],

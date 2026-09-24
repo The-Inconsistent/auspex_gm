@@ -28,9 +28,16 @@ export async function resolveToken(token: string | undefined): Promise<Ctx | nul
   return row ?? null;
 }
 
+// Header is attacker-controlled: a malformed escape (`wg_token=%`) reads as no token instead of throwing, which in the
+// socket middleware would be an unhandled rejection and take the process down.
 export function readCookie(header: string | undefined): string | undefined {
   for (const part of header?.split(";") ?? []) {
     const [k, ...v] = part.trim().split("=");
-    if (k === COOKIE) return decodeURIComponent(v.join("="));
+    if (k !== COOKIE) continue;
+    try {
+      return decodeURIComponent(v.join("="));
+    } catch {
+      return undefined;
+    }
   }
 }

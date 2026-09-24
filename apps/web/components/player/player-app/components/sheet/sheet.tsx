@@ -3,9 +3,10 @@ import { useState } from "react";
 
 import {
   CONDITIONS, SKILLS, deriveStats, effectiveStrength, pcStatus, poolMax, skillTotal,
-  type Character, type LiveState, type Skill,
+  type ActionInput, type Character, type LiveState, type Skill,
 } from "@wg/shared";
 
+import { Refusal } from "@/components/ui/refusal/refusal";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { weaponLine } from "@/lib/weapon-line/weapon-line";
@@ -19,14 +20,24 @@ export function Sheet({ me, state, send }: SheetProps) {
   const s = me.stats;
   const d = deriveStats({ stats: s, overrides: me.overrides, tier: state.campaign.tier });
   const [pickCond, setPickCond] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const players = state.characters.length;
 
-  const adj = (field: SheetCounter, delta: number) => send({ type: "character.adjust", id: me.id, [field]: delta });
-  const adjGlory = (delta: number) => send({ type: "pool.adjust", pool: "glory", delta });
+  // Sends an action; a refusal (e.g. no Respite while Dying, p.197) shows the server's reason.
+  const run = async (a: ActionInput) => {
+    const r = await send(a);
+    setError(r.ok ? null : r.error);
+  };
+
+  // − / + on Wounds, Shock or Wrath.
+  const adj = (field: SheetCounter, delta: number) => run({ type: "character.adjust", id: me.id, [field]: delta });
+
+  // − / + on the shared Glory pool.
+  const adjGlory = (delta: number) => run({ type: "pool.adjust", pool: "glory", delta });
 
   // Condition chip: adds the Condition, or removes it if already on.
   const toggleCond = (k: string) =>
-    send({ type: "character.update", id: me.id, conditions: me.conditions.includes(k) ? me.conditions.filter((x) => x !== k) : [...me.conditions, k] });
+    run({ type: "character.update", id: me.id, conditions: me.conditions.includes(k) ? me.conditions.filter((x) => x !== k) : [...me.conditions, k] });
 
   const traits = [
     ["DEF", d.defence], ["RES", d.resilience], ["RSLV", d.resolve], ["CONV", d.conviction],
@@ -88,7 +99,8 @@ export function Sheet({ me, state, send }: SheetProps) {
         </div>
       ))}
       {s.gear.length > 0 && <div className="dim" style={{ fontSize: 13 }}>GEAR: {s.gear.join(" · ")}</div>}
-      <div><button className="btn" onClick={() => send({ type: "character.respite", id: me.id })}>RESPITE (6h rest: Wounds/Shock 0, Wrath 2)</button></div>
+      <div><button className="btn" onClick={() => run({ type: "character.respite", id: me.id })}>RESPITE (6h rest: Wounds/Shock 0, Wrath 2)</button></div>
+      <Refusal error={error} onDismiss={() => setError(null)} />
     </>
   );
 }

@@ -33,10 +33,11 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
     onDone();
   };
 
-  // DELETE: removes the beat, then closes the editor.
+  // DELETE: removes the beat, then closes the editor; a refusal stays open with the reason.
   const handleDelete = async () => {
     if (!beat) return;
-    await send({ type: "codex.delete", kind: "beat", id: beat.id });
+    const r = await send({ type: "codex.delete", kind: "beat", id: beat.id });
+    if (!r.ok) return setError(r.error);
     onDone();
   };
 

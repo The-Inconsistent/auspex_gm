@@ -14,7 +14,7 @@ const NO_ACCESS = "NO ACCESS. SCAN THE QR CODE ON THE GM'S TABLET.";
 const isJoinError = (v: unknown): v is JoinError => typeof v === "string" && Object.hasOwn(JOIN_ERRORS, v);
 
 // GET an api route as the caller: the login cookie is httpOnly, so only the server can forward it.
-async function apiGet(path: string, token: string) {
+async function apiGet({ path, token }: { path: string; token: string }) {
   const res = await fetch(`${API_ORIGIN}${path}`, {
     headers: { cookie: `${TOKEN_COOKIE}=${encodeURIComponent(token)}` },
     cache: "no-store",
@@ -25,7 +25,7 @@ async function apiGet(path: string, token: string) {
 // GM bestiary for the add-threat pickers, sorted by name. Empty on failure; the pickers just show nothing.
 async function loadBestiary(token: string): Promise<Threat[]> {
   try {
-    const res = await apiGet("/api/threats", token);
+    const res = await apiGet({ path: "/api/threats", token });
     if (!res.ok) return [];
     const parsed = Threat.array().safeParse(await res.json());
     if (!parsed.success) return [];
@@ -45,8 +45,9 @@ export default async function Home({ searchParams }: HomeProps) {
 
   let me: Me;
   try {
-    const res = await apiGet("/api/me", token);
-    if (!res.ok) return <StatusScreen text={NO_ACCESS} />;
+    const res = await apiGet({ path: "/api/me", token });
+    if (res.status === 401) return <StatusScreen text={NO_ACCESS} />;
+    if (!res.ok) return <StatusScreen text={JOIN_ERRORS.nosignal} />;
     const parsed = Me.safeParse(await res.json());
     if (!parsed.success) return <StatusScreen text={NO_ACCESS} />;
     me = parsed.data;

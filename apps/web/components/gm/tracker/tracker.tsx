@@ -51,6 +51,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
 
   const push = (e: Omit<LogEntry, "id">) => setLog((l) => [{ ...e, id: Date.now() + Math.random() }, ...l].slice(0, LOG_LIMIT));
 
+  // Sends an action; on success logs it with its undo, on refusal shows the server's reason.
   const run: Run = async (a, text) => {
     const r = await send(a);
     if (!r.ok) {
@@ -107,23 +108,32 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
   const startTurn = async (c: Combatant, seize: boolean) => {
     const r = await run({ type: seize ? "turn.seize" : "turn.start", id: c.id }, `${seize ? "SEIZE · " : ""}${nameOf(c).toUpperCase()} ACTING`);
     if (r.ok) remind(c, TURN_START_REMINDERS);
+    return r;
   };
 
   // END TURN: ends the current turn, then lists Conditions that tick at turn end.
   const endTurn = async () => {
-    if (!current) return;
-    const r = await run({ type: "turn.end" }, `${nameOf(current).toUpperCase()} END TURN`);
-    if (r.ok) remind(current, TURN_END_REMINDERS);
+    const r = await run({ type: "turn.end" }, `${current ? nameOf(current).toUpperCase() : "TURN"} END TURN`);
+    if (r.ok && current) remind(current, TURN_END_REMINDERS);
+    return r;
   };
 
-  // Command line: parses the typed command and runs each resulting action in order.
+  // Typed turn commands go through the button handlers, so the same Condition reminders fire.
+  const runCommand = (a: ActionInput) => {
+    if (a.type === "turn.end") return endTurn();
+    const c = (a.type === "turn.start" || a.type === "turn.seize") && enc.combatants.find((x) => x.id === a.id);
+    if (c) return startTurn(c, a.type === "turn.seize");
+    return run(a, `> ${cmd.toUpperCase()}`);
+  };
+
+  // Command line: parses the typed command and runs each resulting action in order. A refusal keeps the text for editing.
   const handleCmdSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const p = parseCommand({ input: cmd, state, selected });
     if ("error" in p) return setError(p.error);
     for (const a of p.actions) {
-      if (a.type === "turn.end") await endTurn();
-      else await run(a, `> ${cmd.toUpperCase()}`);
+      const r = await runCommand(a);
+      if (!r.ok) return;
     }
     setCmd("");
   };
@@ -206,7 +216,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                 <button key={c.id} className={`row ${now ? "now" : ""} ${c.id === selected ? "sel" : ""} ${c.acted ? "done" : ""}`} onClick={() => toggleSelected(c.id)}>
                   <span className={now ? "amber" : "dim"}>{stateLabel}</span>
                   <span style={{ fontWeight: 700, display: "flex", gap: 8, alignItems: "center" }}>
-                    {c.kind === "threat" && c.marker && <span aria-label={`${c.marker} marker`} style={{ width: 10, height: 10, background: `var(--marker-${c.marker})`, display: "inline-block" }} />}
+                    {c.kind === "threat" && c.marker && <span role="img" aria-label={`${c.marker} marker`} style={{ width: 10, height: 10, background: `var(--marker-${c.marker})`, display: "inline-block" }} />}
                     {nameOf(c).toUpperCase()}
                   </span>
                   <span className="hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>

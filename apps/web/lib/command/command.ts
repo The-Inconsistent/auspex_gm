@@ -1,19 +1,12 @@
 import { CONDITIONS, type ActionInput, type LiveState } from "@wg/shared";
 
+import { COUNTER_ACTIONS, type CounterAction } from "@/components/gm/tracker/constants";
+
 // The Auspex command line: `hollan dmg 3`, `boyz +2`, `iskra shock 1`, `+pinned iskra`, `end`, `ruin +1`.
 // Wounds count up in W&G, so `+3` = 3 Wounds taken and `-3` = heal 3. Without a target, the selected row is used.
 
 type Target = { name: string; combatantId: string; characterId: string | null };
 export type Parsed = { actions: ActionInput[] } | { error: string };
-
-// Verbs that move a Wound or Shock counter by a signed delta.
-const COUNTER_VERBS = {
-  wounds: { field: "wounds", sign: 1 },
-  heal: { field: "wounds", sign: -1 },
-  shock: { field: "shock", sign: 1 },
-  recover: { field: "shock", sign: -1 },
-} as const;
-type CounterVerb = keyof typeof COUNTER_VERBS;
 
 const VERBS: Record<string, string> = {
   dmg: "wounds", d: "wounds", wound: "wounds", w: "wounds",
@@ -63,7 +56,7 @@ export function parseCommand({ input, state: s, selected }: { input: string; sta
     const condName = cond && CONDITIONS.find((c) => c.toLowerCase().replace(/\s/g, "") === cond[2]!.toLowerCase());
     if (condName) condition = { name: condName, on: cond![1] === "+" };
     else if (/^[+-]\d+$/.test(w) && !verb) { verb = w.startsWith("+") ? "wounds" : "heal"; amount = Math.abs(Number(w)); }
-    else if (/^\d+$/.test(w) && verb) amount = Number(w);
+    else if (/^[+-]?\d+$/.test(w) && verb) amount = Number(w); // `wrath -1`, `dmg +3`
     else if (VERBS[lw] && !verb) verb = VERBS[lw]!;
     else rest.push(w);
   }
@@ -85,8 +78,8 @@ export function parseCommand({ input, state: s, selected }: { input: string; sta
     };
   }
 
-  if (verb && verb in COUNTER_VERBS) {
-    const { field, sign } = COUNTER_VERBS[verb as CounterVerb];
+  if (verb && verb in COUNTER_ACTIONS) {
+    const { field, sign } = COUNTER_ACTIONS[verb as CounterAction];
     const delta = sign * n;
     return {
       actions: [t.characterId

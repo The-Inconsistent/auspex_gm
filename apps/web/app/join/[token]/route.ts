@@ -20,7 +20,9 @@ export async function GET(_request: Request, { params }: JoinContext) {
   } catch {
     return redirectError("nosignal");
   }
-  if (!res.ok) return redirectError("invalid");
+  // Only a rejected token is "invalid"; a 5xx is the api's fault and the link may be fine.
+  if (res.status === 400 || res.status === 401) return redirectError("invalid");
+  if (!res.ok) return redirectError("nosignal");
 
   const response = redirectHome();
   for (const cookie of res.headers.getSetCookie()) response.headers.append("set-cookie", cookie);

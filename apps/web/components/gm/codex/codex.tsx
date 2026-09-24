@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import type { ActionInput, Codex } from "@wg/shared";
 
+import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
@@ -18,6 +19,7 @@ const stripId = ({ id, revealedAt, ...rest }: Row) => rest;
 export function CodexView({ codex, send }: CodexViewProps) {
   const [kind, setKind] = useState<CodexKind>("npc");
   const [editing, setEditing] = useState<Row | "new" | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const rows = rowsFor(kind, codex);
 
   // Kind tab: switch lists and close any open editor.
@@ -27,8 +29,10 @@ export function CodexView({ codex, send }: CodexViewProps) {
   };
 
   // REVEALED / HIDDEN chip: flips whether players see the entry.
-  const toggleRevealed = (r: Row) =>
-    send({ type: "codex.save", kind, id: r.id, data: { ...stripId(r), revealed: !r.revealed } } as ActionInput);
+  const toggleRevealed = async (r: Row) => {
+    const result = await send({ type: "codex.save", kind, id: r.id, data: { ...stripId(r), revealed: !r.revealed } } as ActionInput);
+    setError(result.ok ? null : result.error);
+  };
 
   return (
     <div className="stack">
@@ -60,6 +64,7 @@ export function CodexView({ codex, send }: CodexViewProps) {
           </>
         )}
       </div>
+      <Refusal error={error} onDismiss={() => setError(null)} />
     </div>
   );
 }

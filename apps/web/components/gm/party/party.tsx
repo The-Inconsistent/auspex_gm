@@ -1,6 +1,6 @@
 "use client";
-import { useState, type ChangeEvent, type FormEvent } from "react";
 import QRCode from "qrcode";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import { CharacterStats, deriveStats, pcStatus, type ActionResult, type Character, type Codex, type LiveState } from "@wg/shared";
 

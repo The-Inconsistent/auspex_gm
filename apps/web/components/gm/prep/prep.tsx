@@ -28,11 +28,15 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
     const j = index + dir;
     if (j < 0 || j >= ids.length) return;
     [ids[index], ids[j]] = [ids[j]!, ids[index]!];
-    await send({ type: "beat.reorder", adventureId: adv.id, ids });
+    const r = await send({ type: "beat.reorder", adventureId: adv.id, ids });
+    if (!r.ok) setMsg(`! ${r.error}`);
   };
 
-  const setStatus = (b: Beat, status: BeatStatus) =>
-    send({ type: "codex.save", kind: "beat", id: b.id, data: { ...stripBeat(b), status } });
+  // SET ACTIVE / DONE / SKIP: saves the beat with its new status.
+  const setStatus = async (b: Beat, status: BeatStatus) => {
+    const r = await send({ type: "codex.save", kind: "beat", id: b.id, data: { ...stripBeat(b), status } });
+    report(r, `${b.title.toUpperCase()} → ${status.toUpperCase()}`);
+  };
 
   // Adventure tab: switch adventure and close any open beat editor.
   const pickAdventure = (id: string) => {
@@ -87,8 +91,8 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
                 {b.readAloud && <pre className="text dim">{b.readAloud}</pre>}
                 {b.encounter.length > 0 && <div className="dim">ENCOUNTER: {b.encounter.map((e) => `${e.label ?? e.threatId}${e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""}`).join(", ")}</div>}
                 <div className="keys">
-                  <button className="btn sm" onClick={() => move({ index: i, dir: -1 })} aria-label="Move up">↑</button>
-                  <button className="btn sm" onClick={() => move({ index: i, dir: 1 })} aria-label="Move down">↓</button>
+                  <button className="btn sm" onClick={() => move({ index: i, dir: -1 })} aria-label={`Move ${b.title} up`}>↑</button>
+                  <button className="btn sm" onClick={() => move({ index: i, dir: 1 })} aria-label={`Move ${b.title} down`}>↓</button>
                   <button className="btn sm" onClick={() => setEditing(b)}>EDIT</button>
                   {b.encounter.length > 0
                     ? <button className="btn sm primary" onClick={() => runBeat(b)}>RUN BEAT</button>

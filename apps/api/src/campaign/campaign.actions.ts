@@ -34,6 +34,7 @@ export async function applyCampaignAction(tx: Tx, { ctx, action: a }: { ctx: Ctx
       return { ok: true };
     }
 
+    // Wrath 2 each, Glory 0, Ruin = players (p.162, p.164, p.320); the previous session is closed.
     case "session.start": {
       const players = await playerCount(tx, cid);
       await tx.update(character).set({ wrath: 2 }).where(eq(character.campaignId, cid));
@@ -44,6 +45,7 @@ export async function applyCampaignAction(tx: Tx, { ctx, action: a }: { ctx: Ctx
       return { ok: true, id: s!.id }; // the row was just inserted
     }
 
+    // XP to every character (p.321); pools don't carry over, session.start resets them.
     case "session.end": {
       const [s] = await tx.select().from(session).where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
       if (!s) fail("No session in progress");

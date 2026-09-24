@@ -31,11 +31,12 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
     server.use(async (socket, next) => {
       // Browsers send the httpOnly cookie; scripts and tests may pass { auth: { token } }.
       const token = readCookie(socket.handshake.headers.cookie) ?? (socket.handshake.auth as { token?: string }).token;
-      let ctx: Ctx | null = null;
+      let ctx: Ctx | null;
       try {
         ctx = await resolveToken(token);
       } catch {
-        // A DB error refuses the connection like a bad token.
+        // DB down: the client retries (use-table), unlike "unauthorized" which it treats as a dead token.
+        return next(new Error("unavailable"));
       }
       if (!ctx) return next(new Error("unauthorized"));
       socket.data = ctx;
@@ -61,17 +62,23 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
     const action = parsed.data;
 
     return this.serial(ctx.campaignId, async () => {
+      let result: ActionResult;
       try {
-        const result = await db.transaction((tx) => applyAction(tx, { ctx, action }));
-        const characterId = kicks(action);
-        if (characterId) await this.kick({ campaignId: ctx.campaignId, characterId });
-        await this.broadcast(ctx.campaignId, touches(action));
-        return result;
+        result = await db.transaction((tx) => applyAction(tx, { ctx, action }));
       } catch (e) {
         if (e instanceof ActionError) return { ok: false, error: e.message };
         this.log.error(e);
         return { ok: false, error: "Server error" };
       }
+      // Committed: report success even if fan-out fails, or a retap would apply the delta twice. The next broadcast resyncs.
+      try {
+        const characterId = kicks(action);
+        if (characterId) await this.kick({ campaignId: ctx.campaignId, characterId });
+        await this.broadcast(ctx.campaignId, touches(action));
+      } catch (e) {
+        this.log.error(e);
+      }
+      return result;
     });
   }
 

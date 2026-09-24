@@ -5,7 +5,7 @@ import { CharacterStats, type LiveState, type ThreatCombatant } from "@wg/shared
 
 import { parseCommand } from "./command.ts";
 
-const threat = (id: string, label: string): ThreatCombatant => ({
+const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant => ({
   id, kind: "threat", acted: false, ambushed: false, threatId: "x", threatClass: "T", label, marker: null, mobCount: null,
   mobStart: null, wounds: 0, shock: 0, personalRuin: 0, maxWounds: 5, maxShock: 4, conditions: ["Prone"], revealed: false, stats: null,
 });
@@ -16,12 +16,12 @@ const s: LiveState = {
     id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null,
     combatants: [
       { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false },
-      threat("t1", "Preacher Hollan"), threat("t2", "Kommando ×6"), threat("t3", "Kommando Nob"),
+      threat({ id: "t1", label: "Preacher Hollan" }), threat({ id: "t2", label: "Kommando ×6" }), threat({ id: "t3", label: "Kommando Nob" }),
     ],
   },
 };
-const ok = (input: string, sel: string | null = null) => {
-  const r = parseCommand({ input, state: s, selected: sel });
+const ok = (input: string, { selected = null }: { selected?: string | null } = {}) => {
+  const r = parseCommand({ input, state: s, selected });
   if ("error" in r) throw new Error(r.error);
   return r.actions;
 };
@@ -29,9 +29,11 @@ const ok = (input: string, sel: string | null = null) => {
 test("damage, heal and shock resolve names to the right ids", () => {
   assert.deepEqual(ok("hollan dmg 3"), [{ type: "combatant.adjust", id: "t1", wounds: 3 }]);
   assert.deepEqual(ok("iskra shock 2"), [{ type: "character.adjust", id: "ch1", shock: 2 }], "PCs route to their character");
-  assert.deepEqual(ok("+2", "t1"), [{ type: "combatant.adjust", id: "t1", wounds: 2 }], "selected row, +n = Wounds");
+  assert.deepEqual(ok("+2", { selected: "t1" }), [{ type: "combatant.adjust", id: "t1", wounds: 2 }], "selected row, +n = Wounds");
   assert.deepEqual(ok("-1 hollan"), [{ type: "combatant.adjust", id: "t1", wounds: -1 }]);
   assert.deepEqual(ok("hollan heal 2"), [{ type: "combatant.adjust", id: "t1", wounds: -2 }]);
+  assert.deepEqual(ok("hollan dmg +3"), [{ type: "combatant.adjust", id: "t1", wounds: 3 }], "signed amount after a verb");
+  assert.deepEqual(ok("iskra wrath -1"), [{ type: "character.adjust", id: "ch1", wrath: -1 }], "Wrath can be lowered");
 });
 
 test("globals, turns, conditions", () => {

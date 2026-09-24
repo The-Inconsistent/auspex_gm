@@ -25,6 +25,11 @@ export const EncounterEntry = z.object({
   label: z.string().max(100).optional(),
 });
 
+// ponytail: app limit, not a rule. Bounds the inserts one beat.startEncounter runs in a transaction; a Mob is one row.
+export const MAX_ENCOUNTER_ROWS = 60;
+const encounterRows = (entries: z.infer<typeof EncounterEntry>[]) =>
+  entries.reduce((n, e) => n + (e.asMob && e.count > 1 ? 1 : e.count), 0);
+
 export const BeatType = z.enum(["briefing", "travel", "investigation", "social", "combat", "revelation", "rest"]);
 export type BeatType = z.infer<typeof BeatType>;
 export const BeatStatus = z.enum(["planned", "active", "done", "skipped"]);
@@ -46,7 +51,9 @@ export const CodexInput = {
     status: BeatStatus.default("planned"),
     readAloud: text().default(""), gmNotes: text().default(""), outcome: text().default(""),
     locationId: id.nullable().default(null), npcIds: z.array(id).max(50).default([]), handoutIds: z.array(id).max(50).default([]),
-    encounter: z.array(EncounterEntry).max(30).default([]),
+    encounter: z.array(EncounterEntry).max(30)
+      .refine((es) => encounterRows(es) <= MAX_ENCOUNTER_ROWS, `At most ${MAX_ENCOUNTER_ROWS} combatants; group large counts as a Mob`)
+      .default([]),
   }),
   location: z.object({
     name: text(200), parentId: id.nullable().default(null), description: text().default(""),
