@@ -1,6 +1,7 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "envMode": "loose",
+  "ui": "tui",
   "tasks": {
     "//#dev:db": { "cache": false },
     "dev": { "dependsOn": ["//#dev:db"], "cache": false, "persistent": true },
