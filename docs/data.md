@@ -273,6 +273,7 @@ Each file is `{ "name": "...", "stats": { ... } }`. Every field has a default.
 | `weapons[]` | `Weapon` + `addStrength: bool` (default false), ≤ 20 | `addStrength: true` for melee "S + X": damage = effective Strength + `damage` |
 | `gear` | string[] ≤ 60 | |
 | `wealth` | int ≥ 0 | Live counter (`character.supply`); starts at Tier (Core p.206) |
+| `requisitioned` | `{ wargear?, ammo? }` session ids | Set by `character.requisition`; leave it out of packs |
 | `ammo` | record of ammo type → count 0–99, ≤ 12 types | Live counter (`character.supply`). Per type, because each only reloads its own weapons (Core p.229): `{ "Bolt": 2, "Kraken Bolt": 1 }`. Describe special rounds in `gear` |
 
 GM `overrides` are not part of a pack; the GM sets them in the app, and they win over the derived value plus `mods`.

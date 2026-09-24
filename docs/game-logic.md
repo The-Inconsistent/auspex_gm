@@ -123,6 +123,10 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 - **Supply** (`character.supply`, p.206, p.229): Wealth and per-type Ammo live in `stats` (`wealth`, `ammo`) as counters.
   Players spend their own from the sheet; the GM awards Wealth from PARTY. Nothing is spent automatically: Reloads
   and Influence Tests happen at the table. `adjustAmmo` is the shared helper (tested).
+- **Requisition** (`packages/shared/src/requisition.ts`, pp.205–206, p.229): `requisitionTest` (shared Keywords,
+  [ANY] per §11.15, bonus dice, DN = Value + `RARITY_DN`), `requisitionOutcome` (Wealth tops up a failed roll,
+  Complication −1 Wealth), `requisitionYield` (Ammo 3, Grenades/Missiles 5 − Rarity). `stats.requisitioned` holds
+  the session id of the last Test per slot, so each character gets one Wargear and one Ammo Test per session.
 - Not tracked: Objectives, automatic Wealth awards, Rank from XP, Regroup healing (p.196). Regroup is a manual HEAL.
 
 **Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the

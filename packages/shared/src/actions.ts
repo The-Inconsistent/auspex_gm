@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CodexInput } from "./codex.ts";
+import { Rarity, RequisitionKind } from "./requisition.ts";
 import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./state.ts";
 
 const id = z.uuid();
@@ -43,6 +44,17 @@ export const Action = z.union([
     z.object({
       type: z.literal("character.supply"), id,
       wealth: delta.optional(), ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
+    }),
+    // GM only: a requisition Influence Test rolled at the table (pp.205–206, p.229). The server checks the Keywords and
+    // the session limit, spends the Wealth and, on a success, adds the item to gear or ammo.
+    z.object({
+      type: z.literal("character.requisition"), id, kind: RequisitionKind,
+      item: z.string().trim().min(1).max(100), // for ammo and grenades, the ammo type ("Bolt", "Frag Grenade")
+      value: z.number().int().min(0).max(20), rarity: Rarity,
+      keywords: z.array(z.string().trim().min(1).max(60)).max(12), // the item's
+      icons: z.number().int().min(0).max(60), spend: z.number().int().min(0).max(50).default(0),
+      complication: z.boolean().default(false),
+      loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
     }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),

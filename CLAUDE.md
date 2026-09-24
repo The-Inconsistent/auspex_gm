@@ -139,7 +139,7 @@ apps/web/components/player/  player-app (sheet, fight, intel)
 apps/web/components/ui/      bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
-packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts
+packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, packs/<name>/, validate.ts, index.ts (loaders)
@@ -221,6 +221,6 @@ These are binding; follow them when writing code and use them when reviewing:
 
 - Doctors of Doom character import
 - A full rules reference in the player app
-- Requisition helper and Wargear catalogue (Value, Rarity, Keywords; Core pp.205–245). Wealth and Ammo counters exist
+- Wargear catalogue (Value, Rarity, Keywords; Core pp.208–245): the requisition form takes them by hand today
 - Rate limiting
 - Server-side undo history (client undo is inverse deltas)

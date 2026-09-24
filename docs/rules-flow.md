@@ -233,6 +233,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     and §11.11 alike.
 14. **Ammo carry limit** (p.229: 3, or half Strength, whichever is higher, plus containers) is not enforced or shown:
     containers are free-text gear, and whether Powered adds to that Strength isn't stated. The GM checks it.
+15. **[ANY] Keyword** (p.205) stands for one of the character's own Keywords that the item doesn't already match: it
+    makes the item open to everyone, and adds +1 bonus die only when the character has a Keyword left over.
+    Keyword Deviation (Chaos, Traitor Astartes, Orks, p.207) and location Rarity (p.206) aren't modelled: the GM picks
+    the Rarity and item Keywords to suit.
 
 ---
 

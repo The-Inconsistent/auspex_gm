@@ -9,6 +9,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
+import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
 type PartyProps = { state: LiveState; codex: Codex; send: Send };
@@ -17,6 +18,7 @@ export function Party({ state, codex, send }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
+  const [reqFor, setReqFor] = useState<string | null>(null);
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [xp, setXp] = useState<number>(DEFAULT_XP);
@@ -77,6 +79,15 @@ export function Party({ state, codex, send }: PartyProps) {
     } catch (e) {
       setMsg(`! Invalid stats JSON: ${e instanceof Error ? e.message.slice(0, 200) : "parse error"}`);
     }
+  };
+
+  // REQUISITION: opens the requisition form for this character, or closes it.
+  const toggleReq = (id: string) => setReqFor(reqFor === id ? null : id);
+
+  // A recorded requisition closes its form.
+  const requisitioned = (r: ActionResult, ok: string) => {
+    report(r, ok);
+    if (r.ok) setReqFor(null);
   };
 
   // XP input: digits only.
@@ -189,10 +200,14 @@ export function Party({ state, codex, send }: PartyProps) {
                 <button className="btn sm" onClick={() => showGuestQr(c)}>GUEST QR</button>
                 <button className="btn sm" onClick={() => toggleImport(c.id)}>LOAD STATS (JSON)</button>
                 <button className="btn sm" onClick={() => respite(c)}>RESPITE</button>
+                <button className="btn sm" onClick={() => toggleReq(c.id)}>REQUISITION</button>
                 <button className="btn sm" onClick={() => adjWealth(c, 1)}>+1 WEALTH</button>
                 <button className="btn sm" onClick={() => adjWealth(c, -1)}>−1 WEALTH</button>
                 <button className="btn sm danger" onClick={() => revoke(c)}>REVOKE GUEST QR</button>
               </div>
+              {reqFor === c.id && (
+                <RequisitionForm character={c} influence={d.influence} sessionId={open?.id ?? null} send={send} onResult={requisitioned} />
+              )}
               {importFor === c.id && (
                 <div className="stack">
                   <textarea className="input" aria-label="Stats JSON" value={json} onChange={(e) => setJson(e.target.value)} placeholder='{"species":"Primaris Astartes","attributes":{…}}' />

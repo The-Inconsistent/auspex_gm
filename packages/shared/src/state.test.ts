@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  Action, CharacterStats, Threat, adjustAmmo, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
+  Action, CharacterStats, Threat, adjustAmmo, requisitionOutcome, requisitionTest, requisitionYield, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
   roundEndReminders, sideUpNext, threatStatus, toPlayerCodex, toPlayerView,
   type Character, type Codex, type Combatant, type Encounter, type LiveState, type ThreatCombatant,
 } from "./index.ts";
@@ -172,4 +172,24 @@ test("adjustAmmo: per type, clamped at 0, −1 on an empty type removes it (p.22
   assert.deepEqual(adjustAmmo({}, { kind: "Bolt", delta: 1 }), { Bolt: 1 });
   assert.deepEqual(adjustAmmo({ Bolt: 1, Las: 2 }, { kind: "Bolt", delta: -3 }), { Bolt: 0, Las: 2 });
   assert.deepEqual(adjustAmmo({ Bolt: 0, Las: 2 }, { kind: "Bolt", delta: -1 }), { Las: 2 });
+});
+
+test("requisitionTest: shared Keywords, bonus dice, [ANY], DN = Value + Rarity (pp.205-206)", () => {
+  const gwyth = ["IMPERIUM", "ASTRA MILITARUM", "SCUM"];
+  // The book's example: Hot-Shot Volley Gun, Value 6, Rare → DN 8, one extra matching Keyword → +1 die (p.205).
+  const volley = requisitionTest({ keywords: gwyth, itemKeywords: ["Imperium", "Astra Militarum"], value: 6, rarity: "Rare" });
+  assert.deepEqual([volley.eligible, volley.dn, volley.bonusDice], [true, 8, 1]);
+  assert.equal(requisitionTest({ keywords: gwyth, itemKeywords: ["AELDARI"], value: 6, rarity: "Rare" }).eligible, false);
+  // [ANY] is open to everyone, and counts as one more of their Keywords when one is left unmatched (§11.15).
+  assert.equal(requisitionTest({ keywords: ["ORK"], itemKeywords: ["[ANY]"], value: 2, rarity: "Common" }).eligible, true);
+  assert.equal(requisitionTest({ keywords: gwyth, itemKeywords: ["IMPERIUM", "SCUM", "[ANY]"], value: 3, rarity: "Uncommon" }).bonusDice, 2);
+  assert.equal(requisitionTest({ keywords: ["IMPERIUM"], itemKeywords: ["IMPERIUM", "[ANY]"], value: 3, rarity: "Common" }).bonusDice, 0);
+});
+
+test("requisitionOutcome and requisitionYield (p.205, p.229)", () => {
+  // The example again: 7 Icons against DN 8, 1 Wealth spent → success.
+  assert.deepEqual(requisitionOutcome({ dn: 8, icons: 7, spend: 1, complication: false, wealth: 3 }), { success: true, wealth: 2 });
+  assert.deepEqual(requisitionOutcome({ dn: 8, icons: 5, spend: 0, complication: true, wealth: 0 }), { success: false, wealth: 0 });
+  assert.equal(requisitionYield("ammo", "Uncommon"), 3);
+  assert.equal(requisitionYield("grenade", "Very Rare"), 2); // Plasma Grenades example
 });

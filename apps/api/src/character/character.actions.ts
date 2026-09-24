@@ -1,8 +1,12 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { CharacterStats, MAX_AMMO_TYPES, Overrides, adjustAmmo, deriveStats, pcHit, pcStatus, type Action, type ActionResult, type Character } from "@wg/shared";
+import {
+  CharacterStats, Overrides, adjustAmmo, deriveStats, pcHit, pcStatus, requisitionOutcome, requisitionSlot, requisitionTest,
+  requisitionYield, type Action, type ActionResult, type Character,
+} from "@wg/shared";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
+import { session } from "../campaign/campaign.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
@@ -21,6 +25,14 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
   const status = pcStatus(c, derived);
   return { c, derived, dying: status.includes("Dying"), dead: status.includes("Dead") };
+}
+
+// Writes stats back after a counter change, refusing anything the sheet schema wouldn't load (too many ammo types, a
+// full gear list).
+async function saveStats(tx: Tx, { id, stats }: { id: string; stats: CharacterStats }) {
+  const r = CharacterStats.safeParse(stats);
+  if (!r.success) fail(r.error.issues[0]?.message ?? "Invalid character sheet");
+  await tx.update(character).set({ stats: r.data }).where(eq(character.id, id));
 }
 
 export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ctx; action: CharacterAction }): Promise<ActionResult> {
@@ -64,8 +76,30 @@ export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       const stats = CharacterStats.parse((await ownCharacter(tx, { campaignId: cid, id: a.id })).stats);
       if (a.wealth) stats.wealth = Math.max(0, stats.wealth + a.wealth);
       if (a.ammo) stats.ammo = adjustAmmo(stats.ammo, a.ammo);
-      if (Object.keys(stats.ammo).length > MAX_AMMO_TYPES) fail(`At most ${MAX_AMMO_TYPES} ammo types`);
-      await tx.update(character).set({ stats }).where(eq(character.id, a.id));
+      await saveStats(tx, { id: a.id, stats });
+      return { ok: true };
+    }
+
+    case "character.requisition": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const stats = CharacterStats.parse(row.stats);
+      const [open] = await tx.select({ id: session.id }).from(session).where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
+      if (!open) fail("Start a session first: one Test of each kind per session (p.205)");
+      const slot = requisitionSlot(a.kind);
+      if (stats.requisitioned[slot] === open.id) fail(`${row.name} already made this session's ${slot} Test (p.205)`);
+      const t = requisitionTest({ keywords: stats.keywords, itemKeywords: a.keywords, value: a.value, rarity: a.rarity });
+      if (!t.eligible) fail("No Keyword in common with the item: it can't be requisitioned (p.205)");
+      if (a.spend > stats.wealth) fail(`${row.name} has only ${stats.wealth} Wealth`);
+      if (a.spend > 0 && a.icons >= t.dn) fail("Wealth only buys Icons on a failed Test (p.205)");
+
+      const out = requisitionOutcome({ dn: t.dn, icons: a.icons, spend: a.spend, complication: a.complication, wealth: stats.wealth });
+      stats.wealth = out.wealth;
+      stats.requisitioned = { ...stats.requisitioned, [slot]: open.id };
+      if (out.success && a.kind === "wargear") {
+        stats.gear = [...stats.gear, a.item];
+        if (a.loadedWith) stats.ammo = adjustAmmo(stats.ammo, { kind: a.loadedWith, delta: 1 });
+      } else if (out.success) stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
+      await saveStats(tx, { id: a.id, stats });
       return { ok: true };
     }
 

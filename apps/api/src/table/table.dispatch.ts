@@ -49,6 +49,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "character.update":
     case "character.adjust":
     case "character.supply":
+    case "character.requisition":
     case "character.respite":
     case "character.delete":
     case "token.issue":

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { RequisitionSlot } from "./requisition.ts";
 import { Threat, ThreatClass, Weapon } from "./threat.ts";
 
 // Page refs: docs/rules-flow.md (Core rulebook, printed pages).
@@ -84,6 +85,8 @@ export const CharacterStats = z.object({
   wealth: z.number().int().min(0).default(0),
   ammo: z.record(z.string().min(1).max(60), z.number().int().min(0).max(99))
     .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`).default({}),
+  // The session id of the last requisition Test per slot: one of each per session (p.205).
+  requisitioned: z.partialRecord(RequisitionSlot, z.string()).default({}),
 });
 export type CharacterStats = z.infer<typeof CharacterStats>;
 

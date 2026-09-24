@@ -167,6 +167,20 @@ test("GM and player share a table", async (t) => {
   // Session start resets pools (p.162); session end awards XP (p.321).
   assert.ok((await gm.send({ type: "session.start" })).ok);
   await gm.until((s) => s.campaign.glory === 0 && s.campaign.ruin === 2 && s.characters.every((c) => c.wrath === 2));
+
+  // Requisition (pp.205-206, p.229): GM only, a Keyword in common, one Wargear and one Ammo Test per session.
+  const rq = { type: "character.requisition", id: hero.id, value: 2, rarity: "Common", keywords: ["[ANY]"], icons: 2 } as const;
+  assert.deepEqual(await player.send({ ...rq, kind: "wargear", item: "Laspistol" }), { ok: false, error: "GM only" });
+  assert.deepEqual(await gm.send({ ...rq, kind: "ammo", item: "Bolt", keywords: ["AELDARI"] }),
+    { ok: false, error: "No Keyword in common with the item: it can't be requisitioned (p.205)" });
+  assert.ok((await gm.send({ ...rq, kind: "wargear", item: "Laspistol", loadedWith: "Las" })).ok);
+  assert.deepEqual(await gm.send({ ...rq, kind: "wargear", item: "Chainsword" }),
+    { ok: false, error: "Hero already made this session's wargear Test (p.205)" });
+  assert.ok((await gm.send({ ...rq, kind: "grenade", item: "Frag Grenade", rarity: "Uncommon", icons: 3 })).ok);
+  await gm.until((s) => {
+    const st = s.characters.find((c) => c.id === hero.id)?.stats;
+    return !!st?.gear.includes("Laspistol") && st.ammo.Las === 1 && st.ammo["Frag Grenade"] === 4;
+  });
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumped." })).ok);
   await gm.until((s) => s.characters.every((c) => c.xp === 10));
 
