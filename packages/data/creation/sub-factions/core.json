@@ -1,16 +1,5 @@
 [
   {
-    "id": "orders-militant",
-    "name": "Orders Militant",
-    "source": "core",
-    "page": 51,
-    "type": "order",
-    "factionId": "adepta-sororitas",
-    "keyword": "ORDERS MILITANT",
-    "traits": [],
-    "note": "No traits printed. The [ORDER] box says: \"When attempting an action associated with your order, the GM may grant you bonus dice.\" This entry names two Orders Militant, transcribed separately: the Order of Our Martyred Lady and the Order of the Sanctified Shield of Enoch."
-  },
-  {
     "id": "order-of-our-martyred-lady",
     "name": "Order of Our Martyred Lady",
     "source": "core",
@@ -26,7 +15,7 @@
         "source": "apocrypha"
       }
     ],
-    "note": "Named under Orders Militant (p.51) as an example; no traits printed. Keyword is its name in capitals, as the book prints no keyword form. Also Apocrypha p.34."
+    "note": "Named under Orders Militant (p.51) as an example; no traits printed. Keyword is its name in capitals, as the book prints no keyword form. Also Apocrypha p.34. A named Order fills [ORDER]; the Order categories (Orders Militant, Dialogus, Famulous, Hospitaller, Sabine, Pronatus, p.51) are groupings, not choices (docs/rules-flow.md §11.24)."
   },
   {
     "id": "order-of-the-sanctified-shield",
@@ -37,57 +26,7 @@
     "factionId": "adepta-sororitas",
     "keyword": "ORDER OF THE SANCTIFIED SHIELD",
     "traits": [],
-    "note": "The Gilead System's Order, based on the Shrine World of Enoch; named under Orders Militant as \"the Order of the Sanctified Shield of Enoch\" (p.51). No traits printed."
-  },
-  {
-    "id": "orders-dialogus",
-    "name": "Orders Dialogus",
-    "source": "core",
-    "page": 51,
-    "type": "order",
-    "factionId": "adepta-sororitas",
-    "keyword": "ORDERS DIALOGUS",
-    "traits": []
-  },
-  {
-    "id": "orders-famulous",
-    "name": "Orders Famulous",
-    "source": "core",
-    "page": 51,
-    "type": "order",
-    "factionId": "adepta-sororitas",
-    "keyword": "ORDERS FAMULOUS",
-    "traits": []
-  },
-  {
-    "id": "orders-hospitaller",
-    "name": "Orders Hospitaller",
-    "source": "core",
-    "page": 51,
-    "type": "order",
-    "factionId": "adepta-sororitas",
-    "keyword": "ORDERS HOSPITALLER",
-    "traits": []
-  },
-  {
-    "id": "orders-sabine",
-    "name": "Orders Sabine",
-    "source": "core",
-    "page": 51,
-    "type": "order",
-    "factionId": "adepta-sororitas",
-    "keyword": "ORDERS SABINE",
-    "traits": []
-  },
-  {
-    "id": "orders-pronatus",
-    "name": "Orders Pronatus",
-    "source": "core",
-    "page": 51,
-    "type": "order",
-    "factionId": "adepta-sororitas",
-    "keyword": "ORDERS PRONATUS",
-    "traits": []
+    "note": "The Gilead System's Order, based on the Shrine World of Enoch; named under Orders Militant as \"the Order of the Sanctified Shield of Enoch\" (p.51). No traits printed. A named Order fills [ORDER]; the Order categories (Orders Militant, Dialogus, Famulous, Hospitaller, Sabine, Pronatus, p.51) are groupings, not choices (docs/rules-flow.md §11.24)."
   },
   {
     "id": "mars",
@@ -329,59 +268,6 @@
       }
     ],
     "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label. The +1 Conviction is part of a choice, so it is not a flat mod."
-  },
-  {
-    "id": "other-ordos",
-    "name": "Other Ordos",
-    "source": "core",
-    "page": 64,
-    "type": "ordo",
-    "factionId": "inquisition",
-    "keyword": "[ORDO]",
-    "traits": [
-      {
-        "name": "Bonus",
-        "text": "Choose one of the following Skills: Cunning (Fel), Deception (Fel), Insight (Fel), Intimidation (Wil), Persuasion (Fel), Psychic Mastery (Wil), Scholar (Int), Stealth (A), Survival (Wil), Tech (Int).\n\nYou gain +Rank bonus dice to Tests with the selected Skill.",
-        "grants": [
-          {
-            "choose": 1,
-            "from": [
-              {
-                "text": "+Rank bonus dice to Cunning (Fel) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Deception (Fel) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Insight (Fel) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Intimidation (Wil) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Persuasion (Fel) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Psychic Mastery (Wil) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Scholar (Int) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Stealth (A) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Survival (Wil) Tests"
-              },
-              {
-                "text": "+Rank bonus dice to Tech (Int) Tests"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "note": "A catch-all for the Ordos Minoris (p.64); the book names none, so `keyword` stays [ORDO] and the player writes in the Ordo's name. The bonus is an unnamed bullet; \"Bonus\" is our label."
   },
   {
     "id": "blood-angels",

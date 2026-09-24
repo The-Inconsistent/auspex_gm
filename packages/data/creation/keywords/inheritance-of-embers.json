@@ -6,7 +6,8 @@
     "page": 12,
     "text": "Each craftworld has developed their own culture according to their galactic positioning and the manifold tragedies that have befallen them since the Fall. You can replace the [CRAFTWORLD] Keyword with any of the Craftworlds below. Usually this will be the Craftworld on which your Agent was born and raised, but you may choose an adopted Craftworld if your Agent has been stranded away from their home.",
     "placeholder": "craftworld",
-    "note": "Also Core p.377. Also Apocrypha p.38."
+    "note": "Also Core p.377. Also Apocrypha p.38.",
+    "writeIn": true
   },
   {
     "id": "coterie",
@@ -15,7 +16,8 @@
     "page": 14,
     "text": "The Anhrathe organise into warbands of Corsairs, teaming up to steal better-protected and more valuable plunder. You can replace the [COTERIE] Keyword with any of the Coteries below, reflecting the pirate fleet your Agent has spent the most time fighting alongside.",
     "placeholder": "coterie",
-    "note": "Also Core p.377."
+    "note": "Also Core p.377.",
+    "writeIn": true
   },
   {
     "id": "kabal",

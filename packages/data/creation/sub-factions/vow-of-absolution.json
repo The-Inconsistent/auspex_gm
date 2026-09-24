@@ -8,6 +8,7 @@
     "factionId": "adeptus-astartes",
     "keyword": "ABSOLVERS",
     "traits": [],
-    "note": "VoA prints no Absolvers Chapter Traits. It calls the Absolvers a Blood Angels Successor Chapter (VoA pp.30, 78), while Core p.71 calls them a Chapter of unknown founding and succession, which may take the Chapter Traits of any First Founding Chapter. VoA p.48 (Inheritance talent) refers back to that Core rule. Which Traits an Absolver takes is a GM decision. Also Core p.71."
+    "note": "VoA prints no Absolvers Chapter Traits and calls the Absolvers a Blood Angels Successor Chapter (VoA pp.30, 78); Core p.71 calls them of unknown succession. GM ruling: they take the Blood Angels Chapter Traits, the Red Thirst (Gene-seed) included, even for Primaris (docs/rules-flow.md §11.23). Also Core p.71.",
+    "successorOf": "blood-angels"
   }
 ]

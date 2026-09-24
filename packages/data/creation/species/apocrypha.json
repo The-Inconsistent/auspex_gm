@@ -4,7 +4,7 @@
     "name": "Navigator",
     "source": "apocrypha",
     "page": 11,
-    "note": "Size not printed (a Human strain, p.11). No maximums printed: the p.18 table has no Navigator column. No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM).",
+    "note": "Size not printed (a Human strain, p.11). No maximums printed (the p.18 table has no Navigator column): Human maximums by GM ruling (docs/rules-flow.md §11.27). No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM).",
     "xp": 24,
     "speed": 6,
     "attributes": {
@@ -34,7 +34,17 @@
         "name": "Hereditary Mutations",
         "text": "Your form has been twisted and distorted by exposure to the Immaterium and by generations of inbreeding. Choose one of your attributes; any skill tests using that attribute suffer +1DN, and any derived traits from that attribute are reduced by 1."
       }
-    ]
+    ],
+    "max": {
+      "S": 8,
+      "T": 8,
+      "A": 8,
+      "I": 8,
+      "Wil": 8,
+      "Int": 8,
+      "Fel": 8,
+      "speed": 8
+    }
   },
   {
     "id": "beastman",
@@ -84,7 +94,7 @@
     "name": "Shas T’au",
     "source": "apocrypha",
     "page": 15,
-    "note": "Fire Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed. \"In game terms, each Caste is a different species; a Shas T’au cannot choose an archetype for Fio T’au, and vice versa\" (p.15).",
+    "note": "Fire Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19). \"In game terms, each Caste is a different species; a Shas T’au cannot choose an archetype for Fio T’au, and vice versa\" (p.15).",
     "xp": 4,
     "speed": 6,
     "attributes": {},
@@ -102,7 +112,9 @@
       "Fel": 7,
       "speed": 7
     },
-    "keywords": [],
+    "keywords": [
+      "T'AU"
+    ],
     "abilities": [
       {
         "name": "For the Greater Good (Shas)",
@@ -119,7 +131,7 @@
     "name": "Fio T’au",
     "source": "apocrypha",
     "page": 15,
-    "note": "Earth Caste. Maximums from the table on p.18. Size not printed (\"especially short and broad\", p.17). No Species Keywords printed.",
+    "note": "Earth Caste. Maximums from the table on p.18. Size not printed (\"especially short and broad\", p.17). No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
     "xp": 14,
     "speed": 5,
     "attributes": {
@@ -139,7 +151,9 @@
       "Fel": 6,
       "speed": 5
     },
-    "keywords": [],
+    "keywords": [
+      "T'AU"
+    ],
     "abilities": [
       {
         "name": "For the Greater Good (Fio)",
@@ -156,7 +170,7 @@
     "name": "Kor T’au",
     "source": "apocrypha",
     "page": 16,
-    "note": "Air Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "note": "Air Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
     "xp": 14,
     "speed": 7,
     "attributes": {
@@ -176,7 +190,9 @@
       "Fel": 7,
       "speed": 10
     },
-    "keywords": [],
+    "keywords": [
+      "T'AU"
+    ],
     "abilities": [
       {
         "name": "For the Greater Good (Kor)",
@@ -197,7 +213,7 @@
     "name": "Por T’au",
     "source": "apocrypha",
     "page": 16,
-    "note": "Water Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "note": "Water Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
     "xp": 14,
     "speed": 6,
     "attributes": {
@@ -217,7 +233,9 @@
       "Fel": 10,
       "speed": 6
     },
-    "keywords": [],
+    "keywords": [
+      "T'AU"
+    ],
     "abilities": [
       {
         "name": "For the Greater Good (Por)",
@@ -238,7 +256,7 @@
     "name": "Aun T’au",
     "source": "apocrypha",
     "page": 17,
-    "note": "Ethereal Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "note": "Ethereal Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
     "xp": 40,
     "speed": 6,
     "attributes": {
@@ -260,7 +278,9 @@
       "Fel": 10,
       "speed": 7
     },
-    "keywords": [],
+    "keywords": [
+      "T'AU"
+    ],
     "abilities": [
       {
         "name": "Ethereal Presence",
@@ -327,7 +347,10 @@
       "Int": 8,
       "Fel": 6,
       "speed": 7
-    }
+    },
+    "countsAs": [
+      "aeldari"
+    ]
   },
   {
     "id": "custodian",

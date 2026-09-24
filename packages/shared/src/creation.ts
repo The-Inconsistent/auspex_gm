@@ -58,7 +58,8 @@ export const Requirement = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("influence"), min: z.number().int() }),
   z.object({ kind: z.literal("keyword"), anyOf: z.array(keyword).min(1) }),
   z.object({ kind: z.literal("notKeyword"), anyOf: z.array(keyword).min(1) }),
-  z.object({ kind: z.literal("species"), anyOf: ids }),
+  z.object({ kind: z.literal("species"), anyOf: ids }), // a Species' `countsAs` matches too
+  z.object({ kind: z.literal("notSpecies"), anyOf: ids }),
   z.object({ kind: z.literal("archetype"), anyOf: ids }),
   z.object({ kind: z.literal("subFaction"), anyOf: ids }),
   z.object({ kind: z.literal("talent"), anyOf: ids }),
@@ -149,6 +150,7 @@ export const Keyword = z.object({
   name: keyword,
   text: z.string().default(""),
   placeholder: SubFactionType.optional(),
+  writeIn: z.boolean().default(false), // the player may fill it with a name the books don't list (rules-flow.md §11.25)
 });
 export type Keyword = z.infer<typeof Keyword>;
 
@@ -162,6 +164,9 @@ export const SubFaction = z.object({
   factionId: id,
   keyword, // "SPACE WOLVES", which fills the faction's placeholder
   requires: z.array(Requirement).default([]), // who may join: Black Templars can't be PSYKER (Apocrypha p.27)
+  // A Successor Chapter's founding Chapter. One with no traits of its own takes its parent's (Absolvers → Blood Angels,
+  // docs/rules-flow.md §11.23).
+  successorOf: id.optional(),
   traits: z.array(Rule.extend({ geneSeed: z.boolean().default(false) })).default([]), // Primaris ignore gene-seed (Core p.71)
 });
 export type SubFaction = z.infer<typeof SubFaction>;
@@ -180,6 +185,8 @@ export const Species = z.object({
   keywords: z.array(keyword).default([]), // Species Keywords (Core p.38), for Advanced Creation
   abilities: z.array(Rule).default([]),
   grants: z.array(Grant).default([]), // e.g. "either IMPERIUM or CHAOS"
+  // Species it also counts as for requirements: Primaris is Adeptus Astartes (docs/rules-flow.md §11.18).
+  countsAs: z.array(id).default([]),
 });
 export type Species = z.infer<typeof Species>;
 
@@ -192,6 +199,7 @@ const backgroundRow = z.object({
   text: z.string().min(1),
   bonus: Bonus.optional(),
   grants: z.array(Grant).optional(),
+  requires: z.array(Requirement).optional(), // who may take the row: a Navis Nobilite Origin matches the House (§11.26)
 });
 export const BackgroundTable = z.object({
   ...record,

@@ -4,7 +4,7 @@
     "name": "Ogryn",
     "source": "forsaken-system",
     "page": 93,
-    "note": "Maximums from the table on p.91 (Intellect maximum 1 as printed). No Species Keywords printed. Abhuman rules from pp.90–91; \"Ogyrns\" in Psychic Species is a print error, copied as printed.",
+    "note": "Maximums from the table on p.91 (Intellect maximum 1 as printed). No Species Keywords printed; ABHUMAN by GM ruling (docs/rules-flow.md §11.27). Abhuman rules from pp.90–91; \"Ogyrns\" in Psychic Species is a print error, copied as printed.",
     "xp": 76,
     "speed": 6,
     "size": "Large",
@@ -58,6 +58,9 @@
         "text": "The prodigious size of an Ogryn’s hands and digits means they are unable to wield most ranged weapons as they cannot pull the trigger. This does not preclude them from using any ranged weapon as a club, which deals the same damage as an Unarmed Strike (page 183 of the Wrath & Glory Rulebook) +2 ED.\n\nAn Ogryn can wield any melee weapon they can conceivably hold, though they treat any weapon designed for someone of a smaller size as having the Unwieldy (3) Weapon Trait.",
         "page": 91
       }
+    ],
+    "keywords": [
+      "ABHUMAN"
     ]
   },
   {
@@ -65,7 +68,7 @@
     "name": "Ratling",
     "source": "forsaken-system",
     "page": 95,
-    "note": "Maximums from the table on p.91. No Species Keywords printed. Abhuman rules from pp.90–91; \"Ogyrns\" in Psychic Species is a print error, copied as printed.",
+    "note": "Maximums from the table on p.91. No Species Keywords printed; ABHUMAN by GM ruling (docs/rules-flow.md §11.27). Abhuman rules from pp.90–91; \"Ogyrns\" in Psychic Species is a print error, copied as printed.",
     "xp": 30,
     "speed": 5,
     "size": "Small",
@@ -119,6 +122,9 @@
         "text": "The dextrous Ratlings can wield most Human-sized weapons without too much difficulty, though the size and weight of such bulky technology may cause them to have the Unwieldy (2) Weapon Trait at the GM’s discretion.",
         "page": 91
       }
+    ],
+    "keywords": [
+      "ABHUMAN"
     ]
   },
   {
@@ -126,7 +132,7 @@
     "name": "Kroot",
     "source": "forsaken-system",
     "page": 97,
-    "note": "Maximums from the table on p.91. No Species Keywords printed. The species table's first columns are shifted as printed (\"Kroot\" under XP Cost, \"22\" under Attributes): XP 22, no Attributes. Kroot Mutations are the option group kroot-mutations (p.98).",
+    "note": "Maximums from the table on p.91. No Species Keywords printed; KROOT by GM ruling (docs/rules-flow.md §11.27). The species table's first columns are shifted as printed (\"Kroot\" under XP Cost, \"22\" under Attributes): XP 22, no Attributes. Kroot Mutations are the option group kroot-mutations (p.98).",
     "xp": 22,
     "speed": 7,
     "size": "Average",
@@ -173,6 +179,9 @@
         "text": "For melee combat, the Kroot prefer their own brand of primitive firearms festooned with blades, but can adapt to almost any kind of weaponry given enough time.\n\nKroot can wield any weapon, but if the weapon does not have the PRIMITIVE Keyword or share a Keyword with the Kroot, the weapon is treated as having the Unwieldy (2) Weapon Trait.",
         "page": 91
       }
+    ],
+    "keywords": [
+      "KROOT"
     ]
   }
 ]

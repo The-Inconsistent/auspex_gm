@@ -167,6 +167,9 @@
         "name": "Species Interaction",
         "text": "Differences in culture, language, and biology make communication between any two individuals of different Species difficult, even when they aren't compounded by long histories of horrific mutual warefare.\n\nAll social Tests to interact with a member of another Species suffer a minimum +2 DN penalty (see Chapter 8: Rules for further explanation). As all Astartes were once Human, they do not suffer this penalty, unless another rule or the GM states otherwise."
       }
+    ],
+    "countsAs": [
+      "adeptus-astartes"
     ]
   },
   {

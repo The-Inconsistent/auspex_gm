@@ -446,7 +446,7 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 | `keywords` | `Keyword` | Faction Keywords by printed name (`"ADEPTUS ASTARTES"`, `"[CHAPTER]"`); a bracketed one names the `placeholder` sub-faction type that fills it |
 | `factions` | `Faction` | Adeptus Astartes, Asuryani… |
 | `sub-factions` | `SubFaction` | Chapters, Orders, Forge Worlds, Craftworlds…: `type`, `factionId`, the `keyword` it fills in, `traits` (with `geneSeed`) |
-| `species` | `Species` | XP, Speed, Size, granted Attributes and Skills, maximums, Species Keywords, abilities |
+| `species` | `Species` | XP, Speed, Size, granted Attributes and Skills, maximums, Species Keywords, abilities, and `countsAs`: the species it also counts as for requirements (Primaris → Adeptus Astartes) |
 | `backgrounds` | `BackgroundTable` | Origin / Accomplishment / Goal rows with their `bonus`, and Objectives; owned by a faction, species or sub-faction |
 | `option-groups` | `OptionGroup` | Other creation choices: Kroot Mutations, Asuryani Paths, Kin Cloneskein, Apocrypha Homeworlds. `pick` is a count, `"tier"` or `"any"`; `xp` is the cost of the 1st, 2nd… pick, last repeating |
 | `archetypes` | `Archetype` | The printed entry: Tier, species, XP, Keywords, Attributes, Skills, abilities, wargear, Influence, suggestions |
@@ -457,7 +457,8 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 | `flavour` | `FlavourTable` | Names, appearance, languages |
 
 **Shared shapes.**
-- `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species`, `archetype`, `subFaction`,
+- `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species` (matches `countsAs` too),
+  `notSpecies`, `archetype`, `subFaction`,
   `talent`, `power`, `wargear` (printed names), `rank`, `tier`, or `text` for anything that isn't mechanical.
 - `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
 - `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ keywords }` (taken together), `{ power }`,
@@ -494,20 +495,9 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
   book's contents pages, so progress shows.
 
 **Open questions for the GM** (not yet decided; they go in rules-flow.md §11 once decided):
-- Does Primaris Astartes count as "Adeptus Astartes Species" for requirements (Angel of Death, Rubicon Primaris)?
-- IoE prints a second, unexplained XP figure (+20 / +30) under three Corsair archetypes (pp.54–56).
-- Core p.43 allows only one Background +1 bonus; `docs/pregens.md` and the volkus pack apply all three.
-- Absolvers Chapter Traits: VoA calls them a Blood Angels Successor (pp.30, 78); Core p.71 says unknown succession, free
-  choice of any First Founding Chapter's traits. Which, and does the Blood Angels gene-seed flaw apply?
-- IoE p.14 lets Corsairs use "the Anhrathe Goal table", which isn't printed.
-- A Sister's [ORDER]: Core p.51 lists both categories (Orders Militant…) and named Orders. Which fills the keyword?
-- Forge Worlds, Craftworlds, Coteries and Ordos are printed as examples ("Other Ordos", Core p.64). May players write
-  in their own? The builder needs to know.
-- Navis Nobilite (Apocrypha p.53): must the Origin row (Magisterial, Nomadic, Shrouded House) match the House type?
-- Species details the books leave out: no Size for any Apocrypha species or the Necron; no maximums for Navigators
-  (Human's?); no Species Keywords for Ogryn and Ratling (ABHUMAN?), Kroot (KROOT?) or the T'au castes (T'AU?).
-- May one Human be both a Pariah and a Perpetual (Apocrypha pp.12–13)? The data allows one.
-- Does a Ghost Warrior count as Aeldari Species for Talent requirements (its "Aeldari" ability, Apocrypha p.6)? May a
-  Drukhari with the ASURYANI keyword walk Paths (IoE p.10)?
-- Creating a Traitor (Core p.87) is stored as a Chaos faction rule; it may become archetype variants in the
-  archetype wave.
+
+- Two Inheritance of Embers gaps are parked in GitHub issue #2: the missing Anhrathe Goal table (p.14) and the
+  unexplained +20 / +30 XP under three Corsair archetypes (pp.54–56).
+- Species details still missing: no Size for any Apocrypha species or the Necron.
+- Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
+  Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

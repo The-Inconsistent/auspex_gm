@@ -4,7 +4,7 @@
     "name": "Asuryani Paths",
     "source": "inheritance-of-embers",
     "page": 10,
-    "note": "Ynnari cannot acquire Asuryani Paths (p.20) and Corsair Asuryani abandon their Path, gaining no benefit from it (p.14): both are the notKeyword on every option. Wraith Constructs do not have Paths (p.13): a text requirement. As printed: Path of the Chronicler omits “bonus dice”; “supplicance” (Path of Service). Also Core p.78.",
+    "note": "Ynnari cannot acquire Asuryani Paths (p.20) and Corsair Asuryani abandon their Path, gaining no benefit from it (p.14): both are the notKeyword on every option. Wraith Constructs do not have Paths (p.13), and Drukhari never walk them even with ASURYANI (GM ruling, docs/rules-flow.md §11.21): the notSpecies on every option. As printed: Path of the Chronicler omits “bonus dice”; “supplicance” (Path of Service). Also Core p.78.",
     "owner": {
       "factionId": "asuryani"
     },
@@ -28,8 +28,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -46,8 +49,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -64,8 +70,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -82,8 +91,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -100,8 +112,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -118,8 +133,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -136,8 +154,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -154,8 +175,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -172,8 +196,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -190,8 +217,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -208,8 +238,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       },
@@ -226,8 +259,11 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+            "kind": "notSpecies",
+            "anyOf": [
+              "wraith-construct",
+              "drukhari"
+            ]
           }
         ]
       }

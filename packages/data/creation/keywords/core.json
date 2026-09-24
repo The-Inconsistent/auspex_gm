@@ -399,7 +399,8 @@
     "page": 378,
     "text": "The Cult Mechanicus lay claim to many Imperial planets, coveting their useful mineral resources and converting their entire surface to vast interlinked manufactorums. Each has their own particular culture, methods of worshipping the Omnissiah, and specialised manufacturing patterns.\nExamples: Avachrus, Mars, Ryza, Metalica",
     "placeholder": "forge-world",
-    "note": "Also Apocrypha p.37."
+    "note": "Also Apocrypha p.37.",
+    "writeIn": true
   },
   {
     "id": "haemonculus-coven",

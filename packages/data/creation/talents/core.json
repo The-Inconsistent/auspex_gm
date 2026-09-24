@@ -12,11 +12,19 @@
     "name": "Angel Of Death",
     "source": "core",
     "page": 129,
-    "note": "\"Adeptus Astartes Species\": whether Primaris Astartes qualifies is a GM ruling (docs/rules-flow.md §11).",
+    "note": "Primaris Astartes counts as \"Adeptus Astartes Species\" (its `countsAs`, docs/rules-flow.md §11.18).",
     "xp": 30,
     "requires": [
-      { "kind": "rank", "min": 2 },
-      { "kind": "species", "anyOf": ["adeptus-astartes"] }
+      {
+        "kind": "rank",
+        "min": 2
+      },
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      }
     ],
     "effect": "You are a Space Marine — one of the most feared warriors in the galaxy. You are a highly trained superhuman veteran of hundreds of battles and have mastered the use of many deadly weapons.\n\nAdd +Rank to the total Damage Value of successful attacks with the following weapons:\n- Chainswords\n- Chainaxes\n- Power Swords\n- Power Fists\n- Unarmed strikes\n- Bolt weapons\n- Any weapon with the ADEPTUS ASTARTES Keyword.\n\nAt the GM's discretion, this Talent may also apply to weapons with the CHAOS Keyword for Chaos Space Marines."
   },

@@ -352,17 +352,41 @@
       {
         "name": "Magisterial House",
         "text": "You hail from an ancient House, which dates back to before the Unification of Terra. The power of your kin is felt across the Imperium.",
-        "bonus": "influence"
+        "bonus": "influence",
+        "requires": [
+          {
+            "kind": "subFaction",
+            "anyOf": [
+              "magisterial-house"
+            ]
+          }
+        ]
       },
       {
         "name": "Nomadic House",
         "text": "Your house has forsaken holdings on Terra or any other world to voyage amongst the stars, giving you a significant edge when it comes to the practicalities of navigating the Immaterium.",
-        "bonus": "maxShock"
+        "bonus": "maxShock",
+        "requires": [
+          {
+            "kind": "subFaction",
+            "anyOf": [
+              "nomadic-house"
+            ]
+          }
+        ]
       },
       {
         "name": "Shrouded House",
         "text": "Your house has withdrawn from the wider galaxy, perhaps due to some ancient shame or loss that haunts them still. While not lacking in power or wealth, your House has needed to be resourceful to survive.",
-        "bonus": "determination"
+        "bonus": "determination",
+        "requires": [
+          {
+            "kind": "subFaction",
+            "anyOf": [
+              "shrouded-house"
+            ]
+          }
+        ]
       }
     ],
     "accomplishment": [
@@ -407,7 +431,7 @@
       "You recount a vision which you had while within the Warp to the current situation.",
       "You use the name and influence of your House to get your way or refuse a request."
     ],
-    "note": "The Origin rows name three House types (no Renegade row); they are independent of the House chosen for [HOUSE] (p.53)."
+    "note": "The Origin rows name three House types (no Renegade row); they are independent of the House chosen for [HOUSE] (p.53). Each Origin requires the matching House type (GM ruling, docs/rules-flow.md §11.26); a Renegade House has no Origin row."
   },
   {
     "id": "officio-assassinorum",

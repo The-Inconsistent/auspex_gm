@@ -592,7 +592,8 @@
           "PSYKER"
         ]
       }
-    ]
+    ],
+    "successorOf": "imperial-fists"
   },
   {
     "id": "crimson-fists",
@@ -613,7 +614,8 @@
         "text": "Though proven resistant to mutation and deviance, Rogal Dorn’s gene-seed inhibits two of the Space Marine implants.\n\nYou are missing implant 12: Sus-an Membrane, and implant 17: Betcher’s Gland.",
         "geneSeed": true
       }
-    ]
+    ],
+    "successorOf": "imperial-fists"
   },
   {
     "id": "flesh-tearers",
@@ -634,7 +636,8 @@
         "text": "Your fury comes from a deep destructive impulse within your body and soul, an insatiable bloodlust that resists all attempts to deny it.\n\nWhenever you are in melee combat and see blood, you must make a DN 4 Willpower Test. If you fail, you are Frenzied.",
         "geneSeed": true
       }
-    ]
+    ],
+    "successorOf": "blood-angels"
   },
   {
     "id": "grey-knights",

@@ -4,7 +4,7 @@
     "name": "Pariah and Perpetual",
     "source": "apocrypha",
     "page": 12,
-    "note": "Pariah (p.12) and Perpetual (p.13) are printed as Human templates, not species: \"Any Human character may be chosen to be a Pariah/Perpetual during character creation\", 30 XP extra on any Human archetype. The Pariah cost \"is already included in the cost of all Pariah archetypes\". The book doesn't say whether one character may take both; pick 1 is a house assumption.",
+    "note": "Pariah (p.12) and Perpetual (p.13) are printed as Human templates, not species: \"Any Human character may be chosen to be a Pariah/Perpetual during character creation\", 30 XP extra on any Human archetype. The Pariah cost \"is already included in the cost of all Pariah archetypes\". The book doesn't say whether one character may take both; the GM rules one only (docs/rules-flow.md §11.20).",
     "owner": {
       "speciesId": "human"
     },

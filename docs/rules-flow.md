@@ -245,6 +245,26 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     `mods` (+1 Resolve, +1 Wound), and the XP is the cost of the granted ratings (Core pp.24–25), which is how every Core
     and FSPG species is priced (Core p.29). Its Build Point Cost and Base Tier stay in the record's note. No maximums
     are printed, so the builder applies none.
+18. **Primaris Astartes counts as Adeptus Astartes Species** for every requirement (Angel of Death, Core p.129;
+    Rubicon Primaris, VoA p.43), because the Primaris are a sub-faction of the Adeptus Astartes: `countsAs` on the
+    species record.
+19. **T'au castes** (Apocrypha pp.15–17) have the T'AU Species Keyword, though the book prints none.
+20. **Pariah and Perpetual** (Apocrypha pp.12–13): a Human takes at most one of the two templates.
+21. **Asuryani Ghost Warriors count as Aeldari Species** for requirements (their "Aeldari" ability, Apocrypha p.6).
+    **Drukhari never walk Asuryani Paths**, even with the ASURYANI keyword (IoE p.10).
+22. **One Background bonus** (Core p.43): of the three Background rows a character takes, only one +1 bonus applies.
+    The builder enforces it. The volkus pregens, which apply all three, are left as they are.
+23. **Absolvers are a Blood Angels Successor** (VoA pp.30, 78), not of unknown succession (Core p.71): they take the
+    Blood Angels Chapter Traits, and the Red Thirst (Gene-seed) flaw applies, to Primaris Absolvers too: this
+    overrides Core p.71's "Primaris ignore (Gene-seed) traits" for the Absolvers. `successorOf` on the sub-faction.
+24. **[ORDER] is a named Order** (Order of Our Martyred Lady, Order of the Sanctified Shield…). The Order categories
+    (Orders Militant, Dialogus, Famulous, Hospitaller, Sabine, Pronatus, Core p.51) are groupings, not choices.
+25. **Write-in sub-factions:** players may name their own Forge World, Craftworld or Coterie (`writeIn` on the
+    placeholder keyword). Ordos are only the printed three, so Core p.64's "Other Ordos" isn't a choice.
+26. **Navis Nobilite Origins** (Apocrypha p.54) match the character's House: a Magisterial, Nomadic or Shrouded House
+    Origin needs that House type. A Renegade House has no Origin row.
+27. **Species gaps:** Ogryn and Ratling have the ABHUMAN Species Keyword, Kroot has KROOT (FSPG prints none), and
+    Navigators use the Human maximums (Apocrypha p.18 has no Navigator column).
 
 ---
 
