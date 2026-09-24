@@ -131,6 +131,16 @@ cd apps/api && bun run db:generate                           # after editing sch
 - The app is pre-release, so schema changes may regenerate the single migration: delete `apps/api/drizzle/`, run
   `db:generate`, then `docker compose down -v`. **Once there is real campaign data, add migrations instead.**
 
+## Standards
+
+These are binding; follow them when writing code and use them when reviewing:
+- **Backend:** `.claude/backend-code-style.md` (NestJS, Drizzle, Bun).
+- **Frontend:** `.claude/frontend-code-style.md` (Next.js 16, React 19, plain CSS tokens).
+- **Reviews:** `.claude/code-review.md` (checklist and block-merge rules).
+- **Review procedure:** the `/review` command (`.claude/commands/review.md`), which falls back to the local diff when
+  there's no PR.
+- **Multi-file investigation:** the `codebase-navigator` agent.
+
 ## Conventions and gotchas
 
 - **Adding an action** touches four places:

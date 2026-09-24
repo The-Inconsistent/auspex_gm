@@ -7,6 +7,9 @@ Review a pull request as if merging to main. PR number (optional): "$ARGUMENTS"
 
 ## 0. Resolve target & eligibility
 
+- **No GitHub remote / no PR:** review the local diff instead. The target is the current branch against `main` (or
+  the working tree against `HEAD` if on `main`), the diff is `git diff <base>...HEAD` (or `git diff HEAD`), and step 5
+  is skipped: findings are only presented in chat.
 - If a PR number was given, use it. Otherwise resolve the open PR for the current branch via `gh pr view --json number,title,baseRefName,headRefName,state,isDraft`. If none and no number given, run `gh pr list` and ask which PR.
 - Skip (do not proceed) if the PR is closed/merged, or if you already left this exact review earlier. Drafts MAY be reviewed — note draft status in the summary.
 - Capture `<owner>/<repo>` and `<num>` for later `gh api` calls. Capture the head commit SHA via `gh pr view <num> --json headRefOid`.
@@ -15,7 +18,7 @@ Review a pull request as if merging to main. PR number (optional): "$ARGUMENTS"
 
 - Read the root CLAUDE.md and every referenced review/style doc — especially `.claude/code-review.md`, `.claude/frontend-code-style.md` and `.claude/backend-code-style.md`.
 - Read any CLAUDE.md in directories the PR modifies.
-- Get the diff: `gh pr diff <num>`. For refactors, also read the OLD version of changed files (`git show <baseRefName>:<path>`) so you can audit against prior semantics, not the new code in isolation.
+- Get the diff: `gh pr diff <num>` (or the local `git diff` from step 0). For refactors, also read the OLD version of changed files (`git show <baseRefName>:<path>`) so you can audit against prior semantics, not the new code in isolation.
 
 ## 2. Fan out — launch 5 parallel review agents (Task tool, in ONE message)
 

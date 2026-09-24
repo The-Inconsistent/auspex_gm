@@ -1,786 +1,165 @@
-# Frontend NextJs (React) Code Style Guidelines
+# Frontend (Next.js · React) Code Style Guidelines
+
+> Sibling to [backend-code-style.md](./backend-code-style.md). Stack: **Next.js 16** (App Router), **React 19**,
+> **socket.io-client**, plain CSS design tokens (the "Auspex" terminal look) in `apps/web/app/globals.css`, and **zod**
+> schemas from `@wg/shared`. Architecture is in the root `CLAUDE.md`.
 
 ## General Principles
 
-- **TypeScript**: Use strict typing, **never use `any` type**. Use specific types, `unknown`, or proper generics instead
-- **Optional Chaining**: Always use optional chaining (`?.`) for object property access, regardless of TypeScript types
-- **Imports**: Group by external/internal, alphabetized
-- **Components**: Functional React components with explicit props typing
-- **Naming**: camelCase for variables/functions, PascalCase for components/types
-- **Error Handling**: Use try/catch for async operations, proper error types
-- **State Management**: Use React hooks pattern, minimize prop drilling
-- **File Structure**: Feature-based organization in apps
-- **Formatting**: Prettier enforced, 2-space indentation
-- **UI Components**: Prefer composition across apps
+- **TypeScript:** strict typing; **never use `any`**. Use specific types, `unknown` plus a zod parse, or generics.
+- **Optional chaining:** use `?.` on anything that can be missing (lookups, socket state before it arrives, `Map.get`).
+  Don't paper over a type that the compiler says is defined.
+- **Imports:** external, then workspace (`@wg/*`), then app (`@/…`), then relative, alphabetised within each group.
+- **Components:** function components with explicitly typed props.
+- **Naming:** `camelCase` for variables and functions, `PascalCase` for components and types, kebab-case for files and
+  folders.
+- **Error handling:** `try`/`catch` around async work that can fail. Surface the failure in the UI (the tracker's error
+  line, the player banner); never swallow it.
+- **State:** React hooks; avoid prop drilling (see Context below).
+- **Formatting:** Prettier, 2-space indentation.
 
 ## Development Best Practices
 
-### Use Enums
+### Closed value sets: define once
 
-**Never declare a field as a literal-string union** (e.g. `type: "image" | "storyboard"`). Define an `enum` (or `as const` object + `keyof typeof` type) and reference it on the field. Applies to discriminator fields, status fields, type-tag fields, alignment / orientation / direction fields — anything where the set of valid values is closed and finite.
+**Never re-declare a literal-string union inline** (`useState<"wounds" | "heal">`, `side: "agents" | "threats"`).
+- A set that belongs to the domain (side, marker, condition, beat type…) comes from `@wg/shared`: use its `z.enum` type
+  or `.options`.
+- A UI-only set is an `as const` object in the feature's `constants.ts`, with a type derived from it (`keyof typeof`,
+  or `(typeof X)[number]`).
 
-```typescript
-// ❌ Avoid — literal-string union inline on the field
-export type Cel = {
-  type: "image" | "storyboard" | "note" | "speech_bubble";
-  role: "composition" | "reference";
-};
+(TypeScript `enum` is unavailable, because `erasableSyntaxOnly` is on.)
 
-// ✅ Prefer — enum referenced from a shared constants module
-export enum CelType {
-  IMAGE = "image",
-  STORYBOARD = "storyboard",
-  NOTE = "note",
-  SPEECH_BUBBLE = "speech_bubble",
-}
+```ts
+// ❌ Avoid
+const [amountFor, setAmountFor] = useState<"wounds" | "heal" | "shock" | "recover" | null>(null);
 
-export enum CelRole {
-  COMPOSITION = "composition",
-  REFERENCE = "reference",
-}
-
-export type Cel = {
-  type: CelType;
-  role: CelRole;
-};
+// ✅ Prefer: tracker/constants.ts
+export const COUNTER_ACTIONS = {
+  wounds: { field: "wounds", sign: 1 },
+  heal: { field: "wounds", sign: -1 },
+} as const;
+export type CounterAction = keyof typeof COUNTER_ACTIONS;
 ```
 
-**Why this matters**:
+### Function parameters
 
-- **Single source of truth** — the set of valid values is defined once. Adding a new variant (e.g. `CelType.VIDEO`) is one edit, not a grep-and-replace across every union site.
-- **Refactor safety** — renaming a value updates every consumer; literal-string unions don't.
-- **Call-site clarity** — `CelType.IMAGE` reads as a named concept; `"image"` is a magic string.
-- **Switch exhaustiveness** — TypeScript's `never` exhaustiveness check works better with enums than with re-typed literal unions.
+A function with **more than two parameters**, or two adjacent parameters of the same type, takes **one options
+object**, e.g. `blocks({ value, max })`, not `blocks(value, max)`.
 
-**Placement**: shared enums (used by more than one feature) live in the most-upstream module that defines the concept — typically `@/constants` (e.g. `@/constants/sex.ts`). Feature-specific enums live in `@/features/<feature>/constants`. Both the schema/types and any consumers import from there.
+### Async/await
 
-### Batch Processing
+Always use `async`/`await`, never `.then().catch()` chains. Don't write `return await x`; use
+`const result = await x; return result;`.
 
-Use `batchProcess` from `@/utils` instead of manual for loops with await:
+### Component files and structure
 
-```typescript
-// Avoid
-for (const item of items) {
-  await processItem(item);
-}
-
-// Prefer
-await batchProcess(items, async (item) => {
-  await processItem(item);
-});
-```
-
-### API Client
-
-Use `api.[method]` from `@/shared/api` instead of native `fetch()`. Set up with `ApiProvider` and `initializeApi()` for automatic Sentry instrumentation, error handling, and request tracing.
-
-### Avoid return await
-
-Don't use `return await` pattern. Instead use `const result = await func(); return result;` for better stack traces and debugging.
-
-### Function Parameters
-
-Always use object parameters for functions instead of multiple individual parameters:
-
-```typescript
-// Avoid
-function createUser(name: string, email: string, age: number) {}
-
-// Prefer
-function createUser({
-  name,
-  email,
-  age,
-}: {
-  name: string;
-  email: string;
-  age: number;
-}) {}
-```
-
-### Component Files
-
-Create component files directly (e.g., `component.tsx`) instead of using index files. Avoid creating `index.tsx` files for components - import components directly by their filename.
-
-### Component File Structure
-
-Wrap components in a folder to organize related files (utilities, hooks, types, child components). Use kebab-case for folder and file names:
+- **No `index.tsx` barrels.** Import a component by its file name.
+- **Each component gets a kebab-case folder.** Its children, hooks, types, utils and constants go inside, used only by
+  it:
 
 ```text
-visual-v2/
-  visual-v2.tsx          # Main component
+components/gm/tracker/
+  tracker.tsx                     # main component
+  constants.ts                    # constants used by tracker + tests
   components/
-    co-script-blocks/
-      co-script-blocks.tsx # Child component used only in visual-v2
-  hooks/
-    use-visual-data
-      use-visual-data.ts   # Hooks used only in visual-v2
-  types
-    types.ts               # Types used only in visual-v2
-  utils
-    utils.ts               # Utilities used only in visual-v2
+    add-combatants/add-combatants.tsx
 ```
 
-**Why this matters**: This structure makes dependencies explicit. When child components like `CoScriptBlocks` are only used inside `Content`, placing them in a `components/` subfolder clarifies the relationship. A flat structure makes all components appear equal in importance, making it harder to understand component hierarchies and dependencies.
+- **Shared building blocks** live in `components/ui/<name>/<name>.tsx`.
+- **Shared hooks** live in `hooks/<use-name>/<use-name>.ts`.
+- **Pure helpers** live in `lib/<name>/<name>.ts`, each with a sibling `<name>.test.ts`.
 
-**Apply this pattern to all new work going forward.**
+### Extract constants for testing
 
-### Utility File Structure
-
-Organize utility functions in individual folders instead of combining them in a single file. Use kebab-case for folder and file names:
-
-```text
-utils/
-  format-time/
-    format-time.ts
-    format-time.test.ts
-  calculate-duration/
-    calculate-duration.ts
-    calculate-duration.test.ts
-  parse-episode-data/
-    parse-episode-data.ts
-    parse-episode-data.test.ts
-```
-
-**Why this matters**: This structure makes unit testing easier and more maintainable. Each utility has its own isolated test file, making it clear what's being tested. Avoid combining multiple utilities in `utils.ts` or `index.ts` files.
-
-**Apply this pattern to all new work going forward.**
-
-### Extract Constants for Testing
-
-**Proactively extract constants** to a separate file when writing code that will be tested. This makes test setup easier and keeps tests in sync with implementation.
-
-```typescript
-// constants.ts
-export const DEFAULT_STORIES_PER_PAGE = 10;
-export const DEFAULT_TABLE_PARAMS = {
-  page: 1,
-  limit: DEFAULT_STORIES_PER_PAGE,
-  sortBy: STORIES_SORT_BY.UPDATED_AT,
-  sortOrder: SORT_ORDER.DESC,
-};
-
-// feature.tsx
-import { DEFAULT_TABLE_PARAMS } from "./constants";
-
-export function StoriesList() {
-  const [params, setParams] = useState(DEFAULT_TABLE_PARAMS);
-  // ...
-}
-
-// feature.test.tsx
-import { DEFAULT_TABLE_PARAMS } from "./constants";
-
-describe("StoriesList", () => {
-  const defaultPageParams = {
-    table: DEFAULT_TABLE_PARAMS,
-  };
-  // Tests use same constants as implementation
-});
-```
-
-**Why this matters**:
-
-- Single source of truth - constants defined once
-- Tests automatically stay in sync with implementation changes
-- Refactoring is safer - change constant in one place
-- Reduces test brittleness and maintenance burden
-
-**When to extract constants**:
-
-- Default values for component state or props
-- Configuration objects (pagination, filters, sort options)
-- Magic numbers or strings used in logic
-- Any value that tests need to reference
-
-**File structure**:
-
-```text
-feature/
-  feature.tsx          # Implementation
-  feature.test.tsx     # Tests
-  constants.ts         # Shared constants
-```
-
-### Async/Await
-
-Always use async/await instead of Promise.then().catch() for better readability and error handling.
+Defaults, option lists and magic numbers used in logic go in a `constants.ts` beside the feature, so tests import the same
+values.
 
 ## React & Next.js Patterns
 
-### Named Event Handlers
+### Named event handlers
 
-**Never inline complex logic directly in JSX event props.** Always define named handler functions above the `return` statement with a descriptive name and a comment explaining what it does.
-
-```tsx
-// ❌ Avoid — logic buried in JSX, new function reference on every render
-<Select
-  onValueChange={(val) => {
-    const newTime = convertTime12HourTo24Hour(Number(val), period);
-    setSessionDeadlines((prev) => ({
-      ...prev,
-      [sessionId]: { date: prev[sessionId]?.date || new Date(), time: newTime },
-    }));
-  }}
-/>;
-
-// ✅ Prefer — named handler defined above return, easy to read and review
-// Hour select — updates only the hour part of this session's deadline time.
-const handleHourChange = (val: string) => {
-  const newTime = convertTime12HourTo24Hour(Number(val), period);
-  setSessionDeadlines((prev) => ({
-    ...prev,
-    [sessionId]: { date: prev[sessionId]?.date || new Date(), time: newTime },
-  }));
-};
-
-// In JSX:
-<Select onValueChange={handleHourChange} />;
-```
-
-**Why this matters**:
-
-- Inline arrow functions create a new reference on every render, causing unnecessary re-renders of child components that receive the handler as a prop
-- Named handlers are easier to read, review, and test in isolation
-- Comments on named handlers explain _why_ the logic exists, which is lost when buried in JSX
-
-**Rule**: Any event handler with more than one statement, or any logic beyond a simple setter call, must be extracted as a named function.
-
-### Context Providers for Shared State
-
-**Proactively use Context providers** to prevent props drilling when multiple components need access to the same state or data.
-
-**When to use Context**:
-
-- ✅ State/data shared by 3+ components at different nesting levels
-- ✅ Complex state that needs to be accessed throughout a feature
-- ✅ Shared handlers or callbacks used by multiple child components
-- ✅ Configuration or settings needed by many components
-
-**When NOT to use Context**:
-
-- ❌ Data only used by 1-2 components (use props)
-- ❌ Simple parent-child relationships (use props)
-- ❌ Global app-wide state (use specialized solutions)
-
-**Example - BAD (Props Drilling)**:
-
-```typescript
-// ❌ Props drilling through multiple levels
-function PaymentsPage() {
-  const [filters, setFilters] = useState({});
-  const [selection, setSelection] = useState({});
-
-  return (
-    <PaymentsTable
-      filters={filters}
-      setFilters={setFilters}
-      selection={selection}
-      setSelection={setSelection}
-    >
-      <PaymentsHeader
-        filters={filters}
-        setFilters={setFilters}
-        selection={selection}
-      />
-      <PaymentsBody
-        filters={filters}
-        selection={selection}
-        setSelection={setSelection}
-      >
-        <PaymentRow
-          selection={selection}
-          setSelection={setSelection}
-        />
-      </PaymentsBody>
-    </PaymentsTable>
-  );
-}
-```
-
-**Example - GOOD (Context Provider)**:
-
-```typescript
-// ✅ Context provider wraps the feature
-function PaymentsPage() {
-  return (
-    <PaymentsProvider>
-      <PaymentsTable>
-        <PaymentsHeader />
-        <PaymentsBody>
-          <PaymentRow />
-        </PaymentsBody>
-      </PaymentsTable>
-    </PaymentsProvider>
-  );
-}
-
-// Context implementation
-const PaymentsContext = createContext<PaymentsContextValue | null>(null);
-
-export function PaymentsProvider({ children }: { children: ReactNode }) {
-  const [filters, setFilters] = useState({});
-  const [selection, setSelection] = useState({});
-
-  return (
-    <PaymentsContext.Provider value={{ filters, setFilters, selection, setSelection }}>
-      {children}
-    </PaymentsContext.Provider>
-  );
-}
-
-export function usePayments() {
-  const context = useContext(PaymentsContext);
-  if (!context) {
-    throw new Error("usePayments must be used within PaymentsProvider");
-  }
-  return context;
-}
-
-// Usage in any child component
-function PaymentRow() {
-  const { selection, setSelection } = usePayments();
-  // No props needed!
-}
-```
-
-**Context Provider Pattern Structure**:
-
-```text
-feature/
-  feature-provider.tsx     # Context provider and hook
-  feature.tsx              # Main component
-  components/
-    child-component.tsx    # Uses context via hook
-```
-
-**Benefits**:
-
-- 🎯 Cleaner component props (no drilling)
-- 🔧 Easier refactoring (move components without updating props)
-- 📖 Better readability (clear data dependencies)
-- ⚡ Prevents unnecessary re-renders (with proper memoization)
-
-### Memoize Context Values
-
-**Always memoize context provider values** using `useMemo` to prevent unnecessary re-renders of consuming components:
-
-```typescript
-// ❌ Avoid - creates new object every render
-<Context.Provider value={{ state, setState }}>
-
-// ❌ Also avoid - spreading a hook return is still a new object
-<Context.Provider value={{ ...values, type: "x" }}>
-
-// ✅ Prefer - only re-creates when dependencies change
-const value = useMemo(() => ({ state, setState }), [state]);
-<Context.Provider value={value}>
-```
-
-**This applies even when the source is a custom hook**: if `useFooValues()` returns a fresh literal each render (no internal `useMemo`), wrapping the provider's `value` in `useMemo` is required.
-
-**State setters from `useState` are referentially stable** and don't need to be in the deps array — only state values, derived data, and unstable callbacks do.
-
-The cost of getting this wrong scales with the consumer count: a context read by N per-item nodes (rows, decorators, table cells) re-renders all N on every parent render. See [.claude/liveblocks.md — Subscription Scope](./liveblocks.md#subscription-scope-usestorage-selectors) for the same pitfall on the Liveblocks side.
-
-### Rendering Large Lists
-
-Any list whose length is bounded by user content (scenes, panels, tracks, search results, asset libraries) **must be virtualized** if it can grow past ~100 items. Use [`react-virtuoso`](https://virtuoso.dev/) or [`@tanstack/react-virtual`](https://tanstack.com/virtual) — don't render N DOM nodes for N items.
-
-Other patterns to follow when rendering N items:
-
-- **Don't put `lodash.isEqual` in `React.memo` comparators.** Deep equality on every parent render is O(n × depth). Compare by stable IDs (`hashBlockId`, primary keys) and a small set of relevant primitive fields.
-- **Build lookup maps once.** A `useMemo` like `items.map((x) => other.find((y) => y.id === x.id))` is O(n²) — build a `Map` in the same `useMemo` first, then look up.
-- **Keep contexts that fan out to per-item nodes minimal.** If a context value carries the full list and one item subscribes per row, every list mutation re-renders every row. Split frequently-changing state (per-item) from stable methods/values into separate contexts.
-- **Hoist inline closures.** `onClick={() => handle(id)}` passed to a memoized child defeats the memo. Use `useCallback` with the args closed over, or pass `id` as a prop and have the child build the closure itself.
-
-### Loading States
-
-Add `loading.tsx` for each page to improve perceived routing speed and enable immediate UI response during route transitions.
-
-### Loading UI: Skeletons vs Spinners
-
-Use different loading indicators based on the data fetching state:
-
-- **Skeletons** (`isLoading`): Use for initial/first load when no data exists yet. Skeletons provide a preview of the content layout, reducing perceived loading time.
-- **Opacity dim + spinner** (`isFetching && !isLoading`): Use for refetches when data already exists (filter changes, pagination, search). Dim the existing content and show a corner spinner so the user sees fresh data is loading without a jarring layout swap.
-
-Always destructure both `isLoading` and `isFetching` from the hook and gate the spinner with `isFetching && !isLoading` so the cold-load path shows only the skeleton, never the skeleton + spinner together.
+**Any handler with more than one statement, or with logic beyond a simple setter call, is a named function defined
+above `return`,** with a one-line comment saying what it does. One-line calls may stay inline
+(`onClick={() => setOpen(false)}`).
 
 ```tsx
-// Generic pattern
-const { data, isLoading, isFetching } = useQuery(...);
+// ❌ Avoid: logic buried in JSX
+<select onChange={(e) => { const k = e.target.value; const next = …; void run(…); }} />
 
-if (isLoading) {
-  return <ContentSkeleton />;
-}
-
-return (
-  <div className="relative">
-    {isFetching && !isLoading && (
-      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-        <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
-      </div>
-    )}
-    <div className={cn(isFetching && !isLoading && "opacity-60 transition-opacity")}>
-      <Content data={data} />
-    </div>
-  </div>
-);
+// ✅ Prefer
+// Condition picker: toggles the chosen Condition on the selected combatant.
+const handleConditionPick = (e: ChangeEvent<HTMLSelectElement>) => { … };
+<select onChange={handleConditionPick} />
 ```
 
-```tsx
-// Paginated table pattern (preferred for tables with filters/pagination)
-// Skeleton rows on cold load; on refetch dim the TableBody and overlay a spinner in the corner.
-const { data: rows, isLoading, isFetching } = useFilterX(...);
+### Mutations go through socket actions
 
-return (
-  <div className="relative rounded-md border">
-    {isFetching && !isLoading && (
-      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-        <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
-      </div>
-    )}
-    <Table>
-      <TableHeader>...</TableHeader>
-      <TableBody
-        className={cn(
-          isFetching && !isLoading && "opacity-60 transition-opacity"
-        )}
-      >
-        {isLoading ? (
-          <SkeletonRows />
-        ) : rows.length === 0 ? (
-          <EmptyRow />
-        ) : (
-          rows.map(...)
-        )}
-      </TableBody>
-    </Table>
-  </div>
-);
-```
+Every game change is `send(action)` from `useTable()`. That is the server's single validated, serialised mutation path
+(see CLAUDE.md). **Don't use Server Actions or REST routes for game state.** REST is only for login (`/join`, `/me`) and
+the GM bestiary.
 
-Use `Loader2` from `lucide-react` with `animate-spin` (the codebase convention) and `cn` from `@/lib/cn`.
+- Build actions with the `ActionInput` type from `@wg/shared`.
+- Counters send **deltas**, never absolute values.
+- Check `result.ok`, and show `result.error` when it's false.
 
-**Why this matters**: Skeletons during initial load set user expectations for content layout. Dim + centered spinner during refetch keeps stale rows visible while signaling that new data is on the way — avoids the layout flash that happens when filter/pagination changes swap rows back to skeletons. The spinner overlays the container with `absolute inset-0 flex items-center justify-center` so it sits in the visual center regardless of table size.
+### `useEffect` only for external systems
 
-### Data Mutations
+`useEffect` is allowed **only** to keep in sync with something outside React: the socket connection, the Screen Wake
+Lock, and device APIs such as `navigator.vibrate` on a state change. Each use carries a comment saying which external
+system it syncs with.
 
-Use Server Actions instead of API routes in Next.js apps.
+**Don't use it to fetch data:**
+- Do the fetch on the server (a Server Component or route handler).
+- Or have the socket send the data.
 
-### Form State
+### Server first for request-time work
 
-Use `useActionState` hook (React 19+) instead of `useFormState`.
+The login cookie is httpOnly, so anything that depends on who the caller is (the `/api/me` check, the `/join/<token>`
+exchange) runs on the server: a Server Component or a route handler. Client components receive the result as props.
+Route `params` are Promises in Next 16; `await` them.
 
-### Schema Validation
+### Context providers for shared state
 
-Use Zod for all action and form schemas.
+When state or handlers are needed by three or more components at different depths, provide them with a Context and a
+`useX()` hook that throws outside its provider. Always **memoize the value**
+(`useMemo(() => ({ … }), [deps])`); state setters are stable and don't need to be dependencies.
 
-### Next.js 15
+### Rendering lists
 
-Page params are Promises that must be awaited.
+The tracker and codex lists are small (tens of rows), so no virtualisation is needed. If a list can pass about 100 items
+(a bestiary browser, a long history log), virtualise it.
+- **Build lookup `Map`s once** (`useMemo`), not `find` inside `map`.
+- **Don't pass inline closures to memoized children.**
 
-### URL State Synchronization
+### Loading and connection states
 
-Anything visible on the page should be reproducible by another user simply by pasting the URL into their browser. Use `usePageParams` to ensure this synchronization, with a Zod schema when you need structured validation and defaults.
+- **Before the first snapshot:** render a full-screen status line ("SYNCING…").
+- **While disconnected:** keep the last state on screen and show the fixed "NO SIGNAL" badge. Never blank the screen on
+  reconnect.
 
-**Validating against dynamic data (optional):** When some URL fields depend on data that is not available at `usePageParams` parse time (e.g. clamping `table.page` with `totalPages` from an API), call `registerDynamicParamsGuard` from the `usePageParams` return value during render after that data is available. Build constraints with helpers from `@/hooks` (`cap`, `oneOf`, `arraySubsetOf`, etc. — see `dynamic-params-constraints`). Only one guard registration should run meaningful constraint evaluation per `usePageParams` instance per render (merged constraint object). If all rules are static, use Zod on `usePageParams` only.
+## UI & Accessibility
 
-### Error Handling with Hooks
-
-**CRITICAL**: Be aware that hooks from third-party libraries (Clerk, Liveblocks, etc.) can throw exceptions.
-
-**Current Pattern**: Most components do not handle hook exceptions and will crash. This is acceptable if:
-
-1. The hook is critical to the component (e.g., `useOrganization` for org-scoped data)
-2. Error boundaries at higher levels catch and display error UI
-
-**Example - Component that crashes on hook error**:
-
-```typescript
-export function StoriesList() {
-  // Will throw if Clerk fails - this is OK if error boundary handles it
-  const { isLoaded: orgLoaded } = useOrganization();
-
-  // Component implementation...
-}
-```
-
-**Example - Component with error boundary handling**:
-
-```typescript
-// error.tsx in the same directory
-export default function StoriesError({ error }: { error: Error }) {
-  return (
-    <div>
-      <h2>Failed to load stories</h2>
-      <p>{error.message}</p>
-    </div>
-  );
-}
-```
-
-**When to add explicit error handling**:
-
-- ✅ Hook failure is expected and recoverable (network errors, permission issues)
-- ✅ Component can render a useful error state
-- ✅ Graceful degradation improves UX
-- ❌ Hook is critical and component can't function without it (let error boundary handle it)
-
-## Edit Forms Pattern
-
-For edit/update forms, only allow submission when there are actual changes (`form.formState.isDirty`). Only submit fields that have been modified:
-
-```typescript
-// Avoid - submitting all fields
-const handleSubmit = form.handleSubmit((data) => {
-  const formData = new FormData();
-  formData.append("field1", data.field1);
-  formData.append("field2", data.field2);
-});
-
-// Prefer - only submit changed fields
-const handleSubmit = form.handleSubmit((data) => {
-  const formData = new FormData();
-  const { dirtyFields } = form.formState;
-
-  if (dirtyFields.field1) formData.append("field1", data.field1);
-  if (dirtyFields.field2) formData.append("field2", data.field2);
-});
-
-// Disable button when no changes
-<Button disabled={isPending || !form.formState.isDirty}>
-  Save Changes
-</Button>
-```
-
-### Server Actions for Updates
-
-Only include fields in the database update object that were actually sent in the FormData:
-
-```typescript
-// Avoid - updating all fields regardless of what changed
-const updateData = {
-  field1: validatedFields.data.field1,
-  field2: validatedFields.data.field2,
-};
-
-// Prefer - only update fields that were sent
-const updateData: Partial<DbModel> = {};
-if (formData.has("field1")) updateData.field1 = validatedFields.data.field1;
-if (formData.has("field2")) updateData.field2 = validatedFields.data.field2;
-```
-
-### Optimistic Updates
-
-Use `queryClient.setQueryData` before `queryClient.invalidateQueries` for immediate UI feedback:
-
-```typescript
-const { resetActionProcessed } = useServerAction(actionState, isPending, {
-  onSuccess: () => {
-    // Optimistically update the query data first
-    if (actionState?.data && entityId) {
-      queryClient.setQueryData(
-        ["entityById", entityId],
-        (oldData: EntityData | undefined) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            status: actionState.data?.new_status || oldData.status,
-          };
-        }
-      );
-    }
-    // Then invalidate to ensure fresh data from server
-    queryClient.invalidateQueries({
-      queryKey: ["entityById", entityId],
-    });
-  },
-});
-```
-
-## UI Patterns
-
-### Scrollbars and Layout Shifts
-
-Use the `ScrollArea` component from `@/components/ui/scroll-area` instead of native CSS/Tailwind overflow properties (like `overflow-auto`, `overflow-scroll`) for scrollable containers.
-
-**Why this matters**: Native scrollbars can cause layout shifts when the user connects a mouse (changing from overlay scrollbars to legacy scrollbars on some OS configurations). `ScrollArea` uses custom overlay scrollbars that do not take up layout space, ensuring consistent content dimensions regardless of the user's input device.
-
-```tsx
-// Prefer - consistent dimensions
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-// Avoid - causes layout shift when mouse connected
-<div className="overflow-auto h-full w-full">{content}</div>;
-
-<ScrollArea className="h-full w-full">{content}</ScrollArea>;
-```
-
-**Waiver — horizontal table scroll.** This rule targets scrollers whose _width_ a
-classic scrollbar can steal, reflowing their content: vertical scrollers inside a
-fixed-size container. It does not apply to a horizontal, auto-height scroller, where a
-classic scrollbar only adds height below the content and nothing is sized off it.
-
-In this monorepo the single horizontal table scroller is the container inside
-`packages/ui/src/components/table.tsx`, which `<Table>` provides for every consumer —
-pages must **not** add their own `overflow-x-auto` wrapper around a `<Table>`, because the
-inner container clips first and the outer one is dead. Wrapping a `<table>` in a
-`ScrollArea` is actively worse here: Base UI's viewport scrolls both axes with native
-scrollbars suppressed, which breaks sticky table headers, and it forces a client-component
-boundary into every server-rendered list page.
-
-Note also that this project's shared UI is `@yan/ui/components/*`; there is no
-`@/components/ui/scroll-area`. If a genuinely fixed-height **vertical** scroller is
-needed, build it on the already-installed `@base-ui/react/scroll-area` (the primitive the
-rest of `@yan/ui` uses) — do **not** add `@radix-ui/react-scroll-area`.
-
-### Accessibility, colour and type
-
-Every one of these rules exists because the codebase broke it, and nothing was
-watching. `eslint-plugin-jsx-a11y`'s recommended set is now enabled in
-`apps/crm-web/eslint.config.mjs` and `lint` runs at `--max-warnings 0`, so most
-of them now fail the build rather than the user — but the linter cannot see the
-last three.
-
-**Focus must always be visible.** Never write a bare `outline-none`; pair it with
-a `focus-visible` ring in the same class string. Four inputs had it bare,
-including both Lexical contract-body surfaces, so a keyboard user editing a
-contract could not tell which block they were in (WCAG 2.4.7). A popup container
-(`Combobox.Popup`, `Drawer.Popup`) is the exception — focus lives on the items
-inside it.
-
-**Every control needs an accessible name.** An icon-only button takes an
-`aria-label` that names the action _and its target_ (`aria-label={`Xóa ${item.name}`}`),
-not just the verb — four buttons in a list of roles all reading "Xóa" is the same
-as none. An editable table cell takes one too (`` `${column} — dòng ${i + 1}` ``):
-a grid of unnamed inputs announces as a row of anonymous spinbuttons.
-
-**Labels must be associated, not merely adjacent.** `Label` renders a plain
-`<label>`, and a `<label>` that is a _sibling_ of its input associates with
-nothing. Use `FormLabel` inside `FormItem`/`FormControl` (which wires
-`htmlFor`, `aria-describedby`, `aria-invalid` and `aria-required` for you), or
-`FieldLabel htmlFor` + `fieldProps(id, error)` from
-`components/form-bits/form-bits.tsx` in a form that isn't built on `Form*`.
-For a group of controls — toggle chips, a checkbox set — no `<label>` can
-associate: give the wrapper `role="group"` and an `aria-label`.
-
-**Mark required fields.** `<FormItem required>` or `<FieldLabel required>`. The
-asterisk is `aria-hidden`; the control carries `aria-required`.
-
-**Errors go through `FormMessage` (or `fieldError(error, id)`)**, never a bare
-`<p className="text-destructive">` — that is visible to sighted users and
-announced to nobody.
-
-**State is never carried by colour alone** (WCAG 1.4.1). A selected chip gets
-`aria-pressed`; a selected tab gets weight as well as hue; the stage stepper's
-current step gets an underline and an `sr-only` word, because "done" and
-"current" were both solid black dots.
-
-**Colour comes from the token layer.** No hex in TSX, and no raw Tailwind palette
-colours (`text-zinc-400`, `bg-emerald-50`) outside the one place the app leaves
-the theme: the always-paper-white `DocumentShell` / `.print-sheet` surface. Even
-there the value has to pass contrast — `text-zinc-400` on white is 2.6:1 and
-`placeholder:text-zinc-300` is 1.5:1; `zinc-500` (4.6:1) is the floor, `zinc-600`
-for anything small.
-
-**Type floor: `text-xs`.** `text-[10px]` is not a size this app has; it appeared
-five times and every one was a label or an error message.
-
-**One `<h1>` per page, and no skipped levels.** Use `PageHeader` for a list or
-form page; on a detail page whose title is an entity name, `<CardTitle as="h1">`.
-Sibling section cards under it are `as="h2"`. A page with no visible title still
-needs the heading — `<h1 className="sr-only">` (see `(field)/field/page.tsx`).
-
-**`autoFocus` is allowed only when focus follows a reveal** — an inline editor
-the user just clicked open, or the single field on a login screen. Disable the
-rule on the line with the reason, never in the config.
+- **Focus is always visible.** Never remove an outline without a visible replacement (the border colour changes to
+  `--fg`, or a `:focus-within` ring on a wrapper).
+- **Every control has an accessible name.** Icon-only buttons get an `aria-label` naming the action *and* its target
+  (`Decrease WOUNDS`). Selects and inputs without a visible label get an `aria-label`.
+- **Labels are associated** (`<label htmlFor>`, or the input nested inside its `<label>`). A group of toggle chips gets
+  `role="group"` and an `aria-label`.
+- **State is never shown by colour alone.**
+  - The selected tab gets weight as well as colour (`aria-selected`).
+  - A combatant's state is a word (ACTING, DONE, AMBUSHED).
+  - A marker colour square has an `aria-label` and the label text.
+- **Colour comes from the tokens.** No hex in TSX. Components use `var(--…)` from `globals.css`. Values that must be raw
+  (the QR code canvas) come from `lib/tokens/tokens.ts`, which mirrors the CSS variables.
+- **Smallest text is 12px.** Nothing smaller.
+- **Touch targets are at least 44px,** except dense secondary buttons (`.btn.sm`, 32px), and never below that.
+- **Phone first for players, tablet first for the GM.** Test both at about 390px and 1180px wide. Grid cells get
+  `min-width: 0` so content never spills into a neighbouring column.
 
 ## Data Handling
 
-### Date/Time
-
-Use Day.js for all date/time formatting, parsing, and manipulation instead of native Date methods.
-
-### Time Data Storage
-
-Always save time data as ISO UTC strings using `dayjs().utc().toISOString()`. Display in local/user timezones for UI, but store in UTC.
-
-### Timezone Validation
-
-Always wrap timezone operations in try/catch blocks with error handling and fallbacks for invalid timezone strings.
-
-### JSON Parsing
-
-Use `safeJSONParse` from `@/utils` instead of `JSON.parse`. Provides type safety, null handling, and fallback values.
-
-### Data Formatting
-
-Always wrap data formatting operations (JSON.parse, timezone formatting, date parsing, etc.) in try/catch blocks with appropriate fallbacks.
-
-### Pluralization
-
-Use `pluralize(count, singular, plural?)` from `@/utils` instead of inline `${count > 1 ? "s" : ""}` ternaries. Returns the noun only — caller adds the count.
-
-```typescript
-// ✅ Correct
-import { pluralize } from "@/utils";
-toast.success(`Updated ${count} ${pluralize(count, "session")}`);
-<span>{count} {pluralize(count, "panel")}</span>
-toast.error(`Imported ${n} ${pluralize(n, "child", "children")}`); // irregular
-
-// ❌ Avoid
-toast.success(`Updated ${count} session${count > 1 ? "s" : ""}`); // wrong for count = 0
-toast.success(`Updated ${count} session${count !== 1 ? "s" : ""}`);
-<span>{count} panel{count !== 1 ? "s" : ""}</span>
-```
-
-**Why**: `> 1` is wrong for 0 ("0 file" reads worse than "0 files"). `pluralize` handles `count === 1` correctly, lets us change rules in one place, and supports irregular plurals via the third arg. Adjacent-token JSX patterns like `Panel{x !== 1 ? "s" : ""}` should be restructured to `{pluralize(x, "Panel")}`.
-
-### Currency Formatting
-
-All currency values must be fixed to a maximum of 2 decimal places:
-
-```typescript
-// Correct - Fixed to 2 decimal places
-const amount = 10.5;
-const total = (amount * 1.5).toFixed(2); // "15.75"
-const price = parseFloat((amount * 2).toFixed(2)); // 21.00
-
-// Incorrect - Raw floating-point arithmetic
-const total = amount * 1.5; // 15.750000000000002
-```
-
-## Toast Notifications
-
-### Prevent Duplicate Toasts
-
-**Always pass a stable `id` to `toast()` calls that can be triggered multiple times in rapid succession** (e.g., file validation errors, upload errors, network errors in loops). Without an `id`, each call stacks a new toast on screen.
-
-```typescript
-// ❌ Avoid — fires a new toast every time the handler runs
-toast.error("Image exceeds maximum size (3MB). Please upload a smaller file.");
-
-// ✅ Prefer — sonner deduplicates; only one toast is shown at a time
-const UPLOAD_IMAGE_ERROR_ID = "upload-image-size-error";
-
-toast.error("Image exceeds maximum size (3MB). Please upload a smaller file.", {
-  id: UPLOAD_IMAGE_ERROR_ID,
-});
-```
-
-**When to use an `id`**:
-
-- Validation errors inside Uppy `file-added` / `file-validation-error` callbacks (fires once per file when multiple files are dropped)
-- Upload error handlers called in a loop or batch
-- Any `toast` call inside a `forEach`, `map`, or event listener that can fire repeatedly
-
-**Naming convention**: Define the ID as a module-level constant with a descriptive name:
-
-```typescript
-const UPLOAD_IMAGE_ERROR_ID = "upload-reference-image-error";
-const SESSION_SAVE_ERROR_ID = "session-save-error";
-```
-
-**Why this matters**: Users who drop multiple oversized files see the same error message duplicated N times. A single, deduplicated toast gives a cleaner UX and prevents toast queue overflow.
+- **Parse untrusted JSON with zod** (`CharacterStats.parse(JSON.parse(text))` inside a `try`), and show the error.
+- **Time:** display dates with the platform `Intl` APIs. Timestamps from the server are UTC ISO strings.
+- **Rules numbers never come from the UI.** Derived traits, pool caps and death states come from `@wg/shared`
+  (`deriveStats`, `poolMax`, `pcStatus`, `threatStatus`), so the tablet and the phones always agree with the server.
