@@ -1,7 +1,8 @@
-import { and, eq, max, not, sql } from "drizzle-orm";
+import { and, eq, max, sql } from "drizzle-orm";
 import { threats } from "@wg/data";
 import {
-  EncounterEntry, canSeize, sideOfKind, threatClassAt, type Action, type ActionResult, type Marker, type Side, type Threat,
+  EncounterEntry, canAct, canSeize, isOut, sideOf, sideOfKind, sideUpNext, threatClassAt,
+  type Action, type ActionResult, type Marker, type Side, type Threat,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -12,12 +13,21 @@ import { beat } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
+import { loadState } from "../table/table.state.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
 
 export type EncounterAction = Extract<
   Action,
   { type: `encounter.${string}` | `turn.${string}` | `combatant.${string}` | "beat.startEncounter" }
 >;
+
+// The live state inside this transaction, for the shared turn rules (sideUpNext, canAct, canSeize), so the api and
+// the tracker can't drift apart.
+async function liveTable(tx: Tx, campaignId: string) {
+  const state = await loadState(campaignId, tx);
+  const enc = state?.encounter ?? fail("No active encounter");
+  return { state: state!, enc }; // an encounter implies the campaign row was found
+}
 
 async function activeEncounter(tx: Tx, campaignId: string) {
   const [enc] = await tx.select().from(encounter).where(and(eq(encounter.campaignId, campaignId), eq(encounter.active, true)));
@@ -99,44 +109,42 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
 
     case "turn.start":
     case "turn.seize": {
-      const enc = await activeEncounter(tx, cid);
+      const { state, enc } = await liveTable(tx, cid);
       if (enc.currentId) fail("End the current turn first");
-      const [c] = await tx.select().from(combatant).where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)));
-      if (!c) fail("Combatant not found");
+      const c = enc.combatants.find((x) => x.id === a.id) ?? fail("Combatant not found");
+      if (isOut(state, c)) fail(c.kind === "pc" ? "Dead: no more Turns (p.193)" : "Slain: no more Turns (p.324)");
       if (c.acted) fail("Already acted this round");
       if (c.ambushed && enc.round === 1) fail("Ambushed: no turn in Round 1 (pay 1 Glory/Ruin to be aware)");
-      const side = sideOfKind(c.kind);
+      const side = sideOf(c);
+      const up = sideUpNext(state);
+      const sideName = (x: Side) => (x === "agents" ? "Agents" : "Threats");
       if (a.type === "turn.seize") {
-        if (!canSeize(enc, side))
-          fail(enc.seizedSide === side ? "Already Seized: the other side acts next" : "Seizing lets the side that just acted go again");
+        if (!canSeize(state, side))
+          fail(enc.seizedSide === side ? "Already Seized: the other side acts next"
+            : up === side ? `No need to Seize: the ${sideName(side)} act next anyway`
+            : "Seizing lets the side that just acted go again");
         await spend(tx, { campaignId: cid, side });
         await tx.update(encounter).set({ currentId: a.id, seizedSide: side }).where(eq(encounter.id, enc.id));
       } else {
         // Normal order: the other side, unless it has no one left (p.177).
-        const pending = await tx.select({ kind: combatant.kind, ambushed: combatant.ambushed }).from(combatant)
-          .where(and(eq(combatant.encounterId, enc.id), not(combatant.acted)));
-        const expected: Side = enc.lastSide === "agents" ? "threats" : "agents";
-        const expectedCanAct = pending.some((p) => sideOfKind(p.kind) === expected && !(p.ambushed && enc.round === 1));
-        if (side !== expected && expectedCanAct)
-          fail(`It's the ${expected === "agents" ? "Agents'" : "Threats'"} turn; Seize to go out of order`);
+        if (side !== up) fail(`It's the ${sideName(up ?? side)}' turn; Seize to go out of order`);
         await tx.update(encounter).set({ currentId: a.id }).where(eq(encounter.id, enc.id));
       }
       return { ok: true };
     }
 
     case "turn.end": {
-      const enc = await activeEncounter(tx, cid);
-      if (!enc.currentId) fail("No one is taking a turn");
-      const [c] = await tx.update(combatant).set({ acted: true }).where(eq(combatant.id, enc.currentId)).returning({ kind: combatant.kind });
-      const side = sideOfKind(c!.kind); // current_id is a FK to combatant, so the row exists
+      const { state, enc } = await liveTable(tx, cid);
+      const current = enc.combatants.find((x) => x.id === enc.currentId) ?? fail("No one is taking a turn");
+      const side = sideOf(current);
+      await tx.update(combatant).set({ acted: true }).where(eq(combatant.id, current.id));
       // A Seize holds until the other side acts.
       await tx.update(encounter)
         .set({ currentId: null, lastSide: side, seizedSide: enc.seizedSide === side ? side : null })
         .where(eq(encounter.id, enc.id));
-      // The Round ends once everyone able to act has had a Turn (p.176).
-      const rest = await tx.select({ ambushed: combatant.ambushed }).from(combatant)
-        .where(and(eq(combatant.encounterId, enc.id), not(combatant.acted)));
-      if (rest.every((r) => r.ambushed && enc.round === 1)) await newRound(tx, { encounterId: enc.id, round: enc.round });
+      // The Round ends once everyone able to act has had a Turn (p.176). canAct already excludes the current
+      // combatant, the Slain and the Dead.
+      if (!enc.combatants.some((x) => canAct(state, x))) await newRound(tx, { encounterId: enc.id, round: enc.round });
       return { ok: true };
     }
 
@@ -150,6 +158,9 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
     case "combatant.addCharacter": {
       await ownCharacter(tx, { campaignId: cid, id: a.characterId });
       const enc = await activeEncounter(tx, cid);
+      const [dup] = await tx.select({ id: combatant.id }).from(combatant)
+        .where(and(eq(combatant.encounterId, enc.id), eq(combatant.characterId, a.characterId)));
+      if (dup) fail("Already in this encounter");
       return { ok: true, id: await addPc(tx, { encounterId: enc.id, characterId: a.characterId }) };
     }
 
@@ -162,7 +173,11 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         if (!r.length) fail("Combatant not found");
       }
       if (Object.keys(threatOnly).length) {
-        const r = await tx.update(combatant).set(threatOnly).where(and(where, eq(combatant.kind, "threat"))).returning({ id: combatant.id });
+        // Setting a Mob's size by hand raises its starting size too, so the half-slain prompt and the healing cap
+        // (p.325) follow; null turns it back into a single Threat.
+        const mobStart = threatOnly.mobCount === undefined ? {}
+          : { mobStart: threatOnly.mobCount === null ? null : sql`greatest(coalesce(${combatant.mobStart}, 0), ${threatOnly.mobCount})` };
+        const r = await tx.update(combatant).set({ ...threatOnly, ...mobStart }).where(and(where, eq(combatant.kind, "threat"))).returning({ id: combatant.id });
         if (!r.length) fail("Threat combatant not found");
       }
       return { ok: true };
@@ -175,12 +190,16 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       if (!c) fail("Threat combatant not found");
       // Threat rows always carry a stat snapshot (see addThreat).
       if (a.shock && c.statSnapshot!.shock === null) fail("This Threat never suffers Shock (p.324)");
-      // Every member of a Mob has 1 Wound (p.325): Wounds remove members; healing restores them, up to the starting size.
-      const damage = c.mobCount !== null && a.wounds !== undefined
-        ? { mobCount: sql`least(${c.mobStart ?? c.mobCount}, greatest(0, ${combatant.mobCount} - ${a.wounds}))` }
-        : { wounds: bump(combatant.wounds, a.wounds) };
+      // Mob (p.325): every member has 1 Wound, so Wounds remove members and healing restores them, up to the starting
+      // size. More Shock in one hit than the members' Maximum Shock removes one member; less has no effect, and a Mob
+      // keeps no Shock track.
+      const maxShock = c.statSnapshot!.shock;
+      const mobLoss = (a.wounds ?? 0) + (a.shock !== undefined && maxShock !== null && a.shock > maxShock ? 1 : 0);
+      const damage = c.mobCount !== null
+        ? { mobCount: sql`least(${c.mobStart ?? c.mobCount}, greatest(0, ${combatant.mobCount} - ${mobLoss}))` }
+        : { wounds: bump(combatant.wounds, a.wounds), shock: bump(combatant.shock, a.shock) };
       await tx.update(combatant)
-        .set({ ...damage, shock: bump(combatant.shock, a.shock), personalRuin: bump(combatant.personalRuin, a.personalRuin) })
+        .set({ ...damage, personalRuin: bump(combatant.personalRuin, a.personalRuin) })
         .where(eq(combatant.id, a.id));
       return { ok: true };
     }

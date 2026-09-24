@@ -3,20 +3,21 @@ import { CharacterStats, Overrides, type Codex, type Combatant, type LiveState }
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
-import { db } from "../core/db.ts";
+import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
 
-export async function loadState(campaignId: string): Promise<LiveState | null> {
-  const [c] = await db.select().from(campaign).where(eq(campaign.id, campaignId));
+// `conn` lets an action read the live state inside its own transaction (the turn rules in encounter.actions).
+export async function loadState(campaignId: string, conn: Db = db): Promise<LiveState | null> {
+  const [c] = await conn.select().from(campaign).where(eq(campaign.id, campaignId));
   if (!c) return null;
 
-  const chars = await db.select().from(character).where(eq(character.campaignId, campaignId)).orderBy(asc(character.createdAt));
-  const [enc] = await db
+  const chars = await conn.select().from(character).where(eq(character.campaignId, campaignId)).orderBy(asc(character.createdAt));
+  const [enc] = await conn
     .select()
     .from(encounter)
     .where(and(eq(encounter.campaignId, campaignId), eq(encounter.active, true)));
   const rows = enc
-    ? await db.select().from(combatant).where(eq(combatant.encounterId, enc.id)).orderBy(asc(combatant.order))
+    ? await conn.select().from(combatant).where(eq(combatant.encounterId, enc.id)).orderBy(asc(combatant.order))
     : [];
 
   return {

@@ -2,7 +2,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  Action, CharacterStats, Threat, canSeize, deriveStats, pcStatus, poolMax, sideUpNext, threatStatus, toPlayerCodex, toPlayerView,
+  Action, CharacterStats, Threat, canAct, canSeize, deriveStats, isOut, pcStatus, poolMax, sideUpNext, threatStatus, toPlayerCodex,
+  toPlayerView,
   type Character, type Codex, type Combatant, type Encounter, type LiveState, type ThreatCombatant,
 } from "./index.ts";
 
@@ -16,6 +17,11 @@ const pc = (id: string, o: Partial<Combatant> = {}): Combatant =>
   ({ id, kind: "pc", characterId: `ch-${id}`, acted: false, ambushed: false, ...o }) as Combatant;
 const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter =>
   ({ id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null, combatants, ...o });
+const char = (o: Partial<Character>): Character =>
+  ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, xp: 0, conditions: [], ...o });
+// A Tier 1 table around an encounter; the turn rules need the characters to know who's Dead.
+const table = (e: Encounter, characters: Character[] = []): LiveState =>
+  ({ campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" }, characters, encounter: e });
 
 test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", () => {
   const s: LiveState = {
@@ -57,19 +63,33 @@ test("pool caps", () => {
 });
 
 test("sideUpNext alternates, skips ambushed in Round 1, falls back to the side with someone left", () => {
-  assert.equal(sideUpNext(enc([pc("a"), threat("t")])), "agents", "players choose first each round");
-  assert.equal(sideUpNext(enc([pc("a", { acted: true }), pc("b"), threat("t")], { lastSide: "agents" })), "threats");
-  assert.equal(sideUpNext(enc([pc("a", { acted: true }), pc("b"), threat("t", { acted: true })], { lastSide: "agents" })), "agents");
-  assert.equal(sideUpNext(enc([pc("a", { ambushed: true }), threat("t")])), "threats", "ambushed agent has no turn in round 1");
-  assert.equal(sideUpNext(enc([pc("a", { ambushed: true }), threat("t")], { round: 2 })), "agents");
+  assert.equal(sideUpNext(table(enc([pc("a"), threat("t")]))), "agents", "players choose first each round");
+  assert.equal(sideUpNext(table(enc([pc("a", { acted: true }), pc("b"), threat("t")], { lastSide: "agents" }))), "threats");
+  assert.equal(sideUpNext(table(enc([pc("a", { acted: true }), pc("b"), threat("t", { acted: true })], { lastSide: "agents" }))), "agents");
+  assert.equal(sideUpNext(table(enc([pc("a", { ambushed: true }), threat("t")]))), "threats", "ambushed agent has no turn in round 1");
+  assert.equal(sideUpNext(table(enc([pc("a", { ambushed: true }), threat("t")], { round: 2 }))), "agents");
 });
 
 test("canSeize: same side once, GM-only at round start", () => {
-  assert.equal(canSeize(enc([], { lastSide: "agents" }), "agents"), true);
-  assert.equal(canSeize(enc([], { lastSide: "agents", seizedSide: "agents" }), "agents"), false, "once before the other side acts");
-  assert.equal(canSeize(enc([], { lastSide: "agents" }), "threats"), false, "threats act next anyway");
-  assert.equal(canSeize(enc([]), "threats"), true, "GM seizes the first turn of a round (p.176)");
-  assert.equal(canSeize(enc([]), "agents"), false);
+  assert.equal(canSeize(table(enc([], { lastSide: "agents" })), "agents"), true);
+  assert.equal(canSeize(table(enc([], { lastSide: "agents", seizedSide: "agents" })), "agents"), false, "once before the other side acts");
+  assert.equal(canSeize(table(enc([], { lastSide: "agents" })), "threats"), false, "threats act next anyway");
+  assert.equal(canSeize(table(enc([])), "threats"), true, "GM seizes the first turn of a round (p.176)");
+  assert.equal(canSeize(table(enc([])), "agents"), false);
+  assert.equal(canSeize(table(enc([pc("a", { acted: true }), pc("b")], { lastSide: "agents" })), "agents"), false,
+    "no Threat left to act: the Agents go again without paying");
+});
+
+test("Slain threats and Dead characters are out: no Turns, and they don't hold up the Round", () => {
+  const slain = threat("t", { shock: 3 }); // Troop over max Shock (p.324)
+  assert.equal(isOut(table(enc([slain])), slain), true);
+  assert.equal(sideUpNext(table(enc([pc("a", { acted: true }), slain], { lastSide: "agents" }))), null, "Round is over");
+  const dead = pc("a");
+  const e = enc([dead, threat("t")]);
+  assert.equal(isOut(table(e, [char({ id: "ch-a", traumatic: 3 })]), dead), true, "Tier 1: more than 2 Traumatic Injuries (p.193)");
+  assert.equal(canAct(table(e, [char({ id: "ch-a", traumatic: 3 })]), dead), false);
+  assert.equal(sideUpNext(table(e, [char({ id: "ch-a", traumatic: 3 })])), "threats");
+  assert.equal(isOut(table(e, [char({ id: "ch-a", wounds: 99 })]), dead), false, "Dying characters still take Turns (p.193)");
 });
 
 test("threatStatus follows class rules (p.324)", () => {
@@ -83,8 +103,7 @@ test("threatStatus follows class rules (p.324)", () => {
 
 test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries", () => {
   const d = deriveStats({ stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }), overrides: {}, tier: 1 });
-  const c = (o: Partial<Character>): Character =>
-    ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, xp: 0, conditions: [], ...o });
+  const c = char;
   assert.deepEqual(pcStatus(c({ wounds: 6 }), d), ["Wounded"], "equal to max is not Dying");
   assert.deepEqual(pcStatus(c({ wounds: 7 }), d), ["Dying"]);
   assert.deepEqual(pcStatus(c({ wounds: 7, traumatic: 3 }), d), ["Dead"]);

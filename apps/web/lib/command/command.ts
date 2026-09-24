@@ -29,6 +29,9 @@ export function targetsOf(s: LiveState): Target[] {
 function resolve({ words, targets, selected }: { words: string[]; targets: Target[]; selected: string | null }): Target | string {
   if (!words.length) return targets.find((t) => t.combatantId === selected) ?? "No target: select a row or type a name";
   const q = words.join(" ").toLowerCase();
+  // An exact name wins, so "Ork" is reachable next to "Ork Nob".
+  const exact = targets.filter((t) => t.name.toLowerCase() === q);
+  if (exact.length === 1) return exact[0]!;
   const hits = targets.filter((t) => {
     const n = t.name.toLowerCase();
     return n === q || n.startsWith(q) || n.split(/[\s×()]+/).some((w) => w.startsWith(q));

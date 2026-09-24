@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { io, type Socket } from "socket.io-client";
-import type { ActionInput, ActionResult, Codex, LiveState, ThreatCombatant } from "@wg/shared";
+import { deriveStats, poolMax, type ActionInput, type ActionResult, type Codex, type LiveState, type ThreatCombatant } from "@wg/shared";
 
 const API = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
 
@@ -31,6 +31,23 @@ function connect(token: string) {
         setTimeout(() => reject(new Error(`timed out waiting for: ${pred}`)), 3000);
       }),
   };
+}
+
+// Polls until check() holds, for the codex snapshot (which has no `until`).
+async function eventually(check: () => boolean, what: string) {
+  for (let i = 0; i < 30; i++) {
+    if (check()) return;
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  throw new Error(`timed out waiting for: ${what}`);
+}
+
+async function newCampaign(name: string, tier: number) {
+  const res = await post("/campaigns", { name, tier }, { "x-admin-key": process.env.ADMIN_KEY! });
+  const { gmToken } = (await res.json()) as { gmToken: string };
+  const gm = connect(gmToken);
+  await gm.until((s) => s.campaign.name === name);
+  return gm;
 }
 
 const threatOf = (s: LiveState) => s.encounter?.combatants.find((c): c is ThreatCombatant => c.kind === "threat");
@@ -97,7 +114,7 @@ test("GM and player share a table", async (t) => {
   assert.ok((await gm.send({ type: "turn.end" })).ok);
   assert.deepEqual(await gm.send({ type: "turn.start", id: heroC.id }), { ok: false, error: "Already acted this round" });
   assert.deepEqual(await gm.send({ type: "turn.start", id: otherC.id }), { ok: false, error: "It's the Threats' turn; Seize to go out of order" });
-  assert.deepEqual(await gm.send({ type: "turn.seize", id: ork.id }), { ok: false, error: "Seizing lets the side that just acted go again" });
+  assert.deepEqual(await gm.send({ type: "turn.seize", id: ork.id }), { ok: false, error: "No need to Seize: the Threats act next anyway" });
   const before = (await gm.until((s) => s.encounter?.lastSide === "agents")).campaign.glory;
   assert.ok((await gm.send({ type: "turn.seize", id: otherC.id })).ok);
   await gm.until((s) => s.campaign.glory === before - 1 && s.encounter?.currentId === otherC.id);
@@ -145,7 +162,7 @@ test("GM and player share a table", async (t) => {
   // Pools are capped: Glory max(6, players + 2), Ruin 2 × players.
   await gm.send({ type: "pool.adjust", pool: "glory", delta: 100 });
   await gm.send({ type: "pool.adjust", pool: "ruin", delta: 100 });
-  await gm.until((s) => s.campaign.glory === 6 && s.campaign.ruin === 4);
+  await gm.until((s) => s.campaign.glory === poolMax("glory", 2) && s.campaign.ruin === poolMax("ruin", 2));
 
   // The bestiary endpoint is GM-only.
   const asCookie = (token: string) => ({ headers: { cookie: `wg_token=${token}` } });
@@ -167,4 +184,104 @@ test("a malformed login cookie is refused, not fatal", async () => {
   socket.close();
   assert.equal(err.message, "unauthorized");
   assert.equal((await fetch(`${API}/api/me`)).status, 401, "api still up");
+});
+
+test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, redaction", async (t) => {
+  const gm = await newCampaign("Edge", 2);
+  const other = await newCampaign("Elsewhere", 2);
+  t.after(() => (gm.socket.close(), other.socket.close()));
+  const charOf = (s: LiveState, id: string) => s.characters.find((c) => c.id === id)!;
+
+  assert.ok((await gm.send({ type: "campaign.update", framework: "Deathwatch", patron: "Ordo Xenos" })).ok);
+  await gm.until((s) => s.campaign.framework === "Deathwatch" && s.campaign.patron === "Ordo Xenos");
+
+  const hero = await gm.send({ type: "character.create", name: "Hero" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  const c = await gm.send({ type: "character.create", name: "C" });
+  const gone = await gm.send({ type: "character.create", name: "Gone" });
+  assert.ok(hero.ok && hero.id && b.ok && b.id && c.ok && c.id && gone.ok && gone.id);
+  assert.ok((await gm.send({ type: "character.update", id: b.id, name: "Brother B" })).ok);
+  assert.ok((await gm.send({ type: "character.delete", id: gone.id })).ok);
+  const s0 = await gm.until((s) => s.characters.length === 3 && charOf(s, b.id!)?.name === "Brother B");
+  const d = deriveStats({ stats: charOf(s0, hero.id).stats, overrides: {}, tier: 2 });
+
+  // Dying (p.193): over max Wounds falls Prone; a Wound while Dying is a Traumatic Injury; any healing ends Dying.
+  await gm.send({ type: "character.adjust", id: hero.id, wounds: d.maxWounds + 1 });
+  await gm.until((s) => charOf(s, hero.id!).wounds === d.maxWounds + 1 && charOf(s, hero.id!).conditions.includes("Prone"));
+  await gm.send({ type: "character.adjust", id: hero.id, wounds: 3 });
+  await gm.until((s) => charOf(s, hero.id!).traumatic === 1 && charOf(s, hero.id!).wounds === d.maxWounds + 1);
+  assert.deepEqual(await gm.send({ type: "character.respite", id: hero.id }), { ok: false, error: "A Dying character can't benefit from a Respite (p.197)" });
+  await gm.send({ type: "character.adjust", id: hero.id, wounds: -1 });
+  await gm.until((s) => charOf(s, hero.id!).wounds === d.maxWounds);
+  // More Traumatic Injuries than Tier + 1: Dead.
+  await gm.send({ type: "character.adjust", id: hero.id, traumatic: d.maxTraumatic });
+  await gm.until((s) => charOf(s, hero.id!).traumatic === d.maxTraumatic + 1);
+  assert.deepEqual(await gm.send({ type: "character.respite", id: hero.id }), { ok: false, error: "A Dead character can't Respite (p.193)" });
+  assert.ok((await gm.send({ type: "character.respite", id: c.id })).ok);
+
+  // Out of the fight: a Dead Agent and a Slain Troop take no Turns and don't hold up the Round.
+  await gm.send({ type: "encounter.start" });
+  const heroC = await gm.send({ type: "combatant.addCharacter", characterId: hero.id });
+  const bC = await gm.send({ type: "combatant.addCharacter", characterId: b.id });
+  const cC = await gm.send({ type: "combatant.addCharacter", characterId: c.id });
+  assert.deepEqual(await gm.send({ type: "combatant.addCharacter", characterId: b.id }), { ok: false, error: "Already in this encounter" });
+  const ork = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy" });
+  assert.ok(heroC.ok && heroC.id && bC.ok && bC.id && cC.ok && cC.id && ork.ok && ork.id);
+  assert.deepEqual(await gm.send({ type: "turn.start", id: heroC.id }), { ok: false, error: "Dead: no more Turns (p.193)" });
+  await gm.send({ type: "combatant.adjust", id: ork.id, wounds: 50 });
+  assert.deepEqual(await gm.send({ type: "turn.start", id: ork.id }), { ok: false, error: "Slain: no more Turns (p.324)" });
+  assert.ok((await gm.send({ type: "turn.start", id: bC.id })).ok);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.deepEqual(await gm.send({ type: "turn.seize", id: cC.id }), { ok: false, error: "No need to Seize: the Agents act next anyway" });
+  assert.ok((await gm.send({ type: "turn.start", id: cC.id })).ok);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  await gm.until((s) => s.encounter?.round === 2);
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
+  await gm.until((s) => s.encounter?.round === 3);
+  assert.ok((await gm.send({ type: "combatant.remove", id: ork.id })).ok);
+
+  // Mobs (p.325): sizing a Mob by hand sets its starting size; more Shock in one hit than max Shock removes one member.
+  const mob = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy" });
+  assert.ok(mob.ok && mob.id);
+  await gm.send({ type: "combatant.update", id: mob.id, mobCount: 6 });
+  const m0 = threatOf(await gm.until((s) => threatOf(s)?.mobStart === 6))!;
+  await gm.send({ type: "combatant.adjust", id: mob.id, shock: m0.maxShock! + 1 });
+  await gm.until((s) => threatOf(s)?.mobCount === 5);
+  await gm.send({ type: "combatant.adjust", id: mob.id, shock: 1 });
+  await gm.send({ type: "combatant.adjust", id: mob.id, wounds: 1 });
+  await gm.until((s) => threatOf(s)?.mobCount === 4 && threatOf(s)?.shock === 0);
+
+  // Players never get the threat id or personal Ruin of an unrevealed Threat.
+  const issued = await gm.send({ type: "token.issue", characterId: b.id });
+  assert.ok(issued.ok && issued.token);
+  const player = connect(issued.token);
+  t.after(() => player.socket.close());
+  const seen = threatOf(await player.until((s) => !!threatOf(s)))!;
+  assert.deepEqual([seen.threatId, seen.personalRuin, seen.stats], ["", 0, null]);
+  assert.ok((await gm.send({ type: "encounter.end" })).ok);
+  await gm.until((s) => s.encounter === null);
+
+  // Codex references must stay inside the campaign; deleting an NPC clears it from beats.
+  const foreign = await other.send({ type: "codex.save", kind: "faction", data: { name: "Not yours" } });
+  const faction = await gm.send({ type: "codex.save", kind: "faction", data: { name: "Mechanicus" } });
+  assert.ok(foreign.ok && foreign.id && faction.ok && faction.id);
+  assert.deepEqual(await gm.send({ type: "codex.save", kind: "npc", data: { name: "Spy", factionId: foreign.id } }), { ok: false, error: "Faction not found" });
+  const vex = await gm.send({ type: "codex.save", kind: "npc", data: { name: "Magos Vex", factionId: faction.id, revealed: true } });
+  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Volkus" } });
+  assert.ok(vex.ok && vex.id && adv.ok && adv.id);
+  assert.deepEqual(await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: adv.id, title: "Bad", encounter: [{ threatId: "nope" }] } }),
+    { ok: false, error: 'Unknown threat "nope"' });
+  const b1 = await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: adv.id, title: "Meet Vex", npcIds: [vex.id] } });
+  const b2 = await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: adv.id, title: "Ambush", encounter: [{ threatId: "ork-boy", count: 2 }] } });
+  assert.ok(b1.ok && b1.id && b2.ok && b2.id);
+  assert.ok((await gm.send({ type: "beat.reorder", adventureId: adv.id, ids: [b2.id, b1.id] })).ok);
+  await eventually(() => gm.codex()?.adventures[0]?.beats[0]?.id === b2.id, "beats reordered");
+  await eventually(() => player.codex()?.npcs[0]?.factionId === null, "players don't get hidden faction ids");
+  assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: vex.id })).ok);
+  await eventually(() => gm.codex()?.adventures[0]?.beats.find((x) => x.id === b1.id)?.npcIds.length === 0, "deleted NPC cleared from beats");
+
+  // A prepared beat starts an encounter with the party and its threats.
+  assert.ok((await gm.send({ type: "beat.startEncounter", id: b2.id })).ok);
+  await gm.until((s) => s.encounter?.combatants.filter((x) => x.kind === "threat").length === 2
+    && s.encounter.combatants.filter((x) => x.kind === "pc").length === 3);
 });

@@ -34,7 +34,7 @@ export function PlayerApp({ characterId }: PlayerAppProps) {
   const names = new Map(state.characters.map((c) => [c.id, c.name]));
   const current = enc?.combatants.find((c) => c.id === enc.currentId);
   const currentName = current ? (current.kind === "pc" ? names.get(current.characterId) : current.label) : null;
-  const next = enc ? sideUpNext(enc) : null;
+  const next = sideUpNext(state);
   const banner = !enc ? "NO COMBAT · STANDING BY"
     : myTurn ? "▶ YOUR TURN"
     : `RND ${String(enc.round).padStart(2, "0")} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;

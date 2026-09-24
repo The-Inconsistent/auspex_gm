@@ -16,7 +16,7 @@ const s: LiveState = {
     id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null,
     combatants: [
       { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false },
-      threat({ id: "t1", label: "Preacher Hollan" }), threat({ id: "t2", label: "Kommando ×6" }), threat({ id: "t3", label: "Kommando Nob" }),
+      threat({ id: "t1", label: "Preacher Hollan" }), threat({ id: "t2", label: "Kommando ×6" }), threat({ id: "t3", label: "Kommando Nob" }), threat({ id: "t4", label: "Kommando" }),
     ],
   },
 };
@@ -47,7 +47,8 @@ test("globals, turns, conditions", () => {
 });
 
 test("errors are specific", () => {
-  assert.match((parseCommand({ input: "kommando dmg 1", state: s, selected: null }) as { error: string }).error, /Ambiguous: Kommando ×6, Kommando Nob/);
+  assert.match((parseCommand({ input: "komm dmg 1", state: s, selected: null }) as { error: string }).error, /Ambiguous: Kommando ×6, Kommando Nob, Kommando/);
+  assert.deepEqual(ok("kommando dmg 1"), [{ type: "combatant.adjust", id: "t4", wounds: 1 }], "an exact name wins over prefixes");
   assert.match((parseCommand({ input: "dmg 2", state: s, selected: null }) as { error: string }).error, /No target/);
   assert.match((parseCommand({ input: "zog dmg 2", state: s, selected: null }) as { error: string }).error, /No combatant matches "zog"/);
   assert.match((parseCommand({ input: "hollan wrath 1", state: s, selected: null }) as { error: string }).error, /Threats don't have Wrath/);

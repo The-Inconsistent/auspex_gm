@@ -167,22 +167,37 @@ export const LiveState = z.object({
 export type LiveState = z.infer<typeof LiveState>;
 export type Encounter = NonNullable<LiveState["encounter"]>;
 
-// Ambushed characters get no Turn in Round 1 (p.177).
-export const canAct = (e: Encounter, c: Combatant) => !c.acted && c.id !== e.currentId && !(c.ambushed && e.round === 1);
+// Slain threats and Dead characters are out of the fight: they take no Turns and don't hold up the Round
+// (p.176, p.193, p.324). An Adversary over max Wounds stays in until the GM removes it (Dying or dead is their call).
+export function isOut(s: LiveState, c: Combatant): boolean {
+  if (c.kind === "threat") return threatStatus(c).includes("Slain");
+  const ch = s.characters.find((x) => x.id === c.characterId);
+  return ch ? pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })).includes("Dead") : false;
+}
+
+// Whether c can take a Turn now. Ambushed characters get no Turn in Round 1 (p.177).
+export function canAct(s: LiveState, c: Combatant): boolean {
+  const e = s.encounter;
+  return !!e && !c.acted && c.id !== e.currentId && !(c.ambushed && e.round === 1) && !isOut(s, c);
+}
 
 // Alternating Turns (p.176-177): after an Agent a Threat acts and vice versa; if the other side has no one left,
-// the same side goes again. Each Round starts with the players choosing.
-export function sideUpNext(e: Encounter): Side | null {
-  const pending = (side: Side) => e.combatants.some((c) => canAct(e, c) && sideOf(c) === side);
+// the same side goes again. Each Round starts with the players choosing. null = no one left this Round.
+export function sideUpNext(s: LiveState): Side | null {
+  const e = s.encounter;
+  if (!e) return null;
+  const pending = (side: Side) => e.combatants.some((c) => canAct(s, c) && sideOf(c) === side);
   const preferred: Side = e.lastSide === "agents" ? "threats" : "agents";
   const other: Side = preferred === "agents" ? "threats" : "agents";
   return pending(preferred) ? preferred : pending(other) ? other : null;
 }
 
-// Seize the Initiative (p.176-177, p.320): the side that just acted pays 1 Glory/Ruin to act again, once before the
-// other side acts. At the start of a Round only the GM can Seize, to let a Threat go first.
-export function canSeize(e: Pick<Encounter, "lastSide" | "seizedSide">, side: Side): boolean {
-  if (e.seizedSide === side) return false;
+// Seize the Initiative (p.176-177, p.320): the side that just acted pays 1 Glory/Ruin to act again, once per turn
+// (it can't Seize again until the other side acts). At the start of a Round only the GM can Seize, to let a Threat
+// go first. Never needed, so never allowed, when that side is up next anyway.
+export function canSeize(s: LiveState, side: Side): boolean {
+  const e = s.encounter;
+  if (!e || e.seizedSide === side || sideUpNext(s) === side) return false;
   return e.lastSide === null ? side === "threats" : e.lastSide === side;
 }
 
@@ -214,8 +229,10 @@ export const toPlayerView = (s: LiveState): LiveState =>
         ...s,
         encounter: {
           ...s.encounter,
+          // Unrevealed: bars, label and Conditions only. The threat id would name the stat block, and personal Ruin is
+          // the GM's.
           combatants: s.encounter.combatants.map((c) =>
-            c.kind === "threat" && !c.revealed ? { ...c, stats: null } : c,
+            c.kind === "threat" && !c.revealed ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
           ),
         },
       };

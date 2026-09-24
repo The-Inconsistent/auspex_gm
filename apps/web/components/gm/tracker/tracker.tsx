@@ -21,11 +21,23 @@ import type { LogEntry, Run } from "./types";
 
 type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };
 
-// Undo = the inverse delta. ponytail: inexact if the counter was clamped at 0; server-side history if that bites.
-function inverse(a: ActionInput): ActionInput | undefined {
+// Undo = the inverse delta, read against the state at tap time, because some taps don't do what their delta says:
+// a Wound on a Dying PC is a Traumatic Injury (p.193), and Shock on a Mob removes one member or nothing (p.325).
+// ponytail: inexact if the counter was clamped at 0 (or healing ended Dying); server-side history if that bites.
+function inverse({ action: a, state }: { action: ActionInput; state: LiveState }): ActionInput | undefined {
   const neg = (n?: number) => (n === undefined ? undefined : -n);
-  if (a.type === "character.adjust") return { ...a, wounds: neg(a.wounds), shock: neg(a.shock), wrath: neg(a.wrath), traumatic: neg(a.traumatic) };
-  if (a.type === "combatant.adjust") return { ...a, wounds: neg(a.wounds), shock: neg(a.shock), personalRuin: neg(a.personalRuin) };
+  if (a.type === "character.adjust") {
+    const ch = state.characters.find((c) => c.id === a.id);
+    const dying = ch && pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier })).includes("Dying");
+    if (dying && a.wounds) return a.wounds > 0 ? { type: "character.adjust", id: a.id, traumatic: -1 } : undefined;
+    return { ...a, wounds: neg(a.wounds), shock: neg(a.shock), wrath: neg(a.wrath), traumatic: neg(a.traumatic) };
+  }
+  if (a.type === "combatant.adjust") {
+    const c = state.encounter?.combatants.find((x) => x.id === a.id);
+    if (c?.kind === "threat" && c.mobCount !== null && a.shock !== undefined)
+      return c.maxShock !== null && a.shock > c.maxShock ? { type: "combatant.adjust", id: a.id, wounds: -1 } : undefined;
+    return { ...a, wounds: neg(a.wounds), shock: neg(a.shock), personalRuin: neg(a.personalRuin) };
+  }
   if (a.type === "pool.adjust") return { ...a, delta: -a.delta };
 }
 
@@ -57,7 +69,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
       return r;
     }
     setError(null);
-    push({ text, undo: inverse(a) });
+    push({ text, undo: inverse({ action: a, state }) });
     return r;
   };
 
@@ -83,7 +95,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     );
 
   const current = enc.combatants.find((c) => c.id === enc.currentId) ?? null;
-  const next = sideUpNext(enc);
+  const next = sideUpNext(state);
   const sel = enc.combatants.find((c) => c.id === selected) ?? null;
   const selChar = sel?.kind === "pc" ? chars.get(sel.characterId) : undefined;
   const selDerived = selChar ? derivedOf(selChar) : null;
@@ -182,11 +194,11 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     void run({ type: "character.adjust", id: selChar.id, traumatic: 1 }, `${selChar.name.toUpperCase()} +TRAUMATIC INJURY`);
   };
 
-  // UNDO: sends the inverse delta, then drops the entry from the log.
+  // UNDO: sends the inverse delta, then drops the entry from the log once it went through.
   const handleUndo = async (entry: LogEntry) => {
     if (!entry.undo) return;
-    await run(entry.undo, `UNDO: ${entry.text}`);
-    setLog((x) => x.filter((y) => y.id !== entry.id));
+    const r = await run(entry.undo, `UNDO: ${entry.text}`);
+    if (r.ok) setLog((x) => x.filter((y) => y.id !== entry.id)); // a refused undo keeps its button
   };
 
   return (
@@ -211,7 +223,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
               const stateLabel = now ? "▶ ACTING" : c.acted ? "DONE" : c.ambushed && enc.round === 1 ? "AMBUSHED" : "READY";
               return (
-                <button key={c.id} className={`row ${now ? "now" : ""} ${c.id === selected ? "sel" : ""} ${c.acted ? "done" : ""}`} onClick={() => toggleSelected(c.id)}>
+                <button key={c.id} className={`row ${now ? "now" : ""} ${c.id === selected ? "sel" : ""} ${c.acted ? "done" : ""}`} aria-pressed={c.id === selected} onClick={() => toggleSelected(c.id)}>
                   <span className={now ? "amber" : "dim"}>{stateLabel}</span>
                   <span style={{ fontWeight: 700, display: "flex", gap: 8, alignItems: "center" }}>
                     {c.kind === "threat" && c.marker && <span role="img" aria-label={`${c.marker} marker`} style={{ width: 10, height: 10, background: `var(--marker-${c.marker})`, display: "inline-block" }} />}
@@ -250,8 +262,8 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
         ) : (
           <div className="keys">
             {current && <button className="btn primary" onClick={endTurn}>END TURN</button>}
-            {sel && !current && canAct(enc, sel) && <button className="btn" onClick={() => startTurn(sel, false)}>START TURN</button>}
-            {sel && !current && canAct(enc, sel) && canSeize(enc, sideOf(sel)) && <button className="btn" onClick={() => startTurn(sel, true)}>SEIZE · {seizeCost}</button>}
+            {sel && !current && canAct(state, sel) && <button className="btn" onClick={() => startTurn(sel, false)}>START TURN</button>}
+            {sel && !current && canAct(state, sel) && canSeize(state, sideOf(sel)) && <button className="btn" onClick={() => startTurn(sel, true)}>SEIZE · {seizeCost}</button>}
             {sel && <>
               {COUNTER_ACTION_KEYS.map((k) => <button key={k} className="btn" onClick={() => setAmountFor(k)}>{COUNTER_ACTIONS[k].button}</button>)}
               <select className="btn" aria-label="Toggle condition" value="" onChange={handleConditionPick}>

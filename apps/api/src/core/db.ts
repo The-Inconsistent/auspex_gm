@@ -13,6 +13,8 @@ const schema = { ...authSchema, ...campaignSchema, ...characterSchema, ...codexS
 
 export const db = drizzle(process.env.DATABASE_URL, { schema, casing: "snake_case" });
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+// Either the pool or an open transaction: for reads that also run inside actions.
+export type Db = typeof db | Tx;
 
 export const runMigrations = () =>
   migrate(db, { migrationsFolder: fileURLToPath(new URL("../../drizzle", import.meta.url)) });

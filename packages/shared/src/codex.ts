@@ -80,11 +80,17 @@ export type Codex = {
 };
 
 // Players see revealed NPCs, locations and handouts, without GM notes or secrets, plus session recaps.
-export const toPlayerCodex = (c: Codex): Codex => ({
-  factions: [],
-  adventures: [],
-  locations: c.locations.filter((l) => l.revealed).map((l) => ({ ...l, gmNotes: "", hazards: "" })),
-  npcs: c.npcs.filter((n) => n.revealed).map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" } })),
-  handouts: c.handouts.filter((h) => h.revealed),
-  sessions: c.sessions,
-});
+// Ids that point at something hidden (factions, an unrevealed parent location) are cleared too.
+export function toPlayerCodex(c: Codex): Codex {
+  const shownLocations = new Set(c.locations.filter((l) => l.revealed).map((l) => l.id));
+  return {
+    factions: [],
+    adventures: [],
+    locations: c.locations.filter((l) => l.revealed).map((l) => ({
+      ...l, gmNotes: "", hazards: "", parentId: l.parentId && shownLocations.has(l.parentId) ? l.parentId : null,
+    })),
+    npcs: c.npcs.filter((n) => n.revealed).map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
+    handouts: c.handouts.filter((h) => h.revealed),
+    sessions: c.sessions,
+  };
+}
