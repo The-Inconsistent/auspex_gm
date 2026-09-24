@@ -1,0 +1,21 @@
+{
+  "archetypes": {
+    "vow-of-absolution": [
+      "space-marine-scout",
+      "tactical-space-marine",
+      "first-company-veteran",
+      "apothecary",
+      "chaplain",
+      "primaris-eliminator",
+      "primaris-incursor",
+      "primaris-intercessor",
+      "librarian",
+      "primaris-reiver",
+      "terminator",
+      "techmarine",
+      "primaris-lieutenant",
+      "bladeguard-veteran",
+      "company-ancient"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "tactical-space-marine",
+    "name": "Tactical Space Marine",
+    "source": "vow-of-absolution",
+    "page": 28,
+    "note": "Also Core p.113, identical apart from the wargear order.",
+    "factionId": "adeptus-astartes",
+    "tier": 3,
+    "speciesIds": ["adeptus-astartes"],
+    "xp": 277,
+    "keywords": ["IMPERIUM", "ADEPTUS ASTARTES", "[CHAPTER]"],
+    "attributes": { "S": 4, "T": 5, "A": 5, "I": 5, "Wil": 3, "Int": 3 },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Leadership": 1,
+      "Scholar": 1,
+      "Stealth": 3,
+      "Survival": 1,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Tactical Versatility",
+        "text": "Your training has prepared you for any circumstance. When you make a Critical Hit you may roll twice on the Critical Hit Table and choose either result."
+      }
+    ],
+    "wargear": [
+      { "wargear": { "name": "Aquila Mk VII Power Armour", "wargearId": "voa-mk-vii-aquila-armour" } },
+      { "wargear": { "name": "Astartes Combat Knife", "wargearId": "voa-astartes-combat-knife" } },
+      { "wargear": { "name": "Boltgun", "wargearId": "boltgun" } },
+      { "wargear": { "name": "Bolt Pistol", "wargearId": "voa-bolt-pistol" } },
+      { "wargear": { "name": "Frag Grenade", "qty": 3, "wargearId": "frag-grenade" } },
+      { "wargear": { "name": "Krak Grenade", "qty": 3, "wargearId": "krak-grenade" } }
+    ],
+    "influence": 2
+  }
+]

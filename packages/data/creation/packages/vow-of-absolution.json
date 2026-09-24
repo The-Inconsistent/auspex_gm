@@ -1,0 +1,23 @@
+[
+  {
+    "id": "rubicon-primaris",
+    "name": "Rubicon Primaris",
+    "source": "vow-of-absolution",
+    "page": 43,
+    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43).",
+    "kind": "ascension",
+    "xp": 80,
+    "requires": [
+      { "kind": "species", "anyOf": ["adeptus-astartes"] },
+      { "kind": "tier", "min": 3 }
+    ],
+    "effect": "Few Space Marines could refuse the prospect of being remade, stronger and faster, more capable of waging war against the enemies of the Imperium. You have undergone the extensive and agonising operation required to be implanted with the three additional organs needed to join your Primaris brethren and now count yourself among those who have crossed the Rubicon Primaris.\n\nYou gain the Bolter Discipline and the Built Tough talent. You gain the PRIMARIS keyword. In future, you may choose from the Primaris Assencion packages. (pg 34)\n\nYou gain +2 Influence, and 1 item of Uncommon Wargear.",
+    "influence": 2,
+    "grants": [
+      { "talent": "bolter-discipline" },
+      { "talent": "built-tough" },
+      { "keyword": "PRIMARIS" },
+      { "text": "1 item of Uncommon Wargear" }
+    ]
+  }
+]

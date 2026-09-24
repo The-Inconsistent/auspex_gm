@@ -82,7 +82,7 @@ const attr = z.number().int().min(1).max(12);
 const rule = z.object({ name: z.string().max(100), text: z.string().max(2000), page: z.string().max(40).optional() });
 
 // Additive modifiers from species, talents, archetypes (e.g. Primaris +3 Wounds, Honour the Chapter +1 Resolve).
-const Mods = z
+export const Mods = z
   .object({
     maxWounds: z.number().int(),
     maxShock: z.number().int(),

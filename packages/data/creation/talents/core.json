@@ -1,0 +1,31 @@
+[
+  {
+    "id": "acute-sense",
+    "name": "Acute Sense",
+    "source": "core",
+    "page": 129,
+    "xp": 20,
+    "effect": "Pick one of your 5 senses (sight, hearing, smell, taste, or touch). Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice."
+  },
+  {
+    "id": "angel-of-death",
+    "name": "Angel Of Death",
+    "source": "core",
+    "page": 129,
+    "note": "\"Adeptus Astartes Species\": whether Primaris Astartes qualifies is a GM ruling (docs/rules-flow.md §11).",
+    "xp": 30,
+    "requires": [
+      { "kind": "rank", "min": 2 },
+      { "kind": "species", "anyOf": ["adeptus-astartes"] }
+    ],
+    "effect": "You are a Space Marine — one of the most feared warriors in the galaxy. You are a highly trained superhuman veteran of hundreds of battles and have mastered the use of many deadly weapons.\n\nAdd +Rank to the total Damage Value of successful attacks with the following weapons:\n- Chainswords\n- Chainaxes\n- Power Swords\n- Power Fists\n- Unarmed strikes\n- Bolt weapons\n- Any weapon with the ADEPTUS ASTARTES Keyword.\n\nAt the GM's discretion, this Talent may also apply to weapons with the CHAOS Keyword for Chaos Space Marines."
+  },
+  {
+    "id": "dual-wield",
+    "name": "Dual Wield",
+    "source": "core",
+    "page": 133,
+    "xp": 20,
+    "effect": "You can wield two weapons with uncanny accuracy.\n\nWhen you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon.\n\nYou may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon."
+  }
+]

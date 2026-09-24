@@ -159,7 +159,15 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Threat Assessment | `threat-assessment` | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` | `Wrath & Glory_ Vow of Absolution.pdf` | printed |
-| Threat Assessment: Daemons | *none yet* | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` | printed |
+| Threat Assessment: Daemons | *none yet* | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
+| Forsaken System Player's Guide | `forsaken-system` (creation only) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
+| Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
+| An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
+| Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
+
+No creation content: Darktide and Litanies of the Lost (official adventures), `Wrath Glory Condensed Rules.docx.pdf`
+(fan quick-reference). The creation `source` ids are `SOURCES` in `packages/shared/src/creation.ts`, separate from
+`Threat.source` and `WargearSource`.
 
 **Daemons book:**
 - The offset was checked on PDF pages 15, 41, 75, 101 and 125, where the folio (bottom right, odd pages only) matches
@@ -388,6 +396,11 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Every `rules/*.json` parses as `RuleEntry[]`; ids unique across files | `✖ rules/<file>` + zod error, or `duplicate id` |
 | Rules summary | `rules/<file>: N entries` |
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
+| Every `creation/<type>/<source>.json` parses; the filename is a creation source id and matches each record's `source`; ids unique per type | `✖ creation/…` + zod error, `has source`, or `duplicate id` |
+| Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`) | `✖ creation/… "<id>": unknown <type> "…"` |
+| One record per thing: a name twice in a type (with overlapping species, for archetypes) | `✖ creation/<type>: "…" in A and B; keep the newest printing` |
+| Creation coverage against `creation/manifest.json` | `creation <type> <source>: N/M (missing: …)` |
+| Creation summary | `creation/<type>: N records`, and counts of `text` fallbacks and wargear not yet in the catalogue |
 
 ---
 
@@ -411,7 +424,7 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Copyrighted | Where |
 |---|---|
 | The book PDFs | `books/`, gitignored (`*.pdf`); never commit them |
-| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, and any rule text in packs and characters |
+| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
 - Never serve book content without an access token. `GET /api/campaigns/:id/threats` and `/wargear` return 401 unless
@@ -419,3 +432,54 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 - Players get a threat's `stats` only after the GM reveals that combatant (`toPlayerView`). They never get NPC
   `statSource`.
 - In docs, issues and PRs, show structure or placeholders, never a real stat block.
+
+---
+
+## 9. Creation catalogue
+
+Everything a character is built from, for the character builder (not built yet; nothing serves this data yet). Schemas
+are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
+file, loaded by `creationCatalogue()` in `index.ts`.
+
+| Type | Record | Holds |
+|---|---|---|
+| `keywords` | `Keyword` | Faction Keywords by printed name (`"ADEPTUS ASTARTES"`, `"[CHAPTER]"`); a bracketed one names the `placeholder` sub-faction type that fills it |
+| `factions` | `Faction` | Adeptus Astartes, Asuryani… |
+| `sub-factions` | `SubFaction` | Chapters, Orders, Forge Worlds, Craftworlds…: `type`, `factionId`, the `keyword` it fills in, `traits` (with `geneSeed`) |
+| `species` | `Species` | XP, Speed, Size, granted Attributes and Skills, maximums, Species Keywords, abilities |
+| `backgrounds` | `BackgroundTable` | Origin / Accomplishment / Goal rows with their `bonus`, and Objectives; owned by a faction, species or sub-faction |
+| `option-groups` | `OptionGroup` | Other creation choices: Kroot Mutations, Asuryani Paths, Kin Cloneskein, Apocrypha Homeworlds. `pick` is a count, `"tier"` or `"any"`; `xp` is the cost of the 1st, 2nd… pick, last repeating |
+| `archetypes` | `Archetype` | The printed entry: Tier, species, XP, Keywords, Attributes, Skills, abilities, wargear, Influence, suggestions |
+| `talents` | `Talent` | `category` talent, faith, exarch, prayer or vow; XP, requirements, effect |
+| `packages` | `Package` | Ascension and Advancement Packages |
+| `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords |
+| `patrons` | `Patron` | FSPG Patrons and their Framework options |
+| `flavour` | `FlavourTable` | Names, appearance, languages |
+
+**Shared shapes.**
+- `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species`, `archetype`, `subFaction`,
+  `talent`, `power`, `wargear` (printed names), `rank`, `tier`, or `text` for anything that isn't mechanical.
+- `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
+- `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ power }`, `{ wargear }`, `{ text }`, or
+  `{ choose, from }`.
+- `Rule`: a named ability, verbatim, with `mods` only where the book prints a flat bonus, and `grants`.
+- A wargear item keeps its printed `name`; `wargearId` links it once the Wargear catalogue has it.
+
+**Transcribing.**
+- **One record per thing.** When several books print the same species, archetype or talent, transcribe only the first
+  source in `SOURCES` order (VoA, IoE, FSPG, Core, then the homebrew Apocrypha and Necrontyr), and cite the others in
+  `note` ("Also Core p.113, 277 XP"). Official always beats homebrew; Apocrypha's `##` entries have FSPG versions.
+- **Name the thing, not the heading.** VoA heads Tactical Space Marine "TACTICAL"; the record is `tactical-space-marine`
+  so it clashes with, and replaces, the Core printing.
+- **Section rules go on every record.** VoA p.45 limits every Talent in its chapter to ADEPTUS ASTARTES, not CHAOS:
+  each record carries those requirements and a `note` saying where they come from.
+- Copy print errors as printed (`"weapon'sRapid Fire"`, "Psychic Master (Wil)") and note the ones that matter.
+- Legacy of the Necrontyr is 1st edition: its archetypes get Core-format XP, as a house ruling written in
+  [rules-flow.md](rules-flow.md) §11 when that wave lands.
+- `bun run validate` until clean. `creation/manifest.json` lists the expected ids per type and source, taken from each
+  book's contents pages, so progress shows.
+
+**Open questions for the GM** (not yet decided; they go in rules-flow.md §11 once decided):
+- Does Primaris Astartes count as "Adeptus Astartes Species" for requirements (Angel of Death, Rubicon Primaris)?
+- IoE prints a second, unexplained XP figure (+20 / +30) under three Corsair archetypes (pp.54–56).
+- Core p.43 allows only one Background +1 bonus; `docs/pregens.md` and the volkus pack apply all three.

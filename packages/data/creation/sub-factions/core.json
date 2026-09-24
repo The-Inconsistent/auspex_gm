@@ -1,0 +1,23 @@
+[
+  {
+    "id": "space-wolves",
+    "name": "Space Wolves",
+    "source": "core",
+    "page": 74,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "SPACE WOLVES",
+    "traits": [
+      {
+        "name": "Hunters Unleashed",
+        "text": "The Chapters kinship with wolves extends to enhanced senses and an almost feral fighting style replete with savage grace.\n\nYou have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133).",
+        "grants": [{ "talent": "acute-sense" }, { "talent": "dual-wield" }]
+      },
+      {
+        "name": "Savage Within (Gene-seed)",
+        "text": "Headstrong in their pursuit of valour, Space Wolves do not back down from death in glorious melee combat.\n\nYou cannot Fall Back (p.188).",
+        "geneSeed": true
+      }
+    ]
+  }
+]

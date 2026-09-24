@@ -1,0 +1,29 @@
+[
+  {
+    "id": "bolter-discipline",
+    "name": "Bolter Discipline",
+    "source": "vow-of-absolution",
+    "page": 45,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      { "kind": "keyword", "anyOf": ["ADEPTUS ASTARTES"] },
+      { "kind": "notKeyword", "anyOf": ["CHAOS"] }
+    ],
+    "effect": "Your Bolter spits forth a storm of iron that pulverises threats in an unyielding sequence of explosions. When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon'sRapid Fire rating."
+  },
+  {
+    "id": "built-tough",
+    "name": "Built Tough",
+    "source": "vow-of-absolution",
+    "page": 46,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 10,
+    "requires": [
+      { "kind": "skill", "skill": "Survival", "min": 2 },
+      { "kind": "keyword", "anyOf": ["ADEPTUS ASTARTES"] },
+      { "kind": "notKeyword", "anyOf": ["CHAOS"] }
+    ],
+    "effect": "You are aggressively self-reliant, substituting your culture's folk remedies for formal medical training. You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions (Wrath & Glory, page 124). You do not suffer the usual DN penalties for using this ability on yourself."
+  }
+]

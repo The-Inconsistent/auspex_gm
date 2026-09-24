@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
-import { Pack, RuleEntry, Threat, Wargear } from "@wg/shared";
+import { CREATION_TYPES, type CreationType, Pack, RuleEntry, SOURCES, Threat, Wargear } from "@wg/shared";
 import { loadPackRaw, packNames } from "./index.ts";
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
@@ -111,6 +111,140 @@ for (const file of readdirSync(rulesDir)
   }
   console.log(`rules/${file}: ${r.data.length} entries`);
 }
+
+// Creation catalogue (docs/data.md, "Creation catalogue"): creation/<type>/<source>.json. Schema per file, the
+// filename names the book, ids unique per type, every id reference resolves, one record per thing across books.
+const creationDir = new URL("./creation/", import.meta.url);
+const creation = new Map<CreationType, { file: string; r: Record<string, unknown> }[]>();
+for (const type of Object.keys(CREATION_TYPES) as CreationType[]) {
+  const dir = new URL(`${type}/`, creationDir);
+  const rows: { file: string; r: Record<string, unknown> }[] = [];
+  creation.set(type, rows);
+  let files: string[] = [];
+  try {
+    files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+  } catch {} // not transcribed yet
+  for (const file of files.sort()) {
+    const where = `creation/${type}/${file}`;
+    if (!(file.replace(/\.json$/, "") in SOURCES)) {
+      failed = true;
+      console.error(`✖ ${where}: filename must be a source id (${Object.keys(SOURCES).join(", ")})`);
+      continue;
+    }
+    const parsed = CREATION_TYPES[type].array().safeParse(JSON.parse(readFileSync(new URL(file, dir), "utf8")));
+    if (!parsed.success) {
+      failed = true;
+      console.error(`✖ ${where}\n${z.prettifyError(parsed.error)}`);
+      continue;
+    }
+    for (const r of parsed.data as Record<string, unknown>[]) {
+      if (`${r.source}.json` !== file) {
+        failed = true;
+        console.error(`✖ ${where}: "${r.id}" has source "${r.source}"`);
+      }
+      if (rows.some((x) => x.r.id === r.id)) {
+        failed = true;
+        console.error(`✖ ${where}: duplicate id "${r.id}"`);
+      }
+      rows.push({ file: where, r });
+    }
+  }
+}
+const creationIds = (type: CreationType) => new Set(creation.get(type)!.map((x) => x.r.id as string));
+const keywordNames = new Set(creation.get("keywords")!.map((x) => x.r.name as string));
+const known: Record<string, Set<string>> = {
+  factions: creationIds("factions"),
+  species: creationIds("species"),
+  "sub-factions": creationIds("sub-factions"),
+  archetypes: creationIds("archetypes"),
+  talents: creationIds("talents"),
+  powers: creationIds("powers"),
+  disciplines: creationIds("disciplines"),
+  keywords: keywordNames,
+  wargear: wargearIds,
+};
+// Which catalogue an id-holding key points into. The schema keeps these key names unambiguous.
+const REF_KEYS: Record<string, string> = {
+  factionId: "factions",
+  speciesId: "species",
+  speciesIds: "species",
+  subFactionId: "sub-factions",
+  disciplineId: "disciplines",
+  becomesArchetypeId: "archetypes",
+  talentIds: "talents",
+  powerIds: "powers",
+  talent: "talents",
+  power: "powers",
+  keyword: "keywords",
+  keywords: "keywords",
+  wargearId: "wargear",
+};
+const REQUIREMENT_REFS: Record<string, string> = {
+  keyword: "keywords",
+  notKeyword: "keywords",
+  species: "species",
+  archetype: "archetypes",
+  subFaction: "sub-factions",
+  talent: "talents",
+  power: "powers",
+};
+let textFallbacks = 0;
+let unresolvedWargear = 0;
+// Walks one record, checking every reference and counting the not-yet-structured bits.
+function checkRefs(v: unknown, where: string) {
+  if (Array.isArray(v)) return v.forEach((x) => checkRefs(x, where));
+  if (typeof v !== "object" || v === null) return;
+  const o = v as Record<string, unknown>;
+  const keys = Object.keys(o);
+  if (o.kind === "text" || (keys.length === 1 && keys[0] === "text")) textFallbacks++;
+  const reqType = typeof o.kind === "string" ? REQUIREMENT_REFS[o.kind] : undefined;
+  if (reqType && Array.isArray(o.anyOf)) for (const ref of o.anyOf as string[]) miss(reqType, ref, where);
+  if (typeof o.qty === "number" && typeof o.name === "string" && !o.wargearId) unresolvedWargear++;
+  for (const [k, x] of Object.entries(o)) {
+    const type = REF_KEYS[k];
+    if (type && typeof x === "string") miss(type, x, where);
+    else if (type && Array.isArray(x)) x.forEach((ref) => typeof ref === "string" && miss(type, ref, where));
+    else checkRefs(x, where);
+  }
+}
+function miss(type: string, ref: string, where: string) {
+  if (known[type]?.has(ref)) return;
+  failed = true;
+  console.error(`✖ ${where}: unknown ${type} "${ref}"`);
+}
+// One record per thing: the same name twice in a type means a duplicate printing (keep the newest, docs/data.md).
+// Species-bound records only clash when their species overlap.
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+for (const [type, rows] of creation) {
+  const seen = new Map<string, { file: string; r: Record<string, unknown> }>();
+  for (const row of rows) {
+    checkRefs(row.r, `${row.file} "${row.r.id}"`);
+    const species = (row.r.speciesIds as string[] | undefined)?.join("|") ?? "";
+    const key = norm(row.r.name as string);
+    const prev = seen.get(key);
+    const prevSpecies = (prev?.r.speciesIds as string[] | undefined) ?? [];
+    if (prev && (!species || prevSpecies.some((s) => species.split("|").includes(s)))) {
+      failed = true;
+      console.error(`✖ creation/${type}: "${row.r.name}" in ${prev.file} and ${row.file}; keep the newest printing`);
+    }
+    seen.set(key, row);
+  }
+}
+// Coverage: creation/manifest.json lists the expected ids per type and source, from each book's contents pages.
+let manifest: Record<string, Record<string, string[]>> = {};
+try {
+  manifest = JSON.parse(readFileSync(new URL("manifest.json", creationDir), "utf8"));
+} catch {}
+for (const [type, bySource] of Object.entries(manifest))
+  for (const [source, expected] of Object.entries(bySource)) {
+    const have = creationIds(type as CreationType);
+    const missing = expected.filter((e) => !have.has(e));
+    console.log(
+      `creation ${type} ${source}: ${expected.length - missing.length}/${expected.length}${missing.length ? ` (missing: ${missing.join(", ")})` : ""}`,
+    );
+  }
+for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
+console.log(`creation: ${textFallbacks} text fallbacks, ${unresolvedWargear} wargear items not in the catalogue`);
 
 // Packs: schema, internal references, and every prepared-encounter threat must exist.
 for (const name of packNames()) {

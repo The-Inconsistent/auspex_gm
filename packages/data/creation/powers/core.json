@@ -1,0 +1,18 @@
+[
+  {
+    "id": "smite",
+    "name": "Smite",
+    "source": "core",
+    "page": 272,
+    "disciplineId": "universal",
+    "xp": { "atCreation": 0, "later": 10 },
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "35 m",
+    "multiTarget": true,
+    "tags": ["PSYCHIC"],
+    "effect": "You concentrate destructive power through the lens of your will, summoning lethal bolts of raw psychic energy that blast your enemies into ash.\n\nTarget one enemy within range and make a Psychic Master (Wil) Test against their Defence. If successful, the target suffers 1d3 Mortal Wounds.",
+    "potency": ["[3] +1 Mortal Wound."]
+  }
+]

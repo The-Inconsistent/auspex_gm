@@ -1,0 +1,51 @@
+[
+  {
+    "id": "psyker",
+    "name": "PSYKER",
+    "source": "core",
+    "page": 375,
+    "text": "You are a Psyker, capable of channeling the raw energies of the Warp. If you have this Keyword, you:\n- Know the Universal Psyker Abilities (p.267).\n- Can spend XP to learn psychic powers.\n- Can spend XP to improve your Psychic Mastery Skill.\n\nNone truly know how an individual becomes a Psyker. Some are born with this twisted gift, others are cursed through exposure to the Warp. Becoming a Psyker will dramatically change your character, making them a powerful, feared, and potentially illegal citizen of the Imperium. Talk to your GM and your group before choosing this Keyword."
+  },
+  {
+    "id": "adeptus-astartes",
+    "name": "ADEPTUS ASTARTES",
+    "source": "core",
+    "page": 375,
+    "text": "The Space Marines: genetically enhanced transhuman super soldiers who know no fear."
+  },
+  {
+    "id": "chaos",
+    "name": "CHAOS",
+    "source": "core",
+    "page": 375,
+    "text": "The forces and worshippers of the Chaos Gods."
+  },
+  {
+    "id": "imperium",
+    "name": "IMPERIUM",
+    "source": "core",
+    "page": 376,
+    "text": "The vast interstellar empire of Humanity that spans over a million worlds, led by the Emperor from Holy Terra."
+  },
+  {
+    "id": "primaris",
+    "name": "PRIMARIS",
+    "source": "core",
+    "page": 376,
+    "text": "A new breed of transhuman Space Marines, more powerful even that their Adeptus Astartes brethren."
+  },
+  {
+    "id": "chapter",
+    "name": "[CHAPTER]",
+    "source": "core",
+    "page": 377,
+    "text": "Every Space Marine belongs to a Chapter, an organisation of 1,000 Adeptus Astartes with their own strictures, cultures, traditions, and inherited gene-seed.",
+    "placeholder": "chapter"
+  },
+  {
+    "id": "space-wolves",
+    "name": "SPACE WOLVES",
+    "source": "core",
+    "page": 74
+  }
+]
