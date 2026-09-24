@@ -1,0 +1,54 @@
+{
+  "id": "overlord",
+  "name": "Overlord",
+  "source": "threat-assessment",
+  "page": 137,
+  "faction": "necron",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["NECRON", "[DYNASTY]"],
+  "attributes": { "S": 8, "T": 8, "A": 5, "I": 5, "Wil": 10, "Int": 8, "Fel": 4 },
+  "resilience": { "value": 14, "note": "Armoured Carapace: AR 4, PHASE SHIFTER: AR 2*" },
+  "defence": 4,
+  "wounds": 18,
+  "shock": 15,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Leadership", "dice": 12 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat’s turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "My Will Be Done", "text": "Individuals and Mobs that share a [DYNASTY] Keyword with the Overlord and can see the Overlord gain +2 bonus dice to all Tests." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Hyperphase Glaive", "damage": 14, "ed": 5, "ap": -3, "range": [2], "traits": ["Rending (2)"] },
+        { "name": "Tachyon Arrow (single use)", "damage": 20, "ed": 8, "ap": -5, "range": [60, 120, 180], "traits": ["Blast 20", "Reliable"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Resurrection Orb",
+      "text": "Roll 10d6. The Resurrection Orb restores a number of Wounds equal to the number of Icons rolled to any individual or Mob within 10 m of the Necron Lord that share a [DYNASTY] Keyword, including destroyed Necrons. The Resurrection Orb can only be used once per day."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Roll 8d6.",
+  "conviction": 10,
+  "resolve": 9,
+  "speed": 6,
+  "size": "Avg"
+}

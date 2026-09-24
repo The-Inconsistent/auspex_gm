@@ -1,0 +1,64 @@
+{
+  "id": "ta-ork-boy",
+  "name": "Ork Boy",
+  "source": "threat-assessment",
+  "page": 92,
+  "faction": "ork",
+  "threat": ["E", "E", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 4, "T": 4, "A": 2, "I": 3, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 5, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 6,
+  "shock": 2,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Get Stuck In!",
+      "text": "The Ork Boy Charges the nearest enemy, firing their Slugga wildly. Make a Ballistic Skill (A) Test against the target's Defence as part of the Charge; if it hits, it does not deal damage, but all enemies within 30m of the Ork Boy must make a DN3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 7, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [16], "traits": ["Blast (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "MORE DAKKA!",
+      "text": "For every ten Ork Boyz in the Mob one may have one of the following options (while keeping their Choppa and Slugga):",
+      "weapons": [
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Rokkit Launcher", "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Blast (4)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "type": "COMPLICATION",
+      "name": "Anarchy",
+      "text": "Whenever the Mob rolls a Complication, the Mob starts infighting and inflicts 1d3 Shock on itself. Add 1d3 Shock to this damage for every ten Boyz in the Mob."
+    },
+    { "name": "Mob Rule", "text": "A Mob of Ork Boyz gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Boyz." }
+  ]
+}

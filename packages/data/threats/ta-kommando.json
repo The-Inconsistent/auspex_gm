@@ -1,0 +1,64 @@
+{
+  "id": "ta-kommando",
+  "name": "Kommando",
+  "source": "threat-assessment",
+  "page": 89,
+  "faction": "ork",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 4, "T": 4, "A": 4, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 5, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 6,
+  "shock": 3,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Cunning", "dice": 6 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Survival", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Speed", "text": "Speed is printed as \"5 (May not Run or Sprint)\"." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Sneaky Gitz",
+      "text": "During the first round of combat in which a Kommando ambushes their opponent, they may use their Stealth dice pool of 8 for any Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 7, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [24], "salvo": null, "traits": ["Blast (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 5,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "MORE DAKKA!",
+      "text": "For every ten Kommandos in the Mob, one may have one of the following options (while keeping their Choppa and Slugga):",
+      "weapons": [
+        { "name": "Burna", "damage": 10, "ed": 1, "range": [4, 8, 12], "salvo": 1, "traits": ["Assault", "Flamer"] },
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Rokkit Launcher", "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Blast (4)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Kommandos gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Kommandos." },
+    { "name": "Kunnin' Infiltraters", "text": "When a Mob of Kommandos makes a Stealth (A) Test, add +1 Icon to the result." }
+  ]
+}

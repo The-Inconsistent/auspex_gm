@@ -1,0 +1,48 @@
+{
+  "id": "canoptek-plasmacyte",
+  "name": "Canoptek Plasmacyte",
+  "source": "threat-assessment",
+  "page": 153,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CANOPTEK"],
+  "attributes": { "S": 4, "T": 5, "A": 3, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 9, "note": "AR 3" },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Tech", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Recall Protocol", "text": "If the Canoptek Plasmacyte starts its Turn more than 6m from a Threat with a matching [DYNASTY] Keyword and the DESTROYER Keyword it disappears as it is recalled into a hyperspace dimension." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Dimensional Translocation",
+      "text": "The Canoptek Plasmacyte emerges from a hyperspace dimension, appearing within 6m of a Threat with a matching [DYNASTY] Keyword and the DESTROYER Keyword and immediately takes its turn."
+    },
+    {
+      "type": "ACTION",
+      "name": "Monomolecular Proboscis",
+      "text": "6 +3 ED / AP -1 / Agonising\nInfused Madness: A Threat with the DESTROYER Keyword gains +4 bonus dice to melee attack Tests and +1 bonus Strength until the start of the Canoptek Plasmacyte. Additionally, roll 1d6 — if the result is a Complication, the target suffers 1d3 Mortal Wounds."
+    },
+    {
+      "type": "REACTION",
+      "name": "Evasion Protocols",
+      "text": "If a Canoptek Plasmacyte is within 3m of a Threat with the DESTROYER Keyword it can use its Reaction to move behind it when targeted by a ranged attack Test, forcing the attack to target the Threat with the DESTROYER Keyword."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Avg"
+}

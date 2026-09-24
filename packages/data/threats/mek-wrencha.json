@@ -1,0 +1,51 @@
+{
+  "id": "mek-wrencha",
+  "name": "Mek Wrencha",
+  "source": "gutshivas-kommandos",
+  "page": 20,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["ORK"],
+  "attributes": { "S": 8, "T": 6, "A": 2, "I": 4, "Wil": 3, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 12, "note": "AR: 6" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Intimidation", "dice": 5 },
+      { "name": "Investigation", "dice": 5 },
+      { "name": "Leadership", "dice": 5 },
+      { "name": "Tech", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Mekanik",
+      "text": "Mek Wrencha can repair any damaged piece of equipment within 1 metre. He can also Reload a weapon without spending an Action."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Snazzgun", "damage": 12, "ed": 2, "ap": -2, "range": [12, 24, 36], "salvo": 3, "traits": ["Arc (2)", "Heavy (4)"] },
+        { "name": "Power Claw", "damage": 14, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] },
+        { "name": "Iron Gob", "damage": 6, "ed": 2, "range": [1] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Orky Upgradez",
+      "text": "As a Free Action, Mek Wrencha may spend 1 Ruin to tinker with a ranged weapon within 1 metre. The weapon gains +1d3 ED and +1d3 AP for its next attack. The next time the weapon is fired, a Complication triggers if the Wrath Die lands on a 1, 2, or 3."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 4,
+  "size": "Large"
+}

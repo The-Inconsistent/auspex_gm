@@ -1,0 +1,59 @@
+{
+  "id": "triarch-praetorian",
+  "name": "Triarch Praetorian",
+  "source": "threat-assessment",
+  "page": 155,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "TRIARCH"],
+  "attributes": { "S": 6, "T": 7, "A": 4, "I": 5, "Wil": 6, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 12, "note": "AR 4" },
+  "defence": 4,
+  "wounds": 13,
+  "shock": 9,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Honour Above All", "text": "If an Agent can convince a Triarch Praetorian to engage them in honourable single combat and defeats them, they will ensure they are not attacked by other Necrons to the best of their abilities for the length of a Necrontyr day, provided the Agent does not attack any Necrons." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Rod of Covenant (shooting)", "damage": 12, "ed": 2, "ap": -3, "range": [6, 12, 18], "salvo": 1 },
+        { "name": "Rod of Covenant (melee)", "damage": 9, "ed": 4, "ap": -3, "range": [2] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    },
+    {
+      "type": "RUIN",
+      "name": "Hardwired for Destruction",
+      "text": "When you spend Ruin to re-roll all failing dice for a Ophydian Destroyer’s Weapon Skill Test, results of 3 and 4 count as Icons and results of 5 and 6 count as Exalted Icons."
+    },
+    {
+      "type": "REACTION",
+      "name": "Whipcoil Bodies",
+      "text": "When targeted by a melee attack, an Ophydian Destroyer can use its Reaction to increase its Defence by +1."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 10,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Dynastic Defenders", "text": "A Mob of Triarch Praetorians typically engages by swooping down into the fray from above. This type of Charge increases their Defence by +1 until the start of their next Turn." }
+  ]
+}

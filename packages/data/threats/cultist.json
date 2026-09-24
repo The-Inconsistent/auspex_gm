@@ -1,0 +1,54 @@
+{
+  "id": "cultist",
+  "name": "Cultist",
+  "page": 338,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC"],
+  "attributes": { "S": 2, "T": 3, "A": 2, "I": 3, "Wil": 3, "Int": 2, "Fel": 3 },
+  "resilience": { "value": 4, "note": "Ragged Clothes: 0 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Deception", "dice": 5 },
+      { "name": "Stealth", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Devotion", "text": "Any time a Cultist is slain by a Critical Hit, the GM gains 1 Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Shoot and Stab",
+      "text": "A Cultist takes no Multi-Action penalty on a turn where they elect to shoot their Autopistol and stab with their Knife.",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Knife", "damage": 4, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Ranged Attackers",
+      "text": "Some Cultists are better armed for long-ranged attacks instead of melee. Replace the Cultist's Autopistol and Knife with an Autogun, and their Stab and Shoot ability with For the Dark Gods!",
+      "weapons": [
+        { "name": "Autogun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 3, "traits": ["Rapid Fire (1)"] }
+      ],
+      "abilities": [
+        { "type": "WRATH", "name": "For the Dark Gods", "text": "Whenever the Cultist rolls a 6 on the Wrath Die, the GM gains 2 Ruin instead of 1." }
+      ]
+    }
+  ]
+}

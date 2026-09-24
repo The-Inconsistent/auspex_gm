@@ -1,0 +1,54 @@
+{
+  "id": "necron-lord",
+  "name": "Necron Lord",
+  "source": "threat-assessment",
+  "page": 136,
+  "faction": "necron",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["NECRON", "[DYNASTY]"],
+  "attributes": { "S": 8, "T": 8, "A": 4, "I": 4, "Wil": 9, "Int": 8, "Fel": 3 },
+  "resilience": { "value": 13, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 18,
+  "shock": 14,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Leadership", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat’s turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Relentless March", "text": "Every Mob or individual with the same [DYNASTY] Keyword as this Threat within 10 m gains +1 Speed." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Staff of Light (Shooting)", "damage": 10, "ed": 2, "ap": -1, "range": [9, 18, 27] },
+        { "name": "Staff of Light (Melee)", "damage": 11, "ed": 5, "range": [1] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Resurrection Orb",
+      "text": "Roll 10d6. The Resurrection Orb restores a number of Wounds equal to the number of Icons rolled to any individual or Mob within 10 m of the Necron Lord that share a [DYNASTY] Keyword, including destroyed Necrons. The Resurrection Orb can only be used once per day."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 8d6.",
+  "conviction": 9,
+  "resolve": 8,
+  "speed": 6,
+  "size": "Avg"
+}

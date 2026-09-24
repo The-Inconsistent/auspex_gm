@@ -1,0 +1,59 @@
+{
+  "id": "lokhust-destroyer",
+  "name": "Lokhust Destroyer",
+  "source": "threat-assessment",
+  "page": 157,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "DESTROYER CULT"],
+  "attributes": { "S": 5, "T": 6, "A": 3, "I": 3, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 13, "note": "AR 4" },
+  "defence": 2,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Ballistic Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "COMPLICATION",
+      "name": "Kill Frenzy",
+      "text": "When a Lokhust Destroyer rolls a complication, they become utterly obsessed with destroying one random enemy they can see. It will focus all efforts on chasing and attacking that target."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Gauss Cannon", "damage": 14, "ed": 3, "ap": -3, "range": [12, 24, 36], "salvo": 1 }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Reanimation Protocols",
+      "text": "When a Lokhust Destroyer is killed but not destroyed outright, spend 1 Ruin to return them to life with 1 Wound"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 6,
+  "resolve": 0,
+  "speed": 9,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Heavy",
+      "text": "If a Mob of Lokhust Destroyers enters play with 5 or more members, one of them will be equipped with a Gauss Destructor:",
+      "weapons": [
+        { "name": "Gauss Destructor", "damage": 18, "ed": 6, "ap": -4, "range": [18, 36, 54], "salvo": 1 }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Repulsor Slipstream", "text": "Mobs of Lokhust Destroyers add +1 to their Movement rate" }
+  ]
+}

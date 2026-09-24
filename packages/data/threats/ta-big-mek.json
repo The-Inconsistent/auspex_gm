@@ -1,0 +1,54 @@
+{
+  "id": "ta-big-mek",
+  "name": "Big Mek",
+  "source": "threat-assessment",
+  "page": 83,
+  "faction": "ork",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 9, "T": 6, "A": 3, "I": 3, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 14, "note": "AR 7" },
+  "defence": 2,
+  "wounds": 14,
+  "shock": 8,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 9 },
+      { "name": "Tech", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Kombi-Rokkit", "text": "The Big Mek can Multi Attack with their Shoota and Rokkit Launcher. If they do, they make their Attack Test with an additional +1 DV penalty." },
+    { "name": "Kombi-skorcha", "text": "The Big Mek can Multi Attack with their Skorcha and Shoota. If they do, they make their Attack Test with an additional +1 DV penalty." },
+    { "name": "Grot Oiler", "text": "The Big Mek reduces the DV or a repair test by 2. This destroys the Grot Oiler." },
+    { "name": "Speed", "text": "Speed is printed as \"4 (May not Run or Sprint)\"." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Mekanik",
+      "text": "A Big Mek can attempt to repair any damaged piece of equipment with the ORK Keyword within 1 metre as a Simple Action. They can also Reload a weapon as a Free Action."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Kustom Mega-Blasta", "damage": 16, "ed": "1d6", "ap": -3, "range": [12, 24, 36], "salvo": 1, "traits": ["Blast (4)", "Heavy (5)", "Waaagh!"] },
+        { "name": "Power Klaw", "damage": 15, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Orky Upgradez",
+      "text": "As a Free Action, the Mek may spend 1 Ruin to tinker with a ranged weapon within 1 metre. The weapon gains +1d3 ED and +1d3 AP for its next attack. The next time the weapon is fired, a Complication triggers if the Wrath Die lands on a 1, 2, or 3."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 4,
+  "size": "Large"
+}

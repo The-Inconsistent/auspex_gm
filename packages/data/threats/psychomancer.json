@@ -1,0 +1,50 @@
+{
+  "id": "psychomancer",
+  "name": "Psychomancer",
+  "source": "threat-assessment",
+  "page": 140,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CRYPTEK"],
+  "attributes": { "S": 4, "T": 5, "A": 4, "I": 4, "Wil": 7, "Int": 7, "Fel": 5 },
+  "resilience": { "value": 9, "note": "AR 3" },
+  "defence": 3,
+  "wounds": 9,
+  "shock": 9,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Intimidation", "dice": 10 },
+      { "name": "Tech", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat’s turns." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Nightmare Shroud", "text": "This Threat can Fly. Once per turn, this Threat can select an individual within 10m. The target increases the DN of all Willpower, Fear, Conviction, and Resolve Tests by +1." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Abyssal Lance (shooting)", "damage": 10, "ed": 2, "ap": -3, "range": [9, 18, 27], "traits": ["Assault", "Agonising"] },
+        { "name": "Abyssal Lance (melee)", "damage": 7, "ed": 3, "ap": -3, "range": [2], "traits": ["Agonising", "Parry"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 5,
+  "size": "Avg"
+}

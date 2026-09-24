@@ -1,0 +1,45 @@
+{
+  "id": "ta-squig",
+  "name": "Squig",
+  "source": "threat-assessment",
+  "page": 97,
+  "faction": "ork",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["ORK", "SQUIG"],
+  "attributes": { "S": 2, "T": 2, "A": 1, "I": 2, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 3 },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Athletics", "dice": 4 },
+      { "name": "Awareness", "dice": 2, "passive": 1 },
+      { "name": "Ballistic Skill", "dice": 3 },
+      { "name": "Weapon Skill", "dice": 4 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Bitey Squig Bite", "damage": 5, "ed": 4, "ap": -3, "range": [1], "traits": ["Brutal"] },
+        { "name": "Bile Squig Vomit", "damage": 10, "ed": 3, "range": [8], "salvo": 0, "traits": ["Flamer", "Inflict (Poison 2)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Small",
+  "mobAbilities": [
+    { "name": "A Swarm of Teeth and Claws", "text": "A Mob of Squigs gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Squigs." },
+    {
+      "type": "COMPLICATION",
+      "name": "Vicious by Nature",
+      "text": "Whenever the Mob rolls a Complication, the Squig attacks the nearest Ork and inflicts 1d3 Shock on itself."
+    }
+  ]
+}

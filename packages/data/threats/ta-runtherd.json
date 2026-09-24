@@ -1,0 +1,44 @@
+{
+  "id": "ta-runtherd",
+  "name": "Runtherd",
+  "source": "threat-assessment",
+  "page": 94,
+  "faction": "ork",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 4, "T": 6, "A": 2, "I": 2, "Wil": 3, "Int": 1, "Fel": 3 },
+  "resilience": { "value": 7, "note": "AR 0" },
+  "defence": 1,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Cunning", "dice": 6 },
+      { "name": "Intimidation", "dice": 6 },
+      { "name": "Persuasion", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Fight, Ya Runts!", "text": "If the Runtherd makes a successful melee attack against a Mob of Grots, that Mob gains +3 bonus dice to their next attack Test." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Grabba Stikk", "damage": 7, "ed": 3, "range": [2], "traits": ["Waaagh!"] },
+        { "name": "Grot-Prod", "damage": 7, "ed": 2, "ap": -1, "range": [2], "traits": ["Agonising", "Unwieldy (2)", "WAAAGH!"] },
+        { "name": "Grot Lash", "damage": 5, "ed": 1, "range": [4], "traits": ["Agonising"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg"
+}

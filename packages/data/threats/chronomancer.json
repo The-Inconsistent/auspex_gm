@@ -1,0 +1,55 @@
+{
+  "id": "chronomancer",
+  "name": "Chronomancer",
+  "source": "threat-assessment",
+  "page": 141,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CRYPTEK"],
+  "attributes": { "S": 4, "T": 5, "A": 4, "I": 4, "Wil": 6, "Int": 8, "Fel": 3 },
+  "resilience": { "value": 11, "note": "Armoured Carapace: AR 3, Timesplinter Mantle: AR 2*" },
+  "defence": 3,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Intimidation", "dice": 10 },
+      { "name": "Tech", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat’s turns." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Chronometron", "text": "Once per turn, this Threat can select a target within 10m that shares the same [DYNASTY] Keyword. The target triples its movement when it chooses to Charge and gains +2 AR* until the end of its next turn." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Aeonstave (shooting)", "damage": 12, "ed": 2, "ap": -2, "range": [9, 18, 27], "traits": ["Blast 10", "Brutal"] },
+        { "name": "Aeonstave (melee)", "damage": 8, "ed": 3, "ap": -2, "range": [2], "traits": ["Brutal", "Parry"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Chronotendrils",
+      "text": "Whenever the Technomancer is attacked in melee, it may make a counter attack using its Chronotendrils with the following profile: 7 +2 ED / Rending 4. The Chronomancer can use its Chronotendrils 3 times per Round."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg"
+}

@@ -1,0 +1,48 @@
+{
+  "id": "lychguard",
+  "name": "Lychguard",
+  "source": "threat-assessment",
+  "page": 148,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "<DYNASTY>"],
+  "attributes": { "S": 7, "T": 7, "A": 4, "I": 4, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 12, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 13,
+  "shock": 7,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Intimidation", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Warscythe", "damage": 11, "ed": 5, "ap": -4, "range": [2], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Self Destruct",
+      "text": "When this Threat dies, roll a d6. If you roll a Complication, the threat explodes using the following profile: 12 +5 ED / Blast (10), Rad (1)."
+    },
+    {
+      "type": "REACTION",
+      "name": "Guardian Protocols",
+      "text": "Lychguard may use their Reaction to intercept any ranged attack targeting a Threat that they share a <DYNASTY> Keyword within 3m, forcing them to target the Lychguard instead."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Huge"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "wrath-glory",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "pnpm -r test",
+    "validate": "pnpm --filter @wg/data validate"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "typescript": "^5.9.3"
+  }
+}

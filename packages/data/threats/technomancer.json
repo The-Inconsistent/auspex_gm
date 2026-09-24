@@ -1,0 +1,50 @@
+{
+  "id": "technomancer",
+  "name": "Technomancer",
+  "source": "threat-assessment",
+  "page": 139,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CRYPTEK"],
+  "attributes": { "S": 4, "T": 5, "A": 4, "I": 4, "Wil": 6, "Int": 8, "Fel": 3 },
+  "resilience": { "value": 9, "note": "AR 3" },
+  "defence": 3,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Tech", "dice": 12 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat’s turns." },
+    { "name": "Canoptek Cloak", "text": "This Threat can Fly. Once per turn, if this Threat flies within 3m of another Threat with the same <DYNASTY> Keyword, that Threat regains 1d3 Wounds." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Rites of Reanimation", "text": "Once per turn, the Technomancer can select a Threat with the same <DYNASTY> Keyword within 10m. Select one of the following effects to apply to the target:\n• The Threat’s Living Metal restores 1d3 Wounds and Shock.\n• The Threat’s Reanimation Protocols activate on an Icon and an Exalted Icon." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Staff of Light (Shooting)", "damage": 12, "ed": 1, "ap": -1, "range": [9, 18, 27] },
+        { "name": "Staff of Light (Melee)", "damage": 8, "ed": 3, "ap": -2, "range": [2], "traits": ["Parry"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 5,
+  "size": "Avg"
+}

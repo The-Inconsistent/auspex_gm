@@ -1,0 +1,52 @@
+{
+  "id": "cryptothrall",
+  "name": "Cryptothrall",
+  "source": "threat-assessment",
+  "page": 152,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CANOPTEK"],
+  "attributes": { "S": 6, "T": 6, "A": 3, "I": 4, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 10, "note": "AR 3" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 2,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 8 },
+      { "name": "Awareness", "dice": 6, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 4 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Networked", "text": "When within 10m of a Threat with the CRYPTEK Keyword, a Cryptothrall can move and take actions normally. When a Cryptothrall is not networked, a Cryptothrall will not move and only takes Actions to defend itself to deter attackers." },
+    { "name": "Systematic Vigour", "text": "Networked Cryptothralls gain +3 bonus dice to attack Tests and reduce the Multi-Atack penalty by 2 DN when making melee attacks, as though they had the Dual Wield Talent (Wrath & Glory, page 133)." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Scouring Eye", "damage": 12, "ed": 3, "ap": -2, "range": [6, 12, 18], "salvo": 1 },
+        { "name": "Scythed Limbs", "damage": 9, "ed": 4, "ap": -1, "range": [1] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Protection Protocol",
+      "text": "When Networked a Cryptothrall can use their reaction to force any ranged attack made against a character with the CRYPTEK Keyword within 3m to target them instead."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg"
+}

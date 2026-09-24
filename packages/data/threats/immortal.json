@@ -1,0 +1,44 @@
+{
+  "id": "immortal",
+  "name": "Immortal",
+  "source": "threat-assessment",
+  "page": 144,
+  "faction": "necron",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["NECRON", "[DYNASTY]"],
+  "attributes": { "S": 5, "T": 6, "A": 3, "I": 3, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 11, "note": "AR 4" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 6,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Gauss Blaster", "damage": 13, "ed": 1, "ap": -2, "range": [15, 30, 45], "salvo": 2, "traits": ["Rapid Fire (2)"] },
+        { "name": "Gauss Bayonet", "damage": 7, "ed": 2, "ap": -1, "range": [1] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg"
+}

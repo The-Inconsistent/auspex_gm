@@ -1,0 +1,64 @@
+{
+  "id": "gruzbag",
+  "name": "Gruzbag (Kommando)",
+  "source": "gutshivas-kommandos",
+  "page": 15,
+  "faction": "ork",
+  "threat": ["E", "E", "T", "T"],
+  "keywords": ["ORK", "KOMMANDO"],
+  "attributes": { "S": 4, "T": 5, "A": 4, "I": 3, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 6, "note": "AR: 0" },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Cunning", "dice": 6 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Survival", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Sneaky Gitz",
+      "text": "During the first round of combat in which Gruzbag ambushes their opponent, they may use their Stealth dice pool of 8 for any Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 7, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [24], "salvo": null, "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Uncontrollable Bionik Arm",
+      "text": "At the start of each of Gruzbag's Turns, roll 1d6 to determine what their uncontrollable Bionik Arm does. If the result is a 4 or 5 Gruzbag makes a Ranged Attack using that profile against a random target within range. Attacks made by the Uncontrollable Bionik Arm do not count as Actions.\n1: Shockin' Glitch: Gruzbag suffers 1 Shock.\n2-3: Nothin' Happened!\n4: Burna: 10 +3 ED / Range 4-8-12 / Salvo 1 / Flamer, Waaagh!\n5: Dakka: 8 +4 ED / Range 12-24-36 / Salvo 4 / Rapid Fire, Waaagh!\n6: Controlled Burna-Dakka: Gruzbag fires both the Burna and Dakka profiles at a target of their choice in range. 10 +1 ED / Range 6 – 12 – 18 / Salvo 1 / Pistol, Waaagh!",
+      "weapons": [
+        { "name": "Burna", "damage": 10, "ed": 3, "range": [4, 8, 12], "salvo": 1, "traits": ["Flamer", "Waaagh!"] },
+        { "name": "Dakka", "damage": 8, "ed": 4, "range": [12, 24, 36], "salvo": 4, "traits": ["Rapid Fire", "Waaagh!"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Da Biggest and Bestest Choppa",
+      "text": "If the loyalty mission 'Da Best Choppa' has been completed Gruzbag has a Big Choppa with the following profile:",
+      "weapons": [
+        { "name": "Big Choppa", "damage": 10, "ed": 5, "ap": -2, "range": [1], "traits": ["Unwieldy (2)", "Waaagh!"] }
+      ]
+    }
+  ]
+}

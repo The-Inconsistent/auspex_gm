@@ -1,0 +1,59 @@
+{
+  "id": "ta-nob",
+  "name": "Ork Nob",
+  "source": "threat-assessment",
+  "page": 84,
+  "faction": "ork",
+  "threat": ["A", "A", "E", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 6, "T": 6, "A": 2, "I": 4, "Wil": 3, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 11, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Choppa", "damage": 9, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [24], "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Slugga",
+      "text": "Printed profile is cut off: \"10 +1 ED / R\"."
+    },
+    {
+      "type": "RUIN",
+      "name": "I'm Da Boss!",
+      "text": "Spend 1 Ruin. All allies with the ORK Keyword within 10 metres gain +2 bonus dice to Weapon Skill (I) Tests."
+    },
+    {
+      "type": "REACTION",
+      "name": "Orks Is Never Defeated",
+      "text": "Whenever a Threat with the ORK Keyword dies within 10 metres of the Ork Nob, the Nob may sacrifice 1 Shock. If it does, the ORK Threat may make an immediate attack before it dies."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 64d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Ork Nobz gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Nobz." }
+  ]
+}

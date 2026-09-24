@@ -1,0 +1,61 @@
+{
+  "id": "ophydian-destroyer",
+  "name": "Ophydian Destroyer",
+  "source": "threat-assessment",
+  "page": 153,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "DESTROYER"],
+  "attributes": { "S": 5, "T": 5, "A": 3, "I": 4, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 8, "note": "AR 3" },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Second Strike", "text": "This Threat reduces the Multi-Atack penalty by 2 DN when it attacks with both its Hyperphase Threshers and Ophydian Claws, as though it had the Dual Wield Talent (Wrath & Glory, page 133)." },
+    { "name": "Tunneller", "text": "This Threat can tunnel underground whilst moving. While this Threat is underground it cannot be targeted by attack Tests." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Tunnelling Horrors",
+      "text": "Ophydan Destroyers emerge from tunnelling. All opponents of the Ophydian Destroyer must make a DN 2 Initiative Test or are Ambushed."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Hyperphase Threshers", "damage": 8, "ed": 3, "ap": -4, "range": [1] },
+        { "name": "Ophydian Claws", "damage": 7, "ed": 3, "ap": -1, "range": [1] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Hardwired for Destruction",
+      "text": "When you spend Ruin to re-roll all failing dice for a Ophydian Destroyer’s Weapon Skill Test, results of 3 and 4 count as Icons and results of 5 and 6 count as Exalted Icons."
+    },
+    {
+      "type": "REACTION",
+      "name": "Whipcoil Bodies",
+      "text": "When targeted by a melee attack, an Ophydian Destroyer can use its Reaction to increase its Defence by +1."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Avg"
+}

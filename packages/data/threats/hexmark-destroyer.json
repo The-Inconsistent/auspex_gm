@@ -1,0 +1,50 @@
+{
+  "id": "hexmark-destroyer",
+  "name": "Hexmark Destroyer",
+  "source": "threat-assessment",
+  "page": 147,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "DESTROYER CULT"],
+  "attributes": { "S": 5, "T": 6, "A": 6, "I": 5, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 11, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 12 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Inescapable Death", "text": "This Threat ignores all environmental DN penalties (cover, lighting conditions, etc.) to Ballistic Skill Tests." },
+    { "name": "Multi-threat Eliminator", "text": "When using its Enmitic Disintegrator Pistols, this Threat can Multi-Attack 6 times without suffering a DN penalty." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Dimensional Translocation",
+      "text": "The Hexmark Destroyer emerges from a hidden dimensional oubliette, automatically Ambushing all Agents. They cannot emerge closer than 10m."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Enmitic Disintegrator Pistol", "damage": 14, "ed": 1, "ap": -1, "range": [9, 18, 27], "traits": ["Pistol"] },
+        { "name": "Pistol Whip", "damage": 6, "ed": 2, "range": [1] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Hardwired for Destruction",
+      "text": "When you spend Ruin to re-roll all failing dice for a Hexmark Destroyer’s Ballistic Skill Test, results of 3 and 4 count as Icons and results of 5 and 6 count as Exalted Icons."
+    }
+  ],
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Large"
+}

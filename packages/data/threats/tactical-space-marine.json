@@ -1,0 +1,42 @@
+{
+  "id": "tactical-space-marine",
+  "name": "Tactical Space Marine",
+  "page": 330,
+  "faction": "imperial",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["ADEPTUS ASTARTES", "IMPERIUM", "[CHAPTER]"],
+  "attributes": { "S": 7, "T": 5, "A": 5, "I": 5, "Wil": 4, "Int": 4, "Fel": 2 },
+  "resilience": { "value": 11, "note": "Aquila Mk VII Power Armour: 5 AR" },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 6,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Know No Fear", "text": "Reroll any failed dice on a Resolve Test." },
+    { "name": "Space Marine Implants", "text": "Gain bonus dice and options for actions from Space Marine Implants p.75." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Boltgun", "damage": 10, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Brutal", "Rapid Fire (2)"] },
+        { "name": "Astartes Combat Knife", "damage": 10, "ed": 2, "range": [1], "traits": ["Reliable"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Angel of Death", "text": "Spend 1 Ruin to add the game's Tier in ED to all attacks this round." }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg"
+}

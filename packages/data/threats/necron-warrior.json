@@ -1,0 +1,47 @@
+{
+  "id": "necron-warrior",
+  "name": "Necron Warrior",
+  "source": "threat-assessment",
+  "page": 142,
+  "faction": "necron",
+  "threat": ["E", "E", "T", "T", "T"],
+  "keywords": ["NECRON", "[DYNASTY]"],
+  "attributes": { "S": 4, "T": 4, "A": 2, "I": 2, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 8, "note": "AR 3" },
+  "defence": 1,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Gauss Flayer", "damage": 10, "ed": 1, "ap": -1, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (2)"] },
+        { "name": "Gauss Bayonet", "damage": 6, "ed": 2, "ap": -1, "range": [1] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Their Number Is Legion", "text": "If 10 or more Necron Warriors are alive in a Mob, Reanimation Protocols activate on a result of 5 and 6." }
+  ]
+}

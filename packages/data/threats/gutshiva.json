@@ -1,0 +1,68 @@
+{
+  "id": "gutshiva",
+  "name": "Boss Gutshiva (Nob)",
+  "source": "gutshivas-kommandos",
+  "page": 8,
+  "faction": "ork",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["ORK"],
+  "attributes": { "S": 6, "T": 6, "A": 4, "I": 4, "Wil": 6, "Int": 2, "Fel": 2 },
+  "resilience": { "value": 11, "note": "AR: 4" },
+  "defence": 3,
+  "wounds": 12,
+  "shock": 9,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Athletics", "dice": 9 },
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Survival", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Champion", "text": "Gutshiva may use Ruin actions and has 4 personal Ruin." },
+    { "name": "'Ere We Go!", "text": "If Gutshiva is Engaged at the start of his Turn, he gains +2 damage to melee attacks." },
+    { "name": "Kombi-Rokkit", "text": "Gutshiva can Multi Attack with his Slugga and Rokkit Launcher. If he does,he makes his Attack Test with an additional +1 DV penalty." },
+    { "name": "Sneaky Gitz", "text": "During the first round of combat in which Boss Gutshiva ambushes their opponent, they may use their Stealth dice pool of 8 for any Test." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Rokkit Launcher", "count": 2, "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Blast (4)"] },
+        { "name": "Attack Squig", "damage": 9, "ed": 4, "ap": -1, "range": [1], "traits": ["Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [16], "traits": ["Blast (6)"] },
+        { "name": "Power Klaw", "damage": 12, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Attack Squig",
+      "text": "An Attack Squig can attack on each of Boss Gutshiva's Turns as a Simple Action using the following profile: Squig Bite: 5 +3 ED / AP −1 / Range 1 / Brutal",
+      "weapons": [
+        { "name": "Squig Bite", "damage": 5, "ed": 3, "ap": -1, "range": [1], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "I'm Da Boss!",
+      "text": "Spend 1 Ruin. All allies with the ORK Keyword within 10 metres gain +2 bonus dice to Weapon Skill (I) Tests."
+    },
+    {
+      "type": "REACTION",
+      "name": "Orks Is Never Defeated",
+      "text": "Whenever a Threat with the ORK Keyword dies within 10 metres of the Gutshiva, he may sacrifice 1 Shock. If he does, the ORK Threat may make an immediate attack before it dies."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Large"
+}

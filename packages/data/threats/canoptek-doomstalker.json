@@ -1,0 +1,50 @@
+{
+  "id": "canoptek-doomstalker",
+  "name": "Canoptek Doomstalker",
+  "source": "threat-assessment",
+  "page": 157,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CANOPTEK"],
+  "attributes": { "S": 9, "T": 10, "A": 4, "I": 3, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 17, "note": "AR 4, Containment Field: AR 2*" },
+  "defence": 2,
+  "wounds": 18,
+  "shock": 7,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "text": "The Doomsday Blaster can only be fired in High Power mode if the Canoptek Stalker has not moved this Turn.",
+      "weapons": [
+        { "name": "Doomsday Blaster (Low Power)", "damage": 15, "ed": 2, "ap": -2, "range": [12, 24, 36], "salvo": 1, "traits": ["Reliable", "Mounted (Huge)"] },
+        { "name": "Doomsday Blaster (High Power)", "damage": 19, "ed": 2, "ap": -5, "range": [24, 48, 72], "salvo": 1, "traits": ["Reliable", "Mounted (Huge)"] },
+        { "name": "Twin Gauss Flayer", "damage": 10, "ed": 1, "ap": -1, "range": [12, 24, 36], "salvo": 4, "traits": ["Rapid Fire (4)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Sentinel Construct",
+      "text": "Once per Round when any enemy moves within range of a Canoptek Doomstalker’s Twin Gauss Flayer it can fire the Twin Gauss Flayer."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explosive",
+      "text": "When a Canoptek Doomstalker is destroyed, roll 1d6. If you roll a Complication or an Exalted Icon, the Canoptek Doomstalker explodes with the following profile: 16 +4 ED / Blast (10)"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 10d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 10,
+  "size": "Huge"
+}

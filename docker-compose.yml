@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: wg
+      POSTGRES_PASSWORD: wg
+      POSTGRES_DB: wg
+    ports: ["127.0.0.1:5434:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "wg"]
+      interval: 2s
+      retries: 15
+
+volumes:
+  pgdata:

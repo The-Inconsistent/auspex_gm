@@ -1,0 +1,44 @@
+{
+  "id": "groof-da-yoof",
+  "name": "Groof da Yoof (Stormboy)",
+  "source": "gutshivas-kommandos",
+  "page": 17,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["ORK", "KOMMANDO"],
+  "attributes": { "S": 4, "T": 4, "A": 4, "I": 3, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 5, "note": "AR: 0" },
+  "defence": 2,
+  "wounds": 6,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 3, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Pilot", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Full Throttle", "text": "When Groof uses a Rokkit Pack to move, they can choose to activate Full Throttle to fly at triple their Speed for the rest of their Turn. They also gain +Rank bonus dice to Intimidation, Leadership, and Weapon Skill Tests whilst Full Throttle is active. If Groof crashes whilst Full Throttle is Active they suffer a minimum of 1d6 Shock and 1 Mortal Wound, plus falling damage (Wrath & Glory Rulebook page 201)." },
+    { "name": "Marching Orders", "text": "If the loyalty mission 'Marching Orders' has been completed Groof da Yoof gains an additional +1 to his Speed." },
+    { "name": "Rokkit Pack", "text": "Groof can fly at double their Speed by making a DN 3 Pilot (A) Test, ignoring any terrain. The pool for this Test, and any other Test made while using the Rokkit Pack, must include an additional Wrath Die. If Groof rolls a Complication, they crash, dealing a minimum of 1d3 Shock plus falling damage (Wrath & Glory Rulebook page 201)." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 7, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [16], "traits": ["Blast (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg"
+}

@@ -1,0 +1,54 @@
+{
+  "id": "deathmark",
+  "name": "Deathmark",
+  "source": "threat-assessment",
+  "page": 146,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["NECRON", "<DYNASTY>"],
+  "attributes": { "S": 4, "T": 5, "A": 5, "I": 3, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 9, "note": "AR 3" },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Stealth", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Synaptic Targeting", "text": "Whenever a Deathmark would suffer a DN penalty to a Ballistic Skill Test, roll a d6. If the result is an Exalted Icon, the Deathmark ignores the DN penalty." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Dimensional Translocation",
+      "text": "The Deathmark emerges from a hidden dimensional oubliette no closer than 10m to any Agent. All opponents of the Deathmark must make a DN 3 Initiative Test or are Ambushed."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Synaptic Disintegrator", "damage": 12, "ed": 2, "ap": -2, "range": [18, 36, 54], "traits": ["Sniper (2)"] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Synaptic Headshot",
+      "text": "On a Critical Hit, the Synaptic Disintegrator inflicts an additional Mortal Wound."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "ta-gretchin",
+  "name": "Gretchin",
+  "source": "threat-assessment",
+  "page": 94,
+  "faction": "ork",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 1, "T": 1, "A": 3, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 2, "note": "AR 0" },
+  "defence": 3,
+  "wounds": 2,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 5 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Grot Blasta", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol"] },
+        { "name": "Combat Knife", "damage": 3, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Small",
+  "mobAbilities": [
+    { "name": "Surprisingly Dangerous in Large Numbers", "text": "In Mobs of ten or more, Gretchin reroll all die results of 1 on Ballistic Skill (A) Tests, excluding Complications." }
+  ]
+}

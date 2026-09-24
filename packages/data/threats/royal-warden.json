@@ -1,0 +1,48 @@
+{
+  "id": "royal-warden",
+  "name": "Royal Warden",
+  "source": "threat-assessment",
+  "page": 138,
+  "faction": "necron",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]"],
+  "attributes": { "S": 9, "T": 8, "A": 4, "I": 4, "Wil": 7, "Int": 5, "Fel": 2 },
+  "resilience": { "value": 13, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 16,
+  "shock": 11,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Adaptive Strategy", "text": "At the start of each Round, one Mob or individual with the same <DYNASTY> Keyword as this Threat within 10 m can Seize the Initiative for free." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 1 personal Ruin." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Relentless March", "text": "Every Mob or individual with the same [DYNASTY] Keyword as this Threat within 10 m gains +1 Speed." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Relic Gauss Blaster", "damage": 12, "ed": 1, "ap": -2, "range": [15, 30, 45], "salvo": 2, "traits": ["Rapid Fire (2)", "Reliable"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 8d6.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 6,
+  "size": "Avg"
+}

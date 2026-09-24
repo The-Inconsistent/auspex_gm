@@ -1,0 +1,53 @@
+{
+  "id": "flayed-one",
+  "name": "Flayed One",
+  "source": "threat-assessment",
+  "page": 149,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["NECRON", "FLAYER"],
+  "attributes": { "S": 5, "T": 5, "A": 4, "I": 5, "Wil": 3, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 9, "note": "AR 3" },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 5,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Flesh Hunger", "text": "This Threat’s attacks against organic targets have the Brutal weapon trait." },
+    { "name": "Second Strike", "text": "This Threat reduces the Multi-Atack penalty by 2 DN, as though it had the Dual Wield Talent (Wrath & Glory, page 133)." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Terrifying Dimensional Translocation",
+      "text": "Flayed Ones can cut their way through reality to teleport into combat no closer than 10m to any Agent. All opponents of the Flayed One must make a DN 3 Initiative Test or are Ambushed. Additionally, all opponents of the Flayed One must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Flayer Claws", "damage": 8, "ed": 5, "ap": -1, "range": [1], "traits": ["Rending (2)"] }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Feeding Frenzy",
+      "text": "When a Flayed One rolls a Complication in a situation where blood has been spilt, they spend their next turn wallowing in gore. Anyone seeing this display must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg"
+}

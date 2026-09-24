@@ -1,0 +1,49 @@
+{
+  "id": "canoptek-scarab",
+  "name": "Canoptek Scarab",
+  "source": "threat-assessment",
+  "page": 145,
+  "faction": "necron",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["NECRON", "[DYNASTY]"],
+  "attributes": { "S": 1, "T": 2, "A": 2, "I": 3, "Wil": 3, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 4, "note": "AR 1" },
+  "defence": 4,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 2,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Stealth", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Mechanical Assistance", "text": "A Scarab can use the Help any Necron within 10m as a Free Action." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Feeder Mandibles", "damage": 2, "ed": 2, "range": [1], "traits": ["Rending (6)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Self-Destruction",
+      "text": "Spend 1 Ruin to activate a Canoptek Scarab or a Mob of Canoptek Scarabs self-destruction protocols, causing them to explode with the following profile: 4 +1 ED / Blast (2). For every additional Scarab that self destructs, increase the ED and Blast Rating by +1."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Tiny"
+}

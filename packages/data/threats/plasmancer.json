@@ -1,0 +1,54 @@
+{
+  "id": "plasmancer",
+  "name": "Plasmancer",
+  "source": "threat-assessment",
+  "page": 141,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CRYPTEK"],
+  "attributes": { "S": 4, "T": 5, "A": 5, "I": 5, "Wil": 5, "Int": 8, "Fel": 2 },
+  "resilience": { "value": 11, "note": "AR 3" },
+  "defence": 4,
+  "wounds": 11,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Tech", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat’s turns." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Harbinger of Destruction", "text": "After this Threat has moved, all enemies within 24m must make a DN 3 Athletics Test or suffer 1 Mortal Wound." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Plasmic Lance (shooting)", "damage": 12, "ed": 3, "ap": -3, "range": [9, 18, 27] },
+        { "name": "Plasmic Lance (melee)", "damage": 8, "ed": 5, "ap": -3, "range": [2] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Living Lightning",
+      "text": "Once per round when the Plasmancer is attacked in melee, all enemies of the Plasmancer within 6m must make a DN 4 Athletics Test or suffer 1 Mortal Wound."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 5,
+  "size": "Avg"
+}

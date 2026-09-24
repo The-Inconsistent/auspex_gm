@@ -1,0 +1,62 @@
+{
+  "id": "ork-nob",
+  "name": "Ork Nob",
+  "page": 356,
+  "faction": "ork",
+  "threat": ["A", "A", "E", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 6, "T": 6, "A": 2, "I": 4, "Wil": 3, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 11, "note": "'Eavy Armour: 4 AR" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 3 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Shoota", "damage": 10, "ed": 1, "range": [9, 18, 27], "salvo": 2, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Big Choppa", "damage": 11, "ed": 5, "ap": -1, "range": [1], "traits": ["Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [20], "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "I'm Da Boss!",
+      "text": "Spend 1 Ruin. All allies with the ORK Keyword within 10 metres gain +2 bonus dice to Weapon Skill (I) Tests."
+    },
+    {
+      "type": "REACTION",
+      "name": "Orks Is Never Defeated",
+      "text": "Whenever a Threat with the ORK Keyword dies within 10 metres of the Ork Nob, the Nob may sacrifice 1 Shock. If it does, the ORK Threat may make an immediate attack before it dies."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Meganobz",
+      "text": "What's bigger, fightier, and shootier than an Ork Nob? A Nob in Mega-Armour — a Meganob! Ork Meganobz often lead other Nobz and mobs of Boyz into battle. Meganobz use the same statistics as Nobz, with the following adjustments: SKILLS: Strength 10, Resilience 15, Speed 6 (May not Run or Sprint)",
+      "weapons": [
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Power Klaw", "damage": 16, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] }
+      ]
+    }
+  ]
+}

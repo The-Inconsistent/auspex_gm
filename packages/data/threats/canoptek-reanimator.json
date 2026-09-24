@@ -1,0 +1,46 @@
+{
+  "id": "canoptek-reanimator",
+  "name": "Canoptek Reanimator",
+  "source": "threat-assessment",
+  "page": 145,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["NECRON", "[DYNASTY]", "CANOPTEK"],
+  "attributes": { "S": 6, "T": 7, "A": 2, "I": 2, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 12, "note": "AR 4" },
+  "defence": 1,
+  "wounds": 11,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Tech", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Nanoscarab Reanimation Protocols", "text": "Whenever a Threat within 6m that shares a [DYNASTY] Keyword with the Canoptek Reanimator activates its Reanimation Protocols, it may roll 2d6." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Atomiser Beam", "damage": 14, "ed": 1, "ap": -2, "range": [6, 12, 18], "traits": ["Spread"] },
+        { "name": "Reanimator Claws", "damage": 9, "ed": 2, "ap": -2, "range": [2], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Self Destruct",
+      "text": "When this Threat dies, roll a d6. If you roll a Complication, the threat explodes using the following profile: 12 +5 ED / Blast (10), Rad (1)."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Huge"
+}

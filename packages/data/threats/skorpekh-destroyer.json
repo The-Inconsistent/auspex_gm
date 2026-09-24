@@ -1,0 +1,56 @@
+{
+  "id": "skorpekh-destroyer",
+  "name": "Skorpekh Destroyer",
+  "source": "threat-assessment",
+  "page": 152,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "DESTROYER"],
+  "attributes": { "S": 9, "T": 9, "A": 5, "I": 5, "Wil": 4, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 14, "note": "AR 4" },
+  "defence": 4,
+  "wounds": 17,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Athletics", "dice": 10 },
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." },
+    { "name": "Whirling Onslaught", "text": "If this Threat makes a melee attack on its turn it may use the Parry Trait of its melee weapon to gain +1 Defence against ranged attacks." },
+    { "name": "Second Strike", "text": "This Threat reduces the Multi-Atack penalty by 2 DN, as though it had the Dual Wield Talent (Wrath & Glory, page 133)." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Hyperphase Threshers", "damage": 12, "ed": 4, "ap": -3, "range": [1], "traits": ["Parry"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Protection Protocol",
+      "text": "When Networked a Cryptothrall can use their reaction to force any ranged attack made against a character with the CRYPTEK Keyword within 3m to target them instead."
+    },
+    {
+      "type": "RUIN",
+      "name": "Hardwired for Destruction",
+      "text": "When you spend Ruin to re-roll all failing dice for a Skorpekh Destroyer’s attack test, results of 3 and 4 count as Icons and results of 5 and 6 count as Exalted Icons."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is resurrected with 1 Wound and 1 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 9d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Large"
+}

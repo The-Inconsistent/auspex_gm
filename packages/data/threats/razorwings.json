@@ -1,0 +1,37 @@
+{
+  "id": "razorwings",
+  "name": "Razorwings",
+  "source": "gutshivas-kommandos",
+  "page": 17,
+  "faction": "ork",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["BEAST"],
+  "attributes": { "S": 1, "T": 1, "A": 3, "I": 3, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 3, "note": "AR: 1" },
+  "defence": 3,
+  "wounds": 3,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Weapon Skill", "dice": 3 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Flight", "text": "Speed is printed as \"10(Flight)\"." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Tearing Beak & Claws", "damage": 3, "ed": 2, "ap": -1, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Small"
+}

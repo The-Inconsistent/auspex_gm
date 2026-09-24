@@ -1,0 +1,41 @@
+{
+  "id": "dudd-the-bomb-squig",
+  "name": "Dudd the Bomb Squig",
+  "source": "gutshivas-kommandos",
+  "page": 18,
+  "faction": "ork",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ORK", "SQUIG"],
+  "attributes": { "S": 2, "T": 2, "A": 1, "I": 2, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 3, "note": "AR: 0" },
+  "defence": 2,
+  "wounds": 4,
+  "shock": 3,
+  "skills": {
+    "default": 2,
+    "list": [
+      { "name": "Athletics", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 4 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Bitey Squig Bite", "damage": 10, "ed": 2, "ap": -3, "range": [1], "traits": ["Brutal"] }
+      ]
+    },
+    { "type": "RUIN", "text": "Spend 1 Ruin to make Dudd explode, triggering ANNIHILATION: Boom Squig Explosion." },
+    { "type": "COMPLICATION", "text": "Dudd suddenly explodes, triggering ANNIHILATION: Boom Squig Explosion." },
+    {
+      "type": "ANNIHILATION",
+      "name": "Boom Squig Explosion",
+      "text": "Dudd explodes and dies, using the following profile: 14 +4 ED / AP −1 / Blast 4"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Small"
+}

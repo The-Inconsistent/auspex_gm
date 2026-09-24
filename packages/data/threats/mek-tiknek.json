@@ -1,0 +1,51 @@
+{
+  "id": "mek-tiknek",
+  "name": "Mek Tiknek (Mekboy)",
+  "source": "gutshivas-kommandos",
+  "page": 13,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["ORK"],
+  "attributes": { "S": 4, "T": 5, "A": 3, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 6, "note": "AR: 0" },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Tech", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If Mek Tiknek is Engaged at the start of their Turn, gain +2 damage to melee attacks." },
+    { "name": "Grot Oiler", "text": "The Grot Oiler can be sacrificed to add +3 bonus dice to any Tech Test." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Mekanik",
+      "text": "Mek Tiknek can repair any damaged piece of equipment within 1 metre. He can also Reload a weapon without spending an Action."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Kustom Mega-Slugga", "damage": 10, "ed": "1d3", "ap": -3, "range": [6, 12, 18], "salvo": 1, "traits": ["Blast (4)", "Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 7, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Orky Upgradez",
+      "text": "As a Free Action, Mek Tiknek may spend 1 Ruin to tinker with a ranged weapon within 1 metre. The weapon gains +1d3 ED and +1d3 AP for its next attack. The next time the weapon is fired, a Complication triggers if the Wrath Die lands on a 1, 2, or 3.\n\nIf the loyalty mission 'Yellow Wunz has more Dakka' has been completed, this is a normal Action instead of a Ruin Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg"
+}

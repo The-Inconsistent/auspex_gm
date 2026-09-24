@@ -1,0 +1,52 @@
+{
+  "id": "canoptek-wraith",
+  "name": "Canoptek Wraith",
+  "source": "threat-assessment",
+  "page": 155,
+  "faction": "necron",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["NECRON", "[DYNASTY]", "CANOPTEK"],
+  "attributes": { "S": 5, "T": 6, "A": 5, "I": 4, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 12, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Dimensional Destabilisation", "text": "Canoptek Wraiths can move through solid objects, treating them as Difficult Terrain." },
+    { "name": "Living Metal", "text": "At the start of each of this Threat’s turns it regains 1 Wound and 1 Shock." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Lurking Horrors",
+      "text": "Canoptek Wraiths can enter combat by emerging from a solid object. All opponents of the Hexmark Destroyer must make a DN 2 Initiative Test or are Ambushed. Additionally, all opponents of the Hexmark Destroyer must make a DN 2 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Vicious Claws", "damage": 10, "ed": 5, "ap": -3, "range": [1] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Reanimation Protocols",
+      "text": "When this Threat is destroyed, roll a d6. If the result is an Exalted Icon, it is"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 12,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Fearful Host", "text": "A Mob of Canoptek Wraiths that uses Lurking Horrors adds +2 to both the Initiative and Fear Test." }
+  ]
+}

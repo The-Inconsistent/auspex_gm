@@ -1,0 +1,52 @@
+{
+  "id": "ta-smashasquig",
+  "name": "Smashasquig",
+  "source": "threat-assessment",
+  "page": 97,
+  "faction": "ork",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["ORK", "SQUIG"],
+  "attributes": { "S": 7, "T": 7, "A": 1, "I": 3, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 3 },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Mount", "text": "A Smasha Squig may be ridden by any Ork that can keep it under control, typically a Nob.\nThe Smasha Squig and any rider take their Turn together using the Smasha Squig's movement, and each have their own Action. The rider and Smasha Squig can each be targeted separately." },
+    { "name": "Smasha 'Ead", "text": "When the Smasha Squig Charges, it gains an additional +2 bonus dice to melee attack Tests, as do any individuals riding it. Additionally, if he Smasha Squig successfully its someone with a Charge, they must succeed on a contested Strength Test or be knocked backwards 7m and be knocked Prone." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Smasha Squig Jaws", "damage": 13, "ed": 3, "ap": -1, "range": [1], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Rampage",
+      "text": "The Smasha Squig immediately becomes Frenzied, and focuses all its efforts on killing and eating the nearest individual. If an individual is Mounted on the Smasha Squig they may make a DN 3 Pilot Test to prevent the Smasha Squig from going Frenzied. If they fail, they may become its first target, but may use their Action to repeat the Test on their Turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "A Swarm of Teeth and Claws", "text": "A Mob of Squigs gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Squigs." },
+    {
+      "type": "COMPLICATION",
+      "name": "Vicious by Nature",
+      "text": "Whenever the Mob rolls a Complication, the Squig attacks the nearest Ork and inflicts 1d3 Shock. Add 1d3 Shock to this damage for every ten Squigs in the Mob."
+    }
+  ]
+}

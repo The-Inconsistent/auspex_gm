@@ -1,0 +1,59 @@
+{
+  "id": "dok-bitzbak",
+  "name": "Dok Bitzbak (Painboy)",
+  "source": "gutshivas-kommandos",
+  "page": 11,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["ORK"],
+  "attributes": { "S": 5, "T": 4, "A": 4, "I": 4, "Wil": 4, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 6, "note": "AR: 1" },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Medicae", "dice": 7 },
+      { "name": "Survival", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Bionik Boyz", "text": "A number of ORK Threats equal to the Tier of the game that accompany Dok Bitzbak may have Bioniks (W&G page 246)." },
+    { "name": "Champion", "text": "Dok Bitzbag may use Ruin actions and has 3 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Wetwork",
+      "text": "Dok Bitzbak uses their Dok's Tools on an ally and makes an attack using one of its weapons, ignoring the Multi-Action DN penalty."
+    },
+    {
+      "type": "ACTION",
+      "name": "Dok's Tools",
+      "text": "Dok Bitzbak makes a DN3 Medicae (Int) Test on an ally as a Simple Action. Every shifted Exhalted Icon causes the target to recover 1 additional Wound. If Dok Bitzbak rolls a Complication, the Test fails, and the target suffers an additional Wound"
+    },
+    {
+      "type": "ACTION",
+      "text": "'Urty Syringe is printed without a Range: \"8 +2 ED / Rending (6)\".",
+      "weapons": [
+        { "name": "Power Klaw", "damage": 11, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] },
+        { "name": "'Urty Syringe", "damage": 8, "ed": 2, "range": [1], "traits": ["Rending (6)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Kwik Fix",
+      "text": "Dok Bitzbak uses their Dok's Tools as a Simple Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg"
+}
