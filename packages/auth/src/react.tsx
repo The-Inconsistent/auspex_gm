@@ -1,9 +1,9 @@
 import { ClerkProvider } from "@clerk/nextjs";
 
 // The app's own sign-in and sign-up pages (apps/web/app/sign-in, sign-up). Clerk's screens take the Auspex look from
-// the --clerk-* variables in globals.css.
+// the --clerk-* variables in globals.css. Sign-out lands on /leave (apps/web/app/leave), which also drops a guest cookie.
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  return <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">{children}</ClerkProvider>;
+  return <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up" afterSignOutUrl="/leave">{children}</ClerkProvider>;
 }
 
 export { Show, SignIn, SignUp, UserButton } from "@clerk/nextjs";

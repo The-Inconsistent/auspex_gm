@@ -45,8 +45,10 @@ export function PlayerApp({ campaignId, characterId }: PlayerAppProps) {
       {!online && <div className="badge-offline">NO SIGNAL</div>}
       <div className={`pl-banner ${myTurn ? "up" : ""}`} style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div className="display" style={{ fontSize: 26, flex: 1 }}>{banner}</div>
-        {/* Signed-in players get the lobby and account menu; guests have neither. */}
+        {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
+            (plain <a>, so nothing prefetches it); rescanning the QR rejoins. */}
         <Show when="signed-in"><a href="/" aria-label="Lobby">◂</a><UserButton /></Show>
+        <Show when="signed-out"><a className="btn sm" href="/leave">LEAVE</a></Show>
       </div>
       <div className="pl-body">
         {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
