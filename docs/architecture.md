@@ -90,8 +90,8 @@ socket handshake ──cookie──▶ middleware resolves ctx before the connec
 - The DB stores only SHA-256 hashes of tokens.
 - `token.revoke` marks a character's tokens revoked and **disconnects** that player's socket.
 - Every query is scoped to the caller's `ctx.campaignId`, and a row id sent by the client is looked up inside that
-  campaign before it's used. **Known gap:** `codex.save` stores some cross-references without checking them: a
-  beat's location, NPC and handout ids, an NPC's faction, and a location's parent. See [backend.md](backend.md).
+  campaign before it's used. That includes the cross-references `codex.save` stores: a beat's adventure, location,
+  NPC and handout ids, an NPC's faction, and a location's parent. See [backend.md](backend.md).
 
 ## Static data, snapshotted
 
@@ -107,7 +107,7 @@ These are marked `ponytail:` in the code, with an upgrade path.
 | --- | --- | --- |
 | In-process action queue | one api instance | Postgres advisory locks |
 | Full-snapshot broadcast | fine at a few KB | patches if the payload grows |
-| Client undo = inverse delta | inexact if a counter was clamped at 0 | server-side history |
+| Client undo = inverse delta, read against the state at tap time | inexact if a counter was clamped at 0, or healing ended Dying | server-side history |
 | Prepared-encounter row cap (`MAX_ENCOUNTER_ROWS`) | 60 combatants per beat, a Mob counts as 1 | raise it, or batch the inserts |
 
 ## Deployment (planned)

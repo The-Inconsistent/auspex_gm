@@ -211,7 +211,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 
 1. **Seize limit** — p.177 "once before the Threats take their Turn" and p.320 "once per turn" read as the same
    rule: after a Seize, the other side must act next.
-2. **Round-start GM Seize** (p.176) costs 1 Ruin (p.320) and counts as that Round's one Threat Seize.
+2. **Round-start GM Seize** (p.176) costs 1 Ruin (p.320) and follows the same once-per-turn limit as any Seize
+   (p.320): the Threats can't Seize again until the Agents have acted, and can Seize again after that.
 3. **Monstrous Creatures** roll Determination free (they are "similar to Adversaries") but are killed outright
    beyond Max Wounds (p.324).
 4. **Withstand** triggers when a Champion's Wounds would exceed Max; repeatable while Ruin lasts.
@@ -219,6 +220,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 6. **Passive Awareness** uses Awareness (p.37), not Stealth (p.41 sheet text).
 7. **Annihilation** compares Wounds after Resilience, not raw damage.
 8. **Condition durations** "end of next Turn" = the affected character's next Turn.
+9. **Mob Shock** below the members' Maximum Shock has no effect: p.325 covers only a hit that exceeds it.
+10. **Adversary over Max Wounds** stays in the turn order until the GM removes it; whether it is Dying or dead is
+    the GM's call (p.324).
+11. **Wounds while Dying** add one Traumatic Injury per hit, however many Wounds it deals (p.193 counts each time
+    damage is taken, not its size).
 
 ---
 
@@ -229,18 +235,18 @@ Implementation details: [game-logic.md](game-logic.md).
 | Area | Status | Where / what's left |
 |---|---|---|
 | Seize limit | done | `canSeize` + `encounter.seizedSide`; set in `turn.seize`, kept or cleared in `turn.end` |
-| Round-start Seize | done | `canSeize` (`lastSide` null → threats only); 1 Ruin via `spend()` in `turn.seize` |
+| Round-start Seize | done | `canSeize` (`lastSide` null → threats only; never when that side is up next anyway); 1 Ruin via `spend()` in `turn.seize` |
 | Ambush | done | `combatant.ambushed`; `canAct`, `turn.start` guard, `turn.end` rollover; `combatant.aware` (1 Glory/Ruin); cleared by `newRound()` |
-| Mob damage | partial | Wounds remove members, capped at `mobStart` (`combatant.adjust`); half-slain chip (`threatStatus`). Missing: Shock over max removing a member; prompt isn't tied to Round end |
+| Mob damage | partial | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`). Missing: prompt isn't tied to Round end |
 | Troop Shock | done | `threatStatus` (T over max Shock → Slain); `combatant.adjust` refuses Shock when `maxShock` is null |
 | Threat outcomes | done | `threatStatus` per class (A → Dying or dead, T/E/M → Slain; Exhausted for E/A/M) |
-| Traumatic Injuries | partial | `character.traumatic` (GM-only adjust); `pcStatus` Dead at > Tier + 1. Missing: Wounds while Dying → Traumatic; Annihilation |
+| Traumatic Injuries | partial | `character.traumatic` (GM-only adjust); `pcStatus` Dead at > Tier + 1; `character.adjust` turns a Wound while Dying into 1 Traumatic Injury (§11.11), adds Prone on becoming Dying, and ends Dying on any healing. Missing: Annihilation |
 | Traits minimum 1 | done | `deriveStats` clamps all Traits to ≥ 1; Influence added |
 | Session start | done | `session.start` (Wrath 2, Glory 0, Ruin = characters); `session.end` awards XP |
-| Respite | done | `character.respite` (refused while Dying) |
+| Respite | done | `character.respite` (refused while Dying or Dead) |
 | Personal Ruin | done | `combatant.personalRuin`, seeded from the stat block; tracker SPEND / +1 |
 | Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's vox log only |
-| Slain / Dead in turn order | missing | `canAct`, `turn.start` and the `turn.end` rollover still count them; GM removes them |
+| Slain / Dead in turn order | done | `isOut` in `canAct` / `sideUpNext`; `turn.start` refuses them and the `turn.end` rollover skips them. An Adversary over max Wounds stays until the GM removes it (§11.10) |
 | Exhausted → Mortal Wounds | missing | extra Shock while Exhausted isn't converted (p.196) |
 | Timed Conditions | missing | "end of next Turn" Conditions don't expire (§11.8) |
 | Per-class rule chips | missing | §10's Troop chips (no crits, Determination costs Ruin) aren't shown; the tracker shows the class name only |

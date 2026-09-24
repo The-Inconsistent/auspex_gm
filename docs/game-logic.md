@@ -11,28 +11,31 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 
 | Layer | File | Holds |
 |---|---|---|
-| Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `skillTotal`, `effectiveStrength`, `poolMax`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
+| Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `skillTotal`, `effectiveStrength`, `poolMax`, `isOut`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
 | | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt` |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
 | | `apps/api/src/campaign/campaign.actions.ts` | pools, `session.start`, `session.end` |
-| | `apps/api/src/character/character.actions.ts` | `character.adjust`, `character.respite` |
-| | `apps/api/src/encounter/encounter.actions.ts` | turns, Seize, ambush, threat damage, `beat.startEncounter` |
+| | `apps/api/src/character/character.actions.ts` | `character.adjust` (Dying → Traumatic, Prone), `character.respite` |
+| | `apps/api/src/encounter/encounter.actions.ts` | turns, Seize, ambush, threat and Mob damage, `beat.startEncounter` |
+| | `apps/api/src/codex/codex.actions.ts` | `codex.save` reference and threat checks |
 | | `apps/api/src/core/sql.ts` | `bump`: every counter delta is `greatest(0, col + d)` |
 | Display | `apps/web/components/gm/tracker/tracker.tsx` | status chips, turn buttons, Condition reminders |
 
 Tests: `packages/shared/src/state.test.ts` (`bun run test`); end to end: `apps/api/test/smoke.test.ts`.
 
-> The api does **not** call `canAct` / `sideUpNext` for `turn.start` / `turn.end`; it re-implements the same
-> pending-side check in SQL. Change one, change both.
+> The api calls the same `isOut` / `canAct` / `sideUpNext` / `canSeize` for `turn.start`, `turn.seize` and `turn.end`:
+> `liveTable()` loads the `LiveState` inside the action's transaction (`loadState(campaignId, tx)`). Change the rule
+> once, in `state.ts`.
 
 ---
 
 ## 1. Derived stats (`deriveStats`, pp.36–37, sheet p.372)
 
 Input: `CharacterStats` (attributes, skills, armour, speed, `mods`), GM `Overrides`, campaign Tier. Called on both
-sides: web for display (sheet, party, tracker), api for the Respite check.
+sides: web for display (sheet, party, tracker), api for the Dying and Dead checks (`healthOf()` in `character.adjust`
+and `character.respite`, `isOut` in the turn actions).
 
 | Stat | Formula in code | Page |
 |---|---|---|
@@ -112,15 +115,23 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 |---|---|---|
 | `session.start` | every character Wrath = 2; Glory = 0; Ruin = players; closes any open `session` row and opens session n + 1 | p.162, p.164, p.320 |
 | `session.end` | stores `xp` (0–100) and `recap` on the open session; adds `xp` to **every** character's `xp`; fails if none is open. Pools are left alone (the next `session.start` resets them) | p.321 |
-| `character.respite` | Wounds = 0, Shock = 0, Wrath = 2. Refused while Dying (Wounds > Max Wounds, computed server-side with `deriveStats`) | pp.196–197 |
+| `character.respite` | Wounds = 0, Shock = 0, Wrath = 2. Refused while Dead or Dying (`pcStatus` server-side, via `healthOf()`) | p.193, pp.196–197 |
 
 - "Unless continuing mid-action" (p.162) is the GM's call: just don't press START SESSION.
-- Respite does **not** touch Traumatic Injuries or Conditions, and it doesn't check Dead.
+- Respite does **not** touch Traumatic Injuries or Conditions.
 - Not tracked: Objectives, Wealth awards, Rank from XP, Regroup healing (p.196). Regroup is a manual HEAL.
 
-**Traumatic Injuries** (p.193–194): `character.traumatic`, GM-only (+TRAUMATIC button in the tracker side panel).
-`pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1). The app does **not** turn Wounds
-taken while Dying into Traumatic Injuries: the GM taps +TRAUMATIC instead of DMG. See §11.
+**Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the
+tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1).
+
+**Dying in `character.adjust`** (p.193). `healthOf()` reads the row's `pcStatus` before the write:
+
+- Crossing into Dying (Wounds past max) adds the `Prone` Condition if it's missing.
+- While Dying, a positive Wounds delta adds **1** Traumatic Injury instead of Wounds, whatever its size (house §11.11).
+  This applies to a player's own DMG tap too; the "no `traumatic`" rule in `authorize` covers only the explicit field.
+- While Dying, a negative Wounds delta sets Wounds to `least(maxWounds, wounds + delta)`, so any healing ends Dying.
+
+Example (Max Wounds 8): DMG 9 → Wounds 9, Dying, Prone. DMG 3 → Traumatic +1, Wounds stay 9. HEAL 1 → Wounds 8.
 
 ## 4. Combat state machine (`encounter.actions.ts`, pp.176–178)
 
@@ -130,30 +141,35 @@ null at Round start), `seizedSide` (side that Seized and can't again yet). Per c
 | Action | Checks | Writes |
 |---|---|---|
 | `encounter.start` | — | deactivates any active encounter, inserts an empty one (add PCs and threats after) |
-| `turn.start` (id) | no one is acting; combatant is in this encounter; not `acted`; not ambushed in Round 1; its side is the expected side **unless** the expected side has no one able to act | `currentId` |
-| `turn.seize` (id) | same first four checks; `canSeize(enc, side)`; 1 Glory (Agent) / 1 Ruin (Threat) via `spend()` | `currentId`, `seizedSide = side` |
-| `turn.end` | someone is acting | combatant `acted = true`; `lastSide = side`; `seizedSide` kept if it's this side, else cleared; **auto rollover** if no one left can act |
+| `turn.start` (id) | no one is acting; combatant is in this encounter; not `isOut` ("Dead: no more Turns" / "Slain: no more Turns"); not `acted`; not ambushed in Round 1; its side is `sideUpNext` | `currentId` |
+| `turn.seize` (id) | same first five checks; `canSeize(state, side)`; 1 Glory (Agent) / 1 Ruin (Threat) via `spend()` | `currentId`, `seizedSide = side` |
+| `turn.end` | someone is acting | combatant `acted = true`; `lastSide = side`; `seizedSide` kept if it's this side, else cleared; **auto rollover** if no combatant `canAct` |
 | `encounter.newRound` | — | manual rollover (same `newRound()`) |
 | `encounter.end` | — | `active = false` |
 
-**Pure helpers** (the tracker uses these to show buttons; the api checks the same logic itself)
+**Pure helpers** (the tracker uses these to show buttons, and the api calls them to enforce the same rules). Each takes
+the whole `LiveState`, since telling Dead needs the characters.
 
-- `canAct(e, c)`: not `acted`, not the current combatant, not (`ambushed` and Round 1). p.177.
-- `sideUpNext(e)`: prefer the side opposite `lastSide` (Agents when `lastSide` is null, so players pick first each
+- `isOut(s, c)`: a threat whose `threatStatus` includes Slain, or a PC whose `pcStatus` includes Dead. An Adversary
+  over max Wounds is **not** out; the GM removes it (house §11.10). p.176, p.193, p.324.
+- `canAct(s, c)`: not `acted`, not the current combatant, not (`ambushed` and Round 1), not `isOut`. p.177.
+- `sideUpNext(s)`: prefer the side opposite `lastSide` (Agents when `lastSide` is null, so players pick first each
   Round); if that side has no one able to act, the other side; `null` when the Round is done. p.176–177.
-- `canSeize(e, side)`: false if `seizedSide === side`; at Round start (`lastSide` null) only `threats`; otherwise
-  only the side that just acted. p.176–177, p.320.
+- `canSeize(s, side)`: false if `seizedSide === side`, or if `sideUpNext(s) === side` (it would go next anyway, so
+  there's nothing to pay for: "No need to Seize"); at Round start (`lastSide` null) only `threats`; otherwise only
+  the side that just acted. p.176–177, p.320.
 
 **Seize, step by step**
 
 1. The side that just acted (`lastSide`) pays 1 and goes again. `seizedSide` = that side.
 2. When its Turn ends, `seizedSide` stays set, so it can't Seize a second time in a row (house §11.1).
 3. When the other side's Turn ends, `seizedSide` clears; both sides can Seize again later in the Round.
-4. Round start: only the GM (Threats) can Seize, for 1 Ruin, so a Threat goes first (p.176, house §11.2). That sets
-   `seizedSide = threats`, so the Threats can't chain a second Seize before the Agents act.
+4. Round start: only the GM (Threats) can Seize, for 1 Ruin, so a Threat goes first (p.176, house §11.2). It's an
+   ordinary Seize under the same once-per-turn limit: it sets `seizedSide = threats`, so the Threats can't chain a
+   second Seize before the Agents act, but they can Seize again after that.
 
-**Round rollover** (`newRound()`, p.176): after `turn.end`, if every combatant with `acted = false` is ambushed in
-Round 1 (or none are left), then all `acted` and `ambushed` reset to false, `round + 1`, `currentId`, `lastSide`,
+**Round rollover** (`newRound()`, p.176): after `turn.end`, if no combatant `canAct` (everyone left has acted, is
+ambushed in Round 1, or is out), then all `acted` and `ambushed` reset to false, `round + 1`, `currentId`, `lastSide`,
 `seizedSide` → null.
 
 **Ambush** (p.177)
@@ -166,12 +182,12 @@ Round 1 (or none are left), then all `acted` and `ambushed` reset to false, `rou
 
 **Edge cases**
 
-- Slain threats and Dead PCs still count as able to act. The Round won't roll over until the GM gives them a Turn or
-  REMOVEs them (see §11).
+- Slain threats and Dead PCs are out: they get no Turn and don't hold up the Round, so it rolls over without REMOVE.
+  An Adversary over max Wounds stays in the turn order until the GM removes it.
 - `combatant.remove` on the current combatant clears `currentId` through the FK (`on delete set null`), but doesn't
   trigger a rollover; press NEW ROUND if it was the last one.
-- The api lets a side Seize when the other side has no one left, which spends 1 for nothing.
-- `combatant.addCharacter` doesn't block duplicates; the tracker's add panel only offers characters not yet in.
+- A side can't Seize when it's up next anyway (the other side has no one left), so it never pays 1 for nothing.
+- `combatant.addCharacter` refuses a character already in the encounter ("Already in this encounter").
 
 **Worked example.** Agents A1, A2; Threats T1 (ambushed), T2, T3. Glory 3, Ruin 5.
 
@@ -182,7 +198,7 @@ Round 1 (or none are left), then all `acted` and `ambushed` reset to false, `rou
 | 3 | `turn.seize` A2 | Glory 3 → 2; allowed because Agents just acted | agents / agents |
 | 4 | `turn.end` | Agents can't Seize again (and have no one left) | agents / agents |
 | 5 | `turn.start` T2, `turn.end` | the other side acted, so the Seize lock clears | threats / null |
-| 6 | `turn.start` T3 | expected side is Agents, but none can act, so Threats go back to back | |
+| 6 | `turn.start` T3 | expected side is Agents, but none can act, so Threats go back to back (`turn.seize` T3 would be refused: no need) | |
 | 7 | `turn.end` | only T1 is left, ambushed in Round 1 → **auto rollover** | null / null |
 | 8 | Round 2: `turn.seize` T1 | Ruin 5 → 4; GM Seize at Round start | null / threats → threats / threats after `turn.end` |
 | 9 | `turn.start` T2 | refused: "It's the Agents' turn"; `turn.seize` T2 also refused ("Already Seized") | |
@@ -221,13 +237,15 @@ delta on it ("This Threat never suffers Shock").
 - Created by `combatant.addThreat { mobCount ≥ 2 }` or a prepared `asMob` entry. `mobStart = mobCount`; label
   defaults to `Name ×N`.
 - Every member has 1 Wound, so in `combatant.adjust` a Wounds delta changes `mobCount`, not `wounds`:
-  `least(mobStart ?? mobCount, greatest(0, mobCount − delta))`. DMG 3 removes 3 members; HEAL restores them, never
+  `least(mobStart ?? mobCount, greatest(0, mobCount − loss))`. DMG 3 removes 3 members; HEAL restores them, never
   above the starting size.
+- Shock: one hit of more Shock than the members' max Shock adds 1 to `loss` (removes one member). A smaller hit has no
+  effect (house §11.9), and a Mob keeps no Shock track: its `shock` counter isn't written.
 - Half-slain prompt: the `threatStatus` chip above, visible to GM and players while it holds. It's a prompt only; the
   test and the flight are the table's.
-- Shock on a Mob just accumulates on the shared `shock` counter; it doesn't remove members (see §11).
-- Setting `mobCount` directly with `combatant.update` doesn't touch `mobStart`. Turning a single Threat into a Mob this
-  way leaves `mobStart` null: no half-slain prompt, and healing can't raise the count.
+- Setting `mobCount` directly with `combatant.update` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`,
+  so a Threat turned into a Mob this way gets the half-slain prompt and the healing cap. `mobCount: null` turns it back
+  into a single Threat and nulls `mobStart`.
 
 **Personal Ruin** (p.323, p.325): per combatant, from the stat block. The tracker side panel shows SPEND / +1 only
 when the block has `personalRuin`. It's separate from the GM's Ruin pool.
@@ -242,7 +260,7 @@ when the block has `personalRuin`. It's separate from the GM's Ruin pool.
 | Exhausted | `shock > maxShock` (independent, can show with any of the above) | p.196 |
 
 Wounds equal to max is Wounded, not Dying (tested). Annihilation (p.193–194) isn't detected. Counters have no upper
-cap, so Wounds can go past max + 1.
+cap, so the hit that makes a PC Dying can take Wounds past max + 1; later hits become Traumatic Injuries (§3).
 
 ## 7. Conditions (pp.197–200)
 
@@ -269,17 +287,16 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 |---|---|---|
 | `LiveState.campaign` | everything, including Ruin | — |
 | `LiveState.characters` | every character, in full | — |
-| threat combatant, `revealed: false` | label, marker, class, threatId, mob count, Wounds / Shock and their maxima, Personal Ruin, Conditions, turn flags | `stats` → null |
+| threat combatant, `revealed: false` | label, marker, class, mob count, Wounds / Shock and their maxima, Conditions, turn flags | `stats` → null, `threatId` → `""`, `personalRuin` → 0 |
 | threat combatant, `revealed: true` | all of the above plus `stats` | — |
 | `Codex.factions`, `Codex.adventures` (with beats) | nothing (empty arrays) | all |
-| `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked |
-| `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none` |
+| `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked; `parentId` → null unless the parent is revealed |
+| `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none`; `factionId` → null |
 | `Codex.handouts` | revealed ones only | — |
 | `Codex.sessions` | all, with recaps | — |
 
-- **Threat reveal:** REVEAL / HIDE in the tracker sends `combatant.update { revealed }`. The label defaults to the
-  stat-block name and the `threatId` is sent anyway, so rename the label if the identity itself is the secret.
-- An NPC's `factionId` and a location's `parentId` can still point at ids the player can't see.
+- **Threat reveal:** REVEAL / HIDE in the tracker sends `combatant.update { revealed }`. The `threatId` is withheld, but
+  the label defaults to the stat-block name, so rename the label if the identity itself is the secret.
 
 ## 9. Prepared encounters (`beat.startEncounter`)
 
@@ -301,13 +318,16 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 | # | Decision | Implemented by |
 |---|---|---|
 | 1 | Seize once per handoff | `canSeize` + `encounter.seizedSide`, kept/cleared in `turn.end` |
-| 2 | GM Round-start Seize costs 1 Ruin | `canSeize` (`lastSide` null → threats only), `spend()` in `turn.seize` |
+| 2 | GM Round-start Seize costs 1 Ruin, same once-per-turn limit | `canSeize` (`lastSide` null → threats only), `spend()` in `turn.seize` |
 | 3 | Monstrous: free Determination, killed past Max Wounds | `threatStatus` (M → Slain). Determination is left to the table |
 | 4 | Withstand repeatable while Ruin lasts | not coded; a manual Ruin spend and HEAL |
 | 5 | Corruption 11 = Contaminated | not coded (Corruption isn't tracked) |
 | 6 | Passive Awareness uses Awareness | `deriveStats().passiveAwareness` |
 | 7 | Annihilation after Resilience | not coded |
 | 8 | "End of next Turn" = the affected character's | not coded (Conditions don't expire) |
+| 9 | Mob Shock below max Shock has no effect | `combatant.adjust` (Mob `loss`) |
+| 10 | Adversary over max Wounds stays in the turn order | `isOut` (only Slain / Dead are out); the GM REMOVEs it |
+| 11 | A Wound while Dying = 1 Traumatic Injury per hit | `character.adjust` |
 
 Campaign-specific GM decisions are in [kill-team.md](kill-team.md); they live in the pack data, not in code.
 
@@ -318,6 +338,5 @@ Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / 
 Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
-Known gaps against the spec (not choices): Wounds while Dying aren't converted to Traumatic Injuries; Mob Shock
-doesn't remove members; Exhausted doesn't turn extra Shock into Mortal Wounds; Slain / Dead combatants still hold up
-the Round; timed Conditions don't expire; no per-class rule chips. The live list is [rules-flow.md](rules-flow.md) §12.
+Known gaps against the spec (not choices): Exhausted doesn't turn extra Shock into Mortal Wounds; timed Conditions
+don't expire; no per-class rule chips. The live list is [rules-flow.md](rules-flow.md) §12.

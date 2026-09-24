@@ -29,7 +29,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 
 | Folder | Owns | Key exports |
 |---|---|---|
-| `core/` | DB client, error type, SQL helpers | `db.ts`: `db`, `Tx`, `runMigrations`. `errors.ts`: `ActionError`, `fail(msg): never`. `sql.ts`: `bump` (clamped delta), column builders `conditions`, `createdAt`, `body` |
+| `core/` | DB client, error type, SQL helpers | `db.ts`: `db`, `Tx`, `Db` (either), `runMigrations`. `errors.ts`: `ActionError`, `fail(msg): never`. `sql.ts`: `bump` (clamped delta), column builders `conditions`, `createdAt`, `body` |
 | `auth/` | Login tokens and the cookie | `auth.schema.ts`: `accessToken`. `auth.service.ts`: `COOKIE` (`"wg_token"`), `Ctx`, `issueToken`, `resolveToken`, `readCookie` |
 | `campaign/` | Campaign row, pools, sessions; all REST | `campaign.controller.ts`: `CampaignController`. `campaign.service.ts`: `isAdmin`, `createCampaign`, `listThreats`. `campaign.actions.ts`: `CampaignAction`, `applyCampaignAction`, `campaignTier`. `campaign.schema.ts`: `campaign`, `session`, `owned()` |
 | `character/` | Characters and player tokens | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character` |
@@ -166,25 +166,25 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Fails `"No session in progress"` | S C | p.321 |
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
 | `character.update` | GM; Own (no `overrides`) | Patch `name`, `stats`, `overrides`, `conditions`. `stats` and `overrides` replace the whole jsonb value | S | |
-| `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap | S | |
-| `character.respite` | GM; Own | Wounds 0, Shock 0, Wrath 2. Refused while Dying (`wounds > deriveStats().maxWounds`) | S | p.197 |
+| `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap. Crossing into Dying adds `Prone` if missing. While Dying, a positive `wounds` delta adds 1 Traumatic Injury instead (one per hit), and a negative one sets Wounds to `least(maxWounds, wounds + delta)`, which ends Dying | S | p.193 |
+| `character.respite` | GM; Own | Wounds 0, Shock 0, Wrath 2. Refused while Dead or Dying (`pcStatus`, via `healthOf()`) | S | p.193, p.197 |
 | `character.delete` | GM | Delete. Cascades to tokens and combatant rows. Kicks the player | S | |
 | `token.issue` | GM | New player token for a character in this campaign. Returns `token` (plaintext, once) | S | |
 | `token.revoke` | GM | Stamp `revokedAt` on all of the character's live tokens. Kicks the player | S | |
 | `encounter.start` | GM | Deactivate any active encounter, insert an empty one. Returns `id` | S | |
 | `encounter.end` | GM | Deactivate all the campaign's encounters | S | |
 | `encounter.newRound` | GM | Round + 1. Clear `acted`, `ambushed`, `currentId`, `lastSide`, `seizedSide` | S | p.176–177 |
-| `turn.start` | GM | Set `currentId`. Refused if a turn is running, the combatant already acted, it's ambushed in Round 1, or it's the other side's turn and that side can still act | S | p.177 |
-| `turn.seize` | GM | As `turn.start`, but out of order. Needs `canSeize`, then spends 1 Glory (Agent) or 1 Ruin (Threat) and sets `seizedSide` | S | p.176–177, p.320 |
-| `turn.end` | GM | Mark current `acted`, set `lastSide`, keep `seizedSide` only if the same side. Auto new Round when no one else can act | S | p.176 |
+| `turn.start` | GM | Set `currentId`. Refused if a turn is running, the combatant is out (`isOut`: `"Dead: no more Turns"` / `"Slain: no more Turns"`), already acted, is ambushed in Round 1, or its side isn't `sideUpNext` | S | p.177, p.193, p.324 |
+| `turn.seize` | GM | As `turn.start`, but out of order. Needs `canSeize` (refused with `"No need to Seize: the <side> act next anyway"` when that side is up anyway), then spends 1 Glory (Agent) or 1 Ruin (Threat) and sets `seizedSide` | S | p.176–177, p.320 |
+| `turn.end` | GM | Mark current `acted`, set `lastSide`, keep `seizedSide` only if the same side. Auto new Round when no combatant `canAct` (Slain and Dead ones don't hold it up) | S | p.176 |
 | `combatant.addThreat` | GM | Add a threat from `@wg/data` to the active encounter. Snapshots its stat block and its class at the campaign Tier. `mobCount` makes it a Mob (`mobStart` = `mobCount`). Returns `id` | S | |
-| `combatant.addCharacter` | GM | Add a campaign character as a PC combatant. Returns `id` | S | |
-| `combatant.update` | GM | `ambushed` on any combatant. `label`, `mobCount`, `conditions`, `revealed`, `marker` on threat combatants only | S | |
-| `combatant.adjust` | GM | Threat combatants only. Deltas on `wounds`, `shock`, `personalRuin`, floored at 0. On a Mob, `wounds` removes members (clamped `[0, mobStart]`) instead. Refuses Shock for a threat whose Shock is "–" | S | p.324, p.325 |
+| `combatant.addCharacter` | GM | Add a campaign character as a PC combatant. Refuses one already in (`"Already in this encounter"`). Returns `id` | S | |
+| `combatant.update` | GM | `ambushed` on any combatant. `label`, `mobCount`, `conditions`, `revealed`, `marker` on threat combatants only. `mobCount` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`; `null` makes it a single Threat again and nulls `mobStart` | S | p.325 |
+| `combatant.adjust` | GM | Threat combatants only. Deltas on `wounds`, `shock`, `personalRuin`, floored at 0. On a Mob, `wounds` removes members (clamped `[0, mobStart]`) instead, and one hit of `shock` above the members' max Shock removes one member (a smaller hit does nothing; a Mob keeps no Shock track). Refuses Shock for a threat whose Shock is "–" | S | p.324, p.325 |
 | `combatant.aware` | GM | Ambushed combatant pays 1 Glory or Ruin by side, then `ambushed = false` | S | p.177 |
 | `combatant.remove` | GM | Delete from the active encounter. `currentId` is nulled by the FK | S | |
-| `codex.save` | GM | Insert (no `id`) or full replace (`id`) of one codex row. `data` is validated per `kind` by `CodexInput`. Beats check that `adventureId` is in the campaign. Handouts stamp `revealedAt` on first reveal and clear it on unreveal. Returns `id` | C | |
-| `codex.delete` | GM | Delete one codex row by `kind` and `id` (FK effects in §7) | C | |
+| `codex.save` | GM | Insert (no `id`) or full replace (`id`) of one codex row. `data` is validated per `kind` by `CodexInput`. Every referenced id must be in the campaign (`checkRefs()`, `"<What> not found"`): a beat's `adventureId`, `locationId`, `npcIds` and `handoutIds`, an NPC's `factionId`, a location's `parentId` (which can't be itself). A beat's encounter `threatId`s and a bestiary NPC's `statSource.threatId` must exist (`checkThreats()`, `'Unknown threat "x"'`). Handouts stamp `revealedAt` on first reveal and clear it on unreveal. Returns `id` | C | |
+| `codex.delete` | GM | Delete one codex row by `kind` and `id` (FK effects in §7). Deleting an NPC or handout also `array_remove`s its id from every beat's `npcIds` / `handoutIds` | C | |
 | `beat.reorder` | GM | `ids` must list every beat of the adventure exactly once. Sets `order` = index | C | |
 | `beat.startEncounter` | GM | Validate the beat's `encounter` entries, start a new encounter, add **every** campaign character, then each entry (`asMob && count > 1` → one Mob row, else `count` rows labelled `Name 1..n`). Beat status → `active`. Returns the encounter `id` | S C | |
 
@@ -232,13 +232,13 @@ with `.$type<>` from the shared `z.enum`s.
 | `beat.encounter` | `EncounterEntry[]`, at most `MAX_ENCOUNTER_ROWS` rows once expanded | On write by `CodexInput.beat`. Re-parsed by `beat.startEncounter`, and cast in `loadCodex` |
 | `npc.stat_source` | `StatSource` | On write by `CodexInput.npc`, cast in `loadCodex` |
 
-Deleting an NPC or handout leaves its id in any `beat.npc_ids` / `beat.handout_ids`, and clients must tolerate unknown ids.
+The id arrays have no FK, so `codex.delete` of an NPC or handout clears its id from `beat.npc_ids` / `beat.handout_ids` itself.
 
 ## 8. Snapshots (`table/table.state.ts`)
 
-Both loaders read with the top-level `db` (not a `tx`), after the commit.
+Both loaders read with the top-level `db` after the commit. `loadState` also takes an optional `conn: Db`, so the turn actions can read the live state inside their own transaction (`liveTable()` in `encounter.actions.ts`) and apply the shared `isOut` / `canAct` / `sideUpNext` / `canSeize`.
 
-**`loadState(campaignId): LiveState | null`**, where null means no such campaign:
+**`loadState(campaignId, conn = db): LiveState | null`**, where null means no such campaign:
 
 - `campaign`: `id`, `name`, `tier`, `glory`, `ruin`, `framework`, `patron`.
 - `characters`, by `created_at`: counters, `conditions`, and `stats` / `overrides` parsed through their zod schemas.
@@ -255,8 +255,8 @@ are by `number`.
 
 | Function | Hides from players | Keeps |
 |---|---|---|
-| `toPlayerView` (`state.ts`) | `stats` → null on every threat combatant with `revealed: false` | Everything else, including threat label, class, `threatId`, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
-| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`) | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
+| `toPlayerView` (`state.ts`) | On every threat combatant with `revealed: false`: `stats` → null, `threatId` → `""`, `personalRuin` → 0 | Everything else, including threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
+| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
 
 A new field is visible to players unless one of these functions drops it. Decide when you add it.
 
@@ -268,11 +268,12 @@ A new field is visible to players unless one of these functions drops it. Decide
   - `bump(col, d)` (`core/sql.ts`) → `greatest(0, col + d)`. It returns `undefined` for an absent delta, which Drizzle's
     `.set()` skips.
   - `pool.adjust` → `least(poolMax, bump(...))`. The cap is recomputed from the character count on each action.
-  - Mob damage → `least(mobStart, greatest(0, mob_count - wounds))`.
+  - Mob damage → `least(mobStart, greatest(0, mob_count - loss))`, where `loss` = Wounds, plus 1 for a hit of Shock over max.
   - Spending Glory or Ruin (`spend` in `encounter.actions.ts`) → `col - 1 … WHERE col > 0`. Zero rows updated means
     `"No Glory to spend"` / `"No Ruin to spend"`.
   - `session.end` → `xp = xp + n`.
-- Absolute sets are used only where the rules reset a value (`session.start`, `character.respite`).
+- Absolute sets are used only where the rules reset a value (`session.start`, `character.respite`). `character.adjust`
+  reads the row first to know whether the character is Dying; the per-campaign queue (§4) keeps that safe.
 - Check-then-act logic (turn order, "already acted", beat reorder) relies on the per-campaign queue (§4).
 
 ## 10. Tokens (`auth/`)
@@ -303,7 +304,8 @@ Because seeding goes through the socket, it gets the same validation, scoping an
 ## 12. Testing
 
 `apps/api/test/smoke.test.ts`: end-to-end over HTTP and Socket.IO against a running api and Postgres (`node:test` run by
-`bun test`). Each run creates a fresh campaign "Smoke" and leaves it in the DB.
+`bun test`). There are 3 tests. Each run creates fresh campaigns ("Smoke", plus "Edge" and "Elsewhere" for the edge
+cases) and leaves them in the DB.
 
 ```bash
 bun run dev:db && bun run dev:api   # in another shell
@@ -324,8 +326,20 @@ It covers:
   Round, GM Seize at Round start.
 - **Ambush:** blocked in Round 1, then `combatant.aware`.
 - **Sessions:** `session.start` resets and `session.end` awards XP.
-- **Pools:** caps.
+- **Pools:** caps, asserted against `poolMax`.
 - **Revoke:** `token.revoke` kicks the socket and kills the link.
+- **Rules edge cases** (third test):
+  - `campaign.update`, `character.update` and `character.delete`.
+  - Dying: falling Prone, a Wound becoming a Traumatic Injury, healing ending Dying.
+  - Respite refused while Dying and while Dead.
+  - A duplicate `combatant.addCharacter` is refused.
+  - `turn.start` refused for a Dead Agent and a Slain Troop, and the Round rolls over past them.
+  - A no-need Seize is refused.
+  - `encounter.newRound`, `combatant.remove` and `encounter.end`.
+  - Mob size set by hand (`mobStart` follows), and Mob Shock above and below max.
+  - Players get no `threatId` or `personalRuin` for an unrevealed Threat, and no NPC `factionId`.
+  - Codex reference checks: another campaign's faction, an unknown threat.
+  - `beat.reorder`, NPC delete clearing beats' `npcIds`, and `beat.startEncounter`.
 
 Pure rules functions are unit-tested in `packages/shared` (`bun run test`), see [game-logic.md](game-logic.md).
 

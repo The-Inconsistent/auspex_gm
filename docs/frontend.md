@@ -148,12 +148,12 @@ With no encounter live, the tab shows NO ACTIVE ENCOUNTER and a START ENCOUNTER 
 prepared encounter can also be started from PREP.
 
 **Status strip** (top panel):
-- The turn state: `▶ <NAME> ACTING`, `AWAITING: <SIDE> PICK` (from `sideUpNext`), or `ROUND COMPLETE`.
+- The turn state: `▶ <NAME> ACTING`, `AWAITING: <SIDE> PICK` (from `sideUpNext(state)`), or `ROUND COMPLETE`.
 - `NEXT: <side>` and `<SIDE> SEIZED`, when they apply.
 - The round, plus how many of each side have acted, as `AGENTS acted/total · THREATS acted/total`.
 
-**Rows** are grouped by `Side.options` (agents, then threats). Each row is a `<button>`, and tapping one
-toggles `selected`.
+**Rows** are grouped by `Side.options` (agents, then threats). Each row is a `<button>` with `aria-pressed` set while it's
+selected, and tapping one toggles `selected`.
 
 | Column | Content |
 |---|---|
@@ -174,8 +174,8 @@ acted (dimmed). Below 900px, the columns marked `.hide-sm` (CLASS, SHOCK, DEF, R
 | Button | Shown when | Sends |
 |---|---|---|
 | END TURN | Someone is acting | `turn.end` |
-| START TURN | Nobody is acting and `canAct(enc, sel)` | `turn.start` |
-| SEIZE · 1 GLORY / 1 RUIN | As START TURN, and also `canSeize(enc, side)` | `turn.seize` |
+| START TURN | Nobody is acting and `canAct(state, sel)` (so never for a Slain threat or a Dead PC) | `turn.start` |
+| SEIZE · 1 GLORY / 1 RUIN | As START TURN, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
 | DMG / HEAL / SHOCK / RECOVER | A row is selected | Opens the amount pad |
 | ±COND select | A row is selected | Toggles one of `CONDITIONS` (`character.update` or `combatant.update` with the full list) |
 | REVEAL / HIDE | A threat is selected | `combatant.update { revealed }` |
@@ -203,11 +203,16 @@ server charges the cost; see [game-logic.md](game-logic.md).
 **Vox log and undo.**
 - `run(action, text)` (the `Run` type in `tracker/types.ts`) wraps `send`. On success it pushes a `LogEntry` to the
   top of the log, capped at `LOG_LIMIT` (40). On refusal it sets the tracker's error line.
-- Each entry carries `undo = inverse(action)`. Only `character.adjust`, `combatant.adjust` and `pool.adjust` have an
-  inverse, and it negates every delta. Turns, Conditions, reveals and adds get no UNDO button.
-- UNDO sends the inverse, logs `UNDO: …`, and drops the original entry.
-- The inverse is inexact if the server clamped the counter at 0 (a `ponytail:` note in `tracker.tsx`). The log is
-  client-only: it's per tab and lost on reload.
+- Each entry carries `undo = inverse({ action, state })`, read against the state at tap time. Only
+  `character.adjust`, `combatant.adjust` and `pool.adjust` have an inverse, and it negates every delta, except where
+  the server doesn't apply the delta as sent:
+  - Damage on a Dying PC was a Traumatic Injury, so its undo is `traumatic: -1`. Healing a Dying PC has no undo.
+  - Shock on a Mob removed one member or nothing, so its undo is `wounds: -1` (one member back) or none.
+- Turns, Conditions, reveals and adds get no UNDO button.
+- UNDO sends the inverse and logs `UNDO: …`. It drops the original entry only if the undo went through; a refused undo
+  keeps its button.
+- The inverse is inexact if the server clamped the counter at 0, or if healing ended Dying (a `ponytail:` note in
+  `tracker.tsx`). The log is client-only: it's per tab and lost on reload.
 
 **Condition reminders.** After a successful START TURN or SEIZE, `remind()` checks the combatant's Conditions against
 `TURN_START_REMINDERS`. After END TURN, it checks the combatant that was acting against `TURN_END_REMINDERS`. Each
@@ -277,9 +282,10 @@ taken out:
 | Remaining words | Result |
 |---|---|
 | None | The selected row, or the error `No target: select a row or type a name` |
-| A query `q` (the words joined with spaces) | Matches every combatant whose name **equals** `q`, **starts with** `q`, or has a **word** (split on spaces, `×` and parentheses) that starts with `q` |
+| A query `q` (the words joined with spaces) that exactly one name **equals** | That combatant; an exact name wins before any prefix matching |
+| Any other query `q` | Matches every combatant whose name **equals** `q`, **starts with** `q`, or has a **word** (split on spaces, `×` and parentheses) that starts with `q` |
 | Exactly one match | That combatant. PCs route to their character, threats to their combatant row |
-| Several matches | `Ambiguous: <names>`, even when one of them is an exact match |
+| Several matches | `Ambiguous: <names>` |
 | No match | `No combatant matches "<words>"` |
 
 The names come from `targetsOf(state)`: the character name for PCs and the combatant `label` for threats.
@@ -301,7 +307,8 @@ A command with neither a verb nor a Condition returns
 | `boyz mob 6` | Sets the mob to 6 members |
 | `ruin +1` / `glory -1` | Moves a pool |
 | `end` / `round` | Ends the turn, or starts a new round |
-| `kommando dmg 1` | `Ambiguous: Kommando ×6, Kommando Nob` |
+| `kommando dmg 1` | Kommando takes 1 Wound, even with Kommando ×6 and Kommando Nob in the fight (exact name wins) |
+| `komm dmg 1` | `Ambiguous: Kommando ×6, Kommando Nob, Kommando` |
 
 The tests are in `lib/command/command.test.ts`.
 
@@ -397,15 +404,17 @@ The tests are in `lib/command/command.test.ts`.
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
 | SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds, Shock, Wrath and PARTY GLORY; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions; armament (`weaponLine` with `effectiveStrength`) and armour; skill totals (`skillTotal`); abilities; talents; gear | Their own Wounds, Shock and Wrath (±1, `character.adjust`), party Glory (±1, `pool.adjust`), their own Conditions (`character.update`), RESPITE (`character.respite`) |
-| FIGHT | `components/fight/fight.tsx` | Every combatant as a card: `▶` on the one acting, dimmed once done, a Wounds block bar (mobs show `×count OF start`), threat status chips, and Conditions. Tapping a threat expands its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed | Nothing |
+| FIGHT | `components/fight/fight.tsx` | Every combatant as a card (`div.item`): `▶` on the one acting, dimmed once done, a Wounds block bar (mobs show `×count OF start`), threat status chips, and Conditions. A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed; a PC card's header is plain | Nothing |
 | INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:
-- An unrevealed threat's `stats` is `null`. Its bars, mob count and Conditions still come through.
+- An unrevealed threat's `stats` is `null`, its `threatId` is `""` and its `personalRuin` is 0. Its bars, mob count and
+  Conditions still come through.
 - Factions and adventures (with their beats) are never sent.
 - NPCs, locations and handouts are sent only once `revealed`. Even then, GM notes, secrets, hazards and an NPC's
-  stat source are blanked.
+  stat source are blanked, an NPC's `factionId` is null, and so is a location's `parentId` unless the parent is
+  revealed.
 
 The server's `authorize()` also limits which actions a player can send: only their own character, no `overrides`,
 no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `Refusal` banner. See
@@ -495,7 +504,7 @@ The look is "Auspex": a green-phosphor cogitator terminal. Dark green background
 - Controls: `.btn`, with `.primary`, `.danger`, `.sm` (32px) and `.sq` (44px square); `.input`; `.field`.
 - Chips: `.chip`, with `.warn` and `.bad`.
 - Tabs: `.tabs` / `.tab`, with `[aria-selected="true"]` inverted and bold.
-- Layout: `.panel`, `.item`, `.list`, `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`, `pre.text`.
+- Layout: `.panel`, `.item`, `.item-head` (a card's full-width header row, 44px tall), `.list`, `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`, `pre.text`.
 - Shells: `.gm*` for the GM, `.tracker*` and `.row*` for the tracker, `.cmd` for the command bar, `.pl*`, `.vitals`,
   `.vital` and `.traits` for the player app.
 
@@ -545,8 +554,8 @@ This section summarises the binding rules. The full text is in
   - Touch targets are at least 44px (`.btn`); dense secondary buttons (`.btn.sm`) are 32px.
   - Icon-only buttons have an `aria-label` naming the action and its target (`Decrease WOUNDS`, `Move <beat> up`).
   - Inputs have a `<label htmlFor>` or an `aria-label`, and chip groups use `role="group"`.
-  - State is never shown by colour alone: row state is a word, tabs use weight plus `aria-selected`, and marker
-    swatches carry an `aria-label`.
+  - State is never shown by colour alone: row state is a word, tabs use weight plus `aria-selected`, the selected
+    tracker row has `aria-pressed`, and marker swatches carry an `aria-label`.
   - Focus stays visible: `.input:focus` switches the border to `--fg`, and `.cmd:focus-within` draws a ring.
   - The smallest text is 12px.
   - There's no hex in TSX; colours come from `var(--…)` or `TOKENS`.
