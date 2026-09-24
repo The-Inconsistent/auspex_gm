@@ -70,7 +70,7 @@ In Dockhand:
    | `WG_DB_PASSWORD` | from step 2 |
    | `ADMIN_KEY` | `openssl rand -hex 24`; for `seed.ts` and scripts only |
    | `CLERK_SECRET_KEY` | `sk_live_…` |
-   | `CLERK_JWT_KEY` | the production PEM, **on one line** (Clerk strips the newlines itself) |
+   | `CLERK_JWT_KEY` | the production PEM, pasted in any shape (`pemBody()` in `packages/auth` strips the header and all whitespace) |
 
    GHCR pull already works: the classic PAT logged in inside the `dockhand` container covers the user's own
    packages.
@@ -114,6 +114,10 @@ CLERK_TEST_SECRET= WG_DB_PASSWORD=wg ADMIN_KEY=test WEB_ORIGIN=http://localhost:
 
 ## Gotchas
 
+- **Signed in but every campaign says NO ACCESS** means the api can't verify the Clerk token, and `verifySession`
+  treats that as signed out. Usual causes are a `CLERK_JWT_KEY` from the wrong Clerk instance (dev vs prod), or a
+  `WEB_ORIGIN` that isn't the site's exact origin. A PEM mangled by the env editor used to cause it too: Dockhand
+  turned the key's newlines into spaces. `pemBody()` now handles that.
 - **Cloudflare 523 = the DNS record points at the wrong origin.** The `auspex` record must target the Pangolin
   server, exactly like `kt-api`: `prp.hdc-cloud.org` (`42.96.17.33`), proxied. To test Pangolin while bypassing
   Cloudflare, run `curl -k --resolve auspex.ydothien.work:443:42.96.17.33 https://auspex.ydothien.work/`.

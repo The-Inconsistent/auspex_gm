@@ -21,6 +21,12 @@ export const testSessionToken = ({ secret, userId, role = "member" }: { secret: 
 // Browser origins allowed to present a token (the `azp` claim): the web app's address(es), comma separated.
 const authorizedParties = process.env.WEB_ORIGIN?.split(",").map((o) => o.trim()).filter(Boolean);
 
+// CLERK_JWT_KEY as its bare base64 body. Env editors mangle a multi-line PEM (Dockhand turned its newlines into spaces),
+// and Clerk strips only newlines, so a stray space breaks the key and every token fails as "signed out". Clerk accepts
+// the bare body: it strips the header and footer itself when they're present.
+export const pemBody = (pem: string | undefined) => pem?.replace(/-----(BEGIN|END) PUBLIC KEY-----|\s+/g, "") || undefined;
+const jwtKey = pemBody(process.env.CLERK_JWT_KEY);
+
 export async function verifySession(token: string | undefined): Promise<AuthUser | null> {
   if (!token) return null;
   if (TEST_SECRET && token.startsWith("test.")) {
@@ -28,7 +34,7 @@ export async function verifySession(token: string | undefined): Promise<AuthUser
     return secret === TEST_SECRET && userId ? { userId, name: userId, creator: role === "creator" } : null;
   }
   try {
-    const claims = await verifyToken(token, { jwtKey: process.env.CLERK_JWT_KEY, secretKey: process.env.CLERK_SECRET_KEY, authorizedParties });
+    const claims = await verifyToken(token, { jwtKey, secretKey: process.env.CLERK_SECRET_KEY, authorizedParties });
     const { metadata, name, username } = claims;
     const displayName = [name, username].find((v): v is string => typeof v === "string" && v.trim() !== "") ?? "Player";
     return { userId: claims.sub, name: displayName, creator: metadata?.role === "creator" };
