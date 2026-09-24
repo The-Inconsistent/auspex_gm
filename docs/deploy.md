@@ -17,7 +17,7 @@ phone ──HTTPS──▶ Pangolin (TLS) ──▶ host :3004 ──▶ web (Ne
 | Images | `ghcr.io/junmaxwell/glory-gm-{api,web}:latest`, **private**: they carry book text |
 | Build | `.github/workflows/images.yml`, on a push to `main` that touches app code |
 | Deploy | **By hand:** "Pull & redeploy" on the `auspex` stack in Dockhand |
-| Stack | `docker-compose.prod.yml` (Dockhand git stack, compose path set to that file) |
+| Stack | `docker-compose.prod.yml` (Dockhand git stack `auspex-gm`, compose path set to that file). Dockhand's stack name overrides the compose `name:`, so containers are `auspex-gm-api-1` and `auspex-gm-web-1` |
 | Database | `wg`, owned by role `wg`, inside `green-orange-postgres-1` (Postgres 16) |
 
 ## Why this shape
@@ -84,7 +84,7 @@ Finally, back in the VPS shell:
 11. Seed the first campaign:
 
     ```bash
-    docker exec auspex-api-1 bun scripts/seed.ts volkus --owner <clerk user id>
+    docker exec auspex-gm-api-1 bun scripts/seed.ts volkus --owner <clerk user id>
     ```
 
 ## Checking a deploy
@@ -94,7 +94,7 @@ Finally, back in the VPS shell:
 - In DevTools → Network, `/socket.io/?EIO=4&transport=websocket` returns **101** and stays open.
 - Open a guest QR on a phone over mobile data: the `wg_token` cookie is set with `Secure`, and the player view loads.
 - A +1 Wound on the tablet shows on the phone live.
-- On the VPS, check `docker stats auspex-web-1 auspex-api-1` and `df -h /`.
+- On the VPS, check `docker stats auspex-gm-web-1 auspex-gm-api-1` and `df -h /`.
 
 ## Running the prod stack locally
 
