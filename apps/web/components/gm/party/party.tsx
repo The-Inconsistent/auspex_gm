@@ -166,8 +166,6 @@ export function Party({ state, codex, send }: PartyProps) {
           </div>
         ))}
       </section>
-
-      <div className="rule">── KILL TEAM ──</div>
       <div className="list">
         {state.characters.map((c) => {
           const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });
