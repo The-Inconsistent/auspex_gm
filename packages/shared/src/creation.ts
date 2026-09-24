@@ -19,12 +19,24 @@ export type Source = keyof typeof SOURCES;
 export const Source = z.enum(Object.keys(SOURCES) as [Source, ...Source[]]);
 export const sourceCite = ({ source, page }: { source: Source; page: number }) => `${SOURCES[source].cite} p.${page}`;
 
+// Total XP to reach a rating from 1 (Attributes, Core p.24) or 0 (Skills, Core p.25), by rating.
+export const ATTRIBUTE_XP = [0, 0, 4, 10, 20, 35, 55, 80, 110, 145, 185, 230, 280] as const;
+export const SKILL_XP = [0, 2, 6, 12, 20, 30, 42, 56, 72] as const;
+// A Species' printed XP is exactly the cost of the ratings it grants (Core p.29, FSPG pp.92–97), so validate checks it.
+export const ratingsXp = (r: {
+  attributes: Partial<Record<Attribute, number>>;
+  skills: Partial<Record<Skill, number>>;
+}) =>
+  Object.values(r.attributes).reduce((n, v) => n + (ATTRIBUTE_XP[v] ?? 0), 0) +
+  Object.values(r.skills).reduce((n, v) => n + (SKILL_XP[v] ?? 0), 0);
+
 const id = z.string().regex(/^[a-z0-9-]+$/);
 const ids = z.array(id).min(1);
 const keyword = z.string().regex(/^(\[[A-Z0-9' -]+\]|[A-Z0-9' -]+)$/); // as printed: "ADEPTUS ASTARTES", "[CHAPTER]"
 const attribute = z.enum(ATTRIBUTES as unknown as [Attribute, ...Attribute[]]);
 const skill = z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]);
 const rating = z.number().int().min(0).max(12);
+const cap = z.number().int().min(1).max(20); // a Species maximum: Custodian S 14, Ghost Warrior S 16 (Apocrypha p.18)
 
 // Every record: where it is printed. `note` holds print errors copied as printed, and the other books that print it.
 const record = {
@@ -78,13 +90,19 @@ export const WargearItem = z.object({
 const grantOne = z.union([
   z.object({ talent: id }),
   z.object({ keyword }),
+  z.object({ keywords: z.array(keyword).min(2) }), // taken together: "ANHRATHE and [COTERIE]" (Core p.39)
   z.object({ power: id }),
   z.object({ wargear: WargearItem }),
   z.object({ text: z.string().min(1) }), // "1 item of Uncommon Wargear"
 ]);
 export const Grant = z.union([
   grantOne,
-  z.object({ choose: z.number().int().positive(), from: z.array(grantOne).min(2) }),
+  // `optional`: the character may take none ("You may choose to take the PSYKER Keyword", Core p.29).
+  z.object({
+    choose: z.number().int().positive(),
+    from: z.array(grantOne).min(1),
+    optional: z.boolean().default(false),
+  }),
 ]);
 export type Grant = z.infer<typeof Grant>;
 
@@ -155,10 +173,10 @@ export const Species = z.object({
   ...record,
   xp: z.number().int().min(0), // already inside every archetype's cost (Core p.29)
   speed: z.number().int().positive(),
-  size: z.enum(["Tiny", "Small", "Average", "Large", "Huge", "Gargantuan"]),
+  size: z.enum(["Tiny", "Small", "Average", "Large", "Huge", "Gargantuan"]).optional(), // not printed for every Species
   attributes, // the ratings the Species grants
   skills,
-  max: z.object({ S: rating, T: rating, A: rating, I: rating, Wil: rating, Int: rating, Fel: rating, speed: rating }),
+  max: z.object({ S: cap, T: cap, A: cap, I: cap, Wil: cap, Int: cap, Fel: cap, speed: cap }).optional(), // not printed for every Species (Necrontyr)
   keywords: z.array(keyword).default([]), // Species Keywords (Core p.38), for Advanced Creation
   abilities: z.array(Rule).default([]),
   grants: z.array(Grant).default([]), // e.g. "either IMPERIUM or CHAOS"
@@ -191,6 +209,7 @@ export type BackgroundTable = z.infer<typeof BackgroundTable>;
 export const OptionGroup = z.object({
   ...record,
   owner: Owner,
+  text: z.string().default(""), // the group's own printed rule: how many, what it costs, what limits it
   pick: z.union([z.number().int().positive(), z.literal("tier"), z.literal("any")]), // "tier": as many as your Tier
   xp: z.array(z.number().int().min(0)).min(1).default([0]), // cost of the 1st, 2nd… option taken; the last repeats
   options: z

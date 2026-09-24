@@ -1,0 +1,489 @@
+[
+  {
+    "id": "navigator",
+    "name": "Navigator",
+    "source": "apocrypha",
+    "page": 11,
+    "note": "Size not printed (a Human strain, p.11). No maximums printed: the p.18 table has no Navigator column. No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM).",
+    "xp": 24,
+    "speed": 6,
+    "attributes": {
+      "Int": 3,
+      "Wil": 3
+    },
+    "skills": {
+      "Pilot": 1,
+      "Psychic Mastery": 1
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "Mutant",
+        "text": "+2DN to all Interaction tests with IMPERIAL characters."
+      },
+      {
+        "name": "Warp Eye",
+        "text": "You are considered to be a PSYKER, though you may only select Navigator powers. When you use Psyniscience, double the range for each Exalted Icon shifted. Further, you cannot gain Corruption from looking into or being exposed to the Warp.",
+        "grants": [
+          {
+            "keyword": "PSYKER"
+          }
+        ]
+      },
+      {
+        "name": "Hereditary Mutations",
+        "text": "Your form has been twisted and distorted by exposure to the Immaterium and by generations of inbreeding. Choose one of your attributes; any skill tests using that attribute suffer +1DN, and any derived traits from that attribute are reduced by 1."
+      }
+    ]
+  },
+  {
+    "id": "beastman",
+    "name": "Beastman",
+    "source": "apocrypha",
+    "page": 14,
+    "note": "Maximums from the table on p.18. Size not printed (\"slightly taller and broader than the average human\", p.14). No Species Keywords printed. Child of Chaos's +3 Corruption has no structured field on a Rule (Mods has no corruption).",
+    "xp": 20,
+    "speed": 7,
+    "attributes": {
+      "S": 3,
+      "T": 3
+    },
+    "skills": {},
+    "max": {
+      "S": 10,
+      "T": 10,
+      "A": 9,
+      "I": 8,
+      "Wil": 8,
+      "Int": 6,
+      "Fel": 6,
+      "speed": 8
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "Reviled Abhuman",
+        "text": "+2DN to all Interaction tests with characters who do not possess the CHAOS keyword."
+      },
+      {
+        "name": "Horns",
+        "text": "You may make melee attacks with your horns ([S]+5 +2ED / AP –). Thus, you are always armed."
+      },
+      {
+        "name": "Bestial Savagery",
+        "text": "+1d to all Intimidation tests."
+      },
+      {
+        "name": "Child of Chaos",
+        "text": "You begin play with +3 corruption."
+      }
+    ]
+  },
+  {
+    "id": "shas-tau",
+    "name": "Shas T’au",
+    "source": "apocrypha",
+    "page": 15,
+    "note": "Fire Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed. \"In game terms, each Caste is a different species; a Shas T’au cannot choose an archetype for Fio T’au, and vice versa\" (p.15).",
+    "xp": 4,
+    "speed": 6,
+    "attributes": {},
+    "skills": {
+      "Ballistic Skill": 1,
+      "Tech": 1
+    },
+    "max": {
+      "S": 7,
+      "T": 8,
+      "A": 8,
+      "I": 8,
+      "Wil": 8,
+      "Int": 9,
+      "Fel": 7,
+      "speed": 7
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "For the Greater Good (Shas)",
+        "text": "When you assist an ally using Awareness, Ballistic Skill, or Stealth, you may halve the number of dice you would add and add that many Icons to the test you are assisting."
+      },
+      {
+        "name": "Dull Soul",
+        "text": "You cannot gain the PSYKER keyword under any circumstances."
+      }
+    ]
+  },
+  {
+    "id": "fio-tau",
+    "name": "Fio T’au",
+    "source": "apocrypha",
+    "page": 15,
+    "note": "Earth Caste. Maximums from the table on p.18. Size not printed (\"especially short and broad\", p.17). No Species Keywords printed.",
+    "xp": 14,
+    "speed": 5,
+    "attributes": {
+      "Int": 3
+    },
+    "skills": {
+      "Scholar": 1,
+      "Tech": 1
+    },
+    "max": {
+      "S": 6,
+      "T": 8,
+      "A": 7,
+      "I": 8,
+      "Wil": 8,
+      "Int": 10,
+      "Fel": 6,
+      "speed": 5
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "For the Greater Good (Fio)",
+        "text": "When you assist an ally using Medicae, Scholar, or Tech, you may halve the number of dice you would add and add that many Icons to the test you are assisting."
+      },
+      {
+        "name": "Dull Soul",
+        "text": "You cannot gain the PSYKER keyword under any circumstances."
+      }
+    ]
+  },
+  {
+    "id": "kor-tau",
+    "name": "Kor T’au",
+    "source": "apocrypha",
+    "page": 16,
+    "note": "Air Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "xp": 14,
+    "speed": 7,
+    "attributes": {
+      "A": 3
+    },
+    "skills": {
+      "Awareness": 1,
+      "Pilot": 1
+    },
+    "max": {
+      "S": 6,
+      "T": 6,
+      "A": 9,
+      "I": 8,
+      "Wil": 8,
+      "Int": 9,
+      "Fel": 7,
+      "speed": 10
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "For the Greater Good (Kor)",
+        "text": "When you assist an ally using Awareness, Pilot, or Tech, you may halve the number of dice you would add and add that many Icons to the test you are assisting."
+      },
+      {
+        "name": "Grav-Adapted",
+        "text": "You ignore all DN increases for high, low, or zero-gravity, and you gain a Flying Speed equal to your normal Speed when in zero gravity."
+      },
+      {
+        "name": "Dull Soul",
+        "text": "You cannot gain the PSYKER keyword under any circumstances."
+      }
+    ]
+  },
+  {
+    "id": "por-tau",
+    "name": "Por T’au",
+    "source": "apocrypha",
+    "page": 16,
+    "note": "Water Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "xp": 14,
+    "speed": 6,
+    "attributes": {
+      "Fel": 3
+    },
+    "skills": {
+      "Insight": 1,
+      "Persuasion": 1
+    },
+    "max": {
+      "S": 6,
+      "T": 6,
+      "A": 7,
+      "I": 8,
+      "Wil": 8,
+      "Int": 9,
+      "Fel": 10,
+      "speed": 6
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "For the Greater Good (Por)",
+        "text": "When you assist an ally using Cunning, Deception, or Persuasion, you may halve the number of dice you would add and add that many Icons to the test you are assisting."
+      },
+      {
+        "name": "Polyglot",
+        "text": "You know additional languages equal to your Scholar rank. When you encounter an unfamiliar language, you gain +Double Rank on Scholar tests to learn or translate that language."
+      },
+      {
+        "name": "Dull Soul",
+        "text": "You cannot gain the PSYKER keyword under any circumstances."
+      }
+    ]
+  },
+  {
+    "id": "aun-tau",
+    "name": "Aun T’au",
+    "source": "apocrypha",
+    "page": 17,
+    "note": "Ethereal Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "xp": 40,
+    "speed": 6,
+    "attributes": {
+      "A": 3,
+      "Wil": 3
+    },
+    "skills": {
+      "Leadership": 2,
+      "Scholar": 3,
+      "Weapon Skill": 1
+    },
+    "max": {
+      "S": 8,
+      "T": 8,
+      "A": 8,
+      "I": 8,
+      "Wil": 10,
+      "Int": 9,
+      "Fel": 10,
+      "speed": 7
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "Ethereal Presence",
+        "text": "T’AU characters within 12m always add bonus dice equal to twice the Ethereal’s Rank to their Resolve and Conviction tests. T’AU characters cannot willingly harm an Ethereal and must pass a DN 5 Resolve test or become Pinned if their actions allow an Ethereal to be harmed."
+      },
+      {
+        "name": "Dull Soul",
+        "text": "You cannot gain the PSYKER keyword under any circumstances."
+      }
+    ]
+  },
+  {
+    "id": "asuryani-ghost-warrior",
+    "name": "Asuryani Ghost Warrior",
+    "source": "apocrypha",
+    "page": 6,
+    "note": "Maximums from the table on p.18. Size not printed (the body is \"exactly 10 feet tall\"). No Species Keywords printed; Wraithsight makes it a PSYKER.",
+    "xp": 228,
+    "speed": 5,
+    "attributes": {
+      "S": 7,
+      "T": 6,
+      "A": 4,
+      "I": 4,
+      "Wil": 5
+    },
+    "skills": {
+      "Psychic Mastery": 2,
+      "Scholar": 3
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "Aeldari",
+        "text": "You may select talents which have a prerequisite of Aeldari species."
+      },
+      {
+        "name": "Undead",
+        "text": "You are immune to effects which would stun or knock out other foes. You can never suffer Shock damage. However, you are distant and disconnected from mortal existence, and thus can never generate Glory."
+      },
+      {
+        "name": "Wraithbone Form",
+        "text": "Your robotic body is extremely resistant to harm. Your body naturally has an Armour Rating of 5. In addition, your Determination increases by +3d, and you are immune to the Bleeding, Exhausted, and Poisoned conditions, and cannot suffocate. You are healed using the Tech skill instead of Medicae.",
+        "mods": {
+          "determination": 3
+        }
+      },
+      {
+        "name": "Wraithsight",
+        "text": "A Ghost Warrior is a PSYKER, but may not purchase any psychic powers, not even Smite. Further, you are immune to any penalties or hindrances to vision from any source other than the Warp. However, whenever you roll a Complication on any Test, you become Blinded as the Warp clouds your vision. This can only be removed by a DN 8 Willpower test as a Combat Action, or by an ASURYANI PSYKER within 10m succeeding on a DN 4 Leadership (Wil) Test.",
+        "grants": [
+          {
+            "keyword": "PSYKER"
+          }
+        ]
+      }
+    ],
+    "max": {
+      "S": 16,
+      "T": 16,
+      "A": 8,
+      "I": 8,
+      "Wil": 8,
+      "Int": 8,
+      "Fel": 6,
+      "speed": 7
+    }
+  },
+  {
+    "id": "custodian",
+    "name": "Custodian",
+    "source": "apocrypha",
+    "page": 7,
+    "note": "Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "xp": 330,
+    "speed": 7,
+    "attributes": {
+      "A": 5,
+      "Fel": 3,
+      "I": 5,
+      "Int": 3,
+      "S": 6,
+      "T": 6,
+      "Wil": 3
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 5,
+      "Ballistic Skill": 4,
+      "Insight": 3,
+      "Scholar": 2,
+      "Stealth": 3,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Aegis of the Emperor",
+        "text": "A Custodian may roll Determination against Mortal Wounds."
+      },
+      {
+        "name": "Indomitable, Incorruptible",
+        "text": "You add +2 to your Resolve, and you automatically succeed on all Corruption Tests. Your Maximum Wounds are increased by +4.",
+        "mods": {
+          "resolve": 2,
+          "maxWounds": 4
+        }
+      },
+      {
+        "name": "Solitary",
+        "text": "A Custodian maintains a unique pool of Glory. They may save up to 3 points of Glory, and they cannot save points into the group pool, nor can they spend Glory generated by anyone else."
+      },
+      {
+        "name": "Despised by the Unholy",
+        "text": "If a Custodian is present in a game, the GM’s starting and maximum Ruin are increased by 1."
+      }
+    ],
+    "max": {
+      "S": 14,
+      "T": 14,
+      "A": 11,
+      "I": 11,
+      "Wil": 12,
+      "Int": 12,
+      "Fel": 10,
+      "speed": 9
+    }
+  },
+  {
+    "id": "kin",
+    "name": "Kin",
+    "source": "apocrypha",
+    "page": 10,
+    "note": "Maximums from the table on p.18 (shared by Kin and Ironkin). Size not printed (\"a little over four feet tall\"). Cloneskein Traits are the option group kin-cloneskein-traits.",
+    "xp": 56,
+    "speed": 5,
+    "attributes": {
+      "S": 4,
+      "T": 4,
+      "Wil": 3
+    },
+    "skills": {
+      "Ballistic Skill": 1,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "max": {
+      "S": 10,
+      "T": 10,
+      "A": 6,
+      "I": 8,
+      "Wil": 10,
+      "Int": 9,
+      "Fel": 7,
+      "speed": 6
+    },
+    "keywords": [
+      "ABHUMAN"
+    ],
+    "abilities": [
+      {
+        "name": "Shrouded Soul",
+        "text": "Your Conviction increases by +2.",
+        "mods": {
+          "conviction": 2
+        }
+      },
+      {
+        "name": "Kin-Bond",
+        "text": "On any Interaction-based skill test with another member of your own Kindred, gain +2 bonus dice."
+      },
+      {
+        "name": "Cloneskein",
+        "text": "Kin receive the ABHUMAN keyword. In addition, each Kin may select a single Cloneskein Trait from the list below."
+      }
+    ]
+  },
+  {
+    "id": "ironkin",
+    "name": "Ironkin",
+    "source": "apocrypha",
+    "page": 10,
+    "note": "Maximums from the table on p.18 (shared by Kin and Ironkin). Size not printed.",
+    "xp": 56,
+    "speed": 5,
+    "attributes": {
+      "S": 4,
+      "T": 4,
+      "Wil": 3
+    },
+    "skills": {
+      "Ballistic Skill": 1,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "max": {
+      "S": 10,
+      "T": 10,
+      "A": 6,
+      "I": 8,
+      "Wil": 10,
+      "Int": 9,
+      "Fel": 7,
+      "speed": 6
+    },
+    "keywords": [
+      "ROBOT"
+    ],
+    "abilities": [
+      {
+        "name": "Cerebral Unit",
+        "text": "Your Conviction increases by +2. Further, if you are slain, your Cerebral Unit (CU) can be retrieved and a new body built for you.",
+        "mods": {
+          "conviction": 2
+        }
+      },
+      {
+        "name": "Synthetic Emotion",
+        "text": "You increase the DN of any interaction-based skill test with any character who lacks the LEAGUES OF VOTANN keyword by +1."
+      },
+      {
+        "name": "Machine",
+        "text": "Ironkin receive the ROBOT keyword. You are immune to the Bleeding and Poisoned conditions and cannot suffocate. You are healed using the Tech skill instead of Medicae."
+      }
+    ]
+  }
+]

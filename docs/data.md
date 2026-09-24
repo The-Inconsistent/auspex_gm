@@ -460,8 +460,8 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 - `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species`, `archetype`, `subFaction`,
   `talent`, `power`, `wargear` (printed names), `rank`, `tier`, or `text` for anything that isn't mechanical.
 - `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
-- `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ power }`, `{ wargear }`, `{ text }`, or
-  `{ choose, from }`.
+- `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ keywords }` (taken together), `{ power }`,
+  `{ wargear }`, `{ text }`, or `{ choose, from, optional }` (`optional`: the character may take none).
 - `Rule`: a named ability, verbatim, with `mods` only where the book prints a flat bonus, and `grants`.
 - A wargear item keeps its printed `name`; `wargearId` links it once the Wargear catalogue has it.
 
@@ -476,6 +476,9 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 - **One record per thing.** When several books print the same species, archetype or talent, transcribe only the first
   source in `SOURCES` order (VoA, IoE, FSPG, Core, then the homebrew Apocrypha and Necrontyr), and cite the others in
   `note` ("Also Core p.113, 277 XP"). Official always beats homebrew; Apocrypha's `##` entries have FSPG versions.
+- **Fill what the newer printing leaves out.** A Species' `keywords`, `grants`, `max` and `size` that the winning
+  printing doesn't print are taken from the older one, and the note says so (IoE's Aeldari has Core p.39's Species
+  Keywords). Nothing the winner prints is overridden.
 - **Keep homebrew extras.** When a losing homebrew printing has rules the winner lacks (Apocrypha gives Mars a trait, Core
   prints none), they are added to the winner with `source` set on each `Rule`, so the builder can hide homebrew.
   Faction `rules` are added by name; `traits` and `abilities` only when the winner has none. Tables whose rows differ
@@ -501,5 +504,10 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 - Forge Worlds, Craftworlds, Coteries and Ordos are printed as examples ("Other Ordos", Core p.64). May players write
   in their own? The builder needs to know.
 - Navis Nobilite (Apocrypha p.53): must the Origin row (Magisterial, Nomadic, Shrouded House) match the House type?
+- Species details the books leave out: no Size for any Apocrypha species or the Necron; no maximums for Navigators
+  (Human's?); no Species Keywords for Ogryn and Ratling (ABHUMAN?), Kroot (KROOT?) or the T'au castes (T'AU?).
+- May one Human be both a Pariah and a Perpetual (Apocrypha pp.12–13)? The data allows one.
+- Does a Ghost Warrior count as Aeldari Species for Talent requirements (its "Aeldari" ability, Apocrypha p.6)? May a
+  Drukhari with the ASURYANI keyword walk Paths (IoE p.10)?
 - Creating a Traitor (Core p.87) is stored as a Chaos faction rule; it may become archetype variants in the
   archetype wave.

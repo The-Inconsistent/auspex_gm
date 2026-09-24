@@ -240,6 +240,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 16. **Missiles** print range "– – –" (they use the launcher's). The catalogue gives Frag and Krak Missiles the Missile
     Launcher's 24/48/72; a Cyclone fires them at 18/36/54 (p.220). A thrown weapon's range uses effective Strength,
     Powered included, as the pregens do.
+17. **Legacy of the Necrontyr** (homebrew) is written for 1st edition. Its Necron species is converted to the Core
+    format: each 1st-edition attribute Modifier becomes a granted rating (1 + the Modifier), a Trait Modifier becomes
+    `mods` (+1 Resolve, +1 Wound), and the XP is the cost of the granted ratings (Core pp.24–25), which is how every Core
+    and FSPG species is priced (Core p.29). Its Build Point Cost and Base Tier stay in the record's note. No maximums
+    are printed, so the builder applies none.
 
 ---
 

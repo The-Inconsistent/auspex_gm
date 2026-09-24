@@ -1,0 +1,207 @@
+[
+  {
+    "id": "ogryn",
+    "name": "Ogryn Backgrounds",
+    "source": "forsaken-system",
+    "page": 93,
+    "note": "Origin 2 is printed \"High Gravity: World A harsh life…\": the heading's colon is misplaced (High Gravity World), copied as printed.",
+    "owner": {
+      "speciesId": "ogryn"
+    },
+    "origin": [
+      {
+        "name": "Cloned",
+        "text": "You are a vat-grown replicae, created to serve the Imperium. Your conscious life may have only begun very recently, and you are eager to fulfill your purpose.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "High Gravity",
+        "text": "World A harsh life of survival is all you have known, and you’ve fought for everything you’ve ever had. Imperial society is a strange but not unwelcome world.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Legion Born",
+        "text": "War in the Emperor’s name is an Ogryn’s purpose — that’s what everyone tells you, and you have no reason to disagree. The Militarum Auxilla is your home, and the Emperor protects!",
+        "bonus": "resolve"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Followed Orders",
+        "text": "You executed a series of suicidal orders with unflinching loyalty, surviving against the odds. Your mental and physical fortitude are unquestionable.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Body Shield",
+        "text": "Your tremendous bulk protected a superior officer from a deadly blow (this may have been accidental). Your reputation for being almost impenetrable to bullets is well earned.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Sanctioned Creativity",
+        "text": "Shocking your peers and superiors, you experienced a rare moment of creativity. The strange story of your brief higher function has spread and precedes you.",
+        "bonus": "influence"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Promotion",
+        "text": "You want to get to the top — be it status, proof of your prowess, or to earn a Bone’ead augmetic, your goal is to be promoted.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Medal",
+        "text": "You’ve seen other soldiers get shiny medals, and you want one too! Accruing wealth and other shiny things in the pursuit of commendation has become your obsession.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Ward-bound",
+        "text": "There is someone you must protect, an individual you value above all others. You may not even have met them yet, but you know your life’s purpose is to defend your ward.",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Follow a superior’s orders to the letter.",
+      "Use your tremendous bulk to dominate a social situation.",
+      "Display the strength found in ignorance.",
+      "Apply your unique understanding of the Emperor’s will to the current situation.",
+      "Solve a problem through the judicious application of brute force.",
+      "Charge the enemies of the Imperium!"
+    ]
+  },
+  {
+    "id": "ratling",
+    "name": "Ratling Backgrounds",
+    "source": "forsaken-system",
+    "page": 95,
+    "owner": {
+      "speciesId": "ratling"
+    },
+    "origin": [
+      {
+        "name": "Penal Legionnaire",
+        "text": "Your sharp eye and sly movements served you well as a thief, but now — after only a modicum of torture — they will serve you as a soldier.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Miniature Technician",
+        "text": "You used to spend days at a time trapped in coffin-like chambers to ensure machinery you didn’t understand kept working. You proved your value and got out — now you’re eager to see the galaxy.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Fast Talker",
+        "text": "You’ve talked, tricked, and bamboozled your way out of (and into) more scrapes than you care to count. You’ve earned a reputation for charm and deviousness, and are eager to put it to good use.",
+        "bonus": "influence"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Big Score",
+        "text": "Be it a cache of armaments, a prized collection of relics, or the stock of an entire manufactorum, you managed to liquidate someone else’s assets — let’s hope it never comes back to haunt you.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Sharp Shot",
+        "text": "You assassinated an important enemy at improbable range or under difficult conditions. News of a deadeye Ratling spread quickly, and you’re likely to be in high demand.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Unnoticeable",
+        "text": "You managed to survive a hopeless mission that martyred the remainder of your regiment — you managed to hide and survive. Some laud you as a hero, others a coward.",
+        "bonus": "conviction"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Fame & Fortune",
+        "text": "You’ve got the skills to be a hero of the Imperium, and you intend to be well rewarded for using them. Rise through the ranks and take what is due.",
+        "bonus": "determination"
+      },
+      {
+        "name": "The Good Life",
+        "text": "Land, food, and friendship — what else could you possibly want? You intend to survive everything the galaxy has to throw at you, then find a way to discreetly abandon your post and get back to basics.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Acceptance",
+        "text": "You’re sick of Humans looking down on you. You want to ensure Ratlings are accepted, building elite units and industrial efforts that serve the Emperor and prove your peoples’ worth.",
+        "bonus": "resolve"
+      }
+    ],
+    "objectives": [
+      "Fill your stomach with some high-quality grub.",
+      "Redirect imperial resources to your own advantage.",
+      "Loot supplies from your ignoble enemies.",
+      "Show the advantages of a smaller size.",
+      "Avoid danger using your natural stealth.",
+      "Use your precise eyesight to aid the party (or yourself)."
+    ]
+  },
+  {
+    "id": "kroot",
+    "name": "Kroot Backgrounds",
+    "source": "forsaken-system",
+    "page": 97,
+    "owner": {
+      "speciesId": "kroot"
+    },
+    "origin": [
+      {
+        "name": "Pech Native",
+        "text": "Raised amongst the jungles of the Kroot homeworld Pech, you are accustomed to a primitive life, and may have fought alongside the enigmatic T’au.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Void Born",
+        "text": "Born aboard a warsphere, your nomadic life has been one of constant excursions on strange worlds and bizarre meals. You have met (and devoured) many minor Species, and now little surprises you.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Prodigal Carnivore",
+        "text": "Mercenary work has been lucrative and has offered many opportunities to improve yourself, though you long for the day you can return to your kindred and pass on the rich genetic traits you have gained.",
+        "bonus": "wealth"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Primitive Victor",
+        "text": "Relying on your mutations, you managed to defeat a more technologically advanced foe. You are staunch in your beliefs that biological strength far outweighs any mechanical advantage.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Sole Survivor",
+        "text": "Through caution, courage, cowardice, or simple luck, you survived when the rest of your kindred was slain. You have been made strong by survival and are now free to consume any prey you find.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Contract Secured",
+        "text": "Through shrewd diplomacy (and likely a little intimidation) you negotiated a deal that allowed you to fight alongside another Species against powerful foes.",
+        "bonus": "influence"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Return Home",
+        "text": "Though you have learned much and consumed many foes on your sojourn from your homeworld, you long to return to Pech, and will stop at nothing to do so.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Become Strong",
+        "text": "You have the utmost respect for the goals of your Species. You will journey to any location and fight any foe in your quest to become stronger.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Discovery",
+        "text": "You have had a small taste of the vastness of the galaxy, and believe that there are secrets still hidden that could further advance the Kroot — you will be the one to discover them.",
+        "bonus": "determination"
+      }
+    ],
+    "objectives": [
+      "Speculate on how you could evolve to better cope with the current situation.",
+      "Point out how the advanced technology of another Species has made them weak.",
+      "Relate the wisdom of your Shaper to the current situation.",
+      "Use the environment to put yourself in a more advantageous situation.",
+      "Make an evaluation on how someone you meet would taste.",
+      "Consume the flesh of the strong."
+    ]
+  }
+]

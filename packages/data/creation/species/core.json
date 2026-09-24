@@ -1,5 +1,39 @@
 [
   {
+    "id": "human",
+    "name": "Human",
+    "source": "core",
+    "page": 29,
+    "note": "Maximums from the table on p.25; Species Keywords from p.38.",
+    "xp": 0,
+    "speed": 6,
+    "size": "Average",
+    "attributes": {},
+    "skills": {},
+    "max": {
+      "S": 8,
+      "T": 8,
+      "A": 8,
+      "I": 8,
+      "Wil": 8,
+      "Int": 8,
+      "Fel": 8,
+      "speed": 8
+    },
+    "keywords": [],
+    "grants": [
+      {
+        "text": "Any 2 Keywords (Core p.38)"
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Species Interaction",
+        "text": "Differences in culture, language, and biology make communication between any two individuals of different Species difficult, even when they aren't compounded by long histories of horrific mutual warefare.\n\nAll social Tests to interact with a member of another Species suffer a minimum +2 DN penalty (see Chapter 8: Rules for further explanation). As all Astartes were once Human, they do not suffer this penalty, unless another rule or the GM states otherwise."
+      }
+    ]
+  },
+  {
     "id": "adeptus-astartes",
     "name": "Adeptus Astartes",
     "source": "core",
@@ -8,21 +42,67 @@
     "xp": 160,
     "speed": 7,
     "size": "Average",
-    "attributes": { "A": 4, "I": 4, "Int": 3, "S": 4, "T": 4, "Wil": 3 },
-    "skills": { "Athletics": 3, "Awareness": 3, "Ballistic Skill": 3, "Stealth": 3, "Weapon Skill": 3 },
-    "max": { "S": 10, "T": 10, "A": 9, "I": 9, "Wil": 10, "Int": 10, "Fel": 8, "speed": 9 },
-    "keywords": ["ADEPTUS ASTARTES", "[CHAPTER]"],
-    "grants": [{ "choose": 1, "from": [{ "keyword": "IMPERIUM" }, { "keyword": "CHAOS" }] }],
+    "attributes": {
+      "A": 4,
+      "I": 4,
+      "Int": 3,
+      "S": 4,
+      "T": 4,
+      "Wil": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 3,
+      "Stealth": 3,
+      "Weapon Skill": 3
+    },
+    "max": {
+      "S": 10,
+      "T": 10,
+      "A": 9,
+      "I": 9,
+      "Wil": 10,
+      "Int": 10,
+      "Fel": 8,
+      "speed": 9
+    },
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "keyword": "IMPERIUM"
+          },
+          {
+            "keyword": "CHAOS"
+          }
+        ]
+      }
+    ],
     "abilities": [
-      { "name": "Defender of Humanity", "text": "Add +Rank Icons to any successful attack against a Mob." },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob."
+      },
       {
         "name": "Honour the Chapter",
         "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter.\n\nYour Resolve increases by +1",
-        "mods": { "resolve": 1 }
+        "mods": {
+          "resolve": 1
+        }
       },
       {
         "name": "Space Marine Implants",
         "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 19 implants (p.75) if the GM agrees it is appropriate."
+      },
+      {
+        "name": "Species Interaction",
+        "text": "Differences in culture, language, and biology make communication between any two individuals of different Species difficult, even when they aren't compounded by long histories of horrific mutual warefare.\n\nAll social Tests to interact with a member of another Species suffer a minimum +2 DN penalty (see Chapter 8: Rules for further explanation). As all Astartes were once Human, they do not suffer this penalty, unless another rule or the GM states otherwise."
       }
     ]
   },
@@ -35,20 +115,100 @@
     "xp": 198,
     "speed": 7,
     "size": "Average",
-    "attributes": { "A": 4, "I": 4, "Int": 3, "S": 5, "T": 5, "Wil": 3 },
-    "skills": { "Athletics": 3, "Awareness": 3, "Ballistic Skill": 4, "Stealth": 3, "Weapon Skill": 3 },
-    "max": { "S": 12, "T": 12, "A": 9, "I": 9, "Wil": 10, "Int": 10, "Fel": 8, "speed": 9 },
-    "keywords": ["ADEPTUS ASTARTES", "PRIMARIS", "[CHAPTER]", "IMPERIUM"],
+    "attributes": {
+      "A": 4,
+      "I": 4,
+      "Int": 3,
+      "S": 5,
+      "T": 5,
+      "Wil": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 4,
+      "Stealth": 3,
+      "Weapon Skill": 3
+    },
+    "max": {
+      "S": 12,
+      "T": 12,
+      "A": 9,
+      "I": 9,
+      "Wil": 10,
+      "Int": 10,
+      "Fel": 8,
+      "speed": 9
+    },
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]",
+      "IMPERIUM"
+    ],
     "abilities": [
-      { "name": "Defender of Humanity", "text": "Add +Rank Icons to any successful attack against a Mob." },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob."
+      },
       {
         "name": "Honour the Chapter (Primaris)",
         "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter.\n\nYour Resolve increases by +1.\n\nAs a Primaris, you ignore any impurities in your Chapter Gene-Seed, and also gain +3 Wounds.",
-        "mods": { "resolve": 1, "maxWounds": 3 }
+        "mods": {
+          "resolve": 1,
+          "maxWounds": 3
+        }
       },
       {
         "name": "Space Marine Implants",
         "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate."
+      },
+      {
+        "name": "Species Interaction",
+        "text": "Differences in culture, language, and biology make communication between any two individuals of different Species difficult, even when they aren't compounded by long histories of horrific mutual warefare.\n\nAll social Tests to interact with a member of another Species suffer a minimum +2 DN penalty (see Chapter 8: Rules for further explanation). As all Astartes were once Human, they do not suffer this penalty, unless another rule or the GM states otherwise."
+      }
+    ]
+  },
+  {
+    "id": "ork",
+    "name": "Ork",
+    "source": "core",
+    "page": 29,
+    "note": "Maximums from the table on p.25; Species Keywords from p.39.",
+    "xp": 20,
+    "speed": 6,
+    "size": "Average",
+    "attributes": {
+      "S": 3,
+      "T": 3
+    },
+    "skills": {},
+    "max": {
+      "S": 12,
+      "T": 12,
+      "A": 7,
+      "I": 7,
+      "Wil": 8,
+      "Int": 7,
+      "Fel": 7,
+      "speed": 7
+    },
+    "keywords": [
+      "ORK",
+      "[CLAN]"
+    ],
+    "abilities": [
+      {
+        "name": "Orky",
+        "text": "+1 bonus dice to Intimidation Tests."
+      },
+      {
+        "name": "Bigger is Better",
+        "text": "You calculate Influence using Strength instead of Fellowship."
+      },
+      {
+        "name": "Species Interaction",
+        "text": "Differences in culture, language, and biology make communication between any two individuals of different Species difficult, even when they aren't compounded by long histories of horrific mutual warefare.\n\nAll social Tests to interact with a member of another Species suffer a minimum +2 DN penalty (see Chapter 8: Rules for further explanation). As all Astartes were once Human, they do not suffer this penalty, unless another rule or the GM states otherwise."
       }
     ]
   }

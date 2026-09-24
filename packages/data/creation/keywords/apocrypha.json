@@ -47,5 +47,13 @@
     "page": 67,
     "placeholder": "sept",
     "text": "A character with the [SEPT] keyword may choose a Sept from below, or from other Warhammer 40,000 materials, or to work with the GM to create a Sept of their own. The selected Sept then replaces the [SEPT] keyword on the character sheet."
+  },
+  {
+    "id": "robot",
+    "name": "ROBOT",
+    "source": "apocrypha",
+    "page": 10,
+    "text": "",
+    "note": "Used by the Ironkin species (p.10) but never defined."
   }
 ]

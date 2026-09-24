@@ -1,0 +1,237 @@
+[
+  {
+    "id": "asuryani-paths",
+    "name": "Asuryani Paths",
+    "source": "inheritance-of-embers",
+    "page": 10,
+    "note": "Ynnari cannot acquire Asuryani Paths (p.20) and Corsair Asuryani abandon their Path, gaining no benefit from it (p.14): both are the notKeyword on every option. Wraith Constructs do not have Paths (p.13): a text requirement. As printed: Path of the Chronicler omits “bonus dice”; “supplicance” (Path of Service). Also Core p.78.",
+    "owner": {
+      "factionId": "asuryani"
+    },
+    "pick": "any",
+    "xp": [
+      0,
+      10,
+      20
+    ],
+    "options": [
+      {
+        "name": "Path of the Artisan",
+        "text": "Embracing an aesthetic pursuit, you have dedicated a lifetime to learning the beauty of Aeldari culture.\n\nYou gain +Double Rank bonus dice to Scholar (Int) Tests related to the AELDARI Keyword.",
+        "page": 10,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of Awakening",
+        "text": "You devoted considerable time to the practice of scrutinising your surroundings and focusing your mind.\n\nYou gain +Rank bonus dice to Awareness (Int) Tests.",
+        "page": 10,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Bonesinger",
+        "text": "You tended groves of wraithbone and studied the art of psychically forming it into many useful shapes.\n\nYou gain +Double Rank bonus dice to Tech (Int) Tests on targets with the AELDARI Keyword.",
+        "page": 10,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Celebrant",
+        "text": "Mirroring the Path of the Mourner, you celebrated births, alliances, and victories on behalf of more stoic kin. You gain +Rank maximum Wounds.",
+        "page": 10,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Chronicler",
+        "text": "You aggregated as much essential knowledge as you could, ensuring it would survive long after your death.\n\nYou gain +Double Rank on Investigate (Int) Tests related to the AELDARI Keyword.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Cultivator",
+        "text": "You raised and protected living creatures too vulnerable to protect themselves.\n\nYou gain +Rank bonus dice on Survival (Wil) Tests.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Diplomat",
+        "text": "You competed in devious political schemes with counterparts on other craftworlds.\n\nYou gain +Double Rank bonus dice on Deception (Fel) Tests against targets with the AELDARI Keyword.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Dreamer",
+        "text": "Sinking into meditative trances for days at a time, you wield your lucid dreams to resist She Who Thirsts.\n\nYou gain +Rank bonus dice to Corruption Tests.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Healer",
+        "text": "You healed the wounded and tended to the sick, spending decades caring for others.\n\nYou gain +Double Rank bonus dice to Medicae (Int) Tests on targets with the AELDARI Keyword.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Mariner",
+        "text": "You have learned to sail the void with expert precision and manoeuvrability, becoming one with your craft.\n\nYou gain +Double Rank bonus dice to Pilot (A) Tests using vehicles with the AELDARI Keyword.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of the Mourner",
+        "text": "You lost someone close to you and lamented them without succumbing to extremes that would draw Slaanesh.\n\nYou gain +Rank Maximum Shock.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      },
+      {
+        "name": "Path of Service",
+        "text": "To better aid your entire species, you dedicated yourself to supplicance, reading the needs of your fellows and bettering yourself through empathy.\n\nYou gain +Double Rank bonus dice to Insight (Fel) Tests on targets with the AELDARI Keyword.",
+        "page": 11,
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "YNNARI",
+              "ANHRATHE"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Not a Wraith Construct: Wraith Constructs do not have Paths (p.13)."
+          }
+        ]
+      }
+    ],
+    "text": "You may choose a single Path you have already walked from the following list. You may have walked additional Paths; it costs 10 XP to walk a second Path, and 20 XP for each Path beyond the second."
+  }
+]

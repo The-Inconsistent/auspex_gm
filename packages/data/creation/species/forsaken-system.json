@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ogryn",
+    "name": "Ogryn",
+    "source": "forsaken-system",
+    "page": 93,
+    "note": "Maximums from the table on p.91 (Intellect maximum 1 as printed). No Species Keywords printed. Abhuman rules from pp.90–91; \"Ogyrns\" in Psychic Species is a print error, copied as printed.",
+    "xp": 76,
+    "speed": 6,
+    "size": "Large",
+    "attributes": {
+      "S": 5,
+      "T": 5
+    },
+    "skills": {
+      "Survival": 2
+    },
+    "max": {
+      "S": 12,
+      "T": 12,
+      "A": 7,
+      "I": 4,
+      "Wil": 8,
+      "Int": 1,
+      "Fel": 4,
+      "speed": 8
+    },
+    "abilities": [
+      {
+        "name": "Avalanche of Muscle",
+        "text": "When you Charge you gain an additional +Rank Bonus Dice to your melee attack Test."
+      },
+      {
+        "name": "Claustrophobic",
+        "text": "Whenever you enter an enclosed area you must make a Fear Test (default DN 2). Additionally, whenever you roll a Complication in an enclosed space, the GM can spend 1 Ruin to force you to repeat this Fear Test."
+      },
+      {
+        "name": "Simple Loyalty",
+        "text": "Whenever an ally with the IMPERIUM Keyword makes a Leadership Test targeting an Ogryn they gain Bonus Dice equal to the Ogryn’s Rank."
+      },
+      {
+        "name": "Species & Communication",
+        "text": "By default, abhumans suffer a +1 DN penalty to any social Test with a Human target, modified by the target’s Keywords.",
+        "page": 90
+      },
+      {
+        "name": "Psychic Species",
+        "text": "There are no recorded instances of either Ratlings or Ogryns with psychic abilities. Ratlings and Ogyrns cannot have the PSYKER Keyword.",
+        "page": 91
+      },
+      {
+        "name": "Armour for Abhumans",
+        "text": "For abhumans such as Ratlings and Ogryns, the Rarity of any Armour is increased by +1.",
+        "page": 91
+      },
+      {
+        "name": "Weapons for Ogryns",
+        "text": "The prodigious size of an Ogryn’s hands and digits means they are unable to wield most ranged weapons as they cannot pull the trigger. This does not preclude them from using any ranged weapon as a club, which deals the same damage as an Unarmed Strike (page 183 of the Wrath & Glory Rulebook) +2 ED.\n\nAn Ogryn can wield any melee weapon they can conceivably hold, though they treat any weapon designed for someone of a smaller size as having the Unwieldy (3) Weapon Trait.",
+        "page": 91
+      }
+    ]
+  },
+  {
+    "id": "ratling",
+    "name": "Ratling",
+    "source": "forsaken-system",
+    "page": 95,
+    "note": "Maximums from the table on p.91. No Species Keywords printed. Abhuman rules from pp.90–91; \"Ogyrns\" in Psychic Species is a print error, copied as printed.",
+    "xp": 30,
+    "speed": 5,
+    "size": "Small",
+    "attributes": {
+      "A": 2,
+      "Fel": 2
+    },
+    "skills": {
+      "Awareness": 2,
+      "Ballistic Skill": 1,
+      "Cunning": 1,
+      "Deception": 2,
+      "Stealth": 2
+    },
+    "max": {
+      "S": 6,
+      "T": 6,
+      "A": 10,
+      "I": 10,
+      "Wil": 8,
+      "Int": 8,
+      "Fel": 10,
+      "speed": 7
+    },
+    "abilities": [
+      {
+        "name": "Gourmand",
+        "text": "+Double Rank Bonus Dice to any Test made to prepare food.\n\nPrepared food can be used during a Regroup to recover +Rank Shock."
+      },
+      {
+        "name": "Shoot Sharp and Scarper",
+        "text": "You can move up to your Speed in metres after making a successful Ranged Attack Test."
+      },
+      {
+        "name": "Species & Communication",
+        "text": "By default, abhumans suffer a +1 DN penalty to any social Test with a Human target, modified by the target’s Keywords.",
+        "page": 90
+      },
+      {
+        "name": "Psychic Species",
+        "text": "There are no recorded instances of either Ratlings or Ogryns with psychic abilities. Ratlings and Ogyrns cannot have the PSYKER Keyword.",
+        "page": 91
+      },
+      {
+        "name": "Armour for Abhumans",
+        "text": "For abhumans such as Ratlings and Ogryns, the Rarity of any Armour is increased by +1.",
+        "page": 91
+      },
+      {
+        "name": "Weapons for Ratlings",
+        "text": "The dextrous Ratlings can wield most Human-sized weapons without too much difficulty, though the size and weight of such bulky technology may cause them to have the Unwieldy (2) Weapon Trait at the GM’s discretion.",
+        "page": 91
+      }
+    ]
+  },
+  {
+    "id": "kroot",
+    "name": "Kroot",
+    "source": "forsaken-system",
+    "page": 97,
+    "note": "Maximums from the table on p.91. No Species Keywords printed. The species table's first columns are shifted as printed (\"Kroot\" under XP Cost, \"22\" under Attributes): XP 22, no Attributes. Kroot Mutations are the option group kroot-mutations (p.98).",
+    "xp": 22,
+    "speed": 7,
+    "size": "Average",
+    "attributes": {},
+    "skills": {
+      "Athletics": 1,
+      "Awareness": 1,
+      "Stealth": 2,
+      "Survival": 2,
+      "Weapon Skill": 2
+    },
+    "max": {
+      "S": 12,
+      "T": 12,
+      "A": 12,
+      "I": 12,
+      "Wil": 10,
+      "Int": 6,
+      "Fel": 6,
+      "speed": 10
+    },
+    "abilities": [
+      {
+        "name": "Kroot Mutations",
+        "text": "You have a number of Kroot Mutations equal to your Tier, and may gain additional Kroot Mutations as part of Ascension."
+      },
+      {
+        "name": "Kroot Language",
+        "text": "The multi-faceted biology of the Kroot has led to them developing many different methods of communication. Xenobiologists speculate that the pervasive, shifting scent of the viscous sweat that covers a Kroot’s body can be controlled, allowing them to clandestinely communicate through scent. When the Kroot communicate audibly, they do so with a rattling of their quills and a system of whistles and clicks through their beaked mouths.\n\nThe few who have had non-combative contact with the Species have noted that they tend to mimic other Species, capable of discerning meaning through tone, posture, and possibly even pheromones. As a possible side effect of their own mutable nature, Kroot pick up new languages quickly and easily.\n\nWhenever a Kroot makes a Test to understand a spoken language, they gain +Rank Bonus Dice.",
+        "page": 98
+      },
+      {
+        "name": "Species & Communication",
+        "text": "As a Xenos Species, the Kroot are feared and hated by almost all Imperials. Because of this, they suffer the usual minimum penalty of +2 DN to any social Test with a target of another Species.",
+        "page": 90
+      },
+      {
+        "name": "Armour for Kroot",
+        "text": "Kroot biology is anathema to most forms of armour. Their strange proportions and digitigrade legs make sizing difficult, and their reliance on fieldcraft forces them to eschew the bulky protective plates employed by other Species. Though Kroot Shapers would prefer to evolve a tougher, scalier hide through consuming resilient foes than design some new form of protection, many Kroot Mercenaries wear makeshift armour plating that affords some small defence from arms fire without prohibiting movement.\n\nKroot cannot wear armour that they do not share a Keyword with. Additionally, if a Kroot wears armour with an AR of 4 or more, the DN of all Tests using the Strength, Agility, or Initiative Attribute increase by an amount equal to the AR of the armour.",
+        "page": 91
+      },
+      {
+        "name": "Weapons for Kroot",
+        "text": "For melee combat, the Kroot prefer their own brand of primitive firearms festooned with blades, but can adapt to almost any kind of weaponry given enough time.\n\nKroot can wield any weapon, but if the weapon does not have the PRIMITIVE Keyword or share a Keyword with the Kroot, the weapon is treated as having the Unwieldy (2) Weapon Trait.",
+        "page": 91
+      }
+    ]
+  }
+]

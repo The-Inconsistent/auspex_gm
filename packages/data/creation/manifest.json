@@ -2,7 +2,9 @@
   "done": [
     "keywords",
     "factions",
-    "sub-factions"
+    "sub-factions",
+    "species",
+    "option-groups"
   ],
   "expected": {
     "archetypes": {

@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
-import { CREATION_TYPES, type CreationType, Pack, RuleEntry, SOURCES, Threat, Wargear } from "@wg/shared";
+import { CREATION_TYPES, type CreationType, Pack, RuleEntry, ratingsXp, SOURCES, Threat, Wargear } from "@wg/shared";
 import { loadPackRaw, packNames } from "./index.ts";
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
@@ -251,6 +251,14 @@ for (const [type, bySource] of Object.entries(manifest.expected ?? {}))
       `creation ${type} ${source}: ${expected.length - missing.length}/${expected.length}${missing.length ? ` (missing: ${missing.join(", ")})` : ""}`,
     );
   }
+// A Species' XP is the cost of its granted ratings (Core p.29): a mismatch is a transcription error or a misprint.
+for (const { file, r } of creation.get("species")!) {
+  const cost = ratingsXp(r as Parameters<typeof ratingsXp>[0]);
+  if (cost !== r.xp && !String(r.note ?? "").includes("XP as printed"))
+    console.warn(
+      `? ${file} "${r.id}": XP ${r.xp}, but its ratings cost ${cost} (note "XP as printed" if it's a misprint)`,
+    );
+}
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
 console.log(`creation: ${textFallbacks} text fallbacks, ${unresolvedWargear} wargear items not in the catalogue`);
 for (const [type, n] of pending) console.log(`creation: ${n} references to ${type} pending its wave`);

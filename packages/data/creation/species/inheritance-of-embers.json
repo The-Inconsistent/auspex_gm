@@ -1,0 +1,159 @@
+[
+  {
+    "id": "aeldari",
+    "name": "Aeldari",
+    "source": "inheritance-of-embers",
+    "page": 10,
+    "note": "Maximums from the table on p.20. IoE prints no Species Keywords: keywords and the keyword choice are from Core p.39. Also Core p.29, 10 XP.",
+    "xp": 10,
+    "speed": 8,
+    "size": "Average",
+    "attributes": {
+      "A": 3
+    },
+    "skills": {},
+    "max": {
+      "S": 8,
+      "T": 7,
+      "A": 12,
+      "I": 12,
+      "Wil": 12,
+      "Int": 10,
+      "Fel": 6,
+      "speed": 10
+    },
+    "keywords": [
+      "AELDARI"
+    ],
+    "abilities": [
+      {
+        "name": "Intense Emotion",
+        "text": "+1DN to all Resolve Tests. If you fail a Willpower based test in a scene involving emotion, the GM gains +1 Ruin."
+      },
+      {
+        "name": "Psychosensitive",
+        "text": "You may choose to take the PSYKER Keyword.",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "keyword": "PSYKER"
+              }
+            ],
+            "optional": true
+          }
+        ]
+      },
+      {
+        "name": "Echoes of the Fall",
+        "page": 20,
+        "text": "An Aeldari, Drukhari, or Wraith Construct Agent who fails a Mutation Test always rolls on the Subtle Mutation table (Wrath & Glory page 288). However, an Agent from these Species is rendered unplayable at Corruption Level 4 instead of 5 — at this point, the Agent’s soul is completely defiled by the touch of the Ruinous Powers. An eternity of suffering awaits them, though they may visit this ruin on their former comrades before they inevitably fall."
+      }
+    ],
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "keywords": [
+              "ANHRATHE",
+              "[COTERIE]"
+            ]
+          },
+          {
+            "keywords": [
+              "ASURYANI",
+              "[CRAFTWORLD]"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "drukhari",
+    "name": "Drukhari",
+    "source": "inheritance-of-embers",
+    "page": 10,
+    "note": "Maximums from the table on p.20. IoE prints no Species Keywords. Also Apocrypha p.8.",
+    "xp": 10,
+    "speed": 8,
+    "size": "Average",
+    "attributes": {
+      "A": 3
+    },
+    "skills": {},
+    "max": {
+      "S": 8,
+      "T": 8,
+      "A": 12,
+      "I": 12,
+      "Wil": 10,
+      "Int": 10,
+      "Fel": 6,
+      "speed": 10
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "Intense Emotion",
+        "text": "+1 DN to all Resolve Tests. If you fail a Willpower-based Test in a scene involving emotion, the GM gains +1 Ruin."
+      },
+      {
+        "name": "Night Vision",
+        "text": "You do not suffer vision penalties for low-light or darkness."
+      },
+      {
+        "name": "Soul Debt",
+        "text": "Make a DN Tier+1 Corruption Test at the end of any session in which you did not inflict Wounds on an unwilling creature. You never make Corruption Tests for inflicting pain. Drukhari with the ASURYANI, HARLEQUIN, or YNNARI Keyword lose this ability."
+      },
+      {
+        "name": "Echoes of the Fall",
+        "page": 20,
+        "text": "An Aeldari, Drukhari, or Wraith Construct Agent who fails a Mutation Test always rolls on the Subtle Mutation table (Wrath & Glory page 288). However, an Agent from these Species is rendered unplayable at Corruption Level 4 instead of 5 — at this point, the Agent’s soul is completely defiled by the touch of the Ruinous Powers. An eternity of suffering awaits them, though they may visit this ruin on their former comrades before they inevitably fall."
+      }
+    ]
+  },
+  {
+    "id": "wraith-construct",
+    "name": "Wraith Construct",
+    "source": "inheritance-of-embers",
+    "page": 10,
+    "note": "Maximums from the table on p.20. IoE prints no Species Keywords. p.13: Wraith Constructs do not have Paths, Backgrounds, or Objectives, and may replace the [CRAFTWORLD] Keyword with one chosen from the table on p.12.",
+    "xp": 90,
+    "speed": 5,
+    "size": "Large",
+    "attributes": {
+      "S": 5,
+      "T": 6
+    },
+    "skills": {},
+    "max": {
+      "S": 12,
+      "T": 12,
+      "A": 8,
+      "I": 8,
+      "Wil": 12,
+      "Int": 10,
+      "Fel": 4,
+      "speed": 8
+    },
+    "keywords": [],
+    "abilities": [
+      {
+        "name": "Wraithbone Form",
+        "text": "Wraith Constructs are immune to the Blinded, Bleeding, and Poisoned Conditions, and cannot Suffocate. They cannot wear armour, but always count as having an Armour Rating (AR) of 5."
+      },
+      {
+        "name": "Wraithsight",
+        "text": "Wraith Constructs can communicate telepathically with Spiritseers and other psychically attuned Aeldari, and perceive the presence of psychic powers and warp phenomena, as well as strong thoughts and feelings at the GM’s discretion. Unless a living Aeldari character is within line of sight, they suffer from the Hindered Condition."
+      },
+      {
+        "name": "Echoes of the Fall",
+        "page": 20,
+        "text": "An Aeldari, Drukhari, or Wraith Construct Agent who fails a Mutation Test always rolls on the Subtle Mutation table (Wrath & Glory page 288). However, an Agent from these Species is rendered unplayable at Corruption Level 4 instead of 5 — at this point, the Agent’s soul is completely defiled by the touch of the Ruinous Powers. An eternity of suffering awaits them, though they may visit this ruin on their former comrades before they inevitably fall."
+      }
+    ]
+  }
+]

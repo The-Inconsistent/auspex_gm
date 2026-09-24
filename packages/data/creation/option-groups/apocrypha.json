@@ -1,0 +1,121 @@
+[
+  {
+    "id": "human-templates",
+    "name": "Pariah and Perpetual",
+    "source": "apocrypha",
+    "page": 12,
+    "note": "Pariah (p.12) and Perpetual (p.13) are printed as Human templates, not species: \"Any Human character may be chosen to be a Pariah/Perpetual during character creation\", 30 XP extra on any Human archetype. The Pariah cost \"is already included in the cost of all Pariah archetypes\". The book doesn't say whether one character may take both; pick 1 is a house assumption.",
+    "owner": {
+      "speciesId": "human"
+    },
+    "pick": 1,
+    "xp": [
+      30
+    ],
+    "options": [
+      {
+        "name": "Pariah",
+        "page": 12,
+        "text": "Any Human character may be chosen to be a Pariah during character creation. This has an additional XP cost, and applies additional special abilities to the character, but it also comes with some penalties and restrictions too.\n\nThis additional cost must be paid if you choose any Human archetype. It is already included in the cost of all Pariah archetypes.\n\nXP COST: 30\n- Abhorrent Presence: +2DN to all interaction tests with non-pariah characters. +4DN to interaction tests with PSYKERS. Pariahs reduce their Influence by 1.\n- Psychic Abomination: A pariah cannot be directly affected by psychic powers or other warp phenomena, whether positive or negative. A pariah can never gain the PSYKER keyword, nor can they ever gain Faith points or any other ability that requires drawing upon the Warp for power. Any psychic powers attempted or targeted within a number of metres of the Pariah equal to their Willpower increase their DN by twice the Pariah’s Rank.\n- Untouchable: A pariah cannot gain Corruption from warp phenomena, and they automatically succeed at Resolve tests caused by DAEMONS.",
+        "mods": {
+          "influence": -1
+        },
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Perpetual",
+        "page": 13,
+        "text": "Any Human character may be chosen to be a Perpetual during character creation. This has an additional XP cost and applies additional special abilities to the character.\n\nYou are treated as Human in all other regards, though when you determine your character’s age, use the Aeldari age values instead.\n\nThis additional cost must be paid if you choose any Human archetype.\n\nXP COST: 30\n- Immortal: You cannot die, though you can still suffer injuries and enter the dying state. If you would suffer from Annihilation (suffering damage equal to twice your Maximum Wounds), you instead suffer Traumatic Injuries equal to the game’s Tier +2. You automatically remove one Traumatic Injury after each Respite.\n- Clandestine Connections: You’ve accumulated a great many contacts across your impossibly long life. When you attempt an Influence test, you may roll additional Wrath dice equal to the game’s Tier, but a Wrath Complication means that some detail of your immortal nature has reached those who would hunt you.\n- Despised by the Unholy: If a Perpetual is present in a game, the GM’s starting and maximum Ruin are increased by 1."
+      }
+    ]
+  },
+  {
+    "id": "human-homeworlds",
+    "name": "Human Homeworlds",
+    "source": "apocrypha",
+    "page": 3,
+    "note": "No XP cost printed. Each option contains special abilities and recommendations for thematic Attribute and Skill increases; the book suggests buying at least one extra rank in one each of the Attribute and Skill recommendations.",
+    "owner": {
+      "speciesId": "human"
+    },
+    "pick": 1,
+    "xp": [
+      0
+    ],
+    "options": [
+      {
+        "name": "Death World",
+        "page": 3,
+        "text": "Bitter Survivor: The character clings onto life and is well-versed in eluding death’s grasp. The character adds +1 to Determination.\n\nNot One of Us: Deathworlders don’t easily trust those who haven’t endured the same kind of hostile environments. They suffer +1DN to all Interaction tests with those who aren’t Deathworlders.\n\nRecommended Attributes: Strength, Toughness\n\nRecommended Skills: Stealth, Survival",
+        "mods": {
+          "determination": 1
+        }
+      },
+      {
+        "name": "Hive World",
+        "page": 3,
+        "text": "Caves of Steel: The character has been surrounded by technology, some of which may be centuries or millennia old, for their entire lives. The character gains +1d to Tech tests.\n\nHivebound: Hivers are unaccustomed to the ways of wild, untamed places. Even the wilderness of underhive levels and abandoned habs is still built around artificial structures. Hiveworlders suffer +1DN on all Survival tests made when not in an urban or manufactured environment.\n\nRecommended Attributes: Agility, Initiative\n\nRecommended Skills: Cunning, Tech"
+      },
+      {
+        "name": "Voidborn",
+        "page": 4,
+        "text": "Voidwise: The character is accustomed to the vagaries of life aboard ship or station and is well-versed in protective rites and emergency doctrines. The character gains +1d on all tests to resist radiation and ignores all penalties to action caused by low- or zero-gravity environments.\n\nIll-Omened: Voidborn are considered strange and inauspicious by others, who look for even the slightest sign of ill-fortune. When attempting an interaction test with a non-Voidborn, two dice are replaced by Wrath dice, rather than one, and the character is unable to score criticals on these tests.\n\nRecommended Attributes: Initiative, Willpower\n\nRecommended Skills: Pilot, Tech"
+      },
+      {
+        "name": "Forge World",
+        "page": 4,
+        "text": "Ave Omnissiah: The character has memorised countless operation litanies and maintenance hymnals, giving them an innate familiarity with machines and the Cult Mechanicus. They receive +1d on all Tech tests and Scholar tests relating to the Adeptus Mechanicus.\n\nStranger to the Church: Forgeworlders are unfamiliar with the ways of the Ministorum and the Imperial Creed and suffer +2DN on all Scholar tests relating to the Imperial Creed. The character may not take any archetypes with the ADEPTUS MINISTORUM keyword.\n\nRecommended Attributes: Strength, Intelligence\n\nRecommended Skills: Scholar, Tech"
+      },
+      {
+        "name": "Schola Progenium",
+        "page": 5,
+        "text": "Schola Education: The character was groomed from a young age to be an example to others. You gain +1d on any two of the following skills, chosen during character creation: Insight, Intimidation, Leadership, Scholar.\n\nCloistered Upbringing: Progena have little patience for, or understanding of, the dregs of society. The character suffers +2DN on all non-hostile Interaction tests made when dealing with characters who have the SCUM keyword.\n\nRecommended Attributes: Toughness, Willpower\n\nRecommended Skills: Athletics, Leadership"
+      },
+      {
+        "name": "Shrine World",
+        "page": 5,
+        "text": "The Scorn of the Devout: The character is filled with holy hatred and fury. They receive +1 to Resolve and Conviction, and +1d on all Weapon Skill tests made to attack enemies with the HERETIC keyword.\n\nAbhor the Unhallowed: The character is filled with an instinctive revulsion for the unholy or unclean. They suffer +1DN on all Scholar or Tech tests relating to items or characters with the HERETIC or CHAOS keywords, or with any keyword belonging to a Xenos species.\n\nRecommended Attributes: Willpower, Fellowship\n\nRecommended Skills: Insight, Scholar",
+        "mods": {
+          "resolve": 1,
+          "conviction": 1
+        }
+      }
+    ],
+    "text": "Any Human character may select one of these options to reflect the world of their birth and how that world has influenced their outlook and abilities."
+  },
+  {
+    "id": "kin-cloneskein-traits",
+    "name": "Cloneskein Traits",
+    "source": "apocrypha",
+    "page": 10,
+    "note": "No XP cost printed. Heightened Reflexes says \"without spending Ruin\"; players normally spend Glory, so this may be a print error.",
+    "owner": {
+      "speciesId": "kin"
+    },
+    "pick": 1,
+    "xp": [
+      0
+    ],
+    "options": [
+      {
+        "name": "Thermographic Vision",
+        "text": "You ignore penalties or DN increases on skill tests due to visual conditions, as if you were wearing Preysense Goggles."
+      },
+      {
+        "name": "Heightened Reflexes",
+        "text": "In combat, each round, if you have not yet acted, your side may Keep the Initiative without spending Ruin, but only if you are the next character to act."
+      },
+      {
+        "name": "Void-Hardened",
+        "text": "You gain +2 bonus dice on all Toughness tests to resist the effects of suffocation, extreme heat and cold, and radiation."
+      }
+    ]
+  }
+]
