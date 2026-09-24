@@ -1,4 +1,4 @@
-import { Me, Threat, Wargear } from "@wg/shared";
+import { Me, RuleEntry, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet } from "@/app/server-api";
@@ -30,6 +30,17 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
   }
 }
 
+// Rules reference for any seat, sorted by name. Empty on failure; the RULES tab then says so.
+async function loadRules(campaignId: string): Promise<RuleEntry[]> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/rules`);
+    const parsed = RuleEntry.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data.sort((a, b) => a.name.localeCompare(b.name)) : [];
+  } catch {
+    return [];
+  }
+}
+
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
 export default async function Table({ params }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
@@ -45,9 +56,13 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear] = await Promise.all([loadBestiary(me.campaignId), loadWargear(me.campaignId)]);
-    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} />;
+    const [bestiary, wargear, rules] = await Promise.all([
+      loadBestiary(me.campaignId),
+      loadWargear(me.campaignId),
+      loadRules(me.campaignId),
+    ]);
+    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} rules={rules} />;
   }
   if (!me.characterId) return <StatusScreen text="NO CHARACTER YET. ASK YOUR GM." />;
-  return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} />;
+  return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} rules={await loadRules(me.campaignId)} />;
 }

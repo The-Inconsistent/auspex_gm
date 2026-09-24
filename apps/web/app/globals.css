@@ -487,6 +487,20 @@ textarea.input {
   background: none;
   text-align: left;
 }
+details.item > summary {
+  cursor: pointer;
+  list-style: none;
+  flex-wrap: wrap;
+}
+details.item > summary::-webkit-details-marker {
+  display: none;
+}
+details.item > summary::before {
+  content: "▸";
+}
+details.item[open] > summary::before {
+  content: "▾";
+}
 .stack {
   display: flex;
   flex-direction: column;

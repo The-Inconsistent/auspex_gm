@@ -2,21 +2,22 @@
 import { useState } from "react";
 
 import { UserButton } from "@wg/auth/react";
-import { Pool, poolMax, type Threat, type Wargear } from "@wg/shared";
+import { Pool, poolMax, type RuleEntry, type Threat, type Wargear } from "@wg/shared";
 
 import { CodexView } from "@/components/gm/codex/codex";
 import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { Refusal } from "@/components/ui/refusal/refusal";
+import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { useTable } from "@/hooks/use-table/use-table";
 
 import { GM_TABS, type GmTab } from "./constants";
 
-type GmAppProps = { campaignId: string; bestiary: Threat[]; wargear: Wargear[] };
+type GmAppProps = { campaignId: string; bestiary: Threat[]; wargear: Wargear[]; rules: RuleEntry[] };
 
-export function GmApp({ campaignId, bestiary, wargear }: GmAppProps) {
+export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
   const { state, codex, online, send } = useTable(campaignId);
   const [tab, setTab] = useState<GmTab>("TRACK");
   const [poolError, setPoolError] = useState<string | null>(null);
@@ -81,6 +82,7 @@ export function GmApp({ campaignId, bestiary, wargear }: GmAppProps) {
         )}
         {tab === "CODEX" && <CodexView codex={codex} send={send} />}
         {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
+        {tab === "RULES" && <RulesRef rules={rules} />}
       </main>
       <Refusal error={poolError} onDismiss={() => setPoolError(null)} />
     </div>

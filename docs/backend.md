@@ -65,6 +65,7 @@ is a `400` with `z.prettifyError` text.
 | `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
+| `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `POST /api/join` | the guest token in the body | `{ token: string 1–200 }` | `200` `Ctx`, and `Set-Cookie: wg_token` (flags in §10). The web uses `campaignId` to open the table | `400` bad body. `401 "Invalid or revoked link"` |
 | `GET /api/guest` | `wg_token` cookie | none | `200` `Ctx` of the guest's table, so a returning guest lands back at it | `401` |
 | `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name, `mode`, the invited character or the open ones, `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
@@ -73,8 +74,9 @@ is a `400` with `z.prettifyError` text.
 `/api/me` and `/api/threats` no longer exist; both moved under `/api/campaigns/:id/`. `createCampaign` inserts the
 campaign and the GM's `membership` in one transaction. The admin key's `ownerUserId` gets an `app_user` placeholder
 named "GM" until they sign in. `lobby()` returns the caller's games (`mine`) and every game with a session in progress
-(`running`, with `role` null where the caller has no seat); a card never opens a table. `/api/campaigns/:id/threats` is
-the only REST route that serves book content, which is why it's GM-only (see CLAUDE.md, Copyright).
+(`running`, with `role` null where the caller has no seat); a card never opens a table. `/threats`, `/wargear` and `/rules`
+are the REST routes that serve book content: the first two are GM-only, the rules reference needs any seat (see
+CLAUDE.md, Copyright).
 
 ## 4. Socket lifecycle (`table/table.gateway.ts`)
 

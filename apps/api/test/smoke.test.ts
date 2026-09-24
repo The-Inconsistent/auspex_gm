@@ -311,6 +311,10 @@ test("GM and player share a table", async (t) => {
   const catalogue = await get(`/campaigns/${campaignId}/wargear`, bearer(gmClerk));
   assert.ok(catalogue.status === 200 && ((await catalogue.json()) as unknown[]).length > 100);
   assert.equal((await get(`/campaigns/${campaignId}/wargear`, { cookie: `wg_token=${issued.token}` })).status, 403);
+  // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't.
+  const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });
+  assert.ok(rules.status === 200 && ((await rules.json()) as unknown[]).length > 50);
+  assert.equal((await get(`/campaigns/${campaignId}/rules`, bearer(clerk("stranger")))).status, 401);
 
   // Scripts (seed) open a table with the admin key.
   const admin = connect({ auth: { campaignId, adminKey: process.env.ADMIN_KEY! } });

@@ -195,6 +195,25 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 
 For a large batch, split the work across subagents, one book section each.
 
+### Core bestiary transcription notes
+
+All 36 Core threats (pp.327–371) are in. Print errors are copied as printed, except where the schema can't hold them:
+- **Sign flipped (schema allows AP ≤ 0 only):** Corsair Felarch Power Sword "AP 3" and the Three-Armed Discount Heavy
+  Rock Saw "AP 4" (p.370) are stored as −3 and −4; the option text keeps the printed value.
+- **Pages:** `combat-servitor` is p.334 and `cult-leader` p.339 (the stat blocks' pages, not the contents page).
+- **No range printed, kept as ability text:** Painboy's 'Urty Syringe (`[1]`, as `dok-bitzbak`), Killa Kan Explosion,
+  Possessed Mortal Warp Explosion, Plague Marine Noxious Discharge, Plagueridden Rotten Explosion.
+- **Psychic powers:** `Threat` has no field for them; Rogue Psyker, Patriarch and Magus list theirs in ability text.
+- **Other oddities kept:** Acolyte Hybrid's Autopistol carries an autogun profile; Daemonette claws "1 1 +2ED" read as
+  11; typos such as "Horrifying Mutatios"; "Rapid-Fire (1)" (Enforcer); "Inflicts" vs "Inflict".
+- **Sidebars as `options`, not files:** Gun Servitor, Other Servo-Skulls, Chrono Scissor/Secutor, Aspiring Champion,
+  Plague Marine, Pathfinders, Corsair Felarch, Kan Weapons, Three-Armed Discount, Bloodreaper, Alluress, Plagueridden,
+  Blue/Brimstone Horror, Winged/Psychic Spawn. Stat changes live in option text (the tracker doesn't apply them).
+- **Not transcribed:** Veteran Troopers & Sergeants (p.329, a partial profile), Sergeants & Assault Marines (p.331, the
+  Tactical Space Marine's swaps), Runtherd (p.358).
+- **Faction calls:** Chrono Gladiator `imperial`; Combat Servitor and Servo-Skull `mechanicus`; Poxwalker and Chaos
+  Spawn `heretic` (by keyword, though printed among the daemons).
+
 ---
 
 ## 5. Content packs
@@ -339,6 +358,15 @@ Transcription calls, all in each entry's `note`:
 - **Not entries:** Weapon Patterns (p.225, a variant rule), Ammo in the Gilead System (p.230), Augmetic Installation and
   Reconstruction rules (pp.242–243), Trinkets & Charms tables (pp.247–251).
 
+### Rules reference (`packages/data/rules/*.json`, `RuleEntry` in `packages/shared/src/rules.ts`)
+
+One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (pp.208–210), `armour-traits.json`
+(p.232), `combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
+its rating (`Blast (X)`), `type` (actions only), `source`, printed `page` and `text`: the entry's body, verbatim,
+paragraphs split by a blank line. Print errors are kept as printed; tables are plain lines. A section intro is its own
+entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`. To add a
+kind (psychic powers, talents), extend `RuleKind` and add a file.
+
 ---
 
 ## 6. `validate.ts`
@@ -356,6 +384,8 @@ Transcription calls, all in each entry's `note`:
 | Every beat `encounter[].threatId` and bestiary NPC `threatId` exists | `✖ pack <name>: unknown threat "…"` |
 | Every `wargear/*.json` parses as `Wargear[]`; ids unique across files | `✖ wargear/<file>` + zod error, or `duplicate id` |
 | Wargear summary | `wargear/<file>: N entries` |
+| Every `rules/*.json` parses as `RuleEntry[]`; ids unique across files | `✖ rules/<file>` + zod error, or `duplicate id` |
+| Rules summary | `rules/<file>: N entries` |
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
 
 ---

@@ -1,8 +1,8 @@
 import { timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
-import { threats, wargear } from "@wg/data";
-import type { Lobby, LobbyGame, Role, Threat, Wargear } from "@wg/shared";
+import { rulesList, threats, wargear } from "@wg/data";
+import type { Lobby, LobbyGame, Role, RuleEntry, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { db } from "../core/db.ts";
@@ -89,3 +89,5 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
 
 export const listThreats = (): Threat[] => [...threats.values()];
 export const listWargear = (): Wargear[] => [...wargear.values()];
+const rules = rulesList(); // parsed at startup, so a bad file fails fast
+export const listRules = (): RuleEntry[] => rules;

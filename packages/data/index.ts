@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from "node:fs";
-import { Pack, Threat, Wargear } from "@wg/shared";
+import { Pack, RuleEntry, Threat, Wargear } from "@wg/shared";
 
 // Server-side loaders. Parse at startup/seed time, so a bad file fails fast.
 const json = (url: URL) => JSON.parse(readFileSync(url, "utf8"));
@@ -20,6 +20,11 @@ const wargearDir = new URL("./wargear/", import.meta.url);
 export const wargearList = (): Wargear[] =>
   jsonFiles(wargearDir).flatMap((f) => Wargear.array().parse(json(new URL(f, wargearDir))));
 export const wargear: ReadonlyMap<string, Wargear> = new Map(wargearList().map((w) => [w.id, w]));
+
+// rules/<kind>.json: the rules reference, book text served to any seat (Core pp.177–232).
+const rulesDir = new URL("./rules/", import.meta.url);
+export const rulesList = (): RuleEntry[] =>
+  jsonFiles(rulesDir).flatMap((f) => RuleEntry.array().parse(json(new URL(f, rulesDir))));
 
 export const packNames = () =>
   readdirSync(new URL("./packs/", import.meta.url), { withFileTypes: true })

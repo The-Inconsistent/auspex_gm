@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
-import { Pack, Threat, Wargear } from "@wg/shared";
+import { Pack, RuleEntry, Threat, Wargear } from "@wg/shared";
 import { loadPackRaw, packNames } from "./index.ts";
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
@@ -88,6 +88,28 @@ for (const file of readdirSync(wargearDir)
     wargearIds.add(w.id);
   }
   console.log(`wargear/${file}: ${r.data.length} entries`);
+}
+
+// Rules reference: schema per file, ids unique across files.
+const rulesDir = new URL("./rules/", import.meta.url);
+const ruleIds = new Set<string>();
+for (const file of readdirSync(rulesDir)
+  .filter((f) => f.endsWith(".json"))
+  .sort()) {
+  const r = RuleEntry.array().safeParse(JSON.parse(readFileSync(new URL(file, rulesDir), "utf8")));
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ rules/${file}\n${z.prettifyError(r.error)}`);
+    continue;
+  }
+  for (const e of r.data) {
+    if (ruleIds.has(e.id)) {
+      failed = true;
+      console.error(`✖ rules/${file}: duplicate id "${e.id}"`);
+    }
+    ruleIds.add(e.id);
+  }
+  console.log(`rules/${file}: ${r.data.length} entries`);
 }
 
 // Packs: schema, internal references, and every prepared-encounter threat must exist.

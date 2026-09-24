@@ -202,7 +202,7 @@ vs Tier + 1; personal Ruin; Respite reset.
 
 **Shows (UI):** derived traits; auto states (Wounded, Dying, Exhausted, Slain); turn-boundary reminders
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
-rules reference.
+rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
 
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.

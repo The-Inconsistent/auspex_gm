@@ -159,7 +159,6 @@ the local diff when there's no PR.
 ## Not built yet
 
 - Doctors of Doom import
-- a rules reference in the player app
 - an items tracker
 - rate limiting
 - server-side undo

@@ -32,7 +32,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
     100 MB; render with `pdftoppm -f N -l N -r 110 -png "<pdf>" <scratch>/p` and Read the PNG.
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
-  repo private and never serve book content to anyone without a seat (`/api/campaigns/:id/threats` and `/wargear` are GM-only).
+  repo private and never serve book content to anyone without a seat (`/api/campaigns/:id/threats` and `/wargear` are GM-only; `/rules` needs any seat).
 
 ## Stack
 
@@ -46,7 +46,7 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |
-| `packages/data` | threat stat blocks (`threats/*.json`), the Wargear catalogue (`wargear/*.json`, Core pp.211–247, VoA pp.59–75), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
+| `packages/data` | threat stat blocks (`threats/*.json`), the Wargear catalogue (`wargear/*.json`, Core pp.211–247, VoA pp.59–75), the rules reference (`rules/*.json`: Conditions, weapon and armour traits, combat actions), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
 
 TypeScript is pinned to **5.9**. TS 7 breaks the Next and Nest toolchains, so don't upgrade it.
 
@@ -136,13 +136,13 @@ apps/web/components/lobby/   lobby-view (your games, running now, new game)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
-apps/web/components/ui/      bar, stat-block, status-chips, status-screen, refusal
+apps/web/components/ui/      rules-ref (the RULES tab, GM and player), bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
-packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts
+packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts, rules.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
-packages/data/               threats/*.json, wargear/*.json, packs/<name>/, validate.ts, index.ts (loaders)
+packages/data/               threats/*.json, wargear/*.json, rules/*.json, packs/<name>/, validate.ts, index.ts (loaders)
 ```
 
 ## Commands
@@ -225,5 +225,4 @@ These are binding; follow them when writing code and use them when reviewing:
 ## Not built yet
 
 - Doctors of Doom character import
-- A full rules reference in the player app
 - Server-side undo history (client undo is inverse deltas)

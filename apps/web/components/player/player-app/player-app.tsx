@@ -2,8 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Show, UserButton } from "@wg/auth/react";
-import { sideUpNext } from "@wg/shared";
+import { sideUpNext, type RuleEntry } from "@wg/shared";
 
+import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { useTable } from "@/hooks/use-table/use-table";
 
@@ -12,9 +13,9 @@ import { Intel } from "./components/intel/intel";
 import { Sheet } from "./components/sheet/sheet";
 import { PLAYER_TABS, TURN_VIBRATION, type PlayerTab } from "./constants";
 
-type PlayerAppProps = { campaignId: string; characterId: string };
+type PlayerAppProps = { campaignId: string; characterId: string; rules: RuleEntry[] };
 
-export function PlayerApp({ campaignId, characterId }: PlayerAppProps) {
+export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   const { state, codex, online, send } = useTable(campaignId);
   const [tab, setTab] = useState<PlayerTab>("SHEET");
   const me = state?.characters.find((c) => c.id === characterId);
@@ -67,6 +68,7 @@ export function PlayerApp({ campaignId, characterId }: PlayerAppProps) {
         {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
         {tab === "FIGHT" && <Fight state={state} />}
         {tab === "INTEL" && <Intel codex={codex} state={state} />}
+        {tab === "RULES" && <RulesRef rules={rules} />}
       </div>
       <nav
         className="tabs"
