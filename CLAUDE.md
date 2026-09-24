@@ -41,7 +41,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
 | `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode` |
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
-| `packages/data` | threat stat blocks as JSON (`threats/*.json`) + `validate.ts` + a server-side loader (`index.ts`) |
+| `packages/data` | threat stat blocks (`threats/*.json`), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
 
 TypeScript is pinned to **5.9**. TS 7 breaks the Next and Nest toolchains, so don't upgrade it.
 
@@ -116,7 +116,8 @@ bun install
 bun run dev:db              # Postgres in Docker on localhost:5434 (5432/5433 are taken on this machine)
 bun run dev:api             # NestJS on :4000, watches src
 bun run dev:web             # Next on :3000; proxies /api and /socket.io to :4000
-cd apps/api && bun run create-campaign "Volkus Dig Site" 4   # prints the GM join link
+cd apps/api && bun run seed volkus                          # new campaign from packages/data/packs/volkus; prints GM link
+cd apps/api && bun run create-campaign "Name" 4             # empty campaign; prints the GM join link
 
 bun run typecheck           # shared + api + web
 bun run test                # unit tests: rules functions, command parser
@@ -146,6 +147,9 @@ cd apps/api && bun run db:generate                           # after editing sch
   - `shock: null` means "–".
   - Mob content goes in `options` (kind `mob`) and `mobAbilities`.
   - Print errors are copied as printed and noted in the commit or PR, not corrected silently.
+- **Content packs** (`Pack` in `packages/shared/src/pack.ts`) reference entries by `key`. Parents come before children,
+  and every encounter or NPC `threatId` must exist; `bun run validate` checks all of it. `apps/api/scripts/seed.ts`
+  loads a pack through the normal socket actions, never direct SQL.
 - **Character stats** (`CharacterStats`) carry additive `mods`, e.g. Primaris +3 Wounds or Honour the Chapter
   +1 Resolve; GM `overrides` win over everything. Melee wargear uses `addStrength` (damage = S + X, including the
   armour's Powered bonus).
@@ -162,4 +166,3 @@ cd apps/api && bun run db:generate                           # after editing sch
 - Docker/Caddy deployment to the VPS
 - Rate limiting
 - Server-side undo history (client undo is inverse deltas)
-- The Volkus session-1 seed pack (beats, NPCs, handouts), plus `docs/pregens.md` converted to loadable stats JSON
