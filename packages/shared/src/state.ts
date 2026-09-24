@@ -10,17 +10,32 @@ export const Role = z.enum(["gm", "player"]);
 export type Role = z.infer<typeof Role>;
 
 // Who the caller is at one table (GET /api/campaigns/:id/me). userId is the Clerk user; null for a guest (QR token).
-export const Me = z.object({ campaignId: z.string(), role: Role, characterId: z.string().nullable(), userId: z.string().nullable() });
+export const Me = z.object({
+  campaignId: z.string(),
+  role: Role,
+  characterId: z.string().nullable(),
+  userId: z.string().nullable(),
+});
 export type Me = z.infer<typeof Me>;
 
 // Signed-in people at a table, and the GM's open invite links (docs/backend.md, "Access").
 export const InviteMode = z.enum(["room", "character"]); // room: players claim a character; character: one character
 export type InviteMode = z.infer<typeof InviteMode>;
-export const Member = z.object({ userId: z.string(), name: z.string(), role: Role, characterId: z.string().nullable() });
+export const Member = z.object({
+  userId: z.string(),
+  name: z.string(),
+  role: Role,
+  characterId: z.string().nullable(),
+});
 export type Member = z.infer<typeof Member>;
 export const Invite = z.object({
-  id: z.string(), mode: InviteMode, characterId: z.string().nullable(), allowGuests: z.boolean(),
-  expiresAt: z.string(), uses: z.number().int(), maxUses: z.number().int().nullable(),
+  id: z.string(),
+  mode: InviteMode,
+  characterId: z.string().nullable(),
+  allowGuests: z.boolean(),
+  expiresAt: z.string(),
+  uses: z.number().int(),
+  maxUses: z.number().int().nullable(),
 });
 export type Invite = z.infer<typeof Invite>;
 
@@ -42,9 +57,24 @@ export type Attribute = (typeof ATTRIBUTES)[number];
 
 // Skill → linked Attribute, as printed on the character sheet (p.372).
 export const SKILLS = {
-  Athletics: "S", Awareness: "Int", "Ballistic Skill": "A", Cunning: "Fel", Deception: "Fel", Insight: "Fel",
-  Intimidation: "Wil", Investigation: "Int", Leadership: "Wil", Medicae: "Int", Persuasion: "Fel", Pilot: "A",
-  "Psychic Mastery": "Wil", Scholar: "Int", Stealth: "A", Survival: "Wil", Tech: "Int", "Weapon Skill": "I",
+  Athletics: "S",
+  Awareness: "Int",
+  "Ballistic Skill": "A",
+  Cunning: "Fel",
+  Deception: "Fel",
+  Insight: "Fel",
+  Intimidation: "Wil",
+  Investigation: "Int",
+  Leadership: "Wil",
+  Medicae: "Int",
+  Persuasion: "Fel",
+  Pilot: "A",
+  "Psychic Mastery": "Wil",
+  Scholar: "Int",
+  Stealth: "A",
+  Survival: "Wil",
+  Tech: "Int",
+  "Weapon Skill": "I",
 } as const satisfies Record<string, Attribute>;
 export type Skill = keyof typeof SKILLS;
 
@@ -53,9 +83,17 @@ const rule = z.object({ name: z.string().max(100), text: z.string().max(2000), p
 
 // Additive modifiers from species, talents, archetypes (e.g. Primaris +3 Wounds, Honour the Chapter +1 Resolve).
 const Mods = z
-  .object({ maxWounds: z.number().int(), maxShock: z.number().int(), defence: z.number().int(), resilience: z.number().int(),
-    resolve: z.number().int(), conviction: z.number().int(), influence: z.number().int(), speed: z.number().int(),
-    determination: z.number().int() })
+  .object({
+    maxWounds: z.number().int(),
+    maxShock: z.number().int(),
+    defence: z.number().int(),
+    resilience: z.number().int(),
+    resolve: z.number().int(),
+    conviction: z.number().int(),
+    influence: z.number().int(),
+    speed: z.number().int(),
+    determination: z.number().int(),
+  })
   .partial();
 
 // The Ammo table, Core p.229. Special rounds (Kraken Bolt, Dragonfire Bolt…) are typed in by name.
@@ -69,22 +107,34 @@ export const CharacterStats = z.object({
   attributes: z
     .object({ S: attr, T: attr, A: attr, I: attr, Wil: attr, Int: attr, Fel: attr })
     .default({ S: 1, T: 1, A: 1, I: 1, Wil: 1, Int: 1, Fel: 1 }),
-  skills: z.partialRecord(z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]), z.number().int().min(0).max(8)).default({}),
+  skills: z
+    .partialRecord(z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]), z.number().int().min(0).max(8))
+    .default({}),
   armour: z
-    .object({ name: z.string().max(100), ar: z.number().int().min(0).max(20), invulnerable: z.boolean().default(false),
-      powered: z.number().int().min(0).max(10).default(0), traits: z.array(z.string().max(60)).default([]) })
+    .object({
+      name: z.string().max(100),
+      ar: z.number().int().min(0).max(20),
+      invulnerable: z.boolean().default(false),
+      powered: z.number().int().min(0).max(10).default(0),
+      traits: z.array(z.string().max(60)).default([]),
+    })
     .default({ name: "", ar: 0, invulnerable: false, powered: 0, traits: [] }),
   speed: z.number().int().min(0).max(20).default(6), // by Species (p.29)
   mods: Mods.default({}),
   abilities: z.array(rule).max(30).default([]), // archetype, species, chapter traits
   talents: z.array(rule).max(30).default([]),
-  weapons: z.array(Weapon.extend({ addStrength: z.boolean().default(false) })).max(20).default([]), // melee "S+X"
+  weapons: z
+    .array(Weapon.extend({ addStrength: z.boolean().default(false) }))
+    .max(20)
+    .default([]), // melee "S+X"
   gear: z.array(z.string().max(200)).max(60).default([]),
   // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
   // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),
-  ammo: z.record(z.string().min(1).max(60), z.number().int().min(0).max(99))
-    .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`).default({}),
+  ammo: z
+    .record(z.string().min(1).max(60), z.number().int().min(0).max(99))
+    .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`)
+    .default({}),
   // The session id of the last requisition Test per slot: one of each per session (p.205).
   requisitioned: z.partialRecord(RequisitionSlot, z.string()).default({}),
 });
@@ -105,8 +155,17 @@ export const skillTotal = (s: CharacterStats, skill: Skill) => (s.skills[skill] 
 export const effectiveStrength = (s: CharacterStats) => s.attributes.S + s.armour.powered; // Powered (X), p.232
 
 // Traits, pp.36-37 and the sheet (p.372). All Traits have a minimum of 1 (p.36).
-export function deriveStats({ stats: s, overrides: o, tier }: { stats: CharacterStats; overrides: Overrides; tier: number }) {
-  const a = s.attributes, m = s.mods;
+export function deriveStats({
+  stats: s,
+  overrides: o,
+  tier,
+}: {
+  stats: CharacterStats;
+  overrides: Overrides;
+  tier: number;
+}) {
+  const a = s.attributes,
+    m = s.mods;
   const base = {
     maxWounds: a.T + 2 * tier + (m.maxWounds ?? 0),
     maxShock: a.Wil + tier + (m.maxShock ?? 0),
@@ -150,7 +209,12 @@ export type Character = z.infer<typeof Character>;
 
 const turnFields = { acted: z.boolean(), ambushed: z.boolean() };
 
-export const PcCombatant = z.object({ id: z.string(), kind: z.literal(CombatantKind.enum.pc), characterId: z.string(), ...turnFields });
+export const PcCombatant = z.object({
+  id: z.string(),
+  kind: z.literal(CombatantKind.enum.pc),
+  characterId: z.string(),
+  ...turnFields,
+});
 
 export const ThreatCombatant = z.object({
   id: z.string(),
@@ -180,8 +244,13 @@ export const sideOf = (c: Combatant): Side => sideOfKind(c.kind);
 
 export const LiveState = z.object({
   campaign: z.object({
-    id: z.string(), name: z.string(), tier: Tier, glory: z.number().int(), ruin: z.number().int(),
-    framework: z.string(), patron: z.string(),
+    id: z.string(),
+    name: z.string(),
+    tier: Tier,
+    glory: z.number().int(),
+    ruin: z.number().int(),
+    framework: z.string(),
+    patron: z.string(),
   }),
   characters: z.array(Character),
   encounter: z
@@ -204,7 +273,9 @@ export type Encounter = NonNullable<LiveState["encounter"]>;
 export function isOut(s: LiveState, c: Combatant): boolean {
   if (c.kind === "threat") return threatStatus(c).includes("Slain");
   const ch = s.characters.find((x) => x.id === c.characterId);
-  return ch ? pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })).includes("Dead") : false;
+  return ch
+    ? pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })).includes("Dead")
+    : false;
 }
 
 // Whether c can take a Turn now. Ambushed characters get no Turn in Round 1 (p.177).
@@ -244,12 +315,27 @@ export function pcStatus(c: Character, d: DerivedStats): string[] {
 }
 
 // Exhausted: over Max Shock, or the Condition from another source (p.199).
-export const isExhausted = ({ shock, maxShock, conditions }: { shock: number; maxShock: number | null; conditions: string[] }) =>
-  (maxShock !== null && shock > maxShock) || conditions.includes("Exhausted");
+export const isExhausted = ({
+  shock,
+  maxShock,
+  conditions,
+}: {
+  shock: number;
+  maxShock: number | null;
+  conditions: string[];
+}) => (maxShock !== null && shock > maxShock) || conditions.includes("Exhausted");
 
 // Shock suffered while Exhausted becomes Mortal Wounds (p.199), which ignore Resilience (p.193). The Shock that makes
 // you Exhausted stays Shock (§11.12).
-export function exhaustedShock({ exhausted, wounds = 0, shock = 0 }: { exhausted: boolean; wounds?: number; shock?: number }) {
+export function exhaustedShock({
+  exhausted,
+  wounds = 0,
+  shock = 0,
+}: {
+  exhausted: boolean;
+  wounds?: number;
+  shock?: number;
+}) {
   return exhausted && shock > 0 ? { wounds: wounds + shock, shock: 0 } : { wounds, shock };
 }
 
@@ -259,10 +345,18 @@ export function pcHit({ c, d, hit }: { c: Character; d: DerivedStats; hit: { wou
   const status = pcStatus(c, d);
   const { wounds: w, shock: s } = exhaustedShock({ exhausted: isExhausted({ ...c, maxShock: d.maxShock }), ...hit });
   // Annihilation (p.194): more than double Max Wounds from one attack, counted after Resilience (§11.7). Dead is dead.
-  if (w > 2 * d.maxWounds) return { wounds: c.wounds, shock: c.shock, traumatic: c.traumatic, prone: false, annihilated: true };
-  const out = { wounds: c.wounds, shock: Math.max(0, c.shock + s), traumatic: c.traumatic, prone: false, annihilated: c.annihilated };
+  if (w > 2 * d.maxWounds)
+    return { wounds: c.wounds, shock: c.shock, traumatic: c.traumatic, prone: false, annihilated: true };
+  const out = {
+    wounds: c.wounds,
+    shock: Math.max(0, c.shock + s),
+    traumatic: c.traumatic,
+    prone: false,
+    annihilated: c.annihilated,
+  };
   if (status.includes("Dying")) {
-    if (w > 0) out.traumatic += 1; // a Wound while Dying is a Traumatic Injury instead, one per hit (p.193, §11.11)
+    if (w > 0)
+      out.traumatic += 1; // a Wound while Dying is a Traumatic Injury instead, one per hit (p.193, §11.11)
     else if (w < 0) out.wounds = Math.max(0, Math.min(d.maxWounds, c.wounds + w)); // recovering any Wounds ends Dying (p.193)
   } else {
     out.wounds = Math.max(0, c.wounds + w);
@@ -272,7 +366,8 @@ export function pcHit({ c, d, hit }: { c: Character; d: DerivedStats; hit: { wou
 }
 
 // Half or more of a Mob slain: a DN 3 Resolve Test at the end of the Round (p.325).
-const halfSlain = (c: ThreatCombatant) => c.mobCount !== null && c.mobCount > 0 && c.mobStart !== null && c.mobCount * 2 <= c.mobStart;
+const halfSlain = (c: ThreatCombatant) =>
+  c.mobCount !== null && c.mobCount > 0 && c.mobStart !== null && c.mobCount * 2 <= c.mobStart;
 
 export function threatStatus(c: ThreatCombatant): string[] {
   if (c.mobCount !== null) return c.mobCount === 0 ? ["Slain"] : halfSlain(c) ? ["Resolve DN 3 at Round end"] : [];
@@ -298,8 +393,20 @@ export const toPlayerView = (s: LiveState): LiveState => ({
 
 // Conditions, pp.197-200.
 export const CONDITIONS = [
-  "Bleeding", "Blinded", "Exhausted", "Fear", "Frenzied", "Hindered", "On Fire",
-  "Pinned", "Poisoned", "Prone", "Restrained", "Staggered", "Terror", "Vulnerable",
+  "Bleeding",
+  "Blinded",
+  "Exhausted",
+  "Fear",
+  "Frenzied",
+  "Hindered",
+  "On Fire",
+  "Pinned",
+  "Poisoned",
+  "Prone",
+  "Restrained",
+  "Staggered",
+  "Terror",
+  "Vulnerable",
 ] as const;
 
 // Reminders when a Turn starts/ends for a combatant with these Conditions (pp.198-200).
@@ -320,6 +427,10 @@ export const isTimed = (k: string) => TIMED_CONDITIONS.some((t) => k === t || k.
 
 // Reminders when a Round ends: each Mob with half or more slain tests Resolve (p.325).
 export const roundEndReminders = (e: Encounter): string[] =>
-  e.combatants.flatMap((c) => c.kind === "threat" && halfSlain(c)
-    ? [`${c.label}: half slain, DN 3 Resolve Test; fail = the Mob flees as if in Terror, a Complication slays 1d3 more (p.325)`]
-    : []);
+  e.combatants.flatMap((c) =>
+    c.kind === "threat" && halfSlain(c)
+      ? [
+          `${c.label}: half slain, DN 3 Resolve Test; fail = the Mob flees as if in Terror, a Complication slays 1d3 more (p.325)`,
+        ]
+      : [],
+  );

@@ -12,4 +12,8 @@ export const ROOM_INVITE_HOURS = 12;
 export const CHARACTER_INVITE_HOURS = 168;
 
 // Button labels for the requisition kinds (Core p.205, p.229).
-export const REQUISITION_KINDS = { wargear: "WARGEAR", ammo: "AMMO", grenade: "GRENADES / MISSILES" } as const satisfies Record<RequisitionKind, string>;
+export const REQUISITION_KINDS = {
+  wargear: "WARGEAR",
+  ammo: "AMMO",
+  grenade: "GRENADES / MISSILES",
+} as const satisfies Record<RequisitionKind, string>;

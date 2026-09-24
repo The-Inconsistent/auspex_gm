@@ -15,12 +15,17 @@ export const campaign = pgTable("campaign", {
 // Columns of every row a campaign owns (sessions and the codex tables).
 export const owned = () => ({
   id: uuid().primaryKey().defaultRandom(),
-  campaignId: uuid().notNull().references(() => campaign.id, { onDelete: "cascade" }),
+  campaignId: uuid()
+    .notNull()
+    .references(() => campaign.id, { onDelete: "cascade" }),
   createdAt: createdAt(),
 });
 
 export const session = pgTable("session", {
-  ...owned(), number: integer().notNull(),
+  ...owned(),
+  number: integer().notNull(),
   startedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
-  endedAt: timestamp({ withTimezone: true }), recap: body(), xp: integer().notNull().default(0),
+  endedAt: timestamp({ withTimezone: true }),
+  recap: body(),
+  xp: integer().notNull().default(0),
 });

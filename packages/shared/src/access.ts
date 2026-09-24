@@ -4,7 +4,11 @@ import { InviteMode, Role, Tier } from "./state.ts";
 // REST shapes for signed-in (Clerk) users outside a table: the lobby, creating a game, and invite links.
 
 export const LobbyGame = z.object({
-  id: z.string(), name: z.string(), tier: Tier, gm: z.string(), players: z.number().int(),
+  id: z.string(),
+  name: z.string(),
+  tier: Tier,
+  gm: z.string(),
+  players: z.number().int(),
   session: z.number().int().nullable(), // number of the session in progress; null when none is running
   role: Role.nullable(), // the caller's role there; null when they aren't a member
 });
@@ -20,10 +24,14 @@ const CharacterRef = z.object({ id: z.string(), name: z.string() });
 
 // What /invite/<code> shows before accepting.
 export const InvitePreview = z.object({
-  campaignId: z.string(), campaignName: z.string(), mode: InviteMode,
+  campaignId: z.string(),
+  campaignName: z.string(),
+  mode: InviteMode,
   character: CharacterRef.nullable(), // the invited character (mode "character")
   openCharacters: z.array(CharacterRef), // unclaimed characters to pick from (mode "room")
-  allowGuests: z.boolean(), signedIn: z.boolean(), member: z.boolean(),
+  allowGuests: z.boolean(),
+  signedIn: z.boolean(),
+  member: z.boolean(),
 });
 export type InvitePreview = z.infer<typeof InvitePreview>;
 

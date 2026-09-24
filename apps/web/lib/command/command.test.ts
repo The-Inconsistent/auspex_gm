@@ -6,18 +6,55 @@ import { CharacterStats, type LiveState, type ThreatCombatant } from "@wg/shared
 import { parseCommand } from "./command.ts";
 
 const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant => ({
-  id, kind: "threat", acted: false, ambushed: false, threatId: "x", threatClass: "T", label, marker: null, mobCount: null,
-  mobStart: null, wounds: 0, shock: 0, personalRuin: 0, maxWounds: 5, maxShock: 4, conditions: ["Prone"], revealed: false, stats: null,
+  id,
+  kind: "threat",
+  acted: false,
+  ambushed: false,
+  threatId: "x",
+  threatClass: "T",
+  label,
+  marker: null,
+  mobCount: null,
+  mobStart: null,
+  wounds: 0,
+  shock: 0,
+  personalRuin: 0,
+  maxWounds: 5,
+  maxShock: 4,
+  conditions: ["Prone"],
+  revealed: false,
+  stats: null,
 });
 const s: LiveState = {
   campaign: { id: "c", name: "C", tier: 4, glory: 0, ruin: 0, framework: "", patron: "" },
   access: { members: [], invites: [] },
-  characters: [{ id: "ch1", name: "Iskra Vell", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, annihilated: false, xp: 0, conditions: [] }],
+  characters: [
+    {
+      id: "ch1",
+      name: "Iskra Vell",
+      stats: CharacterStats.parse({}),
+      overrides: {},
+      wounds: 0,
+      shock: 0,
+      wrath: 2,
+      traumatic: 0,
+      annihilated: false,
+      xp: 0,
+      conditions: [],
+    },
+  ],
   encounter: {
-    id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null,
+    id: "e",
+    round: 1,
+    currentId: null,
+    lastSide: null,
+    seizedSide: null,
     combatants: [
       { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false },
-      threat({ id: "t1", label: "Preacher Hollan" }), threat({ id: "t2", label: "Kommando ×6" }), threat({ id: "t3", label: "Kommando Nob" }), threat({ id: "t4", label: "Kommando" }),
+      threat({ id: "t1", label: "Preacher Hollan" }),
+      threat({ id: "t2", label: "Kommando ×6" }),
+      threat({ id: "t3", label: "Kommando Nob" }),
+      threat({ id: "t4", label: "Kommando" }),
     ],
   },
 };
@@ -29,12 +66,28 @@ const ok = (input: string, { selected = null }: { selected?: string | null } = {
 
 test("damage, heal and shock resolve names to the right ids", () => {
   assert.deepEqual(ok("hollan dmg 3"), [{ type: "combatant.adjust", id: "t1", wounds: 3 }]);
-  assert.deepEqual(ok("iskra shock 2"), [{ type: "character.adjust", id: "ch1", shock: 2 }], "PCs route to their character");
-  assert.deepEqual(ok("+2", { selected: "t1" }), [{ type: "combatant.adjust", id: "t1", wounds: 2 }], "selected row, +n = Wounds");
+  assert.deepEqual(
+    ok("iskra shock 2"),
+    [{ type: "character.adjust", id: "ch1", shock: 2 }],
+    "PCs route to their character",
+  );
+  assert.deepEqual(
+    ok("+2", { selected: "t1" }),
+    [{ type: "combatant.adjust", id: "t1", wounds: 2 }],
+    "selected row, +n = Wounds",
+  );
   assert.deepEqual(ok("-1 hollan"), [{ type: "combatant.adjust", id: "t1", wounds: -1 }]);
   assert.deepEqual(ok("hollan heal 2"), [{ type: "combatant.adjust", id: "t1", wounds: -2 }]);
-  assert.deepEqual(ok("hollan dmg +3"), [{ type: "combatant.adjust", id: "t1", wounds: 3 }], "signed amount after a verb");
-  assert.deepEqual(ok("hollan heal -2"), [{ type: "combatant.adjust", id: "t1", wounds: -2 }], "the verb sets the direction");
+  assert.deepEqual(
+    ok("hollan dmg +3"),
+    [{ type: "combatant.adjust", id: "t1", wounds: 3 }],
+    "signed amount after a verb",
+  );
+  assert.deepEqual(
+    ok("hollan heal -2"),
+    [{ type: "combatant.adjust", id: "t1", wounds: -2 }],
+    "the verb sets the direction",
+  );
   assert.deepEqual(ok("iskra wrath -1"), [{ type: "character.adjust", id: "ch1", wrath: -1 }], "Wrath can be lowered");
 });
 
@@ -48,9 +101,22 @@ test("globals, turns, conditions", () => {
 });
 
 test("errors are specific", () => {
-  assert.match((parseCommand({ input: "komm dmg 1", state: s, selected: null }) as { error: string }).error, /Ambiguous: Kommando ×6, Kommando Nob, Kommando/);
-  assert.deepEqual(ok("kommando dmg 1"), [{ type: "combatant.adjust", id: "t4", wounds: 1 }], "an exact name wins over prefixes");
+  assert.match(
+    (parseCommand({ input: "komm dmg 1", state: s, selected: null }) as { error: string }).error,
+    /Ambiguous: Kommando ×6, Kommando Nob, Kommando/,
+  );
+  assert.deepEqual(
+    ok("kommando dmg 1"),
+    [{ type: "combatant.adjust", id: "t4", wounds: 1 }],
+    "an exact name wins over prefixes",
+  );
   assert.match((parseCommand({ input: "dmg 2", state: s, selected: null }) as { error: string }).error, /No target/);
-  assert.match((parseCommand({ input: "zog dmg 2", state: s, selected: null }) as { error: string }).error, /No combatant matches "zog"/);
-  assert.match((parseCommand({ input: "hollan wrath 1", state: s, selected: null }) as { error: string }).error, /Threats don't have Wrath/);
+  assert.match(
+    (parseCommand({ input: "zog dmg 2", state: s, selected: null }) as { error: string }).error,
+    /No combatant matches "zog"/,
+  );
+  assert.match(
+    (parseCommand({ input: "hollan wrath 1", state: s, selected: null }) as { error: string }).error,
+    /Threats don't have Wrath/,
+  );
 });

@@ -20,12 +20,21 @@ const norm = (k: string) => k.trim().toUpperCase();
 
 // Can this character requisition the item, and at what DN? They need a Keyword in common; each one beyond the first
 // is +1 bonus die (p.205). [ANY] stands for one of their Keywords that isn't already matched (§11.15).
-export function requisitionTest({ keywords, itemKeywords, value, rarity }: {
-  keywords: string[]; itemKeywords: string[]; value: number; rarity: Rarity;
+export function requisitionTest({
+  keywords,
+  itemKeywords,
+  value,
+  rarity,
+}: {
+  keywords: string[];
+  itemKeywords: string[];
+  value: number;
+  rarity: Rarity;
 }) {
   const mine = new Set(keywords.map(norm));
   const shared = [...new Set(itemKeywords.map(norm))].filter((k) => k !== ANY && mine.has(k));
-  const any = itemKeywords.some((k) => norm(k) === ANY) && (shared.length === 0 || [...mine].some((k) => !shared.includes(k)));
+  const any =
+    itemKeywords.some((k) => norm(k) === ANY) && (shared.length === 0 || [...mine].some((k) => !shared.includes(k)));
   const matches = shared.length + (any ? 1 : 0);
   return { shared, any, eligible: matches > 0, bonusDice: Math.max(0, matches - 1), dn: value + RARITY_DN[rarity] };
 }
@@ -35,8 +44,18 @@ export const requisitionYield = (kind: RequisitionKind, rarity: Rarity) =>
   kind === "ammo" ? 3 : kind === "grenade" ? 5 - RARITY_DN[rarity] : 1;
 
 // Wealth only buys Icons on a failed Test, 1 each; a Complication costs 1 Wealth (p.205).
-export function requisitionOutcome({ dn, icons, spend, complication, wealth }: {
-  dn: number; icons: number; spend: number; complication: boolean; wealth: number;
+export function requisitionOutcome({
+  dn,
+  icons,
+  spend,
+  complication,
+  wealth,
+}: {
+  dn: number;
+  icons: number;
+  spend: number;
+  complication: boolean;
+  wealth: number;
 }) {
   return { success: icons + spend >= dn, wealth: Math.max(0, wealth - spend - (complication ? 1 : 0)) };
 }

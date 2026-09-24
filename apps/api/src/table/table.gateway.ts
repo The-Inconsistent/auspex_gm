@@ -45,11 +45,16 @@ async function handshakeCtx({ auth, headers }: { auth: unknown; headers: { cooki
     return guest && (!campaignId || guest.campaignId === campaignId) ? guest : null;
   }
   if (!campaignId) return null;
-  return resolveCtx({ campaignId, headers: { cookie: headers.cookie, authorization: clerkToken ? `Bearer ${clerkToken}` : undefined } });
+  return resolveCtx({
+    campaignId,
+    headers: { cookie: headers.cookie, authorization: clerkToken ? `Bearer ${clerkToken}` : undefined },
+  });
 }
 
 // WEB_ORIGIN may list several origins (localhost and the LAN address), comma separated.
-@WebSocketGateway({ cors: { origin: process.env.WEB_ORIGIN?.split(",").map((o) => o.trim()) ?? false, credentials: true } })
+@WebSocketGateway({
+  cors: { origin: process.env.WEB_ORIGIN?.split(",").map((o) => o.trim()) ?? false, credentials: true },
+})
 export class TableGateway implements OnGatewayInit, OnGatewayConnection {
   @WebSocketServer() server!: Server;
   private readonly log = new Logger(TableGateway.name);
@@ -129,13 +134,16 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
       const result = await fn();
       return result;
     })();
-    this.tails.set(key, (async () => {
-      try {
-        await run;
-      } catch {
-        // The caller of `run` sees the error; the next call just waits for it to settle.
-      }
-    })());
+    this.tails.set(
+      key,
+      (async () => {
+        try {
+          await run;
+        } catch {
+          // The caller of `run` sees the error; the next call just waits for it to settle.
+        }
+      })(),
+    );
     return run;
   }
 
@@ -160,9 +168,10 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
     const r = rooms(campaignId);
     for (const s of await this.server.in([r.gm, r.players]).fetchSockets()) {
       const c = s.data as Ctx;
-      const hit = "userId" in kick
-        ? c.userId === kick.userId
-        : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
+      const hit =
+        "userId" in kick
+          ? c.userId === kick.userId
+          : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
       if (hit) s.disconnect(true);
     }
   }

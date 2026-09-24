@@ -31,12 +31,18 @@ export function GmApp({ campaignId, bestiary, wargear }: GmAppProps) {
   };
   const pool = (p: Pool) => (
     <div key={p} className={`pool ${p === "ruin" ? "ruin" : ""}`}>
-      <span className="label" style={{ color: "inherit" }}>{p}</span>
+      <span className="label" style={{ color: "inherit" }}>
+        {p}
+      </span>
       <span className="display" style={{ fontSize: 30 }}>
         {String(state.campaign[p]).padStart(2, "0")}/{String(poolMax(p, players)).padStart(2, "0")}
       </span>
-      <button className="btn sq" aria-label={`Spend ${p}`} onClick={() => adjustPool(p, -1)}>−</button>
-      <button className="btn sq" aria-label={`Add ${p}`} onClick={() => adjustPool(p, 1)}>+</button>
+      <button className="btn sq" aria-label={`Spend ${p}`} onClick={() => adjustPool(p, -1)}>
+        −
+      </button>
+      <button className="btn sq" aria-label={`Add ${p}`} onClick={() => adjustPool(p, 1)}>
+        +
+      </button>
     </div>
   );
 
@@ -44,20 +50,35 @@ export function GmApp({ campaignId, bestiary, wargear }: GmAppProps) {
     <div className="gm">
       {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
       <header className="gm-head">
-        <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>◂</a>
+        <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
+          ◂
+        </a>
         <div className="display gm-title">
-          AUSPEX <span className="dim">// {state.campaign.name.toUpperCase()} // T{state.campaign.tier}</span>
+          AUSPEX{" "}
+          <span className="dim">
+            // {state.campaign.name.toUpperCase()} // T{state.campaign.tier}
+          </span>
         </div>
-        {state.encounter && <div className="display" style={{ fontSize: 30 }}>RND {String(state.encounter.round).padStart(2, "0")}</div>}
+        {state.encounter && (
+          <div className="display" style={{ fontSize: 30 }}>
+            RND {String(state.encounter.round).padStart(2, "0")}
+          </div>
+        )}
         {Pool.options.map(pool)}
         <UserButton />
       </header>
       <nav className="tabs" role="tablist">
-        {GM_TABS.map((t) => <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>[{t}]</button>)}
+        {GM_TABS.map((t) => (
+          <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+            [{t}]
+          </button>
+        ))}
       </nav>
       <main className="gm-body">
         {tab === "TRACK" && <Tracker state={state} send={send} bestiary={bestiary} />}
-        {tab === "PREP" && <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />}
+        {tab === "PREP" && (
+          <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
+        )}
         {tab === "CODEX" && <CodexView codex={codex} send={send} />}
         {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
       </main>

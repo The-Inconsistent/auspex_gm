@@ -15,16 +15,27 @@ const codexSave = (Object.keys(CodexInput) as (keyof typeof CodexInput)[]).map((
 export const Action = z.union([
   z.discriminatedUnion("type", [
     z.object({
-      type: z.literal("campaign.update"), name: z.string().min(1).max(100).optional(), tier: Tier.optional(),
-      framework: z.string().max(5000).optional(), patron: z.string().max(200).optional(),
+      type: z.literal("campaign.update"),
+      name: z.string().min(1).max(100).optional(),
+      tier: Tier.optional(),
+      framework: z.string().max(5000).optional(),
+      patron: z.string().max(200).optional(),
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     z.object({ type: z.literal("session.start") }),
-    z.object({ type: z.literal("session.end"), xp: z.number().int().min(0).max(100), recap: z.string().max(10000).default("") }),
+    z.object({
+      type: z.literal("session.end"),
+      xp: z.number().int().min(0).max(100),
+      recap: z.string().max(10000).default(""),
+    }),
 
-    z.object({ type: z.literal("character.create"), name: z.string().min(1).max(100), stats: CharacterStats.optional() }),
+    z.object({
+      type: z.literal("character.create"),
+      name: z.string().min(1).max(100),
+      stats: CharacterStats.optional(),
+    }),
     z.object({
       type: z.literal("character.update"),
       id,
@@ -36,23 +47,33 @@ export const Action = z.union([
     }),
     // Wounds and Shock go through the damage rules (pcHit, pp.193-199). raw (GM only, the tracker's undo) skips them.
     z.object({
-      type: z.literal("character.adjust"), id,
-      wounds: delta.optional(), shock: delta.optional(), wrath: delta.optional(), traumatic: delta.optional(),
+      type: z.literal("character.adjust"),
+      id,
+      wounds: delta.optional(),
+      shock: delta.optional(),
+      wrath: delta.optional(),
+      traumatic: delta.optional(),
       raw: z.boolean().optional(),
     }),
     // Wealth (p.206) and Ammo by type (p.229); players spend their own, the GM awards.
     z.object({
-      type: z.literal("character.supply"), id,
-      wealth: delta.optional(), ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
+      type: z.literal("character.supply"),
+      id,
+      wealth: delta.optional(),
+      ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
     }),
     // GM only: a requisition Influence Test rolled at the table (pp.205–206, p.229). The server checks the Keywords and
     // the session limit, spends the Wealth and, on a success, adds the item to gear or ammo.
     z.object({
-      type: z.literal("character.requisition"), id, kind: RequisitionKind,
+      type: z.literal("character.requisition"),
+      id,
+      kind: RequisitionKind,
       item: z.string().trim().min(1).max(100), // for ammo and grenades, the ammo type ("Bolt", "Frag Grenade")
-      value: z.number().int().min(0).max(20), rarity: Rarity,
+      value: z.number().int().min(0).max(20),
+      rarity: Rarity,
       keywords: z.array(z.string().trim().min(1).max(60)).max(12), // the item's
-      icons: z.number().int().min(0).max(60), spend: z.number().int().min(0).max(50).default(0),
+      icons: z.number().int().min(0).max(60),
+      spend: z.number().int().min(0).max(50).default(0),
       complication: z.boolean().default(false),
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
       wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
@@ -65,8 +86,11 @@ export const Action = z.union([
 
     // Invite links for signed-in players (and guests, if allowed). The code comes back once, in `token`.
     z.object({
-      type: z.literal("invite.create"), mode: InviteMode, characterId: id.optional(),
-      allowGuests: z.boolean().default(true), hours: z.number().int().min(1).max(720).default(12),
+      type: z.literal("invite.create"),
+      mode: InviteMode,
+      characterId: id.optional(),
+      allowGuests: z.boolean().default(true),
+      hours: z.number().int().min(1).max(720).default(12),
     }),
     z.object({ type: z.literal("invite.revoke"), id }),
     z.object({ type: z.literal("member.remove"), userId: z.string().min(1).max(100) }),
@@ -100,13 +124,21 @@ export const Action = z.union([
     }),
     // Same damage rules for Threats (Mob members p.325, Exhausted p.199); raw (the tracker's undo) skips them.
     z.object({
-      type: z.literal("combatant.adjust"), id,
-      wounds: delta.optional(), shock: delta.optional(), personalRuin: delta.optional(), raw: z.boolean().optional(),
+      type: z.literal("combatant.adjust"),
+      id,
+      wounds: delta.optional(),
+      shock: delta.optional(),
+      personalRuin: delta.optional(),
+      raw: z.boolean().optional(),
     }),
     z.object({ type: z.literal("combatant.aware"), id }), // pay 1 Glory/Ruin to ignore an ambush (p.177)
     z.object({ type: z.literal("combatant.remove"), id }),
 
-    z.object({ type: z.literal("codex.delete"), kind: z.enum(Object.keys(CodexInput) as [keyof typeof CodexInput]), id }),
+    z.object({
+      type: z.literal("codex.delete"),
+      kind: z.enum(Object.keys(CodexInput) as [keyof typeof CodexInput]),
+      id,
+    }),
     z.object({ type: z.literal("beat.reorder"), adventureId: id, ids: z.array(id).max(200) }),
     z.object({ type: z.literal("beat.startEncounter"), id }),
   ]),
@@ -117,7 +149,11 @@ export type ActionInput = z.input<typeof Action>; // what clients send: defaulte
 
 // Actions a player may send; each is further limited to their own character, or the Glory pool.
 export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
-  "character.update", "character.adjust", "character.supply", "character.respite", "pool.adjust",
+  "character.update",
+  "character.adjust",
+  "character.supply",
+  "character.respite",
+  "pool.adjust",
 ]);
 
 export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };

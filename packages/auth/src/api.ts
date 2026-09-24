@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference -- type.d.ts is a global Clerk augmentation, not a module
 /// <reference path="../type.d.ts" />
 import { verifyToken } from "@clerk/backend";
 
@@ -13,18 +14,29 @@ type TestRole = "creator" | "member";
 // Test-only tokens `test.<secret>.<userId>.<creator|member>` let the smoke test act as signed-in users without a
 // Clerk instance. Never in production.
 const TEST_SECRET = process.env.CLERK_TEST_SECRET;
-if (TEST_SECRET && process.env.NODE_ENV === "production") throw new Error("CLERK_TEST_SECRET must not be set in production");
+if (TEST_SECRET && process.env.NODE_ENV === "production")
+  throw new Error("CLERK_TEST_SECRET must not be set in production");
 
-export const testSessionToken = ({ secret, userId, role = "member" }: { secret: string; userId: string; role?: TestRole }) =>
-  `test.${secret}.${userId}.${role}`;
+export const testSessionToken = ({
+  secret,
+  userId,
+  role = "member",
+}: {
+  secret: string;
+  userId: string;
+  role?: TestRole;
+}) => `test.${secret}.${userId}.${role}`;
 
 // Browser origins allowed to present a token (the `azp` claim): the web app's address(es), comma separated.
-const authorizedParties = process.env.WEB_ORIGIN?.split(",").map((o) => o.trim()).filter(Boolean);
+const authorizedParties = process.env.WEB_ORIGIN?.split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
 
 // CLERK_JWT_KEY as its bare base64 body. Env editors mangle a multi-line PEM (Dockhand turned its newlines into spaces),
 // and Clerk strips only newlines, so a stray space breaks the key and every token fails as "signed out". Clerk accepts
 // the bare body: it strips the header and footer itself when they're present.
-export const pemBody = (pem: string | undefined) => pem?.replace(/-----(BEGIN|END) PUBLIC KEY-----|\s+/g, "") || undefined;
+export const pemBody = (pem: string | undefined) =>
+  pem?.replace(/-----(BEGIN|END) PUBLIC KEY-----|\s+/g, "") || undefined;
 const jwtKey = pemBody(process.env.CLERK_JWT_KEY);
 
 export async function verifySession(token: string | undefined): Promise<AuthUser | null> {

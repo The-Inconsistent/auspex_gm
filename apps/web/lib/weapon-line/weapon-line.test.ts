@@ -5,7 +5,14 @@ import type { Weapon } from "@wg/shared";
 
 import { weaponLine } from "./weapon-line.ts";
 
-const knife: Weapon & { addStrength: boolean } = { name: "Knife", damage: 2, ed: 1, range: [1], traits: [], addStrength: true };
+const knife: Weapon & { addStrength: boolean } = {
+  name: "Knife",
+  damage: 2,
+  ed: 1,
+  range: [1],
+  traits: [],
+  addStrength: true,
+};
 const bolter: Weapon = { name: "Bolter", damage: 10, ed: 1, ap: -1, range: [12, 24, 36], salvo: 2, traits: ["Brutal"] };
 
 test("melee addStrength adds the wielder's Strength when known", () => {

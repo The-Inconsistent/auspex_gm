@@ -12,12 +12,21 @@ import { campaign, session } from "./campaign.schema.ts";
 export function isAdmin(key: string | undefined) {
   const expected = process.env.ADMIN_KEY;
   if (!expected || !key) return false;
-  const a = Buffer.from(key), b = Buffer.from(expected);
+  const a = Buffer.from(key),
+    b = Buffer.from(expected);
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
 // A new campaign with its creator seated as GM. `owner.name` is a placeholder until they next sign in.
-export function createCampaign({ name, tier, owner }: { name: string; tier: number; owner: { userId: string; name: string } | null }) {
+export function createCampaign({
+  name,
+  tier,
+  owner,
+}: {
+  name: string;
+  tier: number;
+  owner: { userId: string; name: string } | null;
+}) {
   return db.transaction(async (tx) => {
     const [c] = await tx.insert(campaign).values({ name, tier }).returning({ id: campaign.id });
     const campaignId = c!.id; // the row was just inserted
@@ -32,19 +41,30 @@ export function createCampaign({ name, tier, owner }: { name: string; tier: numb
 // The lobby: the caller's games, and every game with a session in progress (as cards only; opening one needs a seat).
 export async function lobby(user: AuthUser): Promise<Lobby> {
   const [mine, running] = await Promise.all([
-    db.select({ campaignId: membership.campaignId, role: membership.role }).from(membership).where(eq(membership.userId, user.userId)),
+    db
+      .select({ campaignId: membership.campaignId, role: membership.role })
+      .from(membership)
+      .where(eq(membership.userId, user.userId)),
     db.select({ campaignId: session.campaignId, number: session.number }).from(session).where(isNull(session.endedAt)),
   ]);
   const ids = [...new Set([...mine, ...running].map((r) => r.campaignId))];
   if (!ids.length) return { canCreate: user.creator, mine: [], running: [] };
 
   const [camps, gms, players] = await Promise.all([
-    db.select({ id: campaign.id, name: campaign.name, tier: campaign.tier }).from(campaign).where(inArray(campaign.id, ids)),
-    db.select({ campaignId: membership.campaignId, name: appUser.name }).from(membership)
+    db
+      .select({ id: campaign.id, name: campaign.name, tier: campaign.tier })
+      .from(campaign)
+      .where(inArray(campaign.id, ids)),
+    db
+      .select({ campaignId: membership.campaignId, name: appUser.name })
+      .from(membership)
       .innerJoin(appUser, eq(appUser.id, membership.userId))
       .where(and(inArray(membership.campaignId, ids), eq(membership.role, "gm"))),
-    db.select({ campaignId: character.campaignId, n: count() }).from(character)
-      .where(inArray(character.campaignId, ids)).groupBy(character.campaignId),
+    db
+      .select({ campaignId: character.campaignId, n: count() })
+      .from(character)
+      .where(inArray(character.campaignId, ids))
+      .groupBy(character.campaignId),
   ]);
   const roleOf = new Map<string, Role>(mine.map((m) => [m.campaignId, m.role]));
   const card = (id: string): LobbyGame | null => {
@@ -52,13 +72,18 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
     if (!c) return null;
     return {
       ...c,
-      gm: gms.filter((g) => g.campaignId === id).map((g) => g.name).join(", ") || "—",
+      gm:
+        gms
+          .filter((g) => g.campaignId === id)
+          .map((g) => g.name)
+          .join(", ") || "—",
       players: players.find((p) => p.campaignId === id)?.n ?? 0,
       session: running.find((r) => r.campaignId === id)?.number ?? null,
       role: roleOf.get(id) ?? null,
     };
   };
-  const cards = (list: { campaignId: string }[]) => list.map((r) => card(r.campaignId)).filter((g): g is LobbyGame => !!g);
+  const cards = (list: { campaignId: string }[]) =>
+    list.map((r) => card(r.campaignId)).filter((g): g is LobbyGame => !!g);
   return { canCreate: user.creator, mine: cards(mine), running: cards(running) };
 }
 

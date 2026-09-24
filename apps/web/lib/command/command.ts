@@ -9,12 +9,27 @@ type Target = { name: string; combatantId: string; characterId: string | null };
 export type Parsed = { actions: ActionInput[] } | { error: string };
 
 const VERBS: Record<string, string> = {
-  dmg: "wounds", d: "wounds", wound: "wounds", w: "wounds",
-  heal: "heal", h: "heal",
-  shock: "shock", s: "shock",
-  rec: "recover", recover: "recover", r: "recover",
-  start: "start", go: "start", seize: "seize", aware: "aware", ambush: "ambush",
-  reveal: "reveal", hide: "hide", mob: "mob", wrath: "wrath", remove: "remove",
+  dmg: "wounds",
+  d: "wounds",
+  wound: "wounds",
+  w: "wounds",
+  heal: "heal",
+  h: "heal",
+  shock: "shock",
+  s: "shock",
+  rec: "recover",
+  recover: "recover",
+  r: "recover",
+  start: "start",
+  go: "start",
+  seize: "seize",
+  aware: "aware",
+  ambush: "ambush",
+  reveal: "reveal",
+  hide: "hide",
+  mob: "mob",
+  wrath: "wrath",
+  remove: "remove",
 };
 
 export function targetsOf(s: LiveState): Target[] {
@@ -26,7 +41,15 @@ export function targetsOf(s: LiveState): Target[] {
   );
 }
 
-function resolve({ words, targets, selected }: { words: string[]; targets: Target[]; selected: string | null }): Target | string {
+function resolve({
+  words,
+  targets,
+  selected,
+}: {
+  words: string[];
+  targets: Target[];
+  selected: string | null;
+}): Target | string {
   if (!words.length) return targets.find((t) => t.combatantId === selected) ?? "No target: select a row or type a name";
   const q = words.join(" ").toLowerCase();
   // An exact name wins, so "Ork" is reachable next to "Ork Nob".
@@ -40,7 +63,15 @@ function resolve({ words, targets, selected }: { words: string[]; targets: Targe
   return hits.length ? `Ambiguous: ${hits.map((h) => h.name).join(", ")}` : `No combatant matches "${words.join(" ")}"`;
 }
 
-export function parseCommand({ input, state: s, selected }: { input: string; state: LiveState; selected: string | null }): Parsed {
+export function parseCommand({
+  input,
+  state: s,
+  selected,
+}: {
+  input: string;
+  state: LiveState;
+  selected: string | null;
+}): Parsed {
   const words = input.trim().split(/\s+/).filter(Boolean);
   if (!words.length) return { actions: [] };
   const [first, second] = words.map((w) => w.toLowerCase());
@@ -51,15 +82,20 @@ export function parseCommand({ input, state: s, selected }: { input: string; sta
     return { actions: [{ type: "pool.adjust", pool: first, delta: Number(second) }] };
 
   const targets = targetsOf(s);
-  let verb: string | null = null, amount: number | null = null, condition: { name: string; on: boolean } | null = null;
+  let verb: string | null = null,
+    amount: number | null = null,
+    condition: { name: string; on: boolean } | null = null;
   const rest: string[] = [];
   for (const w of words) {
     const lw = w.toLowerCase();
     const cond = /^([+-])(.+)$/.exec(w);
     const condName = cond && CONDITIONS.find((c) => c.toLowerCase().replace(/\s/g, "") === cond[2]!.toLowerCase());
     if (condName) condition = { name: condName, on: cond![1] === "+" };
-    else if (/^[+-]\d+$/.test(w) && !verb) { verb = w.startsWith("+") ? "wounds" : "heal"; amount = Math.abs(Number(w)); }
-    else if (/^[+-]?\d+$/.test(w) && verb) amount = Number(w); // `wrath -1`, `dmg +3`
+    else if (/^[+-]\d+$/.test(w) && !verb) {
+      verb = w.startsWith("+") ? "wounds" : "heal";
+      amount = Math.abs(Number(w));
+    } else if (/^[+-]?\d+$/.test(w) && verb)
+      amount = Number(w); // `wrath -1`, `dmg +3`
     else if (VERBS[lw] && !verb) verb = VERBS[lw]!;
     else rest.push(w);
   }
@@ -71,13 +107,18 @@ export function parseCommand({ input, state: s, selected }: { input: string; sta
 
   if (condition) {
     const current = t.characterId
-      ? s.characters.find((c) => c.id === t.characterId)?.conditions ?? []
-      : s.encounter?.combatants.flatMap((c) => (c.id === t.combatantId && c.kind === "threat" ? c.conditions : [])) ?? [];
-    const next = condition.on ? [...new Set([...current, condition.name])] : current.filter((c) => c !== condition!.name);
+      ? (s.characters.find((c) => c.id === t.characterId)?.conditions ?? [])
+      : (s.encounter?.combatants.flatMap((c) => (c.id === t.combatantId && c.kind === "threat" ? c.conditions : [])) ??
+        []);
+    const next = condition.on
+      ? [...new Set([...current, condition.name])]
+      : current.filter((c) => c !== condition!.name);
     return {
-      actions: [t.characterId
-        ? { type: "character.update", id: t.characterId, conditions: next }
-        : { type: "combatant.update", id: t.combatantId, conditions: next }],
+      actions: [
+        t.characterId
+          ? { type: "character.update", id: t.characterId, conditions: next }
+          : { type: "combatant.update", id: t.combatantId, conditions: next },
+      ],
     };
   }
 
@@ -85,22 +126,37 @@ export function parseCommand({ input, state: s, selected }: { input: string; sta
     const { field, sign } = COUNTER_ACTIONS[verb as CounterAction];
     const delta = sign * Math.abs(n); // the verb sets the direction: `heal -2` still heals
     return {
-      actions: [t.characterId
-        ? { type: "character.adjust", id: t.characterId, [field]: delta }
-        : { type: "combatant.adjust", id: t.combatantId, [field]: delta }],
+      actions: [
+        t.characterId
+          ? { type: "character.adjust", id: t.characterId, [field]: delta }
+          : { type: "combatant.adjust", id: t.combatantId, [field]: delta },
+      ],
     };
   }
 
   switch (verb) {
-    case "wrath": return t.characterId ? { actions: [{ type: "character.adjust", id: t.characterId, wrath: amount ?? 1 }] } : { error: "Threats don't have Wrath" };
-    case "start": return { actions: [{ type: "turn.start", id: t.combatantId }] };
-    case "seize": return { actions: [{ type: "turn.seize", id: t.combatantId }] };
-    case "aware": return { actions: [{ type: "combatant.aware", id: t.combatantId }] };
-    case "ambush": return { actions: [{ type: "combatant.update", id: t.combatantId, ambushed: true }] };
-    case "reveal": return { actions: [{ type: "combatant.update", id: t.combatantId, revealed: true }] };
-    case "hide": return { actions: [{ type: "combatant.update", id: t.combatantId, revealed: false }] };
-    case "mob": return amount === null ? { error: "mob needs a count: <name> mob 6" } : { actions: [{ type: "combatant.update", id: t.combatantId, mobCount: amount }] };
-    case "remove": return { actions: [{ type: "combatant.remove", id: t.combatantId }] };
+    case "wrath":
+      return t.characterId
+        ? { actions: [{ type: "character.adjust", id: t.characterId, wrath: amount ?? 1 }] }
+        : { error: "Threats don't have Wrath" };
+    case "start":
+      return { actions: [{ type: "turn.start", id: t.combatantId }] };
+    case "seize":
+      return { actions: [{ type: "turn.seize", id: t.combatantId }] };
+    case "aware":
+      return { actions: [{ type: "combatant.aware", id: t.combatantId }] };
+    case "ambush":
+      return { actions: [{ type: "combatant.update", id: t.combatantId, ambushed: true }] };
+    case "reveal":
+      return { actions: [{ type: "combatant.update", id: t.combatantId, revealed: true }] };
+    case "hide":
+      return { actions: [{ type: "combatant.update", id: t.combatantId, revealed: false }] };
+    case "mob":
+      return amount === null
+        ? { error: "mob needs a count: <name> mob 6" }
+        : { actions: [{ type: "combatant.update", id: t.combatantId, mobCount: amount }] };
+    case "remove":
+      return { actions: [{ type: "combatant.remove", id: t.combatantId }] };
   }
   return { error: "Unknown command" };
 }

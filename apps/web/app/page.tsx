@@ -35,10 +35,16 @@ export default async function Home({ searchParams }: HomeProps) {
     return (
       <main className="center">
         <div className="stack" style={{ alignItems: "center" }}>
-          <p className="display" style={{ fontSize: 40, margin: 0 }}>AUSPEX</p>
+          <p className="display" style={{ fontSize: 40, margin: 0 }}>
+            AUSPEX
+          </p>
           <p className="dim">Wrath &amp; Glory table companion</p>
-          <a className="btn primary" href="/sign-in">SIGN IN</a>
-          <p className="dim" style={{ fontSize: 12 }}>Joining as a guest? Scan the QR code on the GM&apos;s tablet.</p>
+          <a className="btn primary" href="/sign-in">
+            SIGN IN
+          </a>
+          <p className="dim" style={{ fontSize: 12 }}>
+            Joining as a guest? Scan the QR code on the GM&apos;s tablet.
+          </p>
         </div>
       </main>
     );

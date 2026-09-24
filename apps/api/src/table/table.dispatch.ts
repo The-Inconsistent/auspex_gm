@@ -10,7 +10,8 @@ import { applyEncounterAction } from "../encounter/encounter.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
 export function touches(a: Action): { state: boolean; codex: boolean } {
-  if (a.type === "codex.save" || a.type === "codex.delete" || a.type === "beat.reorder") return { state: false, codex: true };
+  if (a.type === "codex.save" || a.type === "codex.delete" || a.type === "beat.reorder")
+    return { state: false, codex: true };
   if (a.type === "beat.startEncounter" || a.type.startsWith("session.")) return { state: true, codex: true };
   return { state: true, codex: false };
 }
@@ -27,8 +28,13 @@ export function kicks(a: Action): Kick | null {
 function authorize(ctx: Ctx, a: Action) {
   if (ctx.role === "gm") return;
   if (!PLAYER_ACTIONS.has(a.type)) fail("GM only");
-  if ((a.type === "character.update" || a.type === "character.adjust" || a.type === "character.supply" || a.type === "character.respite")
-    && a.id !== ctx.characterId)
+  if (
+    (a.type === "character.update" ||
+      a.type === "character.adjust" ||
+      a.type === "character.supply" ||
+      a.type === "character.respite") &&
+    a.id !== ctx.characterId
+  )
     fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");

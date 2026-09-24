@@ -48,19 +48,27 @@ export function readCookie(header: string | undefined, name = COOKIE): string | 
 export async function signedInUser(headers: { authorization?: string; cookie?: string }): Promise<AuthUser | null> {
   const user = await verifySession(bearerOf(headers.authorization) ?? readCookie(headers.cookie, SESSION_COOKIE));
   if (user) {
-    await db.insert(appUser).values({ id: user.userId, name: user.name })
+    await db
+      .insert(appUser)
+      .values({ id: user.userId, name: user.name })
       .onConflictDoUpdate({ target: appUser.id, set: { name: user.name, updatedAt: new Date() } });
   }
   return user;
 }
 
 // The caller at `campaignId`: a signed-in member first, else a guest token for that same campaign.
-export async function resolveCtx(
-  { campaignId, headers }: { campaignId: string; headers: { authorization?: string; cookie?: string } },
-): Promise<Ctx | null> {
+export async function resolveCtx({
+  campaignId,
+  headers,
+}: {
+  campaignId: string;
+  headers: { authorization?: string; cookie?: string };
+}): Promise<Ctx | null> {
   const user = await signedInUser(headers);
   if (user) {
-    const [m] = await db.select({ role: membership.role, characterId: membership.characterId }).from(membership)
+    const [m] = await db
+      .select({ role: membership.role, characterId: membership.characterId })
+      .from(membership)
       .where(and(eq(membership.campaignId, campaignId), eq(membership.userId, user.userId)));
     if (m) return { campaignId, ...m, userId: user.userId };
   }

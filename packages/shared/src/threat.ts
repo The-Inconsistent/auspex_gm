@@ -17,15 +17,7 @@ export const Weapon = z.object({
 });
 export type Weapon = z.infer<typeof Weapon>;
 
-export const AbilityType = z.enum([
-  "BATTLECRY",
-  "ACTION",
-  "RUIN",
-  "WRATH",
-  "COMPLICATION",
-  "REACTION",
-  "ANNIHILATION",
-]);
+export const AbilityType = z.enum(["BATTLECRY", "ACTION", "RUIN", "WRATH", "COMPLICATION", "REACTION", "ANNIHILATION"]);
 
 export const Ability = z.object({
   type: AbilityType.optional(), // untyped = plain rule, e.g. Mob Rule
@@ -48,7 +40,18 @@ export const Threat = z.object({
   name: z.string(),
   source: z.enum(["core", "threat-assessment", "gutshivas-kommandos", "vow-of-absolution"]).default("core"),
   page: z.number().int().positive(), // printed page number in `source`
-  faction: z.enum(["imperial", "heretic", "daemon", "ork", "aeldari", "drukhari", "genestealer", "necron", "tau", "mechanicus"]),
+  faction: z.enum([
+    "imperial",
+    "heretic",
+    "daemon",
+    "ork",
+    "aeldari",
+    "drukhari",
+    "genestealer",
+    "necron",
+    "tau",
+    "mechanicus",
+  ]),
   threat: z.array(ThreatClass).min(4).max(5), // Tier 1..4 (supplements add Tier 5)
   keywords: z.array(z.string()).min(1),
   attributes: z.object({
@@ -66,9 +69,7 @@ export const Threat = z.object({
   shock: z.number().int().positive().nullable(), // null = "–", never suffers Shock
   skills: z.object({
     default: z.number().int().nullable(),
-    list: z.array(
-      z.object({ name: z.string(), dice: z.number().int(), passive: z.number().int().optional() }),
-    ),
+    list: z.array(z.object({ name: z.string(), dice: z.number().int(), passive: z.number().int().optional() })),
   }),
   personalRuin: z.number().int().positive().optional(), // Champions
   bonuses: z.array(z.object({ name: z.string(), text: z.string() })).default([]),

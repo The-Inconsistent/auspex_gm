@@ -30,7 +30,12 @@ export function CodexView({ codex, send }: CodexViewProps) {
 
   // REVEALED / HIDDEN chip: flips whether players see the entry.
   const toggleRevealed = async (r: Row) => {
-    const result = await send({ type: "codex.save", kind, id: r.id, data: { ...stripId(r), revealed: !r.revealed } } as ActionInput);
+    const result = await send({
+      type: "codex.save",
+      kind,
+      id: r.id,
+      data: { ...stripId(r), revealed: !r.revealed },
+    } as ActionInput);
     setError(result.ok ? null : result.error);
   };
 
@@ -38,26 +43,45 @@ export function CodexView({ codex, send }: CodexViewProps) {
     <div className="stack">
       <nav className="tabs" role="tablist">
         {CODEX_KIND_KEYS.map((k) => (
-          <button key={k} role="tab" className="tab" aria-selected={kind === k} onClick={() => pickKind(k)}>{k.toUpperCase()}S</button>
+          <button key={k} role="tab" className="tab" aria-selected={kind === k} onClick={() => pickKind(k)}>
+            {k.toUpperCase()}S
+          </button>
         ))}
       </nav>
       <div className="pad stack">
         {editing ? (
-          <CodexEditor key={editing === "new" ? "new" : editing.id} kind={kind} codex={codex} send={send} row={editing === "new" ? null : editing} onDone={() => setEditing(null)} />
+          <CodexEditor
+            key={editing === "new" ? "new" : editing.id}
+            kind={kind}
+            codex={codex}
+            send={send}
+            row={editing === "new" ? null : editing}
+            onDone={() => setEditing(null)}
+          />
         ) : (
           <>
-            <div><button className="btn primary" onClick={() => setEditing("new")}>+ NEW {kind.toUpperCase()}</button></div>
+            <div>
+              <button className="btn primary" onClick={() => setEditing("new")}>
+                + NEW {kind.toUpperCase()}
+              </button>
+            </div>
             <div className="list">
               {rows.length === 0 && <div className="dim">Nothing recorded yet.</div>}
               {rows.map((r) => (
                 <div key={r.id} className="item" style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                   <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
                   {"revealed" in r && (
-                    <button className="btn sm" style={{ color: r.revealed ? "var(--fg)" : "var(--red)" }} onClick={() => toggleRevealed(r)}>
+                    <button
+                      className="btn sm"
+                      style={{ color: r.revealed ? "var(--fg)" : "var(--red)" }}
+                      onClick={() => toggleRevealed(r)}
+                    >
                       {r.revealed ? "REVEALED" : "HIDDEN"}
                     </button>
                   )}
-                  <button className="btn sm" onClick={() => setEditing(r)}>EDIT</button>
+                  <button className="btn sm" onClick={() => setEditing(r)}>
+                    EDIT
+                  </button>
                 </div>
               ))}
             </div>

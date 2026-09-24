@@ -12,7 +12,11 @@ test("bearerOf takes only a Bearer header", () => {
 });
 
 test("test tokens need the right secret", async () => {
-  assert.deepEqual(await verifySession(testSessionToken({ secret: "s3cret", userId: "gm", role: "creator" })), { userId: "gm", name: "gm", creator: true });
+  assert.deepEqual(await verifySession(testSessionToken({ secret: "s3cret", userId: "gm", role: "creator" })), {
+    userId: "gm",
+    name: "gm",
+    creator: true,
+  });
   assert.equal((await verifySession(testSessionToken({ secret: "s3cret", userId: "ana" })))?.creator, false);
   assert.equal(await verifySession(testSessionToken({ secret: "wrong", userId: "gm", role: "creator" })), null);
 });

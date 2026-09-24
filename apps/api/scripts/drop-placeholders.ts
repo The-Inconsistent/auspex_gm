@@ -10,7 +10,11 @@ if (!campaignId) throw new Error("Usage: bun scripts/drop-placeholders.ts <campa
 const TAG = " (placeholder name)";
 
 const api = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
-const socket = io(api, { auth: { adminKey: process.env.ADMIN_KEY, campaignId }, transports: ["websocket"], reconnection: false });
+const socket = io(api, {
+  auth: { adminKey: process.env.ADMIN_KEY, campaignId },
+  transports: ["websocket"],
+  reconnection: false,
+});
 const [state, codex] = await Promise.all([
   new Promise<LiveState>((ok, fail) => (socket.once("state", ok), socket.once("connect_error", fail))),
   new Promise<Codex>((ok) => socket.once("codex", ok)),
@@ -26,7 +30,15 @@ if (state.campaign.patron.includes(TAG))
   await send({ type: "campaign.update", patron: state.campaign.patron.replaceAll(TAG, "") }, "patron");
 for (const { id, ...npc } of codex.npcs)
   if (npc.name.includes(TAG) || npc.role.includes(TAG))
-    await send({ type: "codex.save", kind: "npc", id, data: { ...npc, name: npc.name.replaceAll(TAG, ""), role: npc.role.replaceAll(TAG, "") } }, `npc ${npc.name}`);
+    await send(
+      {
+        type: "codex.save",
+        kind: "npc",
+        id,
+        data: { ...npc, name: npc.name.replaceAll(TAG, ""), role: npc.role.replaceAll(TAG, "") },
+      },
+      `npc ${npc.name}`,
+    );
 
 socket.close();
 console.log(`Done: ${state.campaign.name}`);

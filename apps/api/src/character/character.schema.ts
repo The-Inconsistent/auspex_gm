@@ -4,7 +4,9 @@ import { conditions, createdAt } from "../core/sql.ts";
 
 export const character = pgTable("character", {
   id: uuid().primaryKey().defaultRandom(),
-  campaignId: uuid().notNull().references(() => campaign.id, { onDelete: "cascade" }),
+  campaignId: uuid()
+    .notNull()
+    .references(() => campaign.id, { onDelete: "cascade" }),
   name: text().notNull(),
   dodRaw: jsonb(),
   stats: jsonb().$type<Record<string, unknown>>().notNull().default({}),

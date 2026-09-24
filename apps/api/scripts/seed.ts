@@ -9,7 +9,8 @@ import { loadPack } from "@wg/data";
 const args = process.argv.slice(2);
 const name = args.find((a) => !a.startsWith("--") && args[args.indexOf(a) - 1] !== "--owner");
 const ownerUserId = args[args.indexOf("--owner") + 1];
-if (!name || !args.includes("--owner") || !ownerUserId) throw new Error("Usage: bun scripts/seed.ts <pack name> --owner <clerk user id>");
+if (!name || !args.includes("--owner") || !ownerUserId)
+  throw new Error("Usage: bun scripts/seed.ts <pack name> --owner <clerk user id>");
 const pack = loadPack(name);
 
 const api = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
@@ -21,7 +22,11 @@ const res = await fetch(`${api}/api/campaigns`, {
 if (!res.ok) throw new Error(`Create campaign: ${res.status} ${await res.text()}`);
 const { campaignId } = (await res.json()) as { campaignId: string };
 
-const socket = io(api, { auth: { adminKey: process.env.ADMIN_KEY, campaignId }, transports: ["websocket"], reconnection: false });
+const socket = io(api, {
+  auth: { adminKey: process.env.ADMIN_KEY, campaignId },
+  transports: ["websocket"],
+  reconnection: false,
+});
 await new Promise<void>((ok, fail) => (socket.once("connect", () => ok()), socket.once("connect_error", fail)));
 
 async function send(a: ActionInput, what: string): Promise<string | undefined> {
@@ -30,27 +35,51 @@ async function send(a: ActionInput, what: string): Promise<string | undefined> {
   return r.id;
 }
 const ids = new Map<string, string>();
-const ref = (k: string | undefined) => (k ? ids.get(k) ?? null : null);
+const ref = (k: string | undefined) => (k ? (ids.get(k) ?? null) : null);
 
 await send({ type: "campaign.update", framework: pack.campaign.framework, patron: pack.campaign.patron }, "framework");
-for (const { key, ...data } of pack.factions) ids.set(key, (await send({ type: "codex.save", kind: "faction", data }, `faction ${key}`))!);
+for (const { key, ...data } of pack.factions)
+  ids.set(key, (await send({ type: "codex.save", kind: "faction", data }, `faction ${key}`))!);
 for (const { key, parent, ...data } of pack.locations)
-  ids.set(key, (await send({ type: "codex.save", kind: "location", data: { ...data, parentId: ref(parent) } }, `location ${key}`))!);
+  ids.set(
+    key,
+    (await send(
+      { type: "codex.save", kind: "location", data: { ...data, parentId: ref(parent) } },
+      `location ${key}`,
+    ))!,
+  );
 for (const { key, faction, ...data } of pack.npcs)
-  ids.set(key, (await send({ type: "codex.save", kind: "npc", data: { ...data, factionId: ref(faction) } }, `npc ${key}`))!);
-for (const { key, ...data } of pack.handouts) ids.set(key, (await send({ type: "codex.save", kind: "handout", data }, `handout ${key}`))!);
+  ids.set(
+    key,
+    (await send({ type: "codex.save", kind: "npc", data: { ...data, factionId: ref(faction) } }, `npc ${key}`))!,
+  );
+for (const { key, ...data } of pack.handouts)
+  ids.set(key, (await send({ type: "codex.save", kind: "handout", data }, `handout ${key}`))!);
 for (const { key, beats, ...data } of pack.adventures) {
   const adventureId = (await send({ type: "codex.save", kind: "adventure", data }, `adventure ${key}`))!;
   for (const { location, npcs, handouts, ...b } of beats)
-    await send({
-      type: "codex.save", kind: "beat",
-      data: { ...b, adventureId, locationId: ref(location), npcIds: npcs.map((k) => ids.get(k)!), handoutIds: handouts.map((k) => ids.get(k)!) },
-    }, `beat "${b.title}"`);
+    await send(
+      {
+        type: "codex.save",
+        kind: "beat",
+        data: {
+          ...b,
+          adventureId,
+          locationId: ref(location),
+          npcIds: npcs.map((k) => ids.get(k)!),
+          handoutIds: handouts.map((k) => ids.get(k)!),
+        },
+      },
+      `beat "${b.title}"`,
+    );
 }
-for (const c of pack.characters) await send({ type: "character.create", name: c.name, stats: c.stats }, `character ${c.name}`);
+for (const c of pack.characters)
+  await send({ type: "character.create", name: c.name, stats: c.stats }, `character ${c.name}`);
 
 socket.close();
-console.log(`Seeded "${pack.campaign.name}": ${pack.factions.length} factions, ${pack.locations.length} locations, ${pack.npcs.length} NPCs, ` +
-  `${pack.handouts.length} handouts, ${pack.adventures.reduce((n, a) => n + a.beats.length, 0)} beats, ${pack.characters.length} characters.`);
+console.log(
+  `Seeded "${pack.campaign.name}": ${pack.factions.length} factions, ${pack.locations.length} locations, ${pack.npcs.length} NPCs, ` +
+    `${pack.handouts.length} handouts, ${pack.adventures.reduce((n, a) => n + a.beats.length, 0)} beats, ${pack.characters.length} characters.`,
+);
 const web = (process.env.WEB_ORIGIN ?? "http://localhost:3000").split(",")[0];
 console.log(`Open it (signed in as ${ownerUserId}): ${web}/c/${campaignId}`);

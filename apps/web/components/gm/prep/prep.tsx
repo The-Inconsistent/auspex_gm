@@ -66,15 +66,29 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
       {msg && <div className={msg.startsWith("!") ? "red" : "amber"}>{msg}</div>}
       <div className="keys">
         {codex.adventures.map((a) => (
-          <button key={a.id} className={`btn ${a.id === advId ? "primary" : ""}`} onClick={() => pickAdventure(a.id)}>{a.title.toUpperCase()}</button>
+          <button key={a.id} className={`btn ${a.id === advId ? "primary" : ""}`} onClick={() => pickAdventure(a.id)}>
+            {a.title.toUpperCase()}
+          </button>
         ))}
         <form style={{ display: "flex", gap: 6 }} onSubmit={handleCreateAdventure}>
-          <input className="input" aria-label="New adventure title" placeholder="NEW ADVENTURE" value={title} onChange={(e) => setTitle(e.target.value)} />
-          <button className="btn" aria-label="Create adventure">+</button>
+          <input
+            className="input"
+            aria-label="New adventure title"
+            placeholder="NEW ADVENTURE"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <button className="btn" aria-label="Create adventure">
+            +
+          </button>
         </form>
       </div>
 
-      {!adv && <p className="dim">Create an adventure, then plan its beats: briefing, travel, investigation, social, combat, revelation, rest.</p>}
+      {!adv && (
+        <p className="dim">
+          Create an adventure, then plan its beats: briefing, travel, investigation, social, combat, revelation, rest.
+        </p>
+      )}
 
       {adv && !editing && (
         <>
@@ -89,27 +103,72 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
                   <span className={`chip ${b.status === "active" ? "warn" : ""}`}>{b.status.toUpperCase()}</span>
                 </div>
                 {b.readAloud && <pre className="text dim">{b.readAloud}</pre>}
-                {b.encounter.length > 0 && <div className="dim">ENCOUNTER: {b.encounter.map((e) => `${e.label ?? e.threatId}${e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""}`).join(", ")}</div>}
+                {b.encounter.length > 0 && (
+                  <div className="dim">
+                    ENCOUNTER:{" "}
+                    {b.encounter
+                      .map(
+                        (e) => `${e.label ?? e.threatId}${e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""}`,
+                      )
+                      .join(", ")}
+                  </div>
+                )}
                 <div className="keys">
-                  <button className="btn sm" onClick={() => move({ index: i, dir: -1 })} aria-label={`Move ${b.title} up`}>↑</button>
-                  <button className="btn sm" onClick={() => move({ index: i, dir: 1 })} aria-label={`Move ${b.title} down`}>↓</button>
-                  <button className="btn sm" onClick={() => setEditing(b)}>EDIT</button>
-                  {b.encounter.length > 0
-                    ? <button className="btn sm primary" onClick={() => runBeat(b)}>RUN BEAT</button>
-                    : <button className="btn sm" onClick={() => setStatus(b, "active")}>SET ACTIVE</button>}
-                  <button className="btn sm" onClick={() => setStatus(b, "done")}>DONE</button>
-                  <button className="btn sm" onClick={() => setStatus(b, "skipped")}>SKIP</button>
+                  <button
+                    className="btn sm"
+                    onClick={() => move({ index: i, dir: -1 })}
+                    aria-label={`Move ${b.title} up`}
+                  >
+                    ↑
+                  </button>
+                  <button
+                    className="btn sm"
+                    onClick={() => move({ index: i, dir: 1 })}
+                    aria-label={`Move ${b.title} down`}
+                  >
+                    ↓
+                  </button>
+                  <button className="btn sm" onClick={() => setEditing(b)}>
+                    EDIT
+                  </button>
+                  {b.encounter.length > 0 ? (
+                    <button className="btn sm primary" onClick={() => runBeat(b)}>
+                      RUN BEAT
+                    </button>
+                  ) : (
+                    <button className="btn sm" onClick={() => setStatus(b, "active")}>
+                      SET ACTIVE
+                    </button>
+                  )}
+                  <button className="btn sm" onClick={() => setStatus(b, "done")}>
+                    DONE
+                  </button>
+                  <button className="btn sm" onClick={() => setStatus(b, "skipped")}>
+                    SKIP
+                  </button>
                 </div>
               </div>
             ))}
           </div>
-          <div><button className="btn primary" onClick={() => setEditing("new")}>+ NEW BEAT</button></div>
+          <div>
+            <button className="btn primary" onClick={() => setEditing("new")}>
+              + NEW BEAT
+            </button>
+          </div>
         </>
       )}
 
       {adv && editing && (
-        <BeatEditor key={editing === "new" ? "new" : editing.id} adventureId={adv.id} beat={editing === "new" ? null : editing}
-          codex={codex} players={players} send={send} bestiary={bestiary} onDone={() => setEditing(null)} />
+        <BeatEditor
+          key={editing === "new" ? "new" : editing.id}
+          adventureId={adv.id}
+          beat={editing === "new" ? null : editing}
+          codex={codex}
+          players={players}
+          send={send}
+          bestiary={bestiary}
+          onDone={() => setEditing(null)}
+        />
       )}
     </div>
   );

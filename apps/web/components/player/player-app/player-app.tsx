@@ -36,27 +36,54 @@ export function PlayerApp({ campaignId, characterId }: PlayerAppProps) {
   const current = enc?.combatants.find((c) => c.id === enc.currentId);
   const currentName = current ? (current.kind === "pc" ? names.get(current.characterId) : current.label) : null;
   const next = sideUpNext(state);
-  const banner = !enc ? "NO COMBAT · STANDING BY"
-    : myTurn ? "▶ YOUR TURN"
-    : `RND ${String(enc.round).padStart(2, "0")} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
+  const banner = !enc
+    ? "NO COMBAT · STANDING BY"
+    : myTurn
+      ? "▶ YOUR TURN"
+      : `RND ${String(enc.round).padStart(2, "0")} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
 
   return (
     <div className="pl">
       {!online && <div className="badge-offline">NO SIGNAL</div>}
       <div className={`pl-banner ${myTurn ? "up" : ""}`} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <div className="display" style={{ fontSize: 26, flex: 1 }}>{banner}</div>
+        <div className="display" style={{ fontSize: 26, flex: 1 }}>
+          {banner}
+        </div>
         {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
             (plain <a>, so nothing prefetches it); rescanning the QR rejoins. */}
-        <Show when="signed-in"><a href="/" aria-label="Lobby">◂</a><UserButton /></Show>
-        <Show when="signed-out"><a className="btn sm" href="/leave">LEAVE</a></Show>
+        <Show when="signed-in">
+          <a href="/" aria-label="Lobby">
+            ◂
+          </a>
+          <UserButton />
+        </Show>
+        <Show when="signed-out">
+          <a className="btn sm" href="/leave">
+            LEAVE
+          </a>
+        </Show>
       </div>
       <div className="pl-body">
         {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
         {tab === "FIGHT" && <Fight state={state} />}
         {tab === "INTEL" && <Intel codex={codex} state={state} />}
       </div>
-      <nav className="tabs" role="tablist" style={{ borderTop: "1px solid var(--line)", borderBottom: 0, position: "sticky", bottom: 0, background: "var(--bg)" }}>
-        {PLAYER_TABS.map((t) => <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>[{t}]</button>)}
+      <nav
+        className="tabs"
+        role="tablist"
+        style={{
+          borderTop: "1px solid var(--line)",
+          borderBottom: 0,
+          position: "sticky",
+          bottom: 0,
+          background: "var(--bg)",
+        }}
+      >
+        {PLAYER_TABS.map((t) => (
+          <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+            [{t}]
+          </button>
+        ))}
       </nav>
     </div>
   );

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference -- type.d.ts is a global Clerk augmentation, not a module
 /// <reference path="../type.d.ts" />
 import { auth, clerkMiddleware } from "@clerk/nextjs/server";
 

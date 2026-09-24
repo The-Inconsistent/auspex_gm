@@ -14,7 +14,9 @@ export default async function InvitePage({ params }: InvitePageProps) {
     const res = await apiGet(`/api/invites/${encodeURIComponent(code)}`);
     if (res.status === 400) {
       const body = (await res.json().catch(() => null)) as { message?: unknown } | null;
-      return <StatusScreen text={typeof body?.message === "string" ? body.message.toUpperCase() : JOIN_ERRORS.invalid} />;
+      return (
+        <StatusScreen text={typeof body?.message === "string" ? body.message.toUpperCase() : JOIN_ERRORS.invalid} />
+      );
     }
     const parsed = InvitePreview.safeParse(res.ok ? await res.json() : null);
     if (!parsed.success) return <StatusScreen text={JOIN_ERRORS.nosignal} />;

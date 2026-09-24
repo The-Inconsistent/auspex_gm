@@ -6,5 +6,7 @@ import { authMiddleware } from "@wg/auth/next";
 export default authMiddleware();
 
 export const config = {
-  matcher: ["/((?!_next|api/|socket\\.io|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|webmanifest)).*)"],
+  matcher: [
+    "/((?!_next|api/|socket\\.io|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|webmanifest)).*)",
+  ],
 };

@@ -6,7 +6,9 @@ export function Refusal({ error, onDismiss }: RefusalProps) {
   return (
     <div className="refusal" role="alert">
       <span>! {error}</span>
-      <button className="btn" onClick={onDismiss}>OK</button>
+      <button className="btn" onClick={onDismiss}>
+        OK
+      </button>
     </div>
   );
 }

@@ -8,8 +8,11 @@ import { Weapon } from "./threat.ts";
 // "grenade": Grenades and Missiles, which are requisitioned like Ammo (p.229); their launchers are "weapon".
 // Books the catalogue draws on, and how a page cite names them.
 export const WARGEAR_SOURCES = { core: "Core", "vow-of-absolution": "VoA" } as const;
-export const WargearSource = z.enum(Object.keys(WARGEAR_SOURCES) as [keyof typeof WARGEAR_SOURCES, ...(keyof typeof WARGEAR_SOURCES)[]]);
-export const wargearCite = ({ source, page }: { source: WargearSource; page: number }) => `${WARGEAR_SOURCES[source]} p.${page}`;
+export const WargearSource = z.enum(
+  Object.keys(WARGEAR_SOURCES) as [keyof typeof WARGEAR_SOURCES, ...(keyof typeof WARGEAR_SOURCES)[]],
+);
+export const wargearCite = ({ source, page }: { source: WargearSource; page: number }) =>
+  `${WARGEAR_SOURCES[source]} p.${page}`;
 export type WargearSource = z.infer<typeof WargearSource>;
 
 export const WargearKind = z.enum(["weapon", "grenade", "armour", "equipment", "upgrade", "ammo", "augmetic"]);
@@ -54,7 +57,10 @@ export type Wargear = z.infer<typeof Wargear>;
 
 // A catalogue weapon as a sheet weapon. A thrown range becomes N × the character's Strength in metres (p.207); a
 // weapon that is also melee keeps its reach and notes the throw as a trait.
-export function sheetWeapon({ name, weapon: { thrown, range, ...w } }: { name: string; weapon: WargearWeapon }, strength: number) {
+export function sheetWeapon(
+  { name, weapon: { thrown, range, ...w } }: { name: string; weapon: WargearWeapon },
+  strength: number,
+) {
   const throwM = thrown === undefined ? undefined : thrown * strength;
   if (range === undefined) return { name, ...w, range: [throwM ?? 1] };
   return { name, ...w, range, traits: throwM === undefined ? w.traits : [...w.traits, `Thrown (${throwM} m)`] };
@@ -62,9 +68,12 @@ export function sheetWeapon({ name, weapon: { thrown, range, ...w } }: { name: s
 
 // A catalogue item as a gear line on the sheet (≤ 200 characters): the name, armour's AR, and where to read it.
 export function gearLine({ name, armour: a, source, page }: Pick<Wargear, "name" | "armour" | "source" | "page">) {
-  const ar = a ? `AR ${a.ar}${a.invulnerable ? "*" : ""}${a.powered ? `, Powered (${a.powered})` : ""}${a.traits.length ? `, ${a.traits.join(", ")}` : ""}; ` : "";
+  const ar = a
+    ? `AR ${a.ar}${a.invulnerable ? "*" : ""}${a.powered ? `, Powered (${a.powered})` : ""}${a.traits.length ? `, ${a.traits.join(", ")}` : ""}; `
+    : "";
   return `${name} (${ar}${wargearCite({ source, page })})`.slice(0, 200);
 }
 
 // Which requisition Test a catalogue item takes: Ammo and Grenades share the session's Ammo Test (p.205, p.229).
-export const requisitionKindOf = (kind: WargearKind): RequisitionKind => (kind === "ammo" || kind === "grenade" ? kind : "wargear");
+export const requisitionKindOf = (kind: WargearKind): RequisitionKind =>
+  kind === "ammo" || kind === "grenade" ? kind : "wargear";

@@ -6,7 +6,9 @@ import { conditions, createdAt } from "../core/sql.ts";
 
 export const encounter = pgTable("encounter", {
   id: uuid().primaryKey().defaultRandom(),
-  campaignId: uuid().notNull().references(() => campaign.id, { onDelete: "cascade" }),
+  campaignId: uuid()
+    .notNull()
+    .references(() => campaign.id, { onDelete: "cascade" }),
   active: boolean().notNull().default(true),
   round: integer().notNull().default(1),
   currentId: uuid().references((): AnyPgColumn => combatant.id, { onDelete: "set null" }),
@@ -17,7 +19,9 @@ export const encounter = pgTable("encounter", {
 
 export const combatant = pgTable("combatant", {
   id: uuid().primaryKey().defaultRandom(),
-  encounterId: uuid().notNull().references(() => encounter.id, { onDelete: "cascade" }),
+  encounterId: uuid()
+    .notNull()
+    .references(() => encounter.id, { onDelete: "cascade" }),
   order: integer().notNull(), // display order only; turn order is chosen at the table
   acted: boolean().notNull().default(false),
   ambushed: boolean().notNull().default(false),

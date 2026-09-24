@@ -40,29 +40,55 @@ export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 // Editable fields per kind (what the GM sends). `id`/`campaignId` are server-owned.
 export const CodexInput = {
   faction: z.object({
-    name: text(100), keywords: z.array(text(60)).max(20).default([]),
-    stance: FactionStance.default("neutral"), notes: text().default(""), secrets: text().default(""),
+    name: text(100),
+    keywords: z.array(text(60)).max(20).default([]),
+    stance: FactionStance.default("neutral"),
+    notes: text().default(""),
+    secrets: text().default(""),
   }),
   adventure: z.object({
-    title: text(200), premise: text().default(""), status: AdventureStatus.default("planned"),
+    title: text(200),
+    premise: text().default(""),
+    status: AdventureStatus.default("planned"),
   }),
   beat: z.object({
-    adventureId: id, title: text(200), type: BeatType.default("social"),
+    adventureId: id,
+    title: text(200),
+    type: BeatType.default("social"),
     status: BeatStatus.default("planned"),
-    readAloud: text().default(""), gmNotes: text().default(""), outcome: text().default(""),
-    locationId: id.nullable().default(null), npcIds: z.array(id).max(50).default([]), handoutIds: z.array(id).max(50).default([]),
-    encounter: z.array(EncounterEntry).max(30)
-      .refine((es) => encounterRows(es) <= MAX_ENCOUNTER_ROWS, `At most ${MAX_ENCOUNTER_ROWS} combatants; group large counts as a Mob`)
+    readAloud: text().default(""),
+    gmNotes: text().default(""),
+    outcome: text().default(""),
+    locationId: id.nullable().default(null),
+    npcIds: z.array(id).max(50).default([]),
+    handoutIds: z.array(id).max(50).default([]),
+    encounter: z
+      .array(EncounterEntry)
+      .max(30)
+      .refine(
+        (es) => encounterRows(es) <= MAX_ENCOUNTER_ROWS,
+        `At most ${MAX_ENCOUNTER_ROWS} combatants; group large counts as a Mob`,
+      )
       .default([]),
   }),
   location: z.object({
-    name: text(200), parentId: id.nullable().default(null), description: text().default(""),
-    gmNotes: text().default(""), hazards: text().default(""), revealed: z.boolean().default(false),
+    name: text(200),
+    parentId: id.nullable().default(null),
+    description: text().default(""),
+    gmNotes: text().default(""),
+    hazards: text().default(""),
+    revealed: z.boolean().default(false),
   }),
   npc: z.object({
-    name: text(200), factionId: id.nullable().default(null), role: text(200).default(""),
-    description: text().default(""), gmNotes: text().default(""), secrets: text().default(""),
-    attitude: Attitude.default("neutral"), statSource: StatSource.default({ kind: "none" }), revealed: z.boolean().default(false),
+    name: text(200),
+    factionId: id.nullable().default(null),
+    role: text(200).default(""),
+    description: text().default(""),
+    gmNotes: text().default(""),
+    secrets: text().default(""),
+    attitude: Attitude.default("neutral"),
+    statSource: StatSource.default({ kind: "none" }),
+    revealed: z.boolean().default(false),
   }),
   handout: z.object({ title: text(200), body: text(20000).default(""), revealed: z.boolean().default(false) }),
 } as const;
@@ -86,10 +112,17 @@ export function toPlayerCodex(c: Codex): Codex {
   return {
     factions: [],
     adventures: [],
-    locations: c.locations.filter((l) => l.revealed).map((l) => ({
-      ...l, gmNotes: "", hazards: "", parentId: l.parentId && shownLocations.has(l.parentId) ? l.parentId : null,
-    })),
-    npcs: c.npcs.filter((n) => n.revealed).map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
+    locations: c.locations
+      .filter((l) => l.revealed)
+      .map((l) => ({
+        ...l,
+        gmNotes: "",
+        hazards: "",
+        parentId: l.parentId && shownLocations.has(l.parentId) ? l.parentId : null,
+      })),
+    npcs: c.npcs
+      .filter((n) => n.revealed)
+      .map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
     handouts: c.handouts.filter((h) => h.revealed),
     sessions: c.sessions,
   };

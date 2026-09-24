@@ -1,9 +1,25 @@
 import { and, eq, max, sql } from "drizzle-orm";
 import { threats } from "@wg/data";
 import {
-  EncounterEntry, MONSTROUS_IMMUNE, canAct, canSeize, exhaustedShock, isExhausted, isOut, isTimed, sideOf, sideOfKind, sideUpNext,
+  EncounterEntry,
+  MONSTROUS_IMMUNE,
+  canAct,
+  canSeize,
+  exhaustedShock,
+  isExhausted,
+  isOut,
+  isTimed,
+  sideOf,
+  sideOfKind,
+  sideUpNext,
   threatClassAt,
-  type Action, type ActionResult, type Combatant, type LiveState, type Marker, type Side, type Threat,
+  type Action,
+  type ActionResult,
+  type Combatant,
+  type LiveState,
+  type Marker,
+  type Side,
+  type Threat,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -32,30 +48,45 @@ async function liveTable(tx: Tx, campaignId: string) {
 
 // PCs' Conditions live on their character; threats' on the combatant row.
 const conditionsOf = (state: LiveState, c: Combatant) =>
-  c.kind === "pc" ? state.characters.find((x) => x.id === c.characterId)?.conditions ?? [] : c.conditions;
+  c.kind === "pc" ? (state.characters.find((x) => x.id === c.characterId)?.conditions ?? []) : c.conditions;
 
 async function activeEncounter(tx: Tx, campaignId: string) {
-  const [enc] = await tx.select().from(encounter).where(and(eq(encounter.campaignId, campaignId), eq(encounter.active, true)));
+  const [enc] = await tx
+    .select()
+    .from(encounter)
+    .where(and(eq(encounter.campaignId, campaignId), eq(encounter.active, true)));
   return enc ?? fail("No active encounter");
 }
 
 // Spend 1 Glory (Agents) or Ruin (Threats) to Seize or ignore an ambush (p.177, p.320); fails if the pool is empty.
 async function spend(tx: Tx, { campaignId, side }: { campaignId: string; side: Side }) {
   const col = side === "agents" ? campaign.glory : campaign.ruin;
-  const r = await tx.update(campaign).set({ [side === "agents" ? "glory" : "ruin"]: sql`${col} - 1` })
-    .where(and(eq(campaign.id, campaignId), sql`${col} > 0`)).returning({ id: campaign.id });
+  const r = await tx
+    .update(campaign)
+    .set({ [side === "agents" ? "glory" : "ruin"]: sql`${col} - 1` })
+    .where(and(eq(campaign.id, campaignId), sql`${col} > 0`))
+    .returning({ id: campaign.id });
   if (!r.length) fail(side === "agents" ? "No Glory to spend" : "No Ruin to spend");
 }
 
 async function nextOrder(tx: Tx, encounterId: string) {
-  const [{ m } = { m: null }] = await tx.select({ m: max(combatant.order) }).from(combatant).where(eq(combatant.encounterId, encounterId));
+  const [{ m } = { m: null }] = await tx
+    .select({ m: max(combatant.order) })
+    .from(combatant)
+    .where(eq(combatant.encounterId, encounterId));
   return (m ?? -1) + 1;
 }
 
 async function addThreat(
   tx: Tx,
-  { encounterId, tier, threat: t, label, mobCount, marker }:
-    { encounterId: string; tier: number; threat: Threat; label?: string; mobCount?: number; marker?: Marker },
+  {
+    encounterId,
+    tier,
+    threat: t,
+    label,
+    mobCount,
+    marker,
+  }: { encounterId: string; tier: number; threat: Threat; label?: string; mobCount?: number; marker?: Marker },
 ) {
   const [c] = await tx
     .insert(combatant)
@@ -77,7 +108,8 @@ async function addThreat(
 }
 
 async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string; characterId: string }) {
-  const [c] = await tx.insert(combatant)
+  const [c] = await tx
+    .insert(combatant)
     .values({ encounterId, order: await nextOrder(tx, encounterId), kind: "pc", characterId })
     .returning({ id: combatant.id });
   return c!.id; // the row was just inserted
@@ -92,10 +124,16 @@ async function startEncounter(tx: Tx, campaignId: string) {
 // Everyone gets a Turn each Round; the players pick first again; ambush only applies to Round 1 (p.176-177).
 async function newRound(tx: Tx, { encounterId, round }: { encounterId: string; round: number }) {
   await tx.update(combatant).set({ acted: false, ambushed: false }).where(eq(combatant.encounterId, encounterId));
-  await tx.update(encounter).set({ round: round + 1, currentId: null, lastSide: null, seizedSide: null }).where(eq(encounter.id, encounterId));
+  await tx
+    .update(encounter)
+    .set({ round: round + 1, currentId: null, lastSide: null, seizedSide: null })
+    .where(eq(encounter.id, encounterId));
 }
 
-export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ctx; action: EncounterAction }): Promise<ActionResult> {
+export async function applyEncounterAction(
+  tx: Tx,
+  { ctx, action: a }: { ctx: Ctx; action: EncounterAction },
+): Promise<ActionResult> {
   const cid = ctx.campaignId;
 
   switch (a.type) {
@@ -125,9 +163,13 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       const sideName = (x: Side) => (x === "agents" ? "Agents" : "Threats");
       if (a.type === "turn.seize") {
         if (!canSeize(state, side))
-          fail(enc.seizedSide === side ? "Already Seized: the other side acts next"
-            : up === side ? `No need to Seize: the ${sideName(side)} act next anyway`
-            : "Seizing lets the side that just acted go again");
+          fail(
+            enc.seizedSide === side
+              ? "Already Seized: the other side acts next"
+              : up === side
+                ? `No need to Seize: the ${sideName(side)} act next anyway`
+                : "Seizing lets the side that just acted go again",
+          );
         await spend(tx, { campaignId: cid, side });
         await tx.update(encounter).set({ currentId: a.id, seizedSide: side }).where(eq(encounter.id, enc.id));
       } else {
@@ -136,7 +178,10 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         await tx.update(encounter).set({ currentId: a.id }).where(eq(encounter.id, enc.id));
       }
       // Timed Conditions held now end with this Turn; ones gained during it last until the end of the next (§11.8).
-      await tx.update(combatant).set({ expiring: conditionsOf(state, c).filter(isTimed) }).where(eq(combatant.id, a.id));
+      await tx
+        .update(combatant)
+        .set({ expiring: conditionsOf(state, c).filter(isTimed) })
+        .where(eq(combatant.id, a.id));
       return { ok: true };
     }
 
@@ -146,14 +191,24 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       const side = sideOf(current);
       // "Until the end of your next Turn" (pp.199-200): drop the timed Conditions armed at turn.start.
       // ponytail: one that was removed and gained again this Turn ends too; per-Condition start times if that matters.
-      const [{ expiring } = { expiring: [] }] = await tx.select({ expiring: combatant.expiring }).from(combatant).where(eq(combatant.id, current.id));
+      const [{ expiring } = { expiring: [] }] = await tx
+        .select({ expiring: combatant.expiring })
+        .from(combatant)
+        .where(eq(combatant.id, current.id));
       const left = conditionsOf(state, current).filter((k) => !expiring.includes(k));
-      if (current.kind === "pc" && expiring.length) await tx.update(character).set({ conditions: left }).where(eq(character.id, current.characterId));
-      await tx.update(combatant)
-        .set({ acted: true, expiring: [], ...(current.kind === "threat" && expiring.length ? { conditions: left } : {}) })
+      if (current.kind === "pc" && expiring.length)
+        await tx.update(character).set({ conditions: left }).where(eq(character.id, current.characterId));
+      await tx
+        .update(combatant)
+        .set({
+          acted: true,
+          expiring: [],
+          ...(current.kind === "threat" && expiring.length ? { conditions: left } : {}),
+        })
         .where(eq(combatant.id, current.id));
       // A Seize holds until the other side acts.
-      await tx.update(encounter)
+      await tx
+        .update(encounter)
         .set({ currentId: null, lastSide: side, seizedSide: enc.seizedSide === side ? side : null })
         .where(eq(encounter.id, enc.id));
       // The Round ends once everyone able to act has had a Turn (p.176). canAct already excludes the current
@@ -166,13 +221,25 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       const t = threats.get(a.threatId) ?? fail(`Unknown threat "${a.threatId}"`);
       const enc = await activeEncounter(tx, cid);
       const tier = await campaignTier(tx, cid);
-      return { ok: true, id: await addThreat(tx, { encounterId: enc.id, tier, threat: t, label: a.label, mobCount: a.mobCount, marker: a.marker }) };
+      return {
+        ok: true,
+        id: await addThreat(tx, {
+          encounterId: enc.id,
+          tier,
+          threat: t,
+          label: a.label,
+          mobCount: a.mobCount,
+          marker: a.marker,
+        }),
+      };
     }
 
     case "combatant.addCharacter": {
       await ownCharacter(tx, { campaignId: cid, id: a.characterId });
       const enc = await activeEncounter(tx, cid);
-      const [dup] = await tx.select({ id: combatant.id }).from(combatant)
+      const [dup] = await tx
+        .select({ id: combatant.id })
+        .from(combatant)
         .where(and(eq(combatant.encounterId, enc.id), eq(combatant.characterId, a.characterId)));
       if (dup) fail("Already in this encounter");
       return { ok: true, id: await addPc(tx, { encounterId: enc.id, characterId: a.characterId }) };
@@ -187,16 +254,34 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         if (!r.length) fail("Combatant not found");
       }
       if (threatOnly.conditions) {
-        const [row] = await tx.select({ threatClass: combatant.threatClass, conditions: combatant.conditions }).from(combatant).where(where);
-        const immune = row?.threatClass === "M" && threatOnly.conditions.find((k) => !row.conditions.includes(k) && (MONSTROUS_IMMUNE as readonly string[]).includes(k));
+        const [row] = await tx
+          .select({ threatClass: combatant.threatClass, conditions: combatant.conditions })
+          .from(combatant)
+          .where(where);
+        const immune =
+          row?.threatClass === "M" &&
+          threatOnly.conditions.find(
+            (k) => !row.conditions.includes(k) && (MONSTROUS_IMMUNE as readonly string[]).includes(k),
+          );
         if (immune) fail(`Monstrous Creatures are immune to ${immune} (p.323)`);
       }
       if (Object.keys(threatOnly).length) {
         // Setting a Mob's size by hand raises its starting size too, so the half-slain prompt and the healing cap
         // (p.325) follow; null turns it back into a single Threat.
-        const mobStart = threatOnly.mobCount === undefined ? {}
-          : { mobStart: threatOnly.mobCount === null ? null : sql`greatest(coalesce(${combatant.mobStart}, 0), ${threatOnly.mobCount})` };
-        const r = await tx.update(combatant).set({ ...threatOnly, ...mobStart }).where(and(where, eq(combatant.kind, "threat"))).returning({ id: combatant.id });
+        const mobStart =
+          threatOnly.mobCount === undefined
+            ? {}
+            : {
+                mobStart:
+                  threatOnly.mobCount === null
+                    ? null
+                    : sql`greatest(coalesce(${combatant.mobStart}, 0), ${threatOnly.mobCount})`,
+              };
+        const r = await tx
+          .update(combatant)
+          .set({ ...threatOnly, ...mobStart })
+          .where(and(where, eq(combatant.kind, "threat")))
+          .returning({ id: combatant.id });
         if (!r.length) fail("Threat combatant not found");
       }
       return { ok: true };
@@ -204,7 +289,9 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
 
     case "combatant.adjust": {
       const enc = await activeEncounter(tx, cid);
-      const [c] = await tx.select().from(combatant)
+      const [c] = await tx
+        .select()
+        .from(combatant)
         .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id), eq(combatant.kind, "threat")));
       if (!c) fail("Threat combatant not found");
       // Threat rows always carry a stat snapshot (see addThreat).
@@ -213,14 +300,22 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       // Mob (p.325): every member has 1 Wound, so Wounds remove members and healing restores them, up to the starting
       // size. More Shock in one hit than the members' Maximum Shock removes one member; less has no effect, and a Mob
       // keeps no Shock track.
-      const mobLoss = (a.wounds ?? 0) + (!a.raw && a.shock !== undefined && maxShock !== null && a.shock > maxShock ? 1 : 0);
+      const mobLoss =
+        (a.wounds ?? 0) + (!a.raw && a.shock !== undefined && maxShock !== null && a.shock > maxShock ? 1 : 0);
       // A single Threat's Shock while Exhausted is Mortal Wounds (p.199).
-      const hit = a.raw ? { wounds: a.wounds, shock: a.shock }
-        : exhaustedShock({ exhausted: isExhausted({ shock: c.shock, maxShock, conditions: c.conditions }), wounds: a.wounds, shock: a.shock });
-      const damage = c.mobCount !== null
-        ? { mobCount: sql`least(${c.mobStart ?? c.mobCount}, greatest(0, ${combatant.mobCount} - ${mobLoss}))` }
-        : { wounds: bump(combatant.wounds, hit.wounds), shock: bump(combatant.shock, hit.shock) };
-      await tx.update(combatant)
+      const hit = a.raw
+        ? { wounds: a.wounds, shock: a.shock }
+        : exhaustedShock({
+            exhausted: isExhausted({ shock: c.shock, maxShock, conditions: c.conditions }),
+            wounds: a.wounds,
+            shock: a.shock,
+          });
+      const damage =
+        c.mobCount !== null
+          ? { mobCount: sql`least(${c.mobStart ?? c.mobCount}, greatest(0, ${combatant.mobCount} - ${mobLoss}))` }
+          : { wounds: bump(combatant.wounds, hit.wounds), shock: bump(combatant.shock, hit.shock) };
+      await tx
+        .update(combatant)
         .set({ ...damage, personalRuin: bump(combatant.personalRuin, a.personalRuin) })
         .where(eq(combatant.id, a.id));
       return { ok: true };
@@ -229,7 +324,10 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
     // Pay 1 Glory/Ruin so an ambushed combatant acts normally in Round 1 (p.177).
     case "combatant.aware": {
       const enc = await activeEncounter(tx, cid);
-      const [c] = await tx.select().from(combatant).where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)));
+      const [c] = await tx
+        .select()
+        .from(combatant)
+        .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)));
       if (!c) fail("Combatant not found");
       if (!c.ambushed) fail("Not ambushed");
       await spend(tx, { campaignId: cid, side: sideOfKind(c.kind) });
@@ -239,13 +337,19 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
 
     case "combatant.remove": {
       const enc = await activeEncounter(tx, cid);
-      const r = await tx.delete(combatant).where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id))).returning({ id: combatant.id });
+      const r = await tx
+        .delete(combatant)
+        .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)))
+        .returning({ id: combatant.id });
       return r.length ? { ok: true } : fail("Combatant not found"); // current_id is cleared by the FK
     }
 
     // Start the beat's prepared encounter: every party character plus its threats.
     case "beat.startEncounter": {
-      const [b] = await tx.select().from(beat).where(and(eq(beat.id, a.id), eq(beat.campaignId, cid)));
+      const [b] = await tx
+        .select()
+        .from(beat)
+        .where(and(eq(beat.id, a.id), eq(beat.campaignId, cid)));
       if (!b) fail("Beat not found");
       const entries = EncounterEntry.array().parse(b.encounter);
       const missing = entries.find((e) => !threats.has(e.threatId));
@@ -256,9 +360,17 @@ export async function applyEncounterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
         await addPc(tx, { encounterId, characterId: ch.id });
       for (const e of entries) {
         const t = threats.get(e.threatId)!; // every entry was checked against `threats` above
-        if (e.asMob && e.count > 1) await addThreat(tx, { encounterId, tier, threat: t, label: e.label, mobCount: e.count, marker: e.marker });
-        else for (let i = 0; i < e.count; i++)
-          await addThreat(tx, { encounterId, tier, threat: t, label: e.count > 1 ? `${e.label ?? t.name} ${i + 1}` : e.label, marker: e.marker });
+        if (e.asMob && e.count > 1)
+          await addThreat(tx, { encounterId, tier, threat: t, label: e.label, mobCount: e.count, marker: e.marker });
+        else
+          for (let i = 0; i < e.count; i++)
+            await addThreat(tx, {
+              encounterId,
+              tier,
+              threat: t,
+              label: e.count > 1 ? `${e.label ?? t.name} ${i + 1}` : e.label,
+              marker: e.marker,
+            });
       }
       await tx.update(beat).set({ status: "active" }).where(eq(beat.id, b.id));
       return { ok: true, id: encounterId };

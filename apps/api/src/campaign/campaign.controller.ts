@@ -1,5 +1,16 @@
 import {
-  BadRequestException, Body, Controller, ForbiddenException, Get, Headers, HttpCode, Inject, Param, Post, Req, Res,
+  BadRequestException,
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Headers,
+  HttpCode,
+  Inject,
+  Param,
+  Post,
+  Req,
+  Res,
   UnauthorizedException,
 } from "@nestjs/common";
 import type { Request, Response } from "express";
@@ -40,7 +51,11 @@ const headersOf = (req: Request) => ({ authorization: req.headers.authorization,
 // A year-long httpOnly cookie holding a guest's player token.
 function setGuestCookie(res: Response, token: string) {
   res.cookie(COOKIE, token, {
-    httpOnly: true, sameSite: "lax", secure: process.env.COOKIE_SECURE === "true", maxAge: 365 * 24 * 3600 * 1000, path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.COOKIE_SECURE === "true",
+    maxAge: 365 * 24 * 3600 * 1000,
+    path: "/",
   });
 }
 
@@ -122,14 +137,21 @@ export class CampaignController {
   // Accepting changes who's at the table, so it runs in that table's action queue and rebroadcasts like an action.
   @Post("invites/:code/accept")
   @HttpCode(200)
-  async accept(@Param("code") code: string, @Req() req: Request, @Body() body: unknown, @Res({ passthrough: true }) res: Response) {
+  async accept(
+    @Param("code") code: string,
+    @Req() req: Request,
+    @Body() body: unknown,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const user = await signedInUser(headersOf(req));
     const c = parse(InviteCode, code);
     const preview = await refusing(() => previewInvite({ code: c, user }));
-    const result = await refusing(() => this.table.mutate({
-      campaignId: preview.campaignId,
-      fn: () => db.transaction((tx) => acceptInvite(tx, { code: c, user, body })),
-    }));
+    const result = await refusing(() =>
+      this.table.mutate({
+        campaignId: preview.campaignId,
+        fn: () => db.transaction((tx) => acceptInvite(tx, { code: c, user, body })),
+      }),
+    );
     if (result.guestToken) setGuestCookie(res, result.guestToken);
     return { campaignId: result.campaignId };
   }

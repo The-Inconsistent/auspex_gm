@@ -15,7 +15,11 @@ const [display, mono] = await Promise.all([
 
 const C = { bg: "#06110b", panel: "#0b1c13", line: "#1f4d33", fg: "#9ef5b5", dim: "#5fa878", amber: "#ffc266" };
 
-const LINES = ["COMBAT TRACKER .......... ONLINE", "PLAY SHEETS ............. SYNCED", "CODEX ................... SEALED"];
+const LINES = [
+  "COMBAT TRACKER .......... ONLINE",
+  "PLAY SHEETS ............. SYNCED",
+  "CODEX ................... SEALED",
+];
 
 export default function Image() {
   return new ImageResponse(
@@ -26,7 +30,8 @@ export default function Image() {
         display: "flex",
         padding: 40,
         background: C.bg,
-        backgroundImage: "repeating-linear-gradient(0deg, rgba(158, 245, 181, 0.06) 0px, rgba(158, 245, 181, 0.06) 1px, transparent 1px, transparent 4px)",
+        backgroundImage:
+          "repeating-linear-gradient(0deg, rgba(158, 245, 181, 0.06) 0px, rgba(158, 245, 181, 0.06) 1px, transparent 1px, transparent 4px)",
         fontFamily: "Plex",
         color: C.fg,
       }}
@@ -48,7 +53,16 @@ export default function Image() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", alignItems: "flex-end", fontFamily: "VT323", fontSize: 220, lineHeight: 0.9, letterSpacing: 8 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              fontFamily: "VT323",
+              fontSize: 220,
+              lineHeight: 0.9,
+              letterSpacing: 8,
+            }}
+          >
             AUSPEX
             <div style={{ width: 70, height: 150, marginLeft: 24, marginBottom: 22, background: C.fg }} />
           </div>

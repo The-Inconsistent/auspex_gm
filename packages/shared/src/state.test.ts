@@ -2,27 +2,95 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  Action, CharacterStats, Threat, adjustAmmo, gearLine, requisitionOutcome, sheetWeapon, requisitionTest, requisitionYield, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
-  roundEndReminders, sideUpNext, threatStatus, toPlayerCodex, toPlayerView,
-  type Character, type Codex, type Combatant, type Encounter, type LiveState, type ThreatCombatant,
+  Action,
+  CharacterStats,
+  Threat,
+  adjustAmmo,
+  gearLine,
+  requisitionOutcome,
+  sheetWeapon,
+  requisitionTest,
+  requisitionYield,
+  canAct,
+  canSeize,
+  deriveStats,
+  exhaustedShock,
+  isExhausted,
+  isOut,
+  isTimed,
+  pcHit,
+  pcStatus,
+  poolMax,
+  roundEndReminders,
+  sideUpNext,
+  threatStatus,
+  toPlayerCodex,
+  toPlayerView,
+  type Character,
+  type Codex,
+  type Combatant,
+  type Encounter,
+  type LiveState,
+  type ThreatCombatant,
 } from "./index.ts";
 
-const orkBoy = Threat.parse(JSON.parse(readFileSync(new URL("../../data/threats/ork-boy.json", import.meta.url), "utf8")));
+const orkBoy = Threat.parse(
+  JSON.parse(readFileSync(new URL("../../data/threats/ork-boy.json", import.meta.url), "utf8")),
+);
 const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant => ({
-  id, kind: "threat", acted: false, ambushed: false, threatId: "ork-boy", threatClass: "T", label: "Boyz", marker: "red",
-  mobCount: null, mobStart: null, wounds: 0, shock: 0, personalRuin: 0, maxWounds: 6, maxShock: 2, conditions: ["Prone"],
-  revealed: false, stats: orkBoy, ...o,
+  id,
+  kind: "threat",
+  acted: false,
+  ambushed: false,
+  threatId: "ork-boy",
+  threatClass: "T",
+  label: "Boyz",
+  marker: "red",
+  mobCount: null,
+  mobStart: null,
+  wounds: 0,
+  shock: 0,
+  personalRuin: 0,
+  maxWounds: 6,
+  maxShock: 2,
+  conditions: ["Prone"],
+  revealed: false,
+  stats: orkBoy,
+  ...o,
 });
 const pc = (id: string, o: Partial<Combatant> = {}): Combatant =>
   ({ id, kind: "pc", characterId: `ch-${id}`, acted: false, ambushed: false, ...o }) as Combatant;
-const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter =>
-  ({ id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null, combatants, ...o });
+const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter => ({
+  id: "e",
+  round: 1,
+  currentId: null,
+  lastSide: null,
+  seizedSide: null,
+  combatants,
+  ...o,
+});
 const noAccess: LiveState["access"] = { members: [], invites: [] };
-const char = (o: Partial<Character>): Character =>
-  ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, annihilated: false, xp: 0, conditions: [], ...o });
+const char = (o: Partial<Character>): Character => ({
+  id: "x",
+  name: "x",
+  stats: CharacterStats.parse({}),
+  overrides: {},
+  wounds: 0,
+  shock: 0,
+  wrath: 2,
+  traumatic: 0,
+  annihilated: false,
+  xp: 0,
+  conditions: [],
+  ...o,
+});
 // A Tier 1 table around an encounter; the turn rules need the characters to know who's Dead.
-const table = (e: Encounter, characters: Character[] = []): LiveState =>
-  ({ campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" }, characters, encounter: e, access: noAccess });
+const table = (e: Encounter, characters: Character[] = []): LiveState => ({
+  campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" },
+  characters,
+  encounter: e,
+  access: noAccess,
+});
 
 test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", () => {
   const s: LiveState = {
@@ -41,13 +109,19 @@ test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", ()
   assert.equal(shown.stats?.name, "Ork Boy");
   assert.deepEqual(p, pc("p"));
   assert.notEqual((s.encounter!.combatants[0] as ThreatCombatant).stats, null, "input not mutated");
-  assert.deepEqual(toPlayerView(s).access, { members: s.access.members, invites: [] }, "players see who's seated, never the invite links");
+  assert.deepEqual(
+    toPlayerView(s).access,
+    { members: s.access.members, invites: [] },
+    "players see who's seated, never the invite links",
+  );
 });
 
 test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {
   const s = CharacterStats.parse({
-    attributes: { S: 5, T: 6, A: 5, I: 5, Wil: 3, Int: 3, Fel: 1 }, armour: { name: "Mk X Tacticus", ar: 5 },
-    skills: { Awareness: 3 }, mods: { maxWounds: 3, resolve: 1 }, // Primaris +3 Wounds, Honour the Chapter +1 Resolve
+    attributes: { S: 5, T: 6, A: 5, I: 5, Wil: 3, Int: 3, Fel: 1 },
+    armour: { name: "Mk X Tacticus", ar: 5 },
+    skills: { Awareness: 3 },
+    mods: { maxWounds: 3, resolve: 1 }, // Primaris +3 Wounds, Honour the Chapter +1 Resolve
   });
   const d = deriveStats({ stats: s, overrides: {}, tier: 4 });
   assert.equal(d.maxWounds, 6 + 8 + 3);
@@ -70,32 +144,61 @@ test("pool caps", () => {
 
 test("sideUpNext alternates, skips ambushed in Round 1, falls back to the side with someone left", () => {
   assert.equal(sideUpNext(table(enc([pc("a"), threat("t")]))), "agents", "players choose first each round");
-  assert.equal(sideUpNext(table(enc([pc("a", { acted: true }), pc("b"), threat("t")], { lastSide: "agents" }))), "threats");
-  assert.equal(sideUpNext(table(enc([pc("a", { acted: true }), pc("b"), threat("t", { acted: true })], { lastSide: "agents" }))), "agents");
-  assert.equal(sideUpNext(table(enc([pc("a", { ambushed: true }), threat("t")]))), "threats", "ambushed agent has no turn in round 1");
+  assert.equal(
+    sideUpNext(table(enc([pc("a", { acted: true }), pc("b"), threat("t")], { lastSide: "agents" }))),
+    "threats",
+  );
+  assert.equal(
+    sideUpNext(table(enc([pc("a", { acted: true }), pc("b"), threat("t", { acted: true })], { lastSide: "agents" }))),
+    "agents",
+  );
+  assert.equal(
+    sideUpNext(table(enc([pc("a", { ambushed: true }), threat("t")]))),
+    "threats",
+    "ambushed agent has no turn in round 1",
+  );
   assert.equal(sideUpNext(table(enc([pc("a", { ambushed: true }), threat("t")], { round: 2 }))), "agents");
 });
 
 test("canSeize: same side once, GM-only at round start", () => {
   assert.equal(canSeize(table(enc([], { lastSide: "agents" })), "agents"), true);
-  assert.equal(canSeize(table(enc([], { lastSide: "agents", seizedSide: "agents" })), "agents"), false, "once before the other side acts");
+  assert.equal(
+    canSeize(table(enc([], { lastSide: "agents", seizedSide: "agents" })), "agents"),
+    false,
+    "once before the other side acts",
+  );
   assert.equal(canSeize(table(enc([], { lastSide: "agents" })), "threats"), false, "threats act next anyway");
   assert.equal(canSeize(table(enc([])), "threats"), true, "GM seizes the first turn of a round (p.176)");
   assert.equal(canSeize(table(enc([])), "agents"), false);
-  assert.equal(canSeize(table(enc([pc("a", { acted: true }), pc("b")], { lastSide: "agents" })), "agents"), false,
-    "no Threat left to act: the Agents go again without paying");
+  assert.equal(
+    canSeize(table(enc([pc("a", { acted: true }), pc("b")], { lastSide: "agents" })), "agents"),
+    false,
+    "no Threat left to act: the Agents go again without paying",
+  );
 });
 
 test("Slain threats and Dead characters are out: no Turns, and they don't hold up the Round", () => {
   const slain = threat("t", { shock: 3 }); // Troop over max Shock (p.324)
   assert.equal(isOut(table(enc([slain])), slain), true);
-  assert.equal(sideUpNext(table(enc([pc("a", { acted: true }), slain], { lastSide: "agents" }))), null, "Round is over");
+  assert.equal(
+    sideUpNext(table(enc([pc("a", { acted: true }), slain], { lastSide: "agents" }))),
+    null,
+    "Round is over",
+  );
   const dead = pc("a");
   const e = enc([dead, threat("t")]);
-  assert.equal(isOut(table(e, [char({ id: "ch-a", traumatic: 3 })]), dead), true, "Tier 1: more than 2 Traumatic Injuries (p.193)");
+  assert.equal(
+    isOut(table(e, [char({ id: "ch-a", traumatic: 3 })]), dead),
+    true,
+    "Tier 1: more than 2 Traumatic Injuries (p.193)",
+  );
   assert.equal(canAct(table(e, [char({ id: "ch-a", traumatic: 3 })]), dead), false);
   assert.equal(sideUpNext(table(e, [char({ id: "ch-a", traumatic: 3 })])), "threats");
-  assert.equal(isOut(table(e, [char({ id: "ch-a", wounds: 99 })]), dead), false, "Dying characters still take Turns (p.193)");
+  assert.equal(
+    isOut(table(e, [char({ id: "ch-a", wounds: 99 })]), dead),
+    false,
+    "Dying characters still take Turns (p.193)",
+  );
 });
 
 test("threatStatus follows class rules (p.324)", () => {
@@ -103,12 +206,20 @@ test("threatStatus follows class rules (p.324)", () => {
   assert.deepEqual(threatStatus(threat("e", { threatClass: "E", shock: 3 })), ["Exhausted"]);
   assert.deepEqual(threatStatus(threat("a", { threatClass: "A", wounds: 7 })), ["Dying or dead (GM)"]);
   assert.deepEqual(threatStatus(threat("m", { threatClass: "M", wounds: 7 })), ["Slain"]);
-  assert.deepEqual(threatStatus(threat("mob", { mobCount: 5, mobStart: 10 })), ["Resolve DN 3 at Round end"], "half slain");
+  assert.deepEqual(
+    threatStatus(threat("mob", { mobCount: 5, mobStart: 10 })),
+    ["Resolve DN 3 at Round end"],
+    "half slain",
+  );
   assert.deepEqual(threatStatus(threat("mob", { mobCount: 0, mobStart: 10 })), ["Slain"]);
 });
 
 test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries", () => {
-  const d = deriveStats({ stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }), overrides: {}, tier: 1 });
+  const d = deriveStats({
+    stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }),
+    overrides: {},
+    tier: 1,
+  });
   const c = char;
   assert.deepEqual(pcStatus(c({ wounds: 6 }), d), ["Wounded"], "equal to max is not Dying");
   assert.deepEqual(pcStatus(c({ wounds: 7 }), d), ["Dying"]);
@@ -118,19 +229,47 @@ test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries",
 
 test("pcHit: Exhausted Shock → Mortal Wounds, Dying → Traumatic Injury, Annihilation (pp.193-199)", () => {
   // Tier 1, T 4, Wil 3: Max Wounds 6, Max Shock 4.
-  const d = deriveStats({ stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }), overrides: {}, tier: 1 });
+  const d = deriveStats({
+    stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }),
+    overrides: {},
+    tier: 1,
+  });
   const hit = (o: Partial<Character>, h: { wounds?: number; shock?: number }) => pcHit({ c: char(o), d, hit: h });
-  assert.deepEqual(hit({ shock: 3 }, { shock: 2 }), { wounds: 0, shock: 5, traumatic: 0, prone: false, annihilated: false }, "the Shock that Exhausts stays Shock (§11.12)");
+  assert.deepEqual(
+    hit({ shock: 3 }, { shock: 2 }),
+    { wounds: 0, shock: 5, traumatic: 0, prone: false, annihilated: false },
+    "the Shock that Exhausts stays Shock (§11.12)",
+  );
   assert.equal(hit({ shock: 5 }, { shock: 2 }).wounds, 2, "Exhausted: Shock → Mortal Wounds (p.199)");
   assert.equal(hit({ shock: 5 }, { shock: 2 }).shock, 5);
-  assert.equal(hit({ conditions: ["Exhausted"] }, { shock: 1 }).wounds, 1, "the Exhausted Condition from another source counts too");
+  assert.equal(
+    hit({ conditions: ["Exhausted"] }, { shock: 1 }).wounds,
+    1,
+    "the Exhausted Condition from another source counts too",
+  );
   assert.equal(hit({ shock: 5 }, { shock: -1 }).shock, 4, "recovering Shock is never converted");
-  assert.deepEqual(hit({ wounds: 5 }, { wounds: 2 }), { wounds: 7, shock: 0, traumatic: 0, prone: true, annihilated: false }, "becoming Dying: Prone");
-  assert.deepEqual(hit({ wounds: 7 }, { wounds: 4 }), { wounds: 7, shock: 0, traumatic: 1, prone: false, annihilated: false }, "one Traumatic Injury per hit");
-  assert.equal(hit({ wounds: 7, shock: 5 }, { shock: 3 }).traumatic, 1, "Mortal Wounds from Shock while Dying are a Traumatic Injury too");
+  assert.deepEqual(
+    hit({ wounds: 5 }, { wounds: 2 }),
+    { wounds: 7, shock: 0, traumatic: 0, prone: true, annihilated: false },
+    "becoming Dying: Prone",
+  );
+  assert.deepEqual(
+    hit({ wounds: 7 }, { wounds: 4 }),
+    { wounds: 7, shock: 0, traumatic: 1, prone: false, annihilated: false },
+    "one Traumatic Injury per hit",
+  );
+  assert.equal(
+    hit({ wounds: 7, shock: 5 }, { shock: 3 }).traumatic,
+    1,
+    "Mortal Wounds from Shock while Dying are a Traumatic Injury too",
+  );
   assert.equal(hit({ wounds: 9 }, { wounds: -1 }).wounds, 6, "any healing ends Dying");
   assert.equal(hit({}, { wounds: 12 }).annihilated, false, "exactly double is not Annihilation");
-  assert.deepEqual(hit({ wounds: 2 }, { wounds: 13 }), { wounds: 2, shock: 0, traumatic: 0, prone: false, annihilated: true }, "more than double: dead (p.194)");
+  assert.deepEqual(
+    hit({ wounds: 2 }, { wounds: 13 }),
+    { wounds: 2, shock: 0, traumatic: 0, prone: false, annihilated: true },
+    "more than double: dead (p.194)",
+  );
   assert.deepEqual(pcStatus(char({ annihilated: true }), d), ["Dead"]);
 });
 
@@ -138,17 +277,33 @@ test("Threats: Exhausted Shock, timed Conditions, Round-end Mob Resolve", () => 
   assert.equal(isExhausted(threat("e", { threatClass: "E", shock: 3 })), true);
   assert.deepEqual(exhaustedShock({ exhausted: true, wounds: 1, shock: 2 }), { wounds: 3, shock: 0 });
   assert.deepEqual(exhaustedShock({ exhausted: false, shock: 2 }), { wounds: 0, shock: 2 });
-  assert.deepEqual(["Hindered", "Hindered (2)", "Vulnerable (1)", "Staggered", "Pinned", "Prone"].filter(isTimed),
-    ["Hindered", "Hindered (2)", "Vulnerable (1)", "Staggered"]);
-  const e = enc([threat("m", { label: "Boyz ×10", mobCount: 5, mobStart: 10 }), threat("n", { mobCount: 6, mobStart: 10 }), threat("z", { mobCount: 0, mobStart: 10 })]);
-  assert.deepEqual(roundEndReminders(e).map((r) => r.split(":")[0]), ["Boyz ×10"], "half or more slain; a wiped Mob has no one left to flee");
+  assert.deepEqual(["Hindered", "Hindered (2)", "Vulnerable (1)", "Staggered", "Pinned", "Prone"].filter(isTimed), [
+    "Hindered",
+    "Hindered (2)",
+    "Vulnerable (1)",
+    "Staggered",
+  ]);
+  const e = enc([
+    threat("m", { label: "Boyz ×10", mobCount: 5, mobStart: 10 }),
+    threat("n", { mobCount: 6, mobStart: 10 }),
+    threat("z", { mobCount: 0, mobStart: 10 }),
+  ]);
+  assert.deepEqual(
+    roundEndReminders(e).map((r) => r.split(":")[0]),
+    ["Boyz ×10"],
+    "half or more slain; a wiped Mob has no one left to flee",
+  );
 });
 
 test("codex.save validates per kind; player codex drops secrets and unrevealed entries", () => {
   assert.equal(Action.safeParse({ type: "codex.save", kind: "npc", data: { name: "Magos Vex" } }).success, true);
   assert.equal(Action.safeParse({ type: "codex.save", kind: "npc", data: {} }).success, false);
   const beat = (encounter: unknown[]) =>
-    Action.safeParse({ type: "codex.save", kind: "beat", data: { adventureId: crypto.randomUUID(), title: "Ambush", encounter } }).success;
+    Action.safeParse({
+      type: "codex.save",
+      kind: "beat",
+      data: { adventureId: crypto.randomUUID(), title: "Ambush", encounter },
+    }).success;
   assert.equal(beat([{ threatId: "ork-boy", count: 61 }]), false, "too many individual combatants");
   assert.equal(beat([{ threatId: "ork-boy", count: 500, asMob: true }]), true, "a Mob is one row");
   const codex: Codex = {
@@ -156,14 +311,39 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
     adventures: [],
     locations: [],
     npcs: [
-      { id: "n1", name: "Magos", factionId: null, role: "", description: "", gmNotes: "lies", secrets: "x", attitude: "neutral", statSource: { kind: "quick", tier: 4 }, revealed: true },
-      { id: "n2", name: "Hidden", factionId: null, role: "", description: "", gmNotes: "", secrets: "", attitude: "neutral", statSource: { kind: "none" }, revealed: false },
+      {
+        id: "n1",
+        name: "Magos",
+        factionId: null,
+        role: "",
+        description: "",
+        gmNotes: "lies",
+        secrets: "x",
+        attitude: "neutral",
+        statSource: { kind: "quick", tier: 4 },
+        revealed: true,
+      },
+      {
+        id: "n2",
+        name: "Hidden",
+        factionId: null,
+        role: "",
+        description: "",
+        gmNotes: "",
+        secrets: "",
+        attitude: "neutral",
+        statSource: { kind: "none" },
+        revealed: false,
+      },
     ],
     handouts: [],
     sessions: [],
   };
   const p = toPlayerCodex(codex);
-  assert.deepEqual(p.npcs.map((n) => n.name), ["Magos"]);
+  assert.deepEqual(
+    p.npcs.map((n) => n.name),
+    ["Magos"],
+  );
   assert.equal(p.npcs[0]!.gmNotes, "");
   assert.equal(p.factions.length, 0);
 });
@@ -177,28 +357,70 @@ test("adjustAmmo: per type, clamped at 0, −1 on an empty type removes it (p.22
 test("requisitionTest: shared Keywords, bonus dice, [ANY], DN = Value + Rarity (pp.205-206)", () => {
   const gwyth = ["IMPERIUM", "ASTRA MILITARUM", "SCUM"];
   // The book's example: Hot-Shot Volley Gun, Value 6, Rare → DN 8, one extra matching Keyword → +1 die (p.205).
-  const volley = requisitionTest({ keywords: gwyth, itemKeywords: ["Imperium", "Astra Militarum"], value: 6, rarity: "Rare" });
+  const volley = requisitionTest({
+    keywords: gwyth,
+    itemKeywords: ["Imperium", "Astra Militarum"],
+    value: 6,
+    rarity: "Rare",
+  });
   assert.deepEqual([volley.eligible, volley.dn, volley.bonusDice], [true, 8, 1]);
-  assert.equal(requisitionTest({ keywords: gwyth, itemKeywords: ["AELDARI"], value: 6, rarity: "Rare" }).eligible, false);
+  assert.equal(
+    requisitionTest({ keywords: gwyth, itemKeywords: ["AELDARI"], value: 6, rarity: "Rare" }).eligible,
+    false,
+  );
   // [ANY] is open to everyone, and counts as one more of their Keywords when one is left unmatched (§11.15).
-  assert.equal(requisitionTest({ keywords: ["ORK"], itemKeywords: ["[ANY]"], value: 2, rarity: "Common" }).eligible, true);
-  assert.equal(requisitionTest({ keywords: gwyth, itemKeywords: ["IMPERIUM", "SCUM", "[ANY]"], value: 3, rarity: "Uncommon" }).bonusDice, 2);
-  assert.equal(requisitionTest({ keywords: ["IMPERIUM"], itemKeywords: ["IMPERIUM", "[ANY]"], value: 3, rarity: "Common" }).bonusDice, 0);
+  assert.equal(
+    requisitionTest({ keywords: ["ORK"], itemKeywords: ["[ANY]"], value: 2, rarity: "Common" }).eligible,
+    true,
+  );
+  assert.equal(
+    requisitionTest({ keywords: gwyth, itemKeywords: ["IMPERIUM", "SCUM", "[ANY]"], value: 3, rarity: "Uncommon" })
+      .bonusDice,
+    2,
+  );
+  assert.equal(
+    requisitionTest({ keywords: ["IMPERIUM"], itemKeywords: ["IMPERIUM", "[ANY]"], value: 3, rarity: "Common" })
+      .bonusDice,
+    0,
+  );
 });
 
 test("requisitionOutcome and requisitionYield (p.205, p.229)", () => {
   // The example again: 7 Icons against DN 8, 1 Wealth spent → success.
-  assert.deepEqual(requisitionOutcome({ dn: 8, icons: 7, spend: 1, complication: false, wealth: 3 }), { success: true, wealth: 2 });
-  assert.deepEqual(requisitionOutcome({ dn: 8, icons: 5, spend: 0, complication: true, wealth: 0 }), { success: false, wealth: 0 });
+  assert.deepEqual(requisitionOutcome({ dn: 8, icons: 7, spend: 1, complication: false, wealth: 3 }), {
+    success: true,
+    wealth: 2,
+  });
+  assert.deepEqual(requisitionOutcome({ dn: 8, icons: 5, spend: 0, complication: true, wealth: 0 }), {
+    success: false,
+    wealth: 0,
+  });
   assert.equal(requisitionYield("ammo", "Uncommon"), 3);
   assert.equal(requisitionYield("grenade", "Very Rare"), 2); // Plasma Grenades example
 });
 
 test("sheetWeapon and gearLine: catalogue entries on a sheet (p.207)", () => {
   const knife = { name: "Knife", weapon: { addStrength: true, damage: 2, ed: 2, range: [1], thrown: 4, traits: [] } };
-  assert.deepEqual(sheetWeapon(knife, 5), { name: "Knife", addStrength: true, damage: 2, ed: 2, range: [1], traits: ["Thrown (20 m)"] });
-  const frag = { name: "Frag Grenade", weapon: { addStrength: false, damage: 10, ed: 4, thrown: 4, salvo: null, traits: ["Blast (6)"] } };
+  assert.deepEqual(sheetWeapon(knife, 5), {
+    name: "Knife",
+    addStrength: true,
+    damage: 2,
+    ed: 2,
+    range: [1],
+    traits: ["Thrown (20 m)"],
+  });
+  const frag = {
+    name: "Frag Grenade",
+    weapon: { addStrength: false, damage: 10, ed: 4, thrown: 4, salvo: null, traits: ["Blast (6)"] },
+  };
   assert.deepEqual(sheetWeapon(frag, 9).range, [36]);
-  assert.equal(gearLine({ name: "Tacticus Mk X", source: "core", page: 233, armour: { ar: 5, invulnerable: false, powered: 4, traits: [] } }),
-    "Tacticus Mk X (AR 5, Powered (4); Core p.233)");
+  assert.equal(
+    gearLine({
+      name: "Tacticus Mk X",
+      source: "core",
+      page: 233,
+      armour: { ar: 5, invulnerable: false, powered: 4, traits: [] },
+    }),
+    "Tacticus Mk X (AR 5, Powered (4); Core p.233)",
+  );
 });

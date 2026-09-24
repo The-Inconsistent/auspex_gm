@@ -5,13 +5,42 @@ import { loadPackRaw, packNames } from "./index.ts";
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
 const EXPECTED = [
-  "imperial-citizen", "astra-militarum-trooper", "tactical-space-marine", "enforcer", "chrono-gladiator",
-  "mutant", "scum", "combat-servitor", "servo-skull",
-  "cultist", "cult-leader", "rogue-psyker", "possessed-mortal", "chaos-space-marine", "possessed-chaos-space-marine",
-  "bloodletter", "daemonette", "pink-horror", "plaguebearer", "poxwalker", "chaos-spawn",
-  "ork-boy", "kommando", "ork-nob", "painboy", "grot", "killa-kan",
-  "guardian-defender", "wraithguard", "ranger", "corsair",
-  "genestealer", "genestealer-patriarch", "acolyte-hybrid", "neophyte-hybrid", "cult-magus",
+  "imperial-citizen",
+  "astra-militarum-trooper",
+  "tactical-space-marine",
+  "enforcer",
+  "chrono-gladiator",
+  "mutant",
+  "scum",
+  "combat-servitor",
+  "servo-skull",
+  "cultist",
+  "cult-leader",
+  "rogue-psyker",
+  "possessed-mortal",
+  "chaos-space-marine",
+  "possessed-chaos-space-marine",
+  "bloodletter",
+  "daemonette",
+  "pink-horror",
+  "plaguebearer",
+  "poxwalker",
+  "chaos-spawn",
+  "ork-boy",
+  "kommando",
+  "ork-nob",
+  "painboy",
+  "grot",
+  "killa-kan",
+  "guardian-defender",
+  "wraithguard",
+  "ranger",
+  "corsair",
+  "genestealer",
+  "genestealer-patriarch",
+  "acolyte-hybrid",
+  "neophyte-hybrid",
+  "cult-magus",
 ];
 
 const dir = new URL("./threats/", import.meta.url);
@@ -30,7 +59,8 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
     console.error(`✖ ${file}: id "${r.data.id}" doesn't match filename`);
     continue;
   }
-  if (r.data.source === "core" && !EXPECTED.includes(r.data.id)) console.warn(`? ${file}: core source but not in the core bestiary list`);
+  if (r.data.source === "core" && !EXPECTED.includes(r.data.id))
+    console.warn(`? ${file}: core source but not in the core bestiary list`);
   found.push(r.data.id);
 }
 
@@ -41,7 +71,9 @@ console.log(`supplements: ${found.length - core} threats`);
 // Wargear catalogue: schema per file, ids unique across files.
 const wargearDir = new URL("./wargear/", import.meta.url);
 const wargearIds = new Set<string>();
-for (const file of readdirSync(wargearDir).filter((f) => f.endsWith(".json")).sort()) {
+for (const file of readdirSync(wargearDir)
+  .filter((f) => f.endsWith(".json"))
+  .sort()) {
   const r = Wargear.array().safeParse(JSON.parse(readFileSync(new URL(file, wargearDir), "utf8")));
   if (!r.success) {
     failed = true;
@@ -66,13 +98,19 @@ for (const name of packNames()) {
     console.error(`✖ pack ${name}\n${z.prettifyError(r.error)}`);
     continue;
   }
-  const unknown = r.data.adventures.flatMap((a) => a.beats.flatMap((b) => b.encounter.map((e) => e.threatId))).filter((id) => !found.includes(id));
-  const bestiaryNpcs = r.data.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])).filter((id) => !found.includes(id));
+  const unknown = r.data.adventures
+    .flatMap((a) => a.beats.flatMap((b) => b.encounter.map((e) => e.threatId)))
+    .filter((id) => !found.includes(id));
+  const bestiaryNpcs = r.data.npcs
+    .flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : []))
+    .filter((id) => !found.includes(id));
   for (const id of [...unknown, ...bestiaryNpcs]) {
     failed = true;
     console.error(`✖ pack ${name}: unknown threat "${id}"`);
   }
-  console.log(`pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`);
+  console.log(
+    `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`,
+  );
 }
 
 process.exit(failed ? 1 : 0);
