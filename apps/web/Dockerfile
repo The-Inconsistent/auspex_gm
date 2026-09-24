@@ -24,6 +24,8 @@ COPY --from=pruner /app/out/full/ .
 ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 ARG API_ORIGIN=http://api:4000
 ENV NEXT_TELEMETRY_DISABLED=1 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY API_ORIGIN=$API_ORIGIN
+# Without the key the build still succeeds, and every page is a 500 "Missing publishableKey" in prod.
+RUN test -n "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" || { echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is empty: set CLERK_PUBLISHABLE_KEY in the prod environment (docs/deploy.md)"; exit 1; }
 RUN bunx turbo run build --filter=@wg/web
 
 FROM node:22-bookworm-slim

@@ -57,7 +57,8 @@ Then, in Clerk:
 
 In GitHub (`JunMaxwell/glory_gm`):
 
-7. Add the repo **variable** `CLERK_PUBLISHABLE_KEY` = `pk_live_…`.
+7. In the **`prod` environment** (Settings → Environments → prod), add the **variable** `CLERK_PUBLISHABLE_KEY` =
+   `pk_live_…`. It must be a variable, not a secret: the workflow reads `vars.`.
 8. Run **Build images** once (Actions → Build images → Run workflow).
 
 In Dockhand:
@@ -113,6 +114,11 @@ CLERK_TEST_SECRET= WG_DB_PASSWORD=wg ADMIN_KEY=test WEB_ORIGIN=http://localhost:
 
 ## Gotchas
 
+- **Cloudflare 523 = the DNS record points at the wrong origin.** The `auspex` record must target the Pangolin
+  server, exactly like `kt-api`: `prp.hdc-cloud.org` (`42.96.17.33`), proxied. To test Pangolin while bypassing
+  Cloudflare, run `curl -k --resolve auspex.ydothien.work:443:42.96.17.33 https://auspex.ydothien.work/`.
+- **A 500 on every page with "Missing publishableKey" in `docker logs auspex-gm-web-1`** means the image was built
+  without the `CLERK_PUBLISHABLE_KEY` variable in the `prod` environment. The web Dockerfile now refuses to build without it.
 - **Never `build:` in the compose.** Dockhand's plain `up -d` would build once and then serve that stale image
   forever.
 - **The web image bakes in two values:** the Clerk publishable key, and `API_ORIGIN=http://api:4000` for the

@@ -8,8 +8,8 @@
 # The images carry copyrighted book text (packages/data), so they stay PRIVATE: this repo is private, and GHCR
 # packages pushed from it with GITHUB_TOKEN inherit that. Never make them public.
 #
-# One repo variable: CLERK_PUBLISHABLE_KEY (the production pk_live_…). It is public by design, so a variable, not a
-# secret.
+# One variable, in the `prod` environment: CLERK_PUBLISHABLE_KEY (the production pk_live_…). It is public by design, so
+# a variable, not a secret.
 name: Build images
 
 on:
@@ -35,6 +35,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # CLERK_PUBLISHABLE_KEY is a variable of the `prod` environment, visible only to jobs that name it.
+    environment: prod
     strategy:
       matrix:
         app: [api, web]
