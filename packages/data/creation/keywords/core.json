@@ -451,5 +451,29 @@
     "page": 378,
     "text": "Each of the diverse planets of the Imperium owe a tithe of warriors to the Emperor to fight His holy wars. The tremendous variety of planets — from jungle-covered Death Worlds to honourable industrial worlds — mean that every planetary Regiment is vastly different in training, technique, and equipment.\nExamples: See p.61",
     "placeholder": "regiment"
+  },
+  {
+    "id": "cult-mechanicus",
+    "name": "CULT MECHANICUS",
+    "source": "core",
+    "page": 109,
+    "text": "",
+    "note": "Used from p.109; no book defines it in a keyword list."
+  },
+  {
+    "id": "heretic-astartes",
+    "name": "HERETIC ASTARTES",
+    "source": "core",
+    "page": 87,
+    "text": "",
+    "note": "Used from p.87; no book defines it in a keyword list."
+  },
+  {
+    "id": "priest",
+    "name": "PRIEST",
+    "source": "core",
+    "page": 92,
+    "text": "",
+    "note": "Used from p.92; no book defines it in a keyword list."
   }
 ]

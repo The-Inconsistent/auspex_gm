@@ -4,7 +4,8 @@
     "factions",
     "sub-factions",
     "species",
-    "option-groups"
+    "option-groups",
+    "talents"
   ],
   "expected": {
     "archetypes": {

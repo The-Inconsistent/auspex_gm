@@ -52,7 +52,7 @@ const record = {
 export const Bonus = z.enum([...Mods.keyof().options, "wealth", "passiveAwareness", "corruption"]);
 export type Bonus = z.infer<typeof Bonus>;
 
-export const Requirement = z.discriminatedUnion("kind", [
+const requirements = [
   z.object({ kind: z.literal("attribute"), attribute, min: rating }),
   z.object({ kind: z.literal("skill"), skill, min: rating }),
   z.object({ kind: z.literal("influence"), min: z.number().int() }),
@@ -61,13 +61,23 @@ export const Requirement = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("species"), anyOf: ids }), // a Species' `countsAs` matches too
   z.object({ kind: z.literal("notSpecies"), anyOf: ids }),
   z.object({ kind: z.literal("archetype"), anyOf: ids }),
-  z.object({ kind: z.literal("subFaction"), anyOf: ids }),
+  z.object({ kind: z.literal("subFaction"), anyOf: ids }), // a Successor matches its `successorOf` too
   z.object({ kind: z.literal("talent"), anyOf: ids }),
+  z.object({ kind: z.literal("notTalent"), anyOf: ids }), // "can't be taken with" (Alpha-level Psyker, Apocrypha p.230)
+  // A choice from an OptionGroup: the Pariah template (Anathema, Apocrypha p.230).
+  z.object({ kind: z.literal("option"), groupId: id, anyOf: z.array(z.string().min(1)).min(1) }),
   z.object({ kind: z.literal("power"), anyOf: ids }),
   z.object({ kind: z.literal("wargear"), anyOf: z.array(z.string().min(1)).min(1) }), // printed names, e.g. an augmetic
   z.object({ kind: z.literal("rank"), min: z.number().int().min(1) }),
   z.object({ kind: z.literal("tier"), min: z.number().int().min(1).max(5) }),
   z.object({ kind: z.literal("text"), text: z.string().min(1) }), // not mechanical; validate counts these
+] as const;
+export const RequirementOne = z.discriminatedUnion("kind", requirements);
+// `either`: any one of `of` will do ("Absolvers Chapter, or extensive Gilead experience", VoA p.47; "Rating 1+ in any
+// of" seven Skills, Core p.135).
+export const Requirement = z.discriminatedUnion("kind", [
+  ...requirements,
+  z.object({ kind: z.literal("either"), of: z.array(RequirementOne).min(2) }),
 ]);
 export type Requirement = z.infer<typeof Requirement>;
 
@@ -261,7 +271,8 @@ export const Talent = z.object({
   xp: XpCost,
   requires: z.array(Requirement).default([]),
   effect: z.string().min(1),
-  repeatable: z.boolean().default(false),
+  // "perChoice": once for each choice of its bracket or option (Hatred [Any], Signature Saedath; rules-flow.md §11.29).
+  repeatable: z.union([z.boolean(), z.literal("perChoice")]).default(false),
   mods: Mods.optional(),
   grants: z.array(Grant).optional(),
 });

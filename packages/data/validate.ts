@@ -172,6 +172,7 @@ const known: Record<string, Set<string>> = {
   talents: creationIds("talents"),
   powers: creationIds("powers"),
   disciplines: creationIds("disciplines"),
+  "option-groups": creationIds("option-groups"),
   keywords: keywordNames,
   wargear: wargearIds,
 };
@@ -182,6 +183,7 @@ const REF_KEYS: Record<string, string> = {
   speciesIds: "species",
   countsAs: "species",
   successorOf: "sub-factions",
+  groupId: "option-groups",
   subFactionId: "sub-factions",
   disciplineId: "disciplines",
   becomesArchetypeId: "archetypes",
@@ -201,6 +203,7 @@ const REQUIREMENT_REFS: Record<string, string> = {
   archetype: "archetypes",
   subFaction: "sub-factions",
   talent: "talents",
+  notTalent: "talents",
   power: "powers",
 };
 let textFallbacks = 0;
@@ -236,7 +239,7 @@ for (const [type, rows] of creation) {
   for (const row of rows) {
     checkRefs(row.r, `${row.file} "${row.r.id}"`);
     const species = (row.r.speciesIds as string[] | undefined)?.join("|") ?? "";
-    const key = norm(row.r.name as string);
+    const key = `${row.r.category ?? ""}:${norm(row.r.name as string)}`; // an Exarch Power and a talent may share a name
     const prev = seen.get(key);
     const prevSpecies = (prev?.r.speciesIds as string[] | undefined) ?? [];
     if (prev && (!species || prevSpecies.some((s) => species.split("|").includes(s)))) {

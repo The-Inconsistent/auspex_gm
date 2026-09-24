@@ -1,0 +1,427 @@
+[
+  {
+    "id": "animal-companion",
+    "name": "Animal Companion",
+    "source": "inheritance-of-embers",
+    "page": 60,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Leadership",
+        "min": 2
+      },
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 2
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You have tamed a creature to follow your commands, and respect you as its master.\n\nChoose any Threat with the BEAST Keyword that is not an Adversary at your Tier. You have tamed a single creature of that type. It follows you and attempts actions in combat as you command, taking its own slot in the Initiative Order like an Agent. It does not interact with Wrath or Ruin, unless another ability indicates otherwise.\n\nIf you suffer an attack whilst the creature is within half its Speed of you, it may take a DN 5 Initiative Test as a Reflexive Action. If it succeeds, the attack is redirected onto the creature. Slain creatures may be replaced for free the next time you visit the replacement creature’s habitat, or a location where it is raised in captivity."
+  },
+  {
+    "id": "battle-focus",
+    "name": "Battle Focus",
+    "source": "inheritance-of-embers",
+    "page": 60,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\"). Also Apocrypha p.232.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASURYANI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You wage war in a semi-conscious trance, striking with deadly aim, and evading blows with instinctive athleticism.\n\nWhen you make a ranged attack, you may move up to your Speed as a Free Action. You may use this Talent up to Rank times per combat, and never more than once per Turn."
+  },
+  {
+    "id": "battle-psyker",
+    "name": "Battle Psyker",
+    "source": "inheritance-of-embers",
+    "page": 60,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You have walked the Path of the Warlock long enough to balance its augmenting and destructive powers against one another.\n\nWhen you successfully activate a power from the Runes of Battle Discipline (Wrath & Glory pages 283–284), you activate both of the power’s listed effects, rather than just one."
+  },
+  {
+    "id": "beyond-mortality",
+    "name": "Beyond Mortality",
+    "source": "inheritance-of-embers",
+    "page": 60,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "influence",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You have brokered a deal with a Haemonculi Coven so that, if you die, they can restore you to life through agonising fleshcrafting procedures. To use this Talent, one of your allies must recover at least a fraction of your body, and return it to the Dark City for operation.\n\nAfter a recovery period in the care of the Covens, you return to life with all Wounds and Traumatic Injuries cleared. Each time you return from the dead, you gain 1 Corruption Point, which cannot be resisted with a Corruption Test."
+  },
+  {
+    "id": "bladestorm",
+    "name": "Bladestorm",
+    "source": "inheritance-of-embers",
+    "page": 60,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\"). Also Apocrypha p.232.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "When outnumbered, as the Aeldari often are, you can even the odds with a hail of monomolecular-edged discs, discharged with an extraordinary rate of fire.\n\nWhen you use a SHURIKEN weapon, increase the Salvo rating by +Rank."
+  },
+  {
+    "id": "blade-artist",
+    "name": "Blade Artist",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "Paranoia is rife in the Dark City, and many wear hidden blades or armour-implanted spikes so they are never entirely disarmed. You have trained in the use of melee weapons, either to savour your kills up close, or employ as a last resort.\n\nWhen you use an AELDARI or DRUKHARI melee weapon, it gains the Rending (Rank) Trait. If it already has the Rending Trait, increase its Rending rating by +Rank."
+  },
+  {
+    "id": "burning-bright",
+    "name": "Burning Bright",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "The doom of your people is written in stone, but you are determined to fight till the end with fire in your heart.\n\nYou reduce the number of Traumatic Injuries required to kill you by 1 (to a minimum of 1).\n\nYour party begins each session with +1 Glory (up to the usual maximum)."
+  },
+  {
+    "id": "insensible-to-pain",
+    "name": "Insensible to Pain",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "Due to the extensive biological modifications of the Haemonculi, you have transcended the limits of the flesh, and can ignore the debilitating effects of pain at will.\n\nYou may roll Determination against attacks that deal Mortal Wounds. You do not suffer DN penalties for being Wounded, unless you have suffered more than Double Rank Wounds. When you are Dying, you do not fall Prone, and suffer no limits on the Actions you can take, unless you suffer Traumatic Injuries equal to or greater than your Rank."
+  },
+  {
+    "id": "lhamaean",
+    "name": "Lhamaean",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\"). The doubled full stop (\"applied to..\") is as printed.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You have trained with the sisterhood of Lhilitu, crafters of exceedingly virulent toxins that dramatically improve the lethality of any weapons they are applied to..\n\nAs a Simple Action, you may enhance the toxins of a weapon you handle that has the Inflict (Poisoned) Trait. The weapon gains +Double Rank ED until it is next reloaded."
+  },
+  {
+    "id": "luck-of-the-laughing-god",
+    "name": "Luck of the Laughing God",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "As a favoured child of Cegorach, you often enjoy his characteristic good fortune… when not chosen to be the butt of his joke.\n\nOnce per Test, you may re-roll a single Wrath Die. You may not re-roll the die more than once (even if another effect, such as spending a Wrath Point, would make you eligible to do so), and cannot re-roll a Complication."
+  },
+  {
+    "id": "matchless-agility",
+    "name": "Matchless Agility",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI",
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "A",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "The Aeldari are renowned for their impossible grace, evading enemy fire at speeds unattainable by mere Mon-keigh.\n\nAs a Reflexive Action, when you are targeted by a ranged attack from an attacker you’re aware of, you may spend 1 Glory before the Ballistic Skill Test is attempted. You gain +Rank Defence until the attack is resolved. You may use this Talent once per Round against a single attack."
+  },
+  {
+    "id": "power-from-pain",
+    "name": "Power From Pain",
+    "source": "inheritance-of-embers",
+    "page": 61,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You find tasting the souls of the freshly slain to be intoxicating, goading you to greater acts of slaughter for the next invigorating high.\n\nThe first time you make a successful attack Test that kills a living creature in combat, you gain +Rank Determination. The second time you make a successful attack Test that kills a living creature in combat, you gain +Rank Speed. The third time you make a successful attack Test that kills a living creature in combat, you gain +Rank Resolve.\n\nBenefits gained from this Talent expire at the end of combat, or at the end of any combat Turn in which you do not kill a living creature."
+  },
+  {
+    "id": "rising-crescendo",
+    "name": "Rising Crescendo",
+    "source": "inheritance-of-embers",
+    "page": 62,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HARLEQUIN"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "Cegorach taught his followers to strike and disappear like lightning, with dazzling speed and force, before dancing away from enemy reprisals with contemptuous ease.\n\nYou may move up to triple your Speed when using the Charge Full-Round Action. You do not provoke Reflexive Attacks when you move out of Engagement from an enemy."
+  },
+  {
+    "id": "seer-councillor",
+    "name": "Seer Councillor",
+    "source": "inheritance-of-embers",
+    "page": 62,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You share the burden of psychic power with your allies, helping them to manifest even greater abilities.\n\nWhen another Psyker within 10m of you successfully activates a psychic power, they automatically gain an extra Exalted Icon, which can be Shifted for Potency effects as normal."
+  },
+  {
+    "id": "signature-saedath",
+    "name": "Signature Saedath",
+    "source": "inheritance-of-embers",
+    "page": 62,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\"). Repeatable: \"Each time you purchase this Talent, choose to master one of the three saedath types\" (up to three, one per type).",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HARLEQUIN"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "Harlequins strive to master as many dance forms as they can, but some Players find themselves specialising in specific performance styles. These saedaths are something between a genre, a mythological cycle, a fighting stance, and a military strategy. There are thousands of different saedaths, each with their own ceremonial significance, but they can generally be categorised into one of three types: Light, Dark, and Twilight.\n\nEach time you purchase this Talent, choose to master one of the three saedath types below. An Agent can only perform one saedath at a time, but can switch to a different saedath as a Simple Action.\n- Master of Light. You celebrate the heroes of Aeldari myth in a riotous explosion of colour. Whilst performing this saedath, gain +Rank bonus dice on all Interaction Attack Tests.\n- Master of Dark. You indulge the role of a villain with relish, burying the knife deep for a tragic final act. Whilst performing this saedath, increase the AP of your melee weapons by +Rank.\n- Master of Twilight. You walk the line between hero and villain, material and magical, life and death. Whilst performing this saedath, you gain +Rank bonus dice on all Tests made whilst Glory and Ruin are equal (you cannot spend Glory to gain bonus dice on these Tests).",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "skyrunner",
+    "name": "Skyrunner",
+    "source": "inheritance-of-embers",
+    "page": 62,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI",
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "I",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You prefer to wage war aboard high-speed, anti-grav vehicles, pushing your craft to the limit as an extension of your own body.\n\nYou gain +Rank bonus dice on any Pilot (A) Tests to drive Hover vehicles.\n\nIf using the rules for vehicles in Church of Steel, any Hover vehicle you pilot uses the lower of your vehicle’s Manoeuvrability or your Initiative+Rank."
+  },
+  {
+    "id": "trueborn",
+    "name": "Trueborn",
+    "source": "inheritance-of-embers",
+    "page": 62,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\"). Print error: \"DRUKHAI weapon\" is as printed; DRUKHARI is meant.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DRUKHARI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You were born through conventional biological means, rather than from the birthing vats of the Haemonculi. This is considered a mark of prestige among the denizens of Commorragh. You have learned to leverage this birthright to obtain the very best weaponry.\n\nAny DRUKHAI weapon you requisition is delivered with its first weapon upgrade installed. You may choose any available weapon upgrades, so long as the Value and Rarity of the upgrade is not greater than the weapon’s Value or Rarity."
+  },
+  {
+    "id": "warden-of-souls",
+    "name": "Warden of Souls",
+    "source": "inheritance-of-embers",
+    "page": 62,
+    "note": "The AELDARI requirement applies to every Talent in this chapter (\"New Talents\", p.60: \"The following Talents can be chosen by Archetypes with the AELDARI Keyword.\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "effect": "You are chosen by Ynnead to safeguard the spirits of many departed Aeldari. In return, those souls watch over you in times of need, infusing you with strength to avoid joining their number.\n\nDuring combat, you may call upon the spirits to heal you as a Combat Action. If you succeed on a DN 1 Resolve Test, you regain Rank Wounds, plus additional Wounds equal to the number of Shifted Exalted Icons."
+  }
+]

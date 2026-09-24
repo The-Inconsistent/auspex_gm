@@ -55,5 +55,69 @@
     "page": 10,
     "text": "",
     "note": "Used by the Ironkin species (p.10) but never defined."
+  },
+  {
+    "id": "fire-caste",
+    "name": "FIRE CASTE",
+    "source": "apocrypha",
+    "page": 80,
+    "text": "",
+    "note": "Used from p.80; no book defines it in a keyword list."
+  },
+  {
+    "id": "leagues-of-votann",
+    "name": "LEAGUES OF VOTANN",
+    "source": "apocrypha",
+    "page": 84,
+    "text": "",
+    "note": "Used from p.84; no book defines it in a keyword list."
+  },
+  {
+    "id": "tau-empire",
+    "name": "T'AU EMPIRE",
+    "source": "apocrypha",
+    "page": 68,
+    "text": "",
+    "note": "Used from p.68; no book defines it in a keyword list."
+  },
+  {
+    "id": "ethereal-caste",
+    "name": "ETHEREAL CASTE",
+    "source": "apocrypha",
+    "page": 148,
+    "text": "",
+    "note": "Used from p.148; no book defines it in a keyword list."
+  },
+  {
+    "id": "exarch",
+    "name": "EXARCH",
+    "source": "apocrypha",
+    "page": 216,
+    "text": "",
+    "note": "Used from p.216; no book defines it in a keyword list."
+  },
+  {
+    "id": "fallen",
+    "name": "FALLEN",
+    "source": "apocrypha",
+    "page": 236,
+    "text": "",
+    "note": "Used from p.236; no book defines it in a keyword list."
+  },
+  {
+    "id": "deathwing",
+    "name": "DEATHWING",
+    "source": "apocrypha",
+    "page": 237,
+    "text": "",
+    "note": "Used from p.237; no book defines it in a keyword list."
+  },
+  {
+    "id": "ravenwing",
+    "name": "RAVENWING",
+    "source": "apocrypha",
+    "page": 238,
+    "text": "",
+    "note": "Used from p.238; no book defines it in a keyword list."
   }
 ]

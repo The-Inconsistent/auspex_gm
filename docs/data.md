@@ -458,8 +458,9 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 
 **Shared shapes.**
 - `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species` (matches `countsAs` too),
-  `notSpecies`, `archetype`, `subFaction`,
-  `talent`, `power`, `wargear` (printed names), `rank`, `tier`, or `text` for anything that isn't mechanical.
+  `notSpecies`, `archetype`, `subFaction` (a Successor matches its `successorOf` too), `talent`, `notTalent`, `power`,
+  `option` (a choice from an OptionGroup: the Pariah template), `wargear` (printed names), `rank`, `tier`, `either`
+  (any one of `of`: "BS 4+ or WS 4+"), or `text` for anything that isn't mechanical.
 - `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
 - `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ keywords }` (taken together), `{ power }`,
   `{ wargear }`, `{ text }`, or `{ choose, from, optional }` (`optional`: the character may take none).
@@ -484,6 +485,11 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
   prints none), they are added to the winner with `source` set on each `Rule`, so the builder can hide homebrew.
   Faction `rules` are added by name; `traits` and `abilities` only when the winner has none. Tables whose rows differ
   (the Apocrypha Harlequin and Drukhari backgrounds) are separate records named "… (Apocrypha)".
+- **One record per thing means per category.** An Apocrypha Exarch Power named Evade is not the Evade talent: they
+  get different ids (`evade-exarch`), and dedup compares category and name.
+- **Where an index and an entry disagree, the entry is the rule.** Note the difference.
+- **Bracketed names drop the placeholder from the id** and repeat once per choice (`repeatable: "perChoice"`): "Hatred [Any]" is `hatred`, "Loremaster [Keyword]" is
+  `loremaster`, as Core's contents page lists them.
 - **Name the thing, not the heading.** VoA heads Tactical Space Marine "TACTICAL"; the record is `tactical-space-marine`
   so it clashes with, and replaces, the Core printing.
 - **Section rules go on every record.** VoA p.45 limits every Talent in its chapter to ADEPTUS ASTARTES, not CHAOS:

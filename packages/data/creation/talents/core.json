@@ -29,11 +29,1677 @@
     "effect": "You are a Space Marine — one of the most feared warriors in the galaxy. You are a highly trained superhuman veteran of hundreds of battles and have mastered the use of many deadly weapons.\n\nAdd +Rank to the total Damage Value of successful attacks with the following weapons:\n- Chainswords\n- Chainaxes\n- Power Swords\n- Power Fists\n- Unarmed strikes\n- Bolt weapons\n- Any weapon with the ADEPTUS ASTARTES Keyword.\n\nAt the GM's discretion, this Talent may also apply to weapons with the CHAOS Keyword for Chaos Space Marines."
   },
   {
+    "id": "armourbane",
+    "name": "Armourbane",
+    "source": "core",
+    "page": 129,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "Your furious strikes rend armour, leaving it broken and useless.\n\nWhen you make a successful melee attack you can Shift Exalted Icons to reduce the target's Resilience instead of adding ED. Each Exalted Icon you Shift decreases the target's Resilience by 1. This Resilience is removed before you calculate damage from the attack.\n\nYour weapon must have one of the following Keywords to activate this Talent:\n- BLADE\n- CHAIN\n- FORCE\n- POWER FIELD"
+  },
+  {
+    "id": "augmetic",
+    "name": "Augmetic",
+    "source": "core",
+    "page": 129,
+    "xp": {
+      "base": 20,
+      "plus": "the Value of the augmetic you choose"
+    },
+    "effect": "You replace part of your biology with an augmetic, the common name for cybernetic implants in the Imperium.\n\nYou may take this Talent more than once. Each time you take this Talent you may select two augmetics of Rare or lower rarity, or a single Very Rare augmetic. See p.242 for more information on Augmetics.\n\nThe GM determines which augmetics are available (usually any of those designed for your Species) and who can perform the necessary installation procedure.",
+    "repeatable": true
+  },
+  {
+    "id": "betrayer",
+    "name": "Betrayer",
+    "source": "core",
+    "page": 130,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You can make mortal sacrifices to the Chaos Gods to gain their favour.\n\nYou gain +1 Corruption.\n\nYou can sacrifice a willing or unconscious individual — such as a devotee or follower — to gain a point of Wrath.\n\nAt the GM's discretion, this sacrifice triggers a DN 5 Corruption Test."
+  },
+  {
+    "id": "berzerker",
+    "name": "Berzerker",
+    "source": "core",
+    "page": 130,
+    "xp": 20,
+    "effect": "The very sight of blood energises you in battle.\n\nWhenever you see an individual within 30 metres of you suffer a Critical Hit or the Bleeding Condition, you gain 1 point of Wrath.\n\nThe GM may ask you to make a DN 1 Corruption Test whenever this Talent is activated."
+  },
+  {
+    "id": "binary-chatter",
+    "name": "Binary Chatter",
+    "source": "core",
+    "page": 130,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "You are adept at controlling mechanical constructs.\n\nYou gain +Double Rank bonus dice whenever you attempt to instruct, program, or question a servitor or a similar construct, such as a cherub or a servo-skull."
+  },
+  {
+    "id": "blindfighter",
+    "name": "Blindfighter",
+    "source": "core",
+    "page": 130,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Awareness",
+        "min": 3
+      }
+    ],
+    "effect": "You have trained to fight blind, relying on your instincts and other senses to detect and dispatch your foes even when you cannot see.\n\nThe Blinded Condition does not affect your attack Tests using your Weapon Skill (I)."
+  },
+  {
+    "id": "blood-must-flow",
+    "name": "Blood Must Flow!",
+    "source": "core",
+    "page": 130,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You know how to place your strikes to inflict haemorrhaging injuries.\n\nYou may spend an Exalted Icon whenever you make a successful Weapon Skill (I) attack to inflict the Bleeding Condition to your target."
+  },
+  {
+    "id": "bombardment",
+    "name": "Bombardment",
+    "source": "core",
+    "page": 130,
+    "note": "The Keyword list prints \"ASTRA MILLITARUM\" (print error); the requirement uses the glossary Keyword ASTRA MILITARUM.",
+    "xp": 40,
+    "requires": [
+      {
+        "kind": "rank",
+        "min": 2
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES",
+          "AELDARI",
+          "ASTRA MILITARUM",
+          "CHAOS",
+          "ORK",
+          "ROGUE TRADER"
+        ]
+      }
+    ],
+    "effect": "You have the connections and military backup to call in an airstrike. A bombardment may come from ground-based artillery, aircraft, or even a voidship in low orbit. In all cases, the attacks are devastating to their targets.\n\nOnce per game session, a character with this Talent and access to communications with their vessel or other forces may call in a bombardment. The bombardment attack deals 20 damage +Double Rank ED to all targets within Rank x 10 metres of the designated target."
+  },
+  {
+    "id": "brutalist",
+    "name": "Brutalist",
+    "source": "core",
+    "page": 130,
+    "note": "\"Your strike brutal blows\" is as printed.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "S",
+        "min": 3
+      }
+    ],
+    "effect": "Your strike brutal blows regardless of the weapon you wield.\n\nEvery melee weapon you wield has the Brutal Weapon Trait (p.209), including your unarmed strikes.\n\nIf you make a successful melee attack with a weapon that already has the Brutal Weapon Trait, you deal an additional +1 damage. This bonus damage is applied after calculating your total damage, not to the weapon's Damage value."
+  },
+  {
+    "id": "chaos-familiar",
+    "name": "Chaos Familiar",
+    "source": "core",
+    "page": 130,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The Dark Gods have rewarded you with a minion drawn from the Warp. This malign creature revels in violence and deception, and serves as a constant reminder of your choices. Chaos familiars are unreliable, fickle, and treacherous, but they can be a powerful tool in any cultist's arsenal.\n\nYou gain +2 Corruption.\n\nYou gain a minion, a lesser daemon spawned from the Warp. It uses the Brimstone Horror profile (see p.349), but has a 1 in all Attributes. Its only Skills are Scholar (5) and Stealth (8).\n\nThe daemon is fickle. To get it to take action, you must first succeed at an Opposed Persuasion or Intimidation Test. Once persuaded, the daemon goes to extreme measures to accomplish whatever task you set, to the best of its limited abilities.\n\nAt the GM's discretion, if the minion sees you act against the interests of the Warp, the familiar immediately turns on you until it's destroyed or convinced of its mistake.\n\nIf the familiar is slain, you must spend a Wrath Point to summon it again — which is time-consuming and requires the GM's permission."
+  },
+  {
+    "id": "conversational-cogitator",
+    "name": "Conversational Cogitator",
+    "source": "core",
+    "page": 131,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "The cogitation devices that form your brain are finely tuned. Through the cold purity of logic you can calculate the likely outcomes of a conversation and predict the responses of weaker biological minds.\n\nBefore making a Cunning (Fel), Deception (Fel), Insight (Fel), or Persuasion (Fel) Skill Test you can choose to use this Talent to use your Tech (Int) Skill instead.\n\nYou must complete a Regroup or Respite before you can use this Talent again."
+  },
+  {
+    "id": "counter-attack",
+    "name": "Counter Attack",
+    "source": "core",
+    "page": 131,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 5
+      }
+    ],
+    "effect": "You are a master of melee combat, able to find an opening in your opponent's guard when they attack.\n\nYou can use this Talent whenever an enemy targets you with a melee attack. After the enemy has completed their attack, you may make a single melee attack against that enemy. This is treated as your Reflexive Action, but you may Counter Attack up to Rank times per Round.\n\nYou may not apply any other Talents, Abilities, or combat options to a Counter Attack.\n\nIf you Counter Attack, you cannot take any Move Actions on your next turn."
+  },
+  {
+    "id": "deadshot",
+    "name": "Deadshot",
+    "source": "core",
+    "page": 131,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Ballistic Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You are a skilled shot, trained to carefully target your enemies' weak points.\n\nWhen you take the Aim action (p.189) and make a Called Shot (p.187) you double the bonus ED you receive."
+  },
+  {
+    "id": "death-or-glory",
+    "name": "Death Or Glory!",
+    "source": "core",
+    "page": 131,
+    "note": "The Requirement prints just \"Human\", read as the Human Species.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "human"
+        ]
+      }
+    ],
+    "effect": "Even when terrified, you can summon the courage to mount a ferocious attack.\n\nWhenever you are required to make a Fear Test, you may choose to instantly Charge the source of Fear, if you are able to, and make a single melee attack. Make the Fear Test after this attack resolves if the target is still alive.\n\nIf you are in combat after the Fear Test resolves, you sacrifice your first Turn."
+  },
+  {
+    "id": "deductive",
+    "name": "Deductive",
+    "source": "core",
+    "page": 132,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Int",
+        "min": 3
+      }
+    ],
+    "effect": "Your studious mind can pick apart a problem (or person) with ease.\n\nAs a Simple Action, you may use this Talent to make an Intellect-based Skill Test to recall or notice something about a target. The target can be anything, from a mag-locked door with a cantankerous machine spirit to an inscrutable Planetary Governor.\n\nIf you pass the Test, the GM may give you information based on the Skill you used to make the Test. You also gain +Rank bonus dice to any Test made against that target that utilises this information. You may give this bonus to an ally if you communicate what you have learned."
+  },
+  {
+    "id": "devotees",
+    "name": "Devotees",
+    "source": "core",
+    "page": 132,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Leadership",
+        "min": 4
+      }
+    ],
+    "effect": "Through reputation or assignment, you have gathered a number of followers that will do whatever you ask. If you are attacked, they intervene.\n\nYour devotees are a Mob of any Troop level Threat, as described in Chapter 14: Bestiary. A number of devotees equal to Double Rank +2 have decided to follow you. You may use the stats presented in Chapter 14 for each devotee, or use the following rules:\n- Devotee Attributes are equal to 1 + Double Rank.\n- Devotee Skills are equal to 1 + Double Rank.\n- A devotee's Attributes and Skills cannot be higher than your own.\n\nWhenever you are hit by any form of attack, any of your devotees may make a DN5 Initiative Test as a Reflexive Action. If they succeed, the attack kills the devotee instead of hitting you.\n\nSlain devotees may be replaced for free with new devotees the next time you visit a major encampment or city.\n\nIf you take this Talent more than once, you gain more devotees of the same type you already possess. If you already have followers from an archetype ability, this Talent provides additional followers of that type instead.",
+    "repeatable": true
+  },
+  {
+    "id": "die-hard",
+    "name": "Die Hard",
+    "source": "core",
+    "page": 132,
+    "xp": 20,
+    "effect": "You're hard to kill.\n\nWhen you suffer more Wounds than your Maximum Wounds, you are not Dying. Roll once on the Memorable Injuries table and heal 1 Wound.\n\nYou may not use this Talent again until you complete a Regroup."
+  },
+  {
+    "id": "dirty-fighter",
+    "name": "Dirty Fighter",
+    "source": "core",
+    "page": 132,
+    "xp": 20,
+    "effect": "You're proficient in the art of foul play.\n\nWhenever you make an Interaction Attack (p.190) and you shift 2 Exalted Icons, you can inflict your target with an additional Condition. Choose the most narratively appropriate Condition from the following options:\n- Blinded (p.199)\n- Prone (p.200)\n- Restrained (p.200)\n- Staggered (p.200)"
+  },
+  {
+    "id": "discipline-savant",
+    "name": "Discipline Savant",
+    "source": "core",
+    "page": 132,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 4
+      },
+      {
+        "kind": "text",
+        "text": "at least 2 psychic powers from a single Discipline"
+      }
+    ],
+    "effect": "Your devotion to a psychic discipline has given you mastery over your style of Warpcraft.\n\nWhen you take this Talent, select a psychic discipline in which you have at least 2 psychic powers. Whenever you make a Psychic Mastery (Wil) Test to activate a psychic power from that discipline, reduce the DN by 1."
+  },
+  {
+    "id": "disturbing-voice",
+    "name": "Disturbing Voice",
+    "source": "core",
+    "page": 133,
+    "xp": 20,
+    "effect": "You have a sinister and upsetting voice. This may be due to infrasonic cadences produced by a vox synthesiser, interrogation training, or just an inborn air of malice.\n\nYou gain +Rank bonus dice to Intimidation (Wil) and Leadership (Wil) Tests when you use your voice.\n\nAny Fellowship Test made with someone likely to be put off by your voice (nervous individuals, Psykers, pious members of the Ecclesiarchy) suffers +2 DN penalty."
+  },
+  {
     "id": "dual-wield",
     "name": "Dual Wield",
     "source": "core",
     "page": 133,
     "xp": 20,
     "effect": "You can wield two weapons with uncanny accuracy.\n\nWhen you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon.\n\nYou may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon."
+  },
+  {
+    "id": "duty-until-death",
+    "name": "Duty Until Death",
+    "source": "core",
+    "page": 133,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "Your ardent faith in the Emperor allows you to push beyond the limits of injury to act in His will, at a cost to your physical form.\n\nWhenever you suffer more Wounds than your Max Wounds, you can use this Talent. You may take your next Turn normally; you begin Dying at the end of that Turn. You may choose to take your next Turn immediately after activating this Talent, potentially interrupting an enemy's Turn. If you roll a Complication on any Test, you take a Traumatic Wound."
+  },
+  {
+    "id": "eliminator",
+    "name": "Eliminator",
+    "source": "core",
+    "page": 133,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Stealth",
+        "min": 2
+      }
+    ],
+    "effect": "You strike from the shadows, using the element of surprise to take down your foes in one fell swoop.\n\nWhen you have a Stealth Score (p.181) and you attack an enemy that is unaware of you, you may add your Stealth Score as ED, in addition to the bonuses received from a Surprise Attack (p.182). Any decrease to your Stealth Score is resolved after the attack."
+  },
+  {
+    "id": "escape-artist",
+    "name": "Escape Artist",
+    "source": "core",
+    "page": 133,
+    "xp": 20,
+    "effect": "Through bodily contortions, practice, or subdermally concealed equipment, you are adept at escaping any form of bondage.\n\nYou gain +Double Rank bonus dice to all attempts to escape any form of bondage, be it mechanical bonds or an individual Grappling you (p.188)."
+  },
+  {
+    "id": "ever-vigilant",
+    "name": "Ever Vigilant",
+    "source": "core",
+    "page": 133,
+    "xp": 20,
+    "effect": "You never let down your guard.\n\nYou gain +Double Rank to your Passive Awareness."
+  },
+  {
+    "id": "favoured-by-the-warp",
+    "name": "Favoured By The Warp",
+    "source": "core",
+    "page": 133,
+    "xp": 40,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "effect": "The Warp is both dangerous and fickle, its horrors afflicting some more than others. Even those with great mental conditioning and a seeming control over psychic powers can find it turns against them.\n\nYou may use this Talent to reroll any Perils of the Warp (p.263) result. You must accept the new result."
+  },
+  {
+    "id": "fear",
+    "name": "Fear",
+    "source": "core",
+    "page": 133,
+    "xp": 30,
+    "effect": "Either by the ravages of war on your body, an aura of malice, or the weight of your words, you frighten those you meet.\n\nWhen you succeed on an Intimidation (Wil) Test, you can force the target to make a Fear Test with a DN equal to 1 + Double Rank."
+  },
+  {
+    "id": "fearless",
+    "name": "Fearless",
+    "source": "core",
+    "page": 133,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 4
+      }
+    ],
+    "effect": "Extensive mental conditioning or intensive training allows you to completely control your fear.\n\nYou automatically pass any Fear Test. You are immune to Intimidation (Wil) Interaction Attacks."
+  },
+  {
+    "id": "feel-no-pain",
+    "name": "Feel No Pain",
+    "source": "core",
+    "page": 133,
+    "xp": 40,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "T",
+        "min": 4
+      }
+    ],
+    "effect": "Your pain tolerance is above and beyond that of most of your Species.\n\nYou do not suffer a penalty to DN for being Wounded.\n\nYour Wounds Trait is increased by +Rank."
+  },
+  {
+    "id": "flagellant",
+    "name": "Flagellant",
+    "source": "core",
+    "page": 134,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "You have dedicated your pain to the service of the Emperor.\n\nAt the start of each day, you must spend 20 minutes (Terran standard) in prayer, and inflict Wounds to yourself equal to your Tier through self-flagellation.\n\nYou may not roll Determination against these Wounds or allow them to be healed by any method other than through a Respite.\n\nAs long as you are wounded in this way, you gain +Rank bonus dice to your Determination and Conviction rolls and may choose to become Frenzied (p.199) as a Combat Action. If you also have the Frenzy Talent, you may become Frenzied as a Simple Action.\n\nIf you fail to flagellate yourself, you are overcome with shame and take a +2 DN penalty to all Tests until you flagellate again."
+  },
+  {
+    "id": "frenzy",
+    "name": "Frenzy",
+    "source": "core",
+    "page": 134,
+    "xp": 20,
+    "effect": "You can use a Combat Action to become Frenzied (p.199)."
+  },
+  {
+    "id": "furious-charge",
+    "name": "Furious Charge",
+    "source": "core",
+    "page": 134,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Athletics",
+        "min": 2
+      },
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You have practised closing distance to a foe with speed; swinging your weapon whilst running has become second nature.\n\nYou gain +Rank to any melee attack you make as part of a Charge (p.188)."
+  },
+  {
+    "id": "gallows-humour",
+    "name": "Gallows Humour",
+    "source": "core",
+    "page": 134,
+    "note": "\"places,and\" and \"eqaul\" are as printed.",
+    "xp": 20,
+    "effect": "You find humour in the darkest of places,and can use it to bolster the resolve of your allies.\n\nYou can take a Simple Action to make a grim joke whenever you are Wounded or are suffering from a Condition, as long as you are still able to speak. Make a DN 2 Fellowship Attribute Test. If you succeed, you and any allies that can hear you recover Shock eqaul to your Rank plus the number of Icons rolled."
+  },
+  {
+    "id": "hardy",
+    "name": "Hardy",
+    "source": "core",
+    "page": 134,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "T",
+        "min": 3
+      }
+    ],
+    "effect": "You are innately durable or have undergone harrowing endurance training.\n\nAs a Combat Action, you can make a DN 3 Toughness Test. On a failure you recover 1 Shock. On a success you recover 1 + Double Rank Shock. Each Shifted Exalted Icon recovers an additional point of Shock.\n\nOnce you use this Talent, you cannot use it again until you have completed a Regroup (p.196)."
+  },
+  {
+    "id": "hatred",
+    "name": "Hatred [Any]",
+    "source": "core",
+    "page": 134,
+    "xp": 30,
+    "effect": "You have honed your hatred toward a specific foe into a weapon.\n\nSelect a Keyword to be the focus of your hatred. You gain +Double Rank bonus dice on melee attacks against targets that have the chosen Keyword. You suffer a +2 DN penalty whenever you interact socially with individuals of the chosen Keyword.",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "hive-explorer",
+    "name": "Hive Explorer",
+    "source": "core",
+    "page": 135,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "You are experienced at navigating the urban environments of the Imperium.\n\nYou gain +Rank bonus dice to any Stealth (A) or Survival (Wil) Tests when moving through urban environments."
+  },
+  {
+    "id": "jargon",
+    "name": "Jargon [Skill]",
+    "source": "core",
+    "page": 135,
+    "note": "The Skill picked is the one the Jargon applies to.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Ballistic Skill",
+            "min": 1
+          },
+          {
+            "kind": "skill",
+            "skill": "Medicae",
+            "min": 1
+          },
+          {
+            "kind": "skill",
+            "skill": "Pilot",
+            "min": 1
+          },
+          {
+            "kind": "skill",
+            "skill": "Scholar",
+            "min": 1
+          },
+          {
+            "kind": "skill",
+            "skill": "Survival",
+            "min": 1
+          },
+          {
+            "kind": "skill",
+            "skill": "Tech",
+            "min": 1
+          },
+          {
+            "kind": "skill",
+            "skill": "Weapon Skill",
+            "min": 1
+          }
+        ]
+      }
+    ],
+    "effect": "You're knowledgeable enough on a particular subject to open your mouth and let the information flow out. The mystifying slang, precise vernacular, and strange idioms are enough to stupefy the unlearned and make fast friends of strangers who share your passion.\n\nWhen you take this Talent, you must pick which of your Skills it applies to from the list in the Requirements section above.\n\nDuring any social encounter you can make a Skill Test using your Jargon Skill. The DN is determined by the GM based on how friendly the target is to you. If you fail, everyone around you ignores your incoherent babbling.\n\nIf you succeed and the target is interested or trained in the Skill, they are likely to become more friendly to you (see p.168). If the target doesn't share your knowledge and slang, they stand stupefied whilst you babble — they are distracted, unable to get away from your conversation for up to 20 minutes (Terran standard).",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "legacy-of-sorrow",
+    "name": "Legacy Of Sorrow",
+    "source": "core",
+    "page": 135,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "aeldari"
+        ]
+      }
+    ],
+    "effect": "The long and mournful history of your people weighs upon you, sharpening your focus and emboldening your will to live.\n\nYou no longer suffer the penalty from the Intense Emotion Species ability (p.29).\n\nThe group gains +1 Glory every time you recover from Dying."
+  },
+  {
+    "id": "let-the-galaxy-burn",
+    "name": "Let The Galaxy Burn",
+    "source": "core",
+    "page": 135,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You take pleasure in the destruction of any ordered institution. When you see your prey begin to falter, you revel in its collapse and become inspired to commit ever greater atrocities in the names of the Chaos Gods.\n\nYou gain +1 Corruption.\n\nWhenever you incapacitate an Adversary or Elite opponent, the group gains +1 Glory, up to a maximum Glory of Double Rank per encounter."
+  },
+  {
+    "id": "lip-reader",
+    "name": "Lip Reader",
+    "source": "core",
+    "page": 135,
+    "xp": 20,
+    "effect": "You have learnt how to read lips.\n\nThe GM may call for an Awareness (Int) Test to read lips successfully depending on the environment, the speaker's Species, and the language spoken. The default DN is 3 and may be modified as the GM sees fit."
+  },
+  {
+    "id": "lobotomised-efficiency",
+    "name": "Lobotomised Efficiency",
+    "source": "core",
+    "page": 136,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "human"
+        ]
+      }
+    ],
+    "effect": "Through otherworldly discipline or surgical treatments you have been rendered immune to temptations of the flesh.\n\nYou gain +Double Rank to your Conviction and Resolve.\n\nYou no longer add your Tier to your Max Shock."
+  },
+  {
+    "id": "loremaster",
+    "name": "Loremaster [Keyword]",
+    "source": "core",
+    "page": 136,
+    "note": "[Keyword] is the choice made when the Talent is taken; the contents page lists it as \"Loremaster\".",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Scholar",
+        "min": 3
+      }
+    ],
+    "effect": "You are highly educated in a specific field.\n\nWhen you take this Talent, choose a Keyword. This could be a bureau of the Imperium, a xenos species, or something esoteric (and forbidden) like daemonology. All Keyword selections are subject to GM approval.\n\nIf you select another Species as the keyword, you can speak their native language as well as your own.\n\nEducational insight can have broad applications. Studying a culture's history invariably reveals information about their traditions, military prowess, and technological innovations.\n\nWhenever you make a Skill Test related to the chosen Keyword, you gain +Double Rank bonus dice. This includes Scholar Tests, but can also be relevant to any Test that involves interacting with that Keyword, including Interaction Attacks (p.190). The GM is the arbiter of what is sufficiently relevant to your selected Keyword to receive this bonus.",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "mark-of-chaos",
+    "name": "Mark Of Chaos",
+    "source": "core",
+    "page": 136,
+    "note": "The +1 Corruption and the chosen option's bonus stay in the effect: Corruption is not a Mods Trait and every option is conditional. Tzeentch also grants PSYKER (or a minor psychic power if already PSYKER), which a single choice can't carry.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "[MARK OF CHAOS]"
+        ]
+      }
+    ],
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "keyword": "NURGLE"
+          },
+          {
+            "keyword": "KHORNE"
+          },
+          {
+            "keyword": "SLAANESH"
+          },
+          {
+            "keyword": "TZEENTCH"
+          },
+          {
+            "text": "Undedicated (keep the [MARK OF CHAOS] Keyword)"
+          }
+        ]
+      }
+    ],
+    "effect": "You have been granted the favour of the Chaos Gods. This may be from dedicating yourself to one of the named gods or to an act that venerates the entire pantheon. Occasionally, one of the Chaos Gods may grant favour out of amusement or some more inscrutable reason, rather than as a reward.\n\nYou gain +1 Corruption. Select one of the five options below and apply the bonus to your character sheet. Taking this Talent replaces the [MARK OF CHAOS] Keyword with the name of your chosen God. If you choose Undedicated, you do not replace the [MARK OF CHAOS] Keyword.\n- Nurgle: Your Toughness increases by +1.\n- Khorne: You gain +2 bonus dice when making attacks using the All-Out Attack option. You can't take this option if you have the PSYKER keyword.\n- Slaanesh: You gain +2 bonus dice on Awareness and Persuasion Tests.\n- Tzeentch: You gain the PSYKER keyword. If you already possess the PSYKER keyword, you gain one minor psychic power of your choice. Work with the GM to determine which powers are appropriate for your character.\n- Undedicated: Choose one of the following Skills: Awareness, Cunning, Deception, Insight, Persuasion, Psychic Mastery, Stealth, or Weapon Skill. You gain +Rank bonus dice when using that Skill."
+  },
+  {
+    "id": "mastered-paths",
+    "name": "Mastered Paths",
+    "source": "core",
+    "page": 136,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "aeldari"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASURYANI"
+        ]
+      }
+    ],
+    "effect": "As a Craftworlder, you have travelled and mastered many paths over your elongated lifespan. You have likely forgotten more than most humans will ever learn but still retain mastery of your former focus.\n\nSelect one of your Aeldari Paths. You gain an additional +Rank bonus to the bonus you receive from that Aeldari Path."
+  },
+  {
+    "id": "mimic-voice",
+    "name": "Mimic Voice",
+    "source": "core",
+    "page": 137,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Deception",
+        "min": 3
+      }
+    ],
+    "effect": "You can mimic individuals' voice patterns with uncanny accuracy. You may have learned this Talent through your environment or difficult training, or gained this ability from implanted vox synthesisers.\n\nMake an Awareness Test when you listen to an individual speak for at least 1 hour to study their voice. The DN is set by the GM based on the difference between your target's voice and your own, and your current auditory conditions.\n\nIf you succeed, you gain +Double Rank bonus dice whenever you make a Deception Test to mimic this voice. You can memorise a number of voices equal to your Intellect."
+  },
+  {
+    "id": "mob-rule",
+    "name": "Mob Rule",
+    "source": "core",
+    "page": 137,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "ork"
+        ]
+      }
+    ],
+    "effect": "You know how to manipulate the brutish confidence of a mob of Orks.\n\nWhen you command two or more Orks, you and all allied Orks within 15 + Double Rank metres may add +Double Rank bonus dice to Resolve Tests."
+  },
+  {
+    "id": "more-dakka",
+    "name": "More Dakka!",
+    "source": "core",
+    "page": 137,
+    "xp": 35,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "ork"
+        ]
+      }
+    ],
+    "effect": "You love the smell and sound of Dakka, and have a knack for expending exorbitant quantities of ammunition; this is somehow an effective tactic for you.\n\nThe Salvo value of any weapon you wield is increased by +Rank.\n\nYou may want to employ an Ammo Runt (p.241) to carry extra ammunition."
+  },
+  {
+    "id": "noble-peer",
+    "name": "Noble Peer",
+    "source": "core",
+    "page": 137,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Persuasion",
+        "min": 3
+      }
+    ],
+    "effect": "You are a member of a renowned noble class. You may have additional authority over other members of your society, as well as responsibility for your social lessers.\n\nWhenever you are in a social situation where status plays a factor, gain +Double Rank bonus dice to Influence Tests and any Skill Tests involving social interaction."
+  },
+  {
+    "id": "orthopraxy",
+    "name": "Orthopraxy",
+    "source": "core",
+    "page": 137,
+    "note": "\"Simple Acion\" as printed.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "The litanies of His holy word have burned themselves deep in your memory. You can recite hymns and prayers to the Emperor by rote, and can use them to bolster your mind.\n\nAs a Simple Action you can begin mentally reciting Ecclesiastical liturgies. As long as you sacrifice your Simple Acion in this way, you gain +1 bonus Willpower, for a maximum of Double Rank Rounds.\n\nYou can't use this Talent again until you complete a Respite."
+  },
+  {
+    "id": "paranoid",
+    "name": "Paranoid",
+    "source": "core",
+    "page": 137,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Cunning",
+        "min": 3
+      }
+    ],
+    "effect": "You constantly fear for your life. You have established a web of connections to gather information on dangerous conspiracies.\n\nOnce per session when you have access to a communications device, you may ask your ring of contacts one question they may know. The GM rolls a secret Cunning (Fel) Test and provides you with whatever information the contact can provide. The number of Icons rolled on the Test determines the quality and amount of information."
+  },
+  {
+    "id": "primaris-perspective",
+    "name": "Primaris Perspective",
+    "source": "core",
+    "page": 137,
+    "note": "\"+Rank bonus dice Resolve and Corruption Tests\" as printed (a word is missing).",
+    "xp": 40,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "primaris-astartes"
+        ]
+      }
+    ],
+    "effect": "You have been held in suspended animation since the 31st Millennium, just after the Horus Heresy ended. You remember a very different galaxy, and have a unique perspective on the Dark Imperium, a perspective that encompasses memories of both great hope and great sorrow.\n\nYou gain +Rank bonus dice Resolve and Corruption Tests.\n\nYou gain +Double Rank bonus dice to Scholar Tests regarding historical events from the 31st Millennium or earlier."
+  },
+  {
+    "id": "promethium-proficiency",
+    "name": "Promethium Proficiency",
+    "source": "core",
+    "page": 138,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "You have been trained in the use of the Emperor's holy fire.\n\nWhen using weapons with the Inflict (On Fire) Trait, you gain +Rank ED to any damage rolls.\n\nOnce per Round, you may gain 1 Wrath when you kill an enemy of the Imperium using a weapon with the Inflict (On Fire) Trait."
+  },
+  {
+    "id": "rite-of-fear",
+    "name": "Rite of Fear",
+    "source": "core",
+    "page": 138,
+    "note": "Also discounts the Disturbing Voice Talent to 10 XP (effect text only).",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "Your voice box has been replaced with a synthetic vocoder, critical for audible communication in Lingua-technis, and able to emit infrasonic sounds. These deep frequencies are below auditory detection and can trigger fear responses.\n\nYou can trigger the Rite of Fear as a Combat Action. The rite affects all characters within a cone, 10 metres long by 3 metres wide at its terminus. Characters within the area of effect who lack ear protection (including augmetic ears) must immediately make a Fear Test with a DN of 2 + Double Rank. You are the vertex of the cone but are immune to its effects.\n\nYou can purchase the Disturbing Voice Talent for 10 XP."
+  },
+  {
+    "id": "rite-of-magnometrics",
+    "name": "Rite of Magnometrics",
+    "source": "core",
+    "page": 138,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "You have implemented powerful electromagnets into your augmetic replacements that you can control mentally. You can vary the intensity and frequency of your electromagnetic emissions, allowing you to summon metal objects to you and hover over large metallic surfaces.\n\nYou can pick up and carry metal objects up to 3 + Double Rank metres away without touching them. You can also draw your body to any large or stable metal object and hover above it. No Test is required for either of these abilities.\n\nUsing this Talent in combat requires a Simple Action. The effective range of this Talent is equal to your Rank x 20 metres. The effective Strength of this Talent (for use when throwing an object or resisting another force) is 1 + Double Rank."
+  },
+  {
+    "id": "rite-of-pure-thought",
+    "name": "Rite of Pure Thought",
+    "source": "core",
+    "page": 139,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "You have replaced a hemisphere of your brain with a cogitator. You live an emotionless existence, depending upon the peaceful and rewarding purity of logic.\n\nYou gain +Rank bonus dice on Resolve and Fear Tests, and to resist Persuasion and Intimidation Interaction Attacks.\n\nYou gain +Rank bonus dice when making Investigation Tests."
+  },
+  {
+    "id": "scum-savvy",
+    "name": "Scum Savvy",
+    "source": "core",
+    "page": 139,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "human"
+        ]
+      }
+    ],
+    "effect": "Long years of disreputable carousing during business deals with shady individuals have trained you to effectively fleece the lawless and process potentially dangerous chem substances.\n\nYou gain +Double Rank bonus dice to any Test related to resisting the effects of chemicals.\n\nYou gain +Rank bonus dice when making Cunning (Fel) Tests."
+  },
+  {
+    "id": "secret-identity",
+    "name": "Secret Identity",
+    "source": "core",
+    "page": 139,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ],
+    "effect": "You maintain a secret identity that lets you move through the Imperium unnoticed.\n\nWork with your GM to define your secret identity; you might be a minor noble from a far-flung system, a travelling merchant barely registering on Administratum records, or a surveying member of the Administratum itself. It might help to select one or two Keywords that apply to your secret identity.\n\nYour identity has been well established using Inquisitorial resources. It may afford you benefits when dealing with particular individuals.\n\nWhen your secret identity is challenged, you must make a Deception (Fel) Test to maintain the illusion."
+  },
+  {
+    "id": "sidestep",
+    "name": "Sidestep",
+    "source": "core",
+    "page": 139,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "I",
+        "min": 3
+      }
+    ],
+    "effect": "You have a practised ability to evade harm in close combat.\n\nYou can use Sidestep as a Reflexive Action whenever you are attacked in melee and are aware of the attacker. You must declare a Sidestep before the Attacker makes their Weapon Skill Test — doing so sacrifices your Move Action on your next turn.\n\nWhen you Sidestep, you gain +Double Rank Defence and Resilience for the purpose of resolving the attack.\n\nYou can only Sidestep once per round, and the bonuses only apply for a single attack."
+  },
+  {
+    "id": "silent",
+    "name": "Silent",
+    "source": "core",
+    "page": 139,
+    "xp": 20,
+    "effect": "Moving silently comes as second nature to you.\n\nYou can move at full Speed when Moving Stealthily (p.182). Whenever your Stealth Score would be reduced, reduce it by 1 fewer."
+  },
+  {
+    "id": "simultaneous-strike",
+    "name": "Simultaneous Strike",
+    "source": "core",
+    "page": 139,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Ballistic Skill",
+            "min": 4
+          },
+          {
+            "kind": "skill",
+            "skill": "Weapon Skill",
+            "min": 4
+          }
+        ]
+      }
+    ],
+    "effect": "You can accurately attack with two weapons at once.\n\nWhen you take this Talent, you must choose if it applies to your Ballistic Skill (A) or Weapon Skill (I). You must have a Skill Rating of 4+ in the Skill you choose.\n\nYou may only Simultaneous Strike with two one-handed melee weapons or two ranged weapons with the Pistol Trait.\n\nYou can make any Attack Action that has a single target a Simultaneous Strike. Pick your primary weapon; your attack uses all your primary weapon's statistics, such as AP and Weapon Traits. Make your attack Test as normal; if you succeed, add half of the secondary weapon's Damage value as ED to the damage roll."
+  },
+  {
+    "id": "smash-attack",
+    "name": "Smash Attack",
+    "source": "core",
+    "page": 139,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You can concentrate all of your strength and rage into a single attack; this strike is deadly, but leaves you open.\n\nYou gain +Rank ED to any All-Out Attack."
+  },
+  {
+    "id": "special-weapons-trooper",
+    "name": "Special Weapons Trooper",
+    "source": "core",
+    "page": 140,
+    "note": "\"Ballistics Skill Rating 3+\" as printed. The Grenade launcher (with its grenades) and the TEMPESTUS SCION-only Hot-Shot Volley Gun are text grants: an item can't carry extras or a restriction.",
+    "xp": {
+      "base": 20,
+      "plus": "the Value of the chosen weapon"
+    },
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Ballistic Skill",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASTRA MILITARUM"
+        ]
+      }
+    ],
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Combat Shotgun",
+              "wargearId": "combat-shotgun"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Gun",
+              "wargearId": "plasma-gun"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Meltagun",
+              "wargearId": "meltagun"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Long Las",
+              "wargearId": "long-las"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Flamer",
+              "wargearId": "flamer"
+            }
+          },
+          {
+            "text": "Grenade launcher, plus 3 frag and 3 krak grenades"
+          },
+          {
+            "text": "Hot-Shot Volley Gun (TEMPESTUS SCION only)"
+          }
+        ]
+      }
+    ],
+    "effect": "Many soldiers of the Astra Militarum receive training in the use of specialty weapons on the battlefield. Often, this training includes basic chants to appease the weapon's war-spirit if it becomes obstinate or recalcitrant.\n\nYou may select one of the following weapons as standard Wargear, replacing your primary weapon:\n- Combat Shotgun (p.218)\n- Plasma Gun (p.218)\n- Meltagun (p.218)\n- Long Las (p.217)\n- Flamer (p.219)\n- Grenade launcher (p.220). You also receive 3 frag and 3 krak grenades\n- Hot-Shot Volley Gun (TEMPESTUS SCION only, p.217)"
+  },
+  {
+    "id": "stoic",
+    "name": "Stoic",
+    "source": "core",
+    "page": 140,
+    "xp": 20,
+    "effect": "Either through a quirk of biology, surgical intervention, or traumatic injury, your face no longer betrays emotion like a normal member of your Species.\n\nYou impose a +Double Rank DN penalty on any Insight Tests made against you."
+  },
+  {
+    "id": "storm-of-death",
+    "name": "Storm of Death",
+    "source": "core",
+    "page": 140,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 4
+      }
+    ],
+    "effect": "You make a flurry of attacks in combat.\n\nWhen the only combat option you take in your turn is a Multi-Attack, the DN penalty is decreased by –Double Rank. Your turn ends after you complete your Multi-Attack."
+  },
+  {
+    "id": "supplicant",
+    "name": "Supplicant",
+    "source": "core",
+    "page": 140,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "human"
+        ]
+      }
+    ],
+    "effect": "You know your place and how to work Imperial feudalism to your advantage.\n\nYou gain +Rank bonus dice whenever you are appealing to one of your social betters, such as a planetary governor or a superior officer.\n\nIf your behaviour in any way deviates from the accepted social norms of the Imperium, your GM may refuse this bonus."
+  },
+  {
+    "id": "supreme-presence",
+    "name": "Supreme Presence [Skill]",
+    "source": "core",
+    "page": 140,
+    "note": "[Skill] is the choice made when the Talent is taken; the contents page lists it as \"Supreme Presence\".",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Athletics",
+            "min": 4
+          },
+          {
+            "kind": "skill",
+            "skill": "Deception",
+            "min": 4
+          },
+          {
+            "kind": "skill",
+            "skill": "Intimidation",
+            "min": 4
+          },
+          {
+            "kind": "skill",
+            "skill": "Persuasion",
+            "min": 4
+          },
+          {
+            "kind": "skill",
+            "skill": "Tech",
+            "min": 4
+          }
+        ]
+      }
+    ],
+    "effect": "The weight of your presence demands attention, even from large groups of individuals.\n\nWhen you take this Talent, you must select one of the Skills listed in the Requirements.\n\nWhen you make an Interaction Attack with the chosen Skill, you may select either 1 + Double Rank targets or a Mob of any number of Troops. The DN for the Interaction Attack does not increase.",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "tenacious",
+    "name": "Tenacious",
+    "source": "core",
+    "page": 140,
+    "xp": 30,
+    "effect": "You have an uncanny knack for mental perseverance.\n\nYou recover 1 Shock for every Exalted Icon you roll when you roll Determination (p.196)."
+  },
+  {
+    "id": "the-flesh-is-weak",
+    "name": "The Flesh is Weak",
+    "source": "core",
+    "page": 140,
+    "xp": 30,
+    "effect": "Almost all of your biology has been replaced with augmetic components. You may have taken this procedure to repair a gruesome injury, or as a personal expression of faith. The replacements are much sturdier than your former biology but have dramatically affected your appearance.\n\nYou no longer need to breathe and you do not bleed. As a result, you aren't affected by Bleeding (p.199) or Suffocation (p.201).\n\nYou gain +Rank bonus dice to Tech (Int) Tests and Determination rolls.\n\nYou suffer +2DN to Persuasion (Fel) Tests.\n\nWhen you take this Talent, you may heal any Memorable or Traumatic Injuries (p.194-195)."
+  },
+  {
+    "id": "touched-by-fate",
+    "name": "Touched By Fate",
+    "source": "core",
+    "page": 140,
+    "xp": 20,
+    "effect": "Your luck carries you through, even when Wargear or faith might falter.\n\nYou begin each session with an additional +Rank Wrath Points."
+  },
+  {
+    "id": "trademark-weapon",
+    "name": "Trademark Weapon",
+    "source": "core",
+    "page": 141,
+    "xp": 30,
+    "effect": "You have trained extensively with a single weapon that you keep on your person at all times. It has almost become an extension of your body.\n\nChoose one of your weapons to become a Trademark Weapon. This Talent only affects that weapon, and no others of its type (for example, a single modified Chainsword, not all Chainswords).\n\nWhenever you make a successful attack with your Trademark Weapon, you deal +Double Rank additional ED.\n\nIf you lose or destroy your Trademark Weapon, you can no longer receive any benefits from this Talent. Work with the GM to decide if an appropriate replacement can be found; this could be the focus of an entire adventure."
+  },
+  {
+    "id": "transhuman",
+    "name": "Transhuman [Attribute]",
+    "source": "core",
+    "page": 141,
+    "note": "[Attribute] is the choice made when the Talent is taken, so its rating requirement is text.",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "text",
+        "text": "[Attribute] Rating 5+"
+      }
+    ],
+    "effect": "When you take this Talent, you must select one of your Attributes with a rating of 5 or higher. This Talent applies to that Attribute.\n\nWhenever you make a Test using the selected Attribute, you gain +Double Rank bonus dice.",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "twin-focus",
+    "name": "Twin Focus",
+    "source": "core",
+    "page": 141,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 4
+      }
+    ],
+    "effect": "You have practiced the art of splitting your thoughts, allowing you to more effectively focus on manipulating the Warp in two ways at once.\n\nThe DN penalty from sustaining multiple psychic powers is decreased by 2."
+  },
+  {
+    "id": "uncanny",
+    "name": "Uncanny [Trait]",
+    "source": "core",
+    "page": 141,
+    "note": "[Trait] is the choice made when the Talent is taken. The bonus is +Rank, so it is not a flat mod.",
+    "xp": 40,
+    "effect": "Increase one of these Traits by +Rank:\n- Conviction\n- Defence\n- Resilience\n- Resolve\n- Shock\n- Determination\n- Speed\n- Wounds",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "unnatural",
+    "name": "Unnatural [Skill]",
+    "source": "core",
+    "page": 141,
+    "note": "[Skill] is the choice made when the Talent is taken, so its rating requirement is text.",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "text",
+        "text": "[Skill] Rating 4+"
+      }
+    ],
+    "effect": "Choose any Skill with a rating of 4+.\n\nWhen making a Test with the selected Skill, reduce any DN modifiers by –Double Rank, to a minimum of 0. This does not change the task's base difficulty, just any modifiers. Examples include attempting a Test without appropriate tools, in complete darkness, or a specific combat option.",
+    "repeatable": "perChoice"
+  },
+  {
+    "id": "unremarkable",
+    "name": "Unremarkable",
+    "source": "core",
+    "page": 141,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "You are forgettable and blend into crowds easily.\n\nCharacters of a higher social class with the IMPERIUM keyword, such as planetary governors, Imperial nobility, or manufactorum owners, ignore you completely unless you attract undue attention to yourself.\n\nAnyone attempting to notice or track you in a crowded area, or trying to remember your face, suffers +2DN."
+  },
+  {
+    "id": "warped-mind",
+    "name": "Warped Mind",
+    "source": "core",
+    "page": 141,
+    "note": "The XP cost drops by 5 for every point of Corruption taken (effect text).",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 4
+      }
+    ],
+    "effect": "You have opened your mind to access another psychic discipline, either through intense discipline and study or traumatic exposure to the Warp.\n\nYou may learn psychic powers from an additional psychic discipline.\n\nYou may choose to take Corruption to reduce the XP cost of this Talent. For every point of Corruption you take, reduce the XP cost by 5."
+  },
+  {
+    "id": "bolstering-purity",
+    "name": "Bolstering Purity",
+    "source": "core",
+    "page": 142,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 40,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Your words drip with the Emperor's immaculate will, reinforcing the faith of your allies.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you can spend 1 Faith to bolster another's purity. Select one character with the IMPERIUM keyword within hearing range — this can be yourself. The character automatically succeeds all Resolve and Conviction Tests until the end of the Round.\n\nOnce you have used this ability, you cannot use it again until you have completed a Regroup."
+  },
+  {
+    "id": "by-his-will",
+    "name": "By His Will",
+    "source": "core",
+    "page": 142,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The depth of your faith allows you to call upon the God-Emperor to assist you when you work with another of His children.\n\nYou gain +1 Faith.\n\nWhen you Help a character with the IMPERIUM Keyword, you add triple the number of bonus dice if you spend 1 Faith."
+  },
+  {
+    "id": "consecrated-light",
+    "name": "Consecrated Light",
+    "source": "core",
+    "page": 143,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The Emperor's power can manifest physically for the faithful in times of need, a beacon to bolster the citizens of the Imperium.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you may spend 1 Faith and present a holy symbol of the Imperial Cult. You and any allies with the IMPERIUM Keyword within 15 + Double Rank metres gain +Double Rank bonus dice on Fear and Corruption Tests until the end of the Round."
+  },
+  {
+    "id": "divine-guidance",
+    "name": "Divine Guidance",
+    "source": "core",
+    "page": 143,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Through His direction, no shot will miss its mark.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to give the Emperor's guidance. Select one character with the IMPERIUM Keyword within hearing range — this can be yourself. The character gains +Double Rank bonus dice to Ballistic Skill (A) Tests for 1 Round."
+  },
+  {
+    "id": "in-his-name",
+    "name": "In His Name",
+    "source": "core",
+    "page": 143,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Scholar",
+        "min": 1
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You have spent time studying the holy writings of the Cult Imperialis and can invoke hallowed passages to sway others.\n\nYou gain +1 Faith.\n\nWhenever you target a character with the IMPERIUM Keyword with a Persuasion or Leadership Test, you can spend 1 Faith to add +Double Rank bonus dice to your pool."
+  },
+  {
+    "id": "inspired-blessing",
+    "name": "Inspired Blessing",
+    "source": "core",
+    "page": 143,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 25,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Your blessings invoke the majesty of the God-Emperor, uplifting your allies and reinforcing their determination.\n\nYou gain +1 Faith.\n\nYou may make an inspirational statement or prayer as a Combat Action. When you do so, spend 1 Faith to restore 1d3 + Double Rank Shock to you and all allies with the IMPERIUM keyword within 15 + Double Rank metres."
+  },
+  {
+    "id": "litany-of-hatred",
+    "name": "Litany Of Hatred",
+    "source": "core",
+    "page": 143,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity. Print error: the requirement cites \"the Hatred Talent (p.135)\"; Hatred [Any] is on p.134.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "talent",
+        "anyOf": [
+          "hatred"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Hatred is the Emperor's greatest gift to humanity.\n\nYou gain +1 Faith.\n\nYou may spend 1 Faith and a Simple Action to recite a Litany of Hate. The effects of your Hatred Talent now apply to any of your allies with the IMPERIUM keyword within Rank x 10 metres."
+  },
+  {
+    "id": "martyrs-tears",
+    "name": "Martyr's Tears",
+    "source": "core",
+    "page": 143,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You are destined for martyrdom, prepared and willing to sacrifice yourself entirely to serve the Emperor's grand vision.\n\nYou gain +1 Faith.\n\nAs Simple Action you can select a human target to heal. You must spend 1 Faith and take a number of Wounds up to a maximum equal to your Tier. The target recovers double the number of Wounds you sacrificed."
+  },
+  {
+    "id": "repent",
+    "name": "Repent!",
+    "source": "core",
+    "page": 144,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The righteousness of your indignation rings in the ears of those true to the Imperial Cult\n\nYou gain +1 Faith.\n\nYou can attempt to force another adherent of the Imperial Cult to repent using the force of your will. Spend 1 Faith and make an opposed Intimidation (Wil) Test against your target with +Rank bonus dice. If you are in combat, this takes a Combat Action. If you succeed on the Test and the target has the IMPERIUM Keyword, they kneel and repent for Double Rank x 10 seconds."
+  },
+  {
+    "id": "righteous-wrath",
+    "name": "Righteous Wrath",
+    "source": "core",
+    "page": 144,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Your burning fervour inspires you to great deeds and can similarly inspire your allies.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to gain +2 Wrath. When you do this, you can sacrifice 1 point of Wrath to give an ally with the IMPERIUM Keyword that can hear you and is faithful to the Imperial Cult +1 Wrath."
+  },
+  {
+    "id": "shield-of-faith",
+    "name": "Shield Of Faith",
+    "source": "core",
+    "page": 144,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Your indomitable belief steels your mind against Warp-witchery.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you may spend 1 Faith to ignore a psychic power or effect (including Perils of the Warp) until the end of the Round. You may spend an additional Faith to grant the same bonus to all allies with the IMPERIUM keyword within 15 + Double Rank metres."
+  },
+  {
+    "id": "the-passion",
+    "name": "The Passion",
+    "source": "core",
+    "page": 144,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You cast your thoughts to His glory; His visage demands destruction.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to inspire the Emperor's wrath. Select one character with the IMPERIUM Keyword within hearing range — this can be yourself. The character gains +Double Rank bonus dice to Weapon Skill (I) Tests for 1 Round."
+  },
+  {
+    "id": "the-emperor-protects",
+    "name": "The Emperor Protects",
+    "source": "core",
+    "page": 144,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith\", p.142): each gives +1 Faith and an ability that spends it; Faith is restored to maximum at the start of each session and after a Respite. The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", p.142): characters outside the Imperium cannot take them, and gaining CHAOS or another equally heretical Keyword breaks your Faith (reduced to 0, never restored). At the GM's discretion the prerequisites can be customised for another deity. \"At least 1 Faith\" means another Faith Talent first (GM ruling, docs/rules-flow.md §11.30).",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM",
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "talent",
+        "anyOf": [
+          "bolstering-purity",
+          "by-his-will",
+          "consecrated-light",
+          "divine-guidance",
+          "in-his-name",
+          "inspired-blessing",
+          "litany-of-hatred",
+          "martyrs-tears",
+          "repent",
+          "righteous-wrath",
+          "shield-of-faith",
+          "the-passion"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You gain +1 Faith.\n\nAs a Reflexive Action, you may spend 2 Faith to force an attack directed at you to miss."
   }
 ]

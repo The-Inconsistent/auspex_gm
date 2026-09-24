@@ -1,5 +1,65 @@
 [
   {
+    "id": "adaptive-strategy",
+    "name": "Adaptive Strategy",
+    "source": "vow-of-absolution",
+    "page": 44,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed across pp.44–45.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Int",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Informed by your Chapter doctrines or the Codex Astartes, you can overcome whatever obstacles emerge on your path to victory. Your battle plans are comprehensive, and what you cannot plan for, you overcome with cunning improvisation. When spending a point of Wrath to make a Narrative Declaration (Wrath & Glory Core Rulebook, page 164), you may roll a die if the GM approves your declaration. If this die rolls an Icon, the point of Wrath is not spent. If the die rolls an Exalted Icon, the results of the Narrative Declaration are more impressive than usual, and the Wrath point is not spent.\n\nA Narrative Declaration can easily be upscaled by adding a few dice to Tests involving it, increasing the number of items or personnel involved, or even adding one or more ED dice to damage resulting from it."
+  },
+  {
+    "id": "armour-of-contempt",
+    "name": "Armour of Contempt",
+    "source": "vow-of-absolution",
+    "page": 45,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. The Black Carapace is a Space Marine implant (p.24), not an item, so it is a text requirement; Scouts lack it until the Advancement Packages (p.27). Also Apocrypha p.231.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 5
+      },
+      {
+        "kind": "text",
+        "text": "Must have received the Black Carapace"
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "No fell sorcery or malign xenotechnology is sufficient to overcome your armour, for you are clad in righteous faith as well as ceramite. You may spend a point of Wrath to roll Determination against Mortal Wounds as if a standard source of damage inflicted them."
+  },
+  {
     "id": "bolter-discipline",
     "name": "Bolter Discipline",
     "source": "vow-of-absolution",
@@ -7,10 +67,191 @@
     "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
     "xp": 20,
     "requires": [
-      { "kind": "keyword", "anyOf": ["ADEPTUS ASTARTES"] },
-      { "kind": "notKeyword", "anyOf": ["CHAOS"] }
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
     ],
     "effect": "Your Bolter spits forth a storm of iron that pulverises threats in an unyielding sequence of explosions. When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon'sRapid Fire rating."
+  },
+  {
+    "id": "codex-innovator",
+    "name": "Codex Innovator",
+    "source": "vow-of-absolution",
+    "page": 45,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Ultramarines Chapter or an Ultramarines Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Int",
+        "min": 5
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ultramarines"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Since the return of Roboute Guilliman, the Codex Astartes has slowly been recognised as a living document which the greatest tacticians may contribute and iterate upon. Your own studious knowledge of the Codex Astartes and years of service allow you to quickly adapt and evolve strategies on the battlefield in line with its tenets. While it may be decades or centuries before your tactics receive the necessary approval to be disseminated to other Chapters for consideration and adoption, your brethren know your strategic insight, as do all those who witness you in battle.\n\nWhen executing a strategic plan or tactic that you helped create, you add + (Rank) dice to all Leadership (Wil) and Persuasion (Fel) Tests to guide others through the details. In addition, if you have at least one hour to plan for an upcoming encounter or mission, you receive one bonus Wrath point that can only be spent on a Narrative Declaration (Wrath & Glory Core Rulebook, page 164) relevant to your plan. This Wrath point can carry over between sessions, but you may never possess more than one bonus Wrath point from this Talent."
+  },
+  {
+    "id": "codex-duellist",
+    "name": "Codex Duellist",
+    "source": "vow-of-absolution",
+    "page": 45,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You are a practitioner of one of the many duelling schools derived from the Codex Astartes teachings and the martial traditions of your Chapter. Precise movements ensure your blade arrives with maximum force and no time to dodge or brace against its killing edge. When a Threat attempts to roll Determination against damage you inflict with a melee weapon, the first (Rank) Wounds inflicted require 2 Icons each on the Determination Test to eliminate, although the Threat still only suffers 1 Shock for each Wound reduced."
+  },
+  {
+    "id": "echo-of-sanguinius",
+    "name": "Echo of Sanguinius",
+    "source": "vow-of-absolution",
+    "page": 46,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Blood Angels Chapter or a Blood Angels Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The violent and horrific death of the Blood Angels' Primarch at the hands of Warmaster Horus haunts all of Sanguinius' sons to this day. Those most afflicted eventually succumb to the Black Rage, haunted by the psychic echoes of that fateful battle. Still, there are more benign manifestations — including the one to which you have become a witness.\n\nA fragment of the visionary spirit of your Primarch lives within you, granting you knowledge of the past and future. You may declare you have had a vision after a Respite (Wrath & Glory Core Rulebook, page 196). If you do, ask the GM one question about events related to your mission. The GM must answer truthfully, although they do not need to tell the whole truth and may be cryptic in their response. However, after your vision, the closeness to Sanguinius' spirit haunts you. If you have the PRIMARIS Keyword, you are affected by the Blood Angels gene-seed flaw (Wrath & Glory Core Rulebook, pages 71-73) despite your refined origin. Otherwise, increase the DN of the Willpower Test to avoid becoming Frenzied to 5."
+  },
+  {
+    "id": "fear-made-manifest",
+    "name": "Fear Made Manifest",
+    "source": "vow-of-absolution",
+    "page": 46,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "talent",
+        "anyOf": [
+          "fear"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "When unleashing your wrath in battle, the fury of an Astartes warrior is written across your features. You may make an Intimidation (Wil) Test as a Reflexive Action in combat upon encountering any new foes, including at the start of a battle. Apply the results of the Test to each enemy individually (so a Test that rolls four Icons could intimidate a Cultist requiring DN 3, but not their Traitor Astartes master with a DN of 7). You can only attempt to intimidate a given character in this manner once per encounter."
+  },
+  {
+    "id": "gene-wrought-might",
+    "name": "Gene-Wrought Might",
+    "source": "vow-of-absolution",
+    "page": 46,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "S",
+        "min": 6
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The power of your modified physiology enables you to perform incredible feats of raw strength, and failure in such endeavours is a stranger to you. You may add an automatic Icon to your results when making a Test involving physical might, such as an Athletics (S) Test to lift a chunk of debris pinning a wounded ally. Additionally, any such Tests take half as long as usual."
+  },
+  {
+    "id": "chainsaw-warrior",
+    "name": "Chainsaw Warrior",
+    "source": "vow-of-absolution",
+    "page": 46,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed \"Requirements: None\"; the chapter rule still adds ADEPTUS ASTARTES.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Whatever the spinning teeth of your Chainblade doesn't catch on the first rotation is shredded on the next pass. When you use a weapon with the CHAIN Keyword, you may re-roll any ED dice you choose, but must accept the second result."
   },
   {
     "id": "built-tough",
@@ -20,10 +261,599 @@
     "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
     "xp": 10,
     "requires": [
-      { "kind": "skill", "skill": "Survival", "min": 2 },
-      { "kind": "keyword", "anyOf": ["ADEPTUS ASTARTES"] },
-      { "kind": "notKeyword", "anyOf": ["CHAOS"] }
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 2
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
     ],
     "effect": "You are aggressively self-reliant, substituting your culture's folk remedies for formal medical training. You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions (Wrath & Glory, page 124). You do not suffer the usual DN penalties for using this ability on yourself."
+  },
+  {
+    "id": "gilead-combat-veteran",
+    "name": "Gilead Combat Veteran",
+    "source": "vow-of-absolution",
+    "page": 47,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. The Absolvers clause is an either/or with a GM-judged alternative.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "subFaction",
+            "anyOf": [
+              "absolvers"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "possess extensive knowledge of and experience in Gilead combat zones (as adjudicated by the GM)"
+          }
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You have fought across the length and breadth of the Gilead System, striking the fear of the Emperor into foes in every corner of the system. Once per encounter, when making a Narrative Declaration (Wrath & Glory Core Rulebook, p164), you do not need the GM's permission to possess routine clearance codes, briefing information, or facts about enemy disposition and numbers. This does not allow you to influence what is physically present in a scene, only to have the ability to access otherwise hidden information by virtue of your extensive experience."
+  },
+  {
+    "id": "hammer-of-wrath",
+    "name": "Hammer of Wrath",
+    "source": "vow-of-absolution",
+    "page": 47,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Pilot",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The wargear of the Assault Companies is as familiar to you as your battle-brothers themselves, and you have mastered their use on the battlefield. When equipped with a Jump Pack (Wrath & Glory Core Rulebook, page 237), you may spend one Wrath to make any attack you make as part of a flying Charge deal Mortal Wounds for damage."
+  },
+  {
+    "id": "the-imperiums-sword",
+    "name": "The Imperium's Sword",
+    "source": "vow-of-absolution",
+    "page": 47,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Athletics",
+        "min": 3
+      },
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 3
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Always first to the fray, you hurl yourself into combat like a whirlwind of vengeance. You may move an additional +(Rank) metres when you charge. In addition, the attack you make as part of a Charge gains +1 ED, or +2 ED when attacking a Mob."
+  },
+  {
+    "id": "inner-circle-secrets",
+    "name": "Inner Circle Secrets",
+    "source": "vow-of-absolution",
+    "page": 47,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Dark Angels Chapter or a Dark Angels Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 5
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      },
+      {
+        "kind": "text",
+        "text": "must have been entrusted with or discovered the secret of the Fallen"
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The Dark Angels and their Successors sometimes cryptically refer to themselves as the \"Unforgiven,\" and even the lay brethren of these Chapters do not fully understand why. It is a secret wreathed in myth and metaphor, obscured by Chapter mysteries to which only a few are privy. Those who learn the truth, or are sufficiently trusted by their superiors, are inducted into the Inner Circle and told the reality of the Legion's ancient split and fall from grace, giving them a unique perspective on fallibility and failure.\n\nAs one entrusted with these secrets — perhaps by Interrogator-Chaplain Caphziel aboard the Varonius Flotilla — or who discovered the terrible truth in the field, you are prepared to face the worst forms of betrayal. Ever vigilant, you do not need to pay a point of Glory to be considered aware of an ambush (Wrath & Glory Core Rulebook, page 177), and reduce by 2 the DN of Cunning (Fel) and Scholar (Int) Tests to unearth or learn of betrayal and those who would engage in it."
+  },
+  {
+    "id": "legacy-of-the-primarch",
+    "name": "Legacy of the Primarch",
+    "source": "vow-of-absolution",
+    "page": 48,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. A Successor Chapter uses its founding Chapter's entry (the Chapter it drew its Chapter Traits from, per the Effect); Absolvers use [BLOOD ANGELS].",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "[CHAPTER]"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You are a true inheritor of the legacy of your progenitor, bearing the fruits of their genetic, martial, and spiritual heritage in full. For some Astartes, this means countless hours of study of the Codex Astartes to master Guilliman's teachings. In contrast, for others, it means embracing the spirit of the wolf within or replacing the frailty of flesh with the surety of iron. What it means for you depends on your Chapter and the First Founding Legion from which you descend, but it enables you to perform incredible feats, the likes of which only a mighty champion of your gene line could manage.\n\nThis Talent has a variable effect depending on your [CHAPTER] Keyword. If you are playing a Chapter with an unknown succession (Wrath & Glory Core Rulebook, page 71), use the Keyword from which you drew your Chapter Traits at character creation.\n- [BLOOD ANGELS]: Once per game session, you may draw on the fury in your gene-seed to reduce the DN of a melee attack Test by (Rank).\n- [DARK ANGELS]: Once per game session, you may draw on your natural perception and insight to reduce the DN of an Investigation(Int) Test you make by (Rank).\n- [IMPERIAL FISTS]: Once per game session, you may draw on your knowledge of siege warfare to reduce by (Rank) either the DN of a Test made to attack a building, fortification, or enemy in cover, or the DN of a Test related to architectural engineering.\n- [IRON HANDS]: Once per game session, you may draw on the blessed strength of technology to reduce the DN of a Willpower Test by an amount equal to the number of augmetics you possess.\n- [RAVEN GUARD]: Once per game session, you may draw on your cunning and swiftness to reduce the DN of a Stealth (A) Test by (Rank).\n- [SALAMANDERS]: Once per game session, you may draw upon your familiarity with the hazards of Nocturne to reduce by (Rank) either the DN of a Test made to attack using a weapon with the FIRE or MELTA Keywords or the DN of a Determination Test made against damage with a source with the FIRE or MELTA Keywords.\n- [SPACE WOLVES]: Once per game session, you may draw on the senses granted to you by the Canis Helix to reduce the DN of an Awareness (Int) Test by (Rank).\n- [ULTRAMARINES]: Once per game session, you may draw on the teachings of the Codex Astartes to reduce the DN of any single Test by 1.\n- [WHITE SCARS]: Once per game session, you may draw on the riding traditions of Chogoris to reduce the DN of a Pilot (A) Test by (Rank)."
+  },
+  {
+    "id": "mortal-understanding",
+    "name": "Mortal Understanding",
+    "source": "vow-of-absolution",
+    "page": 49,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Salamanders Chapter or a Salamanders Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Fel",
+        "min": 2
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You have lived among the unaugmented Humans of Nocturne, perhaps alongside your distant kin. As such, you find it easier to relate to the ordinary citizens of the Imperium than most Astartes. Therefore, you reduce the DN of Fellowship-based Tests by 2 when interacting with Humans. In addition, once you have made a successful Fellowship-based Test to influence or calm someone frightened by your Infernal Inheritance Chapter Trait (Wrath & Glory Core Rulebook, page 74), you may waive future penalties when interacting with that individual."
+  },
+  {
+    "id": "pain-glove-endurant",
+    "name": "Pain Glove Endurant",
+    "source": "vow-of-absolution",
+    "page": 49,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Imperial Fists Chapter or an Imperial Fists Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 5
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Having regularly engaged in the tradition of the Pain Glove familiar to the scions of Dorn, you have pitted your will against relentless pain. You typically prove the victor in such battles and have learned to disregard fear and suffering as unworthy distractions. As a result, you ignore penalties to Tests caused by pain. In addition, you are immune to Fear."
+  },
+  {
+    "id": "rapid-assault",
+    "name": "Rapid Assault",
+    "source": "vow-of-absolution",
+    "page": 49,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Athletics",
+        "min": 2
+      },
+      {
+        "kind": "skill",
+        "skill": "Ballistic Skill",
+        "min": 3
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You can maintain a steady volley of fire while swiftly advancing. You can fire ranged weapons with the Assault Trait (Wrath & Glory Core Rulebook, page 208) as part of a Sprint (Wrath & Glory Core Rulebook, page 180) without an increased DN."
+  },
+  {
+    "id": "raiding-master",
+    "name": "Raiding Master",
+    "source": "vow-of-absolution",
+    "page": 49,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the White Scars Chapter or a White Scars Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "I",
+        "min": 5
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Not only are the White Scars masters of raiding warfare, but they also have an ancient hatred of raiders who dare strike against the Imperium. Conflicts against Drukhari and Traitor Astartes alike have long nourished this hatred. As few others have done, you have mastered raiding warfare by careful study and hard-won experience. You gain +(Rank) dice to all Tests to plan and execute a raid or ambush. You also gain the same bonus to Tests to detect or prevent enemies from raiding or ambushing you and your allies."
+  },
+  {
+    "id": "scion-of-the-forge",
+    "name": "Scion of the Forge",
+    "source": "vow-of-absolution",
+    "page": 49,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Through ritual study, you have mastered the machine spirits, not just of your wargear but of various tech patterns and obscure devices. What you do not know you learn swiftly, applying your vast knowledge with practised pragmatism and efficiency. When making a Tech Test to analyse or repair a piece of advanced Imperial machinery or wargear, add +Rank dice."
+  },
+  {
+    "id": "skilled-rider",
+    "name": "Skilled Rider",
+    "source": "vow-of-absolution",
+    "page": 49,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Pilot",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Atop one of your Chapter's iron steeds, you are capable of feats of daring speed that can see you ride through the teeth of an enemy barrage unharmed. When riding a combat bike, Land Speeder, or similarly swift Astartes vehicle, enemies who make ranged attacks against you or your vehicle increase their DN by +2. This penalty only applies if you moved at least 10m in your previous turn."
+  },
+  {
+    "id": "spirit-of-the-pack",
+    "name": "Spirit of the Pack",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Space Wolves Chapter or a Space Wolves Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 3
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You count not only the warriors of your Chapter as battle-brothers but the beasts of Fenris and many other worlds. Such is your intuitive understanding of feral beasts that you can almost communicate with them. Therefore, when making a Test to interact with or influence natural wildlife (including xeno-fauna), you may add +(double Rank) dice. In addition, such creatures are reluctant to attack you, treating you as if you caused Fear with a DN equal to (Rank +2)."
+  },
+  {
+    "id": "strength-from-steel",
+    "name": "Strength from Steel",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Iron Hands Chapter or an Iron Hands Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason. \"Three or more augmetics\" is a count of any augmetics, not a named item, so it is a text requirement.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "T",
+        "min": 5
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      },
+      {
+        "kind": "text",
+        "text": "three or more augmetics"
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You are aware of the frailties and weaknesses of flesh and have learned to bolster yourself by relying instead on your blessed augmetics. Once per session, you may ignore a source of damage that would inflict Wounds equal to or less than the number of augmetics you have installed."
+  },
+  {
+    "id": "transhuman-physiology",
+    "name": "Transhuman Physiology",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Also Apocrypha p.245.",
+    "xp": 40,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "T",
+        "min": 6
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Your constitution is such that no blade, bolt, or other weapon can keep you down for long. When an attack deals less than (Rank) Wounds to you, you may immediately choose to convert them to Shock as if you had automatically received (Rank) Icons while rolling Determination. In addition, when converting Wounds to Shock through this method or with standard Determination rolls, you receive one less Shock per instance of conversion, to a minimum of 1."
+  },
+  {
+    "id": "uncompromising-fire",
+    "name": "Uncompromising Fire",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "I",
+        "min": 5
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Combat is so routine to you that it has receded to a reflexive level, freeing your conscious mind to perform other tasks.\n\nOn your turn in combat, you may complete an additional Simple Action that does not involve significant physical motion, such as making an Awareness (Int) Test to spot a hidden enemy or giving orders with Leadership (Wil), but not reloading a weapon or kicking down a barricade. This restriction only applies to the bonus Simple Action gained from this Talent."
+  },
+  {
+    "id": "whirlwind-of-rage",
+    "name": "Whirlwind of Rage",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Print error copied as printed: \"When attacking part of a Charge\" (read: as part of a Charge).",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Athletics",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Raw gene-enhanced muscle mass aids your brutal charges, driven by a hatred of the unclean. When attacking part of a Charge, you may shift up to (Rank) Exalted Icons for +2 ED each instead of the standard +1 ED."
+  },
+  {
+    "id": "wise-orator",
+    "name": "Wise Orator",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Copied as printed: no amount is given for the DN decrease, and \"similar products from Potency\" (read: effects). The Litanies of Battle are VoA p.57.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Leadership",
+        "min": 4
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You carry an air of authority and wisdom any faithful servant of the Emperor can recognise. Those who stop and listen to you are invariably impressed by insight, decreasing the DN to persuade or influence loyal Imperial citizens and soldiers when making a Leadership Test. If using the optional NPC Attitudes rules (Wrath & Glory Core Rulebook, page 168), you can treat all Neutral NPCs as having a Helpful Attitude.\n\nIn addition, your sermons carry particular weight with your Astartes brethren. When reciting a Litany of Battle (page 57), any affected targets other than yourself retain the benefits of the Litany for an additional turn after you cease to sustain the Litany. This effect stacks with any similar products from Potency."
+  },
+  {
+    "id": "wraith-slipping",
+    "name": "Wraith-Slipping",
+    "source": "vow-of-absolution",
+    "page": 50,
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Raven Guard Chapter or a Raven Guard Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "A",
+        "min": 5
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "In the traditions of the Raven Guard, many esoteric physical and mental exercises prepare battle-brothers for stealth operations. They are collectively known as \"wraith-slipping,\" and you are versed in every single one. As a result, you may ignore penalties to Stealth (A) Tests from your size, wargear, or lack of camouflage."
   }
 ]

@@ -265,6 +265,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Origin needs that House type. A Renegade House has no Origin row.
 27. **Species gaps:** Ogryn and Ratling have the ABHUMAN Species Keyword, Kroot has KROOT (FSPG prints none), and
     Navigators use the Human maximums (Apocrypha p.18 has no Navigator column).
+28. **Exarch Powers** (Apocrypha p.247): an Exarch's Aspect is their Aspect Warrior archetype, and Tier 3 is the hard
+    minimum to buy one (Master of War, p.216, prints Tier 4 for the first power).
+29. **Talents with a bracketed choice** (Hatred [Any], Loremaster [Keyword], Jargon [Skill], Supreme Presence, Transhuman,
+    Uncanny, Unnatural; also Signature Saedath, IoE p.62) may be taken once per choice: `repeatable: "perChoice"`.
+30. **The Emperor Protects** (Core p.144) needs "at least 1 Faith": another Faith Talent owned first.
 
 ---
 
