@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
-import { Threat } from "@wg/shared";
+import { Pack, Threat } from "@wg/shared";
+import { loadPackRaw, packNames } from "./index.ts";
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
 const EXPECTED = [
@@ -37,4 +38,21 @@ const missing = EXPECTED.filter((id) => !found.includes(id));
 const core = EXPECTED.length - missing.length;
 console.log(`core bestiary: ${core}/${EXPECTED.length}${missing.length ? ` (missing: ${missing.join(", ")})` : ""}`);
 console.log(`supplements: ${found.length - core} threats`);
+// Packs: schema, internal references, and every prepared-encounter threat must exist.
+for (const name of packNames()) {
+  const r = Pack.safeParse(loadPackRaw(name));
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ pack ${name}\n${z.prettifyError(r.error)}`);
+    continue;
+  }
+  const unknown = r.data.adventures.flatMap((a) => a.beats.flatMap((b) => b.encounter.map((e) => e.threatId))).filter((id) => !found.includes(id));
+  const bestiaryNpcs = r.data.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])).filter((id) => !found.includes(id));
+  for (const id of [...unknown, ...bestiaryNpcs]) {
+    failed = true;
+    console.error(`✖ pack ${name}: unknown threat "${id}"`);
+  }
+  console.log(`pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`);
+}
+
 process.exit(failed ? 1 : 0);

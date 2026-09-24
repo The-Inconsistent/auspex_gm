@@ -31,7 +31,8 @@ const rule = z.object({ name: z.string().max(100), text: z.string().max(2000), p
 // Additive modifiers from species, talents, archetypes (e.g. Primaris +3 Wounds, Honour the Chapter +1 Resolve).
 const Mods = z
   .object({ maxWounds: z.number().int(), maxShock: z.number().int(), defence: z.number().int(), resilience: z.number().int(),
-    resolve: z.number().int(), conviction: z.number().int(), influence: z.number().int(), speed: z.number().int() })
+    resolve: z.number().int(), conviction: z.number().int(), influence: z.number().int(), speed: z.number().int(),
+    determination: z.number().int() })
   .partial();
 
 export const CharacterStats = z.object({
@@ -75,13 +76,13 @@ export function deriveStats(s: CharacterStats, o: Overrides, tier: number) {
     conviction: a.Wil + (m.conviction ?? 0),
     influence: a.Fel - 1 + (m.influence ?? 0),
     speed: s.speed + (m.speed ?? 0),
+    determination: a.T + (m.determination ?? 0), // Background bonuses can raise it (p.72)
   };
   const out = Object.fromEntries(
     Object.entries(base).map(([k, v]) => [k, Math.max(1, o[k as keyof Overrides] ?? v)]),
   ) as typeof base;
   return {
     ...out,
-    determination: Math.max(1, a.T),
     passiveAwareness: Math.max(1, Math.ceil(skillTotal(s, "Awareness") / 2)),
     maxTraumatic: tier + 1,
   };

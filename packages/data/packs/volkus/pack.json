@@ -1,0 +1,320 @@
+{
+  "campaign": {
+    "name": "Volkus Dig Site",
+    "tier": 4,
+    "patron": "Inquisitor Maren Solace, Ordo Xenos (placeholder name)",
+    "framework": "Deathwatch Kill Team. Five Primaris battle-brothers seconded from their Chapters to the Deathwatch station on Enoch's northern pole (Core p.303), serving the Long Vigil against the xenos. An Inquisitor of the Ordo Xenos directs the team; each brother answers to the Watch, but still honours his Chapter (Honour the Chapter, Core p.29).\n\nFirst mission: eliminate an Ork Kommando infestation at the Volkus archeotech dig site on Gilead Primus, and learn why the Adeptus Mechanicus is so desperate to reclaim it."
+  },
+  "factions": [
+    {
+      "key": "ordo-xenos",
+      "name": "Ordo Xenos",
+      "keywords": ["INQUISITION", "IMPERIUM", "[ORDO]"],
+      "stance": "ally",
+      "notes": "The Inquisition's watch against the alien. The Deathwatch is its Chamber Militant (Core p.64, p.303). Inquisitors are perhaps the only humans who can order Astartes (VoA p.122).",
+      "secrets": "The Inquisitor already suspects Volkus sits on a xenos structure. She sent the Kill Team for the Orks and to see what the Mechanicus is hiding."
+    },
+    {
+      "key": "deathwatch",
+      "name": "Deathwatch (Enoch Watch Station)",
+      "keywords": ["DEATHWATCH", "ADEPTUS ASTARTES", "IMPERIUM"],
+      "stance": "ally",
+      "notes": "The Kill Team's home. The station on Enoch's northern pole; forces there work in kill teams or alone (Core p.303).",
+      "secrets": ""
+    },
+    {
+      "key": "mechanicus",
+      "name": "Adeptus Mechanicus (Archdomina Vakuul's retinue)",
+      "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM"],
+      "stance": "rival",
+      "notes": "Claims Volkus as a Mechanicus excavation. Polite, obstructive, and very interested in anything the Kill Team finds.",
+      "secrets": "Archdomina Vakuul wants archeotech and STCs, and trades arms production for them (VoA p.20–21). Her dig team breached a sealed stratum of non-human construction three weeks ago and she buried the report. She wants the tomb, not the Orks, dealt with — and she wants it intact."
+    },
+    {
+      "key": "kommandos",
+      "name": "Gutshiva's Kommandos",
+      "keywords": ["ORK", "KOMMANDO"],
+      "stance": "enemy",
+      "notes": "A mob of Ork Kommandos led by the cunning Nob Gutshiva (Gutshiva's Kommandos p.3, p.8).",
+      "secrets": "[GM adaptation] They were never meant to be here. Muntz 'nerz's crude tellyporta was supposed to drop them under Hive Gulgatha (GK p.3); it misfired and scattered them into the Volkus workings. They have been raiding the dig camp for gear and are now looking for a way home."
+    },
+    {
+      "key": "necrons",
+      "name": "The Sleepers Below",
+      "keywords": ["NECRON"],
+      "stance": "enemy",
+      "notes": "Unknown to the Kill Team at the start of play.",
+      "secrets": "A Necron tomb, sealed for millions of years and maintained by Canopteks (TA p.131–132). The Mechanicus breach has begun to wake it. Threat Assessment's Gilead backstory (rival Lezektekhan crypts and caches hidden around the system, TA p.133–134) and the Perfidia Upswell flashpoint (TA p.134) are both good models: the longer the Imperials fight over it, the more of it wakes."
+    }
+  ],
+  "locations": [
+    {
+      "key": "enoch-station",
+      "name": "Deathwatch Station, Enoch",
+      "description": "The Watch station on Enoch's frozen northern pole. Grey stone, black armour, silver trim, and the constant hum of the station's cogitators.",
+      "gmNotes": "Briefing location. Core p.303.",
+      "hazards": "",
+      "revealed": true
+    },
+    {
+      "key": "gilead-primus",
+      "name": "Gilead Primus",
+      "description": "Capital world of the Gilead System. Titanic hives rise from red rock wastes scarred by centuries of strip mining; abandoned mining towns dot the deserts.",
+      "gmNotes": "Described in Gutshiva's Kommandos p.6. Hive Gulgatha lies on the equator; its lord, Starn Varadgar VII, is quietly hiding an Ork problem in his underhive.",
+      "hazards": "",
+      "revealed": true
+    },
+    {
+      "key": "volkus",
+      "name": "Volkus Dig Site",
+      "parent": "gilead-primus",
+      "description": "An archeotech excavation in the crimson wastes: terraced strip-mine walls, a prefab camp, cranes and ore-haulers, and a deep central shaft sealed with Mechanicus wards.",
+      "gmNotes": "[GM adaptation] The Mechanicus dig here for the riches and archeotech of Gilead's former inhabitants (GK p.6). Nobody on-site will admit what the deep shaft reached.",
+      "hazards": "Pick or roll 1d66 per Tier (4 rolls) on a fitting Battlezone Hazard Table (Threat Assessment p.9–21). Good fits: dust storms, unstable terraces, abandoned machinery.",
+      "revealed": true
+    },
+    {
+      "key": "volkus-camp",
+      "name": "Excavation Camp",
+      "parent": "volkus",
+      "description": "Prefab habs and a cogitator shrine. Doors hang open; servitors lie where they fell. Crude glyphs and toothy grins are daubed on the walls in grease.",
+      "gmNotes": "Kommando raids stripped it. The cogitator shrine's data-core survived (handout: recovered data-slate).",
+      "hazards": "",
+      "revealed": false
+    },
+    {
+      "key": "kommando-lair",
+      "name": "Collapsed Terrace",
+      "parent": "volkus",
+      "description": "A landslide of red rock where an upper mining terrace fell in. Perfect cover. Something in there smells of fungus and promethium.",
+      "gmNotes": "Gutshiva's camp: looted crates, a half-built tellyporta beacon. The ambush happens on approach.",
+      "hazards": "Loose rock: Difficult Terrain (Speed halved, Core p.181). Cover everywhere (+1 or +2 Defence, Core p.181).",
+      "revealed": false
+    },
+    {
+      "key": "volkus-shaft",
+      "name": "The Deep Shaft",
+      "parent": "volkus",
+      "description": "The main excavation shaft. At the bottom, the rock gives way to smooth green-black stone that is cold to the touch and hums faintly.",
+      "gmNotes": "The breach into the tomb. Canoptek Scarabs have started repairing the damage the Mechanicus did.",
+      "hazards": "Darkness (vision penalties, Core p.191) unless the team brings light. Falling: 5 m or more = 1 Mortal Wound +1d3 per extra 5 m (Core p.201).",
+      "revealed": false
+    }
+  ],
+  "npcs": [
+    {
+      "key": "inquisitor",
+      "name": "Inquisitor Maren Solace",
+      "faction": "ordo-xenos",
+      "role": "Patron. Ordo Xenos Inquisitor (placeholder name)",
+      "description": "Grey-haired, precise, never raises her voice. She speaks to the Kill Team as colleagues, not tools.",
+      "gmNotes": "Use her to open the session and to explain the rules of engagement: kill the Orks, do not provoke the Mechanicus, report anything xenos that is not Ork.",
+      "secrets": "She suspects a xenos structure under Volkus and wants proof before the Mechanicus buries it.",
+      "attitude": "friendly",
+      "statSource": { "kind": "quick", "tier": 4 },
+      "revealed": true
+    },
+    {
+      "key": "magos",
+      "name": "Magos Explorator Tessaly-7",
+      "faction": "mechanicus",
+      "role": "Senior surviving Mechanicus officer on-site (placeholder name)",
+      "description": "More machine than woman. Speaks in clipped binaric-inflected Gothic; her mechadendrites never stop moving.",
+      "gmNotes": "Social encounter. She is Uncooperative (+2 DN to social Tests, Core p.168). A successful Insight (Fel) Test reveals she is afraid of something other than the Orks. A Shift can improve her Attitude one step (p.168).",
+      "secrets": "She ordered the deep shaft sealed after the breach and has been hiding in the camp's shrine. She will trade what she knows for safe passage and a promise that the Mechanicus keeps the find.",
+      "attitude": "uncooperative",
+      "statSource": { "kind": "quick", "tier": 4 },
+      "revealed": false
+    },
+    {
+      "key": "vakuul",
+      "name": "Archdomina Aexekra Vakuul",
+      "faction": "mechanicus",
+      "role": "Mechanicus power broker on the Circlet Council (VoA p.20–21)",
+      "description": "",
+      "gmNotes": "Off-screen in session 1. The Magos answers to her.",
+      "secrets": "Wants archeotech and STCs above all (VoA p.21). She will send Skitarii to reclaim Volkus the moment she learns the Orks are gone.",
+      "attitude": "neutral",
+      "statSource": { "kind": "none" },
+      "revealed": false
+    },
+    {
+      "key": "gutshiva",
+      "name": "Boss Gutshiva",
+      "faction": "kommandos",
+      "role": "Nob leader of the Kommandos",
+      "description": "",
+      "gmNotes": "Elite at Tier 4 with 4 personal Ruin (Gutshiva's Kommandos p.8). VoA p.121: let him escape when the fight turns — a boss the players want back is worth more than one they kill in round two.",
+      "secrets": "Wants the tellyporta fixed so he can get his boyz somewhere with more fighting.",
+      "attitude": "hostile",
+      "statSource": { "kind": "bestiary", "threatId": "gutshiva" },
+      "revealed": false
+    },
+    {
+      "key": "dudd",
+      "name": "Dudd the Bomb Squig",
+      "faction": "kommandos",
+      "role": "A 'lucky' unexploded bomb squig (GK p.18)",
+      "description": "",
+      "gmNotes": "Comic relief with teeth. If the players capture it, it is a walking breaching charge.",
+      "secrets": "",
+      "attitude": "hostile",
+      "statSource": { "kind": "bestiary", "threatId": "dudd-the-bomb-squig" },
+      "revealed": false
+    },
+    {
+      "key": "muntz",
+      "name": "Muntz 'nerz",
+      "faction": "kommandos",
+      "role": "Rogue Mekboy who built the tellyporta (GK p.3)",
+      "description": "",
+      "gmNotes": "Off-screen. A thread for later sessions: where is the other end of the tellyporta?",
+      "secrets": "",
+      "attitude": "hostile",
+      "statSource": { "kind": "none" },
+      "revealed": false
+    }
+  ],
+  "handouts": [
+    {
+      "key": "mandate",
+      "title": "Ordo Xenos Mandate",
+      "body": "+++ ORDO XENOS // SEALED FOR KILL TEAM ONLY +++\n\nTARGET: Ork infiltrators, designation KOMMANDO, operating at Volkus Dig Site, Gilead Primus.\nOBJECTIVE 1: Locate and eliminate the xenos. Leadership priority.\nOBJECTIVE 2: Secure the excavation. Do not permit its destruction.\nOBJECTIVE 3: Report ANY xenos presence that is not Ork. Do not engage it without authorisation.\n\nThe Adeptus Mechanicus holds a writ over Volkus. Extend them every courtesy. Believe nothing they tell you.\n\n— M. S., Ordo Xenos",
+      "revealed": true
+    },
+    {
+      "key": "data-slate",
+      "title": "Recovered Data-Slate (Mechanicus)",
+      "body": "…LOG 0-4-7. SHAFT DEPTH 212 M. STRATUM TRANSITION. MATERIAL: UNKNOWN. NOT STONE. NOT ANY METAL IN THE CATALOGUE.\n…LOG 0-5-1. SURFACE WARM. SURFACE REPAIRS ITSELF WHERE CUT. RECOMMEND HALT.\n…LOG 0-5-2. ARCHDOMINA'S SEAL RECEIVED. CONTINUE.\n…LOG 0-6-0. SMALL CONSTRUCTS OBSERVED IN THE BREACH. METALLIC. MANY-LEGGED. THEY ARE TAKING OUR TOOLS APART.\n…LOG 0-6-3. SHAFT SEALED BY ORDER OF THE MAGOS. THE ORKS CAME THE NEXT NIGHT.",
+      "revealed": false
+    },
+    {
+      "key": "auspex",
+      "title": "Auspex Return: Sub-surface Anomaly",
+      "body": "+++ AUSPEX SWEEP // DEPTH 200–400 M +++\nGeometric void, regular, ~1.2 km across. Walls return no material signature.\nLow-level energy output. Rising.\nMultiple small moving contacts near the shaft base.",
+      "revealed": false
+    },
+    {
+      "key": "glyphs",
+      "title": "Glyph Rubbing",
+      "body": "Rows of interlocking circles and crescent lines, cut with impossible precision into the green-black stone. Not Ork. Not Aeldari. Not anything in the Watch's archives you can recall. A battle-brother with Scholar may try a DN 5 Scholar (Int) Test; success: these are Necron.",
+      "revealed": false
+    }
+  ],
+  "adventures": [
+    {
+      "key": "session-1",
+      "title": "Session 1: Kommandos at Volkus",
+      "premise": "A first session for a first-time GM and new players. It teaches the rules in order: Tests (beat 2), combat, ambush, Mobs and Seize the Initiative (beat 3), investigation (beat 4), social Tests (beat 5), and a short fight that ends on a cliffhanger (beat 6). Expect about 3–4 hours.",
+      "status": "planned",
+      "beats": [
+        {
+          "title": "Briefing at the Watch Station",
+          "type": "briefing",
+          "location": "enoch-station",
+          "npcs": ["inquisitor"],
+          "handouts": ["mandate"],
+          "readAloud": "The Watch station's briefing hall is cold enough that your breath would fog, if you still breathed like mortals. Inquisitor Solace does not wait for pleasantries. 'Orks,' she says, and the hololith fills with a red desert and a scar of terraced mine workings. 'Kommandos. At a Mechanicus dig called Volkus. Kill them. And bring me back whatever the Mechanicus doesn't want me to see.'",
+          "gmNotes": "Before play (Threat Assessment p.6 advises this):\n• Explain Wrath (each player starts with 2, Core p.164), Glory (party pool, starts at 0, max 7 for 5 players, p.164) and Ruin (yours, starts at 5, max 10, visible to players, p.320).\n• Start the session in the app (PARTY → START SESSION): it resets Wrath, Glory and Ruin.\n• Each player rolls a d6 for their Objective (Core p.43).\nSend the Mandate handout to phones (CODEX → HANDOUTS → reveal).",
+          "outcome": "",
+          "encounter": []
+        },
+        {
+          "title": "Drop into Volkus",
+          "type": "travel",
+          "location": "volkus",
+          "npcs": [],
+          "handouts": [],
+          "readAloud": "The gunship's ramp drops into a wall of red dust. Below, the dig site is silent: cranes frozen, a hab door banging in the wind. On the upper terraces, something glints and is gone.",
+          "gmNotes": "Teach Tests (Core p.158–161): pool = Attribute + Skill, one die is the Wrath Die, 4–5 = Icon, 6 = two Icons. Standard DN 3 (p.160).\n• Awareness (Int) DN 3 to spot the glint (the Kommando lookout). Anyone who succeeds will not be ambushed in beat 3.\n• Survival (Wil) DN 3 to read the tracks: Ork boots, heavy loads, heading for the collapsed terrace.\n• Roll or pick hazards for the Volkus location (see its hazards note).",
+          "outcome": "",
+          "encounter": []
+        },
+        {
+          "title": "Kommando Ambush",
+          "type": "combat",
+          "location": "kommando-lair",
+          "npcs": ["gutshiva", "dudd"],
+          "handouts": [],
+          "readAloud": "The rockslide explodes into movement. Green shapes that were boulders a heartbeat ago rise with knives and sluggas, and a voice bellows from the ridge: 'Oi! Da big shiny 'umies! Get 'em, ladz!'",
+          "gmNotes": "Run it with PREP → RUN BEAT (it loads the whole team plus these Threats).\n• Ambush (Core p.177): in the tracker, mark any brother who failed beat 2's Awareness as AMBUSHED. They lose their Round 1 turn unless the party pays 1 Glory each (AWARE button).\n• Turns alternate (p.177): the players pick an Agent, then you pick a Threat. Show them Seize the Initiative (1 Glory: a second Agent acts before the Orks).\n• Mobs (p.324–325): every Kommando in a Mob has 1 Wound, so each hit that beats Resilience kills one, and every Icon over Defence kills another. Space Marines add +Rank Icons against Mobs (Defender of Humanity, Core p.29).\n• Troops die outright when they take more Shock than their max (p.324).\n• Gutshiva is an Elite with 4 personal Ruin. When he's losing, spend Ruin and let him escape (VoA p.121).\n• Encounter size follows Threat Assessment p.8 (2 Troops per Agent, half in Mobs, +1 Elite), a little bigger because the Agents are Space Marines.",
+          "outcome": "",
+          "encounter": [
+            { "threatId": "kommando", "count": 6, "asMob": true, "marker": "red", "label": "Kommandos (Red)" },
+            { "threatId": "kommando", "count": 6, "asMob": true, "marker": "amber", "label": "Kommandos (Amber)" },
+            { "threatId": "gutshiva", "count": 1, "asMob": false, "marker": "white", "label": "Boss Gutshiva" },
+            { "threatId": "dudd-the-bomb-squig", "count": 1, "asMob": false, "marker": "green", "label": "Dudd" }
+          ]
+        },
+        {
+          "title": "The Silent Camp",
+          "type": "investigation",
+          "location": "volkus-camp",
+          "npcs": [],
+          "handouts": ["data-slate", "auspex", "glyphs"],
+          "readAloud": "The excavation camp has been picked clean. Servitors lie where they fell, stripped of anything that could be bolted onto a Shoota. In the cogitator shrine, a single data-core still glows amber.",
+          "gmNotes": "Investigation (VoA p.121: Marines gather intel for the next strike, they don't sift crime scenes). Let each specialist shine:\n• Disruptor: Tech (Int) DN 3 to pull the data-core → reveal 'Recovered Data-Slate'.\n• Anyone with an auspex: Awareness DN 4 at the deep shaft → reveal 'Auspex Return'.\n• At the shaft's edge they find cut stone with glyphs → reveal 'Glyph Rubbing'.\nReveal handouts to phones as they are found.",
+          "outcome": "",
+          "encounter": []
+        },
+        {
+          "title": "The Magos Who Stayed",
+          "type": "social",
+          "location": "volkus-camp",
+          "npcs": ["magos"],
+          "handouts": [],
+          "readAloud": "A servo-skull drifts from behind the shrine's altar, lens whirring, and a voice follows it: 'Identify. You are… not Orks. Praise the Omnissiah. And you will leave my excavation as you found it.'",
+          "gmNotes": "Social encounter.\n• The Magos is Uncooperative: +2 DN (Core p.168).\n• Insight (Fel): she's afraid, and not of the Orks.\n• Persuasion (Fel) or Intimidation (Wil) at DN 3 +2: she admits the breach and that the shaft was sealed by her order.\n• A Shift on a success improves her Attitude one step (p.168).\n• She demands the find stays Mechanicus property. That is the hook for the rivalry.",
+          "outcome": "",
+          "encounter": []
+        },
+        {
+          "title": "Below the Seal",
+          "type": "revelation",
+          "location": "volkus-shaft",
+          "npcs": [],
+          "handouts": [],
+          "readAloud": "The Mechanicus wards spark and fail as you cut through them. The shaft drops into darkness. At the bottom, the rock simply stops, and smooth green-black stone begins. Along the seam, dozens of small metal things are working, rebuilding the wall the Mechanicus broke. As one, they stop, and turn toward you.",
+          "gmNotes": "A short fight, then the cliffhanger.\n• Canoptek Scarabs are Troops at Tier 4 (Threat Assessment p.145). Let the team win this.\n• When the last Scarab falls, describe a deep green light kindling far below, and rows of shapes standing in the dark that were not standing a moment ago. End the session there (Core p.321: end on a revelation or cliffhanger).\n• After the game: PARTY → END SESSION, 10 XP each (p.321), write a recap for the phones.",
+          "outcome": "",
+          "encounter": [
+            { "threatId": "canoptek-scarab", "count": 10, "asMob": true, "marker": "purple", "label": "Canoptek Scarabs" }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "tomb-beneath",
+      "title": "Next: The Tomb Beneath (outline)",
+      "premise": "Session 2+ outline, using Cascading Effects (VoA p.123): write down what each antagonist does next, and change it after every session based on what the Kill Team did.\n• Mechanicus: Vakuul sends Skitarii to reclaim Volkus the moment the Orks are gone.\n• Orks: Gutshiva (if he escaped) wants the tellyporta fixed; Muntz 'nerz's other end is under Hive Gulgatha (GK p.3–7).\n• Necrons: the tomb keeps waking. Every session without a decision, stronger Necrons stir (TA p.134). Destroy it, seal it, or let the Mechanicus have it?",
+      "status": "planned",
+      "beats": [
+        {
+          "title": "The Mechanicus Return",
+          "type": "social",
+          "location": "volkus",
+          "npcs": ["magos", "vakuul"],
+          "handouts": [],
+          "readAloud": "",
+          "gmNotes": "Skitarii arrive with a writ. Negotiate, bluff, or stand in their way (VoA p.121: Marines' hardest obstacles are political). Build Skitarii from the Quick NPC table (Core p.326) or the Skitarius archetype (Core p.101).",
+          "outcome": "",
+          "encounter": []
+        },
+        {
+          "title": "The Waking Halls",
+          "type": "combat",
+          "location": "volkus-shaft",
+          "npcs": [],
+          "handouts": [],
+          "readAloud": "",
+          "gmNotes": "Necron Warriors (Troops at Tier 4, TA p.142) in a Mob of 10, with an Elite: a Canoptek Reanimator (TA p.145) to show Reanimation Protocols. Remember Necrons give respected foes an 'honourable' death (TA p.135).",
+          "outcome": "",
+          "encounter": [
+            { "threatId": "necron-warrior", "count": 10, "asMob": true, "marker": "green", "label": "Necron Warriors" },
+            { "threatId": "canoptek-reanimator", "count": 1, "asMob": false, "marker": "white", "label": "Reanimator" }
+          ]
+        }
+      ]
+    }
+  ]
+}

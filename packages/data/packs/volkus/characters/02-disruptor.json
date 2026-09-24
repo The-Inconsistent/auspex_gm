@@ -1,0 +1,213 @@
+{
+  "name": "Brother Veyl Corsa",
+  "stats": {
+    "species": "Primaris Astartes",
+    "archetype": "Primaris Incursor",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "RAVEN GUARD",
+      "DEATHWATCH"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 4,
+      "Int": 5,
+      "Fel": 1
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 4,
+      "Ballistic Skill": 5,
+      "Stealth": 5,
+      "Survival": 2,
+      "Tech": 5,
+      "Weapon Skill": 4
+    },
+    "armour": {
+      "name": "Mk X Phobos",
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": [
+        "+1 Movement",
+        "+2 bonus dice to Stealth (A) Tests"
+      ]
+    },
+    "speed": 7,
+    "mods": {
+      "maxWounds": 3,
+      "maxShock": 1,
+      "resolve": 1,
+      "influence": 1,
+      "speed": 1,
+      "determination": 2
+    },
+    "abilities": [
+      {
+        "name": "Explosive Fury",
+        "text": "When making attacks with grenades, you gain +Rank bonus extra damage to successful attacks. When placing explosives, you may make a DN 3 Tech Test, and add +Rank bonus to both Damage and AP to the attack. [GM] \"+Rank bonus extra damage\" is read as +Rank ED.",
+        "page": "VoA p.33"
+      },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Honour the Chapter (Primaris)",
+        "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter. Your Resolve increases by +1. As a Primaris, you ignore any impurities in your Chapter Gene-Seed, and also gain +3 Wounds.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Space Marine Implants",
+        "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Master Of Shadows",
+        "text": "You may reroll Rank dice once per Stealth (A) Test. Running, using a Jump Pack, or similar circumstances do not affect your Stealth (A) Tests.",
+        "page": "Core p.74"
+      },
+      {
+        "name": "Background",
+        "text": "Origin Cunning (+1 Determination); Accomplishment Cleanse and Purge (+1 Max Shock); Goal Vengeance (+1 Determination). Determination is 7 (T 5 + 2).",
+        "page": "Core p.72"
+      }
+    ],
+    "talents": [
+      {
+        "name": "Wraith-Slipping",
+        "text": "You may ignore penalties to Stealth (A) Tests from your size, wargear, or lack of camouflage.",
+        "page": "VoA p.50"
+      },
+      {
+        "name": "Bolter Discipline",
+        "text": "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating.",
+        "page": "VoA p.45"
+      },
+      {
+        "name": "Silent",
+        "text": "You can move at full Speed when Moving Stealthily (p.182). Whenever your Stealth Score would be reduced, reduce it by 1 fewer.",
+        "page": "Core p.139"
+      }
+    ],
+    "weapons": [
+      {
+        "name": "Occulus Bolt Carbine",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          15,
+          30,
+          45
+        ],
+        "salvo": 2,
+        "traits": [
+          "Brutal",
+          "Rapid Fire (3)"
+        ]
+      },
+      {
+        "name": "Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "range": [
+          6,
+          12,
+          18
+        ],
+        "salvo": 1,
+        "traits": [
+          "Brutal",
+          "Pistol",
+          "Rapid Fire (2)"
+        ]
+      },
+      {
+        "name": "Paired Astartes Combat Knives",
+        "damage": 3,
+        "addStrength": true,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          1
+        ],
+        "traits": [
+          "Reliable"
+        ]
+      },
+      {
+        "name": "Frag Grenade",
+        "count": 3,
+        "damage": 10,
+        "ed": 5,
+        "range": [
+          32
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (6)",
+          "ED includes +1 Explosive Fury"
+        ]
+      },
+      {
+        "name": "Krak Grenade",
+        "count": 3,
+        "damage": 14,
+        "ed": 6,
+        "ap": -2,
+        "range": [
+          32
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)",
+          "ED includes +1 Explosive Fury"
+        ]
+      },
+      {
+        "name": "Haywire Mine",
+        "damage": 14,
+        "ed": 5,
+        "ap": -2,
+        "range": [
+          1
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)",
+          "Placed",
+          "DN 3 Tech: Damage 15, AP −3 (Explosive Fury)"
+        ]
+      },
+      {
+        "name": "Smoke Grenade",
+        "count": 3,
+        "damage": 0,
+        "ed": 0,
+        "range": [
+          32
+        ],
+        "salvo": null,
+        "traits": [
+          "No damage",
+          "Deployed smoke in a Blast (6) area: +3 DN to BS and Awareness, +2 DN to melee (Core p.191) until the GM says it clears"
+        ]
+      }
+    ],
+    "gear": [
+      "Omni-Scrambler (VoA p.75): +3 bonus dice to Tech (Int) or Intimidate (Wil) Tests to disrupt enemy communications within 500 metres",
+      "Divinator-class Auspex (Auspex, Core p.236): Combat Action to detect energy emissions, motion, and other life signs within 50 metres",
+      "Transpectral Combat Visor (Preysense Goggles, Core p.239): ignore any penalties to Tests due to visual conditions (also his own smoke)",
+      "Ammo: 1 Dragonfire Bolt (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)",
+      "Ammo: 2 Bolt"
+    ],
+    "wealth": 4
+  }
+}
