@@ -1,4 +1,5 @@
 import { PLAYER_ACTIONS, type Action, type ActionResult } from "@wg/shared";
+import { applyAccessAction } from "../auth/access.actions.ts";
 import type { Ctx } from "../auth/auth.service.ts";
 import { applyCampaignAction } from "../campaign/campaign.actions.ts";
 import { applyCharacterAction } from "../character/character.actions.ts";
@@ -14,10 +15,12 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
   return { state: true, codex: false };
 }
 
-// The character whose player socket must be disconnected after this action, if any.
-export function kicks(a: Action): string | null {
-  if (a.type === "token.revoke") return a.characterId;
-  if (a.type === "character.delete") return a.id;
+// Sockets to disconnect after this action: a removed member, or whoever plays a revoked/deleted character.
+export type Kick = { userId: string } | { characterId: string; guestsOnly: boolean };
+export function kicks(a: Action): Kick | null {
+  if (a.type === "token.revoke") return { characterId: a.characterId, guestsOnly: true }; // members keep their seat
+  if (a.type === "character.delete") return { characterId: a.id, guestsOnly: false };
+  if (a.type === "member.remove") return { userId: a.userId };
   return null;
 }
 
@@ -68,5 +71,10 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "codex.delete":
     case "beat.reorder":
       return applyCodexAction(tx, { ctx, action });
+
+    case "invite.create":
+    case "invite.revoke":
+    case "member.remove":
+      return applyAccessAction(tx, { ctx, action });
   }
 }

@@ -9,9 +9,9 @@ const REFUSED_RETRY_MS = 3000;
 
 export type Send = (a: ActionInput) => Promise<ActionResult>;
 
-// One socket per tab. The httpOnly cookie authenticates it; the server sends a full snapshot on connect and after
-// every change, so reconnecting needs no extra logic.
-export function useTable() {
+// One socket per tab, for one table. The browser's cookies authenticate it (Clerk's `__session`, or a guest's QR
+// cookie); the server sends a full snapshot on connect and after every change, so reconnecting needs no extra logic.
+export function useTable(campaignId: string) {
   const socket = useRef<Socket | null>(null);
   const [state, setState] = useState<LiveState | null>(null);
   const [codex, setCodex] = useState<Codex | null>(null);
@@ -19,7 +19,7 @@ export function useTable() {
 
   // External system: the Socket.IO connection to the api.
   useEffect(() => {
-    const s = io({ withCredentials: true });
+    const s = io({ withCredentials: true, auth: { campaignId } });
     socket.current = s;
     let retry: ReturnType<typeof setTimeout> | undefined;
     s.on("connect", () => setOnline(true));
@@ -37,7 +37,7 @@ export function useTable() {
       clearTimeout(retry);
       s.close();
     };
-  }, []);
+  }, [campaignId]);
 
   // External system: the Screen Wake Lock API. Phones and tablets shouldn't dim mid-combat; re-acquired when the tab
   // comes back.

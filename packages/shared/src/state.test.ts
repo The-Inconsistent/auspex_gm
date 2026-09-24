@@ -17,17 +17,22 @@ const pc = (id: string, o: Partial<Combatant> = {}): Combatant =>
   ({ id, kind: "pc", characterId: `ch-${id}`, acted: false, ambushed: false, ...o }) as Combatant;
 const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter =>
   ({ id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null, combatants, ...o });
+const noAccess: LiveState["access"] = { members: [], invites: [] };
 const char = (o: Partial<Character>): Character =>
   ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, xp: 0, conditions: [], ...o });
 // A Tier 1 table around an encounter; the turn rules need the characters to know who's Dead.
 const table = (e: Encounter, characters: Character[] = []): LiveState =>
-  ({ campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" }, characters, encounter: e });
+  ({ campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" }, characters, encounter: e, access: noAccess });
 
 test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", () => {
   const s: LiveState = {
     campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" },
     characters: [],
     encounter: enc([threat("a"), threat("b", { revealed: true }), pc("p")]),
+    access: {
+      members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
+      invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
+    },
   };
   const [hidden, shown, p] = toPlayerView(s).encounter!.combatants as [ThreatCombatant, ThreatCombatant, Combatant];
   assert.equal(hidden.stats, null);
@@ -36,6 +41,7 @@ test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", ()
   assert.equal(shown.stats?.name, "Ork Boy");
   assert.deepEqual(p, pc("p"));
   assert.notEqual((s.encounter!.combatants[0] as ThreatCombatant).stats, null, "input not mutated");
+  assert.deepEqual(toPlayerView(s).access, { members: s.access.members, invites: [] }, "players see who's seated, never the invite links");
 });
 
 test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {

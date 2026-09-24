@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CodexInput } from "./codex.ts";
-import { CharacterStats, Marker, Overrides, Pool, Tier } from "./state.ts";
+import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./state.ts";
 
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
@@ -41,6 +41,14 @@ export const Action = z.union([
 
     z.object({ type: z.literal("token.issue"), characterId: id }),
     z.object({ type: z.literal("token.revoke"), characterId: id }),
+
+    // Invite links for signed-in players (and guests, if allowed). The code comes back once, in `token`.
+    z.object({
+      type: z.literal("invite.create"), mode: InviteMode, characterId: id.optional(),
+      allowGuests: z.boolean().default(true), hours: z.number().int().min(1).max(720).default(12),
+    }),
+    z.object({ type: z.literal("invite.revoke"), id }),
+    z.object({ type: z.literal("member.remove"), userId: z.string().min(1).max(100) }),
 
     z.object({ type: z.literal("encounter.start") }),
     z.object({ type: z.literal("encounter.end") }),

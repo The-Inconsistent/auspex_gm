@@ -11,15 +11,45 @@ import {
 import type { Server, Socket } from "socket.io";
 import { z } from "zod";
 import { Action, toPlayerCodex, toPlayerView, type ActionResult } from "@wg/shared";
-import { readCookie, resolveToken, type Ctx } from "../auth/auth.service.ts";
+import { eq } from "drizzle-orm";
+import { resolveCtx, resolveGuest, type Ctx } from "../auth/auth.service.ts";
+import { campaign } from "../campaign/campaign.schema.ts";
+import { isAdmin } from "../campaign/campaign.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
-import { applyAction, kicks, touches } from "./table.dispatch.ts";
+import { applyAction, kicks, touches, type Kick } from "./table.dispatch.ts";
 import { loadCodex, loadState } from "./table.state.ts";
 
 const rooms = (campaignId: string) => ({ gm: `c:${campaignId}:gm`, players: `c:${campaignId}:players` });
 
-@WebSocketGateway({ cors: { origin: process.env.WEB_ORIGIN ?? false, credentials: true } })
+// What a client puts in `io({ auth })`. Browsers send only campaignId; the Clerk `__session` or guest cookie proves who
+// they are. Scripts and tests pass a token instead: a guest `token`, a Clerk `clerkToken`, or the server's `adminKey`.
+const Handshake = z.object({
+  campaignId: z.uuid().optional(),
+  token: z.string().max(200).optional(),
+  clerkToken: z.string().max(5000).optional(),
+  adminKey: z.string().max(500).optional(),
+});
+
+async function handshakeCtx({ auth, headers }: { auth: unknown; headers: { cookie?: string } }): Promise<Ctx | null> {
+  const h = Handshake.safeParse(auth ?? {});
+  if (!h.success) return null;
+  const { campaignId, token, clerkToken, adminKey } = h.data;
+  if (adminKey && campaignId) {
+    if (!isAdmin(adminKey)) return null;
+    const [c] = await db.select({ id: campaign.id }).from(campaign).where(eq(campaign.id, campaignId));
+    return c ? { campaignId, role: "gm", characterId: null, userId: null } : null;
+  }
+  if (token) {
+    const guest = await resolveGuest(token);
+    return guest && (!campaignId || guest.campaignId === campaignId) ? guest : null;
+  }
+  if (!campaignId) return null;
+  return resolveCtx({ campaignId, headers: { cookie: headers.cookie, authorization: clerkToken ? `Bearer ${clerkToken}` : undefined } });
+}
+
+// WEB_ORIGIN may list several origins (localhost and the LAN address), comma separated.
+@WebSocketGateway({ cors: { origin: process.env.WEB_ORIGIN?.split(",").map((o) => o.trim()) ?? false, credentials: true } })
 export class TableGateway implements OnGatewayInit, OnGatewayConnection {
   @WebSocketServer() server!: Server;
   private readonly log = new Logger(TableGateway.name);
@@ -29,11 +59,9 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
   // Authenticate in middleware, before the connection is accepted, so no event can arrive without a ctx.
   afterInit(server: Server) {
     server.use(async (socket, next) => {
-      // Browsers send the httpOnly cookie; scripts and tests may pass { auth: { token } }.
-      const token = readCookie(socket.handshake.headers.cookie) ?? (socket.handshake.auth as { token?: string }).token;
       let ctx: Ctx | null;
       try {
-        ctx = await resolveToken(token);
+        ctx = await handshakeCtx({ auth: socket.handshake.auth, headers: socket.handshake.headers });
       } catch {
         // DB down: the client retries (use-table), unlike "unauthorized" which it treats as a dead token.
         return next(new Error("unavailable"));
@@ -72,14 +100,25 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
       }
       // Committed: report success even if fan-out fails, or a retap would apply the delta twice. The next broadcast resyncs.
       try {
-        const characterId = kicks(action);
-        if (characterId) await this.kick({ campaignId: ctx.campaignId, characterId });
+        const kick = kicks(action);
+        if (kick) await this.kick({ campaignId: ctx.campaignId, kick });
         await this.broadcast(ctx.campaignId, touches(action));
       } catch (e) {
         this.log.error(e);
       }
       return result;
     });
+  }
+
+  // For REST changes to a table (accepting an invite): same queue as socket actions, then the same broadcast.
+  async mutate<T>({ campaignId, fn }: { campaignId: string; fn: () => Promise<T> }): Promise<T> {
+    const result = await this.serial(campaignId, fn);
+    try {
+      await this.broadcast(campaignId, { state: true, codex: false });
+    } catch (e) {
+      this.log.error(e);
+    }
+    return result;
   }
 
   // Runs fn after every earlier call for the same key has settled; a failure doesn't break the chain.
@@ -116,8 +155,15 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
     }
   }
 
-  private async kick({ campaignId, characterId }: { campaignId: string; characterId: string }) {
-    for (const s of await this.server.in(rooms(campaignId).players).fetchSockets())
-      if ((s.data as Ctx).characterId === characterId) s.disconnect(true);
+  // Disconnects the sockets that just lost access: a removed member, or the players of a revoked/deleted character.
+  private async kick({ campaignId, kick }: { campaignId: string; kick: Kick }) {
+    const r = rooms(campaignId);
+    for (const s of await this.server.in([r.gm, r.players]).fetchSockets()) {
+      const c = s.data as Ctx;
+      const hit = "userId" in kick
+        ? c.userId === kick.userId
+        : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
+      if (hit) s.disconnect(true);
+    }
   }
 }

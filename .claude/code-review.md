@@ -70,7 +70,7 @@ Trace every action handler, REST endpoint and rules function end to end.
 - Can a player receive anything they shouldn't: unrevealed threat stats, GM notes, secrets, hidden codex entries, other
   players' tokens?
 - Do new fields pass through `toPlayerView` / `toPlayerCodex`?
-- Can players reach `/api/threats` or book text through any path?
+- Can players reach `/api/campaigns/:id/threats` or book text through any path?
 
 #### External data & type safety
 

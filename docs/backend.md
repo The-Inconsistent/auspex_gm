@@ -6,7 +6,8 @@ For the client side of the socket see [frontend.md](frontend.md). For the rules 
 locally in [development.md](development.md). Code style is binding: `.claude/backend-code-style.md`.
 
 NestJS 12 on Bun, run from source (`bun --watch src/main.ts`) with no build step. Drizzle ORM on Postgres 17. One
-Socket.IO gateway carries every mutation; REST exists only for setup, login and the bestiary.
+Socket.IO gateway carries every mutation; REST exists only for setup, login, the lobby, invites
+and the bestiary.
 
 ---
 
@@ -23,16 +24,17 @@ Socket.IO gateway carries every mutation; REST exists only for setup, login and 
 `@wg/data` loads and zod-parses every threat JSON at import time, so a malformed file fails at startup ([data.md](data.md)).
 
 REST has no CORS enabled: browsers reach it same-origin through the Next rewrites (dev) or Caddy (prod). The gateway sets
-`cors: { origin: WEB_ORIGIN ?? false, credentials: true }`.
+`cors: { origin: <WEB_ORIGIN split on commas> ?? false, credentials: true }`, the same list Clerk verification uses for
+`authorizedParties` (§10).
 
 ## 2. Module map
 
 | Folder | Owns | Key exports |
 |---|---|---|
 | `core/` | DB client, error type, SQL helpers | `db.ts`: `db`, `Tx`, `Db` (either), `runMigrations`. `errors.ts`: `ActionError`, `fail(msg): never`. `sql.ts`: `bump` (clamped delta), column builders `conditions`, `createdAt`, `body` |
-| `auth/` | Login tokens and the cookie | `auth.schema.ts`: `accessToken`. `auth.service.ts`: `COOKIE` (`"wg_token"`), `Ctx`, `issueToken`, `resolveToken`, `readCookie` |
-| `campaign/` | Campaign row, pools, sessions; all REST | `campaign.controller.ts`: `CampaignController`. `campaign.service.ts`: `isAdmin`, `createCampaign`, `listThreats`. `campaign.actions.ts`: `CampaignAction`, `applyCampaignAction`, `campaignTier`. `campaign.schema.ts`: `campaign`, `session`, `owned()` |
-| `character/` | Characters and player tokens | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character` |
+| `auth/` | Clerk users, seats, invites, guest tokens and the cookie | `clerk.ts`: `CLERK_COOKIE` (`"__session"`), `ClerkUser`, `verifyClerk`, `bearerOf`. `auth.schema.ts`: `accessToken`, `appUser`, `membership`, `invite`. `auth.service.ts`: `COOKIE` (`"wg_token"`), `Ctx`, `hash`, `newSecret`, `issueToken`, `resolveGuest`, `readCookie`, `signedInUser`, `resolveCtx`. `invite.service.ts`: `previewInvite`, `acceptInvite`. `access.actions.ts`: `AccessAction`, `applyAccessAction` |
+| `campaign/` | Campaign row, pools, sessions; all REST | `campaign.controller.ts`: `CampaignController`. `campaign.service.ts`: `isAdmin`, `createCampaign`, `lobby`, `listThreats`. `campaign.actions.ts`: `CampaignAction`, `applyCampaignAction`, `campaignTier`. `campaign.schema.ts`: `campaign`, `session`, `owned()` |
+| `character/` | Characters and guest tokens | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character` |
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the six tables |
 | `table/` | The socket | `table.gateway.ts`: `TableGateway`. `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
@@ -42,23 +44,36 @@ Rules:
 - `*.actions.ts` and `*.service.ts` import no Nest symbols. Transports (controller, gateway) parse, resolve `Ctx` and call them.
 - Each feature owns its tables in `<feature>.schema.ts`. `drizzle.config.ts` globs `src/**/*.schema.ts`, and `core/db.ts`
   spreads every schema module into the client.
-- `Ctx = { campaignId, role, characterId }` comes from a token and is the only source of campaign scope.
+- `Ctx = { campaignId, role, characterId, userId }` comes from a Clerk membership, a guest token or the admin key, and is
+  the only source of campaign scope. `userId` is the Clerk user; it's null for guests and the admin.
 
 ## 3. REST endpoints
 
-All in `campaign/campaign.controller.ts`. Bodies are zod-parsed by the local `parse()`, and a failure is a
-`400` with `z.prettifyError` text. "Cookie" means the `wg_token` cookie, read by `callerOf()` → `resolveToken`. A
-missing, malformed, unknown or revoked token is a `401`. REST never reads `auth.token` or an `Authorization` header.
+All in `campaign/campaign.controller.ts`. Bodies and path params are zod-parsed by the local `parse()`, and a failure
+is a `400` with `z.prettifyError` text.
+
+- **Clerk** means a Clerk session token: `Authorization: Bearer …` (server-side Next) or the `__session` cookie (the
+  browser, through the rewrites), verified by `signedInUser()` (§10). An invalid or missing one counts as signed out.
+- **Seat** means `resolveCtx({ campaignId, headers })`: a signed-in member of that campaign first, else a `wg_token`
+  guest cookie for that same campaign. No seat is a `401`.
+- `refusing()` turns an `ActionError` from the invite service into a `400` with its message.
 
 | Method, path | Auth | Body | Success | Errors |
 |---|---|---|---|---|
-| `POST /api/campaigns` | `x-admin-key` header equal to `ADMIN_KEY` (constant-time, `isAdmin`) | `{ name: string 1–100, tier: 1–5 }` | `201 { campaignId, gmToken }` | `401` bad or missing key, or `ADMIN_KEY` unset. `400` bad body (checked after the key) |
-| `POST /api/join` | the token in the body | `{ token: string 1–200 }` | `200` `Ctx` (`{ campaignId, role, characterId }`), and `Set-Cookie: wg_token` (flags in §10) | `400` bad body. `401 "Invalid or revoked link"` |
-| `GET /api/me` | Cookie | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `401` |
-| `GET /api/threats` | Cookie, GM only | none | `200 Threat[]`, the whole bestiary | `401` no or bad token. `403` player |
+| `POST /api/campaigns` | `x-admin-key` equal to `ADMIN_KEY` (constant-time, `isAdmin`), else Clerk with the creator role | `{ name: string 1–100, tier: 1–5 }` (`CreateGame`), plus `ownerUserId` with the admin key | `201 { campaignId }`. The creator, or `ownerUserId`, is seated as GM | `401` not signed in. `403 "Only creators can start a game"`. `400` bad body |
+| `GET /api/lobby` | Clerk | none | `200 Lobby` (`packages/shared/src/access.ts`): `canCreate`, `mine`, `running` | `401` |
+| `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
+| `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
+| `POST /api/join` | the guest token in the body | `{ token: string 1–200 }` | `200` `Ctx`, and `Set-Cookie: wg_token` (flags in §10). The web uses `campaignId` to open the table | `400` bad body. `401 "Invalid or revoked link"` |
+| `GET /api/guest` | `wg_token` cookie | none | `200` `Ctx` of the guest's table, so a returning guest lands back at it | `401` |
+| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name, `mode`, the invited character or the open ones, `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
+| `POST /api/invites/:code/accept` | Clerk, or none with `asGuest` | `AcceptInvite`: `characterId?`, `newCharacterName?`, `asGuest` | `200 { campaignId }`. A guest also gets `Set-Cookie: wg_token` | `400` with the refusal (see §10) |
 
-`createCampaign` inserts the campaign and issues its GM token in one transaction. `/api/threats` is the only REST route
-that serves book content, which is why it's GM-only (see CLAUDE.md, Copyright).
+`/api/me` and `/api/threats` no longer exist; both moved under `/api/campaigns/:id/`. `createCampaign` inserts the
+campaign and the GM's `membership` in one transaction. The admin key's `ownerUserId` gets an `app_user` placeholder
+named "GM" until they sign in. `lobby()` returns the caller's games (`mine`) and every game with a session in progress
+(`running`, with `role` null where the caller has no seat); a card never opens a table. `/api/campaigns/:id/threats` is
+the only REST route that serves book content, which is why it's GM-only (see CLAUDE.md, Copyright).
 
 ## 4. Socket lifecycle (`table/table.gateway.ts`)
 
@@ -66,11 +81,18 @@ that serves book content, which is why it's GM-only (see CLAUDE.md, Copyright).
 
 Runs before the connection is accepted, so no event can arrive without a `Ctx`.
 
-- Token: the `wg_token` cookie (`readCookie` of the handshake `Cookie` header, which browsers send), else
-  `handshake.auth.token` (used by scripts and tests).
-- `resolveToken` throws (DB unreachable) → refused with `Error("unavailable")`. It's transient, and the web client retries.
-- `resolveToken` returns null (no, bad or revoked token) → refused with `Error("unauthorized")`. It's permanent, and the
-  web client reloads into its no-access screen.
+`handshakeCtx` parses `io({ auth })` with the `Handshake` schema: `{ campaignId?, token?, clerkToken?, adminKey? }`.
+
+| Caller | Sends | Resolves to |
+|---|---|---|
+| Browser | `{ campaignId }`; the Clerk `__session` or guest `wg_token` cookie rides on the handshake `Cookie` header | `resolveCtx`: the member's seat, else the guest cookie's seat at that campaign |
+| Script or test, as a guest | `token` (with or without `campaignId`) | `resolveGuest(token)`, which must match `campaignId` if one is sent |
+| Script or test, as a Clerk user | `clerkToken` plus `campaignId` | `resolveCtx` with it as a Bearer token |
+| Script (seed) | `adminKey` plus `campaignId` | GM with `userId: null`, if the key matches and the campaign exists |
+
+- A lookup throws (DB unreachable) → refused with `Error("unavailable")`. It's transient, and the web client retries.
+- No seat (no, bad, expired or revoked credential, or not a member here) → refused with `Error("unauthorized")`. It's
+  permanent, and the web client reloads into its no-access screen.
 - Otherwise `socket.data = ctx`.
 
 `readCookie` swallows a malformed `%` escape and returns "no token". Otherwise the throw would be an unhandled rejection in
@@ -95,7 +117,7 @@ Clients call `emitWithAck("action", ActionInput)` and receive an `ActionResult`:
    - An `ActionError` (thrown by `fail()`) rolls back and acks `{ ok: false, error: e.message }`. These messages are
      user-facing.
    - Anything else rolls back, is logged, and acks `{ ok: false, error: "Server error" }`. No stack reaches the client.
-5. **After commit:** `kicks(action)` → disconnect the matching player sockets. Then `broadcast(campaignId, touches(action))`.
+5. **After commit:** `kicks(action)` → disconnect the matching sockets. Then `broadcast(campaignId, touches(action))`.
    An error here is logged and **the committed result is still returned**. Reporting a failure would make the client
    retap and apply a delta twice; the next broadcast resyncs everyone.
 
@@ -106,7 +128,10 @@ tail. A rejected run doesn't break the chain. Different campaigns run concurrent
 
 This makes every check-then-act inside a handler safe, e.g. "no turn in progress" then "set current", or the full-set
 check in `beat.reorder`. It's in-process, so it assumes **one api instance** (marked `ponytail:` in the file, and the
-upgrade path is pg advisory locks). Anything that bypasses the socket (REST, direct SQL) isn't covered by it.
+upgrade path is pg advisory locks). Direct SQL isn't covered by it.
+
+REST that changes a table goes through `mutate({ campaignId, fn })`: the same `serial` queue, then a `state` broadcast.
+Accepting an invite uses it, so two players claiming the last open agent can't both win.
 
 ### Broadcast
 
@@ -140,18 +165,24 @@ take a Respite, and add to or spend Glory. Nothing else.
 | `beat.startEncounter` (new encounter, and beat status → active), `session.*` (session list) | yes | yes |
 | everything else | yes | no |
 
-`token.*` rebroadcasts `state` even though tokens aren't in it.
+`token.*` rebroadcasts `state` even though tokens aren't in it. `invite.*` and `member.remove` change `state.access`.
 
-### `kicks(action)` → characterId or null
+### `kicks(action)` → `Kick` or null
 
-`token.revoke` → `a.characterId`. `character.delete` → `a.id` (its tokens are cascade-deleted). The gateway disconnects
-every socket in the players room whose `ctx.characterId` matches.
+| Action | Kick | Disconnects |
+|---|---|---|
+| `token.revoke` | `{ characterId, guestsOnly: true }` | guest sockets (`userId` null) playing that character. A member playing it keeps their seat |
+| `character.delete` | `{ characterId: a.id, guestsOnly: false }` | every socket playing it. Its tokens and invites are cascade-deleted; a member's `character_id` is set null |
+| `member.remove` | `{ userId }` | every socket of that user at this table |
+
+The gateway checks the sockets in both rooms of the campaign.
 
 ### `applyAction` routing
 
 A `switch` on `action.type` hands each action to the owning feature's `apply*Action(tx, { ctx, action })`. Each feature
 narrows its slice with `Extract<Action, …>` (`CampaignAction`, `CharacterAction`, `EncounterAction`, `CodexAction`),
-so a type missing from the switch is a compile error.
+so a type missing from the switch is a compile error. `invite.*` and `member.remove` go to `applyAccessAction`
+(`auth/access.actions.ts`, `AccessAction`).
 
 ## 6. Action catalogue
 
@@ -169,8 +200,11 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap. Crossing into Dying adds `Prone` if missing. While Dying, a positive `wounds` delta adds 1 Traumatic Injury instead (one per hit), and a negative one sets Wounds to `least(maxWounds, wounds + delta)`, which ends Dying | S | p.193 |
 | `character.respite` | GM; Own | Wounds 0, Shock 0, Wrath 2. Refused while Dead or Dying (`pcStatus`, via `healthOf()`) | S | p.193, p.197 |
 | `character.delete` | GM | Delete. Cascades to tokens and combatant rows. Kicks the player | S | |
-| `token.issue` | GM | New player token for a character in this campaign. Returns `token` (plaintext, once) | S | |
-| `token.revoke` | GM | Stamp `revokedAt` on all of the character's live tokens. Kicks the player | S | |
+| `token.issue` | GM | New guest token (the GUEST QR) for a character in this campaign. Returns `token` (plaintext, once) | S | |
+| `token.revoke` | GM | Stamp `revokedAt` on all of the character's live guest tokens. Kicks guest sockets only | S | |
+| `invite.create` | GM | New invite: `mode` `"room"` (no `characterId`) or `"character"` (needs one in this campaign, `maxUses` 1). `allowGuests` defaults to true, `hours` 1–720 (default 12). Returns `id` and the code in `token` (plaintext, once) | S | |
+| `invite.revoke` | GM | Stamp `revokedAt` on one live invite. Anyone already seated keeps their seat | S | |
+| `member.remove` | GM | Delete a user's `membership` here. Refuses yourself (`"You can't remove yourself"`). Kicks that user | S | |
 | `encounter.start` | GM | Deactivate any active encounter, insert an empty one. Returns `id` | S | |
 | `encounter.end` | GM | Deactivate all the campaign's encounters | S | |
 | `encounter.newRound` | GM | Round + 1. Clear `acted`, `ambushed`, `currentId`, `lastSide`, `seizedSide` | S | p.176–177 |
@@ -199,7 +233,8 @@ Notes:
 ## 7. Database schema
 
 Postgres, `snake_case` columns (`casing: "snake_case"` in both `drizzle.config.ts` and the client). Ids are `uuid`,
-`defaultRandom()`. Timestamps are `timestamptz`. There are no secondary indexes or unique constraints beyond primary keys.
+`defaultRandom()`, except `app_user.id`, which is the Clerk user id. Timestamps are `timestamptz`. The only unique
+constraints beyond primary keys are `invite.code_hash` and `membership (campaign_id, user_id)`.
 Campaign-owned rows share `owned()` from `campaign.schema.ts` (`id`, `campaign_id` → campaign **cascade**, `created_at`).
 No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
 
@@ -207,7 +242,10 @@ No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
 |---|---|---|---|
 | `campaign` (`campaign.schema.ts`) | The root. Party Glory and GM Ruin live here | `name`, `tier`, `glory`, `ruin`, `framework`, `patron` | none |
 | `session` (`campaign.schema.ts`) | Play sessions and recaps | `number`, `started_at`, `ended_at` (null = in progress), `recap`, `xp` | campaign cascade |
-| `access_token` (`auth.schema.ts`) | Login tokens | `token_hash` (PK, SHA-256 hex), `role`, `character_id` (null for GM), `revoked_at` | campaign cascade. character cascade |
+| `access_token` (`auth.schema.ts`) | Guest tokens | `token_hash` (PK, SHA-256 hex), `role` (always `player` now), `character_id`, `revoked_at` | campaign cascade. character cascade |
+| `app_user` (`auth.schema.ts`) | Clerk users seen by the api | `id` (Clerk user id), `name` (refreshed from the session token on each request), `updated_at` | none |
+| `membership` (`auth.schema.ts`) | A signed-in user's seat at one table | `user_id`, `role`, `character_id` | campaign cascade. app_user cascade. character **set null** |
+| `invite` (`auth.schema.ts`) | Invite links | `code_hash`, `mode`, `character_id`, `allow_guests`, `expires_at`, `max_uses` (null = until it expires), `uses`, `revoked_at` | campaign cascade. character cascade |
 | `character` (`character.schema.ts`) | Player characters | `name`, `wounds` (taken, not remaining), `shock`, `wrath`, `traumatic`, `xp`, `conditions text[]` | campaign cascade |
 | `encounter` (`encounter.schema.ts`) | A fight. At most one `active` per campaign, enforced in code, not by a constraint. Ended ones stay as inactive rows | `active`, `round`, `current_id`, `last_side`, `seized_side` | campaign cascade. `current_id` → combatant **set null** |
 | `combatant` (`encounter.schema.ts`) | One PC or threat (or Mob) in an encounter | `order` (display only), `acted`, `ambushed`, `kind`. PC: `character_id`. Threat: `threat_id` (text, no FK: static data), `threat_class`, `label`, `marker`, `mob_count`, `mob_start`, `personal_ruin`, `wounds`, `shock`, `conditions`, `revealed` | encounter cascade. character cascade |
@@ -241,6 +279,8 @@ Both loaders read with the top-level `db` after the commit. `loadState` also tak
 **`loadState(campaignId, conn = db): LiveState | null`**, where null means no such campaign:
 
 - `campaign`: `id`, `name`, `tier`, `glory`, `ruin`, `framework`, `patron`.
+- `access`: `members` (each `membership` joined to `app_user` for the name, by `created_at`) and `invites` (live ones
+  only: not revoked, not expired, uses left). No code or hash is ever included.
 - `characters`, by `created_at`: counters, `conditions`, and `stats` / `overrides` parsed through their zod schemas.
 - `encounter`: the active one or null, with `round`, `currentId`, `lastSide`, `seizedSide` and `combatants` by `order`.
   - PC → `{ id, kind, characterId, acted, ambushed }`.
@@ -255,7 +295,7 @@ are by `number`.
 
 | Function | Hides from players | Keeps |
 |---|---|---|
-| `toPlayerView` (`state.ts`) | On every threat combatant with `revealed: false`: `stats` → null, `threatId` → `""`, `personalRuin` → 0 | Everything else, including threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
+| `toPlayerView` (`state.ts`) | `access.invites` → `[]`. On every threat combatant with `revealed: false`: `stats` → null, `threatId` → `""`, `personalRuin` → 0 | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
 | `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
 
 A new field is visible to players unless one of these functions drops it. Decide when you add it.
@@ -276,47 +316,90 @@ A new field is visible to players unless one of these functions drops it. Decide
   reads the row first to know whether the character is Dying; the per-campaign queue (§4) keeps that safe.
 - Check-then-act logic (turn order, "already acted", beat reorder) relies on the per-campaign queue (§4).
 
-## 10. Tokens (`auth/`)
+## 10. Access (`auth/`)
 
-- **Issue:** `issueToken(tx, { campaignId, role, characterId })` → `randomBytes(24)` as base64url (32 chars). The GM token
-  comes from `POST /api/campaigns`, player tokens from `token.issue`. The plaintext is returned once and shown as a
-  link or QR code by the web app.
+Signed-in users hold a seat through `membership` (gm or player, plus a character). Guests hold a per-character player
+token in `access_token`. The admin key is for scripts only. There are no GM tokens: the GM is always a member.
+
+### Clerk (`clerk.ts`)
+
+- **Verify:** `verifyClerk(token)` calls `@clerk/backend`'s `verifyToken` with `jwtKey: CLERK_JWT_KEY` (no network
+  call; `CLERK_SECRET_KEY` is the fallback) and `authorizedParties` from `WEB_ORIGIN`, split on commas. An expired,
+  forged or wrong-origin token returns null, which reads as signed out.
+- **Claims:** the name comes from `name`, else `username`, else `"Player"`. `creator` is `metadata.role === "creator"`.
+  These are custom claims: the Clerk Dashboard's session-token template must include
+  `{ "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }`
+  ([development.md](development.md#clerk)). The creator role is set by hand in the user's public metadata.
+- **Where the token comes from:** `bearerOf(Authorization)` first, else the `__session` cookie. `signedInUser()` also
+  upserts `app_user` so member lists and the lobby show a current name.
+- **Test tokens:** with `CLERK_TEST_SECRET` set, `test.<secret>.<userId>.<creator|member>` is accepted without Clerk.
+  It's for the smoke test only, and the api refuses to start if it's set with `NODE_ENV=production`.
+
+### Invites (`invite.service.ts`, `access.actions.ts`)
+
+- **Create:** `invite.create` stores `sha256(code)` of a `newSecret()` and returns the code once. The web app makes two
+  kinds: a **room QR** (`mode: "room"`, 12 h, unlimited uses, guests allowed) and a **per-character link**
+  (`mode: "character"`, 168 h, one use).
+- **Live** means not revoked, not expired, and `uses < max_uses` (or no limit). Anything else refuses with "This invite
+  has expired or was already used. Ask your GM for a new one".
+- **Accept** (`acceptInvite`, inside `TableGateway.mutate`): a guest needs `allowGuests`; otherwise the caller must be
+  signed in. A signed-in member is already seated, so nothing is used up. Then the character is the invited one, an
+  open one the player picked, or a new one by `newCharacterName` (room invites). "Open" means no member plays it and no
+  live guest token points at it; a taken one refuses with "That character is already taken". `uses` goes up by one,
+  then a member gets a `membership` row (`player`), or a guest gets a new guest token and the `wg_token` cookie.
+- **End:** `invite.revoke` ends a link; seats already taken stay. `member.remove` deletes a seat and kicks the user.
+
+### Guest tokens (`auth.service.ts`)
+
+- **Issue:** `issueToken(tx, { campaignId, characterId })` → `randomBytes(24)` as base64url (32 chars), role `player`.
+  They come from `token.issue` (the GUEST QR) and from a guest accepting an invite. The plaintext is returned once.
 - **Store:** only `sha256(token)` hex, in `access_token.token_hash`.
-- **Resolve:** `resolveToken` matches the hash with `revoked_at IS NULL` and returns `Ctx`.
-- **Revoke:** `token.revoke` sets `revoked_at` on every live token of that character. `character.delete` removes them
-  by cascade. Both kick the player's live sockets. A reconnect then fails with `unauthorized`, and `/api/join` returns
-  `401`. There's no action to revoke a GM token.
-- **Cookie** (set by `POST /api/join`): `wg_token`, `httpOnly`, `sameSite: "lax"`, `secure` only when
-  `COOKIE_SECURE === "true"`, `maxAge` 365 days, `path: "/"`. The web `/join/<token>` route forwards the `Set-Cookie`
-  ([frontend.md](frontend.md)).
+- **Resolve:** `resolveGuest` matches the hash with `revoked_at IS NULL` and returns `Ctx` with `userId: null`.
+- **Revoke:** `token.revoke` sets `revoked_at` on every live guest token of that character. `character.delete` removes
+  them by cascade. Both kick the guest's live sockets. A reconnect then fails with `unauthorized`, and `/api/join`
+  returns `401`.
+- **Cookie** (set by `POST /api/join` and a guest invite accept): `wg_token`, `httpOnly`, `sameSite: "lax"`, `secure`
+  only when `COOKIE_SECURE === "true"`, `maxAge` 365 days, `path: "/"`. The web `/join/<token>` route forwards the
+  `Set-Cookie` ([frontend.md](frontend.md)).
+
+### Migration `0001`
+
+`drizzle/0001_curly_network.sql` is additive: it creates `app_user`, `membership` and `invite`. Old GM tokens are still
+rows in `access_token`, but nothing resolves a GM token any more, so they open nothing.
 
 ## 11. Scripts (`apps/api/scripts/`)
 
-Both run against a **running api**, not the DB. Run them from `apps/api` so Bun loads `.env`.
+It runs against a **running api**, not the DB. Run it from `apps/api` so Bun loads `.env`. There's no
+`create-campaign` script any more: creators start empty games in the lobby.
 
 | Script | Does | Env | Output |
 |---|---|---|---|
-| `bun run create-campaign "<name>" [tier]` | `POST /api/campaigns` (tier defaults to 1) | `ADMIN_KEY`, `API_URL` (else `http://localhost:$PORT`, PORT default 4000), `WEB_ORIGIN` for the link | `GM link: <WEB_ORIGIN>/join/<gmToken>`. Throws on a non-2xx |
-| `bun run seed <pack>` | `loadPack(pack)` (zod-parsed, [data.md](data.md)). Creates the campaign, connects a socket with `auth.token`, then sends normal actions in order: `campaign.update` (framework, patron), factions, locations (parent refs), NPCs (faction refs), handouts, adventures with their beats (location, NPC and handout refs), `character.create` per pack character. Pack `key`s map to returned ids | as above | A count summary and the GM link. The first failed action throws with its error. No player tokens are issued |
+| `bun run seed <pack> --owner <clerk user id>` | `loadPack(pack)` (zod-parsed, [data.md](data.md)). `POST /api/campaigns` with the admin key and `ownerUserId`, which seats that Clerk user (Clerk Dashboard → Users) as GM. Connects a socket with `auth: { adminKey, campaignId }`, then sends normal actions in order: `campaign.update` (framework, patron), factions, locations (parent refs), NPCs (faction refs), handouts, adventures with their beats (location, NPC and handout refs), `character.create` per pack character. Pack `key`s map to returned ids | `ADMIN_KEY`, `API_URL` (else `http://localhost:$PORT`, PORT default 4000), `WEB_ORIGIN` (the first entry) for the link | A count summary and `<WEB_ORIGIN>/c/<campaignId>`. Without `--owner` it refuses to run. The first failed action throws with its error. No guest tokens or invites are issued |
 
 Because seeding goes through the socket, it gets the same validation, scoping and broadcasts as live play.
 
 ## 12. Testing
 
 `apps/api/test/smoke.test.ts`: end-to-end over HTTP and Socket.IO against a running api and Postgres (`node:test` run by
-`bun test`). There are 3 tests. Each run creates fresh campaigns ("Smoke", plus "Edge" and "Elsewhere" for the edge
-cases) and leaves them in the DB.
+`bun test`). There are 4 tests. Each run creates fresh campaigns ("Smoke", "Edge" and "Elsewhere" for the edge cases,
+and "Invites") and leaves them in the DB.
+
+The api must run with `CLERK_TEST_SECRET` set (dev only), and the test must see the same value: it signs in as Clerk
+users with test tokens (`test.<secret>.<userId>.<creator|member>`, §10), sent as `Bearer` headers and socket
+`clerkToken`s.
 
 ```bash
 bun run dev:db && bun run dev:api   # in another shell
-bun run test:smoke                  # needs ADMIN_KEY (from apps/api/.env); API_URL / PORT optional
+bun run test:smoke                  # needs ADMIN_KEY and CLERK_TEST_SECRET (from apps/api/.env); API_URL / PORT optional
 ```
 
 It covers:
 
-- **REST:** admin-key `401`, `201` create, `/join` cookie (HttpOnly) and `401` on a bad token, `/api/threats` `200` for
-  the GM and `403` for a player, and a malformed cookie giving `401` on `/api/me` and `unauthorized` on the socket without
-  crashing the api.
+- **REST:** creating a game is `401` signed out, `403` without the creator role, `201` for a creator. `/join` sets the
+  HttpOnly cookie and returns the guest's `campaignId`, and a bad token is `401`. `/api/campaigns/:id/threats` is `200`
+  for the GM, `403` for a guest player and `401` for someone with no seat. A malformed `wg_token` or `__session` cookie
+  gives `401` on `/api/guest` and `/api/lobby` and `unauthorized` on the socket, without crashing the api.
+- **Admin socket:** `auth: { adminKey, campaignId }` opens the table as the seed script does.
 - **Redaction:** threat stats hidden until `revealed`, `maxWounds` visible, and the player codex shows revealed NPCs only,
   without `gmNotes`.
 - **Mobs:** Wounds remove members, healing is capped at `mobStart`.
@@ -327,7 +410,12 @@ It covers:
 - **Ambush:** blocked in Round 1, then `combatant.aware`.
 - **Sessions:** `session.start` resets and `session.end` awards XP.
 - **Pools:** caps, asserted against `poolMax`.
-- **Revoke:** `token.revoke` kicks the socket and kills the link.
+- **Revoke:** `token.revoke` kicks the guest socket and kills the link.
+- **Accounts** (fourth test): a room invite's preview, claim refused signed out, claimed by a member, "already taken"
+  for a second claim, a guest claim with a new character and the guest cookie opening the table. A member plays only
+  their own character and can't create invites, and players see no invites. A character invite refuses a guest when
+  accounts-only and is used up after one claim. The lobby's `canCreate`, `mine` and `running` (a card, not a seat).
+  `invite.revoke` ends the link, `member.remove` kicks the member, and the GM can't remove themselves.
 - **Rules edge cases** (third test):
   - `campaign.update`, `character.update` and `character.delete`.
   - Dying: falling Prone, a Wound becoming a Traumatic Injury, healing ending Dying.
@@ -378,7 +466,7 @@ rule. A new counter is a delta through `bump`, never an absolute value. If the a
 2. `cd apps/api && bun run db:generate` writes a migration to `apps/api/drizzle/`. Restart the api, and `runMigrations`
    applies it on boot.
 3. **Pre-release shortcut** (only while there's no real campaign data): delete `apps/api/drizzle/`, run `db:generate`
-   to regenerate the single migration, then `docker compose down -v` (this wipes the DB volume) and `bun run dev:db`.
+   to regenerate the migrations, then `docker compose down -v` (this wipes the DB volume) and `bun run dev:db`.
    Once real data exists, always add migrations and never rewrite them.
 4. If players see it: add it to `loadState` / `loadCodex` and the shared `LiveState` / `Codex` types, and decide its
    redaction in `toPlayerView` / `toPlayerCodex`. If it's editable codex data: add it to `CodexInput`.
@@ -391,9 +479,11 @@ mutation path).
 1. Add a method to `CampaignController`, or add a new `@Controller()` to `AppModule.controllers`. The `api` prefix is
    global. Dev rewrites and Caddy already forward `/api/*`.
 2. Parse the body with a zod schema. `parse()` in `campaign.controller.ts` turns a failure into a `400`.
-3. Resolve the caller with `callerOf(req)` (`401` if there's no valid cookie). Check `ctx.role` and throw
-   `ForbiddenException` for the wrong role. `parse` and `callerOf` are module-private, so move them to `auth/` if a
-   second controller needs them.
+3. Resolve the caller with `resolveCtx({ campaignId, headers: headersOf(req) })` for a table route (`401` if null), or
+   `signedInUser(headersOf(req))` for a route outside any table. Check `ctx.role` and throw `ForbiddenException` for the
+   wrong role. `parse`, `headersOf` and `refusing` are module-private, so move them to `auth/` if a second controller
+   needs them. If the route changes who's at a table, run it through `TableGateway.mutate` so it's queued and
+   broadcast.
 4. Put the logic in a `*.service.ts` function with no Nest imports, scoped to `ctx.campaignId`.
 5. Never return book content or GM-only data to a player role.
 
@@ -404,9 +494,12 @@ Bun loads `apps/api/.env` automatically.
 | Var | Example | Effect |
 |---|---|---|
 | `DATABASE_URL` | `postgres://wg:wg@localhost:5434/wg` | Postgres connection. Required: `core/db.ts` throws at import if it's unset. Port 5434 matches `docker-compose.yml` |
-| `ADMIN_KEY` | `change-me` | Secret for `POST /api/campaigns` (`x-admin-key`). If unset, campaign creation is always `401`. Also read by the scripts and the smoke test |
-| `WEB_ORIGIN` | `http://localhost:3000` | Socket.IO CORS origin (CORS is disabled if unset). The scripts use it to print join links |
-| `COOKIE_SECURE` | `false` | `"true"` adds `Secure` to the login cookie. Set it behind HTTPS |
+| `ADMIN_KEY` | `change-me` | Script-only secret: `POST /api/campaigns` with `x-admin-key` (and `ownerUserId`), and a socket with `auth: { adminKey, campaignId }`. If unset, only creators can create campaigns. Read by the seed script and the smoke test |
+| `WEB_ORIGIN` | `http://localhost:3000` | Comma-separated web origins: list localhost and the LAN address. Socket.IO CORS origins (CORS is disabled if unset) and Clerk's `authorizedParties`. The seed script prints its first entry |
+| `CLERK_SECRET_KEY` | (Clerk Dashboard → API keys) | Clerk backend key, the fallback for verifying sessions |
+| `CLERK_JWT_KEY` | (Clerk Dashboard → API keys, PEM public key) | Verifies session tokens locally, with no network call |
+| `CLERK_TEST_SECRET` | empty | **Dev/test only.** Enables the smoke test's fake Clerk tokens. The api refuses to start with it when `NODE_ENV=production` |
+| `COOKIE_SECURE` | `false` | `"true"` adds `Secure` to the guest cookie. Set it behind HTTPS |
 | `PORT` | `4000` | Listen port (default 4000). The scripts and test use it to find the api when `API_URL` is unset |
 
 `API_URL` isn't in the example. Only the scripts and the smoke test read it, to target a non-local api.

@@ -8,6 +8,13 @@
       "when": 1790229359256,
       "tag": "0000_tranquil_dorian_gray",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790239374304,
+      "tag": "0001_curly_network",
+      "breakpoints": true
     }
   ]
 }

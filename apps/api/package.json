@@ -8,10 +8,10 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate",
     "test:smoke": "bun test test/",
-    "create-campaign": "bun scripts/create-campaign.ts",
     "seed": "bun scripts/seed.ts"
   },
   "dependencies": {
+    "@clerk/backend": "^3.19.0",
     "@nestjs/common": "^12.1.0",
     "@nestjs/core": "^12.1.0",
     "@nestjs/platform-express": "^12.1.0",

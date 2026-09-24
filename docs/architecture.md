@@ -11,7 +11,7 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
 | GM on a tablet, players on phones | Mobile-first web app, no install. Screens stay awake (Wake Lock) |
 | Several people tap at the same time | The server decides. Counters change by **delta**, never by overwriting a value |
 | Players must not see what the GM hides | The server redacts every snapshot sent to players. The client never receives hidden data |
-| Book content is copyrighted | No public pages. Everything needs an access token, and the repo is private |
+| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token), and the repo is private |
 | Rules must match the books | Rules live in one tested package, and each one cites its page |
 
 ## Shape
@@ -22,10 +22,11 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
         ▼
  Caddy (prod, not built yet)  or  Next rewrites (dev)
         │
-        ├──▶ apps/web   Next.js 16. Server Component resolves who you are; client apps render the table
+        ├──▶ apps/web   Next.js 16 + Clerk. Server Components resolve who you are; client apps render the table
         │
-        └──▶ apps/api   NestJS on Bun
-                ├─ REST       create campaign (admin key), join (token → cookie), me, threats (GM only)
+        └──▶ apps/api   NestJS on Bun (verifies Clerk session tokens itself)
+                ├─ REST       lobby, create campaign (creator or admin key), invites, guest join (token → cookie),
+                │             your seat (me), threats (GM only)
                 └─ Socket.IO  the live table: every change is an `action`, every result is a snapshot
                         │
                         ▼
@@ -37,7 +38,7 @@ Both apps depend on two workspace packages:
 - **`packages/shared`**: zod schemas for everything that crosses the wire, plus the pure rules functions. It's
   imported as TypeScript source, so web and api run the same rules code.
 - **`packages/data`**: threat stat blocks and content packs. Only the api loads it; the web gets threats from
-  `/api/threats`.
+  `/api/campaigns/:id/threats`.
 
 ## One mutation path
 
@@ -58,8 +59,9 @@ client send(action) ──▶ gateway ──▶ parse (zod) ──▶ db.transac
   simultaneous taps both count.
 - **Refusals** (`ActionError`) come back as `{ ok: false, error }`, and the UI shows the reason. Once the transaction
   has committed, the client is told "ok" even if the broadcast afterwards fails, so a retap can't apply the change twice.
-- There are no Server Actions and no REST writes for game state. REST only covers setup (creating a campaign) and
-  identity (join, me).
+- There are no Server Actions and no REST writes for game state. REST only covers setup (creating a campaign),
+  identity (join, me, the lobby) and invites. Accepting an invite changes who sits at a table, so it runs through
+  `TableGateway.mutate`: the same per-campaign queue, then the same broadcast.
 
 ## Two snapshots, full state
 
@@ -67,7 +69,7 @@ After each action, the server sends the **whole** snapshot that the action touch
 
 | Snapshot | Contents | Sent when |
 | --- | --- | --- |
-| `state` (`LiveState`) | campaign and pools, characters, the active encounter with its combatants | combat, character and pool actions |
+| `state` (`LiveState`) | campaign and pools, characters, the active encounter with its combatants, and `access` (members and open invites) | combat, character, pool and access actions, and an accepted invite |
 | `codex` (`Codex`) | factions, adventures and beats, locations, NPCs, handouts, sessions | codex and prep actions (`touches()` decides) |
 
 Keeping them separate means a Wounds tap doesn't resend every NPC. A reconnecting client gets both snapshots on
@@ -77,21 +79,56 @@ Each campaign has two rooms: `c:<id>:gm` gets snapshots as-is, and `c:<id>:playe
 `toPlayerCodex`. Those functions drop unrevealed threat stats, GM notes, secrets, factions, adventures and hidden
 entries. What's hidden is listed in [game-logic.md](game-logic.md).
 
-## Access without accounts
+## Access: accounts and guests
+
+Three kinds of caller reach a table:
+
+| Who | Proof | Seat |
+| --- | --- | --- |
+| Signed-in user | Clerk session token: the `__session` cookie, or a Bearer header from server-side Next | a `membership` row: `gm` or `player`, plus a character |
+| Guest | a per-character player token (`access_token`) in the httpOnly `wg_token` cookie | player only |
+| Script or test | `ADMIN_KEY` | `POST /api/campaigns` with `ownerUserId`, and a GM socket with `auth: { adminKey, campaignId }` |
+
+There are no GM links: the GM is always a signed-in member. A Clerk user with `publicMetadata.role = "creator"` (set by
+hand in the Clerk Dashboard) can start a game in the lobby and is seated as its GM.
 
 ```text
-admin key ──POST /api/campaigns──▶ GM token ──▶ GM link  /join/<token>
-GM: token.issue ──▶ player token ──▶ QR code  /join/<token>
-/join/<token> (Next route) ──POST /api/join──▶ Set-Cookie wg_token (httpOnly) ──303──▶ /
-/ (Server Component) ──GET /api/me with cookie──▶ { campaignId, role, characterId } ──▶ GM app | player app
-socket handshake ──cookie──▶ middleware resolves ctx before the connection is accepted
+creator ──POST /api/campaigns──▶ campaign + membership (gm) ──▶ /c/<id>
+GM: invite.create ──▶ code (shown once) ──▶ QR / link  /invite/<code>
+/invite/<code> ──POST /api/invites/:code/accept──▶ membership (signed in) | guest token + Set-Cookie wg_token
+GM: token.issue ──▶ guest token ──▶ QR code  /join/<token> ──POST /api/join──▶ Set-Cookie wg_token ──303──▶ /c/<id>
+/c/<id> (Server Component) ──GET /api/campaigns/:id/me──▶ { campaignId, role, characterId, userId } ──▶ GM app | player app
+socket handshake { campaignId } + cookies ──▶ middleware resolves ctx before the connection is accepted
 ```
 
-- The DB stores only SHA-256 hashes of tokens.
-- `token.revoke` marks a character's tokens revoked and **disconnects** that player's socket.
+- The api verifies Clerk tokens locally with `verifyToken` and `CLERK_JWT_KEY` (no network call), and checks the
+  `azp` claim against `WEB_ORIGIN`. The user's name and creator role come from custom session-token claims (see
+  [development.md](development.md#clerk)).
+- The DB stores only SHA-256 hashes of guest tokens and invite codes, so a lost one is replaced, not recovered.
+- `member.remove` deletes a seat and **disconnects** that user. `token.revoke` revokes a character's guest tokens and
+  disconnects only guest sockets; a member playing that character keeps their seat.
+- Players never receive invite codes or the invite list (`toPlayerView` clears `access.invites`).
+- Clerk needs internet at the table, for sign-in and for the session refresh about every 60 s. A guest on a QR token
+  depends only on the api.
 - Every query is scoped to the caller's `ctx.campaignId`, and a row id sent by the client is looked up inside that
   campaign before it's used. That includes the cross-references `codex.save` stores: a beat's adventure, location,
   NPC and handout ids, an NPC's faction, and a location's parent. See [backend.md](backend.md).
+
+## One app, two views
+
+The GM board and the player view are one Next app with two routes: `/` is the lobby, and `/c/<campaignId>` is a
+table. `app/c/[campaignId]/page.tsx` asks `/api/campaigns/:id/me` for the caller's seat, and the seat decides the view:
+`GmApp` for the GM, `PlayerApp` for a player. The code trees are separate (`components/gm/`, `components/player/`), and Next loads only the
+client code for the view it rendered.
+
+The two aren't separate apps because the separation that matters is in the **data**: the server redacts every player
+snapshot, and the bestiary is fetched server-side for the GM only. So a player's browser never receives hidden data,
+whichever app renders it. Two apps would duplicate the sign-in and join flow, the cookies, the socket hook, the UI kit and the
+theme. They would also need two builds, two deploys, and either two origins or path-prefix routing, and an invite
+would have to know which app to open.
+
+If the views ever need their own URLs or install manifests (landscape tablet, portrait phone), split the table route
+in two (`/c/<id>/gm` and `/c/<id>/play`), each checking the seat on the server, rather than into two apps.
 
 ## Static data, snapshotted
 

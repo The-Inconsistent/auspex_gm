@@ -29,7 +29,7 @@ Commands and setup: [development.md](development.md).
 **Who loads it.** The api imports `threats` in `apps/api/src/encounter/encounter.actions.ts` and
 `apps/api/src/campaign/campaign.service.ts`, so a malformed threat file throws a zod error and **the api refuses to
 start**. Packs are only loaded by `apps/api/scripts/seed.ts` (`loadPack`) and `validate.ts` (`loadPackRaw` +
-`safeParse`, to report every error). The web app never imports `@wg/data`; the GM gets threats from `GET /api/threats`.
+`safeParse`, to report every error). The web app never imports `@wg/data`; the GM gets threats from `GET /api/campaigns/:id/threats`.
 
 **Snapshot.** When a threat joins an encounter (`combatant.addThreat`, `beat.startEncounter`), the whole `Threat`
 object is copied into the combatant row (`statSnapshot`) and its class for the campaign Tier is fixed then
@@ -290,7 +290,7 @@ The Volkus characters and their sources are in [pregens.md](pregens.md) and [kil
    2. `codex.save` for factions, then locations, NPCs and handouts
    3. each adventure, then its beats
    4. `character.create` for each character
-4. It prints counts and the GM link `/join/<token>`.
+4. It prints counts and the table URL `/c/<campaignId>`, which the `--owner` user opens signed in.
 
 There is no SQL: every row goes through `authorize` → `applyAction`, the same validation and campaign scoping as
 live play ([backend.md](backend.md)). Each run creates a **new** campaign, and a failure part-way leaves a partial
@@ -325,7 +325,7 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
    `asMob`.
 4. Optionally add `characters/NN-<slug>.json`, one per character. The filename prefix sets the order.
 5. Run `bun run validate` until it is clean and shows the `pack <name>: …` line.
-6. Start `bun run dev:db` and `bun run dev:api`, then `cd apps/api && bun run seed <name>`. Open the printed GM link.
+6. Start `bun run dev:db` and `bun run dev:api`, then `cd apps/api && bun run seed <name> --owner <clerk user id>`. Open the printed `/c/<id>` URL, signed in as that user.
 7. After seeding, the GM edits the campaign in the app. Re-seeding creates another campaign; it doesn't update the
    existing one.
 
@@ -339,8 +339,8 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 | Stat blocks and ability or rules text | `packages/data/threats/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
-- Never serve book content without an access token. `GET /api/threats` returns 401 without a valid token cookie and 403 for a
-  player token.
+- Never serve book content without an access token. `GET /api/campaigns/:id/threats` returns 401 unless the caller has a seat
+  at that table and 403 for a player.
 - Players get a threat's `stats` only after the GM reveals that combatant (`toPlayerView`). They never get NPC
   `statSource`.
 - In docs, issues and PRs, show structure or placeholders, never a real stat block.

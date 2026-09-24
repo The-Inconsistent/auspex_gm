@@ -1,4 +1,5 @@
 "use client";
+import { UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 
 import { Pool, poolMax, type Threat } from "@wg/shared";
@@ -13,10 +14,10 @@ import { useTable } from "@/hooks/use-table/use-table";
 
 import { GM_TABS, type GmTab } from "./constants";
 
-type GmAppProps = { bestiary: Threat[] };
+type GmAppProps = { campaignId: string; bestiary: Threat[] };
 
-export function GmApp({ bestiary }: GmAppProps) {
-  const { state, codex, online, send } = useTable();
+export function GmApp({ campaignId, bestiary }: GmAppProps) {
+  const { state, codex, online, send } = useTable(campaignId);
   const [tab, setTab] = useState<GmTab>("TRACK");
   const [poolError, setPoolError] = useState<string | null>(null);
   if (!state || !codex) return <StatusScreen text="SYNCING COGITATOR…" />;
@@ -43,11 +44,13 @@ export function GmApp({ bestiary }: GmAppProps) {
     <div className="gm">
       {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
       <header className="gm-head">
+        <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>◂</a>
         <div className="display gm-title">
           AUSPEX <span className="dim">// {state.campaign.name.toUpperCase()} // T{state.campaign.tier}</span>
         </div>
         {state.encounter && <div className="display" style={{ fontSize: 30 }}>RND {String(state.encounter.round).padStart(2, "0")}</div>}
         {Pool.options.map(pool)}
+        <UserButton />
       </header>
       <nav className="tabs" role="tablist">
         {GM_TABS.map((t) => <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>[{t}]</button>)}

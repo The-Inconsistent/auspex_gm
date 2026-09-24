@@ -80,7 +80,7 @@ export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
 
     case "token.issue": {
       await ownCharacter(tx, { campaignId: cid, id: a.characterId });
-      return { ok: true, token: await issueToken(tx, { campaignId: cid, role: "player", characterId: a.characterId }) };
+      return { ok: true, token: await issueToken(tx, { campaignId: cid, characterId: a.characterId }) };
     }
 
     case "token.revoke":

@@ -11,18 +11,50 @@ Setup, day-to-day commands, testing and the gotchas that have already bitten. Fo
 | Docker | Runs Postgres 17 (`docker-compose.yml`) |
 | TypeScript **5.9** | Pinned. TS 7 breaks the Next and Nest toolchains |
 | poppler (`pdftotext`, `pdftoppm`) | Only needed to transcribe from the books ([data.md](data.md)) |
+| A [Clerk](https://clerk.com) application | Sign-in. The free Hobby plan is enough ([Clerk](#clerk)) |
 
 ## First run
 
 ```bash
 bun install
-cp apps/api/.env.example apps/api/.env      # then set ADMIN_KEY
+cp apps/api/.env.example apps/api/.env      # then set ADMIN_KEY and the Clerk keys
+cp apps/web/.env.example apps/web/.env.local  # then set the Clerk keys
 bun run dev:db                              # Postgres on 127.0.0.1:5434, waits until healthy
 bun run dev:api                             # :4000, bun --watch; runs migrations on startup
 bun run dev:web                             # :3000, proxies /api and /socket.io to :4000
 
-cd apps/api && bun run seed volkus          # prints the GM link
+cd apps/api && bun run seed volkus --owner user_2abc…   # your Clerk user id; prints /c/<campaignId>
 ```
+
+Or sign in at `http://localhost:3000` as a creator and start an empty game with **NEW GAME** in the lobby.
+
+## Clerk
+
+Accounts come from Clerk. Guests with a QR token don't need one, but the GM does. One-time setup:
+
+1. Create a Clerk application on the free **Hobby** plan, and enable the sign-in methods you want.
+2. In the Dashboard, under **Sessions → Customize session token**, add these claims. The api reads the name and the
+   creator role from the session token, so it never calls Clerk (`apps/api/src/auth/clerk.ts`):
+
+   ```json
+   { "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }
+   ```
+
+3. Sign up once in the app, then under **Users →** your user, set **public metadata** to `{ "role": "creator" }`. Only
+   creators see NEW GAME in the lobby. There's no in-app way to grant it; set it by hand for each GM.
+4. Copy the keys from **API keys**:
+
+   | File | Vars |
+   | --- | --- |
+   | `apps/web/.env.local` | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` |
+   | `apps/api/.env` | `CLERK_SECRET_KEY`, `CLERK_JWT_KEY` (the PEM public key, for verifying sessions without a network call) |
+
+5. Your Clerk user id (`user_…`, under **Users**) is what `seed --owner` takes.
+
+Without the web keys, every page answers 500 with "Missing publishableKey".
+
+`CLERK_TEST_SECRET` in `apps/api/.env` is **dev/test only**: it lets the smoke test act as signed-in users with fake
+tokens (`test.<secret>.<userId>.<creator|member>`), and the api refuses to start with it when `NODE_ENV=production`.
 
 ## Environment
 
@@ -31,16 +63,22 @@ cd apps/api && bun run seed volkus          # prints the GM link
 | Var | Purpose | Dev value |
 | --- | --- | --- |
 | `DATABASE_URL` | Postgres connection | `postgres://wg:wg@localhost:5434/wg` |
-| `ADMIN_KEY` | Required to create campaigns (`x-admin-key`). Also used by the scripts and the smoke test | anything private |
-| `WEB_ORIGIN` | Socket.IO CORS origin, and the host in printed GM links | `http://localhost:3000` |
+| `ADMIN_KEY` | Scripts only: `POST /api/campaigns` (`x-admin-key`, with `ownerUserId`) and an admin socket (`auth: { adminKey, campaignId }`). Used by `seed` and the smoke test | anything private |
+| `WEB_ORIGIN` | The web origins, comma separated: Socket.IO CORS, Clerk's `authorizedParties`, and the host `seed` prints (the first entry) | `http://localhost:3000` |
+| `CLERK_SECRET_KEY` | Clerk backend key | from the Clerk Dashboard |
+| `CLERK_JWT_KEY` | Clerk's PEM public key: verifies session tokens locally | from the Clerk Dashboard |
+| `CLERK_TEST_SECRET` | **Dev/test only.** Lets the smoke test sign in as fake Clerk users. The api refuses to start with it when `NODE_ENV=production` | any string, in dev |
 | `COOKIE_SECURE` | `true` behind HTTPS. Keep it `false` on plain http, or the browser drops the cookie | `false` |
 | `PORT` | api port | `4000` |
 
-Web (optional): `API_ORIGIN` is where Next reaches the api server-side, for the rewrites and `/api/me`. The default
-is `http://localhost:4000`.
+`apps/web/.env.local` holds `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` (see `apps/web/.env.example`).
+Optional: `API_ORIGIN` is where Next reaches the api server-side, for the rewrites and the server-side reads
+(`app/server-api.ts`). The default is `http://localhost:4000`.
 
-**Playing over the LAN:** open the web app at the machine's LAN address (`http://192.168.x.y:3000`). Set `WEB_ORIGIN`
-to that address so the printed links and QR codes point there, then restart the api.
+**Playing over the LAN:** open the web app at the machine's LAN address (`http://192.168.x.y:3000`). Add that address
+to `WEB_ORIGIN`, next to localhost (`http://localhost:3000,http://192.168.x.y:3000`), then restart the api. Otherwise
+the api rejects the Clerk session (wrong `azp`) and the socket's CORS check. QR codes use the address the GM's browser
+is on, so open the table at the LAN address before showing them.
 
 ## Commands
 
@@ -51,10 +89,9 @@ Run these from the repo root unless noted.
 | `bun run typecheck` | `tsc` for shared, api and web. Must pass before a commit |
 | `bun run test` | Unit tests (`bun test packages apps/web`): rules functions, command parser, libs |
 | `bun run validate` | Every threat and pack against its schema, plus bestiary progress |
-| `bun run test:smoke` | End-to-end GM and player session over Socket.IO. Needs `dev:db` and `dev:api` |
+| `bun run test:smoke` | End-to-end GM, player, guest and invite sessions over Socket.IO. Needs `dev:db`, and `dev:api` running with `CLERK_TEST_SECRET` set |
 | `cd apps/web && bun run build` | Production build. Catches what `tsc` doesn't, such as Server/Client boundaries |
-| `cd apps/api && bun run seed <pack>` | New campaign from `packages/data/packs/<pack>` |
-| `cd apps/api && bun run create-campaign "<name>" <tier>` | Empty campaign |
+| `cd apps/api && bun run seed <pack> --owner <clerk user id>` | New campaign from `packages/data/packs/<pack>`, with that user as GM. Prints `/c/<campaignId>` |
 | `cd apps/api && bun run db:generate` | Migration from the `src/**/*.schema.ts` files |
 
 ## Database and migrations
@@ -62,7 +99,9 @@ Run these from the repo root unless noted.
 - The tables live next to their feature (`<feature>/<feature>.schema.ts`). `drizzle.config.ts` globs them, and
   `core/db.ts` imports each one for the query builder. **A new feature schema file must be added to `core/db.ts` too.**
 - Migrations in `apps/api/drizzle/` are applied automatically when the api starts.
-- **Pre-release:** there's a single migration, and it may be regenerated:
+- `0001` added accounts (`app_user`, `membership`, `invite`) without touching existing tables. Old GM tokens are still
+  rows in `access_token`, but they no longer open anything.
+- **Pre-release:** the migrations may still be regenerated:
 
   ```bash
   rm -rf apps/api/drizzle && (cd apps/api && bun run db:generate)
@@ -102,10 +141,16 @@ the local diff when there's no PR.
 | Socket connects then 308s, or `/socket.io/` 404s in dev | Next strips the trailing slash. `next.config` needs `skipTrailingSlashRedirect: true` **and** the explicit `/socket.io/` rewrite |
 | `EADDRINUSE :4000` or changes not showing | A stale api process. `lsof -nP -iTCP:4000 -sTCP:LISTEN`, then kill it |
 | Postgres port clash | 5432 and 5433 are taken on the main dev machine, hence 5434 |
-| Login works on localhost but not the LAN | `COOKIE_SECURE=true` on plain http, or `WEB_ORIGIN` pointing at localhost |
+| Login works on localhost but not the LAN | `COOKIE_SECURE=true` on plain http, or the LAN address missing from `WEB_ORIGIN` |
+| Every page is a 500 "Missing publishableKey" | No Clerk keys in `apps/web/.env.local` ([Clerk](#clerk)) |
+| Signed in, but no NEW GAME in the lobby | Your Clerk user has no `{ "role": "creator" }` public metadata, or the session-token claims are missing `metadata` ([Clerk](#clerk)) |
+| Sign-in fails, or a signed-in player can't reload or reconnect, when the venue's internet is down | Clerk needs internet: for sign-in, and to refresh the session token about every 60 s. Guests on a QR token depend only on the api, so hand out GUEST QRs if the connection is unreliable |
+| Smoke test fails with 401s on every signed-in call | The api isn't running with `CLERK_TEST_SECRET`, or the test sees a different value |
 | Player page stuck on "NO SIGNAL · RECONNECTING" | The api is down. The client retries a DB refusal every 3 s and reloads on `unauthorized` |
 | `enum` doesn't compile | Intended: `erasableSyntaxOnly` is on. Use a `z.enum` in shared, or an `as const` object |
 | Upgrading TypeScript breaks everything | Stay on 5.9 |
+| A lost invite or guest QR | Codes are stored as hashes only, so they can't be shown again. Make a new one on PARTY (and REVOKE the old one if it may have leaked). A GM's access is their Clerk account, so there's no GM link to lose |
+| The printed `/c/<id>` link opens on this machine but not on the tablet | It uses the first `WEB_ORIGIN` entry, `localhost`. Swap the host for the LAN address, or put the LAN address first |
 | Read tool refuses a book PDF | Over 100 MB. Render the page with `pdftoppm` ([data.md](data.md)) |
 
 ## Not built yet

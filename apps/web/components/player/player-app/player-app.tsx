@@ -1,4 +1,5 @@
 "use client";
+import { Show, UserButton } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 
 import { sideUpNext } from "@wg/shared";
@@ -11,10 +12,10 @@ import { Intel } from "./components/intel/intel";
 import { Sheet } from "./components/sheet/sheet";
 import { PLAYER_TABS, TURN_VIBRATION, type PlayerTab } from "./constants";
 
-type PlayerAppProps = { characterId: string };
+type PlayerAppProps = { campaignId: string; characterId: string };
 
-export function PlayerApp({ characterId }: PlayerAppProps) {
-  const { state, codex, online, send } = useTable();
+export function PlayerApp({ campaignId, characterId }: PlayerAppProps) {
+  const { state, codex, online, send } = useTable(campaignId);
   const [tab, setTab] = useState<PlayerTab>("SHEET");
   const me = state?.characters.find((c) => c.id === characterId);
   const enc = state?.encounter ?? null;
@@ -42,8 +43,10 @@ export function PlayerApp({ characterId }: PlayerAppProps) {
   return (
     <div className="pl">
       {!online && <div className="badge-offline">NO SIGNAL</div>}
-      <div className={`pl-banner ${myTurn ? "up" : ""}`}>
-        <div className="display" style={{ fontSize: 26 }}>{banner}</div>
+      <div className={`pl-banner ${myTurn ? "up" : ""}`} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div className="display" style={{ fontSize: 26, flex: 1 }}>{banner}</div>
+        {/* Signed-in players get the lobby and account menu; guests have neither. */}
+        <Show when="signed-in"><a href="/" aria-label="Lobby">◂</a><UserButton /></Show>
       </div>
       <div className="pl-body">
         {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}

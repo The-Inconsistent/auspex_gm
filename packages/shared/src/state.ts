@@ -3,13 +3,25 @@ import { Threat, ThreatClass, Weapon } from "./threat.ts";
 
 // Page refs: docs/rules-flow.md (Core rulebook, printed pages).
 
+export const TIERS = [1, 2, 3, 4, 5] as const; // the campaign Tiers that Tier accepts
 export const Tier = z.number().int().min(1).max(5);
 export const Role = z.enum(["gm", "player"]);
 export type Role = z.infer<typeof Role>;
 
-// Who a login token belongs to (GET /api/me).
-export const Me = z.object({ campaignId: z.string(), role: Role, characterId: z.string().nullable() });
+// Who the caller is at one table (GET /api/campaigns/:id/me). userId is the Clerk user; null for a guest (QR token).
+export const Me = z.object({ campaignId: z.string(), role: Role, characterId: z.string().nullable(), userId: z.string().nullable() });
 export type Me = z.infer<typeof Me>;
+
+// Signed-in people at a table, and the GM's open invite links (docs/backend.md, "Access").
+export const InviteMode = z.enum(["room", "character"]); // room: players claim a character; character: one character
+export type InviteMode = z.infer<typeof InviteMode>;
+export const Member = z.object({ userId: z.string(), name: z.string(), role: Role, characterId: z.string().nullable() });
+export type Member = z.infer<typeof Member>;
+export const Invite = z.object({
+  id: z.string(), mode: InviteMode, characterId: z.string().nullable(), allowGuests: z.boolean(),
+  expiresAt: z.string(), uses: z.number().int(), maxUses: z.number().int().nullable(),
+});
+export type Invite = z.infer<typeof Invite>;
 
 export const Side = z.enum(["agents", "threats"]);
 export type Side = z.infer<typeof Side>;
@@ -163,6 +175,7 @@ export const LiveState = z.object({
       combatants: z.array(Combatant),
     })
     .nullable(),
+  access: z.object({ members: z.array(Member), invites: z.array(Invite) }),
 });
 export type LiveState = z.infer<typeof LiveState>;
 export type Encounter = NonNullable<LiveState["encounter"]>;
@@ -222,20 +235,19 @@ export function threatStatus(c: ThreatCombatant): string[] {
   return c.wounds > 0 ? ["Wounded"] : [];
 }
 
-export const toPlayerView = (s: LiveState): LiveState =>
-  !s.encounter
-    ? s
-    : {
-        ...s,
-        encounter: {
-          ...s.encounter,
-          // Unrevealed: bars, label and Conditions only. The threat id would name the stat block, and personal Ruin is
-          // the GM's.
-          combatants: s.encounter.combatants.map((c) =>
-            c.kind === "threat" && !c.revealed ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
-          ),
-        },
-      };
+// Players see who's at the table but not the GM's invite links (each one is a way in).
+export const toPlayerView = (s: LiveState): LiveState => ({
+  ...s,
+  access: { members: s.access.members, invites: [] },
+  encounter: s.encounter && {
+    ...s.encounter,
+    // Unrevealed: bars, label and Conditions only. The threat id would name the stat block, and personal Ruin is
+    // the GM's.
+    combatants: s.encounter.combatants.map((c) =>
+      c.kind === "threat" && !c.revealed ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
+    ),
+  },
+});
 
 // Conditions, pp.197-200.
 export const CONDITIONS = [

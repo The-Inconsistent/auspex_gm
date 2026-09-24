@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
     "dev:db": "docker compose up -d --wait postgres",
     "dev:api": "bun --filter @wg/api dev",
     "dev:web": "bun --filter @wg/web dev",
@@ -13,10 +15,12 @@
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
+    "turbo": "^2.11.3",
     "typescript": "^5.9.3"
   },
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "packageManager": "bun@1.3.14"
 }

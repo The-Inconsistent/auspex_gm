@@ -16,7 +16,8 @@ bookkeeping: whose turn it is, Wounds and Shock, pools, Conditions, and what the
 - **Prep.** Adventures broken into beats (briefing, travel, investigation, social, combat, revelation, rest). A combat
   beat carries a prepared encounter that goes live with one tap.
 - **Codex.** NPCs, locations, handouts and factions. Each entry has its own GM notes and secrets, and a reveal toggle.
-- **Party.** Characters, a QR code to join each one, session start and end (pool resets, XP), and Respite.
+- **Party.** Characters, invites (a room QR for the whole table, a link per character, or a guest QR), session start
+  and end (pool resets, XP), and Respite.
 - **Pools.** Glory and Ruin, capped by the rules.
 
 ### **Players (phone)**
@@ -34,32 +35,52 @@ You need [Bun](https://bun.sh) and Docker. Use Bun, not npm or pnpm.
 
 ```bash
 bun install
-cp apps/api/.env.example apps/api/.env      # set ADMIN_KEY to something private
+cp apps/api/.env.example apps/api/.env      # set ADMIN_KEY to something private, and the Clerk keys
+cp apps/web/.env.example apps/web/.env.local  # the Clerk keys
 
 bun run dev:db                              # Postgres in Docker on localhost:5434
 bun run dev:api                             # API on :4000 (migrations run on startup)
 bun run dev:web                             # web on :3000
 ```
 
-Create a campaign. Both commands print a **GM link**.
+Sign-in runs on [Clerk](https://clerk.com). Set it up once (details in
+[`docs/development.md`](docs/development.md#clerk)):
+
+1. Create a Clerk application on the free Hobby plan and enable the sign-in methods you want.
+2. Under **Sessions → Customize session token**, add the claims
+   `{ "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }`.
+3. Sign in once, then set your user's public metadata to `{ "role": "creator" }` so you can start games.
+4. Put `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` in `apps/web/.env.local`, and `CLERK_SECRET_KEY` and
+   `CLERK_JWT_KEY` in `apps/api/.env`. Without them the web app answers 500 with "Missing publishableKey".
+
+Start a game from the lobby at `http://localhost:3000` (**NEW GAME**), or seed the bundled campaign with yourself as GM:
 
 ```bash
 cd apps/api
-bun run seed volkus                         # the bundled campaign: Deathwatch Kill Team at the Volkus dig site
-bun run create-campaign "My Campaign" 2     # or an empty campaign at Tier 2
+bun run seed volkus --owner user_2abc…     # your Clerk user id (Dashboard → Users); prints /c/<campaignId>
 ```
 
-Open the GM link on the tablet. On the **PARTY** tab, show a character's QR code; the player scans it and lands on
-their sheet. To play on phones over your LAN, set `WEB_ORIGIN` in `apps/api/.env` to the address the phones will use.
+Open the table on the tablet. On the **PARTY** tab, show the **ROOM QR**; players scan it, sign in or join as a guest,
+and claim an agent. To play on phones over your LAN, add the address the phones will use to `WEB_ORIGIN` in
+`apps/api/.env` (comma separated, next to `http://localhost:3000`).
 
 ## How access works
 
-There are no accounts.
+People sign in with Clerk accounts. Players who don't want an account can join as guests.
 
-- An admin key creates a campaign and returns a GM link.
-- The GM issues one link per character, shown as a QR code.
-- Opening a link stores its token in an httpOnly cookie. The database keeps only a hash of the token.
-- Revoking a character's links disconnects that player immediately. Issue a new QR code to let them back in.
+- **Signed-in users** hold a seat at a table: GM, or player with a character. The GM is always a signed-in member, so
+  a GM's access is their account; there are no GM links.
+- **Creators** (Clerk public metadata `role: "creator"`, set by hand in the Clerk Dashboard) can start games in the
+  lobby.
+- **Invites.** From **PARTY**, the GM shows a **ROOM QR** (12 hours; players claim an open agent or name a new one) or
+  an **INVITE** link for one character (a week, single use). A lost invite isn't recovered: revoke it and make a new
+  one.
+- **Guests** hold a per-character QR token in an httpOnly cookie. They come in through an invite that allows guests,
+  or the **GUEST QR** on a character. Revoking a guest QR disconnects that guest immediately.
+- The database keeps only hashes of invite codes and guest tokens.
+- The lobby (`/`) lists your games and the games running now. A table lives at `/c/<campaignId>`, and your seat decides
+  whether it shows the GM board or the player view ([why one app](docs/architecture.md#one-app-two-views)).
+- Clerk needs internet at the table (sign-in, and a session refresh about every minute). Guests only need the api.
 
 ## Commands
 
@@ -75,7 +96,7 @@ There are no accounts.
 
 ```bash
 apps/web          Next.js 16: the GM app and the player app
-apps/api          NestJS on Bun: REST for setup and join, Socket.IO for the live table, Drizzle + Postgres
+apps/api          NestJS on Bun: REST for the lobby, invites and join, Socket.IO for the live table, Drizzle + Postgres
 packages/shared   zod schemas and pure rules functions, shared by web and api
 packages/data     threat stat blocks, content packs (campaigns + pregens), validator
 docs/             architecture, backend, frontend, game logic, data, development, rules spec (index: docs/README.md)
@@ -120,4 +141,4 @@ fan tool.
 
 - The rulebook PDFs (in `books/`, gitignored) and the stat-block and rules text in `packages/data` are copyrighted.
   **Keep this repository private.**
-- The app serves book content only to someone holding a valid access token.
+- The app serves book content only to a signed-in member or a guest holding a valid access token.

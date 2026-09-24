@@ -9,6 +9,7 @@
     "test": "bun test lib"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.9.5",
     "@wg/shared": "workspace:*",
     "next": "^16.3.6",
     "qrcode": "^1.5.4",

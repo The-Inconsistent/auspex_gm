@@ -5,9 +5,10 @@ api in [backend.md](backend.md), the rules functions in [game-logic.md](game-log
 [development.md](development.md). The binding style rules are in
 [`.claude/frontend-code-style.md`](../.claude/frontend-code-style.md).
 
-Stack: Next.js 16 (App Router), React 19, `socket.io-client`, `qrcode`, and plain CSS in `app/globals.css`. There is
-no UI framework, no client-side data fetching and no client router beyond tab state. One page (`/`) renders either
-the GM app or the player app.
+Stack: Next.js 16 (App Router), React 19, `@clerk/nextjs`, `socket.io-client`, `qrcode`, and plain CSS in
+`app/globals.css`. There is no UI framework, no client-side data reads and no client router beyond tab state. `/` is the
+lobby, and one table page (`/c/<campaignId>`) renders either the GM app or the player app, depending on the caller's
+seat.
 
 ---
 
@@ -15,59 +16,104 @@ the GM app or the player app.
 
 | Path | File | Kind | Job |
 |---|---|---|---|
-| `/` | `app/page.tsx` | Server Component | Reads the cookie, asks `/api/me` who the caller is, and renders `GmApp`, `PlayerApp` or a `StatusScreen` |
-| `/join/<token>` | `app/join/[token]/route.ts` | Route handler (`GET`) | Swaps the token for the login cookie, then redirects to `/` with a 303 |
+| `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
+| `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen` |
+| `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
+| `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
+| `/join/<token>` | `app/join/[token]/route.ts` | Route handler (`GET`) | Swaps a guest token for the guest cookie, then redirects to its table with a 303 |
 | `/manifest.webmanifest` | `app/manifest.ts` | Metadata route | "Add to home screen": `display: standalone`, `start_url: /`, colours from `TOKENS.bg` |
 | `/api/*`, `/socket.io/*` | `next.config.ts` | Rewrites (dev only) | Proxied to the api |
 
-`app/layout.tsx` loads the fonts, sets `metadata` and `viewport` (`themeColor: TOKENS.bg`), and imports
-`globals.css`.
+`app/layout.tsx` loads the fonts, sets `metadata` and `viewport` (`themeColor: TOKENS.bg`), imports `globals.css`, and
+wraps the body in `<ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">`. Without
+`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` every page answers 500 with "Missing publishableKey" (see
+[development.md](development.md#clerk)).
+
+### Identity: `proxy.ts` and `app/server-api.ts`
+
+- **`proxy.ts`** (Next 16's middleware file) runs `clerkMiddleware()` so Clerk can keep its session fresh. It protects
+  nothing: each page decides whether it needs a signed-in user, because guests join without an account. Its matcher
+  excludes `/api`, `/socket.io`, `_next` and static files; the api checks the Clerk token itself.
+- **`apiGet(path)`** calls the api directly at `API_ORIGIN` (`app/constants.ts`, env `API_ORIGIN`, default
+  `http://localhost:4000`) with `cache: "no-store"`. It sends the Clerk session as `Authorization: Bearer
+  <auth().getToken()>`, and forwards the guest cookie (`TOKEN_COOKIE` = `wg_token`), which is httpOnly, so only the
+  server can read it.
+- **The browser** reaches the api through the rewrites, so the Clerk `__session` cookie and the guest cookie ride along
+  on its own requests (NEW GAME, accepting an invite, the socket handshake).
 
 ### `/`: `app/page.tsx`
-
-The login cookie (`TOKEN_COOKIE` = `wg_token`, set by the api) is httpOnly, so only the server can read it and forward
-it. `apiGet` calls the api directly at `API_ORIGIN` (`app/constants.ts`, env `API_ORIGIN`, default
-`http://localhost:4000`) with `cache: "no-store"`.
 
 The checks run in this order, and the first one that matches decides what renders:
 
 | Condition | Renders |
 |---|---|
-| `?join=invalid` or `?join=nosignal` (checked **before** the cookie) | `JOIN_ERRORS[join]` |
-| No `wg_token` cookie | NO ACCESS |
-| `/api/me` returns 401 | NO ACCESS |
-| `/api/me` returns any other non-2xx | `JOIN_ERRORS.nosignal` |
-| `/api/me` body fails `Me.safeParse` | NO ACCESS |
-| The fetch throws (api down) | `JOIN_ERRORS.nosignal` |
-| `role: "gm"` | `<GmApp bestiary={…} />` |
-| A player with no `characterId` | NO ACCESS |
-| A player | `<PlayerApp characterId={…} />` |
+| `?join=invalid` or `?join=nosignal` (checked **before** anything else) | `JOIN_ERRORS[join]` |
+| Signed out, and `/api/guest` finds a guest cookie's table | a redirect to `/c/<campaignId>` |
+| Signed out | The sign-in landing: AUSPEX, SIGN IN (to `/sign-in`), and a hint that guests scan the GM's QR code |
+| Signed in, `/api/lobby` fails, errors or doesn't parse as `Lobby` | `JOIN_ERRORS.nosignal` |
+| Signed in | `<LobbyView lobby={…} />` |
 
-The messages:
+**`LobbyView`** (`components/lobby/lobby-view/lobby-view.tsx`) has Clerk's `<UserButton />` in the header and three
+sections:
+
+- **YOUR GAMES** (`lobby.mine`): a card per seat with a GM or PLAYER chip and OPEN (to `/c/<id>`).
+- **RUNNING NOW**: games with a session in progress where the caller has no seat (`running` filtered to `role: null`).
+  They're cards only, with no OPEN: joining needs an invite.
+- **NEW GAME**, only when `lobby.canCreate` (the Clerk creator role): a name and a Tier from `TIERS`. CREATE AS GM POSTs
+  to `/api/campaigns` from the browser, then pushes to `/c/<campaignId>`. Setup is REST, not a table action. A refusal
+  shows inline.
+
+### `/c/<campaignId>`: `app/c/[campaignId]/page.tsx`
+
+| Condition | Renders |
+|---|---|
+| `/api/campaigns/:id/me` returns 400 (bad id) or 401 (no seat) | NO ACCESS |
+| Any other non-2xx, or the body fails `Me.safeParse` | `JOIN_ERRORS.nosignal` |
+| The fetch throws (api down) | `JOIN_ERRORS.nosignal` |
+| `role: "gm"` | `<GmApp campaignId={…} bestiary={…} />` |
+| A player with no `characterId` (their character was deleted) | `NO CHARACTER YET. ASK YOUR GM.` |
+| A player | `<PlayerApp campaignId={…} characterId={…} />` |
+
+The messages (`app/constants.ts`):
 
 | Key | Text |
 |---|---|
-| NO ACCESS (`NO_ACCESS` in `page.tsx`) | `NO ACCESS. SCAN THE QR CODE ON THE GM'S TABLET.` |
+| `NO_ACCESS` | `NO ACCESS. ASK YOUR GM FOR AN INVITE.` |
 | `JOIN_ERRORS.invalid` | `LINK INVALID OR REVOKED. ASK YOUR GM FOR A NEW QR CODE.` |
 | `JOIN_ERRORS.nosignal` | `NO SIGNAL. CHECK THE CONNECTION AND RETRY.` |
 
-For the GM, `loadBestiary` fetches `/api/threats` on the server, parses it with `Threat.array()` and sorts it by name.
-Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop; the client
-never fetches it.
+For the GM, `loadBestiary` fetches `/api/campaigns/:id/threats` on the server, parses it with `Threat.array()` and sorts
+it by name. Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop;
+the client never fetches it.
+
+### `/invite/<code>`: `app/invite/[code]/page.tsx`
+
+The room QR and per-character invite links point here. The page fetches `/api/invites/:code` with `apiGet`:
+
+- A 400 (expired, revoked or used up) shows the api's message, upper-cased, or `JOIN_ERRORS.invalid`.
+- Anything else that doesn't parse as `InvitePreview`, or a throw, shows `JOIN_ERRORS.nosignal`.
+- Otherwise it renders **`InviteAccept`** (`components/invite/invite-accept/invite-accept.tsx`):
+  - Already a member: YOU'RE SEATED · OPEN TABLE.
+  - Signed out: SIGN IN TO JOIN (to `/sign-in?redirect_url=/invite/<code>`), plus a note that guests may join below, or
+    that the table needs an account when `allowGuests` is false.
+  - A character invite: PLAY <NAME> (or PLAY <NAME> AS GUEST).
+  - A room invite: PICK YOUR AGENT from `openCharacters`, or a NEW AGENT NAME form.
+  - Each choice POSTs to `/api/invites/:code/accept` from the browser, with `asGuest` set when signed out, then pushes
+    to `/c/<campaignId>`. A refusal (such as "That character is already taken") shows inline.
 
 ### `/join/<token>`: `app/join/[token]/route.ts`
 
-The GM link and the player QR codes both point here. `GET` awaits `params` (a Promise in Next 16), then POSTs
-`{ token }` to `${API_ORIGIN}/api/join`.
+The GUEST QR codes point here. `GET` awaits `params` (a Promise in Next 16), then POSTs `{ token }` to
+`${API_ORIGIN}/api/join`.
 
 | api result | Response |
 |---|---|
-| 2xx | 303 to `/`, with every `Set-Cookie` from the api copied across (`getSetCookie()`) |
+| 2xx | 303 to `/c/<campaignId>` from the response body (or `/` if it has none), with every `Set-Cookie` from the api copied across (`getSetCookie()`) |
 | 400 or 401 (a rejected token) | 303 to `/?join=invalid` |
 | Any other status (5xx: the link may still be fine) | 303 to `/?join=nosignal` |
 | The fetch throws | 303 to `/?join=nosignal` |
 
-The `Location` header is relative (`/`), so the redirect stays on whatever host the phone used (Caddy in prod,
+The `Location` header is relative, so the redirect stays on whatever host the phone used (Caddy in prod,
 `:3000` in dev). The error keys are the `JoinError` type from `JOIN_ERRORS` in `app/constants.ts`.
 
 ### `next.config.ts`
@@ -84,11 +130,11 @@ The `Location` header is relative (`/`), so the redirect stays on whatever host 
 
 ## 2. `hooks/use-table/use-table.ts`
 
-`useTable()` is the only link to live state. Both apps call it once at the top and pass `state`, `codex` and `send`
-down as props.
+`useTable(campaignId)` is the only link to live state. Both apps call it once at the top with their `campaignId` prop
+and pass `state`, `codex` and `send` down as props.
 
 ```ts
-const { state, codex, online, send } = useTable();
+const { state, codex, online, send } = useTable(campaignId);
 ```
 
 | Returns | Type | Meaning |
@@ -98,14 +144,16 @@ const { state, codex, online, send } = useTable();
 | `online` | `boolean` | Set by socket `connect` / `disconnect` |
 | `send` | `Send = (a: ActionInput) => Promise<ActionResult>` | The only way to change anything |
 
-- **One socket per tab:** `io({ withCredentials: true })`, same origin. The browser sends the httpOnly cookie on the
-  handshake. The server pushes a full snapshot on connect and after every change, and the hook replaces its state
+- **One socket per tab, for one table:** `io({ withCredentials: true, auth: { campaignId } })`, same origin. The
+  browser sends Clerk's `__session` cookie, or a guest's httpOnly `wg_token` cookie, on the handshake, and the server
+  resolves the seat at that campaign. The server pushes a full snapshot on connect and after every change, and the hook replaces its state
   wholesale (`s.on("state", setState)`, `s.on("codex", setCodex)`). A reconnect needs no special logic. The players
   room gets the filtered views; see [architecture.md](architecture.md).
 - **Snapshots are never cleared on disconnect.** The last state stays on screen under the offline badge.
 - **`connect_error`:**
   - If `s.active` is true, it was a transport error and socket.io is already reconnecting, so the hook does nothing.
-  - If the server's auth middleware refused with `"unauthorized"` (a revoked or dead token), it calls
+  - If the server's auth middleware refused with `"unauthorized"` (a revoked token, a removed seat, a signed-out
+    session), it calls
     `location.reload()`, and the reload lands on the NO ACCESS screen.
   - Any other refusal (a DB blip) retries `s.connect()` after `REFUSED_RETRY_MS` (3 s). socket.io doesn't retry
     middleware refusals on its own.
@@ -113,7 +161,7 @@ const { state, codex, online, send } = useTable();
   - If the socket isn't connected, it returns `{ ok: false, error: "No signal" }` without sending.
   - Otherwise it calls `emitWithAck("action", a)` with `ACK_TIMEOUT_MS` (5 s) and returns the server's
     `ActionResult`: `{ ok: true, id?, token? }` or `{ ok: false, error }`. `id` is the new row for creates;
-    `token` is the join token from `token.issue`.
+    `token` is the guest token from `token.issue`, or the invite code from `invite.create`.
   - On timeout it returns `{ ok: false, error: "No reply from server. Check before retrying" }`. The action may
     still have been applied, and counters are deltas, so tapping again could double it.
   - `send` never throws. Callers check `r.ok` and show `r.error`.
@@ -366,7 +414,7 @@ The tests are in `lib/command/command.test.ts`.
   - A refusal shows inline and keeps the editor open.
   - The page-level `Refusal` banner is used only for the reveal toggle.
 
-### 3.5 PARTY: session, framework, kill team
+### 3.5 PARTY: session, framework, table access, kill team
 
 `Party`.
 - **Session panel:**
@@ -375,15 +423,27 @@ The tests are in `lib/command/command.test.ts`.
   - Otherwise: START SESSION n (`session.start`).
   - What the pools reset to is covered in [game-logic.md](game-logic.md).
 - **Framework panel:** patron and framework text, saved with `campaign.update`. Players see both on INTEL.
-- **Kill team list:** for each character, the name, archetype, `pcStatus` chips, XP, and a line of derived stats. The
-  per-character buttons:
+- **TABLE ACCESS panel** (from `state.access`, which only the GM receives in full):
+  - ROOM QR sends `invite.create { mode: "room", hours: ROOM_INVITE_HOURS }` (12) and shows `/invite/<code>` as a QR.
+    Players scan it, sign in or join as a guest, and claim an agent.
+  - The open invites: ROOM or the character's name, uses, ACCOUNTS ONLY when guests aren't allowed, the expiry, and
+    REVOKE (`invite.revoke`). Anyone already seated keeps their seat.
+  - SIGNED IN: each member's name and seat (GM, the character, or NO AGENT). Players have REMOVE (`member.remove`),
+    which takes the seat away and disconnects them.
+- **Kill team list:** for each character, the name, archetype, `pcStatus` chips, XP, PLAYED BY <member> or OPEN SEAT,
+  and a line of derived stats. The per-character buttons:
 
 | Button | Sends | Notes |
 |---|---|---|
-| SHOW QR | `token.issue` | Builds `${location.origin}/join/<token>` into a `QR_SIZE` (320px) PNG with `qrcode`, using `TOKENS.bg` modules on `TOKENS.fg`, and shows it full-screen in `QrDialog` with the URL written underneath |
+| INVITE | `invite.create { mode: "character", characterId, hours: CHARACTER_INVITE_HOURS }` (168) | A single-use link to `/invite/<code>` for that character, shown as a QR |
+| GUEST QR | `token.issue` | A no-account guest QR to `/join/<token>` |
 | LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
 | RESPITE | `character.respite` | |
-| REVOKE LINKS | `token.revoke` | The server also kicks that player's live socket |
+| REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
+
+Every code (room, invite, guest) goes through `showCode`: it builds `${location.origin}/…` into a `QR_SIZE` (320px) PNG
+with `qrcode`, using `TOKENS.bg` modules on `TOKENS.fg`, and shows it full-screen in `QrDialog` with the URL written
+underneath. The code is returned only once, so a closed dialog can't be reopened; make a new one.
 
 - **ADD AGENT** sends `character.create { name }`.
 
@@ -452,12 +512,13 @@ with `bun test lib`.
 
 | Surface | Where | Looks like | Clears |
 |---|---|---|---|
-| Status screen | `page.tsx`, the apps before their first snapshot | A full-screen message (§1) | On navigation or reload |
+| Status screen | the `/`, `/c/<id>` and `/invite/<code>` pages, the apps before their first snapshot | A full-screen message (§1) | On navigation or reload |
 | Offline badge `.badge-offline` | `GmApp` (`NO SIGNAL · RECONNECTING`), `PlayerApp` (`NO SIGNAL`) | A red badge fixed top-right while `!online`; the last state stays on screen | On reconnect |
 | `Refusal` banner | `GmApp` (header pools), `CodexView` (the reveal toggle), `Sheet` (every player action) | A red alert bar fixed to the bottom, `! <error>`, with an OK button | On OK, or on the next success |
 | Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
 | Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
 | Inline editor error | `BeatEditor`, `CodexEditor` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
+| Inline form error | `LobbyView` (NEW GAME), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
 
 The error text is either the server's `ActionError` message or one of the two client strings from `send`
 (`No signal`, and `No reply from server. Check before retrying`).
@@ -498,6 +559,7 @@ The look is "Auspex": a green-phosphor cogitator terminal. Dark green background
 | `--overlay` | Near-opaque backdrop for `.overlay` (the QR dialog) |
 | `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
 | `--mono`, `--display` | Font stacks |
+| `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--fg)`, `--clerk-color-background: var(--panel)`, `--clerk-font-family: var(--mono)`, `--clerk-border-radius: 0`…), so they take the Auspex look |
 
 **Class vocabulary:**
 - Text: `.display`, `.dim`, `.amber`, `.red`, `.label`, `.rule`.
@@ -547,9 +609,12 @@ This section summarises the binding rules. The full text is in
   - the wake lock
   - `navigator.vibrate`
 
-  There's no client-side fetching.
-- **Server-side identity.** The cookie is httpOnly, so `/api/me`, `/api/threats` and the `/join` exchange run on the
-  server (`page.tsx`, `route.ts`). Client components get the results as props (`bestiary`, `characterId`).
+  There's no client-side read. The only browser `fetch` calls are the two REST writes: NEW GAME and accepting an
+  invite.
+- **Server-side identity.** The guest cookie is httpOnly, and the Clerk token comes from `auth().getToken()`, so the
+  lobby, seat (`/api/campaigns/:id/me`), bestiary and invite-preview reads and the `/join` exchange run on the server
+  (the pages, `route.ts`, through `apiGet`). Client components get the results as props (`lobby`, `preview`,
+  `bestiary`, `campaignId`, `characterId`).
 - **Accessibility:**
   - Touch targets are at least 44px (`.btn`); dense secondary buttons (`.btn.sm`) are 32px.
   - Icon-only buttons have an `aria-label` naming the action and its target (`Decrease WOUNDS`, `Move <beat> up`).

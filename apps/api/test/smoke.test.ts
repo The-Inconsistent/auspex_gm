@@ -1,4 +1,5 @@
-// End-to-end check against a running api (bun run dev:api) + postgres (bun run dev:db).
+// End-to-end check against a running api (bun run dev:api) + postgres (bun run dev:db). The api must run with
+// CLERK_TEST_SECRET set (apps/api/.env, dev only), so these tests can act as signed-in Clerk users.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { io, type Socket } from "socket.io-client";
@@ -6,11 +7,18 @@ import { deriveStats, poolMax, type ActionInput, type ActionResult, type Codex, 
 
 const API = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
 
+// A test-only Clerk session token (apps/api/src/auth/clerk.ts) and the headers that carry one.
+const clerk = (userId: string, role: "creator" | "member" = "member") => `test.${process.env.CLERK_TEST_SECRET}.${userId}.${role}`;
+const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
+const get = (path: string, headers: Record<string, string> = {}) => fetch(`${API}/api${path}`, { headers });
+
 const post = (path: string, body: unknown, headers: Record<string, string> = {}) =>
   fetch(`${API}/api${path}`, { method: "POST", headers: { "content-type": "application/json", ...headers }, body: JSON.stringify(body) });
 
-function connect(token: string) {
-  const socket = io(API, { auth: { token }, transports: ["websocket"], reconnection: false });
+// A socket as a GM or player: `auth` carries campaignId plus a Clerk test token, a guest token or the admin key;
+// `headers` can carry a guest cookie instead.
+function connect({ auth, headers }: { auth: Record<string, string>; headers?: Record<string, string> }) {
+  const socket = io(API, { auth, extraHeaders: headers, transports: ["websocket"], reconnection: false });
   let latest: LiveState | null = null;
   let codex: Codex | null = null;
   socket.on("codex", (c: Codex) => (codex = c));
@@ -42,28 +50,28 @@ async function eventually(check: () => boolean, what: string) {
   throw new Error(`timed out waiting for: ${what}`);
 }
 
+// A new campaign created by a signed-in creator, and that GM's socket.
 async function newCampaign(name: string, tier: number) {
-  const res = await post("/campaigns", { name, tier }, { "x-admin-key": process.env.ADMIN_KEY! });
-  const { gmToken } = (await res.json()) as { gmToken: string };
-  const gm = connect(gmToken);
+  const gmClerk = clerk(`gm-${name}`, "creator");
+  const res = await post("/campaigns", { name, tier }, bearer(gmClerk));
+  const { campaignId } = (await res.json()) as { campaignId: string };
+  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
   await gm.until((s) => s.campaign.name === name);
-  return gm;
+  return { ...gm, campaignId, gmClerk };
 }
 
 const threatOf = (s: LiveState) => s.encounter?.combatants.find((c): c is ThreatCombatant => c.kind === "threat");
 
 test("GM and player share a table", async (t) => {
-  assert.equal((await post("/campaigns", { name: "Smoke", tier: 2 })).status, 401, "campaign creation needs the admin key");
-  const created = await post("/campaigns", { name: "Smoke", tier: 2 }, { "x-admin-key": process.env.ADMIN_KEY! });
+  const gmClerk = clerk("gm-smoke", "creator");
+  assert.equal((await post("/campaigns", { name: "Smoke", tier: 2 })).status, 401, "creating a game needs a signed-in user");
+  assert.equal((await post("/campaigns", { name: "Smoke", tier: 2 }, bearer(clerk("not-a-creator")))).status, 403, "and the creator role");
+  const created = await post("/campaigns", { name: "Smoke", tier: 2 }, bearer(gmClerk));
   assert.equal(created.status, 201);
-  const { gmToken } = (await created.json()) as { gmToken: string };
-
-  const join = await post("/join", { token: gmToken });
-  assert.equal(join.status, 200);
-  assert.match(join.headers.get("set-cookie") ?? "", /wg_token=.*HttpOnly/i);
+  const { campaignId } = (await created.json()) as { campaignId: string };
   assert.equal((await post("/join", { token: "nope" })).status, 401);
 
-  const gm = connect(gmToken);
+  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
   t.after(() => gm.socket.close());
   await gm.until((s) => s.campaign.name === "Smoke");
 
@@ -73,7 +81,12 @@ test("GM and player share a table", async (t) => {
   const issued = await gm.send({ type: "token.issue", characterId: hero.id });
   assert.ok(issued.ok && issued.token);
 
-  const player = connect(issued.token);
+  const join = await post("/join", { token: issued.token });
+  assert.equal(join.status, 200);
+  assert.match(join.headers.get("set-cookie") ?? "", /wg_token=.*HttpOnly/i);
+  assert.equal(((await join.json()) as { campaignId: string }).campaignId, campaignId, "a guest QR opens its own table");
+
+  const player = connect({ auth: { token: issued.token } });
   t.after(() => player.socket.close());
   await player.until((s) => s.characters.length === 2);
 
@@ -165,9 +178,14 @@ test("GM and player share a table", async (t) => {
   await gm.until((s) => s.campaign.glory === poolMax("glory", 2) && s.campaign.ruin === poolMax("ruin", 2));
 
   // The bestiary endpoint is GM-only.
-  const asCookie = (token: string) => ({ headers: { cookie: `wg_token=${token}` } });
-  assert.equal((await fetch(`${API}/api/threats`, asCookie(gmToken))).status, 200);
-  assert.equal((await fetch(`${API}/api/threats`, asCookie(issued.token))).status, 403);
+  assert.equal((await get(`/campaigns/${campaignId}/threats`, bearer(gmClerk))).status, 200);
+  assert.equal((await get(`/campaigns/${campaignId}/threats`, { cookie: `wg_token=${issued.token}` })).status, 403);
+  assert.equal((await get(`/campaigns/${campaignId}/threats`, bearer(clerk("stranger")))).status, 401, "not seated here");
+
+  // Scripts (seed) open a table with the admin key.
+  const admin = connect({ auth: { campaignId, adminKey: process.env.ADMIN_KEY! } });
+  t.after(() => admin.socket.close());
+  await admin.until((s) => s.campaign.name === "Smoke");
 
   // Revoking kicks the player's socket and kills the link.
   const kicked = new Promise((r) => player.socket.on("disconnect", r));
@@ -177,13 +195,14 @@ test("GM and player share a table", async (t) => {
 });
 
 test("a malformed login cookie is refused, not fatal", async () => {
-  const bad = { cookie: "wg_token=%" }; // decodeURIComponent throws on this
-  assert.equal((await fetch(`${API}/api/me`, { headers: bad })).status, 401);
+  const bad = { cookie: "wg_token=%; __session=%" }; // decodeURIComponent throws on these
+  assert.equal((await get("/guest", bad)).status, 401);
+  assert.equal((await get("/lobby", bad)).status, 401);
   const socket = io(API, { transports: ["websocket"], reconnection: false, extraHeaders: bad });
   const err = await new Promise<Error>((resolve) => socket.once("connect_error", resolve));
   socket.close();
   assert.equal(err.message, "unauthorized");
-  assert.equal((await fetch(`${API}/api/me`)).status, 401, "api still up");
+  assert.equal((await get("/guest")).status, 401, "api still up");
 });
 
 test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, redaction", async (t) => {
@@ -254,7 +273,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   // Players never get the threat id or personal Ruin of an unrevealed Threat.
   const issued = await gm.send({ type: "token.issue", characterId: b.id });
   assert.ok(issued.ok && issued.token);
-  const player = connect(issued.token);
+  const player = connect({ auth: { token: issued.token } });
   t.after(() => player.socket.close());
   const seen = threatOf(await player.until((s) => !!threatOf(s)))!;
   assert.deepEqual([seen.threatId, seen.personalRuin, seen.stats], ["", 0, null]);
@@ -284,4 +303,72 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   assert.ok((await gm.send({ type: "beat.startEncounter", id: b2.id })).ok);
   await gm.until((s) => s.encounter?.combatants.filter((x) => x.kind === "threat").length === 2
     && s.encounter.combatants.filter((x) => x.kind === "pc").length === 3);
+});
+
+test("accounts: lobby, room and character invites, guests, removing a member", async (t) => {
+  const gm = await newCampaign("Invites", 2);
+  t.after(() => gm.socket.close());
+  const cid = gm.campaignId;
+  const ana = clerk("ana"), bob = clerk("bob"), cat = clerk("cat"), zed = clerk("zed");
+  const pre = await gm.send({ type: "character.create", name: "Pregen" });
+  const spare = await gm.send({ type: "character.create", name: "Spare" });
+  assert.ok(pre.ok && pre.id && spare.ok && spare.id);
+
+  // Room QR: signed-in players claim an open agent; guests may too.
+  const room = await gm.send({ type: "invite.create", mode: "room" });
+  assert.ok(room.ok && room.token);
+  const preview = (await (await get(`/invites/${room.token}`)).json()) as { mode: string; openCharacters: { id: string }[]; signedIn: boolean };
+  assert.deepEqual([preview.mode, preview.openCharacters.length, preview.signedIn], ["room", 2, false]);
+  assert.equal((await post(`/invites/${room.token}/accept`, { characterId: pre.id })).status, 400, "signed out and not a guest");
+  const accepted = await post(`/invites/${room.token}/accept`, { characterId: pre.id }, bearer(ana));
+  assert.equal(accepted.status, 200);
+  assert.equal(((await accepted.json()) as { campaignId: string }).campaignId, cid);
+  const taken = await post(`/invites/${room.token}/accept`, { characterId: pre.id }, bearer(bob));
+  assert.match(((await taken.json()) as { message: string }).message, /already taken/);
+  const guest = await post(`/invites/${room.token}/accept`, { newCharacterName: "Guesty", asGuest: true });
+  assert.equal(guest.status, 200);
+  const guestCookie = (guest.headers.get("set-cookie") ?? "").split(";")[0]!;
+  assert.match(guestCookie, /^wg_token=/);
+  await gm.until((s) => s.access.members.some((m) => m.userId === "ana" && m.characterId === pre.id)
+    && s.characters.some((c) => c.name === "Guesty"));
+
+  // A member plays only their own character; a guest's cookie opens the same table.
+  const anaSock = connect({ auth: { campaignId: cid, clerkToken: ana } });
+  const guestSock = connect({ auth: { campaignId: cid }, headers: { cookie: guestCookie } });
+  t.after(() => (anaSock.socket.close(), guestSock.socket.close()));
+  const seen = await anaSock.until((s) => s.characters.length === 3);
+  assert.deepEqual(seen.access.invites, [], "players never see invite links");
+  assert.ok((await anaSock.send({ type: "character.adjust", id: pre.id, wrath: 1 })).ok);
+  assert.deepEqual(await anaSock.send({ type: "character.adjust", id: spare.id, wrath: 1 }), { ok: false, error: "Not your character" });
+  assert.deepEqual(await anaSock.send({ type: "invite.create", mode: "room" }), { ok: false, error: "GM only" });
+  await guestSock.until((s) => s.characters.length === 3);
+
+  // Character invite: one seat, used once; accounts-only when the GM says so.
+  const one = await gm.send({ type: "invite.create", mode: "character", characterId: spare.id, allowGuests: false });
+  assert.ok(one.ok && one.token && one.id);
+  assert.match(((await (await post(`/invites/${one.token}/accept`, { asGuest: true })).json()) as { message: string }).message, /needs an account/);
+  assert.equal((await post(`/invites/${one.token}/accept`, {}, bearer(bob))).status, 200);
+  assert.equal((await post(`/invites/${one.token}/accept`, {}, bearer(cat))).status, 400, "used up");
+  assert.deepEqual(await gm.send({ type: "invite.create", mode: "character" }), { ok: false, error: "Pick a character to invite" });
+
+  // Lobby: members see their seat; anyone signed in sees a running game as a card only.
+  await gm.send({ type: "session.start" });
+  const lobbyOf = async (token: string) => (await (await get("/lobby", bearer(token))).json()) as {
+    canCreate: boolean; mine: { id: string; role: string }[]; running: { id: string; role: string | null }[];
+  };
+  const anaLobby = await lobbyOf(ana);
+  assert.deepEqual([anaLobby.canCreate, anaLobby.mine.find((g) => g.id === cid)?.role], [false, "player"]);
+  const zedLobby = await lobbyOf(zed);
+  assert.deepEqual([zedLobby.mine.length, zedLobby.running.find((g) => g.id === cid)?.role], [0, null]);
+  assert.equal((await get(`/campaigns/${cid}/me`, bearer(zed))).status, 401, "a card, not a seat");
+  assert.equal((await get("/lobby")).status, 401);
+
+  // Revoking an invite ends the link; removing a member ends the seat and disconnects them.
+  assert.ok((await gm.send({ type: "invite.revoke", id: room.id! })).ok);
+  assert.equal((await get(`/invites/${room.token}`)).status, 400);
+  const kicked = new Promise((r) => anaSock.socket.on("disconnect", r));
+  assert.ok((await gm.send({ type: "member.remove", userId: "ana" })).ok);
+  await kicked;
+  assert.equal((await get(`/campaigns/${cid}/me`, bearer(ana))).status, 401);
+  assert.deepEqual(await gm.send({ type: "member.remove", userId: "gm-Invites" }), { ok: false, error: "You can't remove yourself" });
 });

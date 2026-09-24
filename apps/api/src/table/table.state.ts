@@ -1,5 +1,6 @@
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
 import { CharacterStats, Overrides, type Codex, type Combatant, type LiveState } from "@wg/shared";
+import { appUser, invite, membership } from "../auth/auth.schema.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
@@ -19,6 +20,13 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
   const rows = enc
     ? await conn.select().from(combatant).where(eq(combatant.encounterId, enc.id)).orderBy(asc(combatant.order))
     : [];
+  const members = await conn.select({ userId: membership.userId, name: appUser.name, role: membership.role, characterId: membership.characterId })
+    .from(membership).innerJoin(appUser, eq(appUser.id, membership.userId))
+    .where(eq(membership.campaignId, campaignId)).orderBy(asc(membership.createdAt));
+  const invites = await conn.select().from(invite).where(and(
+    eq(invite.campaignId, campaignId), isNull(invite.revokedAt), gt(invite.expiresAt, new Date()),
+    or(isNull(invite.maxUses), sql`${invite.uses} < ${invite.maxUses}`),
+  )).orderBy(asc(invite.createdAt));
 
   return {
     campaign: { id: c.id, name: c.name, tier: c.tier, glory: c.glory, ruin: c.ruin, framework: c.framework, patron: c.patron },
@@ -59,6 +67,13 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
           ),
         }
       : null,
+    access: {
+      members,
+      invites: invites.map((i) => ({
+        id: i.id, mode: i.mode, characterId: i.characterId, allowGuests: i.allowGuests,
+        expiresAt: i.expiresAt.toISOString(), uses: i.uses, maxUses: i.maxUses,
+      })),
+    },
   };
 }
 

@@ -2,14 +2,14 @@
 import QRCode from "qrcode";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
-import { CharacterStats, deriveStats, pcStatus, type ActionResult, type Character, type Codex, type LiveState } from "@wg/shared";
+import { CharacterStats, deriveStats, pcStatus, type ActionResult, type Character, type Codex, type LiveState, type Member } from "@wg/shared";
 
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
-import { DEFAULT_XP, QR_SIZE, XP_AWARDS } from "./constants";
+import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
 type PartyProps = { state: LiveState; codex: Codex; send: Send };
 
@@ -24,21 +24,48 @@ export function Party({ state, codex, send }: PartyProps) {
   const [framework, setFramework] = useState(state.campaign.framework);
   const [patron, setPatron] = useState(state.campaign.patron);
   const open = codex.sessions.find((s) => !s.endedAt);
+  const { members, invites } = state.access;
+  const seatOf = (characterId: string) => members.find((m) => m.characterId === characterId);
+  const nameOf = (characterId: string | null) => state.characters.find((c) => c.id === characterId)?.name ?? "?";
 
   const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
 
-  // SHOW QR: issues a fresh join token for the character and renders it as a QR code.
-  const showQr = async (c: Character) => {
-    const r = await send({ type: "token.issue", characterId: c.id });
-    if (!r.ok || !r.token) return report(r, "");
-    const url = `${window.location.origin}/join/${r.token}`;
+  // Renders a join URL as a full-screen QR code.
+  const showCode = async ({ title, url }: { title: string; url: string }) => {
     try {
       const img = await QRCode.toDataURL(url, { margin: 1, width: QR_SIZE, color: { dark: TOKENS.bg, light: TOKENS.fg } });
-      setQr({ name: c.name, url, img });
+      setQr({ title, url, img });
     } catch (e) {
       setMsg(`! QR code failed: ${e instanceof Error ? e.message : "unknown error"}`);
     }
   };
+
+  // GUEST QR: a no-account join token for one character (the phone keeps it in a cookie).
+  const showGuestQr = async (c: Character) => {
+    const r = await send({ type: "token.issue", characterId: c.id });
+    if (!r.ok || !r.token) return report(r, "");
+    await showCode({ title: c.name, url: `${window.location.origin}/join/${r.token}` });
+  };
+
+  // INVITE: a single-use link for one character; the player signs in (or joins as a guest) and takes that seat.
+  const inviteCharacter = async (c: Character) => {
+    const r = await send({ type: "invite.create", mode: "character", characterId: c.id, hours: CHARACTER_INVITE_HOURS });
+    if (!r.ok || !r.token) return report(r, "");
+    await showCode({ title: `${c.name} invite`, url: `${window.location.origin}/invite/${r.token}` });
+  };
+
+  // ROOM QR: one code for the whole table tonight; each player claims an open agent or starts a new one.
+  const inviteRoom = async () => {
+    const r = await send({ type: "invite.create", mode: "room", hours: ROOM_INVITE_HOURS });
+    if (!r.ok || !r.token) return report(r, "");
+    await showCode({ title: "Room", url: `${window.location.origin}/invite/${r.token}` });
+  };
+
+  // REVOKE (invite): the link stops working; anyone already seated keeps their seat.
+  const revokeInvite = async (id: string) => report(await send({ type: "invite.revoke", id }), "INVITE REVOKED");
+
+  // REMOVE (member): takes away their seat and disconnects them.
+  const removeMember = async (m: Member) => report(await send({ type: "member.remove", userId: m.userId }), `${m.name.toUpperCase()} REMOVED`);
 
   // LOAD: validates the pasted stats JSON and saves it on the character.
   const importStats = async (id: string) => {
@@ -70,8 +97,8 @@ export function Party({ state, codex, send }: PartyProps) {
   // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
   const respite = async (c: Character) => report(await send({ type: "character.respite", id: c.id }), `${c.name.toUpperCase()} RESPITE`);
 
-  // REVOKE LINKS: kills every join token (and live socket) for the character.
-  const revoke = async (c: Character) => report(await send({ type: "token.revoke", characterId: c.id }), `${c.name.toUpperCase()} LINKS REVOKED`);
+  // REVOKE GUEST QR: kills every guest token (and guest socket) for the character; signed-in members keep their seat.
+  const revoke = async (c: Character) => report(await send({ type: "token.revoke", characterId: c.id }), `${c.name.toUpperCase()} GUEST LINKS REVOKED`);
 
   // ADD AGENT: creates a character with the typed name.
   const handleAddCharacter = async (e: FormEvent<HTMLFormElement>) => {
@@ -114,6 +141,32 @@ export function Party({ state, codex, send }: PartyProps) {
         </div>
       </section>
 
+      <section className="panel pad stack">
+        <div className="rule">── TABLE ACCESS ──</div>
+        <div className="keys" style={{ paddingTop: 0 }}>
+          <button className="btn primary" onClick={inviteRoom}>ROOM QR</button>
+          <span className="dim">Players scan it, sign in or join as a guest, and claim an agent. Live {ROOM_INVITE_HOURS} h.</span>
+        </div>
+        {invites.length > 0 && (
+          <div className="list">
+            {invites.map((i) => (
+              <div key={i.id} className="item" style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                <span style={{ flex: 1 }}>{i.mode === "room" ? "ROOM" : nameOf(i.characterId).toUpperCase()} · {i.uses} USED{i.allowGuests ? "" : " · ACCOUNTS ONLY"}</span>
+                <span className="dim">UNTIL {new Date(i.expiresAt).toLocaleString()}</span>
+                <button className="btn sm danger" onClick={() => revokeInvite(i.id)}>REVOKE</button>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="label">SIGNED IN</div>
+        {members.map((m) => (
+          <div key={m.userId} style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <span style={{ flex: 1 }}>{m.name.toUpperCase()} · {m.role === "gm" ? "GM" : m.characterId ? nameOf(m.characterId).toUpperCase() : "NO AGENT"}</span>
+            {m.role === "player" && <button className="btn sm danger" onClick={() => removeMember(m)}>REMOVE</button>}
+          </div>
+        ))}
+      </section>
+
       <div className="rule">── KILL TEAM ──</div>
       <div className="list">
         {state.characters.map((c) => {
@@ -126,12 +179,14 @@ export function Party({ state, codex, send }: PartyProps) {
                 <StatusChips items={pcStatus(c, d)} />
                 <span className="dim">XP {c.xp}</span>
               </div>
+              <div className="dim">{seatOf(c.id) ? `PLAYED BY ${seatOf(c.id)!.name.toUpperCase()}` : "OPEN SEAT"}</div>
               <div className="dim">WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES {d.resilience}</div>
               <div className="keys">
-                <button className="btn sm" onClick={() => showQr(c)}>SHOW QR</button>
+                <button className="btn sm" onClick={() => inviteCharacter(c)}>INVITE</button>
+                <button className="btn sm" onClick={() => showGuestQr(c)}>GUEST QR</button>
                 <button className="btn sm" onClick={() => toggleImport(c.id)}>LOAD STATS (JSON)</button>
                 <button className="btn sm" onClick={() => respite(c)}>RESPITE</button>
-                <button className="btn sm danger" onClick={() => revoke(c)}>REVOKE LINKS</button>
+                <button className="btn sm danger" onClick={() => revoke(c)}>REVOKE GUEST QR</button>
               </div>
               {importFor === c.id && (
                 <div className="stack">

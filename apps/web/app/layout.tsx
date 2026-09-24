@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, VT323 } from "next/font/google";
 
@@ -16,7 +17,10 @@ type RootLayoutProps = { children: React.ReactNode };
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={`${mono.variable} ${display.variable}`}>
-      <body>{children}</body>
+      <body>
+        {/* Clerk's screens take the Auspex look from the --clerk-* variables in globals.css. */}
+        <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">{children}</ClerkProvider>
+      </body>
     </html>
   );
 }

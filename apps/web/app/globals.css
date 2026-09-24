@@ -23,6 +23,22 @@
   --marker-white: #e8f5ec;
   --mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
   --display: var(--font-display), var(--font-mono), monospace;
+  /* Clerk sign-in / user menu, themed from the tokens above. */
+  --clerk-color-primary: var(--fg);
+  --clerk-color-primary-foreground: var(--bg);
+  --clerk-color-background: var(--panel);
+  --clerk-color-foreground: var(--fg);
+  --clerk-color-muted-foreground: var(--dim);
+  --clerk-color-muted: var(--panel-2);
+  --clerk-color-input: var(--panel-2);
+  --clerk-color-input-foreground: var(--fg);
+  --clerk-color-border: var(--line);
+  --clerk-color-neutral: var(--dim);
+  --clerk-color-danger: var(--red);
+  --clerk-color-ring: var(--fg);
+  --clerk-color-modal-backdrop: var(--overlay);
+  --clerk-font-family: var(--mono);
+  --clerk-border-radius: 0;
 }
 
 * { box-sizing: border-box; }

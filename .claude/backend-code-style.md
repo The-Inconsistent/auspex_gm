@@ -134,7 +134,7 @@ they're unit tested.
 
 Anything sent to players goes through `toPlayerView` / `toPlayerCodex`, which drop unrevealed stats, GM notes and
 secrets. A new field is hidden until you decide otherwise. Book content (threat stat blocks) is only served to an
-authenticated GM (`/api/threats`) or through the redacted snapshot.
+authenticated GM (`/api/campaigns/:id/threats`) or through the redacted snapshot.
 
 ### Async/await
 

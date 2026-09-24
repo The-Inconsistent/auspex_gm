@@ -11,6 +11,7 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
 });
 const s: LiveState = {
   campaign: { id: "c", name: "C", tier: 4, glory: 0, ruin: 0, framework: "", patron: "" },
+  access: { members: [], invites: [] },
   characters: [{ id: "ch1", name: "Iskra Vell", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, xp: 0, conditions: [] }],
   encounter: {
     id: "e", round: 1, currentId: null, lastSide: null, seizedSide: null,

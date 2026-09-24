@@ -32,7 +32,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
     100 MB; render with `pdftoppm -f N -l N -r 110 -png "<pdf>" <scratch>/p` and Read the PNG.
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
-  repo private and never serve book content without an access token (`/api/threats` is GM-only).
+  repo private and never serve book content to anyone without a seat (`/api/campaigns/:id/threats` is GM-only).
 
 ## Stack
 
@@ -40,8 +40,8 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
 
 | Part | Tech |
 |---|---|
-| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode` |
-| `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
+| `apps/web` | Next.js 16 (App Router), React 19, `@clerk/nextjs`, socket.io-client, `qrcode` |
+| `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17, `@clerk/backend` |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/data` | threat stat blocks (`threats/*.json`), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
 
@@ -68,9 +68,22 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
   - `touches(action)` decides which of the two to rebroadcast.
   - The GM room gets everything. The players room gets `toPlayerView` / `toPlayerCodex`, which drop unrevealed
     threat stats, GM notes, secrets and hidden entries.
-- **Access without accounts.** An admin key creates a campaign and returns a GM token. The GM issues one token per
-  character, shown as a QR code. `/join/<token>` moves the token into an httpOnly cookie, and the socket handshake
-  reads that cookie. The DB stores only SHA-256 hashes of tokens. Revoking a token kicks that player's socket.
+- **Access: Clerk accounts, plus guest QR tokens.**
+  - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
+    member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user
+    start games in the lobby. The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
+    `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `auth/clerk.ts`).
+  - Guests hold a per-character player token (`access_token`) in the httpOnly `wg_token` cookie, from a GUEST QR
+    (`/join/<token>`) or a guest-friendly invite.
+  - The GM invites from PARTY: a room QR (`mode: "room"`, 12 h) or a single-use per-character link (`mode:
+    "character"`, 168 h), at `/invite/<code>`. Accepting runs through `TableGateway.mutate` (the action queue, then a
+    broadcast). Players never receive invites (`toPlayerView` clears `access.invites`).
+  - `ADMIN_KEY` is for scripts only: `POST /api/campaigns` with `ownerUserId`, and a socket with
+    `auth: { adminKey, campaignId }`.
+  - Browsers open the socket with `io({ auth: { campaignId } })` and prove who they are with the Clerk `__session`
+    or guest cookie. `Ctx` carries `userId` (null for guests and the admin).
+  - The DB stores only SHA-256 hashes of guest tokens and invite codes. `member.remove` kicks that user;
+    `token.revoke` kicks only guest sockets.
 - **Rules live in `packages/shared`,** as pure, tested functions, so the web and the api agree:
   - `deriveStats` (traits, minimum 1)
   - `sideUpNext` / `canSeize` / `canAct` (alternating initiative, Seize, ambush)
@@ -100,23 +113,30 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
 apps/api/src/
   main.ts, app.module.ts
   core/        db.ts (drizzle client, migrations), errors.ts (ActionError, fail), sql.ts (clamped deltas, column helpers)
-  auth/        auth.schema.ts (access_token), auth.service.ts (tokens, cookie, Ctx)
-  campaign/    campaign.controller.ts (REST: campaigns, join, me, threats), campaign.service.ts,
+  auth/        clerk.ts (verify Clerk session tokens), auth.schema.ts (access_token, app_user, membership, invite),
+               auth.service.ts (guest tokens, cookie, Ctx, resolveCtx), invite.service.ts (preview, accept),
+               access.actions.ts (invite.create/revoke, member.remove)
+  campaign/    campaign.controller.ts (REST: campaigns, lobby, me, threats, join, guest, invites), campaign.service.ts,
                campaign.actions.ts (campaign, pools, sessions), campaign.schema.ts
-  character/   character.actions.ts (characters, tokens), character.schema.ts
+  character/   character.actions.ts (characters, guest tokens), character.schema.ts
   encounter/   encounter.actions.ts (encounters, turns, combatants, beat.startEncounter), encounter.schema.ts
   codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
 apps/api/drizzle/   generated migrations (applied automatically at startup)
-apps/api/test/      smoke.test.ts: end-to-end GM + player session against a running api
-apps/api/scripts/   seed.ts (load a content pack), create-campaign.ts
-apps/web/app/       page.tsx (Server Component: /api/me → GM or player app), join/[token]/route.ts (token → cookie)
+apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
+apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM)
+apps/web/proxy.ts   clerkMiddleware(), protects nothing, skips /api and /socket.io
+apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
+                    invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
+                    server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (ClerkProvider)
+apps/web/components/lobby/   lobby-view (your games, running now, new game)
+apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
 apps/web/components/ui/      bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
-packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, pack.ts
+packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts
 packages/data/               threats/*.json, packs/<name>/, validate.ts, index.ts (loaders)
 ```
 
@@ -129,20 +149,23 @@ bun install
 bun run dev:db              # Postgres in Docker on localhost:5434 (5432/5433 are taken on this machine)
 bun run dev:api             # NestJS on :4000, watches src
 bun run dev:web             # Next on :3000; proxies /api and /socket.io to :4000
-cd apps/api && bun run seed volkus                          # new campaign from packages/data/packs/volkus; prints GM link
-cd apps/api && bun run create-campaign "Name" 4             # empty campaign; prints the GM join link
+cd apps/api && bun run seed volkus --owner user_2abc…       # packages/data/packs/volkus, that Clerk user as GM; prints /c/<id>
 
 bun run typecheck           # shared + api + web
 bun run test                # unit tests: rules functions, command parser
 bun run validate            # every threat JSON against the schema, with bestiary progress
-bun run test:smoke          # end-to-end; needs dev:db and dev:api running
+bun run test:smoke          # end-to-end; needs dev:db, and dev:api with CLERK_TEST_SECRET set
 cd apps/api && bun run db:generate                           # after editing any src/**/*.schema.ts
 ```
 
-- `apps/api/.env` holds `DATABASE_URL`, `ADMIN_KEY`, `WEB_ORIGIN`, `COOKIE_SECURE` and `PORT`. Bun loads it
-  automatically. See `.env.example`.
-- The app is pre-release, so schema changes may regenerate the single migration: delete `apps/api/drizzle/`, run
+- `apps/api/.env` holds `DATABASE_URL`, `ADMIN_KEY`, `WEB_ORIGIN` (comma separated: localhost and the LAN origin),
+  `COOKIE_SECURE`, `PORT`, `CLERK_SECRET_KEY`, `CLERK_JWT_KEY` and, in dev only, `CLERK_TEST_SECRET` (the smoke test's
+  fake Clerk tokens; the api refuses to start with it in production). Bun loads it automatically. See `.env.example`.
+- `apps/web/.env.local` holds `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`. Without them every page is a
+  500 "Missing publishableKey". Clerk setup (session-token claims, the creator role) is in `docs/development.md`.
+- The app is pre-release, so schema changes may regenerate the migrations: delete `apps/api/drizzle/`, run
   `db:generate`, then `docker compose down -v`. **Once there is real campaign data, add migrations instead.**
+  `0001` (accounts) is additive; old GM tokens still sit in `access_token` but open nothing.
 
 ## Standards
 
@@ -177,6 +200,8 @@ These are binding; follow them when writing code and use them when reviewing:
 - **Character stats** (`CharacterStats`) carry additive `mods`, e.g. Primaris +3 Wounds or Honour the Chapter
   +1 Resolve; GM `overrides` win over everything. Melee wargear uses `addStrength` (damage = S + X, including the
   armour's Powered bonus).
+- **Clerk needs internet at the table**, for sign-in and the session refresh about every 60 s. Guests on a QR token
+  depend only on the api.
 - **Next rewrites:** `skipTrailingSlashRedirect` plus an explicit `/socket.io/` rewrite are required, otherwise
   socket.io's handshake gets a 308 or 404.
 - **Style:** match the surrounding code. Comments say *why*, with page cites. Deliberate shortcuts are marked

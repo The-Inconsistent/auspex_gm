@@ -1,24 +1,27 @@
-// Usage: bun scripts/seed.ts volkus
+// Usage: bun scripts/seed.ts volkus --owner user_2abc…
 // Creates a new campaign on the running api and loads a content pack (packages/data/packs/<name>) into it, through
-// the same socket actions the GM app uses, so everything is validated and scoped exactly as in play.
+// the same socket actions the GM app uses, so everything is validated and scoped exactly as in play. --owner is the
+// Clerk user id (Clerk Dashboard → Users) seated as GM; without it nobody can open the campaign.
 import { io } from "socket.io-client";
 import type { ActionInput, ActionResult } from "@wg/shared";
 import { loadPack } from "@wg/data";
 
-const name = process.argv[2];
-if (!name) throw new Error("Usage: bun scripts/seed.ts <pack name>");
+const args = process.argv.slice(2);
+const name = args.find((a) => !a.startsWith("--") && args[args.indexOf(a) - 1] !== "--owner");
+const ownerUserId = args[args.indexOf("--owner") + 1];
+if (!name || !args.includes("--owner") || !ownerUserId) throw new Error("Usage: bun scripts/seed.ts <pack name> --owner <clerk user id>");
 const pack = loadPack(name);
 
 const api = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
 const res = await fetch(`${api}/api/campaigns`, {
   method: "POST",
   headers: { "content-type": "application/json", "x-admin-key": process.env.ADMIN_KEY ?? "" },
-  body: JSON.stringify({ name: pack.campaign.name, tier: pack.campaign.tier }),
+  body: JSON.stringify({ name: pack.campaign.name, tier: pack.campaign.tier, ownerUserId }),
 });
 if (!res.ok) throw new Error(`Create campaign: ${res.status} ${await res.text()}`);
-const { gmToken } = (await res.json()) as { gmToken: string };
+const { campaignId } = (await res.json()) as { campaignId: string };
 
-const socket = io(api, { auth: { token: gmToken }, transports: ["websocket"], reconnection: false });
+const socket = io(api, { auth: { adminKey: process.env.ADMIN_KEY, campaignId }, transports: ["websocket"], reconnection: false });
 await new Promise<void>((ok, fail) => (socket.once("connect", () => ok()), socket.once("connect_error", fail)));
 
 async function send(a: ActionInput, what: string): Promise<string | undefined> {
@@ -49,4 +52,5 @@ for (const c of pack.characters) await send({ type: "character.create", name: c.
 socket.close();
 console.log(`Seeded "${pack.campaign.name}": ${pack.factions.length} factions, ${pack.locations.length} locations, ${pack.npcs.length} NPCs, ` +
   `${pack.handouts.length} handouts, ${pack.adventures.reduce((n, a) => n + a.beats.length, 0)} beats, ${pack.characters.length} characters.`);
-console.log(`GM link: ${process.env.WEB_ORIGIN ?? "http://localhost:3000"}/join/${gmToken}`);
+const web = (process.env.WEB_ORIGIN ?? "http://localhost:3000").split(",")[0];
+console.log(`Open it (signed in as ${ownerUserId}): ${web}/c/${campaignId}`);
