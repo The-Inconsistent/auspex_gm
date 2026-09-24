@@ -97,11 +97,25 @@ apps/web          Next.js 16: the GM app and the player app
 apps/api          NestJS on Bun: REST for the lobby, invites and join, Socket.IO for the live table, Drizzle + Postgres
 packages/shared   zod schemas and pure rules functions, shared by web and api
 packages/data     threat stat blocks, content packs (campaigns + pregens), validator
-docs/             architecture, backend, frontend, game logic, data, development, rules spec (index: docs/README.md)
+docs/             architecture, backend, frontend, game logic, data, development, deploy, rules spec (index: docs/README.md)
 ```
 
 Full documentation is in [`docs/`](docs/README.md). Code style and review rules are in `.claude/`; agent guidance is in
 [`CLAUDE.md`](CLAUDE.md).
+
+## Deploy
+
+Live at **https://auspex.ydothien.work**, on the same VPS as the other projects, at no extra cost.
+
+- A push to `main` that touches app code runs **Build images** (`.github/workflows/images.yml`), which pushes the
+  private images `ghcr.io/junmaxwell/glory-gm-{api,web}:latest`.
+- Then hit **Pull & redeploy** on the `auspex-gm` stack in Dockhand (`docker-compose.prod.yml`). The VPS never builds.
+- Pangolin terminates TLS and forwards to web on host `:3004`. Next's rewrites proxy `/api` and `/socket.io` to the
+  api, which uses its own `wg` database in the shared Postgres.
+- Secrets live only in the Dockhand stack env. The Clerk publishable key is a variable in the GitHub `prod`
+  environment.
+
+The setup, checks and gotchas are in [`docs/deploy.md`](docs/deploy.md).
 
 ## Content packs
 
@@ -117,19 +131,20 @@ app uses. To start a new campaign, copy `volkus/` and edit it.
 
 Built:
 
-- tracker
-- prep
-- codex
-- party and session flow
-- player sheet
-- 44 threats (core rulebook and supplements)
+- [x] tracker
+- [x] prep
+- [x] codex
+- [x] party and session flow
+- [x] player sheet
+- [x] 44 threats (core rulebook and supplements)
+- [x] production deploy (Docker images, Dockhand, Clerk production instance with Google sign-in)
 
 Not built yet:
 
-- Doctors of Doom character import
-- a rules reference in the player app
-- an items and requisition tracker
-- rate limiting
+- [ ] Doctors of Doom character import
+- [ ] a rules reference in the player app
+- [ ] an items and requisition tracker
+- [ ] rate limiting
 
 ## Copyright
 
