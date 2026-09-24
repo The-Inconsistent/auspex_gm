@@ -362,7 +362,8 @@ Transcription calls, all in each entry's `note`:
 
 One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (pp.208–210), `armour-traits.json`
 (p.232), `combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
-its rating (`Blast (X)`), `type` (actions only), `source`, printed `page` and `text`: the entry's body, verbatim,
+its rating (`Blast (X)`), `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
+the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
 paragraphs split by a blank line. Print errors are kept as printed; tables are plain lines. A section intro is its own
 entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`. To add a
 kind (psychic powers, talents), extend `RuleKind` and add a file.

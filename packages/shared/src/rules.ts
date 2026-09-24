@@ -15,6 +15,7 @@ export const RuleEntry = z.object({
   type: z.string().optional(), // actions only: "Combat Action", "Full-Round Action", "Reflexive Action"…
   source: WargearSource,
   page: z.number().int().positive(), // printed page
+  gist: z.string().min(1).max(120), // one terse line, paraphrased from `text`, for the collapsed row
   text: z.string().min(1), // paragraphs separated by a blank line
 });
 export type RuleEntry = z.infer<typeof RuleEntry>;

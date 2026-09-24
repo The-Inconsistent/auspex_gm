@@ -6,6 +6,7 @@
     "type": "Initiative",
     "source": "core",
     "page": 177,
+    "gist": "After an Agent's Turn, 1 Glory lets another Agent act; once before Threats act; GM may pay 1 Ruin",
     "text": "Whenever an Agent has finished their Turn for the Round, the players can Seize the Initiative. Instead of the initiative order passing to a Threat, the players may choose to spend one Glory to have another Agent act instead. This can only be done once before the Threats take their Turn. The GM may spend one Ruin to Seize the Initiative for a Threat in the same way.\n\nExample: A squad of Space Marines (Agents) initiate a firefight with a gang of Ork Boyz (Threats). The normal order of play would be an Agent, followed by a Threat, then back to a different Agent.\n\nHowever, at the end of the first Agent’s Turn the players decide to spend a point of Glory to have a second Agent act immediately. Once the second Agent’s Turn is over, a Threat must act.\n\nThe GM may also spend Ruin to Seize the Initiative, allowing another Threat to go before the next Agent in the same fashion."
   },
   {
@@ -15,6 +16,7 @@
     "type": "Initiative",
     "source": "core",
     "page": 177,
+    "gist": "Hold Action; interrupt a Movement or Action on opposed Initiative Test; Deny the Witch: no Test",
     "text": "You can interrupt the normal initiative order by holding your Action. To do so, you choose not to make a Combat Action during your Turn, and announce you are holding your action instead. Once at any point in the Round when another character is about to perform a Movement or any type of Action, you may declare you are interrupting initiative.\n\nTo interrupt another character’s Action, you must succeed on an opposed Initiative Test; the winner gets to take their Action first.\n\nA Psyker can hold their Action to activate Deny the Witch (see p.267). If a Psyker has already taken their Turn, they can sacrifice their Turn in the next Round to activate Deny the Witch. Activating Deny the Witch does not require an opposed Initiative Test.\n\nExample: Iris the Astra Militarum Trooper holds her Action, training her Lasgun on the largest mutant she can see. On the GM’s Turn, they declare that the mutant is charging her Ministorum Priest ally. Iris declares she is interrupting initiative and makes an opposed Initiative Test against the mutant to see if she can eliminate the beast and save her friend!"
   },
   {
@@ -24,6 +26,7 @@
     "type": "Initiative",
     "source": "core",
     "page": 177,
+    "gist": "Ambushed characters get no Turn in Round 1; GM decides who; 1 Glory (GM: 1 Ruin) to be aware",
     "text": "Surprise! Either you or your enemies weren’t ready for this fight. Characters that are unaware of or unprepared for a combat situation are considered ambushed. The GM decides which (if any) characters are ambushed at the start of combat. Ambushed characters don’t get a Turn in the first Round. Once all characters that weren’t ambushed have had a Turn, the combat proceeds using normal initiative order — no one is considered ambushed after the first Round.\n\nYou can choose to spend a point of Glory to make your character aware of an ambush and take your Turn as normal. The GM can do the same for a Threat by spending a point of Ruin.\n\nExamples:\n\n• A team of Agents working as assassins for Governor-Militant Taleria Fylamon launch a sneak attack on a troublesome noble during a loud military parade.\n• A Genestealer Sanctus stealthily stalks a group of Imperium Agents. The xenos menace strikes from the shadows, but the group’s Sister of Battle spends a point of Glory and the Emperor’s divine guidance alerts her to the ambush!"
   },
   {
@@ -32,6 +35,7 @@
     "name": "Actions",
     "source": "core",
     "page": 178,
+    "gist": "Per Turn: 1 Movement, 1 Combat Action, 1 Simple, 1 Reflexive; any Free Actions; Full-Round takes all",
     "text": "Actions are things you can do on your Turn. You can treat things simply, as described in The Basics of Battle earlier in this chapter, or you can detail every Action you take on your Turn. Usually just describing what you want to do is enough, and the GM will award you the necessary bonuses. If you want more options in combat, take a look at your Abilities and Talents, or use some of the options presented below. You can perform one of each of these Actions on your Turn:\n\n• A Movement or Movement Option.\n• An Action, sometimes called a ‘Combat Action’ for clarity.\n• A Simple Action.\n• A Reflexive Action.\n\nYou can also take any number of Free Actions.\n\nThere are a few exceptions to these rules, which will be explained as they arise. For example, a Full-Round Action takes your entire Round, meaning you cannot make any other Action until the start of your next Turn."
   },
   {
@@ -41,6 +45,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 178,
+    "gist": "One per Turn; e.g. an attack, an Interaction Attack, a Medicae (Int) Test, some psychic powers",
     "text": "Combat Actions require your primary focus in a combat Round, taking the most effort to achieve. Combat Actions are usually your main objective during your Turn. You may perform a single Combat Action (or Action) in a Turn. Combat Actions include, but are not limited to, the following:\n\n• Making an attack (p.182).\n• Using a Skill to make an Interaction Attack (p.190).\n• Using a Skill or object that requires time and attention, such as a Medicae (Int) Test.\n\nThere are other activities that may also count as Combat Actions, such as using certain psychic powers."
   },
   {
@@ -50,6 +55,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 178,
+    "gist": "Declare several Actions; +2 DN to all their Tests per extra Action; max one Attack Action",
     "text": "You can attempt more than one Combat Action in a Round, but doing so makes all Combat Actions you take more difficult. You can’t take more than one Attack Action by using a Multi-Action.\n\nFirst, declare that you are making a Multi-Action, and say which actions you want to take. For every additional Action you declare, you suffer a +2 DN penalty to all Tests made as part of an Action that Turn. So, if you make two Actions, you have a +2 DN penalty on both of those Tests, and if you make three Actions you have a +4 DN penalty on all three Tests.\n\nExample: Dom’s Commissar is in a tight spot; caught in the crossfire between two warring cults, he’s taken cover in the upper gantries of a Basilicanum. One of the soldiers in his care is injured, and the others are terrified.\n\nDom declares a Multi-Action, attempting to heal his comrade with Medicae, push a crumbling statue onto the villains below, and deliver a rousing speech to inspire his troops. The GM tells him that the DN is 3 for the Medicae (Int) Test, pushing the statue over requires a DN 4 Athletics (S) Test, and a Leadership (Wil) Test to rally the troopers would be DN 3.\n\nAs Dom is trying to do all three Tests in one Multi-Action, he must add +4 to the DN of each Test; the Medicae (Int) Test is DN 7, the Athletics (S) Test is DN 8, and the Leadership (Wil) Test is DN 7."
   },
   {
@@ -59,6 +65,7 @@
     "type": "Simple Action",
     "source": "core",
     "page": 179,
+    "gist": "One per Turn; e.g. Reload, draw a weapon, kick open a door, Awareness (Int), activate Wargear",
     "text": "Simple Actions take less time and concentration to perform than Combat Actions but still represent significant effort and focus. You may perform one Simple Action per Turn. Simple Actions include but are not limited to:\n\n• Reloading a weapon (p.184).\n• Drawing or readying a weapon.\n• Kicking open a locked door.\n• Looking around with your Awareness (Int) Skill.\n\nYou might also be able to use your Simple Action to activate a piece of Wargear, for specific Skill Tests, to use abilities, or to activate certain psychic powers."
   },
   {
@@ -68,6 +75,7 @@
     "type": "Free Action",
     "source": "core",
     "page": 179,
+    "gist": "Any number, even outside your Turn, GM limits; e.g. short shout, open unlocked door, Determination",
     "text": "Some actions take little thought, concentration, or time to perform. So little, in fact, that they can be performed while doing other things without any penalty and may be performed outside of your Turn. These are called ‘Free Actions’. The GM is the final arbiter on how many Free Actions you can perform in a Turn or Round.\n\nFree Actions include but are not limited to:\n\n• Shouting a warning or a short sentence (‘He’s over there’, ‘Go round back’, ‘On the count of three!’).\n• Opening an unlocked door.\n• Using Psyniscience (p.267).\n• Rolling Determination (p.196) to reduce damage.\n\nSeveral Talents and pieces of Wargear may allow some Simple Actions to be performed as Free Actions. Free Actions should add to the narrative of the game and should never arbitrarily extend a Turn."
   },
   {
@@ -77,6 +85,7 @@
     "type": "Reflexive Action",
     "source": "core",
     "page": 179,
+    "gist": "Taken outside your Turn, usually in response to another's action; normally one per Round",
     "text": "Certain actions can be made outside of your Turn. These are known as Reflexive Actions, and under normal circumstances you may only make one per Round. You usually make a Reflexive Action in response to an action someone else makes on their Turn."
   },
   {
@@ -86,6 +95,7 @@
     "type": "Full-Round Action",
     "source": "core",
     "page": 179,
+    "gist": "No other actions except Free Actions; no Movement unless part of it; e.g. Sprint, Full Defence",
     "text": "Performing a Full-Round Action prevents you from taking any other actions (except Free Actions) and you can’t make a Movement unless that is part of the Full-Round Action.\n\nThe GM will tell you if what you want to do would be considered a Full-Round option. Some examples of Full-Round Actions are:\n\n• Sprinting (p.180).\n• Full Defence (p.187).\n• The psychic power Conceal Phenomena (p.268)."
   },
   {
@@ -95,6 +105,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Options other than Standard Movement often need a Simple or Combat Action",
     "text": "Positioning can give anyone the upper hand on the battlefields of the 41st Millennium. You might be scurrying between cover to avoid suppressive fire, repositioning to gain a better line of sight to make a shot, or charging across city ruins to swing your chainsword at a xenos threat.\n\nThere are several options for Movement in and out of combat. Often anything other than Standard Movement requires a Simple or Combat Action."
   },
   {
@@ -104,6 +115,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Move up to Speed in metres; inclines, stairs, ladders cost nothing extra; act at any point during it",
     "text": "During a Turn you can move your Speed in metres. You don’t have to use all of your Movement; you can move as little as you want or not at all. There is no additional Movement cost for changing elevation if you are using an incline, stairs, or a ladder. You may take any other Action at any point during a Standard Movement, unless the rules for that Action state otherwise."
   },
   {
@@ -113,6 +125,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Move double Speed in metres; no Simple Action this Turn, and not after taking one",
     "text": "When you Run, you move double your Speed in metres. If you Run, you may not perform a Simple Action during your Turn, and you cannot Run if you’ve already performed a Simple Action during your Turn."
   },
   {
@@ -122,6 +135,7 @@
     "type": "Full-Round Action",
     "source": "core",
     "page": 180,
+    "gist": "Move triple Speed in metres in a straight line",
     "text": "When you Sprint, you move triple your Speed in metres in a straight line. Sprinting is a Full-Round Action."
   },
   {
@@ -131,6 +145,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Move half Speed in metres; Prone while Crawling",
     "text": "You can Crawl half your Speed in metres; you are Prone while Crawling."
   },
   {
@@ -140,6 +155,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "1 m hurdle or gap free; beyond: Simple Action + Athletics (S), Long S m, High S/4 m",
     "text": "You can hurdle obstacles up to 1 metre high or leap over gaps up to 1 metre in length as part of your standard Movement.\n\nMaking a Long Jump or High Jump beyond these limits is a Simple Action, and requires an Athletics (S) Test with a DN determined by the GM based on the current circumstances. Your Long Jump distance is equal to your Strength in metres. Your High Jump is equal to a quarter of your Strength in metres. If you Jump onto Difficult Terrain, you must make an additional DN 3 Athletics (S) Test to avoid falling Prone."
   },
   {
@@ -149,6 +165,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Speed halved; Difficult Terrain: GM sets Athletics (S) Tests and DN; submerged or Dying: may drown",
     "text": "Your Speed is halved while swimming. If you begin your Turn in the water you can swim half your Speed in metres.\n\nIf the GM determines that whatever you’re swimming through is Difficult Terrain, they may call for an Athletics (S) Test to make progress. The GM decides how many Athletics (S) Tests are needed to Swim through the area, the DN of all Tests, and the difficulty of any other action taken While Swimming.\n\nIf you become submerged for an extended period of time, fall unconscious, or are Dying while swimming, you may begin to drown (see Suffocation p.201)."
   },
   {
@@ -158,6 +175,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Move Speed or flight Speed; ignore terrain penalties; pass over characters; knocked Prone: fall",
     "text": "Some characters may be able to Fly, whether using a sophisticated jump pack, wings gifted by a denizen of the Warp, or part of a creature’s own biology. Whatever the means of flight, they all function in a similar way.\n\nFlying allows you to move a number of metres equal to either your Speed, or a Speed indicated by the method of flight (in your ability or Wargear text, for example). Flying ignores terrain penalties and can move over (but not through) other characters.\n\nIf you are knocked Prone while flying, you fall from the sky (see Falling on p.201)."
   },
   {
@@ -167,6 +185,7 @@
     "type": "Movement",
     "source": "core",
     "page": 180,
+    "gist": "Half Speed in metres; DN 3 Athletics (S) for full Speed; −1 DN if also Simple Action, −2 if Combat",
     "text": "You can use your Movement to Climb at half your Speed in metres. You can attempt to Climb at a faster rate, but at the risk of falling. If you succeed on a DN 3 Athletics (S) Test, you may instead climb a number of metres up to your Speed. Using both your Movement and Simple Action reduces the DN of the Athletics (S) Test by 1. Using both your Movement and Combat Action reduces the DN of the Athletics (S) Test by 2."
   },
   {
@@ -176,6 +195,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 182,
+    "gist": "Uses your Movement too; move half Speed in metres; no Run or Sprint",
     "text": "By staying low and sticking to cover or the shadows you can move unseen and unheard. You may use a Combat Action and your Movement to Move Stealthily. You move at half your Speed in metres and cannot Run or Sprint while Moving Stealthily."
   },
   {
@@ -185,6 +205,7 @@
     "type": "Reflexive Action",
     "source": "core",
     "page": 184,
+    "gist": "Melee attack on an Engaged enemy moving out of Engagement; not if they Fall Back",
     "text": "If you are Engaged with an enemy and they choose to move out of Engagement, you may use your Reflexive Action to make a melee attack against them. If you move out of Engagement with an enemy, they may do the same.\n\nYou cannot make a Reflexive Attack if your target uses the Fall Back Combat Action (p.188).\n\nExample: Wilhemena the Ministorum Priest wants to attack an unholy Neophyte Hybrid with her Chainsword. As the Chainsword has an effective range of one metre, she moves closer to attack her foe. The two are now considered Engaged in close combat.\n\nThe Hybrid can only make melee attacks against Wilhemena, but instead tries to escape the wrath of the Ministorum Priest. The Hybrid moves out of Engagement, allowing Wilhemena to make a Reflexive Attack!"
   },
   {
@@ -194,6 +215,7 @@
     "type": "Simple Action",
     "source": "core",
     "page": 184,
+    "gist": "Spend 1 Ammo to reload one ranged weapon; needed after Salvo Options; Salvo ‘–’: after every shot",
     "text": "You can spend a Simple Action to Reload one ranged weapon, expending one point of Ammo. This may be required to fire your weapon after using a Salvo Option or due to a Complication. Weapons with a Salvo rating of ‘–’ must be Reloaded after every shot.\n\nIf you don’t use a Simple Action to Reload a weapon when required, the weapon can’t be used again until it is Reloaded.\n\nExample: Brother Braxus uses his Simple Action to kick open a door, then uses a ranged attack on the cursed xenos in the room. He fires his Boltgun with the Full Auto Salvo option to add 2 bonus dice to his Ballistic Skill pool.\n\nAs Brother Braxus already used his Simple Action, he must wait until his next turn to Reload.\n\nAt the start of his next Turn, Brother Braxus uses his Simple Action to Reload, using up 1 of his 3 Ammo. Now he can fire his weapon again, and deliver more vile xenos from the sin of their existence.\n\nNote: Single-use throwing weapons (such as grenades) have Salvo ‘–’, so one Ammo is spent for each attack instead of Reloading."
   },
   {
@@ -203,6 +225,7 @@
     "type": "Salvo option",
     "source": "core",
     "page": 185,
+    "gist": "Use the weapon's Salvo rating; Reload before firing again; Salvo ‘–’ weapons can't use them",
     "text": "Most ranged weapons have a Salvo rating which is used for the following options. After you use any of these options you must Reload your weapon before you can fire it again. A weapon with a Salvo of ‘-’ can’t be used for Salvo Options."
   },
   {
@@ -212,6 +235,7 @@
     "type": "Salvo option",
     "source": "core",
     "page": 185,
+    "gist": "Single target; +X dice to the attack Test (X = Salvo)",
     "text": "You empty your entire clip firing at a single target. You can make a Full Auto ranged attack to gain a number of bonus dice to your attack Test equal to the weapon’s Salvo value."
   },
   {
@@ -221,6 +245,7 @@
     "type": "Salvo option",
     "source": "core",
     "page": 185,
+    "gist": "Part of a Multi-Attack; −X DN (X = Salvo), no more than the Multi-Attack penalty",
     "text": "You spray ammunition at multiple targets. You can make a Spray Shot as part of a Multi-Attack, reducing the DN of the Test by the weapon’s Salvo value. This can’t decrease the DN by more than the penalty imposed by the Multi-Attack."
   },
   {
@@ -230,6 +255,7 @@
     "type": "Full-Round Action",
     "source": "core",
     "page": 185,
+    "gist": "Ranged attack vs a Mob; on a hit, +X more individuals hit (X = Salvo)",
     "text": "You can target a Mob with a Spray Shot as a Full-Round Action. Make a ranged attack Test against the Mob as normal. If your attack is successful, you hit an additional number of individuals in the Mob equal to the weapon’s Salvo value."
   },
   {
@@ -239,6 +265,7 @@
     "type": "Ranged attack",
     "source": "core",
     "page": 185,
+    "gist": "Wrath Die 1: random other combatant hit if Test beats their Defence; Aim negates this",
     "text": "When using a ranged attack against a target who is Engaged in melee, there is a chance the shot goes awry. If the Wrath Die result is a 1, the ranged attack is made against a random target in the melee instead of the chosen target.\n\nChoose one of the combatants randomly, excluding the intended target. If the Attack Test result beats their Defence, then roll damage against that new target. You may choose to shift Exalted Icons from the Attack Test to the damage roll after the target has been assigned as usual.\n\nIf you use the Aim (p.189) combat option, you can negate the penalties for firing into melee instead of taking the regular Aim bonus.\n\nOptional Rule: Redirected Fire\nIf you are firing a Pistol in melee and you roll a Complication you can choose to use the Firing Into Melee rules to determine a random target to be hit by the Attack. Your target could have grabbed your arm and forced the weapon to face you, or struck your gun with their weapon to redirect the shot at your foot."
   },
   {
@@ -248,6 +275,7 @@
     "type": "Area effect weapons",
     "source": "core",
     "page": 186,
+    "gist": "Full Defence vs Blast or Flamer adds 1 + Icons to Resilience; Blast (6)+ or >10m radius usually not",
     "text": "If you are caught in a Blast radius or hit by a Flamer, you may attempt the Full Defence combat option (see p.187), adding 1+ any Icons rolled to your Resilience instead of your Defence. You can dive for cover, but you might not escape the full explosion or shrapnel.\n\nThe GM may decide that some area effect attacks can’t be dodged or avoided. Area effect attacks with Blast (6) or more, or a radius of over 10m are usually too big to escape in this way."
   },
   {
@@ -257,6 +285,7 @@
     "type": "Attack option",
     "source": "core",
     "page": 186,
+    "gist": "Extra options giving attacks specific effects; some melee- or ranged-only; Talents may modify them",
     "text": "Below are several extra options for your attacks that give specific effects or bonuses. Some options are available to almost any type of attack, while others are limited to melee or ranged attacks.\n\nSome Talents may expand or modify the following options. Their rules are applied on a case-by-case basis and are found in Chapter 6: Talents."
   },
   {
@@ -266,6 +295,7 @@
     "type": "Attack option",
     "source": "core",
     "page": 186,
+    "gist": "+1/+2/+3 DN for medium/small/tiny target; +ED equal to the DN penalty; can disarm or bypass armour",
     "text": "Targeting opponents’ weak points often means the difference between success and failure. Firing at a heavily-armoured opponent is often futile, unless you hit the vulnerable joints. Such precise attacks are often very difficult, however.\n\nYou can make an attack a called shot by declaring a target, such as a gap in some armour, an eye, or a vulnerable joint. Your attack suffers a DN penalty dependent on the size of your target, based on the Called Shots table on the next page, or determined by the GM. If you hit, you gain Extra Damage dice equal to the DN penalty.\n\nCALLED SHOTS\nSize | DN Penalty | Extra Damage Dice\nMedium (arm or leg) | 1 | +1ED\nSmall (hand, head) | 2 | +2ED\nTiny (eye-slit, armour joint) | 3 | +3ED\n\nShot To Disarm\nCalled shots may be used to disarm an opponent by shooting their weapon or the hand that holds it. If the attack hits, the victim must make a Strength Test against a DN equal to half the attack’s total Damage. If they fail, they drop their weapon. Using a called shot to disarm does not award additional ED, and the shot itself does not deal any Damage.\n\nShot To Bypass Armour\nCalled shots may also bypass a target’s armour. This might include shooting at a target’s head who is not wearing a helmet or targeting an area of weaker armour. The GM determines how much armour you bypass when using this called shot."
   },
   {
@@ -275,6 +305,7 @@
     "type": "Full-Round Action",
     "source": "core",
     "page": 187,
+    "gist": "Half Speed; Initiative Test: +1 Defence +1 per Icon until end of Turn; as Reflexive: no Actions next Turn",
     "text": "You can use a Full-Round Action to focus on dodging incoming attacks. Your Speed is reduced by half, and you must make an Initiative Attribute Test. Until the end of your Turn your Defence increases by 1, +1 for every Icon rolled in the Initiative Attribute Test.\n\nYou can activate Full Defence as a Reflexive Action. If you do so, you can’t perform Movement, Combat Actions or Simple Actions on your next Turn.\n\nExample: The GM Seizes the Initiative; a Genestealer charges at Vextra the Death Cult Assassin. Vextra uses her Reflexive Action to activate Full Defence. She has an Initiative rating of 4, so she rolls 4 dice with the following results: 2, 4, 5, 6. She adds 1, plus the 4 Icons from the roll to her Defence, adding a total of 5.\n\nVextra may be a lot harder to hit, but she won’t get to do anything on her Turn this Round. She’s going to have to count on her allies to bring down the vicious bioform."
   },
   {
@@ -284,6 +315,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 187,
+    "gist": "Act later in the Round; opposed Initiative Test to Interrupt; lost if unused by end of Round",
     "text": "You may choose to wait and act later in the Round. To do so, announce you are holding your Combat Action instead of taking it during your Turn. You may announce you are using your held Combat Action at any point later in the Round.\n\nIf you wish to Interrupt another character, you must succeed at an opposed Initiative Test. Failure means that the acting character takes their action first before you have the chance to intervene. If you don’t use your held Combat Action by the end of the Round it is lost."
   },
   {
@@ -293,6 +325,7 @@
     "type": "Attack option",
     "source": "core",
     "page": 187,
+    "gist": "+2 Defence to every target per extra attack; same weapon; no Shift; roll damage once for all hits",
     "text": "Multi-Attacks work similarly to Multi-Actions; every additional attack increases the Defence of every target by +2 for the purposes of the Multi-Attack. Each attack of your Multi-Attack must use the same weapon, and you cannot Shift as part of a Multi-Attack. Roll damage once, and apply the result to every target hit.\n\nExample: Miklos is being assaulted by a Chaos Space Marine, supported by two Cultists. The Cultists each have a Defence of 2, and the Chaos Space Marine has a Defence of 4. Miklos decides to Multi-Attack all 3 targets with his Boltgun.\n\nAs the Multi-Attack has 3 targets, +4 is added to each target’s Defence. The Cultists each have an effective Defence of 6, and the Chaos Space Marine has an effective Defence of 8.\n\nMiklos rolls to hit each target in turn, hitting the Chaos Space Marine and one of the Cultists, but not the other. He then rolls for damage once, and applies the damage to the Chaos Space Marine and Cultist that his Multi-Attack hit.\n\nThrown weapons can only be used in a Multi-Attack at the GM’s discretion. It may be possible to Multi-Attack with thrown weapons in some circumstances, such as throwing a spear through two people standing next to each other.\n\nIf you Multi-Attack with a melee weapon, you must move into Engagement with all targets. You provoke Reflexive Attacks from any targets you leave Engagement with during this attack. If you cannot reach a target, they are not hit by the Multi-Attack."
   },
   {
@@ -302,6 +335,7 @@
     "type": "Melee attack option",
     "source": "core",
     "page": 187,
+    "gist": "+2 dice to melee attack; −2 Defence until start of your next Turn; no Multi-Action",
     "text": "Embrace ultra-violence, throw caution to the wind, and put all of your effort into aggression. When making an All-Out Attack, you gain +2 bonus dice to your melee attack dice pool, but you also suffer −2 to your Defence until the start of your next Turn.\n\nYou can’t take a Multi-Action if you All-Out Attack. You can Multi-Attack as part of an All-Out Attack; all of your attacks gain the same bonus."
   },
   {
@@ -311,6 +345,7 @@
     "type": "Full-Round Action",
     "source": "core",
     "page": 188,
+    "gist": "Move up to double Speed, at least 4 metres; melee attack Test with +1 die",
     "text": "You can Charge a target as a Full-Round Action. When you Charge, you move up to double your Speed and make a melee attack Test with +1 bonus dice. You must move at least 4 metres to Charge."
   },
   {
@@ -320,6 +355,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 188,
+    "gist": "Leave close combat free of Reflexive Attacks; move at least half Speed away, or as far as possible",
     "text": "You can use your Combat Action to fall back from close combat with any number of Threats. You may then use your Movement without suffering Reflexive Attacks from Engaged Threats (see Engaged Targets on p.184). Your Movement must take you at least half your Speed in metres away from the enemy, or as far as possible if this is impossible due to the environment."
   },
   {
@@ -329,6 +365,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 188,
+    "gist": "Opposed Strength vs Engaged foe; win: Restrained, one-handed weapons only; +2 dice per size larger",
     "text": "You can use your Combat Action to try to grapple a target you are Engaged with. Make an Opposed Strength Test with the target. If you win, you grapple the target.\n\nOnce grappled, a character is Restrained and may only use one-handed weapons. To break free from a grapple, a character must succeed an Opposed Strength Test using a Combat Action.\n\nYou may attempt to grapple multiple targets using a Multi-Attack, but you must be Engaged with all targets and you can’t grapple more targets than you have arms.\n\nSize plays an important role in grappling. A target gains +2 bonus dice to the Opposed Strength Test for every size category it is larger than you."
   },
   {
@@ -338,6 +375,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 188,
+    "gist": "Supporters' hits give +1 die each; leader rolls Leadership (Wil) vs Defence; +1 ED per other hit",
     "text": "The Astra Militarum are known for bringing massed firepower to bear to take down highly armoured or incredibly evasive targets. If your GM agrees, you and your allies can also coordinate to make a Combined Attack.\n\nYou can elect to lead a Combined Attack on your Turn as a Combat Action. Any other Agents that have held their Action or have not taken their Turn yet may support the Combined Attack by sacrificing their Combat Action.\n\nEvery Agent supporting the Combined Action Attack makes the same Test. For example, if everyone is firing a ranged weapon, everyone makes a Ballistic Skill (A) Test. Any supporting character that rolls more Icons than the target’s Defense increases the leader’s dice pool by +1 bonus dice.\n\nThe leader then makes a Leadership (Wil) Test with the bonus dice from the supporters. If the number of Icons exceeds the target’s Defence, the Combined Action Attack is successful, and the leader may choose to Shift for +ED as though this were a normal attack with a weapon.\n\nThe leader then chooses one of the supporter’s weapons that successfully hit the target to deal damage, plus any Extra Damage Dice from Shifting, +1 ED for each other supporter’s weapon that successfully hit the target.\n\nExample: A disgusting Death Guard confounds a group of Agents with it’s high Resilience of 14; so far, none of their shots have penetrated the tainted Power Armour that has fused to the traitor Astartes’ flesh. The group’s Commissar notices a gap in the enemy’s armour with an oozing pustule, and decides to try a Combined Attack.\n\nThe 3 veteran Astra Militarum Troopers in the party each make a Ballistic Skill (A) Test against the Chaos Space Marine’s Defence of 4. Each of them succeed, giving the Commissar 3 bonus dice.\n\nThe Commissar makes her Leadership (Wil) Test against the Death Guard’s Defence, adding the 3 bonus dice from her comrades to her dice pool. She rolls 10 Icons, including 3 Exalted Icons which she Shifts.\n\nThe Commissar chooses a Trooper wielding a Hot-Shot Lasgun to hit the target; as all 3 Agents hit their target and the Commissar made 3 Shifts, the damage roll gets a massive bonus of +6 ED."
   },
   {
@@ -347,6 +385,7 @@
     "type": "Ranged attack option",
     "source": "core",
     "page": 189,
+    "gist": "Give up Movement; +1 die to ranged attacks this Turn, or ignore the firing-into-melee penalty",
     "text": "The Aim option allows you to sacrifice your Movement to focus on aiming a weapon. If you Aim, you cannot make a Movement but gain +1 bonus die to ranged attack Tests you make this Turn. You may also use Aim to ignore the penalty for firing at a target Engaged in melee (p.185) instead of gaining bonus dice."
   },
   {
@@ -356,6 +395,7 @@
     "type": "Ranged attack option",
     "source": "core",
     "page": 189,
+    "gist": "Instead of Movement, against a surface or tripod; negates the Heavy trait",
     "text": "You can Brace for firing a weapon with the Heavy trait instead of making a Movement. You must have a suitable surface to Brace against, a tripod, or another means of stabilising your weapon. If you Brace, you negate the Heavy weapon trait (p.209)."
   },
   {
@@ -365,6 +405,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 189,
+    "gist": "Target visible; no cover Defence bonus; target gets +1 to +16 Resilience by cover type",
     "text": "Some weapons are powerful enough that conventional cover is little more than a nuisance. If your target is visible, then you may spend a Combat Action to Shoot Through Cover.\n\nMake an Attack Test as normal and compare the result to the target’s Defence, but don’t add a Defence bonus for the target’s cover. If your attack is successful, calculate damage as normal but add a bonus to the target’s Resilience based on the type of cover they were behind, using the Shoot Through Cover table.\n\nSHOOT THROUGH COVER\nCover Type | Resilience Bonus\nUltra-light materials: wooden planking, blast curtains | +1\nLight materials: thick wood, aluminium sheeting, interior building doors | +2\nMedium materials: steel sheeting, flak board | +4\nHeavy materials: plasteel barricade, permacrete walls, security doors | +8\nSuper-heavy materials: adamant reinforced barricade, blast doors, bunker walls | +16"
   },
   {
@@ -374,6 +415,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 189,
+    "gist": "Salvo 1+; DN = Resolve; no damage; Pinned until your next Turn; Reload after; Shift adds targets",
     "text": "A Pinning Attack allows you to use suppressive fire to pin an enemy behind cover. If you have a ranged weapon with Salvo 1 or more, you can make a Pinning Attack as a Combat Action. A Pinning Attack deals no damage, and you must Reload to fire your weapon again after you make a Pinning Attack.\n\nThe DN of a Pinning Attack is equal to the target’s Resolve. If you succeed, the target is Pinned (p.199) until the start of your next turn. You can Shift Icons to add additional targets on a 1-for-1 basis as long as they are within range and the Icons in your pool exceed the highest Resolve of all of your targets."
   },
   {
@@ -383,6 +425,7 @@
     "type": "Combat Action",
     "source": "core",
     "page": 190,
+    "gist": "DN = foe's opposing Skill or Resolve, higher; success: Hindered or Vulnerable until your next Turn",
     "text": "Wily characters can use their Skills to trick, disorient, stun, or otherwise hinder a target, leaving them vulnerable. The DN of an Interaction Attack is the foe’s opposing Skill Rating or Resolve, whichever is higher. The DN to use an Intimidate Interaction Attack, for example, is either the foe’s Intimidation or Resolve. The following Skills can be used to make Interaction Attacks:\n\n• Athletics to push your enemy.\n• Deception to manipulate your enemy into a poor position.\n• Intimidate to menace your enemy, cowing them.\n• Persuasion to throw your enemy off balance with careful words.\n• Tech to use nearby technology to confuse or weaken your enemy.\n\nInteraction Attack Effects\nIf your Interaction Attack Test equals or exceeds the DN, several effects are possible. You must choose to make the target Hindered (p.199) or Vulnerable (p.200); this effect lasts until the start of your next turn.\n\nIf multiple targets are affected by the same Interaction Attack, all targets suffer the same effect.\n\nShifts may be used to increase the Defence or DN penalty by 1 for each Shift.\n\nPlayer’s Call\nIf you Shift 3 or more Exalted Icons on an Interaction Attack, the result is a ‘Player’s Call’. You can negotiate with the GM to trigger an effect of your choice that is appropriate to the circumstances.\n\nInteraction Attack Range\nThe target of an Interaction Attack must be within range to be affected. The range required depends on the type of Interaction Attack attempted.\n\nINTERACTION ATTACK RANGE\nSkill | Range\nAthletics | You must be Engaged with the target.\nDeception, Intimidate, Persuasion | The target must be able to clearly see and hear you.\nTech | The target must be within a number of metres equal to your Intellect Attribute."
   }
 ]

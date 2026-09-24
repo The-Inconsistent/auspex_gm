@@ -87,7 +87,7 @@ it by name. Any failure gives `[]`, so the add-threat pickers are simply empty. 
 the client never fetches it. `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
 catalogue), fetched in parallel; failure gives `[]` and the form takes typed entries. `loadRules` fetches
 `/api/campaigns/:id/rules` for every seat and passes it to both apps' RULES tab (`components/ui/rules-ref`: search over
-name and text, a kind filter, one `<details>` per entry); failure gives `[]` and the tab says the archive is unreachable.
+name, gist and text, a kind filter, one `<details>` per entry: the gist on the collapsed row, the verbatim text inside); failure gives `[]` and the tab says the archive is unreachable.
 
 ### `/invite/<code>`: `app/invite/[code]/page.tsx`
 

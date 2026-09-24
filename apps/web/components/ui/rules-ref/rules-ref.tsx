@@ -17,7 +17,7 @@ export function RulesRef({ rules }: RulesRefProps) {
   const q = fold(query.trim());
   const kind = RULE_FILTERS[filter];
   const shown = rules.filter(
-    (r) => (!kind || r.kind === kind) && (!q || fold(r.name).includes(q) || fold(r.text).includes(q)),
+    (r) => (!kind || r.kind === kind) && (!q || [r.name, r.gist, r.text].some((t) => fold(t).includes(q))),
   );
 
   return (
@@ -47,6 +47,7 @@ export function RulesRef({ rules }: RulesRefProps) {
               <span className="dim">
                 {r.type ?? RULE_KIND_LABELS[r.kind]} · {wargearCite(r)}
               </span>
+              <span style={{ flexBasis: "100%" }}>{r.gist}</span>
             </summary>
             <pre className="text">{r.text}</pre>
           </details>
