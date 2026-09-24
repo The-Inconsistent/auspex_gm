@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 import {
-  AMMO_TYPES, Rarity, RARITY_DN, RequisitionKind, requisitionOutcome, requisitionSlot, requisitionTest, requisitionYield,
-  type ActionResult, type Character,
+  AMMO_TYPES, Rarity, RARITY_DN, RequisitionKind, requisitionKindOf, requisitionOutcome, requisitionSlot, requisitionTest,
+  requisitionYield, wargearCite, type ActionResult, type Character, type Wargear,
 } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
@@ -11,15 +11,15 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { REQUISITION_KINDS } from "../../constants";
 
 type RequisitionFormProps = {
-  character: Character; influence: number; sessionId: string | null; send: Send;
+  character: Character; catalogue: Wargear[]; influence: number; sessionId: string | null; send: Send;
   onResult: (r: ActionResult, ok: string) => void;
 };
 
 const digits = (v: string) => Number(v.replace(/\D/g, "")) || 0;
 
-// A requisition Influence Test (pp.205–206, p.229): the GM types in the item from the book, the player rolls
-// Influence + bonus dice at the table, and the GM records the Icons.
-export function RequisitionForm({ character: c, influence, sessionId, send, onResult }: RequisitionFormProps) {
+// A requisition Influence Test (pp.205–206, p.229): the GM picks the item from the catalogue (or types it in from the
+// book), the player rolls Influence + bonus dice at the table, and the GM records the Icons.
+export function RequisitionForm({ character: c, catalogue, influence, sessionId, send, onResult }: RequisitionFormProps) {
   const [kind, setKind] = useState<RequisitionKind>("wargear");
   const [item, setItem] = useState("");
   const [value, setValue] = useState(0);
@@ -29,6 +29,25 @@ export function RequisitionForm({ character: c, influence, sessionId, send, onRe
   const [icons, setIcons] = useState(0);
   const [spend, setSpend] = useState(0);
   const [complication, setComplication] = useState(false);
+
+  // A name printed in more than one book is listed with its cite ("Bolt Rifle (VoA p.67)").
+  const seen = new Map<string, number>();
+  for (const w of catalogue) seen.set(w.name.toLowerCase(), (seen.get(w.name.toLowerCase()) ?? 0) + 1);
+  const labelOf = (w: Wargear) => ((seen.get(w.name.toLowerCase()) ?? 0) > 1 ? `${w.name} (${wargearCite(w)})` : w.name);
+  const find = (v: string) => catalogue.find((w) => labelOf(w).toLowerCase() === v.trim().toLowerCase());
+  const picked = find(item);
+
+  // ITEM: picking a catalogue entry fills in its kind, Value, Rarity and Keywords; the GM can still change them
+  // (Rarity by location, p.206).
+  const handleItem = (v: string) => {
+    setItem(v);
+    const w = find(v);
+    if (!w) return;
+    setKind(requisitionKindOf(w.kind));
+    setValue(w.value ?? 0);
+    setRarity(w.rarity ?? "Common");
+    setKeywords(w.keywords.join(", "));
+  };
 
   const itemKeywords = keywords.split(",").map((k) => k.trim()).filter(Boolean);
   const t = requisitionTest({ keywords: c.stats.keywords, itemKeywords, value, rarity });
@@ -41,8 +60,8 @@ export function RequisitionForm({ character: c, influence, sessionId, send, onRe
   // RECORD: the server re-checks Keywords, the session limit and Wealth, then adds the item on a success.
   const record = async () => {
     const r = await send({
-      type: "character.requisition", id: c.id, kind, item, value, rarity, keywords: itemKeywords, icons, spend: spent, complication,
-      loadedWith: kind === "wargear" && loadedWith.trim() ? loadedWith.trim() : undefined,
+      type: "character.requisition", id: c.id, kind, item: picked?.name ?? item.trim(), value, rarity, keywords: itemKeywords, icons, spend: spent, complication,
+      loadedWith: kind === "wargear" && loadedWith.trim() ? loadedWith.trim() : undefined, wargearId: picked?.id,
     });
     onResult(r, out.success ? `${c.name.toUpperCase()} REQUISITIONED ${gets.toUpperCase()}` : `${c.name.toUpperCase()}: REQUISITION FAILED`);
   };
@@ -57,8 +76,11 @@ export function RequisitionForm({ character: c, influence, sessionId, send, onRe
         ))}
       </div>
       <div className="field"><label className="label" htmlFor={`rq-item-${c.id}`}>{kind === "wargear" ? "ITEM" : "AMMO TYPE"}</label>
-        <input id={`rq-item-${c.id}`} className="input" list={kind === "wargear" ? undefined : "rq-ammo-types"} value={item} onChange={(e) => setItem(e.target.value)} />
+        <input id={`rq-item-${c.id}`} className="input" list={catalogue.length || kind === "wargear" ? "rq-catalogue" : "rq-ammo-types"} value={item} onChange={(e) => handleItem(e.target.value)} placeholder="Search the Wargear chapter" />
+        <datalist id="rq-catalogue">{catalogue.map((w) => <option key={w.id} value={labelOf(w)}>{`${w.category} · ${wargearCite(w)}`}</option>)}</datalist>
         <datalist id="rq-ammo-types">{AMMO_TYPES.map((a) => <option key={a} value={a} />)}</datalist></div>
+      {picked && <div className="dim" style={{ fontSize: 12 }}>{picked.category.toUpperCase()} · {wargearCite(picked).toUpperCase()}{picked.effect ? ` · ${picked.effect}` : ""}{picked.weapon ? " · JOINS THE ARMAMENT" : ""}</div>}
+      {picked && (picked.value === null || picked.rarity === null) && <div className="amber">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         <div className="field"><label className="label" htmlFor={`rq-value-${c.id}`}>VALUE</label>
           <input id={`rq-value-${c.id}`} className="input" style={{ width: 70 }} inputMode="numeric" value={value} onChange={(e) => setValue(digits(e.target.value))} /></div>

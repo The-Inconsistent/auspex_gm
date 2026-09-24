@@ -84,7 +84,8 @@ The messages (`app/constants.ts`):
 
 For the GM, `loadBestiary` fetches `/api/campaigns/:id/threats` on the server, parses it with `Threat.array()` and sorts
 it by name. Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop;
-the client never fetches it.
+the client never fetches it. `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
+catalogue), fetched in parallel; failure gives `[]` and the form takes typed entries.
 
 ### `/invite/<code>`: `app/invite/[code]/page.tsx`
 
@@ -445,7 +446,7 @@ The tests are in `lib/command/command.test.ts`.
 | GUEST QR | `token.issue` | A no-account guest QR to `/join/<token>` |
 | LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
 | RESPITE | `character.respite` | |
-| REQUISITION | `character.requisition` | Opens `RequisitionForm`: kind (WARGEAR / AMMO / GRENADES), item, Value, Rarity, item Keywords, a ranged weapon's ammo type. It shows the DN, the dice to roll (Influence + bonus dice), the matched Keywords, and refuses when there's no match or this session's Test is used. The GM enters the Icons, Wealth spent (only up to the shortfall) and a Complication, then RECORD |
+| REQUISITION | `character.requisition` | Opens `RequisitionForm`: the ITEM field searches the catalogue (`<datalist>`); an exact name fills kind (`requisitionKindOf`), Value, Rarity and Keywords, shows the page and effect, and sends `wargearId`. Otherwise kind (WARGEAR / AMMO / GRENADES), item, Value, Rarity, item Keywords, a ranged weapon's ammo type. It shows the DN, the dice to roll (Influence + bonus dice), the matched Keywords, and refuses when there's no match or this session's Test is used. The GM enters the Icons, Wealth spent (only up to the shortfall) and a Complication, then RECORD |
 | +1 WEALTH / −1 WEALTH | `character.supply { wealth: ±1 }` | The GM's award (Core p.206). The line above the buttons shows Wealth and Ammo |
 | REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
 

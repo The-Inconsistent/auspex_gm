@@ -169,17 +169,19 @@ test("GM and player share a table", async (t) => {
   await gm.until((s) => s.campaign.glory === 0 && s.campaign.ruin === 2 && s.characters.every((c) => c.wrath === 2));
 
   // Requisition (pp.205-206, p.229): GM only, a Keyword in common, one Wargear and one Ammo Test per session.
-  const rq = { type: "character.requisition", id: hero.id, value: 2, rarity: "Common", keywords: ["[ANY]"], icons: 2 } as const;
+  const rq = { type: "character.requisition" as const, id: hero.id!, value: 2, rarity: "Common" as const, keywords: ["[ANY]"], icons: 2 };
   assert.deepEqual(await player.send({ ...rq, kind: "wargear", item: "Laspistol" }), { ok: false, error: "GM only" });
   assert.deepEqual(await gm.send({ ...rq, kind: "ammo", item: "Bolt", keywords: ["AELDARI"] }),
     { ok: false, error: "No Keyword in common with the item: it can't be requisitioned (p.205)" });
-  assert.ok((await gm.send({ ...rq, kind: "wargear", item: "Laspistol", loadedWith: "Las" })).ok);
+  assert.ok((await gm.send({ ...rq, kind: "wargear", item: "Laspistol", loadedWith: "Las", wargearId: "laspistol" })).ok);
   assert.deepEqual(await gm.send({ ...rq, kind: "wargear", item: "Chainsword" }),
     { ok: false, error: "Hero already made this session's wargear Test (p.205)" });
-  assert.ok((await gm.send({ ...rq, kind: "grenade", item: "Frag Grenade", rarity: "Uncommon", icons: 3 })).ok);
+  assert.ok((await gm.send({ ...rq, kind: "grenade", item: "Frag Grenade", rarity: "Uncommon", icons: 3, wargearId: "frag-grenade" })).ok);
+  // Catalogue weapons join the armament with their printed profile; a thrown range is S × 4 (p.207; Hero has S 1).
   await gm.until((s) => {
     const st = s.characters.find((c) => c.id === hero.id)?.stats;
-    return !!st?.gear.includes("Laspistol") && st.ammo.Las === 1 && st.ammo["Frag Grenade"] === 4;
+    const has = (name: string) => st?.weapons.find((w) => w.name === name);
+    return has("Laspistol")?.range.length === 3 && has("Frag Grenade")?.range[0] === 4 && st?.ammo.Las === 1 && st.ammo["Frag Grenade"] === 4;
   });
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumped." })).ok);
   await gm.until((s) => s.characters.every((c) => c.xp === 10));
@@ -202,6 +204,10 @@ test("GM and player share a table", async (t) => {
   assert.equal((await get(`/campaigns/${campaignId}/threats`, bearer(gmClerk))).status, 200);
   assert.equal((await get(`/campaigns/${campaignId}/threats`, { cookie: `wg_token=${issued.token}` })).status, 403);
   assert.equal((await get(`/campaigns/${campaignId}/threats`, bearer(clerk("stranger")))).status, 401, "not seated here");
+  // The Wargear catalogue is book text too: GM only.
+  const catalogue = await get(`/campaigns/${campaignId}/wargear`, bearer(gmClerk));
+  assert.ok(catalogue.status === 200 && ((await catalogue.json()) as unknown[]).length > 100);
+  assert.equal((await get(`/campaigns/${campaignId}/wargear`, { cookie: `wg_token=${issued.token}` })).status, 403);
 
   // Scripts (seed) open a table with the admin key.
   const admin = connect({ auth: { campaignId, adminKey: process.env.ADMIN_KEY! } });

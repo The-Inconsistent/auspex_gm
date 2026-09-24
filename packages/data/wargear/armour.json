@@ -1,0 +1,654 @@
+[
+  {
+    "id": "primitive-armour",
+    "name": "Primitive Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "HEAVY",
+      "PRIMITIVE"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Bulk (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "bodyglove",
+    "name": "Bodyglove",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "LIGHT",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "mesh-armour",
+    "name": "Mesh Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "LIGHT",
+      "IMPERIUM",
+      "[ANY]"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "flak-armour",
+    "name": "Flak Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "FLAK",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "flak-coat",
+    "name": "Flak Coat",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FLAK",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "skitarii-auto-cuirass",
+    "name": "Skitarii Auto-Cuirass",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "carapace-armour",
+    "name": "Carapace Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ASTRA MILITARUM"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Bulk (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "tempestus-carapace",
+    "name": "Tempestus Carapace",
+    "source": "core",
+    "page": 233,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM TEMPESTUS"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "light-power-armour",
+    "name": "Light Power Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Powered Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 1,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "sororitas-power-armour",
+    "name": "Sororitas Power Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Powered Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "ADEPTA SORORITAS"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 2,
+      "traits": []
+    },
+    "effect": "",
+    "note": "The table prints \"Sororitas Power Armour\"; its description on p.234 is headed \"Sororitas Powered Armour\"."
+  },
+  {
+    "id": "ignatus-power-armour",
+    "name": "Ignatus Power Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Powered Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "INQUISITION"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 2,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "heavy-power-armour",
+    "name": "Heavy Power Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Powered Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "POWERED",
+      "IMPERIUM",
+      "INQUISITION"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": [
+        "Bulk (1)",
+        "Cumbersome"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "storm-shield",
+    "name": "Storm Shield",
+    "source": "core",
+    "page": 233,
+    "category": "Power Fields",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MINISTORUM",
+      "INQUISITION"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Bulk (1)",
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "",
+    "note": "No weapon profile in the Armour section; the Shield Trait (p.232) adds its AR to Defence and Resilience."
+  },
+  {
+    "id": "refractor-field",
+    "name": "Refractor Field",
+    "source": "core",
+    "page": 233,
+    "category": "Power Fields",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "rosarius",
+    "name": "Rosarius",
+    "source": "core",
+    "page": 233,
+    "category": "Power Fields",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MINISTORUM"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "scout-armour",
+    "name": "Scout Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "aquila-mk-vii",
+    "name": "Aquila Mk VII",
+    "source": "core",
+    "page": 233,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "tacticus-mk-x",
+    "name": "Tacticus Mk X",
+    "source": "core",
+    "page": 233,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "terminator-armour",
+    "name": "Terminator Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": [
+        "Cumbersome"
+      ]
+    },
+    "effect": "Whilst wearing this armour you are considered Large.",
+    "note": "Effect from the description on p.235."
+  },
+  {
+    "id": "corsair-armour",
+    "name": "Corsair Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "LIGHT",
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "aeldari-mesh-armour",
+    "name": "Aeldari Mesh Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LIGHT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "rune-armour",
+    "name": "Rune Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "heavy-mesh-armour",
+    "name": "Heavy Mesh Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "voidplate-harness",
+    "name": "Voidplate Harness",
+    "source": "core",
+    "page": 233,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Bulk (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shimmershield",
+    "name": "Shimmershield",
+    "source": "core",
+    "page": 233,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "Allies within 5 metres of a Shimmershield gain its Power Field Trait and are able to roll Determination against Mortal Wounds.",
+    "note": "Effect from the description on p.236."
+  },
+  {
+    "id": "ork-flak",
+    "name": "Ork Flak",
+    "source": "core",
+    "page": 233,
+    "category": "Ork Armour",
+    "kind": "armour",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PRIMITIVE",
+      "ORK"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "eavy-armour",
+    "name": "’Eavy Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Ork Armour",
+    "kind": "armour",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "HEAVY",
+      "PRIMITIVE",
+      "ORK"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "’Ere We Go",
+        "Bulk (1)"
+      ]
+    },
+    "effect": "",
+    "note": "The table prints the name with an opening quote (‘Eavy); the description on p.236 uses an apostrophe (’Eavy). The Trait is printed \"’Ere We Go\" here and \"’Ere We Go!\" in the glossary (p.232)."
+  },
+  {
+    "id": "mega-armour",
+    "name": "Mega Armour",
+    "source": "core",
+    "page": 233,
+    "category": "Ork Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "ORK"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": [
+        "’Ere We Go",
+        "Cumbersome"
+      ]
+    },
+    "effect": "Whilst wearing this armour you are considered Large.",
+    "note": "Effect from the description on p.236."
+  }
+]

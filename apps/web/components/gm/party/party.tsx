@@ -2,7 +2,7 @@
 import QRCode from "qrcode";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
-import { CharacterStats, deriveStats, pcStatus, type ActionResult, type Character, type Codex, type LiveState, type Member } from "@wg/shared";
+import { CharacterStats, deriveStats, pcStatus, type ActionResult, type Character, type Codex, type LiveState, type Member, type Wargear } from "@wg/shared";
 
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -12,9 +12,9 @@ import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
-type PartyProps = { state: LiveState; codex: Codex; send: Send };
+type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[] };
 
-export function Party({ state, codex, send }: PartyProps) {
+export function Party({ state, codex, send, wargear }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
@@ -206,7 +206,7 @@ export function Party({ state, codex, send }: PartyProps) {
                 <button className="btn sm danger" onClick={() => revoke(c)}>REVOKE GUEST QR</button>
               </div>
               {reqFor === c.id && (
-                <RequisitionForm character={c} influence={d.influence} sessionId={open?.id ?? null} send={send} onResult={requisitioned} />
+                <RequisitionForm character={c} catalogue={wargear} influence={d.influence} sessionId={open?.id ?? null} send={send} onResult={requisitioned} />
               )}
               {importFor === c.id && (
                 <div className="stack">

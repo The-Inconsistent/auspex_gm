@@ -1,0 +1,142 @@
+[
+  {
+    "id": "augmetic-arm", "name": "Augmetic Arm", "source": "core", "page": 243, "category": "Augmetic Enhancements", "kind": "augmetic",
+    "value": 4, "rarity": "Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Strength per Augmetic Arm."
+  },
+  {
+    "id": "augmetic-eye", "name": "Augmetic Eye", "source": "core", "page": 243, "category": "Augmetic Enhancements", "kind": "augmetic",
+    "value": 6, "rarity": "Uncommon", "keywords": ["[ANY]"],
+    "effect": "Select 1 per Augmetic Eye:\n- Auger: +1 bonus die to sight-based Awareness (Int) Tests.\n- Night: Acts as Preysense Goggles (p.238).\n- Pict Recorder: Can record up to 1 hour of video or 86,400 still images.\n- Reticule: +1 bonus die to ranged Attack Tests.\n- Telescopic: You ignore any penalties related to visual distance.\nHaving two eyes of the same type doubles the benefits (if applicable)."
+  },
+  {
+    "id": "augmetic-legs", "name": "Augmetic Legs", "source": "core", "page": 243, "category": "Augmetic Enhancements", "kind": "augmetic",
+    "value": 4, "rarity": "Rare", "keywords": ["[ANY]"],
+    "effect": "Note: The Value, Rarity, and Effect is for a pair of Augmetic Legs. If you want to replace a single leg, check Augmetic Reconstruction.\nYou gain +2 Speed and add 2 metres to any jump."
+  },
+  {
+    "id": "augmetic-respirator", "name": "Augmetic Respirator", "source": "core", "page": 244, "category": "Augmetic Enhancements", "kind": "augmetic",
+    "value": 5, "rarity": "Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 bonus die to Toughness Tests to resist toxic gasses and airborne poisons or diseases. You can hold your breath for twice as long, which doubles how long the air in a Void Suit or similar equipment lasts."
+  },
+  {
+    "id": "augmetic-viscera", "name": "Augmetic Viscera", "source": "core", "page": 244, "category": "Augmetic Enhancements", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Toughness."
+  },
+  {
+    "id": "auger-array", "name": "Auger Array", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 4, "rarity": "Rare", "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS"],
+    "effect": "You have either an Auspex (p.236) or a Diagnostor (p.237) permanently implanted in your brain. You can take this implant twice, choosing the Auspex or Diagnostor each time."
+  },
+  {
+    "id": "autodogmatic-cortex", "name": "Autodogmatic Cortex", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 6, "rarity": "Very Rare", "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "ADEPTUS MINISTORUM"],
+    "effect": "You gain +1 Willpower."
+  },
+  {
+    "id": "cardioproxy", "name": "Cardioproxy", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 6, "rarity": "Unique", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Toughness."
+  },
+  {
+    "id": "cortex-implant", "name": "Cortex Implant", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 7, "rarity": "Very Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Intellect."
+  },
+  {
+    "id": "ballistic-mechadendrite", "name": "Ballistic Mechadendrite", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ADEPTUS MECHANICUS"],
+    "effect": "When you acquire a Mechadendrite, choose a single option. Functions as a Laspistol (p.217) powered by your biolofy. It doesn't use Ammo or need to be Reloaded.",
+    "note": "One Mechadendrite entry (Value 5, Very Rare, ADEPTUS MECHANICUS) with six options, split one entry per option. \"biolofy\" is as printed (biology)."
+  },
+  {
+    "id": "exploration-mechadendrite", "name": "Exploration Mechadendrite", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ADEPTUS MECHANICUS"],
+    "effect": "When you acquire a Mechadendrite, choose a single option. Functions as an Auspex (p.236). +1 bonus die to Survival (Wil) Tests to navigate or track.",
+    "note": "One Mechadendrite entry (Value 5, Very Rare, ADEPTUS MECHANICUS) with six options, split one entry per option."
+  },
+  {
+    "id": "medicae-mechadendrites", "name": "Medicae Mechadendrites", "source": "core", "page": 244, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ADEPTUS MECHANICUS"],
+    "effect": "When you acquire a Mechadendrite, choose a single option. Functions as a Medikit and a Diagnostor (p.238 & p.237). +1 bonus die to Medicae (Int) Tests. Can be used to inject toxins, sedatives, and stimulants in combat as a Simple Action. Injecting an unwilling target requires an Opposed Initiative Test.",
+    "note": "One Mechadendrite entry (Value 5, Very Rare, ADEPTUS MECHANICUS) with six options, split one entry per option. Heading printed plural."
+  },
+  {
+    "id": "optical-mechadendrite", "name": "Optical Mechadendrite", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ADEPTUS MECHANICUS"],
+    "effect": "When you acquire a Mechadendrite, choose a single option. Functions as a Magnocular Scope (p.228) abd Preysense Goggles (239). +1 bonus die to Awareness (Int) Tests; allows you to make microscopic examinations.",
+    "note": "One Mechadendrite entry (p.244: Value 5, Very Rare, ADEPTUS MECHANICUS) with six options, split one entry per option. \"abd\" and \"(239)\" as printed; the Augmetic Eye cites Preysense Goggles as p.238."
+  },
+  {
+    "id": "servo-arm", "name": "Servo-Arm", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ADEPTUS MECHANICUS"],
+    "weapon": { "addStrength": true, "damage": 4, "ed": 2, "ap": -3, "range": [1], "traits": ["Unwieldy (2)"] },
+    "effect": "When you acquire a Mechadendrite, choose a single option. A massive claw designed for heavy lifting and manipulation. You gain +4 Strength when using the arm. In combat, the arm allows you to Brace (p.189) as a Free Action. You can use the arm as a melee weapon with the following profile: Damage (S) +4, ED 2, AP –3, Unwieldy (2).",
+    "note": "One Mechadendrite entry (p.244: Value 5, Very Rare, ADEPTUS MECHANICUS) with six options, split one entry per option."
+  },
+  {
+    "id": "utility-mechadendrite", "name": "Utility Mechadendrite", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ADEPTUS MECHANICUS"],
+    "effect": "When you acquire a Mechadendrite, choose a single option. Functions as a Combi-Tool (p.236). +1 bonus die to Tech (Int) Tests.",
+    "note": "One Mechadendrite entry (p.244: Value 5, Very Rare, ADEPTUS MECHANICUS) with six options, split one entry per option."
+  },
+  {
+    "id": "mind-impulse-unit", "name": "Mind Impulse Unit", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 6, "rarity": "Rare", "keywords": ["[ANY]"],
+    "effect": "You can converse with a machine spirit as an Action; this may require a Tech (Int) Test for unruly spirits. If you succeed, you gain +Double Rank bonus dice to all Tests to operate the machine."
+  },
+  {
+    "id": "neuroplastic-psychosectemy", "name": "Neuroplastic Psychosectemy", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 7, "rarity": "Unique", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Intellect and +1 Willpower but suffer −2 Fellowship."
+  },
+  {
+    "id": "reflex-catalyst", "name": "Reflex Catalyst", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 6, "rarity": "Very Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Initiative."
+  },
+  {
+    "id": "sinew-armature", "name": "Sinew Armature", "source": "core", "page": 245, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 6, "rarity": "Very Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Strength."
+  },
+  {
+    "id": "subdermal-armour", "name": "Subdermal Armour", "source": "core", "page": 246, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": 4, "rarity": "Rare", "keywords": ["[ANY]"],
+    "effect": "You gain +1 Base Resilience."
+  },
+  {
+    "id": "augmetic-arm-weapon-implant", "name": "Augmetic Arm Weapon Implant", "source": "core", "page": 246, "category": "Augmetic Implants", "kind": "augmetic",
+    "value": null, "rarity": "Rare", "keywords": ["[ANY]"],
+    "effect": "You may implant a weapon with the Pistol Trait into an augmetic arm. Alternatively, you may choose to implant a knife or a melee weapon of a similar size into an augmetic arm. You can extract or retract the implanted weapon as an Action. Your limb functions normally until you extract it. The limb can only be used as a weapon while the weapon is extracted. You can't drop an implanted weapon and you can't be disarmed without amputating the limb.",
+    "note": "Printed under the Weapon Implant heading. Value printed as \"3 + Weapon Value\", so value is null here."
+  },
+  {
+    "id": "eyes-of-the-crone", "name": "Eyes Of The Crone", "source": "core", "page": 246, "category": "Aeldari Augmetics", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["AELDARI"],
+    "effect": "A single Eye of the Crone can have two different Augmetic Eye effects (p.243)."
+  },
+  {
+    "id": "heart-of-vaul", "name": "Heart of Vaul", "source": "core", "page": 246, "category": "Aeldari Augmetics", "kind": "augmetic",
+    "value": 7, "rarity": "Unique", "keywords": ["AELDARI"],
+    "effect": "You gain +1 to Defence and Armour in addition to any armour or shield you have."
+  },
+  {
+    "id": "iron-gob", "name": "Iron Gob", "source": "core", "page": 246, "category": "Ork Bioniks", "kind": "augmetic",
+    "value": 3, "rarity": "Rare", "keywords": ["ORK"],
+    "weapon": { "damage": 6, "ed": 2, "range": [1], "traits": [] },
+    "effect": "You gain +1 Armour (this stacks with worn Armour) and +1 bonus die to Intimidation (Wil) Tests. You can make a melee bite attack with a Damage of 6 +2 ED.",
+    "note": "Bite printed as Damage 6, +2 ED only (no AP or Traits); ED 2 assumed from \"+2 ED\"."
+  },
+  {
+    "id": "iron-gutz", "name": "Iron Gutz", "source": "core", "page": 247, "category": "Ork Bioniks", "kind": "augmetic",
+    "value": 5, "rarity": "Very Rare", "keywords": ["ORK"],
+    "effect": "You gain +2 bonus dice to Tests to resist ingested poisons.\nYou can automatically find food to subsist you in any environment."
+  },
+  {
+    "id": "rebuilt-cranium", "name": "Rebuilt Cranium", "source": "core", "page": 247, "category": "Ork Bioniks", "kind": "augmetic",
+    "value": 6, "rarity": "Very Rare", "keywords": ["ORK"],
+    "effect": "Roll 1d3 at the start of each session. Your Intellect Attribute increases by the result.\nYou may spend a point of Wrath to reroll the 1d3 at any time.\nThe GM may force a reroll of the 1d3 under circumstances that could cause the bionik to malfunction."
+  }
+]

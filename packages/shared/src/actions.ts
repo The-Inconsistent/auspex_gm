@@ -55,6 +55,7 @@ export const Action = z.union([
       icons: z.number().int().min(0).max(60), spend: z.number().int().min(0).max(50).default(0),
       complication: z.boolean().default(false),
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
+      wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
     }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),

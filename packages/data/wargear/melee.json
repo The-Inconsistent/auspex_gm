@@ -1,0 +1,939 @@
+[
+  {
+    "id": "knife",
+    "name": "Knife",
+    "source": "core",
+    "page": 211,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 2,
+      "ed": 2,
+      "thrown": 4,
+      "traits": [],
+      "range": [
+        1
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "astartes-combat-knife",
+    "name": "Astartes Combat Knife",
+    "source": "core",
+    "page": 211,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BLADE",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "sword",
+    "name": "Sword",
+    "source": "core",
+    "page": 211,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "mono-knife",
+    "name": "Mono Knife",
+    "source": "core",
+    "page": 211,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BLADE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "industrial-bludgeon",
+    "name": "Industrial Bludgeon",
+    "source": "core",
+    "page": 211,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "psykana-mercy-blade",
+    "name": "Psykana Mercy Blade",
+    "source": "core",
+    "page": 211,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 2,
+      "ed": 2,
+      "ap": -1,
+      "thrown": 4,
+      "traits": [],
+      "range": [
+        1
+      ]
+    },
+    "effect": "",
+    "note": "Not in the table: the p.211 sidebar says it has the Knife's profile but AP –1 and the ADEPTUS ASTRA TELEPATHICA Keyword. Value, Rarity and Thrown S x 4 are the Knife's; whether the keyword replaces [ANY] or is added is not stated (read as replacing)."
+  },
+  {
+    "id": "chain-bayonet",
+    "name": "Chain Bayonet",
+    "source": "core",
+    "page": 212,
+    "category": "Chain Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAIN",
+      "IMPERIUM",
+      "CHAOS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "chainsword",
+    "name": "Chainsword",
+    "source": "core",
+    "page": 212,
+    "category": "Chain Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAIN",
+      "AELDARI",
+      "IMPERIUM",
+      "CHAOS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "chainaxe",
+    "name": "Chainaxe",
+    "source": "core",
+    "page": 212,
+    "category": "Chain Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAIN",
+      "CHAOS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "eviscerator",
+    "name": "Eviscerator",
+    "source": "core",
+    "page": 212,
+    "category": "Chain Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAIN",
+      "2-HANDED",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "POWER FIELD"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "chain-fist",
+    "name": "Chain Fist",
+    "source": "core",
+    "page": 212,
+    "category": "Chain Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAIN",
+      "POWER FIELD",
+      "IMPERIUM",
+      "CHAOS",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "whip",
+    "name": "Whip",
+    "source": "core",
+    "page": 212,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "PRIMITIVE",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 1,
+      "ed": 1,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "neural-whip",
+    "name": "Neural Whip",
+    "source": "core",
+    "page": 212,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shock-whip",
+    "name": "Shock Whip",
+    "source": "core",
+    "page": 212,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shock-maul",
+    "name": "Shock Maul",
+    "source": "core",
+    "page": 212,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising",
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "force-stave",
+    "name": "Force Stave",
+    "source": "core",
+    "page": 212,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FORCE",
+      "AELDARI",
+      "2-HANDED",
+      "INQUISITION",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "force-sword",
+    "name": "Force Sword",
+    "source": "core",
+    "page": 212,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE",
+      "AELDARI",
+      "INQUISITION",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "force-axe",
+    "name": "Force Axe",
+    "source": "core",
+    "page": 212,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "INQUISITION",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "nemesis-daemon-hammer",
+    "name": "Nemesis Daemon Hammer",
+    "source": "core",
+    "page": 212,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE",
+      "2-HANDED",
+      "INQUISITION",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "death-cult-power-blade",
+    "name": "Death Cult Power Blade",
+    "source": "core",
+    "page": 213,
+    "category": "Power Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "power-sword",
+    "name": "Power Sword",
+    "source": "core",
+    "page": 213,
+    "category": "Power Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "AELDARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "omnissian-axe",
+    "name": "Omnissian Axe",
+    "source": "core",
+    "page": 213,
+    "category": "Power Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "power-axe",
+    "name": "Power Axe",
+    "source": "core",
+    "page": 213,
+    "category": "Power Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MECHANICUS",
+      "AELDARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"ADEPTUS ASTARTES ADEPTUS MECHANICUS\" with no comma between them; split into two keywords."
+  },
+  {
+    "id": "power-fist",
+    "name": "Power Fist",
+    "source": "core",
+    "page": 213,
+    "category": "Power Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "thunder-hammer",
+    "name": "Thunder Hammer",
+    "source": "core",
+    "page": 213,
+    "category": "Power Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "INQUISITION"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "singing-spear",
+    "name": "Singing Spear",
+    "source": "core",
+    "page": 213,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "thrown": 5,
+      "traits": [
+        "Assault",
+        "Force",
+        "Warp Weapon"
+      ],
+      "range": [
+        2
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"2m Thrown*: S x 5\": a 2 m melee reach (range) plus a thrown range (thrown). The asterisk has no footnote on p.213."
+  },
+  {
+    "id": "witchblade",
+    "name": "Witchblade",
+    "source": "core",
+    "page": 213,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Parry",
+        "Warp Weapon"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "void-sabre",
+    "name": "Void Sabre",
+    "source": "core",
+    "page": 213,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": "Any Tests made as part of social interactions with an individual with the ASURYANI Keyword suffer a +4 DN penalty.",
+    "note": "Effect is from the Void Sabre description on p.215; the page does not say whether the penalty applies to the wielder's Tests."
+  },
+  {
+    "id": "choppa",
+    "name": "Choppa",
+    "source": "core",
+    "page": 213,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reliable",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "weirdboy-staff",
+    "name": "Weirdboy Staff",
+    "source": "core",
+    "page": 213,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "2-HANDED",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Force",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "chain-choppa",
+    "name": "Chain Choppa",
+    "source": "core",
+    "page": 213,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAIN",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "big-choppa",
+    "name": "Big Choppa",
+    "source": "core",
+    "page": 213,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "2-HANDED",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "power-klaw",
+    "name": "Power Klaw",
+    "source": "core",
+    "page": 213,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (3)",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  }
+]

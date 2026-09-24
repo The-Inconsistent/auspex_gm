@@ -299,6 +299,46 @@ live play ([backend.md](backend.md)). Each run creates a **new** campaign, and a
 campaign behind. An unknown `threatId` in a beat is only caught by validate or by `beat.startEncounter`, not by
 `codex.save`.
 
+### Wargear catalogue (`packages/data/wargear/*.json`, `Wargear` in `packages/shared/src/wargear.ts`)
+
+The Core Wargear chapter (printed pp.211–247) and Vow of Absolution's Call to Arms (pp.59–75), one JSON array per
+section, for the GM's requisition form. 277 entries:
+- Core (219): `melee` (33, pp.211–213), `ranged` (44, pp.217–219), `ranged-xenos-grenades` (21, pp.220–221, 226),
+  `upgrades-ammo` (26, pp.227–230), `armour` (28, p.233), `equipment` (41, pp.236–241), `augmetics` (26, pp.243–247).
+- VoA (58, ids prefixed `voa-`): `voa-weapons` (37, tables on pp.62 and 67), `voa-upgrades-armour` (14, pp.68 and 73),
+  `voa-equipment` (7, pp.74–75).
+- Names printed in both books (Bolt Rifle, Heavy Bolter…) are different profiles; the form lists them with their cite.
+
+| Field | Notes |
+|---|---|
+| `id`, `name`, `source`, `page`, `category` | `source` is `core` or `vow-of-absolution`; `id` is unique across all files; `page` is printed; `category` is the table heading |
+| `kind` | `weapon`, `grenade` (Grenades and Missiles: requisitioned like Ammo, p.229), `armour`, `equipment`, `upgrade`, `ammo`, `augmetic` |
+| `value`, `rarity` | As printed; `null` when none is printed (Clothing's "Variable" Rarity; the Arm Weapon Implant's "3 + Weapon Value") |
+| `keywords` | Upper case, `[ANY]` kept |
+| `weapon` | `Weapon` minus `name`, plus `addStrength` and `thrown` (the N of "S × N", p.207). A knife has both a melee `range` and `thrown` |
+| `armour` | `{ ar, invulnerable, powered, traits }` |
+| `effect` | Rules text only (the Effect line); no flavour |
+| `note` | Print errors copied as printed, and transcription calls |
+
+Transcription calls, all in each entry's `note`:
+- **Launchers** (grenade launcher, missile launcher, Cyclone) print "Uses the profile of the Grenade/Missile fired", so
+  they have no `weapon`; their range and traits are in `effect`. **Frag and Krak Missiles** print range "– – –"; they
+  carry the Missile Launcher's 24/48/72 (§11.16).
+- **Print errors kept:** Meltagun "Asault"; Combat Shotgun's trailing comma in Keywords (a third Keyword may be missing);
+  Volkite Blaster range 12/24/48; missing commas between traits (Needle Pistol, Radium Pistol, Volkite Blaster) and
+  Power Axe keywords, split.
+- **Built from prose:** Psykana Mercy Blade (the Knife with AP −1 and ADEPTUS ASTRA TELEPATHICA, read as replacing
+  [ANY]); Burna (Cuttin' Flame); Iron Gob's bite. The Mechadendrite is one entry per option, each with the shared
+  Value 5, Very Rare.
+- **VoA:** the Augmetics & Other Tools items (Adamantine Cuirass, Astartes Servo-Arm, Battle Standard, Halo Indomitus,
+  Molecular Bonding Studs, Narthecium, Sanguine Flask, Teleport Homer, Omni-Scrambler, pp.73–75) print **no Value,
+  Rarity or Keywords**, so the form warns and the GM sets them. Halo Indomitus is filed as armour (AR 3*), like Core's
+  force fields. VoA prints the trait "Bulky (X)" (Core: "Bulk"), and Phobos's "+1 M, +2 Stealth" as in its table.
+  Gladius Revelationis and Fames Sanguinius print Value "–". Described-only variants (Stalker Bolt Rifle, Hellstorm
+  Heavy Bolter variant, Executor Heavy Bolter, named relics) have no entries.
+- **Not entries:** Weapon Patterns (p.225, a variant rule), Ammo in the Gilead System (p.230), Augmetic Installation and
+  Reconstruction rules (pp.242–243), Trinkets & Charms tables (pp.247–251).
+
 ---
 
 ## 6. `validate.ts`
@@ -314,6 +354,8 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 | Everything else | `supplements: N threats` (all threats minus core list hits) |
 | Every pack parses as `Pack`, including key references and `MAX_ENCOUNTER_ROWS` | `✖ pack <name>` + zod error |
 | Every beat `encounter[].threatId` and bestiary NPC `threatId` exists | `✖ pack <name>: unknown threat "…"` |
+| Every `wargear/*.json` parses as `Wargear[]`; ids unique across files | `✖ wargear/<file>` + zod error, or `duplicate id` |
+| Wargear summary | `wargear/<file>: N entries` |
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
 
 ---
@@ -338,11 +380,11 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 | Copyrighted | Where |
 |---|---|
 | The book PDFs | `books/`, gitignored (`*.pdf`); never commit them |
-| Stat blocks and ability or rules text | `packages/data/threats/*.json`, and any rule text in packs and characters |
+| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
-- Never serve book content without an access token. `GET /api/campaigns/:id/threats` returns 401 unless the caller has a seat
-  at that table and 403 for a player.
+- Never serve book content without an access token. `GET /api/campaigns/:id/threats` and `/wargear` return 401 unless
+  the caller has a seat at that table and 403 for a player.
 - Players get a threat's `stats` only after the GM reveals that combatant (`toPlayerView`). They never get NPC
   `statSource`.
 - In docs, issues and PRs, show structure or placeholders, never a real stat block.

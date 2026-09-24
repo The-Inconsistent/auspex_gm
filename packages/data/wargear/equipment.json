@@ -1,0 +1,604 @@
+[
+  {
+    "id": "9-70-entrenching-tool",
+    "name": "9-70 Entrenching Tool",
+    "source": "core",
+    "page": 236,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "A 9-70 entrenching tool halves the time needed to dig trenches, foxholes, and other earthen fortifications. It also makes for a sturdy improvised weapon, as many a Guardsman can attest."
+  },
+  {
+    "id": "auspex",
+    "name": "Auspex",
+    "source": "core",
+    "page": 236,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "Activated as a Combat Action to detect energy emissions, motion, and other life signs within 50 metres."
+  },
+  {
+    "id": "auto-quill",
+    "name": "Auto-Quill",
+    "source": "core",
+    "page": 236,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADMINISTRATUM"
+    ],
+    "effect": "+2 bonus dice to Tests to forge or alter documents."
+  },
+  {
+    "id": "ballistic-appeasement-auto-reliquary-absolutis-pattern",
+    "name": "Ballistic Appeasement Auto-Reliquary (Absolutis Pattern)",
+    "source": "core",
+    "page": 236,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "effect": "Clear a jammed weapon as a Free Action."
+  },
+  {
+    "id": "clothing",
+    "name": "Clothing",
+    "source": "core",
+    "page": 236,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 1,
+    "rarity": null,
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Clothing of a higher Rarity is a sign of status, and may grant small situational bonuses when making social Skill Tests (+1 bonus die to Persuasion or Influence, for example).",
+    "note": "Rarity printed as \"Variable\", which is not a Rarity; stored as null. Entry starts on p.236, its Effect/Value/Rarity/Keywords are on p.237."
+  },
+  {
+    "id": "combi-tool",
+    "name": "Combi-Tool",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "You ignore DN penalties to build, repair, maintain, and sabotage Imperial technology."
+  },
+  {
+    "id": "cameleoline-cloak",
+    "name": "Cameleoline Cloak",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "+1 bonus die to Stealth (A) Tests and +1 to Defence when in shadow or cover."
+  },
+  {
+    "id": "chaplet-ecclesiasticus",
+    "name": "Chaplet Ecclesiasticus",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "effect": "The Chaplet can be used as a Symbol of Authority (p.240) or, if necessary, a garrote."
+  },
+  {
+    "id": "chrono",
+    "name": "Chrono",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Settings on the chrono’s display allow for the accurate tracking of Imperial standard, shipboard, and local planetary time."
+  },
+  {
+    "id": "data-slate",
+    "name": "Data-Slate",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "You can record any information transferable from a cogitator, such as local maps, familial records, or manufactorum outputs, onto your Data-Slate."
+  },
+  {
+    "id": "diagnostor",
+    "name": "Diagnostor",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "+1 bonus die to Medicae (Int) Tests to detect and diagnose diseases, injuries, and ailments, and to determine cause of death."
+  },
+  {
+    "id": "grav-chute",
+    "name": "Grav-Chute",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "You can hover or control a fall for up to one hour. You can recharge the Grav-Chute’s solar battery by leaving it in sunlight for one hour."
+  },
+  {
+    "id": "jump-pack",
+    "name": "Jump Pack",
+    "source": "core",
+    "page": 237,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Using your Movement, you can fly at double your Speed by making a DN3 Pilot (A) Test, ignoring any terrain. If you fail the Pilot (A) Test, your movement deviates according to the Scattering (p.186) rules. A Complication triggers a crash, which deals a minimum of 1d3 Shock, plus falling damage (p.201)."
+  },
+  {
+    "id": "mag-boots",
+    "name": "Mag-Boots",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]",
+      "NAVIS IMPERIALIS"
+    ],
+    "effect": "When activated with a Simple Action, the wearer’s feet are fully secured to any metallic surface. The wearer’s feet cannot be removed from the metallic surface by any means, other than their own volition. The wearer can walk and move on the metallic surface whilst the boots are on, but their Speed is reduced by 3."
+  },
+  {
+    "id": "medikit",
+    "name": "Medikit",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "You can make Medicae (Int) Tests to perform surgeries and heal others without suffering a DN penalty, including taking the Restore Shock option (p.124)."
+  },
+  {
+    "id": "chirurgeons-tools",
+    "name": "Chirurgeon’s Tools",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTA SORORITAS"
+    ],
+    "effect": "Functions as a Medikit. +2 bonus dice to Medicae (Int) Tests when a character is Dying."
+  },
+  {
+    "id": "martyrs-gift-medikit",
+    "name": "Martyr’s Gift Medikit",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "Functions as a Medikit. Includes a standard augmetic replacement for any lost limb or eye (p.242); the augmetic is temporary, and becomes useless after 24 hours. The subcutaneous frag charge has the same damage profile as a Frag Missile (p.220)."
+  },
+  {
+    "id": "missionary-kit",
+    "name": "Missionary Kit",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "effect": "Contains: sacred texts of the Imperial Creed, holy icon, incense, portable hymn-caster, liturgical pamphlets translated into several derivations of Low Gothic. +1 bonus die to Persuasion (Fel) Tests made involving converts to the Imperial Creed and those seeking redemption through the grace of the God-Emperor.",
+    "note": "The contents list is printed above the Effect line; both are kept in effect."
+  },
+  {
+    "id": "monoscope",
+    "name": "Monoscope",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "MILITARUM TEMPESTUS"
+    ],
+    "effect": "Can act as a light source and show live footage if connected wirelessly to a data-slate."
+  },
+  {
+    "id": "munitorum-issue-mess-kit",
+    "name": "Munitorum-Issue Mess Kit",
+    "source": "core",
+    "page": 238,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "+1 bonus die to Survival (Wil) tests made to find food and water."
+  },
+  {
+    "id": "periculum-kit",
+    "name": "Periculum Kit",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "[ANY]"
+    ],
+    "effect": "Contains: Chrono, Data-Slate, Magnocular Scope, 2 Ration Packs, Respirator, Vox-bead.",
+    "note": "No Effect line printed; effect holds the printed contents list."
+  },
+  {
+    "id": "preysense-goggles",
+    "name": "Preysense Goggles",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "You ignore any penalties to Tests due to visual conditions."
+  },
+  {
+    "id": "psychic-focus",
+    "name": "Psychic Focus",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "+1 bonus die to Psychic Mastery (Wil) Tests."
+  },
+  {
+    "id": "ration-packs",
+    "name": "Ration Packs",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 1,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "",
+    "note": "No Effect line printed; the description says a pack feeds an adult Human for one day."
+  },
+  {
+    "id": "respirator",
+    "name": "Respirator",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "A Respirator canister lasts for 2 hours of continuous breathing. Whilst breathing through the Respirator, you are immune to breathable poisons and toxic atmospheres."
+  },
+  {
+    "id": "rule-of-the-sororitas",
+    "name": "Rule of The Sororitas",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "If you have the ADEPTA SORORITAS Keyword, you can read the Rule of Sororitas as part of a Regroup to recover 1d3 Shock."
+  },
+  {
+    "id": "sacred-machine-oil",
+    "name": "Sacred Machine Oil",
+    "source": "core",
+    "page": 239,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "You can choose to ignore a single Complication involving Imperial technology in any scene."
+  },
+  {
+    "id": "slate-monitron",
+    "name": "Slate Monitron",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "+2 bonus dice to Medicae (Int) Tests made to heal your Wounds."
+  },
+  {
+    "id": "stimm",
+    "name": "Stimm",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Can be used as part of a Medicae (Int) Test to restore 1d3 + 3 Shock."
+  },
+  {
+    "id": "survival-kit",
+    "name": "Survival Kit",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Contains: compass, rope, water, purification filters, chemical testing strips. +1 bonus die to all Survival (Wil) Tests.",
+    "note": "The contents list is printed above the Effect line; both are kept in effect."
+  },
+  {
+    "id": "symbol-of-authority",
+    "name": "Symbol of Authority",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "+1 bonus die to Leadership (Wil) and Intimidation (Wil) Tests versus targets who would respect your position."
+  },
+  {
+    "id": "uplifting-primer",
+    "name": "Uplifting Primer",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "+1 bonus die to Scholar (Int) Test. A Complication on the Test means that the user learns potentially dangerous misinformation as determined by the GM."
+  },
+  {
+    "id": "void-suit",
+    "name": "Void Suit",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Protects the wearer from the vacuum of space, with enough oxygen for five hours of continuous use. Includes a Vox Caster."
+  },
+  {
+    "id": "vox-bead",
+    "name": "Vox Bead",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "You can communicate with anyone within 1,000 metres (one kilometre) that has a vox unit tuned to the same frequency.",
+    "note": "Printed as a sub-entry under the \"Vox\" heading."
+  },
+  {
+    "id": "vox-caster",
+    "name": "Vox Caster",
+    "source": "core",
+    "page": 240,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "You can communicate with anyone within 100,000 metres (100 kilometres) that has a vox unit.",
+    "note": "Printed as a sub-entry under the \"Vox\" heading."
+  },
+  {
+    "id": "writing-kit",
+    "name": "Writing Kit",
+    "source": "core",
+    "page": 241,
+    "category": "Imperial Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM"
+    ],
+    "effect": "",
+    "note": "No Effect line printed."
+  },
+  {
+    "id": "bonesinger-shard",
+    "name": "Bonesinger Shard",
+    "source": "core",
+    "page": 241,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI"
+    ],
+    "effect": "You ignore DN penalties to build, repair, maintain, and sabotage Aeldari technology."
+  },
+  {
+    "id": "spirit-stone",
+    "name": "Spirit Stone",
+    "source": "core",
+    "page": 241,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI"
+    ],
+    "effect": "If an Aeldari dies while wearing a Spirit Stone, the Stone immediately absorbs the soul and stores it safely and secretly inside."
+  },
+  {
+    "id": "webway-keystone",
+    "name": "Webway Keystone",
+    "source": "core",
+    "page": 241,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI"
+    ],
+    "effect": "You can make a DN 5 Tech (Int) Test to activate either of the following effects: Detect the distance and orientation of the nearest Webway portal. Open or close a Webway portal within 30 metres. Large or complex gates have higher DNs."
+  },
+  {
+    "id": "ammo-runt",
+    "name": "Ammo Runt",
+    "source": "core",
+    "page": 241,
+    "category": "Ork Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "The Ammo Runt has the profile of a Grot (p.358) and follows all the owner’s commands more or less loyally. You ignore all Complications related to your ranged weapons and gain +2 Ammo, which the Ammo Runt carries."
+  },
+  {
+    "id": "doks-toolz",
+    "name": "Dok’s Toolz",
+    "source": "core",
+    "page": 241,
+    "category": "Ork Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "Functions as a Medikit (p.238) for Ork biology. Whenever you roll a Complication whilst using a Dok Bag, the target suffers either 1 Wound or 1 Shock, whichever is funnier.",
+    "note": "Printed heading is \"Dok’s Toolz\" but the text calls it a \"Dok Bag\"; copied as printed."
+  }
+]

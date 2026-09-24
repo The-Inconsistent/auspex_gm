@@ -1,0 +1,1090 @@
+[
+  {
+    "id": "voa-crozius-arcanum",
+    "name": "Crozius Arcanum",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-heavy-thunder-hammer",
+    "name": "Heavy Thunder Hammer",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Unique",
+    "keywords": [
+      "2-HANDED",
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 10,
+      "ed": 8,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-lightning-claws",
+    "name": "Lightning Claws",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-gladius-revelationis",
+    "name": "Gladius Revelationis",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": "Unique",
+    "keywords": [
+      "2-HANDED",
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 10,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (2)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Value printed \"-\". Traits printed \"Brutal, Rending(2) Unwieldy(2)\" with no comma between Rending and Unwieldy; read as two Traits."
+  },
+  {
+    "id": "voa-fames-sanguinius",
+    "name": "Fames Sanguinius",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": "Unique",
+    "keywords": [
+      "2-HANDED",
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 10,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (2)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Value printed \"-\". Traits printed \"Brutal, Rending(2) Unwieldy(2)\" with no comma between Rending and Unwieldy; read as two Traits."
+  },
+  {
+    "id": "voa-relic-blade",
+    "name": "Relic Blade",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-force-sword",
+    "name": "Force Sword",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-force-axe",
+    "name": "Force Axe",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-power-sword",
+    "name": "Power Sword",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-chainsword",
+    "name": "Chainsword",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAIN",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-power-fist",
+    "name": "Power Fist",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-thunder-hammer",
+    "name": "Thunder Hammer",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "2-HANDED",
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-power-axe",
+    "name": "Power Axe",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-eviscerator",
+    "name": "Eviscerator",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "2-HANDED",
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-astartes-combat-knife",
+    "name": "Astartes Combat Knife",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-siege-drills",
+    "name": "Siege Drills",
+    "source": "vow-of-absolution",
+    "page": 62,
+    "category": "Astartes Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "2-HANDED",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 12,
+      "ed": 8,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (4)"
+      ]
+    },
+    "effect": "",
+    "note": "The description (p.60) says each Siege Drill holds a Heavy Flamer; no separate profile is printed, so none is given here."
+  },
+  {
+    "id": "voa-accelerator-autocannon",
+    "name": "Accelerator Autocannon",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Heavy (8)"
+      ]
+    },
+    "effect": "",
+    "note": "BOLT keyword as printed."
+  },
+  {
+    "id": "voa-astartes-grenade-launcher",
+    "name": "Astartes Grenade Launcher",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "Range 12/24/36, Salvo –, Assault. Uses the profile of the Grenade fired. As standard, it can be loaded with Frag or Krak rounds (p.64).",
+    "note": "Damage, ED and AP are printed \"Use the profile of the Greanade fired\" (typo as printed), so there is no weapon entry."
+  },
+  {
+    "id": "voa-auto-bolt-rifle",
+    "name": "Auto Bolt Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-centurion-missile-launcher",
+    "name": "Centurion Missile Launcher",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "Range 18/36/54, Salvo –, Heavy (6). Uses the profile of the Missile fired.",
+    "note": "Damage, ED and AP are printed \"Use the profile of the Missile fired\", so there is no weapon entry."
+  },
+  {
+    "id": "voa-executor-bolt-rifle",
+    "name": "Executor Bolt Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-godwyn-pattern-boltgun",
+    "name": "Godwyn Pattern Boltgun",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-grapnel-launcher",
+    "name": "Grapnel Launcher",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-heavy-bolt-rifle",
+    "name": "Heavy Bolt Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Heavy (3)",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-hellstorm-bolt-rifle",
+    "name": "Hellstorm Bolt Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-las-fusil",
+    "name": "Las Fusil",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "LAS",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": null,
+      "traits": [
+        "Rapid Fire (1)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed in lower case (\"uncommon\")."
+  },
+  {
+    "id": "voa-bolt-pistol",
+    "name": "Bolt Pistol",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-heavy-bolt-pistol",
+    "name": "Heavy Bolt Pistol",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Brutal Pistol\" with no comma; read as two Traits."
+  },
+  {
+    "id": "voa-bolt-rifle",
+    "name": "Bolt Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-storm-bolter",
+    "name": "Storm Bolter",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Brutal",
+        "Heavy (3)",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-heavy-bolter",
+    "name": "Heavy Bolter",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-assault-bolter",
+    "name": "Assault Bolter",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"rapid Fire(2)\" in lower case. Described on p.66 as the Assault variant of the MkII Cawl-Pattern Bolt Rifle."
+  },
+  {
+    "id": "voa-grav-cannon",
+    "name": "Grav Cannon",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "GRAV",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (2)",
+        "Rending (2)"
+      ]
+    },
+    "effect": "",
+    "note": "The table prints \"Grav Cannon\"; its description on p.65 is headed \"Grav-Cannon\"."
+  },
+  {
+    "id": "voa-astartes-shotgun",
+    "name": "Astartes Shotgun",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "PROJECTILE",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Spread",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "voa-plasma-gun",
+    "name": "Plasma Gun",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Supercharge"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords as printed, without IMPERIUM."
+  },
+  {
+    "id": "voa-astartes-sniper-rifle",
+    "name": "Astartes Sniper Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Sniper (2)",
+        "Silent"
+      ]
+    },
+    "effect": "",
+    "note": "Salvo printed 0. Keywords as printed (BOLT, no IMPERIUM)."
+  },
+  {
+    "id": "voa-melta-rifle",
+    "name": "Melta Rifle",
+    "source": "vow-of-absolution",
+    "page": 67,
+    "category": "Astartes Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MELTA",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords as printed, without IMPERIUM."
+  }
+]

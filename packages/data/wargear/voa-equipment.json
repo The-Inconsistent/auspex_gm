@@ -1,0 +1,97 @@
+[
+  {
+    "id": "voa-battle-standard",
+    "name": "Battle Standard",
+    "source": "vow-of-absolution",
+    "page": 74,
+    "category": "Augmetics & Other Tools",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "All Astartes within 1km who share a [CHAPTER] Keyword with the banner receive +2 dice to Resolve Tests and Conviction Tests.",
+    "note": "No Value, Rarity or Keywords printed."
+  },
+  {
+    "id": "voa-halo-indomitus",
+    "name": "Halo Indomitus",
+    "source": "vow-of-absolution",
+    "page": 74,
+    "category": "Augmetics & Other Tools",
+    "kind": "armour",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true
+    },
+    "effect": "This functions as an AR 3 Invulnerable force field and gives +1 to all Leadership (Wil) and Intimidation (Wil) Tests against creatures with the ADEPTUS ASTARTES Keyword.",
+    "note": "No Value, Rarity or Keywords printed. Armour block from the Effect's \"AR 3 Invulnerable force field\"."
+  },
+  {
+    "id": "voa-molecular-bonding-studs",
+    "name": "Molecular Bonding Studs",
+    "source": "vow-of-absolution",
+    "page": 74,
+    "category": "Augmetics & Other Tools",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "Power armour fitted with Molecular Bonding Studs can equip additional armour plates. These grant +2 AR but are destroyed if the wearer is struck by a weapon with an AP better than -3. This is done after the attack has been resolved. Shattered plates can be replaced by a suitable skilled Tech-Priest or, more typically, a Chapter's Techmarine.",
+    "note": "No Value, Rarity or Keywords printed."
+  },
+  {
+    "id": "voa-narthecium",
+    "name": "Narthecium",
+    "source": "vow-of-absolution",
+    "page": 74,
+    "category": "Augmetics & Other Tools",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "Adds +1 dice to all Medicae (Int) Tests and a further +2 dice to Tests to surgically recover progenoid glands. Refills a Sanguine Flask in one round.",
+    "note": "No Value, Rarity or Keywords printed. The text says it can be used as a close-combat weapon, but no weapon profile is printed."
+  },
+  {
+    "id": "voa-omni-scrambler",
+    "name": "Omni-Scrambler",
+    "source": "vow-of-absolution",
+    "page": 75,
+    "category": "Augmetics & Other Tools",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "Adds +3 bonus dice to any Tech (Int) or Intimidate (Wil) Tests to disrupt enemy communications within 500 metres.",
+    "note": "No Value, Rarity or Keywords printed. \"Intimidate (Wil)\" as printed (the Skill is Intimidation)."
+  },
+  {
+    "id": "voa-sanguine-flask",
+    "name": "Sanguine Flask",
+    "source": "vow-of-absolution",
+    "page": 75,
+    "category": "Augmetics & Other Tools",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "Consuming the contents of a Sanguine Flask allows an Astartes to recover 1d3 Shock and staves off the Red Thirst for 24 hours.",
+    "note": "No Value, Rarity or Keywords printed."
+  },
+  {
+    "id": "voa-teleport-homer",
+    "name": "Teleport Homer",
+    "source": "vow-of-absolution",
+    "page": 75,
+    "category": "Augmetics & Other Tools",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "A Teleport Homer provides a stable targeting focus for a teleportation chamber to lock onto, allowing for the safe teleportation of troops to its location.",
+    "note": "No Value, Rarity or Keywords printed, and no Effect line; effect is the entry's one rules sentence."
+  }
+]

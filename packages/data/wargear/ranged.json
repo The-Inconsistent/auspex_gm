@@ -1,0 +1,1326 @@
+[
+  {
+    "id": "bolt-pistol",
+    "name": "Bolt Pistol",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "heavy-bolt-pistol",
+    "name": "Heavy Bolt Pistol",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "boltgun",
+    "name": "Boltgun",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "bolt-rifle",
+    "name": "Bolt Rifle",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "storm-bolter",
+    "name": "Storm Bolter",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Brutal",
+        "Heavy (3)",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "assault-bolter",
+    "name": "Assault Bolter",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "heavy-bolter",
+    "name": "Heavy Bolter",
+    "source": "core",
+    "page": 217,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "laspistol",
+    "name": "Laspistol",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "hot-shot-laspistol",
+    "name": "Hot-Shot Laspistol",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "master-crafted-laspistol",
+    "name": "Master-Crafted Laspistol",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "lasgun",
+    "name": "Lasgun",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "hot-shot-lasgun",
+    "name": "Hot-Shot Lasgun",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "hot-shot-volley-gun",
+    "name": "Hot-Shot Volley Gun",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (4)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "long-las",
+    "name": "Long Las",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Sniper (1)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "lascannon",
+    "name": "Lascannon",
+    "source": "core",
+    "page": 217,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (8)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "plasma-pistol",
+    "name": "Plasma Pistol",
+    "source": "core",
+    "page": 218,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "plasma-gun",
+    "name": "Plasma Gun",
+    "source": "core",
+    "page": 218,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "plasma-cannon",
+    "name": "Plasma Cannon",
+    "source": "core",
+    "page": 218,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (8)",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "inferno-pistol",
+    "name": "Inferno Pistol",
+    "source": "core",
+    "page": 218,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MELTA",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Melta",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "meltagun",
+    "name": "Meltagun",
+    "source": "core",
+    "page": 218,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "MELTA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Asault",
+        "Melta"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Asault\" (sic), copied as printed; almost certainly Assault."
+  },
+  {
+    "id": "multi-melta",
+    "name": "Multi-Melta",
+    "source": "core",
+    "page": 218,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "MELTA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (8)",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "autopistol",
+    "name": "Autopistol",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "hand-cannon",
+    "name": "Hand Cannon",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "autogun",
+    "name": "Autogun",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "stubber",
+    "name": "Stubber",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "needle-pistol",
+    "name": "Needle Pistol",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NEEDLE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Agonising",
+        "Inflict (Poisoned 4)",
+        "Pistol",
+        "Silent"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Agonising, Inflict (Poisoned 4) Pistol, Silent\" with a comma missing after Inflict; split into four traits."
+  },
+  {
+    "id": "stubcannon",
+    "name": "Stubcannon",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shotgun",
+    "name": "Shotgun",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Spread"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "combat-shotgun",
+    "name": "Combat Shotgun",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Rapid Fire (1)",
+        "Spread"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"PROJECTILE, IMPERIUM,\" with a trailing comma; a third keyword (likely SCUM) may be missing. Copied as printed."
+  },
+  {
+    "id": "astartes-shotgun",
+    "name": "Astartes Shotgun",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Spread",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "needle-rifle",
+    "name": "Needle Rifle",
+    "source": "core",
+    "page": 218,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NEEDLE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        14,
+        28,
+        42
+      ],
+      "salvo": 2,
+      "traits": [
+        "Agonising",
+        "Silent",
+        "Inflict (Poisoned 4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "heavy-stubber",
+    "name": "Heavy Stubber",
+    "source": "core",
+    "page": 219,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "astartes-sniper-rifle",
+    "name": "Astartes Sniper Rifle",
+    "source": "core",
+    "page": 219,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Sniper (2)",
+        "Silent"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "assault-cannon",
+    "name": "Assault Cannon",
+    "source": "core",
+    "page": 219,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 6,
+      "traits": [
+        "Heavy (8)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "autocannon",
+    "name": "Autocannon",
+    "source": "core",
+    "page": 219,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (8)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "hand-flamer",
+    "name": "Hand Flamer",
+    "source": "core",
+    "page": 219,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FIRE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Flamer",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "flamer",
+    "name": "Flamer",
+    "source": "core",
+    "page": 219,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FIRE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "heavy-flamer",
+    "name": "Heavy Flamer",
+    "source": "core",
+    "page": 219,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FIRE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 2,
+      "traits": [
+        "Flamer",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "arc-pistol",
+    "name": "Arc Pistol",
+    "source": "core",
+    "page": 219,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ARC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Arc (2)",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "radium-pistol",
+    "name": "Radium Pistol",
+    "source": "core",
+    "page": 219,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Rad (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Pistol Rad (2)\" with no comma; split into two traits."
+  },
+  {
+    "id": "galvanic-rifle",
+    "name": "Galvanic Rifle",
+    "source": "core",
+    "page": 219,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "arc-rifle",
+    "name": "Arc Rifle",
+    "source": "core",
+    "page": 219,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ARC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Arc (2)",
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "radium-carbine",
+    "name": "Radium Carbine",
+    "source": "core",
+    "page": 219,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Rad (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "volkite-blaster",
+    "name": "Volkite Blaster",
+    "source": "core",
+    "page": 219,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "ADEPTUS MECHANICUS",
+      "FIRE"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        48
+      ],
+      "salvo": 2,
+      "traits": [
+        "Blast (2)",
+        "Heavy (4)",
+        "Inflict (On Fire)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed 12/24/48 (not the usual 1:2:3 pattern), copied as printed. Traits printed \"Blast (2) Heavy (4), ...\" with a comma missing after Blast (2)."
+  }
+]

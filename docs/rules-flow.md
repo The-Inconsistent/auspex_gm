@@ -237,6 +237,9 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     makes the item open to everyone, and adds +1 bonus die only when the character has a Keyword left over.
     Keyword Deviation (Chaos, Traitor Astartes, Orks, p.207) and location Rarity (p.206) aren't modelled: the GM picks
     the Rarity and item Keywords to suit.
+16. **Missiles** print range "– – –" (they use the launcher's). The catalogue gives Frag and Krak Missiles the Missile
+    Launcher's 24/48/72; a Cyclone fires them at 18/36/54 (p.220). A thrown weapon's range uses effective Strength,
+    Powered included, as the pregens do.
 
 ---
 

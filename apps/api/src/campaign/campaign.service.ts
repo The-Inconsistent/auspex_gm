@@ -1,8 +1,8 @@
 import { timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
-import { threats } from "@wg/data";
-import type { Lobby, LobbyGame, Role, Threat } from "@wg/shared";
+import { threats, wargear } from "@wg/data";
+import type { Lobby, LobbyGame, Role, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { db } from "../core/db.ts";
@@ -63,3 +63,4 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
 }
 
 export const listThreats = (): Threat[] => [...threats.values()];
+export const listWargear = (): Wargear[] => [...wargear.values()];

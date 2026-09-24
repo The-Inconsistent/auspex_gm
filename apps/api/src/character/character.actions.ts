@@ -1,8 +1,9 @@
 import { and, eq, isNull } from "drizzle-orm";
 import {
-  CharacterStats, Overrides, adjustAmmo, deriveStats, pcHit, pcStatus, requisitionOutcome, requisitionSlot, requisitionTest,
-  requisitionYield, type Action, type ActionResult, type Character,
+  CharacterStats, Overrides, adjustAmmo, deriveStats, effectiveStrength, gearLine, pcHit, pcStatus, requisitionOutcome,
+  requisitionSlot, requisitionTest, requisitionYield, sheetWeapon, type Action, type ActionResult, type Character, type WargearWeapon,
 } from "@wg/shared";
+import { wargear } from "@wg/data";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -87,6 +88,7 @@ export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       if (!open) fail("Start a session first: one Test of each kind per session (p.205)");
       const slot = requisitionSlot(a.kind);
       if (stats.requisitioned[slot] === open.id) fail(`${row.name} already made this session's ${slot} Test (p.205)`);
+      const item = a.wargearId ? wargear.get(a.wargearId) ?? fail("Unknown wargear") : undefined;
       const t = requisitionTest({ keywords: stats.keywords, itemKeywords: a.keywords, value: a.value, rarity: a.rarity });
       if (!t.eligible) fail("No Keyword in common with the item: it can't be requisitioned (p.205)");
       if (a.spend > stats.wealth) fail(`${row.name} has only ${stats.wealth} Wealth`);
@@ -95,10 +97,15 @@ export async function applyCharacterAction(tx: Tx, { ctx, action: a }: { ctx: Ct
       const out = requisitionOutcome({ dn: t.dn, icons: a.icons, spend: a.spend, complication: a.complication, wealth: stats.wealth });
       stats.wealth = out.wealth;
       stats.requisitioned = { ...stats.requisitioned, [slot]: open.id };
-      if (out.success && a.kind === "wargear") {
-        stats.gear = [...stats.gear, a.item];
-        if (a.loadedWith) stats.ammo = adjustAmmo(stats.ammo, { kind: a.loadedWith, delta: 1 });
-      } else if (out.success) stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
+      if (out.success) {
+        // A catalogue weapon (or grenade) joins the armament once; everything else is a gear line.
+        if (item?.weapon && !stats.weapons.some((w) => w.name === item.name))
+          stats.weapons = [...stats.weapons, sheetWeapon(item as { name: string; weapon: WargearWeapon }, effectiveStrength(stats))];
+        if (a.kind === "wargear") {
+          if (!item?.weapon) stats.gear = [...stats.gear, item ? gearLine(item) : a.item];
+          if (a.loadedWith) stats.ammo = adjustAmmo(stats.ammo, { kind: a.loadedWith, delta: 1 });
+        } else stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
+      }
       await saveStats(tx, { id: a.id, stats });
       return { ok: true };
     }

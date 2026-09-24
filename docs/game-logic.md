@@ -127,6 +127,9 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
   [ANY] per §11.15, bonus dice, DN = Value + `RARITY_DN`), `requisitionOutcome` (Wealth tops up a failed roll,
   Complication −1 Wealth), `requisitionYield` (Ammo 3, Grenades/Missiles 5 − Rarity). `stats.requisitioned` holds
   the session id of the last Test per slot, so each character gets one Wargear and one Ammo Test per session.
+- **Catalogue items on a sheet** (`packages/shared/src/wargear.ts`): `sheetWeapon` turns a catalogue weapon into a sheet
+  weapon (thrown range = N × Strength, p.207; a knife keeps its reach and gets a `Thrown (X m)` trait), `gearLine`
+  makes the gear string (armour's AR and Powered, and the page), `requisitionKindOf` maps `grenade`/`ammo` to the Ammo Test.
 - Not tracked: Objectives, automatic Wealth awards, Rank from XP, Regroup healing (p.196). Regroup is a manual HEAL.
 
 **Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the

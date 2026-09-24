@@ -1,0 +1,562 @@
+[
+  {
+    "id": "frag-grenade",
+    "name": "Frag Grenade",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "grenade",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"(S) x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "plasma-grenade",
+    "name": "Plasma Grenade",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 5,
+      "ap": -1,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"(S) x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Keywords printed EXPLOSIVE, AELDARI (not IMPERIUM)."
+  },
+  {
+    "id": "krak-grenade",
+    "name": "Krak Grenade",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 5,
+      "ap": -2,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"(S) x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "militarum-tempestus-grenade-launcher",
+    "name": "Militarum Tempestus Grenade Launcher",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "Range 14/28/42, Salvo –, Assault. Uses the profile of the Grenade fired.",
+    "note": "Damage, ED and AP are printed \"Uses the profile of the Grenade/Missile fired\", so there is no weapon entry: the launcher is a gear line and the grenades or missiles carry the profile."
+  },
+  {
+    "id": "frag-missile",
+    "name": "Frag Missile",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 5,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (10)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"– – –\" (a missile uses its launcher's range). The schema needs a range, so the Missile Launcher's 24/48/72 is filled in; not a printed value for this row."
+  },
+  {
+    "id": "krak-missile",
+    "name": "Krak Missile",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Common",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"– – –\" (a missile uses its launcher's range). The schema needs a range, so the Missile Launcher's 24/48/72 is filled in; not a printed value for this row."
+  },
+  {
+    "id": "missile-launcher",
+    "name": "Missile Launcher",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "effect": "Range 24/48/72, Salvo –, Heavy (6). Uses the profile of the Missile fired.",
+    "note": "Damage, ED and AP are printed \"Uses the profile of the Grenade/Missile fired\", so there is no weapon entry: the launcher is a gear line and the grenades or missiles carry the profile."
+  },
+  {
+    "id": "cyclone-missile-launcher",
+    "name": "Cyclone Missile Launcher",
+    "source": "core",
+    "page": 220,
+    "category": "Grenade & Missile Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "Range 18/36/54, Salvo –, Heavy (8). Uses the profile of the Missile fired. You load this weapon with 2 missile Ammo of the same type, and fire them both as one attack. Make the Ballistic Skill (A) Test as normal against a point in range. When calculating damage, treat this as a single attack with double the Damage value and ED of a single missile.",
+    "note": "Damage, ED and AP are printed \"Uses the profile of the Grenade/Missile fired\", so there is no weapon entry: the launcher is a gear line and the grenades or missiles carry the profile."
+  },
+  {
+    "id": "lasblaster",
+    "name": "Lasblaster",
+    "source": "core",
+    "page": 220,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LAS",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shuriken-catapult",
+    "name": "Shuriken Catapult",
+    "source": "core",
+    "page": 220,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SHURIKEN",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Rending (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shuriken-pistol",
+    "name": "Shuriken Pistol",
+    "source": "core",
+    "page": 220,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SHURIKEN",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Pistol",
+        "Rending (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ranger-long-rifle",
+    "name": "Ranger Long Rifle",
+    "source": "core",
+    "page": 220,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LAS",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Sniper (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "fusion-gun",
+    "name": "Fusion Gun",
+    "source": "core",
+    "page": 220,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MELTA",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "slugga",
+    "name": "Slugga",
+    "source": "core",
+    "page": 220,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "PROJECTILE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "shoota",
+    "name": "Shoota",
+    "source": "core",
+    "page": 220,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "burna",
+    "name": "Burna",
+    "source": "core",
+    "page": 220,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FIRE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": "Burnas can be used in close combat as a melee weapon instead of as a ranged weapon, using the following profile: Damage (S) +3, ED 1, AP –2, Inflict (On Fire). (Cuttin' Flame, p.226)"
+  },
+  {
+    "id": "burna-cuttin-flame",
+    "name": "Burna (Cuttin' Flame)",
+    "source": "core",
+    "page": 226,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "FIRE",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (On Fire)"
+      ]
+    },
+    "effect": "Burnas can be used in close combat as a melee weapon instead of as a ranged weapon, using this profile.",
+    "note": "Melee profile of the Burna from the Cuttin' Flame sidebar, not a separate item: requisition the Burna. Keywords copied from the Burna row; value and rarity not printed."
+  },
+  {
+    "id": "big-shoota",
+    "name": "Big Shoota",
+    "source": "core",
+    "page": 220,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "snazzgun",
+    "name": "Snazzgun",
+    "source": "core",
+    "page": 220,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (4)",
+        "Kustom"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "rokkit-launcha",
+    "name": "Rokkit Launcha",
+    "source": "core",
+    "page": 221,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": "1d3",
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault",
+        "Blast (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "stikkbomb",
+    "name": "Stikkbomb",
+    "source": "core",
+    "page": 221,
+    "category": "Ork Ranged Weapons",
+    "kind": "grenade",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 5,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"(S) x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  }
+]

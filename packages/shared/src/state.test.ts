@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  Action, CharacterStats, Threat, adjustAmmo, requisitionOutcome, requisitionTest, requisitionYield, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
+  Action, CharacterStats, Threat, adjustAmmo, gearLine, requisitionOutcome, sheetWeapon, requisitionTest, requisitionYield, canAct, canSeize, deriveStats, exhaustedShock, isExhausted, isOut, isTimed, pcHit, pcStatus, poolMax,
   roundEndReminders, sideUpNext, threatStatus, toPlayerCodex, toPlayerView,
   type Character, type Codex, type Combatant, type Encounter, type LiveState, type ThreatCombatant,
 } from "./index.ts";
@@ -192,4 +192,13 @@ test("requisitionOutcome and requisitionYield (p.205, p.229)", () => {
   assert.deepEqual(requisitionOutcome({ dn: 8, icons: 5, spend: 0, complication: true, wealth: 0 }), { success: false, wealth: 0 });
   assert.equal(requisitionYield("ammo", "Uncommon"), 3);
   assert.equal(requisitionYield("grenade", "Very Rare"), 2); // Plasma Grenades example
+});
+
+test("sheetWeapon and gearLine: catalogue entries on a sheet (p.207)", () => {
+  const knife = { name: "Knife", weapon: { addStrength: true, damage: 2, ed: 2, range: [1], thrown: 4, traits: [] } };
+  assert.deepEqual(sheetWeapon(knife, 5), { name: "Knife", addStrength: true, damage: 2, ed: 2, range: [1], traits: ["Thrown (20 m)"] });
+  const frag = { name: "Frag Grenade", weapon: { addStrength: false, damage: 10, ed: 4, thrown: 4, salvo: null, traits: ["Blast (6)"] } };
+  assert.deepEqual(sheetWeapon(frag, 9).range, [36]);
+  assert.equal(gearLine({ name: "Tacticus Mk X", source: "core", page: 233, armour: { ar: 5, invulnerable: false, powered: 4, traits: [] } }),
+    "Tacticus Mk X (AR 5, Powered (4); Core p.233)");
 });

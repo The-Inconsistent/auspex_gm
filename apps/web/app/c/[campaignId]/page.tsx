@@ -1,4 +1,4 @@
-import { Me, Threat } from "@wg/shared";
+import { Me, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet } from "@/app/server-api";
@@ -19,6 +19,17 @@ async function loadBestiary(campaignId: string): Promise<Threat[]> {
   }
 }
 
+// GM Wargear catalogue for the requisition form, sorted by name. Empty on failure; the form then takes typed entries.
+async function loadWargear(campaignId: string): Promise<Wargear[]> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/wargear`);
+    const parsed = Wargear.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data.sort((a, b) => a.name.localeCompare(b.name)) : [];
+  } catch {
+    return [];
+  }
+}
+
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
 export default async function Table({ params }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
@@ -33,7 +44,10 @@ export default async function Table({ params }: TableProps) {
     return <StatusScreen text={JOIN_ERRORS.nosignal} />;
   }
 
-  if (me.role === "gm") return <GmApp campaignId={me.campaignId} bestiary={await loadBestiary(me.campaignId)} />;
+  if (me.role === "gm") {
+    const [bestiary, wargear] = await Promise.all([loadBestiary(me.campaignId), loadWargear(me.campaignId)]);
+    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} />;
+  }
   if (!me.characterId) return <StatusScreen text="NO CHARACTER YET. ASK YOUR GM." />;
   return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} />;
 }

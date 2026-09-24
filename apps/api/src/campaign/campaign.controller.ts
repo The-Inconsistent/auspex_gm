@@ -10,7 +10,7 @@ import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
 import { TableGateway } from "../table/table.gateway.ts";
-import { createCampaign, isAdmin, listThreats, lobby } from "./campaign.service.ts";
+import { createCampaign, isAdmin, listThreats, listWargear, lobby } from "./campaign.service.ts";
 
 const Join = z.object({ token: z.string().min(1).max(200) });
 // Scripts (admin key) name the Clerk user who will GM the new campaign.
@@ -83,6 +83,15 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return listThreats();
+  }
+
+  // Wargear catalogue for the GM's requisition form (book text, so GM only like the bestiary).
+  @Get("campaigns/:id/wargear")
+  async wargear(@Param("id") id: string, @Req() req: Request) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    return listWargear();
   }
 
   // Guest QR (/join/<token>): the token moves into an httpOnly cookie. Returns the table to open.
