@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module.ts";
-import { runMigrations } from "./db.ts";
+import { runMigrations } from "./core/db.ts";
 
 await runMigrations();
 const app = await NestFactory.create(AppModule);

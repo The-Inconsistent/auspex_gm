@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CodexInput } from "./codex.ts";
-import { CharacterStats, Marker, Overrides, Tier } from "./state.ts";
+import { CharacterStats, Marker, Overrides, Pool, Tier } from "./state.ts";
 
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
@@ -17,7 +17,7 @@ export const Action = z.union([
       type: z.literal("campaign.update"), name: z.string().min(1).max(100).optional(), tier: Tier.optional(),
       framework: z.string().max(5000).optional(), patron: z.string().max(200).optional(),
     }),
-    z.object({ type: z.literal("pool.adjust"), pool: z.enum(["glory", "ruin"]), delta }),
+    z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     z.object({ type: z.literal("session.start") }),

@@ -104,11 +104,12 @@ Every game change is an `Action` (zod union in `packages/shared/src/actions.ts`)
 3. **Apply** inside `db.transaction`.
 4. **Rebroadcast** the snapshots that `touches(action)` reports.
 
-**Adding an action** touches four places:
+**Adding an action** touches these places:
 1. its schema in `packages/shared/src/actions.ts`
 2. its handler in the owning feature's `*.actions.ts`
-3. `touches()`, if it changes the codex
-4. `PLAYER_ACTIONS` / `authorize()`, if players may send it
+3. its `case` in `table/table.dispatch.ts` (a missing case is a type error)
+4. `touches()`, if it changes the codex
+5. `PLAYER_ACTIONS` / `authorize()`, if players may send it
 
 ### Scope every query
 

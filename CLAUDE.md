@@ -52,7 +52,7 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
 ```
 
 - **One mutation path.** Every change is a socket `action` event, validated against the zod `Action` union
-  (`packages/shared/src/actions.ts`). The gateway (`apps/api/src/table.gateway.ts`) handles each one in order:
+  (`packages/shared/src/actions.ts`). The gateway (`apps/api/src/table/table.gateway.ts`) handles each one in order:
   1. `authorize(ctx)` checks the caller's role and ownership.
   2. `applyAction` runs inside a DB transaction.
   3. The gateway rebroadcasts.
@@ -95,16 +95,27 @@ phones/tablets ──HTTPS──▶ Caddy (prod) / Next rewrites (dev) ──▶
 ## Layout
 
 ```
-apps/api/src/   main.ts, app.module.ts, campaign.controller.ts (REST: campaigns, join, me, threats),
-                table.gateway.ts, actions.ts (all game logic), state.ts (snapshot loaders), schema.ts (Drizzle),
-                auth.ts (tokens, cookie), db.ts
-apps/api/drizzle/  generated migrations (applied automatically at startup)
-apps/api/test/     smoke.test.ts: end-to-end GM + player session against a running api
-apps/web/app/      page.tsx (routes to GM or player by /api/me), join/[token], layout, manifest
-apps/web/components/gm/      GmApp, Tracker, Prep, Codex, Party
-apps/web/components/player/  PlayerApp (SHEET / FIGHT / INTEL)
-apps/web/lib/      useTable.ts (socket + wake lock), command.ts (the tracker's command line)
-packages/shared/src/  threat.ts, state.ts, codex.ts, actions.ts
+apps/api/src/
+  main.ts, app.module.ts
+  core/        db.ts (drizzle client, migrations), errors.ts (ActionError, fail), sql.ts (clamped deltas, column helpers)
+  auth/        auth.schema.ts (access_token), auth.service.ts (tokens, cookie, Ctx)
+  campaign/    campaign.controller.ts (REST: campaigns, join, me, threats), campaign.service.ts,
+               campaign.actions.ts (campaign, pools, sessions), campaign.schema.ts
+  character/   character.actions.ts (characters, tokens), character.schema.ts
+  encounter/   encounter.actions.ts (encounters, turns, combatants, beat.startEncounter), encounter.schema.ts
+  codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts
+  table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
+apps/api/drizzle/   generated migrations (applied automatically at startup)
+apps/api/test/      smoke.test.ts: end-to-end GM + player session against a running api
+apps/api/scripts/   seed.ts (load a content pack), create-campaign.ts
+apps/web/app/       page.tsx (Server Component: /api/me → GM or player app), join/[token]/route.ts (token → cookie)
+apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
+apps/web/components/player/  player-app (sheet, fight, intel)
+apps/web/components/ui/      bar, stat-block, status-chips, status-screen
+apps/web/hooks/use-table/    socket + wake lock
+apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
+packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, pack.ts
+packages/data/               threats/*.json, packs/<name>/, validate.ts, index.ts (loaders)
 ```
 
 ## Commands
@@ -143,11 +154,12 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Conventions and gotchas
 
-- **Adding an action** touches four places:
-  1. its zod schema in `actions.ts`
-  2. a `case` in `apps/api/src/actions.ts`
-  3. `touches()`, if it changes the codex
-  4. `PLAYER_ACTIONS` or `authorize()`, if players may send it
+- **Adding an action** touches these places:
+  1. its zod schema in `packages/shared/src/actions.ts`
+  2. its handler in the owning feature's `*.actions.ts`
+  3. its `case` in `table/table.dispatch.ts` (a missing case is a type error)
+  4. `touches()`, if it changes the codex
+  5. `PLAYER_ACTIONS` / `authorize()`, if players may send it
 - **Scope every query to `ctx.campaignId`.** Never trust ids from the client.
 - **Clients send `ActionInput`** (zod input: defaulted fields optional). The server sees `Action` (parsed output).
 - **Threat JSON conventions:**

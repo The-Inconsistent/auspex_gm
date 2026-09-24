@@ -7,8 +7,18 @@ export const Tier = z.number().int().min(1).max(5);
 export const Role = z.enum(["gm", "player"]);
 export type Role = z.infer<typeof Role>;
 
+// Who a login token belongs to (GET /api/me).
+export const Me = z.object({ campaignId: z.string(), role: Role, characterId: z.string().nullable() });
+export type Me = z.infer<typeof Me>;
+
 export const Side = z.enum(["agents", "threats"]);
 export type Side = z.infer<typeof Side>;
+
+export const Pool = z.enum(["glory", "ruin"]);
+export type Pool = z.infer<typeof Pool>;
+
+export const CombatantKind = z.enum(["pc", "threat"]);
+export type CombatantKind = z.infer<typeof CombatantKind>;
 
 // Colour of the tag/base on the physical mini, so the screen maps to the table.
 export const Marker = z.enum(["red", "amber", "green", "blue", "purple", "white"]);
@@ -65,7 +75,7 @@ export const skillTotal = (s: CharacterStats, skill: Skill) => (s.skills[skill] 
 export const effectiveStrength = (s: CharacterStats) => s.attributes.S + s.armour.powered; // Powered (X), p.232
 
 // Traits, pp.36-37 and the sheet (p.372). All Traits have a minimum of 1 (p.36).
-export function deriveStats(s: CharacterStats, o: Overrides, tier: number) {
+export function deriveStats({ stats: s, overrides: o, tier }: { stats: CharacterStats; overrides: Overrides; tier: number }) {
   const a = s.attributes, m = s.mods;
   const base = {
     maxWounds: a.T + 2 * tier + (m.maxWounds ?? 0),
@@ -90,7 +100,7 @@ export function deriveStats(s: CharacterStats, o: Overrides, tier: number) {
 export type DerivedStats = ReturnType<typeof deriveStats>;
 
 // Glory: max(6, players + 2) (p.164). Ruin: 2 × players (p.320).
-export const poolMax = (pool: "glory" | "ruin", players: number) =>
+export const poolMax = (pool: Pool, players: number) =>
   pool === "glory" ? Math.max(6, players + 2) : Math.max(1, players * 2);
 
 export const Character = z.object({
@@ -109,11 +119,11 @@ export type Character = z.infer<typeof Character>;
 
 const turnFields = { acted: z.boolean(), ambushed: z.boolean() };
 
-export const PcCombatant = z.object({ id: z.string(), kind: z.literal("pc"), characterId: z.string(), ...turnFields });
+export const PcCombatant = z.object({ id: z.string(), kind: z.literal(CombatantKind.enum.pc), characterId: z.string(), ...turnFields });
 
 export const ThreatCombatant = z.object({
   id: z.string(),
-  kind: z.literal("threat"),
+  kind: z.literal(CombatantKind.enum.threat),
   ...turnFields,
   threatId: z.string(),
   threatClass: ThreatClass,
@@ -134,7 +144,8 @@ export type ThreatCombatant = z.infer<typeof ThreatCombatant>;
 
 export const Combatant = z.discriminatedUnion("kind", [PcCombatant, ThreatCombatant]);
 export type Combatant = z.infer<typeof Combatant>;
-export const sideOf = (c: Combatant): Side => (c.kind === "pc" ? "agents" : "threats");
+export const sideOfKind = (kind: CombatantKind): Side => (kind === "pc" ? "agents" : "threats");
+export const sideOf = (c: Combatant): Side => sideOfKind(c.kind);
 
 export const LiveState = z.object({
   campaign: z.object({

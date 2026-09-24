@@ -37,7 +37,7 @@ test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {
     attributes: { S: 5, T: 6, A: 5, I: 5, Wil: 3, Int: 3, Fel: 1 }, armour: { name: "Mk X Tacticus", ar: 5 },
     skills: { Awareness: 3 }, mods: { maxWounds: 3, resolve: 1 }, // Primaris +3 Wounds, Honour the Chapter +1 Resolve
   });
-  const d = deriveStats(s, {}, 4);
+  const d = deriveStats({ stats: s, overrides: {}, tier: 4 });
   assert.equal(d.maxWounds, 6 + 8 + 3);
   assert.equal(d.maxShock, 3 + 4);
   assert.equal(d.defence, 4);
@@ -46,7 +46,7 @@ test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {
   assert.equal(d.influence, 1, "Fel 1 − 1 = 0, clamped to 1 (p.36)");
   assert.equal(d.passiveAwareness, 3, "ceil((3 + Int 3) / 2)");
   assert.equal(d.maxTraumatic, 5);
-  assert.equal(deriveStats(s, { maxWounds: 20 }, 4).maxWounds, 20);
+  assert.equal(deriveStats({ stats: s, overrides: { maxWounds: 20 }, tier: 4 }).maxWounds, 20);
   assert.equal(CharacterStats.parse({}).speed, 6, "empty stats parse with defaults");
 });
 
@@ -82,7 +82,7 @@ test("threatStatus follows class rules (p.324)", () => {
 });
 
 test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries", () => {
-  const d = deriveStats(CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }), {}, 1);
+  const d = deriveStats({ stats: CharacterStats.parse({ attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 } }), overrides: {}, tier: 1 });
   const c = (o: Partial<Character>): Character =>
     ({ id: "x", name: "x", stats: CharacterStats.parse({}), overrides: {}, wounds: 0, shock: 0, wrath: 2, traumatic: 0, xp: 0, conditions: [], ...o });
   assert.deepEqual(pcStatus(c({ wounds: 6 }), d), ["Wounded"], "equal to max is not Dying");

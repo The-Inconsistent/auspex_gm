@@ -26,19 +26,24 @@ export const EncounterEntry = z.object({
 });
 
 export const BeatType = z.enum(["briefing", "travel", "investigation", "social", "combat", "revelation", "rest"]);
+export type BeatType = z.infer<typeof BeatType>;
+export const BeatStatus = z.enum(["planned", "active", "done", "skipped"]);
+export type BeatStatus = z.infer<typeof BeatStatus>;
+export const AdventureStatus = z.enum(["planned", "running", "done"]);
+export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 
 // Editable fields per kind (what the GM sends). `id`/`campaignId` are server-owned.
 export const CodexInput = {
   faction: z.object({
     name: text(100), keywords: z.array(text(60)).max(20).default([]),
-    stance: z.enum(["ally", "neutral", "rival", "enemy"]).default("neutral"), notes: text().default(""), secrets: text().default(""),
+    stance: FactionStance.default("neutral"), notes: text().default(""), secrets: text().default(""),
   }),
   adventure: z.object({
-    title: text(200), premise: text().default(""), status: z.enum(["planned", "running", "done"]).default("planned"),
+    title: text(200), premise: text().default(""), status: AdventureStatus.default("planned"),
   }),
   beat: z.object({
     adventureId: id, title: text(200), type: BeatType.default("social"),
-    status: z.enum(["planned", "active", "done", "skipped"]).default("planned"),
+    status: BeatStatus.default("planned"),
     readAloud: text().default(""), gmNotes: text().default(""), outcome: text().default(""),
     locationId: id.nullable().default(null), npcIds: z.array(id).max(50).default([]), handoutIds: z.array(id).max(50).default([]),
     encounter: z.array(EncounterEntry).max(30).default([]),
