@@ -1,0 +1,458 @@
+[
+  {
+    "id": "alaitoc",
+    "name": "Alaitoc",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "ALAITOC",
+    "traits": [
+      {
+        "name": "Alaitoc",
+        "text": "The Rangers alienated by Alaitoc's puritanical interpretation of the Asuryani Path maintain a galaxy-wide intelligence network in support of their kin.\n\n+1 bonus die on Cunning (Fel) Tests"
+      }
+    ],
+    "note": "Also Apocrypha p.38."
+  },
+  {
+    "id": "biel-tan",
+    "name": "Biel-Tan",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "BIEL-TAN",
+    "traits": [
+      {
+        "name": "Biel-Tan",
+        "text": "Daemonic invasion, and the first summoning of the Yncarne, have fractured the craftworld of Biel-Tan. The survivors are aggressively militant, determined to defy their culture's extinction by rebuilding the Aeldari empire.\n\n+1 bonus die on Intimidation (Wil) Tests"
+      }
+    ],
+    "note": "Also Apocrypha p.38."
+  },
+  {
+    "id": "iyanden",
+    "name": "Iyanden",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "IYANDEN",
+    "traits": [
+      {
+        "name": "Iyanden",
+        "text": "The ravages of the Tyranid hive fleets have reduced Iyanden to a craftworld of ghosts — but those who still live are determined to keep doing so.\n\n+1 Resolve",
+        "mods": {
+          "resolve": 1
+        }
+      }
+    ],
+    "note": "Also Apocrypha p.38."
+  },
+  {
+    "id": "saim-hann",
+    "name": "Saim-Hann",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "SAIM-HANN",
+    "traits": [
+      {
+        "name": "Saim-Hann",
+        "text": "Saim-Hann is divided into Wild Rider tribes, bold warriors who wage war from the saddles of anti-grav vehicles, and leave no insult to their honour unchallenged.\n\n+1 bonus die on Pilot (A) Tests"
+      }
+    ],
+    "note": "Also Apocrypha p.38."
+  },
+  {
+    "id": "ul-khari",
+    "name": "Ul-Khari",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "UL-KHARI",
+    "traits": [
+      {
+        "name": "Ul-Khari",
+        "text": "After years of isolationism, the 'doom-courters' of Ul-Khari who failed to heed the omens of annihilation have become stranded amidst vengeful, crystal ice — but adapted impressively well.\n\n+1 bonus die on Toughness Tests"
+      }
+    ],
+    "note": "Also Core p.77."
+  },
+  {
+    "id": "ulthwe",
+    "name": "Ulthwé",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "ULTHWE",
+    "traits": [
+      {
+        "name": "Ulthwé",
+        "text": "Orbiting the Eye of Terror has cursed Ulthwé's psykers to see further than any others, foresight they use to wage a long war against the Ruinous Powers.\n\n+1 bonus Wrath Die on Psychic Mastery (Wil) Tests"
+      }
+    ],
+    "note": "Printed Ulthwé; the keyword drops the diacritic (ULTHWE) to fit the keyword pattern. Also Core p.77. Also Apocrypha p.38."
+  },
+  {
+    "id": "eldritch-raiders",
+    "name": "Eldritch Raiders",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "type": "coterie",
+    "factionId": "anhrathe",
+    "keyword": "ELDRITCH RAIDERS",
+    "traits": [
+      {
+        "name": "Eldritch Raiders",
+        "text": "Under the renowned Prince Yriel of Iyanden, the Eldritch Raiders have bound other Corsair fleets to their banner and formed a disciplined corps of warrior privateers.\n\nSpend Shifts on Leadership (Wil) Tests to gain Wrath."
+      }
+    ],
+    "note": "Also Core p.77."
+  },
+  {
+    "id": "greensteel-warriors",
+    "name": "Greensteel Warriors",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "type": "coterie",
+    "factionId": "anhrathe",
+    "keyword": "GREENSTEEL WARRIORS",
+    "traits": [
+      {
+        "name": "Greensteel Warriors",
+        "text": "Operating out of the Gilead System, the Greensteel Warriors delight in brokering alliances with other factions, if only for the thrill of betraying them later.\n\nSpend Shifts on Deception (Fel) Tests to gain Wrath."
+      }
+    ],
+    "note": "Also Core p.77."
+  },
+  {
+    "id": "steeleye-reavers",
+    "name": "Steeleye Reavers",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "type": "coterie",
+    "factionId": "anhrathe",
+    "keyword": "STEELEYE REAVERS",
+    "traits": [
+      {
+        "name": "Steeleye Reavers",
+        "text": "The Steeleye Reavers cultivate an aura of dread and menace by physically marking their victims with a sigil — the sign of an elongated iris, with a pointing arrowhead.\n\nSpend Shifts on Intimidation (Wil) Tests to gain Wrath."
+      }
+    ]
+  },
+  {
+    "id": "sunblitz-brotherhood",
+    "name": "Sunblitz Brotherhood",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "type": "coterie",
+    "factionId": "anhrathe",
+    "keyword": "SUNBLITZ BROTHERHOOD",
+    "traits": [
+      {
+        "name": "Sunblitz Brotherhood",
+        "text": "The triplet siblings who rule the Sunblitz Brotherhood treat the 'lesser species' of the galaxy with scorn, and yearn for the extermination of all non-Aeldari.\n\nSpend Shifts on Weapon Skill (I) Tests to gain Wrath."
+      }
+    ]
+  },
+  {
+    "id": "void-dragons",
+    "name": "Void Dragons",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "type": "coterie",
+    "factionId": "anhrathe",
+    "keyword": "VOID DRAGONS",
+    "traits": [
+      {
+        "name": "Void Dragons",
+        "text": "The fickle and ubiquitous Void Dragons are a plague on the galaxy at large, venturing into the farthest reaches of the void with their raids, ambushing unpredictably and ruthlessly.\n\nSpend Shifts on Pilot (A) Tests to gain Wrath."
+      }
+    ]
+  },
+  {
+    "id": "the-black-heart",
+    "name": "The Black Heart",
+    "source": "inheritance-of-embers",
+    "page": 16,
+    "type": "kabal",
+    "factionId": "drukhari",
+    "keyword": "THE BLACK HEART",
+    "traits": [
+      {
+        "name": "The Black Heart",
+        "text": "The enforcers of the legendary Asdrubael Vect know their Kabal's preeminence in Commorragh is preserved only as long as they continue to violently assert it.\n\nGain 1 Ruin to add +Double Rank bonus dice on a Leadership (Wil) Test."
+      }
+    ],
+    "note": "Also Apocrypha p.58."
+  },
+  {
+    "id": "the-bloodied-claw",
+    "name": "The Bloodied Claw",
+    "source": "inheritance-of-embers",
+    "page": 16,
+    "type": "kabal",
+    "factionId": "drukhari",
+    "keyword": "THE BLOODIED CLAW",
+    "traits": [
+      {
+        "name": "The Bloodied Claw",
+        "text": "The long reign of Akhara'Keth over this opportunistic Kabal is credited to his keen sense for impending betrayal. His rivals must be even wilier to unseat him.\n\nGain 1 Ruin to add +Double Rank bonus dice on an Insight (Fel) Test."
+      }
+    ]
+  },
+  {
+    "id": "the-flayed-skull",
+    "name": "The Flayed Skull",
+    "source": "inheritance-of-embers",
+    "page": 16,
+    "type": "kabal",
+    "factionId": "drukhari",
+    "keyword": "THE FLAYED SKULL",
+    "traits": [
+      {
+        "name": "The Flayed Skull",
+        "text": "Where possible, these rapid-attack specialists do not sully themselves by setting foot on alien worlds, killing instead from the comfort of their anti-grav vehicles.\n\nGain 1 Ruin to add +Double Rank bonus dice on a Pilot (A) Test."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "the-obsidian-rose",
+    "name": "The Obsidian Rose",
+    "source": "inheritance-of-embers",
+    "page": 16,
+    "type": "kabal",
+    "factionId": "drukhari",
+    "keyword": "THE OBSIDIAN ROSE",
+    "traits": [
+      {
+        "name": "The Obsidian Rose",
+        "text": "These arms dealers and master-crafters produce the deadliest weapons in all of Commorragh, and enjoy putting their precious tools to murderous use.\n\nGain 1 Ruin to add +Double Rank bonus dice on a Tech (Int) Test."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "the-poisoned-tongue",
+    "name": "The Poisoned Tongue",
+    "source": "inheritance-of-embers",
+    "page": 16,
+    "type": "kabal",
+    "factionId": "drukhari",
+    "keyword": "THE POISONED TONGUE",
+    "traits": [
+      {
+        "name": "The Poisoned Tongue",
+        "text": "This Kabal is notorious for scheming and conspiracy, preferring to kill with poisoned weapons and other unfair advantages rather than unimaginative brute force.\n\nGain 1 Ruin to add +Double Rank bonus dice on a Deception (Fel) Test."
+      }
+    ],
+    "note": "Also Apocrypha p.58."
+  },
+  {
+    "id": "cult-of-strife",
+    "name": "Cult of Strife",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "wych-cult",
+    "factionId": "drukhari",
+    "keyword": "CULT OF STRIFE",
+    "traits": [
+      {
+        "name": "Cult of Strife",
+        "text": "This Cult runs some of the most popular bloodsports in Commorragh, because they always make a spectacularly explosive first impression.\n\nGain 1 Ruin to add +Double Rank extra dice on an attack Test made as part of a Charge."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "the-cursed-blade",
+    "name": "The Cursed Blade",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "wych-cult",
+    "factionId": "drukhari",
+    "keyword": "THE CURSED BLADE",
+    "traits": [
+      {
+        "name": "The Cursed Blade",
+        "text": "Whilst most Wych Cults stay out of the Dark City's politics, this Cult holds that a well-executed betrayal is as arresting as any gladiatorial duel.\n\nGain 1 Ruin to add +Double Rank extra dice and +Double Rank ED on a Surprise Attack."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "endless-trauma",
+    "name": "Endless Trauma",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "wych-cult",
+    "factionId": "drukhari",
+    "keyword": "ENDLESS TRAUMA",
+    "traits": [
+      {
+        "name": "Endless Trauma",
+        "text": "The performances of this Cult are more niche and psychological, subjecting their victims to a demeaning subjugation before delivering the killer strike.\n\nGain 1 Ruin to inflict Double Rank Shock on an enemy targeted by a successful melee attack."
+      }
+    ]
+  },
+  {
+    "id": "the-red-grief",
+    "name": "The Red Grief",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "wych-cult",
+    "factionId": "drukhari",
+    "keyword": "THE RED GRIEF",
+    "traits": [
+      {
+        "name": "The Red Grief",
+        "text": "This Cult's shows are characterised by high velocity as well as martial skill, dealing death at such blistering speed even Aeldari reflexes cannot track the blow.\n\nGain 1 Ruin to add +Rank Speed for the rest of a Turn."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "the-baleful-curriculum",
+    "name": "The Baleful Curriculum",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "coven",
+    "factionId": "drukhari",
+    "keyword": "THE BALEFUL CURRICULUM",
+    "traits": [
+      {
+        "name": "The Baleful Curriculum",
+        "text": "This Coven is generous with its appalling knowledge, hoping its teachings can inspire a wave of atrocities across the Gilead System.\n\nGain 1 Ruin to provide +Rank bonus dice when Helping another Agent."
+      }
+    ]
+  },
+  {
+    "id": "coven-of-twelve",
+    "name": "Coven of Twelve",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "coven",
+    "factionId": "drukhari",
+    "keyword": "COVEN OF TWELVE",
+    "traits": [
+      {
+        "name": "Coven of Twelve",
+        "text": "Assassination by power hungry underlings is a constant threat for this Coven's ruling council. The Haemonculus masters punish impulsively, vigilant for signs of betrayal while engrossed in their terrible work.\n\nGain 1 Ruin to reduce the DN penalties for Multi-Actions by Rank for the rest of a Turn."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "the-dark-creed",
+    "name": "The Dark Creed",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "coven",
+    "factionId": "drukhari",
+    "keyword": "THE DARK CREED",
+    "traits": [
+      {
+        "name": "The Dark Creed",
+        "text": "This Coven has perfected the cultivation of fear — not just to satisfy their culture's soul debt, but as an art form worth practising in its own right.\n\nGain 1 Ruin to add +Rank bonus dice and +Rank targets to an Intimidate (Wil) Interaction Attack."
+      }
+    ],
+    "note": "\"Intimidate (Wil)\" as printed; the Skill is Intimidation (Wil). Also Apocrypha p.59."
+  },
+  {
+    "id": "the-prophets-of-flesh",
+    "name": "The Prophets of Flesh",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "type": "coven",
+    "factionId": "drukhari",
+    "keyword": "THE PROPHETS OF FLESH",
+    "traits": [
+      {
+        "name": "The Prophets of Flesh",
+        "text": "Under the notorious Urien Rakarth, this Coven has repeatedly violated the laws of nature, with transgressive fleshcrafting procedures its recipients are nervous to accept.\n\nGain 1 Ruin to heal +Rank additional Wounds on a successful use of the Medicae (Int) Skill."
+      }
+    ],
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "the-calamity-trail",
+    "name": "The Calamity Trail",
+    "source": "inheritance-of-embers",
+    "page": 19,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE CALAMITY TRAIL",
+    "traits": [
+      {
+        "name": "The Calamity Trail",
+        "text": "The sites of terrible disasters are the preferred backdrops for this Masque's performances, where such dire environments provide a perfect stage for one of the many tragedies of Aeldari myth.\n\nWhen you inflict a Critical Hit against a Mob or Threat with a Condition, inflict +2 Mortal Wounds on the target."
+      }
+    ]
+  },
+  {
+    "id": "the-dreaming-shadow",
+    "name": "The Dreaming Shadow",
+    "source": "inheritance-of-embers",
+    "page": 19,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE DREAMING SHADOW",
+    "traits": [
+      {
+        "name": "The Dreaming Shadow",
+        "text": "These sombre sentinels are committed to battling the ancient Necrons. Rarely away from the battlefield, the Dreaming Shadow has honed to a razor's edge those saedath best suited to combating this ancient foe.\n\nWhen you roll a Wrath Critical whilst Dying, you gain 1 Wound and 1 Wrath Point."
+      }
+    ]
+  },
+  {
+    "id": "the-frozen-stars",
+    "name": "The Frozen Stars",
+    "source": "inheritance-of-embers",
+    "page": 19,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE FROZEN STARS",
+    "traits": [
+      {
+        "name": "The Frozen Stars",
+        "text": "The upbeat Harlequins of this Masque dance with giddy, frenetic enthusiasm that quickly translates to malicious and sadistic punishment in combat.\n\nWhen you inflict a Critical Hit as part of a Charge, inflict +2 Mortal Wounds on the Mob or Threat targeted."
+      }
+    ]
+  },
+  {
+    "id": "the-midnight-sorrow",
+    "name": "The Midnight Sorrow",
+    "source": "inheritance-of-embers",
+    "page": 19,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE MIDNIGHT SORROW",
+    "traits": [
+      {
+        "name": "The Midnight Sorrow",
+        "text": "The intensity with which this Masque pursues the Great War against Chaos produces acrobats of incredible grace and skill, at the cost of their personal identity.\n\nWhen you inflict a Critical Hit on a melee attack, you may move up to your Speed as a Free Action."
+      }
+    ]
+  },
+  {
+    "id": "the-veiled-path",
+    "name": "The Veiled Path",
+    "source": "inheritance-of-embers",
+    "page": 19,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE VEILED PATH",
+    "traits": [
+      {
+        "name": "The Veiled Path",
+        "text": "This Masque exemplifies Cegorach's role as a trickster god, misleading enemies and betraying allies for the fun of their indignant reaction.\n\nWhen you roll a Wrath Critical on a Deception Interaction Attack, Conditions inflicted last for the rest of combat."
+      }
+    ]
+  }
+]

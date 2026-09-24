@@ -35,8 +35,9 @@ const record = {
   note: z.string().max(1000).optional(),
 };
 
-// A background or table bonus: a Trait from `Mods`, or Wealth (FSPG p.92).
-export const Bonus = z.enum([...Mods.keyof().options, "wealth"]);
+// A background or table bonus: a Trait from `Mods`, Wealth (FSPG p.92), Passive Awareness (Apocrypha p.43) or
+// Corruption (Core p.86).
+export const Bonus = z.enum([...Mods.keyof().options, "wealth", "passiveAwareness", "corruption"]);
 export type Bonus = z.infer<typeof Bonus>;
 
 export const Requirement = z.discriminatedUnion("kind", [
@@ -92,12 +93,15 @@ export const Rule = z.object({
   name: z.string().min(1).max(100),
   text: z.string().min(1).max(4000),
   page: z.number().int().positive().optional(), // when not the record's page
+  // When not the record's book: a homebrew rule kept on the official record that lacks it (docs/data.md §9).
+  source: Source.optional(),
   mods: Mods.optional(),
   grants: z.array(Grant).optional(),
 });
 export type Rule = z.infer<typeof Rule>;
 
-// What fills a [PLACEHOLDER] keyword ("[CHAPTER]" → a chapter). "any" is [ANY] (FSPG p.118).
+// What fills a [PLACEHOLDER] keyword ("[CHAPTER]" → a chapter). "any" is [ANY] (Core p.375); "mark" is
+// [MARK OF CHAOS], filled by a Chaos God (Core p.377).
 export const SubFactionType = z.enum([
   "chapter",
   "legion",
@@ -117,6 +121,7 @@ export const SubFactionType = z.enum([
   "sept",
   "league",
   "house",
+  "mark",
   "any",
 ]);
 export type SubFactionType = z.infer<typeof SubFactionType>;
@@ -129,7 +134,8 @@ export const Keyword = z.object({
 });
 export type Keyword = z.infer<typeof Keyword>;
 
-export const Faction = z.object({ ...record, text: z.string().default("") });
+// `rules`: rules every member gets (Assassinorum Conditioning, Apocrypha p.55; Coterie Wrath, IoE p.14).
+export const Faction = z.object({ ...record, text: z.string().default(""), rules: z.array(Rule).default([]) });
 export type Faction = z.infer<typeof Faction>;
 
 export const SubFaction = z.object({
@@ -137,6 +143,7 @@ export const SubFaction = z.object({
   type: SubFactionType,
   factionId: id,
   keyword, // "SPACE WOLVES", which fills the faction's placeholder
+  requires: z.array(Requirement).default([]), // who may join: Black Templars can't be PSYKER (Apocrypha p.27)
   traits: z.array(Rule.extend({ geneSeed: z.boolean().default(false) })).default([]), // Primaris ignore gene-seed (Core p.71)
 });
 export type SubFaction = z.infer<typeof SubFaction>;
@@ -161,13 +168,20 @@ export type Species = z.infer<typeof Species>;
 // Who a table or option group belongs to.
 const Owner = z.union([z.object({ factionId: id }), z.object({ speciesId: id }), z.object({ subFactionId: id })]);
 
-const backgroundRow = z.object({ name: z.string().min(1), text: z.string().min(1), bonus: Bonus });
+// A row gives +1 to its `bonus`, or what its `grants` say ("Gain +1 [ANY] Keyword", Core p.67).
+const backgroundRow = z.object({
+  name: z.string().min(1),
+  text: z.string().min(1),
+  bonus: Bonus.optional(),
+  grants: z.array(Grant).optional(),
+});
 export const BackgroundTable = z.object({
   ...record,
   owner: Owner,
-  origin: z.array(backgroundRow).min(1),
-  accomplishment: z.array(backgroundRow).min(1),
-  goal: z.array(backgroundRow).min(1),
+  // Some books print only some columns (IoE has no Origin tables; Anhrathe only Objectives, IoE p.14).
+  origin: z.array(backgroundRow).default([]),
+  accomplishment: z.array(backgroundRow).default([]),
+  goal: z.array(backgroundRow).default([]),
   objectives: z.array(z.string().min(1)).default([]),
 });
 export type BackgroundTable = z.infer<typeof BackgroundTable>;

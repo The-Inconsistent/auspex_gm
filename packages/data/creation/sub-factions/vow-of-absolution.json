@@ -1,0 +1,13 @@
+[
+  {
+    "id": "absolvers",
+    "name": "Absolvers",
+    "source": "vow-of-absolution",
+    "page": 4,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "ABSOLVERS",
+    "traits": [],
+    "note": "VoA prints no Absolvers Chapter Traits. It calls the Absolvers a Blood Angels Successor Chapter (VoA pp.30, 78), while Core p.71 calls them a Chapter of unknown founding and succession, which may take the Chapter Traits of any First Founding Chapter. VoA p.48 (Inheritance talent) refers back to that Core rule. Which Traits an Absolver takes is a GM decision. Also Core p.71."
+  }
+]

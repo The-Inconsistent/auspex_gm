@@ -1,5 +1,515 @@
 [
   {
+    "id": "orders-militant",
+    "name": "Orders Militant",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDERS MILITANT",
+    "traits": [],
+    "note": "No traits printed. The [ORDER] box says: \"When attempting an action associated with your order, the GM may grant you bonus dice.\" This entry names two Orders Militant, transcribed separately: the Order of Our Martyred Lady and the Order of the Sanctified Shield of Enoch."
+  },
+  {
+    "id": "order-of-our-martyred-lady",
+    "name": "Order of Our Martyred Lady",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF OUR MARTYRED LADY",
+    "traits": [
+      {
+        "name": "The Blood of Martyrs",
+        "text": "You regain all spent Faith points when you start Dying. You regain 1 Faith point whenever an ally is slain or starts Dying.",
+        "page": 34,
+        "source": "apocrypha"
+      }
+    ],
+    "note": "Named under Orders Militant (p.51) as an example; no traits printed. Keyword is its name in capitals, as the book prints no keyword form. Also Apocrypha p.34."
+  },
+  {
+    "id": "order-of-the-sanctified-shield",
+    "name": "Order of the Sanctified Shield",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE SANCTIFIED SHIELD",
+    "traits": [],
+    "note": "The Gilead System's Order, based on the Shrine World of Enoch; named under Orders Militant as \"the Order of the Sanctified Shield of Enoch\" (p.51). No traits printed."
+  },
+  {
+    "id": "orders-dialogus",
+    "name": "Orders Dialogus",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDERS DIALOGUS",
+    "traits": []
+  },
+  {
+    "id": "orders-famulous",
+    "name": "Orders Famulous",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDERS FAMULOUS",
+    "traits": []
+  },
+  {
+    "id": "orders-hospitaller",
+    "name": "Orders Hospitaller",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDERS HOSPITALLER",
+    "traits": []
+  },
+  {
+    "id": "orders-sabine",
+    "name": "Orders Sabine",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDERS SABINE",
+    "traits": []
+  },
+  {
+    "id": "orders-pronatus",
+    "name": "Orders Pronatus",
+    "source": "core",
+    "page": 51,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDERS PRONATUS",
+    "traits": []
+  },
+  {
+    "id": "mars",
+    "name": "Mars",
+    "source": "core",
+    "page": 56,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "MARS",
+    "traits": [
+      {
+        "name": "Glory to the Omnissiah",
+        "text": "You may shift up to two dice to Glory on a single Test, rather than one.",
+        "page": 37,
+        "source": "apocrypha"
+      }
+    ],
+    "note": "Named as an example home planet in the [FORGE WORLD] box; no traits printed. Also Apocrypha p.37."
+  },
+  {
+    "id": "metalica",
+    "name": "Metalica",
+    "source": "core",
+    "page": 56,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "METALICA",
+    "traits": [
+      {
+        "name": "Relentless March",
+        "text": "When you Sprint, you may fire a ranged weapon as if it had the Assault trait. You may not fire a Heavy weapon in this way.",
+        "page": 37,
+        "source": "apocrypha"
+      }
+    ],
+    "note": "Named as an example home planet in the [FORGE WORLD] box; no traits printed. Also Apocrypha p.37."
+  },
+  {
+    "id": "avachrus",
+    "name": "Avachrus",
+    "source": "core",
+    "page": 56,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "AVACHRUS",
+    "traits": [],
+    "note": "The Gilead System's Forge World, named in the [FORGE WORLD] box; detailed on p.297. No traits printed."
+  },
+  {
+    "id": "armageddon-steel-legion",
+    "name": "Armageddon Steel Legion",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "ARMAGEDDON STEEL LEGION",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice on any Test to repair a vehicle or weapon."
+      }
+    ]
+  },
+  {
+    "id": "cadian-shock-troopers",
+    "name": "Cadian Shock Troopers",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "CADIAN SHOCK TROOPERS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to Resolve Tests"
+      }
+    ]
+  },
+  {
+    "id": "catachan-jungle-fighters",
+    "name": "Catachan Jungle Fighters",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "CATACHAN JUNGLE FIGHTERS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to Survival (Wil) Tests"
+      }
+    ]
+  },
+  {
+    "id": "death-korps-of-krieg",
+    "name": "Death Korps of Krieg",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "DEATH KORPS OF KRIEG",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to Intimidation (Wil) Tests"
+      }
+    ]
+  },
+  {
+    "id": "gilead-gravediggers",
+    "name": "Gilead Gravediggers",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "GILEAD GRAVEDIGGERS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus to Defence when in Cover"
+      }
+    ]
+  },
+  {
+    "id": "tallarn-desert-raiders",
+    "name": "Tallarn Desert Raiders",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "TALLARN DESERT RAIDERS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to Pilot (A) Tests"
+      }
+    ]
+  },
+  {
+    "id": "valhallan-ice-warriors",
+    "name": "Valhallan Ice Warriors",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "VALHALLAN ICE WARRIORS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus to Determination Tests"
+      }
+    ]
+  },
+  {
+    "id": "vostroyan-firstborn",
+    "name": "Vostroyan Firstborn",
+    "source": "core",
+    "page": 61,
+    "type": "regiment",
+    "factionId": "astra-militarum",
+    "keyword": "VOSTROYAN FIRSTBORN",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus to Leadership (Wil) Tests"
+      }
+    ]
+  },
+  {
+    "id": "ordo-hereticus",
+    "name": "Ordo Hereticus",
+    "source": "core",
+    "page": 64,
+    "type": "ordo",
+    "factionId": "inquisition",
+    "keyword": "ORDO HERETICUS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "You gain either: +2 bonus dice to resist psychic powers.\n\nOr: +2 bonus dice to Corruption Tests",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "text": "+2 bonus dice to resist psychic powers"
+              },
+              {
+                "text": "+2 bonus dice to Corruption Tests"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label."
+  },
+  {
+    "id": "ordo-xenos",
+    "name": "Ordo Xenos",
+    "source": "core",
+    "page": 64,
+    "type": "ordo",
+    "factionId": "inquisition",
+    "keyword": "ORDO XENOS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "You are fluent in one alien language, and gain +2 bonus dice on any Scholar and Investigation Tests related to any known xenos."
+      }
+    ],
+    "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label."
+  },
+  {
+    "id": "ordo-malleus",
+    "name": "Ordo Malleus",
+    "source": "core",
+    "page": 64,
+    "type": "ordo",
+    "factionId": "inquisition",
+    "keyword": "ORDO MALLEUS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "You gain either: +3 Corruption and +1 Conviction.\n\nOr: +2 bonus dice on any Scholar (Int) and Investigation (Int) Tests related to daemons and the Warp.",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "text": "+3 Corruption and +1 Conviction"
+              },
+              {
+                "text": "+2 bonus dice on any Scholar (Int) and Investigation (Int) Tests related to daemons and the Warp"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label. The +1 Conviction is part of a choice, so it is not a flat mod."
+  },
+  {
+    "id": "other-ordos",
+    "name": "Other Ordos",
+    "source": "core",
+    "page": 64,
+    "type": "ordo",
+    "factionId": "inquisition",
+    "keyword": "[ORDO]",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "Choose one of the following Skills: Cunning (Fel), Deception (Fel), Insight (Fel), Intimidation (Wil), Persuasion (Fel), Psychic Mastery (Wil), Scholar (Int), Stealth (A), Survival (Wil), Tech (Int).\n\nYou gain +Rank bonus dice to Tests with the selected Skill.",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "text": "+Rank bonus dice to Cunning (Fel) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Deception (Fel) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Insight (Fel) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Intimidation (Wil) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Persuasion (Fel) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Psychic Mastery (Wil) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Scholar (Int) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Stealth (A) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Survival (Wil) Tests"
+              },
+              {
+                "text": "+Rank bonus dice to Tech (Int) Tests"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "note": "A catch-all for the Ordos Minoris (p.64); the book names none, so `keyword` stays [ORDO] and the player writes in the Ordo's name. The bonus is an unnamed bullet; \"Bonus\" is our label."
+  },
+  {
+    "id": "blood-angels",
+    "name": "Blood Angels",
+    "source": "core",
+    "page": 73,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "BLOOD ANGELS",
+    "traits": [
+      {
+        "name": "Savage Echoes",
+        "text": "Masters of assault combat, Blood Angels are driven by a furious desire to avenge their fallen Primarch.\n\nYou may reroll Double Rank dice once per melee attack Test."
+      },
+      {
+        "name": "The Red Thirst (Gene-seed)",
+        "text": "The dark flaw of the Chapter is a secret well kept — they harbour a destructive yearning, a battle fury, and an almost insatiable blood-hunger.\n\nWhenever you are in melee combat and see blood, you must make a DN 3 Willpower Test. If you fail, you are Frenzied.",
+        "geneSeed": true
+      }
+    ]
+  },
+  {
+    "id": "dark-angels",
+    "name": "Dark Angels",
+    "source": "core",
+    "page": 73,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "DARK ANGELS",
+    "traits": [
+      {
+        "name": "Grim Resolve",
+        "text": "The Dark Angels do not flinch; all are trained to form impassable firing lines.\n\nYou may reroll Double Rank dice once per ranged attack Test when you Aim (p.189)."
+      },
+      {
+        "name": "The Unforgiven (Tradition)",
+        "text": "The secret that plagues this taciturn Chapter plagues their every social interaction.\n\nYou suffer a +2 DN penalty to any social Tests made against anyone outside of your Chapter."
+      }
+    ]
+  },
+  {
+    "id": "imperial-fists",
+    "name": "Imperial Fists",
+    "source": "core",
+    "page": 73,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "IMPERIAL FISTS",
+    "traits": [
+      {
+        "name": "Siege Masters",
+        "text": "Inheriting their Primarch Rogal Dorn’s patient determination, every Imperial Fist is an expert in siegecraft, defensive warfare, and strategies to counter fortified foes.\n\nYou may reroll Double Rank dice once per attack against a building, fortification, or enemy in cover.\n\nYou may also add +Rank bonus dice whenever you make a Test related to architectural engineering."
+      },
+      {
+        "name": "Gene-seed Flaw (Gene-seed)",
+        "text": "Though proven resistant to mutation and deviance, the Imperial Fists gene-seed inhibits two of the Space Marine implants.\n\nYou are missing implant 12: Sus-an Membrane, and implant 17: Bletcher’s Gland. See p.75 for more information on Space Marine implants.",
+        "geneSeed": true
+      }
+    ]
+  },
+  {
+    "id": "iron-hands",
+    "name": "Iron Hands",
+    "source": "core",
+    "page": 73,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "IRON HANDS",
+    "traits": [
+      {
+        "name": "The Flesh Is Weak",
+        "text": "Iron Hands draw strength and surety by purging weakness from their forms.\n\nChoose one Augmetic Enhancement (p.242).\n\nYou do not suffer the penalties of being Wounded (p.193).\n\nYou gain +1 bonus die to Willpower Tests for every augmetic you have.",
+        "grants": [
+          {
+            "text": "One Augmetic Enhancement of your choice (p.242)"
+          }
+        ]
+      },
+      {
+        "name": "Ruthless Logic (Tradition)",
+        "text": "Suppressing all emotion and developing an unfeeling logic, their meticulous and apathetic nature make them cold allies to all but the Adeptus Mechanicus.\n\nYou suffer a +2 DN penalty to Fellowship-based Tests made against a target that does not have the IRON HANDS or ADEPTUS MECHANICUS Keywords."
+      }
+    ]
+  },
+  {
+    "id": "raven-guard",
+    "name": "Raven Guard",
+    "source": "core",
+    "page": 73,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "RAVEN GUARD",
+    "traits": [
+      {
+        "name": "Master Of Shadows",
+        "text": "The Raven Guard are practiced in silent, unseen strikes regardless of conditions or equipment.\n\nYou may reroll Rank dice once per Stealth (A) Test.\n\nRunning, using a Jump Pack, or similar circumstances do not affect your Stealth (A) Tests.",
+        "page": 74
+      },
+      {
+        "name": "Dark Heritage (Gene-seed)",
+        "text": "Ghostly pale with dark, haunting eyes, the Raven Guard gene-seed has slight deficiencies that make them unnerving to behold with dwindling numbers.\n\nYou are missing implant 16: Mucranoid, and implant 17: Bletcher’s Gland.\n\nYou suffer a + 1 DN penalty to any Fellowship based Test made against any target that could be frightened of your appearance. See p.75 for more information on Space Marine implants.",
+        "page": 74,
+        "geneSeed": true
+      }
+    ]
+  },
+  {
+    "id": "salamanders",
+    "name": "Salamanders",
+    "source": "core",
+    "page": 74,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "SALAMANDERS",
+    "traits": [
+      {
+        "name": "Promethean Cult",
+        "text": "Forged in fire, Salamanders are masters of purging flame and blazing weapons.\n\nYou may reroll Rank dice once per attack Test made using a weapon with the FIRE or MELTA Keywords.\n\nYou may reroll Double Rank dice once each time you roll Determination against a damage from a source with the FIRE or MELTA Keyword."
+      },
+      {
+        "name": "Infernal Inheritance (Gene-seed)",
+        "text": "A Salamaner’s eyes glow like red-hot forges and their skin is stained coal black. Their strange appearance is a result of both their Gene-seed and the high radiation of their homeworld Nocturne. Their Chapter instills a deep altriusm in every Astartes, each keenly feeling the pain of every fallen ally.\n\nWhenever an ally within 30 metres of you is killed, the GM gains +1 Ruin.\n\nYou suffer a + 2 DN penalty to any Fellowship-based Test made against any target that could be frightened of your appearance.",
+        "geneSeed": true
+      }
+    ],
+    "note": "Print errors copied as printed: \"Salamaner’s\", \"altriusm\", \"against a damage from a source\"."
+  },
+  {
     "id": "space-wolves",
     "name": "Space Wolves",
     "source": "core",
@@ -11,13 +521,199 @@
       {
         "name": "Hunters Unleashed",
         "text": "The Chapters kinship with wolves extends to enhanced senses and an almost feral fighting style replete with savage grace.\n\nYou have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133).",
-        "grants": [{ "talent": "acute-sense" }, { "talent": "dual-wield" }]
+        "grants": [
+          {
+            "talent": "acute-sense"
+          },
+          {
+            "talent": "dual-wield"
+          }
+        ]
       },
       {
         "name": "Savage Within (Gene-seed)",
         "text": "Headstrong in their pursuit of valour, Space Wolves do not back down from death in glorious melee combat.\n\nYou cannot Fall Back (p.188).",
         "geneSeed": true
       }
+    ],
+    "note": "\"The Chapters kinship\" (missing apostrophe) copied as printed."
+  },
+  {
+    "id": "ultramarines",
+    "name": "Ultramarines",
+    "source": "core",
+    "page": 74,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "ULTRAMARINES",
+    "traits": [
+      {
+        "name": "Tactical Versatility",
+        "text": "Exemplars of the Codex Astartes, the Ultramarines wage war with the utmost flexibility, able to turn any situation to their advantage.\n\nYou may Shift for Glory twice as part of a Test."
+      },
+      {
+        "name": "Pride of Ultramar (Tradition)",
+        "text": "The Imperium looks to the Ultramarines as paragons of the virtues of Astartes, and each strives to excel that reputation; strong in body, but restrained in mind, a tactical and clear-headed protector of Humanity.\n\nYou start each session with 1 Wrath Point instead of 2."
+      }
     ]
+  },
+  {
+    "id": "white-scars",
+    "name": "White Scars",
+    "source": "core",
+    "page": 74,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "WHITE SCARS",
+    "traits": [
+      {
+        "name": "Lightning Assault",
+        "text": "Favouring fast-attack bikes to achieve their famed agile strikes, White Scars are proficient at attacking at speeds that would be otherwise unwieldy.\n\nYou may reroll Double Rank dice once each time you make a Pilot (A) Test.\n\nYou triple your Speed when you Charge (p.188).",
+        "page": 75
+      },
+      {
+        "name": "Ritual Scarring (Tradition)",
+        "text": "Inductees to the chapter mark the flesh of their faces deeply with their blades.\n\nYou suffer a + 1 DN penalty to any Fellowship-based Test made against any target that could be frightened of your appearance.",
+        "page": 75
+      }
+    ]
+  },
+  {
+    "id": "bad-moons",
+    "name": "Bad Moons",
+    "source": "core",
+    "page": 82,
+    "type": "clan",
+    "factionId": "orks",
+    "keyword": "BAD MOONS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "gain +1 Wealth at the end of every session."
+      }
+    ]
+  },
+  {
+    "id": "blood-axes",
+    "name": "Blood Axes",
+    "source": "core",
+    "page": 82,
+    "type": "clan",
+    "factionId": "orks",
+    "keyword": "BLOOD AXES",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to Leadership (Wil) and Stealth (A) Tests."
+      }
+    ]
+  },
+  {
+    "id": "deathskulls",
+    "name": "Deathskulls",
+    "source": "core",
+    "page": 82,
+    "type": "clan",
+    "factionId": "orks",
+    "keyword": "DEATHSKULLS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to Tech (Int) and Influence Tests."
+      }
+    ]
+  },
+  {
+    "id": "evil-sunz",
+    "name": "Evil Sunz",
+    "source": "core",
+    "page": 82,
+    "type": "clan",
+    "factionId": "orks",
+    "keyword": "EVIL SUNZ",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "You gain +1 Speed, and +Rank bonus dice to all Tests whenever you are in a vehicle moving at top speed.",
+        "mods": {
+          "speed": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "goffs",
+    "name": "Goffs",
+    "source": "core",
+    "page": 82,
+    "type": "clan",
+    "factionId": "orks",
+    "keyword": "GOFFS",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Rank bonus dice to melee attack Tests when you Charge (p.189)."
+      }
+    ],
+    "note": "Print error copied as printed: Charge is on p.188, not p.189 (Space Wolves and White Scars cite p.188)."
+  },
+  {
+    "id": "snakebites",
+    "name": "Snakebites",
+    "source": "core",
+    "page": 82,
+    "type": "clan",
+    "factionId": "orks",
+    "keyword": "SNAKEBITES",
+    "traits": [
+      {
+        "name": "Bonus",
+        "text": "+Double Rank bonus dice to Survival (Wil) Tests."
+      }
+    ]
+  },
+  {
+    "id": "khorne",
+    "name": "Khorne",
+    "source": "core",
+    "page": 85,
+    "type": "mark",
+    "factionId": "chaos",
+    "keyword": "KHORNE",
+    "traits": [],
+    "note": "Fills [MARK OF CHAOS] (p.85): \"you can replace it with the name of the Chaos God you have chosen to venerate\". No traits printed; the Mark of Chaos Talent is p.136."
+  },
+  {
+    "id": "nurgle",
+    "name": "Nurgle",
+    "source": "core",
+    "page": 85,
+    "type": "mark",
+    "factionId": "chaos",
+    "keyword": "NURGLE",
+    "traits": [],
+    "note": "Fills [MARK OF CHAOS] (p.85). No traits printed; the Mark of Chaos Talent is p.136."
+  },
+  {
+    "id": "tzeentch",
+    "name": "Tzeentch",
+    "source": "core",
+    "page": 85,
+    "type": "mark",
+    "factionId": "chaos",
+    "keyword": "TZEENTCH",
+    "traits": [],
+    "note": "Fills [MARK OF CHAOS] (p.85). No traits printed; the Mark of Chaos Talent is p.136."
+  },
+  {
+    "id": "slaanesh",
+    "name": "Slaanesh",
+    "source": "core",
+    "page": 85,
+    "type": "mark",
+    "factionId": "chaos",
+    "keyword": "SLAANESH",
+    "traits": [],
+    "note": "Fills [MARK OF CHAOS] (p.85). No traits printed; the Mark of Chaos Talent is p.136."
   }
 ]

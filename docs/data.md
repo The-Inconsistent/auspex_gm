@@ -465,10 +465,21 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 - `Rule`: a named ability, verbatim, with `mods` only where the book prints a flat bonus, and `grants`.
 - A wargear item keeps its printed `name`; `wargearId` links it once the Wargear catalogue has it.
 
+**Sub-faction keywords** ("SPACE WOLVES") are defined by their `SubFaction` record, not by a keyword record; keyword
+records are the glossary Faction Keywords and the `[PLACEHOLDER]`s. A sub-faction's `requires` holds printed
+restrictions (Black Templars can't be PSYKER; World Eaters must take KHORNE as their [MARK OF CHAOS]).
+
+**Waves.** `creation/manifest.json` `done` lists the types whose wave is finished. A reference into a type not yet
+done is counted as pending, not failed, so data can land wave by wave; once every type is done, validate is strict.
+
 **Transcribing.**
 - **One record per thing.** When several books print the same species, archetype or talent, transcribe only the first
   source in `SOURCES` order (VoA, IoE, FSPG, Core, then the homebrew Apocrypha and Necrontyr), and cite the others in
   `note` ("Also Core p.113, 277 XP"). Official always beats homebrew; Apocrypha's `##` entries have FSPG versions.
+- **Keep homebrew extras.** When a losing homebrew printing has rules the winner lacks (Apocrypha gives Mars a trait, Core
+  prints none), they are added to the winner with `source` set on each `Rule`, so the builder can hide homebrew.
+  Faction `rules` are added by name; `traits` and `abilities` only when the winner has none. Tables whose rows differ
+  (the Apocrypha Harlequin and Drukhari backgrounds) are separate records named "… (Apocrypha)".
 - **Name the thing, not the heading.** VoA heads Tactical Space Marine "TACTICAL"; the record is `tactical-space-marine`
   so it clashes with, and replaces, the Core printing.
 - **Section rules go on every record.** VoA p.45 limits every Talent in its chapter to ADEPTUS ASTARTES, not CHAOS:
@@ -483,3 +494,12 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 - Does Primaris Astartes count as "Adeptus Astartes Species" for requirements (Angel of Death, Rubicon Primaris)?
 - IoE prints a second, unexplained XP figure (+20 / +30) under three Corsair archetypes (pp.54–56).
 - Core p.43 allows only one Background +1 bonus; `docs/pregens.md` and the volkus pack apply all three.
+- Absolvers Chapter Traits: VoA calls them a Blood Angels Successor (pp.30, 78); Core p.71 says unknown succession, free
+  choice of any First Founding Chapter's traits. Which, and does the Blood Angels gene-seed flaw apply?
+- IoE p.14 lets Corsairs use "the Anhrathe Goal table", which isn't printed.
+- A Sister's [ORDER]: Core p.51 lists both categories (Orders Militant…) and named Orders. Which fills the keyword?
+- Forge Worlds, Craftworlds, Coteries and Ordos are printed as examples ("Other Ordos", Core p.64). May players write
+  in their own? The builder needs to know.
+- Navis Nobilite (Apocrypha p.53): must the Origin row (Magisterial, Nomadic, Shrouded House) match the House type?
+- Creating a Traitor (Core p.87) is stored as a Chaos faction rule; it may become archetype variants in the
+  archetype wave.

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "necrons",
+    "name": "Necrons",
+    "source": "legacy-of-the-necrontyr",
+    "page": 5,
+    "text": "",
+    "note": "The book prints no faction section or faction name. Its archetypes sit under \"The Undying Legions\" (p.5) and all carry the Necron keyword; the Necron Species is on p.3. Name and id follow the wave's shared faction list."
+  }
+]

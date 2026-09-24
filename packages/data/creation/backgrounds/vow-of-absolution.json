@@ -1,0 +1,71 @@
+[
+  {
+    "id": "absolvers",
+    "name": "Absolvers Backgrounds",
+    "source": "vow-of-absolution",
+    "page": 25,
+    "owner": {
+      "subFactionId": "absolvers"
+    },
+    "origin": [
+      {
+        "name": "Killer Instinct",
+        "text": "Aggression and fury fuelled your aspirant trials. You overcame every challenger with bloody-minded savagery, impressing your betters.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Courage",
+        "text": "You faced every aspirant trial with grit and determination, pushing through exhaustion, fear, and uncertainty with conviction and bravery.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Cunning",
+        "text": "You made your way through the aspirant trials by using your experience with the underhanded, relying on wit over brawn.",
+        "bonus": "determination"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Crusader",
+        "text": "You zealously shouldered a personal responsibility to destroy a particular foe; your Chapter has given you leave to continue your grim work.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Badge of Honour",
+        "text": "You risked your immortal life to rescue mortals in peril, and have been justly recognised for your unasked for selflessness.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Cleanse and Purge",
+        "text": "You fought enemy forces in their blasphemous lair. Some of your battle-brothers died in the conflict, but you ensured the mission was a success.",
+        "bonus": "maxShock"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Advancement",
+        "text": "You desire the honour of a special role in your Chapter. You look for opportunities to show your worth to your battle-brothers.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Vengeance",
+        "text": "Many of your battle-brothers were slain by a particular foe; you burn to avenge this stain on your honour.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Honour the Chapter",
+        "text": "You uphold the Chapter's valour, quick to extoll its virtues, never allowing a slight against your battle-brothers to go unanswered,",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Dedicate a victory to the memory of the events at Yellem.",
+      "Mark your name in the Book of Absolution.",
+      "Clarify your duty — or lack thereof — in the current circumstances.",
+      "Uphold the Vow to Gilead.",
+      "Complete a fallen battle-brothers unfulfilled vow.",
+      "Ruminate on the prophecy of your Sanguine Vision."
+    ],
+    "note": "The Origin, Accomplishment and Goal rows repeat the Adeptus Astartes Backgrounds (Core p.72); only the Objectives differ. Copied as printed: Honour the Chapter ends with a comma, and Objective 5 reads \"battle-brothers unfulfilled\" without an apostrophe."
+  }
+]

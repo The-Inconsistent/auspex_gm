@@ -1,0 +1,55 @@
+[
+  {
+    "id": "craftworld",
+    "name": "[CRAFTWORLD]",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "text": "Each craftworld has developed their own culture according to their galactic positioning and the manifold tragedies that have befallen them since the Fall. You can replace the [CRAFTWORLD] Keyword with any of the Craftworlds below. Usually this will be the Craftworld on which your Agent was born and raised, but you may choose an adopted Craftworld if your Agent has been stranded away from their home.",
+    "placeholder": "craftworld",
+    "note": "Also Core p.377. Also Apocrypha p.38."
+  },
+  {
+    "id": "coterie",
+    "name": "[COTERIE]",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "text": "The Anhrathe organise into warbands of Corsairs, teaming up to steal better-protected and more valuable plunder. You can replace the [COTERIE] Keyword with any of the Coteries below, reflecting the pirate fleet your Agent has spent the most time fighting alongside.",
+    "placeholder": "coterie",
+    "note": "Also Core p.377."
+  },
+  {
+    "id": "kabal",
+    "name": "[KABAL]",
+    "source": "inheritance-of-embers",
+    "page": 16,
+    "text": "The Kabals of Commorragh are criminal gangs and raiding parties elevated to positions of rulership. Each battles constantly in realspace to seize resources that will secure their territory in the Dark City. You can replace the [KABAL] Keyword with any of the Kabals below to reflect the syndicate your Agent currently claims to be loyal to, or was recently exiled from.",
+    "placeholder": "kabal",
+    "note": "Also Core p.378. Also Apocrypha p.58."
+  },
+  {
+    "id": "wych-cult",
+    "name": "[WYCH CULT]",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "text": "The Wych Cults are the masters and performers of Commorragh's gladiatorial arenas, warriors who train to demonstrate their killing arts before a rapt audience. You can replace the [WYCH CULT] Keyword with any of the Cults below to define the company that trained, outfitted, or provided a stage for your Agent.",
+    "placeholder": "wych-cult",
+    "note": "The box is headed \"THE [WYCH] KEYWORD\" (print error); its text and every archetype use [WYCH CULT]. Also Core p.378."
+  },
+  {
+    "id": "coven",
+    "name": "[COVEN]",
+    "source": "inheritance-of-embers",
+    "page": 17,
+    "text": "Little encapsulates the ancient evil and inventive malice of the Drukhari quite like the Covens of the Haemonculi. These twisted fraternities of torturer-alchemists practice vile arts of life and death from their lairs in the Dark City's gnarled underworld. Replace the [COVEN] Keyword with any of the Covens below.",
+    "placeholder": "coven",
+    "note": "Also Apocrypha p.59."
+  },
+  {
+    "id": "masque",
+    "name": "[MASQUE]",
+    "source": "inheritance-of-embers",
+    "page": 19,
+    "text": "Each Player and Harlequin Troupe performs as part of a Grand Masque, one of the theatrical companies which coordinate their appearances in standout arena performances and military campaigns. You can replace the [MASQUE] Keyword with any of the Masques below to decide which company your Agent has studied with and accompanied on campaign. The benefits you gain from Wrath Criticals whilst using these Masque abilities stack with any other effects you'd usually gain, such as an additional point of Glory.",
+    "placeholder": "masque"
+  }
+]

@@ -150,8 +150,20 @@ for (const type of Object.keys(CREATION_TYPES) as CreationType[]) {
     }
   }
 }
+// Coverage: creation/manifest.json lists the expected ids per type and source, from each book's contents pages.
+// `done` lists the types whose transcription wave is finished: a reference into any other type counts as pending, not
+// an error, until its wave lands.
+let manifest: { done?: string[]; expected?: Record<string, Record<string, string[]>> } = {};
+try {
+  manifest = JSON.parse(readFileSync(new URL("manifest.json", creationDir), "utf8"));
+} catch {}
+const done = new Set(["wargear", ...(manifest.done ?? [])]);
+const pending = new Map<string, number>();
 const creationIds = (type: CreationType) => new Set(creation.get(type)!.map((x) => x.r.id as string));
-const keywordNames = new Set(creation.get("keywords")!.map((x) => x.r.name as string));
+// A sub-faction defines the keyword it fills in ("SPACE WOLVES"), so only glossary keywords need a keyword record.
+const keywordNames = new Set(
+  [...creation.get("keywords")!, ...creation.get("sub-factions")!].map((x) => (x.r.keyword ?? x.r.name) as string),
+);
 const known: Record<string, Set<string>> = {
   factions: creationIds("factions"),
   species: creationIds("species"),
@@ -209,6 +221,7 @@ function checkRefs(v: unknown, where: string) {
 }
 function miss(type: string, ref: string, where: string) {
   if (known[type]?.has(ref)) return;
+  if (!done.has(type)) return void pending.set(type, (pending.get(type) ?? 0) + 1);
   failed = true;
   console.error(`✖ ${where}: unknown ${type} "${ref}"`);
 }
@@ -230,12 +243,7 @@ for (const [type, rows] of creation) {
     seen.set(key, row);
   }
 }
-// Coverage: creation/manifest.json lists the expected ids per type and source, from each book's contents pages.
-let manifest: Record<string, Record<string, string[]>> = {};
-try {
-  manifest = JSON.parse(readFileSync(new URL("manifest.json", creationDir), "utf8"));
-} catch {}
-for (const [type, bySource] of Object.entries(manifest))
+for (const [type, bySource] of Object.entries(manifest.expected ?? {}))
   for (const [source, expected] of Object.entries(bySource)) {
     const have = creationIds(type as CreationType);
     const missing = expected.filter((e) => !have.has(e));
@@ -245,6 +253,7 @@ for (const [type, bySource] of Object.entries(manifest))
   }
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
 console.log(`creation: ${textFallbacks} text fallbacks, ${unresolvedWargear} wargear items not in the catalogue`);
+for (const [type, n] of pending) console.log(`creation: ${n} references to ${type} pending its wave`);
 
 // Packs: schema, internal references, and every prepared-encounter threat must exist.
 for (const name of packNames()) {

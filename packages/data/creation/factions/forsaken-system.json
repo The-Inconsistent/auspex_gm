@@ -1,0 +1,18 @@
+[
+  {
+    "id": "tau-empire",
+    "name": "T'au Empire",
+    "source": "forsaken-system",
+    "page": 119,
+    "text": "",
+    "note": "FSPG has no T'au Empire faction section; the name is the faction tab on the Kroot Mercenary archetype (p.119), which grants [ANY] rather than a T'AU EMPIRE keyword. Also Apocrypha p.67.",
+    "rules": [
+      {
+        "name": "T'au Ranks and Game Tier",
+        "page": 69,
+        "text": "The majority of T’au characters will progress through their Caste’s ranks alongside the game’s Tiers: A Fire Caste character at Tier 1 will be a Shas’La, while that same character at Shas’Vre rank will be Tier 3. Ethereals are the exception: the lowest-ranked Ethereal (an Aun’La) will be a Tier 3 character.\n\nT’au Rank | Tier | Shas | Fio | Kor | Por | Aun | Tier (Ethereal)\n- ‘La | 1 | Warrior | Worker | Messenger | Bureaucrat | Lord | 3\n- ‘Ui | 2 | Veteran | Senior | Carrier | Envoy | Prelate | 4\n- ‘Vre | 3 | Hero | Overseer | Pilot | Magister | King | 5\n- ‘El | 4 | Knight | Engineer | Captain | Diplomat | Holy One | Above T5\n- ‘O | 5 | Commander | Planner | Admiral | Ambassador | Highest of the Holy | Above T5",
+        "source": "apocrypha"
+      }
+    ]
+  }
+]

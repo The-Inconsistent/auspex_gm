@@ -1,0 +1,1322 @@
+[
+  {
+    "id": "emperors-chosen",
+    "name": "Emperor's Chosen",
+    "source": "apocrypha",
+    "page": 42,
+    "type": "shield-host",
+    "factionId": "adeptus-custodes",
+    "keyword": "EMPEROR'S CHOSEN",
+    "traits": [
+      {
+        "name": "Exemplar",
+        "text": "You increase your Influence, Resolve, and Conviction each by +1.",
+        "mods": {
+          "influence": 1,
+          "resolve": 1,
+          "conviction": 1
+        }
+      }
+    ],
+    "note": "Not a Shield Host as such: the host for Custodians who belong to none (p.42)."
+  },
+  {
+    "id": "shadowkeepers",
+    "name": "Shadowkeepers",
+    "source": "apocrypha",
+    "page": 42,
+    "type": "shield-host",
+    "factionId": "adeptus-custodes",
+    "keyword": "SHADOWKEEPERS",
+    "traits": [
+      {
+        "name": "Warden",
+        "text": "When an enemy engaged with you attempts to Fall Back, roll a number of d6 equal to Double Rank. For each Icon rolled, the enemy’s Speed is reduced by 1."
+      }
+    ]
+  },
+  {
+    "id": "dread-host",
+    "name": "Dread Host",
+    "source": "apocrypha",
+    "page": 42,
+    "type": "shield-host",
+    "factionId": "adeptus-custodes",
+    "keyword": "DREAD HOST",
+    "traits": [
+      {
+        "name": "Wrath of the Throne",
+        "text": "At the start of the first round of combat, or when you enter combat, enemies who can see you who lack the IMPERIUM keyword must pass a DN 2 +Rank Fear test."
+      }
+    ]
+  },
+  {
+    "id": "aquilan-shield",
+    "name": "Aquilan Shield",
+    "source": "apocrypha",
+    "page": 42,
+    "type": "shield-host",
+    "factionId": "adeptus-custodes",
+    "keyword": "AQUILAN SHIELD",
+    "traits": [
+      {
+        "name": "Guardian",
+        "text": "At the start of the first round of combat, or when you enter combat, you may select a single ally with the IMPERIUM keyword. While that ally is within 3 metres of you, they add +Rank to their Defence."
+      }
+    ]
+  },
+  {
+    "id": "solar-watch",
+    "name": "Solar Watch",
+    "source": "apocrypha",
+    "page": 42,
+    "type": "shield-host",
+    "factionId": "adeptus-custodes",
+    "keyword": "SOLAR WATCH",
+    "traits": [
+      {
+        "name": "Swift Onslaught",
+        "text": "When you Run, Sprint, or Charge, you increase your Speed by +1. Further, you may Fall Back as a Simple Action rather than a Combat Action."
+      }
+    ]
+  },
+  {
+    "id": "emissaries-imperatus",
+    "name": "Emissaries Imperatus",
+    "source": "apocrypha",
+    "page": 42,
+    "type": "shield-host",
+    "factionId": "adeptus-custodes",
+    "keyword": "EMISSARIES IMPERATUS",
+    "traits": [
+      {
+        "name": "Herald of the Throne",
+        "text": "Allies within 9m who possess the IMPERIUM keyword increase their Resolve and Conviction by +Rank."
+      }
+    ]
+  },
+  {
+    "id": "the-dark",
+    "name": "The Dark",
+    "source": "apocrypha",
+    "page": 46,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE DARK",
+    "traits": [
+      {
+        "name": "Dark Deeds",
+        "text": "When the character makes a melee attack, improve the AP of that attack by 1."
+      }
+    ],
+    "note": "A Saedath, which replaces [SAEDATH]; SubFactionType has no saedath, so masque is the closest fit."
+  },
+  {
+    "id": "the-light",
+    "name": "The Light",
+    "source": "apocrypha",
+    "page": 47,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE LIGHT",
+    "traits": [
+      {
+        "name": "Blaze of Light",
+        "text": "When the character is the target of a ranged attack and their attacker is 12 of more metres away, add +1 to the character’s Defence."
+      }
+    ],
+    "note": "A Saedath, which replaces [SAEDATH]; SubFactionType has no saedath, so masque is the closest fit. \"12 of more metres\" as printed (for \"12 or more\")."
+  },
+  {
+    "id": "the-twilight",
+    "name": "The Twilight",
+    "source": "apocrypha",
+    "page": 47,
+    "type": "masque",
+    "factionId": "harlequins",
+    "keyword": "THE TWILIGHT",
+    "traits": [
+      {
+        "name": "Twilight Falls",
+        "text": "When the character uses the Charge action, they gain +1 bonus dice when making their attack."
+      }
+    ],
+    "note": "A Saedath, which replaces [SAEDATH]; SubFactionType has no saedath, so masque is the closest fit."
+  },
+  {
+    "id": "nomadic-house",
+    "name": "Nomadic Houses",
+    "source": "apocrypha",
+    "page": 53,
+    "type": "house",
+    "factionId": "navis-nobilite",
+    "keyword": "NOMADIC HOUSE",
+    "traits": [
+      {
+        "name": "Nomadic",
+        "text": "Nomadic Houses are well-travelled. They grant +Rank dice to Pilot tests and Conviction."
+      }
+    ],
+    "note": "A House type, not a named House: the [HOUSE] keyword is replaced with the character's own House name, which the book leaves to the player (p.53). The keyword here is a stand-in. Trait name is editorial: the book prints each House type as an unnamed bullet."
+  },
+  {
+    "id": "magisterial-house",
+    "name": "Magisterial Houses",
+    "source": "apocrypha",
+    "page": 53,
+    "type": "house",
+    "factionId": "navis-nobilite",
+    "keyword": "MAGISTERIAL HOUSE",
+    "traits": [
+      {
+        "name": "Magisterial",
+        "text": "Magisterial Houses are exalted and influential. They add +Rank to their Influence and Wealth."
+      }
+    ],
+    "note": "A House type, not a named House: the [HOUSE] keyword is replaced with the character's own House name, which the book leaves to the player (p.53). The keyword here is a stand-in. Trait name is editorial: the book prints each House type as an unnamed bullet."
+  },
+  {
+    "id": "shrouded-house",
+    "name": "Shrouded Houses",
+    "source": "apocrypha",
+    "page": 53,
+    "type": "house",
+    "factionId": "navis-nobilite",
+    "keyword": "SHROUDED HOUSE",
+    "traits": [
+      {
+        "name": "Shrouded",
+        "text": "Shrouded Houses are mysterious and opportunistic. They add +Rank to Cunning and Stealth tests."
+      }
+    ],
+    "note": "A House type, not a named House: the [HOUSE] keyword is replaced with the character's own House name, which the book leaves to the player (p.53). The keyword here is a stand-in. Trait name is editorial: the book prints each House type as an unnamed bullet."
+  },
+  {
+    "id": "renegade-house",
+    "name": "Renegade Houses",
+    "source": "apocrypha",
+    "page": 53,
+    "type": "house",
+    "factionId": "navis-nobilite",
+    "keyword": "RENEGADE HOUSE",
+    "traits": [
+      {
+        "name": "Renegade",
+        "text": "Renegade Houses are forsaken and corrupt. They begin with 1d3x Tier Corruption but add +Rank to Psychic Mastery tests and Maximum Shock."
+      }
+    ],
+    "note": "A House type, not a named House: the [HOUSE] keyword is replaced with the character's own House name, which the book leaves to the player (p.53). The keyword here is a stand-in. Trait name is editorial: the book prints each House type as an unnamed bullet."
+  },
+  {
+    "id": "greater-thurian-league",
+    "name": "The Greater Thurian League",
+    "source": "apocrypha",
+    "page": 64,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "GREATER THURIAN LEAGUE",
+    "traits": [
+      {
+        "name": "Highly Efficient",
+        "text": "You add +1 to your Influence, and you gain +1 Wealth at the end of each session.",
+        "mods": {
+          "influence": 1
+        }
+      }
+    ],
+    "note": "Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "ymyr-conglomerate",
+    "name": "The Ymyr Conglomerate",
+    "source": "apocrypha",
+    "page": 64,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "YMYR CONGLOMERATE",
+    "traits": [
+      {
+        "name": "Elite Artisans",
+        "text": "You add +Rank to Tech skill tests and add +1 to the AR of any armour you wear."
+      }
+    ],
+    "note": "Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "urani-surtr-regulates",
+    "name": "Urani-Surtr Regulates",
+    "source": "apocrypha",
+    "page": 64,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "URANI-SURTR REGULATES",
+    "traits": [
+      {
+        "name": "To the Last",
+        "text": "You add +Rank to your Resolve, and you add +1 to your Determination.",
+        "mods": {
+          "determination": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "trans-hyperian-alliance",
+    "name": "Trans-Hyperian Alliance",
+    "source": "apocrypha",
+    "page": 64,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "TRANS-HYPERIAN ALLIANCE",
+    "traits": [
+      {
+        "name": "Nomadic Explorers",
+        "text": "You increase your Passive Awareness by +Rank and add +1d to all Pilot skill tests."
+      }
+    ]
+  },
+  {
+    "id": "kronus-hegemony",
+    "name": "Kronus Hegemony",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "KRONUS HEGEMONY",
+    "traits": [
+      {
+        "name": "Aggressive Expansion",
+        "text": "You may re-roll Rank dice on melee attacks when you charge and add +1ED to the damage of all melee attacks when you charge."
+      }
+    ]
+  },
+  {
+    "id": "ghulo-industrial-complex",
+    "name": "The Ghulo Industrial Complex",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "GHULO INDUSTRIAL COMPLEX",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "typhon-styx-protectorate",
+    "name": "The Typhon-Styx Protectorate",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "TYPHON-STYX PROTECTORATE",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "kapellan-league",
+    "name": "The Kapellan League",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "KAPELLAN LEAGUE",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "seran-tok-mercantile-leagues",
+    "name": "The Seran-Tok Mercantile Leagues",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "SERAN-TOK MERCANTILE LEAGUES",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "grand-orion-compact",
+    "name": "The Grand Orion Compact",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "GRAND ORION COMPACT",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "balor-attal-conglomerate",
+    "name": "The Balor-Attal Conglomerate",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "BALOR-ATTAL CONGLOMERATE",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "pan-telluric-commonwealth",
+    "name": "The Pan-Telluric Commonwealth",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "PAN-TELLURIC COMMONWEALTH",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "tethys-expanse",
+    "name": "The Tethys Expanse",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "TETHYS EXPANSE",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "sigma-drakoni-union",
+    "name": "The Sigma-Drakoni Union",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "SIGMA-DRAKONI UNION",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "grendl-dominance",
+    "name": "The Grendl Dominance",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "GRENDL DOMINANCE",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "jotun-erydani-combine",
+    "name": "The Jotun-Erydani Combine",
+    "source": "apocrypha",
+    "page": 65,
+    "type": "league",
+    "factionId": "leagues-of-votann",
+    "keyword": "JOTUN-ERYDANI COMBINE",
+    "traits": [],
+    "note": "Other Leagues (p.65): \"there are no listed benefits for characters from those Leagues, but they may spark the imagination, and a suitable bonus can be discussed with your Gamemaster.\" Keyword drops the leading \"The\" (the book prints no keyword form)."
+  },
+  {
+    "id": "borkan-sept",
+    "name": "Bork'an Sept",
+    "source": "apocrypha",
+    "page": 67,
+    "type": "sept",
+    "factionId": "tau-empire",
+    "keyword": "BORK'AN",
+    "traits": [
+      {
+        "name": "Air Caste",
+        "text": "Air caste T’au from Bork’an add +1 to the Speed, Wounds, and Resilience of their vehicles, due to superior engineering."
+      },
+      {
+        "name": "Earth Caste",
+        "text": "Earth caste T’au from Bork’an add +2 to their Medicae, Scholar, and Tech skills."
+      },
+      {
+        "name": "Fire Caste",
+        "text": "Fire caste T’au from Bork’an add +2 to the short range of their ranged weapons, +4 to the medium range, and +6 to the long range."
+      },
+      {
+        "name": "Water Caste",
+        "text": "Water caste T’au from Bork’an are practical and reliable; they may re-roll a 1 on their Wrath die when attempting a Cunning, Deception, Insight, or Persuasion test."
+      }
+    ],
+    "note": "Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\"."
+  },
+  {
+    "id": "dalyth-sept",
+    "name": "Dal'yth Sept",
+    "source": "apocrypha",
+    "page": 68,
+    "type": "sept",
+    "factionId": "tau-empire",
+    "keyword": "DAL'YTH",
+    "traits": [
+      {
+        "name": "Air Caste",
+        "text": "Air caste T’au from Dal’yth add +2 to the Defence of their vehicles when they perform Evasive Action."
+      },
+      {
+        "name": "Earth Caste",
+        "text": "Earth caste T’au from Dal’yth carry devices which are cunningly wrought with hidden functions or secret countermeasures: double the range of the character’s Tech interaction attacks."
+      },
+      {
+        "name": "Fire Caste",
+        "text": "Fire caste T’au from Dal’yth employ advanced camouflage systems to obscure their presence; if they do not move during their turn, they add +2 to their Defence (as if in cover) until the start of their next turn."
+      },
+      {
+        "name": "Water Caste",
+        "text": "Water caste T’au from Dal’yth add +2 to their Cunning, Deception, Insight, and Persuasion skills."
+      }
+    ],
+    "note": "Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\"."
+  },
+  {
+    "id": "farsight-enclaves",
+    "name": "The Farsight Enclaves",
+    "source": "apocrypha",
+    "page": 68,
+    "type": "sept",
+    "factionId": "tau-empire",
+    "keyword": "FARSIGHT ENCLAVES",
+    "traits": [
+      {
+        "name": "All T'au",
+        "text": "All T’au from the Farsight Enclaves are rebels, free from the dogma and deceptions of the Ethereals, and add +2 to their Conviction.",
+        "mods": {
+          "conviction": 2
+        }
+      },
+      {
+        "name": "Fire Caste",
+        "text": "Fire caste T’au from the Farsight Enclaves are drilled to engage enemies at close range: they add an extra +2 to all attacks made against enemies within 9m."
+      }
+    ],
+    "note": "Keyword drops the leading \"The\" (the book prints no keyword form). Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\"."
+  },
+  {
+    "id": "sacea-sept",
+    "name": "Sa'cea Sept",
+    "source": "apocrypha",
+    "page": 68,
+    "type": "sept",
+    "factionId": "tau-empire",
+    "keyword": "SA'CEA",
+    "traits": [
+      {
+        "name": "All T'au",
+        "text": "All T’au from Sa’cea add +1 to their Resolve.",
+        "mods": {
+          "resolve": 1
+        }
+      },
+      {
+        "name": "Air Caste",
+        "text": "Air caste T’au from Sa’cea hone their skills in the skies above dense cityscapes, where absolute precision is needed: they may re-roll any 1s rolled (even on a Wrath die) for Pilot tests."
+      },
+      {
+        "name": "Earth Caste",
+        "text": "Earth caste T’au from Sa’cea are keenly observant, almost to a point of wariness, and add +2d to all Awareness tests."
+      },
+      {
+        "name": "Fire Caste",
+        "text": "Fire caste T’au from Sa’cea have exceptional fire discipline: they may re-roll one die on any Ballistic Skill test they attempt."
+      }
+    ],
+    "note": "Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\"."
+  },
+  {
+    "id": "tau-sept",
+    "name": "T'au Sept",
+    "source": "apocrypha",
+    "page": 68,
+    "type": "sept",
+    "factionId": "tau-empire",
+    "keyword": "T'AU",
+    "traits": [
+      {
+        "name": "All T'au",
+        "text": "All T’au from the T’au Sept grant +1 additional die when they assist an ally. Further, whenever they use an ability which affects T’AU EMPIRE allies, the range is increased by +3m."
+      }
+    ],
+    "note": "Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\"."
+  },
+  {
+    "id": "viorla-sept",
+    "name": "Vior'la Sept",
+    "source": "apocrypha",
+    "page": 68,
+    "type": "sept",
+    "factionId": "tau-empire",
+    "keyword": "VIOR'LA",
+    "traits": [
+      {
+        "name": "Air Caste",
+        "text": "Air caste T’au from Vior’la have a knack for high-speed manoeuvres that other T’au might balk at: they ignore the additional Wrath Dice that comes piloting a vehicle at Breakneck speed."
+      },
+      {
+        "name": "Earth Caste",
+        "text": "Earth caste T’au from Vior’la are quick to experiment and jury-rig the devices they use: they may add a second Wrath die to any Tech test they attempt, and thus have the potential for two criticals, two complications, or one of each."
+      },
+      {
+        "name": "Fire Caste",
+        "text": "Fire caste T’au advance and redeploy quickly, adding +1 to their Speed during the first round of each combat, and +1 Speed when they Run or Sprint."
+      },
+      {
+        "name": "Water Caste",
+        "text": "Water caste T’au from Vior’la are fast-talking and effusive: they may add a second Wrath die to any Persuasion test they attempt, and thus have the potential for two criticals, two complications, or one of each."
+      }
+    ],
+    "note": "The Fire caste bullet omits \"from Vior’la\", as printed. Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\". Air caste \"the additional Wrath Dice that comes piloting\" as printed."
+  },
+  {
+    "id": "black-templars",
+    "name": "Black Templars",
+    "source": "apocrypha",
+    "page": 27,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "BLACK TEMPLARS",
+    "note": "SUCCESSOR: Imperial Fists. Restriction as printed: \"Characters with the BLACK TEMPLARS keyword may not, under any circumstances, take the PSYKER keyword: The Black Templars accept no psykers within their ranks.\"",
+    "traits": [
+      {
+        "name": "Righteous Zeal",
+        "text": "Your hatred permits you to show no mercy, nor does it permit you to yield while the enemy draws breath.\n\nWhen you charge, you may re-roll up to Rank dice on your Weapon Skill test. In addition, you may re-roll Rank dice when you roll Determination."
+      },
+      {
+        "name": "Gene-Seed Flaw (Gene-Seed)",
+        "text": "Though proven resistant to mutation and deviance, Rogal Dorn’s gene-seed inhibits two of the Space Marine implants.\n\nYou are missing implant 12: Sus-an Membrane, and implant 17: Betcher’s Gland.",
+        "geneSeed": true
+      }
+    ],
+    "requires": [
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crimson-fists",
+    "name": "Crimson Fists",
+    "source": "apocrypha",
+    "page": 27,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "CRIMSON FISTS",
+    "note": "SUCCESSOR: Imperial Fists.",
+    "traits": [
+      {
+        "name": "No Matter the Odds",
+        "text": "You will not yield in the face of overwhelming odds.\n\nWhen making an attack while you and your allies are outnumbered at least two-to-one, you may add Rank dice to your Ballistic Skill or Weapon Skill test."
+      },
+      {
+        "name": "Gene-Seed Flaw (Gene-Seed)",
+        "text": "Though proven resistant to mutation and deviance, Rogal Dorn’s gene-seed inhibits two of the Space Marine implants.\n\nYou are missing implant 12: Sus-an Membrane, and implant 17: Betcher’s Gland.",
+        "geneSeed": true
+      }
+    ]
+  },
+  {
+    "id": "flesh-tearers",
+    "name": "Flesh Tearers",
+    "source": "apocrypha",
+    "page": 28,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "FLESH TEARERS",
+    "note": "SUCCESSOR: Blood Angels.",
+    "traits": [
+      {
+        "name": "Fury Within",
+        "text": "You are possessed of a bloodthirsty recklessness. When properly directed, this murderous ferocity makes you unstoppable.\n\nYou may re-roll Double Rank dice once per melee attack Test. In addition, if you shift one or more Icons on a melee attack, improve the AP of your attack by 1 (i.e., from -1 to -2)."
+      },
+      {
+        "name": "The Red Thirst (Gene-seed)",
+        "text": "Your fury comes from a deep destructive impulse within your body and soul, an insatiable bloodlust that resists all attempts to deny it.\n\nWhenever you are in melee combat and see blood, you must make a DN 4 Willpower Test. If you fail, you are Frenzied.",
+        "geneSeed": true
+      }
+    ]
+  },
+  {
+    "id": "grey-knights",
+    "name": "Grey Knights",
+    "source": "apocrypha",
+    "page": 28,
+    "type": "chapter",
+    "factionId": "adeptus-astartes",
+    "keyword": "GREY KNIGHTS",
+    "note": "Restriction as printed: \"Due to their unique geneseed and secretive nature, the Grey Knights do not yet count any Primaris Marines amongst their number. As such, Primaris Astartes characters cannot select this CHAPTER.\" The lore also says \"Every Grey Knight is a psyker\".",
+    "traits": [
+      {
+        "name": "Daemonbane",
+        "text": "You have been taught the secrets of daemon-kind to best understand how to end them.\n\nWhen attacking a creature with the DAEMON keyword in melee combat, you add +Rank ED to the attack’s damage. You also add +Rank to your Conviction."
+      },
+      {
+        "name": "Secretive (Tradition)",
+        "text": "Grey Knights do not trust outsiders, and their nature cannot be permitted to be known to any outside the chapter.\n\nYou suffer a +2DN penalty for Interaction tests involving anyone who lacks the Grey Knights or Inquisition keywords."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "PRIMARIS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "emperors-children",
+    "name": "Emperor's Children",
+    "source": "apocrypha",
+    "page": 29,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "EMPEROR'S CHILDREN",
+    "note": "Legion: III. Primarch: Fulgrim. Restriction as printed: \"Characters with the EMPEROR'S CHILDREN keyword must take SLAANESH as their [MARK OF CHAOS] keyword.\"",
+    "traits": [
+      {
+        "name": "In Pursuit of Perfection",
+        "text": "Each Emperor’s Children Space Marine seeks to perfect a single aspect of the arts of warfare.\n\nSelect one of the following skills: Awareness, Ballistic Skill, Leadership, Pilot, Weapon Skill. You gain +Rank dice as a bonus to all uses of that skill."
+      },
+      {
+        "name": "Fear of Imperfection (Tradition)",
+        "text": "The Emperor’s Children cannot abide the imperfect and fear the notion that a flaw may mean perfection is unattainable.\n\nWhenever you suffer a complication on the skill chosen for Pursuit of Perfection, above, the GM gains 1 Ruin, in addition to any other results."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "slaanesh"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "iron-warriors",
+    "name": "Iron Warriors",
+    "source": "apocrypha",
+    "page": 29,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "IRON WARRIORS",
+    "note": "Legion: IV. Primarch: Perturabo.",
+    "traits": [
+      {
+        "name": "Siege Masters",
+        "text": "Iron Warriors know fortifications.\n\nYou may reroll Double Rank dice whenever you attack a building, fortification, or an enemy in cover.\n\nYou may also add +Rank dice whenever you make a test related to architectural engineering."
+      },
+      {
+        "name": "Scorn for the Weak (Tradition)",
+        "text": "Iron Warriors despise weakness in their comrades.\n\nIf one of your allies fails a Resolve test, you must pass a Willpower test (DN 3). On a failure, you feel a strong urge to punish that ally. If the failure involves a complication, the urge becomes a compulsion. The GM may alter the DN based on the severity or significance of the failure."
+      }
+    ]
+  },
+  {
+    "id": "night-lords",
+    "name": "Night Lords",
+    "source": "apocrypha",
+    "page": 30,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "NIGHT LORDS",
+    "note": "Legion: VIII. Primarch: Konrad Curze.",
+    "traits": [
+      {
+        "name": "Ave Dominus Nox",
+        "text": "Night Lords revel in the fear of others and are swift to spread it.\n\nWhile under cover of darkness, you may add +Rank to your Defence and Speed.\n\nAs a free action at the start of combat, you may spend one Glory to cause Fear for the duration of the fight; enemies who see you must pass a Fear test (DN 2 + Double Rank)."
+      },
+      {
+        "name": "Blood of Nostramo (Tradition)",
+        "text": "Night Lords often recruit from amongst the criminal element and have little love for a fair fight.\n\nIf you see an ally fail a Resolve or Fear test, you must attempt a Resolve test (DN 3) or become pinned."
+      }
+    ]
+  },
+  {
+    "id": "world-eaters",
+    "name": "World Eaters",
+    "source": "apocrypha",
+    "page": 30,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "WORLD EATERS",
+    "note": "Legion: XII. Primarch: Angron. Restriction as printed: \"Characters with the WORLD EATERS keyword must take KHORNE as their [MARK OF CHAOS] keyword.\"",
+    "traits": [
+      {
+        "name": "Incarnate Violence",
+        "text": "You are driven to spill blood and rend flesh, and nothing will stop you.\n\nYou may reroll Double Rank dice on any melee attack test."
+      },
+      {
+        "name": "Butcher's Nails (Gene-Seed)",
+        "text": "The implants buried in your skull drive you into fits of berserk rage in battle.\n\nUpon engaging in melee combat, you become Frenzied for the rest of the battle. The Willpower test to restrain your frenzy increases by +1 for every enemy you have killed during the battle.",
+        "geneSeed": true
+      }
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "khorne"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "death-guard",
+    "name": "Death Guard",
+    "source": "apocrypha",
+    "page": 31,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "DEATH GUARD",
+    "note": "Legion: XIV. Primarch: Mortarion. Restriction as printed: \"Characters with the DEATH GUARD keyword must take NURGLE as their [MARK OF CHAOS] keyword.\" No Gene-Seed trait is printed.",
+    "traits": [
+      {
+        "name": "Inexorable Advance",
+        "text": "The brutal, relentless stride of the Death Guard is accompanied by a constant barrage of fire.\n\nYou suffer no penalty for operating a Heavy weapon without bracing it, and when you take a normal move, you may use your Simple Action to aim."
+      },
+      {
+        "name": "Intractable (Tradition)",
+        "text": "Death Guard are slow and purposeful, never given to needless haste when they could instead grind their foes down with inexorable force.\n\nYou must spend a point of Glory to take the Sprint action."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "nurgle"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "thousand-sons",
+    "name": "Thousand Sons",
+    "source": "apocrypha",
+    "page": 31,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "THOUSAND SONS",
+    "note": "Legion: XV. Primarch: Magnus the Red. \"These rules reflect those who possess psychic abilities, rather than the Rubricae automata that accompany them into battle.\" Restriction as printed: \"Characters with the THOUSAND SONS keyword must take TZEENTCH as their [MARK OF CHAOS] keyword.\"",
+    "traits": [
+      {
+        "name": "The Rubric",
+        "text": "A Thousand Sons are legendary for their mastery of warp-craft.\n\nYou gain the Favoured by The Warp talent.",
+        "grants": [
+          {
+            "talent": "favoured-by-the-warp"
+          }
+        ]
+      },
+      {
+        "name": "Gift of Mutation (Gene-Seed)",
+        "text": "Between your unstable gene-seed and the attentions of the Changer of Ways, the Thousand Sons are especially prone to mutation.\n\nYou gain an additional +1 Corruption whenever you would gain one or more Corruption points. You also increase the DN of all tests to resist Corruption or Malignancy by +1.",
+        "geneSeed": true
+      }
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "tzeentch"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "black-legion",
+    "name": "Black Legion",
+    "source": "apocrypha",
+    "page": 32,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "BLACK LEGION",
+    "note": "Legion: XVI. Primarch: Horus Lupercal. No Gene-Seed trait is printed.",
+    "traits": [
+      {
+        "name": "The Tip of the Spear",
+        "text": "The Black Legion epitomise the Traitor Legions’ threat, swift, ruthless, and unyielding in their hateful fervour.\n\nYou may re-roll Rank dice on all Ballistic Skill tests made with a ranged weapon at close range. You may also re-roll Rank dice on Weapon Skill tests made when you Charge.\n\nYou also gain +1 Resolve.",
+        "mods": {
+          "resolve": 1
+        }
+      },
+      {
+        "name": "Bitter Pride (Tradition)",
+        "text": "The Black Legion have little love for those outside their ranks.\n\nYou suffer a +2DN penalty for Interaction tests involving anyone outside the Black Legion, unless those people are subordinate to the Black Legion character."
+      }
+    ]
+  },
+  {
+    "id": "word-bearers",
+    "name": "Word Bearers",
+    "source": "apocrypha",
+    "page": 32,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "WORD BEARERS",
+    "note": "Legion: XVII. Primarch: Lorgar Aurelian. No Gene-Seed trait is printed.",
+    "traits": [
+      {
+        "name": "Profane Zeal",
+        "text": "The Word Bearers march to war for the glory of the Dark Gods.\n\nWhen you charge, you may re-roll up to Rank dice on your Weapon Skill test. In addition, you may re-roll Rank dice when you roll Determination.\n\nIn addition, you are immune to fear caused by creatures with the DAEMON keyword."
+      },
+      {
+        "name": "The Will of the Gods (Tradition)",
+        "text": "Word Bearers follow the will of the Chaos Gods, as interpreted through their prayers and visions, and through the guidance of their Apostles, and must strive to walk the path the Dark Gods set before them.\n\nYou start each session with 1 Wrath Point instead of 2."
+      }
+    ]
+  },
+  {
+    "id": "alpha-legion",
+    "name": "Alpha Legion",
+    "source": "apocrypha",
+    "page": 33,
+    "type": "legion",
+    "factionId": "chaos",
+    "keyword": "ALPHA LEGION",
+    "note": "Legion: XX. Primarch: Alpharius Omegon. No Gene-Seed trait is printed.",
+    "traits": [
+      {
+        "name": "Mutable Tactics",
+        "text": "The Alpha Legion are masters of misdirection and sabotage, undermining their foes long before battle is joined.\n\nAfter each Respite, select one of the following skills: Athletics, Cunning, Deception, Intimidation, Persuasion, Stealth, or Tech. You may re-roll up to Rank dice on any test involving the chosen skill."
+      },
+      {
+        "name": "I Am Alpharius (Tradition)",
+        "text": "The Alpha Legion rely on deception and misdirection, and disdain direct tactics.\n\nAdd 1 to Ruin when you fail an Intellect test, as your carefully wrought plans and contingencies fail you."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-argent-shroud",
+    "name": "Order of the Argent Shroud",
+    "source": "apocrypha",
+    "page": 34,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE ARGENT SHROUD",
+    "note": "Orders Militant.",
+    "traits": [
+      {
+        "name": "Deeds, Not Words",
+        "text": "When you make an attack, you may re-roll up to Rank dice on that attack."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-bloody-rose",
+    "name": "Order of the Bloody Rose",
+    "source": "apocrypha",
+    "page": 34,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE BLOODY ROSE",
+    "note": "Orders Militant.",
+    "traits": [
+      {
+        "name": "Quick to Anger",
+        "text": "Add +Rank bonus dice to your melee attacks when you Charge."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-ebon-chalice",
+    "name": "Order of the Ebon Chalice",
+    "source": "apocrypha",
+    "page": 34,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE EBON CHALICE",
+    "note": "Orders Militant.",
+    "traits": [
+      {
+        "name": "Daughter of the Emperor",
+        "text": "When you roll Determination, you may spend 1 Faith. If you do so, negate all damage the attack would cause, including Mortal Wounds, but do not suffer any Shock."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-sacred-rose",
+    "name": "Order of the Sacred Rose",
+    "source": "apocrypha",
+    "page": 34,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE SACRED ROSE",
+    "note": "Orders Militant.",
+    "traits": [
+      {
+        "name": "Devout Serenity",
+        "text": "You increase your Resolve by +Rank. Further, if you ever roll a 6 on your Wrath die when making a Resolve test, you gain 1 Faith."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-valorous-heart",
+    "name": "Order of the Valorous Heart",
+    "source": "apocrypha",
+    "page": 34,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE VALOROUS HEART",
+    "note": "Orders Militant.",
+    "traits": [
+      {
+        "name": "Stoic Endurance",
+        "text": "You add +Rank bonus dice to Determination rolls."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-holy-word",
+    "name": "Order of the Holy Word",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE HOLY WORD",
+    "note": "Orders Dialogus: \"These [ORDER] options may by selected by any Sister Dialogus (found in the Forsaken System Player's Guide) or Sister Dialogus Polyglot (p. 90) characters.\" (\"may by\" as printed.) Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Voice of the Church",
+        "text": "You gain +Rank bonus dice on all Persuasion tests."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-dialogus",
+          "sister-dialogus-polyglot"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-quill",
+    "name": "Order of the Quill",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE QUILL",
+    "note": "Orders Dialogus: \"These [ORDER] options may by selected by any Sister Dialogus (found in the Forsaken System Player's Guide) or Sister Dialogus Polyglot (p. 90) characters.\" (\"may by\" as printed.) Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Pious Scrutiny",
+        "text": "Your Passive Awareness is increased by +Rank."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-dialogus",
+          "sister-dialogus-polyglot"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-sacred-oath",
+    "name": "Order of the Sacred Oath",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE SACRED OATH",
+    "note": "Orders Dialogus: \"These [ORDER] options may by selected by any Sister Dialogus (found in the Forsaken System Player's Guide) or Sister Dialogus Polyglot (p. 90) characters.\" (\"may by\" as printed.) Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Voice of Judgement",
+        "text": "When you attempt a Persuasion interaction attack, you may spend 1 Faith Point to target +Rank enemies."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-dialogus",
+          "sister-dialogus-polyglot"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-lexicon",
+    "name": "Order of the Lexicon",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE LEXICON",
+    "note": "Orders Dialogus: \"These [ORDER] options may by selected by any Sister Dialogus (found in the Forsaken System Player's Guide) or Sister Dialogus Polyglot (p. 90) characters.\" (\"may by\" as printed.) Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Unquestioned Faith",
+        "text": "You increase your Conviction by +Rank."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-dialogus",
+          "sister-dialogus-polyglot"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-key",
+    "name": "Order of the Key",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE KEY",
+    "note": "Orders Famulous: \"These [ORDER] options may be selected by Sister Famulous (p. 91) characters.\" Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Key to Power",
+        "text": "You increase your Influence by +1.",
+        "mods": {
+          "influence": 1
+        }
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-famulous"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-gate",
+    "name": "Order of the Gate",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE GATE",
+    "note": "Orders Famulous: \"These [ORDER] options may be selected by Sister Famulous (p. 91) characters.\" Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Watchful Counselor",
+        "text": "When you attempt an Awareness, Insight, Leadership, Scholar, or Persuasion test, each point of Glory you spend adds +2 dice."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-famulous"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-holy-seal",
+    "name": "Order of the Holy Seal",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE HOLY SEAL",
+    "note": "Orders Famulous: \"These [ORDER] options may be selected by Sister Famulous (p. 91) characters.\" Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Inescapable Scrutiny",
+        "text": "When you succeed at an Insight test, you may spend 1 Faith point to discern some inner truth or secret shame of the target. Ask the GM one question about the target."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-famulous"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-sacred-coin",
+    "name": "Order of the Sacred Coin",
+    "source": "apocrypha",
+    "page": 35,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE SACRED COIN",
+    "note": "Orders Famulous: \"These [ORDER] options may be selected by Sister Famulous (p. 91) characters.\" Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Faith and Coin",
+        "text": "When you attempt an Influence test to requisition items, you may spend 2 Glory to gain the effects of 1 Wealth."
+      }
+    ],
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "sister-famulous"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-eternal-candle",
+    "name": "Order of the Eternal Candle",
+    "source": "apocrypha",
+    "page": 36,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE ETERNAL CANDLE",
+    "note": "Orders Hospitaller (no archetype restriction printed). Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Healing Light",
+        "text": "When you succeed at a Medicae test to heal wounds or stabilise a dying character, or when you heal Wounds during a Regroup, you may spend 1 Faith to heal an additional +Double Rank Wounds."
+      }
+    ]
+  },
+  {
+    "id": "order-of-serenity",
+    "name": "Order of Serenity",
+    "source": "apocrypha",
+    "page": 36,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF SERENITY",
+    "note": "Orders Hospitaller (no archetype restriction printed). Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Serene Endurance",
+        "text": "When you succeed at a Medicae test to recover a patient’s Shock, recover +Rank shock. Your own Maximum Shock is increased by +Rank."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-cleansing-water",
+    "name": "Order of the Cleansing Water",
+    "source": "apocrypha",
+    "page": 36,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE CLEANSING WATER",
+    "note": "Orders Hospitaller (no archetype restriction printed). Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Indomitable Purity",
+        "text": "Allies with the IMPERIUM keyword within 6m of you reduce the rating of any Poisoned condition, or the DN of any test to resist disease, by 1+ double your Rank. If this would reduce the rating or DN to 0, then the poison or disease has no effect."
+      }
+    ]
+  },
+  {
+    "id": "order-of-the-torch",
+    "name": "Order of the Torch",
+    "source": "apocrypha",
+    "page": 36,
+    "type": "order",
+    "factionId": "adepta-sororitas",
+    "keyword": "ORDER OF THE TORCH",
+    "note": "Orders Hospitaller (no archetype restriction printed). Non-Militant Order lore and abilities are entirely homebrew (p.34).",
+    "traits": [
+      {
+        "name": "Purifying Flame",
+        "text": "When you attempt a Medicae test to remove a condition, you gain +Rank bonus dice on the test."
+      }
+    ]
+  },
+  {
+    "id": "agripinaa",
+    "name": "Agripinaa",
+    "source": "apocrypha",
+    "page": 37,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "AGRIPINAA",
+    "traits": [
+      {
+        "name": "Staunch Defenders",
+        "text": "When you are in cover and did not move during your turn, you add +Rank bonus dice to your ranged attacks."
+      }
+    ]
+  },
+  {
+    "id": "graia",
+    "name": "Graia",
+    "source": "apocrypha",
+    "page": 37,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "GRAIA",
+    "traits": [
+      {
+        "name": "Refusal to Yield",
+        "text": "When you make a Test while Dying, you heal 1 Wound for each Wrath Critical you roll. When you make a Test while under the effects of Fear, Terror or Pinning, a Wrath Critical causes you to recover from that condition immediately. However, you must spend a point of Glory to Fall Back."
+      }
+    ]
+  },
+  {
+    "id": "lucius",
+    "name": "Lucius",
+    "source": "apocrypha",
+    "page": 37,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "LUCIUS",
+    "traits": [
+      {
+        "name": "The Solar Blessing",
+        "text": "When attacked by a weapon with only 1 ED, gain +1 Resilience."
+      }
+    ]
+  },
+  {
+    "id": "ryza",
+    "name": "Ryza",
+    "source": "apocrypha",
+    "page": 37,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "RYZA",
+    "traits": [
+      {
+        "name": "Red in Cog and Claw",
+        "text": "You may re-roll up to Rank dice when making a melee attack."
+      }
+    ]
+  },
+  {
+    "id": "stygies-viii",
+    "name": "Stygies VIII",
+    "source": "apocrypha",
+    "page": 37,
+    "type": "forge-world",
+    "factionId": "adeptus-mechanicus",
+    "keyword": "STYGIES VIII",
+    "traits": [
+      {
+        "name": "Shroud Protocols",
+        "text": "You add +Rank bonus dice to Stealth Tests and gain an additional +1 to Defence against ranged attacks from more than 12 metres away."
+      }
+    ]
+  },
+  {
+    "id": "altansar",
+    "name": "Altansar",
+    "source": "apocrypha",
+    "page": 38,
+    "type": "craftworld",
+    "factionId": "asuryani",
+    "keyword": "ALTANSAR",
+    "traits": [
+      {
+        "name": "Grim Survivors",
+        "text": "Your Determination is increased by +Rank."
+      }
+    ]
+  }
+]

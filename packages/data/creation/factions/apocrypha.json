@@ -1,0 +1,79 @@
+[
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [],
+    "id": "adeptus-arbites",
+    "name": "Adeptus Arbites",
+    "page": 39
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [],
+    "id": "adeptus-custodes",
+    "name": "Adeptus Custodes",
+    "page": 41
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [],
+    "id": "anathema-psykana",
+    "name": "Anathema Psykana",
+    "page": 44
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [],
+    "id": "imperial-navy",
+    "name": "Imperial Navy",
+    "page": 48
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [],
+    "id": "logos-historica-verita",
+    "name": "Logos Historica Verita",
+    "page": 50
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [
+      {
+        "name": "Navigator Lineage",
+        "text": "All Navigator characters are beholden to a Navigator House, reflected by the [HOUSE] keyword, which should be replaced with the name of the Navigator House the character belongs to. Each Navigator House will be one of the following four types:\n- Nomadic Houses are well-travelled. They grant +Rank dice to Pilot tests and Conviction.\n- Magisterial Houses are exalted and influential. They add +Rank to their Influence and Wealth.\n- Shrouded Houses are mysterious and opportunistic. They add +Rank to Cunning and Stealth tests.\n- Renegade Houses are forsaken and corrupt. They begin with 1d3x Tier Corruption but add +Rank to Psychic Mastery tests and Maximum Shock.",
+        "page": 53
+      }
+    ],
+    "id": "navis-nobilite",
+    "name": "Navis Nobilite",
+    "page": 52
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [
+      {
+        "name": "Assassinorum Conditioning",
+        "page": 56,
+        "text": "You add +Rank ED to all damage rolls, and you add +Double Rank to the damage value of your Unarmed Strikes. In addition, so long as you are not immobilised or Restrained, you may use Agility instead of Toughness when you roll Determination, and you may roll Determination against Mortal Wounds."
+      }
+    ],
+    "id": "officio-assassinorum",
+    "name": "Officio Assassinorum",
+    "page": 55
+  },
+  {
+    "source": "apocrypha",
+    "text": "",
+    "rules": [],
+    "id": "leagues-of-votann",
+    "name": "Leagues of Votann",
+    "page": 61,
+    "note": "Printed as \"The Leagues of Votann\"."
+  }
+]

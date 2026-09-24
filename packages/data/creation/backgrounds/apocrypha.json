@@ -1,0 +1,756 @@
+[
+  {
+    "id": "adeptus-arbites",
+    "name": "Adeptus Arbites Backgrounds",
+    "source": "apocrypha",
+    "page": 40,
+    "owner": {
+      "factionId": "adeptus-arbites"
+    },
+    "origin": [
+      {
+        "name": "Progena",
+        "text": "Your parents were stalwart servants of the Throne, and after their deaths, you were raised by the Schola Progenium, who identified your talents and groomed you to join the Adeptus Arbites.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Repentant",
+        "text": "You once lived a life of criminality and desperation before you found the Emperor’s light and saw the error of your ways. You sought out an Arbites Precinct-Fortress and turned yourself over to their judgements, and after your sentence was served, your contrition was rewarded with an opportunity for redemption.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Ascended",
+        "text": "You served the local Enforcers of your homeworld honourably and dutifully, until you found yourself caught between your loyalty to your home and your loyalty to the Emperor. You chose the Imperium, and the Arbites recruited you in the aftermath.",
+        "bonus": "resolve"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Rebellion Quashed",
+        "text": "When a rebellion arose on your last posting, you were instrumental in crushing it and bringing the Emperor’s Justice to the rebels.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Subversive Eliminated",
+        "text": "A noted subversive who had eluded Justice upon a dozen or more worlds found himself within your jurisdiction, and you were the one who carried out the Judgement.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Frontier Marshal",
+        "text": "You were posted to a world on the fringes of the Imperium, with little established Imperial presence. Your efforts helped bring order to such a lawless place.",
+        "bonus": "maxWounds"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Fugitive",
+        "text": "One criminal in particular has continued to elude your efforts, and you will stop at nothing to see them Judged.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Order to the Lawless",
+        "text": "You desire the next great challenge that awaits an Arbitrator – to pacify the criminality and anarchy of places which have fallen from the Emperor’s Light.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Cold Case",
+        "text": "An unsolved crime has haunted your precinct, or possibly your career specifically, for longer than anyone is comfortable with. You will solve that case and bring the perpetrator to justice.",
+        "bonus": "maxShock"
+      }
+    ],
+    "objectives": [
+      "Seek to apply the dictates of the Lex Imperialis to a situation.",
+      "Compare your current environment to another world on which you have served.",
+      "Interrogate a suspect using threats of violence and punishment while an ally offers leniency in exchange for compliance (or vice versa).",
+      "Berate a criminal or other citizen who you have judged as insufficiently law-abiding.",
+      "Open a door, or otherwise enter a room, using forceful methods.",
+      "Subdue an enemy non-lethally so that they might face proper judgement later."
+    ]
+  },
+  {
+    "id": "adeptus-custodes",
+    "name": "Adeptus Custodes Backgrounds",
+    "source": "apocrypha",
+    "page": 43,
+    "owner": {
+      "factionId": "adeptus-custodes"
+    },
+    "origin": [
+      {
+        "name": "Privelege",
+        "text": "You were selected from amongst the wealthy and powerful families of Holy Terra as a small child.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Prophesy",
+        "text": "Your place in the Custodian Guard was foretold and you were sought out as a child to ensure that your fate came to pass.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Provenance",
+        "text": "During a Custodes action, you were noticed, and your potential discovered. You were taken away to join the Ten Thousand.",
+        "bonus": "determination"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Blood Games Veteran",
+        "text": "You have participated in many Blood Games, testing the defences of the Palace with your own skills to discover any flaws that remain.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Hetaeron Guard",
+        "text": "You spent years or even decades amongst the Companions, one of three hundred Custodians guarding the Emperor personally, but not even the strongest can bear such a burden indefinitely.",
+        "bonus": "passiveAwareness"
+      },
+      {
+        "name": "Jailor of the Dark Cells",
+        "text": "You watched over the ancient prisons deep beneath the Imperial Palace, standing vigil over terrors that have been caged since before the Imperium. You may even have been charged to hunt down a creature destined for those cells.",
+        "bonus": "maxShock"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Vision",
+        "text": "You, or another of your order, had a dream-vision sent by the Emperor, revealing some specific objective or purpose that you must fulfil.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Threat Identified",
+        "text": "Your order’s spies and agents have discovered an impending threat to the Throne, and you have been charged with eliminating that threat.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Torchbearer",
+        "text": "You have been placed with the Indomitus Crusade, delivering the Primarch’s Gift to distant Astartes Chapters and striking out at the darkness that fills the galaxy.",
+        "bonus": "influence"
+      }
+    ],
+    "objectives": [
+      "Utilise your awe-inspiring presence and status as the Emperor’s guardian in a social situation",
+      "Speak of the absolute nature of your duty to the Throne",
+      "Apply the wisdom of the Emperor or of ancient philosophy to the current situation",
+      "Dismiss the faith of a servant of the Imperium, or play along with their beliefs to inspire them",
+      "Express doubt as to the loyalty or spiritual fortitude of a servant of the Emperor",
+      "Comment on how secure or vulnerable a location is, or how you would secure a vulnerability."
+    ],
+    "note": "Origins \"Privelege\" and \"Prophesy\" as printed (Privilege, Prophecy)."
+  },
+  {
+    "id": "anathema-psykana",
+    "name": "Anathema Psykana Backgrounds",
+    "source": "apocrypha",
+    "page": 45,
+    "owner": {
+      "factionId": "anathema-psykana"
+    },
+    "origin": [
+      {
+        "name": "Persecuted",
+        "text": "From a young age, you survived despite being regarded with dread and revulsion by all who met you. When hunting rumours of a witch, the Sisterhood found you instead.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Bloodline",
+        "text": "It is believed that you came from a bloodline engineered since the dawn of the Imperium to produce Pariahs for the Sisterhood.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Happenstance",
+        "text": "Though frequently alone in life, you made something of yourself, until the extent of your powers were noticed.",
+        "bonus": "maxShock"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Witch-Bane",
+        "text": "Your skills and powers proved instrumental in defeating a coven of witches or a powerful sorcerer.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Hunter",
+        "text": "You spent months, even years, tracking your quarry. You eventually triumphed, though it required all of your skill and cunning.",
+        "bonus": "passiveAwareness"
+      },
+      {
+        "name": "Anathema",
+        "text": "When all around you were overrun by daemons and the forces of the Ruinous Powers, you stood your ground, unaffected by the warp-spawned horror, and drove it back.",
+        "bonus": "resolve"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Reclaim",
+        "text": "You’ve been charged with retrieving old strongholds or technologies of the Silent Sisterhood or seeking out new recruits to restore the order’s old numbers.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Vigilant",
+        "text": "You are part of a newly established Vigil, standing guard over a region of space to secure it from psychic or daemonic threats.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Vigil Indomitus",
+        "text": "You were stationed upon one of the ships of the Indomitus Crusade, helping the crusaders return light to the darkness, facing some of the heaviest fighting.",
+        "bonus": "maxWounds"
+      }
+    ],
+    "objectives": [
+      "Wield your dread presence and fearsome reputation in a social situation",
+      "Demonstrate the superiority of your order’s traditions and techniques",
+      "Express gratitude for the Emperor’s wisdom and protection",
+      "Use your keen skills of observation to pass judgement upon an individual you’ve just met",
+      "Be confronted by hostility or fear because of your Pariah nature",
+      "Face communications difficulties because of your Vow of Tranquility."
+    ]
+  },
+  {
+    "id": "imperial-navy",
+    "name": "Imperial Navy Backgrounds",
+    "source": "apocrypha",
+    "page": 49,
+    "owner": {
+      "factionId": "imperial-navy"
+    },
+    "origin": [
+      {
+        "name": "Progena",
+        "text": "Your parents were stalwart servants of the Throne, and after their deaths, you were raised by the Schola Progenium, who identified your talents and groomed you to join the Navy.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Prestige",
+        "text": "You’re the scion of a wealthy and powerful family, possibly nobility from your world, sent to one of the prestigious Naval Academies to attain a commission.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Pressgang",
+        "text": "You were rounded up and dragged onto a ship to toil within its depths. You took every opportunity to rise above such ignoble beginnings, however.",
+        "bonus": "maxShock"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Efficiency",
+        "text": "Your unit, work-gang, squadron, or department aboard ship have been commended for their performance during a crucial battle.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Elevation",
+        "text": "Whether through survival or success, you find yourself advancing up the rates or ranks of the Navy.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Endurance",
+        "text": "After a hard-fought battle, you pressed on and did your duty when all you wanted to do was give in.",
+        "bonus": "resolve"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Command",
+        "text": "You aspire to lead your own unit, squadron, or starship, or maybe even loftier levels of authority beyond that.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Crusade",
+        "text": "You seek to lay low the enemies of the Imperium, cleaning the stars and skies of their vile presence.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Certainty",
+        "text": "You are stalwart in your faith in the God-Emperor, and seek only to serve Him-on-Terra to the best of your ability.",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Express confidence (or doubt) in the Navy’s dominance of the void or skies.",
+      "Apply Navy doctrine or tradition to the current situation",
+      "Compare the protection given by faith in the Emperor to the hull or shields of a voidship",
+      "Reminisce about your service on a previous ship or the events of a previous mission",
+      "Obey an order without question or doubt",
+      "Make a tactically sound plan to achieve an objective."
+    ]
+  },
+  {
+    "id": "logos-historica-verita",
+    "name": "Logos Historica Verita Backgrounds",
+    "source": "apocrypha",
+    "page": 51,
+    "owner": {
+      "factionId": "logos-historica-verita"
+    },
+    "origin": [
+      {
+        "name": "Adeptus Terra",
+        "text": "You hail from within the Priesthood of Terra, one of the trillions of faceless functionaries who serve as the Imperial government. Your eye for detail and your resourcefulness drew attention to you, for good or ill, until you were summoned to serve the Lord-Regent.",
+        "bonus": "passiveAwareness"
+      },
+      {
+        "name": "Adeptus Mechanicus",
+        "text": "You were raised amidst data-looms and info-vaults, a cog in the Omnissiah’s grand mechanism. Questioning the accepted doctrine, and the pursuit of knowledge even your betters would not seek, would have seen you condemned, but for the Lord-Regent’s summons.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Highborn",
+        "text": "You were born to wealth and privilege, the scion of an ancient legacy and storied traditions. While you were probably not the heir-apparent, you still had far greater freedom and access than most and were able to study history in ways that few others could.",
+        "bonus": "wealth"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Insightful Treatise",
+        "text": "You composed a thoughtful, keenly-observant analysis of some aspect of the Imperium or the nature of the universe.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Extensive Histories",
+        "text": "You’ve pieced together an accounting of historical events from the records and texts of the era, and it is more accurate than most.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Work of Remembrance",
+        "text": "You created some artistic or creative work that commemorated a significant event in recent history.",
+        "bonus": "wealth"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Immortalised",
+        "text": "You desire for your works to leave a mark upon the Imperium, far outlasting your physical life.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Service",
+        "text": "To attain, or retain, the favour of the Lord-Regent, is your greatest wish. You will serve in whatever capacity will ensure you remain in his good graces.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Truth",
+        "text": "There are secrets hidden in the tapestry of history, things which may be necessary to know in order to survive in future. You will leave no stone unturned in your quest for these secrets.",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Retrieve a vital piece of historical lore or archived data",
+      "Record an event, or the testimony of a witness to an event, which will be an important part of history",
+      "Quote (or misquote) a historical figure you have discovered in your research",
+      "Name-drop the Returned Primarch when your work is obstructed by another institution in the Imperium",
+      "Reference a historical event you have studied which is reminiscent of, or applicable to, your current situation",
+      "Mention a controversial, even heretical, fact that you’ve discovered, even if it may draw ire or condemnation."
+    ]
+  },
+  {
+    "id": "navis-nobilite",
+    "name": "Navis Nobilite Backgrounds",
+    "source": "apocrypha",
+    "page": 54,
+    "owner": {
+      "factionId": "navis-nobilite"
+    },
+    "origin": [
+      {
+        "name": "Magisterial House",
+        "text": "You hail from an ancient House, which dates back to before the Unification of Terra. The power of your kin is felt across the Imperium.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Nomadic House",
+        "text": "Your house has forsaken holdings on Terra or any other world to voyage amongst the stars, giving you a significant edge when it comes to the practicalities of navigating the Immaterium.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Shrouded House",
+        "text": "Your house has withdrawn from the wider galaxy, perhaps due to some ancient shame or loss that haunts them still. While not lacking in power or wealth, your House has needed to be resourceful to survive.",
+        "bonus": "determination"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "A New Route Charted",
+        "text": "During your travels, you identified and charted a previously-unknown stable passage through the Immaterium, earning wealth and prestige for your discovery.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Emerged from a Storm",
+        "text": "You managed to safely guide a vessel from the clutches of a Warp Storm, a feat accomplished by few Navigators.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Warp Gleanings",
+        "text": "While in the Warp, you caught glimpses of weal or woe for your House, which may aid your kin in their future endeavours.",
+        "bonus": "resolve"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Lineage",
+        "text": "You aspire to carry on House and bloodline, bringing forth the next generation of Navigators.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Fortune",
+        "text": "You desire to expand the wealth and resources of your House.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Power",
+        "text": "You desire to take your place amongst the rulers of your House, perhaps even becoming Novator, with your will felt wherever the light of the Astronomican reaches.",
+        "bonus": "influence"
+      }
+    ],
+    "objectives": [
+      "You unnerve or scare somebody because of your mutated form or the reputation of Navigators.",
+      "You use your proud lineage to secure something valuable or useful.",
+      "You spend time admiring the ship you serve upon and reminisce about previous voyages.",
+      "You compare some strange phenomenon to something you experienced while gazing into the Immaterium.",
+      "You recount a vision which you had while within the Warp to the current situation.",
+      "You use the name and influence of your House to get your way or refuse a request."
+    ],
+    "note": "The Origin rows name three House types (no Renegade row); they are independent of the House chosen for [HOUSE] (p.53)."
+  },
+  {
+    "id": "officio-assassinorum",
+    "name": "Officio Assassinorum Backgrounds",
+    "source": "apocrypha",
+    "page": 57,
+    "owner": {
+      "factionId": "officio-assassinorum"
+    },
+    "origin": [
+      {
+        "name": "Progena",
+        "text": "Your parents were stalwart servants of the Throne, and after their deaths, you were raised by the Schola Progenium. There, you demonstrated an aptitude for killing that set you apart.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Cultist",
+        "text": "You were once a member of one of the countless death cults devoted to the God-Emperor’s glory. Your existence was, and still is, devoted to slaying the Emperor’s foes.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Abandoned",
+        "text": "Whatever your life before, at one point it ended, and you were left to fend for yourself. Learning to survive in such inhospitable condition has honed your instincts and hardened you for the duties you now perform.",
+        "bonus": "maxWounds"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Target Eliminated",
+        "text": "After extensive time and effort infiltrating their stronghold, you slew a mighty Champion of Chaos.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Target Eliminated",
+        "text": "After tracking the enemy force across a dozen worlds, you assassinated a powerful Xenos warlord.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Target Eliminated",
+        "text": "After infiltrating the depths of a world in rebellion, you made an example of the witch or demagogue at the heart of a rebellion.",
+        "bonus": "maxShock"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Target Acquired",
+        "text": "You have little ambition beyond the annihilation of your next target in the Emperor’s name.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Target Acquired",
+        "text": "A target escaped you once. You cannot permit this failure to stain your service to the Emperor.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Target Acquired",
+        "text": "Of all the targets you have slain, one particular foe haunts your thoughts and fills your heart with rage. You crave each opportunity to slay targets that resemble that particular hated foe.",
+        "bonus": "resolve"
+      }
+    ],
+    "objectives": [
+      "Conclude a combat without any surviving witnesses other than your allies.",
+      "Extol the superiority of your Temple’s methods of dealing death.",
+      "Explain the how your assigned mission allows—or prohibits—a particular course of action.",
+      "Quote a motto or philosophy of your Temple.",
+      "Refuse to use overt methods to gain access to a location",
+      "Maintain secrecy over your entire operation, refusing to reveal your identity or target to any but your immediate allies."
+    ],
+    "note": "Every Accomplishment row is named \"Target Eliminated\" and every Goal row \"Target Acquired\", as printed. Objective 3 \"Explain the how\" as printed."
+  },
+  {
+    "id": "leagues-of-votann",
+    "name": "Leagues of Votann Backgrounds",
+    "source": "apocrypha",
+    "page": 66,
+    "owner": {
+      "factionId": "leagues-of-votann"
+    },
+    "origin": [
+      {
+        "name": "Kinworld",
+        "text": "You were born in the heart of your League’s territories, with all the resources and opportunities that entails.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Prospect",
+        "text": "Your Kindred plied the void, seeking new resources to exploit and new opportunities for trade or conquest.",
+        "bonus": "passiveAwareness"
+      },
+      {
+        "name": "Void Station",
+        "text": "Your early life was spent aboard a void station, a nexus of trade and production.",
+        "bonus": "wealth"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Lode",
+        "text": "You were part of an expedition which discovered a considerable new resource to exploit.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Lore",
+        "text": "Your efforts led to new knowledge and expertise coming to your Kindred, lending certainty to future expeditions.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Legend",
+        "text": "You have recovered something precious that had been thought lost, or you accomplished some deed that brings status and prosperity to your Kindred.",
+        "bonus": "influence"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Invention",
+        "text": "You wish to become known for creating some invaluable tool, technique, or other creative work.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Discovery",
+        "text": "Far-space is a wild and dangerous place, but it contains opportunities and resources as-yet-untapped by the Leagues. You want to change that.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Vengeance",
+        "text": "You are driven to seek recompense for the slights made against your Kindred, and the payment is due in blood.",
+        "bonus": "maxWounds"
+      }
+    ],
+    "objectives": [
+      "Grumble about the technology of outsiders, comparing it to the craftsmanship of your own people.",
+      "Compare current events to the accomplishments of an honoured ancestor.",
+      "Swear an oath to avenge a misdeed done to you.",
+      "Invoke a Truth—a traditional Leagues of Votann idiom or aphorism—that applies to your current situation.",
+      "Dedicate an action to fallen ancestors.",
+      "Seek to obtain extra necessary supplies, such as ammunition, when preparing for a mission."
+    ]
+  },
+  {
+    "id": "tau-empire",
+    "name": "T'au Backgrounds",
+    "source": "apocrypha",
+    "page": 69,
+    "owner": {
+      "factionId": "tau-empire"
+    },
+    "origin": [
+      {
+        "name": "First-Sphere Sept",
+        "text": "You hail from one of the original Septs settled by the T’au, or possibly from the T’au homeworld itself.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Second-Sphere Sept",
+        "text": "Your ancestors braved the unknown to colonise a Sept during the second-sphere expansion phase.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Third-Sphere Sept",
+        "text": "Your forebears faced extreme resistance to settle a Sept during the third-sphere expansion phase.",
+        "bonus": "determination"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Discovery",
+        "text": "You aided in finding, securing, or creating something valuable to the ongoing expansion of the T’au Empire.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Protection",
+        "text": "You helped to protect some territory, resource, or other vital asset from being lost to outsiders.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Sacrifice",
+        "text": "You willingly gave of yourself in the name of the Greater Good, suffering some form of loss or injury for the betterment of the T’au Empire.",
+        "bonus": "conviction"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Advancement",
+        "text": "You know that you will be able to further the tau’va if you can gain power and status within the Empire.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Duty",
+        "text": "You will do whatever the Ethereals will to ensure the T’au Empire grows and prospers and all are brought within the protection of the Greater Good.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Supremacy",
+        "text": "The galaxy is full of misguided species who need to be shown the error of their ways, and you will do your part to show them.",
+        "bonus": "resolve"
+      }
+    ],
+    "objectives": [
+      "When you seek to apply the wisdom of the Ethereals to a situation.",
+      "Extol the virtues of the Greater Good to someone who does not belong to the T’au Empire",
+      "Reminisce about the wonders and glories of your home Sept and other worlds within the T’au Empire",
+      "Describe a previous triumph or achievement of the T’au Empire",
+      "Reflect on your bond with your team-mates (especially if you Ta’lissera bonded)",
+      "Ponder the differences or similarities between the Castes, or between the T’au and another species"
+    ],
+    "note": "Printed heading \"T’au Backgrounds\". Objective 1 begins \"When you seek\", as printed. Objective 5 \"especially if you Ta’lissera bonded\" as printed."
+  },
+  {
+    "id": "harlequins-apocrypha",
+    "name": "Harlequin Backgrounds (Apocrypha)",
+    "source": "apocrypha",
+    "page": 47,
+    "owner": {
+      "factionId": "harlequins"
+    },
+    "origin": [
+      {
+        "name": "Asuryani",
+        "text": "You once walked the Paths of the Craftworlds, living a life of strict discipline.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Drukhari",
+        "text": "Though no longer, you once preyed upon dread and pain to sustain yourself.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Exodite",
+        "text": "You once sought salvation through hard labour and a return to nature.",
+        "bonus": "determination"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "The Dance Without End",
+        "text": "You played a role within the tale of the Fall of the Aeldari and the birth of She Who Thirsts.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "The Black Library",
+        "text": "You waylaid those who would seek to exploit or defile the most sacred repository of knowledge.",
+        "bonus": "passiveAwareness"
+      },
+      {
+        "name": "The War in Heaven",
+        "text": "You have performed within the dance of the ancient birth of the Aeldari people, and their conflict with the Bloody-Handed God of War.",
+        "bonus": "maxWounds"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Defy She Who Thirsts",
+        "text": "Your eventual purpose is to thwart the machinations of The Great Enemy at some pivotal moment.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Enlightenment",
+        "text": "You are fated to bring vital knowledge to a specific being at a vital time.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Reversal",
+        "text": "An ally falls, an enemy is triumphant, and you had a part in it… but everyone knows that such ill-fortune presages a resurgent victory.",
+        "bonus": "resolve"
+      }
+    ],
+    "objectives": [
+      "Speak about your purpose or agenda in a cryptic or poetic fashion",
+      "Compare your current situation to some event in the mythology or history of the Aeldari",
+      "Challenge a foe to battle with theatrical flourish, including addressing them by the name of a villain from Aeldari legend.",
+      "Pursue a course of action which seems strange or bizarre to others, purely because your role demands it",
+      "Show mercy to a foe, or act ruthlessly to an ally, because it is your role to do so.",
+      "Enter battle with laughter on your lips"
+    ],
+    "note": "Homebrew alternative to the IoE table; kept because its rows differ."
+  },
+  {
+    "id": "drukhari-apocrypha",
+    "name": "Drukhari Backgrounds (Apocrypha)",
+    "source": "apocrypha",
+    "page": 60,
+    "owner": {
+      "factionId": "drukhari"
+    },
+    "origin": [
+      {
+        "name": "Trueborn",
+        "text": "You were born naturally, to one of the powerful families of the Dark City whose resources allowed them to raise a child in the traditional manner. You are a scion of the powerful, raised from childhood to dominate and terrorise.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Halfborn",
+        "text": "You were born from an artificial gestation tube, quickly and efficiently, like the majority of Drukhari. To thrive in the slums and lower tiers of the Dark City, you had to be ruthless and ambitious.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Wrought",
+        "text": "You know not from whence you came, only that you awoke upon a Haemonculus’ table fully formed and thirsting for the agony of others. Your mysterious, possibly unnatural origin may disquiet some, but you are what you have made of yourself.",
+        "bonus": "maxShock"
+      }
+    ],
+    "accomplishment": [
+      {
+        "name": "Raider",
+        "text": "You were part of a victorious real-space raid, and the souls you dragged back, and the recorded hologhosts of your kills have earned you prestige, glory, and status.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Triumph",
+        "text": "You set foot within the arena, and you emerged victorious. The hard-fought victory came with many scars, the ache of which still reminds you of the fury of the battle.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Usurper",
+        "text": "You attained your status through guile and skill, undermining and then eliminating a former superior and assuming their position. You know that others seek to recreate your ascension and take what you have won, but you will not make it easy for them…",
+        "bonus": "determination"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Dominion",
+        "text": "You seek to rise to the highest levels of Drukhari society, by any means necessary. Nothing short of final death or ultimate dominion will see your ambition sated.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Terror",
+        "text": "Out there, in realspace, there is a place which awaits your malicious attentions, which has not learned to dread your kind. You will find them, and you will feast upon their anguish.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Satiety",
+        "text": "The thirst that gnaws away at your soul, at once part of you and external to you, is a perpetual weight upon your existence. You will slake that thirst or escape it.",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Revel in the pain or distress of another creature",
+      "Be scornful or dismissive of the taboos of other Aeldari, or another species",
+      "Coerce or threaten another creature into doing what you want",
+      "Apply your cruelty and cunning to trick or ambush a foe",
+      "Explain a number of the different ways you could hurt or kill someone",
+      "Gain in status or influence through murder or intimidation"
+    ],
+    "note": "Homebrew alternative to the IoE table; kept because its rows differ."
+  }
+]

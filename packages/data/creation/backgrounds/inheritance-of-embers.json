@@ -1,0 +1,272 @@
+[
+  {
+    "id": "asuryani",
+    "name": "Asuryani Backgrounds",
+    "source": "inheritance-of-embers",
+    "page": 11,
+    "owner": {
+      "factionId": "asuryani"
+    },
+    "note": "IoE prints no Origin table: Agents choose an Accomplishment and a Goal only, so `origin` is empty. Objectives are on p.12.",
+    "origin": [],
+    "accomplishment": [
+      {
+        "name": "Denied Destiny",
+        "text": "Where the Farseers foresaw death, you prevailed, defeating an incredible foe or accomplishing an impossible task.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Communed with Infinity",
+        "text": "You have devoted considerable time to meditation with the spirits of the departed; they have taught you much of life and death.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Mon-Keigh Animosity",
+        "text": "The depraved stupidity of Humanity has endangered your life on more than one occasion. You have survived battles alongside and against them.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Webway Explorer",
+        "text": "Traversing many Webway paths, you have uncovered the hidden and forgotten, recovering valuable artefacts and even more crucial routes.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Unusual Ally",
+        "text": "Your actions saved the life of someone beyond your Faction — a Drukhari, a Harlequin, maybe even an Imperial.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Black Library Scholar",
+        "text": "You have studied the ancient arcane writings of the cryptic Black Library. Obscure knowledge of the profane is your constant companion.",
+        "bonus": "conviction"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Fatalist",
+        "text": "After a series of unfortunate battles, you have accepted your species is doomed. You seek only protection; a defensible refuge for you and your allies.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Renewal",
+        "text": "Your long life was fraught with the tragic milieu of your Species. You seek new experiences and perspectives to lift your burdens and wash away your sorrows.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Serenity",
+        "text": "Like many of your kind, your emotions are overwhelming to the point of self-destruction. Seek serenity to protect your soul from Slaanesh.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Path Mastery",
+        "text": "You see nothing beyond your current Path and have thrown yourself into it utterly. Whatever your present discipline is, you will be an exemplar and pioneer.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Recovery",
+        "text": "You will restore the lost majesty of your species, finding artefacts and lost knowledge. Are you seeking something specific?",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Unity",
+        "text": "The arch-foe cannot be defeated by the dwindling forces of your Species — at least, not fractured as they are. You will forge great alliances and bring unity.",
+        "bonus": "influence"
+      }
+    ],
+    "objectives": [
+      "Unfavourably compare another Species' culture, art, or technology to your own.",
+      "Devote an accomplishment or victory to an Aeldari god.",
+      "Recount a lesson from the traditions of a craftworld that applies to the current situation.",
+      "Utilise the reputation of your Species to manipulate an individual.",
+      "Employ knowledge you learned from an earlier Path of your life to the current circumstances.",
+      "Apply your superior intellect and sensitivity to prophecy to carry out a perfect plan."
+    ]
+  },
+  {
+    "id": "anhrathe",
+    "name": "Anhrathe Backgrounds",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "owner": {
+      "factionId": "anhrathe"
+    },
+    "note": "Only the Anhrathe Objectives are printed. Corsairs pick Backgrounds and Goals matching their Species (p.14); the \"Anhrathe Goal table\" p.14 refers to is not printed. `origin`, `accomplishment` and `goal` are empty.",
+    "origin": [],
+    "accomplishment": [],
+    "goal": [],
+    "objectives": [
+      "Raid an enemy voidship.",
+      "Berate another Aeldari for the follies of their beliefs.",
+      "Perform a great feat to grow your reputation.",
+      "Defeat a foe using nothing but threats and your personal infamy.",
+      "Employ a value you learned from your former home to overcome an obstacle.",
+      "Assert your freedom by breaking a law, cutting a bond, or shirking your responsibilities."
+    ]
+  },
+  {
+    "id": "drukhari",
+    "name": "Drukhari Backgrounds",
+    "source": "inheritance-of-embers",
+    "page": 15,
+    "owner": {
+      "factionId": "drukhari"
+    },
+    "note": "IoE prints no Origin table: Agents choose an Accomplishment and a Goal only, so `origin` is empty. The Goals are a separate table, DRUKHARI GOALS, on p.16. Also Apocrypha p.60.",
+    "origin": [],
+    "accomplishment": [
+      {
+        "name": "Arch-Sadist",
+        "text": "You have committed such appalling atrocities to preserve your own withered soul that even other Drukhari are sickened and impressed.",
+        "bonus": "conviction"
+      },
+      {
+        "name": "Realspace Terror",
+        "text": "Your campaigns against dominions of lesser creatures have been especially profitable, reaping a generous bounty of treasures and captives.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Master Conspirator",
+        "text": "You seized your current position through a carefully orchestrated scheme of violence and betrayal.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Arena Champion",
+        "text": "You battled an unusually monstrous foe in the Wych Cult arenas of Commorragh, and survived to tell the tale.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Dark Savant",
+        "text": "You have delved deep into annals of forbidden knowledge, and learned secrets of the ancient Aeldari long forgotten by your short-sighted kin.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Conspicuous Mercy",
+        "text": "You saved the life of a superior, or spared a defeated foe. Some respect your honour, others despise your weakness, and at least one person owes you a favour.",
+        "bonus": "influence"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Power",
+        "text": "You must kill your way to the top of the pecking order. Only when all of Commorragh respects your supremacy will you be satisfied.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Infamy",
+        "text": "The whole galaxy will know your name and your exploits — be they terrified prey Species, or infatuated Drukhari admirers.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Revenge",
+        "text": "You were slighted, betrayed, or ejected from power. Now you are determined to avenge yourself upon the culprits, and make them suffer.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Self-Gratification",
+        "text": "All Aeldari become the playthings of thirsting gods in the end. Better to indulge the material pleasures of the flesh in the meantime.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Exhilaration",
+        "text": "You are never more alive than on the precipice of death. You seek the adrenaline rush of high speed and extreme danger.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Escape",
+        "text": "You want out — from Commorragh, from the monotonous cruelty, from the ever-present thirst of Slaanesh. Of course, escaping is far easier said than done…",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Unfavourably compare another Species' culture, art, or technology to your own.",
+      "Seize a prize or opportunity that could appease your superior.",
+      "Recount how the obsessions of your Kabal, Cult, Coven, or other faction apply to the situation.",
+      "Terrify another creature into compliance.",
+      "Indulge your appetite for transgressive behaviour.",
+      "Apply your superior intellect and devious cunning to carry out a perfect plan."
+    ]
+  },
+  {
+    "id": "harlequins",
+    "name": "Harlequins Backgrounds",
+    "source": "inheritance-of-embers",
+    "page": 18,
+    "owner": {
+      "factionId": "harlequins"
+    },
+    "note": "IoE prints no Origin table: Agents choose an Accomplishment and a Goal only, so `origin` is empty. Printed \"reinact\" and \"You additions\" (Artistic Visionary) are kept as printed. Also Apocrypha p.47.",
+    "origin": [],
+    "accomplishment": [
+      {
+        "name": "Elevated Understudy",
+        "text": "You stepped into an important theatrical role with little notice after another Harlequin was too injured to perform. You wonder if you are worthy of the role.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Toast of Commorragh",
+        "text": "Your performance was so well received in the Dark City, they sacrificed a thousand victims in your name. Indeed, the highest of compliments.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Hero of the Craftworlds",
+        "text": "You have joined the Asuryani on extended campaigns, turning the tides of battles in your kin's favour.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Crone-Walker",
+        "text": "You have travelled to the Eye of Terror and recovered priceless relics from the daemon-haunted crone worlds of the ancient Aeldari empire.",
+        "bonus": "wealth"
+      },
+      {
+        "name": "Artistic Visionary",
+        "text": "Not content to merely reinact the saedath, you have added your own twists to these bloody performances. You additions garnered a great deal of renown.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Divine Visitation",
+        "text": "You believe you have directly interacted with Cegorach himself, but given the Laughing God's mysterious workings, it's hard to be sure.",
+        "bonus": "conviction"
+      }
+    ],
+    "goal": [
+      {
+        "name": "Mastery",
+        "text": "You push your body to its limits to fully embody the role you are performing, banishing any trace of your own wants or personality.",
+        "bonus": "maxWounds"
+      },
+      {
+        "name": "Mockery",
+        "text": "You delight at the comeuppance of the prideful, and seek to bring the conceited down a peg or two.",
+        "bonus": "maxShock"
+      },
+      {
+        "name": "Fulfilment",
+        "text": "You are an agent of destiny, compelled to complete the prophecies of the ancient Aeldari, for good or for ill.",
+        "bonus": "determination"
+      },
+      {
+        "name": "Legacy",
+        "text": "Your chosen role is one that, by rights, should end in glorious death on the battlefield. So far that death has eluded you, but you will find it yet.",
+        "bonus": "influence"
+      },
+      {
+        "name": "Education",
+        "text": "Those who forget the past are doomed to repeat its mistakes. You teach the Aeldari of their heritage so they can rediscover their grace.",
+        "bonus": "resolve"
+      },
+      {
+        "name": "Defiance",
+        "text": "There is only one battle that truly matters — the battle against the Ruinous Powers of Chaos. Opposing the Great Enemy is its own reward.",
+        "bonus": "conviction"
+      }
+    ],
+    "objectives": [
+      "Unfavourably compare another Species' culture, art, or technology to your own.",
+      "Devote an accomplishment or victory to the Laughing God.",
+      "Recount a moral from Aeldari mythology that applies to the current situation.",
+      "Provoke a strong emotional reaction (e.g. confusion, terror, fury, euphoria) from another creature.",
+      "Apply the secret knowledge of the Black Library to the current circumstances.",
+      "Perfectly coordinate your movements with your fellow Agents."
+    ]
+  }
+]

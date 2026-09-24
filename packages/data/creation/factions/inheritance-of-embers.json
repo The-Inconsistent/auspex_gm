@@ -1,0 +1,81 @@
+[
+  {
+    "id": "asuryani",
+    "name": "Asuryani",
+    "source": "inheritance-of-embers",
+    "page": 10,
+    "text": "",
+    "note": "Wraith Constructs (p.13) sit in this section's run of pages but are a Species, not a faction: their archetypes carry AELDARI, ASURYANI and they may take [CRAFTWORLD]. They have no Paths, Backgrounds or Objectives (p.13)."
+  },
+  {
+    "id": "anhrathe",
+    "name": "Anhrathe",
+    "source": "inheritance-of-embers",
+    "page": 14,
+    "text": "",
+    "note": "Headed \"CORSAIRS\"; Anhrathe is the Keyword (ANHRATHE). Rule names are editorial: the book prints these rules unnamed. p.14 says Corsairs may use \"the Anhrathe Goal table\", but no such table is printed.",
+    "rules": [
+      {
+        "name": "Corsair Agents",
+        "text": "Corsairs receive many Aeldari, and count former Asuryani, Drukhari, and Harlequins among their number. Corsair Agents choose from the Species above and pick Keywords, Backgrounds, and Goals that match. The freedom of the Corsair lifestyle means that Asuryani must abandon their Path, gaining no benefit from it. If you feel your Corsair Agent has fully embraced their new identity, you may use the Anhrathe Goal table instead of the one that corresponds with your Agent's Species."
+      },
+      {
+        "name": "Coterie Wrath",
+        "text": "The [COTERIE] Keyword allows you to Shift Exalted Icons on a specific Skill Test to gain 1 Wrath Point per Shift, up to Rank times per session. If an Agent's Shifts and Rank are high enough, this effect can be used multiple times in a single Test. Each Coterie uses a different Skill for this effect, as listed below."
+      }
+    ]
+  },
+  {
+    "id": "drukhari",
+    "name": "Drukhari",
+    "source": "inheritance-of-embers",
+    "page": 15,
+    "text": "",
+    "note": "Rule name is editorial: the book prints it unnamed. Also Apocrypha p.58.",
+    "rules": [
+      {
+        "name": "Gain 1 Ruin",
+        "text": "DRUKHARI Keyword abilities with the 'Gain 1 Ruin' trigger provide 1 Ruin to the GM when they are used. If the GM is already at their maximum Ruin, these effects cannot be used."
+      }
+    ]
+  },
+  {
+    "id": "harlequins",
+    "name": "Harlequins",
+    "source": "inheritance-of-embers",
+    "page": 18,
+    "text": "",
+    "note": "The Keyword is HARLEQUIN. Rule name is editorial; the text is the last sentence of The [MASQUE] Keyword box (p.19). Also Apocrypha p.46.",
+    "rules": [
+      {
+        "name": "Masque Wrath Criticals",
+        "page": 19,
+        "text": "The benefits you gain from Wrath Criticals whilst using these Masque abilities stack with any other effects you'd usually gain, such as an additional point of Glory."
+      },
+      {
+        "name": "Rising Crescendo",
+        "text": "You increase your Speed by +Rank. Additionally, Enemies may never attempt a Reflexive Attack against you when you move out of Engagement.",
+        "page": 46,
+        "source": "apocrypha"
+      }
+    ]
+  },
+  {
+    "id": "ynnari",
+    "name": "Ynnari",
+    "source": "inheritance-of-embers",
+    "page": 20,
+    "text": "",
+    "note": "The book calls the Ynnari a sub-faction; no archetype is native to it, and it is joined through the Change of Kinship Ascension Package (p.58). \"Joining the Ynnari\" is an editorial name.",
+    "rules": [
+      {
+        "name": "Joining the Ynnari",
+        "text": "None of the Archetypes listed in this book are native to the Ynnari sub-faction. However, AELDARI Agents may join the Ynnari sub-faction by choosing the Change of Kinship Ascension Package (page 58). If you purchase this Ascension Package in character creation, use the Background and Objectives of your Agent's original sub-faction. Ynnari Agents cannot acquire Asuryani Paths."
+      },
+      {
+        "name": "Strength From Death",
+        "text": "The departing souls of fallen warriors nourish the Ynnari and inspire them to exceed the limitations of the living. When an allied Agent kills a living creature in their Turn and you Seize the Initiative to act next, you gain +Rank bonus dice on all Tests made during your Turn."
+      }
+    ]
+  }
+]

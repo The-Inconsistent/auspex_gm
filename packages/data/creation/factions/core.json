@@ -1,1 +1,197 @@
-[{ "id": "adeptus-astartes", "name": "Adeptus Astartes", "source": "core", "page": 70 }]
+[
+  {
+    "id": "adepta-sororitas",
+    "name": "Adepta Sororitas",
+    "source": "core",
+    "page": 50,
+    "text": "",
+    "rules": [
+      {
+        "name": "Faith Talents",
+        "page": 51,
+        "text": "Any character with the ADEPTA SORORITAS Keyword has access to Faith Talents (p.142)."
+      },
+      {
+        "name": "The [ORDER] Keyword",
+        "page": 51,
+        "text": "The Adepta Sororitas serve the Emperor in manifold ways. You can replace your [ORDER] Keyword with any Order. When attempting an action associated with your order, the GM may grant you bonus dice."
+      }
+    ]
+  },
+  {
+    "id": "adeptus-astra-telepathica",
+    "name": "Adeptus Astra Telepathica",
+    "source": "core",
+    "page": 53,
+    "text": "",
+    "rules": []
+  },
+  {
+    "id": "adeptus-mechanicus",
+    "name": "Adeptus Mechanicus",
+    "source": "core",
+    "page": 55,
+    "text": "",
+    "rules": [
+      {
+        "name": "The [FORGE WORLD] Keyword",
+        "page": 56,
+        "text": "You can replace your [FORGE WORLD] Keyword with your home planet, where you were taught the mysteries of the Omnissiah. You might choose Mars, birthplace of the Cult Mechanicus, holiest of celestial orbs, or perhaps Metalica, a planet shorn of biological life replaced almost entirely with sterile metal. The Forge World Avachrus of the Gilead System is detailed on p.297."
+      }
+    ]
+  },
+  {
+    "id": "adeptus-ministorum",
+    "name": "Adeptus Ministorum",
+    "source": "core",
+    "page": 58,
+    "text": "",
+    "rules": [
+      {
+        "name": "Faith Talents",
+        "text": "Any character who has the ADEPTUS MINISTORUM Keyword has access to Faith Talents (p.142)."
+      }
+    ]
+  },
+  {
+    "id": "astra-militarum",
+    "name": "Astra Militarum",
+    "source": "core",
+    "page": 60,
+    "text": "",
+    "rules": [
+      {
+        "name": "The [REGIMENT] Keyword",
+        "page": 61,
+        "text": "You can replace your [REGIMENT] Keyword with any of the Regiments below. This could be the Regiment of your home planet or a Regiment you have been stationed in or worked alongside."
+      }
+    ]
+  },
+  {
+    "id": "inquisition",
+    "name": "Inquisition",
+    "source": "core",
+    "page": 63,
+    "text": "",
+    "rules": [
+      {
+        "name": "The [ORDO] Keyword",
+        "page": 64,
+        "text": "You can replace your [ORDO] Keyword with any of the Holy Ordos of the Inquisition listed below."
+      }
+    ]
+  },
+  {
+    "id": "rogue-trader",
+    "name": "Rogue Trader Dynasties",
+    "source": "core",
+    "page": 66,
+    "text": "",
+    "rules": []
+  },
+  {
+    "id": "scum",
+    "name": "Scum",
+    "source": "core",
+    "page": 68,
+    "text": "",
+    "rules": []
+  },
+  {
+    "id": "adeptus-astartes",
+    "name": "Adeptus Astartes",
+    "source": "core",
+    "page": 70,
+    "text": "",
+    "rules": [
+      {
+        "name": "The [CHAPTER] Keyword",
+        "page": 71,
+        "text": "Your Space Marine character may be from any of the loyalist First Founding Chapters. Select one of the Chapters below and apply any Chapter Traits to your character. Replace your CHAPTER Keyword with the name of your chosen Chapter."
+      },
+      {
+        "name": "Primaris Astartes",
+        "page": 71,
+        "text": "The refined genealogy of the Primaris Astartes ensures they do not suffer any gene-seed deficiencies; if you are playing a Primaris Astartes, any Chapter Traits with '(GENE-SEED)' in the title are ignored."
+      },
+      {
+        "name": "Unknown Succession",
+        "page": 71,
+        "text": "If you are playing a Space Marine of the Absolvers Chapter, or a different chapter of unknown succession, you may take the Chapter Traits of any of the First Founding Chapters listed. Replace your CHAPTER Keyword with the name of your chosen successor Chapter."
+      }
+    ]
+  },
+  {
+    "id": "aeldari",
+    "name": "Aeldari",
+    "source": "core",
+    "page": 76,
+    "text": "",
+    "note": "The Asuryani Paths (p.78) are a creation choice for this faction and belong in option-groups; they are not transcribed here.",
+    "rules": [
+      {
+        "name": "Aeldari Craftworlds",
+        "page": 77,
+        "text": "You may replace your [CRAFTWORLD] Keyword with the name of the Craftworld you are from, defining much about your beliefs and values. You might choose the radical Ulthwé, dependent on the prophecies of their Seer Councils, or perhaps the traditionalist Ul-Khari, now wounded and immobile after crashing into the ice world Trollius, trapped in the Gilead System by the machinations of the Ruinous Powers."
+      },
+      {
+        "name": "Aeldari Coteries",
+        "page": 77,
+        "text": "You can replace your [COTERIE] Keyword with the name of the Coterie you belong to. You might choose the prideful Eldritch Raiders led by Prince Yriel, takers of over ten thousand enemy ships, or perhaps the mysterious Greensteel Warriors alternately raiding and supporting the Imperium in the Gilead System."
+      }
+    ]
+  },
+  {
+    "id": "orks",
+    "name": "Orks",
+    "source": "core",
+    "page": 80,
+    "text": "",
+    "rules": [
+      {
+        "name": "The [CLAN] Keyword",
+        "page": 82,
+        "text": "You can replace your [CLAN] Keyword with any of the Clans below."
+      }
+    ]
+  },
+  {
+    "id": "chaos",
+    "name": "Chaos",
+    "source": "core",
+    "page": 84,
+    "text": "",
+    "rules": [
+      {
+        "name": "The [MARK OF CHAOS] Keyword",
+        "page": 85,
+        "text": "If you have the [MARK OF CHAOS] Keyword, you can replace it with the name of the Chaos God you have chosen to venerate. If you worship the powers of Chaos Undivided, you do not have to replace this Keyword.\n\nCharacters with this Keyword can purchase the Mark of Chaos Talent on p.136."
+      },
+      {
+        "name": "Creating a Traitor",
+        "page": 87,
+        "text": "Creating characters for a Chaos Framework is easy; you can either use Advanced Character Creation (p.38) or choose almost any Imperial Archetype, give them the CHAOS Keyword and any other relevant Chaos Keywords, and give them d3 points of Corruption multiplied by the Tier of the game. Your GM might rule that you could also gain extra abilities, some examples are outlined below."
+      },
+      {
+        "name": "Cultist",
+        "page": 87,
+        "text": "To make a Chaos Cultist, choose Ganger as your Archetype. You gain the following Keywords: CHAOS, [MARK OF CHAOS]. You gain d3 Corruption. You gain the following Archetype ability instead of Scrounger:\n\nEnemy Within\n\nYou gain +Double Rank bonus dice to Deception (Fel) Tests, including Interaction Attacks, against targets with the IMPERIUM Keyword."
+      },
+      {
+        "name": "Rogue Psyker",
+        "page": 87,
+        "text": "To make a Rogue Psyker, choose Sanctioned Psyker as your Archetype. You gain the CHAOS Keyword and lose the IMPERIUM and ADEPTUS ASTRA TELEPATHICA Keywords. You gain d3 x 2 Corruption. You have access to the Maleficarum Psychic Discipline (p.280)."
+      },
+      {
+        "name": "Heretek",
+        "page": 87,
+        "text": "To make a Heretek, choose Tech-Priest as your Archetype. You gain the CHAOS and DARK MECHANICUM Keywords. You gain d3 x 3 Corruption."
+      },
+      {
+        "name": "Chaos Space Marine",
+        "page": 87,
+        "text": "To make a Chaos Space Marine, choose Tactical Space Marine as your Archetype. You gain the CHAOS, [MARK OF CHAOS], and HERETIC ASTARTES Keywords. Instead of a [CHAPTER], you belong to a [LEGION] of Chaos Space Marines. You gain d3 x 3 Corruption."
+      }
+    ]
+  }
+]

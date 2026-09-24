@@ -1,0 +1,51 @@
+[
+  {
+    "source": "apocrypha",
+    "id": "shield-host",
+    "name": "[SHIELD HOST]",
+    "page": 42,
+    "placeholder": "shield-host",
+    "text": "All Custodes characters can select a single Shield Host to belong to, reflected by the [SHIELD HOST] keyword, which should be replaced with the name of the Shield Host the character belongs to. Those who do not belong to any specific Shield Host should select the Emperor’s Chosen host instead."
+  },
+  {
+    "source": "apocrypha",
+    "id": "saedath",
+    "name": "[SAEDATH]",
+    "page": 46,
+    "placeholder": "masque",
+    "text": "Since the Fall, a place has traditionally been reserved in a masque's structure should a Solitaire lend their considerable abilities to a cause, but they are otherwise unchanged, centred around three distinct Saedaths: the Light, the Dark, and the Twilight. Each contains a different cast of characters, grouped by outlook and symbolism. This structure ensures that each member is aware their fellows' roles, upon both stage and battlefield.",
+    "note": "SubFactionType has no saedath; masque is the closest fit (a Saedath is a division within a masque, p.46)."
+  },
+  {
+    "source": "apocrypha",
+    "id": "house",
+    "name": "[HOUSE]",
+    "page": 53,
+    "placeholder": "house",
+    "text": "All Navigator characters are beholden to a Navigator House, reflected by the [HOUSE] keyword, which should be replaced with the name of the Navigator House the character belongs to. Each Navigator House will be one of the following four types:"
+  },
+  {
+    "source": "apocrypha",
+    "id": "cult",
+    "name": "[CULT]",
+    "page": 59,
+    "placeholder": "wych-cult",
+    "text": "If you have the WYCH keyword, you will also have the [CULT] Keyword, which is replaced with the name of the Cult you are a member of."
+  },
+  {
+    "source": "apocrypha",
+    "id": "league",
+    "name": "[LEAGUE]",
+    "page": 64,
+    "placeholder": "league",
+    "text": "A character with the [LEAGUE] keyword may select one of the Leagues listed below, or the player may work with the GM to create a League of their own."
+  },
+  {
+    "source": "apocrypha",
+    "id": "sept",
+    "name": "[SEPT]",
+    "page": 67,
+    "placeholder": "sept",
+    "text": "A character with the [SEPT] keyword may choose a Sept from below, or from other Warhammer 40,000 materials, or to work with the GM to create a Sept of their own. The selected Sept then replaces the [SEPT] keyword on the character sheet."
+  }
+]
