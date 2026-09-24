@@ -136,7 +136,8 @@ test("GM and player share a table", async (t) => {
   // Codex: players only see revealed entries, without GM notes.
   const secret = await gm.send({ type: "codex.save", kind: "npc", data: { name: "Magos Vex", gmNotes: "wants the tomb", revealed: false } });
   const known = await gm.send({ type: "codex.save", kind: "npc", data: { name: "Inquisitor Hale", gmNotes: "patron", revealed: true } });
-  assert.ok(secret.ok && known.ok);
+  const orders = await gm.send({ type: "codex.save", kind: "handout", data: { title: "Orders", body: "Kill the Orks.", revealed: true } });
+  assert.ok(secret.ok && known.ok && orders.ok, "handouts can be created already revealed");
   await new Promise((r) => setTimeout(r, 200));
   assert.equal(gm.codex()?.npcs.length, 2);
   assert.deepEqual(player.codex()?.npcs.map((n) => [n.name, n.gmNotes]), [["Inquisitor Hale", ""]]);

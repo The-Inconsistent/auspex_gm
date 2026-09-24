@@ -318,7 +318,8 @@ export async function applyAction(tx: Tx, ctx: Ctx, a: Action): Promise<ActionRe
           .where(and(eq(adventure.id, data.adventureId as string), eq(adventure.campaignId, cid)));
         if (!adv) fail("Adventure not found");
       }
-      if (a.kind === "handout") data.revealedAt = data.revealed ? sql`coalesce(${handout.revealedAt}, now())` : null;
+      // First reveal stamps the time; later saves keep it (only an UPDATE can read the old value).
+      if (a.kind === "handout") data.revealedAt = !data.revealed ? null : a.id ? sql`coalesce(${handout.revealedAt}, now())` : new Date();
       if (a.id) {
         const r = await tx.update(table).set(data as never).where(and(eq(table.id, a.id), eq(table.campaignId, cid))).returning({ id: table.id });
         return r.length ? { ok: true, id: a.id } : fail("Not found");

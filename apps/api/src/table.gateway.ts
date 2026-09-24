@@ -6,6 +6,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
   type OnGatewayConnection,
+  type OnGatewayInit,
 } from "@nestjs/websockets";
 import { z } from "zod";
 import type { Server, Socket } from "socket.io";
@@ -18,18 +19,26 @@ import { loadCodex, loadState } from "./state.ts";
 const rooms = (campaignId: string) => ({ gm: `c:${campaignId}:gm`, players: `c:${campaignId}:players` });
 
 @WebSocketGateway({ cors: { origin: process.env.WEB_ORIGIN ?? false, credentials: true } })
-export class TableGateway implements OnGatewayConnection {
+export class TableGateway implements OnGatewayInit, OnGatewayConnection {
   @WebSocketServer() server!: Server;
   private readonly log = new Logger(TableGateway.name);
   // ponytail: in-process per-campaign queue, assumes one api instance; pg advisory locks if we ever scale out
   private readonly tails = new Map<string, Promise<unknown>>();
 
+  // Authenticate in middleware, before the connection is accepted, so no event can arrive without a ctx.
+  afterInit(server: Server) {
+    server.use(async (socket, next) => {
+      // Browsers send the httpOnly cookie; scripts and tests may pass { auth: { token } }.
+      const token = readCookie(socket.handshake.headers.cookie) ?? (socket.handshake.auth as { token?: string }).token;
+      const ctx = await resolveToken(token).catch(() => null);
+      if (!ctx) return next(new Error("unauthorized"));
+      socket.data = ctx;
+      next();
+    });
+  }
+
   async handleConnection(socket: Socket) {
-    // Browsers send the httpOnly cookie; scripts and tests may pass { auth: { token } }.
-    const token = readCookie(socket.handshake.headers.cookie) ?? (socket.handshake.auth as { token?: string }).token;
-    const ctx = await resolveToken(token);
-    if (!ctx) return socket.disconnect(true);
-    socket.data = ctx;
+    const ctx = socket.data as Ctx;
     const r = rooms(ctx.campaignId);
     await socket.join(ctx.role === "gm" ? r.gm : r.players);
     const gm = ctx.role === "gm";
