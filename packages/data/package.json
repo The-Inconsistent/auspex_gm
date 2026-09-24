@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "validate": "node --experimental-strip-types --no-warnings validate.ts"
+    "validate": "bun validate.ts"
   },
   "dependencies": {
-    "@wg/shared": "workspace:^",
+    "@wg/shared": "workspace:*",
     "zod": "^4.6.5"
   },
   "exports": {

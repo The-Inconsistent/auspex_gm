@@ -2,14 +2,21 @@
   "name": "wrath-glory",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json",
-    "test": "pnpm -r test",
-    "validate": "pnpm --filter @wg/data validate"
+    "dev:db": "docker compose up -d --wait postgres",
+    "dev:api": "bun --filter @wg/api dev",
+    "dev:web": "bun --filter @wg/web dev",
+    "typecheck": "tsc -p tsconfig.json && tsc -p apps/api/tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json",
+    "test": "bun test packages apps/web",
+    "test:smoke": "bun --filter @wg/api test:smoke",
+    "validate": "bun packages/data/validate.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
     "typescript": "^5.9.3"
-  }
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
