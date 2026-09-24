@@ -40,7 +40,7 @@ services:
       API_ORIGIN: http://api:4000
       CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
     ports:
-      - '3004:3000'
+      - "3004:3000"
 
 networks:
   # The green-orange stack's network, so `postgres` resolves by alias. Its name is project-prefixed, so a local run

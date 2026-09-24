@@ -161,5 +161,5 @@ awaits in a loop only when order matters, as with writes in one transaction.
 
 ## Linting & Formatting
 
-- Type check with `bun run typecheck` (shared, api, web); it must pass before a commit.
-- Prettier formats the code. Don't hand-align.
+- `bun run typecheck` (shared, api, web), `bun run lint` and `bun run format:check` must pass before a commit.
+- Prettier formats the code (`bun run format`, width 120). Do not hand-align.

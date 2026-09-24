@@ -16,12 +16,12 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/**'
-      - 'packages/**'
-      - 'package.json'
-      - 'bun.lock'
-      - '.dockerignore'
-      - '.github/workflows/images.yml'
+      - "apps/**"
+      - "packages/**"
+      - "package.json"
+      - "bun.lock"
+      - ".dockerignore"
+      - ".github/workflows/images.yml"
   workflow_dispatch:
 
 permissions:
@@ -69,6 +69,6 @@ jobs:
         with:
           package-name: glory-gm-${{ matrix.app }}
           package-type: container
-          delete-only-untagged-versions: 'true'
+          delete-only-untagged-versions: "true"
 
       - run: echo "Image pushed. Now hit **Pull & redeploy** on the auspex stack in Dockhand." >> $GITHUB_STEP_SUMMARY

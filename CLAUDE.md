@@ -158,6 +158,8 @@ bun run dev:web             # Next on :3000; proxies /api and /socket.io to :400
 cd apps/api && bun run seed volkus --owner user_2abc…       # packages/data/packs/volkus, that Clerk user as GM; prints /c/<id>
 
 bun run typecheck           # shared + api + web
+bun run lint                # ESLint (eslint.config.mjs): typescript-eslint everywhere, Next + React rules in apps/web
+bun run format              # Prettier, width 120; format:check for CI. Skips *.md and packages/data JSON
 bun run test                # unit tests: rules functions, command parser
 bun run validate            # every threat JSON against the schema, with bestiary progress
 bun run test:smoke          # end-to-end; needs dev:db, and dev:api with CLERK_TEST_SECRET set

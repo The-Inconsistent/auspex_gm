@@ -11,10 +11,17 @@
     "typecheck": "tsc -p tsconfig.json && tsc -p apps/api/tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json",
     "test": "bun test packages apps/web",
     "test:smoke": "bun --filter @wg/api test:smoke",
-    "validate": "bun packages/data/validate.ts"
+    "validate": "bun packages/data/validate.ts",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
+    "eslint": "^9",
+    "eslint-config-next": "^16.3.6",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.9",
     "turbo": "^2.11.3",
     "typescript": "^5.9.3"
   },

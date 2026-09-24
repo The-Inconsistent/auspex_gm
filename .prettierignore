@@ -1,0 +1,7 @@
+apps/api/drizzle/
+bun.lock
+books/
+# Docs: Prettier pads every table to its widest cell and rewraps lists.
+*.md
+# Stat blocks transcribed from the books; kept in their hand-written layout.
+packages/data/**/*.json
