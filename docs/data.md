@@ -509,14 +509,5 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 - Two Inheritance of Embers gaps are parked in GitHub issue #2: the missing Anhrathe Goal table (p.14) and the
   unexplained +20 / +30 XP under three Corsair archetypes (pp.54–56).
 - Species details still missing: no Size for any Apocrypha species or the Necron.
-- Unbroken (VoA p.55): Absolvers only? VoA calls it "exclusive … Librarium of the Absolvers" but prints no
-  requirement; the data has `subFaction: absolvers`.
-- VoA's Litanies of Battle (pp.57–58) print only ADEPTUS ASTARTES: Chaplain-only, or do they need Faith?
-- IoE's Phantasmancy, Runes of Fate and Runes of Fortune print no access rule. Aeldari (or Harlequin) only?
-  Apocrypha's homebrew versions print one (Runes of Fortune: ASURYANI, ANHRATHE, HARLEQUIN or YNNARI; Runes of Fate:
-  AELDARI and FARSEER; Phantasmancy: HARLEQUIN), but a homebrew rule isn't applied to an official record.
-- FARSEER (Apocrypha Runes of Fate prerequisites): the keyword, or the Farseer archetype?
-- Grey Knights know Rites of Banishment instead of Smite (Apocrypha p.267); Navigators know The Lidless Stare (granted
-  by the species). Should the Grey Knights sub-faction grant Rites of Banishment the same way?
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

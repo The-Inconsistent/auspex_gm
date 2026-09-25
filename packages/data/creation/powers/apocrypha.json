@@ -828,12 +828,13 @@
         ]
       },
       {
-        "kind": "keyword",
+        "kind": "archetype",
         "anyOf": [
-          "FARSEER"
+          "farseer"
         ]
       }
-    ]
+    ],
+    "note": "FARSEER is the Farseer archetype (GM ruling, docs/rules-flow.md §11.32)."
   },
   {
     "id": "ancestors-grace",

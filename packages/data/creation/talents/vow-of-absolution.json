@@ -861,7 +861,7 @@
     "name": "Litany of Hate",
     "source": "vow-of-absolution",
     "page": 57,
-    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Printed XP Cost: \"0. The Litany of Hate is the most foundational creed of the Astartes Chaplain and is automatically gained by a character that learns any Litanies of Battle.\" Requirements printed in plain case: \"Adeptus Astartes\". Also Apocrypha p.254.",
+    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Printed XP Cost: \"0. The Litany of Hate is the most foundational creed of the Astartes Chaplain and is automatically gained by a character that learns any Litanies of Battle.\" Requirements printed in plain case: \"Adeptus Astartes\". Also Apocrypha p.254. Chaplain only (GM ruling, docs/rules-flow.md §11.31).",
     "category": "prayer",
     "xp": 0,
     "requires": [
@@ -876,6 +876,13 @@
         "anyOf": [
           "CHAOS"
         ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "chaplain",
+          "primaris-chaplain"
+        ]
       }
     ],
     "effect": "Invoking the psycho-conditioning of your brethren, you prime the Space Marines around you to fight with zeal and fervour until their foes are nought but ruin and corpses.\n\nSpend 1 Faith to affect targets with the ADEPTUS ASTARTES Keyword within 20m range of the Chaplain. Those affected may re-roll (Chaplain's Rank) dice with a result of 1, 2, or 3 whenever making a melee attack.\n\nBy spending a further point of Faith, to further enhance the effect, affected targets gain may re-roll an additional die on melee attacks, and the effect lasts for an additional round so long as the Chaplain remains in sight and can be heard."
@@ -885,7 +892,7 @@
     "name": "Litany of Faith",
     "source": "vow-of-absolution",
     "page": 58,
-    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.254.",
+    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.254. Chaplain only (GM ruling, docs/rules-flow.md §11.31).",
     "category": "prayer",
     "xp": 10,
     "requires": [
@@ -900,6 +907,13 @@
         "anyOf": [
           "CHAOS"
         ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "chaplain",
+          "primaris-chaplain"
+        ]
       }
     ],
     "effect": "You inspire those around you to stand fast, as enduring in flesh as they are in faith.\n\nAffected targets within 20m may roll Determination for Mortal Wounds as if they were typical damage.\n\nBy spending a further point of Faith, the effect of this Litany is enhanced and affected targets my reroll a single Determination die against Mortal Wounds."
@@ -909,7 +923,7 @@
     "name": "Catechism of Fire",
     "source": "vow-of-absolution",
     "page": 58,
-    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.254.",
+    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.254. Chaplain only (GM ruling, docs/rules-flow.md §11.31).",
     "category": "prayer",
     "xp": 20,
     "requires": [
@@ -929,6 +943,13 @@
         "anyOf": [
           "CHAOS"
         ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "chaplain",
+          "primaris-chaplain"
+        ]
       }
     ],
     "effect": "Exhorting your comrades to expend every bolt and ounce of fuel they have in the utter destruction of oncoming foes, you direct their armaments towards nearby enemies so that you might destroy a threat before it can close to melee.\n\nWhen you begin reciting this Litany, you designate the threat closest to you. Affected targets within 20m gain an additional +2 ED for damage for each hit applied to the designated threat when making ranged attacks.\n\nBy spending an additional point of Faith, the affected targets instead gain +3ED to damage for each hit applied to the threat."
@@ -938,7 +959,7 @@
     "name": "Exhortation of Rage",
     "source": "vow-of-absolution",
     "page": 58,
-    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.254.",
+    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.254. Chaplain only (GM ruling, docs/rules-flow.md §11.31).",
     "category": "prayer",
     "xp": 15,
     "requires": [
@@ -959,6 +980,13 @@
         "anyOf": [
           "CHAOS"
         ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "chaplain",
+          "primaris-chaplain"
+        ]
       }
     ],
     "effect": "Denouncing the unrighteous, you call upon your allies to face down the foes of Mankind with steel in their hearts and their hands.\n\nAffected targets within 20m add +1 ED to damage on successful melee attacks.\n\nBy spending a further point of Faith, affected targets gain +1 die to melee attack Tests, and the effects of the Litany lasts for an additional round, even if the Chaplain moves out of range, or can no longer be heard."
@@ -968,7 +996,7 @@
     "name": "Sword of the Emperor",
     "source": "vow-of-absolution",
     "page": 58,
-    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". \"Requirements\" is misprinted \"Requiements\".",
+    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". \"Requirements\" is misprinted \"Requiements\". Chaplain only (GM ruling, docs/rules-flow.md §11.31).",
     "category": "prayer",
     "xp": 20,
     "requires": [
@@ -989,6 +1017,13 @@
         "anyOf": [
           "CHAOS"
         ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "chaplain",
+          "primaris-chaplain"
+        ]
       }
     ],
     "effect": "Whether reciting words only you can hear or announcing your faith in a deafening bellow, your words ring in the ears of an ally, upon them your blessing bestows them the vigour of the Emperor and His fiery wrath.\n\nA single affected target with the Astartes Keyword, within 20m, inflicts with their next melee attack, if it hits, a number of Mortal Wounds equal to your Rank.\n\nBy spending a further point of Faith the effect of this Litany is sustained for a further round."
@@ -998,7 +1033,7 @@
     "name": "Recitation of Focus",
     "source": "vow-of-absolution",
     "page": 58,
-    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.255.",
+    "note": "Litanies of Battle (p.57), printed as Talents. The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Litanies spend Faith (Core p.142); VoA prints no Chaplain or Faith requirement, though the text addresses \"the Chaplain\". Also Apocrypha p.255. Chaplain only (GM ruling, docs/rules-flow.md §11.31).",
     "category": "prayer",
     "xp": 15,
     "requires": [
@@ -1017,6 +1052,13 @@
         "kind": "notKeyword",
         "anyOf": [
           "CHAOS"
+        ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "chaplain",
+          "primaris-chaplain"
         ]
       }
     ],

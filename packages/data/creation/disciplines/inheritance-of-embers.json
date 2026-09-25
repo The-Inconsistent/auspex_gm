@@ -28,7 +28,21 @@
     "source": "inheritance-of-embers",
     "page": 70,
     "text": "The art of Phatasmancy is the subtle manipulation and cruel application of psychic illusion and deception. Those Aeldari that have come to master this craft wield powerful illusions and deceitful misdirection through the force of their own will. They can conjure blinking twilight pathways into existence to guide allies or contort and even shroud their enemies' very thoughts within their own minds.",
-    "note": "\"Phatasmancy\" copied as printed. No access rule is printed for this discipline. Also Apocrypha p.312."
+    "note": "\"Phatasmancy\" copied as printed. IoE prints no access rule; by GM ruling it takes the Apocrypha printing's (docs/rules-flow.md §11.32). Also Apocrypha p.312.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HARLEQUIN"
+        ]
+      }
+    ]
   },
   {
     "id": "runes-of-battle",
@@ -58,7 +72,27 @@
     "source": "inheritance-of-embers",
     "page": 74,
     "text": "Farseers are by far the most potent of the Aeldari psykers. In times of war, these abilities are used with the Runes of Fate. They allow the Farseer to unravel the very threads of fate itself to guide their kin or unleash powerful torrents of psychic energies that consume their enemies both bodily and mind.",
-    "note": "No access rule is printed for this discipline. Also Apocrypha p.310."
+    "note": "IoE prints no access rule; by GM ruling it takes the Apocrypha printing's (docs/rules-flow.md §11.32). Also Apocrypha p.310.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "farseer"
+        ]
+      }
+    ]
   },
   {
     "id": "runes-of-fortune",
@@ -66,6 +100,23 @@
     "source": "inheritance-of-embers",
     "page": 75,
     "text": "The Seers of the Asuryani have long employed the Runes of Fortune and their ability to unlock the various strands of fate that intricately weave across the Galaxy. These runes are used to scry possible futures, foresee imminent dangers and aid the Aeldari and their allies in avoiding them.",
-    "note": "No access rule is printed for this discipline. Also Apocrypha p.307."
+    "note": "IoE prints no access rule; by GM ruling it takes the Apocrypha printing's (docs/rules-flow.md §11.32). Also Apocrypha p.307.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASURYANI",
+          "ANHRATHE",
+          "HARLEQUIN",
+          "YNNARI"
+        ]
+      }
+    ]
   }
 ]

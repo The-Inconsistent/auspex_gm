@@ -270,6 +270,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 29. **Talents with a bracketed choice** (Hatred [Any], Loremaster [Keyword], Jargon [Skill], Supreme Presence, Transhuman,
     Uncanny, Unnatural; also Signature Saedath, IoE p.62) may be taken once per choice: `repeatable: "perChoice"`.
 30. **The Emperor Protects** (Core p.144) needs "at least 1 Faith": another Faith Talent owned first.
+31. **Unbroken** (VoA p.55) is Absolvers only, and **VoA's Litanies of Battle** (pp.57–58) are Chaplain only.
+32. **IoE disciplines without an access rule take Apocrypha's where it prints one:** Runes of Fortune (PSYKER with
+    ASURYANI, ANHRATHE, HARLEQUIN or YNNARI), Runes of Fate (AELDARI, and the Farseer archetype), Phantasmancy
+    (HARLEQUIN). FARSEER in Apocrypha's prerequisites is the Farseer archetype, not a keyword.
+33. **Grey Knights** know Rites of Banishment instead of Smite (Apocrypha p.267): the sub-faction grants it, like the
+    Navigator species grants The Lidless Stare.
 
 ---
 

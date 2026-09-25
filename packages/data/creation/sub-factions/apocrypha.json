@@ -647,7 +647,7 @@
     "type": "chapter",
     "factionId": "adeptus-astartes",
     "keyword": "GREY KNIGHTS",
-    "note": "Restriction as printed: \"Due to their unique geneseed and secretive nature, the Grey Knights do not yet count any Primaris Marines amongst their number. As such, Primaris Astartes characters cannot select this CHAPTER.\" The lore also says \"Every Grey Knight is a psyker\".",
+    "note": "Restriction as printed: \"Due to their unique geneseed and secretive nature, the Grey Knights do not yet count any Primaris Marines amongst their number. As such, Primaris Astartes characters cannot select this CHAPTER.\" The lore also says \"Every Grey Knight is a psyker\". The Rites of Banishment trait is the Sanctic Discipline's rule (p.267), a grant by GM ruling (docs/rules-flow.md §11.33).",
     "traits": [
       {
         "name": "Daemonbane",
@@ -656,6 +656,16 @@
       {
         "name": "Secretive (Tradition)",
         "text": "Grey Knights do not trust outsiders, and their nature cannot be permitted to be known to any outside the chapter.\n\nYou suffer a +2DN penalty for Interaction tests involving anyone who lacks the Grey Knights or Inquisition keywords."
+      },
+      {
+        "name": "Rites of Banishment",
+        "text": "GREY KNIGHTS psykers know Rites of Banishment instead of Smite.",
+        "page": 267,
+        "grants": [
+          {
+            "power": "rites-of-banishment"
+          }
+        ]
       }
     ],
     "requires": [
