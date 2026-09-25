@@ -507,7 +507,7 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
     `repeat`, `random`
   - `story`: a narrative benefit the GM runs
 - `Rule`: a named ability, verbatim, with `mods` and `grants`. A `Keyword` has `grants` too (PSYKER gives the Universal
-  Psyker Abilities and Minor / Smite access, Core pp.257, 375), and each Species grants a psyker its disciplines
+  Psyker Abilities and Minor / Smite access, Core pp.257, 375; PRIEST gives Prayer access, rules-flow.md §11.40), and each Species grants a psyker its disciplines
   (Core p.257: Aeldari Divination, Runes of Battle and one more; everyone else one). A `PsychicPower`'s `useRequires`
   is what using it (not learning it) needs.
 - A wargear item keeps its printed `name`, a `qty` (a number or dice), a `scope` (character or group), and a
@@ -568,19 +568,14 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   [CRAFTWORLD]" (IoE p.56; ANHRATHE, [COTERIE] meant?); Venenum Assassin prints TEMPLUM VANUS (Apocrypha); the Corsair
   "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
 - Apocrypha suggests talents from "RR1" (Redacted Records), a book not in `books/`; they are listed in notes only.
-- Stay the Course (Core p.154): with a Memorable Injury already, can the Agent still take the 3 Corruption? The data
-  allows it.
-- Change of Kinship (IoE p.58) is "not at creation", but the Ynnari rule (p.20) speaks of buying it at creation.
+- GitHub issue #7: Change of Kinship (IoE p.58) is "not at creation", but the Ynnari rule (p.20) speaks of buying it
+  at creation.
 - Magisterial House "+Rank to Wealth" (Apocrypha p.53) is read as a one-off grant at creation.
 - The Primaris Chaplain's and Dark Apostle's "+Rank Resolve to you and allies" is read as an aura, not `mods`.
-- Should PRIEST archetypes that print no "may purchase Prayers" still buy them (the Prayers' own PRIEST requirement
-  admits them), or is `talentAccess` the gate?
 - Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier
   to Max Shock" is `maxShock: { timesTier: -1 }`.
-- Weirdboy (WAAAGH!), Grey Knight (Sanctic) and Grimnyr (Skeinwrought) grant a discipline and also get the species'
-  one discipline of choice (Core p.257): two in all. Is the archetype's discipline meant to be that one choice?
+- GitHub issue #8: Weirdboy (WAAAGH!), Grey Knight (Sanctic) and Grimnyr (Skeinwrought) grant a discipline and also
+  get the species' one discipline of choice (Core p.257): two in all. Is the archetype's discipline meant to be that one choice?
 - Navigator Hereditary Mutations (Apocrypha p.11): does −1 to Intellect-derived Traits touch Passive Awareness?
-- Change of Kinship (IoE p.58) prints 10 XP for the first Asuryani Path, 20 after; the Paths group (IoE p.10) makes the
-  first free. Which applies when joining the Asuryani?
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

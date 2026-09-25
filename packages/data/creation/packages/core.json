@@ -180,7 +180,7 @@
     "name": "Stay The Course",
     "source": "core",
     "page": 154,
-    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. The Memorable Injury is for an Agent without one (a `gm` requirement); 3 Corruption may replace it or come with it.",
+    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. An Agent without a Memorable Injury takes one, 3 Corruption instead, or both; an Agent who already has one may still take the 3 Corruption (GM ruling, docs/rules-flow.md §11.39).",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -237,7 +237,17 @@
             ]
           },
           {
-            "corruption": 3
+            "all": [
+              {
+                "corruption": 3
+              }
+            ],
+            "requires": [
+              {
+                "kind": "memorableInjuries",
+                "max": 0
+              }
+            ]
           },
           {
             "all": [
@@ -252,6 +262,25 @@
               {
                 "kind": "memorableInjuries",
                 "max": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "optional": true,
+        "from": [
+          {
+            "all": [
+              {
+                "corruption": 3
+              }
+            ],
+            "requires": [
+              {
+                "kind": "memorableInjuries",
+                "min": 1
               }
             ]
           }

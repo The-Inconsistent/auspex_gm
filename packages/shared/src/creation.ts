@@ -109,8 +109,14 @@ const requirements = [
   z.object({ kind: z.literal("notSpecies"), anyOf: ids }),
   z.object({ kind: z.literal("archetype"), anyOf: ids }),
   z.object({ kind: z.literal("notArchetype"), anyOf: ids }), // the Black Carapace: not yet a Scout (VoA p.24)
-  // "if you do not already have a Memorable Injury" (Stay the Course, Core p.154)
-  z.object({ kind: z.literal("memorableInjuries"), max: z.number().int().min(0) }),
+  // "if you do not already have a Memorable Injury" (Stay the Course, Core p.154); `min` for one who has
+  z
+    .object({
+      kind: z.literal("memorableInjuries"),
+      min: z.number().int().min(1).optional(),
+      max: z.number().int().min(0).optional(),
+    })
+    .refine((m) => m.min !== undefined || m.max !== undefined, "memorableInjuries needs min or max"),
   z.object({ kind: z.literal("subFaction"), anyOf: ids }), // a Successor matches its `successorOf` too
   z.object({ kind: z.literal("talent"), anyOf: ids }),
   z.object({ kind: z.literal("notTalent"), anyOf: ids }), // "can't be taken with" (Alpha-level Psyker, Apocrypha p.230)

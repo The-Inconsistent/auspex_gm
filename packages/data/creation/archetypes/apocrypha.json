@@ -687,11 +687,6 @@
       "[SEPT]",
       "PRIEST"
     ],
-    "grants": [
-      {
-        "talentAccess": "prayer"
-      }
-    ],
     "attributes": {
       "A": 3,
       "I": 3,
@@ -2009,11 +2004,6 @@
       "HERETIC ASTARTES",
       "[LEGION]",
       "PRIEST"
-    ],
-    "grants": [
-      {
-        "talentAccess": "prayer"
-      }
     ],
     "attributes": {
       "S": 4,
@@ -3827,11 +3817,6 @@
       "[CHAPTER]",
       "PRIMARIS",
       "PRIEST"
-    ],
-    "grants": [
-      {
-        "talentAccess": "prayer"
-      }
     ],
     "attributes": {
       "S": 6,
@@ -6090,11 +6075,6 @@
       "[MARK OF CHAOS]",
       "HERETIC",
       "PRIEST"
-    ],
-    "grants": [
-      {
-        "talentAccess": "prayer"
-      }
     ],
     "attributes": {
       "Wil": 3,

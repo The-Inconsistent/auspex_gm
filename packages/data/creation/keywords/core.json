@@ -489,6 +489,11 @@
     "source": "core",
     "page": 92,
     "text": "",
-    "note": "Used from p.92; no book defines it in a keyword list."
+    "note": "Used from p.92; no book defines it in a keyword list. Grants Prayer access, whether or not the archetype prints \"may purchase Prayers\" (GM ruling, docs/rules-flow.md §11.40).",
+    "grants": [
+      {
+        "talentAccess": "prayer"
+      }
+    ]
   }
 ]

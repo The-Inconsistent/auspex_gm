@@ -289,6 +289,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Novice-Sister, which print a cost without it, gain the 30.
 38. **Lost on the Warrior Path** (IoE p.59) grants the EXARCH keyword, which it makes you in prose: the Exarch Powers
     (Apocrypha pp.247–253) need it, and Apocrypha's own printing of the package lost the merge to IoE's.
+39. **Stay the Course** (Core p.154): an Agent who already has a Memorable Injury may still take the 3 Corruption.
+40. **Every PRIEST may buy Prayers** (the Prayers' own PRIEST requirement admits them), whether or not the archetype
+    prints "may purchase Prayers": the PRIEST keyword grants the access.
+41. **Joining the Asuryani by Change of Kinship** (IoE p.58): the first Path is free, as the Paths group prints it
+    (IoE p.10), not 10 XP as the package prints.
 
 ---
 
