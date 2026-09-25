@@ -1,0 +1,85 @@
+{
+  "id": "apoc-combat-servitor",
+  "name": "Combat Servitor",
+  "source": "apocrypha",
+  "page": 467,
+  "faction": "mechanicus",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 2,
+    "A": 2,
+    "I": 2,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "defence": 1,
+  "wounds": 4,
+  "shock": null,
+  "determination": "Spend 1 Glory to roll 3d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "SERVITOR"
+  ],
+  "resilience": {
+    "value": 7,
+    "note": "Augmetics: 4 AR"
+  },
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Servo Arm",
+          "damage": 9,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Mindlock",
+      "text": "The Servitor is Exhausted for 1 round. This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    }
+  ]
+}

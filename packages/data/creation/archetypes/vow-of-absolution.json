@@ -392,7 +392,8 @@
       },
       {
         "wargear": {
-          "name": "Reductor"
+          "name": "Reductor",
+          "wargearId": "apoc-reductor"
         }
       }
     ],
@@ -404,7 +405,7 @@
     "source": "vow-of-absolution",
     "factionId": "adeptus-astartes",
     "page": 31,
-    "note": "Chapter Cult's 1 Faith has no grant in the schema; it stays in the rule text. “Aquilla” as printed. Also FSPG p.106. Also Apocrypha p.188.",
+    "note": "“Aquilla” as printed. Also FSPG p.106. Also Apocrypha p.188.",
     "tier": 4,
     "speciesIds": [
       "adeptus-astartes"
@@ -438,7 +439,16 @@
     "abilities": [
       {
         "name": "Chapter Cult",
-        "text": "You gain 1 Faith, and can purchase Faith Talents available to characters with the ADEPTUS MINISTORUM or the ADEPTUS ASTARTES Keywords.\n\nAs a Combat Action, you may spend 1 Faith to give an ally within hearing distance your [CHAPTER] Keyword for the rest of the scene, with all corresponding effects except those with the Tradition or gene-seed title, or that provide equipment."
+        "text": "You gain 1 Faith, and can purchase Faith Talents available to characters with the ADEPTUS MINISTORUM or the ADEPTUS ASTARTES Keywords.\n\nAs a Combat Action, you may spend 1 Faith to give an ally within hearing distance your [CHAPTER] Keyword for the rest of the scene, with all corresponding effects except those with the Tradition or gene-seed title, or that provide equipment.",
+        "grants": [
+          {
+            "faith": 1
+          },
+          {
+            "talentAccess": "faith",
+            "asKeyword": "ADEPTUS MINISTORUM"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -468,7 +478,8 @@
       },
       {
         "wargear": {
-          "name": "Skull Helm"
+          "name": "Skull Helm",
+          "wargearId": "fspg-skull-helm"
         }
       },
       {
@@ -530,7 +541,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Bolt Sniper Rifle"
+          "name": "Bolt Sniper Rifle",
+          "wargearId": "voa-astartes-sniper-rifle"
         }
       },
       {
@@ -541,7 +553,8 @@
       },
       {
         "wargear": {
-          "name": "Camo Cloak"
+          "name": "Camo Cloak",
+          "wargearId": "cameleoline-cloak"
         }
       },
       {
@@ -644,7 +657,8 @@
       },
       {
         "wargear": {
-          "name": "Divinator-class Auspex"
+          "name": "Divinator-class Auspex",
+          "wargearId": "auspex"
         }
       },
       {
@@ -655,7 +669,8 @@
       },
       {
         "wargear": {
-          "name": "Occulus Bolt Carbine"
+          "name": "Occulus Bolt Carbine",
+          "wargearId": "apoc-occulus-bolt-carbine"
         }
       },
       {
@@ -687,7 +702,8 @@
       {
         "wargear": {
           "name": "Smoke Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-smoke-grenades"
         }
       },
       {
@@ -773,7 +789,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Mark VII Artificer Power Armour (includes servo-harness)"
+          "name": "Mark VII Artificer Power Armour (includes servo-harness)",
+          "wargearId": "apoc-artificer-armour"
         }
       },
       {
@@ -787,7 +804,8 @@
           },
           {
             "wargear": {
-              "name": "Grav-pistol"
+              "name": "Grav-pistol",
+              "wargearId": "apoc-grav-pistol"
             }
           }
         ]
@@ -831,7 +849,12 @@
         }
       },
       {
-        "text": "Any 3 Augmetics"
+        "pick": 3,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 2,
@@ -869,7 +892,7 @@
     "source": "vow-of-absolution",
     "factionId": "adeptus-astartes",
     "page": 36,
-    "note": "Wargear prints “Psychic Hood 3 Frag Grenades” without a comma. “Aquilla” as printed. Also FSPG p.107. Also Apocrypha p.189.",
+    "note": "Wargear prints “Psychic Hood 3 Frag Grenades” without a comma. “Aquilla” as printed. Also FSPG p.107. Also Apocrypha p.189. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline\" is the Species' default choice (Disciplines Known, Core p.257), so only Librarius is granted here.",
     "tier": 4,
     "speciesIds": [
       "adeptus-astartes"
@@ -908,6 +931,11 @@
           },
           {
             "power": "smite"
+          },
+          {
+            "disciplineAccess": [
+              "librarius"
+            ]
           },
           {
             "choose": 1,
@@ -950,7 +978,8 @@
       },
       {
         "wargear": {
-          "name": "Psychic Hood"
+          "name": "Psychic Hood",
+          "wargearId": "fspg-psychic-hood"
         }
       },
       {
@@ -1019,7 +1048,8 @@
       },
       {
         "wargear": {
-          "name": "Bolt Carbine"
+          "name": "Bolt Carbine",
+          "wargearId": "apoc-bolt-carbine"
         }
       },
       {
@@ -1051,7 +1081,8 @@
       {
         "wargear": {
           "name": "Shock Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "fspg-shock-grenade"
         }
       },
       {
@@ -1261,7 +1292,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Mark VII Artificer Power Armour (includes servo-harness)"
+          "name": "Mark VII Artificer Power Armour (includes servo-harness)",
+          "wargearId": "apoc-artificer-armour"
         }
       },
       {
@@ -1275,7 +1307,8 @@
           },
           {
             "wargear": {
-              "name": "Grav-pistol"
+              "name": "Grav-pistol",
+              "wargearId": "apoc-grav-pistol"
             }
           }
         ]
@@ -1319,7 +1352,12 @@
         }
       },
       {
-        "text": "Any 3 Augmetics"
+        "pick": 3,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 2
@@ -1375,7 +1413,11 @@
                 "wargearId": "voa-mk-x-tacticus-armour"
               },
               {
-                "name": "Master-crafted Auto Bolt Rifle"
+                "name": "Master-crafted Auto Bolt Rifle",
+                "wargearId": "voa-auto-bolt-rifle",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Bolt Pistol",
@@ -1400,7 +1442,11 @@
                 "wargearId": "voa-mk-x-tacticus-armour"
               },
               {
-                "name": "Master-crafted Power Sword"
+                "name": "Master-crafted Power Sword",
+                "wargearId": "voa-power-sword",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Bolt Pistol",
@@ -1425,7 +1471,11 @@
                 "wargearId": "voa-mk-x-tacticus-armour"
               },
               {
-                "name": "Master-crafted Power Fist"
+                "name": "Master-crafted Power Fist",
+                "wargearId": "voa-power-fist",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Bolt Pistol",
@@ -1454,7 +1504,11 @@
                 "wargearId": "voa-bolt-pistol"
               },
               {
-                "name": "Master-crafted Occulus Bolt Carbine"
+                "name": "Master-crafted Occulus Bolt Carbine",
+                "wargearId": "apoc-occulus-bolt-carbine",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Astartes Combat Knife",
@@ -1472,7 +1526,8 @@
               },
               {
                 "name": "Smoke Grenade",
-                "qty": 3
+                "qty": 3,
+                "wargearId": "apoc-smoke-grenades"
               },
               {
                 "name": "Grav-Chute",
@@ -1567,7 +1622,11 @@
       },
       {
         "wargear": {
-          "name": "Master-crafted Power Sword"
+          "name": "Master-crafted Power Sword",
+          "wargearId": "voa-power-sword",
+          "upgrades": [
+            "mastercrafted"
+          ]
         }
       },
       {
@@ -1593,7 +1652,8 @@
       {
         "wargear": {
           "name": "Smoke Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-smoke-grenades"
         }
       },
       {
@@ -1699,7 +1759,8 @@
       },
       {
         "wargear": {
-          "name": "Company Standard"
+          "name": "Company Standard",
+          "wargearId": "voa-battle-standard"
         }
       },
       {

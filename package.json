@@ -15,7 +15,10 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "aspire:start": "bun --cwd=aspire-apphost run aspire:start",
+    "aspire:build": "bun --cwd=aspire-apphost run aspire:build",
+    "aspire:dev": "bun --cwd=aspire-apphost run aspire:dev"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

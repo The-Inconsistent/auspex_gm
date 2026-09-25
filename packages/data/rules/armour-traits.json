@@ -70,5 +70,23 @@
     "page": 232,
     "gist": "Add AR to Defence and Resilience, if the GM agrees you can manoeuvre it to block",
     "text": "Wielded like a defensive weapon, shields are carried instead of worn, and used to deflect incoming attacks.\n\nArmour with this Trait adds its AR to your Defence and Resilience, provided the GM agrees you can manoeuvre the shield to block the attack."
+  },
+  {
+    "id": "agile",
+    "kind": "armour-trait",
+    "name": "Agile",
+    "source": "apocrypha",
+    "page": 398,
+    "gist": "The wearer may use Agility instead of Toughness to calculate Determination",
+    "text": "A few types of armour listed in this section have the Agile trait. A character wearing Agile armour may use their Agility to calculate their Determination instead of their Toughness."
+  },
+  {
+    "id": "void",
+    "kind": "armour-trait",
+    "name": "Void",
+    "source": "apocrypha",
+    "page": 398,
+    "gist": "Incoming attacks' AP is reduced one step (AP −1 to 0); also counts as Built-in Tech (Core p.235)",
+    "text": "A number of types of armour listed in this section have the Void trait. A character with Void armour reduces the AP of incoming attacks by one step (i.e., from AP -1 to 0, or from AP -3 to -2).\n\nVoid armour also benefits from the Built-in Tech rule (page 235 of the Wrath & Glory Core Rulebook)."
   }
 ]

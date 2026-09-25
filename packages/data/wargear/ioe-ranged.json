@@ -1,0 +1,1407 @@
+[
+  {
+    "id": "ioe-bright-lance",
+    "name": "Bright Lance",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "category": "Laser Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (12)",
+        "Lance",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-hawks-talon",
+    "name": "Hawk's Talon",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "category": "Laser Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-lasblaster",
+    "name": "Lasblaster",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "category": "Laser Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-ranger-long-rifle",
+    "name": "Ranger Long Rifle",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "category": "Laser Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        18,
+        26,
+        54
+      ],
+      "salvo": null,
+      "traits": [
+        "Sniper (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed 18/26/54 (not the 1:2:3 pattern; 36 likely meant), copied as printed."
+  },
+  {
+    "id": "ioe-scatter-laser",
+    "name": "Scatter Laser",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "category": "Laser Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 4,
+      "traits": [
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-blaster",
+    "name": "Blaster",
+    "source": "inheritance-of-embers",
+    "page": 80,
+    "category": "Darklight Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-blast-pistol",
+    "name": "Blast Pistol",
+    "source": "inheritance-of-embers",
+    "page": 80,
+    "category": "Darklight Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        4,
+        7,
+        10
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-dark-lance",
+    "name": "Dark Lance",
+    "source": "inheritance-of-embers",
+    "page": 80,
+    "category": "Darklight Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Heavy (10)",
+        "Lance"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-avenger-shuriken-catapult",
+    "name": "Avenger Shuriken Catapult",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Rending (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Print error: the name is split over three table rows (\"Avenger\", \"Shuriken\", \"Catapult\"). The \"Avenger\" row prints the Bright Lance's profile and the \"Shuriken\" row the Hawk's Talon's (p.79), both copied from the Laser table; this entry is the \"Catapult\" row, the only one not duplicated."
+  },
+  {
+    "id": "ioe-claw-mounted-shuriken-catapult",
+    "name": "Claw-mounted Shuriken Catapult",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Rending (3)"
+      ]
+    },
+    "effect": "",
+    "note": "No description is printed for it on p.80."
+  },
+  {
+    "id": "ioe-shuriken-cannon",
+    "name": "Shuriken Cannon",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Rending (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-shuriken-catapult",
+    "name": "Shuriken Catapult",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Rending (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-shuriken-pistol",
+    "name": "Shuriken Pistol",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Pistol",
+        "Rending (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-shuriken-rifle",
+    "name": "Shuriken Rifle",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)",
+        "Rending (3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-shrieker-cannon",
+    "name": "Shrieker Cannon",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Shuriken Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 3,
+      "traits": [
+        "Agonising",
+        "Heavy (4)",
+        "Rending (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-death-spinner",
+    "name": "Death Spinner",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Monofilament Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault",
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Monofilament Ranged Weapons\"; category is the table heading."
+  },
+  {
+    "id": "ioe-shadow-weaver",
+    "name": "Shadow Weaver",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Monofilament Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 5,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Heavy (10)",
+        "Rending (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Monofilament Ranged Weapons\"; category is the table heading. The description says its size requires an anti-grav platform or Wraith Construct to wield."
+  },
+  {
+    "id": "ioe-twin-death-spinners",
+    "name": "Twin Death Spinners",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Monofilament Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault",
+        "Blast (10)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Monofilament Ranged Weapons\"; category is the table heading. Table prints \"Twin Death Spinners\", the description \"Twin Death Spinner\"."
+  },
+  {
+    "id": "ioe-shredder",
+    "name": "Shredder",
+    "source": "inheritance-of-embers",
+    "page": 81,
+    "category": "Monofilament Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault",
+        "Blast (6)",
+        "Inflict (Restrained)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Monofilament Ranged Weapons\"; category is the table heading. Traits printed \"Assault, Blast (6, Inflict (Restrained)\" (Blast's closing bracket missing); read as Blast (6), Inflict (Restrained)."
+  },
+  {
+    "id": "ioe-aeldari-flamer",
+    "name": "Aeldari Flamer",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Common",
+    "keywords": [
+      "AELDARI",
+      "FLAME"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"Flame\" (Core's flame weapons use FIRE), copied as printed."
+  },
+  {
+    "id": "ioe-aeldari-missile-launcher-starshot",
+    "name": "Aeldari Missile Launcher: Starshot Missile",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 8,
+      "ap": -5,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Heavy (4)"
+      ]
+    },
+    "effect": "",
+    "note": "One launcher printed with two missile profiles (Starshot, Sunburst), one entry each; the row's Value and Rarity are the launcher's."
+  },
+  {
+    "id": "ioe-aeldari-missile-launcher-sunburst",
+    "name": "Aeldari Missile Launcher: Sunburst Missile",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Heavy (4)"
+      ]
+    },
+    "effect": "",
+    "note": "One launcher printed with two missile profiles (Starshot, Sunburst), one entry each; the row's Value and Rarity are the launcher's."
+  },
+  {
+    "id": "ioe-hallucinogen-grenade-launcher",
+    "name": "Hallucinogen Grenade Launcher",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "effect": "Range 9/18/27, Salvo 1, Blast (6), Inflict (Fear 4). The Hallucinogen and Phantasm Grenade Launchers are designed to deliver very specific payloads. Though uncommon, they can also fire other types of grenades with modification. Changing the payload requires a successful DN 4 Tech Use (Int) Test and an hour of uninterrupted work.",
+    "note": "Damage, ED and AP printed \"–\", so there is no weapon entry: range, salvo and traits are in effect. \"Inflict (Fear 4)\" as printed (Fear is not a Core Condition). The payload rule is from the section introduction."
+  },
+  {
+    "id": "ioe-haywire-blaster",
+    "name": "Haywire Blaster",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Arc (3)",
+        "Blast (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-phantasm-grenade-launcher",
+    "name": "Phantasm Grenade Launcher",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "effect": "Range 9/18/27, Salvo –, Blast (6), Inflict (Terror 4). The Hallucinogen and Phantasm Grenade Launchers are designed to deliver very specific payloads. Though uncommon, they can also fire other types of grenades with modification. Changing the payload requires a successful DN 4 Tech Use (Int) Test and an hour of uninterrupted work.",
+    "note": "Damage, ED and AP printed \"–\", so there is no weapon entry: range, salvo and traits are in effect. \"Inflict (Terror 4)\" as printed (Terror is not a Core Condition). The payload rule is from the section introduction."
+  },
+  {
+    "id": "ioe-reaper-launcher-starswarm",
+    "name": "Reaper Launcher: Starswarm Missile",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 2,
+      "traits": [
+        "Heavy (4)"
+      ]
+    },
+    "effect": "",
+    "note": "One launcher printed with two missile profiles (Starswarm, Starshot), one entry each; the row's Value and Rarity are the launcher's."
+  },
+  {
+    "id": "ioe-reaper-launcher-starshot",
+    "name": "Reaper Launcher: Starshot Missile",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -5,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Heavy (4)"
+      ]
+    },
+    "effect": "",
+    "note": "One launcher printed with two missile profiles (Starswarm, Starshot), one entry each; the row's Value and Rarity are the launcher's."
+  },
+  {
+    "id": "ioe-starcannon",
+    "name": "Starcannon",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "PLASMA"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (10)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-stinger-pistol",
+    "name": "Stinger Pistol",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Gruesome",
+        "Pistol",
+        "Inflict (Poisoned 3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-swooping-hawk-grenade-pack",
+    "name": "Swooping Hawk Grenade Pack",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "effect": "Damage 10, ED 5, AP −1, Range – – –, Salvo 1, Assault, Blast (6).",
+    "note": "Range printed \"– – –\" (the pack is triggered in flight, p.83), and the schema needs a range, so the profile is in effect and there is no weapon entry. Filed as a weapon, not a grenade: it is the pack, bought once."
+  },
+  {
+    "id": "ioe-vibro-cannon",
+    "name": "Vibro-Cannon",
+    "source": "inheritance-of-embers",
+    "page": 82,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        65
+      ],
+      "salvo": null,
+      "traits": [
+        "Mounted (Large)",
+        "Blast (10)"
+      ]
+    },
+    "effect": "",
+    "note": "Printed: Long range 65 (not 54), AP and Salvo with hyphens (\"-3\", \"-\"), \"Blast 10\" without brackets, and a trailing comma in Keywords (\"Aeldari, Asuryani,\"; a third Keyword may be missing). Mounted (Large) is not a Core trait. Described (p.83, \"Vibro Cannon\") as needing a support platform or Wraith Construct."
+  },
+  {
+    "id": "ioe-dragon-fusion-gun",
+    "name": "Dragon Fusion Gun",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-fusion-pistol",
+    "name": "Fusion Pistol",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        4,
+        7,
+        10
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-firepike",
+    "name": "Firepike",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-guardian-fusion-gun",
+    "name": "Guardian Fusion Gun",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Melta Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-shard-carbine",
+    "name": "Shard Carbine",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Splinter Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Inflict (Poisoned 6)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Table prints \"Shard Carbine\", the description \"Shardcarbine\"."
+  },
+  {
+    "id": "ioe-splinter-cannon",
+    "name": "Splinter Cannon",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Splinter Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (10)",
+        "Inflict (Poisoned 6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-splinter-pistol",
+    "name": "Splinter Pistol",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Splinter Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Inflict (Poison 5)",
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Inflict (Poison 5)\" (the Condition is Poisoned), copied as printed."
+  },
+  {
+    "id": "ioe-splinter-pods",
+    "name": "Splinter Pods",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Splinter Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Inflict (Poison 4)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Inflict (Poison 4)\" (the Condition is Poisoned), copied as printed. Described as a pair of twin-linked Splinter Rifles mounted on a Skyboard."
+  },
+  {
+    "id": "ioe-splinter-rifle",
+    "name": "Splinter Rifle",
+    "source": "inheritance-of-embers",
+    "page": 84,
+    "category": "Splinter Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Inflict (Poison 5)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Inflict (Poison 5)\" (the Condition is Poisoned), copied as printed."
+  },
+  {
+    "id": "ioe-d-cannon",
+    "name": "D-Cannon",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Vortex Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "VORTEX"
+    ],
+    "weapon": {
+      "damage": 20,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (14)",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "Even if an affected target survives, they suffer from local distortions of reality; targets of Vortex weapons roll for Scattering (Wrath & Glory, page 186).",
+    "note": "Effect is from the Vortex Weapons introduction (p.84). Trait printed \"Warp Weapon\" (Core p.210: \"Warp Weapons\"), copied as printed. Described as needing an anti-grav platform or Wraith Construct."
+  },
+  {
+    "id": "ioe-d-scythe",
+    "name": "D-Scythe",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Vortex Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "VORTEX"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (12)",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "Even if an affected target survives, they suffer from local distortions of reality; targets of Vortex weapons roll for Scattering (Wrath & Glory, page 186).",
+    "note": "Effect is from the Vortex Weapons introduction (p.84). Trait printed \"Warp Weapon\" (Core p.210: \"Warp Weapons\"), copied as printed."
+  },
+  {
+    "id": "ioe-wraithcannon",
+    "name": "Wraithcannon",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Vortex Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "VORTEX"
+    ],
+    "weapon": {
+      "damage": 20,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "Even if an affected target survives, they suffer from local distortions of reality; targets of Vortex weapons roll for Scattering (Wrath & Glory, page 186).",
+    "note": "Effect is from the Vortex Weapons introduction (p.84). Trait printed \"Warp Weapon\" (Core p.210: \"Warp Weapons\"), copied as printed."
+  },
+  {
+    "id": "ioe-hexrifle",
+    "name": "Hexrifle",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Haemonculus Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        18,
+        26,
+        54
+      ],
+      "salvo": null,
+      "traits": [
+        "Inflict (Poisoned 6)",
+        "Sniper (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Exotic Ranged Weapons\"; category is the table heading. Range printed 18/26/54 (36 likely meant), copied as printed."
+  },
+  {
+    "id": "ioe-liquifier-gun",
+    "name": "Liquifier Gun",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Haemonculus Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Flamer",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": "It spews venom, inflicting Poisoned (5) rather than On Fire.",
+    "note": "Section headed \"Exotic Ranged Weapons\"; category is the table heading. Effect is from its description: it replaces the Flamer Trait's Inflict (On Fire)."
+  },
+  {
+    "id": "ioe-neuro-disruptor",
+    "name": "Neuro Disruptor",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Haemonculus Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Agonising",
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Exotic Ranged Weapons\"; category is the table heading. A HARLEQUIN weapon printed in the Haemonculus table."
+  },
+  {
+    "id": "ioe-ossefactor",
+    "name": "Ossefactor",
+    "source": "inheritance-of-embers",
+    "page": 85,
+    "category": "Haemonculus Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": null,
+      "traits": [
+        "Agonising",
+        "Brutal",
+        "Gruesome",
+        "Inflict (Hindered 1)"
+      ]
+    },
+    "effect": "Treat the dead target as the source of a Frag Grenade explosion.",
+    "note": "Section headed \"Exotic Ranged Weapons\"; category is the table heading. Salvo printed \"-\" (hyphen), read as –. Effect is from its description, which is printed run into the Neuro Disruptor paragraph without a bold heading."
+  }
+]

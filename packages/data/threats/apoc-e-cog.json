@@ -1,0 +1,141 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Automata",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "A.N-VYL Work",
+      "text": "While one or more E-COGs are within 6m of its owner, whenever its owner attempts a Tech test, they gain +1 Exalted Icon for each E-COG within 6m."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"5 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Autoch-pattern Bolter",
+          "damage": 10,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "HunTR"
+          ]
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Manipulator Arms",
+      "text": "An E-COG may exchange its Autoch-pattern Bolter with one of the following: Manipulator Arms: 7 + 1 ED, +2d on Tech tests.",
+      "weapons": [
+        {
+          "name": "Manipulator Arms",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Plasma Torch",
+      "text": "An E-COG may exchange its Autoch-pattern Bolter with one of the following: Plasma Torch: 10 + 2 ED / AP -4 / Careful, Unwieldy (2)",
+      "weapons": [
+        {
+          "name": "Plasma Torch",
+          "damage": 10,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Careful",
+            "Unwieldy (2)"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "mobAbilities": [],
+  "id": "apoc-e-cog",
+  "name": "E-COG",
+  "page": 478,
+  "faction": "votann",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "LEAGUES OF VOTANN",
+    "COG",
+    "ROBOT",
+    "BRÔKHYR"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 5,
+    "A": 4,
+    "I": 4,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 10,
+    "note": "Armoured Shell: 4 AR"
+  },
+  "defence": 3,
+  "wounds": 7,
+  "shock": null,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Tech",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "determination": "Spend 1 Glory to roll 6d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg"
+}

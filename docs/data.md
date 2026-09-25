@@ -50,10 +50,10 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 |---|---|---|
 | `id` | string, `^[a-z0-9-]+$` | Must equal the filename without `.json` (validate checks) |
 | `name` | string | As printed |
-| `source` | `core` \| `threat-assessment` \| `gutshivas-kommandos` \| `vow-of-absolution`; default `core` | Book id. Omit for core |
+| `source` | a `SOURCES` book id (`packages/shared/src/source.ts`), or a `THREAT_ONLY_SOURCES` one (`threat-assessment` \| `gutshivas-kommandos`, `threat.ts`, which also holds their cites); default `core` | Book id. Omit for core |
 | `page` | positive int | **Printed** page in `source`, not the PDF page |
-| `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` | Grouping for the GM picker |
-| `threat` | array of `T`/`E`/`A`/`M`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column) |
+| `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` \| `votann` | Grouping for the GM picker |
+| `threat` | array of `T`/`E`/`A`/`M` or `null`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column). `null` is a printed "—": no class at that Tier (a follower not yet available); the last Tier is always printed, and `threatClassAt` uses the first printed Tier below it |
 | `keywords` | string[], ≥ 1 | As printed, including `<PLACEHOLDER>` keywords |
 | `attributes` | `{ S, T, A, I, Wil, Int, Fel }`, ints | |
 | `resilience` | `{ value: int, note?: string }` | `note` holds the bracketed part, e.g. the AR |
@@ -70,6 +70,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | `size` | `Tiny` \| `Small` \| `Avg` \| `Large` \| `Huge` \| `Gargantuan` | |
 | `options[]` | `ThreatOption`, default `[]` | Mob and variant options (below) |
 | `mobAbilities[]` | `Ability`, default `[]` | Abilities that apply only while in a Mob |
+| `note` | string, optional | A print error copied as printed, or a transcription remark |
 
 **`Ability`**
 
@@ -107,7 +108,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | Convention | Detail |
 |---|---|
 | `id` = filename | `ork-boy.json` → `"id": "ork-boy"`. A supplement reprint of a core entry takes a book prefix (`ta-ork-boy`, `ta-kommando`) so both can coexist |
-| `source` | Book id from the enum above; omitted means `core`. A new book needs a new enum value first |
+| `source` | Book id from the enum above; omitted means `core`. A new book goes in `SOURCES` (`source.ts`) first, or in `THREAT_ONLY_SOURCES` (`threat.ts`, with its cite) if it has only threats |
 | `page` | Printed page, never the PDF page (see §3 for the offsets) |
 | `threat` | 4 letters for core (Tiers 1–4), 5 when the book prints Tier 5. `threatClassAt(t, tier)` picks `threat[min(tier, length) - 1]`, so a 4-letter entry at a Tier 5 campaign uses its Tier 4 class. Class rules: [rules-flow.md](rules-flow.md) §4, Threat classes |
 | Weapons | Inside an `ACTION` ability (`{ "type": "ACTION", "weapons": [...] }`, usually no name or text), never loose on the threat |
@@ -167,10 +168,14 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
+| Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
+| Bloody Gates | *none* (adventure) | `Wrath & Glory_ Bloody Gates.pdf` | printed |
+| Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
 
-No creation content: Darktide and Litanies of the Lost (official adventures), `Wrath Glory Condensed Rules.docx.pdf`
-(fan quick-reference). The creation `source` ids are `SOURCES` in `packages/shared/src/creation.ts`, separate from
-`Threat.source` and `WargearSource`.
+No creation content: Darktide, Litanies of the Lost, Bloody Gates and Affliction Ascendant (official adventures;
+Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only), Church of Steel (travel and vehicles),
+`Wrath Glory Condensed Rules.docx.pdf` (fan quick-reference). The creation `source` ids are `SOURCES` in
+`packages/shared/src/creation.ts`, separate from `Threat.source` and `WargearSource`.
 
 **Daemons book:**
 - The offset was checked on PDF pages 15, 41, 75, 101 and 125, where the folio (bottom right, odd pages only) matches
@@ -331,23 +336,38 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 
 ### Wargear catalogue (`packages/data/wargear/*.json`, `Wargear` in `packages/shared/src/wargear.ts`)
 
-The Core Wargear chapter (printed pp.211–247) and Vow of Absolution's Call to Arms (pp.59–75), one JSON array per
-section, for the GM's requisition form. 277 entries:
+The Core Wargear chapter (printed pp.211–247), Vow of Absolution's Call to Arms (pp.59–75) and the Forsaken System
+Player's Guide armoury (pp.120–128) and Inheritance of Embers' Armoury (pp.77–99), plus the homebrew Legacy of the
+Necrontyr's Vaults of the Tomb Lords (PDF pp.10–13) and An Abundance of Apocrypha's Chapter IV (printed pp.326–482),
+one JSON array per section, for the GM's requisition form. 1,202 entries:
 - Core (219): `melee` (33, pp.211–213), `ranged` (44, pp.217–219), `ranged-xenos-grenades` (21, pp.220–221, 226),
   `upgrades-ammo` (26, pp.227–230), `armour` (28, p.233), `equipment` (41, pp.236–241), `augmetics` (26, pp.243–247).
 - VoA (58, ids prefixed `voa-`): `voa-weapons` (37, tables on pp.62 and 67), `voa-upgrades-armour` (14, pp.68 and 73),
   `voa-equipment` (7, pp.74–75).
+- FSPG (45, ids prefixed `fspg-`): `fspg-weapons` (23, pp.121–124), `fspg-armour-gear` (22, pp.125–128).
+- IoE (154, ids prefixed `ioe-`): `ioe-ranged` (47, pp.79–85), `ioe-melee` (67: melee, grenades, armour and shield
+  generators, pp.86–93), `ioe-gear` (40: helms and masks, upgrades and equipment, drugs, pp.93–99).
+- Necrontyr (26, ids prefixed `necron-`, `page` is the PDF page): `necron` (ranged, melee, armour, wargear).
+- Apocrypha (700, ids prefixed `apoc-`): `apoc-melee` (120, pp.329–345), `apoc-ranged` (200, pp.346–377),
+  `apoc-ranged-upgrades` (100: T'au and Votann ranged, upgrades, ammunition, Drukhari poisons, pp.378–395),
+  `apoc-armour` (85, pp.396–418), `apoc-equipment` (154: tools, drugs, faction equipment, augmetics, pp.419–455),
+  `apoc-followers` (41 `follower` entries, pp.456–482; their 30 stat blocks are `threats/apoc-*.json`). Vehicles
+  (pp.483–495) wait for *Church of Steel*, whose rules they use.
+- IoE reprints of Core's Aeldari-only items supersede them (rules-flow.md §11.46); Core's entry stays, and its `note`
+  names the IoE id.
 - Names printed in both books (Bolt Rifle, Heavy Bolter…) are different profiles; the form lists them with their cite.
 
 | Field | Notes |
 |---|---|
-| `id`, `name`, `source`, `page`, `category` | `source` is `core` or `vow-of-absolution`; `id` is unique across all files; `page` is printed; `category` is the table heading |
-| `kind` | `weapon`, `grenade` (Grenades and Missiles: requisitioned like Ammo, p.229), `armour`, `equipment`, `upgrade`, `ammo`, `augmetic` |
+| `id`, `name`, `source`, `page`, `category` | `source` is a `SOURCES` book id (`source.ts`); `id` is unique across all files; `page` is printed; `category` is the table heading |
+| `kind` | `weapon`, `grenade` (Grenades and Missiles: requisitioned like Ammo, p.229), `armour`, `equipment`, `upgrade`, `ammo`, `augmetic`, `follower` (a companion, servo-skull or drone bought as Wargear) |
 | `value`, `rarity` | As printed; `null` when none is printed (Clothing's "Variable" Rarity; the Arm Weapon Implant's "3 + Weapon Value") |
 | `keywords` | Upper case, `[ANY]` kept |
 | `weapon` | `Weapon` minus `name`, plus `addStrength` and `thrown` (the N of "S × N", p.207). A knife has both a melee `range` and `thrown` |
 | `armour` | `{ ar, invulnerable, powered, traits }` |
 | `effect` | Rules text only (the Effect line); no flavour |
+| `requires` | Who may buy or install it, a `Requirement[]` structured from a printed "Requirements:" line (the line stays in `effect`) |
+| `threatId`, `variant` | A `follower`'s bestiary stat block (required), and which of its `variant` options it is when the book prints one profile with variants (the T'au Drones, Apocrypha p.479). Only followers have them |
 | `note` | Print errors copied as printed, and transcription calls |
 
 Transcription calls, all in each entry's `note`:
@@ -366,13 +386,48 @@ Transcription calls, all in each entry's `note`:
   force fields. VoA prints the trait "Bulky (X)" (Core: "Bulk"), and Phobos's "+1 M, +2 Stealth" as in its table.
   Gladius Revelationis and Fames Sanguinius print Value "–". Described-only variants (Stalker Bolt Rifle, Hellstorm
   Heavy Bolter variant, Executor Heavy Bolter, named relics) have no entries.
+- **FSPG** prints Rarity as a number, read as its DN penalty (rules-flow.md §11.44); each `note` keeps the printed
+  number. Keyword print errors: missing commas split (Blessed Blade, Brazier of Holy Fire, Simulacrum Imperialis…), and
+  "ADEPTUS, MECHANICUS" (Flechette Blaster, Macrostubber, Phosphor Serpenta, Stubcarbine) merged into ADEPTUS
+  MECHANICUS so the Keyword matches. Kept as printed: "Excrutiator", "B.O.N.E", "MILITARUM AUXILLA", "2 HANDED", and the
+  Eradication Ray's KROOT keywords. The Kroot Rifle and the Ripper Gun's bayonet print two profiles, so each is two
+  entries, and a starting "Kroot Rifle" or "Ripper Gun (with bayonet)" is a `bundle` of both. Its Mk X Phobos Power
+  Armour (p.125) reprints VoA's without the +1 M, +2 Stealth, so only VoA's is kept. The Grapnel Launcher and Narthecium
+  differ from VoA's and are kept. The Condemnor Boltgun and Bolt Carbine are described on p.122 but have no printed
+  profile, so no entries. Not entries: the Hearing Range sidebar (p.126) and the p.119 species rules for Kroot and
+  Ogryn weapons and abhuman armour Rarity.
+- **IoE:** the Avenger Shuriken Catapult's name is split over three table rows (p.81), and the first two repeat the
+  Bright Lance and Hawk's Talon profiles, so its one entry is the "Catapult" row. Ranger Long Rifle and Hexrifle print
+  range 18/26/54, the Vibro-Cannon a Long range of 65 and "Blast 10", the Shredder "Blast (6, Inflict (Restrained)":
+  kept as printed. The Void Sabre, Witchblade and other p.89 rows print flat Damage, unlike Core's S + X. The Cameleoline
+  Cloak's "ANY" is stored as [ANY]. Two-profile items are one entry per profile (Aeldari Missile Launcher, Reaper
+  Launcher, Razorflail); Rangefinder and Spirit Stone print two prices, so two entries each. Star Glaive and Wireweave
+  Net are described with no table row (null Value and Rarity). Not entries: the War Mask sidebar (p.93, a `mundane`
+  item), The Grey Between and the lore Test (pp.77–78, requisition rules), The Art of the Knife (p.86, in the Knife's
+  `effect`).
+- **Necrontyr** uses the 1st-edition format: one Range value (`range: [48]`), flat melee Damage ("5+1ED"), "Heavy"
+  with no rating, and the Force Shield armour trait, which no book here defines. Its rule that Necron items count as
+  Unique for other races is in every entry's `note`. The Rod of Covenant and Staff of Light print shooting and melee
+  profiles, so two entries each, and a starting one is a `bundle` of both.
+- **Apocrypha** is homebrew: an item it reprints with the same stats as an official entry is left out, and one with
+  different stats is kept, its `note` naming the official id. Where its summary tables (pp.386, 396–398, 419, 434…)
+  and an item's own description disagree, the description wins and the table's values are in `note`, except where
+  the description is plainly copied from a neighbour (Daemonic Rune, Haemonculus' Tools). Keywords get a straight
+  apostrophe (T'AU EMPIRE, as the glossary). A second profile printed only in a description ("Ranged:" on the
+  Guardian Spear, "Melee:" on the Boltstorm Gauntlet…) is its own entry with no Value or Rarity; a starting one is a
+  `bundle` with its base. Two traits keep a book's variant spelling ("Agonizing", "Warp Weapon"), and "Bulky (1)".
+  Section rules (Nurgle's Rot, Combat Drugs, Dark Gifts, Special Issue Grenades…) open each affected item's `effect`.
+  Not entries: the Optional Rules: Adjusted Core Weapon Traits (p.328), the T'au BATTLESUIT, SUPPORT SYSTEM and JUMP
+  JETS keyword rules (p.414), the Astartes armour swaps and RELIC rule (p.401), and the follower rules (p.456).
 - **Not entries:** Weapon Patterns (p.225, a variant rule), Ammo in the Gilead System (p.230), Augmetic Installation and
   Reconstruction rules (pp.242–243), Trinkets & Charms tables (pp.247–251).
 
 ### Rules reference (`packages/data/rules/*.json`, `RuleEntry` in `packages/shared/src/rules.ts`)
 
-One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (pp.208–210), `armour-traits.json`
-(p.232), `combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
+One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (Core pp.208–210, plus FSPG p.120's
+Blessed, IoE p.79's Lance and Gruesome, the Necrontyr's Tesla as `tesla-necrontyr`, and Apocrypha pp.326–328's 25,
+among them its own Tesla), `armour-traits.json` (Core p.232, plus Apocrypha p.398's Agile and Void),
+`combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
 its rating (`Blast (X)`), `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
 the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
 paragraphs split by a blank line. Print errors are kept as printed; tables are plain lines. A section intro is its own
@@ -400,12 +455,15 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Rules summary | `rules/<file>: N entries` |
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
 | Every `creation/<type>/<source>.json` parses; the filename is a creation source id and matches each record's `source`; ids unique per type | `✖ creation/…` + zod error, `has source`, or `duplicate id` |
-| Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`) | `✖ creation/… "<id>": unknown <type> "…"` |
+| Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`, a wargear item's `upgrades` and weapon-trait `traitIds`) | `✖ creation/… "<id>": unknown <type> "…"` |
+| A wargear item with `upgrades` or `traitIds` has its base `wargearId` | `✖ creation/… "<id>": "…" has upgrades or traitIds but no base wargearId` |
 | One record per thing: a name twice in a type, compared with its `category` and `disciplineId` (and overlapping species, for archetypes) | `✖ creation/<type>: "…" in A and B; keep the newest printing` |
 | A Species' XP is the cost of its granted ratings (`ratingsXp`) | `? … "<id>": XP N, but its ratings cost M` warning, silenced by "XP as printed" in the note |
 | An Archetype's XP is its ratings + (Tier − 1) × 10 (`archetypeXp`) | `? … "<id>": XP N, but ratings + (Tier − 1) × 10 = M` warning, silenced by "XP as printed" in the note |
 | Creation coverage against `creation/manifest.json` | `creation <type> <source>: N/M (missing: …)` |
-| Creation summary | `creation/<type>: N records`, and counts of `text` fallbacks and wargear not yet in the catalogue |
+| Creation summary | `creation/<type>: N records`, and counts of GM-judged story conditions, `mundane` possessions and wargear not yet in the catalogue |
+| A `follower` Wargear entry has a known `threatId`, and any `variant` (there or on a `followers` grant) is one of that threat's variants; nothing else has a `threatId` | `✖ wargear/<file> "<id>": …` or `✖ creation/… "<id>": "…" has no variant "…"` |
+| A `mundane` item links nothing in the catalogue | `✖ creation/… "<id>": "…" is mundane but links the catalogue` |
 
 ---
 
@@ -448,9 +506,9 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 
 **Status (2026-09-25).** All six books are transcribed and verified against the page images: 113 keywords, 27
 factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 333 talents, 32
-packages, 38 disciplines, 267 powers, 11 Patrons and 28 flavour tables, with every reference resolving. What is left
-is outside the catalogue: 497 starting-wargear items name gear the Wargear catalogue doesn't have yet (the FSPG, IoE,
-Apocrypha and Necron armouries).
+packages, 38 disciplines, 267 powers, 11 Patrons, 5 languages and 27 flavour tables, with every reference resolving.
+What is left is outside the catalogue: 55 starting-wargear items the Wargear catalogue doesn't link yet, waiting on
+rulings, and vehicles (see the Wargear catalogue).
 
 | Type | Record | Holds |
 |---|---|---|
@@ -465,19 +523,60 @@ Apocrypha and Necron armouries).
 | `packages` | `Package` | Ascension and Advancement Packages |
 | `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. A discipline's `requires` is who may learn it (checked for every power in it); a power's `requires` is only its own prerequisite. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords; `alsoIn` lists other disciplines that print it. Minor powers and the free Universal Psyker Abilities are the pseudo-disciplines `minor` and `universal-psyker-abilities` |
 | `patrons` | `Patron` | FSPG Patrons and their Framework options |
-| `flavour` | `FlavourTable` | Names, appearance, languages |
+| `languages` | `Language` | The Core p.31 languages: `keywords` that allow the one free pick, `xenos` for an alien tongue. Low Gothic (everyone) has no record; unlisted languages are GM-approved write-ins (rules-flow.md §11.48–50) |
+| `flavour` | `FlavourTable` | Names, appearance |
+
+**Nothing is free text.** Everything a record requires or gives, at creation or on purchase, is structured, and the
+schema has no free-text form for either. Prose (`effect`, ability and trait `text`, `bonus`) is the printed rule text,
+kept verbatim beside the structure. In-play effects (bonus dice in a situation, rerolls, "when you do X") stay in that
+prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly can't check is a `gm` requirement or a
+`story` grant, which the GM judges; validate counts them.
 
 **Shared shapes.**
-- `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species` (matches `countsAs` too),
-  `notSpecies`, `archetype`, `subFaction` (a Successor matches its `successorOf` too), `talent`, `notTalent`, `power`,
-  `option` (a choice from an OptionGroup: the Pariah template), `wargear` (printed names), `rank`, `tier`, `either`
-  (any one of `of`: "BS 4+ or WS 4+"), or `text` for anything that isn't mechanical.
-- `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
-- `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ keywords }` (taken together), `{ power }`,
-  `{ wargear }`, `{ bundle }` (items taken together), `{ text }`, `{ choose, from, optional }` (`optional`: the
-  character may take none), or `{ choose, fromDisciplines }` (any N powers from those disciplines).
-- `Rule`: a named ability, verbatim, with `mods` only where the book prints a flat bonus, and `grants`.
-- A wargear item keeps its printed `name`; `wargearId` links it once the Wargear catalogue has it.
+- `Scaled`: a number, or `{ perTier }` (per Tier Ascended in packages; × the new Tier in XP), `{ timesTier }`
+  (× the character's Tier), `{ perRank, plus? }` (× Rank, + N: Devotees' "Double Rank + 2") or `{ rankPlus }`
+  (Rank + N). `Amount` also allows dice ("1d3", `{ perTier: "1d3" }`, `{ roll: "1d3", times: 3 }`).
+- `Requirement`:
+  - ratings: `attribute`, `skill`, `chosenAttribute` / `chosenSkill` (a bracketed Talent's pick), `influence`, `rank`,
+    `tier` (`min`, `max`)
+  - identity: `keyword`, `notKeyword`, `species` (matches `countsAs` too), `notSpecies`, `archetype`, `subFaction` (a
+    Successor matches its `successorOf` too), `option` (an OptionGroup choice: the Pariah template)
+  - what the character has: `talent`, `notTalent`, `talentCategory` ("at least one Faith talent"), `power`,
+    `powerCount` ("2 powers from one Discipline"), `wargear` (printed names), `wargearKeyword`, `wargearCount`
+    ("three or more augmetics")
+  - composition: `either` (any one of `of`, each of which may be an `all`), `all`
+  - `gm`: a story condition the GM judges ("entrusted with the secret of the Fallen")
+- `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite), or `{ byChoice }` ("10 or
+  20").
+- `WargearFilter`: which catalogue items qualify, by `kinds`, `weapon` (melee or ranged), `categories`, `nameIncludes`,
+  `wargearKeywords`, `maxValue` (a number, `{ tierPlus }`, `{ newTierPlus }`), `rarity` (`atMost`, `atLeast`),
+  `upgrade`, and a GM-judged `condition`.
+- `Grant`:
+  - items: `wargear` (optionally `requires`), `bundle`, `pick` + `wargearOf` (a `WargearFilter`), `weapon` (an innate
+    profile, `addStrength` for S + X), `weaponTrait`, `trinkets`, `followers` (mob, companion, familiar, devotees or
+    minion): a fixed bestiary `threatId` (+ `variant`), or `threatOf` for the player's pick (`classes` at the
+    character's Tier, `maxSize`, any of `keywords`), and `genericStats`, the printed "1 + Double Rank" stand-in
+  - character: `talent`, `keyword`, `keywords`, `loseKeyword`, `neverKeyword`, `power`, `disciplineAccess`,
+    `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`), `talentAccess`
+    (+ `asKeyword`), `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),
+    `attribute` (`add` / `to`; "any", "lowest"), `skills` + `add`, `chosenTrait`, `influenceAttribute`, `xpDiscount`
+    (a Talent at a price, or a discipline at a multiplier), `noArmour`, `never` (Faith or Corruption), `languages`
+    (scaled, or `{ skill }` for "equal to your Scholar rank"; `xenos` for "one alien language")
+  - resources: `wealth`, `wealthPerSession`, `influence`, `corruption`, `faith`, `wrathPerSession`, `ammoPer`,
+    `memorableInjuries`, `mutations`, `bonusDice` (scaled), `gmRuin`
+  - composition: `all` (optionally `requires`), and `choose` from options, from disciplines, or of Skills; `optional`,
+    `repeat`, `random`
+  - `story`: a narrative benefit the GM runs
+- `Rule`: a named ability, verbatim, with `mods` and `grants`. A `Keyword` has `grants` too (PSYKER gives the Universal
+  Psyker Abilities and Minor / Smite access, Core pp.257, 375; PRIEST gives Prayer access, rules-flow.md §11.40), and each Species grants a psyker its disciplines
+  (Core p.257: Aeldari Divination, Runes of Battle and one more; everyone else one). A `PsychicPower`'s `useRequires`
+  is what using it (not learning it) needs.
+- A wargear item keeps its printed `name`, a `qty` (a number or dice), a `scope` (character or group), and a
+  `wargearId` once the Wargear catalogue has it. A variant no book prints as its own item is the base `wargearId` plus
+  `upgrades` (catalogue upgrade ids) and `traitIds` (weapon-trait rule ids): Master-crafted Power Sword, Kustom Slugga
+  (rules-flow.md §11.42).
+  A possession no armoury prints and no rule reads (a Bedroll, a Grooming kit) is `mundane`: a sheet line with no
+  catalogue entry (§11.43).
 
 **Sub-faction keywords** ("SPACE WOLVES") are defined by their `SubFaction` record, not by a keyword record; keyword
 records are the glossary Faction Keywords and the `[PLACEHOLDER]`s. A sub-faction's `requires` holds printed
@@ -533,7 +632,15 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   Lexmechanic prints "SKILLS: 3" with no Skill names (FSPG p.117); Corsair Prince's keywords read "AELDARI, ASURYANI,
   [CRAFTWORLD]" (IoE p.56; ANHRATHE, [COTERIE] meant?); Venenum Assassin prints TEMPLUM VANUS (Apocrypha); the Corsair
   "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
-- Faith: the Chaplain's "gain 1 Faith" and the Canoness's "+Rank Faith" have no structured field yet (the builder's).
 - Apocrypha suggests talents from "RR1" (Redacted Records), a book not in `books/`; they are listed in notes only.
+- GitHub issue #7: Change of Kinship (IoE p.58) is "not at creation", but the Ynnari rule (p.20) speaks of buying it
+  at creation.
+- Magisterial House "+Rank to Wealth" (Apocrypha p.53) is read as a one-off grant at creation.
+- The Primaris Chaplain's and Dark Apostle's "+Rank Resolve to you and allies" is read as an aura, not `mods`.
+- Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier
+  to Max Shock" is `maxShock: { timesTier: -1 }`.
+- GitHub issue #8: Weirdboy (WAAAGH!), Grey Knight (Sanctic) and Grimnyr (Skeinwrought) grant a discipline and also
+  get the species' one discipline of choice (Core p.257): two in all. Is the archetype's discipline meant to be that one choice?
+- Navigator Hereditary Mutations (Apocrypha p.11): does −1 to Intellect-derived Traits touch Passive Awareness?
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

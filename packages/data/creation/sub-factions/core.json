@@ -212,10 +212,12 @@
             "choose": 1,
             "from": [
               {
-                "text": "+2 bonus dice to resist psychic powers"
+                "bonusDice": 2,
+                "when": "to resist psychic powers"
               },
               {
-                "text": "+2 bonus dice to Corruption Tests"
+                "bonusDice": 2,
+                "when": "Corruption Tests"
               }
             ]
           }
@@ -235,7 +237,13 @@
     "traits": [
       {
         "name": "Bonus",
-        "text": "You are fluent in one alien language, and gain +2 bonus dice on any Scholar and Investigation Tests related to any known xenos."
+        "text": "You are fluent in one alien language, and gain +2 bonus dice on any Scholar and Investigation Tests related to any known xenos.",
+        "grants": [
+          {
+            "languages": 1,
+            "xenos": true
+          }
+        ]
       }
     ],
     "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label."
@@ -257,17 +265,31 @@
             "choose": 1,
             "from": [
               {
-                "text": "+3 Corruption and +1 Conviction"
+                "all": [
+                  {
+                    "corruption": 3
+                  },
+                  {
+                    "mods": {
+                      "conviction": 1
+                    }
+                  }
+                ]
               },
               {
-                "text": "+2 bonus dice on any Scholar (Int) and Investigation (Int) Tests related to daemons and the Warp"
+                "bonusDice": 2,
+                "skills": [
+                  "Scholar",
+                  "Investigation"
+                ],
+                "when": "Tests related to daemons and the Warp"
               }
             ]
           }
         ]
       }
     ],
-    "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label. The +1 Conviction is part of a choice, so it is not a flat mod."
+    "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label. The +1 Conviction is part of a choice, so it is a `mods` grant inside that option, not the trait's `mods`."
   },
   {
     "id": "blood-angels",
@@ -342,7 +364,15 @@
         "text": "Iron Hands draw strength and surety by purging weakness from their forms.\n\nChoose one Augmetic Enhancement (p.242).\n\nYou do not suffer the penalties of being Wounded (p.193).\n\nYou gain +1 bonus die to Willpower Tests for every augmetic you have.",
         "grants": [
           {
-            "text": "One Augmetic Enhancement of your choice (p.242)"
+            "pick": 1,
+            "wargearOf": {
+              "kinds": [
+                "augmetic"
+              ],
+              "categories": [
+                "Augmetic Enhancements"
+              ]
+            }
           }
         ]
       },
@@ -439,7 +469,12 @@
       },
       {
         "name": "Pride of Ultramar (Tradition)",
-        "text": "The Imperium looks to the Ultramarines as paragons of the virtues of Astartes, and each strives to excel that reputation; strong in body, but restrained in mind, a tactical and clear-headed protector of Humanity.\n\nYou start each session with 1 Wrath Point instead of 2."
+        "text": "The Imperium looks to the Ultramarines as paragons of the virtues of Astartes, and each strives to excel that reputation; strong in body, but restrained in mind, a tactical and clear-headed protector of Humanity.\n\nYou start each session with 1 Wrath Point instead of 2.",
+        "grants": [
+          {
+            "wrathPerSession": -1
+          }
+        ]
       }
     ]
   },
@@ -475,7 +510,12 @@
     "traits": [
       {
         "name": "Bonus",
-        "text": "gain +1 Wealth at the end of every session."
+        "text": "gain +1 Wealth at the end of every session.",
+        "grants": [
+          {
+            "wealthPerSession": 1
+          }
+        ]
       }
     ]
   },

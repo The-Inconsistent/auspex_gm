@@ -10,10 +10,12 @@ import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
+import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
+import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
 
-import { GM_TABS, type GmTab } from "./constants";
+import { GM_TABS, TAB_NUMERALS, type GmTab } from "./constants";
 
 type GmAppProps = { campaignId: string; bestiary: Threat[]; wargear: Wargear[]; rules: RuleEntry[] };
 
@@ -31,12 +33,13 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
     setPoolError(r.ok ? null : r.error);
   };
   const pool = (p: Pool) => (
-    <div key={p} className={`pool ${p === "ruin" ? "ruin" : ""}`}>
+    <div key={p} className={`pool ${p}`}>
       <span className="label" style={{ color: "inherit" }}>
         {p}
       </span>
-      <span className="display" style={{ fontSize: 30 }}>
-        {String(state.campaign[p]).padStart(2, "0")}/{String(poolMax(p, players)).padStart(2, "0")}
+      <Seal value={state.campaign[p]} pool={p} size={40} />
+      <span className="dim" style={{ fontSize: 15 }}>
+        /{poolMax(p, players)}
       </span>
       <button className="btn sq" aria-label={`Spend ${p}`} onClick={() => adjustPool(p, -1)}>
         −
@@ -50,14 +53,14 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
   return (
     <div className="gm">
       {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
-      <header className="gm-head">
+      <header className="gm-head band torn">
         <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
           ◂
         </a>
         <div className="display gm-title">
           AUSPEX{" "}
           <span className="dim">
-            // {state.campaign.name.toUpperCase()} // T{state.campaign.tier}
+            · {state.campaign.name.toUpperCase()} · T{state.campaign.tier}
           </span>
         </div>
         {state.encounter && (
@@ -66,12 +69,20 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
           </div>
         )}
         {Pool.options.map(pool)}
+        <ThemeToggle />
         <UserButton />
       </header>
-      <nav className="tabs" role="tablist">
-        {GM_TABS.map((t) => (
-          <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            [{t}]
+      <nav className="tabs rail" role="tablist" aria-label="GM sections">
+        {GM_TABS.map((t, i) => (
+          <button
+            key={t}
+            role="tab"
+            className="tab"
+            data-n={TAB_NUMERALS[i]}
+            aria-selected={tab === t}
+            onClick={() => setTab(t)}
+          >
+            {t}
           </button>
         ))}
       </nav>

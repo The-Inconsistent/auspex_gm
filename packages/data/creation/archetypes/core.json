@@ -58,7 +58,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -150,7 +151,8 @@
       },
       {
         "wargear": {
-          "name": "Ministorum Robes"
+          "name": "Ministorum Robes",
+          "wargearId": "clothing"
         }
       },
       {
@@ -244,7 +246,8 @@
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -323,7 +326,19 @@
         }
       },
       {
-        "text": "Any two IMPERIUM weapons with a Value of 5 or less and a Rarity of Uncommon or lower"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "wargearKeywords": [
+            "IMPERIUM"
+          ],
+          "maxValue": 5,
+          "rarity": {
+            "atMost": "Uncommon"
+          }
+        }
       },
       {
         "wargear": {
@@ -400,7 +415,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Administratum Robes"
+          "name": "Administratum Robes",
+          "wargearId": "clothing"
         }
       },
       {
@@ -430,7 +446,8 @@
       {
         "wargear": {
           "name": "Scroll of Ancient Records",
-          "qty": 3
+          "qty": 3,
+          "mundane": true
         }
       }
     ],
@@ -509,17 +526,20 @@
       },
       {
         "wargear": {
-          "name": "Bedroll"
+          "name": "Bedroll",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Canteen"
+          "name": "Canteen",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Gang colours"
+          "name": "Gang colours",
+          "wargearId": "clothing"
         }
       },
       {
@@ -616,32 +636,32 @@
       {
         "wargear": {
           "name": "Corsair Armour",
-          "wargearId": "corsair-armour"
+          "wargearId": "ioe-corsair-armour"
         }
       },
       {
         "wargear": {
           "name": "Shuriken Pistol",
-          "wargearId": "shuriken-pistol"
+          "wargearId": "ioe-shuriken-pistol"
         }
       },
       {
         "wargear": {
           "name": "Lasblaster",
-          "wargearId": "lasblaster"
+          "wargearId": "ioe-lasblaster"
         }
       },
       {
         "wargear": {
           "name": "Spirit Stone",
-          "wargearId": "spirit-stone"
+          "wargearId": "ioe-spirit-stone-empty"
         }
       },
       {
         "wargear": {
           "name": "Plasma Grenade",
           "qty": 3,
-          "wargearId": "plasma-grenade"
+          "wargearId": "ioe-plasma-grenade"
         }
       },
       {
@@ -728,7 +748,8 @@
       },
       {
         "wargear": {
-          "name": "Ripped clothes"
+          "name": "Ripped clothes",
+          "wargearId": "clothing"
         }
       }
     ],
@@ -809,7 +830,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -912,12 +934,6 @@
             "keyword": "PSYKER"
           },
           {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
-          {
             "choose": 1,
             "from": [
               {
@@ -997,12 +1013,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -1038,7 +1056,8 @@
         "attributes": 73,
         "skills": 26
       }
-    }
+    },
+    "note": "The Universal Psyker Abilities come with the PSYKER keyword (Core p.375) and the one Discipline of choice is the Species' default (Disciplines Known, Core p.257), so neither is granted here."
   },
   {
     "source": "core",
@@ -1068,7 +1087,16 @@
     "abilities": [
       {
         "name": "Heavily Augmented",
-        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls."
+        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls.",
+        "grants": [
+          {
+            "mods": {
+              "determination": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1371,12 +1399,18 @@
     ],
     "wargear": [
       {
-        "wargear": {
-          "name": "Imperial Frigate"
-        }
+        "story": "Imperial Frigate"
       },
       {
-        "text": "Choose any two pieces of Wargear with a Value of your Tier +4 or less, and a Rarity of Rare or lower."
+        "pick": 2,
+        "wargearOf": {
+          "maxValue": {
+            "tierPlus": 4
+          },
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       },
       {
         "choose": 1,
@@ -1460,7 +1494,14 @@
     "abilities": [
       {
         "name": "Mutant",
-        "text": "Your life in the unsanitary underbelly of the Imperium has mutated you. Select two Mutations from the list of Scavvy Mutations on p.287. Whenever your Rank increases, you may select another Mutation from the list."
+        "text": "Your life in the unsanitary underbelly of the Imperium has mutated you. Select two Mutations from the list of Scavvy Mutations on p.287. Whenever your Rank increases, you may select another Mutation from the list.",
+        "grants": [
+          {
+            "mutations": {
+              "rankPlus": 1
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1489,17 +1530,20 @@
       },
       {
         "wargear": {
-          "name": "Bedroll"
+          "name": "Bedroll",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Canteen"
+          "name": "Canteen",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Tattered Clothes"
+          "name": "Tattered Clothes",
+          "wargearId": "clothing"
         }
       }
     ],
@@ -1539,7 +1583,7 @@
         "unremarkable"
       ]
     },
-    "note": "Suggested Skills print \"Weapons Skill 2\" (Weapon Skill). The Scavvy Mutations are on Core p.287; there is no catalogue record for them yet, so the ability has no grants."
+    "note": "Suggested Skills print \"Weapons Skill 2\" (Weapon Skill). Mutant's two Mutations, plus one each time Rank increases, are `mutations: { rankPlus: 1 }`; they are chosen from the Scavvy Mutations list (p.287)."
   },
   {
     "id": "kommando",
@@ -1683,10 +1727,21 @@
         }
       },
       {
-        "text": "One Mechadendrite"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "nameIncludes": "Mechadendrite"
+        }
       },
       {
-        "text": "any 2 Augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       },
       {
         "wargear": {
@@ -1766,7 +1821,16 @@
     "abilities": [
       {
         "name": "Armour of Faith",
-        "text": "You gain +Double Rank bonus dice to melee attack tests against targets with the CHAOS or HERETIC Keyword. Your Resolve also increases by +Rank."
+        "text": "You gain +Double Rank bonus dice to melee attack tests against targets with the CHAOS or HERETIC Keyword. Your Resolve also increases by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "resolve": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1790,7 +1854,8 @@
       },
       {
         "wargear": {
-          "name": "Ministorum Robes"
+          "name": "Ministorum Robes",
+          "wargearId": "clothing"
         }
       }
     ],
@@ -1887,12 +1952,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming Kit"
+          "name": "Grooming Kit",
+          "mundane": true
         }
       },
       {
@@ -1989,7 +2056,8 @@
       },
       {
         "wargear": {
-          "name": "Maps of the Heartworlds"
+          "name": "Maps of the Heartworlds",
+          "mundane": true
         }
       },
       {
@@ -1999,10 +2067,27 @@
         }
       },
       {
-        "text": "any PROJECTILE weapon"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        }
       },
       {
-        "text": "any melee weapon of Uncommon or lower Rarity"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "weapon": "melee",
+          "rarity": {
+            "atMost": "Uncommon"
+          }
+        }
       }
     ],
     "influence": 1,
@@ -2069,7 +2154,16 @@
     "abilities": [
       {
         "name": "The Green Tide",
-        "text": "You command a mob of Boyz (p.354) equal to your Rank x3. If any of your Boyz die, they can be replaced between sessions at the GMs discretion."
+        "text": "You command a mob of Boyz (p.354) equal to your Rank x3. If any of your Boyz die, they can be replaced between sessions at the GMs discretion.",
+        "grants": [
+          {
+            "followers": {
+              "perRank": 3
+            },
+            "kind": "mob",
+            "threatId": "ork-boy"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -2081,12 +2175,20 @@
       },
       {
         "wargear": {
-          "name": "Kustom Slugga"
+          "name": "Kustom Slugga",
+          "wargearId": "slugga",
+          "traitIds": [
+            "kustom"
+          ]
         }
       },
       {
         "wargear": {
-          "name": "Kustom Choppa"
+          "name": "Kustom Choppa",
+          "wargearId": "choppa",
+          "traitIds": [
+            "kustom"
+          ]
         }
       }
     ],
@@ -2156,11 +2258,21 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Inquisitorial Rosette"
+          "name": "Inquisitorial Rosette",
+          "wargearId": "symbol-of-authority"
         }
       },
       {
-        "text": "Any two weapons with a Value of 7 or less and a Rarity of Very Rare or lower"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Very Rare"
+          }
+        }
       },
       {
         "choose": 1,

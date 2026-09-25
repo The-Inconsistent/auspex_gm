@@ -1957,7 +1957,12 @@
         ]
       }
     ],
-    "effect": "All your hatred, all of your spite, issues forth in a vitriolic exhortation to destroy.\n\nIf this Prayer is successful, you and all allies with the CHAOS keyword within 12m of you may re-roll up to Double Rank dice on melee attacks, while the Prayer remains in effect."
+    "effect": "All your hatred, all of your spite, issues forth in a vitriolic exhortation to destroy.\n\nIf this Prayer is successful, you and all allies with the CHAOS keyword within 12m of you may re-roll up to Double Rank dice on melee attacks, while the Prayer remains in effect.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "benediction-of-darkness",
@@ -1981,7 +1986,12 @@
         ]
       }
     ],
-    "effect": "As your words grow louder, inly blackness pours from your eyes, forming a swirling mist around your allies.\n\nIf this Prayer is successful, you and all allies with the CHAOS keyword within 12m, gain + Double Rank to Defence against ranged attacks while the Prayer remains in effect."
+    "effect": "As your words grow louder, inly blackness pours from your eyes, forming a swirling mist around your allies.\n\nIf this Prayer is successful, you and all allies with the CHAOS keyword within 12m, gain + Double Rank to Defence against ranged attacks while the Prayer remains in effect.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "litany-of-despair",
@@ -2005,7 +2015,12 @@
         ]
       }
     ],
-    "effect": "You call upon the Dark Gods to offer your foes all manner of whispered temptations, sapping their will to fight.\n\nIf this Prayer is successful, all creatures without the CHAOS keyword within 12m, add +Rank the DN of all Resolve tests while the Prayer remains in effect."
+    "effect": "You call upon the Dark Gods to offer your foes all manner of whispered temptations, sapping their will to fight.\n\nIf this Prayer is successful, all creatures without the CHAOS keyword within 12m, add +Rank the DN of all Resolve tests while the Prayer remains in effect.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "omen-of-potency",
@@ -2029,7 +2044,12 @@
         ]
       }
     ],
-    "effect": "You begin to radiate the unbridled power of the Warp.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you gain +Double Rank bonus dice to melee attacks you make, and you count all melee weapons you wield as having AP -4."
+    "effect": "You begin to radiate the unbridled power of the Warp.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you gain +Double Rank bonus dice to melee attacks you make, and you count all melee weapons you wield as having AP -4.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "warp-sight-plea",
@@ -2053,7 +2073,12 @@
         ]
       }
     ],
-    "effect": "You entreat your dark masters to guide your followers’ aim, granting their shots unerring accuracy.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you and all allies with the CHAOS keyword within 12m add +Rank bonus dice to ranged attacks."
+    "effect": "You entreat your dark masters to guide your followers’ aim, granting their shots unerring accuracy.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you and all allies with the CHAOS keyword within 12m add +Rank bonus dice to ranged attacks.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "soultearer-portent",
@@ -2077,7 +2102,12 @@
         ]
       }
     ],
-    "effect": "Your flock strike at their victim’s very souls, the better to release them from their mortal bonds as an offering to the glory of Chaos.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you and all allies with the CHAOS keyword within 12m ad +Rank ED to all melee attacks."
+    "effect": "Your flock strike at their victim’s very souls, the better to release them from their mortal bonds as an offering to the glory of Chaos.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you and all allies with the CHAOS keyword within 12m ad +Rank ED to all melee attacks.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "illusory-supplication",
@@ -2101,7 +2131,12 @@
         ]
       }
     ],
-    "effect": "Chanting un-words that would drive most mortals mad, you bend and distort the fabric of reality, creating shadowy doppelgängers of nearby allies.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you and all allies with the CHAOS within 12m add +Rank to their Defence."
+    "effect": "Chanting un-words that would drive most mortals mad, you bend and distort the fabric of reality, creating shadowy doppelgängers of nearby allies.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you and all allies with the CHAOS within 12m add +Rank to their Defence.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "wrathful-entreaty",
@@ -2131,7 +2166,12 @@
         ]
       }
     ],
-    "effect": "Drawing blood from your palm, you request that the Lord of Skulls impart a measure of his furious strength to you.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you add +Rank to your Strength."
+    "effect": "Drawing blood from your palm, you request that the Lord of Skulls impart a measure of his furious strength to you.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you add +Rank to your Strength.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "mutating-invocation",
@@ -2161,7 +2201,12 @@
         ]
       }
     ],
-    "effect": "Speaking riddles, you bargain with the Master of Fate to make your flesh flow like liquid, unmaking the harm dealt to you.\n\nIf this Prayer is successful, then you instantly recover Rank Wounds. This Prayer has no ongoing duration—once the effect has occurred, the Prayer is done."
+    "effect": "Speaking riddles, you bargain with the Master of Fate to make your flesh flow like liquid, unmaking the harm dealt to you.\n\nIf this Prayer is successful, then you instantly recover Rank Wounds. This Prayer has no ongoing duration—once the effect has occurred, the Prayer is done.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "feculent-beseechment",
@@ -2191,7 +2236,12 @@
         ]
       }
     ],
-    "effect": "You beg the Grandfather of Pestilence to bless your form with wondrous disease, every syllable expelling a cloud of flies.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you add +Rank to your Toughness."
+    "effect": "You beg the Grandfather of Pestilence to bless your form with wondrous disease, every syllable expelling a cloud of flies.\n\nIf this Prayer is successful, then while the Prayer remains in effect, you add +Rank to your Toughness.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "blissful-devotion",
@@ -2221,7 +2271,12 @@
         ]
       }
     ],
-    "effect": "You ask your beloved Prince of Pleasure to grant you the unnatural swiftness of their daemonic children.\n\nIf this Prayer is successful, then while the Prayer remains in effect, increase your Speed by +Double Rank when advancing or charging"
+    "effect": "You ask your beloved Prince of Pleasure to grant you the unnatural swiftness of their daemonic children.\n\nIf this Prayer is successful, then while the Prayer remains in effect, increase your Speed by +Double Rank when advancing or charging",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "storm-of-fire",
@@ -2436,7 +2491,12 @@
         ]
       }
     ],
-    "effect": "Your psychic powers are particularly potent, with an intensity that few can match.\n\nWhen you attempt to use a psychic power at the Unbound or Transcendent power level, for each Exalted Icon you roll, you may roll one additional die for the Psychic Mastery test. These additional dice may not themselves grant more dice.\n\nYou gain 1d3 Corruption Points when you take this talent. You may not select the Alpha-level Psyker or Beta-level Psyker talents."
+    "effect": "Your psychic powers are particularly potent, with an intensity that few can match.\n\nWhen you attempt to use a psychic power at the Unbound or Transcendent power level, for each Exalted Icon you roll, you may roll one additional die for the Psychic Mastery test. These additional dice may not themselves grant more dice.\n\nYou gain 1d3 Corruption Points when you take this talent. You may not select the Alpha-level Psyker or Beta-level Psyker talents.",
+    "grants": [
+      {
+        "corruption": "1d3"
+      }
+    ]
   },
   {
     "id": "guardian",
@@ -2521,7 +2581,16 @@
         ]
       }
     ],
-    "effect": "Your faith is such that you will not yield before the Emperor’s enemies.\n\nYou, and all ADEPTA SORORITAS characters within 15m of you, add +Rank to Resilience. In addition, when you suffer damage in excess of your Maximum Wounds, you gain 1 Faith. If you die, all characters with the ADEPTUS MINISTORUM or ADEPTA SORORITAS keywords gain 2 Faith and recover +Double Rank Shock, as they are spurred on by your martyrdom."
+    "effect": "Your faith is such that you will not yield before the Emperor’s enemies.\n\nYou, and all ADEPTA SORORITAS characters within 15m of you, add +Rank to Resilience. In addition, when you suffer damage in excess of your Maximum Wounds, you gain 1 Faith. If you die, all characters with the ADEPTUS MINISTORUM or ADEPTA SORORITAS keywords gain 2 Faith and recover +Double Rank Shock, as they are spurred on by your martyrdom.",
+    "grants": [
+      {
+        "mods": {
+          "resilience": {
+            "perRank": 1
+          }
+        }
+      }
+    ]
   },
   {
     "id": "inner-circle",
@@ -2620,7 +2689,10 @@
         "keyword": "PSYKER"
       },
       {
-        "text": "A single minor psychic power"
+        "choose": 1,
+        "fromDisciplines": [
+          "minor"
+        ]
       }
     ]
   },
@@ -2720,7 +2792,12 @@
         ]
       }
     ],
-    "effect": "You have found ways to alter and twist the energies of your Luminen Capacitor, imbuing it with the hellish light of Chaos and your own twisted spirit.\n\nYou gain +1 Corruption. When you use a charge from your Luminen Capacitor, you may suffer a Mortal Wound to corrupt the energy you unleash. If you are using this to power a machine, then the machine is also tainted and corrupted, and the GM will work with you to determine the effect. If you are using that corrupted power to make an attack (using the Luminen Blast or Luminen Shock talents, or any weapons which use your Luminen Capacitor), then the attack gains the Rad (2) trait."
+    "effect": "You have found ways to alter and twist the energies of your Luminen Capacitor, imbuing it with the hellish light of Chaos and your own twisted spirit.\n\nYou gain +1 Corruption. When you use a charge from your Luminen Capacitor, you may suffer a Mortal Wound to corrupt the energy you unleash. If you are using this to power a machine, then the machine is also tainted and corrupted, and the GM will work with you to determine the effect. If you are using that corrupted power to make an attack (using the Luminen Blast or Luminen Shock talents, or any weapons which use your Luminen Capacitor), then the attack gains the Rad (2) trait.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "luminen-shock",
@@ -3158,7 +3235,12 @@
         "min": 5
       }
     ],
-    "effect": "You can focus your mind to still disturbances in the Warp nearby.\n\nYou gain the ability to Deny the Witch, described on page 267 of the Wrath & Glory Core Rulebook, even though you are not a psyker. Instead of a Psychic Mastery test, you make a Willpower test with a bonus of +Double Rank."
+    "effect": "You can focus your mind to still disturbances in the Warp nearby.\n\nYou gain the ability to Deny the Witch, described on page 267 of the Wrath & Glory Core Rulebook, even though you are not a psyker. Instead of a Psychic Mastery test, you make a Willpower test with a bonus of +Double Rank.",
+    "grants": [
+      {
+        "power": "deny-the-witch"
+      }
+    ]
   },
   {
     "id": "reborn-together",
@@ -3340,7 +3422,12 @@
         ]
       }
     ],
-    "effect": "You have seen the maddening truth of the Changer of Ways and emerged with your mind intact and surging with knowledge.\n\nGain +1 Corruption. When you succeed at a Psychic Mastery test, you may spend a point of Wrath to gain +Rank additional Exalted Icons to shift."
+    "effect": "You have seen the maddening truth of the Changer of Ways and emerged with your mind intact and surging with knowledge.\n\nGain +1 Corruption. When you succeed at a Psychic Mastery test, you may spend a point of Wrath to gain +Rank additional Exalted Icons to shift.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "soulless-shrouding",
@@ -3389,8 +3476,25 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "any T'au character equipped with JUMP JETS"
+            "kind": "all",
+            "of": [
+              {
+                "kind": "species",
+                "anyOf": [
+                  "shas-tau",
+                  "fio-tau",
+                  "kor-tau",
+                  "por-tau",
+                  "aun-tau"
+                ]
+              },
+              {
+                "kind": "wargearKeyword",
+                "anyOf": [
+                  "JUMP JETS"
+                ]
+              }
+            ]
           }
         ]
       }
@@ -3541,7 +3645,14 @@
         ]
       }
     ],
-    "effect": "Your powers are a curse, resulting in continual agony.\n\nSelect a single psychic discipline. You may purchase powers from that discipline at half their normal cost, rounded up. Whenever you attempt to use a psychic power from that discipline, you suffer Shock equal to the power’s DN. You may reduce the Shock suffered by twice your Rank but suffer one of the following conditions instead: Bleeding, Blinded, Fear, On Fire, Poisoned (3), Staggered."
+    "effect": "Your powers are a curse, resulting in continual agony.\n\nSelect a single psychic discipline. You may purchase powers from that discipline at half their normal cost, rounded up. Whenever you attempt to use a psychic power from that discipline, you suffer Shock equal to the power’s DN. You may reduce the Shock suffered by twice your Rank but suffer one of the following conditions instead: Bleeding, Blinded, Fear, On Fire, Poisoned (3), Staggered.",
+    "grants": [
+      {
+        "xpDiscount": {
+          "multiplier": 0.5
+        }
+      }
+    ]
   },
   {
     "id": "unparalleled-mastery",
@@ -3586,7 +3697,16 @@
         ]
       }
     ],
-    "effect": "You will not fall while a single enemy draws breath.\n\nYou increase your Resilience by +Rank.\n\nHowever, you cannot gain the benefits of cover at any time.\n\nYou may only have one Vow talent. During downtime, you may replace this talent with any other BLACK TEMPLARS talent marked as a [VOW]."
+    "effect": "You will not fall while a single enemy draws breath.\n\nYou increase your Resilience by +Rank.\n\nHowever, you cannot gain the benefits of cover at any time.\n\nYou may only have one Vow talent. During downtime, you may replace this talent with any other BLACK TEMPLARS talent marked as a [VOW].",
+    "grants": [
+      {
+        "mods": {
+          "resilience": {
+            "perRank": 1
+          }
+        }
+      }
+    ]
   },
   {
     "id": "victor-of-the-blood-games",
@@ -3845,7 +3965,12 @@
         ]
       }
     ],
-    "effect": "Your raw power is beyond that of most psykers encountered by the Imperium, but such power is incredibly unstable.\n\nWhen you successfully use a psychic power at the Transcendent power level, you may add up to Double Rank additional Exalted Icons to apply to the power’s Potency options. However, you add +30 to any roll on the Perils of the Warp table.\n\nYou gain 3d3 Corruption when you take this talent. You may not select the Beta-level Psyker or Gamma-level Psyker talents."
+    "effect": "Your raw power is beyond that of most psykers encountered by the Imperium, but such power is incredibly unstable.\n\nWhen you successfully use a psychic power at the Transcendent power level, you may add up to Double Rank additional Exalted Icons to apply to the power’s Potency options. However, you add +30 to any roll on the Perils of the Warp table.\n\nYou gain 3d3 Corruption when you take this talent. You may not select the Beta-level Psyker or Gamma-level Psyker talents.",
+    "grants": [
+      {
+        "corruption": "3d3"
+      }
+    ]
   },
   {
     "id": "anathema",
@@ -3998,6 +4123,31 @@
       },
       {
         "power": "smite"
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "disciplineAccess": [
+              "maleficarum"
+            ]
+          },
+          {
+            "disciplineAccess": [
+              "dark-hereticus"
+            ]
+          },
+          {
+            "disciplineAccess": [
+              "contagion"
+            ]
+          },
+          {
+            "disciplineAccess": [
+              "change"
+            ]
+          }
+        ]
       }
     ]
   },
@@ -4035,7 +4185,12 @@
         ]
       }
     ],
-    "effect": "You are an exceptionally potent psyker and can draw deeply from the Warp if you’re willing to risk the consequences.\n\nWhen you attempt to use a psychic power at the Transcendent power level, you may set any of the Wrath dice to a 6 rather than rolling it. If you set any Wrath die in this way, you must roll on the Perils of the Warp table and add +10 to the Perils of the Warp roll for each Wrath die set to a 6.\n\nYou gain 2d3 Corruption points when you take this talent. You may not select the Alpha-level Psyker or Gamma-level Psyker talents."
+    "effect": "You are an exceptionally potent psyker and can draw deeply from the Warp if you’re willing to risk the consequences.\n\nWhen you attempt to use a psychic power at the Transcendent power level, you may set any of the Wrath dice to a 6 rather than rolling it. If you set any Wrath die in this way, you must roll on the Perils of the Warp table and add +10 to the Perils of the Warp roll for each Wrath die set to a 6.\n\nYou gain 2d3 Corruption points when you take this talent. You may not select the Alpha-level Psyker or Gamma-level Psyker talents.",
+    "grants": [
+      {
+        "corruption": "2d3"
+      }
+    ]
   },
   {
     "id": "blood-for-the-blood-god",
@@ -4057,7 +4212,12 @@
         ]
       }
     ],
-    "effect": "You are a blood-soaked devotee of the Lord of Skulls, and your desire to slay cannot be sated.\n\nYou gain +1d3 Corruption. After you make a melee attack, you may spend 1 Wrath to make an additional attack."
+    "effect": "You are a blood-soaked devotee of the Lord of Skulls, and your desire to slay cannot be sated.\n\nYou gain +1d3 Corruption. After you make a melee attack, you may spend 1 Wrath to make an additional attack.",
+    "grants": [
+      {
+        "corruption": "1d3"
+      }
+    ]
   },
   {
     "id": "bloodlust",
@@ -4087,7 +4247,12 @@
         ]
       }
     ],
-    "effect": "Little can restrain your desire to close with the enemy and tear them limb from limb.\n\nYou gain +1d3 Corruption. Whenever an enemy makes a ranged attack against you, after the attack has been resolved, you may move up to your Speed directly towards the shooter as a Reflexive Action."
+    "effect": "Little can restrain your desire to close with the enemy and tear them limb from limb.\n\nYou gain +1d3 Corruption. Whenever an enemy makes a ranged attack against you, after the attack has been resolved, you may move up to your Speed directly towards the shooter as a Reflexive Action.",
+    "grants": [
+      {
+        "corruption": "1d3"
+      }
+    ]
   },
   {
     "id": "bolter-drill",
@@ -4239,7 +4404,19 @@
         ]
       }
     ],
-    "effect": "The tenets of the Codex Astartes are sacrosanct to you, and you lean upon their guidance to see you through the worst of times.\n\nYou increase your Conviction and Resolve by +Rank."
+    "effect": "The tenets of the Codex Astartes are sacrosanct to you, and you lean upon their guidance to see you through the worst of times.\n\nYou increase your Conviction and Resolve by +Rank.",
+    "grants": [
+      {
+        "mods": {
+          "conviction": {
+            "perRank": 1
+          },
+          "resolve": {
+            "perRank": 1
+          }
+        }
+      }
+    ]
   },
   {
     "id": "combat-driving",
@@ -4263,7 +4440,16 @@
     "page": 234,
     "note": "XP printed \"10 or 20\": 20 XP if the companion is an Elite Threat rather than a Troop Threat (last paragraph).",
     "xp": {
-      "text": "10 or 20"
+      "byChoice": [
+        {
+          "xp": 10,
+          "when": "a Troop Threat companion"
+        },
+        {
+          "xp": 20,
+          "when": "an Elite Threat companion"
+        }
+      ]
     },
     "requires": [
       {
@@ -4272,7 +4458,23 @@
         "min": 2
       }
     ],
-    "effect": "You’re accompanied by a loyal companion, a subordinate who will support you and follow your direction.\n\nYour companion is a single Troop level Threat, as described in Chapter 14 of the Wrath & Glory Core Rulebook. You may use the stats presented in the core rulebook or another bestiary, or use the following rules:\n- Companion Attributes are equal to 1 + Double Rank.\n- Companion Skills are equal to 1 + Double Rank.\n- A companion’s Attributes and Skills cannot be higher than your own.\n\nWhenever you are hit by any form of attack, your companion may make a DN 5 Initiative Test as a Reflexive Action. If they succeed, the attack hits the companion instead of hitting you.\n\nSlain companions may be replaced for free with a new one the next time you visit a major encampment or city.\n\nYour companion may be an Elite Threat rather than a Troop Threat, but the cost of this Talent increases to 20xp."
+    "effect": "You’re accompanied by a loyal companion, a subordinate who will support you and follow your direction.\n\nYour companion is a single Troop level Threat, as described in Chapter 14 of the Wrath & Glory Core Rulebook. You may use the stats presented in the core rulebook or another bestiary, or use the following rules:\n- Companion Attributes are equal to 1 + Double Rank.\n- Companion Skills are equal to 1 + Double Rank.\n- A companion’s Attributes and Skills cannot be higher than your own.\n\nWhenever you are hit by any form of attack, your companion may make a DN 5 Initiative Test as a Reflexive Action. If they succeed, the attack hits the companion instead of hitting you.\n\nSlain companions may be replaced for free with a new one the next time you visit a major encampment or city.\n\nYour companion may be an Elite Threat rather than a Troop Threat, but the cost of this Talent increases to 20xp.",
+    "grants": [
+      {
+        "followers": 1,
+        "kind": "companion",
+        "threatOf": {
+          "classes": [
+            "T",
+            "E"
+          ]
+        },
+        "genericStats": {
+          "perRank": 2,
+          "plus": 1
+        }
+      }
+    ]
   },
   {
     "id": "conqueror-imperative",
@@ -4426,7 +4628,19 @@
         "min": 5
       }
     ],
-    "effect": "Injuries that would slay even other Orks are mere flesh wounds to you.\n\nYour Resilience is increased by +Rank, and you add +Rank to the number of Traumatic Injuries you can suffer before dying."
+    "effect": "Injuries that would slay even other Orks are mere flesh wounds to you.\n\nYour Resilience is increased by +Rank, and you add +Rank to the number of Traumatic Injuries you can suffer before dying.",
+    "grants": [
+      {
+        "mods": {
+          "resilience": {
+            "perRank": 1
+          },
+          "maxTraumatic": {
+            "perRank": 1
+          }
+        }
+      }
+    ]
   },
   {
     "id": "descent-of-angels",
@@ -4465,7 +4679,12 @@
         ]
       }
     ],
-    "effect": "Grandfather Nurgle bestows life and vitality upon his children. Your wounds knit with tumorous growths, and vile ichor bubbles forth to replace spilt blood.\n\nYou gain +1d3 Corruption. As a simple action, you may spend 1 Wrath to regain 1d3+2 Wounds."
+    "effect": "Grandfather Nurgle bestows life and vitality upon his children. Your wounds knit with tumorous growths, and vile ichor bubbles forth to replace spilt blood.\n\nYou gain +1d3 Corruption. As a simple action, you may spend 1 Wrath to regain 1d3+2 Wounds.",
+    "grants": [
+      {
+        "corruption": "1d3"
+      }
+    ]
   },
   {
     "id": "dynamic-offensive",
@@ -4519,7 +4738,12 @@
         ]
       }
     ],
-    "effect": "The Prince of Pleasure has granted you the greatest depths of awareness, to better appreciate the sensations of existence. Your mind burns with glorious agony as you open your senses to perceive more deeply than any mortal should.\n\nYou gain +1d3 Corruption. When you attempt an Awareness or Insight Test, you may choose to suffer 1, 2, or 3 Shock in order to gain that many additional dice on the Test."
+    "effect": "The Prince of Pleasure has granted you the greatest depths of awareness, to better appreciate the sensations of existence. Your mind burns with glorious agony as you open your senses to perceive more deeply than any mortal should.\n\nYou gain +1d3 Corruption. When you attempt an Awareness or Insight Test, you may choose to suffer 1, 2, or 3 Shock in order to gain that many additional dice on the Test.",
+    "grants": [
+      {
+        "corruption": "1d3"
+      }
+    ]
   },
   {
     "id": "exquisite-swiftness",
@@ -4541,7 +4765,12 @@
         ]
       }
     ],
-    "effect": "Your wits and reflexes are heightened to an exceptional degree, to allow you to better experience life’s joys and torments.\n\nYou gain +1d3 Corruption. Before the first round of combat, you may move up to your speed. Further, you may always choose to act first in each round."
+    "effect": "Your wits and reflexes are heightened to an exceptional degree, to allow you to better experience life’s joys and torments.\n\nYou gain +1d3 Corruption. Before the first round of combat, you may move up to your speed. Further, you may always choose to act first in each round.",
+    "grants": [
+      {
+        "corruption": "1d3"
+      }
+    ]
   },
   {
     "id": "fallen-angel",
@@ -4577,7 +4806,23 @@
     "source": "apocrypha",
     "page": 236,
     "xp": 5,
-    "effect": "You are accompanied by a small companion creature which aids and assists you.\n\nYour companion is a single Troop level Threat of Tiny or Small size, as described in Chapter 14 of the Wrath & Glory Core Rulebook. You may use the stats presented in the core rulebook or another bestiary, or use the following rules:\n- Companion Attributes are equal to 1 + Double Rank.\n- Companion Skills are equal to 1 + Double Rank.\n- A companion’s Attributes and Skills cannot be higher than your own.\n\nYour familiar will stick close to you—within 3m—under most circumstances and will try to avoid combat unless ordered otherwise. If your familiar is within 3m of you, its Defence is increased by +2.\n\nA collection of custom-made familiars can be found in Chapter IV: Equipment."
+    "effect": "You are accompanied by a small companion creature which aids and assists you.\n\nYour companion is a single Troop level Threat of Tiny or Small size, as described in Chapter 14 of the Wrath & Glory Core Rulebook. You may use the stats presented in the core rulebook or another bestiary, or use the following rules:\n- Companion Attributes are equal to 1 + Double Rank.\n- Companion Skills are equal to 1 + Double Rank.\n- A companion’s Attributes and Skills cannot be higher than your own.\n\nYour familiar will stick close to you—within 3m—under most circumstances and will try to avoid combat unless ordered otherwise. If your familiar is within 3m of you, its Defence is increased by +2.\n\nA collection of custom-made familiars can be found in Chapter IV: Equipment.",
+    "grants": [
+      {
+        "followers": 1,
+        "kind": "familiar",
+        "threatOf": {
+          "classes": [
+            "T"
+          ],
+          "maxSize": "Small"
+        },
+        "genericStats": {
+          "perRank": 2,
+          "plus": 1
+        }
+      }
+    ]
   },
   {
     "id": "fix-bayonets",

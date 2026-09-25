@@ -8,7 +8,8 @@ real miniatures and terrain, so there are **no maps, dice or chat**. The app cov
 - **Players (phones):** live play sheet, the fight as the GM allows them to see it, handouts, known NPCs and
   locations, session recaps.
 
-Everything syncs live. UI style is "Auspex": a green-phosphor cogitator terminal (VT323 + IBM Plex Mono).
+Everything syncs live. UI style is the "Imperial Manuscript", after the books' print design: vellum, crimson ink and iron
+bands (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a night "vigil" theme (`docs/frontend.md` §7).
 
 ## Rules come from the books, never from memory
 
@@ -44,7 +45,7 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 
 | Part | Tech |
 |---|---|
-| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode` |
+| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode`, `lucide-react` |
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |
@@ -141,11 +142,12 @@ apps/web/components/player/  player-app (sheet, fight, intel)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
-packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
+packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
                              creation.test.ts (the volkus pregens resolve in the creation catalogue)
+aspire-apphost/     apphost.mts: optional Aspire TypeScript AppHost (Postgres → api → web, with a dashboard)
 ```
 
 ## Commands
@@ -158,6 +160,9 @@ bun run dev                 # whole stack via Turborepo (turbo.json): dev:db fir
 bun run dev:db              # Postgres in Docker on localhost:5434 (5432/5433 are taken on this machine)
 bun run dev:api             # NestJS on :4000, watches src
 bun run dev:web             # Next on :3000; proxies /api and /socket.io to :4000
+aspire run                  # optional: same stack with a dashboard (logs, OTel traces), health-gated startup.
+                            # TypeScript AppHost, no .NET SDK. Podman needs DOTNET_ASPIRE_CONTAINER_RUNTIME=podman.
+                            # Turborepo still owns `build`; deploy unchanged. See docs/development.md §Aspire
 cd apps/api && bun run seed volkus --owner user_2abc…       # packages/data/packs/volkus, that Clerk user as GM; prints /c/<id>
 
 bun run typecheck           # shared + api + web (with test, the Husky pre-commit hook: .husky/pre-commit)

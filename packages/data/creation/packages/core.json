@@ -4,7 +4,7 @@
     "name": "Back From The Brink",
     "source": "core",
     "page": 150,
-    "note": "If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice. The augmetics depend on the Traumatic Injury rolls, so they stay in `effect`, not `grants`.",
+    "note": "If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice. The augmetics that replace lost parts depend on the injury rolls, so they are a `story` grant.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -15,6 +15,15 @@
     "grants": [
       {
         "keyword": "[ANY]"
+      },
+      {
+        "memorableInjuries": 2
+      },
+      {
+        "traumaticInjuries": 2
+      },
+      {
+        "story": "Replace any lost body parts with the appropriate augmetics, of any Rarity the GM deems appropriate (how many depends on the injury rolls)."
       }
     ]
   },
@@ -69,13 +78,24 @@
         "choose": 1,
         "from": [
           {
-            "text": "1 item of Rare Wargear with a value of 3 + new Tier"
+            "pick": 1,
+            "wargearOf": {
+              "maxValue": {
+                "newTierPlus": 3
+              },
+              "rarity": {
+                "atMost": "Rare",
+                "atLeast": "Rare"
+              }
+            }
           },
           {
-            "text": "2 Wealth"
+            "wealth": 2
           },
           {
-            "text": "+2 Influence per Tier Ascended"
+            "influence": {
+              "perTier": 2
+            }
           }
         ]
       }
@@ -86,7 +106,7 @@
     "name": "Perfidious Wretch",
     "source": "core",
     "page": 152,
-    "note": "Also removes \"the Keyword you betrayed\": no grant form removes a keyword, so it is in `effect` only. If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice.",
+    "note": "\"Remove the Keyword you betrayed\" is `loseKeyword` \"[ANY]\": the player picks it. If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice.",
     "kind": "ascension",
     "xp": {
       "perTier": 5
@@ -105,10 +125,21 @@
         "keyword": "[ANY]"
       },
       {
-        "text": "3 Wealth"
+        "wealth": 3
       },
       {
-        "text": "1 item of Wargear with a value of 3 + new Tier and a Rarity of Rare or lower"
+        "pick": 1,
+        "wargearOf": {
+          "maxValue": {
+            "newTierPlus": 3
+          },
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
+      },
+      {
+        "loseKeyword": "[ANY]"
       }
     ]
   },
@@ -117,7 +148,7 @@
     "name": "Psychic Revelations",
     "source": "core",
     "page": 152,
-    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. \"Universal Psychic Powers on p.267\" are Psyniscience and Deny The Witch (universal-psyker-abilities). The Minor power is a text grant because its count is per Tier Ascended (a choose/fromDisciplines [\"minor\"] needs a fixed count). \"Purchase psychic powers from one Discipline of your choice\" is access, not a grant: `effect` only. The \"Changed by the Warp\" box (p.153) is appended to `effect`.",
+    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. The Minor powers are a per-Tier choice from the minor discipline. The \"Universal Psychic Powers on p.267\" come with the PSYKER keyword (Core p.375), and \"one Discipline of your choice\" is the Species' default (Disciplines Known, Core p.257), so neither is granted again. The \"Changed by the Warp\" box (p.153) is appended to `effect`.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -135,13 +166,12 @@
         "power": "smite"
       },
       {
-        "power": "psyniscience"
-      },
-      {
-        "power": "deny-the-witch"
-      },
-      {
-        "text": "One Minor Psychic Power of your choice per Tier Ascended"
+        "choose": {
+          "perTier": 1
+        },
+        "fromDisciplines": [
+          "minor"
+        ]
       }
     ]
   },
@@ -150,7 +180,7 @@
     "name": "Stay The Course",
     "source": "core",
     "page": 154,
-    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }.",
+    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. An Agent without a Memorable Injury takes one, 3 Corruption instead, or both; an Agent who already has one may still take the 3 Corruption (GM ruling, docs/rules-flow.md §11.39).",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -165,10 +195,94 @@
         "choose": 1,
         "from": [
           {
-            "text": "2 items of Rare Wargear with a value of 3 + new Tier"
+            "pick": 2,
+            "wargearOf": {
+              "maxValue": {
+                "newTierPlus": 3
+              },
+              "rarity": {
+                "atMost": "Rare",
+                "atLeast": "Rare"
+              }
+            }
           },
           {
-            "text": "1 item of Very Rare Wargear with a value of 3 + new Tier"
+            "pick": 1,
+            "wargearOf": {
+              "maxValue": {
+                "newTierPlus": 3
+              },
+              "rarity": {
+                "atMost": "Very Rare",
+                "atLeast": "Very Rare"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "all": [
+              {
+                "memorableInjuries": 1
+              }
+            ],
+            "requires": [
+              {
+                "kind": "memorableInjuries",
+                "max": 0
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "corruption": 3
+              }
+            ],
+            "requires": [
+              {
+                "kind": "memorableInjuries",
+                "max": 0
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "memorableInjuries": 1
+              },
+              {
+                "corruption": 3
+              }
+            ],
+            "requires": [
+              {
+                "kind": "memorableInjuries",
+                "max": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "optional": true,
+        "from": [
+          {
+            "all": [
+              {
+                "corruption": 3
+              }
+            ],
+            "requires": [
+              {
+                "kind": "memorableInjuries",
+                "min": 1
+              }
+            ]
           }
         ]
       }

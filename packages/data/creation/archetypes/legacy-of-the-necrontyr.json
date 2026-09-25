@@ -33,7 +33,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
         }
       },
       {
@@ -41,12 +42,14 @@
         "from": [
           {
             "wargear": {
-              "name": "Gauss blaster"
+              "name": "Gauss blaster",
+              "wargearId": "necron-gauss-blaster"
             }
           },
           {
             "wargear": {
-              "name": "Tesla carbine"
+              "name": "Tesla carbine",
+              "wargearId": "necron-tesla-carbine"
             }
           }
         ]
@@ -89,17 +92,20 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
         }
       },
       {
         "wargear": {
-          "name": "Synaptic Disintegrator"
+          "name": "Synaptic Disintegrator",
+          "wargearId": "necron-synaptic-disintegrator"
         }
       },
       {
         "wargear": {
-          "name": "Dimensional Oubliette generator"
+          "name": "Dimensional Oubliette generator",
+          "wargearId": "necron-dimensional-oubliette-generator"
         }
       }
     ],
@@ -139,17 +145,20 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
         }
       },
       {
         "wargear": {
-          "name": "Gauss Cannon"
+          "name": "Gauss Cannon",
+          "wargearId": "necron-gauss-cannon"
         }
       },
       {
         "wargear": {
-          "name": "Grav-platform"
+          "name": "Grav-platform",
+          "wargearId": "necron-grav-platform"
         }
       }
     ],
@@ -190,17 +199,20 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
         }
       },
       {
         "wargear": {
-          "name": "Warscythe"
+          "name": "Warscythe",
+          "wargearId": "necron-warscythe"
         }
       },
       {
         "wargear": {
-          "name": "Dynastic Crest (symbol of authority)"
+          "name": "Dynastic Crest (symbol of authority)",
+          "wargearId": "symbol-of-authority"
         }
       }
     ],
@@ -244,17 +256,26 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
         }
       },
       {
-        "wargear": {
-          "name": "Rod of Covenant"
-        }
+        "bundle": [
+          {
+            "name": "Rod of Covenant (Shooting)",
+            "wargearId": "necron-rod-of-covenant-shooting"
+          },
+          {
+            "name": "Rod of Covenant (Melee)",
+            "wargearId": "necron-rod-of-covenant-melee"
+          }
+        ]
       },
       {
         "wargear": {
-          "name": "Crest of the Triarch (Symbol of Authority)"
+          "name": "Crest of the Triarch (Symbol of Authority)",
+          "wargearId": "symbol-of-authority"
         }
       }
     ],
@@ -299,17 +320,26 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
         }
       },
       {
-        "wargear": {
-          "name": "Staff of Light"
-        }
+        "bundle": [
+          {
+            "name": "Staff of Light (Shooting)",
+            "wargearId": "necron-staff-of-light-shooting"
+          },
+          {
+            "name": "Staff of Light (Melee)",
+            "wargearId": "necron-staff-of-light-melee"
+          }
+        ]
       },
       {
         "wargear": {
-          "name": "Dynastic Crest (symbol of authority)"
+          "name": "Dynastic Crest (symbol of authority)",
+          "wargearId": "symbol-of-authority"
         }
       }
     ],
@@ -351,9 +381,16 @@
     ],
     "wargear": [
       {
-        "wargear": {
-          "name": "Staff of Light"
-        }
+        "bundle": [
+          {
+            "name": "Staff of Light (Shooting)",
+            "wargearId": "necron-staff-of-light-shooting"
+          },
+          {
+            "name": "Staff of Light (Melee)",
+            "wargearId": "necron-staff-of-light-melee"
+          }
+        ]
       }
     ],
     "influence": 2
@@ -397,27 +434,38 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy plating"
+          "name": "Heavy plating",
+          "wargearId": "necron-heavy-plating"
+        }
+      },
+      {
+        "bundle": [
+          {
+            "name": "Staff of Light (Shooting)",
+            "wargearId": "necron-staff-of-light-shooting"
+          },
+          {
+            "name": "Staff of Light (Melee)",
+            "wargearId": "necron-staff-of-light-melee"
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Dynastic Crest (symbol of authority)",
+          "wargearId": "symbol-of-authority"
         }
       },
       {
         "wargear": {
-          "name": "Staff of Light"
+          "name": "Phase Shifter",
+          "wargearId": "necron-phase-shifter"
         }
       },
       {
         "wargear": {
-          "name": "Dynastic Crest (symbol of authority)"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Phase Shifter"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Grav-Platform"
+          "name": "Grav-Platform",
+          "wargearId": "necron-grav-platform"
         }
       }
     ],

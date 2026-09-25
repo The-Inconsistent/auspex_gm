@@ -1,0 +1,94 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Animal",
+      "text": "A Razorwing is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Flyby",
+      "text": "The Threat never counts as being Engaged, and thus enemies cannot attempt Reflexive Attacks when the Threat moves away."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"12 Fly\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Razor Feathers",
+          "damage": 5,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (2)",
+            "Inflict (Bleeding)"
+          ]
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "mobAbilities": [
+    {
+      "name": "Flock of Blades",
+      "text": "Increase the base damage of this mob’s melee attacks by +1 and add +1ED for each creature in the mob, up to a maximum of +5 and +5ED.",
+      "weapons": []
+    }
+  ],
+  "id": "apoc-razorwing",
+  "name": "Razorwing",
+  "page": 475,
+  "faction": "drukhari",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "DRUKHARI",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 5,
+    "I": 5,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 2
+  },
+  "defence": 5,
+  "wounds": 1,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "determination": "Scattered Flock: Spend 1 Glory to roll 1d6. Then the mob moves up to half its Speed and adds +2 to its Defence until the start of its next turn.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 12,
+  "size": "Small"
+}

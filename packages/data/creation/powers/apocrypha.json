@@ -762,13 +762,17 @@
         "anyOf": [
           "AELDARI"
         ]
-      },
-      {
-        "kind": "text",
-        "text": "Must be holding a Webway key to use this power."
       }
     ],
-    "note": "The Webway key condition limits use, not learning."
+    "note": "The Webway key condition limits use, not learning.",
+    "useRequires": [
+      {
+        "kind": "wargear",
+        "anyOf": [
+          "Webway Key"
+        ]
+      }
+    ]
   },
   {
     "id": "wraithtomb",
@@ -4343,11 +4347,9 @@
     "name": "Rites of Banishment",
     "source": "apocrypha",
     "page": 268,
-    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\" Point Cost printed \"0 (10 if buying this power separately)\": GREY KNIGHTS psykers know it instead of Smite (Sanctic Discipline, p.267).",
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\" Point Cost printed \"0 (10 if buying this power separately)\": GREY KNIGHTS psykers know it instead of Smite (Sanctic Discipline, p.267). XP printed \"0 (10 if buying this power separately)\": it is 10, and free to GREY KNIGHTS psykers through the Grey Knights sub-faction's grant (§11.33).",
     "disciplineId": "sanctic",
-    "xp": {
-      "text": "0 (10 if buying this power separately)"
-    },
+    "xp": 10,
     "dn": "Target's Defence",
     "activation": "Action",
     "duration": "Instant",

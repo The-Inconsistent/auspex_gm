@@ -1,0 +1,110 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Animal",
+      "text": "A Squig is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Bouncing Gait",
+      "text": "A Squig adds +1d3 to its Speed each time it runs, charges, or sprints."
+    },
+    {
+      "name": "Squig Hound",
+      "text": "GRETCHIN within 3m of a Squig Hound add +2 to their Resolve."
+    },
+    {
+      "name": "Squigz Gone Wild",
+      "text": "A Squig which starts its turn without an Ork within 3m, or a RUNTHERD within 6m, becomes Frenzied."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "text": "A Bomb Squig which gets within 1m of an enemy will instead Detonate, as described under ANNIHILATION, below. It then dies.",
+      "weapons": [
+        {
+          "name": "Big Chompy Teef",
+          "damage": 9,
+          "ed": 4,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Detonate",
+      "text": "The Bomb Squig explodes.\nBomb Squig Explosion: 16 +3ED / AP -3 / Brutal, Blast (2d3)",
+      "weapons": []
+    }
+  ],
+  "options": [],
+  "mobAbilities": [
+    {
+      "name": "Bouncing Charge",
+      "text": "A Mob of Attack Squigs add Inflict (Knockdown) to their melee attacks when they charge.",
+      "weapons": []
+    }
+  ],
+  "id": "apoc-attack-squig",
+  "name": "Attack Squig",
+  "page": 476,
+  "faction": "ork",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "ORK",
+    "SQUIG",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 3,
+    "A": 4,
+    "I": 3,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 6,
+    "note": "Tough Hide: AR 2"
+  },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Survival",
+        "dice": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Small"
+}

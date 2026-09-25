@@ -27,12 +27,25 @@
               "PSYKER"
             ]
           }
+        ],
+        "grants": [
+          {
+            "never": "faith"
+          },
+          {
+            "neverKeyword": "PSYKER"
+          }
         ]
       },
       {
         "name": "Perpetual",
         "page": 13,
-        "text": "Any Human character may be chosen to be a Perpetual during character creation. This has an additional XP cost and applies additional special abilities to the character.\n\nYou are treated as Human in all other regards, though when you determine your character’s age, use the Aeldari age values instead.\n\nThis additional cost must be paid if you choose any Human archetype.\n\nXP COST: 30\n- Immortal: You cannot die, though you can still suffer injuries and enter the dying state. If you would suffer from Annihilation (suffering damage equal to twice your Maximum Wounds), you instead suffer Traumatic Injuries equal to the game’s Tier +2. You automatically remove one Traumatic Injury after each Respite.\n- Clandestine Connections: You’ve accumulated a great many contacts across your impossibly long life. When you attempt an Influence test, you may roll additional Wrath dice equal to the game’s Tier, but a Wrath Complication means that some detail of your immortal nature has reached those who would hunt you.\n- Despised by the Unholy: If a Perpetual is present in a game, the GM’s starting and maximum Ruin are increased by 1."
+        "text": "Any Human character may be chosen to be a Perpetual during character creation. This has an additional XP cost and applies additional special abilities to the character.\n\nYou are treated as Human in all other regards, though when you determine your character’s age, use the Aeldari age values instead.\n\nThis additional cost must be paid if you choose any Human archetype.\n\nXP COST: 30\n- Immortal: You cannot die, though you can still suffer injuries and enter the dying state. If you would suffer from Annihilation (suffering damage equal to twice your Maximum Wounds), you instead suffer Traumatic Injuries equal to the game’s Tier +2. You automatically remove one Traumatic Injury after each Respite.\n- Clandestine Connections: You’ve accumulated a great many contacts across your impossibly long life. When you attempt an Influence test, you may roll additional Wrath dice equal to the game’s Tier, but a Wrath Complication means that some detail of your immortal nature has reached those who would hunt you.\n- Despised by the Unholy: If a Perpetual is present in a game, the GM’s starting and maximum Ruin are increased by 1.",
+        "grants": [
+          {
+            "gmRuin": 1
+          }
+        ]
       }
     ]
   },
@@ -71,12 +84,55 @@
       {
         "name": "Forge World",
         "page": 4,
-        "text": "Ave Omnissiah: The character has memorised countless operation litanies and maintenance hymnals, giving them an innate familiarity with machines and the Cult Mechanicus. They receive +1d on all Tech tests and Scholar tests relating to the Adeptus Mechanicus.\n\nStranger to the Church: Forgeworlders are unfamiliar with the ways of the Ministorum and the Imperial Creed and suffer +2DN on all Scholar tests relating to the Imperial Creed. The character may not take any archetypes with the ADEPTUS MINISTORUM keyword.\n\nRecommended Attributes: Strength, Intelligence\n\nRecommended Skills: Scholar, Tech"
+        "text": "Ave Omnissiah: The character has memorised countless operation litanies and maintenance hymnals, giving them an innate familiarity with machines and the Cult Mechanicus. They receive +1d on all Tech tests and Scholar tests relating to the Adeptus Mechanicus.\n\nStranger to the Church: Forgeworlders are unfamiliar with the ways of the Ministorum and the Imperial Creed and suffer +2DN on all Scholar tests relating to the Imperial Creed. The character may not take any archetypes with the ADEPTUS MINISTORUM keyword.\n\nRecommended Attributes: Strength, Intelligence\n\nRecommended Skills: Scholar, Tech",
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "ADEPTUS MINISTORUM"
+            ]
+          }
+        ]
       },
       {
         "name": "Schola Progenium",
         "page": 5,
-        "text": "Schola Education: The character was groomed from a young age to be an example to others. You gain +1d on any two of the following skills, chosen during character creation: Insight, Intimidation, Leadership, Scholar.\n\nCloistered Upbringing: Progena have little patience for, or understanding of, the dregs of society. The character suffers +2DN on all non-hostile Interaction tests made when dealing with characters who have the SCUM keyword.\n\nRecommended Attributes: Toughness, Willpower\n\nRecommended Skills: Athletics, Leadership"
+        "text": "Schola Education: The character was groomed from a young age to be an example to others. You gain +1d on any two of the following skills, chosen during character creation: Insight, Intimidation, Leadership, Scholar.\n\nCloistered Upbringing: Progena have little patience for, or understanding of, the dregs of society. The character suffers +2DN on all non-hostile Interaction tests made when dealing with characters who have the SCUM keyword.\n\nRecommended Attributes: Toughness, Willpower\n\nRecommended Skills: Athletics, Leadership",
+        "grants": [
+          {
+            "choose": 2,
+            "from": [
+              {
+                "bonusDice": 1,
+                "skills": [
+                  "Insight"
+                ],
+                "when": "Schola Education: every Test with this Skill"
+              },
+              {
+                "bonusDice": 1,
+                "skills": [
+                  "Intimidation"
+                ],
+                "when": "Schola Education: every Test with this Skill"
+              },
+              {
+                "bonusDice": 1,
+                "skills": [
+                  "Leadership"
+                ],
+                "when": "Schola Education: every Test with this Skill"
+              },
+              {
+                "bonusDice": 1,
+                "skills": [
+                  "Scholar"
+                ],
+                "when": "Schola Education: every Test with this Skill"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Shrine World",

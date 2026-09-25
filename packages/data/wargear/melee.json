@@ -735,7 +735,7 @@
       ]
     },
     "effect": "",
-    "note": "Range printed \"2m Thrown*: S x 5\": a 2 m melee reach (range) plus a thrown range (thrown). The asterisk has no footnote on p.213."
+    "note": "Range printed \"2m Thrown*: S x 5\": a 2 m melee reach (range) plus a thrown range (thrown). The asterisk has no footnote on p.213. Superseded by IoE p.89 (ioe-singing-spear)."
   },
   {
     "id": "witchblade",
@@ -764,7 +764,8 @@
         "Warp Weapon"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.89 (ioe-witchblade)."
   },
   {
     "id": "void-sabre",
@@ -794,7 +795,7 @@
       ]
     },
     "effect": "Any Tests made as part of social interactions with an individual with the ASURYANI Keyword suffer a +4 DN penalty.",
-    "note": "Effect is from the Void Sabre description on p.215; the page does not say whether the penalty applies to the wielder's Tests."
+    "note": "Effect is from the Void Sabre description on p.215; the page does not say whether the penalty applies to the wielder's Tests. Superseded by IoE p.89 (ioe-void-sabre)."
   },
   {
     "id": "choppa",

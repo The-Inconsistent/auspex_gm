@@ -46,7 +46,12 @@
       {
         "name": "Psychic Species",
         "text": "There are no recorded instances of either Ratlings or Ogryns with psychic abilities. Ratlings and Ogyrns cannot have the PSYKER Keyword.",
-        "page": 91
+        "page": 91,
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       },
       {
         "name": "Armour for Abhumans",
@@ -110,7 +115,12 @@
       {
         "name": "Psychic Species",
         "text": "There are no recorded instances of either Ratlings or Ogryns with psychic abilities. Ratlings and Ogyrns cannot have the PSYKER Keyword.",
-        "page": 91
+        "page": 91,
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       },
       {
         "name": "Armour for Abhumans",
@@ -132,7 +142,7 @@
     "name": "Kroot",
     "source": "forsaken-system",
     "page": 97,
-    "note": "Maximums from the table on p.91. No Species Keywords printed; KROOT by GM ruling (docs/rules-flow.md §11.27). The species table's first columns are shifted as printed (\"Kroot\" under XP Cost, \"22\" under Attributes): XP 22, no Attributes. Kroot Mutations are the option group kroot-mutations (p.98).",
+    "note": "Maximums from the table on p.91. No Species Keywords printed; KROOT by GM ruling (docs/rules-flow.md §11.27). The species table's first columns are shifted as printed (\"Kroot\" under XP Cost, \"22\" under Attributes): XP 22, no Attributes. Kroot Mutations are the option group kroot-mutations (p.98). As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 22,
     "speed": 7,
     "size": "Average",
@@ -182,6 +192,23 @@
     ],
     "keywords": [
       "KROOT"
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
     ]
   }
 ]

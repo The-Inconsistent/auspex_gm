@@ -11,7 +11,7 @@ import {
   requisitionSlot,
   requisitionTest,
   requisitionYield,
-  wargearCite,
+  sourceCite,
   type ActionResult,
   type Character,
   type Wargear,
@@ -28,6 +28,7 @@ type RequisitionFormProps = {
   sessionId: string | null;
   send: Send;
   onResult: (r: ActionResult, ok: string) => void;
+  onCancel: () => void;
 };
 
 const digits = (v: string) => Number(v.replace(/\D/g, "")) || 0;
@@ -41,6 +42,7 @@ export function RequisitionForm({
   sessionId,
   send,
   onResult,
+  onCancel,
 }: RequisitionFormProps) {
   const [kind, setKind] = useState<RequisitionKind>("wargear");
   const [item, setItem] = useState("");
@@ -55,8 +57,7 @@ export function RequisitionForm({
   // A name printed in more than one book is listed with its cite ("Bolt Rifle (VoA p.67)").
   const seen = new Map<string, number>();
   for (const w of catalogue) seen.set(w.name.toLowerCase(), (seen.get(w.name.toLowerCase()) ?? 0) + 1);
-  const labelOf = (w: Wargear) =>
-    (seen.get(w.name.toLowerCase()) ?? 0) > 1 ? `${w.name} (${wargearCite(w)})` : w.name;
+  const labelOf = (w: Wargear) => ((seen.get(w.name.toLowerCase()) ?? 0) > 1 ? `${w.name} (${sourceCite(w)})` : w.name);
   const find = (v: string) => catalogue.find((w) => labelOf(w).toLowerCase() === v.trim().toLowerCase());
   const picked = find(item);
 
@@ -109,8 +110,8 @@ export function RequisitionForm({
 
   return (
     <div className="stack panel pad" style={{ gap: 8 }}>
-      <div className="rule">── REQUISITION (p.205) ──</div>
-      {!sessionId && <div className="amber">Start a session first: one Wargear and one Ammo Test per session.</div>}
+      <div className="rule">REQUISITION (p.205)</div>
+      {!sessionId && <div className="accent">Start a session first: one Wargear and one Ammo Test per session.</div>}
       <div className="keys" style={{ paddingTop: 0 }} role="group" aria-label="What">
         {RequisitionKind.options.map((k) => (
           <button
@@ -137,7 +138,7 @@ export function RequisitionForm({
         />
         <datalist id="rq-catalogue">
           {catalogue.map((w) => (
-            <option key={w.id} value={labelOf(w)}>{`${w.category} · ${wargearCite(w)}`}</option>
+            <option key={w.id} value={labelOf(w)}>{`${w.category} · ${sourceCite(w)}`}</option>
           ))}
         </datalist>
         <datalist id="rq-ammo-types">
@@ -148,13 +149,13 @@ export function RequisitionForm({
       </div>
       {picked && (
         <div className="dim" style={{ fontSize: 12 }}>
-          {picked.category.toUpperCase()} · {wargearCite(picked).toUpperCase()}
+          {picked.category.toUpperCase()} · {sourceCite(picked).toUpperCase()}
           {picked.effect ? ` · ${picked.effect}` : ""}
           {picked.weapon ? " · JOINS THE ARMAMENT" : ""}
         </div>
       )}
       {picked && (picked.value === null || picked.rarity === null) && (
-        <div className="amber">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>
+        <div className="accent">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>
       )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         <div className="field">
@@ -263,12 +264,15 @@ export function RequisitionForm({
           COMPLICATION (−1 WEALTH)
         </label>
       </div>
-      <div className={out.success ? "amber" : "dim"}>
+      <div className={out.success ? "accent" : "dim"}>
         {out.success ? `SUCCESS: GETS ${gets.toUpperCase()}` : "FAILS"} · WEALTH {c.stats.wealth} → {out.wealth}
       </div>
-      <div>
+      <div className="keys">
         <button className="btn primary" disabled={!sessionId || used || !t.eligible || !item.trim()} onClick={record}>
           RECORD
+        </button>
+        <button className="btn" onClick={onCancel}>
+          CANCEL
         </button>
       </div>
     </div>

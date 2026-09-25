@@ -97,6 +97,15 @@
               "drukhari"
             ]
           }
+        ],
+        "grants": [
+          {
+            "mods": {
+              "maxWounds": {
+                "perRank": 1
+              }
+            }
+          }
         ]
       },
       {
@@ -243,6 +252,15 @@
               "wraith-construct",
               "drukhari"
             ]
+          }
+        ],
+        "grants": [
+          {
+            "mods": {
+              "maxShock": {
+                "perRank": 1
+              }
+            }
           }
         ]
       },

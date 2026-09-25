@@ -85,15 +85,11 @@ export function Sheet({ me, state, send }: SheetProps) {
   return (
     <>
       <div>
-        <div className="display" style={{ fontSize: 38, lineHeight: 1 }}>
+        <div className="display" style={{ fontSize: 30, lineHeight: 1.05 }}>
           {me.name.toUpperCase()}
         </div>
-        <div className="label">{[s.archetype, s.species, `T${state.campaign.tier}`].filter(Boolean).join(" · ")}</div>
-        {s.keywords.length > 0 && (
-          <div className="dim" style={{ fontSize: 12 }}>
-            {s.keywords.join(", ")}
-          </div>
-        )}
+        <i className="dim">{[s.archetype, s.species, `Tier ${state.campaign.tier}`].filter(Boolean).join(" · ")}</i>
+        {s.keywords.length > 0 && <div className="kw">{s.keywords.join(" · ")}</div>}
       </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         <StatusChips items={pcStatus(me, d)} />
@@ -145,7 +141,7 @@ export function Sheet({ me, state, send }: SheetProps) {
       </div>
 
       <div className="stack" style={{ gap: 6 }}>
-        <div className="rule">── CONDITIONS ──</div>
+        <div className="rule">CONDITIONS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
           {me.conditions.map((k) => (
             <button key={k} className="btn sm" aria-label={`Remove ${k}`} onClick={() => toggleCond(k)}>
@@ -169,7 +165,7 @@ export function Sheet({ me, state, send }: SheetProps) {
 
       {s.weapons.length > 0 && (
         <div className="stack" style={{ gap: 6 }}>
-          <div className="rule">── ARMAMENT ──</div>
+          <div className="rule">ARMAMENT</div>
           {s.weapons.map((w) => (
             <div key={w.name}>
               <b>{w.name.toUpperCase()}</b>
@@ -192,7 +188,7 @@ export function Sheet({ me, state, send }: SheetProps) {
       )}
 
       <div className="stack" style={{ gap: 6 }}>
-        <div className="rule">── SUPPLY ──</div>
+        <div className="rule">SUPPLY</div>
         <SupplyRow
           label="Wealth"
           value={s.wealth}
@@ -233,7 +229,7 @@ export function Sheet({ me, state, send }: SheetProps) {
 
       {Object.keys(s.skills).length > 0 && (
         <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">── SKILLS (dice) ──</div>
+          <div className="rule">SKILLS (dice)</div>
           {(Object.keys(SKILLS) as Skill[])
             .filter((k) => s.skills[k])
             .map((k) => (
@@ -251,7 +247,7 @@ export function Sheet({ me, state, send }: SheetProps) {
         ([title, list]) =>
           list.length > 0 && (
             <div key={title} className="stack" style={{ gap: 6 }}>
-              <div className="rule">── {title} ──</div>
+              <div className="rule">{title}</div>
               {list.map((r) => (
                 <div key={r.name}>
                   <b>{r.name}</b>

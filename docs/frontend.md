@@ -5,7 +5,7 @@ api in [backend.md](backend.md), the rules functions in [game-logic.md](game-log
 [development.md](development.md). The binding style rules are in
 [`.claude/frontend-code-style.md`](../.claude/frontend-code-style.md).
 
-Stack: Next.js 16 (App Router), React 19, Clerk through `@wg/auth`, `socket.io-client`, `qrcode`, and plain CSS in
+Stack: Next.js 16 (App Router), React 19, Clerk through `@wg/auth`, `socket.io-client`, `qrcode`, `lucide-react` (icons), and plain CSS in
 `app/globals.css`. There is no UI framework, no client-side data reads and no client router beyond tab state. `/` is the
 lobby, and one table page (`/c/<campaignId>`) renders either the GM app or the player app, depending on the caller's
 seat.
@@ -168,6 +168,12 @@ const { state, codex, online, send } = useTable(campaignId);
   - On timeout it returns `{ ok: false, error: "No reply from server. Check before retrying" }`. The action may
     still have been applied, and counters are deltas, so tapping again could double it.
   - `send` never throws. Callers check `r.ok` and show `r.error`.
+  - **Tap feedback:** `send` marks the button that triggered it: the focused button, or the last one pressed within
+    1 s (a capture `pointerdown` listener, because iOS doesn't focus tapped buttons). The button gets `aria-busy` until
+    the reply, then `data-sent="ok"` or `"no"` for 600 ms. `globals.css` dims a busy button in a slow pulse and rings
+    a sent one once: in its own text colour when applied, crimson when refused. Every button also darkens while
+    pressed (a `.btn` sinks slightly), since touch screens have no hover. A send without a recent tap, such as the
+    command line's Enter, marks nothing.
 - **Wake lock:** it requests `navigator.wakeLock.request("screen")` on mount and again on every `visibilitychange`
   back to visible, and releases it on unmount. A denial is swallowed on purpose: the screen may dim, and nothing else
   breaks.
@@ -499,9 +505,12 @@ no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `R
 
 | Component | Props | Job |
 |---|---|---|
-| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | Block bar plus `value/max`; `—` when `max` is `null`; red when `danger` and `value > 0` |
-| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat` | A threat stat block in terminal form: a source and page rule, attributes, DEF/RES/WND/SHK/SPD, skills, bonuses, abilities and weapons, Determination, Conviction/Resolve/Size/Personal Ruin, options and mob abilities |
-| `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (amber) |
+| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | A `Track` plus `value/max`; `—` when `max` is `null`; the track fills crimson when `danger`, ink otherwise |
+| `track/track.tsx` `Track` | `value`, `max`, `tone?: TrackTone` (`"harm"` or `"ink"`, `track/constants.ts`), `label?` | Framed cells from `blocks()`, filled crimson or ink. Decorative (`aria-hidden`), so show the number beside it or in `.sr-only` text. The one exception is a threat on FIGHT, where players get the scaled bar and not the count: it passes `label` and reads out "Wounds: 3 of 10 marked" |
+| `seal/seal.tsx` `Seal` | `value`, `pool: Pool`, `size?` | A party pool as a wax seal (brass Glory, crimson Ruin), `role="img"` labelled `<value> <pool>` |
+| `theme-toggle/theme-toggle.tsx` `ThemeToggle` | `className?` | The day/night switch (§7): flips `data-theme` on `<html>` and stores it; `constants.ts` holds `THEME_KEY` and the pre-paint `THEME_SCRIPT` |
+| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite` from `@wg/shared`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
+| `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
 
@@ -512,7 +521,7 @@ with `bun test lib`.
 
 | Lib | Export | Job |
 |---|---|---|
-| `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | A `█░` bar scaled to at most 10 cells. Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
+| `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | `{ filled, cells }` for a track scaled to at most 10 cells (drawn by `components/ui/track`). Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
 | `weapon-line/weapon-line.ts` | `weaponLine({ weapon, strength? })` | A one-line weapon profile: `dmg +ED ED · AP · R short/med/long · S salvo · traits`. `addStrength` melee prints `S+X`, or a number when `strength` is given. A `salvo: null` prints `–`, and an absent salvo is omitted |
 | `tokens/tokens.ts` | `TOKENS` (`bg`, `fg`) | Raw colours for places CSS variables can't reach: the QR canvas, the viewport `themeColor` and the manifest. It mirrors `:root`, so change both together |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
@@ -538,58 +547,82 @@ The error text is either the server's `ActionError` message or one of the two cl
 
 ## 7. Styling
 
-The look is "Auspex": a green-phosphor cogitator terminal. Dark green background, phosphor-green text, faint scanlines
-(the `repeating-linear-gradient` on `body`), square borders, upper-case labels, box-drawing rules (`── NAME ──`) and
-`█░` bars. Everything is plain CSS in `app/globals.css`, using short utility and component classes plus inline
-`style` for one-offs.
+The look is the "Imperial Manuscript", after the print design of the Wrath & Glory books: a vellum page with faint
+stains and a vignette (the `radial-gradient`s on `body`), crimson Cinzel section heads over a double rule, iron bands
+with bone text for headers and tabs, riveted-plate framing for GM-only content, and flat panels and tables so numbers
+read at arm's length. None of it uses book art: everything is CSS, plus one SVG mask (the torn band edge). Mock-ups and
+the design language: canvas `LRBEbp8GhgBAFeDk4pohVy`. Everything is plain CSS in `app/globals.css`, using short
+utility and component classes plus inline `style` for one-offs.
+
+**Themes.** `:root` is **vellum** (day). **Vigil** (night: charred page, bone ink, ember red) re-maps the same tokens
+under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
+`ThemeToggle` (`components/ui/theme-toggle/`) stores the choice per device in `localStorage` (`THEME_KEY`), and
+`THEME_SCRIPT`, inlined in `<head>` by `app/layout.tsx`, applies it before first paint (`<html suppressHydrationWarning>`).
+The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.theme-to-night` / `.theme-to-day`), so server and client markup match.
 
 **Fonts** come from `next/font/google` in `app/layout.tsx` and are exposed as CSS variables on `<html>`:
 
 | Variable | Font | Use |
 |---|---|---|
-| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Body text, the default for everything |
-| `--font-display` → `--display` | VT323 | Big terminal numerals and titles: `.display`, `.bar`, vitals, trait values |
+| `--font-display` → `--display` | Cinzel (variable) | Heads, labels, buttons, tabs, chips: `.display`, `.label`, `.rule`, `.btn`, `.tab`, `.chip`. Stands in for the books' Priori Serif |
+| `--font-serif` → `--serif` | Crimson Pro (variable, with italics) | Body text, the default for everything; counters use its lining tabular figures. Stands in for Caxton |
+| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Only in-world print-outs and typed commands: `pre.text.slate` (handouts, data-slates) and `.cmd input` |
 
-**Tokens** (`:root`):
+**Tokens** (`:root`, re-mapped for vigil):
 
 | Token | Purpose |
 |---|---|
-| `--bg` | Page background (mirrored as `TOKENS.bg`) |
-| `--panel` | Panels, buttons, the command bar, the player banner |
-| `--panel-2` | Inputs, list items, the tracker side panel |
+| `--vellum` | Page background, and the inner frame of buttons (mirrored as `TOKENS.vellum`) |
+| `--vellum-2` | Panels, list items, vitals, zebra rows, the tracker side panel |
+| `--vellum-3` | The command bar and other recessed strips |
+| `--ink`, `--ink-2`, `--ink-3` | Main text (mirrored as `TOKENS.ink`), secondary text and outlines, captions / `.dim` / done rows |
 | `--line` | Default borders and dividers |
-| `--line-dim` | Faint dividers (the vox log's dashed rules) |
-| `--fg` | Main phosphor text, focus borders, primary buttons, the selected tab (mirrored as `TOKENS.fg`) |
-| `--dim` | Secondary text, labels, rules |
-| `--done` | Text on rows that have acted |
-| `--amber` | Warnings, the acting combatant, reminders, success messages, your-turn banner |
-| `--red` | Errors, damage, Ruin, "hidden from players" |
-| `--red-line` | Red borders (danger buttons, Ruin pool, badges) |
-| `--red-bg` | Red surfaces (danger buttons, the offline badge, `Refusal`) |
-| `--row-active` | Background of the tracker row that is acting |
+| `--red` | Crimson ink: section heads, `.accent`, errors, Wounds, "hidden from players", focus rings |
+| `--red-fill`, `--red-2` | Crimson fills under bone text (primary buttons, the acting row, the active tab, your-turn banner) and their borders; `--red-fill` stays dark in vigil |
+| `--red-tint` | Faint crimson wash (hover, `.chip.warn`, danger buttons) |
+| `--red-on-iron` | Crimson that is legible on iron (the Ruin pool, the active tab's top stroke) |
+| `--iron`, `--iron-2` | Bands, tabs (mirrored as `TOKENS.iron`, the browser theme colour); table and stat-block header rows |
+| `--bone`, `--bone-2` | Text on iron and on crimson fills; secondary text on iron |
+| `--brass` | Glory only |
+| `--field` | Input background |
+| `--stain-a`, `--stain-b`, `--vignette` | The page-ground texture |
 | `--overlay` | Near-opaque backdrop for `.overlay` (the QR dialog) |
-| `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
-| `--mono`, `--display` | Font stacks |
-| `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--fg)`, `--clerk-color-background: var(--panel)`, `--clerk-font-family: var(--mono)`, `--clerk-border-radius: 0`…), so they take the Auspex look |
+| `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches, always in an ink frame. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
+| `--serif`, `--display`, `--mono` | Font stacks |
+| `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--red-fill)`, `--clerk-color-background: var(--vellum)`, `--clerk-font-family: var(--serif)`, `--clerk-border-radius: 2px`…) |
 
 **Class vocabulary:**
-- Text: `.display`, `.dim`, `.amber`, `.red`, `.label`, `.rule`.
-- Controls: `.btn`, with `.primary`, `.danger`, `.sm` (32px) and `.sq` (44px square); `.input`; `.field`.
-- Chips: `.chip`, with `.warn` and `.bad`.
-- Tabs: `.tabs` / `.tab`, with `[aria-selected="true"]` inverted and bold.
-- Layout: `.panel`, `.item`, `.item-head` (a card's full-width header row, 44px tall), `.list`, `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`, `pre.text`.
-- Shells: `.gm*` for the GM, `.tracker*` and `.row*` for the tracker, `.cmd` for the command bar, `.pl*`, `.vitals`,
-  `.vital` and `.traits` for the player app.
+- Text: `.sr-only` (read by screen readers, not drawn), `.display`, `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
+  `.label`, `.rule` (a section head; the double rule is drawn by `::after`), `.kw` (keywords in crimson small caps).
+- Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px)
+  and `.sq` (44px square); `.input`; `.field`.
+- Chips: `.chip`, with `.warn` and `.bad`; `.now-chip` (the tracker's "▶ X ACTING").
+- Tabs: `.tabs` / `.tab`, an iron strip; `[aria-selected="true"]` is crimson with a bright top stroke. `.tabs.rail` is
+  the GM's right-edge chapter rail (the open tab on a torn crimson stroke, `data-n` numerals behind the rest; a top
+  strip under 900px). `.tabs.sub` is an underlined in-screen strip (codex kinds, rule kinds) that scrolls sideways
+  when it doesn't fit.
+- Bands: `.band` (iron, bone text; `.btn`, `.dim` and `.label` inside it switch to their on-iron colours) and
+  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, `.pl-banner` and the lobby header.
+- Book furniture: `.sb*` (the stat block: `.sb-title`, `.sb-grid`, `.sb-head` with `.cur` for the campaign Tier,
+  `.sb-v`, `.sb-shade`, `.sb-band`, `.sb-body`), `.tbar` (a crimson table title bar; `.iron` for Threats), `.plate`
+  (riveted plate: GM-only content, e.g. the codex editor's GM notes, secrets and hazards), `.handout` (a sealed
+  slip), `.track` (framed wound/shock cells, `.harm` or `.ink`; `components/ui/track`), `.seal` (a pool as a wax seal;
+  `components/ui/seal`).
+- Layout: `.panel`, `.item` (`.now` for the acting card on FIGHT), `.item-head` (a card's full-width header row, 44px
+  tall), `.list` (`.table` for a bordered, gap-less table), `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`,
+  `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono).
+- Shells: `.gm*` for the GM, `.tracker*`, `.turn-strip` and `.row*` for the tracker, `.cmd` for the command bar,
+  `.pl*`, `.vitals`, `.vital` and `.traits` for the player app.
 
 **Layout:**
-- **GM:** tablet-first. `.gm` is a full-height grid (header, tabs, scrolling body). The tracker is a two-column grid:
-  the main list, plus a 320px side panel.
+- **GM:** tablet-first. `.gm` is a full-height grid: the header band and the scrolling body on the left, the
+  112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel.
 - **`@media (max-width: 900px)`** is the only breakpoint:
-  - The GM shell becomes one scrolling page instead of fixed-height panes.
+  - The GM shell becomes one scrolling page instead of fixed-height panes, and the rail becomes a top tab strip.
   - The title takes a full line.
   - The pool controls shrink to 40px.
   - The tracker stacks, with the side panel below the list.
-  - `.row` drops to 4 columns, and `.hide-sm` cells are hidden.
+  - `.row` drops to 4 columns with no minimum widths, so a row fits a 390px phone, and `.hide-sm` cells are hidden.
 - **Player:** phone-first single column. `.vitals` is 2 columns. `.cols` wraps at `minmax(280px, 1fr)`.
 - **Grid cells** get `min-width: 0` (`.row > *`) so bars shrink instead of spilling into the next column.
 
@@ -632,7 +665,8 @@ This section summarises the binding rules. The full text is in
   - Inputs have a `<label htmlFor>` or an `aria-label`, and chip groups use `role="group"`.
   - State is never shown by colour alone: row state is a word, tabs use weight plus `aria-selected`, the selected
     tracker row has `aria-pressed`, and marker swatches carry an `aria-label`.
-  - Focus stays visible: `.input:focus` switches the border to `--fg`, and `.cmd:focus-within` draws a ring.
+  - Focus stays visible: `:focus-visible` draws a crimson ring, `.input:focus` switches the border to `--red`, and
+    `.cmd:focus-within` rings the command bar.
   - The smallest text is 12px.
   - There's no hex in TSX; colours come from `var(--…)` or `TOKENS`.
 

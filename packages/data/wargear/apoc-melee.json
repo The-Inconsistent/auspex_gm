@@ -1,0 +1,3485 @@
+[
+  {
+    "id": "apoc-axe",
+    "name": "Axe",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-flail",
+    "name": "Flail",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Overwhelming"
+      ]
+    },
+    "effect": "",
+    "note": "Overwhelming is an Apocrypha Weapon Trait (p.327)."
+  },
+  {
+    "id": "apoc-greataxe",
+    "name": "Greataxe",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "2-HANDED",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Rending (1)",
+        "Unwieldy (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-greatsword",
+    "name": "Greatsword",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "2-HANDED",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-navis-hatchet",
+    "name": "Navis Hatchet",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "IMPERIUM",
+      "NAVIS IMPERIALS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"NAVIS IMPERIALS\" (elsewhere NAVIS IMPERIALIS); kept as printed."
+  },
+  {
+    "id": "apoc-repression-baton",
+    "name": "Repression Baton",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-spear",
+    "name": "Spear",
+    "source": "apocrypha",
+    "page": 329,
+    "category": "Ordinary Melee Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Traits printed \"–\"."
+  },
+  {
+    "id": "apoc-force-rod",
+    "name": "Force Rod",
+    "source": "apocrypha",
+    "page": 330,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE",
+      "ADEPTUS ASTRA TELEPATHICS",
+      "INQUISITION",
+      "AELDARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force"
+      ]
+    },
+    "effect": "Special: When the wielder of a Force Rod succeeds at using a psychic power, they may store Exalted Icons rolled on that Psychic Mastery test. These icons may be spent to gain additional dice on subsequent Psychic Mastery tests, or to purchase Potency options on psychic powers used later. The weapon may store a maximum of 6 Exalted Icons.",
+    "note": "Keyword printed \"ADEPTUS ASTRA TELEPATHICS\" (elsewhere ADEPTUS ASTRA TELEPATHICA); kept as printed."
+  },
+  {
+    "id": "apoc-nemesis-falchion",
+    "name": "Nemesis Falchion",
+    "source": "apocrypha",
+    "page": 330,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "GREY KNIGHTS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Nemesis",
+        "Paired",
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Nemesis and Paired are Apocrypha Weapon Traits (p.327)."
+  },
+  {
+    "id": "apoc-nemesis-force-halberd",
+    "name": "Nemesis Force Halberd",
+    "source": "apocrypha",
+    "page": 330,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "GREY KNIGHTS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Force",
+        "Nemesis"
+      ]
+    },
+    "effect": "",
+    "note": "Nemesis is an Apocrypha Weapon Trait (p.327)."
+  },
+  {
+    "id": "apoc-nemesis-force-sword",
+    "name": "Nemesis Force Sword",
+    "source": "apocrypha",
+    "page": 330,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "GREY KNIGHTS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Nemesis",
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Nemesis is an Apocrypha Weapon Trait (p.327)."
+  },
+  {
+    "id": "apoc-nemesis-warding-stave",
+    "name": "Nemesis Warding Stave",
+    "source": "apocrypha",
+    "page": 330,
+    "category": "Force Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "GREY KNIGHTS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force",
+        "Nemesis"
+      ]
+    },
+    "effect": "Special: Against melee attacks, a Nemesis Warding Stave also counts as a shield, providing an Armour Rating of *2, with the Power Field and Shield traits.",
+    "note": "Nemesis is an Apocrypha Weapon Trait (p.327). The shield (AR printed \"*2\", i.e. 2*, Power Field, Shield, melee only) is in effect, not a separate armour entry."
+  },
+  {
+    "id": "apoc-anointed-halberd",
+    "name": "Anointed Halberd",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Blessed (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-astartes-chainsword",
+    "name": "Astartes Chainsword",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAIN",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-chain-knife",
+    "name": "Chain Knife",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAIN",
+      "SCUM",
+      "IMPERIUM",
+      "CHAOS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-crozius-arcanum",
+    "name": "Crozius Arcanum",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Blessed (1)",
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Homebrew reprint: differs from voa-crozius-arcanum (VoA p.62) and fspg-crozius-arcanum (FSPG p.121) in ED, AP, Traits, Keywords (and Rarity vs VoA)."
+  },
+  {
+    "id": "apoc-executioner-greatblade",
+    "name": "Executioner Greatblade",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "ANATHEMA PSYKANA"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-frost-axe",
+    "name": "Frost Axe",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "CHAIN",
+      "SPACE WOLVES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-frost-blade",
+    "name": "Frost Blade",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "CHAIN",
+      "SPACE WOLVES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-guardian-spear",
+    "name": "Guardian Spear",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "ADEPTUS CUSTODES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": "Ranged: A Guardian Spear can be used as a Ranged weapon, using the following profile: Damage 10, ED 2, Range 12-24-36, Salvo 2, Traits Brutal, Rapid Fire (2).",
+    "note": "Traits printed \"–\". Melee profile; the ranged profile (p.332) is apoc-guardian-spear-ranged."
+  },
+  {
+    "id": "apoc-hallowed-mace",
+    "name": "Hallowed Mace",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Blessed (2)",
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-lightning-claw",
+    "name": "Lightning Claw",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Paired",
+        "Tearing"
+      ]
+    },
+    "effect": "",
+    "note": "Homebrew near-reprint of voa-lightning-claws (VoA p.62, \"Lightning Claws\"): differs in ED, AP, Traits, Value, Rarity, Keywords. Paired and Tearing are Apocrypha Weapon Traits (p.327)."
+  },
+  {
+    "id": "apoc-misericordia",
+    "name": "Misericordia",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTUS CUSTODES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-power-lance",
+    "name": "Power Lance",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": "Special: When used from a moving open-topped vehicle or other mount, add the Brutal trait.",
+    "note": "Traits printed \"–\"."
+  },
+  {
+    "id": "apoc-relic-blade",
+    "name": "Relic Blade",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Traits printed \"–\". Homebrew reprint of voa-relic-blade (VoA p.62): differs in Range, Traits, Value, Keywords."
+  },
+  {
+    "id": "apoc-sentinel-blade",
+    "name": "Sentinel Blade",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTUS CUSTODES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "Ranged: A Sentinel Blade can be used as a Ranged weapon, using the following profile: Damage 10, ED 2, Range 6-12-18, Salvo 2, Traits Brutal, Pistol.",
+    "note": "Melee profile; the ranged profile (p.332) is apoc-sentinel-blade-ranged."
+  },
+  {
+    "id": "apoc-spear-of-the-faithful",
+    "name": "Spear of the Faithful",
+    "source": "apocrypha",
+    "page": 331,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Blessed (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed \"{S} +6\" (braces, not parentheses); read as (S) +6."
+  },
+  {
+    "id": "apoc-guardian-spear-ranged",
+    "name": "Guardian Spear (Ranged)",
+    "source": "apocrypha",
+    "page": 332,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "ADEPTUS CUSTODES"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "Ranged: A Guardian Spear can be used as a Ranged weapon, using the following profile:",
+    "note": "Ranged profile of the Guardian Spear (p.331 table row is apoc-guardian-spear); Value, Rarity and Keywords are the table row's. AP not printed. Second profile of apoc-guardian-spear; requisition that."
+  },
+  {
+    "id": "apoc-sentinel-blade-ranged",
+    "name": "Sentinel Blade (Ranged)",
+    "source": "apocrypha",
+    "page": 332,
+    "category": "Chain & Power Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "POWER FIELD",
+      "ADEPTUS CUSTODES"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": "Ranged: A Sentinel Blade can be used as a Ranged weapon, using the following profile:",
+    "note": "Ranged profile of the Sentinel Blade (p.331 table row is apoc-sentinel-blade); Value, Rarity and Keywords are the table row's. AP not printed. Second profile of apoc-sentinel-blade; requisition that."
+  },
+  {
+    "id": "apoc-chordclaw",
+    "name": "Chordclaw",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "TRANSONIC",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Careful",
+        "Mortal (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Homebrew weapon; differs from fspg-chordclaw (FSPG p.128, an augmetic) in Damage, Traits, Value, Rarity, Keywords. Careful and Mortal (X) are Apocrypha Weapon Traits (pp.326-327)."
+  },
+  {
+    "id": "apoc-electroleech-staff",
+    "name": "Electroleech Staff",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LUMINEN",
+      "2-HANDED",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Agonizing",
+        "Mortal (1)"
+      ]
+    },
+    "effect": "Special: Only a character with a Luminen Capacitor may wield an Electroleech Staff: it counts as a normal staff otherwise. Each point of Shock inflicted by an Electroleech Staff adds 1 point of charge to the user’s Luminen Capacitor.",
+    "note": "Trait printed \"Agonizing\" (Core: Agonising); kept as printed. Special on p.334. \"Only a character with a Luminen Capacitor\" is not a Requirements line, so no requires."
+  },
+  {
+    "id": "apoc-electrostatic-gauntlets",
+    "name": "Electrostatic Gauntlets",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LUMINEN",
+      "2-HANDED",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Tesla"
+      ]
+    },
+    "effect": "Ranged: Electrostatic Gauntlets can be used as a Ranged weapon, using the following profile: Damage 12, ED 1, Range 6-12-18, Salvo 3, Traits Assault, Tesla.\nSpecial: Only a character with a Luminen Capacitor may wield Electrostatic Gauntlets. Electrostatic Gauntlets do not use normal reloads – instead, the wielder may expend charges from their Luminen Capacitor to gain the benefits of spending a reload, with each charge spent counting as one reload.",
+    "note": "Melee profile; the ranged profile (p.334) is apoc-electrostatic-gauntlets-ranged. Special on p.334."
+  },
+  {
+    "id": "apoc-excruciator-maul",
+    "name": "Excruciator Maul",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising",
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-honour-staff",
+    "name": "Honour Staff",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "ETHEREAL CASTE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Traits printed \"–\"."
+  },
+  {
+    "id": "apoc-hookfang",
+    "name": "Hookfang",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "BLADE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM VENENUM"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Fleshbane",
+        "Inflict (Poisoned 6)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"-\" (hyphen). Fleshbane is an Apocrypha Weapon Trait (p.326)."
+  },
+  {
+    "id": "apoc-nemesii-blade",
+    "name": "Nemesii Blade",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "BLADE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM ADAMUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (3)",
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"-\" (hyphen)."
+  },
+  {
+    "id": "apoc-neuro-gauntlet",
+    "name": "Neuro-Gauntlet",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM EVERSOR"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": "Special: While Poisoned by a Neuro-Gauntlet, a character is Restrained and suffers 1d3 Mortal Wounds at the beginning of each of their turns.",
+    "note": "Special on p.334."
+  },
+  {
+    "id": "apoc-null-rod",
+    "name": "Null Rod",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "INQUISITION",
+      "ADEPTA SORORITAS",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Blessed (3)",
+        "Brutal"
+      ]
+    },
+    "effect": "Special: The wielder of this item cannot be targeted by psychic powers of any kind. In addition, PSYKERS within 12m of the wielder add +2 DN to all Psychic Mastery tests.",
+    "note": "Special on p.335."
+  },
+  {
+    "id": "apoc-phase-sword",
+    "name": "Phase Sword",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "PHASE BLADE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM CALLIDUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Warp Weapon"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Warp Weapon\" (Core p.210: Warp Weapons); kept as printed."
+  },
+  {
+    "id": "apoc-poisoned-blades",
+    "name": "Poisoned Blades",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM CALLIDUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 5)",
+        "Mortal (d3)",
+        "Rending (3)"
+      ]
+    },
+    "effect": "Special: A character Poisoned by Poisoned Blades suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Special on p.334."
+  },
+  {
+    "id": "apoc-sympatic-dataspikes",
+    "name": "Sympatic Dataspikes",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "ARC",
+      "TEMPLUM VANUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Arc (2)",
+        "Rending (3)",
+        "Haywire (6)",
+        "Paired"
+      ]
+    },
+    "effect": "Special: While wielding Sympatic Dataspikes, the user gains +4 bonus dice on all Tech tests to gain access to cogitators or similar devices.",
+    "note": "Range printed \"-\" (hyphen). Special on p.335. Haywire (X) and Paired are Apocrypha Weapon Traits (p.327)."
+  },
+  {
+    "id": "apoc-taser-goad",
+    "name": "Taser Goad",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "TASER",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonizing",
+        "Tesla"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Agonizing\" (Core: Agonising); kept as printed. Homebrew reprint of fspg-taser-goad (FSPG p.121): differs in Damage, ED, Traits, Value, Keywords."
+  },
+  {
+    "id": "apoc-transonic-blade",
+    "name": "Transonic Blade",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "TRANSONIC",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Paired",
+        "Mortal (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Homebrew reprint of fspg-transonic-blade (FSPG p.121): differs in ED, Traits, Rarity, Keywords."
+  },
+  {
+    "id": "apoc-transonic-razor",
+    "name": "Transonic Razor",
+    "source": "apocrypha",
+    "page": 333,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "TRANSONIC",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Mortal (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Homebrew reprint of fspg-transonic-razor (FSPG p.121): differs in Damage, ED, Traits, Value, Rarity, Keywords."
+  },
+  {
+    "id": "apoc-electrostatic-gauntlets-ranged",
+    "name": "Electrostatic Gauntlets (Ranged)",
+    "source": "apocrypha",
+    "page": 334,
+    "category": "Exotic Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "LUMINEN",
+      "2-HANDED",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Tesla"
+      ]
+    },
+    "effect": "Ranged: Electrostatic Gauntlets can be used as a Ranged weapon, using the following profile:\nSpecial: Only a character with a Luminen Capacitor may wield Electrostatic Gauntlets. Electrostatic Gauntlets do not use normal reloads – instead, the wielder may expend charges from their Luminen Capacitor to gain the benefits of spending a reload, with each charge spent counting as one reload.",
+    "note": "Ranged profile of the Electrostatic Gauntlets (p.333 table row is apoc-electrostatic-gauntlets); Value, Rarity and Keywords are the table row's. AP not printed. Second profile of apoc-electrostatic-gauntlets; requisition that."
+  },
+  {
+    "id": "apoc-accursed-crozius",
+    "name": "Accursed Crozius",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "DAEMON",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Corrupting"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-axe-of-khorne",
+    "name": "Axe of Khorne",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "BLADE",
+      "CHAOS",
+      "DAEMON",
+      "KHORNE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (2)",
+        "Sustained"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-bedlam-staff",
+    "name": "Bedlam Staff",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE",
+      "2-HANDED",
+      "CHAOS",
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Agonising",
+        "Brutal",
+        "Force",
+        "Inflict (Hindered 4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-bubotic-axe",
+    "name": "Bubotic Axe",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 4)",
+        "Rending (1)"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-daemon-blade",
+    "name": "Daemon Blade",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "CHAOS",
+      "DAEMON"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Mortal (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-flail-of-corruption",
+    "name": "Flail of Corruption",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (Poisoned 4)",
+        "Overwhelming"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-great-plague-cleaver",
+    "name": "Great Plague Cleaver",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "2-HANDED",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (Poisoned 4)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-heavy-chainaxe",
+    "name": "Heavy Chainaxe",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAIN",
+      "CHAOS",
+      "2-HANDED"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Rending (2)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-lash-of-torment",
+    "name": "Lash of Torment",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAOS",
+      "DAEMON",
+      "SLAANESH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising",
+        "Inflict (Terror)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-mace-of-contagion",
+    "name": "Mace of Contagion",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "2-HANDED",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 4)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-manreaper",
+    "name": "Manreaper",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "BLADE",
+      "2-HANDED",
+      "CHAOS",
+      "DAEMON",
+      "NURGLE",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Inflict (Poisoned 4)",
+        "Reaping"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-pandemic-staff",
+    "name": "Pandemic Staff",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE",
+      "2-HANDED",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force",
+        "Inflict (Poisoned 4)"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Melee profile; the ranged profile (p.337) is apoc-pandemic-staff-ranged. Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-pandemic-staff-ranged",
+    "name": "Pandemic Staff (ranged)",
+    "source": "apocrypha",
+    "page": 337,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "FORCE",
+      "2-HANDED",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 7,
+      "ed": 7,
+      "range": [
+        7,
+        14,
+        21
+      ],
+      "salvo": 0,
+      "traits": [
+        "Blast (7)",
+        "Gas",
+        "Inflict (Poisoned 4)"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Ranged profile from the description of Pandemic Staff (p.337), not a separate item: requisition apoc-pandemic-staff. No AP printed. Keywords copied from its row; value and rarity not printed. Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-plague-knife",
+    "name": "Plague Knife",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BLADE",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 3)"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-plague-sword",
+    "name": "Plague Sword",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "CHAOS",
+      "DAEMON",
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 4)",
+        "Parry"
+      ]
+    },
+    "effect": "NURGLE’S ROT: A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the NURGLE’S ROT sidebar (p.336)."
+  },
+  {
+    "id": "apoc-prosperine-khopesh",
+    "name": "Prosperine Khopesh",
+    "source": "apocrypha",
+    "page": 336,
+    "category": "Chaos Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "CHAOS",
+      "TZEENTCH",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-banshee-blade",
+    "name": "Banshee Blade",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"POWER\" (the other power weapons print POWER FIELD); kept as printed."
+  },
+  {
+    "id": "apoc-biting-blade",
+    "name": "Biting Blade",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "CHAIN",
+      "2-HANDED",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Parry",
+        "Silent",
+        "Reaping"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-chainsabres",
+    "name": "Chainsabres",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "CHAIN",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry",
+        "Paired",
+        "Silent",
+        "Sustained"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile; the ranged profile (p.339) is apoc-chainsabres-ranged."
+  },
+  {
+    "id": "apoc-chainsabres-ranged",
+    "name": "Chainsabres (ranged)",
+    "source": "apocrypha",
+    "page": 339,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "CHAIN",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Pistol",
+        "Rending (2)",
+        "Paired",
+        "Sustained"
+      ]
+    },
+    "effect": "",
+    "note": "Ranged profile from the description of Chainsabres (p.339), not a separate item: requisition apoc-chainsabres. No AP printed. Keywords copied from its row; value and rarity not printed."
+  },
+  {
+    "id": "apoc-diresword",
+    "name": "Diresword",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "FORCE",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Mortal (1)",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-executioner",
+    "name": "Executioner",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "Special: The Parry trait of an Executioner adds +2 to the wielder’s Defence in melee, rather than +1.",
+    "note": "Special rule from the description on p.339."
+  },
+  {
+    "id": "apoc-ghostaxe",
+    "name": "Ghostaxe",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "GHOST",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force"
+      ]
+    },
+    "effect": "Weapons with the GHOST keyword may only be wielded by Ghost Warrior characters.",
+    "note": "Effect is the GHOST WEAPONS sidebar (p.338)."
+  },
+  {
+    "id": "apoc-ghostsword",
+    "name": "Ghostsword",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "GHOST",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry",
+        "Force",
+        "Paired",
+        "Reaping"
+      ]
+    },
+    "effect": "Weapons with the GHOST keyword may only be wielded by Ghost Warrior characters.",
+    "note": "Effect is the GHOST WEAPONS sidebar (p.338)."
+  },
+  {
+    "id": "apoc-harlequins-blade",
+    "name": "Harlequin’s Blade",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BLADE",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-harlequins-caress",
+    "name": "Harlequin’s Caress",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-harlequins-embrace",
+    "name": "Harlequin’s Embrace",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MONOFILAMENT",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Restrained)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-harlequins-kiss",
+    "name": "Harlequin’s Kiss",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MONOFILAMENT",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Careful",
+        "Mortal (d3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-mirrorswords",
+    "name": "Mirrorswords",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "AELDARI",
+      "ANCIENT",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Paired",
+        "Parry",
+        "Reaping"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-miststave",
+    "name": "Miststave",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonizing",
+        "Force"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Agonizing\" (Core spells it Agonising)."
+  },
+  {
+    "id": "apoc-paragon-sabre",
+    "name": "Paragon Sabre",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Tearing"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-power-blades",
+    "name": "Power Blades",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Paired"
+      ]
+    },
+    "effect": "",
+    "note": "The description (p.340) is headed \"Power Blade\" (singular)."
+  },
+  {
+    "id": "apoc-psytronome-shaper",
+    "name": "Psytronome Shaper",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-scorpion-chainsword",
+    "name": "Scorpion Chainsword",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAIN",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry",
+        "Silent"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-scorpions-claw",
+    "name": "Scorpion’s Claw",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile; the ranged profile (p.340) is apoc-scorpions-claw-ranged. The table name has no asterisk, though the description adds a ranged profile."
+  },
+  {
+    "id": "apoc-scorpions-claw-ranged",
+    "name": "Scorpion’s Claw (ranged)",
+    "source": "apocrypha",
+    "page": 340,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "POWER FIELD",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Rending (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Ranged profile from the description of Scorpion’s Claw (p.340), not a separate item: requisition apoc-scorpions-claw. No AP printed. Keywords copied from its row; value and rarity not printed."
+  },
+  {
+    "id": "apoc-witch-staff",
+    "name": "Witch Staff",
+    "source": "apocrypha",
+    "page": 338,
+    "category": "Aeldari Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "AELDARI",
+      "ASURYANI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Force",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Warp Weapon\" (Core: Warp Weapons)."
+  },
+  {
+    "id": "apoc-agoniser",
+    "name": "Agoniser",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Agonizing",
+        "Fleshbane"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Agonizing\" (Core spells it Agonising)."
+  },
+  {
+    "id": "apoc-archite-glaive",
+    "name": "Archite Glaive",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-demiklaives",
+    "name": "Demiklaives (two blades)",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Reaping",
+        "Paired"
+      ]
+    },
+    "effect": "Special: A pair of Demiklaives use the profile listed above, but can be fitted into a single weapon, using the normal Klaive profile, with a Simple Action.",
+    "note": "Name printed \"Demiklaives* (two blades)\". Fitted together it uses apoc-klaive. Special rule from the description on p.341."
+  },
+  {
+    "id": "apoc-djin-blade",
+    "name": "Djin Blade",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "BLADE",
+      "DAEMON",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Sustained",
+        "Volatile (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed blank; read as melee reach 1. Name printed \"Djin\" (single n)."
+  },
+  {
+    "id": "apoc-electrocorrosive-whip",
+    "name": "Electrocorrosive Whip",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 1,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising",
+        "Fleshbane"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-flesh-gauntlet",
+    "name": "Flesh Gauntlet",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Mortal (1)"
+      ]
+    },
+    "effect": "",
+    "note": "AP printed blank; read as no AP. Range printed blank; read as melee reach 1."
+  },
+  {
+    "id": "apoc-hekatarii-blade",
+    "name": "Hekatarii Blade",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hellglaive",
+    "name": "Hellglaive",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-huskblade",
+    "name": "Huskblade",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Mortal (d3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hydra-gauntlet",
+    "name": "Hydra Gauntlet",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Paired",
+        "Tearing",
+        "Sustained"
+      ]
+    },
+    "effect": "",
+    "note": "The description (p.342) is headed \"Hydra Gauntlets\" (plural)."
+  },
+  {
+    "id": "apoc-impaler",
+    "name": "Impaler",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-klaive",
+    "name": "Klaive",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "2-HANDED",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-mindphase-gauntlet",
+    "name": "Mindphase Gauntlet",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed blank; read as melee reach 1."
+  },
+  {
+    "id": "apoc-razorflail",
+    "name": "Razorflail",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Overwhelming",
+        "Reaping"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-scissorhand",
+    "name": "Scissorhand",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Fleshbane",
+        "Reaping"
+      ]
+    },
+    "effect": "",
+    "note": "AP printed blank; read as no AP. Range printed blank; read as melee reach 1."
+  },
+  {
+    "id": "apoc-shardnet",
+    "name": "Shardnet",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        3
+      ],
+      "traits": [
+        "Agonizing",
+        "Careful",
+        "Inflict (Restrained)"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Agonizing\" (Core spells it Agonising)."
+  },
+  {
+    "id": "apoc-venom-blade",
+    "name": "Venom Blade",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 6,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Fleshbane",
+        "Inflict (Poisoned 7)"
+      ]
+    },
+    "effect": "Special: While suffering the Poisoned condition from a Venom Blade, a creature also suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Special rule from the description on p.342."
+  },
+  {
+    "id": "apoc-wrack-blades",
+    "name": "Wrack Blades",
+    "source": "apocrypha",
+    "page": 341,
+    "category": "Drukhari Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Fleshbane"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed blank; read as melee reach 1."
+  },
+  {
+    "id": "apoc-uge-choppa",
+    "name": "‘Uge Choppa",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAIN",
+      "TWO-HANDED",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-urty-syringe",
+    "name": "‘Urty Syringe",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXOTIC",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Careful",
+        "Inflict (Poisoned 4)",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-grabba-stikk",
+    "name": "Grabba Stikk",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXOTIC",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Inflict (Restrained)",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-grot-prod",
+    "name": "Grot Prod",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "EXOTIC",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonizing",
+        "Waaagh!"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Agonizing\" (Core spells it Agonising)."
+  },
+  {
+    "id": "apoc-killsaw",
+    "name": "Killsaw",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (3)",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-power-snappa",
+    "name": "Power Snappa",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-power-stabba",
+    "name": "Power Stabba",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "POWER FIELD",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-tankhammer",
+    "name": "Tankhammer",
+    "source": "apocrypha",
+    "page": 343,
+    "category": "Ork Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "ORK"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 10,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Careful",
+        "Blast (2)",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-ancestral-ward-stave",
+    "name": "Ancestral Ward Stave",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE",
+      "2-HANDED",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-concussion-gauntlet",
+    "name": "Concussion Gauntlet",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MASS DRIVER",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (Staggered)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-concussion-hammer",
+    "name": "Concussion Hammer",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MASS DRIVER",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (Staggered)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-concussion-knuckles",
+    "name": "Concussion Knuckles",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "MASS DRIVER",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (Staggered)",
+        "Paired"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-concussion-maul",
+    "name": "Concussion Maul",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MASS DRIVER",
+      "2-HANDED",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (Staggered)",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-darkstar-axe",
+    "name": "Darkstar Axe",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "DARKSTAR",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reaping",
+        "Mortal (1)"
+      ]
+    },
+    "effect": "Special: Damage inflicted by a DARKSTAR weapon cannot be negated by rolling Determination.",
+    "note": "Special rule from the description on p.345."
+  },
+  {
+    "id": "apoc-graviton-hammer",
+    "name": "Graviton Hammer",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "GRAV",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Grav"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-heavy-plasma-axe",
+    "name": "Heavy Plasma Axe",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal or Reaping",
+        "Rending (2)"
+      ]
+    },
+    "effect": "Special: When you make an attack with this weapon, choose whether the weapon will have the Brutal trait or the Reaping trait.",
+    "note": "Traits printed \"Brutal or Reaping, Rending (2)\"; the choice is kept as one trait string, as printed. Special rule from the description on p.345."
+  },
+  {
+    "id": "apoc-plasma-axe",
+    "name": "Plasma Axe",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-blade-gauntlet",
+    "name": "Plasma Blade Gauntlet",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-knife",
+    "name": "Plasma Knife",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-sword",
+    "name": "Plasma Sword",
+    "source": "apocrypha",
+    "page": 344,
+    "category": "Leagues of Votann Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  }
+]

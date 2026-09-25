@@ -211,7 +211,8 @@
         "Assault"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.79 (ioe-lasblaster)."
   },
   {
     "id": "shuriken-catapult",
@@ -241,7 +242,8 @@
         "Rending (3)"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.81 (ioe-shuriken-catapult)."
   },
   {
     "id": "shuriken-pistol",
@@ -271,7 +273,8 @@
         "Rending (3)"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.81 (ioe-shuriken-pistol)."
   },
   {
     "id": "ranger-long-rifle",
@@ -299,7 +302,8 @@
         "Sniper (4)"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.79 (ioe-ranger-long-rifle)."
   },
   {
     "id": "fusion-gun",
@@ -329,7 +333,8 @@
         "Melta"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.84 (ioe-guardian-fusion-gun)."
   },
   {
     "id": "slugga",

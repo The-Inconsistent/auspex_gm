@@ -1,0 +1,93 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Automata",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Barrier Tech",
+      "text": "While one or more CORVs are within 6m of its owner, whenever its owner suffers Perils of the Warp, one CORV is destroyed instead."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"5 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Autoch-pattern Bolter",
+          "damage": 10,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "HunTR"
+          ]
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "mobAbilities": [],
+  "id": "apoc-corv",
+  "name": "CORV",
+  "page": 478,
+  "faction": "votann",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "LEAGUES OF VOTANN",
+    "COG",
+    "ROBOT"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 5,
+    "A": 4,
+    "I": 4,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 10,
+    "note": "Armoured Shell: 4 AR"
+  },
+  "defence": 3,
+  "wounds": 7,
+  "shock": null,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "determination": "Spend 1 Glory to roll 6d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg"
+}

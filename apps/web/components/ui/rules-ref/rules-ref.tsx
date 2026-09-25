@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { wargearCite, type RuleEntry } from "@wg/shared";
+import { sourceCite, type RuleEntry } from "@wg/shared";
 
 import { RULE_FILTERS, RULE_KIND_LABELS, type RuleFilter } from "./constants";
 
@@ -30,10 +30,10 @@ export function RulesRef({ rules }: RulesRefProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <nav className="tabs" role="tablist" aria-label="Rule kind">
+      <nav className="tabs sub" role="tablist" aria-label="Rule kind">
         {(Object.keys(RULE_FILTERS) as RuleFilter[]).map((f) => (
           <button key={f} role="tab" className="tab" aria-selected={filter === f} onClick={() => setFilter(f)}>
-            [{f}]
+            {f}
           </button>
         ))}
       </nav>
@@ -45,7 +45,7 @@ export function RulesRef({ rules }: RulesRefProps) {
             <summary className="item-head">
               <b>{r.name.toUpperCase()}</b>
               <span className="dim">
-                {r.type ?? RULE_KIND_LABELS[r.kind]} · {wargearCite(r)}
+                {r.type ?? RULE_KIND_LABELS[r.kind]} · {sourceCite(r)}
               </span>
               <span style={{ flexBasis: "100%" }}>{r.gist}</span>
             </summary>

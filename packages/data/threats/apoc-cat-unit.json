@@ -1,0 +1,69 @@
+{
+  "id": "apoc-cat-unit",
+  "name": "CAT Unit",
+  "source": "apocrypha",
+  "page": 459,
+  "faction": "mechanicus",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "NAVIS IMPERIALIS",
+    "ADEPTUS ASTARTES",
+    "ROBOT"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 3,
+    "A": 2,
+    "I": 1,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 7,
+    "note": "Mechanical Construction: 3 AR"
+  },
+  "defence": 3,
+  "wounds": 5,
+  "shock": null,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Simple Automata",
+      "text": "The Follower can only perform simple actions—navigating an environment, picking up or dropping off small objects—without direct instruction from its operator."
+    },
+    {
+      "name": "Surveillance",
+      "text": "The Follower sends a constant feed of everything it sees and hears back to its operator, who may view them on a control device, or via armour autosenses or a data-tether."
+    },
+    {
+      "name": "Tracked",
+      "text": "This Follower moves on a set of segmented tracks. It cannot jump, climb, or traverse any obstacle taller than half its height."
+    }
+  ],
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Tiny"
+}

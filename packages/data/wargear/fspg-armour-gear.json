@@ -1,0 +1,450 @@
+[
+  {
+    "id": "fspg-kroot-armour",
+    "name": "Kroot Armour",
+    "source": "forsaken-system",
+    "page": 125,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 1,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "PRIMITIVE",
+      "KROOT"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Rarity printed as the number 1 (read as its Core p.206 DN penalty: Uncommon). Traits printed \"—\"."
+  },
+  {
+    "id": "fspg-sicarian-battle-armour",
+    "name": "Sicarian Battle Armour",
+    "source": "forsaken-system",
+    "page": 125,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed as the number 2 (Rare). AR printed 4 with no asterisk, though the Trait is Power Field; copied as printed."
+  },
+  {
+    "id": "fspg-bullgryn-plate",
+    "name": "Bullgryn Plate",
+    "source": "forsaken-system",
+    "page": 125,
+    "category": "Militarum Auxilla Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "This armour is designed for Ogryns. Average-sized characters cannot wear Ogryn armour, and treat Ogryn shields as having the Bulk (2) Trait.",
+    "note": "Rarity printed as the number 1 (Uncommon). Traits printed \"—\". Effect is the Militarum Auxilla Armour section rule."
+  },
+  {
+    "id": "fspg-brute-shield",
+    "name": "Brute Shield",
+    "source": "forsaken-system",
+    "page": 125,
+    "category": "Militarum Auxilla Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Shield"
+      ]
+    },
+    "effect": "This armour is designed for Ogryns. Average-sized characters cannot wear Ogryn armour, and treat Ogryn shields as having the Bulk (2) Trait.",
+    "note": "Rarity printed as the number 2 (Rare). AR printed 3*; no Power Field Trait printed, though the text says it incorporates a refractor field. Effect is the section rule."
+  },
+  {
+    "id": "fspg-slabshield",
+    "name": "Slabshield",
+    "source": "forsaken-system",
+    "page": 125,
+    "category": "Militarum Auxilla Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Cumbersome",
+        "Shield"
+      ]
+    },
+    "effect": "This armour is designed for Ogryns. Average-sized characters cannot wear Ogryn armour, and treat Ogryn shields as having the Bulk (2) Trait.",
+    "note": "Rarity printed as the number 2 (Rare). Effect is the Militarum Auxilla Armour section rule."
+  },
+  {
+    "id": "fspg-brazier-of-holy-fire",
+    "name": "Brazier of Holy Fire",
+    "source": "forsaken-system",
+    "page": 125,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Unique",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "effect": "Anyone can attempt to light a Brazier of Holy Fire as a Combat Action. When lit, the Brazier sheds bright light for 6 metres. If a character with at least one Faith point wields the Brazier of Holy Fire, any character with the DAEMON Keyword touched by its light is Hindered. A character wielding a Brazier of Holy Fire can spend 1 Faith point to unleash the holy flames as a Reflexive Action. This attack functions in the same way as a Hand Flamer (Wrath & Glory Rulebook, p.219) but has +3 ED. If the target of this attack has the DAEMON Keyword, the attack has +6 ED instead.",
+    "note": "Rarity printed as the number 4 (Unique). Keywords printed \"IMPERIUM ADEPTUS MINISTORUMADEPTA SORORITAS\" (no commas, run together); split. Hindered printed with no rating."
+  },
+  {
+    "id": "fspg-diagnostor-helmet",
+    "name": "Diagnostor Helmet",
+    "source": "forsaken-system",
+    "page": 126,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "+1 Bonus Dice to Medicae (Int) Tests to detect and diagnose diseases, injuries, and ailments, and to determine cause of death. If your target is the Adeptus Astartes or Primaris Astartes Species, this bonus increases to +2 Bonus Dice.",
+    "note": "Rarity printed as the number 3 (Very Rare)."
+  },
+  {
+    "id": "fspg-excrutiator",
+    "name": "Excrutiator",
+    "source": "forsaken-system",
+    "page": 126,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MINISTORUM",
+      "INQUISITION"
+    ],
+    "effect": "You may apply an Excrutiator to a target as a Combat Action. If the target is capable of resisting and chooses to do so, you must succeed on an Opposed Test (typically Strength, Agility or Initiative) to inflict the Excrutiator on them. The Excrutiator deals 1 Shock Damage and Hindered 1 when applied to a target. The Excrutiator may be applied repeatedly, dealing an additional 1 Shock Damage and increasing the Hindered Condition by +1 every time it is used. At the GM’s discretion, it may also alter the target’s emotions.",
+    "note": "Rarity printed as the number 2 (Rare). Name spelled \"Excrutiator\" throughout, as printed. Keywords printed without a comma across a line break; split."
+  },
+  {
+    "id": "fspg-laud-hailer",
+    "name": "Laud-Hailer",
+    "source": "forsaken-system",
+    "page": 126,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "A portable Laud-Hailer makes your voice audible at double the normal range. If you have a Talent or Ability that uses your voice, its range is doubled.",
+    "note": "Rarity printed as the number 0 (Common). See the optional Hearing Range sidebar on the same page (80m / 40m / 20m)."
+  },
+  {
+    "id": "fspg-grapnel-launcher",
+    "name": "Grapnel Launcher",
+    "source": "forsaken-system",
+    "page": 126,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "effect": "The grapnel launcher has a medium range of 30 metres, and can be fired as a Combat Action like a normal Ranged Weapon into any surface with a default DN of 3. If successfully fired into a surface, the grapnel latches on, and can be retracted to pull you up to that surface as a Free Action.",
+    "note": "Rarity printed as the number 1 (Uncommon). No weapon profile printed; VoA p.67's Grapnel Launcher is a weapon with a profile."
+  },
+  {
+    "id": "fspg-infravisor",
+    "name": "Infravisor",
+    "source": "forsaken-system",
+    "page": 126,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "An Infravisor functions as Preysense Goggles (Wrath & Glory Rulebook, p.239), and also allows you to detect high levels of radiation in your immediate environment.",
+    "note": "Rarity printed as the number 3 (Very Rare)."
+  },
+  {
+    "id": "fspg-narthecium",
+    "name": "Narthecium",
+    "source": "forsaken-system",
+    "page": 127,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "You can make Medicae (Int) Tests to perform surgeries and heal others without suffering any DN penalties related to the current situation. When you make a Medicae (Int) Test using a Narthecium as part of a Multi-Action in combat, the DN penalty is decreased by 2. Most Nartheciums incorporate a Reductor, which allows gene-seed to be recovered from a dead Astartes with a Simple Action.",
+    "note": "Rarity printed as the number 2 (Rare). Keywords printed \"IMPERIUM ADEPTUS ASTARTES\" (no comma); split."
+  },
+  {
+    "id": "fspg-null-rod",
+    "name": "Null Rod",
+    "source": "forsaken-system",
+    "page": 127,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "Whilst you wield a Null Rod in one hand, any Psychic Mastery (Wil) Tests made within 18 metres of you suffer a DN penalty of +3.",
+    "note": "Rarity printed as the number 2 (Rare). No weapon profile printed."
+  },
+  {
+    "id": "fspg-purity-seal",
+    "name": "Purity Seal",
+    "source": "forsaken-system",
+    "page": 127,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM"
+    ],
+    "effect": "As long as you do not have any points of Corruption, you gain +1 bonus dice to any Corruption Test for each Purity Seal you have.",
+    "note": "Rarity printed as the number 2 (Rare)."
+  },
+  {
+    "id": "fspg-psychic-hood",
+    "name": "Psychic Hood",
+    "source": "forsaken-system",
+    "page": 127,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "+1 bonus dice to Psychic Master (Wil) Tests. Whenever you use the Deny the Witch psychic power, the DN is equal to 1 + the DN of the psychic power you are trying to deny.",
+    "note": "Rarity printed as the number 3 (Very Rare). \"Psychic Master (Wil)\" as printed (the Skill is Psychic Mastery)."
+  },
+  {
+    "id": "fspg-simulacrum-imperialis",
+    "name": "Simulacrum Imperialis",
+    "source": "forsaken-system",
+    "page": 127,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Unique",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "effect": "As long as you heft the Simulacrum Imperialis with at least one hand, you and any allies that are faithful to the Imperial Cult within 15 metres gain +2 Bonus Dice to any Corruption Tests.",
+    "note": "Rarity printed as the number 4 (Unique). Keywords printed \"IMPERIUM,ADEPTUSMINISTORUM, ADEPTA SORORITAS\" (spaces missing); split."
+  },
+  {
+    "id": "fspg-skull-helm",
+    "name": "Skull Helm",
+    "source": "forsaken-system",
+    "page": 127,
+    "category": "Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "Whilst wearing a Skull Helm you gain +1 Bonus Dice to all Leadership (Wil) Tests made against targets with the ADEPTUS ASTARTES Keyword.",
+    "note": "Rarity printed as the number 3 (Very Rare)."
+  },
+  {
+    "id": "fspg-abeyant",
+    "name": "Abeyant",
+    "source": "forsaken-system",
+    "page": 128,
+    "category": "Augmetics",
+    "kind": "augmetic",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "Requirements: Four other Augmetics.\nAllows you to hover up to 3 metres off the ground and move at your Speed. If you are falling, the Abeyant slows your fall so that you land safely.",
+    "note": "Rarity printed as the number 4 (Unique). The printed Requirements line is kept at the start of effect (no schema field).",
+    "requires": [
+      {
+        "kind": "wargearCount",
+        "of": {
+          "kinds": [
+            "augmetic"
+          ]
+        },
+        "min": 4
+      }
+    ]
+  },
+  {
+    "id": "fspg-bone",
+    "name": "B.O.N.E",
+    "source": "forsaken-system",
+    "page": 128,
+    "category": "Augmetics",
+    "kind": "augmetic",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "MILITARUM AUXILLA"
+    ],
+    "effect": "Requirements: Ogryn Species, Leadership 1, Rank 3\nRaises your Maximum Intellect to 3 and increases your Intellect by 1.",
+    "note": "Rarity printed as the number 1 (Uncommon). Name printed \"B.O.N.E\" (no final stop). Keywords printed \"IMPERIUM MILITARUM AUXILLA\" (no comma); split. Requirements line kept at the start of effect.",
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "ogryn"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Leadership",
+        "min": 1
+      },
+      {
+        "kind": "rank",
+        "min": 3
+      }
+    ]
+  },
+  {
+    "id": "fspg-chordclaw",
+    "name": "Chordclaw",
+    "source": "forsaken-system",
+    "page": 128,
+    "category": "Augmetics",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising",
+        "Rending (6)"
+      ]
+    },
+    "effect": "Your hand is replaced by a Chordclaw. Your Chordclaw hand functions as a normal hand, but also replaces your Unarmed Strike with the weapon profile below.",
+    "note": "Rarity printed as the number 3 (Very Rare). Header Keywords printed \"IMPERIUM ADEPTUS MECHANICUS\" (no comma); split. The weapon table prints the same Value 5 / Rarity 3 but Keywords BLADE, TRANSONIC, ADEPTUS MECHANICUS. AP and Range printed \"-\"."
+  },
+  {
+    "id": "fspg-enhanced-ballistic-mechadendrite",
+    "name": "Enhanced Ballistic Mechadendrite",
+    "source": "forsaken-system",
+    "page": 128,
+    "category": "Augmetics",
+    "kind": "augmetic",
+    "value": null,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "Requirements: The weapon you want to integrate into the Enhanced Ballistic Mechadendrite.\nWhen you fire your Enhanced Ballistic Mechadendrite as part of a Multi-Action or Multi-Attack, the DN penalty is decreased by 2. The weapon never needs to be reloaded, but when you use a Salvo Option with your Enhanced Ballistic Mechadendrite you suffer Shock equal to the weapon’s Salvo rating.",
+    "note": "Value printed \"5 + Weapon Value\", so null (like Core's Arm Weapon Implant). Rarity printed as the number 3 (Very Rare). Keywords printed without a comma; split. Requirements line kept at the start of effect.",
+    "requires": [
+      {
+        "kind": "wargearCount",
+        "of": {
+          "kinds": [
+            "weapon"
+          ]
+        },
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "fspg-infiltrator-headpiece",
+    "name": "Infiltrator Headpiece",
+    "source": "forsaken-system",
+    "page": 128,
+    "category": "Augmetics",
+    "kind": "augmetic",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "Your Passive Awareness is increased by +Rank.",
+    "note": "Rarity printed as the number 1 (Uncommon). Keywords printed \"IMPERIUM ADEPTUS MECHANICUS\" (no comma); split."
+  }
+]

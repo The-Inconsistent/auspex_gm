@@ -1,0 +1,146 @@
+{
+  "id": "apoc-black-templars-neophyte",
+  "name": "Black Templars Neophyte",
+  "source": "apocrypha",
+  "page": 458,
+  "faction": "imperial",
+  "threat": [
+    null,
+    null,
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS ASTARTES",
+    "BLACK TEMPLARS"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 4,
+    "I": 4,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 9,
+    "note": "Scout Armour: 4 AR"
+  },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Know No Fear",
+      "text": "Reroll any failed dice on a Resolve Test."
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants, p.75 of the Wrath & Glory Core Rulebook."
+    },
+    {
+      "name": "Master's Vow",
+      "text": "If this follower’s owner has taken any Vow talents, this Follower also benefits from them while within 6m of their owner."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Boltgun",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Astartes Combat Knife",
+          "damage": 7,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Reliable"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 3d6.",
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Astartes Combat Shotgun",
+      "text": "FOLLOWER OPTIONS: The follower’s Boltgun may be exchanged for an Astartes Combat Shotgun.",
+      "weapons": [
+        {
+          "name": "Astartes Combat Shotgun",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Spread",
+            "Reliable"
+          ]
+        }
+      ]
+    }
+  ]
+}

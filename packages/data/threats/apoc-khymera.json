@@ -1,0 +1,88 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Animal",
+      "text": "A Khymera is unable to take any actions which would require the use of hands."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this Threat must make a DN 3 Fear Test.",
+      "weapons": []
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Claws and Talons",
+          "damage": 11,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "mobAbilities": [],
+  "id": "apoc-khymera",
+  "name": "Khymera",
+  "page": 475,
+  "faction": "drukhari",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "DRUKHARI",
+    "BEAST",
+    "DAEMON"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 6,
+    "A": 5,
+    "I": 5,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 4,
+  "wounds": 8,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Intimidation",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "determination": "Daemonic: Spend 1 Glory to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 10,
+  "size": "Avg"
+}

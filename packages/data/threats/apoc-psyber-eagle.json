@@ -1,0 +1,84 @@
+{
+  "id": "apoc-psyber-eagle",
+  "name": "Psyber Eagle",
+  "source": "apocrypha",
+  "page": 465,
+  "faction": "imperial",
+  "threat": [
+    null,
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS ASTARTES",
+    "INQUISITION",
+    "ADEPTUS MECHANICUS",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 2,
+    "A": 4,
+    "I": 4,
+    "Wil": 4,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 3
+  },
+  "defence": 5,
+  "wounds": 4,
+  "shock": 5,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Animal",
+      "text": "A Psyber-Eagle is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Psy-Bond",
+      "text": "The Follower is linked to its owner via a neural interface called a psyber-lure (implanted when the Follower is acquired). The owner can see, hear, etc., through the Follower’s senses, and give instant mental commands, so long as the Follower is within a number of kilometres equal to the owner’s Willpower."
+    },
+    {
+      "name": "Psychic Focus",
+      "text": "If the Follower’s owner is a PSYKER, the owner may focus their psychic abilities through the Follower. This adds +1 to the DN of the psychic power, but the power’s range and effect are measured from the Follower instead."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"10 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Talons",
+          "damage": 3,
+          "ed": 2,
+          "range": [
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 2d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 10,
+  "size": "Tiny"
+}

@@ -29,7 +29,7 @@
   { "id": "voa-mk-x-phobos-armour", "name": "Mk X Phobos Armour", "source": "vow-of-absolution", "page": 73, "category": "Armour", "kind": "armour", "value": 9, "rarity": "Very Rare", "keywords": ["POWERED", "IMPERIUM", "ADEPTUS ASTARTES", "PRIMARIS"],
     "armour": { "ar": 4, "invulnerable": false, "powered": 3, "traits": ["+1 M", "+2 Stealth"] },
     "effect": "+1 Movement, +2 bonus dice to Stealth (A) Tests.",
-    "note": "Table traits abbreviate the p.72 Effect line, which is copied in effect." },
+    "note": "Table traits abbreviate the p.72 Effect line, which is copied in effect. Also printed in FSPG p.125 (Mk X Phobos Power Armour, same stats, no +1 M or +2 Stealth)." },
   { "id": "voa-centurion-warsuit", "name": "Centurion Warsuit", "source": "vow-of-absolution", "page": 73, "category": "Armour", "kind": "armour", "value": 10, "rarity": "Unique", "keywords": ["POWERED", "IMPERIUM", "ADEPTUS ASTARTES"],
     "armour": { "ar": 8, "invulnerable": false, "powered": 5, "traits": ["Bulky (1)", "Size: Large"] },
     "effect": "Size: Large. Not sized for Primaris Marines (p.72).",

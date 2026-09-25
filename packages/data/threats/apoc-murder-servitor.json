@@ -1,0 +1,124 @@
+{
+  "id": "apoc-murder-servitor",
+  "name": "Murder Servitor",
+  "source": "apocrypha",
+  "page": 469,
+  "faction": "mechanicus",
+  "threat": [
+    null,
+    "E",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "NAVIS IMPERIALIS",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 4,
+    "A": 4,
+    "I": 4,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 9,
+    "note": "Augmetics: 4 AR"
+  },
+  "defence": 3,
+  "wounds": 8,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Athletics",
+        "dice": 5
+      },
+      {
+        "name": "Intimidation",
+        "dice": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Second Strike",
+      "text": "This Follower reduces the Multi-Attack penalty by 2 DN, as though it had the Dual Wield Talent."
+    },
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Mono-Talons",
+          "damage": 8,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Tearing"
+          ]
+        },
+        {
+          "name": "Viscerator Limb",
+          "damage": 10,
+          "ed": 4,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        },
+        {
+          "name": "Melta-Cutters",
+          "damage": 16,
+          "ed": 3,
+          "ap": -4,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "traits": [
+            "Melta",
+            "Spread"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Murder-lock",
+      "text": "The Servitor is Frenzied for 1 round. This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg"
+}

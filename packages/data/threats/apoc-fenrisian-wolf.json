@@ -1,0 +1,85 @@
+{
+  "id": "apoc-fenrisian-wolf",
+  "name": "Fenrisian Wolf",
+  "source": "apocrypha",
+  "page": 463,
+  "faction": "imperial",
+  "threat": [
+    null,
+    null,
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "SPACE WOLVES",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 5,
+    "A": 5,
+    "I": 5,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 6
+  },
+  "defence": 4,
+  "wounds": 11,
+  "shock": 6,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Intimidation",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 11
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Pack Animal",
+      "text": "This Follower adds +1 to Resolve for each SPACE WOLVES ally within 6 metres. Further, when it attacks an enemy, it adds +1 ED for each SPACE WOLVES ally who has attacked that enemy this round."
+    },
+    {
+      "name": "Animal",
+      "text": "A Fenrisian Wolf is unable to take any actions which would require the use of hands."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Teeth and Claws",
+          "damage": 9,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Bleeding)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 5d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 10,
+  "size": "Avg"
+}

@@ -223,5 +223,266 @@
     "page": 210,
     "gist": "Damage = target's Total Resilience −4, unless listed Damage is higher",
     "text": "Powered by psychic energy, xenos technology, or the raw force of Chaos, few can face these ungodly weapons and emerge unharmed.\n\nA Warp Weapon has a Damage value equal to the target’s Total Resilience –4, unless the weapon’s listed Damage is higher."
+  },
+  {
+    "id": "blessed",
+    "kind": "weapon-trait",
+    "name": "Blessed (X)",
+    "source": "forsaken-system",
+    "page": 120,
+    "gist": "+X ED when attacking a target with the PSYKER or DAEMON Keywords",
+    "text": "Anointed by the priests of the Ecclesiarchy, or hexagrammicly warded against the foul forces of the archenemy, these weapons are particularly effective against the foul beings spawned by the Immaterium, and those tainted by its power. Blessed weapons gain +ED equal to their rating when you use them to attack a target with the PSYKER or DAEMON Keywords."
+  },
+  {
+    "id": "lance",
+    "kind": "weapon-trait",
+    "name": "Lance",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "gist": "Ignores the Invulnerable trait; deals Mortal Wounds, and always at least 1 even without damage",
+    "text": "Lance weapons strike targets with beams of concentrated energy, and the vaporising blast bores through the thickest armour.\n\nWeapons with the Lance Trait ignore the Invulnerable Armour Trait. Lance weapons cause Mortal Wounds, and they always inflict 1 Mortal Wound even if the attack does not damage its target."
+  },
+  {
+    "id": "gruesome",
+    "kind": "weapon-trait",
+    "name": "Gruesome",
+    "source": "inheritance-of-embers",
+    "page": 79,
+    "gist": "On a Wrath Critical, the target and allies within 10m take a DN 3 Fear Test",
+    "text": "Drukhari weapons, especially Haemonculi weapons, don’t merely kill; they torture the target and terrify onlookers to feed the Drukhari soul debt.\n\nWeapons with the Gruesome Trait cause a DN 3 Fear Test for the target and allies within 10m on a Wrath Critical."
+  },
+  {
+    "id": "tesla-necrontyr",
+    "kind": "weapon-trait",
+    "name": "Tesla",
+    "source": "legacy-of-the-necrontyr",
+    "page": 10,
+    "gist": "Each 6 shifted to damage: up to two more foes within 4m (Defence no higher) are hit; a Mob is hit three times",
+    "text": "These weapons are designed to fire arcs of energy that seem to bounce between targets, creating chains of death that can reduce entire squads to smoking ash. Whenever one or more 6s are shifted to damage after hitting with a Tesla weapon, up to two other enemies within 4m of the original target are also considered to be hit, so long as their defense is equal to or less than that of the original target. If the original target was a mob, the mob is considered to have been hit three times instead of only once. The weapon’s full damage is dealt to all three targets, or three times to a mob."
+  },
+  {
+    "id": "bane",
+    "kind": "weapon-trait",
+    "name": "Bane (X)",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "+2 ED against targets of the Keyword or Species X (VEHICLE counts as a Keyword)",
+    "text": "This weapon is especially effective against a specific type of target.\n\nA Bane weapon replaces X with a single Keyword or Species. For these purposes, VEHICLE is counted as a Keyword. When used to make an attack against targets of that species or with that Keyword, the weapon inflicts +2 ED."
+  },
+  {
+    "id": "beam",
+    "kind": "weapon-trait",
+    "name": "Beam",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "Hits along a line; Multi-Attack DN penalty cut by twice Salvo; extra icons vs Mobs equal to Salvo",
+    "text": "The weapon fires a focused beam of energy that bores through everything in your path.\n\nEach time an attack is made with this weapon, draw a line back from the target of the attack back to the weapon. The Multi-Attack DN penalty for attacks with this weapon is reduced by twice the weapon’s Salvo, in addition to effects from a Salvo attack. Against a Mob, an attack with the weapon scores a number of additional icons equal to the weapon’s Salvo."
+  },
+  {
+    "id": "barrage",
+    "kind": "weapon-trait",
+    "name": "Barrage",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "A Salvo attack raises the Blast rating by the weapon's Salvo value",
+    "text": "The weapon fires salvoes of explosive ammunition that scatter over a wide area.\n\nWhen this weapon makes a Salvo attack, increase the weapon’s Blast rating by the weapon’s Salvo value."
+  },
+  {
+    "id": "bomb",
+    "kind": "weapon-trait",
+    "name": "Bomb",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "A flyer or FLYER gunner drops it anywhere they passed over after moving; attacks count as short range",
+    "text": "This weapon is designed to be dropped from above.\n\nAfter moving, as an attack, a flying character or the gunner of a FLYER vehicle, equipped with a bomb can drop it at any point they passed above during their movement. All attacks are made as though at short range."
+  },
+  {
+    "id": "cacophony",
+    "kind": "weapon-trait",
+    "name": "Cacophony",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "Attacks ignore cover bonuses to Defence",
+    "text": "Cacophony weapons use destructive wavelengths of sound to tear targets apart, and it is nigh-impossible to hide from them.\n\nAttacks with a Cacophony weapon ignore cover bonuses to defence."
+  },
+  {
+    "id": "careful",
+    "kind": "weapon-trait",
+    "name": "Careful",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "Cannot be used to make a Multi-Attack",
+    "text": "A Careful Weapon requires precision and care to wield and cannot easily be used to make multiple rapid attacks.\n\nA Careful Weapon cannot be used to make a Multi-Attack."
+  },
+  {
+    "id": "corrupting",
+    "kind": "weapon-trait",
+    "name": "Corrupting",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "Target gains 1 Corruption per Exalted Icon on the damage roll",
+    "text": "This weapon directs the corrupting power of the Warp.\n\nFor each Exalted Icon rolled on the weapon’s damage roll, the target gains 1 Corruption."
+  },
+  {
+    "id": "fleshbane",
+    "kind": "weapon-trait",
+    "name": "Fleshbane",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "Base damage + the target's Toughness; no effect on Vehicles",
+    "text": "The weapon is deadly to flesh and blood with even the slightest scratch.\n\nThe weapon’s base damage is increased by the target’s Toughness. This has no effect against Vehicles."
+  },
+  {
+    "id": "gas",
+    "kind": "weapon-trait",
+    "name": "Gas",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "BS Test places a gas cloud; Blast shrinks by 2 each round; rebreathers, non-breathers and Tyranids resist",
+    "text": "A Gas weapon deploys clouds of aerosolised or gaseous chemical agents.\n\nTo use a Gas weapon, make a Ballistic Skill test to target a specific location; if it hits, that is where the gas emerges, filling the blast area and affecting creatures within. The gas dissipates over time, reducing the Blast Rating by 2 at the end of each round. Strong winds may make the gas dissipate more quickly, at GM’s discretion.\n\nCharacters wearing a rebreather or a void suit, or armour which includes such features, automatically succeed at any tests required to resist Gas weapon’s effects, as are creatures which do not need to breathe, such as unliving automata, NECRONS, or DAEMONS, or creatures impervious to chemical weapons like TYRANIDS."
+  },
+  {
+    "id": "grav",
+    "kind": "weapon-trait",
+    "name": "Grav",
+    "source": "apocrypha",
+    "page": 326,
+    "gist": "+ED equal to half the target's Resilience; Staggered until end of its next turn if it takes Wounds or Shock",
+    "text": "Grav weaponry turn their targets’ own mass against them.\n\nThe weapon gains additional ED equal to half the target’s Resilience, and the target is Staggered until the end of its next turn if they suffer any wounds or shock from the attack."
+  },
+  {
+    "id": "haywire",
+    "kind": "weapon-trait",
+    "name": "Haywire (X)",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Vs a vehicle or mechanical foe, roll X d6: each Icon is a Mortal Wound",
+    "text": "Haywire weapons generate destructive electromagnetic pulses.\n\nWhen attacking a vehicle or mechanical foe, roll a number of d6 equal to the trait’s rating. Each Icon inflicts a Mortal Wound."
+  },
+  {
+    "id": "huntr",
+    "kind": "weapon-trait",
+    "name": "HunTR",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "No penalty for firing at Long Range",
+    "text": "HunTR weapons contain auto-calibration and grav-stabilisation systems which make them precise at any range.\n\nHunTR weapons do not suffer any penalty for being fired at Long Range."
+  },
+  {
+    "id": "indirect",
+    "kind": "weapon-trait",
+    "name": "Indirect",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Can fire at unseen enemies at +2 DN; they get no cover bonus to Defence",
+    "text": "The weapon can be fired at enemies which are not visible to the bearer, adding +2 to the DN. Enemies attacked indirectly do not receive any bonus to Defence for being in cover."
+  },
+  {
+    "id": "luminagen",
+    "kind": "weapon-trait",
+    "name": "Luminagen",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "A target hit gets no benefit from cover until the start of its next turn",
+    "text": "Phosphor weapons illuminate their targets with a searing light.\n\nA character hit by a Luminagen weapon cannot benefit from being in cover until the start of their next turn."
+  },
+  {
+    "id": "mortal",
+    "kind": "weapon-trait",
+    "name": "Mortal (X)",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "X Mortal Wounds per Exalted Icon on the ED, on top of the attack's damage",
+    "text": "The weapon deals horrific, deadly wounds that are nigh-impossible to withstand.\n\nFor each Exalted Icon you roll on the weapon’s ED, you inflict X Mortal Wounds, in addition to any damage the attack inflicts."
+  },
+  {
+    "id": "nemesis",
+    "kind": "weapon-trait",
+    "name": "Nemesis",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "DAEMONS cannot roll Determination against its wounds or Mortal Wounds",
+    "text": "Nemesis weapons are created to be bane to daemons.\n\nDAEMONS may not roll Determination to negate wounds or mortal wounds inflicted by Nemesis weapons."
+  },
+  {
+    "id": "overwhelming",
+    "kind": "weapon-trait",
+    "name": "Overwhelming",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "The target gets no benefit from its weapons' Parry trait or its Shields' Defence bonus",
+    "text": "The weapon can batter past even the most proficient defence.\n\nWhen you make an attack with an Overwhelming weapon, the target does not benefit from the Parry trait of any of their weapons or the Defence bonus from Shields."
+  },
+  {
+    "id": "paired",
+    "kind": "weapon-trait",
+    "name": "Paired",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Wielding both: a Simultaneous Strike or Multi-Attack DN −2; Signature Weapon covers both",
+    "text": "The weapon is designed to be used in a pair—two weapons of that type, one in each hand.\n\nWhen a character makes an attack while wielding both weapons in a pair, either count it as a Simultaneous Strike (as per the talent) or reduce the DN of a multi-attack by 2. If you have the Signature Weapon talent, you may apply it to both weapons in a pair."
+  },
+  {
+    "id": "reaping",
+    "kind": "weapon-trait",
+    "name": "Reaping",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Multi-Attack DN rises by +1 per extra target instead of +2",
+    "text": "The weapon is intended to scythe through groups of foes.\n\nWhen you make a Multi-Attack with this weapon, the DN increases by +1 per additional target, rather than +2."
+  },
+  {
+    "id": "recharge",
+    "kind": "weapon-trait",
+    "name": "Recharge",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "After attacking, it cannot attack again during the next round",
+    "text": "The weapon’s rate of fire is slowed by a need to recharge or cool down after use.\n\nWhen a Recharge weapon has been used to attack, it may not be used to attack again during the next round of combat."
+  },
+  {
+    "id": "sustained",
+    "kind": "weapon-trait",
+    "name": "Sustained",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Each Exalted Icon on the attack adds one attack die (the extra dice don't add more)",
+    "text": "The weapon is well-suited for delivering attack after attack.\n\nFor each Exalted Icon rolled when you make an attack with this weapon, you may roll one additional attack die. These additional dice cannot themselves generate additional dice."
+  },
+  {
+    "id": "tearing",
+    "kind": "weapon-trait",
+    "name": "Tearing",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Re-roll any number of ED",
+    "text": "The weapon rips and tears at their enemies, inflicting horrific wounds.\n\nWhen you roll for damage with this weapon, you may re-roll any number of ED."
+  },
+  {
+    "id": "tesla",
+    "kind": "weapon-trait",
+    "name": "Tesla",
+    "source": "apocrypha",
+    "page": 327,
+    "gist": "Shifted Exalted Icons can hit enemies within 3m of a target, at normal damage and AP, instead of +ED",
+    "text": "The weapon fires arcs of crackling lightning, leaping from foe to foe.\n\nWhen you shift Exalted Icons from a successful attack, you may shift Exalted Icons to hit enemies within 3m of an existing target as well as the main target, using the weapon’s normal damage and AP. Each Exalted Icon shifted may only be used to hit additional enemies or to gain +ED, not both."
+  },
+  {
+    "id": "unreliable",
+    "kind": "weapon-trait",
+    "name": "Unreliable (X)",
+    "source": "apocrypha",
+    "page": 328,
+    "gist": "Complication when the Wrath Die rolls X or less",
+    "text": "The weapon is prone to misfires, malfunctions, and mishaps.\n\nAn Unreliable X weapon suffers a Complication if its Wrath Die rolls equal to or less than X: that is, a weapon with Unreliable (2) will suffer a Complication if the Wrath die rolls 1 or 2."
+  },
+  {
+    "id": "volatile",
+    "kind": "weapon-trait",
+    "name": "Volatile (X)",
+    "source": "apocrypha",
+    "page": 328,
+    "gist": "On a Complication the wielder takes X Mortal Wounds (all within Blast if it has Blast, centred on them)",
+    "text": "The weapon’s power is barely-contained, and it can be harmful to an unwary wielder.\n\nIf you suffer a Complication when wielding this weapon, you immediately suffer X Mortal Wounds. X may either be a static value, or it may be a die roll, such as d3 or d6. If a Volatile weapon has the Blast trait, then a Complication inflicts X Mortal Wounds to all creatures within the weapon’s Blast rating, centred on the wielder."
   }
 ]

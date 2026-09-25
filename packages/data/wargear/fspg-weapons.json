@@ -1,0 +1,670 @@
+[
+  {
+    "id": "fspg-kroot-rifle-melee",
+    "name": "Kroot Rifle (melee)",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Very Rare",
+    "keywords": [
+      "2-HANDED",
+      "BLADE",
+      "KROOT",
+      "PRIMITIVE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Melee profile of the Kroot Rifle; the ranged profile is fspg-kroot-rifle (p.123). Traits printed blank. ED printed \"+5\" with a plus sign. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-blessed-blade",
+    "name": "Blessed Blade",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Imperium Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Blessed (3)",
+        "Parry",
+        "Rending (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"ADEPTUS MINISTORUM ADEPTA SORORITAS\" with no comma between them; read as two Keywords. ED printed \"+5\" with a plus sign. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-crozius-arcanum",
+    "name": "Crozius Arcanum",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Imperium Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "A Crozius Arcanum functions as both a weapon and a Symbol of Authority (p.240, Wrath & Glory Rulebook).",
+    "note": "Reprint of VoA p.62 with different Rarity and Keywords. ED printed \"+4\" with a plus sign. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-dialogus-staff",
+    "name": "Dialogus Staff",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Imperium Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reliable"
+      ]
+    },
+    "effect": "A Dialogus Staff functions as a weapon, a Symbol of Authority (p.240, Wrath & Glory Rulebook), and a Laud-Hailer (p.126).",
+    "note": "ED printed \"+3\" with a plus sign. Rarity printed \"2\" (the DN modifier, Core p.206): Rare."
+  },
+  {
+    "id": "fspg-power-maul",
+    "name": "Power Maul",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Imperium Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWER FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MINISTORUM"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "ED printed \"+4\" with a plus sign. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-taser-goad",
+    "name": "Taser Goad",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206): Rare."
+  },
+  {
+    "id": "fspg-transonic-blade",
+    "name": "Transonic Blade",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "TRANSONIC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Rending (5)"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-transonic-razor",
+    "name": "Transonic Razor",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "TRANSONIC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-bullgryn-maul",
+    "name": "Bullgryn Maul",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Ogryn Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"MILITARUM AUXILLA\" (not AUXILIA), kept as printed. Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon."
+  },
+  {
+    "id": "fspg-ripper-gun-bayonet",
+    "name": "Ripper Gun Bayonet",
+    "source": "forsaken-system",
+    "page": 121,
+    "category": "Ogryn Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BLADE",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"MILITARUM AUXILLA\" (not AUXILIA), kept as printed. Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon."
+  },
+  {
+    "id": "fspg-kroot-rifle",
+    "name": "Kroot Rifle",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Ranged Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Very Rare",
+    "keywords": [
+      "2 HANDED",
+      "PROJECTILE",
+      "KROOT"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Ranged profile; the melee profile is fspg-kroot-rifle-melee (p.121). Keyword printed \"2 HANDED\" (no hyphen; the melee profile prints \"2-HANDED\"), kept as printed. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-eradication-ray",
+    "name": "Eradication Ray",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "2 HANDED",
+      "PROJECTILE",
+      "KROOT"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (5)",
+        "Inflict (X)",
+        "Rending (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"2 HANDED, PROJECTILE, KROOT\", the Kroot Rifle's, in the Adeptus Mechanicus table; kept as printed (likely a copy error). \"Inflict (X)\" printed with no Condition named. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-flechette-blaster",
+    "name": "Flechette Blaster",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Pistol",
+        "Rapid Fire (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"ADEPTUS, MECHANICUS\" with a comma, read as the one Keyword ADEPTUS MECHANICUS. Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon."
+  },
+  {
+    "id": "fspg-macrostubber",
+    "name": "Macrostubber",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Pistol",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": "",
+    "note": "AP printed \"0\" (the other rows print \"—\"); no AP. Keywords printed \"ADEPTUS, MECHANICUS\" with a comma, read as the one Keyword ADEPTUS MECHANICUS. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-phosphor-serpenta",
+    "name": "Phosphor Serpenta",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"ADEPTUS, MECHANICUS\" with a comma, read as the one Keyword ADEPTUS MECHANICUS. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-stubcarbine",
+    "name": "Stubcarbine",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"ADEPTUS, MECHANICUS\" with a comma, read as the one Keyword ADEPTUS MECHANICUS. Rarity printed \"2\" (the DN modifier, Core p.206): Rare."
+  },
+  {
+    "id": "fspg-grenadier-gauntlet",
+    "name": "Grenadier Gauntlet",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Militarum Auxilla Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "weapon": {
+      "damage": 11,
+      "ed": 3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (2)",
+        "Heavy (5)"
+      ]
+    },
+    "effect": "",
+    "note": "A grenade launcher that prints its own profile (not \"uses the profile of the Grenade fired\"). Keyword printed \"MILITARUM AUXILLA\" (not AUXILIA), kept as printed. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-ratling-rifle",
+    "name": "Ratling Rifle",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Militarum Auxilla Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Sniper (3)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"MILITARUM AUXILLA\" (not AUXILIA), kept as printed. Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon."
+  },
+  {
+    "id": "fspg-ripper-gun",
+    "name": "Ripper Gun",
+    "source": "forsaken-system",
+    "page": 123,
+    "category": "Militarum Auxilla Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA"
+    ],
+    "weapon": {
+      "damage": 11,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Heavy (5)"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"MILITARUM AUXILLA\" (not AUXILIA), kept as printed. Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-frag-bomb",
+    "name": "Frag Bomb",
+    "source": "forsaken-system",
+    "page": 124,
+    "category": "Grenades",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 4,
+      "thrown": 2,
+      "salvo": null,
+      "traits": [
+        "Blast (8)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"S) x2m or as Launcher\", missing its opening parenthesis: thrown S x 2, or the launcher's range when fired from one. Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon."
+  },
+  {
+    "id": "fspg-melta-bomb",
+    "name": "Melta Bomb",
+    "source": "forsaken-system",
+    "page": 124,
+    "category": "Grenades",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -4,
+      "thrown": 2,
+      "salvo": null,
+      "traits": [
+        "Blast (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"(S) x2m or as Launcher\": thrown S x 2, or the launcher's range when fired from one. Heading printed \"Melta Bombs\". Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "fspg-mindscrambler-grenade",
+    "name": "Mindscrambler Grenade",
+    "source": "forsaken-system",
+    "page": 124,
+    "category": "Grenades",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Agonising",
+        "Arc (4)",
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"(S) x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Rarity printed \"2\" (the DN modifier, Core p.206): Rare."
+  },
+  {
+    "id": "fspg-shock-grenade",
+    "name": "Shock Grenade",
+    "source": "forsaken-system",
+    "page": 124,
+    "category": "Grenades",
+    "kind": "grenade",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 3,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Inflict (Blinded 1, Vulnerable 1)"
+      ]
+    },
+    "effect": "A Shock Grenade deals Shock Damage to targets caught in the Blast radius instead of Wounds. If the target suffers any Shock Damage, they also suffer the Blinded and Vulnerable Conditions. Targets in the Blast radius of a Shock Grenade can attempt to use the normal rules for dodging area effect attacks (W&G Rulebook page186).",
+    "note": "Damage printed \"3 (Shock)\"; ED printed \"-\", stored as 0. Range printed \"(S) x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon."
+  }
+]

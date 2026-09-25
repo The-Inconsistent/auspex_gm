@@ -1,0 +1,2252 @@
+[
+  {
+    "id": "apoc-airbursting-fragmentation-projector",
+    "name": "Airbursting Fragmentation Projector",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 0,
+      "traits": [
+        "Blast (6)",
+        "Indirect",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-burst-cannon",
+    "name": "Burst Cannon",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 6,
+      "traits": [
+        "Assault",
+        "Rapid Fire (3)",
+        "Heavy (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-cyclic-ion-blaster",
+    "name": "Cyclic Ion Blaster",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ION",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Heavy (6)",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-fireblade-pulse-rifle",
+    "name": "Fireblade Pulse Rifle",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-fusion-blaster",
+    "name": "Fusion Blaster",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "FUSION",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-ion-rifle",
+    "name": "Ion Rifle",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ION",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (4)",
+        "Supercharge"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Heavy (4) Supercharge\" with no comma; split."
+  },
+  {
+    "id": "apoc-longshot-pulse-rifle",
+    "name": "Longshot Pulse Rifle",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 1,
+      "traits": [
+        "Rapid Fire (1)",
+        "Sniper (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-markerlight",
+    "name": "Markerlight",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXOTIC",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": []
+    },
+    "effect": "Special: A successful attack with a Markerlight inflicts one instance of the Marked condition on the target. A character with a markerlight may fire the markerlight as part of a multi-action which includes another ranged attack with a different weapon.\nMarked: A ranged attack against a Marked character gains an additional +2 bonus dice. An instance of the Marked condition is removed when a ranged attack is made against the character. A character removes all instances of the Marked condition on them at the end of their turn.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Traits printed \"Special\" (the rule is in effect). Name printed with an asterisk: its Special rule is in effect. Marked is a new Condition defined here (p.380), kept in effect."
+  },
+  {
+    "id": "apoc-missile-pod",
+    "name": "Missile Pod",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 2,
+      "traits": [
+        "Barrage",
+        "Blast (2)",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-photon-grenade",
+    "name": "Photon Grenade",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "grenade",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PHOTON",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "Special: Photon Grenades do not inflict damage. Rather, each enemy caught in the blast immediately suffers the Blinded and Staggered conditions until the end of their next turn.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as launcher\": thrown S x 4, or the launcher's range when fired from one. Traits printed \"Blast (6), Special\"; Special is in effect. Name printed with an asterisk: its Special rule is in effect."
+  },
+  {
+    "id": "apoc-fusion-grenade",
+    "name": "Fusion Grenade",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FUSION",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 4,
+      "ap": -1,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"Strength x4m or as launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-emp-grenade",
+    "name": "EMP Grenade",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EMP",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 2,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (2)"
+      ]
+    },
+    "effect": "Special: When a vehicle is hit by the blast from an EMP grenade, it immediately suffers the Hindered (2) and Restrained conditions, which last until the end of the vehicle’s next turn.",
+    "note": "Range printed \"Strength x4m or as launcher\": thrown S x 4, or the launcher's range when fired from one. Traits printed \"Blast (2), Special\"; Special is in effect. Name printed with an asterisk: its Special rule is in effect."
+  },
+  {
+    "id": "apoc-plasma-rifle",
+    "name": "Plasma Rifle",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Heavy (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-pulse-blaster-short",
+    "name": "Pulse Blaster (Short)",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        8,
+        16,
+        24
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Spread"
+      ]
+    },
+    "effect": "Special: Pulse Blasters have different Damage, ED, and AP values depending on whether the target is within Close range, Medium range, or Long range.",
+    "note": "One weapon printed as three rows, one per range band; each row prints only its own band's range (Short 8, Med 16, Long 24), so all three carry 8/16/24 and the row applies only within its band."
+  },
+  {
+    "id": "apoc-pulse-blaster-med",
+    "name": "Pulse Blaster (Med)",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        8,
+        16,
+        24
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Spread"
+      ]
+    },
+    "effect": "Special: Pulse Blasters have different Damage, ED, and AP values depending on whether the target is within Close range, Medium range, or Long range.",
+    "note": "One weapon printed as three rows, one per range band; each row prints only its own band's range (Short 8, Med 16, Long 24), so all three carry 8/16/24 and the row applies only within its band. Traits, Value, Rarity and Keywords printed \"As above\"."
+  },
+  {
+    "id": "apoc-pulse-blaster-long",
+    "name": "Pulse Blaster (Long)",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        8,
+        16,
+        24
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Spread"
+      ]
+    },
+    "effect": "Special: Pulse Blasters have different Damage, ED, and AP values depending on whether the target is within Close range, Medium range, or Long range.",
+    "note": "One weapon printed as three rows, one per range band; each row prints only its own band's range (Short 8, Med 16, Long 24), so all three carry 8/16/24 and the row applies only within its band. Name printed \"Pulse Blaster(Long)\" with no space. Traits, Value, Rarity and Keywords printed \"As above\"."
+  },
+  {
+    "id": "apoc-pulse-carbine",
+    "name": "Pulse Carbine",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": "Special: Many forms of Pulse Carbine are fitted with an underslung grenade launcher, normally used to fire photon grenades. A Pulse Carbine so equipped increases the rarity to Rare, and the Value by +2."
+  },
+  {
+    "id": "apoc-pulse-carbine-with-grenade-launcher",
+    "name": "Pulse Carbine with Grenade Launcher",
+    "source": "apocrypha",
+    "page": 381,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "effect": "Special: Many forms of Pulse Carbine are fitted with an underslung grenade launcher, normally used to fire photon grenades. A Pulse Carbine so equipped increases the rarity to Rare, and the Value by +2.\nLauncher: A Pulse Carbine with grenade launcher can be used as a Ranged weapon, using the following profile: Damage As Grenade, ED As Grenade, Range 10-20-30, Salvo –, Traits Assault, As Grenade.",
+    "note": "The Pulse Carbine's second profile (p.381). Value 6 and Rare derived from the Special (\"Rare, and the Value by +2\" on the Pulse Carbine's 4 Uncommon). Damage and ED printed \"As Grenade\", so there is no weapon entry, as for Core's Missile Launcher."
+  },
+  {
+    "id": "apoc-pulse-pistol",
+    "name": "Pulse Pistol",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-pulse-rifle",
+    "name": "Pulse Rifle",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PULSE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-rail-rifle",
+    "name": "Rail Rifle",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 0,
+      "traits": [
+        "Heavy (4)",
+        "Mortal (1)",
+        "Sniper (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-smart-missile-system",
+    "name": "Smart Missile System",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 4,
+      "traits": [
+        "Barrage",
+        "Blast (2)",
+        "Heavy (6)",
+        "Indirect"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-tau-flamer",
+    "name": "T'au Flamer",
+    "source": "apocrypha",
+    "page": 378,
+    "category": "T'au Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FIRE",
+      "T'AU EMPIRE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-autoch-pattern-bolt-pistol",
+    "name": "Autoch-pattern Bolt Pistol",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-autoch-pattern-bolter",
+    "name": "Autoch-pattern Bolter",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-autoch-pattern-combi-bolter",
+    "name": "Autoch-pattern Combi-Bolter",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Brutal",
+        "HunTR",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-bolt-cannon",
+    "name": "Bolt Cannon",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Heavy (5)",
+        "HunTR"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Heavy (5) HunTR\" with no comma; split."
+  },
+  {
+    "id": "apoc-bolt-revolver",
+    "name": "Bolt Revolver",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        5,
+        10,
+        15
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-bolt-shotgun",
+    "name": "Bolt Shotgun",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Spread"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-eta-carn-plasma-beamer",
+    "name": "Eta-Carn Plasma Beamer",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Beam",
+        "HunTR"
+      ]
+    },
+    "effect": "",
+    "note": "Name as the table prints it; its p.384 heading and the other EtaCarn rows print \"EtaCarn\" with no hyphen."
+  },
+  {
+    "id": "apoc-etacarn-plasma-gun",
+    "name": "EtaCarn Plasma Gun",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-etacarn-plasma-pistol",
+    "name": "EtaCarn Plasma Pistol",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-exo-armour-grenade-launcher",
+    "name": "Exo-Armour Grenade Launcher",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (4)",
+        "HunTR",
+        "Inflict (Staggered)"
+      ]
+    },
+    "effect": "Special: A character equipped with an Exo-Armour Grenade Launcher may fire the launcher as part of a multi-action, even if the character attacks with a different weapon as a different action in the multi-action. The DN penalty for the multi-action is reduced by 2.",
+    "note": "Name printed with an asterisk: its Special rule is in effect."
+  },
+  {
+    "id": "apoc-gravitic-concussion-grenades",
+    "name": "Gravitic Concussion Grenades",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 4,
+      "ap": -1,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (4)",
+        "Inflict (Staggered)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"Strength x4m or as launcher\": thrown S x 4, or the launcher's range when fired from one. Salvo printed \"-\"."
+  },
+  {
+    "id": "apoc-graviton-blast-cannon",
+    "name": "Graviton Blast Cannon",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GRAV",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (6)",
+        "Grav",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-graviton-rifle",
+    "name": "Graviton Rifle",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GRAV",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Grav",
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hylas-auto-rifle",
+    "name": "HYLas Auto Rifle",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hylas-beam-cannon",
+    "name": "HYLas Beam Cannon",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Beam",
+        "Heavy (8)",
+        "HunTR"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Heavy (8) HunTR\" with no comma; split."
+  },
+  {
+    "id": "apoc-hylas-rotary-cannon",
+    "name": "HYLas Rotary Cannon",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 9,
+      "traits": [
+        "Heavy (6)",
+        "HunTR",
+        "Rapid Fire (3)",
+        "Sustained"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-ion-beamer",
+    "name": "Ion Beamer",
+    "source": "apocrypha",
+    "page": 382,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ION",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Beam",
+        "Heavy (6)",
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-ion-blaster",
+    "name": "Ion Blaster",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ION",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-ion-pistol",
+    "name": "Ion Pistol",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ION",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-l7-missile-launcher",
+    "name": "L7 Missile Launcher",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "Range 15/30/45, Heavy (6), HunTR. Uses the profile of the Mode used.",
+    "note": "Damage, ED and AP printed \"Uses the profile of the Mode used\", so there is no weapon entry, as for Core's Missile Launcher; the Focused and Blast rows carry the profiles. Salvo printed blank."
+  },
+  {
+    "id": "apoc-l7-missile-launcher-focused",
+    "name": "L7 Missile Launcher: Focused",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": null,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Printed as a \"- Focused\" row under the L7 Missile Launcher with its own Value and Rarity, so filed as a missile (kind grenade, like Core's Frag Missile). Range printed \"As Launcher\"; the schema needs a range, so the launcher's 15/30/45 is filled in. Traits printed blank."
+  },
+  {
+    "id": "apoc-l7-missile-launcher-blast",
+    "name": "L7 Missile Launcher: Blast",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Printed as a \"- Blast\" row under the L7 Missile Launcher with its own Value and Rarity, so filed as a missile (kind grenade, like Core's Frag Missile). Range printed \"As Launcher\"; the schema needs a range, so the launcher's 15/30/45 is filled in."
+  },
+  {
+    "id": "apoc-magna-coil-autocannon",
+    "name": "Magna-coil Autocannon",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (6)",
+        "HunTR"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-magna-rail-rifle",
+    "name": "Magna-rail Rifle",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "MAGNA-RAIL",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (4)",
+        "HunTR",
+        "Mortal (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-matr-autocannon",
+    "name": "MATR Autocannon",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 6,
+      "traits": [
+        "Heavy (6)",
+        "HunTR",
+        "Sustained"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-mole-grenade-launcher",
+    "name": "Mole Grenade Launcher",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Heavy (6)",
+        "HunTR",
+        "Indirect"
+      ]
+    },
+    "effect": "",
+    "note": "Salvo printed \"-\"."
+  },
+  {
+    "id": "apoc-sp-conversion-beamer",
+    "name": "SP Conversion Beamer",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CONVERSION",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 1,
+      "traits": [
+        "Beam",
+        "Heavy (6)"
+      ]
+    },
+    "effect": "Special: This weapon increases its damage by +2 ED at Medium range, and by +4 ED at Long range.",
+    "note": "Name printed with an asterisk: its Special rule is in effect."
+  },
+  {
+    "id": "apoc-volkanite-disintegrator",
+    "name": "Volkanite Disintegrator",
+    "source": "apocrypha",
+    "page": 383,
+    "category": "Leagues of Votann Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "VOLKANITE",
+      "LEAGUES OF VOTANN"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "HunTR",
+        "Inflict (On Fire)"
+      ]
+    },
+    "effect": "",
+    "note": "AP printed \"-\"."
+  },
+  {
+    "id": "apoc-aethyric-capacitor",
+    "name": "Aethyric Capacitor",
+    "source": "apocrypha",
+    "page": 387,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIAL",
+      "ADEPTUS ASTRA TELEPATHICA",
+      "AELDARI"
+    ],
+    "effect": "Any melee weapon with the FORCE keyword may take this upgrade.\nWhen the wielder of this weapon succeeds at using a psychic power, they may store Exalted Icons rolled on that Psychic Mastery test. These icons may be spent to gain additional dice on subsequent Psychic Mastery tests, or to purchase Potency options on psychic powers used later. The weapon may store a maximum of 3 Exalted Icons.",
+    "note": "Keyword printed \"IMPERIAL\" (not IMPERIUM) in both the table and the entry; copied as printed."
+  },
+  {
+    "id": "apoc-darkstar-weapon",
+    "name": "Darkstar Weapon",
+    "source": "apocrypha",
+    "page": 387,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "DARKSTAR",
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "Any melee weapon with the BLADE keyword may take this upgrade.\nThe weapon’s damage is increased by +2, and it gains +1ED and the Mortal (1) trait. Further, damage inflicted by a Darkstar weapon cannot be negated by rolling Determination.",
+    "note": "Not in the p.386 Weapon Upgrades table; Value and Keywords from its entry."
+  },
+  {
+    "id": "apoc-digital-weapon",
+    "name": "Digital Weapon",
+    "source": "apocrypha",
+    "page": 387,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "AELDARI",
+      "JOKAERO"
+    ],
+    "effect": "Any LAS, MELTA, FIRE, or NEEDLE weapon with the Pistol trait may be upgraded to a Digital Weapon.\nThe weapon’s ranges are halved, the weapon has only 1 reload, and it can only be reloaded during a Regroup. A character wearing multiple Digital Weapons may fire up to three as part of a Multi-Action.",
+    "note": "Keywords from the entry; the p.386 table prints \"IMPERIAL, AELDARI, JOKAERO\"."
+  },
+  {
+    "id": "apoc-envenomed-blade",
+    "name": "Envenomed Blade",
+    "source": "apocrypha",
+    "page": 387,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Any melee weapon with the BLADE keyword may take this upgrade.\nThe wielder of the weapon may spend a Simple Action during combat applying venom to the blade from a hidden reservoir. The weapon gains the Inflict (Poisoned 3) trait until the end of the current scene."
+  },
+  {
+    "id": "apoc-exterminator-cartridge",
+    "name": "Exterminator Cartridge",
+    "source": "apocrypha",
+    "page": 387,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "FIRE",
+      "IMPERIUM",
+      "SCUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "effect": "An Exterminator may be mounted onto any other weapon, and it counts as a hand flamer which may only be fired once.",
+    "note": "No Effect line printed; effect is the entry's rule sentence."
+  },
+  {
+    "id": "apoc-folding-stock",
+    "name": "Folding Stock",
+    "source": "apocrypha",
+    "page": 387,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "A Folding Stock can be fitted onto any Pistol weapon.\nThe weapon loses the Pistol trait, but its Short range is increased by +3, its medium range is increased by +6, and its long range is increased by 9."
+  },
+  {
+    "id": "apoc-foregrip",
+    "name": "Foregrip",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "A Folding Stock can be fitted onto any Assault or Rapid Fire weapon which does not have the Heavy trait.\nThe weapon gains the Assault trait, if it did not already have it. If the weapon already had the Assault trait, it instead ignores the DN increase for firing as part of a Sprint action.",
+    "note": "Printed \"A Folding Stock can be fitted onto…\" in the Foregrip entry (a copy slip for Foregrip); copied as printed."
+  },
+  {
+    "id": "apoc-independent-weapon-mount-pistol",
+    "name": "Independent Weapon Mount (Pistol)",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "This heavy bracing allows a single ranged weapon to be mounted along the arm, on a shoulder, or somewhere else on the character’s body or armour. It allows the user to keep both hands free to use other weapons or tools.\nThe value and rarity of this mod varies by weapon size\nValue: 4 (Rare) for Pistols, 6 (Rare) for non-Heavy weapons, 8 (Very Rare) for Heavy weapons.",
+    "note": "Value varies by weapon size, so split into three entries (names ours). The p.386 table prints only \"6 Rare\". No Effect line printed; effect is the entry's rule text."
+  },
+  {
+    "id": "apoc-independent-weapon-mount-non-heavy",
+    "name": "Independent Weapon Mount (non-Heavy)",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "This heavy bracing allows a single ranged weapon to be mounted along the arm, on a shoulder, or somewhere else on the character’s body or armour. It allows the user to keep both hands free to use other weapons or tools.\nThe value and rarity of this mod varies by weapon size\nValue: 4 (Rare) for Pistols, 6 (Rare) for non-Heavy weapons, 8 (Very Rare) for Heavy weapons.",
+    "note": "Value varies by weapon size, so split into three entries (names ours). The p.386 table prints only \"6 Rare\". No Effect line printed; effect is the entry's rule text."
+  },
+  {
+    "id": "apoc-independent-weapon-mount-heavy",
+    "name": "Independent Weapon Mount (Heavy)",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "This heavy bracing allows a single ranged weapon to be mounted along the arm, on a shoulder, or somewhere else on the character’s body or armour. It allows the user to keep both hands free to use other weapons or tools.\nThe value and rarity of this mod varies by weapon size\nValue: 4 (Rare) for Pistols, 6 (Rare) for non-Heavy weapons, 8 (Very Rare) for Heavy weapons.",
+    "note": "Value varies by weapon size, so split into three entries (names ours). The p.386 table prints only \"6 Rare\". No Effect line printed; effect is the entry's rule text."
+  },
+  {
+    "id": "apoc-mass-accelerator",
+    "name": "Mass Accelerator",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "Any MASS DRIVER weapon may take this upgrade.\nThe weapon gains +3 ED."
+  },
+  {
+    "id": "apoc-matched-pair",
+    "name": "Matched Pair",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "This modification may be applied to a pair of identical melee weapons or to a pair of identical pistols. If either weapon has any other upgrades, both must have that upgrade.\nThe weapons gain the Paired trait.",
+    "note": "The entry prints Keywords \"ANY\" without brackets; the p.386 table prints \"[ANY]\", used here."
+  },
+  {
+    "id": "apoc-overcharge-capacitor",
+    "name": "Overcharge Capacitor",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "SCUM"
+    ],
+    "effect": "This modification may be applied to any las weapon which lacks the Heavy trait.\n+2 ED, weapon loses the Reliable trait and reduces Salvo by 1."
+  },
+  {
+    "id": "apoc-powered-blade",
+    "name": "Powered Blade",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "You may use this weapon as a Power Blade.",
+    "note": "Keywords from the entry; the p.386 table prints only \"AELDARI\"."
+  },
+  {
+    "id": "apoc-sanctified",
+    "name": "Sanctified",
+    "source": "apocrypha",
+    "page": 388,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "effect": "This quality may only be applied to melee weapons, and cannot be applied to unique weapons, or weapons of Xenos or Chaos manufacture.\nThe weapon gains the Blessed (2) trait."
+  },
+  {
+    "id": "apoc-suspensor-rig",
+    "name": "Suspensor Rig",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "This quality may be applied to any Heavy weapon.\nThe weapon is always considered to be braced, even when the user is moving."
+  },
+  {
+    "id": "apoc-warp-focus",
+    "name": "Warp Focus",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Weapon Upgrades",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS"
+    ],
+    "effect": "This may be added to any melee weapon.\nAdd +2d3 metres to the range of any psychic power the wielder uses while wielding this weapon.",
+    "note": "Not in the p.386 Weapon Upgrades table; Value and Keywords from its entry."
+  },
+  {
+    "id": "apoc-amputator-rounds",
+    "name": "Amputator Rounds",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "These rounds may be used by weapons with the PROJECTILE keyword. Weapons with the Heavy trait may not use this ammunition.\n+1 ED and the Brutal trait."
+  },
+  {
+    "id": "apoc-blessed-promethium",
+    "name": "Blessed Promethium",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "effect": "This modification may be applied to any FIRE weapon with the IMPERIUM keyword.\nThe weapon’s damage is increased by +2 and it gains the Blessed (2) trait."
+  },
+  {
+    "id": "apoc-bolt-shells",
+    "name": "Bolt Shells",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "SCUM"
+    ],
+    "effect": "These shells may be used with a shotgun or combat shotgun.\nDamage is changed to 10 +1ED, add the Brutal trait, lose the Spread trait."
+  },
+  {
+    "id": "apoc-dragonfire-bolt-rounds",
+    "name": "Dragonfire Bolt Rounds",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DEATHWATCH"
+    ],
+    "effect": "Weapon gains the Spread trait and the FIRE keyword.",
+    "note": "Differs from Core's dragonfire-bolt-rounds (p.230): Value 6 → 7, Very Rare → Rare, keywords IMPERIUM, ADEPTUS ASTARTES → DEATHWATCH; adds the FIRE keyword, drops the cover rule and the BOLT-only line."
+  },
+  {
+    "id": "apoc-enhanced-web-chem",
+    "name": "Enhanced Web-Chem",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS ARBITES"
+    ],
+    "effect": "This upgrade can only be applied to WEB weapons.\nWeb weapons firing Enhanced Web-Chem add +2 to the rating of their Inflict (Restrained X) trait.",
+    "note": "Called an upgrade in its text but listed under Reloads and Ammunition; filed as ammo."
+  },
+  {
+    "id": "apoc-enriched-ammunition",
+    "name": "Enriched Ammunition",
+    "source": "apocrypha",
+    "page": 389,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "These rounds may be used by weapons with the PROJECTILE keyword. Weapons with the Heavy trait may not use this ammunition.\n+1 ED and the Rad (1) trait. If the weapon already has the Rad trait, add 1to the rating.",
+    "note": "\"add 1to\" (no space) as printed."
+  },
+  {
+    "id": "apoc-executioner-shells",
+    "name": "Executioner Shells",
+    "source": "apocrypha",
+    "page": 390,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS ARBITES"
+    ],
+    "effect": "These shells may be used with a shotgun or combat shotgun.\nWeapon loses Spread, but gains +1ED. A shotgun using Executioner shells reverses the normal modifiers for firing at Short or Long range."
+  },
+  {
+    "id": "apoc-exitus-hellfire-rounds",
+    "name": "Exitus Hellfire Rounds",
+    "source": "apocrypha",
+    "page": 390,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM VINDICARE"
+    ],
+    "effect": "+2ED, +3ED against organic targets. In addition, the weapon gains the Careful and Inflict (Poisoned 5) trait, but its Salvo rating is reduced to – for this shot.\nPoisoned: A creature Poisoned by an Exitus round suffers 1d3 Mortal Wounds at the start of each of their turns.\nSingle Shot: A reload of Exitus special ammunition consists of a single round. Using this ammunition expends that round, and grants none of the normal benefits a Salvo action.",
+    "note": "\"benefits a Salvo action\" (missing \"of\") as printed."
+  },
+  {
+    "id": "apoc-exitus-shield-breaker-rounds",
+    "name": "Exitus Shield-breaker Rounds",
+    "source": "apocrypha",
+    "page": 390,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM VINDICARE"
+    ],
+    "effect": "The weapon gains the Careful and Warp Weapon traits, but its Salvo rating is reduced to – for this shot. Enemies may not roll Determination against this attack.\nSingle Shot: A reload of Exitus special ammunition consists of a single round. Using this ammunition expends that round, and grants none of the normal benefits a Salvo action.",
+    "note": "\"benefits a Salvo action\" (missing \"of\") as printed."
+  },
+  {
+    "id": "apoc-exitus-turbo-penetrator-rounds",
+    "name": "Exitus Turbo-Penetrator Rounds",
+    "source": "apocrypha",
+    "page": 390,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM VINDICARE"
+    ],
+    "effect": "The weapon gains the Careful, Brutal, and Rending [4] traits, but its Salvo rating is reduced to – for this shot.\nSingle Shot: A reload of Exitus special ammunition consists of a single round. Using this ammunition expends that round, and grants none of the normal benefits a Salvo action.",
+    "note": "\"Rending [4]\" printed with square brackets, and \"benefits a Salvo action\" (missing \"of\"); both as printed."
+  },
+  {
+    "id": "apoc-flechette-rounds",
+    "name": "Flechette Rounds",
+    "source": "apocrypha",
+    "page": 390,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "These rounds may be used by weapons with the PROJECTILE keyword. Weapons with the Heavy keyword may not use this ammunition.\nThe weapon gains Spread and may re-roll up to 2 dice when making an attack while spending one or more Reloads.",
+    "note": "\"Heavy keyword\" as printed (Amputator and Enriched say \"Heavy trait\")."
+  },
+  {
+    "id": "apoc-hot-shot-charge-pack",
+    "name": "Hot-shot Charge Pack",
+    "source": "apocrypha",
+    "page": 391,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "SCUM"
+    ],
+    "effect": "This ammo may only be used in a Lasgun, Laspistol, Duelling Laspistol, or Long Las.\nThe weapon gains +2ED, and the Careful, Brutal and Rending (2) traits, but it loses the Reliable trait and its Salvo rating is reduced to – for this shot.\nSingle Shot: A Hot-shot Charge Pack is expended after a single shot. Using this ammunition expends that pack, and grants none of the normal benefits of a Salvo action."
+  },
+  {
+    "id": "apoc-incendiary-shells",
+    "name": "Incendiary Shells",
+    "source": "apocrypha",
+    "page": 391,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "effect": "These shells may be used with a shotgun or combat shotgun.\nThe weapon gains the Inflict (On Fire) trait, and the FIRE keyword."
+  },
+  {
+    "id": "apoc-inferno-bolt-rounds",
+    "name": "Inferno Bolt Rounds",
+    "source": "apocrypha",
+    "page": 391,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "HERETIC ASTARTES",
+      "TZEENTCH"
+    ],
+    "effect": "AP -2, and the FIRE keyword."
+  },
+  {
+    "id": "apoc-micro-blast-needles",
+    "name": "Micro-blast Needles",
+    "source": "apocrypha",
+    "page": 391,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM"
+    ],
+    "effect": "Any NEEDLE weapon may use this ammo.\n+1ED and Brutal, lose Inflict (Poisoned X) trait."
+  },
+  {
+    "id": "apoc-psybolt-bolt-rounds",
+    "name": "Psybolt Bolt Rounds",
+    "source": "apocrypha",
+    "page": 391,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ORDO MALLEUS",
+      "GREY KNIGHTS"
+    ],
+    "effect": "Bolt weapons loaded with Psybolt ammo gain the Force trait.",
+    "note": "Rarity from the entry; the p.386 table prints \"7 Rare\"."
+  },
+  {
+    "id": "apoc-shrieker-bio-explosive-discs",
+    "name": "Shrieker Bio-Explosive Discs",
+    "source": "apocrypha",
+    "page": 391,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "HARLEQUIN"
+    ],
+    "effect": "This ammo may only be used in SHURIKEN weapons.\nThe weapon gains the Careful and Inflict (Poisoned 7) trait, but its Salvo rating is reduced to – for this shot.\nBio-Explosive: A character who is Poisoned by Shrieker ammo is also Staggered and suffers 1d3 Mortal Wounds at the start of each of their turns. If they are slain by this damage, they explode with a Blast (6), inflicting 10 +6ED damage to anyone within the explosion. Any of the victim’s allies within 15 metres must attempt a Terror test (DN 7).\nSingle Shot: A reload of Shrieker ammo consists of a single round. Using this ammunition expends that round, and grants none of the normal benefits a Salvo action.",
+    "note": "\"benefits a Salvo action\" (missing \"of\") as printed."
+  },
+  {
+    "id": "apoc-soulseeker-splinters",
+    "name": "Soulseeker Splinters",
+    "source": "apocrypha",
+    "page": 392,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "This ammo may only be used in SPLINTER weapons.\nTargets do not receive the benefits of cover when attacked by a splinter weapon loaded with soulseeker splinters."
+  },
+  {
+    "id": "apoc-stalker-silenced-bolt-rounds",
+    "name": "Stalker Silenced Bolt Rounds",
+    "source": "apocrypha",
+    "page": 392,
+    "category": "Reloads and Ammunition",
+    "kind": "ammo",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "Bolt weapons firing Stalker bolt rounds gain the Silent trait. If the weapon already has the Silent trait, then firing the weapon no longer affects the character’s Stealth score."
+  },
+  {
+    "id": "apoc-agonite",
+    "name": "Agonite",
+    "source": "apocrypha",
+    "page": 393,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile Poisoned, the target may not roll Determination.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-deathbloom",
+    "name": "Deathbloom",
+    "source": "apocrypha",
+    "page": 393,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile the target is Poisoned, they suffer a Mortal Wound at the start of each Turn.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-essence-of-perfect-vitriol",
+    "name": "Essence of Perfect Vitriol",
+    "source": "apocrypha",
+    "page": 393,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target is left enfeebled and vulnerable. While poisoned, the target halves their Resilience, rounding up.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-feralex",
+    "name": "Feralex",
+    "source": "apocrypha",
+    "page": 393,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target suffers the Frenzied condition while the Poisoned effect lasts, and they are incapable of distinguishing friend from foe while Frenzied. Any attempts to remove the Frenzied condition fail while the Poisoned effect remains.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-final-breath",
+    "name": "Final Breath",
+    "source": "apocrypha",
+    "page": 393,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target gasps for air while Poisoned, and begins to suffocate, as described on page 201 of the Wrath & Glory rulebook.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-heartfire",
+    "name": "Heartfire",
+    "source": "apocrypha",
+    "page": 393,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target’s blood becomes volatile while Poisoned; whenever the character suffers damage, is knocked prone, runs, or sprints, they suffer 1d3 Mortal Wounds.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-icevein",
+    "name": "Icevein",
+    "source": "apocrypha",
+    "page": 394,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile the target is Poisoned, any of the target’s allies within 5m are Staggered.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-liquid-agony",
+    "name": "Liquid Agony",
+    "source": "apocrypha",
+    "page": 394,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target’s senses are overwhelmed with pain while Poisoned; the character suffers 1d3 Shock at the start of each of their turns, and doubles the amount of Shock they suffer from other sources.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-nerveshard",
+    "name": "Nerveshard",
+    "source": "apocrypha",
+    "page": 394,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Common",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile the target is Poisoned, any of the target’s allies within 5m adds +2DN to Resolve Tests.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-nightmare-philtre",
+    "name": "Nightmare Philtre",
+    "source": "apocrypha",
+    "page": 394,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target is filled with dread while Poisoned; the character is under the effects of Terror while Poisoned and they cannot recover from Terror until after the Poisoned effect is ended. Ork characters become Frenzied instead, while Adeptus Astartes and Primaris Astartes characters are completely unaffected by this poison.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-sanguine-exodus",
+    "name": "Sanguine Exodus",
+    "source": "apocrypha",
+    "page": 394,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Common",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target bleeds profusely while Poisoned and suffers the Bleeding condition while the Poisoned effect lasts. Any attempts to remove the Bleeding condition fail while the Poisoned effect remains.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-shattergift",
+    "name": "Shattergift",
+    "source": "apocrypha",
+    "page": 395,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target’s psychic abilities are impaired while Poisoned, suffering +4DN on all Psychic Mastery Tests, and inflicting 1d3 Shock each time a Psychic Mastery Test is attempted.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  },
+  {
+    "id": "apoc-vitae-rebellion",
+    "name": "Vitae Rebellion",
+    "source": "apocrypha",
+    "page": 395,
+    "category": "Drukhari Poisons",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DRUKHARI",
+      "TOXIN"
+    ],
+    "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nAt the start of the victim’s first turn after suffering the Poisoned condition, if they fail the Toughness test to shake off the effects then they suffer enough Mortal Wounds to exceed their Max Wounds by 1, then they immediately suffer a Traumatic Injury and begin Dying.",
+    "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
+  }
+]

@@ -6,5 +6,5 @@ export function blocks({ value, max }: { value: number; max: number }) {
   const cells = Math.max(0, Math.min(max, MAX_CELLS));
   const filled =
     value <= 0 ? 0 : value >= max ? cells : Math.min(cells - 1, Math.max(1, Math.round((value / max) * cells)));
-  return "█".repeat(filled) + "░".repeat(cells - filled);
+  return { filled, cells };
 }

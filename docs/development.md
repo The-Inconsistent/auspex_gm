@@ -8,7 +8,8 @@ Setup, day-to-day commands, testing and the gotchas that have already bitten. Fo
 | Tool | Notes |
 | --- | --- |
 | [Bun](https://bun.sh) 1.3+ | Package manager, runtime and test runner. **Don't use npm or pnpm** |
-| Docker | Runs Postgres 17 (`docker-compose.yml`) |
+| Docker or Podman | Runs Postgres 17 (`docker-compose.yml`), which `dev:db`, `dev`, `test:smoke` and [Aspire](#aspire) all need. Podman works: install `podman-docker` (or Podman Desktop) for the `docker` shim, or use `podman compose` |
+| [Aspire](https://aspire.dev) CLI | Optional. A dashboard with per-resource logs and traces, and health-gated startup ([Aspire](#aspire)) |
 | TypeScript **5.9** | Pinned. TS 7 breaks the Next and Nest toolchains |
 | poppler (`pdftotext`, `pdftoppm`) | Only needed to transcribe from the books ([data.md](data.md)) |
 | A [Clerk](https://clerk.com) application | Sign-in. The free Hobby plan is enough ([Clerk](#clerk)) |
@@ -29,6 +30,43 @@ cd apps/api && bun run seed volkus --owner user_2abc…   # your Clerk user id; 
 ```
 
 Or sign in at `http://localhost:3000` as a creator and start an empty game with **NEW GAME** in the lobby.
+
+## Aspire
+
+Optional alternative to `bun run dev`, for a dashboard with per-resource logs, OTel traces and metrics, health-gated
+startup and container lifecycle. The AppHost is TypeScript (`aspire-apphost/apphost.mts`) — no C#, no .NET SDK.
+Turborepo still owns `build`, and deploy is unchanged.
+
+```bash
+curl -sSL https://aspire.dev/install.sh | bash   # or install.ps1 on Windows; adds ~/.aspire/bin to PATH
+aspire certs trust                               # once; opens an OS dialog, so run it in your own terminal
+aspire run                                       # Postgres → api → web, in order
+```
+
+The installer edits your user PATH, so **an already-open shell won't see `aspire`** — open a new one, or
+`export PATH="$HOME/.aspire/bin:$PATH"`.
+
+It orchestrates the same three things `bun run dev` does:
+
+| Resource | How |
+| --- | --- |
+| `postgres` | Its own container, `17-alpine`, host port 5434, user/password/db all `wg` — matching `docker-compose.yml`, so `apps/api/.env` and drizzle-kit keep working. The volume is **separate from compose's**, so the two hold different data |
+| `api` | `bun run dev` in `apps/api`, port 4000. Only `DATABASE_URL` is injected, from `db.uriExpression()` (`postgresql://…`); everything else still comes from `apps/api/.env` — `CLERK_SECRET_KEY`, `CLERK_JWT_KEY`, `WEB_ORIGIN`, `ADMIN_KEY`. Delete that file and sign-in silently fails. Waits for Postgres |
+| `web` | `next dev` in `apps/web`, port 3000, unproxied so it binds every interface (phones at the table reach it by LAN address). Waits for the api. Still needs Clerk keys in `.env.local` ([Clerk](#clerk)) |
+
+Ports are pinned deliberately: 4000 and 3000 are what Next's rewrites, `WEB_ORIGIN` and Clerk's `authorizedParties`
+assume. Both JS resources set `withBun({ install: false })` — an installer running inside `apps/*` hangs, because
+`workspace:*` deps only resolve from a root `bun install`.
+
+**Stop the compose Postgres first.** It holds the same port 5434 with the same credentials, and `bun run dev` leaves
+it running after Ctrl-C. Otherwise Aspire's container can't bind and the api hangs on `waitFor(db)` — or worse, you
+connect to whichever won the port and campaigns appear to vanish, because the two containers have separate volumes.
+
+```bash
+docker compose stop postgres
+```
+
+**Podman** needs `DOTNET_ASPIRE_CONTAINER_RUNTIME=podman`, since Aspire defaults to Docker.
 
 ## Clerk
 
@@ -102,6 +140,8 @@ Run these from the repo root unless noted.
 | `bun run test:smoke` | End-to-end GM, player, guest and invite sessions over Socket.IO. Needs `dev:db`, and `dev:api` running with `CLERK_TEST_SECRET` set |
 | `bun run dev` | The whole stack: Turborepo runs the root `dev:db` task (Postgres, waits until healthy), then every workspace's `dev` in parallel (api and web). Ctrl-C stops the api and web; Postgres keeps running |
 | `bun run build` | `turbo run build`: today that's the web production build. Catches what `tsc` doesn't, such as Server/Client boundaries |
+| `aspire run` | The whole stack with a dashboard, as an alternative to `bun run dev` ([Aspire](#aspire)). Ctrl-C stops everything, Postgres included |
+| `bun run aspire:build` | `tsc` for the AppHost. `aspire:dev` is the same in watch mode — neither one runs the stack |
 | `cd apps/api && bun run seed <pack> --owner <clerk user id>` | New campaign from `packages/data/packs/<pack>`, with that user as GM. Prints `/c/<campaignId>` |
 | `cd apps/api && bun run db:generate` | Migration from the `src/**/*.schema.ts` files |
 
@@ -164,6 +204,14 @@ the local diff when there's no PR.
 | The printed `/c/<id>` link opens on this machine but not on the tablet | It uses the first `WEB_ORIGIN` entry, `localhost`. Swap the host for the LAN address, or put the LAN address first |
 | Read tool refuses a book PDF | Over 100 MB. Render the page with `pdftoppm` ([data.md](data.md)) |
 | A phone opens the app over the LAN, but nothing works: the table sits on `SYNCING…`, sign-in is blank, no errors anywhere | `DEV_ORIGINS` isn't set, so the dev server 403s the HMR websocket and React never hydrates. The page renders server-side and then does nothing. Localhost is unaffected, so it only shows up on devices |
+| `bun: command not found: next` | Bun linked no `node_modules/.bin`, and a plain `bun install` reports "no changes". `bun install --force` relinks. Workspace binaries land in the member dir (`apps/web/node_modules/.bin`), not the root |
+| `npm error Unsupported URL Type "workspace:"` | npm can't resolve `workspace:*`. Use `bun install` — never npm |
+| `bash: aspire: command not found` right after installing | The installer edited your user PATH; the open shell predates it. New terminal, or `export PATH="$HOME/.aspire/bin:$PATH"` |
+| `aspire run` hangs at "Trusting certificates…" | It wants an OS dialog it can't show. Run `aspire certs trust` in an interactive terminal once |
+| `bun --cwd <dir> run <script>` prints usage and exits 0 | Bun wants `--cwd=<dir>`. The space form is a silent no-op |
+| Aspire starts nothing, socket refused | Podman machine is down, or Aspire is looking for Docker. `podman machine stop; podman machine start`, and set `DOTNET_ASPIRE_CONTAINER_RUNTIME=podman` |
+| `aspire run` hangs on the api, or seeded campaigns "disappear" | The compose Postgres is still on 5434 from an earlier `bun run dev`. `docker compose stop postgres` — the two have separate volumes, so they are different databases with the same credentials |
+| A join link answers "NO SIGNAL" rather than "LINK INVALID" | Not the token: the Next server couldn't reach the api, or got a 5xx (`app/join/[token]/route.ts`). A rejected token gives "LINK INVALID" instead. The api restarts on every file change under `bun --watch` |
 
 ## Not built yet
 

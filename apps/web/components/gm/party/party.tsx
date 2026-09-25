@@ -48,7 +48,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       const img = await QRCode.toDataURL(url, {
         margin: 1,
         width: QR_SIZE,
-        color: { dark: TOKENS.bg, light: TOKENS.fg },
+        color: { dark: TOKENS.ink, light: TOKENS.vellum },
       });
       setQr({ title, url, img });
     } catch (e) {
@@ -116,6 +116,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   // LOAD STATS (JSON): opens the import box for this character, or closes it.
   const toggleImport = (id: string) => setImportFor(importFor === id ? null : id);
 
+  // CANCEL (import box): closes it and drops the pasted JSON.
+  const cancelImport = () => {
+    setImportFor(null);
+    setJson("");
+  };
+
   // END SESSION: awards XP to everyone and saves the recap.
   const endSession = async () =>
     report(await send({ type: "session.end", xp, recap }), `SESSION ENDED · +${xp} XP EACH`);
@@ -152,11 +158,11 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
 
   return (
     <div className="pad stack">
-      {msg && <div className={msg.startsWith("!") ? "red" : "amber"}>{msg}</div>}
+      {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
 
       <section className="cols">
         <div className="panel pad stack">
-          <div className="rule">── SESSION ──</div>
+          <div className="rule">SESSION</div>
           {open ? (
             <>
               <div>SESSION {open.number} IN PROGRESS</div>
@@ -219,7 +225,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
         </div>
 
         <div className="panel pad stack">
-          <div className="rule">── FRAMEWORK (p.18) ──</div>
+          <div className="rule">FRAMEWORK (p.18)</div>
           <div className="field">
             <label className="label" htmlFor="patron">
               PATRON
@@ -241,7 +247,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       </section>
 
       <section className="panel pad stack">
-        <div className="rule">── TABLE ACCESS ──</div>
+        <div className="rule">TABLE ACCESS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
           <button className="btn primary" onClick={inviteRoom}>
             ROOM QR
@@ -310,13 +316,13 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 <button className="btn sm" onClick={() => showGuestQr(c)}>
                   GUEST QR
                 </button>
-                <button className="btn sm" onClick={() => toggleImport(c.id)}>
+                <button className="btn sm" aria-expanded={importFor === c.id} onClick={() => toggleImport(c.id)}>
                   LOAD STATS (JSON)
                 </button>
                 <button className="btn sm" onClick={() => respite(c)}>
                   RESPITE
                 </button>
-                <button className="btn sm" onClick={() => toggleReq(c.id)}>
+                <button className="btn sm" aria-expanded={reqFor === c.id} onClick={() => toggleReq(c.id)}>
                   REQUISITION
                 </button>
                 <button className="btn sm" onClick={() => adjWealth(c, 1)}>
@@ -337,6 +343,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                   sessionId={open?.id ?? null}
                   send={send}
                   onResult={requisitioned}
+                  onCancel={() => setReqFor(null)}
                 />
               )}
               {importFor === c.id && (
@@ -348,9 +355,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     onChange={(e) => setJson(e.target.value)}
                     placeholder='{"species":"Primaris Astartes","attributes":{…}}'
                   />
-                  <div>
+                  <div className="keys">
                     <button className="btn primary" onClick={() => importStats(c.id)}>
                       LOAD
+                    </button>
+                    <button className="btn" onClick={cancelImport}>
+                      CANCEL
                     </button>
                   </div>
                 </div>

@@ -1,0 +1,99 @@
+{
+  "id": "apoc-grapplehawk",
+  "name": "Grapplehawk",
+  "source": "apocrypha",
+  "page": 464,
+  "faction": "imperial",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS ARBITES",
+    "ANATHEMA PSYKANA",
+    "SERVITOR",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 2,
+    "A": 5,
+    "I": 5,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 8,
+    "note": "Mechanical Body: 4 AR"
+  },
+  "defence": 4,
+  "wounds": 5,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Stealth",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Animal",
+      "text": "A Grapplehawk is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Apprehend",
+      "text": "If an enemy becomes Restrained as a result of a Grapplehawk’s attack, the condition remains while they are engaged with the Grapplehawk—they are restrained by the Cyber-Mastiff’s jaws. If an enemy attempts to break free, the DN is equal to the Grapplehawk’s Strength, and a failed skill test inflicts 1d3 Mortal Wounds."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"10 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shock Pulse Claws",
+          "damage": 8,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Agonizing",
+            "Inflict (Restrained)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 3d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 10,
+  "size": "Small",
+  "note": "Apprehend prints \"restrained by the Cyber-Mastiff's jaws\" (copied from the Cyber-Mastiff); kept as printed."
+}

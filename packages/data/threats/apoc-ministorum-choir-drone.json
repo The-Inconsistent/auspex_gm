@@ -1,0 +1,72 @@
+{
+  "id": "apoc-ministorum-choir-drone",
+  "name": "Ministorum Choir Drone",
+  "source": "apocrypha",
+  "page": 469,
+  "faction": "mechanicus",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 2,
+    "A": 2,
+    "I": 2,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "defence": 1,
+  "wounds": 4,
+  "shock": null,
+  "determination": "Spend 1 Glory to roll 3d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "ADEPTUS MINISTORUM",
+    "SERVITOR"
+  ],
+  "resilience": {
+    "value": 6,
+    "note": "Augmetics: 3 AR"
+  },
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Scholar",
+        "dice": 4
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Choristor",
+      "text": "While within 10m of its owner, the Follower adds +2d to all the owner’s Leadership and Persuasion tests."
+    },
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "COMPLICATION",
+      "name": "Mindlock",
+      "text": "The Servitor is Exhausted for 1 round. This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    }
+  ]
+}

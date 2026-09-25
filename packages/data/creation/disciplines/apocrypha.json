@@ -5,8 +5,15 @@
     "source": "apocrypha",
     "page": 301,
     "text": "Chaos Sorcery\n\nThis section contains psychic powers distinct to the Sorcerers, Warp-Witches, Malefic Arcanists, and Rogue Psykers who have devoted themselves to the Dark Powers of Chaos.\n\nDark Hereticus\n\nChaos Space Marine psykers open their minds fully to the horrors of the warp, drawing immense power from this nightmare dimension to rip apart their enemies and infuse their allies with strength. Only those already inured to the maddening taint of Chaos can wield such raw power without losing all remnants of sanity.\n\nInfernal Gaze\n\nThis is identical to the power of the same name in the Maleficarum discipline, on page 281 of the Wrath & Glory rulebook. Its presence in the Dark Hereticus discipline allows characters to select that power without also knowing the Maleficarum discipline.\n\nPrescience\n\nThis is identical to the power of the same name in the Divination discipline, on page 274 of the Wrath & Glory rulebook. Its presence in the Dark Hereticus discipline allows characters to select that power without also knowing the Divination discipline.",
-    "requires": [],
-    "note": "No discipline-wide access rule is printed; each power prints its own Prerequisite (HERETIC ASTARTES and CHAOS, or HERETIC ASTARTES and the Chaos God's keyword). The text opens with the Chaos Sorcery section intro (p.301). Infernal Gaze (Core p.281, Maleficarum) and Prescience (Core p.274, Divination) are also Dark Hereticus powers by cross-reference: their Core records list dark-hereticus in alsoIn."
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "No discipline-wide access rule is printed; each power prints its own Prerequisite (HERETIC ASTARTES and CHAOS, or HERETIC ASTARTES and the Chaos God's keyword). The text opens with the Chaos Sorcery section intro (p.301). Infernal Gaze (Core p.281, Maleficarum) and Prescience (Core p.274, Divination) are also Dark Hereticus powers by cross-reference: their Core records list dark-hereticus in alsoIn. PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\""
   },
   {
     "id": "contagion",
@@ -70,8 +77,15 @@
     "source": "apocrypha",
     "page": 309,
     "text": "Bonesingers apply the psychic talents of the Aeldari in more creative ways than most, weaving telekinetic manipulation, psychosonic harmonies, and aethyric resonance into something which is equal parts art and craft, shaping the psychoreactive materials the Eldar use in their constructions with haunting melodies that are felt as much as heard.",
-    "requires": [],
-    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the AELDARI keyword.'"
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the AELDARI keyword.' PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\""
   },
   {
     "id": "revenant",
@@ -79,8 +93,15 @@
     "source": "apocrypha",
     "page": 314,
     "text": "Amongst the Reborn, even those psykers who have honed their powers for centuries will find their abilities augmented by the god of death.",
-    "requires": [],
-    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the YNNARI keyword.'"
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the YNNARI keyword.' PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\""
   },
   {
     "id": "waaagh",
@@ -88,8 +109,15 @@
     "source": "apocrypha",
     "page": 316,
     "text": "Weirdboyz channel the power of the Waaagh! into glowing green blasts of psychic destruction, or else yoke those roiling energies to create crude but spectacular results—if, that is, the attempt doesn’t cause their heads to explode like they swallowed a stikkbomb.",
-    "requires": [],
-    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the ORK keyword.'"
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the ORK keyword.' PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\""
   },
   {
     "id": "skeinwrought",
@@ -97,8 +125,15 @@
     "source": "apocrypha",
     "page": 318,
     "text": "With access to barrier-tech, all Grimnyr are capable of accessing and manipulating the psychic energies of the Warp despite their species' general resistance to or inability to touch the Immaterium. Grimnyr can smite their foes with blasts of psychic energy, but also are capable of unleashing other psychic abilities as well, making use of what is known as the Skeinwrought Discipline, which takes its name from the special psychoactive cloneskeins that all Grimnyr possess when they emerge from their crucibles.",
-    "requires": [],
-    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the LEAGUES OF VOTANN keyword.'"
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "No discipline-wide access rule is printed; each power prints 'Psyker must have the LEAGUES OF VOTANN keyword.' PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\""
   },
   {
     "id": "sanguinary",
@@ -120,11 +155,14 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ],
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors)."
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's."
   },
   {
     "id": "stormspeaking",
@@ -146,11 +184,14 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ],
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors)."
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's."
   },
   {
     "id": "technomancy",
@@ -172,11 +213,14 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ],
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors)."
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's."
   },
   {
     "id": "tempestas",
@@ -198,11 +242,14 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ],
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors)."
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's."
   },
   {
     "id": "umbramancy",
@@ -224,11 +271,14 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ],
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors)."
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's."
   },
   {
     "id": "psykana",
@@ -315,9 +365,15 @@
     "name": "Sanctic Discipline",
     "source": "apocrypha",
     "page": 267,
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). No \"Librarians only\" line is printed; the GREY KNIGHTS requirement is taken from the section intro and every power's printed Prerequisite.",
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). No \"Librarians only\" line is printed; the GREY KNIGHTS requirement is taken from the section intro and every power's printed Prerequisite. PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\"",
     "text": "Each Grey Knight is an accomplished psyker, trained to channel his mental energies into protective wards and an array of battle-sorceries. The mightiest Grey Knights of all can banish Daemons with a word, conjure psychic defences to protect their allies and unleash the destructive power of the warp itself upon their foes.\n\nGREY KNIGHTS psykers know Rites of Banishment instead of Smite.\n\nCreatures with the DAEMON keyword may not roll Determination against damage caused by a Sanctic power.",
     "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
       {
         "kind": "keyword",
         "anyOf": [
@@ -329,10 +385,6 @@
         "anyOf": [
           "grey-knights"
         ]
-      },
-      {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
       }
     ]
   },
@@ -341,7 +393,7 @@
     "name": "Geokinesis Discipline",
     "source": "apocrypha",
     "page": 271,
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors).",
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's.",
     "text": "Those scions of Rogal Dorn who have power over the warp are masters of stone and iron. Using aetheric energies, they can shatter fortress walls, cast the enemy into great pits in the ground or fortify themselves and their allies with strength drawn from the very bones of the earth.\n\nIMPERIAL FISTS Librarians only.",
     "requires": [
       {
@@ -357,8 +409,11 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ]
   },
@@ -367,7 +422,7 @@
     "name": "Indomitus Discipline",
     "source": "apocrypha",
     "page": 273,
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors).",
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's.",
     "text": "The Ultramarines Librarius is renowned for its discipline and close adherence to the strict dictates of the Codex Astartes. Ultramarines Librarians train their minds to a sharp focus, and are able to manipulate their enemy, read the premonitory echoes of their movements, or even strike directly at their victims’ psyches to devastating effect.\n\nULTRAMARINES Librarians only.",
     "requires": [
       {
@@ -383,8 +438,11 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ]
   },
@@ -393,7 +451,7 @@
     "name": "Interromancy Discipline",
     "source": "apocrypha",
     "page": 274,
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors).",
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's.",
     "text": "In order to aid the Interrogator-Chaplains in their cruel labours, the Librarians of the Dark Angels have mastered a sinister and invasive form of telepathy. Few sensations are more horrific for a victim than the insidious slither of the Librarian’s thoughts as they writhe through the gaps in his mental defences, flaying and twisting his psyche at will.\n\nDARK ANGELS Librarians only.",
     "requires": [
       {
@@ -409,8 +467,11 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ]
   },
@@ -419,7 +480,7 @@
     "name": "Promethean Discipline",
     "source": "apocrypha",
     "page": 276,
-    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors).",
+    "note": "Section rules (Adeptus Astartes Psychic Powers, p.267): \"This section contains psychic powers distinct to the Librarians of the Adeptus Astartes, and the sanctified daemon-slaying powers of the Grey Knights Chapter.\" \"SUCCESSOR CHAPTERS: Many of the following psychic disciplines can only be used by characters with a specific [CHAPTER] keyword. This can be substituted for any Chapter which is a successor to the listed Chapter. So, the Geokinesis Discipline can be used by CRIMSON FISTS characters, as they are a successor to the IMPERIAL FISTS.\" (a subFaction requirement matches successors). \"[CHAPTER] Librarians only\" / \"Librarians of the Adeptus Astartes\" (p.267): the Librarian archetypes; the rule that a Librarian knows only Librarius and one other discipline (p.267) is the Librarian's, not this discipline's.",
     "text": "The reek of ash, the searing heat of the volcano and the terrifying visage of monsters from Nocturnean myth—these are the hallmarks of the psychic powers used by those Librarians descended from Vulkan. Channelling the Chapter’s infernal heritage, these warrior-mystics defend their battle-brothers like true Salamanders.\n\nSALAMANDERS Librarians only.",
     "requires": [
       {
@@ -435,8 +496,11 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "As standard, a Librarian may only know powers from the Librarius discipline and one other discipline of their choice. An individual Librarian may replace the Librarius discipline with the Obscuration discipline or one of the Chapter-specific Disciplines in this section."
+        "kind": "archetype",
+        "anyOf": [
+          "librarian",
+          "primaris-librarian"
+        ]
       }
     ]
   }

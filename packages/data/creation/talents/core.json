@@ -53,7 +53,37 @@
       "plus": "the Value of the augmetic you choose"
     },
     "effect": "You replace part of your biology with an augmetic, the common name for cybernetic implants in the Imperium.\n\nYou may take this Talent more than once. Each time you take this Talent you may select two augmetics of Rare or lower rarity, or a single Very Rare augmetic. See p.242 for more information on Augmetics.\n\nThe GM determines which augmetics are available (usually any of those designed for your Species) and who can perform the necessary installation procedure.",
-    "repeatable": true
+    "repeatable": true,
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "pick": 2,
+            "wargearOf": {
+              "kinds": [
+                "augmetic"
+              ],
+              "rarity": {
+                "atMost": "Rare"
+              }
+            }
+          },
+          {
+            "pick": 1,
+            "wargearOf": {
+              "kinds": [
+                "augmetic"
+              ],
+              "rarity": {
+                "atLeast": "Very Rare",
+                "atMost": "Very Rare"
+              }
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "betrayer",
@@ -69,7 +99,12 @@
         ]
       }
     ],
-    "effect": "You can make mortal sacrifices to the Chaos Gods to gain their favour.\n\nYou gain +1 Corruption.\n\nYou can sacrifice a willing or unconscious individual — such as a devotee or follower — to gain a point of Wrath.\n\nAt the GM's discretion, this sacrifice triggers a DN 5 Corruption Test."
+    "effect": "You can make mortal sacrifices to the Chaos Gods to gain their favour.\n\nYou gain +1 Corruption.\n\nYou can sacrifice a willing or unconscious individual — such as a devotee or follower — to gain a point of Wrath.\n\nAt the GM's discretion, this sacrifice triggers a DN 5 Corruption Test.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "berzerker",
@@ -181,7 +216,18 @@
         ]
       }
     ],
-    "effect": "The Dark Gods have rewarded you with a minion drawn from the Warp. This malign creature revels in violence and deception, and serves as a constant reminder of your choices. Chaos familiars are unreliable, fickle, and treacherous, but they can be a powerful tool in any cultist's arsenal.\n\nYou gain +2 Corruption.\n\nYou gain a minion, a lesser daemon spawned from the Warp. It uses the Brimstone Horror profile (see p.349), but has a 1 in all Attributes. Its only Skills are Scholar (5) and Stealth (8).\n\nThe daemon is fickle. To get it to take action, you must first succeed at an Opposed Persuasion or Intimidation Test. Once persuaded, the daemon goes to extreme measures to accomplish whatever task you set, to the best of its limited abilities.\n\nAt the GM's discretion, if the minion sees you act against the interests of the Warp, the familiar immediately turns on you until it's destroyed or convinced of its mistake.\n\nIf the familiar is slain, you must spend a Wrath Point to summon it again — which is time-consuming and requires the GM's permission."
+    "effect": "The Dark Gods have rewarded you with a minion drawn from the Warp. This malign creature revels in violence and deception, and serves as a constant reminder of your choices. Chaos familiars are unreliable, fickle, and treacherous, but they can be a powerful tool in any cultist's arsenal.\n\nYou gain +2 Corruption.\n\nYou gain a minion, a lesser daemon spawned from the Warp. It uses the Brimstone Horror profile (see p.349), but has a 1 in all Attributes. Its only Skills are Scholar (5) and Stealth (8).\n\nThe daemon is fickle. To get it to take action, you must first succeed at an Opposed Persuasion or Intimidation Test. Once persuaded, the daemon goes to extreme measures to accomplish whatever task you set, to the best of its limited abilities.\n\nAt the GM's discretion, if the minion sees you act against the interests of the Warp, the familiar immediately turns on you until it's destroyed or convinced of its mistake.\n\nIf the familiar is slain, you must spend a Wrath Point to summon it again — which is time-consuming and requires the GM's permission.",
+    "grants": [
+      {
+        "corruption": 2
+      },
+      {
+        "followers": 1,
+        "kind": "minion",
+        "threatId": "pink-horror",
+        "variant": "Brimstone Horror"
+      }
+    ]
   },
   {
     "id": "conversational-cogitator",
@@ -275,7 +321,25 @@
       }
     ],
     "effect": "Through reputation or assignment, you have gathered a number of followers that will do whatever you ask. If you are attacked, they intervene.\n\nYour devotees are a Mob of any Troop level Threat, as described in Chapter 14: Bestiary. A number of devotees equal to Double Rank +2 have decided to follow you. You may use the stats presented in Chapter 14 for each devotee, or use the following rules:\n- Devotee Attributes are equal to 1 + Double Rank.\n- Devotee Skills are equal to 1 + Double Rank.\n- A devotee's Attributes and Skills cannot be higher than your own.\n\nWhenever you are hit by any form of attack, any of your devotees may make a DN5 Initiative Test as a Reflexive Action. If they succeed, the attack kills the devotee instead of hitting you.\n\nSlain devotees may be replaced for free with new devotees the next time you visit a major encampment or city.\n\nIf you take this Talent more than once, you gain more devotees of the same type you already possess. If you already have followers from an archetype ability, this Talent provides additional followers of that type instead.",
-    "repeatable": true
+    "repeatable": true,
+    "grants": [
+      {
+        "followers": {
+          "perRank": 2,
+          "plus": 2
+        },
+        "kind": "devotees",
+        "threatOf": {
+          "classes": [
+            "T"
+          ]
+        },
+        "genericStats": {
+          "perRank": 2,
+          "plus": 1
+        }
+      }
+    ]
   },
   {
     "id": "die-hard",
@@ -306,8 +370,9 @@
         "min": 4
       },
       {
-        "kind": "text",
-        "text": "at least 2 psychic powers from a single Discipline"
+        "kind": "powerCount",
+        "min": 2,
+        "sameDiscipline": true
       }
     ],
     "effect": "Your devotion to a psychic discipline has given you mastery over your style of Warpcraft.\n\nWhen you take this Talent, select a psychic discipline in which you have at least 2 psychic powers. Whenever you make a Psychic Mastery (Wil) Test to activate a psychic power from that discipline, reduce the DN by 1."
@@ -378,7 +443,16 @@
     "source": "core",
     "page": 133,
     "xp": 20,
-    "effect": "You never let down your guard.\n\nYou gain +Double Rank to your Passive Awareness."
+    "effect": "You never let down your guard.\n\nYou gain +Double Rank to your Passive Awareness.",
+    "grants": [
+      {
+        "mods": {
+          "passiveAwareness": {
+            "perRank": 2
+          }
+        }
+      }
+    ]
   },
   {
     "id": "favoured-by-the-warp",
@@ -432,7 +506,16 @@
         "min": 4
       }
     ],
-    "effect": "Your pain tolerance is above and beyond that of most of your Species.\n\nYou do not suffer a penalty to DN for being Wounded.\n\nYour Wounds Trait is increased by +Rank."
+    "effect": "Your pain tolerance is above and beyond that of most of your Species.\n\nYou do not suffer a penalty to DN for being Wounded.\n\nYour Wounds Trait is increased by +Rank.",
+    "grants": [
+      {
+        "mods": {
+          "maxWounds": {
+            "perRank": 1
+          }
+        }
+      }
+    ]
   },
   {
     "id": "flagellant",
@@ -609,7 +692,12 @@
         ]
       }
     ],
-    "effect": "You take pleasure in the destruction of any ordered institution. When you see your prey begin to falter, you revel in its collapse and become inspired to commit ever greater atrocities in the names of the Chaos Gods.\n\nYou gain +1 Corruption.\n\nWhenever you incapacitate an Adversary or Elite opponent, the group gains +1 Glory, up to a maximum Glory of Double Rank per encounter."
+    "effect": "You take pleasure in the destruction of any ordered institution. When you see your prey begin to falter, you revel in its collapse and become inspired to commit ever greater atrocities in the names of the Chaos Gods.\n\nYou gain +1 Corruption.\n\nWhenever you incapacitate an Adversary or Elite opponent, the group gains +1 Glory, up to a maximum Glory of Double Rank per encounter.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
   },
   {
     "id": "lip-reader",
@@ -633,7 +721,22 @@
         ]
       }
     ],
-    "effect": "Through otherworldly discipline or surgical treatments you have been rendered immune to temptations of the flesh.\n\nYou gain +Double Rank to your Conviction and Resolve.\n\nYou no longer add your Tier to your Max Shock."
+    "effect": "Through otherworldly discipline or surgical treatments you have been rendered immune to temptations of the flesh.\n\nYou gain +Double Rank to your Conviction and Resolve.\n\nYou no longer add your Tier to your Max Shock.",
+    "grants": [
+      {
+        "mods": {
+          "conviction": {
+            "perRank": 2
+          },
+          "resolve": {
+            "perRank": 2
+          },
+          "maxShock": {
+            "timesTier": -1
+          }
+        }
+      }
+    ]
   },
   {
     "id": "loremaster",
@@ -657,7 +760,7 @@
     "name": "Mark Of Chaos",
     "source": "core",
     "page": 136,
-    "note": "The +1 Corruption and the chosen option's bonus stay in the effect: Corruption is not a Mods Trait and every option is conditional. Tzeentch also grants PSYKER (or a minor psychic power if already PSYKER), which a single choice can't carry.",
+    "note": "Each God option replaces [MARK OF CHAOS] with the God's Keyword; Undedicated keeps it. Khorne can't be taken by a PSYKER; Tzeentch gives PSYKER, or a minor power if already PSYKER. Undedicated's +Rank bonus dice to a chosen Skill stays in the effect (bonusDice takes a fixed number).",
     "xp": 30,
     "requires": [
       {
@@ -669,22 +772,132 @@
     ],
     "grants": [
       {
+        "corruption": 1
+      },
+      {
         "choose": 1,
         "from": [
           {
-            "keyword": "NURGLE"
+            "all": [
+              {
+                "loseKeyword": "[MARK OF CHAOS]"
+              },
+              {
+                "keyword": "NURGLE"
+              },
+              {
+                "attribute": "T",
+                "add": 1
+              }
+            ]
           },
           {
-            "keyword": "KHORNE"
+            "all": [
+              {
+                "loseKeyword": "[MARK OF CHAOS]"
+              },
+              {
+                "keyword": "KHORNE"
+              },
+              {
+                "bonusDice": 2,
+                "when": "attacks using the All-Out Attack option"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "PSYKER"
+                ]
+              }
+            ]
           },
           {
-            "keyword": "SLAANESH"
+            "all": [
+              {
+                "loseKeyword": "[MARK OF CHAOS]"
+              },
+              {
+                "keyword": "SLAANESH"
+              },
+              {
+                "bonusDice": 2,
+                "skills": [
+                  "Awareness",
+                  "Persuasion"
+                ],
+                "when": "Awareness and Persuasion Tests"
+              }
+            ]
           },
           {
-            "keyword": "TZEENTCH"
+            "all": [
+              {
+                "loseKeyword": "[MARK OF CHAOS]"
+              },
+              {
+                "keyword": "TZEENTCH"
+              },
+              {
+                "keyword": "PSYKER"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "PSYKER"
+                ]
+              }
+            ]
           },
           {
-            "text": "Undedicated (keep the [MARK OF CHAOS] Keyword)"
+            "all": [
+              {
+                "loseKeyword": "[MARK OF CHAOS]"
+              },
+              {
+                "keyword": "TZEENTCH"
+              },
+              {
+                "choose": 1,
+                "fromDisciplines": [
+                  "minor"
+                ]
+              }
+            ],
+            "requires": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "PSYKER"
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "keyword": "[MARK OF CHAOS]"
+              },
+              {
+                "bonusDice": {
+                  "perRank": 1
+                },
+                "skills": [
+                  "Awareness",
+                  "Cunning",
+                  "Deception",
+                  "Insight",
+                  "Persuasion",
+                  "Psychic Mastery",
+                  "Stealth",
+                  "Weapon Skill"
+                ],
+                "when": "Tests with one of these Skills, chosen when the Talent is taken"
+              }
+            ]
           }
         ]
       }
@@ -845,7 +1058,6 @@
     "name": "Rite of Fear",
     "source": "core",
     "page": 138,
-    "note": "Also discounts the Disturbing Voice Talent to 10 XP (effect text only).",
     "xp": 30,
     "requires": [
       {
@@ -855,7 +1067,15 @@
         ]
       }
     ],
-    "effect": "Your voice box has been replaced with a synthetic vocoder, critical for audible communication in Lingua-technis, and able to emit infrasonic sounds. These deep frequencies are below auditory detection and can trigger fear responses.\n\nYou can trigger the Rite of Fear as a Combat Action. The rite affects all characters within a cone, 10 metres long by 3 metres wide at its terminus. Characters within the area of effect who lack ear protection (including augmetic ears) must immediately make a Fear Test with a DN of 2 + Double Rank. You are the vertex of the cone but are immune to its effects.\n\nYou can purchase the Disturbing Voice Talent for 10 XP."
+    "effect": "Your voice box has been replaced with a synthetic vocoder, critical for audible communication in Lingua-technis, and able to emit infrasonic sounds. These deep frequencies are below auditory detection and can trigger fear responses.\n\nYou can trigger the Rite of Fear as a Combat Action. The rite affects all characters within a cone, 10 metres long by 3 metres wide at its terminus. Characters within the area of effect who lack ear protection (including augmetic ears) must immediately make a Fear Test with a DN of 2 + Double Rank. You are the vertex of the cone but are immune to its effects.\n\nYou can purchase the Disturbing Voice Talent for 10 XP.",
+    "grants": [
+      {
+        "xpDiscount": {
+          "talent": "disturbing-voice",
+          "xp": 10
+        }
+      }
+    ]
   },
   {
     "id": "rite-of-magnometrics",
@@ -989,7 +1209,7 @@
     "name": "Special Weapons Trooper",
     "source": "core",
     "page": 140,
-    "note": "\"Ballistics Skill Rating 3+\" as printed. The Grenade launcher (with its grenades) and the TEMPESTUS SCION-only Hot-Shot Volley Gun are text grants: an item can't carry extras or a restriction.",
+    "note": "\"Ballistics Skill Rating 3+\" as printed. The Grenade launcher comes as a bundle with its grenades; the Hot-Shot Volley Gun requires the Tempestus Scion archetype.",
     "xp": {
       "base": 20,
       "plus": "the Value of the chosen weapon"
@@ -1042,10 +1262,38 @@
             }
           },
           {
-            "text": "Grenade launcher, plus 3 frag and 3 krak grenades"
+            "bundle": [
+              {
+                "name": "Grenade Launcher",
+                "qty": 1,
+                "wargearId": "militarum-tempestus-grenade-launcher"
+              },
+              {
+                "name": "Frag Grenade",
+                "qty": 3,
+                "wargearId": "frag-grenade"
+              },
+              {
+                "name": "Krak Grenade",
+                "qty": 3,
+                "wargearId": "krak-grenade"
+              }
+            ]
           },
           {
-            "text": "Hot-Shot Volley Gun (TEMPESTUS SCION only)"
+            "wargear": {
+              "name": "Hot-Shot Volley Gun",
+              "qty": 1,
+              "wargearId": "hot-shot-volley-gun"
+            },
+            "requires": [
+              {
+                "kind": "archetype",
+                "anyOf": [
+                  "tempestus-scion"
+                ]
+              }
+            ]
           }
         ]
       }
@@ -1155,7 +1403,14 @@
     "source": "core",
     "page": 140,
     "xp": 20,
-    "effect": "Your luck carries you through, even when Wargear or faith might falter.\n\nYou begin each session with an additional +Rank Wrath Points."
+    "effect": "Your luck carries you through, even when Wargear or faith might falter.\n\nYou begin each session with an additional +Rank Wrath Points.",
+    "grants": [
+      {
+        "wrathPerSession": {
+          "perRank": 1
+        }
+      }
+    ]
   },
   {
     "id": "trademark-weapon",
@@ -1170,12 +1425,12 @@
     "name": "Transhuman [Attribute]",
     "source": "core",
     "page": 141,
-    "note": "[Attribute] is the choice made when the Talent is taken, so its rating requirement is text.",
+    "note": "[Attribute] is the choice made when the Talent is taken: the requirement is on that chosen Attribute.",
     "xp": 60,
     "requires": [
       {
-        "kind": "text",
-        "text": "[Attribute] Rating 5+"
+        "kind": "chosenAttribute",
+        "min": 5
       }
     ],
     "effect": "When you take this Talent, you must select one of your Attributes with a rating of 5 or higher. This Talent applies to that Attribute.\n\nWhenever you make a Test using the selected Attribute, you gain +Double Rank bonus dice.",
@@ -1201,22 +1456,29 @@
     "name": "Uncanny [Trait]",
     "source": "core",
     "page": 141,
-    "note": "[Trait] is the choice made when the Talent is taken. The bonus is +Rank, so it is not a flat mod.",
+    "note": "[Trait] is the choice made when the Talent is taken; it gains +Rank.",
     "xp": 40,
     "effect": "Increase one of these Traits by +Rank:\n- Conviction\n- Defence\n- Resilience\n- Resolve\n- Shock\n- Determination\n- Speed\n- Wounds",
-    "repeatable": "perChoice"
+    "repeatable": "perChoice",
+    "grants": [
+      {
+        "chosenTrait": {
+          "perRank": 1
+        }
+      }
+    ]
   },
   {
     "id": "unnatural",
     "name": "Unnatural [Skill]",
     "source": "core",
     "page": 141,
-    "note": "[Skill] is the choice made when the Talent is taken, so its rating requirement is text.",
+    "note": "[Skill] is the choice made when the Talent is taken: the requirement is on that chosen Skill.",
     "xp": 60,
     "requires": [
       {
-        "kind": "text",
-        "text": "[Skill] Rating 4+"
+        "kind": "chosenSkill",
+        "min": 4
       }
     ],
     "effect": "Choose any Skill with a rating of 4+.\n\nWhen making a Test with the selected Skill, reduce any DN modifiers by –Double Rank, to a minimum of 0. This does not change the task's base difficulty, just any modifiers. Examples include attempting a Test without appropriate tools, in complete darkness, or a specific combat option.",
@@ -1252,7 +1514,12 @@
         "min": 4
       }
     ],
-    "effect": "You have opened your mind to access another psychic discipline, either through intense discipline and study or traumatic exposure to the Warp.\n\nYou may learn psychic powers from an additional psychic discipline.\n\nYou may choose to take Corruption to reduce the XP cost of this Talent. For every point of Corruption you take, reduce the XP cost by 5."
+    "effect": "You have opened your mind to access another psychic discipline, either through intense discipline and study or traumatic exposure to the Warp.\n\nYou may learn psychic powers from an additional psychic discipline.\n\nYou may choose to take Corruption to reduce the XP cost of this Talent. For every point of Corruption you take, reduce the XP cost by 5.",
+    "grants": [
+      {
+        "chooseDisciplines": 1
+      }
+    ]
   },
   {
     "id": "bolstering-purity",
@@ -1283,7 +1550,12 @@
         ]
       }
     ],
-    "effect": "Your words drip with the Emperor's immaculate will, reinforcing the faith of your allies.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you can spend 1 Faith to bolster another's purity. Select one character with the IMPERIUM keyword within hearing range — this can be yourself. The character automatically succeeds all Resolve and Conviction Tests until the end of the Round.\n\nOnce you have used this ability, you cannot use it again until you have completed a Regroup."
+    "effect": "Your words drip with the Emperor's immaculate will, reinforcing the faith of your allies.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you can spend 1 Faith to bolster another's purity. Select one character with the IMPERIUM keyword within hearing range — this can be yourself. The character automatically succeeds all Resolve and Conviction Tests until the end of the Round.\n\nOnce you have used this ability, you cannot use it again until you have completed a Regroup.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "by-his-will",
@@ -1314,7 +1586,12 @@
         ]
       }
     ],
-    "effect": "The depth of your faith allows you to call upon the God-Emperor to assist you when you work with another of His children.\n\nYou gain +1 Faith.\n\nWhen you Help a character with the IMPERIUM Keyword, you add triple the number of bonus dice if you spend 1 Faith."
+    "effect": "The depth of your faith allows you to call upon the God-Emperor to assist you when you work with another of His children.\n\nYou gain +1 Faith.\n\nWhen you Help a character with the IMPERIUM Keyword, you add triple the number of bonus dice if you spend 1 Faith.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "consecrated-light",
@@ -1344,7 +1621,12 @@
         ]
       }
     ],
-    "effect": "The Emperor's power can manifest physically for the faithful in times of need, a beacon to bolster the citizens of the Imperium.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you may spend 1 Faith and present a holy symbol of the Imperial Cult. You and any allies with the IMPERIUM Keyword within 15 + Double Rank metres gain +Double Rank bonus dice on Fear and Corruption Tests until the end of the Round."
+    "effect": "The Emperor's power can manifest physically for the faithful in times of need, a beacon to bolster the citizens of the Imperium.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you may spend 1 Faith and present a holy symbol of the Imperial Cult. You and any allies with the IMPERIUM Keyword within 15 + Double Rank metres gain +Double Rank bonus dice on Fear and Corruption Tests until the end of the Round.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "divine-guidance",
@@ -1375,7 +1657,12 @@
         ]
       }
     ],
-    "effect": "Through His direction, no shot will miss its mark.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to give the Emperor's guidance. Select one character with the IMPERIUM Keyword within hearing range — this can be yourself. The character gains +Double Rank bonus dice to Ballistic Skill (A) Tests for 1 Round."
+    "effect": "Through His direction, no shot will miss its mark.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to give the Emperor's guidance. Select one character with the IMPERIUM Keyword within hearing range — this can be yourself. The character gains +Double Rank bonus dice to Ballistic Skill (A) Tests for 1 Round.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "in-his-name",
@@ -1411,7 +1698,12 @@
         ]
       }
     ],
-    "effect": "You have spent time studying the holy writings of the Cult Imperialis and can invoke hallowed passages to sway others.\n\nYou gain +1 Faith.\n\nWhenever you target a character with the IMPERIUM Keyword with a Persuasion or Leadership Test, you can spend 1 Faith to add +Double Rank bonus dice to your pool."
+    "effect": "You have spent time studying the holy writings of the Cult Imperialis and can invoke hallowed passages to sway others.\n\nYou gain +1 Faith.\n\nWhenever you target a character with the IMPERIUM Keyword with a Persuasion or Leadership Test, you can spend 1 Faith to add +Double Rank bonus dice to your pool.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "inspired-blessing",
@@ -1441,7 +1733,12 @@
         ]
       }
     ],
-    "effect": "Your blessings invoke the majesty of the God-Emperor, uplifting your allies and reinforcing their determination.\n\nYou gain +1 Faith.\n\nYou may make an inspirational statement or prayer as a Combat Action. When you do so, spend 1 Faith to restore 1d3 + Double Rank Shock to you and all allies with the IMPERIUM keyword within 15 + Double Rank metres."
+    "effect": "Your blessings invoke the majesty of the God-Emperor, uplifting your allies and reinforcing their determination.\n\nYou gain +1 Faith.\n\nYou may make an inspirational statement or prayer as a Combat Action. When you do so, spend 1 Faith to restore 1d3 + Double Rank Shock to you and all allies with the IMPERIUM keyword within 15 + Double Rank metres.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "litany-of-hatred",
@@ -1478,7 +1775,12 @@
         ]
       }
     ],
-    "effect": "Hatred is the Emperor's greatest gift to humanity.\n\nYou gain +1 Faith.\n\nYou may spend 1 Faith and a Simple Action to recite a Litany of Hate. The effects of your Hatred Talent now apply to any of your allies with the IMPERIUM keyword within Rank x 10 metres."
+    "effect": "Hatred is the Emperor's greatest gift to humanity.\n\nYou gain +1 Faith.\n\nYou may spend 1 Faith and a Simple Action to recite a Litany of Hate. The effects of your Hatred Talent now apply to any of your allies with the IMPERIUM keyword within Rank x 10 metres.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "martyrs-tears",
@@ -1514,7 +1816,12 @@
         ]
       }
     ],
-    "effect": "You are destined for martyrdom, prepared and willing to sacrifice yourself entirely to serve the Emperor's grand vision.\n\nYou gain +1 Faith.\n\nAs Simple Action you can select a human target to heal. You must spend 1 Faith and take a number of Wounds up to a maximum equal to your Tier. The target recovers double the number of Wounds you sacrificed."
+    "effect": "You are destined for martyrdom, prepared and willing to sacrifice yourself entirely to serve the Emperor's grand vision.\n\nYou gain +1 Faith.\n\nAs Simple Action you can select a human target to heal. You must spend 1 Faith and take a number of Wounds up to a maximum equal to your Tier. The target recovers double the number of Wounds you sacrificed.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "repent",
@@ -1550,7 +1857,12 @@
         ]
       }
     ],
-    "effect": "The righteousness of your indignation rings in the ears of those true to the Imperial Cult\n\nYou gain +1 Faith.\n\nYou can attempt to force another adherent of the Imperial Cult to repent using the force of your will. Spend 1 Faith and make an opposed Intimidation (Wil) Test against your target with +Rank bonus dice. If you are in combat, this takes a Combat Action. If you succeed on the Test and the target has the IMPERIUM Keyword, they kneel and repent for Double Rank x 10 seconds."
+    "effect": "The righteousness of your indignation rings in the ears of those true to the Imperial Cult\n\nYou gain +1 Faith.\n\nYou can attempt to force another adherent of the Imperial Cult to repent using the force of your will. Spend 1 Faith and make an opposed Intimidation (Wil) Test against your target with +Rank bonus dice. If you are in combat, this takes a Combat Action. If you succeed on the Test and the target has the IMPERIUM Keyword, they kneel and repent for Double Rank x 10 seconds.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "righteous-wrath",
@@ -1586,7 +1898,12 @@
         ]
       }
     ],
-    "effect": "Your burning fervour inspires you to great deeds and can similarly inspire your allies.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to gain +2 Wrath. When you do this, you can sacrifice 1 point of Wrath to give an ally with the IMPERIUM Keyword that can hear you and is faithful to the Imperial Cult +1 Wrath."
+    "effect": "Your burning fervour inspires you to great deeds and can similarly inspire your allies.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to gain +2 Wrath. When you do this, you can sacrifice 1 point of Wrath to give an ally with the IMPERIUM Keyword that can hear you and is faithful to the Imperial Cult +1 Wrath.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "shield-of-faith",
@@ -1621,7 +1938,12 @@
         ]
       }
     ],
-    "effect": "Your indomitable belief steels your mind against Warp-witchery.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you may spend 1 Faith to ignore a psychic power or effect (including Perils of the Warp) until the end of the Round. You may spend an additional Faith to grant the same bonus to all allies with the IMPERIUM keyword within 15 + Double Rank metres."
+    "effect": "Your indomitable belief steels your mind against Warp-witchery.\n\nYou gain +1 Faith.\n\nAs a Reflexive Action, you may spend 1 Faith to ignore a psychic power or effect (including Perils of the Warp) until the end of the Round. You may spend an additional Faith to grant the same bonus to all allies with the IMPERIUM keyword within 15 + Double Rank metres.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "the-passion",
@@ -1652,7 +1974,12 @@
         ]
       }
     ],
-    "effect": "You cast your thoughts to His glory; His visage demands destruction.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to inspire the Emperor's wrath. Select one character with the IMPERIUM Keyword within hearing range — this can be yourself. The character gains +Double Rank bonus dice to Weapon Skill (I) Tests for 1 Round."
+    "effect": "You cast your thoughts to His glory; His visage demands destruction.\n\nYou gain +1 Faith.\n\nAs a Combat Action, you can spend 1 Faith to inspire the Emperor's wrath. Select one character with the IMPERIUM Keyword within hearing range — this can be yourself. The character gains +Double Rank bonus dice to Weapon Skill (I) Tests for 1 Round.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   },
   {
     "id": "the-emperor-protects",
@@ -1700,6 +2027,11 @@
         ]
       }
     ],
-    "effect": "You gain +1 Faith.\n\nAs a Reflexive Action, you may spend 2 Faith to force an attack directed at you to miss."
+    "effect": "You gain +1 Faith.\n\nAs a Reflexive Action, you may spend 2 Faith to force an attack directed at you to miss.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
   }
 ]

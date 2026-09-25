@@ -41,7 +41,7 @@ export function CodexView({ codex, send }: CodexViewProps) {
 
   return (
     <div className="stack">
-      <nav className="tabs" role="tablist">
+      <nav className="tabs sub" role="tablist" style={{ padding: "0 16px" }}>
         {CODEX_KIND_KEYS.map((k) => (
           <button key={k} role="tab" className="tab" aria-selected={kind === k} onClick={() => pickKind(k)}>
             {k.toUpperCase()}S
@@ -73,7 +73,7 @@ export function CodexView({ codex, send }: CodexViewProps) {
                   {"revealed" in r && (
                     <button
                       className="btn sm"
-                      style={{ color: r.revealed ? "var(--fg)" : "var(--red)" }}
+                      style={{ color: r.revealed ? "var(--ink)" : "var(--red)" }}
                       onClick={() => toggleRevealed(r)}
                     >
                       {r.revealed ? "REVEALED" : "HIDDEN"}

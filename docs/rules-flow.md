@@ -289,6 +289,49 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Novice-Sister, which print a cost without it, gain the 30.
 38. **Lost on the Warrior Path** (IoE p.59) grants the EXARCH keyword, which it makes you in prose: the Exarch Powers
     (Apocrypha pp.247–253) need it, and Apocrypha's own printing of the package lost the merge to IoE's.
+39. **Stay the Course** (Core p.154): an Agent who already has a Memorable Injury may still take the 3 Corruption.
+40. **Every PRIEST may buy Prayers** (the Prayers' own PRIEST requirement admits them), whether or not the archetype
+    prints "may purchase Prayers": the PRIEST keyword grants the access.
+41. **Joining the Asuryani by Change of Kinship** (IoE p.58): the first Path is free, as the Paths group prints it
+    (IoE p.10), not 10 XP as the package prints.
+42. **A named variant of a catalogue item** is the item plus what makes the variant, unless a book prints the variant
+    as its own item (Core's Master-Crafted Laspistol, p.217; IoE's Master Crafted Void Sabre, p.89). "Master-crafted
+    X" (VoA pp.40–41) is X with the Mastercrafted upgrade (Core p.228). The Ork Nob's "Kustom Slugga" and "Kustom
+    Choppa" (Core p.115) are the Slugga and Choppa with the Kustom Trait (Core p.209), so each takes a Trait of the
+    player's choice when acquired.
+43. **Mundane possessions** (a Bedroll, a Canteen, a Grooming kit, "Maps of the Heartworlds") that no armoury prints
+    and no rule reads stay name-only `mundane` items: a line on the sheet, never a catalogue entry, no Value or Rarity.
+    Clothes, robes, vestments, rags and gang colours are Clothing (Core p.236: "religious vestments, uniforms, or
+    protective worker's overalls"). The Rogue Trader's Imperial Frigate (Core p.104) is a `story` grant, a ship the GM
+    runs.
+44. **FSPG's numeric Rarity** (pp.120–128) is the Rarity's DN penalty (Core p.206): 0 Common, 1 Uncommon, 2 Rare,
+    3 Very Rare, 4 Unique. The Laud-Hailer prints "Rarity: 0", and the Irregular Acquisition endeavour sets a DN "equal
+    to the Rarity modifier".
+45. **The Ratling Sniper's "Sniper Rifle"** (FSPG p.114) is the Ratling Rifle (FSPG p.123), which its text calls one of
+    "these sniper rifles". The Interrogator's "Excruciator" is the armoury's "Excrutiator" (p.126).
+46. **IoE's Armoury supersedes Core's Aeldari printings** (the newest official printing wins). Aeldari-only items
+    (shuriken weapons, Lasblaster, Ranger Long Rifle, Fusion Gun, Void Sabre, Witchblade, Singing Spear, the Aeldari
+    armours, Shimmershield, Spirit Stone, Bonesinger Shard) link to IoE's entry in every book; Core's entry stays in the
+    catalogue, noting it. Generic items IoE reprints as Aeldari gear (Knife, Flamer, Chainsword, Power Sword, Plasma
+    Grenade, Cameleoline Cloak) link to IoE's only in Aeldari records (from IoE, or an archetype of an Aeldari faction).
+    A starting Spirit Stone is IoE's empty one (p.98), and a Rangefinder the standalone one.
+47. **An official book's starting wargear that no official armoury prints** takes Apocrypha's homebrew profile when it
+    has one: VoA's Bolt Carbine, Occulus Bolt Carbine, Grav-pistol, Plasma Incinerators, Smoke Grenades and Reductor
+    (VoA pp.30–37), the Techmarine's "Mark VII Artificer Power Armour" (Apocrypha's Artificer Armour, p.397), and
+    FSPG's Servo-skull, Cherubim and Combat servitor (Apocrypha's followers). An official profile wins where one
+    exists: VoA's Shock Grenade is FSPG's (p.124). The Eversor Assassin's "Executor pistol"
+    is the Executioner Pistol its section describes as the Eversor sidearm (Apocrypha p.356).
+48. **One free language** (Core p.31): "a free additional language" is one, even when several of your keywords
+    qualify. An ADEPTUS MECHANICUS character picks High Gothic or Cant Mechanicus, not both.
+49. **The Languages table's "Keyword Required"** only decides the free pick. Anyone may buy any language for 1 XP with
+    the GM's agreement (Core p.31 asks only for someone to teach it).
+50. **Languages the table doesn't list** (T'au, Thoughtmark, a Navigator House's tongue; Core p.31 "discuss with your
+    GM") are write-ins at 1 XP, approved by the GM.
+51. **Buying Wealth** (Core p.38): "you can buy up to 4 Wealth" is up to 4 bought on top of the starting Tier, at 1 XP
+    each.
+52. **The Tree of Learning** (Core p.26) applies only when raising a Skill with XP: raising it to R needs R Skills with
+    points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
+    fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
 
 ---
 

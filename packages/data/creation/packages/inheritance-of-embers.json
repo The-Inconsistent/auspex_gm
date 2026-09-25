@@ -24,8 +24,13 @@
     "influence": {
       "perTier": 1
     },
-    "note": "Skill Requirement printed \"Deceive Rating 3+\". Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier. Also allows Archetype Ascension as part of the package. The Archetype Ascension option is barred at Creation Ascension; the package itself is not.",
-    "effect": "Most characters portrayed in a Harlequin saedath can be played and then set aside at the end of a performance. But some masks are imbued with such psychic and mythological significance that once worn once, they forever leave a mark on the wearer's soul. These are often specific aspects of general archetypes, characters that play significant roles in particular stories. For example, a Death Jester might not merely assume the part of Death, but instead portray the insatiable Harvester of Torment, the majestic Lord of Crystal Bones, or the inescapable Rift Ghoul.\n\nStory Element: You have been honoured with the opportunity to portray an infamous character of Aeldari legend. Your new assumed identity imposes the following changes:\n- Choose two of your Skills with different Ratings. Swap the Ratings you have in each of those Skills.\n- Whichever of the two chosen Skills is now highest becomes your Agent's 'Signature Skill' (replacing any Signature Skills you already had). Whenever you roll a Wrath Critical on Tests of that Skill, you count as rolling an additional Exalted Icon, which can be Shifted on successful Tests as normal. This stacks with any other effects of the Wrath Critical, such as a Critical Hit or gaining 1 Glory.\n- As part of this Ascension Package, you may also undergo Archetype Ascension, so long as you meet the usual prerequisites. You cannot choose this option as part of Creation Ascension."
+    "note": "Skill Requirement printed \"Deceive Rating 3+\". Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier. Also allows Archetype Ascension as part of the package. The Archetype Ascension option is barred at Creation Ascension; the package itself is not. No grant form swaps Skill Ratings, so the swap is a `story` grant.",
+    "effect": "Most characters portrayed in a Harlequin saedath can be played and then set aside at the end of a performance. But some masks are imbued with such psychic and mythological significance that once worn once, they forever leave a mark on the wearer's soul. These are often specific aspects of general archetypes, characters that play significant roles in particular stories. For example, a Death Jester might not merely assume the part of Death, but instead portray the insatiable Harvester of Torment, the majestic Lord of Crystal Bones, or the inescapable Rift Ghoul.\n\nStory Element: You have been honoured with the opportunity to portray an infamous character of Aeldari legend. Your new assumed identity imposes the following changes:\n- Choose two of your Skills with different Ratings. Swap the Ratings you have in each of those Skills.\n- Whichever of the two chosen Skills is now highest becomes your Agent's 'Signature Skill' (replacing any Signature Skills you already had). Whenever you roll a Wrath Critical on Tests of that Skill, you count as rolling an additional Exalted Icon, which can be Shifted on successful Tests as normal. This stacks with any other effects of the Wrath Critical, such as a Critical Hit or gaining 1 Glory.\n- As part of this Ascension Package, you may also undergo Archetype Ascension, so long as you meet the usual prerequisites. You cannot choose this option as part of Creation Ascension.",
+    "grants": [
+      {
+        "story": "Choose two of your Skills with different Ratings and swap their Ratings; the higher of the two becomes your Signature Skill, replacing any you had."
+      }
+    ]
   },
   {
     "id": "change-of-kinship",
@@ -46,16 +51,23 @@
     ],
     "notAtCreation": true,
     "influence": -1,
-    "note": "Influence Bonus printed \"−1\". The grant is the kindred joined; losing the old sub-faction's Keywords has no grant form, so it is in `effect` only. Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier. Also allows Archetype Ascension as part of the package.",
+    "note": "Influence Bonus printed \"−1\". The first grant is the kindred joined; the second is the kindred left, whose Keywords are lost (`loseKeyword`, each option only for an Agent with that kindred's Keyword). Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier. Also allows Archetype Ascension as part of the package. Joining the Asuryani gives `optionAccess` to asuryani-paths at the group's XP (first free, IoE p.10), not the package's printed 10 XP for the first Path (GM ruling, docs/rules-flow.md §11.41). Leaving the Asuryani loses the Paths by losing ASURYANI; no grant form removes an option access.",
     "effect": "It is uncommon, but not unheard of, for Aeldari to leave their homes, be forced into exile, or be captured and raised by another Aeldari culture. This is most common for those already on the frontiers of their respective societies, rebels and Outcasts with questions their kin cannot answer. The Ynnari exist only by welcoming Aeldari of all kinds.\n\nStory Element: You have abandoned your Aeldari sub-culture and found refuge with another. Choose one of the sub-factions below as your new kindred. The exact effects of this Ascension Package vary, depending on which sub-faction you are leaving and which you are joining.\n- If you leave the Asuryani, you lose the ASURYANI and [CRAFTWORLD] Keywords, and can no longer purchase Asuryani Paths. If you join the Asuryani, you gain the ASURYANI and [CRAFTWORLD] Keywords, and may now purchase Asuryani Paths — the first costs 10 XP, and all subsequent Paths cost 20 XP each.\n- If you leave the Anhrathe, you lose the ANHRATHE and [COTERIE] Keywords. If you join the Anhrathe, you gain the ANHRATHE and [COTERIE] Keywords.\n- If you leave the Drukhari, you lose the DRUKHARI, [KABAL], [WYCH CULT], [COVEN] and BLADES FOR HIRE Keywords. If you join the Drukhari, you gain the DRUKHARI and BLADES FOR HIRE Keywords.\n- If you leave the Harlequins, you lose the HARLEQUIN and [MASQUE] Keywords. If you join the Harlequins, you gain the HARLEQUIN and [MASQUE] Keywords.\n- If you leave the Ynnari, you lose the YNNARI Keyword. If you join the Ynnari, you gain the YNNARI Keyword.\n\nWhichever sub-faction the Agent joins or leaves, they replace their Objectives with those of their new sub-faction, but retain the benefits of any Talents, Archetype Abilities, Asuryani Paths, or psychic powers they had already obtained. As part of this Ascension Package, you may also undergo Archetype Ascension, so long as you meet the usual prerequisites.",
     "grants": [
       {
         "choose": 1,
         "from": [
           {
-            "keywords": [
-              "ASURYANI",
-              "[CRAFTWORLD]"
+            "all": [
+              {
+                "keywords": [
+                  "ASURYANI",
+                  "[CRAFTWORLD]"
+                ]
+              },
+              {
+                "optionAccess": "asuryani-paths"
+              }
             ]
           },
           {
@@ -78,6 +90,107 @@
           },
           {
             "keyword": "YNNARI"
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "all": [
+              {
+                "loseKeyword": "ASURYANI"
+              },
+              {
+                "loseKeyword": "[CRAFTWORLD]"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "ASURYANI"
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "loseKeyword": "ANHRATHE"
+              },
+              {
+                "loseKeyword": "[COTERIE]"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "ANHRATHE"
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "loseKeyword": "DRUKHARI"
+              },
+              {
+                "loseKeyword": "[KABAL]"
+              },
+              {
+                "loseKeyword": "[WYCH CULT]"
+              },
+              {
+                "loseKeyword": "[COVEN]"
+              },
+              {
+                "loseKeyword": "BLADES FOR HIRE"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "DRUKHARI"
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "loseKeyword": "HARLEQUIN"
+              },
+              {
+                "loseKeyword": "[MASQUE]"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "HARLEQUIN"
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "loseKeyword": "YNNARI"
+              }
+            ],
+            "requires": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "YNNARI"
+                ]
+              }
+            ]
           }
         ]
       }
@@ -108,11 +221,27 @@
     "influence": {
       "perTier": 1
     },
-    "note": "The optional Corruption buy-off and the optional extra +1 Influence per Tier are in `effect` only. Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier.",
+    "note": "The optional extra +1 Influence per Tier (which earns a rival's enmity) is an optional choice. The Wealth-for-Corruption buy-off is a trade of any size, which no grant form holds, so it is a `story` grant. Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier.",
     "effect": "The current time of turmoil in the Gilead System is but a minor distraction from the dark spectacles seen in Commorragh. Between realspace raids, Drukhari may return to show off their plunder, conspire with their peers, and shore up their territory in the Dark City. When this scheming goes well, the rewards are plentiful — but everything claimed in Commorragh is at someone else's expense, and the vendettas of slighted rivals can be deadly.\n\nStory Element: You have won power, turf, status, or influence in the Dark City, and to the victor goes the spoils. Gain 2 Wealth per Tier Ascended.\n\nYou may use this opportunity to spend any Wealth you have on sinister rituals that reduce your debt to She Who Thirsts. Lose 1 Corruption Point per point of Wealth spent.\n\nOptionally, you may also choose to gain an additional +1 Influence per Tier Ascended (+2 per Tier Ascended in total), but if you do so you earn the bitter enmity of another Kabal, Wych Cult, or Haemonculus Coven, who will seek to sabotage your operations in the future.",
     "grants": [
       {
-        "text": "2 Wealth per Tier Ascended"
+        "wealth": {
+          "perTier": 2
+        }
+      },
+      {
+        "choose": 1,
+        "optional": true,
+        "from": [
+          {
+            "influence": {
+              "perTier": 1
+            }
+          }
+        ]
+      },
+      {
+        "story": "You may spend any Wealth you have on sinister rituals: lose 1 Corruption Point per point of Wealth spent."
       }
     ]
   },
@@ -151,11 +280,20 @@
     "influence": {
       "perTier": 1
     },
-    "note": "Makes the Agent \"an Exarch of Khaine\" in prose only: EXARCH is not printed as a Keyword here, so it is not granted. Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier. Apocrypha p.216 prints a different homebrew \"Lost Upon The Warrior Path\" (15 × New Tier, KEYWORDS: EXARCH, Exarch Armour); it is not transcribed, this official printing wins. EXARCH keyword granted by GM ruling (docs/rules-flow.md §11.38), which opens the Exarch Powers.",
+    "note": "Makes the Agent \"an Exarch of Khaine\"; EXARCH is not printed as a Keyword here, but is granted by GM ruling (docs/rules-flow.md §11.38), which opens the Exarch Powers. Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier. Apocrypha p.216 prints a different homebrew \"Lost Upon The Warrior Path\" (15 × New Tier, KEYWORDS: EXARCH, Exarch Armour); it is not transcribed, this official printing wins.",
     "effect": "When an Asuryani becomes so obsessed with an Asuryani Path that they cannot veer from it, they are said to be 'lost on the Path'. Aspect Warriors who suffer this fate become Exarchs, and are outfitted with ceremonial armour in the Aspect Shrines they now tend as high priests. This armour's spirit stones contain the souls of all previous Exarchs who wore it, transforming the wearer from an individual into the collective consciousness of several legendary warriors. The wearer's personal identity is forfeit, their name replaced with a ceremonial title that honours an aspect of Khaine.\n\nStory Element: You have forever pledged yourself to the Warrior Path, and become anointed an Exarch of Khaine. Choose an ASPECT WARRIOR Archetype you already have the Archetype Ability for, and apply the following ongoing benefits:\n- Whilst using the Archetype Ability of the chosen Archetype, you may substitute your Rank with your Tier.\n- Whilst wearing the armour provided by your chosen Archetype's Wargear, you may roll Determination against attacks that deal Mortal Wounds.\n- Gain a new weapon with the ASPECT WARRIOR Keyword. If you choose a weapon already provided by your chosen Archetype's Wargear, it gains the Mastercrafted Upgrade (Wrath & Glory page 228).",
     "grants": [
       {
-        "text": "A new weapon with the ASPECT WARRIOR Keyword (Mastercrafted if already provided by the chosen Archetype's Wargear)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "wargearKeywords": [
+            "ASPECT WARRIOR"
+          ],
+          "condition": "Mastercrafted if already provided by the chosen Archetype's Wargear"
+        }
       },
       {
         "keyword": "EXARCH"
@@ -197,20 +335,38 @@
     "influence": {
       "perTier": 1
     },
-    "note": "The three reward options are a text choice (serenity, treasures, answers). Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier.",
+    "note": "The three reward options (serenity, treasures, answers) are a choice of structured grants. Section intro (p.57): chosen by Archetypes with the AELDARI keyword when they Ascend to a new Tier.",
     "effect": "Though the Webway is among the swiftest means of traversing the galaxy, it can deliver a traveller to many perilous worlds. Adventurous Aeldari who wander its winding cross-dimensional corridors might find relative peace amongst the Exodite colonies, recover artefacts from lost worlds, or perhaps even lay their hands on knowledge and lore from the depths of the Black Library. Whatever boons they discover in their travels can be put to good use upon their return to the Gilead System.\n\nStory Element: Your journey through the Webway's safer paths earned you a reward, before it returned you to where you started. Choose one of the options below:\n- You find serenity. Lose 2 Corruption per Tier Ascended.\n- You find treasures thought lost to your people. Gain 1 Wealth per Tier Ascended, and an item of Wargear with Value of 2 + new Tier (or lower).\n- You find answers to your questions. In addition to narrative effects agreed with your GM, you start each future session with an extra Wrath Point per Tier Ascended.",
     "grants": [
       {
         "choose": 1,
         "from": [
           {
-            "text": "Lose 2 Corruption per Tier Ascended"
+            "corruption": {
+              "perTier": -2
+            }
           },
           {
-            "text": "1 Wealth per Tier Ascended, and an item of Wargear with Value of 2 + new Tier (or lower)"
+            "all": [
+              {
+                "wealth": {
+                  "perTier": 1
+                }
+              },
+              {
+                "pick": 1,
+                "wargearOf": {
+                  "maxValue": {
+                    "newTierPlus": 2
+                  }
+                }
+              }
+            ]
           },
           {
-            "text": "An extra Wrath Point per Tier Ascended at the start of each future session"
+            "wrathPerSession": {
+              "perTier": 1
+            }
           }
         ]
       }

@@ -1,0 +1,767 @@
+[
+  {
+    "id": "apoc-arco-flagellant",
+    "name": "Arco-Flagellant",
+    "source": "apocrypha",
+    "page": 457,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-arco-flagellant",
+    "effect": ""
+  },
+  {
+    "id": "apoc-black-templars-neophyte",
+    "name": "Black Templars Neophyte",
+    "source": "apocrypha",
+    "page": 458,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "BLACK TEMPLARS"
+    ],
+    "threatId": "apoc-black-templars-neophyte",
+    "effect": "You may only acquire a Black Templars Neophyte if you are an ADEPTUS ASTARTES character (including PRIMARIS Astartes) of the BLACK TEMPLARS Chapter.",
+    "note": "The requirement is printed without a \"Requirements:\" label, under the Value line; kept at the start of effect and structured.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "black-templars"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "apoc-cat-unit",
+    "name": "CAT Unit",
+    "source": "apocrypha",
+    "page": 459,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "NAVIS IMPERIALIS",
+      "ADEPTUS ASTARTES",
+      "ROBOT"
+    ],
+    "threatId": "apoc-cat-unit",
+    "effect": ""
+  },
+  {
+    "id": "apoc-chapter-serf",
+    "name": "Chapter Serf",
+    "source": "apocrypha",
+    "page": 460,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "threatId": "apoc-chapter-serf",
+    "effect": ""
+  },
+  {
+    "id": "apoc-cherub",
+    "name": "Cherub",
+    "source": "apocrypha",
+    "page": 461,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTA SORORITAS",
+      "ADEPTUS MINISTORUM",
+      "ADEPTUS ASTARTES",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-cherub",
+    "effect": "A Cherub may have one of the following options: Armourium Cherub, Incensor Cherub, Choristor Cherub, Defensor Cherub, Warp-Bane Cherub.",
+    "note": "Section headed \"Cherubim\", stat block \"CHERUB\". The option list is the stat block's VARIANTS bonus; each option is a variant on the threat."
+  },
+  {
+    "id": "apoc-cyber-mastiff",
+    "name": "Cyber-Mastiff",
+    "source": "apocrypha",
+    "page": 462,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ARBITES",
+      "ANATHEMA PSYKANA",
+      "SERVITOR",
+      "BEAST"
+    ],
+    "threatId": "apoc-cyber-mastiff",
+    "effect": ""
+  },
+  {
+    "id": "apoc-fenrisian-wolf",
+    "name": "Fenrisian Wolf",
+    "source": "apocrypha",
+    "page": 463,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "SPACE WOLVES",
+      "BEAST"
+    ],
+    "threatId": "apoc-fenrisian-wolf",
+    "effect": ""
+  },
+  {
+    "id": "apoc-grapplehawk",
+    "name": "Grapplehawk",
+    "source": "apocrypha",
+    "page": 464,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ARBITES",
+      "ANATHEMA PSYKANA",
+      "SERVITOR",
+      "BEAST"
+    ],
+    "threatId": "apoc-grapplehawk",
+    "effect": ""
+  },
+  {
+    "id": "apoc-psyber-eagle",
+    "name": "Psyber Eagle",
+    "source": "apocrypha",
+    "page": 465,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "INQUISITION",
+      "ADEPTUS MECHANICUS",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-psyber-eagle",
+    "effect": "",
+    "note": "The book adds (flavour column): \"The same profile can also be used for Psyber-Ravens, and similar augmented avian familiars.\""
+  },
+  {
+    "id": "apoc-calligraphus-servitor",
+    "name": "Calligraphus Servitor",
+    "source": "apocrypha",
+    "page": 466,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "ADEPTUS MINISTORUM",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-calligraphus-servitor",
+    "effect": ""
+  },
+  {
+    "id": "apoc-combat-servitor",
+    "name": "Combat Servitor",
+    "source": "apocrypha",
+    "page": 467,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-combat-servitor",
+    "effect": ""
+  },
+  {
+    "id": "apoc-gun-servitor",
+    "name": "Gun Servitor",
+    "source": "apocrypha",
+    "page": 467,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-gun-servitor",
+    "effect": ""
+  },
+  {
+    "id": "apoc-monotask-servitor",
+    "name": "Monotask Servitor",
+    "source": "apocrypha",
+    "page": 468,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-monotask-servitor",
+    "effect": ""
+  },
+  {
+    "id": "apoc-medicae-servitor",
+    "name": "Medicae Servitor",
+    "source": "apocrypha",
+    "page": 468,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "OFFICIO MEDICAE",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-medicae-servitor",
+    "effect": ""
+  },
+  {
+    "id": "apoc-ministorum-choir-drone",
+    "name": "Ministorum Choir Drone",
+    "source": "apocrypha",
+    "page": 469,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "ADEPTUS MINISTORUM",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-ministorum-choir-drone",
+    "effect": ""
+  },
+  {
+    "id": "apoc-murder-servitor",
+    "name": "Murder Servitor",
+    "source": "apocrypha",
+    "page": 469,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "NAVIS IMPERIALIS",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-murder-servitor",
+    "effect": ""
+  },
+  {
+    "id": "apoc-servo-skull",
+    "name": "Servo Skull",
+    "source": "apocrypha",
+    "page": 470,
+    "category": "Imperial Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SERVITOR"
+    ],
+    "threatId": "apoc-servo-skull",
+    "effect": "A Servo Skull can be outfitted as one of the following variants: Augur Skull, Auto-Scribe Skull, Combat Skull, Courier, Gheistskull, Gun Skull, Illuminator, Laud Hauler, Medicae Skull, Utility Skull."
+  },
+  {
+    "id": "apoc-daemonhost",
+    "name": "Daemonhost",
+    "source": "apocrypha",
+    "page": 471,
+    "category": "Chaos Followers",
+    "kind": "follower",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "CHAOS",
+      "DAEMON",
+      "[MARK OF CHAOS]",
+      "PSYKER"
+    ],
+    "threatId": "apoc-daemonhost",
+    "effect": "When first acquired, a Daemonhost is Thrice-Bound."
+  },
+  {
+    "id": "apoc-dark-disciple",
+    "name": "Dark Disciple",
+    "source": "apocrypha",
+    "page": 472,
+    "category": "Chaos Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAOS",
+      "HERETIC",
+      "[MARK OF CHAOS]",
+      "PRIEST"
+    ],
+    "threatId": "apoc-dark-disciple",
+    "effect": ""
+  },
+  {
+    "id": "apoc-thrall-wizard",
+    "name": "Thrall Wizard",
+    "source": "apocrypha",
+    "page": 472,
+    "category": "Chaos Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAOS",
+      "HERETIC",
+      "[MARK OF CHAOS]",
+      "PSYKER"
+    ],
+    "threatId": "apoc-thrall-wizard",
+    "effect": ""
+  },
+  {
+    "id": "apoc-rubric-marine",
+    "name": "Rubric Marine",
+    "source": "apocrypha",
+    "page": 473,
+    "category": "Chaos Followers",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "HERETIC ASTARTES",
+      "THOUSAND SONS"
+    ],
+    "threatId": "apoc-rubric-marine",
+    "effect": "You may only acquire a Rubric Marine if you are an HERETIC ASTARTES PSYKER of the THOUSAND SONS Legion.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "THOUSAND SONS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "apoc-faolchu",
+    "name": "Faolchú",
+    "source": "apocrypha",
+    "page": 474,
+    "category": "Aeldari Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ANHRATHE",
+      "BEAST"
+    ],
+    "threatId": "apoc-faolchu",
+    "effect": ""
+  },
+  {
+    "id": "apoc-gyrinx",
+    "name": "Gyrinx",
+    "source": "apocrypha",
+    "page": 474,
+    "category": "Aeldari Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ANHRATHE",
+      "HARLEQUIN",
+      "BEAST"
+    ],
+    "threatId": "apoc-gyrinx",
+    "effect": ""
+  },
+  {
+    "id": "apoc-khymera",
+    "name": "Khymera",
+    "source": "apocrypha",
+    "page": 475,
+    "category": "Drukhari Followers",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "BEAST",
+      "DAEMON"
+    ],
+    "threatId": "apoc-khymera",
+    "effect": ""
+  },
+  {
+    "id": "apoc-razorwing",
+    "name": "Razorwing",
+    "source": "apocrypha",
+    "page": 475,
+    "category": "Drukhari Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "BEAST"
+    ],
+    "threatId": "apoc-razorwing",
+    "effect": ""
+  },
+  {
+    "id": "apoc-attack-squig",
+    "name": "Attack Squig",
+    "source": "apocrypha",
+    "page": 476,
+    "category": "Ork Followers",
+    "kind": "follower",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "ORK",
+      "SQUIG",
+      "BEAST"
+    ],
+    "threatId": "apoc-attack-squig",
+    "effect": ""
+  },
+  {
+    "id": "apoc-grot",
+    "name": "Grot",
+    "source": "apocrypha",
+    "page": 477,
+    "category": "Ork Followers",
+    "kind": "follower",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "GRETCHIN",
+      "RUNTS"
+    ],
+    "threatId": "apoc-gretchin",
+    "effect": "",
+    "note": "Sold under the heading \"Grot\"; the stat block is titled GRETCHIN."
+  },
+  {
+    "id": "apoc-corv",
+    "name": "CORV",
+    "source": "apocrypha",
+    "page": 478,
+    "category": "Leagues of Votann Followers",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "COG",
+      "ROBOT"
+    ],
+    "threatId": "apoc-corv",
+    "effect": ""
+  },
+  {
+    "id": "apoc-e-cog",
+    "name": "E-COG",
+    "source": "apocrypha",
+    "page": 478,
+    "category": "Leagues of Votann Followers",
+    "kind": "follower",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "COG",
+      "ROBOT",
+      "BRÔKHYR"
+    ],
+    "threatId": "apoc-e-cog",
+    "effect": ""
+  },
+  {
+    "id": "apoc-dx-4-technical-drone",
+    "name": "DX-4 Technical Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "EARTH CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "DX-4 Technical Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-escort-drone",
+    "name": "Escort Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "WATER CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "Escort Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-hover-drone-platform",
+    "name": "Hover Drone Platform",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "ETHEREAL CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "Hover Drone Platform",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mb-3-recon-drone",
+    "name": "MB-3 Recon Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "PATHFINDER"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MB-3 Recon Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-1-tactical-drone",
+    "name": "MV-1 Tactical Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "FIRE CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-1 Tactical Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-31-pulse-accelerator-drone",
+    "name": "MV-31 Pulse Accelerator Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "PATHFINDER"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-31 Pulse Accelerator Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-33-grav-inhibitor-drone",
+    "name": "MV-33 Grav-Inhibitor Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "PATHFINDER"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-33 Grav-Inhibitor Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-36-guardian-drone",
+    "name": "MV-36 Guardian Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "FIRE CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-36 Guardian Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-4-shield-drone",
+    "name": "MV-4 Shield Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-4 Shield Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-7-marker-drone",
+    "name": "MV-7 Marker Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "FIRE CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-7 Marker Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-71-sniper-drone",
+    "name": "MV-71 Sniper Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "FIRE CASTE"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-71 Sniper Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here."
+  },
+  {
+    "id": "apoc-mv-8-missile-drone",
+    "name": "MV-8 Missile Drone",
+    "source": "apocrypha",
+    "page": 479,
+    "category": "T'au Empire Drones",
+    "kind": "follower",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "DRONE",
+      "XV88"
+    ],
+    "threatId": "apoc-tau-drone",
+    "variant": "MV-8 Missile Drone",
+    "effect": "When a drone is acquired, it will take the form of one of the variants listed here.",
+    "note": "The table on p.479 prints \"MV 8 Missile Drone\" (no hyphen); its entry on p.482 prints \"MV-8 Missile Drone\"."
+  }
+]

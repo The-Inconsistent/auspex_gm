@@ -542,7 +542,8 @@
     "keywords": [
       "AELDARI"
     ],
-    "effect": "You ignore DN penalties to build, repair, maintain, and sabotage Aeldari technology."
+    "effect": "You ignore DN penalties to build, repair, maintain, and sabotage Aeldari technology.",
+    "note": "Superseded by IoE p.95 (ioe-bonesinger-shard)."
   },
   {
     "id": "spirit-stone",
@@ -556,7 +557,8 @@
     "keywords": [
       "AELDARI"
     ],
-    "effect": "If an Aeldari dies while wearing a Spirit Stone, the Stone immediately absorbs the soul and stores it safely and secretly inside."
+    "effect": "If an Aeldari dies while wearing a Spirit Stone, the Stone immediately absorbs the soul and stores it safely and secretly inside.",
+    "note": "Superseded by IoE p.98 (ioe-spirit-stone-empty)."
   },
   {
     "id": "webway-keystone",

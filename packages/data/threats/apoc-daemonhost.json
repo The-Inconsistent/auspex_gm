@@ -1,0 +1,132 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Bound Daemon",
+      "text": "The Daemonhost’s abilities depend on how strongly the daemon is bound into the host.\nThrice-Bound: The Daemonhost’s profile is unchanged.\nTwice-Bound: The Daemonhost’s AR, the DN of its Fear Test, the ED of its attacks, and its Intimidation, Scholar, and Psychic Mastery skills all increase by +1. The Daemonhost has a Flight speed of 6, and it knows one additional psychic power.\nOnce-Bound: The Daemonhost’s AR, the DN of its Fear Test, the ED of its attacks, and its Intimidation, Scholar, and Psychic Mastery skills all increase by +2. The Daemonhost has a Flight speed of 7, and it knows two additional psychic powers.\nUnbound: The Daemonhost’s AR, the DN of its Fear Test, the ED of its attacks, and its Intimidation, Scholar, and Psychic Mastery skills all increase by +3. The Daemonhost has a Flight speed of 8, and it knows three additional psychic powers."
+    },
+    {
+      "name": "Servant of the Lord of Skulls",
+      "text": "A Daemonhost with the KHORNE keyword does not have the PSYKER keyword, the Psychic Mastery skill, and cannot use Psychic Powers. Instead, it has Weapon Skill 10 (which increases according to the Bound Daemon rule, above), and gains the Brutal trait on its Warp Grasp melee attack. A KHORNE Daemonhost may enter a Frenzied state as a Simple Action."
+    },
+    {
+      "name": "Unholy Changes",
+      "text": "The Daemonhost’s form is twisted by the entity within. Roll one or more times on the Mutation tables on page 287 of the Wrath & Glory Core Rulebook. An Unbound Daemonhost rolls four times. A Once-Bound Daemonhost rolls three times. A Twice-Bound Daemonhost rolls twice. A Thrice-Bound Daemonhost rolls once."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Daemonic Dread",
+      "text": "Anyone who can see this Follower, other than its owner, must take a DN 3 Fear Test.",
+      "weapons": []
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Unholy Gaze",
+          "damage": 16,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Beam",
+            "Mortal (1)"
+          ]
+        },
+        {
+          "name": "Warp Grasp",
+          "damage": 9,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Warp Weapon"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Maleficarum",
+      "text": "The Daemonhost may attempt to activate any psychic power it knows. It knows Smite, Psyniscience, Deny the Witch, and one power from the Maleficarum discipline (page 280 of the Wrath & Glory Core Rulebook).",
+      "weapons": []
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Daemonic Rebellion",
+      "text": "The Daemon attempts to break free of its bindings. It attempts a Willpower Test, with a DN based on its binding level: Thrice-bound is DN 5, Twice-bound is DN 4, Once-bound is DN 3. If it succeeds, its level of binding is reduced by one, towards Unbound. If already unbound, the daemon betrays its owner.",
+      "weapons": []
+    }
+  ],
+  "options": [],
+  "mobAbilities": [],
+  "id": "apoc-daemonhost",
+  "name": "Daemonhost",
+  "page": 471,
+  "faction": "daemon",
+  "threat": [
+    null,
+    null,
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "[MARK OF CHAOS]",
+    "PSYKER"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 6,
+    "A": 5,
+    "I": 5,
+    "Wil": 6,
+    "Int": 5,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 10,
+    "note": "Daemonic Aura: *3 AR"
+  },
+  "defence": 4,
+  "wounds": 12,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Intimidation",
+        "dice": 9
+      },
+      {
+        "name": "Scholar",
+        "dice": 9
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 9
+      }
+    ]
+  },
+  "determination": "Daemonic Aura: Spend 1 Glory to roll 6d6. This Follower may roll Determination against Mortal Wounds, and any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg"
+}

@@ -1,0 +1,148 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Arcane Automata",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Inferno Boltgun",
+          "damage": 10,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "Armoured Fists",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Warpflamer",
+      "text": "The follower’s Inferno Boltgun may be exchanged for one of the following.",
+      "weapons": [
+        {
+          "name": "Warpflamer",
+          "damage": 10,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            4,
+            8,
+            12
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Corrupting",
+            "Flamer"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Soulreaper Cannon",
+      "text": "The follower’s Inferno Boltgun may be exchanged for one of the following.",
+      "weapons": [
+        {
+          "name": "Soulreaper Cannon",
+          "damage": 13,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 5,
+          "traits": [
+            "Heavy (7)",
+            "Sustained"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "mobAbilities": [],
+  "id": "apoc-rubric-marine",
+  "name": "Rubric Marine",
+  "page": 473,
+  "faction": "heretic",
+  "threat": [
+    null,
+    null,
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC ASTARTES",
+    "THOUSAND SONS"
+  ],
+  "attributes": {
+    "S": 7,
+    "T": 5,
+    "A": 4,
+    "I": 4,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 11,
+    "note": "Ancient Power Armour: 5 AR"
+  },
+  "defence": 3,
+  "wounds": 11,
+  "shock": null,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 9
+      }
+    ]
+  },
+  "determination": "All is Dust: Spend 1 Glory to roll 6d6. The Follower may re-roll any dice which roll 1s.",
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg"
+}

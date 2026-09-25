@@ -1,0 +1,56 @@
+[
+  {
+    "id": "high-gothic",
+    "name": "High Gothic",
+    "source": "core",
+    "page": 31,
+    "text": "The ancient language of humanity, said to be spoken by the Emperor Himself. Relics and records from ages past are written in High Gothic.",
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MECHANICUS",
+      "ADEPTUS MINISTORUM"
+    ]
+  },
+  {
+    "id": "cant-mechanicus",
+    "name": "Cant Mechanicus",
+    "source": "core",
+    "page": 31,
+    "text": "An aggregation of separate languages used by cogitators to communicate with one another, filled with the arcane mysteries of the Mechanicus.",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ]
+  },
+  {
+    "id": "glossia",
+    "name": "Glossia",
+    "source": "core",
+    "page": 31,
+    "text": "A coded language that utilises the personal interpretation of metaphors. Glossia is metaphotically encrypted, and can only be decoded by understanding the meaning associated with each word. Used to communicate secretly with other individuals that know the same form of Glossia.",
+    "keywords": [
+      "INQUISITION"
+    ]
+  },
+  {
+    "id": "aeldari-lexicon",
+    "name": "Aeldari Lexicon",
+    "source": "core",
+    "page": 31,
+    "text": "A complex, flowing language augmented with gestures, poses, and references to culture. Written in context-dependent runes, the Aeldari Lexicon is almost impenetrable to outsiders.",
+    "keywords": [
+      "AELDARI"
+    ],
+    "xenos": true
+  },
+  {
+    "id": "ork-language",
+    "name": "Ork Language",
+    "source": "core",
+    "page": 31,
+    "text": "A crude, brutal language cobbled together from the lingua of the many Species the Orks have fought. The written language of Orks is very simple, relying on basic pictograms.",
+    "keywords": [
+      "ORK"
+    ],
+    "xenos": true
+  }
+]

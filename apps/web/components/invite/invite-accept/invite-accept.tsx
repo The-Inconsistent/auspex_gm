@@ -70,7 +70,7 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
 
         {!p.member && canClaim && p.mode === "room" && (
           <>
-            <div className="rule">── PICK YOUR AGENT ──</div>
+            <div className="rule">PICK YOUR AGENT</div>
             <div className="keys" style={{ paddingTop: 0 }}>
               {p.openCharacters.length === 0 && <span className="dim">Every agent is taken. Start a new one:</span>}
               {p.openCharacters.map((c) => (
