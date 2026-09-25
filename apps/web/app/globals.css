@@ -584,13 +584,92 @@ textarea.input {
   background: var(--red-tint);
 }
 
-/* GM shell */
+/* GM shell: header band over the body, with the chapter-tab rail down the right edge (tablet). */
 .gm {
   height: 100dvh;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "head rail"
+    "body rail";
+}
+.tabs.rail {
+  grid-area: rail;
+  flex-direction: column;
+  padding: 12px 0;
+  background: var(--vellum-3);
+  box-shadow: inset 7px 0 12px -7px rgba(0, 0, 0, 0.4);
+}
+.tabs.rail .tab {
+  flex: none;
+  position: relative;
+  isolation: isolate;
+  min-height: 64px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+}
+/* Faint chapter numeral behind each tab. */
+.tabs.rail .tab::before {
+  content: attr(data-n);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  color: var(--ink-3);
+  opacity: 0.16;
+}
+/* The open chapter sits on a torn crimson brush stroke. */
+.tabs.rail .tab[aria-selected="true"] {
+  background: transparent;
+  color: var(--bone);
+}
+.tabs.rail .tab[aria-selected="true"]::before {
+  content: "";
+  inset: 8px 4px;
+  opacity: 1;
+  background: var(--red-fill);
+  clip-path: polygon(
+    2.5% 20%,
+    11.7% 7.5%,
+    33.3% 15%,
+    58.3% 5%,
+    86.7% 12.5%,
+    97.5% 7.5%,
+    95% 40%,
+    99.2% 75%,
+    91.7% 92.5%,
+    65% 85%,
+    36.7% 95%,
+    13.3% 87.5%,
+    1.7% 95%,
+    5% 60%
+  );
+}
+/* Secondary tab strips inside a screen (codex kinds, rule kinds): underlined, no iron. */
+.tabs.sub {
+  background: transparent;
+  border-bottom: 1px solid var(--line);
+  gap: 18px;
+}
+.tabs.sub .tab {
+  flex: none;
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-3);
+}
+.tabs.sub .tab[aria-selected="true"] {
+  background: transparent;
+  color: var(--red);
+  border-bottom-color: var(--red);
 }
 .gm-head {
+  grid-area: head;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -606,9 +685,10 @@ textarea.input {
   text-overflow: ellipsis;
 }
 .gm-body {
+  grid-area: body;
   min-height: 0;
   overflow: auto;
-  padding-top: 6px;
+  padding-top: 12px;
 }
 .pool {
   display: flex;
@@ -624,6 +704,33 @@ textarea.input {
 .pool.ruin {
   border-color: var(--red-on-iron);
   color: var(--red-on-iron);
+}
+
+/* Tracker: who is up, then one crimson- or iron-titled table per side. */
+.turn-strip {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 4px 0 8px;
+}
+.now-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  background: var(--red-fill);
+  border: 1px solid var(--red-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.list.table {
+  gap: 0;
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
 }
 
 .tracker {
@@ -730,6 +837,25 @@ button.row.now:nth-of-type(even) {
     height: auto;
     min-height: 100dvh;
     display: block;
+  }
+  .tabs.rail {
+    flex-direction: row;
+    padding: 0;
+    background: var(--iron);
+    box-shadow: none;
+  }
+  .tabs.rail .tab {
+    flex: 1;
+    min-height: 52px;
+    color: var(--bone-2);
+  }
+  .tabs.rail .tab::before,
+  .tabs.rail .tab[aria-selected="true"]::before {
+    content: none;
+  }
+  .tabs.rail .tab[aria-selected="true"] {
+    background: var(--red-fill);
+    color: var(--bone);
   }
   .gm-body {
     overflow: visible;
@@ -889,10 +1015,15 @@ details.item[open] > summary::before {
   background: var(--overlay);
   z-index: 40;
 }
-/* Handouts and data-slates: in-world print-outs keep the cogitator face. */
+/* Long text keeps its line breaks; `.slate` is an in-world print-out (handouts, data-slates) in the cogitator face. */
 pre.text {
   white-space: pre-wrap;
   margin: 0;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.45;
+}
+pre.text.slate {
   font-family: var(--mono);
   font-size: 14px;
   line-height: 1.55;

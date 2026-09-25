@@ -23,9 +23,9 @@ export function Intel({ codex, state }: IntelProps) {
       <div className="rule">HANDOUTS</div>
       {handouts.length === 0 && <div className="dim">No transmissions received.</div>}
       {handouts.map((h) => (
-        <div key={h.id} className="item">
-          <b>{h.title.toUpperCase()}</b>
-          <pre className="text">{h.body}</pre>
+        <div key={h.id} className="handout stack" style={{ gap: 8 }}>
+          <span className="label">{h.title.toUpperCase()}</span>
+          <pre className="text slate">{h.body}</pre>
         </div>
       ))}
       <div className="rule">KNOWN PERSONS</div>

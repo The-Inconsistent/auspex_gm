@@ -342,40 +342,36 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
   return (
     <div className="tracker">
       <section className="tracker-main">
-        <div
-          className="panel"
-          style={{ display: "flex", gap: 16, alignItems: "center", padding: "8px 12px", flexWrap: "wrap" }}
-        >
-          <span className="accent">
-            {current
-              ? `▶ ${nameOf(current).toUpperCase()} ACTING`
-              : next
-                ? `AWAITING: ${next.toUpperCase()} PICK`
-                : "ROUND COMPLETE"}
-          </span>
-          {current && next && <span className="dim">NEXT: {next.toUpperCase()}</span>}
+        <div className="turn-strip">
+          {current ? (
+            <span className="now-chip">▶ {nameOf(current).toUpperCase()} ACTING</span>
+          ) : (
+            <span className="accent display">{next ? `AWAITING: ${next.toUpperCase()} PICK` : "ROUND COMPLETE"}</span>
+          )}
+          {current && next && <i className="dim">Next: the {next} pick</i>}
           {enc.seizedSide && <span className="dim">{enc.seizedSide.toUpperCase()} SEIZED</span>}
           <span style={{ flex: 1 }} />
-          <span className="dim">
-            RND {String(enc.round).padStart(2, "0")} · AGENTS {done("agents")} · THREATS {done("threats")}
+          <span className="label">
+            RND {enc.round} · AGENTS {done("agents")} · THREATS {done("threats")}
           </span>
         </div>
 
-        <div className="row head">
-          <span>STATE</span>
-          <span>DESIGNATION</span>
-          <span className="hide-sm">CLASS</span>
-          <span>WOUNDS</span>
-          <span className="hide-sm">SHOCK</span>
-          <span className="hide-sm">DEF</span>
-          <span className="hide-sm">RES</span>
-          <span>STATUS</span>
-          <span className="hide-sm">PLAYERS</span>
-        </div>
         {Side.options.map((side) => (
-          <div key={side} className="list" style={{ gap: 2 }}>
-            <div className="rule" style={{ padding: "8px 8px 2px" }}>
-              {side.toUpperCase()}
+          <div key={side} className="list table">
+            <div className={`tbar ${side === "threats" ? "iron" : ""}`}>
+              <span>{side.toUpperCase()}</span>
+              <span style={{ fontSize: 12 }}>{done(side)} ACTED</span>
+            </div>
+            <div className="row head">
+              <span>STATE</span>
+              <span>DESIGNATION</span>
+              <span className="hide-sm">CLASS</span>
+              <span>WOUNDS</span>
+              <span className="hide-sm">SHOCK</span>
+              <span className="hide-sm">DEF</span>
+              <span className="hide-sm">RES</span>
+              <span>STATUS</span>
+              <span className="hide-sm">PLAYERS</span>
             </div>
             {rows(side).map((c) => {
               const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
@@ -482,7 +478,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               </button>
             )}
             {sel && !current && canAct(state, sel) && (
-              <button className="btn" onClick={() => startTurn(sel, false)}>
+              <button className="btn primary" onClick={() => startTurn(sel, false)}>
                 START TURN
               </button>
             )}
@@ -537,8 +533,8 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
           </div>
         )}
         <form className="cmd" onSubmit={handleCmdSubmit}>
-          <span className="display" style={{ fontSize: 28 }}>
-            &gt;
+          <span className="label" aria-hidden="true">
+            ORDER ›
           </span>
           <input
             aria-label="Command"
@@ -624,7 +620,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               paddingBottom: 6,
             }}
           >
-            <span style={{ flex: 1, fontSize: 13 }} className={l.warn ? "accent" : undefined}>
+            <span style={{ flex: 1, fontSize: 15 }} className={l.warn ? "accent" : undefined}>
               {l.text}
             </span>
             {l.undo && (

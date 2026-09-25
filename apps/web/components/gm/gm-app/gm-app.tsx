@@ -15,7 +15,7 @@ import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
 
-import { GM_TABS, type GmTab } from "./constants";
+import { GM_TABS, TAB_NUMERALS, type GmTab } from "./constants";
 
 type GmAppProps = { campaignId: string; bestiary: Threat[]; wargear: Wargear[]; rules: RuleEntry[] };
 
@@ -53,7 +53,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
   return (
     <div className="gm">
       {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
-      <header className="gm-head band">
+      <header className="gm-head band torn">
         <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
           ◂
         </a>
@@ -72,9 +72,16 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
         <ThemeToggle />
         <UserButton />
       </header>
-      <nav className="tabs band torn" role="tablist">
-        {GM_TABS.map((t) => (
-          <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+      <nav className="tabs rail" role="tablist" aria-label="GM sections">
+        {GM_TABS.map((t, i) => (
+          <button
+            key={t}
+            role="tab"
+            className="tab"
+            data-n={TAB_NUMERALS[i]}
+            aria-selected={tab === t}
+            onClick={() => setTab(t)}
+          >
             {t}
           </button>
         ))}

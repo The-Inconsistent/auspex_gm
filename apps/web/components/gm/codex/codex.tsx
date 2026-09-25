@@ -41,7 +41,7 @@ export function CodexView({ codex, send }: CodexViewProps) {
 
   return (
     <div className="stack">
-      <nav className="tabs" role="tablist">
+      <nav className="tabs sub" role="tablist">
         {CODEX_KIND_KEYS.map((k) => (
           <button key={k} role="tab" className="tab" aria-selected={kind === k} onClick={() => pickKind(k)}>
             {k.toUpperCase()}S

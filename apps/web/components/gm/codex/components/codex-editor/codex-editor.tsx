@@ -7,7 +7,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
-import { FIELD_TYPES, type FieldType } from "./constants";
+import { FIELD_TYPES, GM_ONLY_FIELDS, type FieldType } from "./constants";
 
 type Option = [value: string, label: string];
 type Field = { key: string; label: string; type: FieldType; options?: Option[] };
@@ -108,7 +108,7 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
   return (
     <div className="panel pad stack">
       {fields.map((f) => (
-        <div key={f.key} className="field">
+        <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
           <label className="label" htmlFor={`f-${f.key}`}>
             {f.label}
           </label>
