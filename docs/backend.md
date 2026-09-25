@@ -270,7 +270,7 @@ with `.$type<>` from the shared `z.enum`s.
 |---|---|---|
 | `character.stats` | `CharacterStats` | On write by the action schema. On read, `loadState` parses it and fills defaults, so `{}` is a valid stored value |
 | `character.overrides` | `Overrides` | Same as `stats` |
-| `character.dod_raw` | nothing yet: no code reads or writes it (Doctors of Doom import isn't built) | none |
+| `character.dod_raw` | nothing: no code reads or writes it. The Doctors of Doom import it was for is replaced by the planned character builder, so the column can go in a later migration | none |
 | `combatant.stat_snapshot` | `Threat`, copied at add time so a data fix doesn't change a running fight | Parsed at startup by `@wg/data`, and cast on read |
 | `beat.encounter` | `EncounterEntry[]`, at most `MAX_ENCOUNTER_ROWS` rows once expanded | On write by `CodexInput.beat`. Re-parsed by `beat.startEncounter`, and cast in `loadCodex` |
 | `npc.stat_source` | `StatSource` | On write by `CodexInput.npc`, cast in `loadCodex` |

@@ -1,0 +1,409 @@
+[
+  {
+    "id": "asuryani-ghost-warrior-details",
+    "name": "Asuryani Ghost Warrior Additional Details",
+    "source": "apocrypha",
+    "page": 6,
+    "note": "Printed heading \"Additional Details\"; the name adds the species.",
+    "owner": {
+      "speciesId": "asuryani-ghost-warrior"
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "Use the same values as for Aeldari characters."
+      ],
+      [
+        "Colouration",
+        "Their armoured forms are commonly marked in the colours of their Craftworld, but may be distinguished by runes, artistic designs, and other variations."
+      ],
+      [
+        "Height",
+        "Ghost Warrior bodies are uniform in size, exactly 10 feet tall."
+      ],
+      [
+        "Languages",
+        "Ghost Warriors ‘speak’ the same languages they did in life, though their ability to speak and listen are more psychic than physical."
+      ]
+    ]
+  },
+  {
+    "id": "custodian-details",
+    "name": "Custodian Additional Details",
+    "source": "apocrypha",
+    "page": 7,
+    "note": "Printed heading \"Additional Details\"; the name adds the species.",
+    "owner": {
+      "speciesId": "custodian"
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "Custodes are functionally immortal and will persist for centuries or millennia if not slain through extreme violence. If you’re randomly rolling for a Custodian character’s age, roll 4d6 x 5, and then multiply the total by twice the game’s Tier."
+      ],
+      [
+        "Colouration",
+        "As transhumans, Custodians possess a similar range and variety of skin pigments, hair colours, and eye colours to baseline humans."
+      ],
+      [
+        "Height",
+        "Custodians typically stand taller than the Astartes and are close in height to the Primarchs of old. If you’re randomly rolling a Custodian character’s height, roll 8’ +2d6”."
+      ],
+      [
+        "Languages",
+        "The Custodians speak Low Gothic and High Gothic and are often fluent in numerous obscure historical human languages, as well as other forms of communication, including the Thoughtmark and Battlemark sign languages used by the Silent Sisterhood, and Astartes battle-sign."
+      ]
+    ]
+  },
+  {
+    "id": "custodian-names",
+    "name": "Custodian Names",
+    "source": "apocrypha",
+    "page": 7,
+    "note": "The Custodes have an unusual relationship with names. Their original, true names, the ones which they bore at birth, are secret, recorded nowhere. Instead, each Custodian answers to a name of their choosing, often some moniker of note from Terran history or legend. Each accepts additional names throughout their lives, etched microscopically within their armour as a testament to their accomplishments; the mightiest Custodians may have dozens, even hundreds of names. Examples include:",
+    "owner": {
+      "speciesId": "custodian"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Tybalus"
+      ],
+      [
+        "Aetheus"
+      ],
+      [
+        "Dalat"
+      ],
+      [
+        "Kariyan"
+      ],
+      [
+        "Basillaeus"
+      ],
+      [
+        "Tristraen"
+      ],
+      [
+        "Erasmian"
+      ],
+      [
+        "Heracal"
+      ],
+      [
+        "Tauramacchis"
+      ],
+      [
+        "Nurthias"
+      ],
+      [
+        "Hasturias"
+      ],
+      [
+        "Artoris"
+      ],
+      [
+        "Nathadian"
+      ],
+      [
+        "Io"
+      ],
+      [
+        "Harkhas"
+      ],
+      [
+        "Constantin"
+      ],
+      [
+        "Eratorius"
+      ],
+      [
+        "Archimallus"
+      ]
+    ]
+  },
+  {
+    "id": "drukhari-details",
+    "name": "Drukhari Additional Details",
+    "source": "apocrypha",
+    "page": 8,
+    "note": "Printed heading \"Additional Details\"; the name adds the species.",
+    "owner": {
+      "speciesId": "drukhari"
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "Use the same values as for Aeldari characters."
+      ],
+      [
+        "Colouration",
+        "Drukhari tend to have similar skin, hair, and eye colours to their Asuryani cousins, though the Thirst and alterations made by Haemonculi can make them seem more ghoulish or unnatural."
+      ],
+      [
+        "Height",
+        "Drukhari have the same range of heights as other Aeldari."
+      ],
+      [
+        "Languages",
+        "Drukhari speak their own dialect of the Aeldari Lexicon; while mutually intelligible, this Drukhari dialect sounds crueller and has many more words for pain and torture."
+      ]
+    ]
+  },
+  {
+    "id": "drukhari-names-apocrypha",
+    "name": "Drukhari Names (Apocrypha)",
+    "source": "apocrypha",
+    "page": 8,
+    "note": "While sharing a common language and history with their Craftworlder cousins, the Drukhari tend to favour names with a harsher edge to them, often choosing names which symbolise the pain and terror they wish to spread. Examples include:",
+    "owner": {
+      "speciesId": "drukhari"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Akhirion"
+      ],
+      [
+        "Anarkyss"
+      ],
+      [
+        "Anielyn"
+      ],
+      [
+        "Bekliel"
+      ],
+      [
+        "Ethrilliac"
+      ],
+      [
+        "Grendett"
+      ],
+      [
+        "Grevyth"
+      ],
+      [
+        "Kylos"
+      ],
+      [
+        "Laelanyel"
+      ],
+      [
+        "Madrax"
+      ],
+      [
+        "Melikka"
+      ],
+      [
+        "Mellyx"
+      ],
+      [
+        "Monsatos"
+      ],
+      [
+        "Narlek"
+      ],
+      [
+        "Nyktos"
+      ],
+      [
+        "Peiythia"
+      ],
+      [
+        "Phyrix"
+      ],
+      [
+        "Selithrian"
+      ],
+      [
+        "Theskril"
+      ],
+      [
+        "Thessa"
+      ],
+      [
+        "Thraed"
+      ],
+      [
+        "Thresyn"
+      ],
+      [
+        "Thrixxesh"
+      ],
+      [
+        "Quaez"
+      ],
+      [
+        "Uless"
+      ],
+      [
+        "Vrexith"
+      ],
+      [
+        "Vylekh"
+      ],
+      [
+        "Vypus"
+      ],
+      [
+        "Xela"
+      ],
+      [
+        "Xurul"
+      ]
+    ]
+  },
+  {
+    "id": "kin-details",
+    "name": "Kin Additional Details",
+    "source": "apocrypha",
+    "page": 10,
+    "note": "Printed heading \"Additional Details\"; the name adds the species. \"Except where noted, these apply equally to Kin and Ironkin.\"",
+    "owner": {
+      "speciesIds": [
+        "kin",
+        "ironkin"
+      ]
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "Kin, with their hardy physiology, tend to live long lives and feel the effects of age only gradually. If you’re randomly rolling for a Kin character’s age, roll 4d6 x 5, and then multiply the total by the game’s Tier."
+      ],
+      [
+        "Colouration",
+        "Kin possess a similar range and variety of skin pigments, hair colours, and eye colours to humans, though their particular Cloneskein may result in stranger colouration. Ironkin are entirely mechanical, and their colouration is determined by their construction."
+      ],
+      [
+        "Height",
+        "Kin are not a tall people. An average Kin stands a little over four feet tall, or around 1.3 metres. If you’re randomly rolling a Kin character’s height, roll 4’ +2d6”."
+      ],
+      [
+        "Languages",
+        "Kin speak their own language, with countless dialects for individual Kindreds, Leagues, and Guilds, collectively known as Kinspäke, and its written form Kinrhûn."
+      ]
+    ]
+  },
+  {
+    "id": "navigator-details",
+    "name": "Navigator Additional Details",
+    "source": "apocrypha",
+    "page": 11,
+    "note": "Printed heading \"Additional Details\"; the name adds the species.",
+    "owner": {
+      "speciesId": "navigator"
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "Navigators can live for centuries, with an average lifespan of around 400 years. If you’re randomly rolling for a Navigator character’s age, roll 3d6 x 5, and then multiply the total by the game’s Tier."
+      ],
+      [
+        "Colouration",
+        "Navigators have comparable skin, eye, and hair colour to baseline humans, except where their mutations alter this."
+      ],
+      [
+        "Height",
+        "Navigators are similar in height to baseline humans, but those who dwell mostly in the void tend to be slightly taller. If you’re randomly rolling a Navigator character’s height, roll 5’ +4d6”."
+      ],
+      [
+        "Languages",
+        "Navigators are customarily fluent in High Gothic and Low Gothic, as well as the private languages of the Navis Nobilite and their own House."
+      ]
+    ]
+  },
+  {
+    "id": "beastman-details",
+    "name": "Beastman Additional Details",
+    "source": "apocrypha",
+    "page": 14,
+    "note": "Printed heading \"Additional Details\"; the name adds the species.",
+    "owner": {
+      "speciesId": "beastman"
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "Beastmen tend not to live out their natural lifespan, as most are killed or die off far younger than that, whether through battle or mishap. Beastmen reach maturity relatively quickly, and they are forced to either learn how to survive quickly or be denied the opportunity. If determining a Beastman character’s age randomly, roll 3d6 + 10 and multiply the total by the game’s Tier."
+      ],
+      [
+        "Colouration",
+        "Beastmen tend to have fur in the same range of colours as human hair, though darker colours are more common (roll twice for hair colour and choose the lowest). Their eyes vary between human colourations and more savage-appearing crimson or amber eyes."
+      ],
+      [
+        "Height",
+        "Beastmen tend to stand a similar height to baseline humans, though their gait (having hooves) and their horns often make them appear taller."
+      ],
+      [
+        "Languages",
+        "Beastmen are barely equipped to speak Low Gothic, though they can manage a mangled rendition of it through mouths not well-suited to speech. They do not possess a distinct language of their own."
+      ]
+    ]
+  },
+  {
+    "id": "tau-details",
+    "name": "T’au Additional Details",
+    "source": "apocrypha",
+    "page": 17,
+    "note": "Printed heading \"Additional Details\"; the name adds the species. Printed after the Aun entry but covers all five castes (shas-tau, fio-tau, kor-tau, por-tau, aun-tau).",
+    "owner": {
+      "speciesIds": [
+        "shas-tau",
+        "fio-tau",
+        "kor-tau",
+        "por-tau",
+        "aun-tau"
+      ]
+    },
+    "columns": [
+      "Trait",
+      "Description"
+    ],
+    "rows": [
+      [
+        "Age",
+        "T’au live slightly shorter lives than baseline humans, aging to maturity by around 8 Tau’cyr (a T’au unit of time, roughly equal to a year). And rarely living for longer than 40 or 50 Tau’cyr, though some valuable T’au leaders and experts are interred in stasis pods or receive experimental treatments or implants to extend their lives, and Ethereals appear to live somewhat longer than other T’au. If you’re randomly rolling for a T'au character’s age, roll 1d6+6, and then add an additional d6 for each Tier."
+      ],
+      [
+        "Colouration",
+        "T’au have skin in various shades of blue-grey—some more grey, some more blue. Their eyes tend to be large dark orbs, with little distinct colouration. Their hair tends to be carefully maintained, normally shaven except for a single scalp-lock, and tend to be various shades of red, brown, or black, though turning grey or white with age."
+      ],
+      [
+        "Height",
+        "T’au height varies significantly by caste. Air Caste T’au are the tallest, at 7’ +2d6”. Fire, Water, and Ethereal Caste T’au are all similar in height, averaging 4’ + 5d6”, slightly shorter than a human. Earth Caste T’au are especially short and broad, averaging 4’ + 4d6”."
+      ],
+      [
+        "Languages",
+        "The T’au speak their own language, typically referred to as “T’au” by the Imperium. This language is well-known to Imperial xenolinguists, as the T’au Water Caste are quite free with translation guides to aid interactions (though those same T’au diplomats also speak Imperial Gothic extremely well). This agglutinative language—a language where new words are built by combining existing words—is extremely adaptable to the rapid growth of the T’au Empire, and new concepts are added or developed regularly. Each Caste has their own highly developed dialects replete with distinctive jargon and specialised colloquialisms. The Earth Caste are also fluent in the complex octal machine-languages of their Drone assistants."
+      ]
+    ]
+  }
+]

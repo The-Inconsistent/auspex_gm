@@ -216,7 +216,13 @@ export const Species = z.object({
 export type Species = z.infer<typeof Species>;
 
 // Who a table or option group belongs to.
-const Owner = z.union([z.object({ factionId: id }), z.object({ speciesId: id }), z.object({ subFactionId: id })]);
+// `speciesIds`: one table for several species (Kin and Ironkin, Apocrypha p.10).
+const Owner = z.union([
+  z.object({ factionId: id }),
+  z.object({ speciesId: id }),
+  z.object({ speciesIds: ids }),
+  z.object({ subFactionId: id }),
+]);
 
 // A row gives +1 to its `bonus`, or what its `grants` say ("Gain +1 [ANY] Keyword", Core p.67).
 const backgroundRow = z.object({

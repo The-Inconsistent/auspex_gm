@@ -144,7 +144,8 @@ apps/web/lib/                command (tracker command line), blocks, weapon-line
 packages/shared/src/         threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
-packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders)
+packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
+                             creation.test.ts (the volkus pregens resolve in the creation catalogue)
 ```
 
 ## Commands
@@ -226,5 +227,5 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Not built yet
 
-- Doctors of Doom character import
+- The character builder (the creation catalogue it reads from is done: `packages/data/creation/`, `docs/data.md` §9)
 - Server-side undo history (client undo is inverse deltas)

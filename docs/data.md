@@ -25,6 +25,9 @@ Commands and setup: [development.md](development.md).
 | `packNames()` | Folder names under `packs/` |
 | `loadPackRaw(name)` | `pack.json` plus `characters: [...]` from `characters/*.json` (sorted by filename, so `01-`, `02-` prefixes set the order). A missing `characters/` folder is fine. Unparsed |
 | `loadPack(name)` | `Pack.parse(loadPackRaw(name))`; throws on a bad pack |
+| `wargear`, `wargearList()` | The Wargear catalogue (`wargear/*.json`), parsed at import |
+| `rulesList()` | The rules reference (`rules/*.json`) |
+| `creationCatalogue()` | The creation catalogue (§9): every `creation/<type>/<source>.json`, parsed, one array per type |
 
 **Who loads it.** The api imports `threats` in `apps/api/src/encounter/encounter.actions.ts` and
 `apps/api/src/campaign/campaign.service.ts`, so a malformed threat file throws a zod error and **the api refuses to
@@ -398,7 +401,9 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
 | Every `creation/<type>/<source>.json` parses; the filename is a creation source id and matches each record's `source`; ids unique per type | `✖ creation/…` + zod error, `has source`, or `duplicate id` |
 | Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`) | `✖ creation/… "<id>": unknown <type> "…"` |
-| One record per thing: a name twice in a type (with overlapping species, for archetypes) | `✖ creation/<type>: "…" in A and B; keep the newest printing` |
+| One record per thing: a name twice in a type, compared with its `category` and `disciplineId` (and overlapping species, for archetypes) | `✖ creation/<type>: "…" in A and B; keep the newest printing` |
+| A Species' XP is the cost of its granted ratings (`ratingsXp`) | `? … "<id>": XP N, but its ratings cost M` warning, silenced by "XP as printed" in the note |
+| An Archetype's XP is its ratings + (Tier − 1) × 10 (`archetypeXp`) | `? … "<id>": XP N, but ratings + (Tier − 1) × 10 = M` warning, silenced by "XP as printed" in the note |
 | Creation coverage against `creation/manifest.json` | `creation <type> <source>: N/M (missing: …)` |
 | Creation summary | `creation/<type>: N records`, and counts of `text` fallbacks and wargear not yet in the catalogue |
 
@@ -441,6 +446,12 @@ Everything a character is built from, for the character builder (not built yet; 
 are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
 file, loaded by `creationCatalogue()` in `index.ts`.
 
+**Status (2026-09-25).** All six books are transcribed and verified against the page images: 113 keywords, 27
+factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 333 talents, 32
+packages, 38 disciplines, 267 powers, 11 Patrons and 28 flavour tables, with every reference resolving. What is left
+is outside the catalogue: 497 starting-wargear items name gear the Wargear catalogue doesn't have yet (the FSPG, IoE,
+Apocrypha and Necron armouries).
+
 | Type | Record | Holds |
 |---|---|---|
 | `keywords` | `Keyword` | Faction Keywords by printed name (`"ADEPTUS ASTARTES"`, `"[CHAPTER]"`); a bracketed one names the `placeholder` sub-faction type that fills it |
@@ -473,7 +484,11 @@ records are the glossary Faction Keywords and the `[PLACEHOLDER]`s. A sub-factio
 restrictions (Black Templars can't be PSYKER; World Eaters must take KHORNE as their [MARK OF CHAOS]).
 
 **Waves.** `creation/manifest.json` `done` lists the types whose wave is finished. A reference into a type not yet
-done is counted as pending, not failed, so data can land wave by wave; once every type is done, validate is strict.
+done is counted as pending, not failed, so data can land wave by wave. Every type is done now, so validate is strict: a
+new type added to `CREATION_TYPES` starts pending until it is added to `done`.
+
+**Test.** `packages/data/creation.test.ts` (part of `bun run test`) checks that every volkus pregen resolves: its
+species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), talents, and Chapter with its traits.
 
 **Transcribing.**
 - **One record per thing.** When several books print the same species, archetype or talent, transcribe only the first

@@ -158,7 +158,7 @@ the local diff when there's no PR.
 
 ## Not built yet
 
-- Doctors of Doom import
+- The character builder, which replaces the planned Doctors of Doom import (its creation catalogue is done, `docs/data.md` §9)
 - an items tracker
 - rate limiting
 - server-side undo

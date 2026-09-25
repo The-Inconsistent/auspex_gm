@@ -1,0 +1,786 @@
+[
+  {
+    "id": "human-names",
+    "name": "Human Names",
+    "source": "core",
+    "page": 27,
+    "owner": {
+      "speciesId": "human"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Adrielle"
+      ],
+      [
+        "Alaric"
+      ],
+      [
+        "Barus"
+      ],
+      [
+        "Castus"
+      ],
+      [
+        "Celeste"
+      ],
+      [
+        "Diana"
+      ],
+      [
+        "Dar"
+      ],
+      [
+        "Davian"
+      ],
+      [
+        "Ephrael"
+      ],
+      [
+        "Erith"
+      ],
+      [
+        "Estebus"
+      ],
+      [
+        "Felicia"
+      ],
+      [
+        "Gaius"
+      ],
+      [
+        "Gezrael"
+      ],
+      [
+        "Halo"
+      ],
+      [
+        "Harken"
+      ],
+      [
+        "Haveloch"
+      ],
+      [
+        "Hestia"
+      ],
+      [
+        "Iris"
+      ],
+      [
+        "Jestilla"
+      ],
+      [
+        "Kamir"
+      ],
+      [
+        "Katrina"
+      ],
+      [
+        "Lukas"
+      ],
+      [
+        "Lyta"
+      ],
+      [
+        "Mikel"
+      ],
+      [
+        "Mira"
+      ],
+      [
+        "Nura"
+      ],
+      [
+        "Ophelia"
+      ],
+      [
+        "Poul"
+      ],
+      [
+        "Quitus"
+      ],
+      [
+        "Ravenna"
+      ],
+      [
+        "Rossel"
+      ],
+      [
+        "Ruby"
+      ],
+      [
+        "Silvana"
+      ],
+      [
+        "Skyv"
+      ],
+      [
+        "Steele"
+      ],
+      [
+        "Taur"
+      ],
+      [
+        "Titus"
+      ],
+      [
+        "Tyanna"
+      ],
+      [
+        "Ursa"
+      ],
+      [
+        "Undine"
+      ],
+      [
+        "Verbal"
+      ],
+      [
+        "Victor"
+      ],
+      [
+        "Waynoka"
+      ],
+      [
+        "Wilhemina"
+      ],
+      [
+        "Xavier"
+      ],
+      [
+        "Yvette"
+      ],
+      [
+        "Zane"
+      ],
+      [
+        "Zellith"
+      ],
+      [
+        "Zek"
+      ]
+    ],
+    "note": "Human names vary widely by individual planet or culture, even across hive cities of the same world. In the Gilead System, the following names are common:"
+  },
+  {
+    "id": "aeldari-names",
+    "name": "Aeldari Names",
+    "source": "core",
+    "page": 28,
+    "owner": {
+      "speciesId": "aeldari"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Aethon"
+      ],
+      [
+        "Anthrillien"
+      ],
+      [
+        "Ashkalla"
+      ],
+      [
+        "Aulirel"
+      ],
+      [
+        "Auran"
+      ],
+      [
+        "Avenelle"
+      ],
+      [
+        "Baharroth"
+      ],
+      [
+        "Caerys"
+      ],
+      [
+        "Culyan"
+      ],
+      [
+        "Elashbel"
+      ],
+      [
+        "Elarique"
+      ],
+      [
+        "Eldorath"
+      ],
+      [
+        "Elessar"
+      ],
+      [
+        "Erandel"
+      ],
+      [
+        "Gilead"
+      ],
+      [
+        "Gilvas"
+      ],
+      [
+        "Hrythar"
+      ],
+      [
+        "Hyrne"
+      ],
+      [
+        "Idranel"
+      ],
+      [
+        "Illic"
+      ],
+      [
+        "Iyanna"
+      ],
+      [
+        "Kaelith"
+      ],
+      [
+        "Kelmon"
+      ],
+      [
+        "Micha"
+      ],
+      [
+        "Meliniel"
+      ],
+      [
+        "Mirehn"
+      ],
+      [
+        "Morwyn"
+      ],
+      [
+        "Naudhu"
+      ],
+      [
+        "Naguan"
+      ],
+      [
+        "Quillindral"
+      ],
+      [
+        "Requiel"
+      ],
+      [
+        "Salaine"
+      ],
+      [
+        "Sylandri"
+      ],
+      [
+        "Taladin"
+      ],
+      [
+        "Taldeer"
+      ],
+      [
+        "Talyesin"
+      ],
+      [
+        "Ullarion"
+      ],
+      [
+        "Ulthos"
+      ],
+      [
+        "Yriel"
+      ]
+    ],
+    "note": "Imbued with the same serpentine sound their language is known for, Aeldari names are often tied to the circumstances of their birth; Craftworld, Corsair fleet, Maiden World, or otherwise. The following names are common:"
+  },
+  {
+    "id": "ork-names",
+    "name": "Ork Names",
+    "source": "core",
+    "page": 28,
+    "owner": {
+      "speciesId": "ork"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Arrlug"
+      ],
+      [
+        "Balgrog"
+      ],
+      [
+        "Blacktoof"
+      ],
+      [
+        "Bluddflak"
+      ],
+      [
+        "Bonesmasha"
+      ],
+      [
+        "Dedak"
+      ],
+      [
+        "Dragnatz"
+      ],
+      [
+        "Eddbasha"
+      ],
+      [
+        "Garahak"
+      ],
+      [
+        "Gargash"
+      ],
+      [
+        "Garmek"
+      ],
+      [
+        "Genghiz"
+      ],
+      [
+        "Gorbad"
+      ],
+      [
+        "Grimskull"
+      ],
+      [
+        "Hackitt"
+      ],
+      [
+        "Hruk"
+      ],
+      [
+        "Klawjaw"
+      ],
+      [
+        "Kozdek"
+      ],
+      [
+        "Lug"
+      ],
+      [
+        "Morglum"
+      ],
+      [
+        "Murgor"
+      ],
+      [
+        "Nazhakka"
+      ],
+      [
+        "Rakka"
+      ],
+      [
+        "Rekkfist"
+      ],
+      [
+        "Rotchop"
+      ],
+      [
+        "Skarjaw"
+      ],
+      [
+        "Skubmak"
+      ],
+      [
+        "Urkthrall"
+      ],
+      [
+        "Vorhgad"
+      ],
+      [
+        "Zogax"
+      ]
+    ],
+    "note": "Derived from the particulars of their brutish behaviour, Ork names are often plosive descriptions or simply rough sounds used to distinguish individuals, for example:"
+  },
+  {
+    "id": "languages",
+    "name": "Languages",
+    "source": "core",
+    "page": 31,
+    "columns": [
+      "Language",
+      "Description",
+      "Keyword Required"
+    ],
+    "rows": [
+      [
+        "High Gothic",
+        "The ancient language of humanity, said to be spoken by the Emperor Himself. Relics and records from ages past are written in High Gothic.",
+        "ADEPTUS ASTARTES, ADEPTUS MECHANICUS, or ADEPTUS MINISTORUM."
+      ],
+      [
+        "Cant Mechanicus",
+        "An aggregation of separate languages used by cogitators to communicate with one another, filled with the arcane mysteries of the Mechanicus.",
+        "ADEPTUS MECHANICUS"
+      ],
+      [
+        "Glossia",
+        "A coded language that utilises the personal interpretation of metaphors. Glossia is metaphotically encrypted, and can only be decoded by understanding the meaning associated with each word. Used to communicate secretly with other individuals that know the same form of Glossia.",
+        "INQUISITION"
+      ],
+      [
+        "Aeldari Lexicon",
+        "A complex, flowing language augmented with gestures, poses, and references to culture. Written in context-dependent runes, the Aeldari Lexicon is almost impenetrable to outsiders.",
+        "AELDARI"
+      ],
+      [
+        "Ork Language",
+        "A crude, brutal language cobbled together from the lingua of the many Species the Orks have fought. The written language of Orks is very simple, relying on basic pictograms.",
+        "ORK"
+      ]
+    ],
+    "note": "Sidebar 'Languages of the Gilead System'. Every character knows Low Gothic. You can learn an additional language at the cost of 1 XP, provided you have access to someone who can teach the language to you; if the GM agrees, you can spend XP to learn an additional language at character creation. \"You recieve a free additional language at character creation if you have the appropriate Keyword\" (sic, no full stop). Other languages (e.g. Necron hieroglyphs) are by GM discussion. Print errors copied: 'metaphotically' (Glossia)."
+  },
+  {
+    "id": "age",
+    "name": "Age",
+    "source": "core",
+    "page": 32,
+    "columns": [
+      "Species",
+      "Age",
+      "Tier Multiplier"
+    ],
+    "rows": [
+      [
+        "Human",
+        "4d6 + 14",
+        "Multiply your age by your Tier."
+      ],
+      [
+        "Astartes",
+        "4d6 x 5",
+        "Multiply your age by your Tier."
+      ],
+      [
+        "Aeldari",
+        "3d6 x 50",
+        "Add 3d6 centuries per Tier."
+      ],
+      [
+        "Ork",
+        "1d6 x 1d6",
+        "Add 1d6 years per Tier."
+      ]
+    ],
+    "note": "Table has no printed title; named 'Age' after its section (p.30). \"You can choose your character's age, or roll on the table on p.32. If you like, you can multiply the result of your roll by the Tier Multiplier to represent the additional experiences your character has had.\" (p.30)"
+  },
+  {
+    "id": "eye-colour",
+    "name": "Eye Colour",
+    "source": "core",
+    "page": 32,
+    "columns": [
+      "2d6",
+      "Eye Colour"
+    ],
+    "rows": [
+      [
+        "2",
+        "Black"
+      ],
+      [
+        "3",
+        "Dark Brown"
+      ],
+      [
+        "4",
+        "Speckled Brown"
+      ],
+      [
+        "5",
+        "Pale Blue"
+      ],
+      [
+        "6",
+        "Murky Blue"
+      ],
+      [
+        "7",
+        "Icy Blue"
+      ],
+      [
+        "8",
+        "Grey"
+      ],
+      [
+        "9",
+        "Sickly Green"
+      ],
+      [
+        "10",
+        "Dull Amber"
+      ],
+      [
+        "11",
+        "Purple"
+      ],
+      [
+        "12",
+        "Mismatched – roll twice."
+      ]
+    ],
+    "note": "No printed title; named from its column heading (the text calls it the Eye Colour table). Astartes usually retain their eye colour and may roll on the same table. \"When making an Aeldari character, roll on the Eye Colour table and add 3 to your result.\" All Orks appear to share the same blood-red eye colour. After determining a colour, you might like to add an adjective (e.g. blood-shot pale-blue eyes, cold-grey eyes)."
+  },
+  {
+    "id": "hair-colour",
+    "name": "Hair Colour",
+    "source": "core",
+    "page": 32,
+    "columns": [
+      "d66",
+      "Human Hair",
+      "Aeldari Hair"
+    ],
+    "rows": [
+      [
+        "11-16",
+        "Mud Brown",
+        "Jet Black"
+      ],
+      [
+        "21-26",
+        "Sandy Brown",
+        "Blue-Black"
+      ],
+      [
+        "31-36",
+        "Black",
+        "Mahogany"
+      ],
+      [
+        "41-43",
+        "Dirty Blonde",
+        "Auburn"
+      ],
+      [
+        "44-46",
+        "Ashy Blonde",
+        "Chestnut"
+      ],
+      [
+        "51-53",
+        "Grey",
+        "White"
+      ],
+      [
+        "54-56",
+        "White",
+        "Silver"
+      ],
+      [
+        "61-63",
+        "Burnt Auburn",
+        "Fire Red"
+      ],
+      [
+        "64-66",
+        "Brick Red",
+        "Platinum"
+      ]
+    ],
+    "note": "No printed title; the text calls it \"The hair colour table\" and says it uses a d66 roll (p.170). Astartes have the same hair colour as their mortal kin. Orks with hair have not been recorded (some have Squigs forming a parody of hair)."
+  },
+  {
+    "id": "height",
+    "name": "Height",
+    "source": "core",
+    "page": 33,
+    "columns": [
+      "Species",
+      "Height"
+    ],
+    "rows": [
+      [
+        "Human",
+        "4' + 6d6\""
+      ],
+      [
+        "Adeptus Astartes",
+        "7' + 1d6\""
+      ],
+      [
+        "Primaris Astartes",
+        "8' + 1d6\""
+      ],
+      [
+        "Aeldari",
+        "6' + 2d6\""
+      ],
+      [
+        "Ork",
+        "5'6\" + 2d6\" per Tier"
+      ]
+    ],
+    "note": "No printed title; named after its section. \"Regardless of your height, your Size Trait is Average.\""
+  },
+  {
+    "id": "features",
+    "name": "Features",
+    "source": "core",
+    "page": 33,
+    "columns": [
+      "d6",
+      "1 Augmetic",
+      "2 Modification",
+      "3 Speech",
+      "4 Habit",
+      "5 Tell",
+      "6 Detail"
+    ],
+    "rows": [
+      [
+        "1",
+        "Hand",
+        "Warpaint with sentimental value",
+        "Speaks every thought out loud",
+        "Prays constantly under their breath",
+        "Fidgets with their weapon",
+        "Heavily-lidded eyes"
+      ],
+      [
+        "2",
+        "Arm",
+        "Tattoos linked to important memories",
+        "Talks from the corner of their mouth",
+        "Always carries a lit candle",
+        "Trembling hands",
+        "Severely broken nose"
+      ],
+      [
+        "3",
+        "Foot",
+        "Piercings that are makeshift weapons when removed",
+        "Soft, whispery voice",
+        "Collects skulls",
+        "Intense eye contact",
+        "A smattering of freckles"
+      ],
+      [
+        "4",
+        "Leg",
+        "Holographic electoo designating allegiance",
+        "Intense and deliberate enunciation",
+        "Makes notes on everyone they meet",
+        "Covers their mouth",
+        "Deep-frown lines"
+      ],
+      [
+        "5",
+        "Torso",
+        "Enochian skinplant of glowing religious symbols",
+        "Raspy, rough and rattling voice",
+        "Whistles or hums hymns",
+        "Incessant chatterbox",
+        "Sharp, prominent incisors"
+      ],
+      [
+        "6",
+        "Eye",
+        "Subdermally implanted keepsake",
+        "Never asks questions, always commands",
+        "Constantly curses under their breath",
+        "Laughs uncontrollably",
+        "Never blinks"
+      ]
+    ],
+    "note": "No printed title; named after its section. \"Roll 1d6 to determine the type of feature (Bionic, Modification, Speech, etc.) then roll 1d6 to determine which feature your character has. You can roll as many times as you like, or use these features as inspiration to create your own.\" Print errors copied: the text says 'Bionic' but column 1 is headed 'Augmetic'; 'electoo' (Leg / Modification). Sidebar 'Judged by Your Scars': you can start with a Memorable Injury (p.194) if someone else at the table describes how you got it."
+  },
+  {
+    "id": "ten-questions",
+    "name": "Ten Questions",
+    "source": "core",
+    "page": 34,
+    "columns": [
+      "Question",
+      "Text",
+      "Prompts"
+    ],
+    "rows": [
+      [
+        "1. Where Are You From?",
+        "",
+        "Is your home a planet in the Gilead System, or did you travel here with the Varonius Flotilla?\nAre you one of billions from a bustling hive city, or the child of simple agri world farmers?\nWere your days spent in prayer and penance to the Emperor, or amongst gruelling labour on a penal planet?\nIs this the first time you have left your homeworld, or were you Warp-born aboard a voidship, accustomed to constant travel?\nHow do you feel about your home? Do you miss it, or resent every memory?\nDid you leave willingly, or were you taken?\nWhether a wealthy noble scion or a common citizen, you can check Chapter 12: The Gilead System for more information on Imperial life."
+      ],
+      [
+        "2. How Were You Raised?",
+        "Few of those capable of adventuring in the 41st Millennium have normal familial relationships. Most are raised by their Faction, indoctrinated and trained from the time they can form memories to prepare them for the grim horrors of the galaxy.",
+        "If you joined your Faction as a child, how did you feel about it when you were young? Has your view changed?\nDid you know your parents? Maybe they raised you; manufactorum workers who spent their free minutes teaching you about the world, or nobles with time and money to spare on your education. Perhaps they are part of the same Faction, adepts or warriors whose path you followed.\nOr, you may have rebelled against the path they set before you. What do they think of you now?"
+      ],
+      [
+        "3. How Did You Join Your Faction?",
+        "",
+        "Were you forced to join the Faction you now call family, or did you assume responsibility willingly?\nWere you born to your duties?\nDid you join your Faction because you were tithed to pay your homeworld's due to the Imperium?\nWere you cast out from your community?\nDid you feel some noble or pious calling, saw an opportunity to make money, or simply threw in your lot with the group that saved you from annihilation?"
+      ],
+      [
+        "4. Who Are Your Friends?",
+        "",
+        "Are all your bonds battle-forged, or do you have friends beyond fighting?\nHave you formed friendships with those you work with, or in your own time? In the worship hall, the rationing queue, the pleasure den, or on the voidship deck?\nAre the other characters in your group your best friends?\nDo you still have friends from your childhood — perhaps many light years away, but still held close in your heart?"
+      ],
+      [
+        "5. What Are Your Most Significant Memories?",
+        "Your best memories might be of a great accomplishment or victory, a wonderful meal, a whirlwind romance, or a gut-busting joke that lifted you in a time of despair. Your worst memories might be a bitter defeat or a close brush with death, a painful humiliation, or the loss of someone close to you. The emergence of the Great Rift has brought tragedy to the galaxy.",
+        "What are your greatest regrets?\nWhich memories would you most like to forget?\nWhat parts of your past do you wish you could change?"
+      ],
+      [
+        "6. What Is Your Greatest Desire?",
+        "Your character wants — for safety, companionship, glory, wealth. There is something they are pursuing, even beyond their goals when adventuring.",
+        "Is there something you prize above all else?\nDo you want a physical object?\nDo you desire status, and if so, with whom?\nIs there a particular act you wish to see done?\nIn the 41st Millennium, the greatest and only joy for many is seeing their enemy crushed and broken; are you the same?"
+      ],
+      [
+        "7. What Is Your Greatest Fear?",
+        "Wisdom is the beginning of fear. The 41st Millennium is terrifying. Life is a prison; death a release.",
+        "Beyond your own demise, what are you afraid of?\nDo you harbour a dark secret that you hope none discover?\nIs there something you hope you will never be asked — or tempted — to do?"
+      ],
+      [
+        "8. What Do You Believe In?",
+        "The existence of gods is undeniable in the 41st Millennium, be they twisted manifestations of the Warp, ancient beings of unfathomable power, or the Emperor Himself.",
+        "What do you worship — if anything — and how?\nDo you follow a faith, like the Imperial Creed or Cult Mechanicus?\nAre you a puritan, or a radical?\nAre you a true believer, or someone paying lip service in pursuit of your own goals?"
+      ],
+      [
+        "9. To Whom, Or What, Are You Loyal?",
+        "Beyond your faith, you may have other beliefs that are core to your personality.",
+        "What would you never do?\nIs your greatest duty to your Faction? Your friends? Your family? Your word? To justice? Or simply to yourself?"
+      ],
+      [
+        "10. Why Are You In The Gilead System?",
+        "",
+        "Did you come to the Heartworlds in service of your Faction or through your own volition?\nAre you here to find glory, or a specific artefact?\nIs this system your home, or a strange place you travelled to out of necessity?\nWere you here when the Great Rift opened?\nIf not, why did you join Jakel Varonius's perilous journey?\nHowever you found yourself in the Gilead System, you're stuck there now — how do you feel about your fate?\nWhat led you to joining your group and forming your current Framework?"
+      ]
+    ],
+    "note": "Printed pp.34–36. Prompts are the printed bullets, one per line. Questions 1–5 are headed 'Your Past' (\"The first five questions are about your character's past.\"), 6–10 'Your Personality' (\"The second five questions ask you how your character thinks.\"). Text is the prose under each question heading, empty where none is printed."
+  },
+  {
+    "id": "tough-questions",
+    "name": "Tough Questions",
+    "source": "core",
+    "page": 36,
+    "columns": [
+      "Question",
+      "Text",
+      "Prompts"
+    ],
+    "rows": [
+      [
+        "What Is Your Internal Conflict?",
+        "",
+        "What conflicting viewpoints does your character hold?\nWhat makes them doubt or question their actions and beliefs?\nWhat do they want to do but can't because of their beliefs?"
+      ],
+      [
+        "How Is Your Character Different From You?",
+        "Beyond the physical, what beliefs does your character hold that are different to your own? Your character doesn't have to have a personality completely at odds with yours — in fact, it might help if you share a few values — but the 41st Millennium is a very different world.",
+        ""
+      ]
+    ],
+    "note": "Sidebar. \"If you're an experienced RPG player, you might like to answer the two questions below. They can make roleplaying more complex, but this can create fun and original experiences.\""
+  }
+]

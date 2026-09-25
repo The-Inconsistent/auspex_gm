@@ -1,0 +1,187 @@
+[
+  {
+    "id": "space-marine-implants",
+    "name": "Space Marine Implants",
+    "source": "vow-of-absolution",
+    "page": 24,
+    "owner": {
+      "speciesId": "adeptus-astartes"
+    },
+    "columns": [
+      "#",
+      "Implant"
+    ],
+    "rows": [
+      [
+        "1",
+        "Secondary Heart (The Maintainer):Enhances blood flow."
+      ],
+      [
+        "2",
+        "Ossmodula (The Ironheart): Fuses the ribcage for structural integrity."
+      ],
+      [
+        "3",
+        "Biscopea (The Forge of Strength): Produces hormones to increase muscle mass."
+      ],
+      [
+        "4",
+        "Haemastamen (The Blood Maker): Enhances blood efficiency."
+      ],
+      [
+        "5",
+        "Larraman’s Organ (The Healer): Enables faster clotting and scar tissue formation."
+      ],
+      [
+        "6",
+        "Catalepsean Node (The Unsleeping): Eliminates the need for sleep."
+      ],
+      [
+        "7",
+        "Preomnor (The Neutraliser): Enables the digestion of poisons without consequence."
+      ],
+      [
+        "8",
+        "Omophagea (The Remembrancer): Incorporates memories from consumed meat."
+      ],
+      [
+        "9",
+        "Multi-lung (The Imbiber): Enables breathing in poisonous atmospheres and water."
+      ],
+      [
+        "10",
+        "Occulobe (The Eye of Vengeance): Enhances eyesight, including low-light vision."
+      ],
+      [
+        "11",
+        "Lyman’s Ear (The Sentinel): Enhances audio detection and improves balance."
+      ],
+      [
+        "12",
+        "Sus-an Membrane (The Hibernator): Enables voluntary suspended animation."
+      ],
+      [
+        "13",
+        "Melanochrome (The Skinshield): Provides radiation resistance."
+      ],
+      [
+        "14",
+        "Oolitic Kidney (The Purifier): Filters poisons from the bloodstream."
+      ],
+      [
+        "15",
+        "Neuroglottis (The Devourer): Enhances the senses of taste and smell."
+      ],
+      [
+        "16",
+        "Mucranoid (The Weaver): Protects the skin from extreme temperatures and vacuum."
+      ],
+      [
+        "17",
+        "Betcher’s Gland (The Poison Bite): Enables acidic, poisonous spit."
+      ],
+      [
+        "18",
+        "Progenoids (The Gene-Seed): Provides the basis for new gene-seed."
+      ],
+      [
+        "19",
+        "Interface (The Black Carapace): Interfaces with power armour."
+      ],
+      [
+        "20",
+        "Sinew Coils (The Steel Within): Further enhances physical strength."
+      ],
+      [
+        "21",
+        "Magnificat (The Amplifier): Enhances growth and improves implant efficiency."
+      ],
+      [
+        "22",
+        "Belisarian Furnace (The Revitaliser): Provides rapid healing under extreme stress."
+      ]
+    ],
+    "note": "As part of the transformation from a mortal into an Adeptus Astartes, initiates receive 19 genetically enhancing implants. These improvements cause the metamorphosis from Human to Space Marine, enlarging and improving the physical form and mind of a prospective Astartes. Primaris Astartes also have an additional three implants. (20-22) Some Chapters have deficiencies in their gene-seed, reducing or eliminating the effectiveness of some implants. Your Species bonuses incorporate some of the benefits of these implants. If you are in a situation where you think your implants might allow you to take a specific Action or award you bonus dice, ask your GM. [Rows 20–22 are Primaris only. Printed as a numbered list; the '#' column is the list number. Item 1 prints no space after the colon, kept as printed.] Also Core p.75."
+  },
+  {
+    "id": "absolvers-names",
+    "name": "Astartes Names",
+    "source": "vow-of-absolution",
+    "page": 25,
+    "owner": {
+      "subFactionId": "absolvers"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Algernon"
+      ],
+      [
+        "Balthazar"
+      ],
+      [
+        "Chryses"
+      ],
+      [
+        "Diallo"
+      ],
+      [
+        "Egnatius"
+      ],
+      [
+        "Fafnir"
+      ],
+      [
+        "Gerhart"
+      ],
+      [
+        "Helbrecht"
+      ],
+      [
+        "Ibrahim"
+      ],
+      [
+        "Kalim"
+      ],
+      [
+        "Luthando"
+      ],
+      [
+        "Maximus"
+      ],
+      [
+        "Nicator"
+      ],
+      [
+        "Raziq"
+      ],
+      [
+        "Seigfried"
+      ],
+      [
+        "Tarik"
+      ],
+      [
+        "Ursinus"
+      ],
+      [
+        "Viggo"
+      ],
+      [
+        "Woyzeck"
+      ],
+      [
+        "Xanthus"
+      ],
+      [
+        "Youssou"
+      ],
+      [
+        "Zosimus"
+      ]
+    ],
+    "note": "Some Astartes choose to keep the names they held when they were mortal, while others choose or are gifted more fitting names when they transcend Humanity and become Space Marines. The Absolvers Chapter of the Astartes have 1,000 names they deem sacrosanct, ritually tattooed onto a Space Marine’s magnified form when the Chapter Master deems it has been earned. Many Absolvers decorate their Wargear with their names, knowing that when they fall in glorious battle, their designation will be passed to a new aspirant. You can take inspiration from the following Absolvers names: Also Core p.27."
+  }
+]

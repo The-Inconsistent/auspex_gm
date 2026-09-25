@@ -10,7 +10,8 @@
     "powers",
     "archetypes",
     "packages",
-    "patrons"
+    "patrons",
+    "flavour"
   ],
   "expected": {
     "archetypes": {

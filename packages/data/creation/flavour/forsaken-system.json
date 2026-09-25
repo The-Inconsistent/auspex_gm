@@ -1,0 +1,281 @@
+[
+  {
+    "id": "ogryn-names",
+    "name": "Ogryn Names",
+    "source": "forsaken-system",
+    "page": 92,
+    "owner": {
+      "speciesId": "ogryn"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Ank"
+      ],
+      [
+        "Brok"
+      ],
+      [
+        "Berta"
+      ],
+      [
+        "Chukka"
+      ],
+      [
+        "Dent"
+      ],
+      [
+        "Frug"
+      ],
+      [
+        "Grok"
+      ],
+      [
+        "Hak"
+      ],
+      [
+        "Igor"
+      ],
+      [
+        "Jab"
+      ],
+      [
+        "Karg"
+      ],
+      [
+        "Kront"
+      ],
+      [
+        "Lokk"
+      ],
+      [
+        "Munt"
+      ],
+      [
+        "Nork"
+      ],
+      [
+        "Okka"
+      ],
+      [
+        "Orod"
+      ],
+      [
+        "Punt"
+      ],
+      [
+        "Rakka"
+      ],
+      [
+        "Smasha"
+      ],
+      [
+        "Tock"
+      ],
+      [
+        "Tug"
+      ],
+      [
+        "Urok"
+      ],
+      [
+        "Vohn"
+      ],
+      [
+        "Wakka"
+      ],
+      [
+        "Yarp"
+      ]
+    ],
+    "note": "Ogryn names are invariably short and easily pronounced in the broken Low Gothic characteristic of the dull-witted abhumans. Harsh, plosive-filled, monosyllabic names that can be yelled over the din of battle are common in the Gilead System and beyond:"
+  },
+  {
+    "id": "ratling-names",
+    "name": "Ratling Names",
+    "source": "forsaken-system",
+    "page": 94,
+    "owner": {
+      "speciesId": "ratling"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Arble"
+      ],
+      [
+        "Bigby"
+      ],
+      [
+        "Chansey"
+      ],
+      [
+        "Doc"
+      ],
+      [
+        "Edegar"
+      ],
+      [
+        "Fingers"
+      ],
+      [
+        "Gormo"
+      ],
+      [
+        "Helli"
+      ],
+      [
+        "Irma"
+      ],
+      [
+        "Jolli"
+      ],
+      [
+        "Kelli"
+      ],
+      [
+        "Kurds"
+      ],
+      [
+        "Lobe"
+      ],
+      [
+        "Malgoy"
+      ],
+      [
+        "Merrin"
+      ],
+      [
+        "Norm"
+      ],
+      [
+        "Obbs"
+      ],
+      [
+        "Pietra"
+      ],
+      [
+        "Rally"
+      ],
+      [
+        "Stumper"
+      ],
+      [
+        "Talia"
+      ],
+      [
+        "Ulto"
+      ],
+      [
+        "Vinn"
+      ],
+      [
+        "Wanda"
+      ],
+      [
+        "Wisp"
+      ],
+      [
+        "Yanush"
+      ]
+    ],
+    "note": "Ratling names are as diverse as, and often derived from, Human names. Most collect names during their lifetimes, switching between them depending on their company or the crimes of which they are accused. The following names are common amongst Ratlings in the Gilead System."
+  },
+  {
+    "id": "kroot-names",
+    "name": "Kroot Names",
+    "source": "forsaken-system",
+    "page": 96,
+    "owner": {
+      "speciesId": "kroot"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Anghkor"
+      ],
+      [
+        "Braztyk"
+      ],
+      [
+        "Cechkala"
+      ],
+      [
+        "Dahyak"
+      ],
+      [
+        "Enghok"
+      ],
+      [
+        "Fenya"
+      ],
+      [
+        "Gorok"
+      ],
+      [
+        "Harbyx"
+      ],
+      [
+        "Ixilla"
+      ],
+      [
+        "Jiynko"
+      ],
+      [
+        "Khort"
+      ],
+      [
+        "Lucu"
+      ],
+      [
+        "Meyzek"
+      ],
+      [
+        "Nhatalla"
+      ],
+      [
+        "Ortazk"
+      ],
+      [
+        "Pechallai"
+      ],
+      [
+        "Quon"
+      ],
+      [
+        "Razick"
+      ],
+      [
+        "Senghak"
+      ],
+      [
+        "Tovrick"
+      ],
+      [
+        "Ula"
+      ],
+      [
+        "Vhey"
+      ],
+      [
+        "Wihn"
+      ],
+      [
+        "Xala"
+      ],
+      [
+        "Yulu"
+      ],
+      [
+        "Zhorick"
+      ]
+    ],
+    "note": "As only the Kroot are physically capable of speaking their language they adopt Low Gothic names when negotiating mercenary contracts with other Species. These names are usually little more than a few easily recognisable guttural sounds strung together. Kroot in the Gilead System are known to have used the following names:"
+  }
+]

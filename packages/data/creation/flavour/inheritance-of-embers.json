@@ -1,0 +1,287 @@
+[
+  {
+    "id": "asuryani-names",
+    "name": "Asuryani Names",
+    "source": "inheritance-of-embers",
+    "page": 12,
+    "owner": {
+      "factionId": "asuryani"
+    },
+    "columns": [
+      "Element 1",
+      "Element 2"
+    ],
+    "rows": [
+      [
+        "Aleera",
+        "Born of Twilight"
+      ],
+      [
+        "Aydona",
+        "Brylliel"
+      ],
+      [
+        "Bahtaam",
+        "Caman"
+      ],
+      [
+        "Dis’ar",
+        "of the Clan Randras"
+      ],
+      [
+        "Eärandil",
+        "the Fireheart"
+      ],
+      [
+        "Fachean",
+        "the Implacable"
+      ],
+      [
+        "Glenoighi",
+        "Indomi"
+      ],
+      [
+        "Ingfhar",
+        "Scion of Rhidmar"
+      ],
+      [
+        "Kalistri",
+        "Sheersom"
+      ],
+      [
+        "Lorinth",
+        "Ullamar"
+      ],
+      [
+        "Noithi",
+        ""
+      ],
+      [
+        "Osinell",
+        ""
+      ],
+      [
+        "Ra’thar",
+        ""
+      ],
+      [
+        "Senn",
+        ""
+      ],
+      [
+        "Torc",
+        ""
+      ],
+      [
+        "Yvraine",
+        ""
+      ]
+    ],
+    "note": "Imbued with deep meaning like the rest of their language, Asuryani names can be followed by a second element that is either inherited or earned later in life. [Printed as two independent comma lists; pick one from each. Element 2 is shorter, so its trailing cells are empty strings.]"
+  },
+  {
+    "id": "wraith-construct-names",
+    "name": "Wraith Construct Names",
+    "source": "inheritance-of-embers",
+    "page": 13,
+    "owner": {
+      "speciesId": "wraith-construct"
+    },
+    "columns": [
+      "Name"
+    ],
+    "rows": [
+      [
+        "Adamant"
+      ],
+      [
+        "Bastion"
+      ],
+      [
+        "Contender"
+      ],
+      [
+        "Diligence"
+      ],
+      [
+        "Endurance"
+      ],
+      [
+        "Eternity"
+      ],
+      [
+        "Gatekeeper"
+      ],
+      [
+        "Gravitas"
+      ],
+      [
+        "Hereafter"
+      ],
+      [
+        "Immutable"
+      ],
+      [
+        "Infinity"
+      ],
+      [
+        "Intransigence"
+      ],
+      [
+        "Mirthless"
+      ],
+      [
+        "Monument"
+      ],
+      [
+        "Penumbra"
+      ],
+      [
+        "Pinnacle"
+      ],
+      [
+        "Profundity"
+      ],
+      [
+        "Rampart"
+      ],
+      [
+        "Sentinel"
+      ],
+      [
+        "Severity"
+      ],
+      [
+        "Steadfast"
+      ],
+      [
+        "Solace"
+      ],
+      [
+        "Vengeance"
+      ],
+      [
+        "Vigilance"
+      ],
+      [
+        "Warden"
+      ],
+      [
+        "Zenith"
+      ]
+    ],
+    "note": "Most Wraith Constructs use the name they went by in life, if they still remember it. If not, they may adopt a suitably imposing title, such as:"
+  },
+  {
+    "id": "drukhari-names",
+    "name": "Drukhari Names",
+    "source": "inheritance-of-embers",
+    "page": 15,
+    "owner": {
+      "factionId": "drukhari"
+    },
+    "columns": [
+      "Element 1",
+      "Element 2"
+    ],
+    "rows": [
+      [
+        "Aestra",
+        "Beastbane"
+      ],
+      [
+        "Araqir",
+        "the Bloodbreather"
+      ],
+      [
+        "Atreixes",
+        "the Bloodsister"
+      ],
+      [
+        "Barakhar",
+        "the Crimson"
+      ],
+      [
+        "Drekarth",
+        "the Flenser"
+      ],
+      [
+        "Drisella",
+        "Masdruvael"
+      ],
+      [
+        "Iridivyst",
+        "Nervose"
+      ],
+      [
+        "Jalaxlar",
+        "of the Obsidian Needle"
+      ],
+      [
+        "Korai",
+        ""
+      ],
+      [
+        "Kruellagh",
+        ""
+      ],
+      [
+        "Maelik",
+        ""
+      ],
+      [
+        "Melandyr",
+        ""
+      ],
+      [
+        "Mydilian",
+        ""
+      ],
+      [
+        "Orinth",
+        ""
+      ],
+      [
+        "Salaine",
+        ""
+      ],
+      [
+        "Skechara",
+        ""
+      ],
+      [
+        "Tarsidhe",
+        ""
+      ],
+      [
+        "Vhane",
+        ""
+      ],
+      [
+        "Vorl",
+        ""
+      ],
+      [
+        "Xethis",
+        ""
+      ],
+      [
+        "Xynariis",
+        ""
+      ],
+      [
+        "Yesyr",
+        ""
+      ],
+      [
+        "Zharokh",
+        ""
+      ],
+      [
+        "Zuol",
+        ""
+      ]
+    ],
+    "note": "Drukhari names tend to sound harsher than their Asuryani kin. They too earn or choose epithet’s during their lives, with most reflecting some dark acomplishment they wish recognised. [Printed as two independent comma lists; pick one from each. Element 2 is shorter, so its trailing cells are empty strings. 'epithet’s' and 'acomplishment' are as printed.]"
+  }
+]
