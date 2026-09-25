@@ -467,17 +467,51 @@ Apocrypha and Necron armouries).
 | `patrons` | `Patron` | FSPG Patrons and their Framework options |
 | `flavour` | `FlavourTable` | Names, appearance, languages |
 
+**Nothing is free text.** Everything a record requires or gives, at creation or on purchase, is structured, and the
+schema has no free-text form for either. Prose (`effect`, ability and trait `text`, `bonus`) is the printed rule text,
+kept verbatim beside the structure. In-play effects (bonus dice in a situation, rerolls, "when you do X") stay in that
+prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly can't check is a `gm` requirement or a
+`story` grant, which the GM judges; validate counts them.
+
 **Shared shapes.**
-- `Requirement`: `attribute`, `skill`, `influence`, `keyword`, `notKeyword`, `species` (matches `countsAs` too),
-  `notSpecies`, `archetype`, `subFaction` (a Successor matches its `successorOf` too), `talent`, `notTalent`, `power`,
-  `option` (a choice from an OptionGroup: the Pariah template), `wargear` (printed names), `rank`, `tier`, `either`
-  (any one of `of`: "BS 4+ or WS 4+"), or `text` for anything that isn't mechanical.
-- `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
-- `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ keywords }` (taken together), `{ power }`,
-  `{ wargear }`, `{ bundle }` (items taken together), `{ text }`, `{ choose, from, optional }` (`optional`: the
-  character may take none), or `{ choose, fromDisciplines }` (any N powers from those disciplines).
-- `Rule`: a named ability, verbatim, with `mods` only where the book prints a flat bonus, and `grants`.
-- A wargear item keeps its printed `name`; `wargearId` links it once the Wargear catalogue has it.
+- `Scaled`: a number, or `{ perTier }` (per Tier Ascended in packages; × the new Tier in XP), `{ timesTier }`
+  (× the character's Tier), `{ perRank, plus? }` (× Rank, + N: Devotees' "Double Rank + 2") or `{ rankPlus }`
+  (Rank + N). `Amount` also allows dice ("1d3", `{ perTier: "1d3" }`, `{ roll: "1d3", times: 3 }`).
+- `Requirement`:
+  - ratings: `attribute`, `skill`, `chosenAttribute` / `chosenSkill` (a bracketed Talent's pick), `influence`, `rank`,
+    `tier` (`min`, `max`)
+  - identity: `keyword`, `notKeyword`, `species` (matches `countsAs` too), `notSpecies`, `archetype`, `subFaction` (a
+    Successor matches its `successorOf` too), `option` (an OptionGroup choice: the Pariah template)
+  - what the character has: `talent`, `notTalent`, `talentCategory` ("at least one Faith talent"), `power`,
+    `powerCount` ("2 powers from one Discipline"), `wargear` (printed names), `wargearKeyword`, `wargearCount`
+    ("three or more augmetics")
+  - composition: `either` (any one of `of`, each of which may be an `all`), `all`
+  - `gm`: a story condition the GM judges ("entrusted with the secret of the Fallen")
+- `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite), or `{ byChoice }` ("10 or
+  20").
+- `WargearFilter`: which catalogue items qualify, by `kinds`, `weapon` (melee or ranged), `categories`, `nameIncludes`,
+  `wargearKeywords`, `maxValue` (a number, `{ tierPlus }`, `{ newTierPlus }`), `rarity` (`atMost`, `atLeast`),
+  `upgrade`, and a GM-judged `condition`.
+- `Grant`:
+  - items: `wargear` (optionally `requires`), `bundle`, `pick` + `wargearOf` (a `WargearFilter`), `weapon` (an innate
+    profile, `addStrength` for S + X), `weaponTrait`, `trinkets`, `followers` (mob, companion, familiar, devotees or
+    minion, with an optional bestiary `threatId`)
+  - character: `talent`, `keyword`, `keywords`, `loseKeyword`, `neverKeyword`, `power`, `disciplineAccess`,
+    `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`), `talentAccess`
+    (+ `asKeyword`), `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),
+    `attribute` (`add` / `to`; "any", "lowest"), `skills` + `add`, `chosenTrait`, `influenceAttribute`, `xpDiscount`
+    (a Talent at a price, or a discipline at a multiplier), `noArmour`, `never` (Faith or Corruption)
+  - resources: `wealth`, `wealthPerSession`, `influence`, `corruption`, `faith`, `wrathPerSession`, `ammoPer`,
+    `memorableInjuries`, `mutations`, `bonusDice` (scaled), `gmRuin`
+  - composition: `all` (optionally `requires`), and `choose` from options, from disciplines, or of Skills; `optional`,
+    `repeat`, `random`
+  - `story`: a narrative benefit the GM runs
+- `Rule`: a named ability, verbatim, with `mods` and `grants`. A `Keyword` has `grants` too (PSYKER gives the Universal
+  Psyker Abilities and Minor / Smite access, Core pp.257, 375), and each Species grants a psyker its disciplines
+  (Core p.257: Aeldari Divination, Runes of Battle and one more; everyone else one). A `PsychicPower`'s `useRequires`
+  is what using it (not learning it) needs.
+- A wargear item keeps its printed `name`, a `qty` (a number or dice), a `scope` (character or group), and a
+  `wargearId` once the Wargear catalogue has it.
 
 **Sub-faction keywords** ("SPACE WOLVES") are defined by their `SubFaction` record, not by a keyword record; keyword
 records are the glossary Faction Keywords and the `[PLACEHOLDER]`s. A sub-faction's `requires` holds printed
@@ -533,7 +567,15 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   Lexmechanic prints "SKILLS: 3" with no Skill names (FSPG p.117); Corsair Prince's keywords read "AELDARI, ASURYANI,
   [CRAFTWORLD]" (IoE p.56; ANHRATHE, [COTERIE] meant?); Venenum Assassin prints TEMPLUM VANUS (Apocrypha); the Corsair
   "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
-- Faith: the Chaplain's "gain 1 Faith" and the Canoness's "+Rank Faith" have no structured field yet (the builder's).
 - Apocrypha suggests talents from "RR1" (Redacted Records), a book not in `books/`; they are listed in notes only.
+- Stay the Course (Core p.154): with a Memorable Injury already, can the Agent still take the 3 Corruption? The data
+  allows it.
+- Change of Kinship (IoE p.58) is "not at creation", but the Ynnari rule (p.20) speaks of buying it at creation.
+- Magisterial House "+Rank to Wealth" (Apocrypha p.53) is read as a one-off grant at creation.
+- The Primaris Chaplain's and Dark Apostle's "+Rank Resolve to you and allies" is read as an aura, not `mods`.
+- Should PRIEST archetypes that print no "may purchase Prayers" still buy them (the Prayers' own PRIEST requirement
+  admits them), or is `talentAccess` the gate?
+- Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier
+  to Max Shock" is `maxShock: { timesTier: -1 }`.
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

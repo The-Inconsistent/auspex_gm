@@ -185,6 +185,7 @@ const known: Record<string, Set<string>> = {
   "option-groups": creationIds("option-groups"),
   keywords: keywordNames,
   wargear: wargearIds,
+  threats: new Set(found),
 };
 // Which catalogue an id-holding key points into. The schema keeps these key names unambiguous.
 const REF_KEYS: Record<string, string> = {
@@ -198,6 +199,13 @@ const REF_KEYS: Record<string, string> = {
   disciplineId: "disciplines",
   alsoIn: "disciplines",
   fromDisciplines: "disciplines",
+  disciplineAccess: "disciplines",
+  threatId: "threats",
+  onlyDisciplines: "disciplines",
+  asKeyword: "keywords",
+  loseKeyword: "keywords",
+  neverKeyword: "keywords",
+  optionAccess: "option-groups",
   becomesArchetypeId: "archetypes",
   talentIds: "talents",
   powerIds: "powers",
@@ -218,15 +226,26 @@ const REQUIREMENT_REFS: Record<string, string> = {
   notTalent: "talents",
   power: "powers",
 };
-let textFallbacks = 0;
+let storyConditions = 0; // `gm` requirements and `story` grants: judged by the GM by design
+const wargearCategories = new Set(
+  readdirSync(wargearDir).flatMap((f) =>
+    (JSON.parse(readFileSync(new URL(f, wargearDir), "utf8")) as Wargear[]).map((w) => w.category),
+  ),
+);
 let unresolvedWargear = 0;
 // Walks one record, checking every reference and counting the not-yet-structured bits.
 function checkRefs(v: unknown, where: string) {
   if (Array.isArray(v)) return v.forEach((x) => checkRefs(x, where));
   if (typeof v !== "object" || v === null) return;
   const o = v as Record<string, unknown>;
-  const keys = Object.keys(o);
-  if (o.kind === "text" || (keys.length === 1 && keys[0] === "text")) textFallbacks++;
+  if (o.kind === "gm" || typeof o.story === "string") storyConditions++;
+  for (const cat of Array.isArray(o.categories) ? (o.categories as string[]) : [])
+    if (!wargearCategories.has(cat)) {
+      failed = true;
+      console.error(`✖ ${where}: unknown wargear category "${cat}"`);
+    }
+  if (typeof o.chooseDisciplines === "number" && Array.isArray(o.from))
+    for (const ref of o.from as string[]) miss("disciplines", ref, where);
   const reqType = typeof o.kind === "string" ? REQUIREMENT_REFS[o.kind] : undefined;
   if (reqType && Array.isArray(o.anyOf)) for (const ref of o.anyOf as string[]) miss(reqType, ref, where);
   if (typeof o.qty === "number" && typeof o.name === "string" && !o.wargearId) unresolvedWargear++;
@@ -286,7 +305,9 @@ for (const { file, r } of creation.get("archetypes")!) {
     );
 }
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
-console.log(`creation: ${textFallbacks} text fallbacks, ${unresolvedWargear} wargear items not in the catalogue`);
+console.log(
+  `creation: ${storyConditions} GM-judged story conditions, ${unresolvedWargear} wargear items not in the catalogue`,
+);
 for (const [type, n] of pending) console.log(`creation: ${n} references to ${type} pending its wave`);
 
 // Packs: schema, internal references, and every prepared-encounter threat must exist.

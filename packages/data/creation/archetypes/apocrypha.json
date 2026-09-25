@@ -230,7 +230,19 @@
     "abilities": [
       {
         "name": "Hardened Augmetics",
-        "text": "Your Resilience is increased by +Rank, but you may not wear any armour. In addition, when you roll Determination, you may re-roll any dice which roll 1."
+        "text": "Your Resilience is increased by +Rank, but you may not wear any armour. In addition, when you roll Determination, you may re-roll any dice which roll 1.",
+        "grants": [
+          {
+            "mods": {
+              "resilience": {
+                "perRank": 1
+              }
+            }
+          },
+          {
+            "noArmour": true
+          }
+        ]
       }
     ],
     "wargear": [
@@ -250,7 +262,15 @@
         ]
       },
       {
-        "text": "three Augmetic Enhancements"
+        "pick": 3,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "categories": [
+            "Augmetic Enhancements"
+          ]
+        }
       },
       {
         "wargear": {
@@ -355,7 +375,16 @@
         }
       },
       {
-        "text": "any one ranged weapon of uncommon or lower rarity"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "weapon": "ranged",
+          "rarity": {
+            "atMost": "Uncommon"
+          }
+        }
       },
       {
         "wargear": {
@@ -658,6 +687,11 @@
       "[SEPT]",
       "PRIEST"
     ],
+    "grants": [
+      {
+        "talentAccess": "prayer"
+      }
+    ],
     "attributes": {
       "A": 3,
       "I": 3,
@@ -691,7 +725,29 @@
         }
       },
       {
-        "text": "up to two Drones (Gun Drone, Marker Drone, or Shield Drone)"
+        "choose": 2,
+        "optional": true,
+        "repeat": true,
+        "from": [
+          {
+            "wargear": {
+              "name": "Gun Drone",
+              "qty": 1
+            }
+          },
+          {
+            "wargear": {
+              "name": "Marker Drone",
+              "qty": 1
+            }
+          },
+          {
+            "wargear": {
+              "name": "Shield Drone",
+              "qty": 1
+            }
+          }
+        ]
       }
     ],
     "influence": 4,
@@ -860,7 +916,15 @@
     "abilities": [
       {
         "name": "Addicted to Destruction",
-        "text": "When you roll a 6 on your Wrath die when making a ranged attack, you may forego the critical hit and spend a reload in order to make a second ranged attack with that weapon. This second attack cannot produce further attacks.\n\nIn addition, you gain 1d3x3 Corruption when you select this Archetype."
+        "text": "When you roll a 6 on your Wrath die when making a ranged attack, you may forego the critical hit and spend a reload in order to make a second ranged attack with that weapon. This second attack cannot produce further attacks.\n\nIn addition, you gain 1d3x3 Corruption when you select this Archetype.",
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 3
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -984,7 +1048,15 @@
     "abilities": [
       {
         "name": "Master of Slaughter",
-        "text": "When you inflict a critical hit, you count as having spent 1 Glory to improve the effect. You may still spend additional Glory to improve the effect further.\n\nIn addition, you gain 1d3x3 Corruption when you select this Archetype."
+        "text": "When you inflict a critical hit, you count as having spent 1 Glory to improve the effect. You may still spend additional Glory to improve the effect further.\n\nIn addition, you gain 1d3x3 Corruption when you select this Archetype.",
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 3
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1598,6 +1670,11 @@
             "fromDisciplines": [
               "waaagh"
             ]
+          },
+          {
+            "disciplineAccess": [
+              "waaagh"
+            ]
           }
         ]
       }
@@ -1818,6 +1895,26 @@
             "fromDisciplines": [
               "dark-hereticus"
             ]
+          },
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "disciplineAccess": [
+              "dark-hereticus"
+            ]
+          },
+          {
+            "chooseDisciplines": 1
+          },
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 4
+            }
           }
         ]
       }
@@ -1922,6 +2019,11 @@
       "[LEGION]",
       "PRIEST"
     ],
+    "grants": [
+      {
+        "talentAccess": "prayer"
+      }
+    ],
     "attributes": {
       "S": 4,
       "T": 4,
@@ -1943,7 +2045,15 @@
     "abilities": [
       {
         "name": "Accursed Demagogue",
-        "text": "You, and all allies with the CHAOS keyword within 15+Rank metres add +Rank to Resolve. This increases to +Double Rank if they share your [MARK OF CHAOS] or [LEGION] keyword.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype."
+        "text": "You, and all allies with the CHAOS keyword within 15+Rank metres add +Rank to Resolve. This increases to +Double Rank if they share your [MARK OF CHAOS] or [LEGION] keyword.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype.",
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 4
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -2022,7 +2132,7 @@
     "name": "Genetor",
     "source": "apocrypha",
     "page": 169,
-    "note": "Suggested talent printed \"The Rite of Pure Thought (p. 139)\".",
+    "note": "Suggested talent printed \"The Rite of Pure Thought (p. 139)\". \"Availability N (Rarity)\" is read as a Value of N or less and that Rarity or lower (the wargear filters).",
     "factionId": "adeptus-mechanicus",
     "tier": 4,
     "speciesIds": [
@@ -2047,7 +2157,19 @@
     "abilities": [
       {
         "name": "Magos Biologis",
-        "text": "You add +Rank bonus dice to any Medicae test you attempt and take only half as long to perform a Medicae test. In addition, your bioengineered and genetic augmentations increase your Max Wounds and Max Shock by +Rank."
+        "text": "You add +Rank bonus dice to any Medicae test you attempt and take only half as long to perform a Medicae test. In addition, your bioengineered and genetic augmentations increase your Max Wounds and Max Shock by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "maxWounds": {
+                "perRank": 1
+              },
+              "maxShock": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -2070,10 +2192,30 @@
         }
       },
       {
-        "text": "any two augmetic enhancements"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "categories": [
+            "Augmetic Enhancements"
+          ]
+        }
       },
       {
-        "text": "any one augmetic implant of up to Availability 7 (Unique)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "categories": [
+            "Augmetic Implants"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Unique"
+          }
+        }
       },
       {
         "wargear": {
@@ -2082,7 +2224,16 @@
         }
       },
       {
-        "text": "any one weapon of up to Availability 6 (Very Rare)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 6,
+          "rarity": {
+            "atMost": "Very Rare"
+          }
+        }
       }
     ],
     "influence": 3,
@@ -2160,6 +2311,11 @@
         "grants": [
           {
             "power": "rites-of-banishment"
+          },
+          {
+            "disciplineAccess": [
+              "sanctic"
+            ]
           }
         ]
       }
@@ -2249,6 +2405,11 @@
           {
             "choose": 1,
             "fromDisciplines": [
+              "skeinwrought"
+            ]
+          },
+          {
+            "disciplineAccess": [
               "skeinwrought"
             ]
           }
@@ -2350,7 +2511,19 @@
     ],
     "wargear": [
       {
-        "text": "any two VOTANN weapons with a Value of 7 or less and a Rarity of Very Rare or lower"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "wargearKeywords": [
+            "VOTANN"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Very Rare"
+          }
+        }
       },
       {
         "wargear": {
@@ -2431,7 +2604,15 @@
     "abilities": [
       {
         "name": "Blood for the Blood God!",
-        "text": "When you make an All-Out Attack, you may add up to +Rank additional Wrath dice to your dice pool, in addition to the normal Wrath die. If any of these Wrath dice are 6s, then you score a Critical hit. That Critical Hit increases in effect as if a Glory point had been spent, for each Wrath die after the first which rolls a 6.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype."
+        "text": "When you make an All-Out Attack, you may add up to +Rank additional Wrath dice to your dice pool, in addition to the normal Wrath die. If any of these Wrath dice are 6s, then you score a Critical hit. That Critical Hit increases in effect as if a Glory point had been spent, for each Wrath die after the first which rolls a 6.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype.",
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 4
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -2493,7 +2674,7 @@
     "name": "Logis",
     "source": "apocrypha",
     "page": 175,
-    "note": "Suggested Talents lists the Divination powers Prescience, Psychometry and Scrier's Gaze (Core pp.274-275); they are in powerIds.",
+    "note": "Suggested Talents lists the Divination powers Prescience, Psychometry and Scrier's Gaze (Core pp.274-275); they are in powerIds. \"Availability N (Rarity)\" is read as a Value of N or less and that Rarity or lower (the wargear filters).",
     "factionId": "adeptus-mechanicus",
     "tier": 4,
     "speciesIds": [
@@ -2524,6 +2705,11 @@
             "fromDisciplines": [
               "divination"
             ]
+          },
+          {
+            "disciplineAccess": [
+              "divination"
+            ]
           }
         ]
       }
@@ -2541,10 +2727,24 @@
         }
       },
       {
-        "text": "any 3 augmetics"
+        "pick": 3,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       },
       {
-        "text": "any one cybernetic of up to Availability 7 (Unique)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Unique"
+          }
+        }
       },
       {
         "wargear": {
@@ -2553,7 +2753,16 @@
         }
       },
       {
-        "text": "any one weapon of up to Availability 6 (Very Rare)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 6,
+          "rarity": {
+            "atMost": "Very Rare"
+          }
+        }
       }
     ],
     "influence": 3,
@@ -2596,7 +2805,7 @@
     "name": "Magos",
     "source": "apocrypha",
     "page": 176,
-    "note": "The Canticles of the Omnissiah rule is the page's sidebar, which the Forge-Lord ability refers to.",
+    "note": "The Canticles of the Omnissiah rule is the page's sidebar, which the Forge-Lord ability refers to. \"Availability N (Rarity)\" is read as a Value of N or less and that Rarity or lower (the wargear filters).",
     "factionId": "adeptus-mechanicus",
     "tier": 4,
     "speciesIds": [
@@ -2642,10 +2851,30 @@
         }
       },
       {
-        "text": "any two augmetic enhancements"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "categories": [
+            "Augmetic Enhancements"
+          ]
+        }
       },
       {
-        "text": "any two augmetic implants of up to Availability 7 (Unique)"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "categories": [
+            "Augmetic Implants"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Unique"
+          }
+        }
       },
       {
         "wargear": {
@@ -2654,7 +2883,16 @@
         }
       },
       {
-        "text": "any two weapons of up to Availability 7 (Unique)"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Unique"
+          }
+        }
       }
     ],
     "influence": 4,
@@ -2727,14 +2965,21 @@
         "text": "You are trained to be able to guide a starship through the Warp. In addition, you are a PSYKER, and may only learn and use Navigator powers. You begin with the Lidless Stare power and one other Navigator power.\n\nFinally, your status and influence are such that you gain +Rank bonus dice on Persuasion (Fel) Tests and Influence tests made to negotiate or to acquire goods and services.",
         "grants": [
           {
-            "keyword": "PSYKER"
-          },
-          {
             "power": "the-lidless-stare"
           },
           {
             "choose": 1,
             "fromDisciplines": [
+              "navigator-powers"
+            ]
+          },
+          {
+            "disciplineAccess": [
+              "navigator-powers"
+            ]
+          },
+          {
+            "onlyDisciplines": [
               "navigator-powers"
             ]
           }
@@ -2772,7 +3017,7 @@
         }
       },
       {
-        "text": "Wealth 4"
+        "wealth": 4
       }
     ],
     "influence": 4,
@@ -2851,7 +3096,15 @@
     "abilities": [
       {
         "name": "Cacophony and Ecstasy",
-        "text": "You add +Double Rank bonus dice on Awareness and Insight tests that relate specifically to hearing, and you can pick out sounds, and variations in sounds that a normal human cannot. Further, you recover Rank Shock at the end of every turn, as you revel in the din of battle. However, if you reach Max Shock, you are Staggered as well as Exhausted, as you are overcome by sensation.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype."
+        "text": "You add +Double Rank bonus dice on Awareness and Insight tests that relate specifically to hearing, and you can pick out sounds, and variations in sounds that a normal human cannot. Further, you recover Rank Shock at the end of every turn, as you revel in the din of battle. However, if you reach Max Shock, you are Staggered as well as Exhausted, as you are overcome by sensation.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype.",
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 4
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -3057,7 +3310,18 @@
     "abilities": [
       {
         "name": "Disgustingly Resilient",
-        "text": "You may roll Determination against Mortal Wounds. In addition, any Wounds negated by Determination are ignored rather than being converted into Shock. However, your Speed is reduced by 1.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype."
+        "text": "You may roll Determination against Mortal Wounds. In addition, any Wounds negated by Determination are ignored rather than being converted into Shock. However, your Speed is reduced by 1.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype.",
+        "mods": {
+          "speed": -1
+        },
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 4
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -3573,6 +3837,11 @@
       "PRIMARIS",
       "PRIEST"
     ],
+    "grants": [
+      {
+        "talentAccess": "prayer"
+      }
+    ],
     "attributes": {
       "S": 6,
       "T": 6,
@@ -3695,9 +3964,6 @@
         "text": "You are a psyker; you have all the Universal psyker abilities, you know the Smite psychic power. You know the Librarius discipline, and receive one power from that Discipline, and you may select one other Psychic Discipline of your choice to learn powers from.",
         "grants": [
           {
-            "keyword": "PSYKER"
-          },
-          {
             "power": "smite"
           },
           {
@@ -3707,7 +3973,18 @@
             ]
           },
           {
-            "text": "one other Psychic Discipline of your choice to learn powers from"
+            "chooseDisciplines": 1
+          },
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "disciplineAccess": [
+              "librarius"
+            ]
           }
         ]
       }
@@ -3849,7 +4126,12 @@
         }
       },
       {
-        "text": "any 2 augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 2,
@@ -3901,7 +4183,15 @@
     "abilities": [
       {
         "name": "Daemon-Smith",
-        "text": "You add +Rank to all Tech tests to control or repair daemonic or corrupted technology, or to corrupt Imperial technology. You only take half as long as normal to perform a Tech test.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype."
+        "text": "You add +Rank to all Tech tests to control or repair daemonic or corrupted technology, or to corrupt Imperial technology. You only take half as long as normal to perform a Tech test.\n\nIn addition, you gain 1d3x4 Corruption when you select this Archetype.",
+        "grants": [
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 4
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -3943,10 +4233,21 @@
         }
       },
       {
-        "text": "one Mechadendrite of your choice"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "nameIncludes": "Mechadendrite"
+        }
       },
       {
-        "text": "choice of two augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 2,
@@ -4588,7 +4889,32 @@
       },
       {
         "name": "Pivotal Role",
-        "text": "Many senior Harlequins take on specific roles within a Troupe or a performance, that differ from the normal role of the Harlequin. When you select this Archetype, you may choose to replace Blitz with one of the following:\n\n- SHOCKING EMERGENCE: As a Free Action at the start of combat, you may take on an indistinct, shimmering form, and cannot be seen or targeted by enemies or allies; you cannot take any actions other than movement in this form. At the start of any of your turns, you may reveal yourself, and you add +Rank bonus dice to any melee attack you make if you charge on the turn you reveal yourself.\n- CHROMATIC RUSH: Your speed is increased by +Double Rank. This replaces the increase to Speed from the Harlequins’ Rising Crescendo ability.\n- UNNATURAL ACROBATICS: Your Defence is increased by +Rank."
+        "text": "Many senior Harlequins take on specific roles within a Troupe or a performance, that differ from the normal role of the Harlequin. When you select this Archetype, you may choose to replace Blitz with one of the following:\n\n- SHOCKING EMERGENCE: As a Free Action at the start of combat, you may take on an indistinct, shimmering form, and cannot be seen or targeted by enemies or allies; you cannot take any actions other than movement in this form. At the start of any of your turns, you may reveal yourself, and you add +Rank bonus dice to any melee attack you make if you charge on the turn you reveal yourself.\n- CHROMATIC RUSH: Your speed is increased by +Double Rank. This replaces the increase to Speed from the Harlequins’ Rising Crescendo ability.\n- UNNATURAL ACROBATICS: Your Defence is increased by +Rank.",
+        "grants": [
+          {
+            "choose": 1,
+            "optional": true,
+            "from": [
+              {
+                "story": "SHOCKING EMERGENCE replaces Blitz"
+              },
+              {
+                "mods": {
+                  "speed": {
+                    "perRank": 2
+                  }
+                }
+              },
+              {
+                "mods": {
+                  "defence": {
+                    "perRank": 1
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [
@@ -4730,7 +5056,13 @@
         }
       },
       {
-        "text": "Mechadendrite (pick one type)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "nameIncludes": "Mechadendrite"
+        }
       },
       {
         "wargear": {
@@ -5120,7 +5452,15 @@
         }
       },
       {
-        "text": "One Augmetic or Ork Bionic (rarity Rare or better)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       }
     ],
     "suggested": {
@@ -5150,7 +5490,8 @@
         "attributes": 68,
         "skills": 32
       }
-    }
+    },
+    "note": "\"rarity Rare or better\" is read as Rare or lower, as elsewhere in the book (\"Rare or lower\")."
   },
   {
     "source": "apocrypha",
@@ -5189,6 +5530,15 @@
           },
           {
             "power": "vauls-song"
+          },
+          {
+            "disciplineAccess": [
+              "divination",
+              "runes-of-shaping"
+            ]
+          },
+          {
+            "chooseDisciplines": 1
           }
         ]
       }
@@ -5391,7 +5741,12 @@
         ]
       },
       {
-        "text": "Any two Augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       },
       {
         "wargear": {
@@ -5452,6 +5807,25 @@
       "IMPERIUM",
       "INQUISITION",
       "[ORDO]"
+    ],
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "keywords": [
+              "ASTRA MILITARUM",
+              "[REGIMENT]"
+            ]
+          },
+          {
+            "keywords": [
+              "ADEPTUS ADMINISTRATUM",
+              "OFFICIO MEDICAE"
+            ]
+          }
+        ]
+      }
     ],
     "attributes": {
       "Int": 5,
@@ -5538,26 +5912,7 @@
         "attributes": 44,
         "skills": 36
       }
-    },
-    "grants": [
-      {
-        "choose": 1,
-        "from": [
-          {
-            "keywords": [
-              "ASTRA MILITARUM",
-              "[REGIMENT]"
-            ]
-          },
-          {
-            "keywords": [
-              "ADEPTUS ADMINISTRATUM",
-              "OFFICIO MEDICAE"
-            ]
-          }
-        ]
-      }
-    ]
+    }
   },
   {
     "source": "apocrypha",
@@ -5590,7 +5945,16 @@
     "abilities": [
       {
         "name": "Voltaic Fanaticism",
-        "text": "Your maximum Shock is increased by +Double Rank, and you ignore all penalties for being Wounded."
+        "text": "Your maximum Shock is increased by +Double Rank, and you ignore all penalties for being Wounded.",
+        "grants": [
+          {
+            "mods": {
+              "maxShock": {
+                "perRank": 2
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -5610,7 +5974,12 @@
         }
       },
       {
-        "text": "Any two augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 1,
@@ -5743,6 +6112,11 @@
       "HERETIC",
       "PRIEST"
     ],
+    "grants": [
+      {
+        "talentAccess": "prayer"
+      }
+    ],
     "attributes": {
       "Wil": 3,
       "Fel": 4
@@ -5766,7 +6140,16 @@
         }
       },
       {
-        "text": "One melee weapon or one ranged weapon of up to Value 5 and a rarity of up to Rare"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 5,
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       },
       {
         "wargear": {
@@ -5850,7 +6233,16 @@
     "abilities": [
       {
         "name": "Voltaic Fanaticism",
-        "text": "Your maximum Shock is increased by +Double Rank, and you ignore all penalties for being Wounded."
+        "text": "Your maximum Shock is increased by +Double Rank, and you ignore all penalties for being Wounded.",
+        "grants": [
+          {
+            "mods": {
+              "maxShock": {
+                "perRank": 2
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -5870,7 +6262,12 @@
         }
       },
       {
-        "text": "Any two augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 1,
@@ -6009,7 +6406,7 @@
       "human"
     ],
     "xp": 70,
-    "note": "The Suggested Attributes, Skills and Talents are identical to the Magistrate's (p.117).",
+    "note": "The Suggested Attributes, Skills and Talents are identical to the Magistrate's (p.117). \"a rarity of Rare or better\" is read as Rare or lower, as elsewhere in the book (\"Rare or lower\").",
     "keywords": [
       "IMPERIUM",
       "LOGOS HISTORICA VERITA"
@@ -6051,7 +6448,34 @@
         }
       },
       {
-        "text": "One melee weapon and one ranged weapon, each with a Value of 5 or less, and a rarity of Rare or better"
+        "all": [
+          {
+            "pick": 1,
+            "wargearOf": {
+              "kinds": [
+                "weapon"
+              ],
+              "weapon": "melee",
+              "maxValue": 5,
+              "rarity": {
+                "atMost": "Rare"
+              }
+            }
+          },
+          {
+            "pick": 1,
+            "wargearOf": {
+              "kinds": [
+                "weapon"
+              ],
+              "weapon": "ranged",
+              "maxValue": 5,
+              "rarity": {
+                "atMost": "Rare"
+              }
+            }
+          }
+        ]
       }
     ],
     "influence": 2,
@@ -6422,6 +6846,16 @@
         "grants": [
           {
             "power": "the-lidless-stare"
+          },
+          {
+            "disciplineAccess": [
+              "navigator-powers"
+            ]
+          },
+          {
+            "onlyDisciplines": [
+              "navigator-powers"
+            ]
           }
         ]
       }
@@ -7000,6 +7434,26 @@
             "fromDisciplines": [
               "maleficarum"
             ]
+          },
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "disciplineAccess": [
+              "maleficarum"
+            ]
+          },
+          {
+            "chooseDisciplines": 1
+          },
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": 2
+            }
           }
         ]
       }
@@ -7099,7 +7553,16 @@
     "abilities": [
       {
         "name": "Slaver",
-        "text": "You are accompanied by a mob of Grots (p. 358) equal to your Rank x4. If any of your Grots die, they can be replaced between sessions at the GM’s discretion. All Grots, Snotlings, and Squigs within 10 + Rank metres of you add your Leadership to their Resolve."
+        "text": "You are accompanied by a mob of Grots (p. 358) equal to your Rank x4. If any of your Grots die, they can be replaced between sessions at the GM’s discretion. All Grots, Snotlings, and Squigs within 10 + Rank metres of you add your Leadership to their Resolve.",
+        "grants": [
+          {
+            "followers": {
+              "perRank": 4
+            },
+            "kind": "mob",
+            "threatId": "grot"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -7201,7 +7664,18 @@
     ],
     "wargear": [
       {
-        "text": "Choose any two weapons with a Value of your Tier +3 or lower, and a rarity of Rare or lower"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": {
+            "tierPlus": 3
+          },
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       },
       {
         "choose": 1,
@@ -7493,7 +7967,18 @@
     ],
     "wargear": [
       {
-        "text": "Up to one weapon with a Value of your Tier +3 or lower, and a rarity of Rare or lower"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": {
+            "tierPlus": 3
+          },
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       },
       {
         "wargear": {
@@ -7834,7 +8319,12 @@
         }
       },
       {
-        "text": "Any two augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       },
       {
         "wargear": {
@@ -7918,7 +8408,16 @@
         }
       },
       {
-        "text": "One melee weapon or one ranged weapon of up to Value 7 and a rarity of up to Rare"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       },
       {
         "wargear": {
@@ -8229,7 +8728,29 @@
         }
       },
       {
-        "text": "Up to two Drones (Gun Drone, Marker Drone, or Shield Drone)"
+        "choose": 2,
+        "optional": true,
+        "repeat": true,
+        "from": [
+          {
+            "wargear": {
+              "name": "Gun Drone",
+              "qty": 1
+            }
+          },
+          {
+            "wargear": {
+              "name": "Marker Drone",
+              "qty": 1
+            }
+          },
+          {
+            "wargear": {
+              "name": "Shield Drone",
+              "qty": 1
+            }
+          }
+        ]
       }
     ],
     "influence": 3,
@@ -8469,7 +8990,17 @@
     ],
     "wargear": [
       {
-        "text": "Two melee weapons each of Value 3 or less of up to Common rarity"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "weapon": "melee",
+          "maxValue": 3,
+          "rarity": {
+            "atMost": "Common"
+          }
+        }
       },
       {
         "wargear": {
@@ -8533,7 +9064,12 @@
     "abilities": [
       {
         "name": "The Enemy Within",
-        "text": "While disguised, you gain +Rank bonus dice on all Deception tests to pass as an Imperial citizen. When no longer disguised, you gain +Rank bonus dice on all Interaction Attacks against IMPERIAL characters.\n\nIn addition, you gain 1d3 Corruption."
+        "text": "While disguised, you gain +Rank bonus dice on all Deception tests to pass as an Imperial citizen. When no longer disguised, you gain +Rank bonus dice on all Interaction Attacks against IMPERIAL characters.\n\nIn addition, you gain 1d3 Corruption.",
+        "grants": [
+          {
+            "corruption": "1d3"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -8796,6 +9332,16 @@
     "keywords": [
       "IMPERIUM"
     ],
+    "grants": [
+      {
+        "choose": 1,
+        "rating": 1,
+        "skills": [
+          "Ballistic Skill",
+          "Weapon Skill"
+        ]
+      }
+    ],
     "attributes": {
       "Wil": 2
     },
@@ -8808,7 +9354,16 @@
     ],
     "wargear": [
       {
-        "text": "One ranged or melee weapon of Value 3 or less of up to Common rarity"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 3,
+          "rarity": {
+            "atMost": "Common"
+          }
+        }
       },
       {
         "wargear": {
@@ -8852,17 +9407,7 @@
       }
     },
     "note": "SKILLS prints \"Ballistic Skill 1 or Weapon Skill 1\": the skill-choice grant; `skills` is empty. The 6 XP is Willpower 2 plus one of them. XP as printed; ratings + (Tier − 1) × 10 = 4.",
-    "source": "apocrypha",
-    "grants": [
-      {
-        "choose": 1,
-        "rating": 1,
-        "skills": [
-          "Ballistic Skill",
-          "Weapon Skill"
-        ]
-      }
-    ]
+    "source": "apocrypha"
   },
   {
     "id": "fire-caste-breacher",
@@ -9463,7 +10008,12 @@
     "abilities": [
       {
         "name": "The Scent of Blood",
-        "text": "You become Frenzied when an enemy is killed within 10 metres of you. While Frenzied, you add +Rank ED to all melee attacks you make. In addition, gain +1d3 Corruption"
+        "text": "You become Frenzied when an enemy is killed within 10 metres of you. While Frenzied, you add +Rank ED to all melee attacks you make. In addition, gain +1d3 Corruption",
+        "grants": [
+          {
+            "corruption": "1d3"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -9553,7 +10103,22 @@
     "abilities": [
       {
         "name": "Inured to Suffering",
-        "text": "You add +Rank to both your Resolve and your Determination. In addition, gain +1d3 Corruption"
+        "text": "You add +Rank to both your Resolve and your Determination. In addition, gain +1d3 Corruption",
+        "grants": [
+          {
+            "mods": {
+              "resolve": {
+                "perRank": 1
+              },
+              "determination": {
+                "perRank": 1
+              }
+            }
+          },
+          {
+            "corruption": "1d3"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -9646,7 +10211,11 @@
         }
       },
       {
-        "text": "1d3+1 knifes"
+        "wargear": {
+          "name": "Knife",
+          "qty": "1d3+1",
+          "wargearId": "knife"
+        }
       },
       {
         "wargear": {
@@ -9706,7 +10275,7 @@
         "skills": 20
       }
     },
-    "note": "The p.70 table calls it \"Penal Trooper\". No ATTRIBUTES line is printed. Keyword printed \"MILITARUM AUXILIA\"; mapped to Core's MILITARUM AUXILLA. Wargear prints \"1d3+1 knifes\" (kept as text, a random count) and \"3 doses of Frenzon with injector\".",
+    "note": "The p.70 table calls it \"Penal Trooper\". No ATTRIBUTES line is printed. Keyword printed \"MILITARUM AUXILIA\"; mapped to Core's MILITARUM AUXILLA. Wargear prints \"1d3+1 knifes\" (a random count, qty \"1d3+1\") and \"3 doses of Frenzon with injector\".",
     "source": "apocrypha"
   },
   {
@@ -9737,7 +10306,16 @@
     "abilities": [
       {
         "name": "Sanctified Linguist",
-        "text": "You add +Rank bonus dice on Scholar tests relating to language, and you know Double Rank additional languages. You also gain +Rank Conviction."
+        "text": "You add +Rank bonus dice on Scholar tests relating to language, and you know Double Rank additional languages. You also gain +Rank Conviction.",
+        "grants": [
+          {
+            "mods": {
+              "conviction": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -9834,7 +10412,16 @@
     "abilities": [
       {
         "name": "Spiritual Advisor",
-        "text": "You add +Rank bonus dice to Leadership and Persuasion tests when interacting with the Nobility of the Imperium. You also add +Rank to your Conviction."
+        "text": "You add +Rank bonus dice to Leadership and Persuasion tests when interacting with the Nobility of the Imperium. You also add +Rank to your Conviction.",
+        "grants": [
+          {
+            "mods": {
+              "conviction": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -10062,7 +10649,12 @@
     "abilities": [
       {
         "name": "Distracting Musk",
-        "text": "Characters within 5 metres of you which lack the SLAANESH keyword add +Rank to the DN of all Intelligence and Willpower tests. In addition, gain +1d3 Corruption"
+        "text": "Characters within 5 metres of you which lack the SLAANESH keyword add +Rank to the DN of all Intelligence and Willpower tests. In addition, gain +1d3 Corruption",
+        "grants": [
+          {
+            "corruption": "1d3"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -10138,7 +10730,19 @@
     "abilities": [
       {
         "name": "Aura of Change",
-        "text": "Your Resilience increases by +Rank, and you make roll Determination against Mortal Wounds. In addition, gain +1d3 Corruption."
+        "text": "Your Resilience increases by +Rank, and you make roll Determination against Mortal Wounds. In addition, gain +1d3 Corruption.",
+        "grants": [
+          {
+            "mods": {
+              "resilience": {
+                "perRank": 1
+              }
+            }
+          },
+          {
+            "corruption": "1d3"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -10312,7 +10916,19 @@
     "abilities": [
       {
         "name": "Insensible to Pain",
-        "text": "Your maximum Shock is increased by +Rank. Further, when you roll Determination, you may re-roll any die which rolls a 1. You may roll Determination against Mortal Wounds. You cannot wear armour, due to your altered physiology."
+        "text": "Your maximum Shock is increased by +Rank. Further, when you roll Determination, you may re-roll any die which rolls a 1. You may roll Determination against Mortal Wounds. You cannot wear armour, due to your altered physiology.",
+        "grants": [
+          {
+            "mods": {
+              "maxShock": {
+                "perRank": 1
+              }
+            }
+          },
+          {
+            "noArmour": true
+          }
+        ]
       }
     ],
     "wargear": [
@@ -10332,7 +10948,18 @@
         }
       },
       {
-        "text": "Any one Augmetic with the DRUKHARI keyword and a rarity of up to Rare"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "wargearKeywords": [
+            "DRUKHARI"
+          ],
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       }
     ],
     "suggested": {
@@ -10383,10 +11010,24 @@
         "text": "You are a psyker; you know a number of randomly determined Minor Psychic Powers equal to 1 +Rank, and you may learn additional Minor Powers. Each time you suffer Perils of the Warp, you lose the power you attempted to use, and must randomly generate a new minor power to replace it.\n\nYou may not learn Smite or powers from any psychic discipline unless you have ascended and achieved Tier 2 or higher.",
         "grants": [
           {
-            "keyword": "PSYKER"
+            "choose": {
+              "rankPlus": 1
+            },
+            "fromDisciplines": [
+              "minor"
+            ],
+            "random": true
           },
           {
-            "text": "1 +Rank randomly determined Minor Psychic Powers"
+            "disciplineAccess": [
+              "minor"
+            ]
+          },
+          {
+            "onlyDisciplines": [
+              "minor"
+            ],
+            "untilTier": 2
           }
         ]
       }
@@ -10776,10 +11417,26 @@
         "text": "You are a Psyker; you know the Telepathy psychic power and may purchase additional psychic powers from the Telepathy Discipline. If you purchase an access to an additional Discipline, it must be Divination or Theosophamy.\n\nYou permanently have the Blinded condition, though you can perceive the world well enough as long as you can use your psychic powers. You add +Rank to your Conviction, and you may spend ten minutes entering a trance in order to use the Telepathy psychic power with a range of 1 Light Year rather than 100m. Each use of Telepathy over this distance may only communicate with other Astropaths, and it inflicts 1d3 Shock.",
         "grants": [
           {
-            "keyword": "PSYKER"
+            "power": "telepathy"
           },
           {
-            "power": "telepathy"
+            "disciplineAccess": [
+              "telepathy"
+            ]
+          },
+          {
+            "mods": {
+              "conviction": {
+                "perRank": 1
+              }
+            }
+          },
+          {
+            "chooseDisciplines": 1,
+            "from": [
+              "divination",
+              "theosophamy"
+            ]
           }
         ]
       }
@@ -10884,7 +11541,12 @@
     "abilities": [
       {
         "name": "Litany of Purity",
-        "text": "You have +1 Faith Point. When you attempt an Intimidation or Persuasion Interaction Attack against a DAEMON, you may spend one Faith point to invoke the Litany of Purity. If the Interaction Attack succeeds, the DAEMON is Pinned in addition to other effects, and suffers 1d3 Mortal Wounds, +1 per Exalted Icon shifted."
+        "text": "You have +1 Faith Point. When you attempt an Intimidation or Persuasion Interaction Attack against a DAEMON, you may spend one Faith point to invoke the Litany of Purity. If the Interaction Attack succeeds, the DAEMON is Pinned in addition to other effects, and suffers 1d3 Mortal Wounds, +1 per Exalted Icon shifted.",
+        "grants": [
+          {
+            "faith": 1
+          }
+        ]
       }
     ],
     "wargear": [
@@ -10895,7 +11557,18 @@
         }
       },
       {
-        "text": "One melee weapon of up to Value 7 and a rarity of up to Rare, with the Sanctified upgrade"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "weapon": "melee",
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Rare"
+          },
+          "upgrade": "Sanctified"
+        }
       },
       {
         "wargear": {

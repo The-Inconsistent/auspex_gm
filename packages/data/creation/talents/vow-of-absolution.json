@@ -32,7 +32,7 @@
     "name": "Armour of Contempt",
     "source": "vow-of-absolution",
     "page": 45,
-    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. The Black Carapace is a Space Marine implant (p.24), not an item, so it is a text requirement; Scouts lack it until the Advancement Packages (p.27). Also Apocrypha p.231.",
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. The Black Carapace is a Space Marine implant (p.24), not an item, so it is a GM-judged requirement; Scouts lack it until the Advancement Packages (p.27). Also Apocrypha p.231.",
     "xp": 30,
     "requires": [
       {
@@ -47,7 +47,7 @@
         "min": 5
       },
       {
-        "kind": "text",
+        "kind": "gm",
         "text": "Must have received the Black Carapace"
       },
       {
@@ -305,7 +305,7 @@
             ]
           },
           {
-            "kind": "text",
+            "kind": "gm",
             "text": "possess extensive knowledge of and experience in Gilead combat zones (as adjudicated by the GM)"
           }
         ]
@@ -406,7 +406,7 @@
         ]
       },
       {
-        "kind": "text",
+        "kind": "gm",
         "text": "must have been entrusted with or discovered the secret of the Fallen"
       },
       {
@@ -677,7 +677,7 @@
     "name": "Strength from Steel",
     "source": "vow-of-absolution",
     "page": 50,
-    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Iron Hands Chapter or an Iron Hands Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason. \"Three or more augmetics\" is a count of any augmetics, not a named item, so it is a text requirement.",
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed Chapter requirement: \"must be of the Iron Hands Chapter or an Iron Hands Successor Chapter\". Per \"Talents of the Astartes\" (p.45) the GM may waive it, but only with a compelling reason. \"Three or more augmetics\" is a count of augmetic items.",
     "xp": 20,
     "requires": [
       {
@@ -698,8 +698,13 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "three or more augmetics"
+        "kind": "wargearCount",
+        "of": {
+          "kinds": [
+            "augmetic"
+          ]
+        },
+        "min": 3
       },
       {
         "kind": "notKeyword",

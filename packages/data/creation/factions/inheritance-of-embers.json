@@ -64,7 +64,16 @@
         "name": "Rising Crescendo",
         "text": "You increase your Speed by +Rank. Additionally, Enemies may never attempt a Reflexive Attack against you when you move out of Engagement.",
         "page": 46,
-        "source": "apocrypha"
+        "source": "apocrypha",
+        "grants": [
+          {
+            "mods": {
+              "speed": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ]
   },

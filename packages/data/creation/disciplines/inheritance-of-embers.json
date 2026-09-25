@@ -9,6 +9,12 @@
       {
         "kind": "keyword",
         "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
           "AELDARI"
         ]
       },
@@ -20,7 +26,7 @@
         ]
       }
     ],
-    "note": "Printed as each power's Prerequisite (pp.69–70): \"The Psyker must have the AELDARI Keyword and either the ASURYANI or YNNARI Keyword.\" Kept on the discipline only."
+    "note": "Printed as each power's Prerequisite (pp.69–70): \"The Psyker must have the AELDARI Keyword and either the ASURYANI or YNNARI Keyword.\" Kept on the discipline only. PSYKER from Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\""
   },
   {
     "id": "phantasmancy",

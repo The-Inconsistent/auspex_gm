@@ -15,26 +15,77 @@
     "options": [
       {
         "name": "Maneater",
-        "text": "Prey Consumed: Humans\n\nHumans offer little evolutionary benefit to the Kroot.\n\n+1 to your lowest Attribute (your choice if the Attributes are equal)."
+        "text": "Prey Consumed: Humans\n\nHumans offer little evolutionary benefit to the Kroot.\n\n+1 to your lowest Attribute (your choice if the Attributes are equal).",
+        "grants": [
+          {
+            "attribute": "lowest",
+            "add": 1
+          }
+        ]
       },
       {
         "name": "Astartes Eater",
         "text": "Prey Consumed: Astartes\n\nAstartes are genetically enhanced to be greater than other mortal Species in almost every way. Their amplified DNA can offer many benefits to Kroot biology.\n\n+2 to any Attribute of your choice.",
-        "notAtCreation": true
+        "notAtCreation": true,
+        "grants": [
+          {
+            "attribute": "any",
+            "add": 2
+          }
+        ]
       },
       {
         "name": "Aeldari Eater",
-        "text": "Prey Consumed: Aeldari\n\nKroot that consume the lithe and psychically attuned Aeldari either adopt their otherworldly grace and agility or steel their minds.\n\n+1 to Agility or Willpower."
+        "text": "Prey Consumed: Aeldari\n\nKroot that consume the lithe and psychically attuned Aeldari either adopt their otherworldly grace and agility or steel their minds.\n\n+1 to Agility or Willpower.",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "attribute": "A",
+                "add": 1
+              },
+              {
+                "attribute": "Wil",
+                "add": 1
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Ork Eater",
         "page": 99,
-        "text": "Prey Consumed: Orks\n\nKroot that consume the brutal Orks are more suited for brazen battle, becoming larger, tougher, stronger, and greener.\n\n+1 to Strength or Toughness."
+        "text": "Prey Consumed: Orks\n\nKroot that consume the brutal Orks are more suited for brazen battle, becoming larger, tougher, stronger, and greener.\n\n+1 to Strength or Toughness.",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "attribute": "S",
+                "add": 1
+              },
+              {
+                "attribute": "T",
+                "add": 1
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Armoured Hide",
         "page": 99,
-        "text": "Prey Consumed: Any creature with toughened skin (such as Ambull or Grox).\n\nThe number of sturdy quills in your skin steadily increases as your flesh thickens into a rugged hide.\n\nYou gain +Rank to your Base Resilience."
+        "text": "Prey Consumed: Any creature with toughened skin (such as Ambull or Grox).\n\nThe number of sturdy quills in your skin steadily increases as your flesh thickens into a rugged hide.\n\nYou gain +Rank to your Base Resilience.",
+        "grants": [
+          {
+            "mods": {
+              "resilience": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       },
       {
         "name": "Bioluminescence",

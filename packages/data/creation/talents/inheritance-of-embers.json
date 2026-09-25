@@ -24,7 +24,13 @@
         ]
       }
     ],
-    "effect": "You have tamed a creature to follow your commands, and respect you as its master.\n\nChoose any Threat with the BEAST Keyword that is not an Adversary at your Tier. You have tamed a single creature of that type. It follows you and attempts actions in combat as you command, taking its own slot in the Initiative Order like an Agent. It does not interact with Wrath or Ruin, unless another ability indicates otherwise.\n\nIf you suffer an attack whilst the creature is within half its Speed of you, it may take a DN 5 Initiative Test as a Reflexive Action. If it succeeds, the attack is redirected onto the creature. Slain creatures may be replaced for free the next time you visit the replacement creature’s habitat, or a location where it is raised in captivity."
+    "effect": "You have tamed a creature to follow your commands, and respect you as its master.\n\nChoose any Threat with the BEAST Keyword that is not an Adversary at your Tier. You have tamed a single creature of that type. It follows you and attempts actions in combat as you command, taking its own slot in the Initiative Order like an Agent. It does not interact with Wrath or Ruin, unless another ability indicates otherwise.\n\nIf you suffer an attack whilst the creature is within half its Speed of you, it may take a DN 5 Initiative Test as a Reflexive Action. If it succeeds, the attack is redirected onto the creature. Slain creatures may be replaced for free the next time you visit the replacement creature’s habitat, or a location where it is raised in captivity.",
+    "grants": [
+      {
+        "followers": 1,
+        "kind": "companion"
+      }
+    ]
   },
   {
     "id": "battle-focus",

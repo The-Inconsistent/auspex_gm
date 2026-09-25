@@ -4,7 +4,6 @@
     "name": "A Test of Faith",
     "source": "apocrypha",
     "page": 210,
-    "note": "+1 Faith point and +1 Conviction and Resolve are in effect only (no field).",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -39,7 +38,16 @@
     },
     "grants": [
       {
-        "text": "Select one weapon you possess. That weapon gains the Blessed (1) trait."
+        "weaponTrait": "Blessed (1)"
+      },
+      {
+        "faith": 1
+      },
+      {
+        "mods": {
+          "conviction": 1,
+          "resolve": 1
+        }
       }
     ]
   },
@@ -48,7 +56,7 @@
     "name": "Agent of the Inquisition",
     "source": "apocrypha",
     "page": 210,
-    "note": "The 3 Corruption points and Memorable Injury are in effect only. Inquisitorial Rosette is not in the Wargear catalogue.",
+    "note": "Inquisitorial Rosette is not in the Wargear catalogue.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -96,12 +104,36 @@
         "choose": 1,
         "from": [
           {
-            "text": "Up to two items of Rare Wargear with a Value up to 3 + the new Tier"
+            "pick": 2,
+            "wargearOf": {
+              "maxValue": {
+                "newTierPlus": 3
+              },
+              "rarity": {
+                "atMost": "Rare",
+                "atLeast": "Rare"
+              }
+            }
           },
           {
-            "text": "One item of Very Rare Wargear with a Value up to 3 + the new Tier"
+            "pick": 1,
+            "wargearOf": {
+              "maxValue": {
+                "newTierPlus": 3
+              },
+              "rarity": {
+                "atMost": "Very Rare",
+                "atLeast": "Very Rare"
+              }
+            }
           }
         ]
+      },
+      {
+        "corruption": 3
+      },
+      {
+        "memorableInjuries": 1
       }
     ]
   },
@@ -184,7 +216,16 @@
         ]
       },
       {
-        "text": "One Weapon Upgrade with a value of up to 7 (Very Rare)"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "upgrade"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Very Rare"
+          }
+        }
       }
     ]
   },
@@ -193,7 +234,7 @@
     "name": "Blessed by the Emperor",
     "source": "apocrypha",
     "page": 212,
-    "note": "Printed pp.212–213: the four Trials (Faith, Purity, Righteousness, Suffering) and Sainthood are kept in effect; one Trial is active at a time, each completed Trial grants its named ability, all four unlock Sainthood. No schema field tracks Trial progress.",
+    "note": "Printed pp.212–213. At purchase the Agent selects one of the four Trials: that is the grant. The rest is per-character progress in play and stays in `effect`: ten deeds complete a Trial and grant its named ability, a new Trial then replaces it, and completing all four unlocks Sainthood.",
     "kind": "ascension",
     "xp": {
       "perTier": 15
@@ -211,22 +252,40 @@
         ]
       },
       {
-        "kind": "text",
-        "text": "At least one Faith talent"
+        "kind": "talentCategory",
+        "category": "faith",
+        "min": 1
       }
     ],
     "effect": "Your faith in the God-Emperor is absolute and of a magnitude far greater than even the most devout of your sisters. Some have even whispered that you have the potential to become a Saint, one of the greatest heroes of your faith and your Order.\n\nYou are merely a vessel for the glory of the Master of Mankind, and you will serve Him as He wills. What that entails, and what trials you will face, remain to be seen.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: You are faced with trials of faith. Each Trial—described below—requires that certain deeds be performed, but each will provide a reward once those deeds have been completed. When you select this Ascension Package, select a single one of the Trials below. When you have completed that Trial, and received the listed reward, you may select another Trial to replace it. If you manage to complete all four Trials, you may gain Sainthood.\n\nTrial of Faith\n\nA Saint performs miraculous deeds, proof that the Emperor works through them.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- Spend three or more Faith points in a single day.\n- Successfully invoke three or more Hymns of Battle in a single day.\n- Invoke at least one Hymn of Battle with a Wrath Critical.\n- The Glory pool is full at the end of at least one battle that day.\n\nOnce you’ve passed this trial, gain the following ability:\n\nBoundless Faith: You may shift an Exalted Icon to regain 1 Faith.\n\nTrial of Purity\n\nA Saint is so pure that malign sorcery cannot touch their soul, and no wound can stay their body.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- You slay an enemy PSYKER.\n- You resist or avoid the effect of a Psychic Power targeted at you.\n- You roll Determination and reduce the damage suffered to 0.\n- If you become dying during a scene but are subsequently healed.\n\nOnce you’ve passed this trial, gain the following ability:\n\nBlazing Soulfire: You may spend 2 Faith points to unleash a burst of pure Soulfire as a Simple Action. Roll 3d6 for each enemy within 6m: each enemy suffers a Mortal Wound for each Icon rolled. PSYKERS and CHAOS enemies re-roll any dice which result in a failure.\n\nTrial of Righteousness\n\nA Saint will smite the enemies of the Emperor wherever they cower.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- You slay an enemy Adversary Threat.\n- You slay one or more CHAOS Elites or Adversaries, or a mob of CHAOS Troops.\n- If you slay a number of non-Troops enemies in a single battle greater than the game’s Tier.\n- If you inflict one or more Critical Hits or cause 3 or more Mortal Wounds in a single battle.\n\nOnce you’ve passed this trial, gain the following ability:\n\nRighteous Wrath: You may spend 2 Faith points at the end of one of your turns. If you do so, you may take a second turn later in that round.\n\nTrial of Suffering\n\nSuffering is the greatest prayer a Saint can offer the God-Emperor.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- You become dying.\n- You suffered three or more Mortal Wounds during a single battle.\n- You suffer a Traumatic Injury.\n- You gain the Exhausted condition.\n\nOnce you’ve passed this trial, gain the following ability:\n\nMiraculous Recovery: Your Traumatic Injuries are immediately healed, and new Traumatic Injuries heal immediately upon taking a Respite. Further, you may spend 2 Faith points as a simple action to immediately heal Wounds equal to the game’s Tier.\n\nSainthood\n\nThe ultimate fate for all Saints is martyrdom in the Emperor’s cause. Indeed, to even be considered a Saint, one must die in the Emperor’s service. However, a rare few Saints continue beyond death, being revived by the Emperor’s Light to continue His works.\n\nWhen you die, roll a number of d6 equal to the maximum number of Faith Points you possess. If the number of Icons rolled equals or exceeds two plus the number of times you’ve died, you are miraculously restored to life.\n\nIf you are not restored to life, then you die permanently. However, your martyrdom means any other ADEPTA SORORITAS characters in the scene gain 1 Faith Point for each Trial you have completed.",
     "influence": {
       "perTier": 1
     },
-    "grants": []
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "story": "Trial of Faith: pursue its deeds; completing it grants Boundless Faith."
+          },
+          {
+            "story": "Trial of Purity: pursue its deeds; completing it grants Blazing Soulfire."
+          },
+          {
+            "story": "Trial of Righteousness: pursue its deeds; completing it grants Righteous Wrath."
+          },
+          {
+            "story": "Trial of Suffering: pursue its deeds; completing it grants Miraculous Recovery."
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "divine-revelation",
     "name": "Divine Revelation",
     "source": "apocrypha",
     "page": 214,
-    "note": "The Faith point and Faith-talent access (as ADEPTUS MINISTORUM) are in effect only.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -246,7 +305,14 @@
     },
     "grants": [
       {
-        "text": "A single trinket, randomly determined from the tables in the core rulebook or created with your GM"
+        "trinkets": 1
+      },
+      {
+        "faith": 1
+      },
+      {
+        "talentAccess": "faith",
+        "asKeyword": "ADEPTUS MINISTORUM"
       }
     ]
   },
@@ -267,7 +333,7 @@
     },
     "grants": [
       {
-        "text": "A single trinket, randomly determined from the tables in the core rulebook or created with your GM"
+        "trinkets": 1
       }
     ]
   },
@@ -276,7 +342,7 @@
     "name": "Illuminated",
     "source": "apocrypha",
     "page": 215,
-    "note": "No Wargear printed. Conviction + Tier is in effect only.",
+    "note": "No Wargear printed.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -301,6 +367,13 @@
     "grants": [
       {
         "keyword": "ILLUMINATI"
+      },
+      {
+        "mods": {
+          "conviction": {
+            "timesTier": 1
+          }
+        }
       }
     ]
   },
@@ -309,7 +382,7 @@
     "name": "Lost Upon the Seer Path",
     "source": "apocrypha",
     "page": 216,
-    "note": "Its printed \"KEYWORDS: FARSEER\" is the Farseer archetype, not a keyword (GM ruling, docs/rules-flow.md §11.32): `becomesArchetypeId` farseer, no FARSEER keyword grant. Access to the Runes of Fate discipline and using Willpower for Influence are in effect only. Ghosthelm, Runes of Witnessing and Runes of Warding are not in the Wargear catalogue.",
+    "note": "Its printed \"KEYWORDS: FARSEER\" is the Farseer archetype, not a keyword (GM ruling, docs/rules-flow.md §11.32): `becomesArchetypeId` farseer, no FARSEER keyword grant. \"You may use your Willpower instead of your Fellowship to determine your Influence\" is an optional `influenceAttribute`. Ghosthelm, Runes of Witnessing and Runes of Warding are not in the Wargear catalogue.",
     "kind": "ascension",
     "xp": {
       "perTier": 15
@@ -373,6 +446,20 @@
             "qty": 1
           }
         ]
+      },
+      {
+        "disciplineAccess": [
+          "runes-of-fate"
+        ]
+      },
+      {
+        "choose": 1,
+        "optional": true,
+        "from": [
+          {
+            "influenceAttribute": "Wil"
+          }
+        ]
       }
     ],
     "becomesArchetypeId": "farseer"
@@ -422,7 +509,7 @@
     "name": "Rite of Duplessence",
     "source": "apocrypha",
     "page": 217,
-    "note": "No Wargear printed. The Binary Cortex's own Intellect (5, raised with XP) has no field.",
+    "note": "No Wargear printed. The Binary Cortex's own Intellect (5, raised with XP) belongs to a second mind, not the Agent's Attributes, so it is a `story` grant.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -460,7 +547,11 @@
     "influence": {
       "perTier": 1
     },
-    "grants": []
+    "grants": [
+      {
+        "story": "You gain a Binary Cortex: a second mind with an Intellect of 5, raised by spending XP separately from your own Attributes."
+      }
+    ]
   },
   {
     "id": "sanctioned-xenos",
@@ -504,7 +595,7 @@
     "name": "Willing Possession",
     "source": "apocrypha",
     "page": 221,
-    "note": "Willpower printed \"4+\". Influence Bonus printed \"+3\", flat (not per Tier). The 1d3 Corruption per Tier ascended is in effect only.",
+    "note": "Willpower printed \"4+\". Influence Bonus printed \"+3\", flat (not per Tier). Accursed Vigour's three Attributes and Mutated Form's mutations are chosen at purchase but act only while the daemon's power is used, so they stay in `effect`.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -527,6 +618,11 @@
     "grants": [
       {
         "keyword": "DAEMON"
+      },
+      {
+        "corruption": {
+          "perTier": "1d3"
+        }
       }
     ]
   }

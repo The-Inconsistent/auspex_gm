@@ -23,7 +23,10 @@
     "keywords": [],
     "grants": [
       {
-        "text": "Any 2 Keywords (Core p.38)"
+        "keyword": "[ANY]"
+      },
+      {
+        "keyword": "[ANY]"
       }
     ],
     "abilities": [
@@ -207,7 +210,12 @@
       },
       {
         "name": "Bigger is Better",
-        "text": "You calculate Influence using Strength instead of Fellowship."
+        "text": "You calculate Influence using Strength instead of Fellowship.",
+        "grants": [
+          {
+            "influenceAttribute": "S"
+          }
+        ]
       },
       {
         "name": "Species Interaction",

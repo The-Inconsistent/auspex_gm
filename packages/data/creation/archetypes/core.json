@@ -323,7 +323,19 @@
         }
       },
       {
-        "text": "Any two IMPERIUM weapons with a Value of 5 or less and a Rarity of Uncommon or lower"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "wargearKeywords": [
+            "IMPERIUM"
+          ],
+          "maxValue": 5,
+          "rarity": {
+            "atMost": "Uncommon"
+          }
+        }
       },
       {
         "wargear": {
@@ -966,6 +978,9 @@
           },
           {
             "power": "smite"
+          },
+          {
+            "chooseDisciplines": 1
           }
         ]
       }
@@ -1068,7 +1083,16 @@
     "abilities": [
       {
         "name": "Heavily Augmented",
-        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls."
+        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls.",
+        "grants": [
+          {
+            "mods": {
+              "determination": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1376,7 +1400,15 @@
         }
       },
       {
-        "text": "Choose any two pieces of Wargear with a Value of your Tier +4 or less, and a Rarity of Rare or lower."
+        "pick": 2,
+        "wargearOf": {
+          "maxValue": {
+            "tierPlus": 4
+          },
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
       },
       {
         "choose": 1,
@@ -1460,7 +1492,14 @@
     "abilities": [
       {
         "name": "Mutant",
-        "text": "Your life in the unsanitary underbelly of the Imperium has mutated you. Select two Mutations from the list of Scavvy Mutations on p.287. Whenever your Rank increases, you may select another Mutation from the list."
+        "text": "Your life in the unsanitary underbelly of the Imperium has mutated you. Select two Mutations from the list of Scavvy Mutations on p.287. Whenever your Rank increases, you may select another Mutation from the list.",
+        "grants": [
+          {
+            "mutations": {
+              "rankPlus": 1
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1539,7 +1578,7 @@
         "unremarkable"
       ]
     },
-    "note": "Suggested Skills print \"Weapons Skill 2\" (Weapon Skill). The Scavvy Mutations are on Core p.287; there is no catalogue record for them yet, so the ability has no grants."
+    "note": "Suggested Skills print \"Weapons Skill 2\" (Weapon Skill). Mutant's two Mutations, plus one each time Rank increases, are `mutations: { rankPlus: 1 }`; they are chosen from the Scavvy Mutations list (p.287)."
   },
   {
     "id": "kommando",
@@ -1683,10 +1722,21 @@
         }
       },
       {
-        "text": "One Mechadendrite"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "nameIncludes": "Mechadendrite"
+        }
       },
       {
-        "text": "any 2 Augmetics"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       },
       {
         "wargear": {
@@ -1766,7 +1816,16 @@
     "abilities": [
       {
         "name": "Armour of Faith",
-        "text": "You gain +Double Rank bonus dice to melee attack tests against targets with the CHAOS or HERETIC Keyword. Your Resolve also increases by +Rank."
+        "text": "You gain +Double Rank bonus dice to melee attack tests against targets with the CHAOS or HERETIC Keyword. Your Resolve also increases by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "resolve": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1999,10 +2058,27 @@
         }
       },
       {
-        "text": "any PROJECTILE weapon"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        }
       },
       {
-        "text": "any melee weapon of Uncommon or lower Rarity"
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "weapon": "melee",
+          "rarity": {
+            "atMost": "Uncommon"
+          }
+        }
       }
     ],
     "influence": 1,
@@ -2069,7 +2145,16 @@
     "abilities": [
       {
         "name": "The Green Tide",
-        "text": "You command a mob of Boyz (p.354) equal to your Rank x3. If any of your Boyz die, they can be replaced between sessions at the GMs discretion."
+        "text": "You command a mob of Boyz (p.354) equal to your Rank x3. If any of your Boyz die, they can be replaced between sessions at the GMs discretion.",
+        "grants": [
+          {
+            "followers": {
+              "perRank": 3
+            },
+            "kind": "mob",
+            "threatId": "ork-boy"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -2160,7 +2245,16 @@
         }
       },
       {
-        "text": "Any two weapons with a Value of 7 or less and a Rarity of Very Rare or lower"
+        "pick": 2,
+        "wargearOf": {
+          "kinds": [
+            "weapon"
+          ],
+          "maxValue": 7,
+          "rarity": {
+            "atMost": "Very Rare"
+          }
+        }
       },
       {
         "choose": 1,

@@ -404,7 +404,7 @@
     "source": "vow-of-absolution",
     "factionId": "adeptus-astartes",
     "page": 31,
-    "note": "Chapter Cult's 1 Faith has no grant in the schema; it stays in the rule text. “Aquilla” as printed. Also FSPG p.106. Also Apocrypha p.188.",
+    "note": "“Aquilla” as printed. Also FSPG p.106. Also Apocrypha p.188.",
     "tier": 4,
     "speciesIds": [
       "adeptus-astartes"
@@ -438,7 +438,16 @@
     "abilities": [
       {
         "name": "Chapter Cult",
-        "text": "You gain 1 Faith, and can purchase Faith Talents available to characters with the ADEPTUS MINISTORUM or the ADEPTUS ASTARTES Keywords.\n\nAs a Combat Action, you may spend 1 Faith to give an ally within hearing distance your [CHAPTER] Keyword for the rest of the scene, with all corresponding effects except those with the Tradition or gene-seed title, or that provide equipment."
+        "text": "You gain 1 Faith, and can purchase Faith Talents available to characters with the ADEPTUS MINISTORUM or the ADEPTUS ASTARTES Keywords.\n\nAs a Combat Action, you may spend 1 Faith to give an ally within hearing distance your [CHAPTER] Keyword for the rest of the scene, with all corresponding effects except those with the Tradition or gene-seed title, or that provide equipment.",
+        "grants": [
+          {
+            "faith": 1
+          },
+          {
+            "talentAccess": "faith",
+            "asKeyword": "ADEPTUS MINISTORUM"
+          }
+        ]
       }
     ],
     "wargear": [
@@ -831,7 +840,12 @@
         }
       },
       {
-        "text": "Any 3 Augmetics"
+        "pick": 3,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 2,
@@ -907,13 +921,27 @@
             "keyword": "PSYKER"
           },
           {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
             "power": "smite"
+          },
+          {
+            "disciplineAccess": [
+              "librarius"
+            ]
           },
           {
             "choose": 1,
             "fromDisciplines": [
               "librarius"
             ]
+          },
+          {
+            "chooseDisciplines": 1
           }
         ]
       }
@@ -1319,7 +1347,12 @@
         }
       },
       {
-        "text": "Any 3 Augmetics"
+        "pick": 3,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
       }
     ],
     "influence": 2

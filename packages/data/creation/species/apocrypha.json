@@ -56,7 +56,7 @@
     "name": "Beastman",
     "source": "apocrypha",
     "page": 14,
-    "note": "Maximums from the table on p.18. Size not printed (\"slightly taller and broader than the average human\", p.14). No Species Keywords printed. Child of Chaos's +3 Corruption has no structured field on a Rule (Mods has no corruption).",
+    "note": "Maximums from the table on p.18. Size not printed (\"slightly taller and broader than the average human\", p.14). No Species Keywords printed. Child of Chaos's +3 Corruption is a `corruption` grant on the ability.",
     "xp": 20,
     "speed": 7,
     "attributes": {
@@ -90,7 +90,12 @@
       },
       {
         "name": "Child of Chaos",
-        "text": "You begin play with +3 corruption."
+        "text": "You begin play with +3 corruption.",
+        "grants": [
+          {
+            "corruption": 3
+          }
+        ]
       }
     ]
   },

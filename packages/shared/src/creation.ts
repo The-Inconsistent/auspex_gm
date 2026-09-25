@@ -1,5 +1,8 @@
 import { z } from "zod";
+import { Rarity } from "./requisition.ts";
 import { ATTRIBUTES, Mods, SKILLS, type Attribute, type Skill } from "./state.ts";
+import { Weapon } from "./threat.ts";
+import { WargearKind } from "./wargear.ts";
 
 // The character-creation catalogue: every species, archetype, talent, package, power and table a character is built
 // from, transcribed from the books (docs/data.md, "Creation catalogue"). Records cross-reference each other by id and
@@ -56,9 +59,49 @@ const record = {
 export const Bonus = z.enum([...Mods.keyof().options, "wealth", "passiveAwareness", "corruption"]);
 export type Bonus = z.infer<typeof Bonus>;
 
+// A number that can scale: "per Tier Ascended" (Core p.151) or "1 + Rank" (Apocrypha p.99).
+// `perTier`: per Tier Ascended (packages) or × the new Tier (XP); `timesTier`: × the character's Tier ("Conviction +
+// Tier", Apocrypha p.215); `perRank`: × Rank ("+Rank Faith", FSPG p.104).
+export const Scaled = z.union([
+  z.number().int(),
+  z.object({ perTier: z.number().int() }),
+  z.object({ timesTier: z.number().int() }),
+  z.object({ perRank: z.number().int(), plus: z.number().int().optional() }), // Devotees: "Double Rank +2" (Core p.132)
+  z.object({ rankPlus: z.number().int() }),
+]);
+const dice = z.string().regex(/^\d*d\d+([+-]\d+)?$/); // "1d3", "d6+3"
+// An amount that may be rolled: "1d3 Corruption per Tier ascended" (Apocrypha p.221)
+// "1d3 × 3 Corruption" (Havoc, Apocrypha p.151) is { roll: "1d3", times: 3 }; "1d3 × Tier" is times { timesTier: 1 }.
+export const Amount = z.union([Scaled, dice, z.object({ perTier: dice }), z.object({ roll: dice, times: Scaled })]);
+export type Scaled = z.infer<typeof Scaled>;
+
+// Which catalogue items qualify: "any two augmetics", "one ranged weapon of Uncommon or lower rarity", "Rare Wargear
+// with a Value up to 3 + the new Tier" (Core p.151). Every field narrows; an empty filter is any item.
+export const WargearFilter = z.object({
+  kinds: z.array(WargearKind).min(1).optional(),
+  weapon: z.enum(["melee", "ranged"]).optional(),
+  categories: z.array(z.string().min(1)).min(1).optional(), // `Wargear.category`: "Augmetic Enhancements"
+  nameIncludes: z.string().min(1).optional(), // "Mechadendrite", "Drone"
+  wargearKeywords: z.array(z.string().min(1)).min(1).optional(), // the item has any of these (BOLT, IMPERIUM, PROJECTILE)
+  maxValue: z
+    .union([
+      z.number().int().min(0),
+      z.object({ tierPlus: z.number().int() }), // "a Value of your Tier +3 or lower" (Apocrypha p.128)
+      z.object({ newTierPlus: z.number().int() }), // "a value of 3 + new Tier" (Core p.151)
+    ])
+    .optional(),
+  rarity: z.object({ atMost: Rarity.optional(), atLeast: Rarity.optional() }).optional(), // "Rare" alone is both
+  upgrade: z.string().min(1).optional(), // "with the Sanctified upgrade" (Apocrypha p.103)
+  condition: z.string().min(1).optional(), // a GM-judged condition: "worn openly and visibly" (FSPG p.73)
+});
+export type WargearFilter = z.infer<typeof WargearFilter>;
+
 const requirements = [
   z.object({ kind: z.literal("attribute"), attribute, min: rating }),
   z.object({ kind: z.literal("skill"), skill, min: rating }),
+  // the Attribute or Skill chosen for a bracketed Talent: "[Attribute] Rating 5+" (Transhuman, Core p.140)
+  z.object({ kind: z.literal("chosenAttribute"), min: rating }),
+  z.object({ kind: z.literal("chosenSkill"), min: rating }),
   z.object({ kind: z.literal("influence"), min: z.number().int() }),
   z.object({ kind: z.literal("keyword"), anyOf: z.array(keyword).min(1) }),
   z.object({ kind: z.literal("notKeyword"), anyOf: z.array(keyword).min(1) }),
@@ -68,20 +111,38 @@ const requirements = [
   z.object({ kind: z.literal("subFaction"), anyOf: ids }), // a Successor matches its `successorOf` too
   z.object({ kind: z.literal("talent"), anyOf: ids }),
   z.object({ kind: z.literal("notTalent"), anyOf: ids }), // "can't be taken with" (Alpha-level Psyker, Apocrypha p.230)
+  // "At least one Faith talent" (Apocrypha p.212)
+  z.object({ kind: z.literal("talentCategory"), category: z.lazy(() => TalentCategory), min: z.number().int().min(1) }),
   // A choice from an OptionGroup: the Pariah template (Anathema, Apocrypha p.230).
   z.object({ kind: z.literal("option"), groupId: id, anyOf: z.array(z.string().min(1)).min(1) }),
   z.object({ kind: z.literal("power"), anyOf: ids }),
+  // "at least 2 psychic powers from a single Discipline" (Discipline Savant, Core p.132)
+  z.object({ kind: z.literal("powerCount"), min: z.number().int().min(1), sameDiscipline: z.boolean().default(false) }),
   z.object({ kind: z.literal("wargear"), anyOf: z.array(z.string().min(1)).min(1) }), // printed names, e.g. an augmetic
+  z.object({ kind: z.literal("wargearKeyword"), anyOf: z.array(keyword).min(1) }), // "equipped with JUMP JETS"
+  // "three or more augmetics" (Strength from Steel, VoA p.50)
+  z.object({ kind: z.literal("wargearCount"), of: WargearFilter, min: z.number().int().min(1) }),
   z.object({ kind: z.literal("rank"), min: z.number().int().min(1) }),
-  z.object({ kind: z.literal("tier"), min: z.number().int().min(1).max(5) }),
-  z.object({ kind: z.literal("text"), text: z.string().min(1) }), // not mechanical; validate counts these
+  // "Tier 3+" is min; "Tier 2 or below" (FSPG p.65) is max
+  z
+    .object({
+      kind: z.literal("tier"),
+      min: z.number().int().min(1).max(5).optional(),
+      max: z.number().int().min(1).max(5).optional(),
+    })
+    .refine((t) => t.min !== undefined || t.max !== undefined, "tier needs min or max"),
+  // A story condition the GM judges: "entrusted with or discovered the secret of the Fallen" (VoA p.48).
+  z.object({ kind: z.literal("gm"), text: z.string().min(1) }),
 ] as const;
 export const RequirementOne = z.discriminatedUnion("kind", requirements);
+// `all`: every one of `of`, as one option of an `either` ("any T'au character equipped with JUMP JETS").
+const RequirementAll = z.object({ kind: z.literal("all"), of: z.array(RequirementOne).min(2) });
 // `either`: any one of `of` will do ("Absolvers Chapter, or extensive Gilead experience", VoA p.47; "Rating 1+ in any
 // of" seven Skills, Core p.135).
 export const Requirement = z.discriminatedUnion("kind", [
   ...requirements,
-  z.object({ kind: z.literal("either"), of: z.array(RequirementOne).min(2) }),
+  RequirementAll,
+  z.object({ kind: z.literal("either"), of: z.array(z.union([RequirementOne, RequirementAll])).min(2) }),
 ]);
 export type Requirement = z.infer<typeof Requirement>;
 
@@ -90,32 +151,98 @@ export const XpCost = z.union([
   z.object({ perTier: z.number().int().positive() }), // "10 × new Tier" (Core p.149)
   z.object({ base: z.number().int().min(0), plus: z.string().min(1) }), // "20, plus the augmetic's Value" (Core p.129)
   z.object({ atCreation: z.number().int().min(0), later: z.number().int().min(0) }), // Smite (Core p.272)
-  z.object({ text: z.string().min(1) }),
+  // "10 or 20" by what is chosen (Companion: 20 for an Elite, Apocrypha p.233)
+  z.object({ byChoice: z.array(z.object({ xp: z.number().int().min(0), when: z.string().min(1) })).min(2) }),
 ]);
 export type XpCost = z.infer<typeof XpCost>;
 
 // A catalogue item as printed; `wargearId` once the Wargear catalogue has it (validate counts the rest).
 export const WargearItem = z.object({
   name: z.string().min(1).max(200),
-  qty: z.number().int().positive().default(1),
+  qty: z.union([z.number().int().positive(), z.string().regex(/^\d*d\d+([+-]\d+)?$/)]).default(1), // "1d3+1 knifes"
   wargearId: id.optional(),
+  scope: z.enum(["character", "group"]).default("character"), // "a servo-skull for the group" (FSPG p.68)
 });
 
-// Something a record gives: a talent, keyword, power or item, or a choice between several.
+// Something a record gives. Every form is structured; `story` is a narrative benefit the GM runs.
 const grantOne = z.union([
   z.object({ talent: id }),
   z.object({ keyword }),
   z.object({ keywords: z.array(keyword).min(2) }), // taken together: "ANHRATHE and [COTERIE]" (Core p.39)
   z.object({ power: id }),
-  z.object({ wargear: WargearItem }),
+  z.object({ wargear: WargearItem, requires: z.array(RequirementOne).optional() }), // "(TEMPESTUS SCION only)"
   z.object({ bundle: z.array(WargearItem).min(2) }), // items taken together: "a Bolt Pistol and a Chainsword" (Core p.99)
-  z.object({ text: z.string().min(1) }), // "1 item of Uncommon Wargear"
+  z.object({ pick: Scaled, wargearOf: WargearFilter }), // "any two augmetics" (Core p.109)
+  // An innate weapon profile: Baleblasts (IoE p.41); `addStrength` for melee "S + X" (Beastman Horns, Apocrypha p.14)
+  z.object({ weapon: Weapon.extend({ addStrength: z.boolean().default(false) }) }),
+  z.object({ weaponTrait: z.string().min(1) }), // "one weapon you possess gains the Blessed (1) trait" (Apocrypha p.210)
+  z.object({ trinkets: Amount }), // "d6+3 Trinkets" (IoE p.56)
+  z.object({ wealth: Amount }),
+  z.object({ influence: Scaled }),
+  z.object({ corruption: Amount }), // negative to lose it: "Lose 2 Corruption per Tier Ascended" (IoE p.59)
+  z.object({ faith: Scaled }), // "You gain 1 Faith" (VoA p.31); "+Rank Faith" (FSPG p.104)
+  z.object({ memorableInjuries: Amount }), // Agent of the Inquisition (Apocrypha p.211)
+  z.object({ mutations: Amount }), // rolls on the Mutation tables (Scavvy, Core p.105; Core p.287)
+  z.object({ wrathPerSession: Scaled }), // "An extra Wrath Point … at the start of each future session" (IoE p.59)
+  z.object({ wealthPerSession: Scaled }), // "+1 Wealth at the end of each session" (Bad Moons, Core p.82)
+  z.object({ ammoPer: z.enum(["session", "mission"]), ammo: z.number().int().positive() }), // FSPG p.78
+  // "+1 Conviction", "Conviction + Tier"; also Passive Awareness (Ever Vigilant, Core p.133) and the Traumatic Injuries
+  // taken before dying (Ded 'Ard, Apocrypha p.235)
+  z.object({
+    mods: z.partialRecord(
+      z.enum([...Mods.keyof().options, "passiveAwareness", "maxTraumatic", "armourRating"]),
+      Scaled,
+    ),
+  }),
+  // Attributes: `add` raises by N, `to` raises to at least N; `which` is the Attribute(s) or the player's pick
+  z.object({
+    attribute: z.union([attribute, z.array(attribute).min(2), z.enum(["any", "lowest"])]),
+    add: z.number().int().optional(),
+    to: rating.optional(),
+  }),
+  z.object({ chosenTrait: Scaled }), // to the Trait chosen for a bracketed Talent: Uncanny [Trait] (Core p.141)
+  z.object({ skills: z.array(skill).min(1), add: z.number().int() }), // "+2 to Medicae, Scholar, Tech" (Apocrypha p.67)
+  z.object({ optionAccess: id }), // may now take an OptionGroup's options: Asuryani Paths (Change of Kinship, IoE p.58)
+  z.object({ neverKeyword: keyword }), // "can never have the PSYKER Keyword" (Ogryn, FSPG p.90)
+  z.object({ never: z.enum(["faith", "corruption"]) }), // "never gain Faith" (Pariah, Apocrypha p.12)
+  z.object({ gmRuin: Scaled }), // the GM's starting and maximum Ruin (Perpetual, Apocrypha p.13)
+  z.object({ talentAccess: z.lazy(() => TalentCategory), asKeyword: keyword.optional() }), // Faith Talents (VoA p.31)
+  z.object({ disciplineAccess: ids }), // "you may purchase powers from the Runes of Fate" (Apocrypha p.216)
+  z.object({ loseKeyword: keyword }), // "[ANY]": one the player picks ("the Keyword you betrayed", Core p.152)
+  z.object({ influenceAttribute: attribute }), // "You calculate Influence using Strength" (Ork, Core p.29)
+  // A cheaper price: a Talent at a set XP (Rite of Fear, Core p.138), or a discipline's powers at a fraction
+  // ("one Discipline of your choice at half cost", Tormented Manifestation, Apocrypha p.244; `discipline` omitted: chosen)
+  z.object({
+    xpDiscount: z.union([
+      z.object({ talent: id, xp: z.number().int().min(0) }),
+      z.object({ discipline: id.optional(), multiplier: z.number().positive().max(1) }),
+    ]),
+  }),
+  // Followers: "a mob of Boyz equal to Rank × 3" (Ork Nob, Core p.115); `threatId` is their bestiary stat block
+  z.object({
+    followers: Scaled,
+    kind: z.enum(["mob", "companion", "familiar", "devotees", "minion"]),
+    threatId: id.optional(),
+  }),
+  // "+2 bonus dice to Corruption Tests" (Core p.64): the dice, and the Skills or situation they apply to
+  z.object({ bonusDice: Scaled, skills: z.array(skill).optional(), when: z.string().min(1) }),
+  // "one other Psychic Discipline of your choice"; `from` limits it ("must be Divination or Theosophamy", Apocrypha p.102)
+  z.object({ chooseDisciplines: z.number().int().positive(), from: ids.optional() }),
+  // Only these disciplines, until a Tier if given: "may only learn and use Navigator powers" (Apocrypha p.119); "no
+  // Smite or discipline powers until Tier 2" (Wyrd, Apocrypha p.99)
+  z.object({ onlyDisciplines: ids, untilTier: z.number().int().min(2).max(5).optional() }),
+  z.object({ noArmour: z.literal(true) }), // "may not wear armour" (Wraith Construct, IoE p.10)
+  // powers of the character's choice from these disciplines ("choose two powers from Divination, Phantasmancy or
+  // Telepathy", IoE p.49); `random`: rolled, not chosen ("randomly determined Minor Psychic Powers", Apocrypha p.99)
+  z.object({ choose: Scaled, fromDisciplines: ids, random: z.boolean().default(false) }),
+  z.object({ story: z.string().min(1) }), // "Any limbs … you lose … are replaced" (FSPG p.73)
 ]);
+// Several grants as one option of a choice: "+3 Corruption and +1 Conviction" (Core p.64).
+// `requires`: the option only for some ("Tzeentch: PSYKER, or a Minor power if already PSYKER", Core p.136).
+const grantAll = z.object({ all: z.array(grantOne).min(1), requires: z.array(RequirementOne).optional() });
 export const Grant = z.union([
   grantOne,
-  // powers of the character's choice from these disciplines ("choose two powers from Divination, Phantasmancy or
-  // Telepathy", IoE p.49)
-  z.object({ choose: z.number().int().positive(), fromDisciplines: ids }),
+  grantAll,
   // Skills of the character's choice raised to `rating`: "Increase any two Skills of your choice to 4" (Core p.116);
   // `skills` limits the choice ("Ballistic Skill 2 or Weapon Skill 2", Apocrypha p.79).
   z.object({
@@ -123,11 +250,13 @@ export const Grant = z.union([
     rating: z.number().int().min(1).max(8),
     skills: z.array(skill).min(2).optional(),
   }),
-  // `optional`: the character may take none ("You may choose to take the PSYKER Keyword", Core p.29).
+  // `optional`: the character may take none ("You may choose to take the PSYKER Keyword", Core p.29); `repeat`: an
+  // option may be taken more than once ("up to two Drones (Gun Drone, Marker Drone, or Shield Drone)", Apocrypha p.99).
   z.object({
-    choose: z.number().int().positive(),
-    from: z.array(grantOne).min(1),
+    choose: Scaled,
+    from: z.array(z.union([grantOne, grantAll])).min(1),
     optional: z.boolean().default(false),
+    repeat: z.boolean().default(false),
   }),
 ]);
 export type Grant = z.infer<typeof Grant>;
@@ -176,6 +305,7 @@ export const Keyword = z.object({
   text: z.string().default(""),
   placeholder: SubFactionType.optional(),
   writeIn: z.boolean().default(false), // the player may fill it with a name the books don't list (rules-flow.md §11.25)
+  grants: z.array(Grant).default([]), // what having the keyword gives: PSYKER → the Universal Psyker Abilities (Core p.375)
 });
 export type Keyword = z.infer<typeof Keyword>;
 
@@ -340,6 +470,7 @@ export const PsychicPower = z.object({
   effect: z.string().min(1),
   potency: z.array(z.string().min(1)).default([]), // "[3] +1 Mortal Wound", "*" kept as printed
   requires: z.array(Requirement).default([]),
+  useRequires: z.array(Requirement).default([]), // to use it, not learn it: "Must be holding a Webway key" (Apocrypha p.309)
 });
 export type PsychicPower = z.infer<typeof PsychicPower>;
 

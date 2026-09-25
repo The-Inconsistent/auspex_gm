@@ -1124,7 +1124,16 @@
     "abilities": [
       {
         "name": "War Construct",
-        "text": "Your new body weathers the strains of battle better than any living creature could. Any ranged weapons you wield without the Heavy Trait gain the Pistol Trait. When wielding two melee weapons, you reduce the DN penalty for making Multi-Attacks by 2. You gain +Rank Determination."
+        "text": "Your new body weathers the strains of battle better than any living creature could. Any ranged weapons you wield without the Heavy Trait gain the Pistol Trait. When wielding two melee weapons, you reduce the DN penalty for making Multi-Attacks by 2. You gain +Rank Determination.",
+        "grants": [
+          {
+            "mods": {
+              "determination": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1945,7 +1954,17 @@
         }
       },
       {
-        "text": "Stolen Spirit Stones and other trophies"
+        "wargear": {
+          "name": "Stolen Spirit Stones",
+          "qty": 1,
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Trophies",
+          "qty": 1
+        }
       },
       {
         "wargear": {
@@ -2037,7 +2056,21 @@
         }
       },
       {
-        "text": "You are also able to generate Baleblasts, which have the weapon profile below:\n\n10 +1 ED / Range 9 – 18 – 27 / Salvo - / Assault, Rending (4)"
+        "weapon": {
+          "name": "Baleblast",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": null,
+          "traits": [
+            "Assault",
+            "Rending (4)"
+          ]
+        }
       }
     ],
     "suggested": {
@@ -2307,7 +2340,16 @@
     "abilities": [
       {
         "name": "Master of Pain",
-        "text": "You have inflicted such violations upon your own flesh that enemy attacks are barely cause for concern. You gain +Rank Resilience. In addition, when you heal another creature’s Wounds, you can choose to heal additional Wounds by inflicting an equal amount of Shock on the patient, up to Double Rank."
+        "text": "You have inflicted such violations upon your own flesh that enemy attacks are barely cause for concern. You gain +Rank Resilience. In addition, when you heal another creature’s Wounds, you can choose to heal additional Wounds by inflicting an equal amount of Shock on the patient, up to Double Rank.",
+        "grants": [
+          {
+            "mods": {
+              "resilience": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "wargear": [
@@ -3060,7 +3102,7 @@
         }
       },
       {
-        "text": "1 extra random trinket"
+        "trinkets": 1
       }
     ],
     "suggested": {
@@ -3176,7 +3218,7 @@
         }
       },
       {
-        "text": "1 extra random trinket"
+        "trinkets": 1
       }
     ],
     "suggested": {
@@ -3290,7 +3332,17 @@
         }
       },
       {
-        "text": "Set of Wraithbone Runes and recovered Spirit Stones"
+        "wargear": {
+          "name": "Set of Wraithbone Runes",
+          "qty": 1
+        }
+      },
+      {
+        "wargear": {
+          "name": "Recovered Spirit Stones",
+          "qty": 1,
+          "wargearId": "spirit-stone"
+        }
       }
     ],
     "suggested": {
@@ -3414,7 +3466,7 @@
         }
       },
       {
-        "text": "+d3 Trinkets"
+        "trinkets": "d3"
       }
     ],
     "suggested": {
@@ -3541,7 +3593,7 @@
         }
       },
       {
-        "text": "d6+3 Trinkets"
+        "trinkets": "d6+3"
       }
     ],
     "suggested": {

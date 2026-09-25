@@ -19,17 +19,26 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Tier 2 or below"
+            "kind": "tier",
+            "max": 2
           }
         ],
         "wargear": [
           {
-            "text": "A prayer wafer laced with poison."
+            "wargear": {
+              "name": "Prayer wafer laced with poison",
+              "qty": 1
+            }
           }
         ],
         "bonus": "Increase your Determination value by +1.",
-        "grants": []
+        "grants": [
+          {
+            "mods": {
+              "determination": 1
+            }
+          }
+        ]
       },
       {
         "name": "Blessed Exemplars",
@@ -54,7 +63,23 @@
         ],
         "wargear": [
           {
-            "text": "A cherubim or laud-hailer for the group."
+            "choose": 1,
+            "from": [
+              {
+                "wargear": {
+                  "name": "Cherubim",
+                  "qty": 1,
+                  "scope": "group"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Laud-Hailer",
+                  "qty": 1,
+                  "scope": "group"
+                }
+              }
+            ]
           }
         ],
         "bonus": "+1 Bonus Dice to Persuasion (Fel) Tests against characters with the IMPERIUM Keyword, unless they have the ADEPTUS MECHANICUS Keyword or ADEPTUS ASTARTES Keywords.",
@@ -84,7 +109,11 @@
         ],
         "wargear": [
           {
-            "text": "A servo-skull for the group."
+            "wargear": {
+              "name": "Servo-skull",
+              "qty": 1,
+              "scope": "group"
+            }
           }
         ],
         "bonus": "+1 bonus die to Persuasion (Fel) Tests against characters with the IMPERIUM Keyword.",
@@ -103,7 +132,11 @@
         ],
         "wargear": [
           {
-            "text": "A combat servitor for the group."
+            "wargear": {
+              "name": "Combat servitor",
+              "qty": 1,
+              "scope": "group"
+            }
           }
         ],
         "bonus": "+2 Bonus Dice to Influence Tests made when requisitioning Wargear from the Adeptus Mechanicus.",
@@ -192,7 +225,14 @@
         ],
         "wargear": [
           {
-            "text": "One Rare item for each individual (the item must be something worn openly and visibly)."
+            "pick": 1,
+            "wargearOf": {
+              "rarity": {
+                "atMost": "Rare",
+                "atLeast": "Rare"
+              },
+              "condition": "the item must be something worn openly and visibly"
+            }
           }
         ],
         "bonus": "Gain the NAVIS NOBILITE Keyword.",
@@ -219,7 +259,7 @@
         ],
         "wargear": [
           {
-            "text": "Any limbs or organs you lose in the course of your duties are replaced with an augmetic enhancement at the expense of House Omincara."
+            "story": "Any limbs or organs you lose in the course of your duties are replaced with an augmetic enhancement at the expense of House Omincara."
           }
         ],
         "bonus": "+1 Bonus Dice to Deception (Fel) Tests against characters with the IMPERIUM Keyword.",
@@ -247,8 +287,8 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Tier 2 or below"
+            "kind": "tier",
+            "max": 2
           }
         ],
         "wargear": [],
@@ -303,8 +343,8 @@
             ]
           },
           {
-            "kind": "text",
-            "text": "Tier 2 or below"
+            "kind": "tier",
+            "max": 2
           }
         ],
         "wargear": [
@@ -336,7 +376,8 @@
         ],
         "wargear": [
           {
-            "text": "Each member receives 1 Ammo Point at the beginning of each mission."
+            "ammoPer": "mission",
+            "ammo": 1
           }
         ],
         "bonus": "+1 Bonus Dice to attacks targeting Mobs.",
@@ -440,7 +481,16 @@
         ],
         "wargear": [
           {
-            "text": "One Rare item of Aeldari Wargear."
+            "pick": 1,
+            "wargearOf": {
+              "wargearKeywords": [
+                "AELDARI"
+              ],
+              "rarity": {
+                "atMost": "Rare",
+                "atLeast": "Rare"
+              }
+            }
           }
         ],
         "bonus": "+2 Bonus Dice to Resolve Tests when defending Craftworld Ul-Khari.",
@@ -469,7 +519,10 @@
         ],
         "wargear": [
           {
-            "text": "An Aeldari sword inlaid with green gems for each individual."
+            "wargear": {
+              "name": "Aeldari sword inlaid with green gems",
+              "qty": 1
+            }
           }
         ],
         "bonus": "+1 Bonus Dice to Athletics Tests made in zero gravity.",
@@ -491,7 +544,7 @@
         "grants": []
       }
     ],
-    "note": "Printed as written: “the Emerald Warriors appear” (p.84, the Coterie is elsewhere the Greensteel Warriors) and “discrete rewards” (p.85). The Elders’ Aeldari sword is kept as text: the book gives no profile, so it isn’t linked to the Core Sword. A Motley Crew WARGEAR is “None.”"
+    "note": "Printed as written: “the Emerald Warriors appear” (p.84, the Coterie is elsewhere the Greensteel Warriors) and “discrete rewards” (p.85). The Elders’ Aeldari sword has no printed profile, so it isn’t linked to the Core Sword. A Motley Crew WARGEAR is “None.”"
   },
   {
     "id": "warboss-vazdrok-spikey-smasha",
@@ -514,7 +567,7 @@
                 ]
               },
               {
-                "kind": "text",
+                "kind": "gm",
                 "text": "or at least must wear something that hides the ears"
               }
             ]
@@ -522,7 +575,10 @@
         ],
         "wargear": [
           {
-            "text": "A ‘suicide capsule’ that is actually just a bullet."
+            "wargear": {
+              "name": "‘Suicide capsule’ (actually just a bullet)",
+              "qty": 1
+            }
           }
         ],
         "bonus": "+1 Bonus Dice to Stealth (A) Tests when the action is clearly a risky idea.",
@@ -544,7 +600,7 @@
         "grants": []
       }
     ],
-    "note": "Da ’Ard Boyz BONUS is printed word for word as A Motley Crew’s (p.85), likely a copy error; kept as printed. Da Inteli-Gitz’s AELDARI limitation has an in-fiction way round it (“or at least must wear something that hides the ears”), so it is an `either`: notKeyword AELDARI, or that text. Printed as written: “as well.Vazdrok” (p.86, no space), “Ezample Mishunns” (p.87, deliberate). Da ’Ard Boyz WARGEAR is “None.”"
+    "note": "Da ’Ard Boyz BONUS is printed word for word as A Motley Crew’s (p.85), likely a copy error; kept as printed. Da Inteli-Gitz’s AELDARI limitation has an in-fiction way round it (“or at least must wear something that hides the ears”), so it is an `either`: notKeyword AELDARI, or that condition for the GM to judge. Printed as written: “as well.Vazdrok” (p.86, no space), “Ezample Mishunns” (p.87, deliberate). Da ’Ard Boyz WARGEAR is “None.”"
   },
   {
     "id": "chaos-lord-maloquence",
@@ -579,7 +635,10 @@
         ],
         "wargear": [
           {
-            "text": "An icon of the eight-pointed star, hammered from corroded metal or fashioned from human bone."
+            "wargear": {
+              "name": "Icon of the eight-pointed star, hammered from corroded metal or fashioned from human bone",
+              "qty": 1
+            }
           }
         ],
         "bonus": "Gain +1 Bonus Dice to Corruption Tests.",

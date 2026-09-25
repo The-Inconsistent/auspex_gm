@@ -170,7 +170,21 @@
     "traits": [
       {
         "name": "Magisterial",
-        "text": "Magisterial Houses are exalted and influential. They add +Rank to their Influence and Wealth."
+        "text": "Magisterial Houses are exalted and influential. They add +Rank to their Influence and Wealth.",
+        "grants": [
+          {
+            "mods": {
+              "influence": {
+                "perRank": 1
+              }
+            }
+          },
+          {
+            "wealth": {
+              "perRank": 1
+            }
+          }
+        ]
       }
     ],
     "note": "A House type, not a named House: the [HOUSE] keyword is replaced with the character's own House name, which the book leaves to the player (p.53). The keyword here is a stand-in. Trait name is editorial: the book prints each House type as an unnamed bullet."
@@ -202,7 +216,16 @@
     "traits": [
       {
         "name": "Renegade",
-        "text": "Renegade Houses are forsaken and corrupt. They begin with 1d3x Tier Corruption but add +Rank to Psychic Mastery tests and Maximum Shock."
+        "text": "Renegade Houses are forsaken and corrupt. They begin with 1d3x Tier Corruption but add +Rank to Psychic Mastery tests and Maximum Shock.",
+        "grants": [
+          {
+            "mods": {
+              "maxShock": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "note": "A House type, not a named House: the [HOUSE] keyword is replaced with the character's own House name, which the book leaves to the player (p.53). The keyword here is a stand-in. Trait name is editorial: the book prints each House type as an unnamed bullet."
@@ -256,7 +279,16 @@
         "text": "You add +Rank to your Resolve, and you add +1 to your Determination.",
         "mods": {
           "determination": 1
-        }
+        },
+        "grants": [
+          {
+            "mods": {
+              "resolve": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ]
   },
@@ -651,7 +683,16 @@
     "traits": [
       {
         "name": "Daemonbane",
-        "text": "You have been taught the secrets of daemon-kind to best understand how to end them.\n\nWhen attacking a creature with the DAEMON keyword in melee combat, you add +Rank ED to the attack’s damage. You also add +Rank to your Conviction."
+        "text": "You have been taught the secrets of daemon-kind to best understand how to end them.\n\nWhen attacking a creature with the DAEMON keyword in melee combat, you add +Rank ED to the attack’s damage. You also add +Rank to your Conviction.",
+        "grants": [
+          {
+            "mods": {
+              "conviction": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       },
       {
         "name": "Secretive (Tradition)",
@@ -875,7 +916,12 @@
       },
       {
         "name": "The Will of the Gods (Tradition)",
-        "text": "Word Bearers follow the will of the Chaos Gods, as interpreted through their prayers and visions, and through the guidance of their Apostles, and must strive to walk the path the Dark Gods set before them.\n\nYou start each session with 1 Wrath Point instead of 2."
+        "text": "Word Bearers follow the will of the Chaos Gods, as interpreted through their prayers and visions, and through the guidance of their Apostles, and must strive to walk the path the Dark Gods set before them.\n\nYou start each session with 1 Wrath Point instead of 2.",
+        "grants": [
+          {
+            "wrathPerSession": -1
+          }
+        ]
       }
     ]
   },
@@ -959,7 +1005,16 @@
     "traits": [
       {
         "name": "Devout Serenity",
-        "text": "You increase your Resolve by +Rank. Further, if you ever roll a 6 on your Wrath die when making a Resolve test, you gain 1 Faith."
+        "text": "You increase your Resolve by +Rank. Further, if you ever roll a 6 on your Wrath die when making a Resolve test, you gain 1 Faith.",
+        "grants": [
+          {
+            "mods": {
+              "resolve": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ]
   },
@@ -1066,7 +1121,16 @@
     "traits": [
       {
         "name": "Unquestioned Faith",
-        "text": "You increase your Conviction by +Rank."
+        "text": "You increase your Conviction by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "conviction": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "requires": [
@@ -1206,7 +1270,16 @@
     "traits": [
       {
         "name": "Serene Endurance",
-        "text": "When you succeed at a Medicae test to recover a patient’s Shock, recover +Rank shock. Your own Maximum Shock is increased by +Rank."
+        "text": "When you succeed at a Medicae test to recover a patient’s Shock, recover +Rank shock. Your own Maximum Shock is increased by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "maxShock": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ]
   },
@@ -1328,7 +1401,16 @@
     "traits": [
       {
         "name": "Grim Survivors",
-        "text": "Your Determination is increased by +Rank."
+        "text": "Your Determination is increased by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "determination": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ]
   }

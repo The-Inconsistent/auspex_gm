@@ -337,7 +337,13 @@
         "talent": "hatred"
       },
       {
-        "text": "1 item of Uncommon Wargear"
+        "pick": 1,
+        "wargearOf": {
+          "rarity": {
+            "atMost": "Uncommon",
+            "atLeast": "Uncommon"
+          }
+        }
       }
     ]
   },
@@ -374,7 +380,13 @@
         "keyword": "PRIMARIS"
       },
       {
-        "text": "1 item of Uncommon Wargear"
+        "pick": 1,
+        "wargearOf": {
+          "rarity": {
+            "atMost": "Uncommon",
+            "atLeast": "Uncommon"
+          }
+        }
       }
     ]
   },
@@ -395,7 +407,7 @@
         ]
       }
     ],
-    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43); no Tier Requirement or Influence printed. Requirements printed keyword-styled \"1ST COMPANY VETERAN, CHAPLAIN, OR LIBRARIAN\", read as the VoA Archetypes. The weapon swaps depend on the Archetype, so the weapons are a text grant. Print error, copied as printed: \"Storm Boler\". Apocrypha p.214 prints a different homebrew version (30 XP, BS 5+ or WS 5+, Adeptus Astartes or Primaris, +2 Influence, other wargear); not transcribed, this official printing wins.",
+    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43); no Tier Requirement or Influence printed. Requirements printed keyword-styled \"1ST COMPANY VETERAN, CHAPLAIN, OR LIBRARIAN\", read as the VoA Archetypes. Print error, copied as printed: \"Storm Boler\". Apocrypha p.214 prints a different homebrew version (30 XP, BS 5+ or WS 5+, Adeptus Astartes or Primaris, +2 Influence, other wargear); not transcribed, this official printing wins. Weapon combinations structured as choices: a ranged weapon (Storm Bolter, Heavy Flamer or Assault Cannon) with a melee weapon (Power Fist, Chainfist or Power Sword), or a pair of Lightning Claws; a Chaplain's melee weapon is the Crozius Arcanum and a Librarian's a Force Weapon (the printed \"is replaced with\").",
     "effect": "A 1st Company Veteran, Librarian, or Chaplain may begin with Terminator armour. Terminator armour comes with the following weapon combinations:\n- Storm Bolter and Power Fist or Chainfist as standard.\n- The Storm Boler may be exchanged for a Heavy Flamer or Assault Cannon.\n- Alternatively, the Powerfist/Chainfist may be exchanged for a Power Sword.\n- The Storm Bolter and Powerfist/Chainfist can both be exchanged for a pair of Lightning Claws.\n- If worn by a Chaplain, the Powerfist/Chainfist is replaced with a Crozius Arcanum.\n- If worn by a Librarian, the Powerfist/Chainfist is replaced with a Force Weapon.",
     "grants": [
       {
@@ -405,7 +417,334 @@
         }
       },
       {
-        "text": "Terminator armour weapon combination: Storm Bolter and Power Fist or Chainfist as standard, with the exchanges listed in the effect"
+        "choose": 1,
+        "from": [
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Storm Bolter",
+                  "qty": 1,
+                  "wargearId": "voa-storm-bolter"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Power Fist",
+                  "qty": 1,
+                  "wargearId": "voa-power-fist"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Storm Bolter",
+                  "qty": 1,
+                  "wargearId": "voa-storm-bolter"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Chainfist",
+                  "qty": 1
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Storm Bolter",
+                  "qty": 1,
+                  "wargearId": "voa-storm-bolter"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Power Sword",
+                  "qty": 1,
+                  "wargearId": "voa-power-sword"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Heavy Flamer",
+                  "qty": 1,
+                  "wargearId": "heavy-flamer"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Power Fist",
+                  "qty": 1,
+                  "wargearId": "voa-power-fist"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Heavy Flamer",
+                  "qty": 1,
+                  "wargearId": "heavy-flamer"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Chainfist",
+                  "qty": 1
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Heavy Flamer",
+                  "qty": 1,
+                  "wargearId": "heavy-flamer"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Power Sword",
+                  "qty": 1,
+                  "wargearId": "voa-power-sword"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Assault Cannon",
+                  "qty": 1,
+                  "wargearId": "assault-cannon"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Power Fist",
+                  "qty": 1,
+                  "wargearId": "voa-power-fist"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Assault Cannon",
+                  "qty": 1,
+                  "wargearId": "assault-cannon"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Chainfist",
+                  "qty": 1
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Assault Cannon",
+                  "qty": 1,
+                  "wargearId": "assault-cannon"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Power Sword",
+                  "qty": 1,
+                  "wargearId": "voa-power-sword"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Storm Bolter",
+                  "qty": 1,
+                  "wargearId": "voa-storm-bolter"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Crozius Arcanum",
+                  "qty": 1,
+                  "wargearId": "voa-crozius-arcanum"
+                },
+                "requires": [
+                  {
+                    "kind": "archetype",
+                    "anyOf": [
+                      "chaplain",
+                      "primaris-chaplain"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Heavy Flamer",
+                  "qty": 1,
+                  "wargearId": "heavy-flamer"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Crozius Arcanum",
+                  "qty": 1,
+                  "wargearId": "voa-crozius-arcanum"
+                },
+                "requires": [
+                  {
+                    "kind": "archetype",
+                    "anyOf": [
+                      "chaplain",
+                      "primaris-chaplain"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Assault Cannon",
+                  "qty": 1,
+                  "wargearId": "assault-cannon"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Crozius Arcanum",
+                  "qty": 1,
+                  "wargearId": "voa-crozius-arcanum"
+                },
+                "requires": [
+                  {
+                    "kind": "archetype",
+                    "anyOf": [
+                      "chaplain",
+                      "primaris-chaplain"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Storm Bolter",
+                  "qty": 1,
+                  "wargearId": "voa-storm-bolter"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Force Weapon",
+                  "qty": 1
+                },
+                "requires": [
+                  {
+                    "kind": "archetype",
+                    "anyOf": [
+                      "librarian",
+                      "primaris-librarian"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Heavy Flamer",
+                  "qty": 1,
+                  "wargearId": "heavy-flamer"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Force Weapon",
+                  "qty": 1
+                },
+                "requires": [
+                  {
+                    "kind": "archetype",
+                    "anyOf": [
+                      "librarian",
+                      "primaris-librarian"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "wargear": {
+                  "name": "Assault Cannon",
+                  "qty": 1,
+                  "wargearId": "assault-cannon"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Force Weapon",
+                  "qty": 1
+                },
+                "requires": [
+                  {
+                    "kind": "archetype",
+                    "anyOf": [
+                      "librarian",
+                      "primaris-librarian"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "wargear": {
+              "name": "Lightning Claws",
+              "qty": 2,
+              "wargearId": "voa-lightning-claws"
+            }
+          }
+        ]
       }
     ]
   }
