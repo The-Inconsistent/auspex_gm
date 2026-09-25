@@ -301,6 +301,7 @@ export type Discipline = z.infer<typeof Discipline>;
 export const PsychicPower = z.object({
   ...record,
   disciplineId: id,
+  alsoIn: z.array(id).default([]), // other disciplines that list it (Miasma of Pestilence in Contagion, Apocrypha p.303)
   xp: XpCost,
   dn: z.union([z.number().int().positive(), z.string().min(1)]), // "Target's Defence"
   activation: z.string().min(1),

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "bonesinging",
+    "name": "Bonesinging",
+    "source": "inheritance-of-embers",
+    "page": 69,
+    "text": "Bonesinging allows Aeldari Psykers to create, shape, repair and destroy wraithbone. To do so, they need a way to measure how much damage a piece of wraithbone can take. Most wraithbone has 2 Wounds per square metre; the wraithbone created by Conjure Wraithbone has 1 Wound per square metre.\n\nArcane Voice\n\nThrough Bonesinging, Agents are capable of more feats than are described here, but they require teams of Bonesingers, as well as time. The feats described in the Bonesinging Discipline are things Wrath & Glory characters can achieve on their own, within the scope of an adventure. The wraithbone created by Conjure Wraithbone is comparatively brittle and weak — that's because wraithbone can potentially be a super-material; allowing Agents to create things stronger than the hull of a voidship in moments can make Bonesingers inordinately powerful. For the same reason, we've limited the amount of wraithbone a Bonesinger can easily make. Creating too much or too swiftly, a Bonesinger will have the power to make anything they need with a snap of their fingers, potentially wrecking an adventure.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASURYANI",
+          "YNNARI"
+        ]
+      }
+    ],
+    "note": "Printed as each power's Prerequisite (pp.69–70): \"The Psyker must have the AELDARI Keyword and either the ASURYANI or YNNARI Keyword.\" Kept on the discipline only."
+  },
+  {
+    "id": "phantasmancy",
+    "name": "Phantasmancy",
+    "source": "inheritance-of-embers",
+    "page": 70,
+    "text": "The art of Phatasmancy is the subtle manipulation and cruel application of psychic illusion and deception. Those Aeldari that have come to master this craft wield powerful illusions and deceitful misdirection through the force of their own will. They can conjure blinking twilight pathways into existence to guide allies or contort and even shroud their enemies' very thoughts within their own minds.",
+    "note": "\"Phatasmancy\" copied as printed. No access rule is printed for this discipline. Also Apocrypha p.312."
+  },
+  {
+    "id": "runes-of-battle",
+    "name": "Runes of Battle",
+    "source": "inheritance-of-embers",
+    "page": 72,
+    "text": "When the Warlocks of the Asuryani take to the battlefield, they employ the Runes of Battle to devastating effect. They are capable of emboldening the already considerable innate abilities of their fellow Aeldari while causing their enemies to wilt before them in horror.",
+    "note": "No access rule is printed for this discipline in IoE; requires filled from Core: PSYKER from p.257 (\"If you have the PSYKER Keyword, you are a Psyker.\"), and p.271 (\"The Maleficarum and Runes of Battle Disciplines require specific Keywords to learn.\") with each Core power's \"Prerequisite: Psyker must have the AELDARI Keyword\" (p.283). Also Core pp.283–284; this is the newer printing. Core's section intro (p.282) holds the Aeldari Psykers and Asuryani Psykers rules, now on the aeldari species and the asuryani faction.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "runes-of-fate",
+    "name": "Runes of Fate",
+    "source": "inheritance-of-embers",
+    "page": 74,
+    "text": "Farseers are by far the most potent of the Aeldari psykers. In times of war, these abilities are used with the Runes of Fate. They allow the Farseer to unravel the very threads of fate itself to guide their kin or unleash powerful torrents of psychic energies that consume their enemies both bodily and mind.",
+    "note": "No access rule is printed for this discipline. Also Apocrypha p.310."
+  },
+  {
+    "id": "runes-of-fortune",
+    "name": "Runes of Fortune",
+    "source": "inheritance-of-embers",
+    "page": 75,
+    "text": "The Seers of the Asuryani have long employed the Runes of Fortune and their ability to unlock the various strands of fate that intricately weave across the Galaxy. These runes are used to scry possible futures, foresee imminent dangers and aid the Aeldari and their allies in avoiding them.",
+    "note": "No access rule is printed for this discipline. Also Apocrypha p.307."
+  }
+]

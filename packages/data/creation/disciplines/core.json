@@ -1,1 +1,151 @@
-[{ "id": "universal", "name": "Universal Psychic Discipline", "source": "core", "page": 272 }]
+[
+  {
+    "id": "universal-psyker-abilities",
+    "name": "Universal Psyker Abilities",
+    "source": "core",
+    "page": 267,
+    "text": "Any character with the PSYKER Keyword gains both of these abilities.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "Pseudo-discipline: both abilities are known for free by every PSYKER. The PSYKER requirement is the chapter rule, Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\" \"All Psykers begin their careers knowing the Universal Psyker Abilities.\""
+  },
+  {
+    "id": "minor",
+    "name": "Minor Psychic Powers",
+    "source": "core",
+    "page": 268,
+    "text": "Psychic powers rarely develop in an individual as full-fledged, earth-shattering phenomena. Instead, most Psykers begin to develop their powers incrementally, displaying abilities of lesser strength or intensity. Some individuals don’t even recognise these as psychic powers, passing things off as natural talents or luck. Collectively, such lesser powers are known as Minor Psychic Powers.\n\nFor most Psykers, the development of such powers is the full extent of that creature’s potential. This is especially true among humanity. Should they survive this initial period of development — an uncertain prospect upon any world of the Imperium, where Psykers are often persecuted as witches, mutants or even monsters — they will be identified and collected for the tithe of the Black Ships.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "Pseudo-discipline. The PSYKER requirement is the chapter rule, Core p.257: \"If you have the PSYKER Keyword, you are a Psyker.\" \"All Psykers can learn Minor Psychic Powers and Smite (p.272), but you can only learn psychic powers from a single Discipline unless you are an Aeldari or have taken the Warped Mind Talent (p.141).\" The p.257 table lists Minor Psychic Powers as \"Less powerful psychic phenomena outside of any discipline\", so they don't count toward that limit. Epigraph (Phin, underhive scum) omitted."
+  },
+  {
+    "id": "universal",
+    "name": "Universal Psychic Discipline",
+    "source": "core",
+    "page": 272,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "PSYKER requirement from Core p.257 (Gaining Psychic Powers): \"If you have the PSYKER Keyword, you are a Psyker.\" Core p.257 also limits a Psyker to one Discipline unless Aeldari (Divination, Runes of Battle and one other) or Warped Mind (p.141). Core p.257: all Psykers can learn Minor Psychic Powers and Smite. Smite is the only power printed under this heading."
+  },
+  {
+    "id": "biomancy",
+    "name": "Biomancy Discipline",
+    "source": "core",
+    "page": 272,
+    "text": "Biomancers channel the Warp through their bodies and the bodies of others, manipulating physical forms at will. Masters of flesh-shaping are feared and envied for their ability to forge their own form into whatever their desire, and reduce their enemies to infirm weaklings.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "PSYKER requirement from Core p.257 (Gaining Psychic Powers): \"If you have the PSYKER Keyword, you are a Psyker.\" Core p.257 also limits a Psyker to one Discipline unless Aeldari (Divination, Runes of Battle and one other) or Warped Mind (p.141)."
+  },
+  {
+    "id": "divination",
+    "name": "Divination Discipline",
+    "source": "core",
+    "page": 274,
+    "text": "The Warp is outside of time and space; distance is Warped in the Immaterium, past, present, and future are one. Diviners cast their minds through unreality to view events that are far away or have not yet come to pass.\n\nGleaning any information from the Warp is difficult and terrifying. Those that pierce the twisting, demonic veil endure horrific visions without number, and must then decode the monstrous meanings to find the truth. Many diviners are driven to depression or madness by the otherworldly images that flood their minds.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "PSYKER requirement from Core p.257 (Gaining Psychic Powers): \"If you have the PSYKER Keyword, you are a Psyker.\" Core p.257 also limits a Psyker to one Discipline unless Aeldari (Divination, Runes of Battle and one other) or Warped Mind (p.141)."
+  },
+  {
+    "id": "pyromancy",
+    "name": "Pyromancy Discipline",
+    "source": "core",
+    "page": 275,
+    "text": "Summoners of Warpfire and controllers of combustion, pyromancers are capable of sculpting and conjuring flame. A discipline known purely for its destructive prowess, practitioners of this discipline are seen as unstable and destructive even amongst Psykers, and many are immediately judged to be pyromaniacs who revel in conflagrations.\n\nMany pyromancy disciplines are capable of inflicting the On Fire condition (p.199).",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "PSYKER requirement from Core p.257 (Gaining Psychic Powers): \"If you have the PSYKER Keyword, you are a Psyker.\" Core p.257 also limits a Psyker to one Discipline unless Aeldari (Divination, Runes of Battle and one other) or Warped Mind (p.141)."
+  },
+  {
+    "id": "telekinesis",
+    "name": "Telekinesis Discipline",
+    "source": "core",
+    "page": 277,
+    "text": "Telekinesis practitioners translate mental energy into kinetic or physical force. A mind practised in telekinesis can bend physics to their will, moving, crushing, or blocking objects using raw mental power.\n\nThe equivalence of mental to psycho-kinetic power is not fully understood, though practitioners of telekinesis often eschew physical fitness in order to focus on further sharpening their minds.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "PSYKER requirement from Core p.257 (Gaining Psychic Powers): \"If you have the PSYKER Keyword, you are a Psyker.\" Core p.257 also limits a Psyker to one Discipline unless Aeldari (Divination, Runes of Battle and one other) or Warped Mind (p.141)."
+  },
+  {
+    "id": "telepathy",
+    "name": "Telepathy Discipline",
+    "source": "core",
+    "page": 278,
+    "text": "Focused on entering and manipulating the minds of others, Telepaths arouse suspicion and caution wherever they go. Their ability to pluck thoughts from others, heads is almost as feared as their power to implant waking nightmares.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "note": "PSYKER requirement from Core p.257 (Gaining Psychic Powers): \"If you have the PSYKER Keyword, you are a Psyker.\" Core p.257 also limits a Psyker to one Discipline unless Aeldari (Divination, Runes of Battle and one other) or Warped Mind (p.141). Print error copied as printed: \"others, heads\"."
+  },
+  {
+    "id": "maleficarum",
+    "name": "Maleficarum Discipline",
+    "source": "core",
+    "page": 280,
+    "text": "Trust not the witch, for their powers are tainted.\nFear the witch, for their souls are corrupt.\nBurn the witch, for the fire purifies all.\n—Edict of Cardinal Koriv, Arch-Confessor\n\nSorcery: a word that terrifies and inspires in equal measure. Psykers' powers are already impressive, but some reach for more. Most are Rogue Psykers, individuals who learned to develop their powers beyond the Emperor's guiding light. But even those Psykers disciplined and trained in the Imperium's Scholastia Psykana sometimes succumb to the lure of Chaos. The whispers from the other side never cease, and can even erode a strong mind in time. Called witchcraft, sorcery, black magic, and an endless number of similar names, these psychic powers all stem from the same source the infernal and malignant Warp entities humans know as Daemons.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "note": "Core p.271: \"The Maleficarum and Runes of Battle Disciplines require specific Keywords to learn.\" Every Maleficarum power prints \"Prerequisite: Psyker must have the CHAOS Keyword\" (Core p.281); each power record carries it too. PSYKER from Core p.257."
+  }
+]

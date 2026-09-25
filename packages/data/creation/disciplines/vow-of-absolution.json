@@ -1,0 +1,56 @@
+[
+  {
+    "id": "librarius",
+    "name": "Librarius Discipline",
+    "source": "vow-of-absolution",
+    "page": 51,
+    "note": "VoA prints no access rule on the discipline itself; ADEPTUS ASTARTES is from the chapter introduction (p.44: \"a selection of psychic powers common to the Adeptus Astartes and exclusive powers taught by the Librarium of the Absolvers\"). FSPG p.129 prints the rule outright: \"The Librarius Discipline can only be mastered by psykers with the ADEPTUS ASTARTES Keyword.\" Also FSPG pp.129–130, with six powers and different stats; VoA prints four (Veil of Time, Might of Heroes, Fury of the Ancients, Psychic Fortress).",
+    "text": "The core of Astartes Psyker training revolves around mastering the Librarius Discipline. The powers taught in their curricula are not bound together by such familiar concepts as 'fire' or 'life', as other Psykers might learn, but by the tactical needs of the battlefield. The Librarians of the Ultramarines and their Successors often point to the precepts of the Codex Astartes as the discipline's origin, though many Codex-divergent Chapters practice it as well.\n\nWhatever its origins, the practitioners of the Librarius' power focus exclusively on combat and warfare. Moreover, the most commonly learned abilities focus on critical concepts for any tactician to understand — the placement of troops, force multipliers, power projection and limiting losses. By focusing on the essence of what their brothers need, Librarians can set their wills to fulfil those needs over the bounds of what is physically possible.\n\nWhile primarily focused on the pragmatic and efficent application on their psychic might, some Librarians maintain customs and rituals drawn from their homeworlds. This may involve uttering an ancient battle litany while obliterating foes, or bearing the hide and bones of a great beast into battle to evoke its spirit. Whether this is done out of true belief in such practices or out of respect for ancient traditions varies from Chapter to Chapter, and Librarian to Librarian.\n\nThe most potent Astartes Librarians use the foundational training of the Librarius to delve into more profound mysteries and accomplish feats beyond even their own brothers. For example, it is said that the Chief Librarian of the Ultramarines, Varro Tigurius, was able to telepathically contact the alien Tyranid Hive Mind and glean its secrets. All Blood Angels are familiar with the story of Mephiston, whose relentless discipline enabled him to overcome the Red Thirst. Of course, such feats are not strictly the domain of the Librarius, but many believe that it would only be possible to ascend to such heights with complete mastery of more common techniques. And so Chief Librarians across the galaxy drill their pupils endlessly, hoping to create warriors who can exceed their master's prowess — and who will be strong enough to wield their power with reason and restraint.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "obscuration",
+    "name": "Obscuration Discipline",
+    "source": "vow-of-absolution",
+    "page": 53,
+    "note": "VoA prints no access rule on the discipline itself; ADEPTUS ASTARTES is from the chapter introduction (p.44: \"a selection of psychic powers common to the Adeptus Astartes and exclusive powers taught by the Librarium of the Absolvers\"). Also Apocrypha p.269.",
+    "text": "The origin of the Obscuration Discipline is a recent matter and a curious one. Developed by a conclave of Librarians before the launch of the Indomitus Crusade for tasks to which full-fledged battle-brothers were rarely assigned, the Obscuration Discipline focuses on stealth, surveillance, and intelligence gathering.\n\nIt was a confluence of factors that led to the Discipline's creation. First and foremost of these was the Great Rift. The malign power of the Cicatrix Maledictum blotted out conventional means of communication within its shadow, both over great interstellar distances and at short range. As a result, the Scout Companies of the Astartes were more needed than ever to cover ground so that they might learn of and report enemy movements. Still, they were few, and their neophytes were not always equal to such monumental tasks.\n\nThe second and closely related factor was the development of the Phobos armour variant. Designed for stealthy movement and detached operations, Phobos-clad warriors could achieve what the Scout Companies could not. Yet, with the new challenges the Phobos squads faced, their commanders recognised that they would need immediate access to command personnel to make sensitive decisions without resorting to potentially compromised vox networks or telepathic messages. So officers were also issued Phobos vestments, and the masters of the Librarius were among them. Still, Librarians were often unaccustomed to working undetected in the shadows. Their powers were things of shattering force, unyielding will, and mythic power — not skulduggery or subtle knives.\n\nIn search of an answer to these problems, the finest minds from Guilliman's Ultramarines and several other Chapters convened to develop a new set of techniques suitable for use by those assigned to such work. They were pressed for time, traversing largely unfamiliar ground, and faced with a barrier of differing backgrounds and histories. Yet, the foundation they delivered was a masterpiece of subtle psy-craft and battlefield mastery. The result could be quickly disseminated among the ranks of the Primaris forces attached to the Crusade and thence to any beleaguered Chapters they encountered on their journey.\n\nMasters of the Obscuration Discipline can walk into enemy fortresses unseen, deftly avoiding patrols on their way to a target. They might slay an enemy commander untraceable by strangling the heretic with his own shadow or plunder strategic plans from the minds of their foes. Then, when it is time to exfiltrate, these powers see them out of enemy territory undetected and unharmed or allow the Librarian to carve a bloody yet precise escape route around anyone who might close in to stop them.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unbroken",
+    "name": "Unbroken Discipline",
+    "source": "vow-of-absolution",
+    "page": 55,
+    "note": "VoA prints no access rule on the discipline itself; ADEPTUS ASTARTES is from the chapter introduction (p.44: \"a selection of psychic powers common to the Adeptus Astartes and exclusive powers taught by the Librarium of the Absolvers\"). The Absolvers requirement is from the same sentence (\"exclusive powers taught by the Librarium of the Absolvers\"); it is not printed as a Requirement, so the GM may prefer to treat it like VoA p.45's Chapter-specific Talents, which the GM may waive with a compelling reason.",
+    "text": "The spirit of the Absolvers remains undaunted despite vast and varied challenges. Though frequently blunt and uncompromising, their discipline and loyalty have endured. Unsurprisingly, the psychic discipline employed by their Librarians is one of endurance and extremes. These psychic warriors are trained to be brutal and unrelenting, even more so than the rest of their Chapter.\n\nThose trained in the Librarius of the Absolvers learn fortitude through hardship and reaction to prophecy. Even before the advent of the Cicatrix Maledictum, the Absolvers taught that mastery of both spirit and body was paramount. Now, with corruption staring down from the stars upon them, they cleave to those lessons more than ever. Tests administered by the senior members of the Librarius are harsh, verging on cruel — even by the callous standards of the Imperium's war machine. Pain is a constant companion to aspirants and novices. Fatigue follows as well, and in its wake, confusion. It is not unknown for psychically-inclined neophytes to spiral into madness before receiving the Black Carapace. Such are the pressures placed upon them. That any precious gene-seed is wasted in this way is a tragedy, yet the Absolvers view any Psyker who cannot endure their training regiment as a liability in waiting.\n\nThose who master their initiation and join the ranks of the Librarius have been tested to the edge of destruction. They can now wield the pain inflicted on them and the endurance they drew upon with the ease that their brethren sight their bolter drills, for these torments have become old companions. These Librarians eschew ostentatious pyrokinetic displays or mystical pretence. When they wield their wills, the Absolvers' lines hold, and their foes crumple before them.\n\nThere may be echoes of the lost genetic heritage in the aptly named Unbroken Discipline of the Absolvers. However, if any remnant of their Primarch's spirit remains, it has been diluted through the Chapter's trials and travails. Nevertheless, keenly aware observers of psychic techniques sometimes speak to the themes of strength and swiftness in the Absolvers' psy-doctrine, and speculate whether Jaghatai Khan, Corvus Corax, Sanguinius, or even Leman Russ might be their forebears — for whatever the opinions of such experts in witchcraft are worth.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "absolvers"
+        ]
+      }
+    ]
+  }
+]

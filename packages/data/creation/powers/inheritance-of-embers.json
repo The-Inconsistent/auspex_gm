@@ -1,0 +1,626 @@
+[
+  {
+    "id": "conjure-wraithbone",
+    "name": "Conjure Wraithbone",
+    "source": "inheritance-of-embers",
+    "page": 69,
+    "disciplineId": "bonesinging",
+    "xp": 25,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "ASURYANI",
+      "YNNARI",
+      "PSYCHIC"
+    ],
+    "effect": "You call a simple wraithbone shape into existence. The wraithbone created by this power is approximately as strong as rockcrete (weaker than normal wraithbone, due to its rapid creation). Once called, it lasts indefinitely. You can create one of the following forms:\n\nSpear: A simple but deadly spear of wraithbone between half a metre and three metres long, and up to fifteen centimetres thick.\nShield: A flat surface of wraithbone a few centimetres thick, with a diameter between half a metre and three metres. The 'shield' doesn't have to be circular, but can't exceed three metres on its longest side.\nSpine: Several sharp spurs of wraithbone that emerge from the ground, approximately one metre high and covering an area of ten square meters (in whatever shape you choose). The affected area becomes Difficult Terrain.",
+    "potency": [
+      "[1] Increase the Range by 10 m.",
+      "[1] Increase the amount of wraithbone you create or the area affected by Spine by one square metre.",
+      "[3] Create an additional piece of wraithbone of the same type (Spear, Shield, or Spine)."
+    ]
+  },
+  {
+    "id": "repair-ruin",
+    "name": "Repair/Ruin",
+    "source": "inheritance-of-embers",
+    "page": 69,
+    "disciplineId": "bonesinging",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "ASURYANI",
+      "YNNARI",
+      "PSYCHIC"
+    ],
+    "effect": "Wraithbone remembers its form, to a very limited degree, and seeks to return to it. You assist it in doing so, repairing damage and reestablishing its prior state. You can also disrupt the shape of a piece of wraithbone, breaking or severely damaging it. You can achieve one of the following effects:\n\nRepair: You restore 2 Wounds to a piece of wraithbone, or a wraithbone construct such as a Wraithguard.\nRuin: You inflict 2 Wounds on a piece of wraithbone.",
+    "potency": [
+      "[1] Restore or inflict +1 Wound.",
+      "[3] Restore or inflict a Mortal Wound on a wraithbone construct (a Wraithguard, War Walker, etc.)."
+    ]
+  },
+  {
+    "id": "shape-reshape",
+    "name": "Shape/Reshape",
+    "source": "inheritance-of-embers",
+    "page": 70,
+    "disciplineId": "bonesinging",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "ASURYANI",
+      "YNNARI",
+      "PSYCHIC"
+    ],
+    "effect": "You guide the shape of an existing piece of wraithbone, including one called into being with Conjure Wraithbone. You can coax it into increasingly complex shapes depending on how long you spend manipulating it. You may reduce the DN of the Test by 1 by increasing time spent by one step (see below). You affect up to 10 square metres of wraithbone with this power.\n\nDepending on the time spent, you can achieve one of the following effects:\n\nA Round*: Seamlessly join together two pieces of wraithbone; guide wraithbone into simple shapes (coax a Spear into an arch or a ring; add curves or simple decoration to a Shield).\n* If a Round is particularly short, e.g. the time for an exchange of gunfire and no more, the GM may ask the Psyker player to spend two or three Rounds to achieve this effect.\nA Scene: Shape a piece of wraithbone into relatively complex or load-bearing forms (a single armour plate, a sealed chest, a wall); cut smaller pieces from a larger piece of wraithbone; add moderately complex decoration to a piece of wraithbone.\nA Day: Shape a piece of wraithbone into a sophisticated shape, with moving parts; add sophisticated decoration to a piece of wraithbone.",
+    "potency": [
+      "[2] Increase the amount of wraithbone affected by 5 square metres.",
+      "[3] Exceptional quality work, which reduces the DN for further manipulations by 1."
+    ]
+  },
+  {
+    "id": "fog-of-dreams",
+    "name": "Fog of Dreams",
+    "source": "inheritance-of-embers",
+    "page": 70,
+    "disciplineId": "phantasmancy",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Your consciousness creeps out across the battlefield like a sprawling mist, seeping into the mind of the enemy and confounding their senses. While this power is sustained, you and any allies with the HARLEQUIN [MASQUE] Keyword gain a +1 bonus to Defence and +1 bonus dice to any Stealth (A) Tests you make.",
+    "potency": [
+      "[3] Benefits improve by +1 Defence and +1d to Stealth.",
+      "[2] Range increased to 30m."
+    ],
+    "note": "Also Apocrypha p.312."
+  },
+  {
+    "id": "mirror-of-minds",
+    "name": "Mirror of Minds",
+    "source": "inheritance-of-embers",
+    "page": 70,
+    "disciplineId": "phantasmancy",
+    "xp": 30,
+    "dn": 8,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You project your own will directly towards the target, resulting in horrific consequences as reality crumbles around them in a catastrophic clash of minds. The target suffers 12+ 1 ED damage and must make a successful DN 5 Willpower or Psychic Mastery Test or also immediately suffer 1d3 Mortal Wounds.",
+    "potency": [
+      "[3] +2 ED damage.",
+      "[2] Target must also make a DN 3 Fear Test."
+    ],
+    "note": "Also Apocrypha p.312."
+  },
+  {
+    "id": "shards-of-light",
+    "name": "Shards of Light",
+    "source": "inheritance-of-embers",
+    "page": 71,
+    "disciplineId": "phantasmancy",
+    "xp": 25,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Vibrant shards of polychrome energy lash forward from your mind and bombard the psyche of the target, inflicting excruciating psychosomatic wounds that leave them injured and disorientated.\n\nShards of Light travel instantaneously in a straight line for 10m in the direction the Psyker is facing. Targets struck by the shards suffer 12+ 2 ED damage and must pass a DN 4 Willpower or Psychic Mastery Test or gain the Blinded Condition.",
+    "potency": [
+      "[2] DN of Willpower or Psychic Mastery Test increased by 1, target may also gain the Prone Condition.",
+      "[1] +10m range."
+    ],
+    "note": "Also Apocrypha p.312."
+  },
+  {
+    "id": "twilight-pathways",
+    "name": "Twilight Pathways",
+    "source": "inheritance-of-embers",
+    "page": 71,
+    "disciplineId": "phantasmancy",
+    "xp": 25,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You focus your mind on any ally with the HARLEQUIN [MASQUE] Keyword, and mysterious, half-lit pathways shimmer and blink into existence around the battlefield, opening new routes of attack. While the power is sustained, the target may take one additional Action per Round.",
+    "potency": [
+      "[1] Target acts first in every Round.",
+      "[2] Target also gains a +1 bonus to Defence."
+    ],
+    "note": "Also Apocrypha p.312."
+  },
+  {
+    "id": "veil-of-tears",
+    "name": "Veil of Tears",
+    "source": "inheritance-of-embers",
+    "page": 71,
+    "disciplineId": "phantasmancy",
+    "xp": 25,
+    "dn": 8,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "With a simple gesture and the force of your will you reach out and snatch the very image of the Troupe from the mind of your foes. Once activated, any character with the HARLEQUIN [MASQUE] Keyword within range gains +2 bonus to Defence and +2 bonus dice to any Stealth (A) Tests until the next Turn.",
+    "potency": [
+      "[3] Activation reduced to an Action.",
+      "[2] Range increased to 30m."
+    ],
+    "note": "Also Apocrypha p.313."
+  },
+  {
+    "id": "webway-dance",
+    "name": "Webway Dance",
+    "source": "inheritance-of-embers",
+    "page": 71,
+    "disciplineId": "phantasmancy",
+    "xp": 25,
+    "dn": 9,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You pull the veil between realspace and the Webway aside, allowing the Troupe to weave freely among the enemy, twisting and contorting away from danger only to reappear elsewhere. While this power is sustained any allies with the HARLEQUIN [MASQUE] Keyword may reroll any failed Determination rolls.",
+    "potency": [
+      "[3] Allies with the HARLEQUIN [MASQUE] Keyword may make an additional Move Action this Turn.",
+      "[2] Allies with the HARLEQUIN [MASQUE] Keyword gain +1 bonus dice to any Stealth (A) Tests."
+    ],
+    "note": "Also Apocrypha p.313."
+  },
+  {
+    "id": "conceal-reveal",
+    "name": "Conceal / Reveal",
+    "source": "inheritance-of-embers",
+    "page": 72,
+    "disciplineId": "runes-of-battle",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reach out with your mind and take command of the shadows, bending and shaping them to your will.\n\nOnce activated, you can cause one of the following effects:\n\nConceal: You draw the shadows in and don them like a cloak to conceal your position. While the power is sustained, you and any allies within 5m gain a +1 bonus to your Defence and +1 bonus dice to any Stealth (A) Tests you make.\nReveal: You push the shadows away from a target within range, revealing them to all. Target one enemy within range as the centre point for a Blast (6) area of effect. Any enemies in that area while the power is sustained can't benefit from bonuses to Defence or Stealth Tests due to cover while this power is sustained.",
+    "potency": [
+      "[3] Conceal: Benefits improve by +1 Defence and +1d to Stealth.",
+      "[2] Reveal: Area of effect increases to Blast (10)."
+    ],
+    "note": "Also Core p.283."
+  },
+  {
+    "id": "embolden-horrify",
+    "name": "Embolden / Horrify",
+    "source": "inheritance-of-embers",
+    "page": 72,
+    "disciplineId": "runes-of-battle",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into the minds of those around you, either fortifying or eroding their resolve. Once activated, you can choose one of the following effects:\n\nEmbolden: You instil valour and determination into your allies. While the power is sustained, you and all allies within 5m gain +1 bonus die to Resolve Tests.\nHorrify: You sap the courage and determination of your enemies. Target one enemy within range as the centre point for a Blast (6) area of effect. Any enemies in that area suffer a +1 DN penalty to Resolve Tests while the power is sustained.",
+    "potency": [
+      "[2] Embolden: +1 bonus die to Resolve Tests.",
+      "[2] Horrify: +1DN penalty to target's Resolve Tests."
+    ],
+    "note": "Also Core p.283."
+  },
+  {
+    "id": "empower-enervate",
+    "name": "Empower / Enervate",
+    "source": "inheritance-of-embers",
+    "page": 73,
+    "disciplineId": "runes-of-battle",
+    "xp": 30,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You commune with the spirits of those around you, expanding their potential or draining their will to fight. Once activated, you can cause one of the following effects:\n\nEmpower: You empower the spirits of yourself and your allies. Whilst this power is sustained, you and all allies within 5m gain +1 ED to any successful melee attack.\nEnervate: You sap your enemies' spirits, filling them with doubt and despair. All enemies in a Blast (6) area within range suffer a –1 ED penalty to any successful melee attacks, to a minimum of 0.",
+    "potency": [
+      "[3] Empower: +1 ED to damage.",
+      "[3] Enervate: –1 ED to target's damage."
+    ],
+    "note": "Also Core p.283."
+  },
+  {
+    "id": "enhance-drain",
+    "name": "Enhance / Drain",
+    "source": "inheritance-of-embers",
+    "page": 73,
+    "disciplineId": "runes-of-battle",
+    "xp": 30,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Drawing upon the favour of Khaine, you enhance the combat prowess of your allies or diminish that of your enemies. Once activated, you can cause one of the following effects:\n\nEnhance: You channel a fraction of Khaine's skill to enhance your allies' combat abilities. While the power is sustained, you and all allies within 5m gain +1 bonus dice to Weapon Skill (I) Tests.\nDrain: You allow a portion of Khaine's anger and disdain to suppress the fighting skills of your enemies. Target one enemy within range as the centre point for a Blast (6) area of effect. Any enemies in that area while the power is sustained suffer a +1 DN to Weapon Skill (I) Tests they make.",
+    "potency": [
+      "[2] Enhance: Additional +1 bonus dice to Weapon Skill (I) Tests.",
+      "[2] Drain: Additional +1DN to target's Weapon Skill (I) Tests."
+    ],
+    "note": "Also Core p.284."
+  },
+  {
+    "id": "protect-jinx",
+    "name": "Protect / Jinx",
+    "source": "inheritance-of-embers",
+    "page": 73,
+    "disciplineId": "runes-of-battle",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Pyling the threads of fate that surround any field of battle, you isolate and bind those of a specific individual, reshaping their destiny. Once activated, cause one of the following effects:\n\nProtect: You weave your fate and that of your allies, to inure you from harm. While the power is sustained, you and all allies within 5m gain a +1 bonus to their Base Resilience.\nJinx: You weave your enemies' fate, making them more susceptible to harm. Target one enemy within range as the centre point for a Blast (6) area of effect. Any enemies in that area while the power is sustained suffer a –1 penalty to their Base Resilience.",
+    "potency": [
+      "[3] Protect: Additional +1 bonus to Resilience.",
+      "[3] Jinx: Additional –1 penalty to Resilience."
+    ],
+    "note": "\"Pyling\" copied as printed (likely \"Plying\"). Also Core p.284."
+  },
+  {
+    "id": "quicken-restrain",
+    "name": "Quicken / Restrain",
+    "source": "inheritance-of-embers",
+    "page": 73,
+    "disciplineId": "runes-of-battle",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You twist time itself, briefly altering its flow for a select few on the battlefield. Once activated, you can cause one of the following effects:\n\nQuicken: You change the flow of time for yourself and your allies, making you seem supernaturally swift. While the power is sustained, you and all allies within 5m may make an additional Move Action on each of your Turns.\nRestrain: You change the flow of time for your enemies, making them move as if they were passing through deep water. Target one enemy within range as the centre point for a Blast (6) area of effect. Any enemies in that area while the power is sustained move as if they are in Difficult Terrain.",
+    "potency": [
+      "[2] Quicken: Increase the radius of the effect to allies within 10m.",
+      "[2] Restrain: Area of effect increases to Blast (10)."
+    ],
+    "note": "Also Core p.284."
+  },
+  {
+    "id": "doom",
+    "name": "Doom",
+    "source": "inheritance-of-embers",
+    "page": 74,
+    "disciplineId": "runes-of-fate",
+    "xp": 25,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You weave the fabric of destiny to cast a darkening shadow over an enemy's soul, ensuring that each shot and blow that befalls them endeavours to be their last. While this power is sustained, the target suffers a –1 penalty to their Base Resilience and a +1 DN penalty to any Resolve Tests.",
+    "potency": [
+      "[3] Additional –1 penalty to target's Resilience.",
+      "[2] Additional +1 DN penalty to target's Resolve Tests."
+    ],
+    "note": "Also Apocrypha p.310."
+  },
+  {
+    "id": "executioner",
+    "name": "Executioner",
+    "source": "inheritance-of-embers",
+    "page": 74,
+    "disciplineId": "runes-of-fate",
+    "xp": 30,
+    "dn": 8,
+    "activation": "Target's Defence",
+    "duration": "Instant",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Reaching across destiny itself you summon a vengeful astral doppelganger and unleash it against your enemy. The fiery psychic form bears down on its target, intent on tearing flesh asunder. The target suffers 14 + 2 ED damage and must pass a DN 3 Fear Test.",
+    "potency": [
+      "[3] +2 ED damage.",
+      "[2] +1 DN to the Fear Test."
+    ],
+    "note": "Printed as \"DN: 8\" and \"Activation: Target's Defence\"; copied as printed. The Activation looks like a misprint (no Action type is given). Also Apocrypha p.310."
+  },
+  {
+    "id": "fortune",
+    "name": "Fortune",
+    "source": "inheritance-of-embers",
+    "page": 74,
+    "disciplineId": "runes-of-fate",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "10 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "With infinite pathways laid out before you, you can see the perils that await your allies before they come to pass and assist them in avoiding danger. If successfully activated you and all allies with the AELDARI Keyword gain a +1 bonus to your Defence until the beginning of your next Turn.",
+    "potency": [
+      "[2] Additional +1 bonus dice.",
+      "[1] +1 Round duration."
+    ],
+    "note": "The [2] Potency reads \"Additional +1 bonus dice\" though the effect grants a Defence bonus, not dice; copied as printed. Also Apocrypha p.310."
+  },
+  {
+    "id": "guide",
+    "name": "Guide",
+    "source": "inheritance-of-embers",
+    "page": 74,
+    "disciplineId": "runes-of-fate",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reshape the paths of destiny by the sheer force of your will, picking out targets through the turmoil of war with your mind and guiding your allies' shots towards their target. Once activated, you and all allies within range with the AELDARI Keyword gain +2 bonus dice to all Ballistic Skill (A) Tests until the beginning of your next Turn.",
+    "potency": [
+      "[2] Additional +2 bonus dice.",
+      "[1] Range increased by 10m."
+    ],
+    "note": "Also Apocrypha p.311."
+  },
+  {
+    "id": "mind-war",
+    "name": "Mind War",
+    "source": "inheritance-of-embers",
+    "page": 74,
+    "disciplineId": "runes-of-fate",
+    "xp": 20,
+    "dn": "Target's Willpower (Opposed Test)",
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into the mind of an enemy, engaging in a furious psychic duel, flooding their thoughts with your presence and ripping apart the very essence of their being. You and your target make an Opposed Willpower Test. If you succeed, the target immediately suffers 1d3 Mortal Wounds.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "[1] Activation reduced to an Action."
+    ],
+    "note": "Also Apocrypha p.311."
+  },
+  {
+    "id": "will-of-asuryan",
+    "name": "Will of Asuryan",
+    "source": "inheritance-of-embers",
+    "page": 75,
+    "disciplineId": "runes-of-fate",
+    "xp": 30,
+    "dn": 8,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "30 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "As the threads of untold destinies intertwine before you, your will summons the ancient confidence and certainty of the Aeldari Empire, cleansing the mind of fear and doubt. While sustained, this power grants you and all allies within range with the AELDARI Keyword +2 Resilience, and the ability to roll Determination against Mortal Wounds.",
+    "potency": [
+      "[2] +1 Resilience.",
+      "[1] +10m Range."
+    ],
+    "note": "Also Apocrypha p.311."
+  },
+  {
+    "id": "crushing-orb",
+    "name": "Crushing Orb",
+    "source": "inheritance-of-embers",
+    "page": 75,
+    "disciplineId": "runes-of-fortune",
+    "xp": 25,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You project your will to surround the target in a restrictive orb of kinetic energy before a slight gesture of the hand sends the massed force crushing inward. If successfully activated, the target immediately gains the Restrained Condition and suffers 10 + 2 ED damage. The target must pass a DN3 Strength or Psychic Mastery Test to escape the Orb; if they fail, the target suffers an additional 10 +2 ED damage each Round the power is sustained until they escape or perish.",
+    "potency": [
+      "[2] DN of Strength or Psychic Mastery Test increased by +1.",
+      "[1] +1 ED damage."
+    ],
+    "note": "Also Apocrypha p.307."
+  },
+  {
+    "id": "fateful-divergence",
+    "name": "Fateful Divergence",
+    "source": "inheritance-of-embers",
+    "page": 75,
+    "disciplineId": "runes-of-fortune",
+    "xp": 30,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You exert your will against destiny itself, bending the ever-shifting paths of fate to the benefit of your people. If successfully activated, any character with the AELDARI Keyword within range may re-roll one failed Determination roll until the beginning of your next Turn.",
+    "potency": [
+      "[3] +2 bonus dice when rerolling.",
+      "[2] +1 bonus dice when rerolling."
+    ],
+    "note": "Also Apocrypha p.307."
+  },
+  {
+    "id": "focus-will",
+    "name": "Focus Will",
+    "source": "inheritance-of-embers",
+    "page": 76,
+    "disciplineId": "runes-of-fortune",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into the mind of a friendly target and reinforce their mind against the predations of enemy Psykers and sorcerers. If successfully activated, the target gains +2 bonus dice to their next attempt to activate Deny The Witch.",
+    "potency": [
+      "[2] The target also gains a +1 bonus to all Psychic Mastery Tests until the start of your next Turn."
+    ],
+    "note": "Also Apocrypha p.307."
+  },
+  {
+    "id": "ghostwalk",
+    "name": "Ghostwalk",
+    "source": "inheritance-of-embers",
+    "page": 76,
+    "disciplineId": "runes-of-fortune",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "30 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You channel power into your ally, imbuing the target with an ethereal energy and allowing them to move at great speed. If successful, the target gains +3 Speed until the beginning of your next Turn.",
+    "potency": [
+      "[2] The target may make an additional Move Action this Turn.",
+      "[1] +1 Speed."
+    ],
+    "note": "Also Apocrypha p.308."
+  },
+  {
+    "id": "impair-senses",
+    "name": "Impair Senses",
+    "source": "inheritance-of-embers",
+    "page": 76,
+    "disciplineId": "runes-of-fortune",
+    "xp": 20,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "30 m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reach out into the mind of the target and flood their consciousness with a dazzling array of vivid patterns, images, and sound, bewildering their senses and disorientating them completely. The target gains the Hindered (2) Condition until the start of your next Turn.",
+    "potency": [
+      "[3] The target must also make a DN 3 Fear Test.",
+      "[2] The target also gains the Blinded Condition."
+    ],
+    "note": "Also Apocrypha p.308."
+  },
+  {
+    "id": "witchstrike",
+    "name": "Witchstrike",
+    "source": "inheritance-of-embers",
+    "page": 76,
+    "disciplineId": "runes-of-fortune",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Instant",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You focus your will into your weapon; drawing on the power of ancient runes you swathe the blade in psychic energy, turning it into a potent extension of your consciousness. Once activated, attacks made with a Witchblade gain a +2 ED damage bonus.",
+    "potency": [
+      "[2] +1 Round duration.",
+      "[1] +1 ED damage."
+    ],
+    "note": "Also Apocrypha p.308."
+  }
+]

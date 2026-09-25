@@ -4,7 +4,7 @@
     "name": "Navigator",
     "source": "apocrypha",
     "page": 11,
-    "note": "Size not printed (a Human strain, p.11). No maximums printed (the p.18 table has no Navigator column): Human maximums by GM ruling (docs/rules-flow.md §11.27). No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM).",
+    "note": "Size not printed (a Human strain, p.11). No maximums printed (the p.18 table has no Navigator column): Human maximums by GM ruling (docs/rules-flow.md §11.27). No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM). Every Navigator knows The Lidless Stare instead of Smite (p.294): the power grant.",
     "xp": 24,
     "speed": 6,
     "attributes": {
@@ -44,7 +44,12 @@
       "Int": 8,
       "Fel": 8,
       "speed": 8
-    }
+    },
+    "grants": [
+      {
+        "power": "the-lidless-stare"
+      }
+    ]
   },
   {
     "id": "beastman",
@@ -91,7 +96,7 @@
   },
   {
     "id": "shas-tau",
-    "name": "Shas T’au",
+    "name": "Shas T'au",
     "source": "apocrypha",
     "page": 15,
     "note": "Fire Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19). \"In game terms, each Caste is a different species; a Shas T’au cannot choose an archetype for Fio T’au, and vice versa\" (p.15).",
@@ -128,7 +133,7 @@
   },
   {
     "id": "fio-tau",
-    "name": "Fio T’au",
+    "name": "Fio T'au",
     "source": "apocrypha",
     "page": 15,
     "note": "Earth Caste. Maximums from the table on p.18. Size not printed (\"especially short and broad\", p.17). No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
@@ -167,7 +172,7 @@
   },
   {
     "id": "kor-tau",
-    "name": "Kor T’au",
+    "name": "Kor T'au",
     "source": "apocrypha",
     "page": 16,
     "note": "Air Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
@@ -210,7 +215,7 @@
   },
   {
     "id": "por-tau",
-    "name": "Por T’au",
+    "name": "Por T'au",
     "source": "apocrypha",
     "page": 16,
     "note": "Water Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",
@@ -253,7 +258,7 @@
   },
   {
     "id": "aun-tau",
-    "name": "Aun T’au",
+    "name": "Aun T'au",
     "source": "apocrypha",
     "page": 17,
     "note": "Ethereal Caste. Maximums from the table on p.18. Size not printed. No Species Keywords printed; T'AU by GM ruling (docs/rules-flow.md §11.19).",

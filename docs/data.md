@@ -452,7 +452,7 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 | `archetypes` | `Archetype` | The printed entry: Tier, species, XP, Keywords, Attributes, Skills, abilities, wargear, Influence, suggestions |
 | `talents` | `Talent` | `category` talent, faith, exarch, prayer or vow; XP, requirements, effect |
 | `packages` | `Package` | Ascension and Advancement Packages |
-| `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords |
+| `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. A discipline's `requires` is who may learn it (checked for every power in it); a power's `requires` is only its own prerequisite. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords; `alsoIn` lists other disciplines that print it. Minor powers and the free Universal Psyker Abilities are the pseudo-disciplines `minor` and `universal-psyker-abilities` |
 | `patrons` | `Patron` | FSPG Patrons and their Framework options |
 | `flavour` | `FlavourTable` | Names, appearance, languages |
 
@@ -485,7 +485,9 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
   prints none), they are added to the winner with `source` set on each `Rule`, so the builder can hide homebrew.
   Faction `rules` are added by name; `traits` and `abilities` only when the winner has none. Tables whose rows differ
   (the Apocrypha Harlequin and Drukhari backgrounds) are separate records named "… (Apocrypha)".
-- **One record per thing means per category.** An Apocrypha Exarch Power named Evade is not the Evade talent: they
+- **Access rules survive the merge.** When the winning official printing states no `requires` and an older official
+  one does, the older one's apply (IoE's Runes of Battle takes Core p.271's PSYKER + AELDARI).
+- **One record per thing means per category** (and per discipline, for powers). An Apocrypha Exarch Power named Evade is not the Evade talent: they
   get different ids (`evade-exarch`), and dedup compares category and name.
 - **Where an index and an entry disagree, the entry is the rule.** Note the difference.
 - **Bracketed names drop the placeholder from the id** and repeat once per choice (`repeatable: "perChoice"`): "Hatred [Any]" is `hatred`, "Loremaster [Keyword]" is
@@ -495,6 +497,8 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 - **Section rules go on every record.** VoA p.45 limits every Talent in its chapter to ADEPTUS ASTARTES, not CHAOS:
   each record carries those requirements and a `note` saying where they come from.
 - Copy print errors as printed (`"weapon'sRapid Fire"`, "Psychic Master (Wil)") and note the ones that matter.
+- Names and DNs use straight apostrophes (`Target's Defence`), so lookups by name work; prose keeps the book's
+  typography.
 - Legacy of the Necrontyr is 1st edition: its archetypes get Core-format XP, as a house ruling written in
   [rules-flow.md](rules-flow.md) §11 when that wave lands.
 - `bun run validate` until clean. `creation/manifest.json` lists the expected ids per type and source, taken from each
@@ -505,5 +509,14 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 - Two Inheritance of Embers gaps are parked in GitHub issue #2: the missing Anhrathe Goal table (p.14) and the
   unexplained +20 / +30 XP under three Corsair archetypes (pp.54–56).
 - Species details still missing: no Size for any Apocrypha species or the Necron.
+- Unbroken (VoA p.55): Absolvers only? VoA calls it "exclusive … Librarium of the Absolvers" but prints no
+  requirement; the data has `subFaction: absolvers`.
+- VoA's Litanies of Battle (pp.57–58) print only ADEPTUS ASTARTES: Chaplain-only, or do they need Faith?
+- IoE's Phantasmancy, Runes of Fate and Runes of Fortune print no access rule. Aeldari (or Harlequin) only?
+  Apocrypha's homebrew versions print one (Runes of Fortune: ASURYANI, ANHRATHE, HARLEQUIN or YNNARI; Runes of Fate:
+  AELDARI and FARSEER; Phantasmancy: HARLEQUIN), but a homebrew rule isn't applied to an official record.
+- FARSEER (Apocrypha Runes of Fate prerequisites): the keyword, or the Farseer archetype?
+- Grey Knights know Rites of Banishment instead of Smite (Apocrypha p.267); Navigators know The Lidless Stare (granted
+  by the species). Should the Grey Knights sub-faction grant Rites of Banishment the same way?
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

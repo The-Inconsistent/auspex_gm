@@ -49,6 +49,18 @@
         "name": "Echoes of the Fall",
         "page": 20,
         "text": "An Aeldari, Drukhari, or Wraith Construct Agent who fails a Mutation Test always rolls on the Subtle Mutation table (Wrath & Glory page 288). However, an Agent from these Species is rendered unplayable at Corruption Level 4 instead of 5 — at this point, the Agent’s soul is completely defiled by the touch of the Ruinous Powers. An eternity of suffering awaits them, though they may visit this ruin on their former comrades before they inevitably fall."
+      },
+      {
+        "name": "Aeldari Psykers",
+        "text": "Capable of feeling extremes of emotion, the souls of the Aeldari shine bright in the Warp. Slaanesh eyes each greedily, awaiting the moment their discipline fails to consume another of the declining Species.\n\nIf you are an Aeldari and trigger Perils of the Warp you must roll 2d6; the highest is always the 'tens' digit of the d66 roll, and the lower result is the units digit.",
+        "page": 282,
+        "source": "core"
+      },
+      {
+        "name": "Aeldari Psykers (Harlequin and Ynnari)",
+        "text": "The Shadowseers of the Harlequins and the reborn psykers pledged to Ynnead are no less practiced and efficient with their powers than their Craftworlder kin. An Aeldari PSYKER with the HARLEQUIN or YNNARI keyword may re-roll a single Wrath Dice that rolled a complication once per Psychic Mastery Test.",
+        "page": 307,
+        "source": "apocrypha"
       }
     ],
     "grants": [

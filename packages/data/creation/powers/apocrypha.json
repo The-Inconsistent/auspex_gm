@@ -1,0 +1,5191 @@
+[
+  {
+    "id": "death-hex",
+    "name": "Death Hex",
+    "source": "apocrypha",
+    "page": 301,
+    "disciplineId": "dark-hereticus",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "You place a dire hex upon your foes. Wards and shields flicker and fail, leaving the foe exposed. The power affects all enemies in a Blast (6) within range. Affected enemies may not roll Determination until the start of the Sorcerer’s next turn.",
+    "potency": [
+      "*[2] The area affected is a Blast (10).",
+      "[1] -1 Resilience to the affected enemies."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gift-of-chaos",
+    "name": "Gift of Chaos",
+    "source": "apocrypha",
+    "page": 301,
+    "disciplineId": "dark-hereticus",
+    "xp": 25,
+    "dn": "Target's Toughness",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "6m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "As the power of the warp surges through your victim, bones snap and flesh rips as a new form takes shape. This power targets a single creature within range. The target suffers 1d3+3 Mortal Wounds, and an equal number of Corruption points. If the target is reduced to 0 wounds by this power and subsequently dies, the target mutates into a Chaos Spawn instead of dying.",
+    "potency": [
+      "[2] +1 Mortal Wound and +1 Corruption."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "diabolic-strength",
+    "name": "Diabolic Strength",
+    "source": "apocrypha",
+    "page": 301,
+    "disciplineId": "dark-hereticus",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "The unholy energies of Chaos course through the recipient, swelling their frame with the strength to tear tanks asunder. Select an ally with the CHAOS keyword within range. The ally’s Strength is increased by +4, and they receive +2 bons dice on melee attacks, while this power remains in effect.",
+    "potency": [
+      "[2] +1 Strength",
+      "[1] +1ED to the affected ally’s melee damage."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "note": "Print error copied as printed: 'bons dice' (bonus dice)."
+  },
+  {
+    "id": "warptime",
+    "name": "Warptime",
+    "source": "apocrypha",
+    "page": 302,
+    "disciplineId": "dark-hereticus",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "5m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "The power of the immaterium bursts from you, warping time and heightening the speed of your allies. You and all allies with the CHAOS keyword within range, may immediately move up to your Speed.",
+    "potency": [
+      "[1] +1 Speed to all affected characters."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "weaver-of-fates",
+    "name": "Weaver of Fates",
+    "source": "apocrypha",
+    "page": 302,
+    "disciplineId": "dark-hereticus",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "You trace the skeins of the future to see the fates of battle. Forewarned of imminent danger, warriors dodge bullets and blades with seemingly supernatural reflexes. Select a number of allies with the TZEENTCH keyword within range equal to your Willpower. Until the start of your next turn, the affected allies add +2 to their Resilience and may roll Determination against Mortal Wounds.",
+    "potency": [
+      "*[2] Affect an additional number of affected allies equal to your Willpower",
+      "[1] +1 Resilience",
+      "[2] +1 bonus dice on Determination rolls."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ],
+    "note": "Also a Discipline of Change power by cross-reference (p.306).",
+    "alsoIn": [
+      "change"
+    ]
+  },
+  {
+    "id": "miasma-of-pestilence",
+    "name": "Miasma of Pestilence",
+    "source": "apocrypha",
+    "page": 302,
+    "disciplineId": "dark-hereticus",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "NURGLE",
+      "PSYCHIC"
+    ],
+    "effect": "As you chant in a phlegm-choked drone, a dark cloud of filth and flies shrouds your allies from view. Select a number of allies with the NURGLE keyword within range equal to your Willpower. The affected allies count as in Cover, adding +2 to their Defence, until the start of your next turn.",
+    "potency": [
+      "*[2] Affect an additional number of affected allies equal to your Willpower"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ],
+    "note": "Also a Contagion power by cross-reference (p.303).",
+    "alsoIn": [
+      "contagion"
+    ]
+  },
+  {
+    "id": "delightful-agonies",
+    "name": "Delightful Agonies",
+    "source": "apocrypha",
+    "page": 302,
+    "disciplineId": "dark-hereticus",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "SLAANESH",
+      "PSYCHIC"
+    ],
+    "effect": "Those whose minds are touched by the Sorcerer’s caress are wracked by waves of exquisite pain, and the real injuries of battle are trivial by comparison. Select a number of allies with the SLAANESH keyword within range equal to your Willpower. Until the start of your next turn, the affected allies may roll Determination against Mortal Wounds, and do not suffer any Shock when they roll Determination—each Icon rolled simply negates a Wound or Mortal Wound.",
+    "potency": [
+      "*[2] Affect an additional number of affected allies equal to your Willpower",
+      "[2] +1 bonus dice on Determination rolls."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "SLAANESH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "curse-of-the-leper",
+    "name": "Curse of the Leper",
+    "source": "apocrypha",
+    "page": 303,
+    "disciplineId": "contagion",
+    "xp": 25,
+    "dn": "Target's Toughness",
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "CHAOS",
+      "NURGLE",
+      "PSYCHIC"
+    ],
+    "effect": "The victims touched by this enervating curse find themselves weakened and drained of life within moments. This targets the nearest enemy within range and line of sight. Roll seven d6: for each Icon, the target suffers 1 Shock and is Staggered.",
+    "potency": [
+      "[1] The target suffers +1 Shock per Icon rolled.",
+      "[2] If a target becomes Exhausted, they suffer 1d3 Mortal Wounds immediately."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gift-of-contagion",
+    "name": "Gift of Contagion",
+    "source": "apocrypha",
+    "page": 303,
+    "disciplineId": "contagion",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "CHAOS",
+      "NURGLE",
+      "PSYCHIC"
+    ],
+    "effect": "With a gesture, you gather a foul fog of contagion about your foes, granting them a blessing from Grandfather Nurgle. This affects enemies you can see within a Blast (6) within range. Each enemy hit suffers the Poisoned (4) condition. While they remain Poisoned, creatures affected increase the DN of all Strength-based tests by +2.",
+    "potency": [
+      "[1] Add +1 to the rating of the Poisoned effect.",
+      "*[2] While Poisoned affected targets also add +2 DN to all melee attacks they make."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "plague-wind",
+    "name": "Plague Wind",
+    "source": "apocrypha",
+    "page": 303,
+    "disciplineId": "contagion",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "NURGLE",
+      "PSYCHIC"
+    ],
+    "effect": "You belch forth a wind of plague that blows through your foes, choking them and leaving only diseased, maggot-bloated corpses in its wake. This affects enemies within a Blast (6). Each enemy hit suffers 1d3 Mortal Wounds and the Poisoned (4) condition. While they remain Poisoned, creatures affected suffer 1d3 Mortal Wounds at the start of each turn.",
+    "potency": [
+      "[1] Add +1 to the rating of the Poisoned effect.",
+      "[3] Add +1 to the number of Mortal Wounds inflicted by the power’s initial effect, and each turn."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "putrescent-vitality",
+    "name": "Putrescent Vitality",
+    "source": "apocrypha",
+    "page": 303,
+    "disciplineId": "contagion",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "NURGLE",
+      "PSYCHIC"
+    ],
+    "effect": "Rancorous energies surge through Nurgle’s followers, bloating their distended bodies further with fresh infections and granting them new strength. Select a number of allies with the NURGLE keyword within range equal to your Willpower. The affected allies add +2 to their Strength and Toughness until the start of your next turn.",
+    "potency": [
+      "[1] Each affected ally regains 1d3 Shock.",
+      "[2] Each affected ally regains 1 Wound."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "baleful-devolution",
+    "name": "Baleful Devolution",
+    "source": "apocrypha",
+    "page": 304,
+    "disciplineId": "change",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "Transmogrifying energies erupt from your eyes, playing across the enemy’s ranks and reducing their proud warriors to mewling beasts. This power affects all enemies within a Blast (6) within range and line of sight. Affected enemies must pass a Toughness test with a DN of 5; if they fail, they are transformed into twisted, but harmless beasts while this power remains in effect. Transformed enemies retain their normal Defence, Resilience, Wounds, and Shock, but cannot take any actions of any kind, and they will transform back if they suffer any damage.",
+    "potency": [
+      "[3] Transformed enemies suffer 1 Mortal Wound when they first transform.",
+      "[2] Increase the size of the Blast by +2."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cacodaemonic-curse",
+    "name": "Cacodaemonic Curse",
+    "source": "apocrypha",
+    "page": 304,
+    "disciplineId": "change",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "With dark invocations, you summon cackling daemon imps to infest the enemy’s weapons. This targets the ranged weapons of all enemies within a Blast (6) within range and line of sight. Until the start of your next turn, the affected weapons reduce their base damage by 2.",
+    "potency": [
+      "*[1] Affected weapons roll one fewer ED than normal, to a minimum of 0ED.",
+      "*[2] Affected weapons’ AP is reduced to 0.",
+      "*[2] Affected weapons suffer a complication on any Wrath die roll of 1, 2, or 3."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "doombolt",
+    "name": "Doombolt",
+    "source": "apocrypha",
+    "page": 304,
+    "disciplineId": "change",
+    "xp": 20,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "You hurl a bolt of roiling energy that horribly twists its target into abhorrent and mutated new shapes. This is a psychic ranged attack, which targets the nearest enemy within range and line of sight and inflicts Willpower +9 +3ED damage with an AP of -2 and has the Agonizing and Corrupting traits.",
+    "potency": [
+      "[1] +1ED."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "glamour-of-tzeentch",
+    "name": "Glamour of Tzeentch",
+    "source": "apocrypha",
+    "page": 305,
+    "disciplineId": "change",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "You twist and obscure the perceptions of your foes to the point that your allies become all but invisible. This power affects a number of CHAOS allies within range and line of sight equal to your Willpower. While this power remains in effect, these allies increase their Defence by +2.",
+    "potency": [
+      "[2] +1 Defence.",
+      "[1] Affected allies add +1 die to all Stealth tests."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "perplex",
+    "name": "Perplex",
+    "source": "apocrypha",
+    "page": 305,
+    "disciplineId": "change",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "With perspective-warping illusions you obfuscate your enemies’ vision, rendering their targets fluid and indistinct. This targets enemies within Blast (6) within range and line of sight. The affected enemies cannot see enemies or make ranged attacks against targets more distant than 25m away.",
+    "potency": [
+      "[2] Increase the size of the Blast by +2."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pyric-flux",
+    "name": "Pyric Flux",
+    "source": "apocrypha",
+    "page": 305,
+    "disciplineId": "change",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC",
+      "FIRE"
+    ],
+    "effect": "You make yourself a bounteous font of unholy warpflame. Until the start of your next turn, all TZEENTCH FIRE weapons within range gain +2ED.",
+    "potency": [
+      "[1] Affected weapons gain an additional +1ED."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "temporal-manipulation",
+    "name": "Temporal Manipulation",
+    "source": "apocrypha",
+    "page": 305,
+    "disciplineId": "change",
+    "xp": 20,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC"
+    ],
+    "effect": "Fashioning a pocket of dilated time around an injured ally, the psyker accelerates the rate at which their flesh reknits. Select a single CHAOS ally within range and line of sight: that ally immediately regains wounds equal to your Intellect.",
+    "potency": [
+      "[2] The ally regains +1 Wound.",
+      "[1] The ally regains 1 Shock."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tzeentchs-firestorm",
+    "name": "Tzeentch's Firestorm",
+    "source": "apocrypha",
+    "page": 306,
+    "disciplineId": "change",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "CHAOS",
+      "TZEENTCH",
+      "PSYCHIC",
+      "FIRE"
+    ],
+    "effect": "You conjure a raging storm of pink and blue fire down from the skies, that mutates your foes and leaves capering daemons that claw and bite in its wake. This targets an enemy within range and line of sight. If successful, roll nine d6. For each Icon rolled, the target suffers 1 Mortal Wound. For each Exalted Icon rolled, the target suffers 1d3 Mortal Wounds.",
+    "potency": [
+      "*[3] Increase the number rolled on each d6 by 1 (i.e., a roll of 3 or 4 is an Icon, while a 5 or 6 is an Exalted Icon).",
+      "[1] If a target is killed by damage from this power, a single Pink Horror of Tzeentch is summoned, appearing on the same spot as the slain target."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "HERETIC ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vauls-song",
+    "name": "Vaul's Song",
+    "source": "apocrypha",
+    "page": 309,
+    "disciplineId": "runes-of-shaping",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "5m",
+    "multiTarget": "No (Yes for small items of technology)",
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You invoke the psychosonic ringing of Vaul’s anvil, knitting together wraithbone and psychoreactive crystal in moments. Select a single AELDARI vehicle or wraith-construct within range. The target regains 1d3+1 Wounds, or repairs one system on the vehicle which had been damaged. Alternatively, target one other pieces of Aeldari technology within range: the device is repaired, and any malfunctions or jams are fixed instantly.",
+    "potency": [
+      "[1] +1 Wounds (vehicle or wraith-construct)."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ],
+    "note": "Print error copied as printed: 'one other pieces'."
+  },
+  {
+    "id": "webway-step",
+    "name": "Webway Step",
+    "source": "apocrypha",
+    "page": 309,
+    "disciplineId": "runes-of-shaping",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You are highly attuned to the Webway, and can slip within its reaches with ease, without the use of a gate. You vanish and reappear a few moments later at any point within range. You must reappear standing on solid ground or another object sturdy enough to support your weight.",
+    "potency": [
+      "[2] You may bring along +1 ally who is within 3m of you when the power is used.",
+      "[2] Increase the range by 25m."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      },
+      {
+        "kind": "text",
+        "text": "Must be holding a Webway key to use this power."
+      }
+    ],
+    "note": "The Webway key condition limits use, not learning."
+  },
+  {
+    "id": "wraithtomb",
+    "name": "Wraithtomb",
+    "source": "apocrypha",
+    "page": 309,
+    "disciplineId": "runes-of-shaping",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "10m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You conjure and weave a tangle of wraithvines, psychic constructs that take the form of thorny tendrils which enwrap themselves around the target. Though they will not remain coherent without wraithbone or psychocrystal to make the structure tangible, the vines are solid enough for the moment. This power targets a single creature, vehicle, or structure within range. If a creature or vehicle, the target is restrained and hindered (3) while the power remains in effect. If a structure is the target, then the wraithvines wrap themselves around and into the structure in a manner determined by the Bonesinger and the GM: it may seal over or force open doors, ensnare and shut down automated defences, create a climbable surface, or something similar.",
+    "potency": [
+      "[1] Hindered condition increases by +1"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eldritch-storm",
+    "name": "Eldritch Storm",
+    "source": "apocrypha",
+    "page": 310,
+    "disciplineId": "runes-of-fate",
+    "xp": 30,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "50m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You summon a swirling corona of energy that assails the foe with bolts of lightning and psychic shockwaves. Entire platoons are devastated beneath the onslaught of the roiling tempest as you channel more and more power into their storm of destruction. The power affects all enemies in a Blast (10) within range. All enemies within the affected area at the start of each of your turns, immediately take 9 +3ED damage with an AP of -2 and the Agonizing, Arc (2) and Warp Weapon traits.",
+    "potency": [
+      "[1] The size of the Blast is increased by +5."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "AELDARI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "FARSEER"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ancestors-grace",
+    "name": "Ancestor's Grace",
+    "source": "apocrypha",
+    "page": 314,
+    "disciplineId": "revenant",
+    "xp": 20,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Drawing upon the greatness that is the genetic and spiritual legacy of all Aeldari, you bolster your fellows. Select a number of allies with the AELDARI keyword equal to your Willpower within range. Until the start of your next turn, the affected Aeldari may re-roll all 1s on any skill tests they attempt.",
+    "potency": [
+      "*[2] Affect a number of allies up to twice the psyker’s Willpower.",
+      "[2] Affected allies gain +1d on all skill tests."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gaze-of-ynnead",
+    "name": "Gaze of Ynnead",
+    "source": "apocrypha",
+    "page": 314,
+    "disciplineId": "revenant",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "Your eyes blaze with fire as they channel the power of Ynnead. You target one enemy with a psychic ranged attack. If hit, the target suffers 1d3+2 Mortal Wounds.",
+    "potency": [
+      "[3] +1 Mortal Wound."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "shield-of-ynnead",
+    "name": "Shield of Ynnead",
+    "source": "apocrypha",
+    "page": 314,
+    "disciplineId": "revenant",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "6m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You manifest a shield of spiritual energy around your allies. You and all allies within range gain +2 Defence and +2 Resilience until the start of your next turn.",
+    "potency": [
+      "[1] Affected allies gain +1 Resilience.",
+      "[2] Affected allies gain +1 Defence."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "storm-of-whispers",
+    "name": "Storm of Whispers",
+    "source": "apocrypha",
+    "page": 314,
+    "disciplineId": "revenant",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "6m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Your voice joins with those of the dead to drive the foe insane. All enemies within range must make a Fear test (DN 5); enemies who fail this test suffer 1d3+1 Shock, and 1 Mortal Wound if they suffer a complication on their Fear Test.",
+    "potency": [
+      "[2] Fear test DN increased by +1",
+      "[1] Shock inflicted increased by +1"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unbind-souls",
+    "name": "Unbind Souls",
+    "source": "apocrypha",
+    "page": 315,
+    "disciplineId": "revenant",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You reach out with your powers to weaken the bond between soul and body. The power affects all enemies in a Blast (6) within range. Until the start of your next turn, all attacks made against the affected enemies gain +1ED and may re-roll any failures.",
+    "potency": [
+      "*[1] The area affected is a Blast (10).",
+      "[1] +1ED to all attacks against the affected enemies."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "word-of-the-phoenix",
+    "name": "Word of the Phoenix",
+    "source": "apocrypha",
+    "page": 315,
+    "disciplineId": "revenant",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "AELDARI",
+      "PSYCHIC"
+    ],
+    "effect": "You call upon the rebirthing energies of the mythical phoenix. The power affects one ally within range; that ally regains 1d3 wounds, or 1d3+2 if they have the YNNARI keyword. If you target an ally who has died since the end f your last turn, they are immediately restored to life. A character resurrected in this way has wounds and shock equal to their maximums.",
+    "potency": [
+      "[1] +1 Wound healed."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "YNNARI"
+        ]
+      }
+    ],
+    "note": "Print error copied as printed: 'end f your last turn'."
+  },
+  {
+    "id": "eadbanger",
+    "name": "'Eadbanger",
+    "source": "apocrypha",
+    "page": 316,
+    "disciplineId": "waaagh",
+    "xp": 20,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "ORK",
+      "PSYCHIC"
+    ],
+    "effect": "A bolt of raw power erupts from your head and rockets across the battlefield, causing the head of the first unfortunate victim caught in its path to explode in a shower of brains and gore. This power targets the closest enemy, who must pass a Toughness test (DN 3) immediately suffer enough wounds to exceed their Max Wounds by 1.",
+    "potency": [
+      "[1] +1 DN to the target’s Toughness test."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ORK"
+        ]
+      }
+    ],
+    "note": "Print error copied as printed: 'must pass a Toughness test (DN 3) immediately suffer' is missing a word (presumably 'or')."
+  },
+  {
+    "id": "da-jump",
+    "name": "Da Jump",
+    "source": "apocrypha",
+    "page": 316,
+    "disciplineId": "waaagh",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "ORK",
+      "PSYCHIC"
+    ],
+    "effect": "You close your eyes tight and, in a storm of flashing green light, you teleport a mass of confused greenskins to another part of the battlefield. Select a number of allies with the ORK keyword equal to your Willpower within range. Those allies vanish, and then reappear moments later anywhere within 100m. They must reappear more than 9m from an enemy, and they forfeit their move in their following turn.",
+    "potency": [
+      "[2] Affect an additional number of allies equal to your Willpower.",
+      "*[2] Activation reduced to an Action"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ORK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "da-krunch",
+    "name": "Da Krunch",
+    "source": "apocrypha",
+    "page": 316,
+    "disciplineId": "waaagh",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "ORK",
+      "PSYCHIC"
+    ],
+    "effect": "Green energies erupt from your eyes, ears, nose, and mouth, and coalesce into a roiling cloud above the enemy. That cloud then solidifies into the vast green foot of Gork (or Mork) himself, which commences to stamp down upon the foe. This power affects all enemies in a Blast (6) within range. Affected enemies take 1d3 Mortal Wounds and are knocked prone. Foes who were already prone become staggered as well. Then, roll a d6: on an Exalted Icon, repeat the power’s effects (repositioning the blast as desired) as the foot stamps down again.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "[2] +1 on the roll to repeat the effect.",
+      "[3] Roll to repeat the power’s effects an additional time."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ORK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fists-of-gork",
+    "name": "Fists of Gork",
+    "source": "apocrypha",
+    "page": 316,
+    "disciplineId": "waaagh",
+    "xp": 8,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "ORK",
+      "PSYCHIC"
+    ],
+    "effect": "You channel Waaagh energy into your own fists or those of another Ork, providing strength enough to punch through the armour of tanks. This power affects you or one ally with the ORK keyword within range. Until the end of your next turn, the affected character’s Strength is increased by +4 and they receive +2 bonus dice on all melee attacks.",
+    "potency": [
+      "[1] +1 Strength",
+      "[1] +1ED damage on melee attacks.",
+      "*[2] Activation reduced to a Simple Action"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ORK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "roar-of-mork",
+    "name": "Roar of Mork",
+    "source": "apocrypha",
+    "page": 317,
+    "disciplineId": "waaagh",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "ORK",
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You open your gob impossibly wide and give vent to a bellowing roar that reverberates through your enemies’ minds. Coherent thought becomes nigh-impossible, and as the roar thunders on, panic begins to spread. While this power remains in effect, all enemies within range add +2 DN to all Resolve tests.",
+    "potency": [
+      "[1] +1 DN",
+      "*[2] Enemies within range must make a Resolve test (DN 3) or become pinned."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ORK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "warpath",
+    "name": "Warpath",
+    "source": "apocrypha",
+    "page": 317,
+    "disciplineId": "waaagh",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "ORK",
+      "PSYCHIC"
+    ],
+    "effect": "You disperse the Waaagh energy coursing through your frame into the Ork warriors around you, stoking their already bellicose nature into a roaring fever pitch. Select a number of allies with the ORK keyword equal to your Willpower within range. The affected allies add +2 bonus dice to all melee attacks they attempt until the start of your next turn, and they may ignore up to 2 points of DN increase for taking the Multi-Attack or Multi-Action options.",
+    "potency": [
+      "[1] Increase DN reduction by 1.",
+      "[1] +1 bonus dice to melee attacks.",
+      "[2] Affect an number of additional allies equal to your Willpower."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ORK"
+        ]
+      }
+    ],
+    "note": "Print error copied as printed: 'an number'."
+  },
+  {
+    "id": "interface-echo",
+    "name": "Interface Echo",
+    "source": "apocrypha",
+    "page": 318,
+    "disciplineId": "skeinwrought",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "LEAGUES OF VOTANN",
+      "PSYCHIC"
+    ],
+    "effect": "You draw empyrically archived Votannic wisdom from within ward-tech augmetic neural buffers and use it to inform your comrades’ battle plan. If the power is successful, you immediately gain 1 Glory.",
+    "potency": [
+      "[2] Gain +1 Glory",
+      "*[3] Gain 1 Wrath"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "LEAGUES OF VOTANN"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fortify",
+    "name": "Fortify",
+    "source": "apocrypha",
+    "page": 318,
+    "disciplineId": "skeinwrought",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "LEAGUES OF VOTANN",
+      "PSYCHIC"
+    ],
+    "effect": "The Kin have a natural belief in their own indomitable fortitude. Employing controlled empyric energies, you cause these beliefs to manifest as temporary physical enhancement. Select a number of LEAGUES OF VOTANN allies within range. Until the start of your next turn, the affected allies add +2 to their Resilience, and gain +2 dice on Determination rolls.",
+    "potency": [
+      "[1] +1 dice on Determination rolls",
+      "[1] +1 Resilience"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "LEAGUES OF VOTANN"
+        ]
+      }
+    ],
+    "note": "As printed, 'a number of' allies has no number (no 'equal to your Willpower')."
+  },
+  {
+    "id": "ancestral-wrath",
+    "name": "Ancestral Wrath",
+    "source": "apocrypha",
+    "page": 318,
+    "disciplineId": "skeinwrought",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "LEAGUES OF VOTANN",
+      "PSYCHIC",
+      "FIRE"
+    ],
+    "effect": "Channelling the grim hatred that all Kin believe their Ancestors hold for their foes, you transmute it into furious destructive energies. White fire leaps from your eyes, your fingertips, and your open mouth, blasting the foe to scattered ashes. This targets all enemies in a Blast (6) within range and line of sight. Enemies affected suffer 12+ 3ED damage with the Force trait. If any of the enemies affected have killed a LEAGUE OF VOTANN character in the current scene, the damage gains the Brutal trait.",
+    "potency": [
+      "[1] +1ED",
+      "[2] Increase Blast size by +2."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "LEAGUES OF VOTANN"
+        ]
+      }
+    ],
+    "note": "Copied as printed: 'LEAGUE OF VOTANN' (the keyword is LEAGUES OF VOTANN)."
+  },
+  {
+    "id": "grudgepyre",
+    "name": "Grudgepyre",
+    "source": "apocrypha",
+    "page": 318,
+    "disciplineId": "skeinwrought",
+    "xp": 25,
+    "dn": "Target's Willpower (opposed test)",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "LEAGUES OF VOTANN",
+      "PSYCHIC",
+      "FIRE"
+    ],
+    "effect": "Harnessing the Kin’s gestalt hatred for a begrudged foe, you engulfs your victim in a pillar of flame that scours them from existence. Select a single enemy within range and line of sight and make an Opposed Willpower test against them. If you succeed, the target suffers 1d3+3 Mortal Wounds.",
+    "potency": [
+      "[1] +1 Mortal Wound"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "LEAGUES OF VOTANN"
+        ]
+      }
+    ],
+    "note": "Print error copied as printed: 'you engulfs'."
+  },
+  {
+    "id": "null-vortex",
+    "name": "Null Vortex",
+    "source": "apocrypha",
+    "page": 319,
+    "disciplineId": "skeinwrought",
+    "xp": 25,
+    "dn": 7,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "LEAGUES OF VOTANN",
+      "PSYCHIC"
+    ],
+    "effect": "Unleashing the full contra-empyric power of your barrier tech, you project a null-probability field that causes enemy force shields to flicker and die, and even the most agile foes to fumble weakly in their efforts to evade harm. While this power remains in effect, enemies within range do not benefit from any Invulnerable Armour they possess.",
+    "potency": [
+      "*[3] Enemies within the power’s range cannot roll Determination."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "LEAGUES OF VOTANN"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crushing-contempt",
+    "name": "Crushing Contempt",
+    "source": "apocrypha",
+    "page": 319,
+    "disciplineId": "skeinwrought",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "LEAGUES OF VOTANN",
+      "PSYCHIC"
+    ],
+    "effect": "Your glowering stare bores into the enemy, your manifest disdain and anger intensifying by the moment until they feel its weight as a physical force. It causes them to stagger and strain simply to keep from collapsing altogether. This targets all enemies in a Blast (6) within range and line of sight. Enemies affected suffer 1d3 Shock and must attempt a Resolve test with a DN of 5; if they fail, they are Prone and Staggered until the start of your next turn.",
+    "potency": [
+      "*[2] Enemies are Restrained instead of Staggered.",
+      "[1] +1 Shock"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "LEAGUES OF VOTANN"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "blood-boil",
+    "name": "Blood Boil",
+    "source": "apocrypha",
+    "page": 278,
+    "disciplineId": "sanguinary",
+    "xp": 15,
+    "dn": "Target's Toughness",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You drive your enemy’s lifeblood into a seething frenzy, causing it to boil in the victim’s veins a split-second before bursting from every pore with explosive force. You target an enemy with a psychic ranged attack. The target suffers 1d3 Mortal Wounds and 1d6 Shock.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "[1] +1 Shock."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the BLOOD ANGELS keyword.\""
+  },
+  {
+    "id": "quickening",
+    "name": "Quickening",
+    "source": "apocrypha",
+    "page": 278,
+    "disciplineId": "sanguinary",
+    "xp": 20,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "1 Battle",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You channel your psychic might and the deadly powers of the immaterium flow through you, heightening your speed and lethality. While this power remains in effect, your Speed is increased by +3, and you ignore up to 2 points of DN increase when making a Multi-Attack or Multi-Action.",
+    "potency": [
+      "[2] Bonus to Speed increases by +1",
+      "[3] DN reduction for Multi-Attack and Multi-Action increased by 2."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the BLOOD ANGELS keyword.\""
+  },
+  {
+    "id": "shield-of-sanguinius",
+    "name": "Shield of Sanguinius",
+    "source": "apocrypha",
+    "page": 278,
+    "disciplineId": "sanguinary",
+    "xp": 10,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You will a shimmering golden barrier into existence, shielding your brothers from harm. If manifested, choose an ally within range. Until the start of your next turn, the affected ally gains +1 Defence and +1 Resilience.",
+    "potency": [
+      "[2] Bonus to Defence increases by +1",
+      "[1] Bonus to Resilience increases by +1"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the BLOOD ANGELS keyword.\""
+  },
+  {
+    "id": "the-blood-lance",
+    "name": "The Blood Lance",
+    "source": "apocrypha",
+    "page": 278,
+    "disciplineId": "sanguinary",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You conjure a mighty lance, infused with his innermost rage. Hefting this empyric projectile, your hurl it with all of your psychokinetic might, sending it hurtling through the enemy ranks to maim and impale. This is a psychic ranged attack, which hits all enemies along a straight line 25m long and 1m wide, running from the psyker. Each enemy along this line suffers 1d3 mortal wounds and is staggered.",
+    "potency": [
+      "[3] +1 Mortal Wound to each target."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the BLOOD ANGELS keyword.\" \"infused with his innermost rage\" and \"your hurl it\" as printed."
+  },
+  {
+    "id": "unleash-rage",
+    "name": "Unleash Rage",
+    "source": "apocrypha",
+    "page": 279,
+    "disciplineId": "sanguinary",
+    "xp": 10,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into the minds of your fellows and stoke the fires of anger lurking in their psyches, pushing them into a frenzied rage. If successful, select an Adeptus Astartes ally who has the BLOOD ANGELS keyword (or is of a Chapter with the Blood Angels geneseed). That ally immediately becomes Frenzied.",
+    "potency": [
+      "[1] The affected ally adds +1d to all Weapon Skill tests while Frenzied.",
+      "[2] The affected ally adds +1ED to melee attacks while Frenzied."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the BLOOD ANGELS keyword.\""
+  },
+  {
+    "id": "wings-of-sanguinius",
+    "name": "Wings of Sanguinius",
+    "source": "apocrypha",
+    "page": 279,
+    "disciplineId": "sanguinary",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Blood-red wings of psychic energy spring from your back, allowing you to soar across the battlefield like an avenging angel. You gain the ability to fly, with a speed equal to your normal speed plus your Psychic Mastery skill. You may immediately move as part of the action used to manifest this psychic power.",
+    "potency": [
+      "[2] Flying Speed increases by +1"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "blood-angels"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the BLOOD ANGELS keyword.\""
+  },
+  {
+    "id": "blasting-gale",
+    "name": "Blasting Gale",
+    "source": "apocrypha",
+    "page": 280,
+    "disciplineId": "stormspeaking",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 round.",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You call up a screaming windstorm to assail the foe. It is all your victims can do to stand their ground without being torn from their feet, let alone press forwards into battle. The power affects all creatures in a Blast (6) within range. Affected targets are Staggered until the start of your next turn.",
+    "potency": [
+      "*[2] Targets are also knocked Prone.",
+      "[2] Targets are also Hindered or Vulnerable."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the WHITE SCARS keyword.\""
+  },
+  {
+    "id": "lightning-call",
+    "name": "Lightning Call",
+    "source": "apocrypha",
+    "page": 280,
+    "disciplineId": "stormspeaking",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Raising your arms to the roiling storm-clouds overhead, you call down lightning strikes upon your foes. If this power is successfully used, the nearest enemy within range suffers a Damage 17 +3ED hit with the Agonizing trait. Then roll 1d6; on an Icon, the nearest enemy within 5m of the first target suffers 12 +2ED Damage with the Agonizing trait. Repeat that d6 roll until there are no targets remaining within range who have not been rolled for.",
+    "potency": [
+      "[2] +1ED damage to one target"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the WHITE SCARS keyword.\""
+  },
+  {
+    "id": "ride-the-winds",
+    "name": "Ride the Winds",
+    "source": "apocrypha",
+    "page": 280,
+    "disciplineId": "stormspeaking",
+    "xp": 8,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Invoking the power of the winds, you send rushing currents of invisible energy to speed your comrades into battle. If this power is successful, a number of allies in range equal to your Willpower add +1 to their Speed until the start of your next turn. This bonus increases to +2 for any allies who possess the WHITE SCARS keyword.",
+    "potency": [
+      "[2] +1 Speed.",
+      "[2] Affect additional allies equal to your Willpower."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the WHITE SCARS keyword.\""
+  },
+  {
+    "id": "storm-wreathed",
+    "name": "Storm-Wreathed",
+    "source": "apocrypha",
+    "page": 280,
+    "disciplineId": "stormspeaking",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "At your behest, the roiling clouds funnel into a furious vortex that swirls down to surround your advancing comrades. Lightning crackles around them, and leaps from their bodies to strike down the foe. If this power is successful, select a number of allies within range equal to your Willpower. If the affected allies Charge before the start of your next turn, their melee attacks gain the Inflict (Staggered) and Agonizing traits.",
+    "potency": [
+      "[2] Affect additional allies equal to your Willpower.",
+      "[2] Affected allies add +1 to their Defence."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the WHITE SCARS keyword.\""
+  },
+  {
+    "id": "spirits-of-chogoris",
+    "name": "Spirits of Chogoris",
+    "source": "apocrypha",
+    "page": 281,
+    "disciplineId": "stormspeaking",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Many and terrible are the spirits and ghouls of Chogorian tribal folklore, and it is warpwrought simulacra of these ancient terrors which you now unleash. The power affects all creatures in a Blast (6) within range. Affected targets must pass a DN 5 Fear test; those who fail also add +2 to the DN of Resolve tests they attempt while under the effects of Fear.",
+    "potency": [
+      "[2] +1 DN to Fear test.",
+      "*[2] Increase the area affected to a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the WHITE SCARS keyword.\""
+  },
+  {
+    "id": "eye-of-the-storm",
+    "name": "Eye of the Storm",
+    "source": "apocrypha",
+    "page": 281,
+    "disciplineId": "stormspeaking",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Summoning a hurricane, you become the heart of a screaming cyclone. Wherever you stride, the enemy are plucked from their feet and dashed to ruin by its elemental fury. When you use this power, and at the start of each turn you sustain it, all enemies within range must attempt a DN 4 Athletics test, adding +2 DN if they are flying. Failure means that the creature is knocked Prone and hurled 3d6 metres in a random direction; if they impact any solid object in this random move, determine damage as if they had fallen.",
+    "potency": [
+      "[2] +1 DN to Athletics test.",
+      "[1] Add +d6 metres to the distance hurled."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "white-scars"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the WHITE SCARS keyword.\""
+  },
+  {
+    "id": "blessing-of-the-machine-god",
+    "name": "Blessing of the Machine God",
+    "source": "apocrypha",
+    "page": 282,
+    "disciplineId": "technomancy",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You reach out with your mind and binharically amplify the anger of a nearby machine spirit, driving it to lash out at the enemy with renewed purpose. Select a single IMPERIAL vehicle you can see within range; that vehicle adds +2 bonus dice to its ranged attacks before the start of your next turn.",
+    "potency": [
+      "[2] The vehicle’s weapons inflict +1ED damage.",
+      "*[2] Activation reduced to an Action."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the IRON HANDS keyword.\""
+  },
+  {
+    "id": "fury-of-medusa",
+    "name": "Fury of Medusa",
+    "source": "apocrypha",
+    "page": 282,
+    "disciplineId": "technomancy",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You channel the might of Medusa’s furious electrical storms, unleashing a leaping psychic geist that surges through the enemy. Select a single enemy you can see within range and draw a straight line between them and you. Any foe along this line must roll 1d6, or 3d6 if it is a Vehicle. Each roll of an Icon inflicts 1d3 Mortal Wounds, while each Exalted Icon inflicts 3 Mortal Wounds.",
+    "potency": [
+      "[2] Each enemy rolls 1 additional d6."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the IRON HANDS keyword.\""
+  },
+  {
+    "id": "objuration-mechanicum",
+    "name": "Objuration Mechanicum",
+    "source": "apocrypha",
+    "page": 282,
+    "disciplineId": "technomancy",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "35m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Extending your hand, you compel the enemy’s equipment to betray them. Grenades spontaneously detonate, weapons backfire, and power cells overheat in a deadly fashion. If this power is successful, select a single piece of wargear or weapon you can see in range. Until the start of your next turn, any roll of 1, 2, or 3 on the Wrath die when attempting to use that device is a Complication, and the complication is always the most catastrophic failure, inflicting 1d3 Mortal Wounds on the user. If the device is a grenade or other explosive, the device instead detonates immediately.",
+    "potency": [
+      "[1] The power lasts for one additional turn.",
+      "[2] Increase the power’s range by +10 metres."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the IRON HANDS keyword.\""
+  },
+  {
+    "id": "psysteel-armour",
+    "name": "Psysteel Armour",
+    "source": "apocrypha",
+    "page": 282,
+    "disciplineId": "technomancy",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "At your command, warp energy flows in streamers from thin air and winds itself around your allies, glowing like forge-hot steel. The flowing Psysteel coats the armour of nearby vehicles or else wraps fellow warriors in a second skin capable of turning aside bullet and blade alike. Select a number of visible allies within range equal to your Willpower, or a single allied vehicle you can see within range. The target adds +2 to Resilience while this power remains in effect.",
+    "potency": [
+      "[2] +1 Resilience",
+      "[2] Affects an additional number of allies equal to Willpower, or one additional vehicle."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the IRON HANDS keyword.\""
+  },
+  {
+    "id": "reforge",
+    "name": "Reforge",
+    "source": "apocrypha",
+    "page": 283,
+    "disciplineId": "technomancy",
+    "xp": 8,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "3m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Placing your hand on rent plating, you chant binharic incantations that urge a machine to return to function. Wiring reknits, damaged energy cells are sealed, and buckled plating flattens and reforms. Select one damaged machine within range. If the machine is a piece of wargear, it is fully repaired and will function normally. If the machine is a vehicle, it recovers a number of wounds equal to your Willpower.",
+    "potency": [
+      "[1] A vehicle recovers +1 wound.",
+      "*[2] Activation reduced to an Action."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the IRON HANDS keyword.\""
+  },
+  {
+    "id": "machine-flense",
+    "name": "Machine Flense",
+    "source": "apocrypha",
+    "page": 283,
+    "disciplineId": "technomancy",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You lash out with your mind at an enemy war machine to shred its armoured hull. The strips of razor-edged shrapnel turn from the vehicle’s iron flesh are hurled like daggers at a nearby foe. Select one enemy vehicle you can see within range. That vehicle suffers 1d6+1 Mortal Wounds. Then, for each Mortal Wound the vehicle suffered, select a single creature within 6m of the vehicle (no creature may be selected more than once for this), and roll 1d6: on an Icon, that creature suffers a Mortal Wound.",
+    "potency": [
+      "[3] The vehicle suffers +1 Mortal Wounds"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "iron-hands"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the IRON HANDS keyword.\""
+  },
+  {
+    "id": "fury-of-the-wolf-spirits",
+    "name": "Fury of the Wolf Spirits",
+    "source": "apocrypha",
+    "page": 283,
+    "disciplineId": "tempestas",
+    "xp": 10,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Invoking the spirits of Freki the Fierce and Geri the Cunning, you set charcoal-black phantasms upon their foes. You create a melee weapon with the following profile: Damage 12 +4ED, AP -3, Range 3, Force, Reaping. You do not add your Strength to this weapon’s damage. You then immediately make a melee attack with that weapon as part of this action.",
+    "potency": [
+      "[1] Add +1ED to the weapon."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the SPACE WOLVES keyword.\""
+  },
+  {
+    "id": "jaws-of-the-world-wolf",
+    "name": "Jaws of the World Wolf",
+    "source": "apocrypha",
+    "page": 283,
+    "disciplineId": "tempestas",
+    "xp": 20,
+    "dn": 7,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You implore the spirit of the world upon which you walk to open its rock-fanged maw. The power affects all creatures in a Blast (6) within range. Those affected must pass an Agility test (DN 5) or suffer 1d3+2 Mortal Wounds and be knocked prone.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "[1] +1 DN to Agility test.",
+      "*[2] Affected area is a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the SPACE WOLVES keyword.\""
+  },
+  {
+    "id": "living-lightning",
+    "name": "Living Lightning",
+    "source": "apocrypha",
+    "page": 284,
+    "disciplineId": "tempestas",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Sentient electricity crackles amid the brooding skies above as you call forth the elements to smite your foes. At your command, lightning arcs into the ranks of the enemy, leaving a trail of blackened corpses in its wake. The you target the nearest enemy within range with a psychic ranged attack, inflicting 1d3 Mortal Wounds. If the target is reduced to 0 Wounds by this, then the nearest enemy within 35m to the previous target also suffers 1d3 Mortal Wounds. If they in turn are reduced to 0 Wounds, then the next nearest enemy within 35m to them is affected, and so on until an enemy suffers Mortal Wounds from this power but is not reduced to 0 Wounds or there are no enemies remaining within range.",
+    "potency": [
+      "[2] +1 Mortal Wound to each target."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the SPACE WOLVES keyword.\" \"The you target\" as printed."
+  },
+  {
+    "id": "murderous-hurricane",
+    "name": "Murderous Hurricane",
+    "source": "apocrypha",
+    "page": 284,
+    "disciplineId": "tempestas",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "you bellow an ancient curse, and within moments your foes are all but consumed in a hurricane of freezing shards, a thousand blades of psychically formed ice plunging into their flesh. The power affects all creatures in a Blast (6) within range. Roll 1d6 for each enemy affected: for each Icon, one enemy takes 1 Mortal Wound and is Vulnerable until the start of your next turn.",
+    "potency": [
+      "[2] Enemies suffer 1d3 Mortal Wounds instead of 1.",
+      "[1] +1 to Vulnerable effect.",
+      "*[2] Affected area is a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the SPACE WOLVES keyword.\""
+  },
+  {
+    "id": "storm-caller",
+    "name": "Storm Caller",
+    "source": "apocrypha",
+    "page": 284,
+    "disciplineId": "tempestas",
+    "xp": 20,
+    "dn": 8,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You chant an ancient rite that builds into a terrifying howl. Roaring winds and furious blizzards rage about him in a vortex of ice and snow that obscures you from sight. You, and all allies within range, add +2 to Defence due to the wind and snow that surrounds you.",
+    "potency": [
+      "[1] +1 Defence.",
+      "*[1] Enemies within the power’s range count as in difficult terrain."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the SPACE WOLVES keyword.\""
+  },
+  {
+    "id": "tempests-wrath",
+    "name": "Tempest's Wrath",
+    "source": "apocrypha",
+    "page": 284,
+    "disciplineId": "tempestas",
+    "xp": 10,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "50m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The Rune Priest brings the rage of the storm to a roaring crescendo, frost-fingered wind spirits whipping at his enemies, tearing at their eyes and snatching weapons from hands. The power affects all creatures in a Blast (6) within range. Enemies affected are Hindered (2) until the start of the psyker’s next turn.",
+    "potency": [
+      "[1] +1 to Hindered effect.",
+      "*[2] Affected area is a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "space-wolves"
+        ]
+      }
+    ],
+    "note": "Keywords \"Psychic\" and Prerequisite \"Psyker must have the Space Wolves keyword.\" printed in plain type, not the usual keyword style; read as the PSYCHIC and SPACE WOLVES keywords."
+  },
+  {
+    "id": "umbral-form",
+    "name": "Umbral Form",
+    "source": "apocrypha",
+    "page": 285,
+    "disciplineId": "umbramancy",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You summon a veil of darkness, slipping into its folds to evade the fury and firepower of the foe. While this power remains in effect, you add +2 to your Defence and gain +2 bonus dice on all Stealth tests.",
+    "potency": [
+      "[2] +1 Defence",
+      "[2] +1 bonus dice to Stealth tests",
+      "*[2] Activation reduced to a Simple Action"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the RAVEN GUARD keyword.\""
+  },
+  {
+    "id": "enveloping-darkness",
+    "name": "Enveloping Darkness",
+    "source": "apocrypha",
+    "page": 285,
+    "disciplineId": "umbramancy",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "At your command, the shadows cast by your enemies rise up and engulf them like a dense flock of ravens, leaving them disoriented and vulnerable to attack. This power affects all enemies in a Blast (6) you can see within range. Affected enemies suffer the Hindered 2 and Vulnerable 2 conditions until the start of your next turn.",
+    "potency": [
+      "[2] Add +1 to Hindered rating.",
+      "[2] Add +1 to Vulnerable rating.",
+      "*[2] Affected area is a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the RAVEN GUARD keyword.\""
+  },
+  {
+    "id": "spectral-blade",
+    "name": "Spectral Blade",
+    "source": "apocrypha",
+    "page": 285,
+    "disciplineId": "umbramancy",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You implant your foes with the psychosomatic suggestion that your weapon is irresistibly sharp, striking them down with the psychic feedback of their own warped perceptions. While this power remains in effect, you add half your Willpower to the base damage of all melee attacks you make (if you’re already wielding a Force Weapon, add your entire Willpower score instead, replacing both this effect and the benefit from the Force Weapon trait). In addition, if your Willpower is higher than that of your target, then the AP of your weapon is improved to -4.",
+    "potency": [
+      "[2] +1 ED to your melee weapon’s damage.",
+      "*[2] Weapon gains the Inflict (Bleeding) trait.",
+      "*[2] Activation reduced to a Simple Action"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the RAVEN GUARD keyword.\""
+  },
+  {
+    "id": "shadowstep",
+    "name": "Shadowstep",
+    "source": "apocrypha",
+    "page": 286,
+    "disciplineId": "umbramancy",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The gloom of the battlefield coalesces into a dark passageway that allows those who use it to stalk amongst the shadows and re-emerge where the foe least expects them. Select a single ally you can see within range. That ally immediately vanishes into the shadows. At the start of the ally’s next turn, they reappear, emerging from any other patch of shadows or darkness within 100m of where they vanished, so long as that location is more than 9m from an enemy.",
+    "potency": [
+      "*[2] The ally may make a Stealth test when they appear, as a Free Action.",
+      "[2] +1 Defence to the ally until the turn after they appear."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-abyss",
+    "name": "The Abyss",
+    "source": "apocrypha",
+    "page": 286,
+    "disciplineId": "umbramancy",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "A shadowy whirlpool opens in the enemy’s midst, snatching away unfortunate warriors as it gathers terrifying momentum. Select a single point you can see within range; the power affects all enemies within 3m of that point. Roll a d6 for each enemy affected; for each Icon rolled, that enemy suffers 1d3 Mortal Wounds. Those who are slain vanish into darkness. Those in the area who suffer wounds but are not slain are Restrained. Those who suffered no wounds must pass a DN 3 Fear test, adding +1 to the DN for each creature they have seen slain. At the start of each of your subsequent turns, while this power is sustained, add +1 metre to the radius of the effect. You suffer 1 Shock each turn you sustain this power.",
+    "potency": [
+      "[3] Enemies suffer +1 Mortal Wound"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-darkness-within",
+    "name": "The Darkness Within",
+    "source": "apocrypha",
+    "page": 286,
+    "disciplineId": "umbramancy",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You send your mind forth, calling not to the visible shadows surrounding your foes but rather to the fears and doubts that shadow their souls. Select a number of enemies that you can see within range equal to your Willpower. When this power is used, and at the start of each turn it is sustained, each selected enemy must pass a Resolve test (DN 4) or suffer 1d3+2 Shock.",
+    "potency": [
+      "[1] +1 DN to Resolve test",
+      "[1] +1 Shock",
+      "[2] Affect an additional number of enemies equal to your Willpower."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "raven-guard"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gaze-of-the-emperor",
+    "name": "Gaze of the Emperor",
+    "source": "apocrypha",
+    "page": 287,
+    "disciplineId": "psykana",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You cage the immense power of the Immaterium within your physical form, and your eyes blaze with the Emperor’s vengeful fury. Select one enemy you can see within range, and draw a straight line between you and them. Roll 3 d6 for each enemy touched by this line: each Icon rolled inflicts one Mortal Wound, while each Exalted Icon rolled inflicts 2 Mortal Wounds instead.",
+    "potency": [
+      "[2] Roll +1 d6 for each enemy.",
+      "[1] +6m range."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mental-shackles",
+    "name": "Mental Shackles",
+    "source": "apocrypha",
+    "page": 287,
+    "disciplineId": "psykana",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You impose forbidding psychic prohibitions on the foe, causing the victims’ limbs to feel like leaden weights and miring their minds in an illusory fog. Select enemies within a Blast (6) within range. Until the start of your next turn, the affected enemies are Staggered.",
+    "potency": [
+      "*[2] Enemies are Restrained instead of Staggered.",
+      "[1] Increase Blast size by +2."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nightshroud",
+    "name": "Nightshroud",
+    "source": "apocrypha",
+    "page": 288,
+    "disciplineId": "psykana",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Calling upon the power of the empyrean, you cloak your allies in a flowing curtain shadow, concealing them from the enemy. Select a number of IMPERIUM allies you can see within range equal to your Willpower. While this power remains in effect, affected allies add +2 to their Defence. If any ally affected attempts a Stealth test, they gain +2 bonus dice.",
+    "potency": [
+      "[2] +1 Defence.",
+      "[1] Affect +1 ally.",
+      "*[2] Affected allies who have a Stealth score may increase their Stealth Score by +1 at the start of each turn this power remains in effect."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "psychic-barrier",
+    "name": "Psychic Barrier",
+    "source": "apocrypha",
+    "page": 288,
+    "disciplineId": "psykana",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You weave an aegis of pure psychic energy around your allies, against which enemy fire sparks and spatters harmlessly. Select a number of IMPERIUM allies you can see within range equal to your Willpower. While this power remains in effect, affected allies increase their Resilience by +2, and may roll Determination against Mortal Wounds.",
+    "potency": [
+      "[1] +1 Resilience.",
+      "[1] Affect +1 ally.",
+      "*[2] Affected allies who roll Determination while this power is in effect may roll a number of dice equal to your Willpower instead of their normal Determination."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "psychic-maelstrom",
+    "name": "Psychic Maelstrom",
+    "source": "apocrypha",
+    "page": 288,
+    "disciplineId": "psykana",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You unleash the full might of your mind, summoning a roiling psychic tempest that envelops the enemy, lifting them from the ground and wrenching them about like a rag doll. This power affects enemies within a Blast (6) you can see within range. This blast must touch the nearest enemy you can see. Each enemy must pass a Strength test with a DN of 4, and failure means they are flung 1d3 metres in a random direction and knocked Prone, suffering Mortal Wounds equal to the distance they were thrown.",
+    "potency": [
+      "[1] +1 DN",
+      "[1] Blast rating is increased by +2.",
+      "[2] Each target is thrown +1 metre."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "terrifying-visions",
+    "name": "Terrifying Visions",
+    "source": "apocrypha",
+    "page": 288,
+    "disciplineId": "psykana",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You fill your enemies’ minds with nightmarish images and visions of torment, eroding cohesive thought and sense of duty. This affects all enemies within a Blast (6) you can see within range. Until the start of your next turn, the affected enemies add +2 DN to all Resolve tests they’re required to make.",
+    "potency": [
+      "[2] Enemies affected are also Hindered.",
+      "[1] Blast rating is increased by +2."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "psychic-fortitude",
+    "name": "Psychic Fortitude",
+    "source": "apocrypha",
+    "page": 289,
+    "disciplineId": "telethesia",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Drawing on boundless reserves of inner strength, you shield your allies’ minds from mortal fears and the threat of sorcerous assault. If successful, choose a number of allied IMPERIUM allies equal to your Willpower within range. Until the start of your next turn, affected allies add +3 to their Resolve and Conviction.",
+    "potency": [
+      "[1] +1 Resolve.",
+      "[1] +1 Conviction."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "terrify-telethesia",
+    "name": "Terrify",
+    "source": "apocrypha",
+    "page": 289,
+    "disciplineId": "telethesia",
+    "xp": 20,
+    "dn": "Target's Resolve",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You fill your enemies’ minds with visions of torment and agony. Select a single enemy you can see within range. If successful, the enemy suffers Terror.",
+    "potency": [
+      "*[1] The enemy cannot use Reflexive Actions while under the effects of Terror.",
+      "[1] The enemy suffers 1 Shock as well."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ],
+    "note": "Not Core p.280's Telepathy power Terrify (15 XP, DN 5): a different power of the same name, so its id is terrify-telethesia."
+  },
+  {
+    "id": "dominate",
+    "name": "Dominate",
+    "source": "apocrypha",
+    "page": 289,
+    "disciplineId": "telethesia",
+    "xp": 20,
+    "dn": "Target's Conviction",
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into a target’s mind and assume control over their conscious thoughts, pushing them to act as you see fit. This affects a single enemy you can see within range. While the power remains in effect, when the enemy acts, you may choose the actions they take. However, enemies affected are also Exhausted. You suffer 1 Shock each round you sustain this power.",
+    "potency": [
+      "*[3] Enemies affected may take actions freely and are not Exhausted.",
+      "*[2] Instead of the normal effect, you may leave a single command within the target’s mind, which remains for a number of days equal to your Willpower. This version of the power is not Sustained. You choose a single action the target is compelled to take, and the specific conditions which they will take that action. The target will not remember being given the command until after they have performed the action.",
+      "[1] +1 bonus die on a single action taken by the target."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mental-interrogation",
+    "name": "Mental Interrogation",
+    "source": "apocrypha",
+    "page": 290,
+    "disciplineId": "telethesia",
+    "xp": 20,
+    "dn": "Target's Conviction",
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into the mind of an adversary, seeking their secrets. You select a single enemy you can see within range. If the power is successful, the target is Hindered while the power remains in effect. Each round the power remains in effect, you may ask the GM 1d3 questions, which the GM must answer based on the target’s surface thoughts and recent memories (anything within a number of days equal to their Intellect). The target then suffers Shock equal to the number of questions asked that round. You must use a Full Action each round to sustain this power.",
+    "potency": [
+      "[1] If the enemy is an Adversary Threat, remove one point of their personal Ruin and gain 1 point of Glory.",
+      "[1] Ask one additional question each round.",
+      "*[2] Questions asked may delve into long-term memories and knowledge which is private, secret, personal, or dangerous.",
+      "*[3] Questions asked may instead delve into memories the target had repressed , forgotten, or which had been forcibly hidden. These questions inflict 2 Shock each."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "psychic-pursuit",
+    "name": "Psychic Pursuit",
+    "source": "apocrypha",
+    "page": 290,
+    "disciplineId": "telethesia",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 day",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You mark your target’s spirit within the Immaterium, allowing you to track their movements and pick them out in any crowd. Select a single enemy you can see within range. While the power remains in effect, you gain +3 bonus dice on all tests to locate or track the target. If you cannot perceive the target, you always know the general direction to them, so long as both you and they are in realspace, and this indicator grows stronger the closer you are to them. While the power remains in effect, you may use a Simple Action to confer your awareness to any allies within 6m of you, adding +2 dice to their Awareness tests and attacks against the target.",
+    "potency": [
+      "*[2] While the power remains in effect, the target is haunted by dreams of being pursued. Each day they are pursued, the target’s maximum Wounds and Shock are reduced by 1.",
+      "[1] Duration increased by +1 day."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "castigation",
+    "name": "Castigation",
+    "source": "apocrypha",
+    "page": 290,
+    "disciplineId": "telethesia",
+    "xp": 25,
+    "dn": "Target's Conviction",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Your foes are wracked with intense psychic pain, due punishment for their sin of existence. Select an enemy you can see within range. If the power is successful, the target suffers 1d3+3 Shock and is knocked Prone.",
+    "potency": [
+      "[2] Enemies affected are also Hindered.",
+      "[1] +1 Shock."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scourging",
+    "name": "Scourging",
+    "source": "apocrypha",
+    "page": 291,
+    "disciplineId": "telethesia",
+    "xp": 15,
+    "dn": "Target's Conviction",
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You fashion a lash from your foe’s own guilt and uses it to flay their writhing mind. Select a single enemy you can see within range. The target is Hindered and Restrained until the start of your next turn. If the target has the PSYKER keyword, they also increase the DN of any Psychic Mastery tests they attempt by +2.",
+    "potency": [
+      "[2] The duration is increased by +1 Round.",
+      "[1] The Hindered effect is increased by 1."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ordo-hereticus"
+        ]
+      }
+    ],
+    "note": "Prerequisite: INQUISITION and ORDO HERETICUS keywords; ORDO HERETICUS is the Ordo Hereticus sub-faction."
+  },
+  {
+    "id": "psychic-veil",
+    "name": "Psychic Veil",
+    "source": "apocrypha",
+    "page": 291,
+    "disciplineId": "telethesia",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "6m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You conjure a glamour to shield your allies from inhuman eyes. If successful, all IMPERIUM allies within range immediately gain a Stealth Score equal to your Intellect for the duration of the power.",
+    "potency": [
+      "[1] Stealth Score increased by +1",
+      "[2] The duration is increased by +1 Round."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ordo-xenos"
+        ]
+      }
+    ],
+    "note": "Prerequisite: INQUISITION and ORDO XENOS keywords; ORDO XENOS is the Ordo Xenos sub-faction."
+  },
+  {
+    "id": "warding-incantation",
+    "name": "Warding Incantation",
+    "source": "apocrypha",
+    "page": 291,
+    "disciplineId": "telethesia",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You chant a protective invocation, raising a wall of adjuratory empyric wards around your allies. Select a number of allies you can see within range equal to your Willpower. Until the start of your next turn, affected allies add +3 to their Resilience, and may roll Determination against Mortal Wounds.",
+    "potency": [
+      "[2] The duration is increased by +1 Round.",
+      "[1] +1 Resilience.",
+      "*[1] Affected allies attacked by DAEMONS may re-roll any dice which roll a 1 on their Determination rolls."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "INQUISITION"
+        ]
+      },
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ordo-malleus"
+        ]
+      }
+    ],
+    "note": "Prerequisite: INQUISITION and ORDO MALLEUS keywords; ORDO MALLEUS is the Ordo Malleus sub-faction."
+  },
+  {
+    "id": "banishment",
+    "name": "Banishment",
+    "source": "apocrypha",
+    "page": 292,
+    "disciplineId": "theosophamy",
+    "xp": 25,
+    "dn": "Target's Willpower",
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "Willpower x 5m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "By tapping into the ability to sense tenuous connections between the warp and warp-entities, you are able to attack the ties and create a discordant resonance within them. Target a single DAEMON you can see within range. The target suffers Mortal Wounds equal to your Willpower and may not roll Determination against this damage. If the target is slain by this power, it is cast back into the warp.",
+    "potency": [
+      "[1] +1 Mortal Wound.",
+      "*[1] The target is Hindered."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rebuke-the-mutant",
+    "name": "Rebuke the Mutant",
+    "source": "apocrypha",
+    "page": 292,
+    "disciplineId": "theosophamy",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Willpower x 10m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The foul mutant cannot bear to stand against he who has stood before the God-Emperor. Those who dare gaze upon him have their own imperfections reflected back upon them; only the most stalwart can stand against this. When using this technique, you open yourself up to the currents of the warp and act as a mirror, revealing to the viewer what he truly is. If this power is successful, any ABHUMAN or MUTANT character within range must take a DN 3 Fear test. They suffer 1d3 Mortal Wounds at the start of their turn if within the power’s range while suffering from Fear.",
+    "potency": [
+      "[1] +1 DN to the Fear test.",
+      "[2] Targets suffer +1 Mortal Wound."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sanctuary",
+    "name": "Sanctuary",
+    "source": "apocrypha",
+    "page": 292,
+    "disciplineId": "theosophamy",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "By tapping into the various breaches and cracks that exist in the real world, you are able to wrap yourself within tendrils of warp energy and use them to gird yourself against harm. While this power remains in effect, an enemy who wishes to target you with a ranged attack or move within 3m of you must pass a DN 3 Willpower test; if they fail, they forgo their turn as the power holds them at bay. Further, you may roll Determination against Mortal Wounds while this power remains in effect. The effect ends instantly when you make a ranged attack.",
+    "potency": [
+      "*[2] The power affects you and all allies you can see within 5m.",
+      "[1] Willpower test has +1 DN."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seal-the-breach",
+    "name": "Seal the Breach",
+    "source": "apocrypha",
+    "page": 293,
+    "disciplineId": "theosophamy",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "1 day",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You sever the connection between the Materium and the Immaterium. Daemons and warp entities will diminish and fade without their link to the warp, and others who draw upon the Immaterium will struggle to wield their powers. If successful, an area centred on you with a radius of your Willpower x 5m is temporarily sealed off from the Warp. This area remains fixed in place and does not move with you. DAEMONS suffer 1d3 Mortal Wounds at the start of each turn they begin within that area, and they cannot roll Determination while within the area. PSYKERS within the area can only use their powers at the Bound power level, and they add +2 DN to all Psychic Mastery tests.",
+    "potency": [
+      "[1] +1 Mortal Wound to DAEMONS",
+      "[2] The area’s radius is increased to Willpower x 10m.",
+      "[1] +1 DN to Psychic Mastery tests for PSYKERS."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "soul-of-adamantium",
+    "name": "Soul of Adamantium",
+    "source": "apocrypha",
+    "page": 293,
+    "disciplineId": "theosophamy",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Your mind is a powerful weapon, and your faith in the Emperor makes it doubly so. With this technique, you cleave to the bond between yourself and the God-Emperor, fortifying mind, body, and soul with the certainty of faith. While this power remains in effect, you automatically pass all Resolve and Conviction tests, and you may roll Determination against Mortal Wounds.",
+    "potency": [
+      "*[2] You also regain Shock equal to your Rank +1 at the start of each of your turns while the power remains in effect.",
+      "[1] +1 die when you roll Determination",
+      "[1] Any effects which use your Willpower or your Resolve as their DN increase their DN by +1."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "warp-weapon",
+    "name": "Warp Weapon",
+    "source": "apocrypha",
+    "page": 293,
+    "disciplineId": "theosophamy",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "Touch",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Your undying faith in the God-Emperor allows you to perform amazing feats that can normally only be performed by warp entities. By tapping into the flow of warp energy that passes through the Materium, you use your faith to imbue a single melee weapon with aethyric power. Until the end of your next turn, one melee weapon you hold in your grasp gains the Blessed (1) and Warp Weapon traits.",
+    "potency": [
+      "*[1] Increase Blessed rating to 2",
+      "[1] The power’s effects last +1 Round."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTRA TELEPATHICA"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a-cloud-in-the-warp",
+    "name": "A Cloud in the Warp",
+    "source": "apocrypha",
+    "page": 294,
+    "disciplineId": "navigator-powers",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "By understanding and perceiving the currents of the warp, you can hide your presence from any who would use the Immaterium to detect you. While this power remains in effect, you cannot by detected by the Psyniscience power, or by any form of detection or perception which relies upon the Warp, including divination. Further, creatures with the DAEMON keyword must pass an Awareness test (DN 5) to detect you.",
+    "potency": [
+      "[1] +1 DN to DAEMON Awareness tests.",
+      "*[3] This power affects you and any allies within a distance equal to your Willpower in metres."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ],
+    "note": "\"you cannot by detected\" as printed."
+  },
+  {
+    "id": "aether-doldrums",
+    "name": "Aether Doldrums",
+    "source": "apocrypha",
+    "page": 294,
+    "disciplineId": "navigator-powers",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "A skilled Navigator can mark a point of calm in even the most tumultuous Warp storm. On a smaller scale, they can also find a stillness in the flows of the Immaterium, dampening psychic powers and even repelling the daemonic. You cause an area of calm Warp centred on you, with a radius equal to your Intellect in metres, which lasts until the start of your next turn. Psychic powers used by PSYKERS within that area, or targeted within that area, increase their DN by +2. DAEMONS must pass a DN 5 Resolve test if they attempt to enter the area; if they fail, they stop at the edge and are Staggered. When this power’s effect ends, you suffer 1d3+1 Shock.",
+    "potency": [
+      "[1] +1 DN to Psychic Powers.",
+      "[1] +1 DN to DAEMON Resolve tests.",
+      "[2] This power lasts +1 Round.",
+      "*[2] DAEMONS which fail their Resolve test also suffer 1d3 Mortal Wounds."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "baleful-watcher",
+    "name": "Baleful Watcher",
+    "source": "apocrypha",
+    "page": 295,
+    "disciplineId": "navigator-powers",
+    "xp": 15,
+    "dn": "Target's Conviction",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "This technique is taught to Navigators to help them penetrate the densest of Warp storms and fine a safe path. Turned on an individual, it can allow a Navigator to glean secrets from the targets’ soul. Select a single enemy you can see within range. If successful, you immediately learn all the Keywords the target has, and you may ask three questions about the target. The GM may only answer Yes or No to these questions but must answer truthfully.",
+    "potency": [
+      "[1] Ask one additional question."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ],
+    "note": "\"fine a safe path\" as printed."
+  },
+  {
+    "id": "ebb-and-flow",
+    "name": "Ebb and Flow",
+    "source": "apocrypha",
+    "page": 295,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "Time can flow in a strange manner when travelling through the Immaterium, and over the years many Navigators have learned to move with the temporal unpredictability of the Immaterium that underlies reality. By unleashing a vision which strips away the flimsy façade of linear time from an attacker’s eyes, you can shatter their ability to react to the changing battlefield. Select a single enemy you can see within range. If you succeed, the target suffers the Hindered (2) and Vulnerable (2) conditions and cannot attempt Reflexive Actions while the power remains in effect.",
+    "potency": [
+      "[1] +1 to Hindered condition.",
+      "[1] +1 to Vulnerable condition.",
+      "*[3] On the first turn after the target is affected, they cannot take any actions."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evil-eye",
+    "name": "Evil Eye",
+    "source": "apocrypha",
+    "page": 295,
+    "disciplineId": "navigator-powers",
+    "xp": 10,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "1d6 Days",
+    "range": "5m",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "On many worlds, three-eyed mutants who can peer into your soul are thought of as bogey-men to scare children into obedience and people whisper that they are a tainted breed that can curse good, Emperor-fearing citizens with a glance. These legends contain a seed of truth, for techniques exist which cause their victims to attract malign entities to plague their mind and soul. Select a single enemy you can see within range. While this power remains in effect, the target is Hindered and suffers a Complication on any Wrath die which rolls 1, 2, or 3. This power lasts until the duration expires, or until the target creature spends 1 Wrath (or the GM spends 1 Ruin if the target is an NPC). You may not have more than one foe cursed by this power at any time.",
+    "potency": [
+      "[1] +1 to Hindered condition.",
+      "[2] A PSYKER affected adds +10 to all rolls on the Perils of the Warp table."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eye-of-oblivion",
+    "name": "Eye of Oblivion",
+    "source": "apocrypha",
+    "page": 296,
+    "disciplineId": "navigator-powers",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "1 Round",
+    "range": "25m",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "You snap open your Warp eye and trace the vital lines that bind a creature’s animating force to its mortal shell. By striking these places with utmost precision, you may inflict harm on your target’s very essence, and defeat foes that might otherwise seem impervious to harm. Select a single enemy you can see within range. If successful, until the end of your next turn, the next attack you make against that target inflicts an automatic Critical Hit.",
+    "potency": [
+      "[1] Increase the severity of the Critical Hit by one, as if you had spent 1 Glory.",
+      "[1] Increase duration by +1 Round.",
+      "*[3] The target may not roll Determination against an attack affected by this power."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreshadowing",
+    "name": "Foreshadowing",
+    "source": "apocrypha",
+    "page": 296,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "By using your eye to filter small secrets from the near future, you can choose to make slight adjustments to his actions to avoid harm and manipulate the course of events. Choosing to dig too deeply into the future for secrets may leave you vulnerable to the Warp’s deceptions, however. If the power is successful, you may draw three secrets from the future. At any point before the end of your next turn, you may spend each secret to select a single d6 that has just been rolled—by any character—and change the result to any number. However, each die which you change to a 6 allows the GM to change a single d6 roll to a 1 later in the same scene. Similarly, each die which you change to a 1 allows the GM to change a single d6 roll to a 6 later in the scene.",
+    "potency": [
+      "[1] The power lasts +1 round.",
+      "[1] You draw one additional secret."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gaze-into-the-abyss",
+    "name": "Gaze into the Abyss",
+    "source": "apocrypha",
+    "page": 297,
+    "disciplineId": "navigator-powers",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Special",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "You perceive a creature or object’s reflection in the Warp and learn things that may be hidden in the Materium. This power has a variety of applications. You select a single creature or object you can see. When you use this power, you immediately learn whether the target has the CHAOS keyword, is possessed, is a DAEMON in disguise, possesses any mutations, or is otherwise corrupted by the Warp. An NPC may spend 1 Ruin to attempt to resist this effect, making a DN 4 Conviction Test.",
+    "potency": [
+      "*[1] You may mark the soul of a creature targeted and can track the creature’s presence and movements using Psyniscience within the next 24 hours.",
+      "*[2] Until the end of the current scene, you can perceive major disturbances in the warp within your Intellect x 1,000 km. This includes vessels entering or leaving the warp, the presence of warp portals, and daemonic incursions.",
+      "*[2] For the remainder of the scene, you are immediately aware of any use of psychic powers within a distance of your Intellect x10 metres."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "held-in-my-gaze",
+    "name": "Held in my Gaze",
+    "source": "apocrypha",
+    "page": 297,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "5x Intellect metres",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "The unflinching eye of a Navigator locks a creature in place with a gaze that pierces flesh and bone to see the immaterial essence of all things. Choose a target you can see within range. If you succeed, the target is Warp-locked. While Warp-locked, the target adds +4 to the DN of any psychic power they attempt. If the target is a DAEMON, then they also may not roll Determination against any damage inflicted against them. Each round this power is sustained, you suffer 1d3 Shock.",
+    "potency": [
+      "[1] Increase the range to 10x Intellect metres."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ],
+    "note": "Heading printed \"Held in my Gaze.\" with a trailing full stop."
+  },
+  {
+    "id": "inward-view",
+    "name": "Inward View",
+    "source": "apocrypha",
+    "page": 297,
+    "disciplineId": "navigator-powers",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Five Minutes",
+    "duration": "1 Hour",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "There are many myths about the “third eye” into the soul, their origins supposedly harking from Ancient Terra. The Navis Nobilite know that such stories are not wholly myth, and they understand that it is entirely possible to discover hidden knowledge through particular forms of introspective meditation. If this power is successful, you immediately recover 1d3+2 Shock, and add +2 bonus dice to the first Investigation or Scholar test you attempt during the power’s duration. You may use this power as part of a Regroup. Once you have used this power, you may not use it again until after you have taken a Respite.",
+    "potency": [
+      "[1] Recover +1 Shock.",
+      "[1] Increase duration by +1 hour.",
+      "*[2] You may use the bonus dice on Psychic Mastery tests."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pass-unscathed",
+    "name": "Pass Unscathed",
+    "source": "apocrypha",
+    "page": 298,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Willpower minutes",
+    "range": "Intellect x3 metres",
+    "multiTarget": true,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "Being so closely linked with the Warp, it is no surprise that Navigators have developed techniques to avoid its corrupting influence and those around them. With considerable effort, you can slow the insidious effects of the Warp for short durations. If the power is successful, choose a target you can see within range (this may be yourself). The target’s Conviction is increased by +3 while the power lasts.",
+    "potency": [
+      "[1] The power’s duration is increased by +1 minute."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seek-the-path",
+    "name": "Seek the Path",
+    "source": "apocrypha",
+    "page": 298,
+    "disciplineId": "navigator-powers",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "You use your pineal eye to peer through the Immaterium around you, piercing the churning clouds of the Warp to find the causeways of least resistance to your target. In this way, you guide your attacks to their target while slipping past your foe’s defences. Until the end of your next round, you add +3 bonus dice to any melee or ranged attacks you make.",
+    "potency": [
+      "[1] The power grants an additional bonus die.",
+      "[1] The power lasts +1 round."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-course-untravelled",
+    "name": "The Course Untravelled",
+    "source": "apocrypha",
+    "page": 298,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "Time is not an arrow that flies straight and true, but rather a tangled web of moments and possibilities. This technique allows you to walk this web, stepping fractionally from one moment to another, altering your position in the physical world as you step between infinitesimally different timelines, no matter the cost to yourself. If this power is successful, you instantly move to any point within twice your Intellect in metres, so long as you could have reached that location naturally. You then immediately suffer 1d3+3 Shock due to the strain on your body.",
+    "potency": [
+      "[1] Reduce the amount of Shock suffered by 1.",
+      "[1] Increase the distance moved by your Intellect in metres.",
+      "*[2] The power can now be activated as a Simple Action."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-lidless-stare",
+    "name": "The Lidless Stare",
+    "source": "apocrypha",
+    "page": 298,
+    "disciplineId": "navigator-powers",
+    "xp": 0,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": true,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "If you open your warp eye fully, anyone gazing into its depths will witness the power and mind-breaking unreality of the Warp. In an instant, they witness the chaos boiling beneath the skin of existence. For many, it is the last thing they see. Select a single enemy you can see (and who can see you) within range. This is a Gaze Power. The target immediately suffers 1d3+1 Mortal Wounds and suffers the Fear condition. After this power is used, you suffer 1d3+1 Shock.",
+    "potency": [
+      "[2] +1 Mortal Wound"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ],
+    "note": "Known by every Navigator instead of Smite (p.294: \"A Navigator knows The Lidless Stare instead of Smite\"); printed Point Cost 0."
+  },
+  {
+    "id": "tides-of-time-and-space",
+    "name": "Tides of Time and Space",
+    "source": "apocrypha",
+    "page": 299,
+    "disciplineId": "navigator-powers",
+    "xp": 25,
+    "dn": 5,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "By examining the flow of the warp around you, you can anticipate near future actions and move outside the normal flow of events by choosing strands of reality and slipping between them. This power can be of great benefit, but it can also be extremely dangerous. If this power is successful, you may take a second turn at any point before the start of your next normal turn. After you use this power, you suffer 1d3 Shock. In addition, if you fail to use this power, you disappear from reality temporarily, reappearing at the end of your next turn.",
+    "potency": [
+      "[1] You gain +1 Speed while the power is in effect.",
+      "*[2] You may Keep the Initiative without spending Glory once while this power is in effect."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tracks-in-the-stars",
+    "name": "Tracks in the Stars",
+    "source": "apocrypha",
+    "page": 299,
+    "disciplineId": "navigator-powers",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "When a ship travels through either realspace or the warp it leaves a faint trail, the lingering shadow of its warp drive. Using your third eye, you can follow this trail across the stars. If this power is successful, you can perceive and follow the trail of a ship through realspace, so long as the trail is no older than a number of weeks equal to your Intellect, though at GM’s discretion especially large vessels may have a trail that lasts longer.",
+    "potency": [
+      "*[1] You may track a ship’s trail if it is no older than months equal to your Intellect.",
+      "*[1] You may track a ship’s trail through the warp as well as through realspace.",
+      "*[2] You may track a ship's trail if it is no older than years equal to your Intellect."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vision-of-hell",
+    "name": "Vision of Hell",
+    "source": "apocrypha",
+    "page": 299,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": "Target's Resolve",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "15m",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "While many Navigators simply focus on wreaking as much destruction as possible by revealing the Warp to their foes, some Navigators prefer to act with more subtlety, training themselves to cast projections of the true, hellish face of the Warp. Select an enemy you can see, and who can see you, within range. This is a Gaze Power. If the power is successful, the target immediately suffers 1d3+2 Shock and the Terror condition. After this power is used, you suffer 1d3+2 Shock.",
+    "potency": [
+      "[1] The target suffers +1 Shock."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "void-watcher",
+    "name": "Void Watcher",
+    "source": "apocrypha",
+    "page": 299,
+    "disciplineId": "navigator-powers",
+    "xp": 20,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Intellect x 10,000km",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "Using this power and gazing into the void whilst aboard ship, you can learn things about space in the immediate vicinity of your vessel. This can reveal hidden dangers such as mines, void creatures, and concealed ships, as well as more mundane perils like asteroids and debris. If successful, while the power remains in effect, you can make Awareness tests to detect spaceborne objects within a distance of your Intellect x 10,000km, without the use of starship augurs.",
+    "potency": [
+      "[1] You can detect spaceborne objects within a distance of your Intellect x 20,000km.",
+      "[1] You can ask a single question about a spaceborne object you’ve detected. The GM must answer this question truthfully."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ],
+    "note": "Heading and Point Cost on p.299, the rest of the entry on p.300."
+  },
+  {
+    "id": "warp-vigil",
+    "name": "Warp Vigil",
+    "source": "apocrypha",
+    "page": 300,
+    "disciplineId": "navigator-powers",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "1 Scene",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "NAVIS NOBILITE",
+      "PSYCHIC"
+    ],
+    "effect": "Navigators must be ever watchful for danger when guiding a vessel through the Warp and be capable of reacting at a moment’s notice to the caprices of the Immaterium. While this power remains in effect, you increase your Defence by +2, and you may take two reflexive actions per round instead of one.",
+    "potency": [
+      "[1] +1 Defence",
+      "*[2] Each time an attack misses you, you may move up to your Speed as a Reflexive Action."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NAVIS NOBILITE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bio-lightning",
+    "name": "Bio-Lightning",
+    "source": "apocrypha",
+    "page": 259,
+    "disciplineId": "biomancy",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You channel your life force through the meridians of your body, causing your form to crackle with living energy.\n\nA target hit by this power suffers damage equal to 7 + your Willpower score +1ED with the Agonizing trait.",
+    "potency": [
+      "[1] +1ED",
+      "[2] +10m range"
+    ]
+  },
+  {
+    "id": "constrict",
+    "name": "Constrict",
+    "source": "apocrypha",
+    "page": 259,
+    "note": "\"see p. 201\" is as printed; the book does not say which book it means.",
+    "disciplineId": "biomancy",
+    "xp": 10,
+    "dn": "Target's Toughness",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "10m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "With a word, thought, or gesture, you can command the flesh of your target to sharply contract. The target’s windpipe closes, choking them and cutting off their breath.\n\nThe target begins to suffocate (see p. 201) and will fall unconscious after a number of rounds equal to twice their Toughness (Astartes characters double this). Each round they must pass a DN 3 Toughness test or suffer 1d3 Shock, falling unconscious when they reach maximum Shock.\n\nEnding the power’s effect allows the target to breathe again.",
+    "potency": [
+      "[2] +1 DN to the target’s Toughness tests.",
+      "[2] +1 Shock from a failed test"
+    ]
+  },
+  {
+    "id": "enhanced-senses",
+    "name": "Enhanced Senses",
+    "source": "apocrypha",
+    "page": 259,
+    "disciplineId": "biomancy",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "With a moment’s thought, you force your senses to become exceptionally sensitive.\n\nWhile the power remains in effect, add +Double Rank bonus dice to all Awareness tests using that sense.",
+    "potency": [
+      "[1] add +1 to your Passive Awareness"
+    ]
+  },
+  {
+    "id": "seal-wounds",
+    "name": "Seal Wounds",
+    "source": "apocrypha",
+    "page": 259,
+    "disciplineId": "biomancy",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You focus your power to repair your damaged flesh or that of any character within range.\n\nThe target regains Wounds equal to your Willpower attribute.",
+    "potency": [
+      "[2] Each target regains +1 Wound.",
+      "[1] +5m range"
+    ]
+  },
+  {
+    "id": "toxic-siphon",
+    "name": "Toxic Siphon",
+    "source": "apocrypha",
+    "page": 259,
+    "disciplineId": "biomancy",
+    "xp": 5,
+    "dn": "Rating of Target's Poisoned condition",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Touch",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You draw poisons from the flesh.\n\nIf the target has the Poisoned X condition, it is removed instantly. The target is Staggered on their next turn.",
+    "potency": [
+      "*[2] The target is not Staggered.",
+      "[3] +10m range"
+    ]
+  },
+  {
+    "id": "auto-seance",
+    "name": "Auto-Séance",
+    "source": "apocrypha",
+    "page": 260,
+    "disciplineId": "divination",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Special",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You tune your psychic abilities to peer into the streams of time and space, to see events from past, present, and future. A hallmark of Astropaths, the auto-séance is a power by which a psyker opens up their mind and analyses the auras and psychic resonances around them. By doing this, they also augment and enhance the powers of another psyker and serve as a buffer against the worst dangers of the Immaterium. When you use this power, you assist another psyker, adding your ranks in Psychic Mastery as bonus dice to their next attempt to use a Divination power. In addition, should they suffer Perils of the Warp, you may both roll, and choose whichever result is lower.",
+    "potency": [
+      "[1] The assisted psyker may re-roll up to 1 Wrath die that rolled a Complication.",
+      "[1] The assisted psyker gains one additional Exalted Icon to spend on Potency effects for their power."
+    ]
+  },
+  {
+    "id": "detect-corruption",
+    "name": "Detect Corruption",
+    "source": "apocrypha",
+    "page": 260,
+    "disciplineId": "divination",
+    "xp": 5,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Willpower metres",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Psykers, by their very nature, are attuned to the Warp. You can discern the tell-tail stain of corruption upon objects, places, and even people. When you use this ability, choose an object you can see within range. You detect whether or not the object has been in contact with the warp, affected by psychic powers, or other warp-related abilities within a number of hours equal to your Intellect.",
+    "potency": [
+      "*[1] You can detect the nature and type of warp contact the object has had: use in a ritual, held by a psyker, used a psychic power, etc.",
+      "*[1] You can detect the touch of the Warp upon a person instead of an object.",
+      "*[1] If you can detect the touch of the warp upon a person, you can determine how the person is connected to the warp, allowing you to determine if they are a psyker, sorcerer, possessed, etc.",
+      "*[2] You can now discern the nature of any person, place, or object’s connection to the Warp. You can also detect the presence of otherwise-invisible warp gates, dark pacts, possession, etc."
+    ]
+  },
+  {
+    "id": "divine-shot",
+    "name": "Divine Shot",
+    "source": "apocrypha",
+    "page": 260,
+    "disciplineId": "divination",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Using this power enables you to make nearly impossible ranged shots, allowing you to strike virtually any target you can perceive. You concentrate on a single firearm or other projectile weapon in your possession, and the ammunition it carries, before casting your psychic gaze into the Warp to search down the near-infinite paths of the future.\n\nWhen you use this power, choose a single ranged weapon you’re carrying, which has ammunition. You fire a single shot from this weapon against a single target—no multi-targets allowed—which hits instantly if the power is successfully used, at any distance up to the weapon’s normal maximum range.",
+    "potency": [
+      "[1] The attack inflicts +1ED.",
+      "[2] One ED from the attack counts as if it had rolled a 6."
+    ]
+  },
+  {
+    "id": "dowsing",
+    "name": "Dowsing",
+    "source": "apocrypha",
+    "page": 261,
+    "disciplineId": "divination",
+    "xp": 10,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "By focusing your mind you can single out an object or person somewhere in your immediate vicinity, pushing aside all other distractions until you can unerringly find it.\n\nSelect a single specific item or person you know (in the case of a person, having seen them or knowing what they look like, or knowing their name is required). If successful, and the item or person is within a number of kilometres equal to your Willpower attribute, you know the rough direction to the target. While you sustain this power, you may spend a Full Action to update the information received.\n\nYou receive bonus Exalted Icons on a successful use of this power based on your familiarity with the target: +2 if you’ve known the target for a long time, +1 if you have a piece of the target, +1 if the target is within 100m.",
+    "potency": [
+      "*[1] You instead know the specific direction to the target, and roughly how far away it is (to the nearest 50m).",
+      "*[2] You instead know the specific direction to the target and exactly how far away it is.",
+      "*[3] You have a visual image of the current location of the target, in addition to knowing exactly how far away it is and in what direction."
+    ]
+  },
+  {
+    "id": "glimpse",
+    "name": "Glimpse",
+    "source": "apocrypha",
+    "page": 261,
+    "disciplineId": "divination",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You peer moments into the future, sensing the many ways that the future may unfold. Until the end of your next turn, you add +6 bonus dice to a single skill test you attempt.",
+    "potency": [
+      "[2] The power grants an extra +1 bonus dice",
+      "*[3] Activation reduced to a Simple Action"
+    ]
+  },
+  {
+    "id": "precognitive-strike",
+    "name": "Precognitive Strike",
+    "source": "apocrypha",
+    "page": 261,
+    "disciplineId": "divination",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You can sense disturbances to the path of your immediate future, allowing you to read the movements of your enemies. Until the end of your turn, you add +Rank bonus dice to all Ballistic Skill and Weapon Skill tests.",
+    "potency": [
+      "[2] You add an extra +1 bonus die to Ballistic Skill and Weapon Skill tests."
+    ]
+  },
+  {
+    "id": "precognitive-dodge",
+    "name": "Precognitive Dodge",
+    "source": "apocrypha",
+    "page": 261,
+    "disciplineId": "divination",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Reflexive Action",
+    "duration": "Instant",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You manipulate probability to your advantage, and threats in your immediate future are clear to you. You may use this power when you are the target of an attack, but before that attack is resolved. You add +1 to your Defence until the start of your next turn. However, you are Staggered on your next turn.",
+    "potency": [
+      "[1] Your Defence is increased by a further +1.",
+      "*[2] You are not Staggered after using this power."
+    ]
+  },
+  {
+    "id": "the-action-again",
+    "name": "The Action Again",
+    "source": "apocrypha",
+    "page": 261,
+    "disciplineId": "divination",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "With this power, you snatch a glimpse of the future and briefly see the outcome of your actions. Through this flash of insight. If the power is successful, you may re-roll any test you attempt until the end of your next turn.",
+    "potency": [
+      "[1] The power’s duration increases by +1 Round."
+    ]
+  },
+  {
+    "id": "blinding-flash",
+    "name": "Blinding Flash",
+    "source": "apocrypha",
+    "page": 262,
+    "disciplineId": "pyromancy",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You focus blazing mental energy into a single point within your mind before releasing it all in a burst of searing bright light, blinding anyone who sees you and is within Range. All creatures within range and able to see you must pass a DN 3 Agility test or suffer the Blinded condition for a number of rounds equal to your Willpower.",
+    "potency": [
+      "[1] The DN of the Agility test increases by +1",
+      "[2] +4m range"
+    ]
+  },
+  {
+    "id": "burning-fist",
+    "name": "Burning Fist",
+    "source": "apocrypha",
+    "page": 262,
+    "disciplineId": "pyromancy",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "With intense concentration, you wreathe your hands in waves of shimmering flame. While this power remains in effect, your unarmed attacks increase their base damage by your Willpower and gain the Inflict (On Fire) quality.",
+    "potency": [
+      "[1] Your unarmed attacks gain +1ED"
+    ]
+  },
+  {
+    "id": "douse-flame",
+    "name": "Douse Flame",
+    "source": "apocrypha",
+    "page": 262,
+    "disciplineId": "pyromancy",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Willpower x5 metres",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "It takes a potent mind to deny the natural tendency of flames to run out of control. While this power remains in effect, all flames within range are extinguished and will not reignite, and weapons and powers with the FIRE keyword will not function.",
+    "potency": [
+      "[1] Increase range by +5m"
+    ]
+  },
+  {
+    "id": "firebolt",
+    "name": "Firebolt",
+    "source": "apocrypha",
+    "page": 262,
+    "disciplineId": "pyromancy",
+    "xp": 10,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You conjure bolts of flame from thin air and hurl them at your foes. Each target suffers Willpower +6 + 1ED damage, with the Inflict (On Fire) trait.",
+    "potency": [
+      "[1] +1ED",
+      "[1] The attack gains -1 AP."
+    ]
+  },
+  {
+    "id": "fire-storm",
+    "name": "Fire Storm",
+    "source": "apocrypha",
+    "page": 262,
+    "disciplineId": "pyromancy",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20m",
+    "multiTarget": true,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You instantly create an intense conflagration about your target as the air itself ignites, burning all within to cinders. You create a Blast (6) anywhere you can see within range. Creatures within that area suffer Willpower +8 +3ED damage, with the Inflict (On Fire) trait.",
+    "potency": [
+      "[1] +1ED",
+      "[2] +2 to the size of the Blast"
+    ]
+  },
+  {
+    "id": "holocaust",
+    "name": "Holocaust",
+    "source": "apocrypha",
+    "page": 263,
+    "disciplineId": "pyromancy",
+    "xp": 25,
+    "dn": 8,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "A legendary power that few pyrokines are strong enough to attempt, the psyker attempts to conjure the inferno of their own soul. All enemies within 6m of you suffer Mortal Wounds equal to your Willpower, and again at the start of each turn you sustain the power. Each round that you sustain this power, you suffer 1 Mortal Wound.",
+    "potency": [
+      "[3] The power inflicts +1 Mortal Wound to enemies.",
+      "*[2] DAEMONS may not roll Determination against Mortal Wounds inflicted by this power"
+    ]
+  },
+  {
+    "id": "death-grip",
+    "name": "Death Grip",
+    "source": "apocrypha",
+    "page": 263,
+    "disciplineId": "telekinesis",
+    "xp": 10,
+    "dn": "Target's Toughness",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Willpower metres",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "Using the power of your mind, you create a telekinetic grip on your target’s vital organs and squeeze. Select a living creature you can see within range. The target suffers 2d3 Shock.",
+    "potency": [
+      "[1] You inflict +1d3 Shock.",
+      "*[2] The target suffers the Restrained condition until the end of their next turn.",
+      "*[2] The target suffers the Bleeding condition."
+    ]
+  },
+  {
+    "id": "force-barrage",
+    "name": "Force Barrage",
+    "source": "apocrypha",
+    "page": 263,
+    "disciplineId": "telekinesis",
+    "xp": 20,
+    "dn": "Target's Defence",
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "Willpower x5m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You conjure a flurry of kinetic blasts, projectiles of pure mental force. The target suffers Willpower +5 +2ED damage. The penalty for targeting multiple foes is reduced by an amount equal to half your Willpower, rounding up.",
+    "potency": [
+      "[1] You hit one additional target."
+    ]
+  },
+  {
+    "id": "force-bolt",
+    "name": "Force Bolt",
+    "source": "apocrypha",
+    "page": 263,
+    "disciplineId": "telekinesis",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Willpower x5m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You hurl a bolt of mental force at your opponent.\n\nThe target suffers Willpower +6 +2ED damage and they are knocked Prone if they are Average or smaller.",
+    "potency": [
+      "[1] +1ED",
+      "[2] The size of target that can be knocked Prone is increased by one step (to Large, then to Huge, then to Gargantuan)."
+    ]
+  },
+  {
+    "id": "precision-telekinesis",
+    "name": "Precision Telekinesis",
+    "source": "apocrypha",
+    "page": 264,
+    "disciplineId": "telekinesis",
+    "xp": 25,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "10m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You have honed your will to wield it as deftly and carefully as you use your own two hands. While this power remains in effect, you can manipulate objects you can see within range as if you were physically handling them. If you do something that would require a skill test, you roll your Psychic Mastery instead. You may only manipulate one object at a time.",
+    "potency": [
+      "[2] Manipulate one additional object within range.",
+      "[3] +10m range"
+    ]
+  },
+  {
+    "id": "psychic-blade",
+    "name": "Psychic Blade",
+    "source": "apocrypha",
+    "page": 264,
+    "disciplineId": "telekinesis",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "A complex and delicate power to use, you conjure a perfectly thin cutting edge of psychic force, capable of slicing through almost any known matter. The power conjures a melee weapon which inflicts (S)+6 +3ED damage, an AP of -3, and the Force and Warp Weapon qualities. When attacking with the weapon, you may use your Psychic Mastery skill instead of your Weapon Skill.",
+    "potency": [
+      "[1] The weapon inflicts +1ED.",
+      "[3] The weapon gains Rending (3)",
+      "*[2] The weapon gains a range of 2m."
+    ]
+  },
+  {
+    "id": "psycho-kinetic-mist",
+    "name": "Psycho-Kinetic Mist",
+    "source": "apocrypha",
+    "page": 264,
+    "disciplineId": "telekinesis",
+    "xp": 10,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Willpower metres",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "By calling on the powers of the warp, you conjure a psycho-kinetic substance that can be shaped by your will. This substance manifests as a hazy white vapour that drifts and curls around you. Until the start of your next turn, all allies within range count as in cover.",
+    "potency": [
+      "[1] The power lasts for +1 Round.",
+      "[1] The power’s range increases by +1 metre.",
+      "*[2] You instead shape the mist into a shield that can repel attacks. It provides an Armour Rating equal to your Willpower, but the range is reduced to Self."
+    ]
+  },
+  {
+    "id": "telekinesis",
+    "name": "Telekinesis",
+    "source": "apocrypha",
+    "page": 264,
+    "disciplineId": "telekinesis",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "10m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "A basic form of telekinesis, you can use your will to move inanimate objects around. You may lift and move any object you can see within range which weighs no more than your Willpower x5 kg. Lifted objects may be moved anywhere within range, but you cannot move an object fast enough to make an attack. Any objects still suspended when the power ends drop to the ground.",
+    "potency": [
+      "[1] +5m range"
+    ]
+  },
+  {
+    "id": "beacon",
+    "name": "Beacon",
+    "source": "apocrypha",
+    "page": 265,
+    "note": "Print errors copied as printed: \"how far away you away from the beacon\", \"The beacon’s can be seen\".",
+    "disciplineId": "telepathy",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Special",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "With this power, you are able to create a small psychic beacon within the Empyrean that can only be seen with psychic senses. While the beacon remains in place, you can always determine how far away you away from the beacon. Anyone able to use Psyniscience is able to perceive your beacon, and it can be detected as far away as your Willpower x 5km in realspace, or your Willpower in light years in the Warp, subject to warp conditions. You cannot control who can perceive your beacon, however, and enemies may detect it as well.",
+    "potency": [
+      "[1] The beacon’s can be seen from +5km or +1 light year away.",
+      "*[1] A character navigating through the Warp adds +2 bonus dice to their tests if they can see the beacon."
+    ]
+  },
+  {
+    "id": "chaos-mind",
+    "name": "Chaos Mind",
+    "source": "apocrypha",
+    "page": 265,
+    "disciplineId": "telepathy",
+    "xp": 15,
+    "dn": "Target's Willpower (Opposed)",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "Willpower metres",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You form a bridge between your mind and the mind of your target. Through this connection, you pour the raw power of the Warp into the target’s mind, overwhelming them. This power can have a devastating effect upon you as well as upon the target. Target a single enemy you can see within range and make an opposed Willpower test against them: if you win, the target suffers 1d3+2 Mortal Wounds. If you lose, however, you suffer 1d3+2 Corruption Points from the backlash.",
+    "potency": [
+      "[1] The target suffers +1 Mortal Wound."
+    ]
+  },
+  {
+    "id": "inspire",
+    "name": "Inspire",
+    "source": "apocrypha",
+    "page": 265,
+    "disciplineId": "telepathy",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "6m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You bolster your allies by subtly implanting images of great courage and masking various negative emotions, allowing them to shake off fears and doubts. All allies within range immediately remove any Fear, Terror, or Pinned conditions they’re currently suffering from, and remain immune to those effects as well as Intimidation-based Interaction Attacks while they remain within range.",
+    "potency": [
+      "[2] +2m range"
+    ]
+  },
+  {
+    "id": "mental-alacrity",
+    "name": "Mental Alacrity",
+    "source": "apocrypha",
+    "page": 265,
+    "disciplineId": "telepathy",
+    "xp": 20,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "Willpower metres",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Within the Scholastica Psykana and the Adeptus Astra Telepathica, there are many exercises and meditations that are taught to Sanctioned Psykers and Astropaths to enhance their senses and their mental clarity. While this power remains in effect, you or one ally within range adds +3 bonus dice to all Intellect-based tests until the end of their next turn.",
+    "potency": [
+      "[1] The bonus increased by +1",
+      "[1] The power lasts for +1 Round."
+    ]
+  },
+  {
+    "id": "mind-ward",
+    "name": "Mind Ward",
+    "source": "apocrypha",
+    "page": 266,
+    "disciplineId": "telepathy",
+    "xp": 5,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "There are many ways to enter the mind of another person. With this power, those ways become limited. You erect psychic defences and bulwarks that help prevent mental attacks, and even steel you against fear. Any TELEPATHY power that targets you increases in DN by 1, and you increase your Resolve by 1.",
+    "potency": [
+      "[1] The DN increase for TELEPATHY powers increases by +1",
+      "*[1] You are also immune to the Pinned condition.",
+      "*[1] You are also immune to Fear.",
+      "*[2] You are also immune to Terror."
+    ]
+  },
+  {
+    "id": "projection",
+    "name": "Projection",
+    "source": "apocrypha",
+    "page": 266,
+    "note": "Printed with no Potency entry.",
+    "disciplineId": "telepathy",
+    "xp": 20,
+    "dn": 7,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You send your disembodied mind and spirit, allowing you to touch other minds from a great distance away.\n\nWhile this power remains in effect, you leave your physical body, and can travel thousands of kilometres in an instant. In this form, you cannot physically affect anything, and you are undetectable to anyone except people you choose… though characters with the PSYKER or DAEMON keywords may be able to sense and affect you. You can communicate freely with anyone you know well who is in the same solar system.\n\nWhile in this form, you are completely unaware of your physical body, which is unconscious. Every minute you sustain this power, you suffer 1 Shock.",
+    "potency": []
+  },
+  {
+    "id": "see-me-not",
+    "name": "See Me Not",
+    "source": "apocrypha",
+    "page": 266,
+    "disciplineId": "telepathy",
+    "xp": 15,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "20m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You erase your presence from the minds of others. This is more than mere invisibility: those affected by the power simply cannot perceive your presence. Their senses still work, but their minds will not acknowledge you.\n\nWhile this power is in effect, the target cannot perceive you in any way, though they will still be able to see the results of your actions. If ever a target is confronted with evidence of your presence (such as being attacked by you, or seeing a door open because of you), they may attempt a Willpower test with a DN of 3 to try and shake off this power’s effects.",
+    "potency": [
+      "[2] The target’s Willpower test DN increases by +1",
+      "[2] +10m range"
+    ]
+  },
+  {
+    "id": "astral-aim",
+    "name": "Astral Aim",
+    "source": "apocrypha",
+    "page": 267,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\"",
+    "disciplineId": "sanctic",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You draw power into your weapon, guiding your shots to the chosen target. You may make ranged attacks against enemies you cannot see and you ignore any bonuses to Defence from cover on those ranged attacks, until the start of your next turn.",
+    "potency": [
+      "[2] +1 bonus dice to ranged attacks."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gate-of-infinity",
+    "name": "Gate of Infinity",
+    "source": "apocrypha",
+    "page": 267,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\"",
+    "disciplineId": "sanctic",
+    "xp": 25,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "500m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You punch a corridor through the roiling immaterium, allowing you to cross great distances in the blink of an eye. You and all allies within 5m immediately vanish, and reappear anywhere within range, which must also be more than 10m from an enemy.",
+    "potency": [
+      "[3] +500m range."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hammerhand",
+    "name": "Hammerhand",
+    "source": "apocrypha",
+    "page": 267,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\"",
+    "disciplineId": "sanctic",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "5m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Focusing the raging power of your mind, you augment your strength to the point where your fists can crush flesh and bone with a single blow. You add +3ED to the damage of all melee attacks until the start of your next turn.",
+    "potency": [
+      "[2] +1ED to damage."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "purge-soul",
+    "name": "Purge Soul",
+    "source": "apocrypha",
+    "page": 268,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\"",
+    "disciplineId": "sanctic",
+    "xp": 15,
+    "dn": "Target's Resolve",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You draw upon all of your willpower to purge the evil of your foes’ souls, scouring every trace of corruption even if it destroys them in the process. You target one enemy with a psychic ranged attack. If successful, the target suffers 1 Mortal Wound and is staggered until the start of its next turn.",
+    "potency": [
+      "[1] +1 Mortal Wound."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rites-of-banishment",
+    "name": "Rites of Banishment",
+    "source": "apocrypha",
+    "page": 268,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\" Point Cost printed \"0 (10 if buying this power separately)\": GREY KNIGHTS psykers know it instead of Smite (Sanctic Discipline, p.267).",
+    "disciplineId": "sanctic",
+    "xp": {
+      "text": "0 (10 if buying this power separately)"
+    },
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You utter prayers and litanies of detestation and antipathy, which sever the bonds holding Daemons to the material universe, banishing them to the roiling hellscape from whence they came. You target one enemy with a psychic ranged attack. If successful, the target suffers 1d3 Mortal Wounds, or 1d3+3 Mortal Wounds if they have the DAEMON keyword.",
+    "potency": [
+      "[2] +1 Mortal Wound."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sanctuary-sanctic",
+    "name": "Sanctuary",
+    "source": "apocrypha",
+    "page": 268,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\" Its id carries the discipline because another Apocrypha discipline has a power of the same name.",
+    "disciplineId": "sanctic",
+    "xp": 25,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "5m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Chanting words of warding, you create a zone of light around you that can protect you from harm and repel daemonic creatures. You, and all allies within range, add +1 to your Determination, may roll Determination against Mortal Wounds, and do not suffer Shock when rolling Determination, until the start of your next turn. Further, creatures with the DAEMON keyword treat the area within range of you as difficult terrain until the start of your next turn.",
+    "potency": [
+      "[2] +1 Determination",
+      "[3] +5m range."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vortex-of-doom",
+    "name": "Vortex of Doom",
+    "source": "apocrypha",
+    "page": 268,
+    "note": "Prerequisite as printed: \"Psyker must have the GREY KNIGHTS keyword.\"",
+    "disciplineId": "sanctic",
+    "xp": 30,
+    "dn": 8,
+    "activation": "Full Action",
+    "duration": "1 Round",
+    "range": "25m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The psyker tears a rift between realspace and the Warp, condemning his foes to oblivion. The power affects all creatures in a Blast (6), dragging them into a howling vortex. Every creature within the area suffers 1d3 Mortal Wounds.",
+    "potency": [
+      "[2] +1 Mortal Wound per target.",
+      "*[2] Increase the area of effect to Blast (10).",
+      "*[2] Time to activate reduced to an Action."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "grey-knights"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hallucination",
+    "name": "Hallucination",
+    "source": "apocrypha",
+    "page": 269,
+    "note": "Prerequisite as printed: \"Psyker must have the ADEPTUS ASTARTES keyword.\"",
+    "disciplineId": "obscuration",
+    "xp": 10,
+    "dn": "Target's Resolve",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "35m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You instil terror and panic in your foes by conjuring images from their memories—from past allies returned from the dead to apparitions wrought from nightmares. If successful, select an enemy within range. That enemy adds +1 to the DN of all Resolve tests and attacks while the power remains in effect.",
+    "potency": [
+      "[2] +1 DN to Resolve tests.",
+      "[2] +1 DN to attacks."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "temporal-corridor",
+    "name": "Temporal Corridor",
+    "source": "apocrypha",
+    "page": 270,
+    "note": "Prerequisite as printed: \"Psyker must have the ADEPTUS ASTARTES keyword.\"",
+    "disciplineId": "obscuration",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "5m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You create an invisible corridor within which the passage of time is altered, allowing your allies to traverse the battlefield with supernatural swiftness. If successful, all allies within range may immediately move up to twice their Speed. All affected allies must remain within 5m of one another during the move, and no creature may benefit from this power more than once in a single round.",
+    "potency": [
+      "[2] Targets receive +1 Speed for this move.",
+      "*[2] Activation reduced to an Action."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aspect-of-stone",
+    "name": "Aspect of Stone",
+    "source": "apocrypha",
+    "page": 271,
+    "note": "Prerequisite as printed: \"Psyker must have the IMPERIAL FISTS keyword.\"",
+    "disciplineId": "geokinesis",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Thrumming geokinetic energies wreath your fists. Iron strengthens your sinews while your flesh becomes unyielding as Ferrocrete. While this power remains in effect, add +4 to your Strength and Toughness attributes. You suffer 1 Shock at the start of each turn you sustain this power.",
+    "potency": [
+      "*[2] Time to activate reduced to a Simple Action.",
+      "*[1] Target one ally with the IMPERIAL FISTS keyword within 12 metres instead of yourself."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chasm",
+    "name": "Chasm",
+    "source": "apocrypha",
+    "page": 271,
+    "note": "Prerequisite as printed: \"Psyker must have the IMPERIAL FISTS keyword.\" Print error copied as printed: \"into the darkness below In such a state, you are nigh-unstoppable.\" (a stray sentence).",
+    "disciplineId": "geokinesis",
+    "xp": 25,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You slam your palms together, and then pull them slowly apart. As you do, a wide chasm opens beneath the feet of your foes, and they tumble screaming into the darkness below In such a state, you are nigh-unstoppable. This power affects all creatures in a Blast (6) within range. The ground under the target area opens up, creating a sheer-walled pit with a depth equal to ten times your Willpower in metres. Any creature in the area, excluding those which can fly, may attempt an Agility test with a DN of 5 to scramble away; if they succeed, they move up to half their Speed away from the chasm. If they fail, they suffer falling damage as they plummet to the bottom. The pit remains once the power has been used. You suffer 1d3+2 Shock when you use this power, as it is draining to manifest.",
+    "potency": [
+      "*[2] Time to activate reduced to a Combat Action.",
+      "*[2] Increase the area of effect to a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fortify-geokinesis",
+    "name": "Fortify",
+    "source": "apocrypha",
+    "page": 272,
+    "note": "Prerequisite as printed: \"Psyker must have the IMPERIAL FISTS keyword.\" Its id carries the discipline because another Apocrypha discipline has a power of the same name.",
+    "disciplineId": "geokinesis",
+    "xp": 15,
+    "dn": 3,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You envision a mighty citadel, ravaged by battle but under swift repair. As you do so, you let your powers wash over your battle-brothers, compelling their flesh to knit and their bones to set, just as your mental fortress is restored to its original magnificence. If this power is successful, select a single ally within range; they recover 1d3 Wounds, or twice that amount if they possess the IMPERIAL FISTS keyword. Once a creature has been affected by this power, they may not do so again until after their next Regroup.",
+    "potency": [
+      "[3] The target recovers +1 Wound.",
+      "[2] The target also recovers 1d3 Shock."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "iron-inferno",
+    "name": "Iron Inferno",
+    "source": "apocrypha",
+    "page": 272,
+    "note": "Prerequisite as printed: \"Psyker must have the IMPERIAL FISTS keyword.\"",
+    "disciplineId": "geokinesis",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You send your mind questing outwards to locate seams of metal, the iron spars of girders and foundations, and any other metalling mass you can sense. Then, with a furious mental blast, you superheat them all to trigger a pyrometallic explosion. If this power is successful, select a single point within range that you can see; roll 1d6 for each creature or vehicle within 6m of that point; on an Icon, that creature suffers 1 Mortal Wound and the On Fire condition.",
+    "potency": [
+      "[3] Targets suffer +1 Mortal Wound."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tectonic-purge",
+    "name": "Tectonic Purge",
+    "source": "apocrypha",
+    "page": 272,
+    "note": "Prerequisite as printed: \"Psyker must have the IMPERIAL FISTS keyword.\"",
+    "disciplineId": "geokinesis",
+    "xp": 8,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 round",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You interlock your fingers, raise your hands high, and slam them down with a clubbing blow upon the ground. Psychic energy ripples from the impact site, causing the ground to convulse and shudder violently and enemies to be flung from their feet. If this power is successful, all enemies within range are knocked Prone. Further, the area within range is treated as Difficult Terrain by all enemies until the start of your next turn.",
+    "potency": [
+      "[2] Enemies within the area are Hindered.",
+      "[2] Enemies within the area are Vulnerable."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wrack-and-ruin",
+    "name": "Wrack and Ruin",
+    "source": "apocrypha",
+    "page": 272,
+    "note": "Prerequisite as printed: \"Psyker must have the IMPERIAL FISTS keyword.\"",
+    "disciplineId": "geokinesis",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Reaching out with your mind, you sense every fault, hairline crack, and structural weakness in an enemy fortification, then build empyric resonance within them until the stronghold shakes itself apart. The power affects creatures in a Blast (6) that you can see within range. Roll 1d6 for each enemy in the blast who is in cover or in difficult terrain; on an Exalted Icon, they suffer a Mortal Wound and are Staggered. If the targets are within an enclosed structure, then instead roll 1d6 and each Icon inflicts 1d3 Mortal Wounds and causes them to be Restrained.",
+    "potency": [
+      "[3] Affected enemies suffer +1 Mortal Wounds.",
+      "*[2] Increase the area of effect to a Blast (10).",
+      "*[3] If there is a building or enclosing structure within the blast, then it begins to collapse."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "imperial-fists"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "empyric-channelling",
+    "name": "Empyric Channelling",
+    "source": "apocrypha",
+    "page": 273,
+    "note": "Prerequisite as printed: \"Psyker must have the ULTRAMARINES keyword.\"",
+    "disciplineId": "indomitus",
+    "xp": 8,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You focus your thoughts to channel warp energies into a psychically-attuned ally, achieving a harmonious psychic choristry that magnifies their powers considerably. Select an allied Psyker within range. Before your next turn, that psyker may add your Rank as bonus dice to a single Psychic Mastery test. This increases to Double Rank if they also have the ULTRAMARINES keyword.",
+    "potency": [
+      "[1] +1 additional bonus die.",
+      "*[2] The targeted psyker may re-roll a single Wrath die which rolled a Complication."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ultramarines"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "precognition",
+    "name": "Precognition",
+    "source": "apocrypha",
+    "page": 273,
+    "note": "Prerequisite as printed: \"Psyker must have the ULTRAMARINES keyword.\"",
+    "disciplineId": "indomitus",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You see the trajectory of incoming attacks, allowing you to slip effortlessly around them. To the outside observer, it seems neither bullet nor blade can touch you. While this power remains in effect, you add +2 to your Defence, and you may Seize the Initiative without spending Glory.",
+    "potency": [
+      "[2] +1 bonus to Defence",
+      "[1] You receive a single bonus Glory point."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ultramarines"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "psychic-shackles",
+    "name": "Psychic Shackles",
+    "source": "apocrypha",
+    "page": 273,
+    "note": "Prerequisite as printed: \"Psyker must have the ULTRAMARINES keyword.\"",
+    "disciplineId": "indomitus",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "1 round",
+    "range": "12m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You plunge into your foe’s mind, trammelling their soul and crushing their will to fight, stalling their advance in its tracks. The power affects all creatures in a Blast (6) within range. Affected targets suffer 1d3 Shock and are Staggered until the start of your next turn.",
+    "potency": [
+      "[1] +1 Shock",
+      "[2] Affected enemies are Restrained instead of Staggered.",
+      "*[2] Increase the area of effect to a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ultramarines"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "storm-of-the-emperors-wrath",
+    "name": "Storm of the Emperor's Wrath",
+    "source": "apocrypha",
+    "page": 274,
+    "note": "Prerequisite as printed: \"Psyker must have the ULTRAMARINES keyword.\"",
+    "disciplineId": "indomitus",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Stretching forth one armoured gauntlet, you unleash a ravening tempest of psychic blasts. Striking like lightning, these actinic energy bolts burn flesh black and overload the machine spirits of enemy war engines with a crackling roar. The power affects all creatures and vehicles in a Blast (6) within range. Affected targets suffer a hit dealing 12 +3ED damage, AP -2, with the Agonizing and Haywire (3) traits.",
+    "potency": [
+      "[2] +1ED",
+      "[2] +1 to rating of Haywire trait.",
+      "*[2] Increase the area of effect to a Blast (10)"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ultramarines"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "telepathic-assault",
+    "name": "Telepathic Assault",
+    "source": "apocrypha",
+    "page": 274,
+    "note": "Prerequisite as printed: \"Psyker must have the ULTRAMARINES keyword.\"",
+    "disciplineId": "indomitus",
+    "xp": 15,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "50m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Gathering your mental might into a searing blade of psychic energy, you unleash an overwhelming empyric attack upon your enemy’s mind. Foes scream and collapse, blood jetting from their eyes as their brains rupture and burst. If this power is successful, an enemy you can see within range suffers 1d3+2 Shock and one Mortal Wound.",
+    "potency": [
+      "[1] +1 Shock",
+      "[2] +1 Mortal Wound"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "ultramarines"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aversion",
+    "name": "Aversion",
+    "source": "apocrypha",
+    "page": 274,
+    "note": "Prerequisite as printed: \"Psyker must have the DARK ANGELS keyword.\"",
+    "disciplineId": "interromancy",
+    "xp": 8,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "50m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You send waves of cold fear washing outwards. The foe finds themselves unable to focus upon you, their subconscious screaming at them to look away for fear of what they will see. The power affects all creatures in a Blast (6) within range. Affected targets are Hindered until the start of the Librarian’s next turn.",
+    "potency": [
+      "[2] Increase Hindered effect by +1.",
+      "*[2] Increase the area of effect to a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "engulfing-fear",
+    "name": "Engulfing Fear",
+    "source": "apocrypha",
+    "page": 274,
+    "note": "Prerequisite as printed: \"Psyker must have the DARK ANGELS keyword.\"",
+    "disciplineId": "interromancy",
+    "xp": 10,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You inveigle your way into the minds of your foes. Subtly, you twist and heighten their fears. While this power remains in effect, all enemies within range treat all 6s on Resolve tests as 1s.",
+    "potency": [
+      "*[2] Enemies within range must also take a Fear test (DN 5), treating you as the source of their fear."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mind-wipe",
+    "name": "Mind Wipe",
+    "source": "apocrypha",
+    "page": 275,
+    "note": "Prerequisite as printed: \"Psyker must have the DARK ANGELS keyword.\"",
+    "disciplineId": "interromancy",
+    "xp": 15,
+    "dn": "Target's Willpower (Opposed)",
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "35m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You scourge the mind of your foe, dragging out every memory that makes them who they are and reducing them to hollow shells of what they once were. You must win at an opposed Willpower test against the target; if the power is successful, the target counts all their skills as having a rating of 0 for as long as the power remains in effect (for Threats, all skills use the Default score -2). This power is somewhat taxing to maintain, so you suffer 1 Shock for each round it is sustained.",
+    "potency": [
+      "[1] The target also suffers 1 Shock."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mindworm",
+    "name": "Mindworm",
+    "source": "apocrypha",
+    "page": 275,
+    "note": "Prerequisite as printed: \"Psyker must have the DARK ANGELS keyword.\"",
+    "disciplineId": "interromancy",
+    "xp": 15,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You burrow your consciousness into the screaming victim’s brain, ripping free secrets in a spray of gore. If successfully manifested, the power inflicts 1 Mortal Wound and 1d3 Shock to the target, and you gain the answer to one question, in the form of memories, images, or other experiences from the target’s mind. In addition, if the target has not yet acted this round, they may not take a turn until after all other characters in the scene have acted; if they have acted this round, then they will act last during the next round instead.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "[1] +1 Shock.",
+      "[2] The target answers one additional question."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "righteous-repugnance",
+    "name": "Righteous Repugnance",
+    "source": "apocrypha",
+    "page": 275,
+    "note": "Prerequisite as printed: \"Psyker must have the DARK ANGELS keyword.\"",
+    "disciplineId": "interromancy",
+    "xp": 10,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "1 Round",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Reaching into the minds of your brothers, you stoke the fires of their hate, and the Dark Angels respond with a surge of cold, furious violence. If manifested, pick an ally with DARK ANGELS keyword (or the [CHAPTER] keyword of a Dark Angels successor) within range. Until the start of your next turn, the chosen ally may re-roll all failures on melee attacks and melee damage rolls.",
+    "potency": [
+      "[1] The affected ally also receives +1d on melee attacks while under the power’s effect."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "trephination",
+    "name": "Trephination",
+    "source": "apocrypha",
+    "page": 275,
+    "note": "Prerequisite as printed: \"Psyker must have the DARK ANGELS keyword.\"",
+    "disciplineId": "interromancy",
+    "xp": 15,
+    "dn": "Target's Resolve",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You gather your thoughts into a white-hot spike to plunge straight into a victim’s mind, leaving the foe’s brain matter dribbling from their ears. You target one enemy with a psychic ranged attack. If hit, the target suffers 1d3 Mortal Wounds and is exhausted until the start of its next turn.",
+    "potency": [
+      "[1] +1 Mortal Wound."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "dark-angels"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "flaming-blast",
+    "name": "Flaming Blast",
+    "source": "apocrypha",
+    "page": 276,
+    "note": "Prerequisite as printed: \"Psyker must have the SALAMANDERS keyword.\"",
+    "disciplineId": "promethean",
+    "xp": 8,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "24m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You condense the roiling energy of the warp into a great ball of raging fire before casting it at the foe. Choose a single point you can see within range. The power affects all creatures in a Blast (6) within range. Affected targets suffer a hit with Damage 12 +2ED, adding your Willpower score to the base damage, with an AP of -1 and the Inflict (On Fire) trait.",
+    "potency": [
+      "[2] +1ED damage.",
+      "*[2] Increase the area effected to a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fire-shield",
+    "name": "Fire Shield",
+    "source": "apocrypha",
+    "page": 276,
+    "note": "Prerequisite as printed: \"Psyker must have the SALAMANDERS keyword.\"",
+    "disciplineId": "promethean",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "Extending your hand, a great sheet of flame bursts from your palm. With a sweep of your arms, you create a towering wall of flame to protect your comrades. The power affects all allies in a Blast (6) within range. While the power remains in effect, all affected allies gain Heavy Cover (+2 Defence), and enemies who charge those allies must pass an Agility test (DN 4) or be set On Fire.",
+    "potency": [
+      "*[2] Increase the area effected to a Blast (10)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "burning-hands",
+    "name": "Burning Hands",
+    "source": "apocrypha",
+    "page": 276,
+    "note": "Prerequisite as printed: \"Psyker must have the SALAMANDERS keyword.\"",
+    "disciplineId": "promethean",
+    "xp": 10,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "Your gauntlets glow bright before bursting into flames. Each strike from these armoured fists sear and scorch your foes. While this power remains in effect, your unarmed attacks increase their base damage by your Willpower and gain the Inflict (On Fire) and Mortal (1) traits.",
+    "potency": [
+      "[1] Your melee attacks deal +1ED damage."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "drakeskin",
+    "name": "Drakeskin",
+    "source": "apocrypha",
+    "page": 276,
+    "note": "Prerequisite as printed: \"Psyker must have the SALAMANDERS keyword.\"",
+    "disciplineId": "promethean",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "12m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You summon a shimmering layer of translucent scales around your allies, harder even than the impervious hides of the great Drakes of Nocturne. Select an ally within Range. The ally gains +2 Resilience and +2 Determination while the power remains in effect.",
+    "potency": [
+      "[2] +1 Resilience.",
+      "[2] +1 Determination."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fury-of-nocturne",
+    "name": "Fury of Nocturne",
+    "source": "apocrypha",
+    "page": 277,
+    "note": "Prerequisite as printed: \"Psyker must have the SALAMANDERS keyword.\"",
+    "disciplineId": "promethean",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "18m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You channel your powers into the ground around you to create a microcosm of Nocturne around your foes. The earth darkens and begins to split, before towering flames and boiling magma spew forth to burn the enemies of the Salamanders to cinders. The power affects all creatures in a Blast (10) within range. Affected targets suffer a hit with Damage 15 +4ED, adding your Willpower score to the base damage, with an AP of -3. Further anyone hit must pass an Agility test (DN 5) or be set On Fire.",
+    "potency": [
+      "[2] +1ED damage.",
+      "[1] Increase DN of Agility test by +1",
+      "*[3] Increase the area effected to a Blast (20)."
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "draconic-aspect",
+    "name": "Draconic Aspect",
+    "source": "apocrypha",
+    "page": 277,
+    "note": "Prerequisite as printed: \"Psyker must have the SALAMANDERS keyword.\"",
+    "disciplineId": "promethean",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Summoning the wrath of the indigenous creatures of Nocturne, you take on elements of the appearance of a great fire-breathing drake. With burning eyes and flame streaming from your nostrils, you inspire dread in your foes. The power affects all creatures in a Blast (6) within range. While this power remains in effect, all enemies within 12 metres of you add +2 to the DN of all Resolve tests they attempt.",
+    "potency": [
+      "[2] +1 DN"
+    ],
+    "requires": [
+      {
+        "kind": "subFaction",
+        "anyOf": [
+          "salamanders"
+        ]
+      }
+    ]
+  }
+]

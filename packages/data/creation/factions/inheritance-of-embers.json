@@ -5,7 +5,15 @@
     "source": "inheritance-of-embers",
     "page": 10,
     "text": "",
-    "note": "Wraith Constructs (p.13) sit in this section's run of pages but are a Species, not a faction: their archetypes carry AELDARI, ASURYANI and they may take [CRAFTWORLD]. They have no Paths, Backgrounds or Objectives (p.13)."
+    "note": "Wraith Constructs (p.13) sit in this section's run of pages but are a Species, not a faction: their archetypes carry AELDARI, ASURYANI and they may take [CRAFTWORLD]. They have no Paths, Backgrounds or Objectives (p.13).",
+    "rules": [
+      {
+        "name": "Asuryani Psykers",
+        "text": "The Asuryani have practised and honed their psychic abilities for aeons, developing stalwart discipline; they know well the dangers that lurk within the esoteric plane from which the energies that power them flow.\n\nIf you are an Aeldari with the ASURYANI Keyword you may reroll a single Wrath Dice that rolled a Complication once per Test.",
+        "page": 282,
+        "source": "core"
+      }
+    ]
   },
   {
     "id": "anhrathe",

@@ -1,0 +1,45 @@
+[
+  {
+    "id": "psychic-scourge",
+    "name": "Psychic Scourge",
+    "source": "forsaken-system",
+    "page": 130,
+    "note": "Multi-target is printed Yes although the effect names a single target.",
+    "disciplineId": "librarius",
+    "xp": 20,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You perforate your target's mind, stripping it of information in an incredibly painful and frightening way.\n\nTo activate this power, you must win an Opposed Willpower Test with your target. If you succeed, you deal 1d3 Mortal Wounds and the target suffers the Fear Condition.",
+    "potency": [
+      "[3]+1 Mortal Wound"
+    ]
+  },
+  {
+    "id": "null-zone",
+    "name": "Null Zone",
+    "source": "forsaken-system",
+    "page": 130,
+    "note": "Potency printed inline on one line, split per bracket.",
+    "disciplineId": "librarius",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Drawing on the Emperor's own purity, you twist the power of the Warp to temporarily expel its malign influence from a specific area.\n\nWhen you successfully activate this power, select a point or target in range. You create a null zone with a 6m radius centered on that point or target until the start of your next Turn. The DN of all Psychic Mastery (Wil) Tests made within the null zone is increased by your Willpower Rating. The Invulnerable Armour Trait has no effect inside the null zone.",
+    "potency": [
+      "[1] +10m Range.",
+      "[2] Double the radius of the null zone."
+    ]
+  }
+]

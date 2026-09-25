@@ -186,6 +186,7 @@ const REF_KEYS: Record<string, string> = {
   groupId: "option-groups",
   subFactionId: "sub-factions",
   disciplineId: "disciplines",
+  alsoIn: "disciplines",
   becomesArchetypeId: "archetypes",
   talentIds: "talents",
   powerIds: "powers",
@@ -239,7 +240,8 @@ for (const [type, rows] of creation) {
   for (const row of rows) {
     checkRefs(row.r, `${row.file} "${row.r.id}"`);
     const species = (row.r.speciesIds as string[] | undefined)?.join("|") ?? "";
-    const key = `${row.r.category ?? ""}:${norm(row.r.name as string)}`; // an Exarch Power and a talent may share a name
+    // An Exarch Power and a talent may share a name, and so may powers of two disciplines.
+    const key = `${row.r.category ?? ""}:${row.r.disciplineId ?? ""}:${norm(row.r.name as string)}`;
     const prev = seen.get(key);
     const prevSpecies = (prev?.r.speciesIds as string[] | undefined) ?? [];
     if (prev && (!species || prevSpecies.some((s) => species.split("|").includes(s)))) {

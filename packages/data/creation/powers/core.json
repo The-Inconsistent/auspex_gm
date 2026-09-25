@@ -1,18 +1,1254 @@
 [
   {
+    "id": "psyniscience",
+    "name": "Psyniscience",
+    "source": "core",
+    "page": 267,
+    "disciplineId": "universal-psyker-abilities",
+    "xp": 0,
+    "dn": 3,
+    "activation": "Free Action",
+    "duration": "Instant",
+    "range": "50 m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You can sense the presence of the Warp pressing in against the material world. Existing or imminent distortions of the barrier between Materium and Immaterium in your immediate presence may betray themselves in the flicker of shadows, a brief chill on the flesh, or in a thousand other ways.\n\nYou can attempt to detect the presence of Warp phenomena within range and line of sight, including sustained psychic powers, psychic powers being activated, and similar effects as decided by the GM.\n\nThis won’t show the source of any such phenomenon, only that it is present within the restrictions, nor does it detect any Psykers. It does, however, provide enough information to activate Deny the Witch.\n\nIf you attempt to activate this power and fail, the mysteries of the Warp assail your mind. You are automatically under the effects of Fear.\n\nAs it is not considered a psychic power, Psyniscience can’t trigger the Perils of the Warp.",
+    "potency": [],
+    "note": "Universal Psyker Ability: known for free by every character with the PSYKER Keyword (Core p.257, p.267); no XP Cost is printed."
+  },
+  {
+    "id": "deny-the-witch",
+    "name": "Deny The Witch",
+    "source": "core",
+    "page": 267,
+    "disciplineId": "universal-psyker-abilities",
+    "xp": 0,
+    "dn": "2 + the DN of the psychic power you are trying to deny",
+    "activation": "Action*",
+    "duration": "Instant",
+    "range": "50 m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You can unravel another psyker’s attempt to manipulate the Warp.\n\nAll characters with the PSYKER keyword can attempt to prevent the activation of a psychic power within range, or nullify an already active Sustained or timed duration psychic power. Your character must be aware that a power is being used in order to Deny the Witch.\n\nThe DN for Deny the Witch is 2 + the DN of the psychic power you are trying to deny. If the power you are trying to deny has increased potency from shifting an Exalted Icon, the DN is increased by +1 for each Exalted Icon shifted.\n\nIf Deny the Witch succeeds, the power fails to activate or immediately stops working.\n\n*Unlike other Actions, this can be used to deny a power occurring before your Turn, but this uses your Combat Action for the Round. If you have used your Action for the Round then you can’t Deny the Witch.",
+    "potency": [],
+    "note": "Universal Psyker Ability: known for free by every character with the PSYKER Keyword (Core p.257, p.267); no XP Cost is printed. No DN line is printed; `dn` is taken from the Effect text (pp.267–268)."
+  },
+  {
+    "id": "chameleon",
+    "name": "Chameleon",
+    "source": "core",
+    "page": 268,
+    "disciplineId": "minor",
+    "xp": 8,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You bend reality just enough to cause your image to blend with your surroundings. While this power remains in effect, you gain +5 bonus dice to Stealth (A) Tests and + 1 to your Defence against ranged attacks.",
+    "potency": [
+      "[1] Stealth (A) bonus increased by +1.",
+      "[3] Additional +1 bonus to Defence."
+    ]
+  },
+  {
+    "id": "compel",
+    "name": "Compel",
+    "source": "core",
+    "page": 268,
+    "disciplineId": "minor",
+    "xp": 10,
+    "dn": 5,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "5 m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You implant a simple command in the mind of a nearby creature. This command must be short (consisting of a single action), simple, and obvious, but can otherwise overcome the given creature’s own interests or base instincts.\n\nExample commands include: ‘drop the weapon,’ ‘open the door’ or ‘push him.’ Suggestions cannot make a creature perform an action that they are simply incapable of performing — for example, you can’t make a Cyber Mastiff work a cogitator.\n\nThe target creature must successfully pass a DN 4 Willpower Test or is compelled to obey.",
+    "potency": [
+      "[1] +1 DN to the Willpower test to resist.",
+      "[2] +1 Round duration."
+    ]
+  },
+  {
+    "id": "conceal-phenomena",
+    "name": "Conceal Phenomena",
+    "source": "core",
+    "page": 268,
+    "disciplineId": "minor",
+    "xp": 5,
+    "dn": 3,
+    "activation": "Full-Round Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You draw the dark energies of the Warp about your mind, cloaking your presence against those who may attempt to detect you via psychic means.\n\nIf successful, you can resist attempts to locate you or identify you as a Psyker via powers such as Psyniscience. Any Psychic Mastery (Wil) Test made to detect you must be made with a +2 DN penalty.",
+    "potency": [
+      "[1] +1 to the DN for detection attempts."
+    ]
+  },
+  {
+    "id": "conjure-flame",
+    "name": "Conjure Flame",
+    "source": "core",
+    "page": 269,
+    "disciplineId": "minor",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Movement",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You conjure a simple flame. This flame can vary in size, from as small as a match to as large as a crackling torch. This flame behaves in every way as real fire and can be used to ignite combustible materials.\n\nWhile the flame exists, you are immune to its effects, though you are not immune to the effects of fire from any other source (nor is your clothing or any items you’re holding). When making a melee attack, this flame can be used as a weapon inflicting 8+1ED damage. At the GM’s discretion, this can cause the On Fire condition.",
+    "potency": [
+      "[1] You generate an additional flame.",
+      "[2] +1 ED damage."
+    ]
+  },
+  {
+    "id": "dull-pain",
+    "name": "Dull Pain",
+    "source": "core",
+    "page": 269,
+    "disciplineId": "minor",
+    "xp": 8,
+    "dn": 4,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "5 m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You use your force of will to desensitise others (or yourself) to pain. While this power remains in effect, the target reduces all Shock they suffer by 1.",
+    "potency": [
+      "[1] Shock reduced by a further 1.",
+      "[3] Target reduces all Wounds they suffer by 1."
+    ]
+  },
+  {
+    "id": "flash-bang",
+    "name": "Flash Bang",
+    "source": "core",
+    "page": 269,
+    "disciplineId": "minor",
+    "xp": 8,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "5 m",
+    "multiTarget": true,
+    "tags": [
+      "AUDITORY",
+      "LIGHT",
+      "PSYCHIC"
+    ],
+    "effect": "You mentally snap Warp energy like a whip, creating a bright flash and a sharp crack of sound. Everyone within range must make a successful DN 3 Toughness Test or take 1 Shock and be Blinded for 1 round.",
+    "potency": [
+      "[1] Additional +1 Shock.",
+      "[2] Range increased by 5 m"
+    ]
+  },
+  {
+    "id": "invoke-luck",
+    "name": "Invoke Luck",
+    "source": "core",
+    "page": 269,
+    "disciplineId": "minor",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Simple Action",
+    "duration": "1 Round",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You manipulate the energies of the Warp, perhaps without even consciously doing it, to make sure probabilities seem to favour you. You may choose to gain +1 bonus dice to one Test you make during the power’s duration.",
+    "potency": [
+      "[1] You gain +1 bonus dice to the chosen Test."
+    ]
+  },
+  {
+    "id": "inflict-pain",
+    "name": "Inflict Pain",
+    "source": "core",
+    "page": 269,
+    "disciplineId": "minor",
+    "xp": 8,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "5 m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You draw upon the swirling energies of the Warp and pour them into the mind of your target, wracking them with debilitating pain.\n\nChoose a target within visual range. That target immediately takes 1d3 Shock and must make a successful DN 3 Willpower Test or is Staggered.\n\nAs long as you sustain this power, the target must make the same Test again at the beginning of each of their Turns or be dealt another point of Shock and remain Staggered. If the target resists, they are immune to being Staggered by this power for the rest of the scene, but still takes Shock damage.\n\nInflict Pain has no effect against targets that aren’t truly alive (such as Daemons, plants, etc.).",
+    "potency": [
+      "[1] Additional +1 Shock damage per sustained Round."
+    ]
+  },
+  {
+    "id": "subvert-machine",
+    "name": "Subvert Machine",
+    "source": "core",
+    "page": 270,
+    "disciplineId": "minor",
+    "xp": 10,
+    "dn": 4,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "25 m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into a specific machine or mechanism with your mind and cause it to temporarily cease functioning. A mechanism jammed with this power remains inoperable for one minute. The mechanism can be cleared and made operational during this time with a successful DN 3 Tech Test.",
+    "potency": [
+      "[1] Range increased by 25 m.",
+      "[1] Tech Test DN increased by +1."
+    ]
+  },
+  {
+    "id": "hover",
+    "name": "Hover",
+    "source": "core",
+    "page": 270,
+    "disciplineId": "minor",
+    "xp": 7,
+    "dn": 4,
+    "activation": "Simple Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You use your force of will to unshackle your body from the constraints of gravity.\n\nYou can float freely, hovering or moving slowly up or down (1/2 Speed). You are not able to truly fly, however, so must use some other means to move in any other direction. This power may be used to attempt to negate a fall.",
+    "potency": [
+      "*[1] May move at normal Speed up or down.",
+      "[2] May also affect a willing creature within 5m. The Psyker controls their vertical movement."
+    ]
+  },
+  {
+    "id": "psychic-torch",
+    "name": "Psychic Torch",
+    "source": "core",
+    "page": 270,
+    "disciplineId": "minor",
+    "xp": 5,
+    "dn": 2,
+    "activation": "Simple Action",
+    "duration": "Sustained",
+    "range": "5 m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You conjure a floating orb of glowing light.\n\nThough typically equal in intensity to a common lumen torch, you can cause it to become as dim as a candle or as bright as a flare through concentration. The orb typically floats in the air beside you, but with a mental command it can be given simple instructions such as to follow you, orbit your head, or to remain stationary at a specific location. The orb may move up to your Speed, but instantly dissipates if it passes out of range and must be re-summoned.",
+    "potency": [
+      "[1] Range is increased by 5 m.",
+      "[2] May create an additional orb."
+    ]
+  },
+  {
+    "id": "phantom-grip",
+    "name": "Phantom Grip",
+    "source": "core",
+    "page": 270,
+    "disciplineId": "minor",
+    "xp": 8,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You manifest an invisible set of phantom hands within range.\n\nBy using the appropriate action, you can use these hands to perform any number of tasks that they might do — push a button, open/close a door, pull the pin from a grenade, etc., though you must be able to see the object/target to be manipulated. For the purposes of these tasks, the Phantom Grip has a Strength and Agility equal to your Willpower.\n\nPhantom Grip can’t be used to make an attack, but the GM may allow you to make an Interaction Attack using a dice pool equal to your Willpower.",
+    "potency": [
+      "*[1] Activation reduced to an Action.",
+      "[1] Range increased by 10 m."
+    ]
+  },
+  {
+    "id": "mental-force",
+    "name": "Mental Force",
+    "source": "core",
+    "page": 270,
+    "disciplineId": "minor",
+    "xp": 8,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "15 m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "Through sheer willpower, you summon an invisible mental force and use it to shove a target in line-of-sight.\n\nThe target must immediately make a successful DN 4 Agility Test or is knocked Prone, possibly incurring additional consequences depending upon their situation at the time.",
+    "potency": [
+      "[1] Range is increased by 15 m.",
+      "[2] Agility Test DN increased by 1."
+    ]
+  },
+  {
+    "id": "otherworldly-voices",
+    "name": "Otherworldly Voices",
+    "source": "core",
+    "page": 271,
+    "disciplineId": "minor",
+    "xp": 5,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": false,
+    "tags": [
+      "AUDITORY",
+      "PSYCHIC"
+    ],
+    "effect": "You mould the cacophonous sounds of the Warp into a tool for your own purposes, causing ghostly voices or other sounds to appear from places or objects within line of sight and in range.\n\nThese voices or sounds have an echoing, otherworldly quality to them, and cannot rise in volume above a typical conversational tone. These sounds are usually used to unnerve or distract others, but they can also be used to convey information to distant targets, though such communication is one-way and disturbing in nature.",
+    "potency": [
+      "[1] Range is increased by 25 m.",
+      "*[2] Volume of voices and sounds increased to level of a shout."
+    ]
+  },
+  {
     "id": "smite",
     "name": "Smite",
     "source": "core",
     "page": 272,
     "disciplineId": "universal",
-    "xp": { "atCreation": 0, "later": 10 },
+    "xp": {
+      "atCreation": 0,
+      "later": 10
+    },
     "dn": "Target's Defence",
     "activation": "Action",
     "duration": "Instant",
     "range": "35 m",
     "multiTarget": true,
-    "tags": ["PSYCHIC"],
+    "tags": [
+      "PSYCHIC"
+    ],
     "effect": "You concentrate destructive power through the lens of your will, summoning lethal bolts of raw psychic energy that blast your enemies into ash.\n\nTarget one enemy within range and make a Psychic Master (Wil) Test against their Defence. If successful, the target suffers 1d3 Mortal Wounds.",
-    "potency": ["[3] +1 Mortal Wound."]
+    "potency": [
+      "[3] +1 Mortal Wound."
+    ]
+  },
+  {
+    "id": "enfeeble",
+    "name": "Enfeeble",
+    "source": "core",
+    "page": 272,
+    "disciplineId": "biomancy",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "10 m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The air grows thick and sticky as you open a slight tear in the fabric of reality to drain away the life of your enemies.\n\nThe target's Strength is reduced by 1 and they suffer 1 Shock at the beginning of each of their turns while the power is sustained. Once the power ends, the target regains their lost Strength.",
+    "potency": [
+      "[1] +1 Strength reduction.",
+      "[3] +1 Shock damage per Round."
+    ]
+  },
+  {
+    "id": "life-leech",
+    "name": "Life Leech",
+    "source": "core",
+    "page": 272,
+    "disciplineId": "biomancy",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "5 m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The air chills around you as you draw the life from your enemy in ephemeral wisps.\n\nThe target suffers 1d6 Shock and 1d3 Wounds. You heal an amount of Shock and Wounds equal to half the amount inflicted on the target.",
+    "potency": [
+      "[1] +1 Shock.",
+      "[2] +1 Wound.",
+      "*[3] Damage is Mortal Wounds."
+    ]
+  },
+  {
+    "id": "warp-speed",
+    "name": "Warp Speed",
+    "source": "core",
+    "page": 272,
+    "disciplineId": "biomancy",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Your form begins to distort and grow fuzzy as you draw energy from the Warp and transfer it straight into your own limbs.\n\nWhile you sustain this power your Speed is doubled, you may take one additional Action per round at no penalty (which can be an attack), your Defence increases by +1, and you act first in every Round.\n\nWarp Speed taxes a Psyker physically. You suffer 1d3+1 Shock for every Round you sustain the power.",
+    "potency": [
+      "*[1] Suffer 1 less Shock when for sustaining this power.",
+      "[2] +1 bonus to Defence."
+    ],
+    "note": "Print error copied as printed: \"Suffer 1 less Shock when for sustaining this power.\""
+  },
+  {
+    "id": "phantom-form",
+    "name": "Phantom Form",
+    "source": "core",
+    "page": 272,
+    "disciplineId": "biomancy",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "The light surrounding you grows dim, then so does your body, transformed into a wispy phantom.\n\nWhile you sustain the power, you can pass freely through solid objects of any kind, though your Speed is reduced by half. In effect, you become a phantom, a being out of phase with reality. While you can both see and be seen by the real world, you cannot physically interact with it in any way.\n\nPhantom Form is extremely taxing to the spirit. You suffer 1 Shock for every round you sustain the power.\n\nShould you revert to your normal form while passing through hazardous conditions, you immediately suffer the consequences of those conditions. If you revert to your true form while passing through a solid object, you appear at a random open space next to the object and suffer 1d6 Mortal Wounds.",
+    "potency": [
+      "[1]* your Speed is normal.",
+      "[1]* your speech can be heard.",
+      "[3]* you can interact with objects as a Full Round Action."
+    ],
+    "note": "Printed across pp.272-273. The potency asterisks are printed after the bracket (\"[1]*\"), unlike the other powers; kept as printed."
+  },
+  {
+    "id": "regeneration",
+    "name": "Regeneration",
+    "source": "core",
+    "page": 273,
+    "disciplineId": "biomancy",
+    "xp": 15,
+    "dn": 8,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Your body is an extension of the Warp itself. You are one and the same, and master of both.\n\nOnce activated, you can use this power to heal injuries at a phenomenal rate, and, in time, even regrow lost limbs or body parts.\n\nWhile this power is sustained, you heal 1 Wound per Round. If you are at maximum Wounds, you heal 1 Shock per round.\n\nIf you are at maximum Shock and Wounds, you may regenerate whole body parts, though this process is much slower. A smaller body part, such as a finger or eye, can be regenerated in an hour, but regenerating a whole limb takes an entire day (sustaining the power for so long will leave you Exhausted).",
+    "potency": [
+      "[1] +1 Shock healed per round.",
+      "[2] +1 Wound healed per round."
+    ]
+  },
+  {
+    "id": "shape-flesh",
+    "name": "Shape Flesh",
+    "source": "core",
+    "page": 273,
+    "disciplineId": "biomancy",
+    "xp": 20,
+    "dn": 6,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Your physical form is completely mutable to your will. Through thought alone you can change your body however you wish.\n\nWhen you activate this power, choose one of the following effects. The effect lasts until you stop Sustaining this psychic power.\n- You assume the appearance of any individual with a roughly equivalent mass to your own. If you are attempting to emulate a person you have met, you can alter your vocal chords to match theirs, as long as you have heard them speak. You are biologically identical to whatever you have tried to emulate, but may still be required to make Deception (Fel) Tests to convince people you are who you say and appear to be.\n- You modify your body with one of the following options. Some of these modifications are obviously visible and likely grotesque, and those who see them will likely view them as mutations.\n  - You manifest wings, allowing you to fly freely at your normal Speed.\n  - You develop gills, giving you immunity to the Suffocating Condition whilst breathing underwater.\n  - Your appendages become webbed, making water normal terrain instead of difficult terrain.\n  - Your corneas are massively altered, giving you the same benefits as Preysense Goggles (p.239).\n  - You harden your outer skin, giving you a +4 Resilience bonus.",
+    "potency": [
+      "[2] +1 bonus die to Deception Tests when emulating another individual.",
+      "[3] You may select a second body modification when modifying your body."
+    ],
+    "note": "Prerequisite as printed: \"At least one other Biomancy Power.\" The body modifications are a nested list (\"\\n  - \").",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "enfeeble",
+          "life-leech",
+          "warp-speed",
+          "phantom-form",
+          "regeneration"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "forewarning",
+    "name": "Forewarning",
+    "source": "core",
+    "page": 274,
+    "disciplineId": "divination",
+    "xp": 15,
+    "dn": 6,
+    "activation": "Full-Round Action",
+    "duration": "1 Combat",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You fall into a brief reverie, peering into the immediate future to see how events of a specific encounter will unfold. You pay heed to how your enemies fight and what actions they will take, so that armed with this knowledge, you may better protect against their attacks.\n\nWhile activated, you may Seize the Initiative (p.177) without spending Glory once during the combat you are currently engaged in or your next combat, and you gain a +1 bonus to your Defence in the combat you are currently engaged in or your next combat.",
+    "potency": [
+      "*[1] Activation reduced to an Action.",
+      "[2] +1 bonus to Defence."
+    ]
+  },
+  {
+    "id": "prescience",
+    "name": "Prescience",
+    "source": "core",
+    "page": 274,
+    "disciplineId": "divination",
+    "xp": 15,
+    "dn": 7,
+    "activation": "30 minutes",
+    "duration": "1 Scene",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You peer into the depths of the Warp and see past the glimmering possibilities rippling on the surface. Past the glamour and misleading promises of what might be, you catch glimpses and images of what really will be — at least in the near future.\n\nOnce activated, Prescience allows you to reroll 1 dice (not the Wrath Dice) in any Tests you make for the remainder of the scene.\n\nIn addition, you may petition the timeless beings that dwell in the Warp to answer a single question about what may come to pass. The GM chooses the being that responds to your question and privately communicates their response. The response itself may be a short phrase, a single word, an emotion, or something else entirely — the beings of the Warp are unfathomable to mortal minds, and may be helpful, unhelpful, or utterly uncaring of your question.\n\nThe Immaterium, and those entities that dwell in it that concern themselves with the vagaries of time as it pertains to the mortal realms, are loathe to surrender this sort of detail regarding the future. A Psyker risks much in prying in this manner. When making the Psychic Mastery (Wil) Test for this power, the roll automatically counts as if a single 1 had been rolled on a Wrath Dice (i.e. meaning that if no 1s were rolled on a Wrath Dice of the Psychic test, it would still count as 1 Wrath Dice showing a 1 and require a roll on the Perils of the Warp table).\n\nYou may not use Prescience more than once in any scene.",
+    "potency": [
+      "[1] Activation reduced by 5 minutes (minimum 5).",
+      "*[2] You may ask the GM an additional question about the future."
+    ],
+    "note": "Prerequisite as printed: \"At least one other Divination Power.\" Apocrypha (homebrew) also lists it in Dark Hereticus (p.301).",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "forewarning",
+          "misfortune",
+          "psychometry",
+          "scriers-gaze"
+        ]
+      }
+    ],
+    "alsoIn": [
+      "dark-hereticus"
+    ]
+  },
+  {
+    "id": "misfortune",
+    "name": "Misfortune",
+    "source": "core",
+    "page": 274,
+    "disciplineId": "divination",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Full-Round Action",
+    "duration": "Sustained",
+    "range": "30 m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You fall into a brief reverie, peering into the immediate future of a specific enemy, and then manipulate the threads of that future so that the most awful outcomes prevail.\n\nThe target immediately becomes Vulnerable (1) and Hindered (1) for as long as the power is sustained. Misfortune is mentally draining. You suffer 1 Shock for every minute you sustain the power.",
+    "potency": [
+      "*[1] Time to Activate reduced to an Action.",
+      "[2] Target has a –1 penalty to Defence.",
+      "[2] Target has +1DN to ability tests."
+    ]
+  },
+  {
+    "id": "psychometry",
+    "name": "Psychometry",
+    "source": "core",
+    "page": 275,
+    "disciplineId": "divination",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Full-Round Action",
+    "duration": "Sustained",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "Intense emotions leave lasting marks on the timeless threads of the Warp. By opening your mind, you receive echoes of the past psychically emanating from a place or an object.\n\nWhen you use this power you are able to glimpse visions of past events in an area where an individual expressed an emotional outburst.\n\nInitially, only the psychic traces of the specific emotion; enter your senses, for example the sour-steel taste of murderous rage or the pungent, decaying stench of regret.\n\nThe longer you remain in place and sustain the power, the more information you receive about the events surrounding the emotional outburst. Your senses can detect past events that happen in a 10 m diameter sphere centred on yourself.\n- 1 Hour: Though vague and indistinct, your senses can perceive the events immediately preceding, during, and after the emotional outburst. Individuals appear ghostly with impermanent, hazy forms, and all sounds are muffled, echoing whispers.\n- 6 Hours: You can perceive the events preceding, during, and after the emotional outburst within range in clear focus.\n- 12 Hours: You glean a deeper understanding of what took place from the Warp; you may ask the GM a single question about the event that took place.\n\nYou can also use this psychic power on a specific object you are in physical contact with instead of a location. The nature of the visions you receive are the same, but the range of any visions is halved and centered on the object.",
+    "potency": [
+      "[1] You may share your vision with any ally in range of the psychic power.",
+      "[2] The range of the power is doubled.",
+      "[2] Your visions take half the listed time to manifest."
+    ],
+    "note": "Prerequisite as printed: \"At least one other Divination power.\" Stray semicolon copied as printed (\"the specific emotion; enter your senses\").",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "forewarning",
+          "prescience",
+          "misfortune",
+          "scriers-gaze"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scriers-gaze",
+    "name": "Scrier's Gaze",
+    "source": "core",
+    "page": 275,
+    "disciplineId": "divination",
+    "xp": 5,
+    "dn": 6,
+    "activation": "Full-Round Action (or 10 minutes)",
+    "duration": "Sustained",
+    "range": "5,000 m",
+    "multiTarget": false,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You project your mind remotely to view events occurring in another place within range. You must be aware of the location to view it, and must have at least a general idea of where it is in relation to yourself. If you are not exactly aware of these conditions, you must spend 10 minutes to hone in on the location.\n\nYou can sustain Scrier's Gaze to view the targeted location, but while doing so you cannot move or perform any other actions and are completely oblivious to your own surroundings.\n\nScrier's Graze is mentally taxing. You suffer 1 Shock for every 10 minutes you sustain the power. You may not recover Shock while sustaining this power.",
+    "potency": [
+      "[1] Range increased by a factor of 10."
+    ],
+    "note": "Print error copied as printed: \"Scrier's Graze\" in the effect. Apocrypha (homebrew) also lists it in Indomitus (p.273).",
+    "alsoIn": [
+      "indomitus"
+    ]
+  },
+  {
+    "id": "fiery-form",
+    "name": "Fiery Form",
+    "source": "core",
+    "page": 275,
+    "disciplineId": "pyromancy",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You burst into flame, your body engulfed in a roaring inferno. These flames cause no harm to you or your possessions.\n\nWhile this power is sustained, all creatures within 2 m of you immediately take 10 +1 ED damage, and take this damage again at the end of each of their own Turns they remain in range.\n\nYou gain a +1 bonus to your Defence and are immune to all damage or effects with the FIRE or MELTA Keywords.",
+    "potency": [
+      "[2] +1 ED damage.",
+      "[3] +1 Defence."
+    ],
+    "note": "Printed across pp.275-276."
+  },
+  {
+    "id": "flame-breath",
+    "name": "Flame Breath",
+    "source": "core",
+    "page": 276,
+    "disciplineId": "pyromancy",
+    "xp": 5,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "5 m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You spew a gout of warpfire. Your Flaming Breath fills a line 5m in front of you and is treated as a having the Flamer Trait.",
+    "potency": [
+      "[1] +1 ED damage.",
+      "[1] Arc the Flame Breath (Wil) metres."
+    ]
+  },
+  {
+    "id": "mindfire",
+    "name": "Mindfire",
+    "source": "core",
+    "page": 276,
+    "disciplineId": "pyromancy",
+    "xp": 15,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "100 m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You subtly raise the internal temperature of your target's body. As the temperature rises they experience intense discomfort and their body falters.\n\nYour target must be within in line of sight to activate this power. If you succeed, you raise the target's internal temperature and they are Hindered.\n\nIn order to Sustain this power you must win an Opposed Willpower Test against your target at the start of each of your turns.\n\nWhilst this power is affecting a target, the effects of extreme cold may be reduced or ignored at the GM's discretion.",
+    "potency": [
+      "[1] Increase target's level of Hindered by 1.",
+      "*[3] Target is Exhausted."
+    ],
+    "note": "Prerequisite as printed: \"At least one other Pyromancy power\".",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "fiery-form",
+          "flame-breath",
+          "molten-beam",
+          "spontaneous-combustion",
+          "wall-of-flame"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "molten-beam",
+    "name": "Molten Beam",
+    "source": "core",
+    "page": 276,
+    "disciplineId": "pyromancy",
+    "xp": 20,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You stretch forth your open hand and release a beam of blindingly bright energy at your foes. This extremely hot beam of raw power melts even the hardest metals to slag, and the air close to the beam's passage catches fire.\n\nThe beam instantly travels along a straight line for 10 m in a direction you choose. Targets struck by the beam suffer 18 +2 ED damage and must pass a DN 4 Initiative Test or be set On Fire.",
+    "potency": [
+      "[2] +1 ED damage.",
+      "*[1] +10m range"
+    ]
+  },
+  {
+    "id": "spontaneous-combustion",
+    "name": "Spontaneous Combustion",
+    "source": "core",
+    "page": 276,
+    "disciplineId": "pyromancy",
+    "xp": 10,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You focus your rage, eyes glowing with Warpfire, until your enemies burst into flame.\n\nTargets hit with this power suffer 12 +1 ED damage and must make a successful DN 4 Agility Test to avoid being set On Fire.",
+    "potency": [
+      "[2] +1 ED damage.",
+      "[1] +10 m range."
+    ]
+  },
+  {
+    "id": "wall-of-flame",
+    "name": "Wall Of Flame",
+    "source": "core",
+    "page": 277,
+    "disciplineId": "pyromancy",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "20 m",
+    "multiTarget": false,
+    "tags": [
+      "FIRE",
+      "PSYCHIC"
+    ],
+    "effect": "You throw your arms wide and channel the seething energies of the Warp, conjuring a wall of flames.\n\nInitially, you may freely shape this fiery wall as you please, though its dimensions have limits — up to 3 m wide, 20 m long and 10 m high. You can summon the Wall of Flame anywhere within range and line of sight, including the space occupied by living creatures.\n\nOnce the wall has been summoned, its dimensions cannot be altered, and it burns without fuel for as long as you sustain it.\n\nCreatures that attempt to pass through the Wall of Flame or that are caught inside it when it is summoned immediately take 12 +1 ED damage and are On Fire. Creatures within 2 m immediately take 10 +1 ED damage when the wall is summoned, and again each turn they end within 2 m of the wall.",
+    "potency": [
+      "[2] +1 ED damage.",
+      "*[2] You may use a Move Action to reshape the wall of flame once while it is Sustained.",
+      "[1] +1 m in height or length."
+    ]
+  },
+  {
+    "id": "assail",
+    "name": "Assail",
+    "source": "core",
+    "page": 277,
+    "disciplineId": "telekinesis",
+    "xp": 10,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "Eyes blazing with inner light, you use nothing more than the power of your will to uproot a boulder, tree, or similarly large object in the vicinity, and smite your enemies with it.\n\nTargets hit by this power suffer 10 +1 ED damage.",
+    "potency": [
+      "[1] +1ED damage.",
+      "[2] +10 m range."
+    ]
+  },
+  {
+    "id": "crush",
+    "name": "Crush",
+    "source": "core",
+    "page": 277,
+    "disciplineId": "telekinesis",
+    "xp": 10,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You clamp an invisible force around your enemy, and tighten it to crush them.\n\nIf successfully activated, the target takes 10 +1 ED damage and must make a successful DN 5 Strength or Willpower Test (their choice) or be Restrained.\n\nWhile Restrained, the target can do nothing on their turn except try to break free by again making another Strength or Willpower Test as a Full-Round Action. If the victim does not escape, they take an additional 10 +1 ED at the beginning of each of your turns for as long as you Sustain the power.",
+    "potency": [
+      "[3] +1 ED damage. The increased damage applies to the continual damage each turn.",
+      "[2] +1 DN to the Strength or Willpower Test."
+    ]
+  },
+  {
+    "id": "levitation",
+    "name": "Levitation",
+    "source": "core",
+    "page": 277,
+    "disciplineId": "telekinesis",
+    "xp": 8,
+    "dn": 5,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "Your hair and garments are blown fiercely by ethereal forces as you rise off the ground. You can fly freely at your normal Speed while you sustain this power.\n\nLevitation is mentally taxing. You suffer 1 Shock for every hour you sustain the power,",
+    "potency": [
+      "[1] Flying Speed increases by 5 m.",
+      "[2] +1 Strength for determining what you may carry while flying."
+    ],
+    "note": "The effect ends with a comma, as printed. Also Apocrypha p.263."
+  },
+  {
+    "id": "telekinetic-dome",
+    "name": "Telekinetic Dome",
+    "source": "core",
+    "page": 278,
+    "disciplineId": "telekinesis",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "Self",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You draw the inert energies floating all around you and fashion an invisible barrier of force to protect yourself from harm.\n\nYou gain +2 Resilience and may roll Determination against Mortal Wounds while you sustain this power.\n\nTelekinetic Dome is mentally taxing. You suffer 1 Shock for every minute you sustain the power.",
+    "potency": [
+      "*[2] Increase range to +Rank m, and all beings in range gain the same protection.",
+      "[2] Increase bonus to Resilience by +1."
+    ],
+    "note": "Prerequisite as printed: \"At least one other Telekinesis Power\".",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "assail",
+          "crush",
+          "levitation",
+          "grav-warp",
+          "shock-wave"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grav-warp",
+    "name": "Grav-Warp",
+    "source": "core",
+    "page": 278,
+    "disciplineId": "telekinesis",
+    "xp": 20,
+    "dn": "Targets Willpower +2",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "50 m",
+    "multiTarget": true,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "You exploit the pressures of the Warp, exerting a force much like gravity on your target.\n\nMake an Opposed Willpower Test with a single target in line of sight to activate this power. If you succeed, you can choose to inflict one of the following effects on the target:\n- Increase Gravity: Your target is Prone and Restrained.\n- Change Gravity: Choose a direction; gravity now acts in that direction for the target.\n\nIf you Sustain this power, you may choose another effect — such as increasing gravity after changing it — or change the direction of gravity for the target again.\n\nWhenever your stop sustaining this power or the target moves more than 50 m away, the power no longer affects the target.\n\nThe gravity the target is subjected to is equivalent to Terran standard. This may cause them to take damage from falling (p.201).\n\nIf your target is an object, the DN is determined by the object's size and weight.",
+    "potency": [
+      "[2] Inflict 1 Mortal Wound to the target.",
+      "[3] Increase Range by +50 m."
+    ],
+    "note": "Copied as printed: DN \"Targets Willpower +2\" (no apostrophe), Multi-target Yes though the effect names a single target, and \"Whenever your stop\"."
+  },
+  {
+    "id": "shock-wave",
+    "name": "Shock Wave",
+    "source": "core",
+    "page": 278,
+    "disciplineId": "telekinesis",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "5 m",
+    "multiTarget": false,
+    "tags": [
+      "KINETIC",
+      "PSYCHIC"
+    ],
+    "effect": "With a mighty thrust of your fist, you unleash a burst of mental force that blasts from you in all directions.\n\nAll creatures within range take 12 +1 ED damage from this blast and must make a successful DN 5 Agility Test or be thrown to the ground Prone.",
+    "potency": [
+      "[1] Range is increased by 5 m.",
+      "[2] +1ED damage."
+    ]
+  },
+  {
+    "id": "erasure",
+    "name": "Erasure",
+    "source": "core",
+    "page": 278,
+    "disciplineId": "telepathy",
+    "xp": 15,
+    "dn": "Target's Willpower +2",
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "30 m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You remove a memory from your target's mind, casting it off to be lost in the Warp forever.\n\nIf you successfully activate this power you may remove a recent memory from the target's mind. You may only remove a number of hours of the target's memory equal to your Rank, and cannot remove memories from more than 24 hours before this power was used.\n\nThe target is aware of the gap in their recollections, but the memories have been fully removed from their psyche and cannot be recovered.",
+    "potency": [
+      "[2] +30 m range.",
+      "[3] Double the length of the memory that can be removed."
+    ],
+    "note": "Printed across pp.278-279. Prerequisite as printed: \"At least one other Telepathy power.\"",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "fog-the-mind",
+          "mind-probe",
+          "psychic-shriek",
+          "telepathy",
+          "terrify"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fog-the-mind",
+    "name": "Fog The Mind",
+    "source": "core",
+    "page": 279,
+    "disciplineId": "telepathy",
+    "xp": 15,
+    "dn": 4,
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You reach into your enemy's mind and cloud their thoughts, slowing their cognitive processes and dulling their wits.\n\nA sense of haziness and confusion overcomes all enemies within range, and they must make a successful DN 6 Willpower Test or immediately be both Hindered (2) and Staggered.\n\nFog the Mind is mentally draining. You suffer 1 Shock for every round you sustain the power.",
+    "potency": [
+      "[1] +10 Range.",
+      "*[2] Activation reduced to an Action."
+    ],
+    "note": "Copied as printed: \"[1] +10 Range.\" has no unit."
+  },
+  {
+    "id": "mind-probe",
+    "name": "Mind Probe",
+    "source": "core",
+    "page": 279,
+    "disciplineId": "telepathy",
+    "xp": 15,
+    "dn": "Target's Willpower (Opposed Test)",
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "30 m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You envelop a visible target with your mind, imposing your will on them and forcibly probing their innermost secrets.\n\nTo activate this power you must win an Opposed Willpower Test with your target. If you succeed, you can probe the target's mind for secrets until the power ends or either party loses consciousness.\n\nOn each of your Turns this power is active, you may ask the target one question. The GM will provide as honest an answer as possible through the target's memories and mental visualisations as they stream into your own consciousness, but be aware that this answer may be skewed by the target's personal perspective. The target suffers 1d3 Shock for each question 'answered' in this way.\n\nTo Sustain this power, you must win an Oppose Willpower Test with your target at the start of each of your Turns, then may ask another question. If you fail an Opposed Test, you are expelled from the target's mind and suffer 1d3+3 Shock.\n\nYou may not recover Shock while sustaining this power.",
+    "potency": [
+      "[1] The target answers one additional question.",
+      "*[2] The target suffers no Shock and is unaware of the psyker's intrusion into their mind."
+    ],
+    "note": "Prerequisite as printed: \"At least one other Telepathic Power\". The potency list is printed numbered (1., 2.) instead of bulleted; numbers dropped. \"an Oppose Willpower Test\" copied as printed.",
+    "requires": [
+      {
+        "kind": "power",
+        "anyOf": [
+          "erasure",
+          "fog-the-mind",
+          "psychic-shriek",
+          "telepathy",
+          "terrify"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "psychic-shriek",
+    "name": "Psychic Shriek",
+    "source": "core",
+    "page": 279,
+    "disciplineId": "telepathy",
+    "xp": 10,
+    "dn": "Target's Willpower",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "50 m",
+    "multiTarget": true,
+    "tags": [
+      "PSYCHIC"
+    ],
+    "effect": "You unleash a blast of psychic energy to attack the mind of an enemy nearby.\n\nThe target immediately takes 1d3+3 Shock and must make a successful DN 5 Willpower Test or be Staggered.",
+    "potency": [
+      "[1] +1 Shock.",
+      "[2] +1 DN to the Willpower Test."
+    ],
+    "note": "Keywords printed as PSYCHIC only (no TELEPATHY), unlike the rest of the discipline."
+  },
+  {
+    "id": "telepathy",
+    "name": "Telepathy",
+    "source": "core",
+    "page": 279,
+    "disciplineId": "telepathy",
+    "xp": 5,
+    "dn": 3,
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "100 m",
+    "multiTarget": true,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "You reach out with your mind to link with another and communicate with nothing but thoughts. You don't need line of sight to the target, and no obstacles except those designed specifically for warding off psychic intrusion can prevent this communication.\n\nYou don't need to know whether any targets are in range, and may simply use Telepathy to contact the nearest target.\n\nOnce you activate the power, communication continues until you end it. If the target wishes to break the link against your will, they must make a successful DN 3 Willpower Test. If the target forcibly breaks the telepathic link in this manner, you suffer 1d3 Shock.\n\nYou may use Telepathy to eavesdrop on a target instead of communicating, and may still choose to 'speak' at any time using the link. If you use Telepathy in this way, the target may still become aware of the link and that something is amiss with a successful Awareness (Int) Test (DN equal to your Psychic Mastery (Wil) dice pool). If the target becomes aware of the telepathic communication, it can choose to use the link itself or attempt to terminate it as above.\n\nTelepathy only reads active surface thoughts, so you cannot pry into another's secrets, unless the target is actively thinking about them at the time.\n\nIf you use Telepathy to communicate with more than one target, you act as a communication hub and all targets can 'hear' one another through you. Acting as a telepathic hub in this way is mentally taxing. You suffer 1 Shock for every 20 minutes you sustain the power.\n\nYou may not recover Shock while sustaining this power.",
+    "potency": [
+      "[1] Range is increased by a factor of 10."
+    ],
+    "note": "Printed across pp.279-280."
+  },
+  {
+    "id": "terrify",
+    "name": "Terrify",
+    "source": "core",
+    "page": 280,
+    "disciplineId": "telepathy",
+    "xp": 15,
+    "dn": 5,
+    "activation": "Full Action",
+    "duration": "Instant",
+    "range": "10 m",
+    "multiTarget": false,
+    "tags": [
+      "TELEPATHY",
+      "PSYCHIC"
+    ],
+    "effect": "Reaching out with your mind, you pluck the latent fears of enemies nearby from their subconscious, and force them to the surface.\n\nA supernatural dread of you and your allies overcomes all enemies within range; they must make a DN 5 Fear Test.",
+    "potency": [
+      "[2] Fear roll DN increased by +1.",
+      "*[2] Activation reduced to an Action.",
+      "[1] +10 m range."
+    ]
+  },
+  {
+    "id": "dark-flame",
+    "name": "Dark Flame",
+    "source": "core",
+    "page": 281,
+    "disciplineId": "maleficarum",
+    "xp": 15,
+    "dn": 7,
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "You unleash the roiling inferno of your rage. The power affects all creatures in a 6m radius from a point in range, unholy flames burning their very souls. Affected targets suffer 1d3 + your Corruption level in Shock damage and must pass a DN 5 Toughness Test or suffer 1d3 Mortal Wounds as well.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "*[2] Double the blast radius."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the CHAOS Keyword\"."
+  },
+  {
+    "id": "possession",
+    "name": "Possession",
+    "source": "core",
+    "page": 281,
+    "disciplineId": "maleficarum",
+    "xp": 20,
+    "dn": "Target's Willpower (Opposed Test)",
+    "activation": "Full Action",
+    "duration": "Sustained",
+    "range": "30 m",
+    "multiTarget": false,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "You breach your enemy's mind, quashing its will completely, and turning their body into your puppet.\n\nYou and your target make an Opposed Willpower Test. If you succeed, the target is completely dominated — they have no free will whatsoever. With a simple thought you can compel the target to perform any task you choose as long as the power is Sustained. This control has no limits, and victims do anything you command them to do without question. You immediately gain 1 Corruption on activation of this power, and the target must make a DN 6 Corruption Test when the power ends.\n\nPossession is mentally draining, as you must constantly overpower the target's persona. You suffer 1d3+1 Shock every Round you sustain the power. You may not recover Shock while sustaining this power.",
+    "potency": [
+      "*[1] Activation reduced to an Action.",
+      "*[2] May sustain the power for a minute before taking Shock."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the CHAOS Keyword\"."
+  },
+  {
+    "id": "soul-shrivel",
+    "name": "Soul Shrivel",
+    "source": "core",
+    "page": 281,
+    "disciplineId": "maleficarum",
+    "xp": 20,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Instant",
+    "range": "20 m",
+    "multiTarget": true,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "You open a minute fissure into the Immaterium near your enemy, draining the very life energies of their spirit.\n\nThe target suffers 1d3 Mortal Wounds and must make a DN 3 Corruption Test.",
+    "potency": [
+      "[2] +1 Mortal Wound.",
+      "[1] Range increased by 10 m."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the CHAOS Keyword\"."
+  },
+  {
+    "id": "touch-of-corruption",
+    "name": "Touch Of Corruption",
+    "source": "core",
+    "page": 281,
+    "disciplineId": "maleficarum",
+    "xp": 15,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "Touch",
+    "multiTarget": true,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "You unleash the mutable energies of the Warp to forcibly corrupt your target's flesh.\n\nThe target suffers 1 Corruption and gains a random mutation from the Minor Mutation table (p.288). The resulting mutation is horrific, but temporary. The target's flesh returns to normal when the power ends.\n\nTouch of Corruption is mentally draining. You suffer 1 Shock for every minute you sustain the power. You may not recover Shock while sustaining this power.",
+    "potency": [
+      "[1] Target suffers +2 Shock damage.",
+      "[2] Target suffers 1 additional Corruption."
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "note": "Prerequisite as printed: \"Psyker must have the CHAOS Keyword\"."
+  },
+  {
+    "id": "infernal-gaze",
+    "name": "Infernal Gaze",
+    "source": "core",
+    "page": 281,
+    "disciplineId": "maleficarum",
+    "xp": 10,
+    "dn": "Target's Defence",
+    "activation": "Action",
+    "duration": "Sustained",
+    "range": "25 m",
+    "multiTarget": true,
+    "tags": [
+      "CHAOS",
+      "PSYCHIC"
+    ],
+    "effect": "You worm your way into the mind of your victim, forcing them to experience the dread things that only the Warp can unveil.\n\nThe target temporarily loses 1 Intellect and must make a successful DN 7 Willpower Test or suffer intense, personal hallucinations. These hallucinations take the form of supernatural illusions that only they can see. The target immediately rolls on the Perils of the Warp table.\n\nThe effects of these hallucinations continue for as long as you sustain the power, or until the Perils of the Warp run their course, whichever is longer. In certain circumstances, where the target may question why those around them are not affected by such an obvious supernatural event as determined by the roll on the table, the target may be allowed to reroll its Willpower Test. Temporary lost Intellect returns at the rate of 1 point per day.\n\nInfernal Gaze is mentally taxing. You suffer 1 Shock for every minute you sustain the power. You may not recover Shock while sustaining this power.",
+    "potency": [
+      "[1] +1 temporary Intellect damage.",
+      "*[3] Target must add the psyker's Corruption score to the first digit of their d66 roll on the Perils of the Warp table."
+    ],
+    "note": "Printed across pp.281-282. Apocrypha (homebrew) also lists it in Dark Hereticus (p.301). Prerequisite as printed: \"Psyker must have the CHAOS Keyword\".",
+    "alsoIn": [
+      "dark-hereticus"
+    ],
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ]
   }
 ]
