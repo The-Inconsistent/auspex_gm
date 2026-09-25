@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { wargearCite, type RuleEntry } from "@wg/shared";
+import { sourceCite, type RuleEntry } from "@wg/shared";
 
 import { RULE_FILTERS, RULE_KIND_LABELS, type RuleFilter } from "./constants";
 
@@ -45,7 +45,7 @@ export function RulesRef({ rules }: RulesRefProps) {
             <summary className="item-head">
               <b>{r.name.toUpperCase()}</b>
               <span className="dim">
-                {r.type ?? RULE_KIND_LABELS[r.kind]} · {wargearCite(r)}
+                {r.type ?? RULE_KIND_LABELS[r.kind]} · {sourceCite(r)}
               </span>
               <span style={{ flexBasis: "100%" }}>{r.gist}</span>
             </summary>

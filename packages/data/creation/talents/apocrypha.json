@@ -4462,7 +4462,17 @@
     "grants": [
       {
         "followers": 1,
-        "kind": "companion"
+        "kind": "companion",
+        "threatOf": {
+          "classes": [
+            "T",
+            "E"
+          ]
+        },
+        "genericStats": {
+          "perRank": 2,
+          "plus": 1
+        }
       }
     ]
   },
@@ -4800,7 +4810,17 @@
     "grants": [
       {
         "followers": 1,
-        "kind": "familiar"
+        "kind": "familiar",
+        "threatOf": {
+          "classes": [
+            "T"
+          ],
+          "maxSize": "Small"
+        },
+        "genericStats": {
+          "perRank": 2,
+          "plus": 1
+        }
       }
     ]
   },

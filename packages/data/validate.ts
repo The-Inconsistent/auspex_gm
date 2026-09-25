@@ -56,6 +56,7 @@ const EXPECTED = [
 const dir = new URL("./threats/", import.meta.url);
 let failed = false;
 const found: string[] = [];
+const variantsOf = new Map<string, Set<string>>(); // a threat's `variant` options, for followers
 
 for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   const r = Threat.safeParse(JSON.parse(readFileSync(new URL(file, dir), "utf8")));
@@ -72,12 +73,20 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   if (r.data.source === "core" && !EXPECTED.includes(r.data.id))
     console.warn(`? ${file}: core source but not in the core bestiary list`);
   found.push(r.data.id);
+  variantsOf.set(r.data.id, new Set(r.data.options.filter((o) => o.kind === "variant").map((o) => o.name)));
 }
 
 const missing = EXPECTED.filter((id) => !found.includes(id));
 const core = EXPECTED.length - missing.length;
 console.log(`core bestiary: ${core}/${EXPECTED.length}${missing.length ? ` (missing: ${missing.join(", ")})` : ""}`);
 console.log(`supplements: ${found.length - core} threats`);
+// A follower names its stat block, and a variant only of that threat; nothing else names a stat block.
+function followerError(follower: boolean, threatId?: string, variant?: string) {
+  if (follower !== (threatId !== undefined))
+    return follower ? "a follower needs a threatId" : "only a follower has a threatId";
+  if (threatId && !variantsOf.has(threatId)) return `unknown threat "${threatId}"`;
+  if (variant && !variantsOf.get(threatId!)?.has(variant)) return `"${threatId}" has no variant "${variant}"`;
+}
 // Wargear catalogue: schema per file, ids unique across files.
 const wargearDir = new URL("./wargear/", import.meta.url);
 const wargearIds = new Set<string>();
@@ -96,6 +105,11 @@ for (const file of readdirSync(wargearDir)
       console.error(`✖ wargear/${file}: duplicate id "${w.id}"`);
     }
     wargearIds.add(w.id);
+    const err = followerError(w.kind === "follower", w.threatId, w.variant);
+    if (err) {
+      failed = true;
+      console.error(`✖ wargear/${file} "${w.id}": ${err}`);
+    }
   }
   console.log(`wargear/${file}: ${r.data.length} entries`);
 }
@@ -255,6 +269,13 @@ function checkRefs(v: unknown, where: string) {
     for (const ref of o.from as string[]) miss("disciplines", ref, where);
   const reqType = typeof o.kind === "string" ? REQUIREMENT_REFS[o.kind] : undefined;
   if (reqType && Array.isArray(o.anyOf)) for (const ref of o.anyOf as string[]) miss(reqType, ref, where);
+  if (o.followers !== undefined && o.variant !== undefined) {
+    const err = followerError(true, o.threatId as string | undefined, o.variant as string);
+    if (err) {
+      failed = true;
+      console.error(`✖ ${where}: ${err}`);
+    }
+  }
   if (o.mundane === true) {
     mundaneWargear++;
     if (o.wargearId || o.upgrades || o.traitIds) {

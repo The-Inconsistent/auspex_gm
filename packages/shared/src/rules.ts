@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { WargearSource } from "./wargear.ts";
+import { Source } from "./source.ts";
 
 // The rules reference: Conditions (Core pp.197–200), weapon traits (pp.208–210), armour traits (p.232) and combat
 // actions (pp.177–190), transcribed from the books. It holds book text, so it is served to seats only (GM or player),
@@ -13,7 +13,7 @@ export const RuleEntry = z.object({
   kind: RuleKind,
   name: z.string().min(1), // as printed, with its rating: "Blast (X)"
   type: z.string().optional(), // actions only: "Combat Action", "Full-Round Action", "Reflexive Action"…
-  source: WargearSource,
+  source: Source,
   page: z.number().int().positive(), // printed page
   gist: z.string().min(1).max(120), // one terse line, paraphrased from `text`, for the collapsed row
   text: z.string().min(1), // paragraphs separated by a blank line

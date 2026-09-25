@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SOURCES } from "./source.ts";
 
 // Bestiary format: Core Rulebook p.323. Stats don't vary by Tier, only the Threat class does.
 
@@ -27,6 +28,9 @@ export const Ability = z.object({
 });
 export type Ability = z.infer<typeof Ability>;
 
+export const ThreatSize = z.enum(["Tiny", "Small", "Avg", "Large", "Huge", "Gargantuan"]); // smallest first
+export type ThreatSize = z.infer<typeof ThreatSize>;
+
 export const ThreatOption = z.object({
   kind: z.enum(["mob", "variant"]),
   name: z.string(),
@@ -38,7 +42,9 @@ export const ThreatOption = z.object({
 export const Threat = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   name: z.string(),
-  source: z.enum(["core", "threat-assessment", "gutshivas-kommandos", "vow-of-absolution"]).default("core"),
+  source: z
+    .enum([...(Object.keys(SOURCES) as (keyof typeof SOURCES)[]), "threat-assessment", "gutshivas-kommandos"])
+    .default("core"),
   page: z.number().int().positive(), // printed page number in `source`
   faction: z.enum([
     "imperial",
@@ -78,7 +84,7 @@ export const Threat = z.object({
   conviction: z.number().int(),
   resolve: z.number().int(),
   speed: z.number().int(),
-  size: z.enum(["Tiny", "Small", "Avg", "Large", "Huge", "Gargantuan"]),
+  size: ThreatSize,
   options: z.array(ThreatOption).default([]),
   mobAbilities: z.array(Ability).default([]),
 });

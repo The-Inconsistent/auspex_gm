@@ -1,26 +1,13 @@
 import { z } from "zod";
 import { Rarity } from "./requisition.ts";
 import { ATTRIBUTES, Mods, SKILLS, type Attribute, type Skill } from "./state.ts";
-import { Weapon } from "./threat.ts";
+import { ThreatClass, ThreatSize, Weapon } from "./threat.ts";
+import { Source } from "./source.ts";
 import { WargearKind } from "./wargear.ts";
 
 // The character-creation catalogue: every species, archetype, talent, package, power and table a character is built
 // from, transcribed from the books (docs/data.md, "Creation catalogue"). Records cross-reference each other by id and
 // packages/data/validate.ts resolves every reference. It holds book text, so it is served to seats only.
-
-// Books, in precedence order: when one thing is printed in several books only the first listed is transcribed, and
-// the others are cited in its `note` (docs/data.md). Official beats homebrew, then newest printing wins.
-export const SOURCES = {
-  "vow-of-absolution": { cite: "VoA", official: true, pages: "printed" }, // Apr 2024 printing
-  "inheritance-of-embers": { cite: "IoE", official: true, pages: "printed" }, // Jan 2024
-  "forsaken-system": { cite: "FSPG", official: true, pages: "printed" }, // 2021
-  core: { cite: "Core", official: true, pages: "printed" }, // 2020
-  apocrypha: { cite: "Apocrypha", official: false, pages: "printed" }, // homebrew, v9 2023
-  "legacy-of-the-necrontyr": { cite: "Necrontyr", official: false, pages: "pdf" }, // homebrew, no printed pages
-} as const;
-export type Source = keyof typeof SOURCES;
-export const Source = z.enum(Object.keys(SOURCES) as [Source, ...Source[]]);
-export const sourceCite = ({ source, page }: { source: Source; page: number }) => `${SOURCES[source].cite} p.${page}`;
 
 // Total XP to reach a rating from 1 (Attributes, Core p.24) or 0 (Skills, Core p.25), by rating.
 export const ATTRIBUTE_XP = [0, 0, 4, 10, 20, 35, 55, 80, 110, 145, 185, 230, 280] as const;
@@ -74,6 +61,15 @@ const dice = z.string().regex(/^\d*d\d+([+-]\d+)?$/); // "1d3", "d6+3"
 // "1d3 × 3 Corruption" (Havoc, Apocrypha p.151) is { roll: "1d3", times: 3 }; "1d3 × Tier" is times { timesTier: 1 }.
 export const Amount = z.union([Scaled, dice, z.object({ perTier: dice }), z.object({ roll: dice, times: Scaled })]);
 export type Scaled = z.infer<typeof Scaled>;
+
+// Which bestiary Threats a follower may be: its class at the character's Tier (threatClassAt), at most a Size, and
+// any of the keywords. "not an Adversary at your Tier" (IoE p.60) lists the other classes.
+export const ThreatFilter = z.object({
+  classes: z.array(ThreatClass).min(1).optional(),
+  maxSize: ThreatSize.optional(),
+  keywords: z.array(keyword).min(1).optional(),
+});
+export type ThreatFilter = z.infer<typeof ThreatFilter>;
 
 // Which catalogue items qualify: "any two augmetics", "one ranged weapon of Uncommon or lower rarity", "Rare Wargear
 // with a Value up to 3 + the new Tier" (Core p.151). Every field narrows; an empty filter is any item.
@@ -236,11 +232,16 @@ const grantOne = z.union([
       z.object({ discipline: id.optional(), multiplier: z.number().positive().max(1) }),
     ]),
   }),
-  // Followers: "a mob of Boyz equal to Rank × 3" (Ork Nob, Core p.115); `threatId` is their bestiary stat block
+  // Followers: "a mob of Boyz equal to Rank × 3" (Ork Nob, Core p.115). `threatId` (and `variant`) is a fixed bestiary
+  // stat block; `threatOf` is the player's pick ("a single Troop level Threat of Tiny or Small size", Apocrypha p.236).
+  // `genericStats` is the printed stand-in: "Attributes … equal to 1 + Double Rank", capped at your own (Core p.132).
   z.object({
     followers: Scaled,
     kind: z.enum(["mob", "companion", "familiar", "devotees", "minion"]),
     threatId: id.optional(),
+    variant: z.string().min(1).optional(),
+    threatOf: ThreatFilter.optional(),
+    genericStats: Scaled.optional(),
   }),
   // "+2 bonus dice to Corruption Tests" (Core p.64): the dice, and the Skills or situation they apply to
   z.object({ bonusDice: Scaled, skills: z.array(skill).optional(), when: z.string().min(1) }),

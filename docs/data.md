@@ -50,7 +50,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 |---|---|---|
 | `id` | string, `^[a-z0-9-]+$` | Must equal the filename without `.json` (validate checks) |
 | `name` | string | As printed |
-| `source` | `core` \| `threat-assessment` \| `gutshivas-kommandos` \| `vow-of-absolution`; default `core` | Book id. Omit for core |
+| `source` | a `SOURCES` book id (`packages/shared/src/source.ts`), or `threat-assessment` \| `gutshivas-kommandos`; default `core` | Book id. Omit for core |
 | `page` | positive int | **Printed** page in `source`, not the PDF page |
 | `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` | Grouping for the GM picker |
 | `threat` | array of `T`/`E`/`A`/`M`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column) |
@@ -107,7 +107,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | Convention | Detail |
 |---|---|
 | `id` = filename | `ork-boy.json` → `"id": "ork-boy"`. A supplement reprint of a core entry takes a book prefix (`ta-ork-boy`, `ta-kommando`) so both can coexist |
-| `source` | Book id from the enum above; omitted means `core`. A new book needs a new enum value first |
+| `source` | Book id from the enum above; omitted means `core`. A new book goes in `SOURCES` (`source.ts`) first |
 | `page` | Printed page, never the PDF page (see §3 for the offsets) |
 | `threat` | 4 letters for core (Tiers 1–4), 5 when the book prints Tier 5. `threatClassAt(t, tier)` picks `threat[min(tier, length) - 1]`, so a 4-letter entry at a Tier 5 campaign uses its Tier 4 class. Class rules: [rules-flow.md](rules-flow.md) §4, Threat classes |
 | Weapons | Inside an `ACTION` ability (`{ "type": "ACTION", "weapons": [...] }`, usually no name or text), never loose on the threat |
@@ -341,13 +341,14 @@ section, for the GM's requisition form. 277 entries:
 
 | Field | Notes |
 |---|---|
-| `id`, `name`, `source`, `page`, `category` | `source` is `core` or `vow-of-absolution`; `id` is unique across all files; `page` is printed; `category` is the table heading |
-| `kind` | `weapon`, `grenade` (Grenades and Missiles: requisitioned like Ammo, p.229), `armour`, `equipment`, `upgrade`, `ammo`, `augmetic` |
+| `id`, `name`, `source`, `page`, `category` | `source` is a `SOURCES` book id (`source.ts`); `id` is unique across all files; `page` is printed; `category` is the table heading |
+| `kind` | `weapon`, `grenade` (Grenades and Missiles: requisitioned like Ammo, p.229), `armour`, `equipment`, `upgrade`, `ammo`, `augmetic`, `follower` (a companion, servo-skull or drone bought as Wargear) |
 | `value`, `rarity` | As printed; `null` when none is printed (Clothing's "Variable" Rarity; the Arm Weapon Implant's "3 + Weapon Value") |
 | `keywords` | Upper case, `[ANY]` kept |
 | `weapon` | `Weapon` minus `name`, plus `addStrength` and `thrown` (the N of "S × N", p.207). A knife has both a melee `range` and `thrown` |
 | `armour` | `{ ar, invulnerable, powered, traits }` |
 | `effect` | Rules text only (the Effect line); no flavour |
+| `threatId`, `variant` | A `follower`'s bestiary stat block (required), and which of its `variant` options it is when the book prints one profile with variants (the T'au Drones, Apocrypha p.479). Only followers have them |
 | `note` | Print errors copied as printed, and transcription calls |
 
 Transcription calls, all in each entry's `note`:
@@ -407,6 +408,7 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | An Archetype's XP is its ratings + (Tier − 1) × 10 (`archetypeXp`) | `? … "<id>": XP N, but ratings + (Tier − 1) × 10 = M` warning, silenced by "XP as printed" in the note |
 | Creation coverage against `creation/manifest.json` | `creation <type> <source>: N/M (missing: …)` |
 | Creation summary | `creation/<type>: N records`, and counts of GM-judged story conditions, `mundane` possessions and wargear not yet in the catalogue |
+| A `follower` Wargear entry has a known `threatId`, and any `variant` (there or on a `followers` grant) is one of that threat's variants; nothing else has a `threatId` | `✖ wargear/<file> "<id>": …` or `✖ creation/… "<id>": "…" has no variant "…"` |
 | A `mundane` item links nothing in the catalogue | `✖ creation/… "<id>": "…" is mundane but links the catalogue` |
 
 ---
@@ -497,7 +499,8 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
 - `Grant`:
   - items: `wargear` (optionally `requires`), `bundle`, `pick` + `wargearOf` (a `WargearFilter`), `weapon` (an innate
     profile, `addStrength` for S + X), `weaponTrait`, `trinkets`, `followers` (mob, companion, familiar, devotees or
-    minion, with an optional bestiary `threatId`)
+    minion): a fixed bestiary `threatId` (+ `variant`), or `threatOf` for the player's pick (`classes` at the
+    character's Tier, `maxSize`, any of `keywords`), and `genericStats`, the printed "1 + Double Rank" stand-in
   - character: `talent`, `keyword`, `keywords`, `loseKeyword`, `neverKeyword`, `power`, `disciplineAccess`,
     `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`), `talentAccess`
     (+ `asKeyword`), `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),

@@ -28,7 +28,17 @@
     "grants": [
       {
         "followers": 1,
-        "kind": "companion"
+        "kind": "companion",
+        "threatOf": {
+          "classes": [
+            "T",
+            "E",
+            "M"
+          ],
+          "keywords": [
+            "BEAST"
+          ]
+        }
       }
     ]
   },

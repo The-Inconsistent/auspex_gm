@@ -11,7 +11,7 @@ import {
   requisitionSlot,
   requisitionTest,
   requisitionYield,
-  wargearCite,
+  sourceCite,
   type ActionResult,
   type Character,
   type Wargear,
@@ -55,8 +55,7 @@ export function RequisitionForm({
   // A name printed in more than one book is listed with its cite ("Bolt Rifle (VoA p.67)").
   const seen = new Map<string, number>();
   for (const w of catalogue) seen.set(w.name.toLowerCase(), (seen.get(w.name.toLowerCase()) ?? 0) + 1);
-  const labelOf = (w: Wargear) =>
-    (seen.get(w.name.toLowerCase()) ?? 0) > 1 ? `${w.name} (${wargearCite(w)})` : w.name;
+  const labelOf = (w: Wargear) => ((seen.get(w.name.toLowerCase()) ?? 0) > 1 ? `${w.name} (${sourceCite(w)})` : w.name);
   const find = (v: string) => catalogue.find((w) => labelOf(w).toLowerCase() === v.trim().toLowerCase());
   const picked = find(item);
 
@@ -137,7 +136,7 @@ export function RequisitionForm({
         />
         <datalist id="rq-catalogue">
           {catalogue.map((w) => (
-            <option key={w.id} value={labelOf(w)}>{`${w.category} · ${wargearCite(w)}`}</option>
+            <option key={w.id} value={labelOf(w)}>{`${w.category} · ${sourceCite(w)}`}</option>
           ))}
         </datalist>
         <datalist id="rq-ammo-types">
@@ -148,7 +147,7 @@ export function RequisitionForm({
       </div>
       {picked && (
         <div className="dim" style={{ fontSize: 12 }}>
-          {picked.category.toUpperCase()} · {wargearCite(picked).toUpperCase()}
+          {picked.category.toUpperCase()} · {sourceCite(picked).toUpperCase()}
           {picked.effect ? ` · ${picked.effect}` : ""}
           {picked.weapon ? " · JOINS THE ARMAMENT" : ""}
         </div>

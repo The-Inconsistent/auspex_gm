@@ -223,7 +223,9 @@
       },
       {
         "followers": 1,
-        "kind": "minion"
+        "kind": "minion",
+        "threatId": "pink-horror",
+        "variant": "Brimstone Horror"
       }
     ]
   },
@@ -326,7 +328,16 @@
           "perRank": 2,
           "plus": 2
         },
-        "kind": "devotees"
+        "kind": "devotees",
+        "threatOf": {
+          "classes": [
+            "T"
+          ]
+        },
+        "genericStats": {
+          "perRank": 2,
+          "plus": 1
+        }
       }
     ]
   },
