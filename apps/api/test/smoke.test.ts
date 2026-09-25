@@ -103,6 +103,7 @@ test("GM and player share a table", async (t) => {
 
   const hero = await gm.send({ type: "character.create", name: "Hero" });
   const other = await gm.send({ type: "character.create", name: "Other" });
+  assert.ok(other.ok && other.id);
   assert.ok(hero.ok && hero.id && other.ok && other.id);
   const issued = await gm.send({ type: "token.issue", characterId: hero.id });
   assert.ok(issued.ok && issued.token);
@@ -735,6 +736,27 @@ test("character builder: the creation catalogue for seats, and character.build d
     s.characters.some((c) => c.id === made.id && (c.build?.gm as { keywords: string[] }).keywords.length === 0),
   );
   assert.ok(!after.characters.find((c) => c.id === made.id)!.stats.keywords.includes("DEATHWATCH"));
+
+  // A draft sent to the table waits for the GM: a player's keeps the GM's part, only their own, and a save clears it.
+  const other = await gm.send({ type: "character.create", name: "Other" });
+  assert.ok(other.ok && other.id);
+  assert.deepEqual(await player.send({ type: "character.draft", id: other.id, draft: { tier: 4 } }), {
+    ok: false,
+    error: "Not your character",
+  });
+  const sent = await player.send({
+    type: "character.draft",
+    id: made.id!,
+    draft: { ...disruptor, name: "Veyl", gm: { keywords: ["DEATHWATCH"] } },
+  });
+  assert.ok(sent.ok, JSON.stringify(sent));
+  const waiting = (await gm.until((s) => !!s.characters.find((c) => c.id === made.id)?.draft)).characters.find(
+    (c) => c.id === made.id,
+  )!;
+  assert.equal(waiting.draft?.archetypeId, "primaris-incursor");
+  assert.deepEqual((waiting.draft?.gm as { keywords: string[] }).keywords, [], "the player's GM part is dropped");
+  assert.ok((await gm.send({ type: "character.build", id: made.id, build: disruptor })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === made.id)?.draft === null);
 });
 
 test("the guest door is rate limited per caller IP", async () => {

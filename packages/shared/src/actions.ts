@@ -7,6 +7,8 @@ import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./sta
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
 const conditions = z.array(z.string().max(60)).max(30);
+// A builder draft is a few KB; this is room for every choice twice over, and a cap on what a socket can store.
+export const MAX_DRAFT_CHARS = 64_000;
 
 const codexSave = (Object.keys(CodexInput) as (keyof typeof CodexInput)[]).map((kind) =>
   z.object({ type: z.literal("codex.save"), kind: z.literal(kind), id: id.optional(), data: CodexInput[kind] }),
@@ -90,6 +92,16 @@ export const Action = z.union([
       name: z.string().min(1).max(100).optional(),
       build: CharacterBuild,
     }),
+    // A builder draft kept on the server, so the GM can open a player's half-made character, tick what only the GM
+    // judges and save it. Any shape the builder writes (it may lack an archetype yet); null clears it.
+    z.object({
+      type: z.literal("character.draft"),
+      id,
+      draft: z
+        .record(z.string(), z.unknown())
+        .refine((d) => JSON.stringify(d).length <= MAX_DRAFT_CHARS, "The draft is too large")
+        .nullable(),
+    }),
 
     z.object({ type: z.literal("token.issue"), characterId: id }),
     z.object({ type: z.literal("token.revoke"), characterId: id }),
@@ -161,6 +173,7 @@ export type ActionInput = z.input<typeof Action>; // what clients send: defaulte
 export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.update",
   "character.build",
+  "character.draft",
   "character.supply",
 ]);
 

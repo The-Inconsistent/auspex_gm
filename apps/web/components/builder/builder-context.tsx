@@ -5,8 +5,9 @@ import type { BuildCatalogue, BuildChoice, CharacterBuildInput, Creation, Resolv
 
 import type { BuilderStep } from "./constants";
 
-// A build still being made: no archetype yet is allowed, and the name travels with it until it's saved.
-export type Draft = Omit<CharacterBuildInput, "archetypeId"> & { archetypeId?: string; name: string };
+// A build still being made: no archetype yet is allowed, and the name travels with it until it's saved. `savedAt`
+// (ms) picks the newer of this device's draft and the one sent to the table.
+export type Draft = Omit<CharacterBuildInput, "archetypeId"> & { archetypeId?: string; name: string; savedAt?: number };
 
 // Catalogue lookups by id, built once per payload.
 export type Lookups = {
@@ -23,6 +24,9 @@ export type BuilderValue = {
   tier: number;
   role: Role;
   go: (step: BuilderStep) => void;
+  // SEND TO GM: puts the draft on the table for the GM (null for a character not made yet).
+  sendDraft: (() => Promise<string | null>) | null;
+  sentDraft: boolean; // a draft is waiting on the table
 };
 
 export const BuilderContext = createContext<BuilderValue | null>(null);

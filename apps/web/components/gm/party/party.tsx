@@ -311,8 +311,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 {d.resilience}
               </div>
               <div className="keys">
-                <a className="btn sm" href={`/c/${state.campaign.id}/build/${c.id}`}>
-                  {c.build ? "REBUILD" : "BUILD"}
+                {/* A draft a player sent: the GM ticks what only the GM judges, and saves it. */}
+                <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
+                  {c.draft ? "OPEN DRAFT" : c.build ? "REBUILD" : "BUILD"}
                 </a>
                 <button className="btn sm" onClick={() => inviteCharacter(c)}>
                   INVITE

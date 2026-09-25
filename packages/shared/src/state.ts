@@ -207,6 +207,8 @@ export const Character = z.object({
   // The creation choices `stats` was derived from (a CharacterBuild, build.ts), or null for a hand-made sheet. Loose
   // here because build.ts imports this file; the builder parses it with CharacterBuild.
   build: z.record(z.string(), z.unknown()).nullable(),
+  // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
+  draft: z.record(z.string(), z.unknown()).nullable(),
 });
 export type Character = z.infer<typeof Character>;
 

@@ -29,7 +29,10 @@ function authorize(ctx: Ctx, a: Action) {
   if (ctx.role === "gm") return;
   if (!PLAYER_ACTIONS.has(a.type)) fail("GM only");
   if (
-    (a.type === "character.update" || a.type === "character.build" || a.type === "character.supply") &&
+    (a.type === "character.update" ||
+      a.type === "character.build" ||
+      a.type === "character.draft" ||
+      a.type === "character.supply") &&
     a.id !== ctx.characterId
   )
     fail("Not your character");
@@ -49,6 +52,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "character.create":
     case "character.update":
     case "character.build":
+    case "character.draft":
     case "character.adjust":
     case "character.supply":
     case "character.requisition":

@@ -42,6 +42,7 @@ const s: LiveState = {
       xp: 0,
       conditions: [],
       build: null,
+      draft: null,
     },
   ],
   encounter: {

@@ -44,7 +44,12 @@ export async function ownCharacter(tx: Tx, { campaignId, id }: { campaignId: str
 
 // A character row with its derived Traits and damage state (Dying, Dead), at the campaign's Tier.
 async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: typeof character.$inferSelect }) {
-  const c: Character = { ...row, stats: CharacterStats.parse(row.stats), overrides: Overrides.parse(row.overrides) };
+  const c: Character = {
+    ...row,
+    stats: CharacterStats.parse(row.stats),
+    overrides: Overrides.parse(row.overrides),
+    draft: row.buildDraft,
+  };
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
   const status = pcStatus(c, derived);
   return { c, derived, dying: status.includes("Dying"), dead: status.includes("Dead") };
@@ -110,7 +115,7 @@ export async function applyCharacterAction(
       if (row) {
         await tx
           .update(character)
-          .set({ stats, build, ...(a.name ? { name: a.name } : {}) })
+          .set({ stats, build, buildDraft: null, ...(a.name ? { name: a.name } : {}) })
           .where(eq(character.id, row.id));
         return { ok: true, id: row.id };
       }
@@ -119,6 +124,16 @@ export async function applyCharacterAction(
         .values({ campaignId: cid, name: a.name ?? "Unnamed", stats, build })
         .returning({ id: character.id });
       return { ok: true, id: c!.id }; // the row was just inserted
+    }
+
+    // A draft waits on the character for the GM. A player's keeps the GM's part as it stands (the stored draft's, or the
+    // saved build's), so ticks and rulings stay the GM's.
+    case "character.draft": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const gm = row.buildDraft?.gm ?? row.build?.gm;
+      const draft = a.draft && ctx.role !== "gm" ? { ...a.draft, gm: gm ?? {} } : a.draft;
+      await tx.update(character).set({ buildDraft: draft }).where(eq(character.id, row.id));
+      return { ok: true };
     }
 
     case "character.adjust": {

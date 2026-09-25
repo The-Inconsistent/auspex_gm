@@ -96,9 +96,12 @@ name, gist and text, a kind filter, one `<details>` per entry: the gist on the c
 The character builder (issue #9). `<characterId>` is `new` (`NEW_CHARACTER`) for a character not made yet, GM only; a
 player may open only their own. The page checks the seat, fetches `/api/campaigns/:id/creation` (parsed with
 `CreationPayload`) and renders `Builder` (`components/builder/`):
-- **Draft:** the choices so far (`Draft`: a `CharacterBuildInput` with the archetype optional, plus the name), kept in
-  `localStorage` per table and character (`draftKey`), started from the saved `character.build` or blank. START OVER
-  drops it.
+- **Draft:** the choices so far (`Draft`: a `CharacterBuildInput` with the archetype optional, plus the name and
+  `savedAt`), kept in `localStorage` per table and character (`draftKey`). It starts from the newer of that and the
+  draft sent to the table (`character.draft`, `Character.draft`), else the saved `character.build`, else blank. START
+  OVER drops the local one.
+- **SEND TO GM** (players, on REVIEW): puts the draft on the table. PARTY then shows OPEN DRAFT for that character; the
+  GM ticks what only the GM judges and saves, which clears the draft.
 - **Live preview:** every change runs `resolveBuild` from `@wg/shared` (`useMemo`); the screens read its sheet,
   ledger, `pending`, `choices` (every grant choice with its picker kind and answer) and `problems`. `BuilderContext`
   (`useBuilder()`) carries the draft, the result and the catalogue lookups.

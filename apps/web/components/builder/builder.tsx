@@ -50,14 +50,21 @@ export function Builder({ campaignId, characterId, role, payload }: BuilderProps
 
 type WorkshopProps = BuilderProps & { state: LiveState; online: boolean; send: Send; character?: Character };
 
-// A draft to start from: the one left on this device, the character's saved build, or a blank one.
+// A draft to start from: the newer of this device's and the one sent to the table (a player's, for the GM to tick),
+// else the character's saved build, else a blank one.
 function initialDraft({ key, character, tier }: { key: string; character?: Character; tier: number }): Draft {
+  let local: Draft | null = null;
   try {
     const stored = localStorage.getItem(key);
-    if (stored) return JSON.parse(stored) as Draft;
+    if (stored) local = JSON.parse(stored) as Draft;
   } catch {
-    // Storage blocked or a draft from an older builder: start from the saved build instead.
+    // Storage blocked or a draft from an older builder: start from the table's draft or the saved build instead.
   }
+  const sent = (character?.draft ?? null) as Draft | null;
+  const newest = [local, sent]
+    .filter((d): d is Draft => d !== null)
+    .sort((a, b) => (b.savedAt ?? 0) - (a.savedAt ?? 0))[0];
+  if (newest) return newest;
   const saved = CharacterBuild.safeParse(character?.build);
   if (saved.success) return { ...saved.data, name: character?.name ?? "" };
   return { tier, name: character?.name ?? "" };
@@ -83,7 +90,7 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
   // The live sheet: every change re-resolves the whole build, so a later choice that breaks an earlier one shows up.
   const resolved = useMemo((): ResolvedBuild | null => {
     if (!draft.archetypeId) return null;
-    const { name: _, archetypeId, ...rest } = draft;
+    const { name: _, savedAt: __, archetypeId, ...rest } = draft;
     try {
       return resolveBuild({ catalogue, build: { ...rest, archetypeId, tier } });
     } catch {
@@ -101,15 +108,33 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
   }, [key, draft]);
 
   const value = useMemo((): BuilderValue => {
-    const update = (fn: (d: Draft) => Draft) => setDraft((d) => fn(d));
+    const update = (fn: (d: Draft) => Draft) => setDraft((d) => ({ ...fn(d), savedAt: Date.now() }));
     const setChoice = (path: string, answer: BuildChoice) =>
-      setDraft((d) => ({ ...d, choices: { ...d.choices, [path]: answer } }));
+      setDraft((d) => ({ ...d, choices: { ...d.choices, [path]: answer }, savedAt: Date.now() }));
     const go = (s: BuilderStep) => {
       setStep(s);
       window.scrollTo({ top: 0 });
     };
-    return { draft, update, setChoice, resolved, catalogue, lookups, tier, role, go };
-  }, [draft, resolved, catalogue, lookups, tier, role]);
+    const sendDraft = characterId
+      ? async () => {
+          const r = await send({ type: "character.draft", id: characterId, draft: { ...draft, savedAt: Date.now() } });
+          return r.ok ? null : r.error;
+        }
+      : null;
+    return {
+      draft,
+      update,
+      setChoice,
+      resolved,
+      catalogue,
+      lookups,
+      tier,
+      role,
+      go,
+      sendDraft,
+      sentDraft: !!character?.draft,
+    };
+  }, [draft, resolved, catalogue, lookups, tier, role, characterId, send, character?.draft]);
 
   // START OVER: drops the draft on this device and goes back to the saved build, or a blank one.
   const startOver = () => {
@@ -125,7 +150,7 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
   // SAVE: the server re-resolves the build and writes the sheet; back to the table once it's saved.
   const save = async () => {
     if (!draft.archetypeId) return;
-    const { name, archetypeId, ...rest } = draft;
+    const { name, archetypeId, savedAt: _, ...rest } = draft;
     const r = await send({
       type: "character.build",
       id: characterId ?? undefined,

@@ -25,7 +25,14 @@ const TRAITS = [
 
 // Review and save: the sheet exactly as the play sheet will show it, the ledger, what is left, and the GM's part.
 export function ReviewStep({ onSave }: ReviewStepProps) {
-  const { draft, resolved: r, tier, role, go } = useBuilder();
+  const { draft, resolved: r, tier, role, go, sendDraft, sentDraft } = useBuilder();
+  const [sendMsg, setSendMsg] = useState<string | null>(null);
+
+  // SEND TO GM: the draft goes on the table; the GM opens it here, ticks what only the GM judges, and saves.
+  const handleSendDraft = async () => {
+    const error = await sendDraft?.();
+    setSendMsg(error ? `! ${error}` : "SENT. YOUR GM CAN OPEN IT FROM PARTY AND SAVE IT.");
+  };
   if (!r)
     return (
       <div className="stack">
@@ -41,6 +48,7 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
   const d = deriveStats({ stats: s, overrides: {}, tier });
   const ready = buildReady(r);
   const left = r.pending.length + r.problems.length;
+  const gmItems = r.problems.some((p) => p.severity === "gm");
 
   return (
     <div className="stack">
@@ -125,20 +133,29 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
       </div>
 
       <XpLedger />
+      {role === "gm" && sentDraft && (
+        <div className="accent">A draft was sent to the table: tick what it asks, then SAVE CHARACTER.</div>
+      )}
       {role === "gm" && <GmPart />}
 
       <div className="keys" style={{ alignItems: "center" }}>
         <button className="btn primary" disabled={!ready} onClick={onSave}>
           SAVE CHARACTER
         </button>
+        {role !== "gm" && sendDraft && (
+          <button className="btn" onClick={handleSendDraft}>
+            {sentDraft ? "SEND AGAIN TO GM" : "SEND TO GM"}
+          </button>
+        )}
         <span className="dim">
           {ready
             ? "The server checks the build again and writes the sheet."
             : `${left} thing${left === 1 ? "" : "s"} to settle first${
-                r.problems.some((p) => p.severity === "gm") && role !== "gm" ? "; GM items need your GM" : ""
+                gmItems && role !== "gm" ? "; send it to your GM for the GM items" : ""
               }.`}
         </span>
       </div>
+      {sendMsg && <div className={sendMsg.startsWith("!") ? "red" : "accent"}>{sendMsg}</div>}
     </div>
   );
 }

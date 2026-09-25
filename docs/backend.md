@@ -153,10 +153,10 @@ Always the full snapshot, never a diff.
 
 | Action | Extra player check | Refusal |
 |---|---|---|
-| `character.update`, `character.build`, `character.supply` | `a.id === ctx.characterId` (so a player can't build a new character) | `"Not your character"` |
+| `character.update`, `character.build`, `character.draft`, `character.supply` | `a.id === ctx.characterId` (so a player can't build a new character) | `"Not your character"` |
 | `character.update` | no `overrides` field | `"Overrides are GM only"` |
 
-A player may therefore edit their own character's `name`, `stats` and `conditions`, and spend its Wealth and Ammo. Nothing else:
+A player may therefore edit their own character's `name`, `stats` and `conditions`, spend its Wealth and Ammo, and build it or save a builder draft. Nothing else:
 Wounds, Shock, Wrath, Glory and Respite are the GM's.
 
 ### `touches(action)` → `{ state, codex }`
@@ -199,6 +199,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Fails `"No session in progress"` | S C | p.321 |
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
 | `character.build` | GM; Own | Re-runs `resolveBuild` on `build` at the campaign's Tier and homebrew setting. Refuses `"This campaign is Tier N…"`, `"Still to choose: …"` or the first problem. Writes the derived `stats` (keeping the live `ammo` and `requisitioned`) and the `build`; a player's build keeps the stored `build.gm`. No `id`: inserts a character (GM). Returns `id` | S | Core pp.17–38 |
+| `character.draft` | GM; Own | Stores a builder draft (any JSON object up to `MAX_DRAFT_CHARS`, or null to clear) in `character.build_draft`, shown in LiveState as `draft`. A player's keeps the GM's part (`gm`) of the stored draft or build. `character.build` clears it | S | |
 | `character.update` | GM; Own (no `overrides`) | Patch `name`, `stats`, `overrides`, `conditions`. `stats` and `overrides` replace the whole jsonb value | S | |
 | `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap. Crossing into Dying adds `Prone` if missing. While Dying, a positive `wounds` delta adds 1 Traumatic Injury instead (one per hit), and a negative one sets Wounds to `least(maxWounds, wounds + delta)`, which ends Dying | S | p.193 |
 | `character.supply` | GM; Own | Read-modify-write on `stats`: `wealth` delta floored at 0; `ammo: { kind, delta }` via `adjustAmmo` (floored at 0; −1 on an empty type removes it). Refused past `MAX_AMMO_TYPES` (12). No carry cap (§11.14) | S | p.206, p.229 |

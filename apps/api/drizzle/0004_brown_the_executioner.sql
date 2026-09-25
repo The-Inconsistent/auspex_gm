@@ -1,0 +1,1 @@
+ALTER TABLE "character" ADD COLUMN "build_draft" jsonb;
