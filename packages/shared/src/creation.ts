@@ -30,6 +30,10 @@ export const ratingsXp = (r: {
   Object.values(r.attributes).reduce((n, v) => n + (ATTRIBUTE_XP[v] ?? 0), 0) +
   Object.values(r.skills).reduce((n, v) => n + (SKILL_XP[v] ?? 0), 0);
 
+// An Archetype's printed XP is, for most entries in every book, its ratings plus (Tier − 1) × 10 for the Archetype
+// Ability, so validate flags the others (a misprint, or a transcription error).
+export const archetypeXp = (a: Parameters<typeof ratingsXp>[0] & { tier: number }) => ratingsXp(a) + (a.tier - 1) * 10;
+
 const id = z.string().regex(/^[a-z0-9-]+$/);
 const ids = z.array(id).min(1);
 const keyword = z.string().regex(/^(\[[A-Z0-9' -]+\]|[A-Z0-9' -]+)$/); // as printed: "ADEPTUS ASTARTES", "[CHAPTER]"
@@ -104,10 +108,21 @@ const grantOne = z.union([
   z.object({ keywords: z.array(keyword).min(2) }), // taken together: "ANHRATHE and [COTERIE]" (Core p.39)
   z.object({ power: id }),
   z.object({ wargear: WargearItem }),
+  z.object({ bundle: z.array(WargearItem).min(2) }), // items taken together: "a Bolt Pistol and a Chainsword" (Core p.99)
   z.object({ text: z.string().min(1) }), // "1 item of Uncommon Wargear"
 ]);
 export const Grant = z.union([
   grantOne,
+  // powers of the character's choice from these disciplines ("choose two powers from Divination, Phantasmancy or
+  // Telepathy", IoE p.49)
+  z.object({ choose: z.number().int().positive(), fromDisciplines: ids }),
+  // Skills of the character's choice raised to `rating`: "Increase any two Skills of your choice to 4" (Core p.116);
+  // `skills` limits the choice ("Ballistic Skill 2 or Weapon Skill 2", Apocrypha p.79).
+  z.object({
+    choose: z.number().int().positive(),
+    rating: z.number().int().min(1).max(8),
+    skills: z.array(skill).min(2).optional(),
+  }),
   // `optional`: the character may take none ("You may choose to take the PSYKER Keyword", Core p.29).
   z.object({
     choose: z.number().int().positive(),
@@ -246,8 +261,10 @@ export const Archetype = z.object({
   factionId: id,
   tier: z.number().int().min(1).max(5),
   speciesIds: ids,
+  requires: z.array(Requirement).default([]), // beyond Species: a Pariah archetype needs the Pariah template
   xp: z.number().int().min(0),
   keywords: z.array(keyword).default([]),
+  grants: z.array(Grant).default([]), // a keyword choice: "either ASTRA MILITARUM, [REGIMENT] or …" (Apocrypha p.109)
   attributes,
   skills,
   abilities: z.array(Rule).min(1),
@@ -259,6 +276,10 @@ export const Archetype = z.object({
       skills: skills.optional(),
       talentIds: z.array(id).default([]),
       powerIds: z.array(id).default([]),
+      xp: z
+        .object({ attributes: z.number().int().min(0), skills: z.number().int().min(0) })
+        .partial()
+        .optional(), // as printed
     })
     .optional(),
 });

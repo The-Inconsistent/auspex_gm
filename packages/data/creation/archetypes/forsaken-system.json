@@ -1,0 +1,1744 @@
+[
+  {
+    "id": "sister-repentia",
+    "name": "Sister Repentia",
+    "source": "forsaken-system",
+    "page": 100,
+    "note": "No Influence printed.",
+    "factionId": "adepta-sororitas",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 70,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 3,
+      "A": 3,
+      "Wil": 3
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Scholar": 1,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Solace in Anguish",
+        "text": "You crave redemption or martyrdom, fighting harder when closest to death.\n\nYou ignore DN penalties for being Wounded, and instead gain +Rank Bonus Dice to all melee Attack Tests whilst Wounded. When you are Dying, this bonus applies for all Tests — you do not fall Prone, and are not restricted in which actions you can take.\n\nYou gain +Double Rank bonus dice to any Test to resist the effects of a Psychic Power."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Eviscerator",
+          "wargearId": "eviscerator"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rags"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Purity Seals"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 3,
+        "I": 4,
+        "Wil": 4,
+        "Int": 2,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 2,
+        "Ballistic Skill": 2,
+        "Intimidation": 1,
+        "Scholar": 3,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "flagellant",
+        "frenzy",
+        "furious-charge"
+      ],
+      "xp": {
+        "attributes": 44,
+        "skills": 36
+      }
+    }
+  },
+  {
+    "id": "sister-dialogus",
+    "name": "Sister Dialogus",
+    "source": "forsaken-system",
+    "page": 101,
+    "note": "The page heading prints \"Dialogus\"; the stat block \"Sister Dialogus\". The FSPG wargear list (pp.120–128) spells it \"Laud-Hailer\".",
+    "factionId": "adepta-sororitas",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 146,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 3,
+      "A": 3,
+      "Wil": 4,
+      "Int": 4
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Investigation": 3,
+      "Leadership": 2,
+      "Persuasion": 2,
+      "Scholar": 4,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Polyglot Superior",
+        "text": "You are a master of written and spoken language, recording your companions’ speeches and interesting discoveries for later recital.\n\nWhen you speak aloud another person’s words (for example, translating xenos text, distributing an officer’s orders, repeating another agent’s inspiring oration, reciting scripture), gain +Rank Bonus Dice to any corresponding Test.\n\nHalf any DN penalties for interacting with an unfamiliar species or culture."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Dialogus Staff"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Laud Hailer"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      },
+      {
+        "text": "numerous books on linguistics and the Imperial Creed"
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 3,
+        "I": 3,
+        "Wil": 5,
+        "Int": 5,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 2,
+        "Ballistic Skill": 4,
+        "Insight": 2,
+        "Investigation": 4,
+        "Leadership": 2,
+        "Persuasion": 4,
+        "Scholar": 4,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "deductive",
+        "lip-reader",
+        "repent"
+      ],
+      "xp": {
+        "attributes": 50,
+        "skills": 54
+      }
+    }
+  },
+  {
+    "id": "sister-imagifier",
+    "name": "Sister Imagifier",
+    "source": "forsaken-system",
+    "page": 102,
+    "note": "The page heading prints \"Imagifier\"; the stat block \"Sister Imagifier\".",
+    "factionId": "adepta-sororitas",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 146,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 3,
+      "A": 3,
+      "Wil": 4,
+      "Fel": 4
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Intimidation": 2,
+      "Leadership": 4,
+      "Persuasion": 3,
+      "Scholar": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Litany of Deeds",
+        "text": "When you carry or are adjacent to your Simulacrum Imperialis, you and any allies faithful to the Imperial Cult within hearing distance gain +1 Strength.\n\nIn addition, as a Combat Action, you can plant your Simulacrum in place. Until you next move, you and any allies faithful to the Imperial Cult within 5m gain +Rank Determination."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Boltgun",
+          "wargearId": "boltgun"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Simulacrum Imperialis"
+        }
+      },
+      {
+        "wargear": {
+          "name": "complete records of your martyr"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 3,
+        "I": 3,
+        "Wil": 5,
+        "Int": 2,
+        "Fel": 5
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Intimidation": 2,
+        "Leadership": 4,
+        "Persuasion": 4,
+        "Scholar": 3,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "orthopraxy",
+        "bolstering-purity",
+        "in-his-name"
+      ],
+      "xp": {
+        "attributes": 44,
+        "skills": 46
+      }
+    }
+  },
+  {
+    "id": "seraphim",
+    "name": "Seraphim",
+    "source": "forsaken-system",
+    "page": 103,
+    "note": "\"San Leor-patten jump pack\" copied as printed (for \"pattern\"); linked to the Core Jump Pack.",
+    "factionId": "adepta-sororitas",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 118,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 3,
+      "A": 4,
+      "Wil": 3,
+      "Int": 3
+    },
+    "skills": {
+      "Ballistic Skill": 3,
+      "Pilot": 3,
+      "Scholar": 1,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Angelic Presence",
+        "text": "You and any allies within 15m faithful to the Imperial Cult gain +Rank Bonus Dice to Resolve Tests. In addition, when you use a jump pack to move away from Engagement, enemies cannot make Reflexive Attacks against you."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "San Leor-patten jump pack",
+          "wargearId": "jump-pack"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Bolt Pistol",
+              "qty": 2,
+              "wargearId": "bolt-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Hand Flamer",
+              "qty": 2,
+              "wargearId": "hand-flamer"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Inferno Pistol",
+              "qty": 2,
+              "wargearId": "inferno-pistol"
+            }
+          }
+        ]
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 6,
+        "I": 4,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 1,
+        "Ballistic Skill": 4,
+        "Insight": 1,
+        "Leadership": 1,
+        "Pilot": 4,
+        "Scholar": 2,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "dual-wield",
+        "inspired-blessing",
+        "shield-of-faith"
+      ],
+      "xp": {
+        "attributes": 79,
+        "skills": 40
+      }
+    }
+  },
+  {
+    "id": "canoness",
+    "name": "Canoness",
+    "source": "forsaken-system",
+    "page": 104,
+    "note": "No Suggested Attributes printed. The ability's \"+Rank Faith\" has no structured field; it stays in the text.",
+    "factionId": "adepta-sororitas",
+    "tier": 4,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 249,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 4,
+      "A": 4,
+      "I": 4,
+      "Wil": 6,
+      "Int": 3,
+      "Fel": 4
+    },
+    "skills": {
+      "Ballistic Skill": 3,
+      "Leadership": 4,
+      "Scholar": 4,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Lead the Righteous",
+        "text": "You are an inspiring warleader and walking miracle both. You gain +Rank Faith (see page142 of Wrath & Glory Rulebook). Whenever you deal a Wound, you may spend 1 Faith to gain +1 Glory as a Free Action."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rosarius",
+          "wargearId": "rosarius"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chaplet Ecclesiasticus",
+          "wargearId": "chaplet-ecclesiasticus"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sororitas Vestments"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Condemnor Boltgun"
+            }
+          },
+          {
+            "text": "a Boltgun with the Combi Weapon upgrade combined with a Flamer, Meltagun or Plasma Gun"
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Blessed Blade"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Chainsword",
+              "wargearId": "chainsword"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Eviscerator",
+              "wargearId": "eviscerator"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Power Sword",
+              "wargearId": "power-sword"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Bolt Pistol",
+              "wargearId": "bolt-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Pistol",
+              "wargearId": "plasma-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Inferno Pistol",
+              "wargearId": "inferno-pistol"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Brazier of Holy Fire"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Null Rod"
+            }
+          }
+        ]
+      }
+    ],
+    "influence": 3,
+    "suggested": {
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Insight": 3,
+        "Intimidation": 2,
+        "Investigation": 2,
+        "Leadership": 4,
+        "Persuasion": 3,
+        "Scholar": 4,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "bolstering-purity",
+        "repent",
+        "righteous-wrath"
+      ],
+      "xp": {
+        "skills": 90
+      }
+    }
+  },
+  {
+    "id": "tech-adept",
+    "name": "Tech-Adept",
+    "source": "forsaken-system",
+    "page": 109,
+    "note": "The stat block prints \"Tech Adept\"; the heading \"Tech-Adept\". No Influence printed.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 1,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 22,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "Int": 2
+    },
+    "skills": {
+      "Scholar": 2,
+      "Tech": 3
+    },
+    "abilities": [
+      {
+        "name": "Admin Access",
+        "text": "Your purpose is to commune with Machine Spirits and catalogue their wisdom, to further the Quest for Knowledge. When you commune with a Machine Spirit as part of a Test, you gain Icons equal to your Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Laspistol",
+          "wargearId": "laspistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Adepts Robes (Clothing)",
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combi-Tool",
+          "wargearId": "combi-tool"
+        }
+      },
+      {
+        "wargear": {
+          "name": "DataSlate",
+          "wargearId": "data-slate"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sacred Machine Oil",
+          "wargearId": "sacred-machine-oil"
+        }
+      },
+      {
+        "text": "any Augmetic Enhancement"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 1,
+        "T": 2,
+        "A": 1,
+        "I": 1,
+        "Wil": 1,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 2,
+        "Ballistic Skill": 1,
+        "Investigation": 2,
+        "Medicae": 1,
+        "Pilot": 1,
+        "Scholar": 2,
+        "Tech": 4,
+        "Weapon Skill": 1
+      },
+      "talentIds": [
+        "augmetic",
+        "binary-chatter",
+        "deductive"
+      ],
+      "xp": {
+        "attributes": 20,
+        "skills": 28
+      }
+    }
+  },
+  {
+    "id": "sicarian-infiltrator",
+    "name": "Sicarian Infiltrator",
+    "source": "forsaken-system",
+    "page": 110,
+    "note": "No Influence printed. Also Apocrypha p.158.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 76,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "T": 3,
+      "A": 3,
+      "Int": 2
+    },
+    "skills": {
+      "Ballistic Skill": 4,
+      "Intimidation": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Neurostatic Aura",
+        "text": "You are immune to Bleeding.\n\nAs a Combat Action, you may choose a number up to your Rank, and inflict that many Hindered Conditions on all characters within 10m that don’t have this ability or null-code audio inputs."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sicarian Battle Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Augmetic Legs",
+          "wargearId": "augmetic-legs"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Infiltrator Headpiece"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "bundle": [
+              {
+                "name": "Flechette Blaster"
+              },
+              {
+                "name": "Taser Goad"
+              }
+            ]
+          },
+          {
+            "bundle": [
+              {
+                "name": "Stubcarbine"
+              },
+              {
+                "name": "Power Sword",
+                "wargearId": "power-sword"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 5,
+        "I": 4,
+        "Wil": 3,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Insight": 2,
+        "Intimidation": 4,
+        "Investigation": 1,
+        "Leadership": 1,
+        "Medicae": 1,
+        "Stealth": 2,
+        "Survival": 2,
+        "Tech": 3,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "augmetic",
+        "disturbing-voice",
+        "lobotomised-efficiency"
+      ],
+      "xp": {
+        "attributes": 91,
+        "skills": 68
+      }
+    }
+  },
+  {
+    "id": "sicarian-ruststalker",
+    "name": "Sicarian Ruststalker",
+    "source": "forsaken-system",
+    "page": 111,
+    "note": "No Influence printed. Also Apocrypha p.159.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 76,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "T": 3,
+      "A": 3,
+      "I": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Stealth": 2,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Transonic Assassin",
+        "text": "You are a hunter-killer operative, delivering a hail of transonic blows until you find the perfect armour-shredding frequency.\n\nYou are immune to BLEEDING.\n\nIn addition, you gain +Rank bonus dice when Charging or making All-Out Attacks whilst wielding a weapon with the TRANSONIC Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sicarian Battle Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Augmetic Legs",
+          "wargearId": "augmetic-legs"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Transonic Blade",
+              "qty": 2
+            }
+          },
+          {
+            "bundle": [
+              {
+                "name": "Transonic Razor"
+              },
+              {
+                "name": "Chordclaw"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 5,
+        "I": 6,
+        "Wil": 3,
+        "Int": 3,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 3,
+        "Ballistic Skill": 1,
+        "Deception": 2,
+        "Intimidation": 1,
+        "Investigation": 1,
+        "Medicae": 1,
+        "Stealth": 4,
+        "Tech": 3,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "armourbane",
+        "augmetic",
+        "eliminator"
+      ],
+      "xp": {
+        "attributes": 116,
+        "skills": 52
+      }
+    }
+  },
+  {
+    "id": "tech-priest-dominus",
+    "name": "Tech-Priest Dominus",
+    "source": "forsaken-system",
+    "page": 112,
+    "note": "The wargear prints without punctuation (\"Omnissian Axe Volkite Blaster or Eradication Ray Macrostubber or Phosphor Serpenta Light Power Armour Refractor Field One Mechadendrite\"); split as Omnissian Axe, Volkite Blaster or Eradication Ray, Macrostubber or Phosphor Serpenta, Light Power Armour, Refractor Field, One Mechadendrite. Suggested Skills print \"Weapons Skill 5\", read as Weapon Skill.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 4,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 113,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "Int": 5
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Scholar": 2,
+      "Tech": 5,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Lord of the Machine Cult",
+        "text": "You are unbound by the tethers of your biological form, automatically interfacing with nearby technology. As a Simple Action, you can Help all allies within 10m that have the ADEPTUS MECHANICUS Keyword, or are utilising equipment with a Machine Spirit (including guns and non-basic melee weapons), granting +Rank Bonus Dice to their Tests."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Omnissian Axe",
+          "wargearId": "omnissian-axe"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Volkite Blaster",
+              "wargearId": "volkite-blaster"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Eradication Ray"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Macrostubber"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Phosphor Serpenta"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Light Power Armour",
+          "wargearId": "light-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Refractor Field",
+          "wargearId": "refractor-field"
+        }
+      },
+      {
+        "text": "One Mechadendrite"
+      },
+      {
+        "text": "Any 3 Augmetics"
+      },
+      {
+        "wargear": {
+          "name": "Combi-Tool",
+          "wargearId": "combi-tool"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Omnissian Sigil (Symbol of Authority)",
+          "wargearId": "symbol-of-authority"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sacred Machine Oil",
+          "wargearId": "sacred-machine-oil"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 3,
+        "I": 4,
+        "Wil": 4,
+        "Int": 7,
+        "Fel": 2
+      },
+      "skills": {
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Investigation": 3,
+        "Leadership": 2,
+        "Medicae": 1,
+        "Pilot": 3,
+        "Scholar": 3,
+        "Tech": 5,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "devotees",
+        "rite-of-magnometrics",
+        "rite-of-pure-thought"
+      ],
+      "xp": {
+        "attributes": 119,
+        "skills": 98
+      }
+    }
+  },
+  {
+    "id": "confessor",
+    "name": "Confessor",
+    "source": "forsaken-system",
+    "page": 113,
+    "note": "The faction tab prints \"Adepta Ministorum\" (for Adeptus Ministorum).",
+    "factionId": "adeptus-ministorum",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 90,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM"
+    ],
+    "attributes": {
+      "Wil": 4,
+      "Int": 3
+    },
+    "skills": {
+      "Insight": 2,
+      "Intimidation": 2,
+      "Medicae": 3,
+      "Scholar": 4,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Spiritual Administration",
+        "text": "When you Test to discover the sins of another character (by coercion, investigation, or instinct), gain +Rank Bonus Dice.\n\nIn addition, during a Regroup, you can choose one character faithful to the Imperial Cult to regain all Shock."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Ministorum Robes"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rosarius",
+          "wargearId": "rosarius"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Missionary Kit",
+          "wargearId": "missionary-kit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Power Maul"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Laspistol",
+          "wargearId": "laspistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Torture Kit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ministorum Tomes"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Portable Lectern"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 2,
+        "I": 2,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 3
+      },
+      "skills": {
+        "Awareness": 1,
+        "Insight": 4,
+        "Intimidation": 2,
+        "Investigation": 2,
+        "Medicae": 3,
+        "Scholar": 4,
+        "Tech": 1,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "in-his-name",
+        "repent",
+        "the-passion"
+      ],
+      "xp": {
+        "attributes": 26,
+        "skills": 24
+      }
+    }
+  },
+  {
+    "id": "ratling-sniper",
+    "name": "Ratling Sniper",
+    "source": "forsaken-system",
+    "page": 114,
+    "note": "The stat block prints \"Ratling\"; the heading \"Ratling Sniper\". Wargear prints \"5 Rations (2 stolen)\". No Influence printed. The Rations are linked to Ration Packs (Core).",
+    "factionId": "astra-militarum",
+    "tier": 1,
+    "speciesIds": [
+      "ratling"
+    ],
+    "xp": 54,
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "[REGIMENT]",
+      "ABHUMAN",
+      "MILITARUM AUXILLA"
+    ],
+    "attributes": {
+      "T": 2,
+      "A": 2,
+      "Fel": 2
+    },
+    "skills": {
+      "Awareness": 2,
+      "Ballistic Skill": 3,
+      "Cunning": 2,
+      "Deception": 2,
+      "Stealth": 3
+    },
+    "abilities": [
+      {
+        "name": "Shoot Sharp and Scarper",
+        "text": "When using a weapon with the Sniper Weapon Trait, increase the weapon’s Sniper rating by +Rank. In addition, when you make a successful ranged Attack Test, you may immediately move up to your Speed as a Reflexive Action."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Sniper Rifle"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Long-Las",
+              "wargearId": "long-las"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Knife",
+          "wargearId": "knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Flak Armour",
+          "wargearId": "flak-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ration (2 stolen)",
+          "qty": 5,
+          "wargearId": "ration-packs"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ratling Keepsakes"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 1,
+        "T": 2,
+        "A": 3,
+        "I": 1,
+        "Wil": 1,
+        "Int": 2,
+        "Fel": 3
+      },
+      "skills": {
+        "Awareness": 2,
+        "Ballistic Skill": 3,
+        "Cunning": 2,
+        "Deception": 2,
+        "Insight": 1,
+        "Persuasion": 1,
+        "Stealth": 3
+      },
+      "talentIds": [
+        "deadshot",
+        "eliminator",
+        "silent"
+      ],
+      "xp": {
+        "attributes": 16,
+        "skills": 4
+      }
+    }
+  },
+  {
+    "id": "ogryn-warrior",
+    "name": "Ogryn Warrior",
+    "source": "forsaken-system",
+    "page": 115,
+    "note": "No Influence printed.",
+    "factionId": "astra-militarum",
+    "tier": 2,
+    "speciesIds": [
+      "ogryn"
+    ],
+    "xp": 98,
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA",
+      "[REGIMENT]",
+      "ABHUMAN"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "Wil": 2
+    },
+    "skills": {
+      "Ballistic Skill": 1,
+      "Survival": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Let It Rip",
+        "text": "Your approach to combat is simple, direct, and expends plenty of ammunition.\n\nWhen you Charge and have a ranged weapon, you can fire it wildly as a Free Action. This is treated as a Salvo Option that awards Bonus Dice to your Melee Attack Test equal to your weapon’s Salvo rating."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Flak Armour",
+          "wargearId": "flak-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ripper Gun (with bayonet)"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Bomb",
+          "qty": 3
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 5,
+        "T": 5,
+        "A": 2,
+        "I": 2,
+        "Wil": 2,
+        "Int": 1,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 1,
+        "Ballistic Skill": 2,
+        "Intimidation": 1,
+        "Survival": 3,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "augmetic",
+        "brutalist",
+        "duty-until-death"
+      ],
+      "xp": {
+        "attributes": 8,
+        "skills": 44
+      }
+    }
+  },
+  {
+    "id": "bullgryn",
+    "name": "Bullgryn",
+    "source": "forsaken-system",
+    "page": 116,
+    "note": "No Influence printed.",
+    "factionId": "astra-militarum",
+    "tier": 3,
+    "speciesIds": [
+      "ogryn"
+    ],
+    "xp": 172,
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "MILITARUM AUXILLA",
+      "[REGIMENT]",
+      "ABHUMAN"
+    ],
+    "attributes": {
+      "S": 6,
+      "T": 6,
+      "A": 2,
+      "I": 2,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 2,
+      "Survival": 2,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Shieldwall",
+        "text": "You provide your allies with a mobile defence line formed of carapace, tank tracks and Abhuman muscle. If an attack is made against an ally within 3m, that ally can add your Shield’s Armour Rating to their Armour Rating."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Bullgryn Plate"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Bomb",
+          "qty": 3
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "bundle": [
+              {
+                "name": "Slabshield"
+              },
+              {
+                "name": "Grenadier Gauntlet"
+              }
+            ]
+          },
+          {
+            "bundle": [
+              {
+                "name": "Bullgryn Maul"
+              },
+              {
+                "name": "Brute Shield"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 6,
+        "A": 3,
+        "I": 3,
+        "Wil": 2,
+        "Int": 1,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 3,
+        "Ballistic Skill": 3,
+        "Leadership": 1,
+        "Survival": 3,
+        "Weapon Skill": 6
+      },
+      "talentIds": [
+        "brutalist",
+        "die-hard",
+        "fear"
+      ],
+      "xp": {
+        "attributes": 12,
+        "skills": 56
+      }
+    }
+  },
+  {
+    "id": "lexmechanic",
+    "name": "Lexmechanic",
+    "source": "forsaken-system",
+    "page": 117,
+    "note": "Print errors: SKILLS prints \"3\" with no Skill name, so no Skills are recorded. Suggested Attributes print every rating as 0 and both suggested XP costs as \"00\", so they are left out. XP as printed; ratings + (Tier − 1) × 10 = 20. The 24 XP difference is unexplained: the SKILLS line lost its Skill names (two Skills at 3 would cost 24).",
+    "factionId": "inquisition",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 44,
+    "keywords": [
+      "IMPERIUM",
+      "INQUISITION",
+      "[ORDO]",
+      "ADEPTUS MECHANICUS",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "Int": 3
+    },
+    "skills": {},
+    "abilities": [
+      {
+        "name": "Statistical Certainty",
+        "text": "The assistance you provide your allies comes with the benefit of exacting mathematical analysis, to remove all possibility of ill-fortune or doubt. When you Help an ally, you may reduce the amount of Bonus Dice you provide by an amount equal up to your Rank. For every die removed, your ally gains an extra Icon on their Test result."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Laspistol",
+          "wargearId": "laspistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Adepts Robes (Clothing)",
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Auspex",
+          "wargearId": "auspex"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Auto-Quill",
+          "wargearId": "auto-quill"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combi-Tool",
+          "wargearId": "combi-tool"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Data Slate",
+          "wargearId": "data-slate"
+        }
+      },
+      {
+        "text": "any 2 Augmetics"
+      },
+      {
+        "wargear": {
+          "name": "Sacred Machine Oil",
+          "wargearId": "sacred-machine-oil"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Symbol of Authority (Adeptus Mechanicus and Inquisition)",
+          "wargearId": "symbol-of-authority"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "skills": {
+        "Awareness": 2,
+        "Ballistic Skill": 1,
+        "Cunning": 1,
+        "Insight": 2,
+        "Investigation": 2,
+        "Medicae": 1,
+        "Persuasion": 1,
+        "Pilot": 1,
+        "Scholar": 3,
+        "Tech": 3,
+        "Weapon Skill": 1
+      },
+      "talentIds": [
+        "augmetic",
+        "deductive",
+        "rite-of-pure-thought"
+      ]
+    }
+  },
+  {
+    "id": "interrogator",
+    "name": "Interrogator",
+    "source": "forsaken-system",
+    "page": 118,
+    "note": "Suggested Skills print \"Scholar 2\" and then \"Scholar Tech 2\"; the second is read as Tech 2.",
+    "factionId": "inquisition",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 64,
+    "keywords": [
+      "IMPERIUM",
+      "INQUISITION",
+      "[ORDO]",
+      "[ANY]"
+    ],
+    "attributes": {
+      "Wil": 3,
+      "Int": 4
+    },
+    "skills": {
+      "Insight": 2,
+      "Medicae": 3,
+      "Scholar": 1,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Extract the Truth",
+        "text": "To earn an Inquisitorial Rosette, the first skill you must master is to lay bare the sinful hearts of Human and xenos. When you succeed on a Test to acquire information from an individual, you gain free Shifts equal to your Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Symbol of Authority",
+          "wargearId": "symbol-of-authority"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Excruciator"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Neural Whip",
+          "wargearId": "neural-whip"
+        }
+      },
+      {
+        "text": "Any three pieces of Wargear with the IMPERIUM Keyword of a rarity or Rare or less."
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 2,
+        "I": 3,
+        "Wil": 3,
+        "Int": 4,
+        "Fel": 4
+      },
+      "skills": {
+        "Awareness": 2,
+        "Ballistic Skill": 1,
+        "Cunning": 1,
+        "Insight": 3,
+        "Intimidation": 2,
+        "Investigation": 2,
+        "Medicae": 3,
+        "Scholar": 2,
+        "Survival": 1,
+        "Tech": 2,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "deductive",
+        "ever-vigilant",
+        "fear"
+      ],
+      "xp": {
+        "attributes": 48,
+        "skills": 42
+      }
+    }
+  },
+  {
+    "id": "kroot-mercenary",
+    "name": "Kroot Mercenary",
+    "source": "forsaken-system",
+    "page": 119,
+    "note": "No Influence or Suggested Talents printed.",
+    "factionId": "tau-empire",
+    "tier": 1,
+    "speciesIds": [
+      "kroot"
+    ],
+    "xp": 62,
+    "keywords": [
+      "KROOT"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 2,
+      "A": 3,
+      "I": 2
+    },
+    "skills": {
+      "Athletics": 1,
+      "Awareness": 1,
+      "Stealth": 2,
+      "Survival": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Adaptive Loyalty",
+        "text": "You scour the galaxy seeking strong prey to consume, working as a mercenary to fund your travels.\n\nYou gain the [ANY] Keyword, which should be substituted for the Faction that currently commands your allegiance. At the GM’s discretion, you may swap this Keyword out for a different one when your loyalties shift in play.",
+        "grants": [
+          {
+            "keyword": "[ANY]"
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Kroot Rifle"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Kroot Armour"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 2,
+        "A": 3,
+        "I": 2,
+        "Wil": 2,
+        "Int": 1,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 1,
+        "Awareness": 1,
+        "Ballistic Skill": 1,
+        "Insight": 3,
+        "Stealth": 2,
+        "Survival": 3,
+        "Weapon Skill": 3
+      },
+      "xp": {
+        "attributes": 4,
+        "skills": 14
+      }
+    }
+  }
+]

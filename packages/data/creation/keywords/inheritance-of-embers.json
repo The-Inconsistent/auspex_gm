@@ -53,5 +53,13 @@
     "page": 19,
     "text": "Each Player and Harlequin Troupe performs as part of a Grand Masque, one of the theatrical companies which coordinate their appearances in standout arena performances and military campaigns. You can replace the [MASQUE] Keyword with any of the Masques below to decide which company your Agent has studied with and accompanied on campaign. The benefits you gain from Wrath Criticals whilst using these Masque abilities stack with any other effects you'd usually gain, such as an additional point of Glory.",
     "placeholder": "masque"
+  },
+  {
+    "id": "blades-for-hire",
+    "name": "BLADES FOR HIRE",
+    "source": "inheritance-of-embers",
+    "page": 40,
+    "text": "",
+    "note": "Used from p.40; no book defines it in a keyword list. IoE p.98 (Terms of Covenant): when an Incubus or Scourge takes a contract, the BLADES FOR HIRE Keyword is replaced with the Keyword of their employer."
   }
 ]

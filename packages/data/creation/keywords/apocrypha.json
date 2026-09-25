@@ -119,5 +119,181 @@
     "page": 238,
     "text": "",
     "note": "Used from p.238; no book defines it in a keyword list."
+  },
+  {
+    "id": "adeptus-arbites",
+    "name": "ADEPTUS ARBITES",
+    "source": "apocrypha",
+    "page": 78,
+    "text": "",
+    "note": "Used from p.78; no book defines it in a keyword list."
+  },
+  {
+    "id": "cthonian",
+    "name": "CTHONIAN",
+    "source": "apocrypha",
+    "page": 142,
+    "text": "",
+    "note": "Used from p.142; no book defines it in a keyword list."
+  },
+  {
+    "id": "incubus",
+    "name": "INCUBUS",
+    "source": "apocrypha",
+    "page": 153,
+    "text": "",
+    "note": "Used from p.153; no book defines it in a keyword list."
+  },
+  {
+    "id": "anathema-psykana",
+    "name": "ANATHEMA PSYKANA",
+    "source": "apocrypha",
+    "page": 122,
+    "text": "",
+    "note": "Used from p.122; no book defines it in a keyword list."
+  },
+  {
+    "id": "talons-of-the-emperor",
+    "name": "TALONS OF THE EMPEROR",
+    "source": "apocrypha",
+    "page": 122,
+    "text": "",
+    "note": "Used from p.122; no book defines it in a keyword list."
+  },
+  {
+    "id": "kabalite",
+    "name": "KABALITE",
+    "source": "apocrypha",
+    "page": 58,
+    "text": "If you have the KABALITE keyword, you will also have the [KABAL] Keyword, which is replaced with the name of the Kabal you are a member of.",
+    "note": "Defined in the Drukhari Kabals section, p.58; used from p.193 in this range (also earlier archetypes)."
+  },
+  {
+    "id": "haemacolyte",
+    "name": "HAEMACOLYTE",
+    "source": "apocrypha",
+    "page": 59,
+    "text": "If you have the HAEMACOLYTE keyword, you will also have the [COVEN] Keyword, which is replaced with the name of the Haemonculi Coven you belong to.",
+    "note": "Defined in the Haemonculi Covens section, p.59; used from p.199 in this range."
+  },
+  {
+    "id": "wych",
+    "name": "WYCH",
+    "source": "apocrypha",
+    "page": 59,
+    "text": "If you have the WYCH keyword, you will also have the [CULT] Keyword, which is replaced with the name of the Cult you are a member of.",
+    "note": "Defined in the Wych Cults section, p.59, which names the placeholder [CULT]; archetypes print [WYCH CULT]. Used from p.204 in this range."
+  },
+  {
+    "id": "adeptus-custodes",
+    "name": "ADEPTUS CUSTODES",
+    "source": "apocrypha",
+    "page": 197,
+    "text": "",
+    "note": "Used from p.197 (Custodian Guard); no book defines it in a keyword list. Also the adeptus-custodes faction."
+  },
+  {
+    "id": "templum-adamus",
+    "name": "TEMPLUM ADAMUS",
+    "source": "apocrypha",
+    "page": 192,
+    "text": "",
+    "note": "Used from p.192; no book defines it in a keyword list."
+  },
+  {
+    "id": "templum-callidus",
+    "name": "TEMPLUM CALLIDUS",
+    "source": "apocrypha",
+    "page": 195,
+    "text": "",
+    "note": "Used from p.195; no book defines it in a keyword list."
+  },
+  {
+    "id": "templum-culexus",
+    "name": "TEMPLUM CULEXUS",
+    "source": "apocrypha",
+    "page": 196,
+    "text": "",
+    "note": "Used from p.196; no book defines it in a keyword list."
+  },
+  {
+    "id": "templum-eversor",
+    "name": "TEMPLUM EVERSOR",
+    "source": "apocrypha",
+    "page": 198,
+    "text": "",
+    "note": "Used from p.198; no book defines it in a keyword list."
+  },
+  {
+    "id": "templum-vanus",
+    "name": "TEMPLUM VANUS",
+    "source": "apocrypha",
+    "page": 205,
+    "text": "",
+    "note": "Used from p.205; no book defines it in a keyword list."
+  },
+  {
+    "id": "templum-vindicare",
+    "name": "TEMPLUM VINDICARE",
+    "source": "apocrypha",
+    "page": 207,
+    "text": "",
+    "note": "Used from p.207; no book defines it in a keyword list."
+  },
+  {
+    "id": "officio-medicae",
+    "name": "OFFICIO MEDICAE",
+    "source": "apocrypha",
+    "page": 109,
+    "text": "",
+    "note": "Used from p.109, in Chirurgeon's \"plus either … ADEPTUS ADMINISTRATUM, OFFICIO MEDICAE\" keyword choice; no book defines it in a keyword list."
+  },
+  {
+    "id": "hernkyn",
+    "name": "HERNKYN",
+    "source": "apocrypha",
+    "page": 114,
+    "text": "",
+    "note": "Used from p.114; no book defines it in a keyword list."
+  },
+  {
+    "id": "logos-historica-verita",
+    "name": "LOGOS HISTORICA VERITA",
+    "source": "apocrypha",
+    "page": 115,
+    "text": "",
+    "note": "Used from p.115; no book defines it in a keyword list."
+  },
+  {
+    "id": "brokhyr",
+    "name": "BROKHYR",
+    "source": "apocrypha",
+    "page": 138,
+    "text": "",
+    "note": "Used from p.138, printed BRÔKHYR (the keyword schema only allows A–Z); no book defines it in a keyword list."
+  },
+  {
+    "id": "air-caste",
+    "name": "AIR CASTE",
+    "source": "apocrypha",
+    "page": 73,
+    "text": "",
+    "note": "Used from p.73; no book defines it in a keyword list."
+  },
+  {
+    "id": "earth-caste",
+    "name": "EARTH CASTE",
+    "source": "apocrypha",
+    "page": 77,
+    "text": "",
+    "note": "Used from p.77; no book defines it in a keyword list."
+  },
+  {
+    "id": "water-caste",
+    "name": "WATER CASTE",
+    "source": "apocrypha",
+    "page": 95,
+    "text": "",
+    "note": "Used from p.95; no book defines it in a keyword list."
   }
 ]

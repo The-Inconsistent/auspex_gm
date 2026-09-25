@@ -1,16 +1,137 @@
 [
   {
+    "id": "space-marine-scout",
+    "name": "Space Marine Scout",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 26,
+    "note": "Wargear choice as printed: “Choose any one of the following options; a Boltgun or a Bolt pistol and a Chainsword or an Astartes Shotgun or an Astartes Sniper Rifle and a Cameleoline Cloak”. Read as four options, “and” pairing the Bolt pistol with the Chainsword and the Sniper Rifle with the Cloak, each pair a bundle. Also Core p.106.",
+    "tier": 2,
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
+    "xp": 170,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 4,
+      "T": 4,
+      "A": 4,
+      "I": 4,
+      "Wil": 3,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 3,
+      "Stealth": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Use the Terrain",
+        "text": "You gain +Rank to any Stealth (A) Test when there is some form of terrain to hide behind."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Astartes Combat Knife",
+          "wargearId": "voa-astartes-combat-knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Scout Armour",
+          "wargearId": "scout-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Vox Bead",
+          "wargearId": "vox-bead"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Boltgun",
+              "wargearId": "boltgun"
+            }
+          },
+          {
+            "bundle": [
+              {
+                "name": "Bolt pistol",
+                "wargearId": "voa-bolt-pistol"
+              },
+              {
+                "name": "Chainsword",
+                "wargearId": "voa-chainsword"
+              }
+            ]
+          },
+          {
+            "wargear": {
+              "name": "Astartes Shotgun",
+              "wargearId": "voa-astartes-shotgun"
+            }
+          },
+          {
+            "bundle": [
+              {
+                "name": "Astartes Sniper Rifle",
+                "wargearId": "voa-astartes-sniper-rifle"
+              },
+              {
+                "name": "Cameleoline Cloak",
+                "wargearId": "cameleoline-cloak"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "influence": 1
+  },
+  {
     "id": "tactical-space-marine",
     "name": "Tactical Space Marine",
     "source": "vow-of-absolution",
     "page": 28,
-    "note": "Also Core p.113, identical apart from the wargear order.",
+    "note": "XP as printed; ratings + (Tier − 1) × 10 = 257 (ratings 237 + 20). Also Core p.113, identical (277 XP too) apart from the wargear order.",
     "factionId": "adeptus-astartes",
     "tier": 3,
-    "speciesIds": ["adeptus-astartes"],
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
     "xp": 277,
-    "keywords": ["IMPERIUM", "ADEPTUS ASTARTES", "[CHAPTER]"],
-    "attributes": { "S": 4, "T": 5, "A": 5, "I": 5, "Wil": 3, "Int": 3 },
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 4,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 3,
+      "Int": 3
+    },
     "skills": {
       "Athletics": 3,
       "Awareness": 3,
@@ -28,13 +149,1601 @@
       }
     ],
     "wargear": [
-      { "wargear": { "name": "Aquila Mk VII Power Armour", "wargearId": "voa-mk-vii-aquila-armour" } },
-      { "wargear": { "name": "Astartes Combat Knife", "wargearId": "voa-astartes-combat-knife" } },
-      { "wargear": { "name": "Boltgun", "wargearId": "boltgun" } },
-      { "wargear": { "name": "Bolt Pistol", "wargearId": "voa-bolt-pistol" } },
-      { "wargear": { "name": "Frag Grenade", "qty": 3, "wargearId": "frag-grenade" } },
-      { "wargear": { "name": "Krak Grenade", "qty": 3, "wargearId": "krak-grenade" } }
+      {
+        "wargear": {
+          "name": "Aquila Mk VII Power Armour",
+          "wargearId": "voa-mk-vii-aquila-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Astartes Combat Knife",
+          "wargearId": "voa-astartes-combat-knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Boltgun",
+          "wargearId": "boltgun"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      }
     ],
     "influence": 2
+  },
+  {
+    "id": "first-company-veteran",
+    "name": "1st Company Veteran",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 29,
+    "note": "The weapon choice replaces a weapon as printed: “You may replace 1 of the above weapons with a Lightning Claw, Power Fist, Power Sword, Plasma Pistol, or Storm Bolter”; the schema has no replacement, so it is an optional choice. “Aquilla” as printed.",
+    "tier": 4,
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
+    "xp": 380,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 6,
+      "I": 6,
+      "Wil": 3,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 4,
+      "Ballistic Skill": 6,
+      "Leadership": 2,
+      "Scholar": 2,
+      "Stealth": 4,
+      "Survival": 2,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Veteran of the Endless War",
+        "text": "Your experience across hundreds of worlds, spanning centuries of bloodshed, have made you an unrelenting weapon of the Emperor. When you make a Critical Hit, you may swap the dice values in the d66 roll (a 34, becomes a 43). You may ignore the first critical hit you suffer in each game session."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Aquilla Mark VII Power Armour",
+          "wargearId": "voa-mk-vii-aquila-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Boltgun",
+          "wargearId": "boltgun"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chainsword",
+          "wargearId": "voa-chainsword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "choose": 1,
+        "optional": true,
+        "from": [
+          {
+            "wargear": {
+              "name": "Lightning Claw",
+              "wargearId": "voa-lightning-claws"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Power Fist",
+              "wargearId": "voa-power-fist"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Power Sword",
+              "wargearId": "voa-power-sword"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Pistol",
+              "wargearId": "plasma-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Storm Bolter",
+              "wargearId": "voa-storm-bolter"
+            }
+          }
+        ]
+      }
+    ],
+    "influence": 4
+  },
+  {
+    "id": "apothecary",
+    "name": "Astartes Apothecary",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 30,
+    "note": "Print error: Skills print “Medicare 5”, recorded as Medicae. “Aquilla” as printed. Also FSPG p.105. Also Apocrypha p.160.",
+    "tier": 4,
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
+    "xp": 357,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 4,
+      "Int": 5
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Leadership": 1,
+      "Medicae": 5,
+      "Scholar": 1,
+      "Stealth": 3,
+      "Survival": 1,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Prime Helix",
+        "text": "Your duty to your injured battle-brothers is second only to your duty to the fallen. When you succeed on a Medicae Test to heal a target’s Wounds, they recover +Rank additional Wounds."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Aquilla Mark VII Power Armour",
+          "wargearId": "voa-mk-vii-aquila-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chainsword",
+          "wargearId": "voa-chainsword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Narthecium",
+          "wargearId": "voa-narthecium"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Reductor"
+        }
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "chaplain",
+    "name": "Astartes Chaplain",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 31,
+    "note": "Chapter Cult's 1 Faith has no grant in the schema; it stays in the rule text. “Aquilla” as printed. Also FSPG p.106. Also Apocrypha p.188.",
+    "tier": 4,
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
+    "xp": 392,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 5,
+      "Int": 3,
+      "Fel": 5
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Insight": 3,
+      "Leadership": 3,
+      "Scholar": 4,
+      "Stealth": 3,
+      "Survival": 1,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Chapter Cult",
+        "text": "You gain 1 Faith, and can purchase Faith Talents available to characters with the ADEPTUS MINISTORUM or the ADEPTUS ASTARTES Keywords.\n\nAs a Combat Action, you may spend 1 Faith to give an ally within hearing distance your [CHAPTER] Keyword for the rest of the scene, with all corresponding effects except those with the Tradition or gene-seed title, or that provide equipment."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Aquilla Mark VII Power Armour",
+          "wargearId": "voa-mk-vii-aquila-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Crozius Arcanum",
+          "wargearId": "voa-crozius-arcanum"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rosarius",
+          "wargearId": "rosarius"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skull Helm"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "primaris-eliminator",
+    "name": "Primaris Eliminator",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 32,
+    "note": "XP as printed; ratings + (Tier − 1) × 10 = 286 (ratings 256 + 30). Species printed “Adeptus Astartes”, though the archetype has the PRIMARIS keyword. Also Apocrypha p.182. SPECIES printed \"Adeptus Astartes\"; Primaris Astartes by GM ruling (docs/rules-flow.md §11.36).",
+    "tier": 4,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 276,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 4,
+      "I": 5,
+      "Wil": 5,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Stealth": 3,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Emperor’s Judgement",
+        "text": "When using a ranged weapon and aiming, a 6 on the Wrath die on a successful attack either inflicts a further 1d3 Mortal Wounds, or allows you to make a free Movement action once the attack is finished."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Bolt Sniper Rifle"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Camo Cloak"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mark X Phobos Power Armour",
+          "wargearId": "voa-mk-x-phobos-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 5,
+        "T": 5,
+        "A": 6,
+        "I": 6,
+        "Wil": 5,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 5,
+        "Ballistic Skill": 6,
+        "Stealth": 5,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "bolter-discipline",
+        "deadshot",
+        "eliminator"
+      ],
+      "xp": {
+        "attributes": 46,
+        "skills": 58
+      }
+    }
+  },
+  {
+    "id": "primaris-incursor",
+    "name": "Primaris Incursor",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 33,
+    "note": "XP as printed; ratings + (Tier − 1) × 10 = 297 (ratings 267 + 30). Species printed “Adeptus Astartes”, though the archetype has the PRIMARIS keyword. “Occulus” as printed. Also Apocrypha p.185. SPECIES printed \"Adeptus Astartes\"; Primaris Astartes by GM ruling (docs/rules-flow.md §11.36).",
+    "tier": 4,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 273,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 4,
+      "I": 5,
+      "Wil": 4,
+      "Int": 4
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 4,
+      "Stealth": 3,
+      "Survival": 2,
+      "Tech": 4,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Explosive Fury",
+        "text": "When making attacks with grenades, you gain +Rank bonus extra damage to successful attacks.\n\nWhen placing explosives, you may make a DN 3 Tech Test, and add +Rank bonus to both Damage and AP to the attack."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Divinator-class Auspex"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mark X Phobos Power Armour",
+          "wargearId": "voa-mk-x-phobos-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Occulus Bolt Carbine"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Astartes Combat Knife",
+          "qty": 2,
+          "wargearId": "voa-astartes-combat-knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Transpectral Combat Visor"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Smoke Grenade",
+          "qty": 3
+        }
+      },
+      {
+        "wargear": {
+          "name": "Haywire Mine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 5,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Stealth": 4,
+        "Survival": 3,
+        "Tech": 5,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "brutalist",
+        "fear",
+        "furious-charge"
+      ],
+      "xp": {
+        "attributes": 50,
+        "skills": 38
+      }
+    }
+  },
+  {
+    "id": "primaris-intercessor",
+    "name": "Primaris Intercessor",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 34,
+    "note": "Print errors, as printed: the XP (357), Attributes, Skills, Wargear and Influence (+2) are exactly the Astartes Techmarine's (p.39), and the Suggested block (ratings, XP 46 / 58, talents) is exactly the Primaris Eliminator's (p.32). Only the name, Keywords and ability (Intercessor Focus) are the Intercessor's own. Core p.117 prints its own block (Species Primaris Astartes, 300 XP), which docs/kill-team.md uses. Species printed “Adeptus Astartes”, though the archetype has the PRIMARIS keyword. Keywords print “PRIMARIS [CHAPTER]” without a comma. Also Core p.117. SPECIES printed \"Adeptus Astartes\"; Primaris Astartes by GM ruling (docs/rules-flow.md §11.36). GM ruling: VoA's printing is kept although it copies the Techmarine (docs/rules-flow.md §11.34).",
+    "tier": 4,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 357,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 4,
+      "Int": 5
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Leadership": 1,
+      "Scholar": 1,
+      "Stealth": 3,
+      "Survival": 1,
+      "Tech": 5,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Intercessor Focus",
+        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A)Tests to fire a ranged weapon with the PRIMARIS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Mark VII Artificer Power Armour (includes servo-harness)"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Plasma Pistol",
+              "wargearId": "plasma-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Grav-pistol"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Omnissian Axe",
+          "wargearId": "omnissian-axe"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Servo-arm",
+          "wargearId": "servo-arm"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sacred Machine Oil",
+          "wargearId": "sacred-machine-oil"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combi-Tool",
+          "wargearId": "combi-tool"
+        }
+      },
+      {
+        "text": "Any 3 Augmetics"
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 5,
+        "T": 5,
+        "A": 6,
+        "I": 6,
+        "Wil": 5,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 5,
+        "Ballistic Skill": 6,
+        "Stealth": 5,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "bolter-discipline",
+        "deadshot",
+        "eliminator"
+      ],
+      "xp": {
+        "attributes": 46,
+        "skills": 58
+      }
+    }
+  },
+  {
+    "id": "librarian",
+    "name": "Astartes Librarian",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 36,
+    "note": "Wargear prints “Psychic Hood 3 Frag Grenades” without a comma. “Aquilla” as printed. Also FSPG p.107. Also Apocrypha p.189.",
+    "tier": 4,
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
+    "xp": 359,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 6,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Psychic Mastery": 4,
+      "Scholar": 2,
+      "Stealth": 3,
+      "Survival": 1,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Sanctified Sorcerer",
+        "text": "You have the PSYKER Keyword, and are a psyker. You know the Universal Psyker Abilities Wrath & Glory Rulebook, p.267, and the Smite psychic power. You know the Librarius Discipline and one power from that Discipline of your choice, and may choose one other Psychic Discipline to learn powers from as described in Chapter 11 of the Rulebook.",
+        "grants": [
+          {
+            "keyword": "PSYKER"
+          },
+          {
+            "power": "smite"
+          },
+          {
+            "choose": 1,
+            "fromDisciplines": [
+              "librarius"
+            ]
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Aquilla Mark VII Power Armour",
+              "wargearId": "voa-mk-vii-aquila-armour"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Mk X Phobos Armour",
+              "wargearId": "voa-mk-x-phobos-armour"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Force Stave",
+          "wargearId": "force-stave"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Psychic Hood"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "primaris-reiver",
+    "name": "Primaris Reiver",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 37,
+    "note": "Species printed “Adeptus Astartes”, though the archetype has the PRIMARIS keyword. Also FSPG p.108. Also Apocrypha p.187. SPECIES printed \"Adeptus Astartes\"; Primaris Astartes by GM ruling (docs/rules-flow.md §11.36).",
+    "tier": 4,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 288,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 4,
+      "I": 5,
+      "Wil": 5,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 4,
+      "Intimidation": 3,
+      "Stealth": 3,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Terror Tactics",
+        "text": "When your Stealth Score is reduced to 0 or you Ambush a Threat, you can choose for all enemies who can see or hear you to take a Terror Test, with a DN equal to 1 + Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Mark X Phobos Power Armour",
+          "wargearId": "voa-mk-x-phobos-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Carbine"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Heavy Bolt Pistol",
+          "wargearId": "voa-heavy-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Astartes Combat Knife",
+          "wargearId": "voa-astartes-combat-knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Shock Grenade",
+          "qty": 3
+        }
+      },
+      {
+        "wargear": {
+          "name": "Grav-Chute",
+          "wargearId": "grav-chute"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 5,
+        "A": 4,
+        "I": 6,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Intimidation": 5,
+        "Stealth": 4,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "brutalist",
+        "fear",
+        "furious-charge"
+      ],
+      "xp": {
+        "attributes": 40,
+        "skills": 26
+      }
+    }
+  },
+  {
+    "id": "terminator",
+    "name": "Terminator",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 38,
+    "note": "XP printed “335+30”; xp is the first figure. XP as printed; ratings + (Tier − 1) × 10 = 365: 335 is the ratings alone, and 335 + 30 matches. Species printed “Astartes / Primaris”. Tactical Dreadnought Power Armour is linked to Terminator Armour (the page calls Tactical Dreadnought Armour “Terminator armour”). As printed, the Attributes, Skills, ability (Tactical Master), XP, Influence and Suggested block are the same as the Primaris Lieutenant's (p.40); only Tier, Species, Keywords and Wargear differ. XP as printed: the total of \"335+30\" (GM ruling, docs/rules-flow.md §11.35).",
+    "tier": 4,
+    "speciesIds": [
+      "adeptus-astartes",
+      "primaris-astartes"
+    ],
+    "xp": 365,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 5,
+      "Int": 4,
+      "Fel": 4
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 4,
+      "Ballistic Skill": 5,
+      "Leadership": 4,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Tactical Master",
+        "text": "In each combat round, if you spend a point of Glory, all allies within 10 metres gain your Rank bonus as Extra Damage dice, and ranged weapons these allies carry without the HEAVY trait gain the ASSAULT trait."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Tactical Dreadnought Power Armour",
+          "wargearId": "terminator-armour"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Power Fist",
+              "wargearId": "voa-power-fist"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Lightning Claws",
+              "wargearId": "voa-lightning-claws"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Storm Bolter",
+              "wargearId": "voa-storm-bolter"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Autocannon",
+              "wargearId": "autocannon"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      }
+    ],
+    "influence": 4,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 6,
+        "A": 6,
+        "I": 5,
+        "Wil": 5,
+        "Int": 4,
+        "Fel": 5
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 4,
+        "Ballistic Skill": 6,
+        "Leadership": 5,
+        "Weapon Skill": 6
+      },
+      "talentIds": [
+        "augmetic",
+        "primaris-perspective",
+        "touched-by-fate"
+      ],
+      "xp": {
+        "attributes": 75,
+        "skills": 34
+      }
+    }
+  },
+  {
+    "id": "techmarine",
+    "name": "Astartes Techmarine",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 39,
+    "note": "“TechTest” and “Icans” (Icons) as printed. Also Apocrypha p.190.",
+    "tier": 4,
+    "speciesIds": [
+      "adeptus-astartes"
+    ],
+    "xp": 357,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 4,
+      "Int": 5
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 5,
+      "Leadership": 1,
+      "Scholar": 1,
+      "Stealth": 3,
+      "Survival": 1,
+      "Tech": 5,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Blessings of the Omnissiah",
+        "text": "You are a warrior of the Omnissiah. You perform your duties by tending to the weapons, vehicles and machine spirits wielded by your chapter. When you succeed on a TechTest to repair a weapon or vehicle, you gain +Rank bonus dice to the test. When you commune with a machine spirit as part of a test, you instead gain Icans equal to your rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Mark VII Artificer Power Armour (includes servo-harness)"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Plasma Pistol",
+              "wargearId": "plasma-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Grav-pistol"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Omnissian Axe",
+          "wargearId": "omnissian-axe"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Servo-arm",
+          "wargearId": "servo-arm"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sacred Machine Oil",
+          "wargearId": "sacred-machine-oil"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combi-Tool",
+          "wargearId": "combi-tool"
+        }
+      },
+      {
+        "text": "Any 3 Augmetics"
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "primaris-lieutenant",
+    "name": "Primaris Lieutenant",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 40,
+    "note": "XP printed “335+30”; xp is the first figure. XP as printed; ratings + (Tier − 1) × 10 = 375 (ratings 335 + 40). As printed, the Attributes, Skills, ability, XP, Influence and Suggested block are the Terminator's (p.38), “+30” included. Two whole loadouts are printed, the second after “Or,”; the first's “Master-crafted Auto Bolt Rifle/Power Sword/Power Fist” is read as one of the three, Master-crafted, so it is three bundles. The second prints “Frag Grenades” with no count and “paired Astartes Combat Knives”. XP as printed: the total of \"335+30\" (GM ruling, docs/rules-flow.md §11.35).",
+    "tier": 5,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 365,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 5,
+      "Int": 4,
+      "Fel": 4
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 4,
+      "Ballistic Skill": 5,
+      "Leadership": 4,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Tactical Master",
+        "text": "In each combat round, if you spend a point of Glory, all allies within 10 metres gain your Rank bonus as Extra Damage dice, and ranged weapons these allies carry without the HEAVY Trait gain the ASSAULT Trait."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "bundle": [
+              {
+                "name": "Mark X Tacticus Power Armour",
+                "wargearId": "voa-mk-x-tacticus-armour"
+              },
+              {
+                "name": "Master-crafted Auto Bolt Rifle"
+              },
+              {
+                "name": "Bolt Pistol",
+                "wargearId": "voa-bolt-pistol"
+              },
+              {
+                "name": "Frag Grenade",
+                "qty": 3,
+                "wargearId": "frag-grenade"
+              },
+              {
+                "name": "Krak Grenade",
+                "qty": 3,
+                "wargearId": "krak-grenade"
+              }
+            ]
+          },
+          {
+            "bundle": [
+              {
+                "name": "Mark X Tacticus Power Armour",
+                "wargearId": "voa-mk-x-tacticus-armour"
+              },
+              {
+                "name": "Master-crafted Power Sword"
+              },
+              {
+                "name": "Bolt Pistol",
+                "wargearId": "voa-bolt-pistol"
+              },
+              {
+                "name": "Frag Grenade",
+                "qty": 3,
+                "wargearId": "frag-grenade"
+              },
+              {
+                "name": "Krak Grenade",
+                "qty": 3,
+                "wargearId": "krak-grenade"
+              }
+            ]
+          },
+          {
+            "bundle": [
+              {
+                "name": "Mark X Tacticus Power Armour",
+                "wargearId": "voa-mk-x-tacticus-armour"
+              },
+              {
+                "name": "Master-crafted Power Fist"
+              },
+              {
+                "name": "Bolt Pistol",
+                "wargearId": "voa-bolt-pistol"
+              },
+              {
+                "name": "Frag Grenade",
+                "qty": 3,
+                "wargearId": "frag-grenade"
+              },
+              {
+                "name": "Krak Grenade",
+                "qty": 3,
+                "wargearId": "krak-grenade"
+              }
+            ]
+          },
+          {
+            "bundle": [
+              {
+                "name": "Mark X Phobos Power Armour",
+                "wargearId": "voa-mk-x-phobos-armour"
+              },
+              {
+                "name": "Bolt Pistol",
+                "wargearId": "voa-bolt-pistol"
+              },
+              {
+                "name": "Master-crafted Occulus Bolt Carbine"
+              },
+              {
+                "name": "Astartes Combat Knife",
+                "qty": 2,
+                "wargearId": "voa-astartes-combat-knife"
+              },
+              {
+                "name": "Frag Grenade",
+                "wargearId": "frag-grenade"
+              },
+              {
+                "name": "Krak Grenade",
+                "qty": 3,
+                "wargearId": "krak-grenade"
+              },
+              {
+                "name": "Smoke Grenade",
+                "qty": 3
+              },
+              {
+                "name": "Grav-Chute",
+                "wargearId": "grav-chute"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "influence": 4,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 6,
+        "A": 6,
+        "I": 5,
+        "Wil": 5,
+        "Int": 4,
+        "Fel": 5
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 4,
+        "Ballistic Skill": 6,
+        "Leadership": 5,
+        "Weapon Skill": 6
+      },
+      "talentIds": [
+        "augmetic",
+        "primaris-perspective",
+        "touched-by-fate"
+      ],
+      "xp": {
+        "attributes": 75,
+        "skills": 34
+      }
+    }
+  },
+  {
+    "id": "bladeguard-veteran",
+    "name": "Primaris Bladeguard Veteran",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 41,
+    "note": "XP printed “335+30”; xp is the first figure. XP as printed; ratings + (Tier − 1) × 10 = 371 (ratings 331 + 40); 335+30 is the Terminator's and Primaris Lieutenant's figure. “Storm Sheild” as printed, linked to Storm Shield. Wargear prints “3 Smoke Grenades Grenades”. XP as printed: the total of \"335+30\" (GM ruling, docs/rules-flow.md §11.35).",
+    "tier": 5,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 365,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 6,
+      "Wil": 5,
+      "Int": 4,
+      "Fel": 2
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 4,
+      "Ballistic Skill": 5,
+      "Leadership": 3,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Sword Master",
+        "text": "In each round, you may spend a point of Glory to either:\n- Add +Rank bonus dice to your melee attack Test or,\n- Add +Rank bonus dice to your Resilience."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Mark X Tacticus Power Armour",
+          "wargearId": "voa-mk-x-tacticus-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Heavy Bolt Pistol",
+          "wargearId": "voa-heavy-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Master-crafted Power Sword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Storm Sheild",
+          "wargearId": "storm-shield"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Smoke Grenade",
+          "qty": 3
+        }
+      },
+      {
+        "wargear": {
+          "name": "Haywire Mine"
+        }
+      }
+    ],
+    "influence": 3,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 6,
+        "A": 6,
+        "I": 7,
+        "Wil": 5,
+        "Int": 4,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 5,
+        "Ballistic Skill": 5,
+        "Leadership": 4,
+        "Weapon Skill": 6
+      },
+      "talentIds": [
+        "counter-attack",
+        "fearless",
+        "feel-no-pain",
+        "furious-charge"
+      ],
+      "xp": {
+        "attributes": 91,
+        "skills": 30
+      }
+    }
+  },
+  {
+    "id": "company-ancient",
+    "name": "Primaris Company Ancient",
+    "source": "vow-of-absolution",
+    "factionId": "adeptus-astartes",
+    "page": 42,
+    "note": "XP printed “295+20”; xp is the first figure. XP as printed; ratings + (Tier − 1) × 10 = 375 (ratings 335 + 40). Its Attributes and Skills are the same as the Primaris Lieutenant's (p.40). XP as printed: the total of \"295+20\" (GM ruling, docs/rules-flow.md §11.35).",
+    "tier": 5,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 315,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 5,
+      "Int": 4,
+      "Fel": 4
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 4,
+      "Ballistic Skill": 5,
+      "Leadership": 4,
+      "Weapon Skill": 5
+    },
+    "abilities": [
+      {
+        "name": "Glory of the Emperor",
+        "text": "Visible allies, within 50 meters restore Shock equal to the number of successes you achieved on a DN 4 Leadership Test."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Mark X Tacticus Power Armour",
+          "wargearId": "voa-mk-x-tacticus-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Rifle",
+          "wargearId": "voa-bolt-rifle"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Power Sword",
+          "wargearId": "voa-power-sword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Company Standard"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      }
+    ],
+    "influence": 4,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 6,
+        "A": 6,
+        "I": 6,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 5,
+        "Ballistic Skill": 6,
+        "Leadership": 2,
+        "Weapon Skill": 7
+      },
+      "talentIds": [
+        "duty-until-death",
+        "orthopraxy",
+        "primaris-perspective"
+      ],
+      "xp": {
+        "attributes": 80,
+        "skills": 54
+      }
+    }
   }
 ]

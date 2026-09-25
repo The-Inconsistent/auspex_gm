@@ -1,0 +1,3583 @@
+[
+  {
+    "id": "guardian",
+    "name": "Guardian",
+    "source": "inheritance-of-embers",
+    "page": 22,
+    "factionId": "asuryani",
+    "tier": 2,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 42,
+    "note": "Wargear prints \"Shuriken Catapult or Shuriken Pistol and Guardian Chainsword\", read as Shuriken Catapult, or Shuriken Pistol and Guardian Chainsword (a bundle). \"Guardian Chainsword\" is not in the Wargear catalogue. IoE prints no Influence for this Archetype. Also Apocrypha p.83.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Martial Citizenry",
+        "text": "You are drilled in using basic Asuryani weaponry. When attacking whilst in cover, gain +Rank to the Rending rating of any SHURIKEN weapons. When attacking an enemy in cover, gain +Rank ED on any melee attacks."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Aeldari Mesh Armour",
+          "wargearId": "aeldari-mesh-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Civilian Clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ritual Tools"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Catapult",
+              "wargearId": "shuriken-catapult"
+            }
+          },
+          {
+            "bundle": [
+              {
+                "name": "Shuriken Pistol",
+                "wargearId": "shuriken-pistol"
+              },
+              {
+                "name": "Guardian Chainsword"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 4,
+        "I": 4,
+        "Wil": 3,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 2,
+        "Ballistic Skill": 3,
+        "Insight": 1,
+        "Persuasion": 1,
+        "Pilot": 3,
+        "Scholar": 1,
+        "Stealth": 1,
+        "Tech": 1,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "bladestorm",
+        "legacy-of-sorrow",
+        "mastered-paths",
+        "skyrunner"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 52,
+        "skills": 46
+      }
+    }
+  },
+  {
+    "id": "ranger",
+    "name": "Ranger",
+    "source": "inheritance-of-embers",
+    "page": 23,
+    "factionId": "asuryani",
+    "tier": 2,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 34,
+    "note": "IoE prints no Influence for this Archetype. Also Core p.107.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Stealth": 1,
+      "Survival": 2
+    },
+    "abilities": [
+      {
+        "name": "From the Shadows",
+        "text": "You are adept at exploiting any form of concealment. Whenever a Vision Penalty (Wrath & Glory page 191) or Cover (Wrath & Glory page 181) imposes a penalty on someone trying to attack or detect you, the penalty is increased by +Rank DN."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Ranger Long Rifle",
+          "wargearId": "ranger-long-rifle"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Knife",
+          "wargearId": "knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aeldari Mesh Armour",
+          "wargearId": "aeldari-mesh-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Cameleoline Cloak",
+          "wargearId": "cameleoline-cloak"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Magnocular Scope",
+          "wargearId": "magnocular-scope"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bedroll"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Blanket"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 5,
+        "I": 3,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 3,
+        "Ballistic Skill": 3,
+        "Cunning": 1,
+        "Deception": 1,
+        "Investigation": 1,
+        "Medicae": 1,
+        "Pilot": 2,
+        "Stealth": 2,
+        "Survival": 3,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "acute-sense",
+        "deadshot",
+        "eliminator",
+        "silent"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 61,
+        "skills": 54
+      }
+    }
+  },
+  {
+    "id": "dark-reaper",
+    "name": "Dark Reaper",
+    "source": "inheritance-of-embers",
+    "page": 24,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 70,
+    "note": "SKILLS prints \"Intimidate 1\"; transcribed as Intimidation. Also Apocrypha p.143.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 3,
+      "Intimidation": 1,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Inescapable Accuracy",
+        "text": "Your targeting systems and uncanny precision make it impossible for your victims to hide. When making a ranged attack, you may reduce the total DN penalties you suffer due to Long Range, Vision Penalties, and the target’s Cover by an amount equal to your Rank. When you Brace a Heavy Weapon, you may Aim as a Free Action."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Reaper Launcher"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Reaper Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Intimidation": 3,
+        "Scholar": 1,
+        "Tech": 2,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "deadshot",
+        "ever-vigilant",
+        "fear",
+        "stoic"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 100,
+        "skills": 60
+      }
+    }
+  },
+  {
+    "id": "dire-avenger",
+    "name": "Dire Avenger",
+    "source": "inheritance-of-embers",
+    "page": 25,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 74,
+    "note": "Print error: the Suggested Attributes (2/3/5/3/2/2/2, 61 XP) and Suggested Skills XP (54) are exactly the Ranger's (p.23); the suggested Willpower 2 is below the Archetype's own Willpower 3. Also Apocrypha p.146.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3,
+      "Wil": 3
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 3,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Defence Tactics",
+        "text": "You advance, take cover, and complete your objectives without ever interrupting rate of fire. You may make a ranged attack with a SHURIKEN as a Free Action, but cannot do so in the same Turn you use Combat Actions to make another ranged, melee, or Interaction Attack. You can use this ability up to Rank times per combat, and never more than once per Turn."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Avenger Shuriken Catapult"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Knife",
+          "wargearId": "knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rangefinder"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 5,
+        "I": 3,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Insight": 1,
+        "Leadership": 2,
+        "Medicae": 2,
+        "Scholar": 2,
+        "Tech": 2,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "battle-focus",
+        "bladestorm",
+        "ever-vigilant",
+        "fearless"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 61,
+        "skills": 54
+      }
+    }
+  },
+  {
+    "id": "fire-dragon",
+    "name": "Fire Dragon",
+    "source": "inheritance-of-embers",
+    "page": 26,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 72,
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "T": 2,
+      "A": 3,
+      "I": 3,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 3,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Assured Destruction",
+        "text": "With intense heat you boil your targets from the inside out. You may activate the Melta Trait of any weapons you wield at Medium and Long Range (not just Short Range), and gain +Double Rank ED when making attacks with those weapons."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Dragon Fusion Gun"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Fusion Charge",
+          "qty": 3
+        }
+      },
+      {
+        "wargear": {
+          "name": "Heavy Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Deception": 1,
+        "Intimidation": 2,
+        "Scholar": 2,
+        "Tech": 2,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "battle-focus",
+        "burning-bright",
+        "die-hard",
+        "hardy"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 106,
+        "skills": 62
+      }
+    },
+    "note": "Also Apocrypha p.149."
+  },
+  {
+    "id": "howling-banshee",
+    "name": "Howling Banshee",
+    "source": "inheritance-of-embers",
+    "page": 27,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 90,
+    "note": "XP as printed; ratings + (Tier − 1) × 10 = 68. Possible print error: SKILLS (Ballistic Skill 2, Stealth 1, Survival 2) are exactly the Ranger's (p.23), and the Suggested Skills rate neither Stealth nor Survival. Also Apocrypha p.152.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 4,
+      "Wil": 2
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Stealth": 1,
+      "Survival": 2
+    },
+    "abilities": [
+      {
+        "name": "Whirling Death",
+        "text": "You are a shock assault specialist, delivering such a devastating first strike your enemies are left reeling. You gain +Double Rank bonus dice on melee attacks and Interaction Attacks made as part of a Charge."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Banshee Blade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Howling Banshee Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 6,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 3,
+        "Ballistic Skill": 3,
+        "Deception": 2,
+        "Insight": 2,
+        "Intimidation": 4,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "fear",
+        "furious-charge",
+        "matchless-agility",
+        "sidestep"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 110,
+        "skills": 70
+      }
+    }
+  },
+  {
+    "id": "striking-scorpion",
+    "name": "Striking Scorpion",
+    "source": "inheritance-of-embers",
+    "page": 28,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 84,
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "S": 2,
+      "A": 3,
+      "I": 3,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 2,
+      "Stealth": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Stalking Shadow",
+        "text": "You temper your lust to kill by silently hunting your prey first. You gain +Double Rank bonus dice and +Double Rank ED when making a Surprise Attack (in addition to the usual +2 bonus dice and +2 ED)."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Scorpion Chainsword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mandiblaster"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Heavy Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 3,
+        "Deception": 2,
+        "Intimidation": 2,
+        "Scholar": 1,
+        "Stealth": 4,
+        "Survival": 2,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "counter-attack",
+        "eliminator",
+        "silent",
+        "storm-of-death"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 106,
+        "skills": 70
+      }
+    },
+    "note": "Also Apocrypha p.161."
+  },
+  {
+    "id": "swooping-hawk",
+    "name": "Swooping Hawk",
+    "source": "inheritance-of-embers",
+    "page": 29,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 86,
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Awareness": 2,
+      "Ballistic Skill": 3,
+      "Pilot": 3,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Skyleap",
+        "text": "You employ hit-and-run manoeuvres to frustrate your enemies. You do not provoke Reflexive Attacks when you move out of Engagement. You also gain +Double Rank bonus dice on Pinning Attacks."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Lasblaster",
+          "wargearId": "lasblaster"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Grenade Pack"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Swooping Hawk Wings"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 4,
+        "Ballistic Skill": 5,
+        "Leadership": 1,
+        "Pilot": 4,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "acute-sense",
+        "battle-focus",
+        "burning-bright",
+        "matchless-agility"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 100,
+        "skills": 54
+      }
+    },
+    "note": "Also Apocrypha p.162."
+  },
+  {
+    "id": "warp-spider",
+    "name": "Warp Spider",
+    "source": "inheritance-of-embers",
+    "page": 30,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 86,
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 3,
+      "Deception": 2,
+      "Pilot": 3,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Flickerjump",
+        "text": "You appear just long enough to weave a deadly web, before disappearing from sight. When an enemy enters Engagement with you whilst you are Unengaged, you may move up to your Speed as a Reflexive Action. You can use this ability up to Rank times per combat."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Death Spinner"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Heavy Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Warp Spider Jump Generator"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aspect Shrine"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Cunning": 1,
+        "Deception": 2,
+        "Pilot": 4,
+        "Stealth": 2,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "battle-focus",
+        "eliminator",
+        "escape-artist",
+        "favoured-by-the-warp"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 100,
+        "skills": 54
+      }
+    },
+    "note": "Also Apocrypha p.164."
+  },
+  {
+    "id": "warlock",
+    "name": "Warlock",
+    "source": "inheritance-of-embers",
+    "page": 31,
+    "factionId": "asuryani",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 56,
+    "note": "Suggested Psychic Powers cite \"page 283/284\" (Core's Runes of Battle pages); resolved to IoE's Runes of Battle records. The ability's Universal Psyker Abilities are granted as Psyniscience and Deny the Witch. Also Core p.114.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "PSYKER",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "Wil": 4
+    },
+    "skills": {
+      "Psychic Mastery": 2
+    },
+    "abilities": [
+      {
+        "name": "Runes of Battle",
+        "text": "You are a warrior and a Psyker both, adapting your powers to either augment your allies or assail your enemies. You know the Universal Psyker Abilities (Wrath & Glory page 267), the Smite psychic power, and a single power of your choice from the Runes of Battle Discipline.",
+        "grants": [
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "power": "smite"
+          },
+          {
+            "choose": 1,
+            "fromDisciplines": [
+              "runes-of-battle"
+            ]
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Witchblade",
+              "wargearId": "witchblade"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Singing Spear",
+              "wargearId": "singing-spear"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Rune Armour",
+          "wargearId": "rune-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Set of Wraithbone Runes"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 4,
+        "I": 5,
+        "Wil": 7,
+        "Int": 4,
+        "Fel": 2
+      },
+      "skills": {
+        "Awareness": 1,
+        "Insight": 3,
+        "Leadership": 1,
+        "Psychic Mastery": 4,
+        "Scholar": 3,
+        "Weapon Skill": 3
+      },
+      "talentIds": [],
+      "powerIds": [
+        "conceal-reveal",
+        "embolden-horrify",
+        "protect-jinx",
+        "quicken-restrain"
+      ],
+      "xp": {
+        "attributes": 143,
+        "skills": 54
+      }
+    }
+  },
+  {
+    "id": "wraithguard",
+    "name": "Wraithguard",
+    "source": "inheritance-of-embers",
+    "page": 32,
+    "factionId": "asuryani",
+    "tier": 4,
+    "speciesIds": [
+      "wraith-construct"
+    ],
+    "xp": 164,
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "WRAITH CONSTRUCT",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "Wil": 4
+    },
+    "skills": {
+      "Ballistic Skill": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "War Construct",
+        "text": "Your new body weathers the strains of battle better than any living creature could. Any ranged weapons you wield without the Heavy Trait gain the Pistol Trait. When wielding two melee weapons, you reduce the DN penalty for making Multi-Attacks by 2. You gain +Rank Determination."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Wraithcannon"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Ghostsword",
+              "qty": 2
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 7,
+        "T": 8,
+        "A": 2,
+        "I": 4,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Intimidation": 3,
+        "Scholar": 2,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "brutalist",
+        "feel-no-pain",
+        "frenzy",
+        "tenacious"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 139,
+        "skills": 46
+      }
+    },
+    "note": "Also Apocrypha p.209."
+  },
+  {
+    "id": "autarch",
+    "name": "Autarch",
+    "source": "inheritance-of-embers",
+    "page": 33,
+    "factionId": "asuryani",
+    "tier": 5,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 216,
+    "note": "Print error: the Suggested Talents are printed under the heading \"SUGGESTED PSYCHIC POWERS\"; they are talents and are transcribed as talentIds. Also Apocrypha p.194.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 4,
+      "I": 4,
+      "Wil": 5,
+      "Int": 5,
+      "Fel": 3
+    },
+    "skills": {
+      "Athletics": 2,
+      "Awareness": 2,
+      "Ballistic Skill": 3,
+      "Leadership": 4,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Superlative Strategist",
+        "text": "When you, or any allies within communication range, spend Glory to increase their dice pool, they gain +Rank bonus dice (in addition to bonus dice equal to the Glory spent). You may make Leadership Tests to remove the Fear, Terror, or Pinned Conditions as a Simple Action."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Pistol",
+              "wargearId": "shuriken-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Dragon Fusion Gun"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Reaper Launcher"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Death Spinner"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Star Glaive"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Banshee Blade"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Scorpion Chainsword"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Plasma Grenade",
+              "qty": 3,
+              "wargearId": "plasma-grenade"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Howling Banshee Mask"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Mandiblasters"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Fusion Charge",
+              "qty": 3
+            }
+          },
+          {
+            "wargear": {
+              "name": "Swooping Hawk Wings"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Warp Spider Jump Generator"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Heavy Aspect Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "War Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Forceshield"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Back Banner"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      }
+    ],
+    "influence": 3,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 7,
+        "Int": 6,
+        "Fel": 5
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Insight": 2,
+        "Intimidation": 2,
+        "Leadership": 5,
+        "Persuasion": 3,
+        "Pilot": 2,
+        "Scholar": 2,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "battle-focus",
+        "burning-bright",
+        "mastered-paths",
+        "noble-peer"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 140,
+        "skills": 94
+      }
+    }
+  },
+  {
+    "id": "farseer",
+    "name": "Farseer",
+    "source": "inheritance-of-embers",
+    "page": 34,
+    "factionId": "asuryani",
+    "tier": 5,
+    "speciesIds": [
+      "aeldari"
+    ],
+    "xp": 167,
+    "note": "Print error: Suggested Psychic Powers prints only \"TBD\", so powerIds is empty. The ability's two-power choice is from the Divination, Runes of Fate and Runes of Fortune disciplines; those also hold Apocrypha homebrew powers (Eldritch Storm, and Divination's Auto-Seance and others), which the builder hides as homebrew. The Universal Psyker Abilities are granted as Psyniscience and Deny the Witch.",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "PSYKER",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3,
+      "Wil": 6,
+      "Int": 4
+    },
+    "skills": {
+      "Leadership": 2,
+      "Psychic Mastery": 4,
+      "Scholar": 2
+    },
+    "abilities": [
+      {
+        "name": "The Witch Path",
+        "text": "You are a supremely powerful Psyker, specialising in manipulation of the future. You know the Universal Psyker Abilities (Wrath & Glory page 267), and the Smite psychic power. You may choose two powers you know from any of the following Disciplines (so long as you meet the prerequisites): Divination, Runes of Fate, Runes of Fortune.",
+        "grants": [
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "power": "smite"
+          },
+          {
+            "choose": 2,
+            "fromDisciplines": [
+              "divination",
+              "runes-of-fate",
+              "runes-of-fortune"
+            ]
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Witchblade",
+              "wargearId": "witchblade"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Singing Spear",
+              "wargearId": "singing-spear"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Rune Armour",
+          "wargearId": "rune-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ghosthelm"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Set of Wraithbone Runes"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      }
+    ],
+    "influence": 3,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 5,
+        "I": 5,
+        "Wil": 8,
+        "Int": 6,
+        "Fel": 5
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 4,
+        "Ballistic Skill": 3,
+        "Leadership": 4,
+        "Psychic Mastery": 5,
+        "Scholar": 4,
+        "Weapon Skill": 3
+      },
+      "talentIds": [],
+      "powerIds": [],
+      "xp": {
+        "attributes": 205,
+        "skills": 88
+      }
+    }
+  },
+  {
+    "id": "kabalite-warrior",
+    "name": "Kabalite Warrior",
+    "source": "inheritance-of-embers",
+    "page": 36,
+    "factionId": "drukhari",
+    "tier": 2,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 42,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[KABAL]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Prey on the Weak",
+        "text": "Your mind is focussed by the scent of fear and suffering. You gain +Rank bonus dice on attack Tests against enemies that have suffered Wounds, or Mobs of Troops that have suffered casualties."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Splinter Rifle"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Knife",
+          "wargearId": "knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Kabalite Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Hook and Chains"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Initiation Token"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 4,
+        "I": 4,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 1,
+        "Awareness": 2,
+        "Ballistic Skill": 3,
+        "Cunning": 2,
+        "Deception": 1,
+        "Insight": 1,
+        "Intimidation": 2,
+        "Pilot": 1,
+        "Stealth": 2,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "dirty-fighter",
+        "eliminator",
+        "trueborn",
+        "power-from-pain"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 40,
+        "skills": 38
+      }
+    },
+    "note": "Also Apocrypha p.87."
+  },
+  {
+    "id": "wych",
+    "name": "Wych",
+    "source": "inheritance-of-embers",
+    "page": 37,
+    "factionId": "drukhari",
+    "tier": 2,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 62,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[WYCH CULT]"
+    ],
+    "attributes": {
+      "A": 4,
+      "I": 4
+    },
+    "skills": {
+      "Athletics": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Lightning Dodge",
+        "text": "You run circles around your enemy, and take them apart one slice at a time. When wearing no armour besides a Wychsuit, you gain +Rank Defence against melee attacks."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Splinter Pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Hekatarii Blade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Wychsuit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combat Drugs"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Arena Trophy"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 4,
+        "I": 5,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Ballistic Skill": 2,
+        "Cunning": 2,
+        "Intimidation": 1,
+        "Persuasion": 1,
+        "Pilot": 1,
+        "Stealth": 1,
+        "Weapon Skill": 3
+      },
+      "talentIds": [
+        "blade-artist",
+        "matchless-agility",
+        "sidestep",
+        "skyrunner"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 35,
+        "skills": 32
+      }
+    },
+    "note": "Also Apocrypha p.97."
+  },
+  {
+    "id": "hellion",
+    "name": "Hellion",
+    "source": "inheritance-of-embers",
+    "page": 38,
+    "factionId": "drukhari",
+    "tier": 2,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 36,
+    "note": "IoE prints no Influence for this Archetype.",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[WYCH CULT]"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3
+    },
+    "skills": {
+      "Pilot": 2
+    },
+    "abilities": [
+      {
+        "name": "Hit and Run",
+        "text": "You revel in the confusion of swift attacks, striking fast before sweeping away from victims who fall prey to your Skyboard or Hellglaive. You do not provoke Reflexive Attacks when you move out of Engagement. You gain +Rank bonus dice on any Pilot (A) Tests related to the operation of your Skyboard."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Hellglaive"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skyboard with Splinter Pods"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Wychsuit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combat Drugs"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Gang Colours"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ornamental Skull"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 4,
+        "I": 4,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 2,
+        "Ballistic Skill": 2,
+        "Cunning": 2,
+        "Intimidation": 1,
+        "Pilot": 3,
+        "Tech": 2,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "burning-bright",
+        "furious-charge",
+        "matchless-agility",
+        "power-from-pain"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 40,
+        "skills": 44
+      }
+    }
+  },
+  {
+    "id": "beastmaster",
+    "name": "Beastmaster",
+    "source": "inheritance-of-embers",
+    "page": 39,
+    "factionId": "drukhari",
+    "tier": 3,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 100,
+    "note": "Suggested Talents print \"Animal Companion [Khymera or Clawed Fiend]\" and \"Devotees [Razorwing Flock]\".",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[WYCH CULT]"
+    ],
+    "attributes": {
+      "A": 4,
+      "I": 4,
+      "Wil": 3
+    },
+    "skills": {
+      "Athletics": 2,
+      "Leadership": 2,
+      "Pilot": 2,
+      "Survival": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Beast Handler",
+        "text": "You command respect from wild animals, cowing them into obedience. You gain +Double Rank bonus dice on all social Skill Tests against a creature with the BEAST Keyword. When you consent, allied BEAST creatures in communication range can spend your Wrath Points as their own."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Agoniser"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skyboard with Splinter Pods"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Wychsuit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Beastmaster Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combat Drugs"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Hunting Trophy"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 3,
+        "Cunning": 2,
+        "Insight": 2,
+        "Intimidation": 2,
+        "Leadership": 3,
+        "Pilot": 2,
+        "Survival": 4,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "acute-sense",
+        "animal-companion",
+        "devotees",
+        "fear"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 74,
+        "skills": 86
+      }
+    }
+  },
+  {
+    "id": "incubus",
+    "name": "Incubus",
+    "source": "inheritance-of-embers",
+    "page": 40,
+    "factionId": "drukhari",
+    "tier": 3,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 84,
+    "note": "Printed in the Drukhari Archetypes section with the BLADES FOR HIRE keyword; filed under the drukhari faction. SKILLS prints \"Intimidate 2\"; transcribed as Intimidation. Also Apocrypha p.153.",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "BLADES FOR HIRE"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 4,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 2,
+      "Intimidation": 2,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Lethal Precision",
+        "text": "You train tirelessly to master the perfect killing strike. When you inflict a Critical Hit on a melee attack, you inflict +Double Rank Mortal Wounds."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Klaive"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Incubus Warsuit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Tormentor"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Terms of Covenant"
+        }
+      },
+      {
+        "text": "Stolen Spirit Stones and other trophies"
+      },
+      {
+        "wargear": {
+          "name": "Shrine of the Father"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 6,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 3,
+        "Cunning": 2,
+        "Insight": 3,
+        "Intimidation": 3,
+        "Weapon Skill": 5
+      },
+      "talentIds": [
+        "blade-artist",
+        "brutalist",
+        "counter-attack",
+        "power-from-pain"
+      ],
+      "powerIds": [],
+      "xp": {
+        "attributes": 110,
+        "skills": 66
+      }
+    }
+  },
+  {
+    "id": "mandrake",
+    "name": "Mandrake",
+    "source": "inheritance-of-embers",
+    "page": 41,
+    "note": "Printed in the Drukhari Archetypes section with the BLADES FOR HIRE keyword; filed under the drukhari faction. No Influence printed.",
+    "factionId": "drukhari",
+    "tier": 3,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 92,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "BLADES FOR HIRE"
+    ],
+    "attributes": {
+      "S": 2,
+      "A": 4,
+      "I": 3
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 2,
+      "Stealth": 4,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Shadow Creature",
+        "text": "You are not a creature of flesh and blood, instead dwelling in a liminal state between realities. When you are not wearing armour, you gain +Rank Resilience, and can roll Determination against attacks that inflict Mortal Wounds. You always count as being in heavy fog, with all corresponding vision penalties (+3 DN to target with Awareness and Ballistic Skill Tests, +2 DN to target with Weapon Skill Tests). When you move, you ignore all obstacles between your start and end point, so long as you move from one shadow to another."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Glimmersteel Blade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Cloak of Skin"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Hook and Chains"
+        }
+      },
+      {
+        "text": "You are also able to generate Baleblasts, which have the weapon profile below:\n\n10 +1 ED / Range 9 – 18 – 27 / Salvo - / Assault, Rending (4)"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Cunning": 2,
+        "Intimidation": 3,
+        "Stealth": 5,
+        "Survival": 3,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 74,
+        "skills": 94
+      },
+      "talentIds": [
+        "blade-artist",
+        "eliminator",
+        "silent",
+        "power-from-pain"
+      ]
+    }
+  },
+  {
+    "id": "scourge",
+    "name": "Scourge",
+    "source": "inheritance-of-embers",
+    "page": 42,
+    "note": "Printed in the Drukhari Archetypes section with the BLADES FOR HIRE keyword; filed under the drukhari faction. Also Apocrypha p.127.",
+    "factionId": "drukhari",
+    "tier": 3,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 70,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "BLADES FOR HIRE"
+    ],
+    "attributes": {
+      "A": 3,
+      "I": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 2,
+      "Ballistic Skill": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Winged Strike",
+        "text": "You are grafted with wings that allow you to fly at double your normal Speed. More complicated aerial manoeuvres may require an Athletics (S) Test, with +Double Rank bonus dice. In addition, you can spend Shifts on a successful ranged attack Test to inflict the Pinned Condition on the target. This costs a number of Shifts equal to the target’s Resolve minus Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shardcarbine"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ghostplate Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Terms of Covenant"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Delivery Capsule"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 5,
+        "I": 5,
+        "Wil": 3,
+        "Int": 3,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 4,
+        "Ballistic Skill": 5,
+        "Cunning": 2,
+        "Intimidation": 2,
+        "Stealth": 2,
+        "Survival": 2,
+        "Weapon Skill": 3
+      },
+      "xp": {
+        "attributes": 94,
+        "skills": 76
+      },
+      "talentIds": [
+        "acute-sense",
+        "deadshot",
+        "matchless-agility",
+        "power-from-pain"
+      ]
+    }
+  },
+  {
+    "id": "archon",
+    "name": "Archon",
+    "source": "inheritance-of-embers",
+    "page": 43,
+    "factionId": "drukhari",
+    "tier": 5,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 192,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[KABAL]"
+    ],
+    "attributes": {
+      "A": 4,
+      "I": 4,
+      "Wil": 4,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 2,
+      "Awareness": 2,
+      "Ballistic Skill": 3,
+      "Cunning": 2,
+      "Intimidation": 4,
+      "Leadership": 4,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Overlord",
+        "text": "You drive your underlings toward success by threatening them with the consequences of failure. As a Simple Action, you may spend 1 Wrath to provide yourself and all allies +Rank bonus dice to the next Test they make this encounter in your presence. In addition, you may spend 1 Glory to gain 1 Wrath Point as a Free Action, up to Rank times per session."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Splinter Pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Huskblade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Kabalite Armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Shadowfield"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Trophy Rack"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Initiation Brand"
+        }
+      }
+    ],
+    "influence": 4,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 6,
+        "I": 6,
+        "Wil": 6,
+        "Int": 5,
+        "Fel": 4
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Cunning": 3,
+        "Deception": 2,
+        "Insight": 2,
+        "Intimidation": 5,
+        "Leadership": 5,
+        "Persuasion": 2,
+        "Scholar": 2,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 170,
+        "skills": 78
+      },
+      "talentIds": [
+        "beyond-mortality",
+        "paranoid",
+        "power-from-pain",
+        "supreme-presence"
+      ]
+    },
+    "note": "Suggested talent printed \"Supreme Presence [Intimidation]\". Also Apocrypha p.193."
+  },
+  {
+    "id": "haemonculus",
+    "name": "Haemonculus",
+    "source": "inheritance-of-embers",
+    "page": 44,
+    "note": "Suggested talents cite Beyond Mortality as \"page 61\"; it is on p.60 (the Archon and Succubus entries cite page 60). Also Apocrypha p.199.",
+    "factionId": "drukhari",
+    "tier": 5,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 175,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[COVEN]"
+    ],
+    "attributes": {
+      "T": 3,
+      "A": 3,
+      "I": 3,
+      "Int": 5
+    },
+    "skills": {
+      "Ballistic Skill": 2,
+      "Intimidation": 3,
+      "Medicae": 4,
+      "Scholar": 4,
+      "Tech": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Master of Pain",
+        "text": "You have inflicted such violations upon your own flesh that enemy attacks are barely cause for concern. You gain +Rank Resilience. In addition, when you heal another creature’s Wounds, you can choose to heal additional Wounds by inflicting an equal amount of Shock on the patient, up to Double Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Stinger Pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Scissorhand"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ichor Injector"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mesh Implants"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Anti-Grav Suspensor Crystal"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Haemonculus Tools"
+        }
+      }
+    ],
+    "influence": 4,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 5,
+        "A": 5,
+        "I": 5,
+        "Wil": 4,
+        "Int": 7,
+        "Fel": 2
+      },
+      "skills": {
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Cunning": 3,
+        "Deception": 2,
+        "Intimidation": 4,
+        "Insight": 1,
+        "Investigation": 2,
+        "Leadership": 2,
+        "Medicae": 5,
+        "Scholar": 5,
+        "Stealth": 1,
+        "Survival": 1,
+        "Tech": 3,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 154,
+        "skills": 110
+      },
+      "talentIds": [
+        "beyond-mortality",
+        "fear",
+        "insensible-to-pain",
+        "power-from-pain"
+      ]
+    }
+  },
+  {
+    "id": "succubus",
+    "name": "Succubus",
+    "source": "inheritance-of-embers",
+    "page": 45,
+    "factionId": "drukhari",
+    "tier": 5,
+    "speciesIds": [
+      "drukhari"
+    ],
+    "xp": 164,
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "[WYCH CULT]"
+    ],
+    "attributes": {
+      "A": 5,
+      "I": 5,
+      "Wil": 2,
+      "Fel": 2
+    },
+    "skills": {
+      "Athletics": 4,
+      "Leadership": 2,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Brides of Death",
+        "text": "You shock your fellow warriors into greater acts of spectacular slaughter. Once per Turn as a Free Action, you may spend 1 Wrath to provide yourself and all allies in communication range +Rank ED on any melee attacks made until the start of your next Turn. When wearing no armour besides a Wychsuit, you gain +Rank Defence against ranged attacks."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Agoniser"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Archite Glaive"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Wychsuit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Combat Drugs"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Arena Trophy"
+        }
+      }
+    ],
+    "influence": 3,
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 3,
+        "A": 7,
+        "I": 7,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 4
+      },
+      "skills": {
+        "Athletics": 5,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Cunning": 2,
+        "Deception": 2,
+        "Insight": 2,
+        "Intimidation": 3,
+        "Leadership": 3,
+        "Persuasion": 2,
+        "Pilot": 2,
+        "Stealth": 2,
+        "Weapon Skill": 5
+      },
+      "xp": {
+        "attributes": 170,
+        "skills": 106
+      },
+      "talentIds": [
+        "beyond-mortality",
+        "blade-artist",
+        "matchless-agility",
+        "sidestep"
+      ]
+    },
+    "note": "Also Apocrypha p.204."
+  },
+  {
+    "id": "troupe-player",
+    "name": "Troupe Player",
+    "source": "inheritance-of-embers",
+    "page": 47,
+    "note": "Species printed \"Aeldari/Drukhari\". Also Apocrypha p.172.",
+    "factionId": "harlequins",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 94,
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN",
+      "[MASQUE]"
+    ],
+    "attributes": {
+      "A": 4,
+      "I": 4,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 3,
+      "Ballistic Skill": 2,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "War Dancer",
+        "text": "You fight best as part of a chorus, the strikes of your allies blurring into your own as a storm of blades. You gain +Double Rank bonus dice on melee attacks against an enemy engaged with an ally."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Harlequin’s Blade"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Harlequin’s Kiss"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Harlequin’s Caress"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Harlequin’s Embrace"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Holo-Suit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "False Face"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Flip-Belt"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 6,
+        "I": 6,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 1,
+        "Ballistic Skill": 4,
+        "Deception": 2,
+        "Intimidation": 2,
+        "Pilot": 2,
+        "Scholar": 1,
+        "Stealth": 1,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 114,
+        "skills": 52
+      },
+      "talentIds": [
+        "luck-of-the-laughing-god",
+        "rising-crescendo",
+        "matchless-agility",
+        "skyrunner"
+      ]
+    }
+  },
+  {
+    "id": "death-jester",
+    "name": "Death Jester",
+    "source": "inheritance-of-embers",
+    "page": 48,
+    "note": "Species printed \"Aeldari/Drukhari\". Also Apocrypha p.200.",
+    "factionId": "harlequins",
+    "tier": 4,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 176,
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN",
+      "[MASQUE]"
+    ],
+    "attributes": {
+      "S": 4,
+      "A": 5,
+      "I": 5,
+      "Wil": 4
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 3,
+      "Intimidation": 2,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Death Is Not Enough",
+        "text": "You delight in brutal volleys of firepower that demoralise and terrify your enemies. When you succeed on a ranged attack, any targets of the attack must make a Fear Test, with a DN of 1 + Double Rank. If none of your targets survived the attack, you can choose another character who witnessed the attack to make the Fear Test instead."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shrieker Cannon with Jester’s Blade attachment"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Holo-Suit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rictus Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Flip-Belt"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 3,
+        "A": 7,
+        "I": 7,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 2,
+        "Ballistic Skill": 4,
+        "Deception": 2,
+        "Intimidation": 3,
+        "Scholar": 2,
+        "Stealth": 1,
+        "Tech": 1,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 135,
+        "skills": 58
+      },
+      "talentIds": [
+        "fear",
+        "gallows-humour",
+        "luck-of-the-laughing-god",
+        "rising-crescendo"
+      ]
+    }
+  },
+  {
+    "id": "shadowseer",
+    "name": "Shadowseer",
+    "source": "inheritance-of-embers",
+    "page": 49,
+    "note": "Species printed \"Aeldari/Drukhari\". The Universal Psyker Abilities (Core p.267) are granted as Psyniscience and Deny the Witch. Also Apocrypha p.201.",
+    "factionId": "harlequins",
+    "tier": 5,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 277,
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN",
+      "PSYKER",
+      "[MASQUE]"
+    ],
+    "attributes": {
+      "S": 2,
+      "T": 2,
+      "A": 5,
+      "I": 5,
+      "Wil": 6,
+      "Int": 4,
+      "Fel": 2
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 3,
+      "Deception": 3,
+      "Psychic Mastery": 4,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Phantasmancer",
+        "text": "You know the Universal Psyker Abilities (Wrath & Glory page 267), and the Smite psychic power. You may choose two powers you know from any of the following Disciplines (so long as you meet the prerequisites): Divination, Phantasmancy, Telepathy.",
+        "grants": [
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "power": "smite"
+          },
+          {
+            "choose": 2,
+            "fromDisciplines": [
+              "divination",
+              "phantasmancy",
+              "telepathy"
+            ]
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Pistol",
+              "wargearId": "shuriken-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Neuro Disruptor"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Miststave"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Hallucinogen Grenade Launcher"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Holo-Suit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mirror Mask"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Flip-Belt"
+        }
+      }
+    ],
+    "influence": 2,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 6,
+        "I": 6,
+        "Wil": 8,
+        "Int": 5,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 4,
+        "Ballistic Skill": 4,
+        "Deception": 4,
+        "Intimidation": 2,
+        "Leadership": 2,
+        "Psychic Mastery": 5,
+        "Scholar": 2,
+        "Stealth": 2,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 128,
+        "skills": 74
+      },
+      "powerIds": [
+        "fog-of-dreams",
+        "shards-of-light",
+        "webway-dance"
+      ]
+    }
+  },
+  {
+    "id": "troupe-master",
+    "name": "Troupe Master",
+    "source": "inheritance-of-embers",
+    "page": 50,
+    "note": "Species printed \"Aeldari/Drukhari\". Also Apocrypha p.203.",
+    "factionId": "harlequins",
+    "tier": 5,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 253,
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN",
+      "[MASQUE]"
+    ],
+    "attributes": {
+      "S": 2,
+      "T": 2,
+      "A": 5,
+      "I": 5,
+      "Wil": 5,
+      "Int": 4,
+      "Fel": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 2,
+      "Ballistic Skill": 4,
+      "Leadership": 3,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Choreographer of War",
+        "text": "When you, or any allies within communication range, spend Glory to increase damage, they inflict +Rank damage (in addition to +1 damage per Glory spent). In addition, you may Seize the Initiative without spending Glory, up to Rank times per combat."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Aeldari Power Sword"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Harlequin’s Kiss"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Harlequin’s Caress"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Harlequin’s Embrace"
+            }
+          }
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Pistol",
+              "wargearId": "shuriken-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Fusion Pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Neuro Disruptor"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Holo-Suit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "False Face"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Flip-Belt"
+        }
+      }
+    ],
+    "influence": 3,
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 3,
+        "A": 7,
+        "I": 7,
+        "Wil": 6,
+        "Int": 5,
+        "Fel": 4
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Deception": 2,
+        "Insight": 2,
+        "Intimidation": 2,
+        "Leadership": 4,
+        "Persuasion": 1,
+        "Scholar": 2,
+        "Stealth": 1,
+        "Weapon Skill": 5
+      },
+      "xp": {
+        "attributes": 147,
+        "skills": 70
+      },
+      "talentIds": [
+        "burning-bright",
+        "luck-of-the-laughing-god",
+        "rising-crescendo",
+        "signature-saedath"
+      ]
+    }
+  },
+  {
+    "id": "voidreaver",
+    "name": "Voidreaver",
+    "source": "inheritance-of-embers",
+    "page": 52,
+    "note": "Species printed \"Aeldari, Drukhari\". No Influence printed. Ability text prints \"lighting strike raids\" (copied as printed). Wargear \"Shuriken Rifle or Shuriken Pistol and Void Sabre\" is read as (Rifle or Pistol) and Void Sabre; it could also mean Rifle, or Pistol and Void Sabre (the Guardian, p.22, prints the same shape meaning Catapult, or Pistol and Chainsword). Also Apocrypha p.94.",
+    "factionId": "anhrathe",
+    "tier": 2,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 44,
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "[COTERIE]"
+    ],
+    "attributes": {
+      "A": 3
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 2,
+      "Pilot": 2,
+      "Weapon Skill": 2
+    },
+    "abilities": [
+      {
+        "name": "Raiders of the Void",
+        "text": "You are a raider, experienced at operating in the vacuum of space. Used to zero gravity, and engaging in lighting strike raids, you use speed and guile to your advantage in battle. You gain +Rank bonus dice to melee or ranged attacks when you Seize the Initiative. You gain a further +1 die bonus if this ability is used when fighting in zero gravity."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Rifle"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Shuriken Pistol",
+              "wargearId": "shuriken-pistol"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Void Sabre",
+          "wargearId": "void-sabre"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Corsair Armour",
+          "wargearId": "corsair-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Void Suit",
+          "wargearId": "void-suit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "text": "1 extra random trinket"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 5,
+        "I": 4,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 2,
+        "Ballistic Skill": 3,
+        "Pilot": 3,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 65,
+        "skills": 34
+      },
+      "talentIds": [
+        "blood-must-flow",
+        "counter-attack",
+        "fear"
+      ]
+    }
+  },
+  {
+    "id": "voidscarred",
+    "name": "Voidscarred",
+    "source": "inheritance-of-embers",
+    "page": 53,
+    "note": "Species printed \"Aeldari, Drukhari\". No Influence printed. Wargear read as (Rifle or Pistol) and Void Sabre, as for the Voidreaver; it could also mean Rifle, or Pistol and Void Sabre. Also printed, as suggested loadouts for Advanced Character Creation: Special Weapon gunners take in addition either a Corsair Blaster, Shredder, Wraithcannon or Shuriken Cannon. A Starstorm Duellist takes an additional Fusion, Blast, or Splinter Pistol. A Kurnite Hunter may take a Faolchu pet. A Shade Runner replaces their weapons with a pair of Hekatarii Blades and a Shuriken Pistol, and gains a Blink Pack. Kurnathi may upgrade their Void Sabre to a Master Crafted Void Sabre. A Fate Dealer gains a Ranger Long Rifle and a Cameleoline Cloak.",
+    "factionId": "anhrathe",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 94,
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "[COTERIE]"
+    ],
+    "attributes": {
+      "T": 2,
+      "A": 4,
+      "I": 3,
+      "Wil": 2
+    },
+    "skills": {
+      "Athletics": 2,
+      "Ballistic Skill": 2,
+      "Pilot": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Wrath of the Stars",
+        "text": "Your training has prepared you for any battlefield. When you make a Critical Hit you may roll twice on the Critical Hit table and choose either result."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Rifle"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Shuriken Pistol",
+              "wargearId": "shuriken-pistol"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Void Sabre",
+          "wargearId": "void-sabre"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Corsair Armour",
+          "wargearId": "corsair-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Void Suit",
+          "wargearId": "void-suit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "text": "1 extra random trinket"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 6,
+        "I": 5,
+        "Wil": 3,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 3,
+        "Ballistic Skill": 4,
+        "Pilot": 4,
+        "Weapon Skill": 5
+      },
+      "xp": {
+        "attributes": 90,
+        "skills": 66
+      },
+      "talentIds": [
+        "blood-must-flow",
+        "counter-attack",
+        "fear"
+      ]
+    }
+  },
+  {
+    "id": "soul-weaver-and-wayseeker",
+    "name": "Soul Weaver & Wayseeker",
+    "source": "inheritance-of-embers",
+    "page": 54,
+    "note": "XP printed \"44\" with \"+20\" beneath it (GitHub issue #2). The printed 44 is the ratings alone; 44 + 20 = 64, not 54, so here the mark is not the Archetype Ability's (Tier − 1) × 10. Species printed \"Aeldari, Drukhari\". No Influence printed. PSYKER comes from the ability, not the printed Keywords. The Universal Psyker Abilities (Core p.267) are granted as Psyniscience and Deny the Witch. Suggested Psychic Powers are two sets, both in powerIds: \"Way Seeker: Prescience, Protect/Jinx, Psychometry\" and \"Soul Weaver: Empower/Enervate, Embolden/Horrify, Enhance/Drain\". Wargear \"Corsair Sabre\" is not in the catalogue (Void Sabre?). XP as printed: the total of \"44+20\" (GM ruling, docs/rules-flow.md §11.35).",
+    "factionId": "anhrathe",
+    "tier": 2,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 64,
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "[COTERIE]"
+    ],
+    "attributes": {
+      "A": 3,
+      "Wil": 4
+    },
+    "skills": {
+      "Athletics": 1,
+      "Ballistic Skill": 1,
+      "Pilot": 1,
+      "Psychic Mastery": 2,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Void Dreamer",
+        "text": "You have the PSYKER Keyword, and are a Psyker. You know the Universal Psyker Abilities (Wrath & Glory page 267), and the Smite psychic power.",
+        "grants": [
+          {
+            "keyword": "PSYKER"
+          },
+          {
+            "power": "psyniscience"
+          },
+          {
+            "power": "deny-the-witch"
+          },
+          {
+            "power": "smite"
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Corsair Sabre"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Witchstaff"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ritual Tools"
+        }
+      },
+      {
+        "text": "Set of Wraithbone Runes and recovered Spirit Stones"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 2,
+        "A": 3,
+        "I": 3,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 1,
+        "Ballistic Skill": 3,
+        "Insight": 3,
+        "Pilot": 2,
+        "Psychic Mastery": 3,
+        "Scholar": 3,
+        "Weapon Skill": 2
+      },
+      "xp": {
+        "attributes": 47,
+        "skills": 54
+      },
+      "powerIds": [
+        "prescience",
+        "protect-jinx",
+        "psychometry",
+        "empower-enervate",
+        "embolden-horrify",
+        "enhance-drain"
+      ]
+    }
+  },
+  {
+    "id": "felarch",
+    "name": "Felarch",
+    "source": "inheritance-of-embers",
+    "page": 55,
+    "note": "XP printed \"124\" with \"+20\" beneath it (GitHub issue #2). The printed 124 is the ratings alone and 124 + 20 = 144, so the mark reads as the Archetype Ability's (Tier − 1) × 10. Species printed \"Aeldari, Drukhari\". No Influence printed. Wargear read as (Rifle or Pistol) and Master Crafted Void Sabre, as for the Voidreaver; it could also mean Rifle, or Pistol and Master Crafted Void Sabre. XP as printed: the total of \"124+20\" (GM ruling, docs/rules-flow.md §11.35).",
+    "factionId": "anhrathe",
+    "tier": 3,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 144,
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "[COTERIE]"
+    ],
+    "attributes": {
+      "T": 2,
+      "A": 4,
+      "I": 4,
+      "Wil": 2,
+      "Fel": 2
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 3,
+      "Leadership": 3,
+      "Pilot": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Captain of the Stars",
+        "text": "You and any allies within 20 metres of you that can see you may add +Double Rank bonus dice to Resolve Tests. You add +Double Rank bonus dice to any Intimidation (Wil) Tests, including Interaction Attacks."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Shuriken Rifle"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Shuriken Pistol",
+              "wargearId": "shuriken-pistol"
+            }
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Master Crafted Void Sabre"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Corsair Armour",
+          "wargearId": "corsair-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Void Suit",
+          "wargearId": "void-suit"
+        }
+      },
+      {
+        "text": "+d3 Trinkets"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 6,
+        "I": 5,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 4,
+        "Ballistic Skill": 4,
+        "Cunning": 2,
+        "Intimidation": 2,
+        "Leadership": 3,
+        "Pilot": 3,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 76,
+        "skills": 36
+      },
+      "talentIds": [
+        "augmetic",
+        "die-hard",
+        "dual-wield",
+        "fearless",
+        "legacy-of-sorrow",
+        "noble-peer"
+      ]
+    }
+  },
+  {
+    "id": "corsair-prince",
+    "name": "Corsair Prince",
+    "source": "inheritance-of-embers",
+    "page": 56,
+    "note": "Stat block headed \"PRINCE\". XP printed \"180\" with \"+30\" beneath it (GitHub issue #2). The printed 180 is the ratings alone and 180 + 30 = 210, so the mark reads as the Archetype Ability's (Tier − 1) × 10. Species printed \"Aeldari, Drukhari\". No Influence printed. Keywords printed \"AELDARI, ASURYANI, [CRAFTWORLD]\", copied as printed; likely an error for ANHRATHE, [COTERIE] (every other Corsair entry, and the ability refers to ANHRATHE). Attributes print \"Intelligence 2\" (Intellect). XP as printed: the total of \"180+30\" (GM ruling, docs/rules-flow.md §11.35).",
+    "factionId": "anhrathe",
+    "tier": 4,
+    "speciesIds": [
+      "aeldari",
+      "drukhari"
+    ],
+    "xp": 210,
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "[CRAFTWORLD]"
+    ],
+    "attributes": {
+      "S": 2,
+      "T": 2,
+      "A": 4,
+      "I": 4,
+      "Wil": 3,
+      "Int": 2,
+      "Fel": 2
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 3,
+      "Cunning": 3,
+      "Intimidation": 2,
+      "Leadership": 4,
+      "Pilot": 4,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Lord of the Galaxy",
+        "text": "You gain +Double Rank bonus dice to social Skill Tests when interacting with a character with the AELDARI or DRUKHARI Keywords. You gain +Double Rank bonus to all Cunning Tests when commanding ANHRATHE characters and units."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Shuriken Pistol",
+          "wargearId": "shuriken-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Master Crafted Void Sabre"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Plasma Grenade",
+          "qty": 3,
+          "wargearId": "plasma-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Corsair Armour",
+          "wargearId": "corsair-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mist Shield"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "wargearId": "spirit-stone"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Court garb"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ritual Tools"
+        }
+      },
+      {
+        "text": "d6+3 Trinkets"
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 3,
+        "A": 6,
+        "I": 5,
+        "Wil": 4,
+        "Int": 3,
+        "Fel": 3
+      },
+      "skills": {
+        "Athletics": 4,
+        "Awareness": 3,
+        "Ballistic Skill": 5,
+        "Cunning": 3,
+        "Deception": 2,
+        "Intimidation": 3,
+        "Leadership": 5,
+        "Persuasion": 2,
+        "Pilot": 5,
+        "Weapon Skill": 5
+      },
+      "xp": {
+        "attributes": 78,
+        "skills": 74
+      },
+      "talentIds": [
+        "augmetic",
+        "die-hard",
+        "dual-wield",
+        "fearless",
+        "legacy-of-sorrow",
+        "noble-peer"
+      ]
+    }
+  }
+]

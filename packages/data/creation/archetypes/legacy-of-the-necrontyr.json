@@ -1,0 +1,426 @@
+[
+  {
+    "id": "immortal",
+    "name": "Immortal",
+    "source": "legacy-of-the-necrontyr",
+    "page": 5,
+    "note": "Converted from 1st edition (Build Point Cost 60, Tier 3); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 92 XP + (3 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 3,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 112,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 4,
+      "T": 4,
+      "A": 4
+    },
+    "skills": {
+      "Ballistic Skill": 4,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Undying Warrior",
+        "text": "An Immortal reduces the amount of shock it loses when soaking wounds by ½ Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Gauss blaster"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Tesla carbine"
+            }
+          }
+        ]
+      }
+    ],
+    "influence": 1
+  },
+  {
+    "id": "deathmark",
+    "name": "Deathmark",
+    "source": "legacy-of-the-necrontyr",
+    "page": 5,
+    "note": "Converted from 1st edition (Build Point Cost 65, Tier 3); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 127 XP + (3 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 3,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 147,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 4,
+      "T": 4,
+      "A": 5
+    },
+    "skills": {
+      "Ballistic Skill": 4,
+      "Stealth": 4,
+      "Awareness": 3
+    },
+    "abilities": [
+      {
+        "name": "Hunter’s Mark",
+        "text": "A Deathmark may declare a single elite or adversary-level threat as its “mark” as a free action. Once a target has been marked in such a way, the Deathmark will know the marked target’s exact geographic location relative to the Deathmark, as well as his status as alive or dead. This does not give the Deathmark information about the surroundings of the target, only its relative location. It may use this ability ½ Rank times per day."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Synaptic Disintegrator"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Dimensional Oubliette generator"
+        }
+      }
+    ],
+    "influence": 1
+  },
+  {
+    "id": "destroyer",
+    "name": "Destroyer",
+    "source": "legacy-of-the-necrontyr",
+    "page": 6,
+    "note": "Converted from 1st edition (Build Point Cost 85, Tier 3); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 115 XP + (3 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 3,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 135,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 4,
+      "T": 5,
+      "A": 4
+    },
+    "skills": {
+      "Ballistic Skill": 4,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Hardwired Hatred",
+        "text": "A Destroyer gains +½ Rank to Attack tests against organic targets, but suffers a +2DN penalty to social tests with non-Destroyer Necrons."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Gauss Cannon"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Grav-platform"
+        }
+      }
+    ],
+    "influence": 1
+  },
+  {
+    "id": "lychguard",
+    "name": "Lychguard",
+    "source": "legacy-of-the-necrontyr",
+    "page": 6,
+    "note": "Converted from 1st edition (Build Point Cost 70, Tier 4); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 160 XP + (4 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 4,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 190,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 4,
+      "I": 4
+    },
+    "skills": {
+      "Weapon Skill": 5,
+      "Awareness": 4
+    },
+    "abilities": [
+      {
+        "name": "Guardian Protocols",
+        "text": "The Lychguard may designate another <Dynasty> Necron as its Charge as a free action. If the Lychguard is within 6m of its charge, it may make a DN 3 Agility test when the Charge is attacked or would otherwise take damage from an outside source. If it succeeds on this test, the Lychguard takes the place of its Charge as the target of the attack or effect. If the effect would harm both the Lychguard and its charge, such as a weapon with the Blast trait, the Lychguard takes the damage for both itself and its charge separately. If the Lychguard loses wounds by taking damage for its charge, reduce any wounds lost by the Lychguard by ½ Rank."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Warscythe"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Dynastic Crest (symbol of authority)"
+        }
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "triarch-praetorian",
+    "name": "Triarch Praetorian",
+    "source": "legacy-of-the-necrontyr",
+    "page": 7,
+    "note": "Converted from 1st edition (Build Point Cost 70, Tier 4); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 202 XP + (4 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 4,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 232,
+    "keywords": [
+      "NECRON",
+      "TRIARCH"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 4,
+      "Int": 4,
+      "Fel": 3
+    },
+    "skills": {
+      "Weapon Skill": 4,
+      "Ballistic Skill": 4,
+      "Scholar": 5,
+      "Persuasion": 3
+    },
+    "abilities": [
+      {
+        "name": "Codes of Combat",
+        "text": "A Triarch gains +Rank bonus dice to all Scholar tests to decide matters of Necrontyr law. A Praetorian may choose a single non-Necron elite or adversary-tier threat and make a DN 4 Scholar test as an action. If successful, the Triarch may declare that threat Honorable or Dishonorable. If it is Honorable, all Necrons within 12m gain +½ Rank to Weapon Skill tests against that threat. If it is Dishonorable, all Necrons within 12m gain +½ Rank to Ballistic Skill tests against that target, and certain tactics and cruelties may be permissible to use against it."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rod of Covenant"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Crest of the Triarch (Symbol of Authority)"
+        }
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "necron-lord",
+    "name": "Lord",
+    "source": "legacy-of-the-necrontyr",
+    "page": 7,
+    "note": "Converted from 1st edition (Build Point Cost 80, Tier 4); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 235 XP + (4 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 4,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 265,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 5,
+      "A": 4,
+      "I": 4,
+      "Fel": 5
+    },
+    "skills": {
+      "Weapon Skill": 4,
+      "Ballistic Skill": 4,
+      "Leadership": 5,
+      "Persuasion": 4
+    },
+    "abilities": [
+      {
+        "name": "The Lord’s Will",
+        "page": 8,
+        "text": "A Lord may make a DN 4 Leadership test and designate a specific threat as a free action at the beginning of each of its turns. If it is successful, all other <Dynasty> Necrons within 12m that are not Lords or Overlords may reroll up to Rank failed ED on damage rolls against that threat."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Staff of Light"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Dynastic Crest (symbol of authority)"
+        }
+      }
+    ],
+    "influence": 3
+  },
+  {
+    "id": "cryptek",
+    "name": "Cryptek",
+    "source": "legacy-of-the-necrontyr",
+    "page": 8,
+    "note": "Converted from 1st edition (Build Point Cost 75, Tier 4); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 185 XP + (4 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 4,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 215,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 4,
+      "T": 4,
+      "A": 4,
+      "Int": 5
+    },
+    "skills": {
+      "Weapon Skill": 4,
+      "Ballistic Skill": 4,
+      "Tech": 5,
+      "Scholar": 4
+    },
+    "abilities": [
+      {
+        "name": "Technomancer",
+        "text": "A Cryptek gains +½ Rank to Tech tests when working on any item with the Necron keyword. All Necrons within 6m of a Cryptek gain +1 to Defiance tests."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Staff of Light"
+        }
+      }
+    ],
+    "influence": 2
+  },
+  {
+    "id": "destroyer-lord",
+    "name": "Destroyer Lord",
+    "source": "legacy-of-the-necrontyr",
+    "page": 8,
+    "note": "Converted from 1st edition (Build Point Cost 95, Tier 5); XP = ratings + (Tier − 1) × 10, docs/rules-flow.md §11.17. Attributes and Skills are the printed Prerequisites (ratings 255 XP + (5 − 1) × 10). Abilities keep their 1st-edition terms as printed.",
+    "factionId": "necrons",
+    "tier": 5,
+    "speciesIds": [
+      "necron"
+    ],
+    "xp": 295,
+    "keywords": [
+      "NECRON",
+      "[DYNASTY]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "A": 4,
+      "I": 4,
+      "Fel": 5
+    },
+    "skills": {
+      "Weapon Skill": 4,
+      "Ballistic Skill": 4,
+      "Leadership": 5,
+      "Persuasion": 4
+    },
+    "abilities": [
+      {
+        "name": "United in Hatred",
+        "page": 9,
+        "text": "A Destroyer Lord may issue orders to Destroyers. The Destroyer Lord and all Destroyers within 12m may reroll up to ½ Rank ED on damage rolls when attacking organic targets."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Heavy plating"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Staff of Light"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Dynastic Crest (symbol of authority)"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Phase Shifter"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Grav-Platform"
+        }
+      }
+    ],
+    "influence": 3
+  }
+]

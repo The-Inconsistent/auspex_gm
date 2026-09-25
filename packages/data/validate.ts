@@ -1,6 +1,16 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
-import { CREATION_TYPES, type CreationType, Pack, RuleEntry, ratingsXp, SOURCES, Threat, Wargear } from "@wg/shared";
+import {
+  CREATION_TYPES,
+  type CreationType,
+  Pack,
+  RuleEntry,
+  archetypeXp,
+  ratingsXp,
+  SOURCES,
+  Threat,
+  Wargear,
+} from "@wg/shared";
 import { loadPackRaw, packNames } from "./index.ts";
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
@@ -187,6 +197,7 @@ const REF_KEYS: Record<string, string> = {
   subFactionId: "sub-factions",
   disciplineId: "disciplines",
   alsoIn: "disciplines",
+  fromDisciplines: "disciplines",
   becomesArchetypeId: "archetypes",
   talentIds: "talents",
   powerIds: "powers",
@@ -265,6 +276,13 @@ for (const { file, r } of creation.get("species")!) {
   if (cost !== r.xp && !String(r.note ?? "").includes("XP as printed"))
     console.warn(
       `? ${file} "${r.id}": XP ${r.xp}, but its ratings cost ${cost} (note "XP as printed" if it's a misprint)`,
+    );
+}
+for (const { file, r } of creation.get("archetypes")!) {
+  const cost = archetypeXp(r as Parameters<typeof archetypeXp>[0]);
+  if (cost !== r.xp && !String(r.note ?? "").includes("XP as printed"))
+    console.warn(
+      `? ${file} "${r.id}": XP ${r.xp}, but ratings + (Tier − 1) × 10 = ${cost} (note "XP as printed" if it's a misprint)`,
     );
 }
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);

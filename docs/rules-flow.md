@@ -245,6 +245,9 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     `mods` (+1 Resolve, +1 Wound), and the XP is the cost of the granted ratings (Core pp.24–25), which is how every Core
     and FSPG species is priced (Core p.29). Its Build Point Cost and Base Tier stay in the record's note. No maximums
     are printed, so the builder applies none.
+    Its 8 archetypes take their printed Prerequisite minimums as the ratings they grant, and cost those ratings (Core
+    pp.24–25) plus (Tier − 1) × 10, the pattern about 85% of the printed Core, VoA, FSPG, IoE and Apocrypha
+    archetypes follow (`validate.ts` checks it).
 18. **Primaris Astartes counts as Adeptus Astartes Species** for every requirement (Angel of Death, Core p.129;
     Rubicon Primaris, VoA p.43), because the Primaris are a sub-faction of the Adeptus Astartes: `countsAs` on the
     species record.
@@ -276,6 +279,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     (HARLEQUIN). FARSEER in Apocrypha's prerequisites is the Farseer archetype, not a keyword.
 33. **Grey Knights** know Rites of Banishment instead of Smite (Apocrypha p.267): the sub-faction grants it, like the
     Navigator species grants The Lidless Stare.
+34. **VoA's Primaris Intercessor** (p.34) is kept over Core p.117 although its ratings, wargear and XP copy the
+    Techmarine's (p.39): VoA is the newer printing.
+35. **"N+M" archetype XP** (VoA pp.38–42 "335+30", "295+20"; IoE pp.54–56 "+20"/"+30" under the XP) is the total N+M:
+    the second figure is the Archetype Ability's cost, printed separately. This settles the XP half of issue #2.
+36. **VoA's Primaris Eliminator, Incursor, Intercessor and Reiver** (pp.32–37) require the Primaris Astartes species,
+    matching their PRIMARIS keyword, though their SPECIES line prints Adeptus Astartes.
+37. **Pariah archetypes include the Pariah template's 30 XP** (Apocrypha p.12): Null-Maiden, Oblivion Knight and
+    Novice-Sister, which print a cost without it, gain the 30.
 
 ---
 

@@ -449,7 +449,7 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 | `species` | `Species` | XP, Speed, Size, granted Attributes and Skills, maximums, Species Keywords, abilities, and `countsAs`: the species it also counts as for requirements (Primaris → Adeptus Astartes) |
 | `backgrounds` | `BackgroundTable` | Origin / Accomplishment / Goal rows with their `bonus`, and Objectives; owned by a faction, species or sub-faction |
 | `option-groups` | `OptionGroup` | Other creation choices: Kroot Mutations, Asuryani Paths, Kin Cloneskein, Apocrypha Homeworlds. `pick` is a count, `"tier"` or `"any"`; `xp` is the cost of the 1st, 2nd… pick, last repeating |
-| `archetypes` | `Archetype` | The printed entry: Tier, species, XP, Keywords, Attributes, Skills, abilities, wargear, Influence, suggestions |
+| `archetypes` | `Archetype` | The printed entry: Tier, species, XP, Keywords, Attributes, Skills, abilities, wargear, Influence, suggestions (with their printed XP); `grants` for a keyword choice, `requires` beyond species (a Pariah archetype needs the Pariah template) |
 | `talents` | `Talent` | `category` talent, faith, exarch, prayer or vow; XP, requirements, effect |
 | `packages` | `Package` | Ascension and Advancement Packages |
 | `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. A discipline's `requires` is who may learn it (checked for every power in it); a power's `requires` is only its own prerequisite. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords; `alsoIn` lists other disciplines that print it. Minor powers and the free Universal Psyker Abilities are the pseudo-disciplines `minor` and `universal-psyker-abilities` |
@@ -463,7 +463,8 @@ file, loaded by `creationCatalogue()` in `index.ts`.
   (any one of `of`: "BS 4+ or WS 4+"), or `text` for anything that isn't mechanical.
 - `XpCost`: a number, `{ perTier }`, `{ base, plus }`, `{ atCreation, later }` (Smite) or `{ text }`.
 - `Grant`: what a record gives, `{ talent }`, `{ keyword }`, `{ keywords }` (taken together), `{ power }`,
-  `{ wargear }`, `{ text }`, or `{ choose, from, optional }` (`optional`: the character may take none).
+  `{ wargear }`, `{ bundle }` (items taken together), `{ text }`, `{ choose, from, optional }` (`optional`: the
+  character may take none), or `{ choose, fromDisciplines }` (any N powers from those disciplines).
 - `Rule`: a named ability, verbatim, with `mods` only where the book prints a flat bonus, and `grants`.
 - A wargear item keeps its printed `name`; `wargearId` links it once the Wargear catalogue has it.
 
@@ -492,6 +493,11 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 - **Where an index and an entry disagree, the entry is the rule.** Note the difference.
 - **Bracketed names drop the placeholder from the id** and repeat once per choice (`repeatable: "perChoice"`): "Hatred [Any]" is `hatred`, "Loremaster [Keyword]" is
   `loremaster`, as Core's contents page lists them.
+- **Archetypes printed in several books share one id** so the merge sees them as one: FSPG's "Astartes Apothecary"
+  and VoA's "Apothecary" are both `apothecary`; Apocrypha's "Harlequin Player" is IoE's `troupe-player`. Apocrypha's
+  dual stat blocks are two records (`apothecary`, `primaris-apothecary`).
+- **Archetype XP** is, for about 85% of printed entries in every book, the cost of its ratings plus (Tier − 1) × 10
+  (`archetypeXp`). Validate flags the rest; a real misprint keeps the printed XP with "XP as printed" in its note.
 - **Name the thing, not the heading.** VoA heads Tactical Space Marine "TACTICAL"; the record is `tactical-space-marine`
   so it clashes with, and replaces, the Core printing.
 - **Section rules go on every record.** VoA p.45 limits every Talent in its chapter to ADEPTUS ASTARTES, not CHAOS:
@@ -506,8 +512,13 @@ done is counted as pending, not failed, so data can land wave by wave; once ever
 
 **Open questions for the GM** (not yet decided; they go in rules-flow.md §11 once decided):
 
-- Two Inheritance of Embers gaps are parked in GitHub issue #2: the missing Anhrathe Goal table (p.14) and the
-  unexplained +20 / +30 XP under three Corsair archetypes (pp.54–56).
+- GitHub issue #2: the missing Anhrathe Goal table (IoE p.14). (Its +20 / +30 XP half is settled by §11.35.)
 - Species details still missing: no Size for any Apocrypha species or the Necron.
+- Archetype print problems kept as printed, pending a ruling: Howling Banshee's SKILLS copy the Ranger's (IoE p.27);
+  Lexmechanic prints "SKILLS: 3" with no Skill names (FSPG p.117); Corsair Prince's keywords read "AELDARI, ASURYANI,
+  [CRAFTWORLD]" (IoE p.56; ANHRATHE, [COTERIE] meant?); Venenum Assassin prints TEMPLUM VANUS (Apocrypha); the Corsair
+  "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
+- Faith: the Chaplain's "gain 1 Faith" and the Canoness's "+Rank Faith" have no structured field yet (the builder's).
+- Apocrypha suggests talents from "RR1" (Redacted Records), a book not in `books/`; they are listed in notes only.
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.
