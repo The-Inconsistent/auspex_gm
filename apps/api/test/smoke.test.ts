@@ -757,6 +757,37 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.deepEqual((waiting.draft?.gm as { keywords: string[] }).keywords, [], "the player's GM part is dropped");
   assert.ok((await gm.send({ type: "character.build", id: made.id, build: disruptor })).ok);
   await gm.until((s) => s.characters.find((c) => c.id === made.id)?.draft === null);
+
+  // Advancement (issue #9 step 5): a session's XP is spent from the builder; play's Wealth survives the rebuild, and a
+  // player can't change the creation choices any more.
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "session.end", xp: 40, recap: "" })).ok);
+  assert.ok((await player.send({ type: "character.supply", id: made.id!, wealth: -1 })).ok);
+  const before = (await gm.until((s) => s.characters.find((c) => c.id === made.id)?.xp === 40)).characters.find(
+    (c) => c.id === made.id,
+  )!;
+  assert.deepEqual(
+    await player.send({ type: "character.build", id: made.id, build: { ...disruptor, attributes: { A: 6 } } }),
+    { ok: false, error: "Only your GM changes a character's creation choices once it's made" },
+  );
+  assert.deepEqual(
+    await player.send({
+      type: "character.build",
+      id: made.id,
+      build: { ...disruptor, advancement: { attributes: { S: 7 } } },
+    }),
+    { ok: false, error: "5 XP more than the 40 earned in play (Core p.146)" }, // S 5 → 7: 20 + 25 = 45
+  );
+  const spent = await player.send({
+    type: "character.build",
+    id: made.id,
+    build: { ...disruptor, advancement: { skills: { Stealth: 6 } } },
+  });
+  assert.ok(spent.ok, JSON.stringify(spent));
+  const advanced = (
+    await gm.until((s) => s.characters.find((c) => c.id === made.id)?.stats.skills.Stealth === 6)
+  ).characters.find((c) => c.id === made.id)!;
+  assert.equal(advanced.stats.wealth, before.stats.wealth, "play's Wealth is kept");
 });
 
 test("the guest door is rate limited per caller IP", async () => {

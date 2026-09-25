@@ -241,7 +241,7 @@ export function Sheet({ me, state, send }: SheetProps) {
       )}
       <div>
         <a className="btn" href={`/c/${state.campaign.id}/build/${me.id}`}>
-          CHARACTER BUILDER
+          {me.build ? "SPEND XP (BUILDER)" : "CHARACTER BUILDER"}
         </a>
       </div>
       <Refusal error={error} onDismiss={() => setError(null)} />

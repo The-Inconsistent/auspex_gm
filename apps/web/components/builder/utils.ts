@@ -3,10 +3,27 @@ import type { BuildStep, PsychicPower, Requirement, ResolvedBuild } from "@wg/sh
 import type { Draft, Lookups } from "./builder-context";
 import { ATTRIBUTE_NAMES, BUILDER_STEPS, type BuilderStep } from "./constants";
 
-// The screens this build needs: Creation Ascension only when the archetype's Tier is below the campaign's (Core p.148).
-export function stepsFor({ draft, lookups, tier }: { draft: Draft; lookups: Lookups; tier: number }): BuilderStep[] {
+// The screens this build needs: Creation Ascension only when the archetype's Tier is below the campaign's (Core p.148),
+// ADVANCE once the character is made. A player's made character shows only ADVANCE and REVIEW: its creation choices
+// are the GM's to change.
+export function stepsFor({
+  draft,
+  lookups,
+  tier,
+  made,
+  locked,
+}: {
+  draft: Draft;
+  lookups: Lookups;
+  tier: number;
+  made: boolean;
+  locked: boolean;
+}): BuilderStep[] {
+  if (locked) return ["advance", "review"];
   const a = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  return BUILDER_STEPS.filter((s) => s !== "ascension" || (a !== undefined && a.tier < tier));
+  return BUILDER_STEPS.filter(
+    (s) => (s !== "ascension" || (a !== undefined && a.tier < tier)) && (s !== "advance" || made),
+  );
 }
 
 // What still blocks a step: choices left and problems that aren't the GM's tick.

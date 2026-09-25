@@ -115,7 +115,13 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   back to the table.
 - Long catalogue lists (`RecordList`) show `LIST_LIMIT` matches and ask for a narrower search instead of virtualising.
 
-Entry points: BUILD / REBUILD per character and NEW FROM BUILDER in PARTY; CHARACTER BUILDER on the player SHEET.
+- **ADVANCE** (issue #9 step 5), once the character is made: the Customise screen for `advancement`, spending the XP
+  earned in play (`character.xp`) with Rank from it, Ascension Packages when the group's Tier is above the one the
+  character was made at, and languages. The ledger and the XP bar switch to that XP. A player's made character shows
+  only ADVANCE and REVIEW; the GM sees every screen.
+
+Entry points: BUILD / REBUILD per character and NEW FROM BUILDER in PARTY; CHARACTER BUILDER (SPEND XP once made) on
+the player SHEET.
 
 ### `/invite/<code>`: `app/invite/[code]/page.tsx`
 

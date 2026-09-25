@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { buildReady, resolveBuild, type CharacterBuildInput, type CharacterStats } from "@wg/shared";
+import { buildReady, keepPlay, resolveBuild, type CharacterBuildInput, type CharacterStats } from "@wg/shared";
 import { creationCatalogue, loadPack, wargear } from "./index.ts";
 
 // Issue #9 step 1 acceptance: the five volkus pregens (docs/pregens.md), rebuilt from the choices their sheets record,
@@ -296,4 +296,56 @@ test("homebrew records are refused unless the campaign allows them", () => {
 test("over budget is a problem (Core p.20)", () => {
   const r = run({ ...incursor, talents: [...incursor.talents!, { id: "furious-charge" }] });
   assert.ok(r.problems.some((p) => p.what === "19 XP over the budget of 400"));
+});
+
+// ── advancement: XP earned in play (issue #9 step 5) ──
+
+const inPlay = (build: CharacterBuildInput, play: { tier: number; xpEarned: number }) =>
+  resolveBuild({ catalogue, build, play });
+
+test("in play, purchases spend the XP earned, priced from where creation left the ratings (Core pp.24–25, 146)", () => {
+  const r = inPlay(
+    { ...incursor, advancement: { skills: { Stealth: 6 }, talents: [{ id: "furious-charge" }] } },
+    { tier: 4, xpEarned: 40 },
+  );
+  assert.deepEqual(r.problems, []);
+  assert.equal(r.spent, 399, "the creation budget is untouched");
+  assert.deepEqual(r.advancement, { budget: 40, spent: 12 + 20, rank: 2, tier: 4 });
+  assert.equal(r.sheet.skills.Stealth, 6);
+});
+
+test("in play, spending more than was earned is a problem", () => {
+  const r = inPlay({ ...incursor, advancement: { attributes: { S: 6 } } }, { tier: 4, xpEarned: 10 });
+  assert.ok(r.problems.some((p) => p.what === "10 XP more than the 10 earned in play"));
+});
+
+test("Rank comes from the XP earned: +1 per 40, at most 3 (Core pp.146–147)", () => {
+  const withAngel = { ...incursor, advancement: { talents: [{ id: "angel-of-death" }] } }; // Rank 2+ (Core p.129)
+  assert.ok(inPlay(withAngel, { tier: 4, xpEarned: 39 }).problems.some((p) => p.what.includes("Rank 2")));
+  assert.ok(!inPlay(withAngel, { tier: 4, xpEarned: 40 }).problems.some((p) => p.what.includes("Rank")));
+});
+
+test("an Ascension Package in play needs the group to have Ascended (rules-flow.md §11.55)", () => {
+  const b = { ...incursor, advancement: { packages: ["back-from-the-brink"] } };
+  assert.ok(inPlay(b, { tier: 4, xpEarned: 100 }).problems.some((p) => p.what.includes("no Ascension to Tier 5")));
+  const up = inPlay(b, { tier: 5, xpEarned: 100 });
+  assert.ok(!up.problems.some((p) => p.what.includes("Ascension")));
+  assert.equal(up.ledger.find((l) => l.pool && l.what.startsWith("Back From The Brink"))?.xp, 50, "10 × the new Tier");
+});
+
+test("keepPlay: a rebuild in play keeps Wealth, Ammo and what play added; the new build's items join", () => {
+  const previous = { ...PREGENS[1]!.build };
+  const before = resolveBuild({ catalogue, build: previous }).sheet;
+  const played = {
+    ...before,
+    wealth: 1,
+    ammo: { Bolt: 2 },
+    weapons: [...before.weapons, { name: "Looted Choppa", damage: 4, ed: 1, range: [1], traits: [], addStrength: true }],
+  };
+  const next = inPlay({ ...previous, advancement: { packages: [] } }, { tier: 4, xpEarned: 0 }).sheet;
+  const kept = keepPlay({ previous: played, next });
+  assert.equal(kept.wealth, 1);
+  assert.deepEqual(kept.ammo, { Bolt: 2 });
+  assert.ok(kept.weapons.some((w) => w.name === "Looted Choppa"));
+  assert.equal(kept.weapons.length, played.weapons.length, "nothing doubled");
 });

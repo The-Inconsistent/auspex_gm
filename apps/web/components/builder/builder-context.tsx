@@ -21,7 +21,9 @@ export type BuilderValue = {
   resolved: ResolvedBuild | null;
   catalogue: BuildCatalogue;
   lookups: Lookups;
-  tier: number;
+  tier: number; // the Tier the character is made at
+  play: { tier: number; xpEarned: number } | null; // a character in play: the group's Tier now and the XP earned
+  made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
   role: Role;
   go: (step: BuilderStep) => void;
   // SEND TO GM: puts the draft on the table for the GM (null for a character not made yet).

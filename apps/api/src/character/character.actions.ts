@@ -5,6 +5,8 @@ import {
   Overrides,
   adjustAmmo,
   buildReady,
+  creationKey,
+  keepPlay,
   deriveStats,
   effectiveStrength,
   gearLine,
@@ -98,8 +100,19 @@ export async function applyCharacterAction(
       const row = a.id ? await ownCharacter(tx, { campaignId: cid, id: a.id }) : undefined;
       // A player's build keeps the GM's part (rulings and ticks) as the GM last saved it.
       const build = ctx.role === "gm" ? a.build : { ...a.build, gm: storedGm(row?.build) };
-      if (build.tier !== tier) fail(`This campaign is Tier ${tier}; build for Tier ${tier}`);
-      const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build });
+      // Once made, a character keeps the Tier it was made at, and only the GM changes its creation choices; a player
+      // spends the XP earned in play (issue #9 step 5).
+      const made = row?.build ? CharacterBuild.safeParse(row.build) : undefined;
+      if (made?.success) {
+        if (build.tier !== made.data.tier) fail(`This character was made at Tier ${made.data.tier}`);
+        if (ctx.role !== "gm" && creationKey(build) !== creationKey(made.data))
+          fail("Only your GM changes a character's creation choices once it's made");
+      } else if (build.tier !== tier) fail(`This campaign is Tier ${tier}; build for Tier ${tier}`);
+      const r = resolveBuild({
+        catalogue: buildCatalogue(homebrew),
+        build,
+        play: row ? { tier, xpEarned: row.xp } : undefined,
+      });
       if (!buildReady(r)) {
         const next = r.pending[0];
         fail(
@@ -108,10 +121,13 @@ export async function applyCharacterAction(
             : `${r.problems[0]!.what}${r.problems[0]!.cite ? ` (${r.problems[0]!.cite})` : ""}`,
         );
       }
-      // ponytail: a rebuild keeps the live Ammo and requisitions but resets Wealth to the build's; fine before play,
-      // upgrade path is Advancement (issue #9 step 5) spending XP on top of the saved build.
+      // A character already made keeps what play changed (keepPlay); a first build keeps only Ammo and requisitions.
       const old = row ? CharacterStats.parse(row.stats) : undefined;
-      const stats = old ? { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned } : r.sheet;
+      const stats = !old
+        ? r.sheet
+        : made?.success
+          ? keepPlay({ previous: old, next: r.sheet })
+          : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       if (row) {
         await tx
           .update(character)

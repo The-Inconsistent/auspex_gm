@@ -45,7 +45,8 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
       </div>
     );
   const s = r.sheet;
-  const d = deriveStats({ stats: s, overrides: {}, tier });
+  const now = r.advancement?.tier ?? tier; // the Tier the group plays at: Traits use it (Core pp.36–37)
+  const d = deriveStats({ stats: s, overrides: {}, tier: now });
   const ready = buildReady(r);
   const left = r.pending.length + r.problems.length;
   const gmItems = r.problems.some((p) => p.severity === "gm");
@@ -57,7 +58,7 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
         <div className="sb-title">
           <span>{(draft.name.trim() || "UNNAMED").toUpperCase()}</span>
           <i>
-            {s.archetype} · {s.species} · Tier {tier} · Rank 1
+            {s.archetype} · {s.species} · Tier {now} · Rank {r.advancement?.rank ?? 1}
           </i>
         </div>
         <div className="sb-body">

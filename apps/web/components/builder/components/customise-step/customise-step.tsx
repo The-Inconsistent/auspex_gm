@@ -4,15 +4,16 @@ import {
   ATTRIBUTES,
   SKILL_XP,
   SKILLS,
+  LANGUAGE_XP,
   sourceCite,
   type Attribute,
   type Skill,
   type XpCost,
 } from "@wg/shared";
 
-import { useBuilder } from "../../builder-context";
+import { useBuilder, type Draft } from "../../builder-context";
 import { ATTRIBUTE_NAMES } from "../../constants";
-import { powerText, rulesText, toggle } from "../../utils";
+import { citeLabel, powerText, rulesText, toggle } from "../../utils";
 import { RecordList } from "../record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
@@ -31,9 +32,35 @@ const xpLabel = (x: XpCost) =>
           ? `${x.base} + ${x.plus}`
           : x.byChoice.map((c) => c.xp).join(" or ");
 
+type Layer = "creation" | "advancement";
+type Purchases = {
+  attributes?: Partial<Record<Attribute, number>>;
+  skills?: Partial<Record<Skill, number>>;
+  talents?: { id: string; choice?: string }[];
+  powers?: string[];
+  packages?: string[];
+  languages?: string[];
+};
+type CustomiseStepProps = { layer?: Layer };
+
+// The purchases a screen edits: creation's, or the advancement's (the XP earned in play, issue #9 step 5).
+const purchasesOf = (d: Draft, layer: Layer): Purchases =>
+  layer === "creation"
+    ? { attributes: d.attributes, skills: d.skills, talents: d.talents, powers: d.powers, packages: d.packages }
+    : { ...d.advancement };
+const withPurchases = (d: Draft, layer: Layer, p: Purchases): Draft =>
+  layer === "creation" ? { ...d, ...p, languages: d.languages } : { ...d, advancement: { ...d.advancement, ...p } };
+
 // Customise (Core pp.22–26): Attributes and Skills bought with XP, Talents, psychic powers and Advancement Packages.
-export function CustomiseStep() {
-  const { draft, update, resolved: r, lookups, go } = useBuilder();
+// As ADVANCE, the same for the XP earned in play (Core pp.146–151): Rank from it, and an Ascension Package for each Tier
+// the group has Ascended since creation (rules-flow.md §11.55).
+export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
+  const { draft, update: updateDraft, resolved: r, lookups, go, tier, play } = useBuilder();
+  const inPlay = layer === "advancement";
+  const mine = purchasesOf(draft, layer);
+  // Edits this layer's purchases.
+  const update = (fn: (p: Purchases) => Purchases) =>
+    updateDraft((d) => withPurchases(d, layer, fn(purchasesOf(d, layer))));
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
   if (!arch || !r)
     return (
@@ -50,6 +77,7 @@ export function CustomiseStep() {
   const max = (speciesId ? lookups.species.get(speciesId)?.max : undefined) ?? undefined;
   const sheet = r.sheet;
   const psyker = sheet.keywords.includes("PSYKER");
+  const ascensionOpen = !!play && play.tier > tier;
 
   // USE SUGGESTIONS: the archetype's suggested Attributes, Skills and Talents (Core p.22), bought in one go.
   const useSuggestions = () =>
@@ -76,11 +104,11 @@ export function CustomiseStep() {
       talents: (d.talents ?? []).map((t, j) => (j === i ? { ...t, choice: choice || undefined } : t)),
     }));
 
-  const bought = draft.talents ?? [];
+  const bought = mine.talents ?? [];
   const attrRow = (a: Attribute) => {
     const v = sheet.attributes[a];
     const cap = max?.[a] ?? MAX_ATTRIBUTE;
-    const buying = (draft.attributes?.[a] ?? 0) >= v && draft.attributes?.[a] !== undefined;
+    const buying = (mine.attributes?.[a] ?? 0) >= v && mine.attributes?.[a] !== undefined;
     return (
       <div key={a} className="bld-rate">
         <span>
@@ -109,7 +137,7 @@ export function CustomiseStep() {
   };
   const skillRow = (k: Skill) => {
     const v = sheet.skills[k] ?? 0;
-    const buying = (draft.skills?.[k] ?? -1) >= v && draft.skills?.[k] !== undefined && v > 0;
+    const buying = (mine.skills?.[k] ?? -1) >= v && mine.skills?.[k] !== undefined && v > 0;
     return (
       <div key={k} className="bld-rate">
         <span>
@@ -142,8 +170,17 @@ export function CustomiseStep() {
 
   return (
     <div className="stack">
-      <div className="rule">CUSTOMISE</div>
-      {arch.suggested && (
+      <div className="rule">{inPlay ? "ADVANCE" : "CUSTOMISE"}</div>
+      {inPlay && r.advancement && (
+        <div className="panel pad keys" style={{ alignItems: "center" }}>
+          <span style={{ flex: "1 1 220px" }}>
+            <b>{r.advancement.budget} XP</b> earned in play, <b>{r.advancement.spent}</b> spent,{" "}
+            <b>{r.advancement.budget - r.advancement.spent}</b> left · Rank {r.advancement.rank} (+1 per 40 XP earned,
+            Core pp.146–147) · made at Tier {tier}, the group is Tier {r.advancement.tier}
+          </span>
+        </div>
+      )}
+      {!inPlay && arch.suggested && (
         <div className="panel pad keys" style={{ alignItems: "center" }}>
           <span style={{ flex: "1 1 220px" }}>
             Buy the archetype&apos;s suggested Attributes, Skills and Talents in one go (Core p.22).
@@ -153,7 +190,7 @@ export function CustomiseStep() {
           </button>
         </div>
       )}
-      <StepChoices step="customise" />
+      <StepChoices step={inPlay ? "advance" : "customise"} />
 
       <section className="stack">
         <div className="tbar">
@@ -255,7 +292,7 @@ export function CustomiseStep() {
                 meta: `${lookups.disciplines.get(p.disciplineId)?.name ?? p.disciplineId} · ${sourceCite(p)} · ${xpLabel(p.xp)} XP`,
                 detail: powerText(p),
               }))}
-            selected={draft.powers ?? []}
+            selected={mine.powers ?? []}
             onPick={(id) => update((d) => ({ ...d, powers: toggle(d.powers ?? [], id) }))}
           />
         </section>
@@ -263,29 +300,51 @@ export function CustomiseStep() {
 
       <section className="stack">
         <div className="tbar iron">
-          <span>ADVANCEMENT PACKAGES</span>
-          <span>AT CREATION</span>
+          <span>{inPlay && ascensionOpen ? "PACKAGES" : "ADVANCEMENT PACKAGES"}</span>
+          <span>{inPlay ? "IN PLAY" : "AT CREATION"}</span>
         </div>
+        {inPlay && ascensionOpen && (
+          <div className="dim">
+            The group has Ascended since this character was made: take an Ascension Package for each Tier, in order (
+            {citeLabel("rules-flow.md §11.55")}).
+          </div>
+        )}
         <RecordList
-          label="Search advancement packages"
+          label="Search packages"
+          searchable
           items={[...lookups.packages.values()]
-            .filter((p) => p.kind === "advancement")
+            .filter((p) => p.kind === "advancement" || (inPlay && ascensionOpen))
             .map((p) => ({
               id: p.id,
               label: p.name,
-              meta: sourceCite(p),
+              meta: `${p.kind === "ascension" ? "Ascension · " : ""}${sourceCite(p)}`,
               detail: rulesText(p),
               xp: typeof p.xp === "number" ? p.xp : undefined,
-              blocked: p.notAtCreation ? "not at creation" : undefined,
+              blocked: p.notAtCreation && !inPlay ? "not at creation" : undefined,
             }))}
-          selected={draft.packages ?? []}
+          selected={mine.packages ?? []}
           onPick={(id) => update((d) => ({ ...d, packages: toggle(d.packages ?? [], id) }))}
         />
       </section>
 
+      {inPlay && (
+        <section className="stack">
+          <div className="tbar">
+            <span>LANGUAGES</span>
+            <span>{LANGUAGE_XP} XP EACH · Core p.31</span>
+          </div>
+          <RecordList
+            label="Search languages"
+            items={[...lookups.languages.values()].map((l) => ({ id: l.id, label: l.name, xp: LANGUAGE_XP }))}
+            selected={mine.languages ?? []}
+            onPick={(id) => update((d) => ({ ...d, languages: toggle(d.languages ?? [], id) }))}
+          />
+        </section>
+      )}
+
       <div>
-        <button className="btn primary" onClick={() => go("faction")}>
-          NEXT: FACTION
+        <button className="btn primary" onClick={() => go(inPlay ? "review" : "faction")}>
+          NEXT: {inPlay ? "REVIEW" : "FACTION"}
         </button>
       </div>
     </div>

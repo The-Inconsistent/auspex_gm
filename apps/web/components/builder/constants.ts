@@ -4,7 +4,16 @@ import type { Attribute, Bonus, BuildStep } from "@wg/shared";
 export const NEW_CHARACTER = "new";
 
 // The screens, in the Core rulebook's creation order (p.17), and what each tab says. "review" is the builder's own.
-export const BUILDER_STEPS = ["tier", "archetype", "customise", "faction", "ascension", "detail", "review"] as const;
+export const BUILDER_STEPS = [
+  "tier",
+  "archetype",
+  "customise",
+  "faction",
+  "ascension",
+  "detail",
+  "advance",
+  "review",
+] as const;
 export type BuilderStep = (typeof BUILDER_STEPS)[number];
 export const STEP_LABELS: Record<BuilderStep, string> = {
   tier: "TIER",
@@ -13,6 +22,7 @@ export const STEP_LABELS: Record<BuilderStep, string> = {
   faction: "FACTION",
   ascension: "ASCENSION",
   detail: "DETAIL",
+  advance: "ADVANCE",
   review: "REVIEW",
 };
 export const STEP_CITES: Record<BuildStep, string> = {
@@ -22,6 +32,7 @@ export const STEP_CITES: Record<BuildStep, string> = {
   faction: "Core pp.26–30",
   ascension: "Core p.148",
   detail: "Core pp.30–38",
+  advance: "Core pp.146–151",
 };
 
 // Long catalogue lists (205 archetypes, 333 talents, 1,202 wargear items) show this many matches; the search narrows.

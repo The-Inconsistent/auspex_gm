@@ -338,6 +338,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 54. **Creation Ascension** (Core p.148): one Ascension Package, whose requirements are met at the archetype's Tier
     (before Ascending). "Per Tier Ascended" counts from the archetype's Tier to the campaign's, and "× the new Tier" XP
     uses the campaign's Tier. *Proposed; awaiting the GM.*
+55. **Advancement in play** (Core pp.146–151): the XP a character has earned (session XP, p.321) buys the same ratings,
+    Talents, powers and languages as at creation, priced from where creation left them, and Advancement Packages
+    (`notAtCreation` ones too). When the group Ascends (the GM raises the campaign's Tier), each character may take one
+    Ascension Package per Tier Ascended, in order: its requirements met at the Tier it leaves, "× the new Tier" priced at
+    the Tier it reaches. A power's "at creation" price (Smite) gives way to its later one. Rank is from the XP earned.
+    The creation budget stays as it was. *Proposed; awaiting the GM.*
 
 ---
 

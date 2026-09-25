@@ -7,8 +7,8 @@ type StepNavProps = { step: BuilderStep };
 
 // One tab per screen, each saying how much is left there in words ("2 LEFT"), not colour alone.
 export function StepNav({ step }: StepNavProps) {
-  const { draft, lookups, tier, resolved, go } = useBuilder();
-  const steps = stepsFor({ draft, lookups, tier });
+  const { draft, lookups, tier, resolved, go, made, role } = useBuilder();
+  const steps = stepsFor({ draft, lookups, tier, made, locked: made && role !== "gm" });
   return (
     <nav className="bld-steps" aria-label="Creation steps">
       <div className="tabs sub" role="tablist">

@@ -75,7 +75,11 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
   const tier = state.campaign.tier;
   const key = draftKey({ campaignId, characterId });
   const [draft, setDraft] = useState<Draft>(() => initialDraft({ key, character, tier }));
-  const [step, setStep] = useState<BuilderStep>(draft.archetypeId ? "customise" : "tier");
+  const made = !!character?.build;
+  const locked = made && role !== "gm";
+  const xpEarned = character?.xp;
+  const play = useMemo(() => (xpEarned === undefined ? null : { tier, xpEarned }), [tier, xpEarned]);
+  const [step, setStep] = useState<BuilderStep>(locked ? "advance" : draft.archetypeId ? "customise" : "tier");
   const [error, setError] = useState<string | null>(null);
 
   const catalogue = useMemo(() => catalogueOf(payload), [payload]);
@@ -92,11 +96,11 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
     if (!draft.archetypeId) return null;
     const { name: _, savedAt: __, archetypeId, ...rest } = draft;
     try {
-      return resolveBuild({ catalogue, build: { ...rest, archetypeId, tier } });
+      return resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
     } catch {
       return null; // a malformed draft (an older builder's): START OVER clears it
     }
-  }, [draft, catalogue, tier]);
+  }, [draft, catalogue, play]);
 
   // External system: localStorage, so a half-made character survives a closed tab on this device.
   useEffect(() => {
@@ -128,13 +132,15 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
       resolved,
       catalogue,
       lookups,
-      tier,
+      tier: draft.tier,
+      play,
+      made,
       role,
       go,
       sendDraft,
       sentDraft: !!character?.draft,
     };
-  }, [draft, resolved, catalogue, lookups, tier, role, characterId, send, character?.draft]);
+  }, [draft, resolved, catalogue, lookups, play, made, role, characterId, send, character?.draft]);
 
   // START OVER: drops the draft on this device and goes back to the saved build, or a blank one.
   const startOver = () => {
@@ -155,7 +161,7 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
       type: "character.build",
       id: characterId ?? undefined,
       name: name.trim() || undefined,
-      build: { ...rest, archetypeId, tier },
+      build: { ...rest, archetypeId },
     });
     if (!r.ok) return setError(r.error);
     try {
@@ -192,6 +198,7 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
             {step === "faction" && <FactionStep />}
             {step === "ascension" && <AscensionStep />}
             {step === "detail" && <DetailStep />}
+            {step === "advance" && <CustomiseStep layer="advancement" />}
             {step === "review" && <ReviewStep onSave={save} />}
           </main>
           <aside className="bld-side" aria-label="XP ledger and what is left">

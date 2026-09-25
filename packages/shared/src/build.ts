@@ -8,6 +8,7 @@ import {
   WEALTH_XP,
   WargearItem,
   startingXp,
+  rankOf,
   treeOfLearning,
   type Creation,
   type Grant,
@@ -39,13 +40,27 @@ export const BackgroundRow = z.enum(BACKGROUND_ROWS);
 export type BackgroundRow = z.infer<typeof BackgroundRow>;
 
 // The builder's screens (issue #9 §7); every pending choice and problem names the one that fixes it.
-export const BUILD_STEPS = ["tier", "archetype", "customise", "faction", "ascension", "detail"] as const;
+export const BUILD_STEPS = ["tier", "archetype", "customise", "faction", "ascension", "detail", "advance"] as const;
 export type BuildStep = (typeof BUILD_STEPS)[number];
 
 // The answer to one choice in a grant, keyed by its path (see `grantPath` below): option indexes for `choose … from`,
 // otherwise the picked ids or names (wargear ids, Skills, disciplines, powers, an Attribute, a keyword).
 export const BuildChoice = z.array(z.union([z.number().int().min(0), z.string().min(1).max(100)])).max(20);
 export type BuildChoice = z.infer<typeof BuildChoice>;
+
+// Advancement (Core pp.146–151, issue #9 step 5): what the character buys after creation with the XP earned in play,
+// priced from where creation left the ratings. `packages`: Advancement Packages (`notAtCreation` ones too), and one
+// Ascension Package for each Tier the group has Ascended since creation, in order (rules-flow.md §11.55).
+export const Advancement = z
+  .object({
+    attributes: z.partialRecord(attribute, z.number().int().min(1).max(12)).prefault({}),
+    skills: z.partialRecord(skill, z.number().int().min(0).max(8)).prefault({}),
+    talents: z.array(z.object({ id, choice: z.string().min(1).max(60).optional() })).prefault([]),
+    powers: z.array(id).prefault([]),
+    packages: z.array(id).prefault([]),
+    languages: z.array(z.string().min(1).max(60)).prefault([]), // bought at 1 XP each (Core p.31)
+  })
+  .prefault({});
 
 export const CharacterBuild = z.object({
   tier: Tier, // the campaign Tier the character is made for
@@ -83,6 +98,7 @@ export const CharacterBuild = z.object({
     .prefault({}),
   wealth: z.number().int().min(0).max(MAX_BOUGHT_WEALTH).prefault(0), // bought on top of the starting Tier (§11.51)
   choices: z.record(z.string().min(1).max(200), BuildChoice).prefault({}),
+  advancement: Advancement,
   // The GM's part: rulings on this character that no book makes, and ticks on what only the GM can judge.
   gm: z
     .object({
@@ -98,7 +114,8 @@ export const CharacterBuild = z.object({
 export type CharacterBuild = z.infer<typeof CharacterBuild>;
 export type CharacterBuildInput = z.input<typeof CharacterBuild>;
 
-export type LedgerRow = { what: string; xp: number; cite?: string; step: BuildStep };
+// `pool`: "advancement" for XP earned in play; absent for the creation budget.
+export type LedgerRow = { what: string; xp: number; cite?: string; step: BuildStep; pool?: "advancement" };
 // A choice still to make: `choose` of `options` (labels, answered by index) or, when `options` is empty, of the ids
 // or names `of` describes.
 export type PendingChoice = {
@@ -136,6 +153,8 @@ export type ResolvedBuild = {
   choices: BuildChoicePrompt[];
   problems: BuildProblem[];
   effects: BuildEffect[];
+  // In play: the XP earned (the advancement budget), what advancement spends of it, Rank, and the Tier now.
+  advancement: { budget: number; spent: number; rank: number; tier: number } | null;
 };
 
 // Ready to save: nothing left to choose, nothing wrong, and every GM question ticked.
@@ -250,17 +269,23 @@ type Sheet = {
   subFactionIds: string[];
 };
 
+// `play`: a character already in play: the campaign's Tier now and the XP it has earned (character.xp). Without it,
+// the build is priced as at creation.
 export function resolveBuild({
   catalogue,
   build: input,
+  play,
 }: {
   catalogue: BuildCatalogue;
   build: CharacterBuildInput;
+  play?: { tier: number; xpEarned: number };
 }): ResolvedBuild {
   const build = CharacterBuild.parse(input);
   const ix = index(catalogue.creation);
-  const tier = build.tier;
-  const rank = 1; // Core p.36; also after a Creation Ascension (Core p.148)
+  const tier = build.tier; // the Tier the character was made at
+  const nowTier = Math.max(tier, play?.tier ?? tier);
+  // Rank 1 at creation (Core p.36), also after a Creation Ascension (p.148); then +1 per 40 XP earned (pp.146–147).
+  const rank = play ? rankOf(play.xpEarned) : 1;
   const budget = build.budget ?? startingXp(tier);
   const ledger: LedgerRow[] = [];
   const pending: PendingChoice[] = [];
@@ -322,7 +347,7 @@ export function resolveBuild({
   const scaled = (v: Scaled, o: Origin): number => {
     if (typeof v === "number") return v;
     if ("perTier" in v) return v.perTier * o.tiersAscended;
-    if ("timesTier" in v) return v.timesTier * tier;
+    if ("timesTier" in v) return v.timesTier * nowTier;
     if ("perRank" in v) return v.perRank * rank + (v.plus ?? 0);
     return rank + v.rankPlus;
   };
@@ -378,11 +403,14 @@ export function resolveBuild({
   // Ratings as they stand: granted, or bought up to (the ledger prices the difference once the grants are all in).
   const ratings = () => ({
     attributes: Object.fromEntries(
-      ATTRIBUTES.map((a) => [a, Math.max(s.base.attributes[a], build.attributes[a] ?? 0)]),
+      ATTRIBUTES.map((a) => [
+        a,
+        Math.max(s.base.attributes[a], build.attributes[a] ?? 0, build.advancement.attributes[a] ?? 0),
+      ]),
     ) as Record<Attribute, number>,
     skills: Object.fromEntries(
       (Object.keys(SKILLS) as Skill[])
-        .map((k) => [k, Math.max(s.base.skills[k] ?? 0, build.skills[k] ?? 0)])
+        .map((k) => [k, Math.max(s.base.skills[k] ?? 0, build.skills[k] ?? 0, build.advancement.skills[k] ?? 0)])
         .filter(([, v]) => (v as number) > 0),
     ) as Partial<Record<Skill, number>>,
   });
@@ -666,7 +694,17 @@ export function resolveBuild({
   const arch = ix.archetypes.get(build.archetypeId);
   if (!arch) {
     problem({ step: "archetype", severity: "error", what: `Unknown archetype ${build.archetypeId}` });
-    return { sheet: CharacterStats.parse({}), budget, spent: 0, ledger, pending, choices, problems, effects };
+    return {
+      sheet: CharacterStats.parse({}),
+      budget,
+      spent: 0,
+      ledger,
+      pending,
+      choices,
+      problems,
+      effects,
+      advancement: null,
+    };
   }
   allowed(arch, "archetype");
   const archOrigin: Origin = {
@@ -789,6 +827,65 @@ export function resolveBuild({
       origin: po,
       severity: "error",
       tier: p.kind === "ascension" ? arch.tier : tier,
+    });
+    if (p.becomesArchetypeId)
+      effects.push({
+        what: `Becomes ${ix.archetypes.get(p.becomesArchetypeId)?.name ?? p.becomesArchetypeId}`,
+        cite: cite(p),
+      });
+  }
+
+  // ── packages bought in play: Advancement Packages, and one Ascension Package for each Tier the group has Ascended
+  // since creation, in order (Core pp.147–148, rules-flow.md §11.55) ──
+  let ascended = 0;
+  for (const pid of build.advancement.packages) {
+    const p = ix.packages.get(pid);
+    if (!p) {
+      problem({ step: "advance", severity: "error", what: `Unknown package ${pid}` });
+      continue;
+    }
+    if (!allowed(p, "advance")) continue;
+    const from = tier + ascended; // the Tier this package is bought at
+    if (p.kind === "ascension") {
+      ascended += 1;
+      if (from + 1 > nowTier)
+        problem({
+          step: "advance",
+          severity: "error",
+          what: `${p.name}: the group is Tier ${nowTier}, so there is no Ascension to Tier ${from + 1} yet`,
+          cite: "Core pp.147–148",
+        });
+    }
+    const po: Origin = {
+      path: `advance/package/${p.id}`,
+      step: "advance",
+      cite: cite(p),
+      tiersAscended: p.kind === "ascension" ? 1 : 0,
+      granted: true,
+    };
+    // "× the new Tier" is the Tier Ascended to; an Advancement Package is priced at the Tier now.
+    const at = p.kind === "ascension" ? from + 1 : nowTier;
+    ledger.push({
+      what: `${p.name} (${p.kind} package)`,
+      xp:
+        typeof p.xp === "object" && "perTier" in p.xp
+          ? p.xp.perTier * at
+          : price(p.xp, { path: po.path, step: "advance", what: p.name }),
+      cite: cite(p),
+      step: "advance",
+      pool: "advancement",
+    });
+    packageNames.push(p.name);
+    s.mods.influence =
+      (s.mods.influence ?? 0) +
+      (typeof p.influence === "number" ? p.influence : p.influence.perTier * po.tiersAscended);
+    p.grants.forEach((g, i) => grant(g, { ...po, path: `${po.path}/${i}` }));
+    deferred.push({
+      reqs: p.requires,
+      what: p.name,
+      origin: po,
+      severity: "error",
+      tier: p.kind === "ascension" ? from : nowTier,
     });
     if (p.becomesArchetypeId)
       effects.push({
@@ -985,27 +1082,38 @@ export function resolveBuild({
     addItem(g, { path: "gm", step: "archetype", cite: "GM", tiersAscended: 0, granted: true }),
   );
 
-  // ── talents and powers bought ──
-  for (const t of build.talents) {
-    const rec = ix.talents.get(t.id);
-    if (!rec) {
-      problem({ step: "customise", severity: "error", what: `Unknown talent ${t.id}` });
-      continue;
+  // ── talents bought: at creation, then with the XP earned in play ──
+  const pools = [
+    { step: "customise" as BuildStep, pool: undefined, talents: build.talents, powers: build.powers },
+    {
+      step: "advance" as BuildStep,
+      pool: "advancement" as const,
+      talents: build.advancement.talents,
+      powers: build.advancement.powers,
+    },
+  ];
+  for (const { step, pool, talents } of pools)
+    for (const t of talents) {
+      const rec = ix.talents.get(t.id);
+      if (!rec) {
+        problem({ step, severity: "error", what: `Unknown talent ${t.id}` });
+        continue;
+      }
+      if (!allowed(rec, step)) continue;
+      const path = `${pool ? "advance/" : ""}talent/${rec.id}`;
+      if (s.talents.has(rec.id) && rec.repeatable === false) {
+        problem({ step, severity: "error", what: `${rec.name} is already taken`, cite: cite(rec) });
+        continue;
+      }
+      ledger.push({
+        what: `${rec.name}${t.choice ? ` (${t.choice})` : ""}`,
+        xp: s.xpDiscounts.talents.get(rec.id) ?? price(rec.xp, { path, step, what: rec.name }),
+        cite: cite(rec),
+        step,
+        pool,
+      });
+      addTalent(rec.id, { path, step, cite: cite(rec), tiersAscended: 0, granted: false }, t.choice);
     }
-    if (!allowed(rec, "customise")) continue;
-    const path = `talent/${rec.id}`;
-    if (s.talents.has(rec.id) && rec.repeatable === false) {
-      problem({ step: "customise", severity: "error", what: `${rec.name} is already granted`, cite: cite(rec) });
-      continue;
-    }
-    ledger.push({
-      what: `${rec.name}${t.choice ? ` (${t.choice})` : ""}`,
-      xp: s.xpDiscounts.talents.get(rec.id) ?? price(rec.xp, { path, step: "customise", what: rec.name }),
-      cite: cite(rec),
-      step: "customise",
-    });
-    addTalent(rec.id, { path, step: "customise", cite: cite(rec), tiersAscended: 0, granted: false }, t.choice);
-  }
 
   // ── keyword grants (PSYKER, PRIEST…), until nothing new arrives ──
   const seen = new Set<string>();
@@ -1032,35 +1140,46 @@ export function resolveBuild({
     if (reqs.every((r) => meets(r, c) === true)) grant(g, origin, true);
   }
 
-  // ── powers bought: from a discipline the character may learn (Core p.257) ──
-  for (const pid of build.powers) {
-    const p = ix.powers.get(pid);
-    if (!p) {
-      problem({ step: "customise", severity: "error", what: `Unknown power ${pid}` });
-      continue;
-    }
-    if (!allowed(p, "customise")) continue;
-    const discs = [p.disciplineId, ...p.alsoIn];
-    const known = discs.find((d) => s.disciplines.has(d));
-    if (!known)
-      problem({
-        step: "customise",
-        severity: "error",
-        what: `${p.name} is from a Discipline you can't learn (${discs.join(", ")})`,
+  // ── powers bought: from a discipline the character may learn (Core p.257), at creation, then in play ──
+  for (const { step, pool, powers } of pools)
+    for (const pid of powers) {
+      const p = ix.powers.get(pid);
+      if (!p) {
+        problem({ step, severity: "error", what: `Unknown power ${pid}` });
+        continue;
+      }
+      if (!allowed(p, step)) continue;
+      if (s.powers.has(p.id)) {
+        problem({ step, severity: "error", what: `${p.name} is already known`, cite: cite(p) });
+        continue;
+      }
+      const discs = [p.disciplineId, ...p.alsoIn];
+      const known = discs.find((d) => s.disciplines.has(d));
+      if (!known)
+        problem({
+          step,
+          severity: "error",
+          what: `${p.name} is from a Discipline you can't learn (${discs.join(", ")})`,
+          cite: cite(p),
+        });
+      const disc = ix.disciplines.get(known ?? p.disciplineId);
+      const discount = s.xpDiscounts.disciplines.find((d) => d.id && discs.includes(d.id))?.multiplier ?? 1;
+      ledger.push({
+        what: `${p.name} (power)`,
+        // A power's "at creation" price holds only at creation (Smite, Core p.272).
+        xp: Math.ceil(
+          (pool && typeof p.xp === "object" && "later" in p.xp
+            ? p.xp.later
+            : price(p.xp, { path: `power/${p.id}`, step, what: p.name })) * discount,
+        ),
         cite: cite(p),
+        step,
+        pool,
       });
-    const disc = ix.disciplines.get(known ?? p.disciplineId);
-    const discount = s.xpDiscounts.disciplines.find((d) => d.id && discs.includes(d.id))?.multiplier ?? 1;
-    ledger.push({
-      what: `${p.name} (power)`,
-      xp: Math.ceil(price(p.xp, { path: `power/${p.id}`, step: "customise", what: p.name }) * discount),
-      cite: cite(p),
-      step: "customise",
-    });
-    s.powers.add(p.id);
-    const po: Origin = { path: `power/${p.id}`, step: "customise", cite: cite(p), tiersAscended: 0, granted: false };
-    deferred.push({ reqs: [...(disc?.requires ?? []), ...p.requires], what: p.name, origin: po, severity: "error" });
-  }
+      s.powers.add(p.id);
+      const po: Origin = { path: `power/${p.id}`, step, cite: cite(p), tiersAscended: 0, granted: false };
+      deferred.push({ reqs: [...(disc?.requires ?? []), ...p.requires], what: p.name, origin: po, severity: "error" });
+    }
 
   // ── ratings bought with XP ──
   const attributes = { ...s.base.attributes };
@@ -1087,6 +1206,32 @@ export function resolveBuild({
       step: "customise",
     });
   }
+  // In play: ratings raised from where creation left them.
+  for (const [a, to] of Object.entries(build.advancement.attributes) as [Attribute, number][]) {
+    const from = attributes[a];
+    if (to <= from) continue;
+    attributes[a] = to;
+    ledger.push({
+      what: `${ATTRIBUTE_NAMES[a]} ${from} → ${to}`,
+      xp: ATTRIBUTE_XP[to]! - ATTRIBUTE_XP[from]!,
+      cite: "Core p.24",
+      step: "advance",
+      pool: "advancement",
+    });
+  }
+  const created = { ...skills };
+  for (const [k, to] of Object.entries(build.advancement.skills) as [Skill, number][]) {
+    const from = skills[k] ?? 0;
+    if (to <= from) continue;
+    skills[k] = to;
+    ledger.push({
+      what: `${k} ${from} → ${to}`,
+      xp: SKILL_XP[to]! - SKILL_XP[from]!,
+      cite: "Core p.25",
+      step: "advance",
+      pool: "advancement",
+    });
+  }
   // Species maximums (Core p.25), for every rating however it was reached.
   for (const a of ATTRIBUTES) {
     const max = species?.max?.[a];
@@ -1103,6 +1248,14 @@ export function resolveBuild({
     if (to > (s.base.skills[k] ?? 0) && !treeOfLearning(skills, k, to))
       problem({
         step: "customise",
+        severity: "error",
+        what: `${k} ${to} needs ${to} Skills with points (the Tree of Learning)`,
+        cite: "Core p.26",
+      });
+  for (const [k, to] of Object.entries(build.advancement.skills) as [Skill, number][])
+    if (to > (created[k] ?? 0) && !treeOfLearning(skills, k, to))
+      problem({
+        step: "advance",
         severity: "error",
         what: `${k} ${to} needs ${to} Skills with points (the Tree of Learning)`,
         cite: "Core p.26",
@@ -1143,7 +1296,8 @@ export function resolveBuild({
       of: qualifying.map((l) => l.name).join(", ") || "any language",
       cite: "Core p.31",
     });
-  for (const l of [...picks, ...bought])
+  const learned = build.advancement.languages;
+  for (const l of [...picks, ...bought, ...learned])
     if (!ix.languages.has(l))
       problem({
         step: "detail",
@@ -1159,7 +1313,15 @@ export function resolveBuild({
       cite: "Core p.31",
       step: "detail",
     });
-  const dupes = [...picks, ...bought].filter((l, i, all) => all.indexOf(l) !== i);
+  for (const l of learned)
+    ledger.push({
+      what: `${ix.languages.get(l)?.name ?? l} (language)`,
+      xp: LANGUAGE_XP,
+      cite: "Core p.31",
+      step: "advance",
+      pool: "advancement",
+    });
+  const dupes = [...picks, ...bought, ...learned].filter((l, i, all) => all.indexOf(l) !== i);
   if (dupes.length) problem({ step: "detail", severity: "error", what: `${dupes.join(", ")} taken twice` });
 
   // ── Wealth bought (Core p.38, §11.51) ──
@@ -1186,13 +1348,13 @@ export function resolveBuild({
         1 +
         (s.mods.influence ?? 0),
       rank,
-      tier,
+      tier: nowTier,
     };
   }
   const final = ctx();
   for (const d of deferred)
     for (const r of d.reqs) {
-      const why = meets(r, { ...final, tier: d.tier ?? tier, chosen: d.choice });
+      const why = meets(r, { ...final, tier: d.tier ?? nowTier, chosen: d.choice });
       if (why === true) continue;
       const gmOnly = typeof why === "object";
       const path = `${d.origin.path}/requires/${norm(JSON.stringify(r))}`.slice(0, 200);
@@ -1206,7 +1368,16 @@ export function resolveBuild({
     }
 
   // ── the sheet ──
-  const spent = ledger.reduce((n, r) => n + r.xp, 0);
+  const spent = ledger.filter((r) => !r.pool).reduce((n, r) => n + r.xp, 0);
+  const advanceSpent = ledger.filter((r) => r.pool).reduce((n, r) => n + r.xp, 0);
+  const earned = play?.xpEarned ?? 0;
+  if (advanceSpent > earned)
+    problem({
+      step: "advance",
+      severity: "error",
+      what: `${advanceSpent - earned} XP more than the ${earned} earned in play`,
+      cite: "Core p.146",
+    });
   if (spent > budget)
     problem({
       step: "customise",
@@ -1285,7 +1456,8 @@ export function resolveBuild({
     gear: gear.slice(0, 60).map((g) => g.slice(0, 200)),
     wealth: s.wealth,
   });
-  return { sheet, budget, spent, ledger, pending, choices, problems, effects };
+  const advancement = play ? { budget: earned, spent: advanceSpent, rank, tier: nowTier } : null;
+  return { sheet, budget, spent, ledger, pending, choices, problems, effects, advancement };
 }
 
 // ── requirements ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -1535,4 +1707,46 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
   const out: string[] = [];
   for (let p = sf.successorOf; p && !out.includes(p); p = all.get(p)?.successorOf) out.push(p);
   return out;
+}
+
+// A rebuild of a character already in play keeps what play changed: Wealth, Ammo and requisitions, and the armament
+// and gear gained since (a requisitioned weapon, loot). What the new build adds joins them; nothing is dropped, and the
+// better armour is worn (only one suit counts, Core p.231).
+export function keepPlay({ previous, next }: { previous: CharacterStats; next: CharacterStats }): CharacterStats {
+  const weapons = new Set(previous.weapons.map((w) => w.name));
+  const gear = new Set(previous.gear);
+  const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
+  const shedArmour = previous.armour.name && previous.armour.name !== armour.name ? [previous.armour.name] : [];
+  return {
+    ...next,
+    armour,
+    weapons: [...previous.weapons, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
+    gear: [
+      ...previous.gear,
+      ...shedArmour,
+      ...next.gear.filter((g) => !gear.has(g) && !g.startsWith(`${armour.name} (`)),
+    ]
+      .filter((g, i, all) => all.indexOf(g) === i)
+      .slice(0, 60),
+    wealth: previous.wealth,
+    ammo: previous.ammo,
+    requisitioned: previous.requisitioned,
+  };
+}
+
+// The creation part of a build, as a stable string: what a player may no longer change once the character is made
+// (everything but the advancement, the choices its grants ask for, and the GM's part). Keys are sorted, so two builds
+// with the same choices compare equal however their objects were put together.
+export function creationKey(b: CharacterBuild): string {
+  const part = {
+    ...b,
+    advancement: undefined,
+    gm: undefined,
+    choices: Object.fromEntries(Object.entries(b.choices).filter(([k]) => !k.startsWith("advance/"))),
+  };
+  return JSON.stringify(part, (_, v: unknown) =>
+    v && typeof v === "object" && !Array.isArray(v)
+      ? Object.fromEntries(Object.entries(v).sort(([x], [y]) => x.localeCompare(y)))
+      : v,
+  );
 }
