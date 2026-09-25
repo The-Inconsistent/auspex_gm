@@ -173,7 +173,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
 
 No creation content: Darktide, Litanies of the Lost, Bloody Gates and Affliction Ascendant (official adventures;
-Affliction Ascendant's "Additional Rules for Psykers" is unread), Church of Steel (travel and vehicles),
+Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only), Church of Steel (travel and vehicles),
 `Wrath Glory Condensed Rules.docx.pdf` (fan quick-reference). The creation `source` ids are `SOURCES` in
 `packages/shared/src/creation.ts`, separate from `Threat.source` and `WargearSource`.
 
