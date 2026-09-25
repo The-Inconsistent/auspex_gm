@@ -35,7 +35,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
     100 MB; render with `pdftoppm -f N -l N -r 110 -png "<pdf>" <scratch>/p` and Read the PNG.
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
-  repo private and never serve book content to anyone without a seat (`/api/campaigns/:id/threats` and `/wargear` are GM-only; `/rules` needs any seat).
+  repo private and never serve book content to anyone without a seat (`/api/campaigns/:id/threats` and `/wargear` are GM-only; `/rules` and `/creation` need any seat).
 
 ## Stack
 
@@ -92,6 +92,7 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
     `token.revoke` kicks only guest sockets.
 - **Rules live in `packages/shared`,** as pure, tested functions, so the web and the api agree:
   - `deriveStats` (traits, minimum 1)
+  - `resolveBuild` (creation choices → sheet, XP ledger, pending choices, problems; `build.ts`)
   - `sideUpNext` / `canSeize` / `canAct` (alternating initiative, Seize, ambush)
   - `threatStatus` / `pcStatus` (per-class death rules)
   - `poolMax`
@@ -233,5 +234,5 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Not built yet
 
-- The character builder (the creation catalogue it reads from is done: `packages/data/creation/`, `docs/data.md` §9)
+- The character builder UI (the catalogue, `resolveBuild`, `GET /creation` and `character.build` are done: issue #9 steps 1–3)
 - Server-side undo history (client undo is inverse deltas)

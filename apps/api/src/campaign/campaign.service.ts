@@ -87,6 +87,12 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
   return { canCreate: user.creator, mine: cards(mine), running: cards(running) };
 }
 
+// Whether the campaign's character builder may use the homebrew books (a REST read, outside any action).
+export async function campaignHomebrew(campaignId: string) {
+  const [c] = await db.select({ homebrew: campaign.homebrew }).from(campaign).where(eq(campaign.id, campaignId));
+  return c?.homebrew ?? false;
+}
+
 export const listThreats = (): Threat[] => [...threats.values()];
 export const listWargear = (): Wargear[] => [...wargear.values()];
 const rules = rulesList(); // parsed at startup, so a bad file fails fast

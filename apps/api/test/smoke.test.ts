@@ -10,6 +10,7 @@ import {
   type ActionInput,
   type ActionResult,
   type Codex,
+  type CreationPayload,
   type LiveState,
   type ThreatCombatant,
 } from "@wg/shared";
@@ -646,6 +647,94 @@ test("accounts: lobby, room and character invites, guests, removing a member", a
     ok: false,
     error: "You can't remove yourself",
   });
+});
+
+// The volkus Disruptor (docs/pregens.md #2), as the builder would send it (packages/data/build.test.ts).
+const disruptor = {
+  tier: 4,
+  archetypeId: "primaris-incursor",
+  fills: { "[CHAPTER]": { id: "raven-guard" } },
+  background: {
+    tableId: "adeptus-astartes",
+    origin: "Cunning",
+    accomplishment: "Cleanse and Purge",
+    goal: "Vengeance",
+    bonus: "origin" as const,
+  },
+  attributes: { A: 5, Int: 5 },
+  skills: { Tech: 5, Stealth: 5, "Ballistic Skill": 5, Awareness: 4 },
+  talents: [{ id: "wraith-slipping" }, { id: "bolter-discipline" }, { id: "silent" }],
+  languages: { picks: ["high-gothic"] },
+};
+
+test("character builder: the creation catalogue for seats, and character.build decided by the server", async (t) => {
+  const gm = await newCampaign("Builder", 4);
+  t.after(() => gm.socket.close());
+
+  // The catalogue is book text: seats only, without the homebrew books unless the campaign allows them.
+  assert.equal((await get(`/campaigns/${gm.campaignId}/creation`)).status, 401);
+  const res = await get(`/campaigns/${gm.campaignId}/creation`, bearer(gm.gmClerk));
+  assert.equal(res.status, 200);
+  const payload = (await res.json()) as CreationPayload;
+  assert.equal(payload.homebrew, false);
+  assert.ok(payload.creation.archetypes.some((a) => a.id === "primaris-incursor"));
+  assert.ok(!payload.creation.archetypes.some((a) => a.source === "apocrypha"));
+  const etag = res.headers.get("etag")!;
+  assert.equal(
+    (await get(`/campaigns/${gm.campaignId}/creation`, { ...bearer(gm.gmClerk), "if-none-match": etag })).status,
+    304,
+  );
+  assert.ok((await gm.send({ type: "campaign.update", homebrew: true })).ok);
+  const withHomebrew = (await (
+    await get(`/campaigns/${gm.campaignId}/creation`, bearer(gm.gmClerk))
+  ).json()) as CreationPayload;
+  assert.ok(withHomebrew.creation.archetypes.some((a) => a.source === "apocrypha"));
+
+  // The GM builds a new character; the server writes the sheet it derives, and keeps the choices.
+  const made = await gm.send({ type: "character.build", name: "Veyl", build: disruptor });
+  assert.ok(made.ok && made.id, JSON.stringify(made));
+  const veyl = (await gm.until((s) => s.characters.some((c) => c.id === made.id))).characters.find(
+    (c) => c.id === made.id,
+  )!;
+  assert.equal(veyl.stats.archetype, "Primaris Incursor");
+  assert.deepEqual(veyl.stats.attributes, { S: 5, T: 5, A: 5, I: 5, Wil: 4, Int: 5, Fel: 1 });
+  assert.equal(veyl.build?.archetypeId, "primaris-incursor");
+
+  // Refused: a build with choices left, one over budget, one for another Tier.
+  const { languages: _, ...noLanguage } = disruptor;
+  assert.deepEqual(await gm.send({ type: "character.build", build: noLanguage }), {
+    ok: false,
+    error: "Still to choose: Choose 1 free language",
+  });
+  assert.deepEqual(await gm.send({ type: "character.build", build: { ...disruptor, attributes: { A: 7 } } }), {
+    ok: false,
+    error: "29 XP over the budget of 400 (Core p.20)", // 399 − 30 (A 5, Int 5) + 60 (A 4 → 7)
+  });
+  assert.deepEqual(await gm.send({ type: "character.build", build: { ...disruptor, tier: 3 } }), {
+    ok: false,
+    error: "This campaign is Tier 4; build for Tier 4",
+  });
+
+  // A player rebuilds only their own character, and can't make the GM's rulings.
+  const issued = await gm.send({ type: "token.issue", characterId: made.id! });
+  assert.ok(issued.ok && issued.token);
+  const player = connect({ auth: { token: issued.token } });
+  t.after(() => player.socket.close());
+  await player.until((s) => s.characters.length === 1);
+  assert.deepEqual(await player.send({ type: "character.build", build: disruptor }), {
+    ok: false,
+    error: "Not your character",
+  });
+  const rebuilt = await player.send({
+    type: "character.build",
+    id: made.id,
+    build: { ...disruptor, gm: { keywords: ["DEATHWATCH"] } },
+  });
+  assert.ok(rebuilt.ok, JSON.stringify(rebuilt));
+  const after = await gm.until((s) =>
+    s.characters.some((c) => c.id === made.id && (c.build?.gm as { keywords: string[] }).keywords.length === 0),
+  );
+  assert.ok(!after.characters.find((c) => c.id === made.id)!.stats.keywords.includes("DEATHWATCH"));
 });
 
 test("the guest door is rate limited per caller IP", async () => {

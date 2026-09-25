@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
 import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./state.ts";
@@ -20,6 +21,7 @@ export const Action = z.union([
       tier: Tier.optional(),
       framework: z.string().max(5000).optional(),
       patron: z.string().max(200).optional(),
+      homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
 
@@ -80,6 +82,14 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),
+    // Save a character from its creation choices (build.ts). The server re-runs resolveBuild, refuses a build that
+    // isn't ready, and writes the sheet it derives. No id: a new character (GM only).
+    z.object({
+      type: z.literal("character.build"),
+      id: id.optional(),
+      name: z.string().min(1).max(100).optional(),
+      build: CharacterBuild,
+    }),
 
     z.object({ type: z.literal("token.issue"), characterId: id }),
     z.object({ type: z.literal("token.revoke"), characterId: id }),
@@ -148,6 +158,10 @@ export type Action = z.infer<typeof Action>;
 export type ActionInput = z.input<typeof Action>; // what clients send: defaulted fields optional
 
 // Actions a player may send, each limited to their own character. Harm, Wrath, Glory and Respite are the GM's.
-export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set(["character.update", "character.supply"]);
+export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
+  "character.update",
+  "character.build",
+  "character.supply",
+]);
 
 export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };

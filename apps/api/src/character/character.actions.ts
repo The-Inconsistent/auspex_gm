@@ -1,8 +1,10 @@
 import { and, eq, isNull } from "drizzle-orm";
 import {
+  CharacterBuild,
   CharacterStats,
   Overrides,
   adjustAmmo,
+  buildReady,
   deriveStats,
   effectiveStrength,
   gearLine,
@@ -12,6 +14,7 @@ import {
   requisitionSlot,
   requisitionTest,
   requisitionYield,
+  resolveBuild,
   sheetWeapon,
   type Action,
   type ActionResult,
@@ -21,12 +24,13 @@ import {
 import { wargear } from "@wg/data";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
-import { campaignTier } from "../campaign/campaign.actions.ts";
+import { campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
 import { session } from "../campaign/campaign.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
 import { character } from "./character.schema.ts";
+import { buildCatalogue } from "./creation.service.ts";
 
 export type CharacterAction = Extract<Action, { type: `character.${string}` | `token.${string}` }>;
 
@@ -44,6 +48,12 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
   const status = pcStatus(c, derived);
   return { c, derived, dying: status.includes("Dying"), dead: status.includes("Dead") };
+}
+
+// The GM's part of a saved build, or none. A build saved under an older schema just loses it.
+function storedGm(build: Record<string, unknown> | null | undefined) {
+  const r = CharacterBuild.shape.gm.safeParse(build?.gm);
+  return r.success ? r.data : CharacterBuild.shape.gm.parse(undefined);
 }
 
 // Writes stats back after a counter change, refusing anything the sheet schema wouldn't load (too many ammo types, a
@@ -75,6 +85,40 @@ export async function applyCharacterAction(
       if (Object.keys(patch).length === 0) return { ok: true };
       const r = await tx.update(character).set(patch).where(inCampaign(id)).returning({ id: character.id });
       return r.length ? { ok: true } : fail("Character not found");
+    }
+
+    // The server decides: it re-resolves the build and writes the sheet it derives, never the client's.
+    case "character.build": {
+      const { tier, homebrew } = await campaignRules(tx, cid);
+      const row = a.id ? await ownCharacter(tx, { campaignId: cid, id: a.id }) : undefined;
+      // A player's build keeps the GM's part (rulings and ticks) as the GM last saved it.
+      const build = ctx.role === "gm" ? a.build : { ...a.build, gm: storedGm(row?.build) };
+      if (build.tier !== tier) fail(`This campaign is Tier ${tier}; build for Tier ${tier}`);
+      const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build });
+      if (!buildReady(r)) {
+        const next = r.pending[0];
+        fail(
+          next
+            ? `Still to choose: ${next.what}`
+            : `${r.problems[0]!.what}${r.problems[0]!.cite ? ` (${r.problems[0]!.cite})` : ""}`,
+        );
+      }
+      // ponytail: a rebuild keeps the live Ammo and requisitions but resets Wealth to the build's; fine before play,
+      // upgrade path is Advancement (issue #9 step 5) spending XP on top of the saved build.
+      const old = row ? CharacterStats.parse(row.stats) : undefined;
+      const stats = old ? { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned } : r.sheet;
+      if (row) {
+        await tx
+          .update(character)
+          .set({ stats, build, ...(a.name ? { name: a.name } : {}) })
+          .where(eq(character.id, row.id));
+        return { ok: true, id: row.id };
+      }
+      const [c] = await tx
+        .insert(character)
+        .values({ campaignId: cid, name: a.name ?? "Unnamed", stats, build })
+        .returning({ id: character.id });
+      return { ok: true, id: c!.id }; // the row was just inserted
     }
 
     case "character.adjust": {

@@ -129,6 +129,39 @@ export const buildReady = (r: ResolvedBuild) => r.pending.length === 0 && r.prob
 
 export type BuildCatalogue = { creation: Creation; wargear: ReadonlyMap<string, Wargear>; homebrew: boolean };
 
+// What GET /api/campaigns/:id/creation serves a seat: the catalogue, filtered to the campaign's allowed books, and the
+// Wargear catalogue the builder's picks and sheet preview read.
+export type CreationPayload = { homebrew: boolean; creation: Creation; wargear: Wargear[] };
+export const catalogueOf = (p: CreationPayload): BuildCatalogue => ({
+  creation: p.creation,
+  wargear: new Map(p.wargear.map((w) => [w.id, w])),
+  homebrew: p.homebrew,
+});
+
+// The catalogue without the homebrew books: their records, and the homebrew rules merged onto official ones
+// (docs/data.md §9, "Keep homebrew extras").
+export function officialOnly(c: Creation): Creation {
+  const keep = <T extends { source: Source }>(list: T[]) => list.filter((r) => official(r.source));
+  const rules = <R extends { source?: Source }>(list: R[]) => list.filter((r) => !r.source || official(r.source));
+  return {
+    ...c,
+    keywords: keep(c.keywords),
+    factions: keep(c.factions).map((f) => ({ ...f, rules: rules(f.rules) })),
+    "sub-factions": keep(c["sub-factions"]).map((s) => ({ ...s, traits: rules(s.traits) })),
+    species: keep(c.species).map((s) => ({ ...s, abilities: rules(s.abilities) })),
+    backgrounds: keep(c.backgrounds),
+    "option-groups": keep(c["option-groups"]).map((g) => ({ ...g, options: rules(g.options) })),
+    archetypes: keep(c.archetypes).map((a) => ({ ...a, abilities: rules(a.abilities) })),
+    talents: keep(c.talents),
+    packages: keep(c.packages),
+    disciplines: keep(c.disciplines),
+    powers: keep(c.powers),
+    patrons: keep(c.patrons),
+    languages: keep(c.languages),
+    flavour: keep(c.flavour),
+  };
+}
+
 // ── indexes ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 type Amount = z.infer<typeof AmountSchema>;

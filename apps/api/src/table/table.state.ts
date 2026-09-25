@@ -57,9 +57,10 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       ruin: c.ruin,
       framework: c.framework,
       patron: c.patron,
+      homebrew: c.homebrew,
     },
     characters: chars.map(
-      ({ id, name, stats, overrides, wounds, shock, wrath, traumatic, annihilated, xp, conditions }) => ({
+      ({ id, name, stats, overrides, build, wounds, shock, wrath, traumatic, annihilated, xp, conditions }) => ({
         id,
         name,
         stats: CharacterStats.parse(stats),
@@ -71,6 +72,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
         annihilated,
         xp,
         conditions,
+        build: build ?? null,
       }),
     ),
     encounter: enc

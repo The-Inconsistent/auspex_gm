@@ -11,6 +11,7 @@ export const character = pgTable("character", {
   dodRaw: jsonb(),
   stats: jsonb().$type<Record<string, unknown>>().notNull().default({}),
   overrides: jsonb().$type<Record<string, unknown>>().notNull().default({}),
+  build: jsonb().$type<Record<string, unknown>>(), // the CharacterBuild `stats` came from; null for a hand-made sheet
   wounds: integer().notNull().default(0), // Wounds taken, not remaining
   shock: integer().notNull().default(0),
   wrath: integer().notNull().default(2),

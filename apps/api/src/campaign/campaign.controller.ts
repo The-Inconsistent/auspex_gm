@@ -20,8 +20,17 @@ import { COOKIE, readCookie, resolveCtx, resolveGuest, signedInUser } from "../a
 import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
+import { creationPayload } from "../character/creation.service.ts";
 import { TableGateway } from "../table/table.gateway.ts";
-import { createCampaign, isAdmin, listRules, listThreats, listWargear, lobby } from "./campaign.service.ts";
+import {
+  campaignHomebrew,
+  createCampaign,
+  isAdmin,
+  listRules,
+  listThreats,
+  listWargear,
+  lobby,
+} from "./campaign.service.ts";
 
 const Join = z.object({ token: z.string().min(1).max(200) });
 // Scripts (admin key) name the Clerk user who will GM the new campaign.
@@ -115,6 +124,26 @@ export class CampaignController {
     const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
     return listRules();
+  }
+
+  // The character-creation catalogue (book text) for any seat, filtered to the books the campaign allows (issue #9).
+  // Gzipped once at first use; the ETag lets a phone revalidate instead of downloading about 2 MB again.
+  @Get("campaigns/:id/creation")
+  async creation(@Param("id") id: string, @Req() req: Request, @Res() res: Response) {
+    const campaignId = parse(CampaignId, id);
+    const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    const p = creationPayload(await campaignHomebrew(campaignId));
+    res.set({
+      "content-type": "application/json",
+      "cache-control": "private, no-cache",
+      vary: "accept-encoding",
+      etag: p.etag,
+    });
+    if (req.headers["if-none-match"] === p.etag) return void res.status(304).end();
+    if (/\bgzip\b/.test(req.headers["accept-encoding"] ?? ""))
+      return void res.set("content-encoding", "gzip").send(p.gzip);
+    res.send(p.json);
   }
 
   // Guest QR (/join/<token>): the token moves into an httpOnly cookie. Returns the table to open.
