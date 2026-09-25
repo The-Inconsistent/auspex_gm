@@ -1,0 +1,118 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Ammo Runt",
+      "text": "An Ammo Runt carries two Reloads for its owner. The owner may ignore the first Complication they suffer on a ranged attack."
+    },
+    {
+      "name": "Cowardly",
+      "text": "When making a Resolve test, if the Wrath die rolls a failure, it is counted as a Complication."
+    },
+    {
+      "name": "Dok’s Orderly",
+      "text": "A Dok’s Orderly has a Medicae skill of 5. When a DOK has a Grot Orderly within 2m, they may re-roll any 1s on their Medicae tests."
+    },
+    {
+      "name": "Grot Oiler",
+      "text": "A Grot Oiler has a Tech skill of 5. When a MEK has a Grot Oiler within 2m, they may re-roll any 1s on their Tech tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Grot Blasta",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Sneaky Stabba",
+          "damage": 3,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Silent"
+          ]
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "mobAbilities": [
+    {
+      "name": "Grot Shields",
+      "text": "ORK Threats count as having full cover (+2 Defence) when they are behind and within 6m of a Gretchin Mob. Each failed attack against ORK Threats benefitting from this inflicts 1d3 Mortal Wounds on the Gretchin Mob instead.",
+      "weapons": []
+    }
+  ],
+  "id": "apoc-gretchin",
+  "name": "Gretchin",
+  "page": 477,
+  "faction": "ork",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "GRETCHIN",
+    "RUNTS"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 2,
+    "A": 3,
+    "I": 3,
+    "Wil": 1,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 4
+  },
+  "defence": 4,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 5
+      },
+      {
+        "name": "Stealth",
+        "dice": 5
+      },
+      {
+        "name": "Survival",
+        "dice": 5
+      }
+    ]
+  },
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Small"
+}

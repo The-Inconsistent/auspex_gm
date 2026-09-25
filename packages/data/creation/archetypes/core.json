@@ -636,32 +636,32 @@
       {
         "wargear": {
           "name": "Corsair Armour",
-          "wargearId": "corsair-armour"
+          "wargearId": "ioe-corsair-armour"
         }
       },
       {
         "wargear": {
           "name": "Shuriken Pistol",
-          "wargearId": "shuriken-pistol"
+          "wargearId": "ioe-shuriken-pistol"
         }
       },
       {
         "wargear": {
           "name": "Lasblaster",
-          "wargearId": "lasblaster"
+          "wargearId": "ioe-lasblaster"
         }
       },
       {
         "wargear": {
           "name": "Spirit Stone",
-          "wargearId": "spirit-stone"
+          "wargearId": "ioe-spirit-stone-empty"
         }
       },
       {
         "wargear": {
           "name": "Plasma Grenade",
           "qty": 3,
-          "wargearId": "plasma-grenade"
+          "wargearId": "ioe-plasma-grenade"
         }
       },
       {

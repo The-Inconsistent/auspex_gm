@@ -1,0 +1,108 @@
+{
+  "id": "apoc-cherub",
+  "name": "Cherub",
+  "source": "apocrypha",
+  "page": 461,
+  "faction": "imperial",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTA SORORITAS",
+    "ADEPTUS MINISTORUM",
+    "ADEPTUS ASTARTES",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 4,
+    "I": 3,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 3,
+    "note": "Artificial Body: 1 AR"
+  },
+  "defence": 4,
+  "wounds": 3,
+  "shock": null,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Symbol of Purity",
+      "text": "A Cherub’s owner gains +2 Conviction while the Cherub is within 10m."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"8 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "damage": 3,
+          "ed": 1,
+          "range": [
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 2d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Tiny",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Armourium Cherub",
+      "text": "The Cherub carries 3 additional Ammo for its owner."
+    },
+    {
+      "kind": "variant",
+      "name": "Incensor Cherub",
+      "text": "When the Cherub’s owner spends a Faith point, roll 1d6: on a 6, the Cherub’s owner regains 1 Faith Point. The Cherub must be within 10m for this to function."
+    },
+    {
+      "kind": "variant",
+      "name": "Choristor Cherub",
+      "text": "While within 10m of its owner, the Cherub adds +2d to all the owner’s Leadership and Persuasion tests."
+    },
+    {
+      "kind": "variant",
+      "name": "Defensor Cherub",
+      "text": "While within 3m of its owner, the Cherub’s owner gains +2 Resilience."
+    },
+    {
+      "kind": "variant",
+      "name": "Warp-Bane Cherub",
+      "text": "Any psychic power which targets the Cherub or a character within 3m increases the DN by +2."
+    }
+  ]
+}

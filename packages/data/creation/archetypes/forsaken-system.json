@@ -49,7 +49,8 @@
       },
       {
         "wargear": {
-          "name": "Purity Seals"
+          "name": "Purity Seals",
+          "wargearId": "fspg-purity-seal"
         }
       },
       {
@@ -141,12 +142,14 @@
       },
       {
         "wargear": {
-          "name": "Dialogus Staff"
+          "name": "Dialogus Staff",
+          "wargearId": "fspg-dialogus-staff"
         }
       },
       {
         "wargear": {
-          "name": "Laud Hailer"
+          "name": "Laud Hailer",
+          "wargearId": "fspg-laud-hailer"
         }
       },
       {
@@ -270,7 +273,8 @@
       },
       {
         "wargear": {
-          "name": "Simulacrum Imperialis"
+          "name": "Simulacrum Imperialis",
+          "wargearId": "fspg-simulacrum-imperialis"
         }
       },
       {
@@ -614,7 +618,8 @@
         "from": [
           {
             "wargear": {
-              "name": "Blessed Blade"
+              "name": "Blessed Blade",
+              "wargearId": "fspg-blessed-blade"
             }
           },
           {
@@ -665,12 +670,14 @@
         "from": [
           {
             "wargear": {
-              "name": "Brazier of Holy Fire"
+              "name": "Brazier of Holy Fire",
+              "wargearId": "fspg-brazier-of-holy-fire"
             }
           },
           {
             "wargear": {
-              "name": "Null Rod"
+              "name": "Null Rod",
+              "wargearId": "fspg-null-rod"
             }
           }
         ]
@@ -840,7 +847,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Sicarian Battle Armour"
+          "name": "Sicarian Battle Armour",
+          "wargearId": "fspg-sicarian-battle-armour"
         }
       },
       {
@@ -851,7 +859,8 @@
       },
       {
         "wargear": {
-          "name": "Infiltrator Headpiece"
+          "name": "Infiltrator Headpiece",
+          "wargearId": "fspg-infiltrator-headpiece"
         }
       },
       {
@@ -860,17 +869,20 @@
           {
             "bundle": [
               {
-                "name": "Flechette Blaster"
+                "name": "Flechette Blaster",
+                "wargearId": "fspg-flechette-blaster"
               },
               {
-                "name": "Taser Goad"
+                "name": "Taser Goad",
+                "wargearId": "fspg-taser-goad"
               }
             ]
           },
           {
             "bundle": [
               {
-                "name": "Stubcarbine"
+                "name": "Stubcarbine",
+                "wargearId": "fspg-stubcarbine"
               },
               {
                 "name": "Power Sword",
@@ -952,7 +964,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Sicarian Battle Armour"
+          "name": "Sicarian Battle Armour",
+          "wargearId": "fspg-sicarian-battle-armour"
         }
       },
       {
@@ -967,16 +980,19 @@
           {
             "wargear": {
               "name": "Transonic Blade",
-              "qty": 2
+              "qty": 2,
+              "wargearId": "fspg-transonic-blade"
             }
           },
           {
             "bundle": [
               {
-                "name": "Transonic Razor"
+                "name": "Transonic Razor",
+                "wargearId": "fspg-transonic-razor"
               },
               {
-                "name": "Chordclaw"
+                "name": "Chordclaw",
+                "wargearId": "fspg-chordclaw"
               }
             ]
           }
@@ -1066,7 +1082,8 @@
           },
           {
             "wargear": {
-              "name": "Eradication Ray"
+              "name": "Eradication Ray",
+              "wargearId": "fspg-eradication-ray"
             }
           }
         ]
@@ -1076,12 +1093,14 @@
         "from": [
           {
             "wargear": {
-              "name": "Macrostubber"
+              "name": "Macrostubber",
+              "wargearId": "fspg-macrostubber"
             }
           },
           {
             "wargear": {
-              "name": "Phosphor Serpenta"
+              "name": "Phosphor Serpenta",
+              "wargearId": "fspg-phosphor-serpenta"
             }
           }
         ]
@@ -1221,7 +1240,8 @@
       },
       {
         "wargear": {
-          "name": "Power Maul"
+          "name": "Power Maul",
+          "wargearId": "fspg-power-maul"
         }
       },
       {
@@ -1323,7 +1343,8 @@
         "from": [
           {
             "wargear": {
-              "name": "Sniper Rifle"
+              "name": "Sniper Rifle",
+              "wargearId": "fspg-ratling-rifle"
             }
           },
           {
@@ -1433,14 +1454,22 @@
         }
       },
       {
-        "wargear": {
-          "name": "Ripper Gun (with bayonet)"
-        }
+        "bundle": [
+          {
+            "name": "Ripper Gun",
+            "wargearId": "fspg-ripper-gun"
+          },
+          {
+            "name": "Ripper Gun Bayonet",
+            "wargearId": "fspg-ripper-gun-bayonet"
+          }
+        ]
       },
       {
         "wargear": {
           "name": "Frag Bomb",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "fspg-frag-bomb"
         }
       }
     ],
@@ -1514,13 +1543,15 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Bullgryn Plate"
+          "name": "Bullgryn Plate",
+          "wargearId": "fspg-bullgryn-plate"
         }
       },
       {
         "wargear": {
           "name": "Frag Bomb",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "fspg-frag-bomb"
         }
       },
       {
@@ -1529,20 +1560,24 @@
           {
             "bundle": [
               {
-                "name": "Slabshield"
+                "name": "Slabshield",
+                "wargearId": "fspg-slabshield"
               },
               {
-                "name": "Grenadier Gauntlet"
+                "name": "Grenadier Gauntlet",
+                "wargearId": "fspg-grenadier-gauntlet"
               }
             ]
           },
           {
             "bundle": [
               {
-                "name": "Bullgryn Maul"
+                "name": "Bullgryn Maul",
+                "wargearId": "fspg-bullgryn-maul"
               },
               {
-                "name": "Brute Shield"
+                "name": "Brute Shield",
+                "wargearId": "fspg-brute-shield"
               }
             ]
           }
@@ -1731,7 +1766,8 @@
       },
       {
         "wargear": {
-          "name": "Excruciator"
+          "name": "Excruciator",
+          "wargearId": "fspg-excrutiator"
         }
       },
       {
@@ -1828,13 +1864,21 @@
     ],
     "wargear": [
       {
-        "wargear": {
-          "name": "Kroot Rifle"
-        }
+        "bundle": [
+          {
+            "name": "Kroot Rifle",
+            "wargearId": "fspg-kroot-rifle"
+          },
+          {
+            "name": "Kroot Rifle (melee)",
+            "wargearId": "fspg-kroot-rifle-melee"
+          }
+        ]
       },
       {
         "wargear": {
-          "name": "Kroot Armour"
+          "name": "Kroot Armour",
+          "wargearId": "fspg-kroot-armour"
         }
       }
     ],

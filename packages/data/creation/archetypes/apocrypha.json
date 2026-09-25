@@ -37,7 +37,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Arbites Carapace Armour"
+          "name": "Arbites Carapace Armour",
+          "wargearId": "apoc-arbites-carapace"
         }
       },
       {
@@ -54,7 +55,8 @@
       },
       {
         "wargear": {
-          "name": "magnacles"
+          "name": "magnacles",
+          "wargearId": "apoc-magnacles"
         }
       },
       {
@@ -65,7 +67,8 @@
       },
       {
         "wargear": {
-          "name": "Book of Judgement (abridged)"
+          "name": "Book of Judgement (abridged)",
+          "wargearId": "apoc-book-of-judgement-abridged"
         }
       }
     ],
@@ -140,7 +143,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Aspect Armour"
+          "name": "Aspect Armour",
+          "wargearId": "ioe-aspect-armour"
         }
       },
       {
@@ -151,7 +155,7 @@
       {
         "wargear": {
           "name": "Shuriken Pistol",
-          "wargearId": "shuriken-pistol"
+          "wargearId": "ioe-shuriken-pistol"
         }
       },
       {
@@ -163,7 +167,7 @@
       {
         "wargear": {
           "name": "spirit stone",
-          "wargearId": "spirit-stone"
+          "wargearId": "ioe-spirit-stone-empty"
         }
       }
     ],
@@ -251,12 +255,14 @@
         "from": [
           {
             "wargear": {
-              "name": "Heavy Plasma Axe"
+              "name": "Heavy Plasma Axe",
+              "wargearId": "apoc-heavy-plasma-axe"
             }
           },
           {
             "wargear": {
-              "name": "Concussion Maul"
+              "name": "Concussion Maul",
+              "wargearId": "apoc-concussion-maul"
             }
           }
         ]
@@ -618,22 +624,26 @@
     "wargear": [
       {
         "wargear": {
-          "name": "EtaCarn Plasma Gun"
+          "name": "EtaCarn Plasma Gun",
+          "wargearId": "apoc-etacarn-plasma-gun"
         }
       },
       {
         "wargear": {
-          "name": "Exoarmour Grenade Launcher"
+          "name": "Exoarmour Grenade Launcher",
+          "wargearId": "apoc-exo-armour-grenade-launcher"
         }
       },
       {
         "wargear": {
-          "name": "Concussion Gauntlet"
+          "name": "Concussion Gauntlet",
+          "wargearId": "apoc-concussion-gauntlet"
         }
       },
       {
         "wargear": {
-          "name": "Exo-armour"
+          "name": "Exo-armour",
+          "wargearId": "apoc-exo-armour"
         }
       }
     ],
@@ -711,7 +721,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Honour staff"
+          "name": "Honour staff",
+          "wargearId": "apoc-honour-staff"
         }
       },
       {
@@ -727,19 +738,22 @@
           {
             "wargear": {
               "name": "Gun Drone",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "apoc-mv-1-tactical-drone"
             }
           },
           {
             "wargear": {
               "name": "Marker Drone",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "apoc-mv-7-marker-drone"
             }
           },
           {
             "wargear": {
               "name": "Shield Drone",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "apoc-mv-4-shield-drone"
             }
           }
         ]
@@ -990,7 +1004,8 @@
           },
           {
             "wargear": {
-              "name": "reaper chaincannon"
+              "name": "reaper chaincannon",
+              "wargearId": "apoc-reaper-chaincannon"
             }
           }
         ]
@@ -1106,7 +1121,8 @@
       },
       {
         "wargear": {
-          "name": "grisly trophies"
+          "name": "grisly trophies",
+          "wargearId": "apoc-grisly-trophies"
         }
       }
     ],
@@ -1156,7 +1172,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Vratine armour"
+          "name": "Vratine armour",
+          "wargearId": "apoc-vratine-armour"
         }
       },
       {
@@ -1167,7 +1184,8 @@
       },
       {
         "wargear": {
-          "name": "Psyk-out Grenades"
+          "name": "Psyk-out Grenades",
+          "wargearId": "apoc-psyk-out-grenades"
         }
       },
       {
@@ -1186,12 +1204,14 @@
           },
           {
             "wargear": {
-              "name": "Witchseeker Flamer"
+              "name": "Witchseeker Flamer",
+              "wargearId": "apoc-witchseeker-flamer"
             }
           },
           {
             "wargear": {
-              "name": "Executioner Greatblade"
+              "name": "Executioner Greatblade",
+              "wargearId": "apoc-executioner-greatblade"
             }
           }
         ]
@@ -1365,13 +1385,21 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Heavy Aspect Armour"
+          "name": "Heavy Aspect Armour",
+          "wargearId": "ioe-heavy-aspect-armour"
         }
       },
       {
-        "wargear": {
-          "name": "Laser Lance"
-        }
+        "bundle": [
+          {
+            "name": "Laser Lance",
+            "wargearId": "apoc-laser-lance"
+          },
+          {
+            "name": "Laser Lance (melee)",
+            "wargearId": "apoc-laser-lance-melee"
+          }
+        ]
       },
       {
         "wargear": {
@@ -1381,7 +1409,7 @@
       {
         "wargear": {
           "name": "spirit stone",
-          "wargearId": "spirit-stone"
+          "wargearId": "ioe-spirit-stone-empty"
         }
       }
     ],
@@ -1461,7 +1489,8 @@
       },
       {
         "wargear": {
-          "name": "Absolvor Bolt Pistol"
+          "name": "Absolvor Bolt Pistol",
+          "wargearId": "apoc-absolvor-bolt-pistol"
         }
       },
       {
@@ -1472,7 +1501,8 @@
       },
       {
         "wargear": {
-          "name": "Reductor"
+          "name": "Reductor",
+          "wargearId": "apoc-reductor"
         }
       },
       {
@@ -1594,7 +1624,8 @@
       },
       {
         "wargear": {
-          "name": "Memorance Implant"
+          "name": "Memorance Implant",
+          "wargearId": "apoc-memorance-implant"
         }
       }
     ],
@@ -1942,7 +1973,8 @@
       },
       {
         "wargear": {
-          "name": "grisly trophies"
+          "name": "grisly trophies",
+          "wargearId": "apoc-grisly-trophies"
         }
       }
     ],
@@ -2054,7 +2086,8 @@
       },
       {
         "wargear": {
-          "name": "Accursed Crozius"
+          "name": "Accursed Crozius",
+          "wargearId": "apoc-accursed-crozius"
         }
       },
       {
@@ -2073,7 +2106,8 @@
       },
       {
         "wargear": {
-          "name": "Sigil of Corruption"
+          "name": "Sigil of Corruption",
+          "wargearId": "apoc-sigil-of-corruption"
         }
       }
     ],
@@ -2306,12 +2340,14 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Aegis Power Armour"
+          "name": "Aegis Power Armour",
+          "wargearId": "apoc-aegis-armour"
         }
       },
       {
         "wargear": {
-          "name": "Nemesis Force Sword"
+          "name": "Nemesis Force Sword",
+          "wargearId": "apoc-nemesis-force-sword"
         }
       },
       {
@@ -2323,7 +2359,8 @@
       {
         "wargear": {
           "name": "psyk-out grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-psyk-out-grenades"
         }
       },
       {
@@ -2403,23 +2440,27 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Ancestral Ward Stave"
+          "name": "Ancestral Ward Stave",
+          "wargearId": "apoc-ancestral-ward-stave"
         }
       },
       {
         "wargear": {
-          "name": "Void Armour"
+          "name": "Void Armour",
+          "wargearId": "apoc-void-armour"
         }
       },
       {
         "wargear": {
-          "name": "Ancestral Ward Crest"
+          "name": "Ancestral Ward Crest",
+          "wargearId": "apoc-ancestral-ward-crest"
         }
       },
       {
         "wargear": {
           "name": "CORV armed with Autoch-pattern Bolters",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-corv"
         }
       }
     ],
@@ -2511,12 +2552,14 @@
       },
       {
         "wargear": {
-          "name": "Bastium Void Armour"
+          "name": "Bastium Void Armour",
+          "wargearId": "apoc-bastium-void-armour"
         }
       },
       {
         "wargear": {
-          "name": "Rampart Crest"
+          "name": "Rampart Crest",
+          "wargearId": "apoc-rampart-crest"
         }
       }
     ],
@@ -2707,7 +2750,8 @@
       },
       {
         "wargear": {
-          "name": "Calculus Logi implant"
+          "name": "Calculus Logi implant",
+          "wargearId": "apoc-calculus-logi-implant"
         }
       },
       {
@@ -3100,7 +3144,8 @@
       },
       {
         "wargear": {
-          "name": "Sonic Blaster"
+          "name": "Sonic Blaster",
+          "wargearId": "apoc-sonic-blaster"
         }
       },
       {
@@ -3176,12 +3221,14 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Vratine armour"
+          "name": "Vratine armour",
+          "wargearId": "apoc-vratine-armour"
         }
       },
       {
         "wargear": {
-          "name": "Voidsheen Cloak"
+          "name": "Voidsheen Cloak",
+          "wargearId": "apoc-voidsheen-cloak"
         }
       },
       {
@@ -3192,7 +3239,8 @@
       },
       {
         "wargear": {
-          "name": "Psyk-out Grenades"
+          "name": "Psyk-out Grenades",
+          "wargearId": "apoc-psyk-out-grenades"
         }
       },
       {
@@ -3208,7 +3256,11 @@
       },
       {
         "wargear": {
-          "name": "Master-crafted Executioner Greatblade"
+          "name": "Master-crafted Executioner Greatblade",
+          "wargearId": "apoc-executioner-greatblade",
+          "upgrades": [
+            "mastercrafted"
+          ]
         }
       }
     ],
@@ -3329,13 +3381,15 @@
       },
       {
         "wargear": {
-          "name": "Plague Knife"
+          "name": "Plague Knife",
+          "wargearId": "apoc-plague-knife"
         }
       },
       {
         "wargear": {
           "name": "Blight Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-blight-grenade"
         }
       },
       {
@@ -3410,7 +3464,8 @@
       },
       {
         "wargear": {
-          "name": "Ballistic Appeasement Autoreliquary"
+          "name": "Ballistic Appeasement Autoreliquary",
+          "wargearId": "ballistic-appeasement-auto-reliquary-absolutis-pattern"
         }
       },
       {
@@ -3420,19 +3475,32 @@
             "bundle": [
               {
                 "name": "Fragstorm Grenade Launcher",
-                "qty": 1
+                "qty": 1,
+                "wargearId": "apoc-fragstorm-grenade-launcher"
               },
               {
                 "name": "Auto Boltstorm Gauntlet",
+                "wargearId": "apoc-auto-boltstorm-gauntlet",
+                "qty": 2
+              },
+              {
+                "name": "Auto Boltstorm Gauntlet (melee)",
+                "wargearId": "apoc-auto-boltstorm-gauntlet-melee",
                 "qty": 2
               }
             ]
           },
           {
-            "wargear": {
-              "name": "Flamestorm Gauntlet",
-              "qty": 2
-            }
+            "bundle": [
+              {
+                "name": "Flamestorm Gauntlet",
+                "wargearId": "apoc-flamestorm-gauntlet"
+              },
+              {
+                "name": "Flamestorm Gauntlet (melee)",
+                "wargearId": "apoc-flamestorm-gauntlet-melee"
+              }
+            ]
           }
         ]
       }
@@ -3516,7 +3584,8 @@
       },
       {
         "wargear": {
-          "name": "Plasma Incinerator"
+          "name": "Plasma Incinerator",
+          "wargearId": "apoc-plasma-incinerator"
         }
       },
       {
@@ -3653,7 +3722,8 @@
           {
             "wargear": {
               "name": "Plasma Exterminator",
-              "qty": 2
+              "qty": 2,
+              "wargearId": "apoc-plasma-exterminator"
             }
           }
         ]
@@ -3740,7 +3810,8 @@
       },
       {
         "wargear": {
-          "name": "Marksman Bolt Carbine"
+          "name": "Marksman Bolt Carbine",
+          "wargearId": "apoc-marksman-bolt-carbine"
         }
       },
       {
@@ -3752,7 +3823,8 @@
       {
         "wargear": {
           "name": "Smoke Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-smoke-grenades"
         }
       },
       {
@@ -3868,7 +3940,8 @@
       },
       {
         "wargear": {
-          "name": "Absolvor bolt pistol"
+          "name": "Absolvor bolt pistol",
+          "wargearId": "apoc-absolvor-bolt-pistol"
         }
       },
       {
@@ -3974,7 +4047,8 @@
       },
       {
         "wargear": {
-          "name": "Psychic hood"
+          "name": "Psychic hood",
+          "wargearId": "fspg-psychic-hood"
         }
       },
       {
@@ -4054,7 +4128,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Artificer Armour"
+          "name": "Artificer Armour",
+          "wargearId": "apoc-artificer-armour"
         }
       },
       {
@@ -4167,7 +4242,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Fleshmetal Armour"
+          "name": "Fleshmetal Armour",
+          "wargearId": "apoc-fleshmetal"
         }
       },
       {
@@ -4296,17 +4372,26 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Nemesii Blade"
+          "name": "Nemesii Blade",
+          "wargearId": "apoc-nemesii-blade"
         }
       },
       {
-        "wargear": {
-          "name": "Needlespine Blaster"
-        }
+        "bundle": [
+          {
+            "name": "Needlespine Blaster (Bolt)",
+            "wargearId": "apoc-needlespine-blaster-bolt"
+          },
+          {
+            "name": "Needlespine Blaster (Needler)",
+            "wargearId": "apoc-needlespine-blaster-needler"
+          }
+        ]
       },
       {
         "wargear": {
-          "name": "Assassinorum Bodyglove"
+          "name": "Assassinorum Bodyglove",
+          "wargearId": "apoc-assassinorum-bodyglove"
         }
       }
     ],
@@ -4393,28 +4478,33 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Phase Sword"
+          "name": "Phase Sword",
+          "wargearId": "apoc-phase-sword"
         }
       },
       {
         "wargear": {
-          "name": "Neural Shredder"
+          "name": "Neural Shredder",
+          "wargearId": "apoc-neural-shredder"
         }
       },
       {
         "wargear": {
           "name": "Polymorphine",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-polymorphine"
         }
       },
       {
         "wargear": {
-          "name": "Poisoned blades"
+          "name": "Poisoned blades",
+          "wargearId": "apoc-poisoned-blades"
         }
       },
       {
         "wargear": {
-          "name": "Assassinorum Bodyglove"
+          "name": "Assassinorum Bodyglove",
+          "wargearId": "apoc-assassinorum-bodyglove"
         }
       }
     ],
@@ -4503,28 +4593,33 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Etherium"
+          "name": "Etherium",
+          "wargearId": "apoc-etherium"
         }
       },
       {
         "wargear": {
-          "name": "Force Matrix"
+          "name": "Force Matrix",
+          "wargearId": "apoc-force-matrix"
         }
       },
       {
         "wargear": {
-          "name": "Animus Speculum"
+          "name": "Animus Speculum",
+          "wargearId": "apoc-animus-speculum"
         }
       },
       {
         "wargear": {
           "name": "Psyk-Out Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-psyk-out-grenades"
         }
       },
       {
         "wargear": {
-          "name": "Assassinorum Bodyglove"
+          "name": "Assassinorum Bodyglove",
+          "wargearId": "apoc-assassinorum-bodyglove"
         }
       }
     ],
@@ -4618,22 +4713,34 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Auramite Custodian Power Armour"
+          "name": "Auramite Custodian Power Armour",
+          "wargearId": "apoc-auramite-custodian-power-armour"
         }
       },
       {
         "choose": 1,
         "from": [
           {
-            "wargear": {
-              "name": "Guardian Spear"
-            }
+            "bundle": [
+              {
+                "name": "Guardian Spear",
+                "wargearId": "apoc-guardian-spear"
+              },
+              {
+                "name": "Guardian Spear (ranged)",
+                "wargearId": "apoc-guardian-spear-ranged"
+              }
+            ]
           },
           {
             "bundle": [
               {
                 "name": "Sentinel Blade",
-                "qty": 1
+                "wargearId": "apoc-sentinel-blade"
+              },
+              {
+                "name": "Sentinel Blade (ranged)",
+                "wargearId": "apoc-sentinel-blade-ranged"
               },
               {
                 "name": "Storm Shield",
@@ -4646,7 +4753,8 @@
       },
       {
         "wargear": {
-          "name": "Misericordia"
+          "name": "Misericordia",
+          "wargearId": "apoc-misericordia"
         }
       }
     ],
@@ -4747,18 +4855,27 @@
         }
       },
       {
+        "bundle": [
+          {
+            "name": "Executioner Pistol (Bolt)",
+            "wargearId": "apoc-executioner-pistol-bolt"
+          },
+          {
+            "name": "Executioner Pistol (Needler)",
+            "wargearId": "apoc-executioner-pistol-needler"
+          }
+        ]
+      },
+      {
         "wargear": {
-          "name": "Executor pistol"
+          "name": "Sentinel array",
+          "wargearId": "apoc-sentinel-array"
         }
       },
       {
         "wargear": {
-          "name": "Sentinel array"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Neuro-gauntlet"
+          "name": "Neuro-gauntlet",
+          "wargearId": "apoc-neuro-gauntlet"
         }
       },
       {
@@ -4770,17 +4887,20 @@
       {
         "wargear": {
           "name": "Melta bomb",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-melta-bombs"
         }
       },
       {
         "wargear": {
-          "name": "Eversor combat drugs (3 doses of Fury, 3 doses of Destroyer, 1 dose of Terminus)"
+          "name": "Eversor combat drugs (3 doses of Fury, 3 doses of Destroyer, 1 dose of Terminus)",
+          "wargearId": "apoc-eversor-combat-drugs"
         }
       },
       {
         "wargear": {
-          "name": "Assassinorum Bodyglove"
+          "name": "Assassinorum Bodyglove",
+          "wargearId": "apoc-assassinorum-bodyglove"
         }
       }
     ],
@@ -4890,27 +5010,32 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Holo-suit"
+          "name": "Holo-suit",
+          "wargearId": "ioe-holo-suit"
         }
       },
       {
         "wargear": {
-          "name": "Agaith"
+          "name": "Agaith",
+          "wargearId": "apoc-agaith"
         }
       },
       {
         "wargear": {
-          "name": "Flip-belt"
+          "name": "Flip-belt",
+          "wargearId": "ioe-flip-belt"
         }
       },
       {
         "wargear": {
-          "name": "Harlequin’s Caress"
+          "name": "Harlequin’s Caress",
+          "wargearId": "ioe-harlequins-caress"
         }
       },
       {
         "wargear": {
-          "name": "Harlequin’s Kiss"
+          "name": "Harlequin’s Kiss",
+          "wargearId": "ioe-harlequins-kiss"
         }
       }
     ],
@@ -4993,13 +5118,15 @@
       },
       {
         "wargear": {
-          "name": "Assassinorum Bodyglove"
+          "name": "Assassinorum Bodyglove",
+          "wargearId": "apoc-assassinorum-bodyglove"
         }
       },
       {
         "wargear": {
           "name": "Servo-skull",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-servo-skull"
         }
       },
       {
@@ -5042,17 +5169,20 @@
       },
       {
         "wargear": {
-          "name": "Auspectre"
+          "name": "Auspectre",
+          "wargearId": "apoc-auspectre"
         }
       },
       {
         "wargear": {
-          "name": "Sympatic Dataspikes"
+          "name": "Sympatic Dataspikes",
+          "wargearId": "apoc-sympatic-dataspikes"
         }
       },
       {
         "wargear": {
-          "name": "Vox-Disruptor Array"
+          "name": "Vox-Disruptor Array",
+          "wargearId": "apoc-vox-disruptor-array"
         }
       }
     ],
@@ -5131,23 +5261,27 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Assassinorum Bodyglove"
+          "name": "Assassinorum Bodyglove",
+          "wargearId": "apoc-assassinorum-bodyglove"
         }
       },
       {
         "wargear": {
-          "name": "Toxin Ejector"
+          "name": "Toxin Ejector",
+          "wargearId": "apoc-toxin-ejector"
         }
       },
       {
         "wargear": {
-          "name": "Hookfang Blades"
+          "name": "Hookfang Blades",
+          "wargearId": "apoc-hookfang"
         }
       },
       {
         "wargear": {
           "name": "Poison Globe",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-poison-globes"
         }
       }
     ],
@@ -5225,27 +5359,42 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Exitus Longrifle"
+          "name": "Exitus Longrifle",
+          "wargearId": "apoc-exitus-longrifle"
         }
       },
       {
         "wargear": {
-          "name": "Exitus Pistol"
+          "name": "Exitus Pistol",
+          "wargearId": "apoc-exitus-pistol"
+        }
+      },
+      {
+        "bundle": [
+          {
+            "name": "Exitus Shield-Breaker Round",
+            "wargearId": "apoc-exitus-shield-breaker-rounds"
+          },
+          {
+            "name": "Exitus Turbo-Penetrator Round",
+            "wargearId": "apoc-exitus-turbo-penetrator-rounds"
+          },
+          {
+            "name": "Exitus Hellfire Round",
+            "wargearId": "apoc-exitus-hellfire-rounds"
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Stealth Suit",
+          "wargearId": "apoc-vindicare-stealth-suit"
         }
       },
       {
         "wargear": {
-          "name": "Exitus Ammunition (one round of Shield-Breaker, one round of Turbo-Penetrator, one round of Hellfire)"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Stealth Suit"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Spy Mask"
+          "name": "Spy Mask",
+          "wargearId": "apoc-vindicare-spy-mask"
         }
       }
     ],
@@ -5338,7 +5487,8 @@
               },
               {
                 "name": "Force Shield",
-                "qty": 1
+                "qty": 1,
+                "wargearId": "ioe-force-shield"
               }
             ]
           }
@@ -5514,29 +5664,31 @@
       {
         "wargear": {
           "name": "Rune Armour",
-          "wargearId": "rune-armour"
+          "wargearId": "ioe-rune-armour"
         }
       },
       {
         "wargear": {
-          "name": "Psytronome Shaper"
+          "name": "Psytronome Shaper",
+          "wargearId": "apoc-psytronome-shaper"
         }
       },
       {
         "wargear": {
-          "name": "Set of Wraithbone Runes"
+          "name": "Set of Wraithbone Runes",
+          "wargearId": "ioe-wraithbone-runes"
         }
       },
       {
         "wargear": {
           "name": "Bonesinger Shard",
-          "wargearId": "bonesinger-shard"
+          "wargearId": "ioe-bonesinger-shard"
         }
       },
       {
         "wargear": {
           "name": "Spirit Stone",
-          "wargearId": "spirit-stone"
+          "wargearId": "ioe-spirit-stone-empty"
         }
       }
     ],
@@ -5687,7 +5839,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Calculus Logi Implant"
+          "name": "Calculus Logi Implant",
+          "wargearId": "apoc-calculus-logi-implant"
         }
       },
       {
@@ -5927,17 +6080,26 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Luminen Capacitor"
+          "name": "Luminen Capacitor",
+          "wargearId": "apoc-luminen-capacitor"
         }
       },
       {
-        "wargear": {
-          "name": "Electrostatic Gauntlets"
-        }
+        "bundle": [
+          {
+            "name": "Electrostatic Gauntlets",
+            "wargearId": "apoc-electrostatic-gauntlets"
+          },
+          {
+            "name": "Electrostatic Gauntlets (ranged)",
+            "wargearId": "apoc-electrostatic-gauntlets-ranged"
+          }
+        ]
       },
       {
         "wargear": {
-          "name": "Voltagheist Field Generator"
+          "name": "Voltagheist Field Generator",
+          "wargearId": "apoc-voltagheist-field-generator"
         }
       },
       {
@@ -6016,17 +6178,20 @@
     "wargear": [
       {
         "wargear": {
-          "name": "XV8 Crisis Battlesuit"
+          "name": "XV8 Crisis Battlesuit",
+          "wargearId": "apoc-xv8-crisis-battlesuit"
         }
       },
       {
         "wargear": {
-          "name": "Burst Cannon"
+          "name": "Burst Cannon",
+          "wargearId": "apoc-burst-cannon"
         }
       },
       {
         "wargear": {
-          "name": "T’au Flamer"
+          "name": "T’au Flamer",
+          "wargearId": "apoc-tau-flamer"
         }
       }
     ],
@@ -6115,7 +6280,8 @@
       },
       {
         "wargear": {
-          "name": "Aura of Dark Glory"
+          "name": "Aura of Dark Glory",
+          "wargearId": "apoc-aura-of-dark-glory"
         }
       },
       {
@@ -6210,17 +6376,20 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Luminen Capacitor"
+          "name": "Luminen Capacitor",
+          "wargearId": "apoc-luminen-capacitor"
         }
       },
       {
         "wargear": {
-          "name": "Electroleech Staff"
+          "name": "Electroleech Staff",
+          "wargearId": "apoc-electroleech-staff"
         }
       },
       {
         "wargear": {
-          "name": "Voltagheist Field Generator"
+          "name": "Voltagheist Field Generator",
+          "wargearId": "apoc-voltagheist-field-generator"
         }
       },
       {
@@ -6302,12 +6471,14 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Bolt Shotgun"
+          "name": "Bolt Shotgun",
+          "wargearId": "apoc-bolt-shotgun"
         }
       },
       {
         "wargear": {
-          "name": "Autoch-pattern Bolt Pistol"
+          "name": "Autoch-pattern Bolt Pistol",
+          "wargearId": "apoc-autoch-pattern-bolt-pistol"
         }
       },
       {
@@ -6319,7 +6490,8 @@
       {
         "wargear": {
           "name": "Gravitic Concussion Grenade",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-gravitic-concussion-grenades"
         }
       },
       {
@@ -6643,7 +6815,8 @@
       },
       {
         "wargear": {
-          "name": "Book of Judgement (abridged)"
+          "name": "Book of Judgement (abridged)",
+          "wargearId": "apoc-book-of-judgement-abridged"
         }
       }
     ],
@@ -6711,7 +6884,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Kustom Mega Blasta"
+          "name": "Kustom Mega Blasta",
+          "wargearId": "apoc-kustom-mega-blasta"
         }
       },
       {
@@ -6927,22 +7101,32 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Navis Armoured Voidsuit"
+          "name": "Navis Armoured Voidsuit",
+          "wargearId": "apoc-navis-armoured-voidsuit"
+        }
+      },
+      {
+        "bundle": [
+          {
+            "name": "Navis Shotgun",
+            "wargearId": "apoc-navis-shotgun"
+          },
+          {
+            "name": "Navis Shotgun (melee)",
+            "wargearId": "apoc-navis-shotgun-melee"
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Navis Hatchet",
+          "wargearId": "apoc-navis-hatchet"
         }
       },
       {
         "wargear": {
-          "name": "Navis Shotgun"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Navis Hatchet"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Apertor"
+          "name": "Apertor",
+          "wargearId": "apoc-apertor"
         }
       }
     ],
@@ -7219,7 +7403,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "‘Urty Syringe"
+          "name": "‘Urty Syringe",
+          "wargearId": "apoc-urty-syringe"
         }
       },
       {
@@ -7310,12 +7495,14 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Wychsuit"
+          "name": "Wychsuit",
+          "wargearId": "ioe-wych-suit"
         }
       },
       {
         "wargear": {
-          "name": "Splinter Pistol"
+          "name": "Splinter Pistol",
+          "wargearId": "ioe-splinter-pistol"
         }
       },
       {
@@ -7326,7 +7513,8 @@
       {
         "wargear": {
           "name": "Hekatarii Combat Drugs",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-hekatarii-combat-drugs"
         }
       }
     ],
@@ -7419,7 +7607,8 @@
       },
       {
         "wargear": {
-          "name": "Aura of Dark Glory"
+          "name": "Aura of Dark Glory",
+          "wargearId": "apoc-aura-of-dark-glory"
         }
       },
       {
@@ -7437,7 +7626,8 @@
       {
         "wargear": {
           "name": "Spook",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-spook"
         }
       }
     ],
@@ -7527,7 +7717,8 @@
       },
       {
         "wargear": {
-          "name": "Grabba-Stikk"
+          "name": "Grabba-Stikk",
+          "wargearId": "apoc-grabba-stikk"
         }
       },
       {
@@ -7845,7 +8036,8 @@
       },
       {
         "wargear": {
-          "name": "Data-Tether"
+          "name": "Data-Tether",
+          "wargearId": "apoc-data-tether"
         }
       },
       {
@@ -8108,7 +8300,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "XV15 Stealth Battlesuit"
+          "name": "XV15 Stealth Battlesuit",
+          "wargearId": "apoc-xv15-stealth-battlesuit"
         }
       }
     ],
@@ -8195,7 +8388,8 @@
       },
       {
         "wargear": {
-          "name": "Tankbusta Bomb"
+          "name": "Tankbusta Bomb",
+          "wargearId": "apoc-tankbusta-bomb"
         }
       }
     ],
@@ -8269,7 +8463,8 @@
       },
       {
         "wargear": {
-          "name": "Enhanced Data Tether"
+          "name": "Enhanced Data Tether",
+          "wargearId": "apoc-enhanced-data-tether"
         }
       },
       {
@@ -8565,22 +8760,26 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Graviton Rifle"
+          "name": "Graviton Rifle",
+          "wargearId": "apoc-graviton-rifle"
         }
       },
       {
         "wargear": {
-          "name": "Graviton Hammer"
+          "name": "Graviton Hammer",
+          "wargearId": "apoc-graviton-hammer"
         }
       },
       {
         "wargear": {
-          "name": "Void Armour"
+          "name": "Void Armour",
+          "wargearId": "apoc-void-armour"
         }
       },
       {
         "wargear": {
-          "name": "Multi-Spectral Visor"
+          "name": "Multi-Spectral Visor",
+          "wargearId": "apoc-multispectral-visor"
         }
       },
       {
@@ -8591,7 +8790,8 @@
       },
       {
         "wargear": {
-          "name": "E-COG Assistant"
+          "name": "E-COG Assistant",
+          "wargearId": "apoc-e-cog"
         }
       }
     ],
@@ -8662,12 +8862,14 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Fireblade Pulse Rifle"
+          "name": "Fireblade Pulse Rifle",
+          "wargearId": "apoc-fireblade-pulse-rifle"
         }
       },
       {
         "wargear": {
-          "name": "Markerlight"
+          "name": "Markerlight",
+          "wargearId": "apoc-markerlight"
         }
       },
       {
@@ -8678,7 +8880,8 @@
       {
         "wargear": {
           "name": "Photon Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-photon-grenade"
         }
       },
       {
@@ -8689,19 +8892,22 @@
           {
             "wargear": {
               "name": "Gun Drone",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "apoc-mv-1-tactical-drone"
             }
           },
           {
             "wargear": {
               "name": "Marker Drone",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "apoc-mv-7-marker-drone"
             }
           },
           {
             "wargear": {
               "name": "Shield Drone",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "apoc-mv-4-shield-drone"
             }
           }
         ]
@@ -8769,12 +8975,14 @@
     "wargear": [
       {
         "wargear": {
-          "name": "T’au Flight Suit"
+          "name": "T’au Flight Suit",
+          "wargearId": "apoc-tau-flight-suit"
         }
       },
       {
         "wargear": {
-          "name": "Pulse Pistol"
+          "name": "Pulse Pistol",
+          "wargearId": "apoc-pulse-pistol"
         }
       }
     ],
@@ -9149,7 +9357,8 @@
       },
       {
         "wargear": {
-          "name": "Drone Controller"
+          "name": "Drone Controller",
+          "wargearId": "apoc-drone-controller-personnel"
         }
       }
     ],
@@ -9233,12 +9442,14 @@
       },
       {
         "wargear": {
-          "name": "Repression baton"
+          "name": "Repression baton",
+          "wargearId": "apoc-repression-baton"
         }
       },
       {
         "wargear": {
-          "name": "Magnacles"
+          "name": "Magnacles",
+          "wargearId": "apoc-magnacles"
         }
       }
     ],
@@ -9399,18 +9610,31 @@
       },
       {
         "wargear": {
-          "name": "Field Relay Amplifier"
+          "name": "Field Relay Amplifier",
+          "wargearId": "apoc-field-relay-amplifier"
         }
       },
       {
-        "wargear": {
-          "name": "Pulse Blaster"
-        }
+        "bundle": [
+          {
+            "name": "Pulse Blaster (Short)",
+            "wargearId": "apoc-pulse-blaster-short"
+          },
+          {
+            "name": "Pulse Blaster (Med)",
+            "wargearId": "apoc-pulse-blaster-med"
+          },
+          {
+            "name": "Pulse Blaster (Long)",
+            "wargearId": "apoc-pulse-blaster-long"
+          }
+        ]
       },
       {
         "wargear": {
           "name": "Photon Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-photon-grenade"
         }
       }
     ],
@@ -9474,23 +9698,27 @@
     "wargear": [
       {
         "wargear": {
-          "name": "T’au Recon Armour"
+          "name": "T’au Recon Armour",
+          "wargearId": "apoc-tau-recon-armour"
         }
       },
       {
         "wargear": {
-          "name": "Pulse Carbine"
+          "name": "Pulse Carbine",
+          "wargearId": "apoc-pulse-carbine"
         }
       },
       {
         "wargear": {
-          "name": "Markerlight"
+          "name": "Markerlight",
+          "wargearId": "apoc-markerlight"
         }
       },
       {
         "wargear": {
           "name": "Photon Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-photon-grenade"
         }
       }
     ],
@@ -9562,12 +9790,14 @@
         "from": [
           {
             "wargear": {
-              "name": "Pulse Rifle"
+              "name": "Pulse Rifle",
+              "wargearId": "apoc-pulse-rifle"
             }
           },
           {
             "wargear": {
-              "name": "Pulse Carbine"
+              "name": "Pulse Carbine",
+              "wargearId": "apoc-pulse-carbine"
             }
           }
         ]
@@ -9575,7 +9805,8 @@
       {
         "wargear": {
           "name": "Photon Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-photon-grenade"
         }
       }
     ],
@@ -9647,30 +9878,35 @@
         "from": [
           {
             "wargear": {
-              "name": "Autoch-pattern Bolter"
+              "name": "Autoch-pattern Bolter",
+              "wargearId": "apoc-autoch-pattern-bolter"
             }
           },
           {
             "wargear": {
-              "name": "Ion Blaster"
+              "name": "Ion Blaster",
+              "wargearId": "apoc-ion-blaster"
             }
           }
         ]
       },
       {
         "wargear": {
-          "name": "Autoch-pattern Bolt Pistol"
+          "name": "Autoch-pattern Bolt Pistol",
+          "wargearId": "apoc-autoch-pattern-bolt-pistol"
         }
       },
       {
         "wargear": {
-          "name": "Void armour"
+          "name": "Void armour",
+          "wargearId": "apoc-void-armour"
         }
       },
       {
         "wargear": {
           "name": "Gravitic concussion grenade",
-          "qty": 2
+          "qty": 2,
+          "wargearId": "apoc-gravitic-concussion-grenades"
         }
       }
     ],
@@ -9989,7 +10225,8 @@
           {
             "wargear": {
               "name": "Axe",
-              "qty": 2
+              "qty": 2,
+              "wargearId": "apoc-axe"
             }
           },
           {
@@ -10096,7 +10333,8 @@
       },
       {
         "wargear": {
-          "name": "Plague knife"
+          "name": "Plague knife",
+          "wargearId": "apoc-plague-knife"
         }
       }
     ],
@@ -10198,13 +10436,15 @@
       },
       {
         "wargear": {
-          "name": "Explosive collar"
+          "name": "Explosive collar",
+          "wargearId": "apoc-explosive-collar"
         }
       },
       {
         "wargear": {
           "name": "Frenzon with injector",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-frenzon"
         }
       }
     ],
@@ -10312,7 +10552,8 @@
       },
       {
         "wargear": {
-          "name": "Laud hailer"
+          "name": "Laud hailer",
+          "wargearId": "fspg-laud-hailer"
         }
       }
     ],
@@ -10803,7 +11044,8 @@
       },
       {
         "wargear": {
-          "name": "Escort Drone"
+          "name": "Escort Drone",
+          "wargearId": "apoc-escort-drone"
         }
       },
       {
@@ -10814,7 +11056,8 @@
       },
       {
         "wargear": {
-          "name": "Holographic Projector"
+          "name": "Holographic Projector",
+          "wargearId": "apoc-holographic-projector"
         }
       },
       {
@@ -10897,17 +11140,20 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Gnarlskin"
+          "name": "Gnarlskin",
+          "wargearId": "apoc-gnarlskin"
         }
       },
       {
         "wargear": {
-          "name": "Wrack Blade"
+          "name": "Wrack Blade",
+          "wargearId": "apoc-wrack-blades"
         }
       },
       {
         "wargear": {
-          "name": "Haemacolyte’s Tools"
+          "name": "Haemacolyte’s Tools",
+          "wargearId": "apoc-haemacolytes-tools"
         }
       },
       {
@@ -11027,7 +11273,8 @@
       },
       {
         "wargear": {
-          "name": "Spook"
+          "name": "Spook",
+          "wargearId": "apoc-spook"
         }
       }
     ],
@@ -11103,7 +11350,8 @@
       },
       {
         "wargear": {
-          "name": "Aeronautica Flight Suit"
+          "name": "Aeronautica Flight Suit",
+          "wargearId": "apoc-aeronautica-flight-suit"
         }
       },
       {
@@ -11193,32 +11441,38 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Arbites Carapace"
+          "name": "Arbites Carapace",
+          "wargearId": "apoc-arbites-carapace"
         }
       },
       {
         "wargear": {
-          "name": "Excruciator maul"
+          "name": "Excruciator maul",
+          "wargearId": "apoc-excruciator-maul"
         }
       },
       {
         "wargear": {
-          "name": "Suppression shield"
+          "name": "Suppression shield",
+          "wargearId": "apoc-suppression-shield"
         }
       },
       {
         "wargear": {
-          "name": "Arbites shotpistol"
+          "name": "Arbites shotpistol",
+          "wargearId": "apoc-arbites-shotpistol"
         }
       },
       {
         "wargear": {
-          "name": "Magnacles"
+          "name": "Magnacles",
+          "wargearId": "apoc-magnacles"
         }
       },
       {
         "wargear": {
-          "name": "Book of Judgement (abridged)"
+          "name": "Book of Judgement (abridged)",
+          "wargearId": "apoc-book-of-judgement-abridged"
         }
       }
     ],
@@ -11290,32 +11544,38 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Arbites Carapace"
+          "name": "Arbites Carapace",
+          "wargearId": "apoc-arbites-carapace"
         }
       },
       {
         "wargear": {
-          "name": "Arbites combat shotgun"
+          "name": "Arbites combat shotgun",
+          "wargearId": "apoc-arbites-combat-shotgun"
         }
       },
       {
         "wargear": {
-          "name": "Repression baton"
+          "name": "Repression baton",
+          "wargearId": "apoc-repression-baton"
         }
       },
       {
         "wargear": {
-          "name": "Arbites shotpistol"
+          "name": "Arbites shotpistol",
+          "wargearId": "apoc-arbites-shotpistol"
         }
       },
       {
         "wargear": {
-          "name": "Magnacles"
+          "name": "Magnacles",
+          "wargearId": "apoc-magnacles"
         }
       },
       {
         "wargear": {
-          "name": "Book of Judgement (abridged)"
+          "name": "Book of Judgement (abridged)",
+          "wargearId": "apoc-book-of-judgement-abridged"
         }
       }
     ],
@@ -11652,7 +11912,8 @@
       },
       {
         "wargear": {
-          "name": "Hexagrammic wards"
+          "name": "Hexagrammic wards",
+          "wargearId": "apoc-hexagrammic-wards"
         }
       },
       {

@@ -1,0 +1,96 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Animal",
+      "text": "A Faolchú is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Empathic Link",
+      "text": "The Follower is linked to its owner via a psychic bond. The owner can see, hear, etc., through the Follower’s senses, and give instant mental commands, so long as the Follower is within a number of kilometres equal to the owner’s Willpower."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"12 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "To the Skies",
+      "text": "The Faolchú immediately makes a normal move.",
+      "weapons": []
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Talons",
+          "damage": 3,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "mobAbilities": [],
+  "id": "apoc-faolchu",
+  "name": "Faolchú",
+  "page": 474,
+  "faction": "aeldari",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ANHRATHE",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 6,
+    "I": 6,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 2
+  },
+  "defence": 7,
+  "wounds": 3,
+  "shock": 5,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Survival",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "determination": "Spend 1 Glory to roll 6d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 12,
+  "size": "Tiny"
+}

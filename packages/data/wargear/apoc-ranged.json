@@ -1,0 +1,6098 @@
+[
+  {
+    "id": "apoc-absolvor-bolt-pistol",
+    "name": "Absolvor Bolt Pistol",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        8,
+        16,
+        24
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-auto-bolt-rifle",
+    "name": "Auto Bolt Rifle",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": "An Auto Bolt Rifle is fitted with an Ammunition Drum as standard.",
+    "note": "Differs from VoA's voa-auto-bolt-rifle (p.67): Damage, ED, AP, traits, Value, Keywords."
+  },
+  {
+    "id": "apoc-auto-boltstorm-gauntlet",
+    "name": "Auto-Boltstorm Gauntlet",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "POWER FIELD",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Paired",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": "Melee: An Auto-Boltstorm Gauntlet can be used as a melee weapon, using the following profile: Damage (S) +5, ED 5, AP -3, Brutal, Unwieldy (2), Paired.",
+    "note": "The description (p.347) also calls it \"Auto Boltstorm Gauntlets\" without the hyphen. Two profiles printed; the melee profile is apoc-auto-boltstorm-gauntlet-melee."
+  },
+  {
+    "id": "apoc-auto-boltstorm-gauntlet-melee",
+    "name": "Auto-Boltstorm Gauntlet (melee)",
+    "source": "apocrypha",
+    "page": 347,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "BOLT",
+      "POWER FIELD",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)",
+        "Paired"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile of the Auto-Boltstorm Gauntlet (printed in its description, p.347); the ranged profile is apoc-auto-boltstorm-gauntlet. Damage printed \"(S) +5\". Second profile of apoc-auto-boltstorm-gauntlet; requisition that."
+  },
+  {
+    "id": "apoc-bolt-carbine",
+    "name": "Bolt Carbine",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        14,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Reliable",
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed 12/14/36 (Medium 14 breaks the 1:2:3 pattern; 24 likely meant), copied as printed."
+  },
+  {
+    "id": "apoc-bolt-sniper-rifle",
+    "name": "Bolt Sniper Rifle",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Heavy (6)",
+        "Sniper (2)"
+      ]
+    },
+    "effect": "A Bolt Sniper Rifle includes a Monoscope, Preysense Sight, and Silencer as standard.\nSpecial: When firing a Bolt Sniper Rifle, choose a single ammo type: Executioner (AP -1, +2d to the attack roll and ignore cover), Hyperfrag (add the Blast [2] trait), or Mortis (+1ED, AP -2, add Inflict [Poisoned 5] trait)",
+    "note": "The three ammo types are printed only in this Special rule, no profiles; not separate entries. Special has no closing full stop, as printed."
+  },
+  {
+    "id": "apoc-boltstorm-gauntlet",
+    "name": "Boltstorm Gauntlet",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "POWER FIELD",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": "Melee: A Boltstorm Gauntlet can be used as a melee weapon, using the following profile: Damage (S) +5, ED 5, AP -3, Brutal, Unwieldy (2).",
+    "note": "Two profiles printed; the melee profile is apoc-boltstorm-gauntlet-melee."
+  },
+  {
+    "id": "apoc-boltstorm-gauntlet-melee",
+    "name": "Boltstorm Gauntlet (melee)",
+    "source": "apocrypha",
+    "page": 347,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "BOLT",
+      "POWER FIELD",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile of the Boltstorm Gauntlet (printed in its description, p.347); the ranged profile is apoc-boltstorm-gauntlet. Damage printed \"(S) +5\". Second profile of apoc-boltstorm-gauntlet; requisition that."
+  },
+  {
+    "id": "apoc-executor-bolt-rifle",
+    "name": "Executor Bolt Rifle",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        21,
+        42,
+        63
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "An Executor Bolt Rifle comes with a Monoscope as standard.",
+    "note": "Differs from VoA's voa-executor-bolt-rifle (p.67): range, Salvo, traits, Value, Rarity, Keywords."
+  },
+  {
+    "id": "apoc-executor-heavy-bolter",
+    "name": "Executor Heavy Bolter",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        21,
+        42,
+        63
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hellstorm-bolt-rifle",
+    "name": "Hellstorm Bolt Rifle",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": "A Hellstorm Bolt Rifle is fitted with an Ammunition Drum as standard.",
+    "note": "Differs from VoA's voa-hellstorm-bolt-rifle (p.67): ED, AP, Salvo, traits, Value, Rarity, Keywords."
+  },
+  {
+    "id": "apoc-hellstorm-heavy-bolter",
+    "name": "Hellstorm Heavy Bolter",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 4,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (4)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-heavy-bolt-rifle",
+    "name": "Heavy Bolt Rifle",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from VoA's voa-heavy-bolt-rifle (p.67): AP, range, Salvo, traits, Value, Keywords."
+  },
+  {
+    "id": "apoc-instigator-bolt-carbine",
+    "name": "Instigator Bolt Carbine",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Silent",
+        "Sniper (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-marksman-bolt-carbine",
+    "name": "Marksman Bolt Carbine",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (1)",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "Marksman Bolt Carbines are fitted with a Monoscope as standard.",
+    "note": "AP printed \"0\" (the other rows print \"–\"); no AP."
+  },
+  {
+    "id": "apoc-occulus-bolt-carbine",
+    "name": "Occulus Bolt Carbine",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": "Oculus Bolt Carbines are fitted with a Preysense Sight as standard.\nSpecial: If used by a character equipped with a Divinator-class Auspex, attacks with an Occulus Bolt Carbine ignore all modifiers for the target being in cover.",
+    "note": "Spelled \"Occulus\" in the table and heading, \"Oculus\" once in the description (p.348); copied as printed."
+  },
+  {
+    "id": "apoc-stalker-bolt-rifle",
+    "name": "Stalker Bolt Rifle",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (1)",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "A Stalker Bolt Rifle comes with a Monoscope as standard.",
+    "note": "VoA describes a Stalker Bolt Rifle with no profile (no VoA entry)."
+  },
+  {
+    "id": "apoc-stalker-pattern-boltgun",
+    "name": "Stalker-pattern Boltgun",
+    "source": "apocrypha",
+    "page": 346,
+    "category": "Bolt Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "ADEPTUS ASTARTES",
+      "DEATHWATCH"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 2,
+      "traits": [
+        "Brutal",
+        "Heavy (4)",
+        "Rapid Fire (1)",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "A Stalker-pattern Boltgun comes with a Monoscope as standard."
+  },
+  {
+    "id": "apoc-grav-pistol",
+    "name": "Grav-pistol",
+    "source": "apocrypha",
+    "page": 348,
+    "category": "Grav Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GRAV",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Grav",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-grav-gun",
+    "name": "Grav-gun",
+    "source": "apocrypha",
+    "page": 348,
+    "category": "Grav Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GRAV",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Grav",
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-grav-cannon",
+    "name": "Grav-cannon",
+    "source": "apocrypha",
+    "page": 348,
+    "category": "Grav Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GRAV",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Grav",
+        "Heavy (8)"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from VoA's voa-grav-cannon (p.67): Damage, AP, range, Salvo, traits, Value, Keywords."
+  },
+  {
+    "id": "apoc-heavy-graviton-cannon",
+    "name": "Heavy Graviton Cannon",
+    "source": "apocrypha",
+    "page": 348,
+    "category": "Grav Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GRAV",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 5,
+      "traits": [
+        "Grav",
+        "Heavy (8)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-holdout-laspistol",
+    "name": "Holdout Laspistol",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 0,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": "CONCEALABLE: The weapon can easily be hidden and cannot be detected on a character without a thorough search or an auspex scan (Awareness Test, DN 4)."
+  },
+  {
+    "id": "apoc-hot-shot-marksman-rifle",
+    "name": "Hot-shot Marksman Rifle",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Sniper (1)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Description (p.350) headed \"Hot-Shot Marksman Rifle\"."
+  },
+  {
+    "id": "apoc-las-fusil",
+    "name": "Las Fusil",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Heavy (4)",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from VoA's voa-las-fusil (p.67): Damage, ED, AP, range, Salvo, traits, Value, Rarity, Keywords."
+  },
+  {
+    "id": "apoc-lasgun-accatran",
+    "name": "Lasgun (Accatran)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Rapid Fire (1)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350."
+  },
+  {
+    "id": "apoc-lasgun-kantrael",
+    "name": "Lasgun (Kantrael)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        14,
+        28,
+        42
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350."
+  },
+  {
+    "id": "apoc-lasgun-lucius",
+    "name": "Lasgun (Lucius)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350."
+  },
+  {
+    "id": "apoc-lasgun-necromunda",
+    "name": "Lasgun (Necromunda)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Rapid Fire (2)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350."
+  },
+  {
+    "id": "apoc-lasgun-triplex-phall-pattern",
+    "name": "Lasgun (Triplex Phall Pattern)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Reliable"
+      ]
+    },
+    "effect": "VARIABLE CHARGE: When the weapon is fired, the user may choose to remove the Reliable trait to gain the Brutal trait.",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350. Effect from the Triplex Phall Pattern description."
+  },
+  {
+    "id": "apoc-laslock",
+    "name": "Laslock",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        10,
+        20,
+        30
+      ],
+      "salvo": null,
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-laspistol-kantrael",
+    "name": "Laspistol (Kantrael)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        7,
+        14,
+        21
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350."
+  },
+  {
+    "id": "apoc-laspistol-necromunda",
+    "name": "Laspistol (Necromunda)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Pistol",
+        "Rapid Fire (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350."
+  },
+  {
+    "id": "apoc-laspistol-triplex-phall-pattern",
+    "name": "Laspistol (Triplex Phall Pattern)",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LAS",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": "VARIABLE CHARGE: When the weapon is fired, the user may choose to remove the Reliable trait to gain the Brutal trait.",
+    "note": "Patterns are named in parentheses in the table; the pattern's description is on p.350. Effect from the Triplex Phall Pattern description."
+  },
+  {
+    "id": "apoc-navis-las-volley",
+    "name": "Navis Las-Volley",
+    "source": "apocrypha",
+    "page": 349,
+    "category": "Las Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (4)",
+        "Rapid Fire (2)",
+        "Reliable"
+      ]
+    },
+    "effect": "The Navis Las-Volley includes a backpack ammo supply."
+  },
+  {
+    "id": "apoc-assault-plasma-incinerator",
+    "name": "Assault Plasma Incinerator",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-heavy-plasma-gun-mk-i",
+    "name": "Heavy Plasma Gun Mk I",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 4,
+      "traits": [
+        "Barrage",
+        "Blast (2)",
+        "Supercharge",
+        "Volatile (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed with a trailing full stop (\"Volatile (1).\"); dropped."
+  },
+  {
+    "id": "apoc-heavy-plasma-gun-mk-ii",
+    "name": "Heavy Plasma Gun, Mk II",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (4)",
+        "Supercharge"
+      ]
+    },
+    "effect": "",
+    "note": "Name printed with a comma (\"Heavy Plasma Gun, Mk II\"; the Mk I row has none). Traits printed with a trailing full stop (\"Supercharge.\"); dropped."
+  },
+  {
+    "id": "apoc-heavy-plasma-incinerator",
+    "name": "Heavy Plasma Incinerator",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (4)",
+        "Supercharge"
+      ]
+    },
+    "effect": "A Heavy Plasma Incinerator comes with a backpack ammunition supply."
+  },
+  {
+    "id": "apoc-plasma-blaster",
+    "name": "Plasma Blaster",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (3)",
+        "Rapid Fire (2)",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-caliver",
+    "name": "Plasma Caliver",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-cannon-alternate",
+    "name": "Plasma Cannon (Alternate)",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        53
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (4)",
+        "Heavy (8)",
+        "Supercharge"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed 18/36/53 (Long 53; 54 likely meant), copied as printed. No description is printed for it."
+  },
+  {
+    "id": "apoc-plasma-cannon-mk-iii",
+    "name": "Plasma Cannon, Mk III",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (6)",
+        "Heavy (8)",
+        "Volatile (d3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-exterminator",
+    "name": "Plasma Exterminator",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (2)",
+        "Supercharge",
+        "Paired"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-gun-mk-i",
+    "name": "Plasma Gun, Mk I",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)",
+        "Volatile (d6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-gun-mk-ii",
+    "name": "Plasma Gun, Mk II",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)",
+        "Recharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-gun-mk-iii",
+    "name": "Plasma Gun, Mk III",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Volatile (d3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-incinerator",
+    "name": "Plasma Incinerator",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PLASMA",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 15,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Supercharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-pistol-mk-i",
+    "name": "Plasma Pistol, Mk I",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Pistol",
+        "Volatile (d3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-pistol-mk-ii",
+    "name": "Plasma Pistol, Mk II",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (1)",
+        "Pistol",
+        "Recharge"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-plasma-pistol-mk-iii",
+    "name": "Plasma Pistol, Mk III",
+    "source": "apocrypha",
+    "page": 351,
+    "category": "Plasma Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Volatile (d3)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-flamestorm-gauntlet",
+    "name": "Flamestorm Gauntlet",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FIRE",
+      "POWER FIELD",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Flamer",
+        "Paired"
+      ]
+    },
+    "effect": "Melee: A Flamestorm Gauntlet can be used as a melee weapon, using the following profile: Damage (S) +5, ED 5, AP -3, Brutal, Unwieldy (2), Paired.",
+    "note": "Two profiles printed; the melee profile is apoc-flamestorm-gauntlet-melee."
+  },
+  {
+    "id": "apoc-flamestorm-gauntlet-melee",
+    "name": "Flamestorm Gauntlet (melee)",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "FIRE",
+      "POWER FIELD",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Unwieldy (2)",
+        "Paired"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile of the Flamestorm Gauntlet (printed in its description, p.353); the ranged profile is apoc-flamestorm-gauntlet. Damage printed \"(S) +5\". Second profile of apoc-flamestorm-gauntlet; requisition that."
+  },
+  {
+    "id": "apoc-incinerator",
+    "name": "Incinerator",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FIRE",
+      "ADEPTUS ASTARTES",
+      "GREY KNIGHTS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Blessed (3)",
+        "Flamer",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-pyreblaster",
+    "name": "Pyreblaster",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FIRE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        8,
+        16,
+        24
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Flamer",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-pyre-pistol",
+    "name": "Pyre Pistol",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FIRE",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Flamer",
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "AP printed \"--\" (two hyphens); no AP."
+  },
+  {
+    "id": "apoc-vindictor",
+    "name": "Vindictor",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FIRE",
+      "ADEPTUS MINISTORUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blessed (2)",
+        "Flamer"
+      ]
+    },
+    "effect": "Melee: A Vindictor’s chainblade can be used as a melee weapon, using the following profile: Damage (S) +6, ED 5, AP -2, Brutal, Inflict (On Fire).",
+    "note": "Two profiles printed; the melee profile is apoc-vindictor-melee."
+  },
+  {
+    "id": "apoc-vindictor-melee",
+    "name": "Vindictor (melee)",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "FIRE",
+      "ADEPTUS MINISTORUM"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (On Fire)"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile of the Vindictor (printed in its description, p.353); the ranged profile is apoc-vindictor. Damage printed \"(S) +6\". Second profile of apoc-vindictor; requisition that."
+  },
+  {
+    "id": "apoc-witchseeker-flamer",
+    "name": "Witchseeker Flamer",
+    "source": "apocrypha",
+    "page": 353,
+    "category": "Flame Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FIRE",
+      "ANATHEMA PSYKANA"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-arbites-combat-shotgun",
+    "name": "Arbites Combat Shotgun",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Rapid Fire (1)",
+        "Spread"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption)."
+  },
+  {
+    "id": "apoc-arbites-shotpistol",
+    "name": "Arbites Shotpistol",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Spread"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption)."
+  },
+  {
+    "id": "apoc-duelling-pistol",
+    "name": "Duelling Pistol",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption)."
+  },
+  {
+    "id": "apoc-executioner-shotgun",
+    "name": "Executioner Shotgun",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 0,
+      "traits": [
+        "Spread"
+      ]
+    },
+    "effect": "Special: An Executioner Shotgun gains the Sniper (1) trait when equipped with Executioner Shells (p. 389).",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption)."
+  },
+  {
+    "id": "apoc-hunting-rifle",
+    "name": "Hunting Rifle",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 0,
+      "traits": [
+        "Brutal",
+        "Sniper (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption)."
+  },
+  {
+    "id": "apoc-naval-pistol",
+    "name": "Naval Pistol",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": "Melee: A Naval Pistol can be used as a melee weapon, using the following profile: Damage (S) +3, ED 2, AP -.",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption). Two profiles printed; the melee profile is apoc-naval-pistol-melee."
+  },
+  {
+    "id": "apoc-naval-pistol-melee",
+    "name": "Naval Pistol (melee)",
+    "source": "apocrypha",
+    "page": 355,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Melee profile of the Naval Pistol (printed in its description, p.355); the ranged profile is apoc-naval-pistol. Damage printed \"(S) +3\". AP and Traits printed \"-\". Second profile of apoc-naval-pistol; requisition that."
+  },
+  {
+    "id": "apoc-navis-heavy-shotgun",
+    "name": "Navis Heavy Shotgun",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Rapid Fire (2)",
+        "Spread"
+      ]
+    },
+    "effect": "Melee: A Navis Heavy Shotgun can be used as a melee weapon, using the following profile: Damage (S) +3, ED 2, AP -, Brutal.",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption). Two profiles printed; the melee profile is apoc-navis-heavy-shotgun-melee."
+  },
+  {
+    "id": "apoc-navis-heavy-shotgun-melee",
+    "name": "Navis Heavy Shotgun (melee)",
+    "source": "apocrypha",
+    "page": 355,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile of the Navis Heavy Shotgun (printed in its description, p.355); the ranged profile is apoc-navis-heavy-shotgun. Damage printed \"(S) +3\". Second profile of apoc-navis-heavy-shotgun; requisition that."
+  },
+  {
+    "id": "apoc-navis-shotgun",
+    "name": "Navis Shotgun",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Spread",
+        "Reliable"
+      ]
+    },
+    "effect": "Melee: A Navis Shotgun can be used as a melee weapon, using the following profile: Damage (S) +3, ED 2, AP -, Brutal.",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption). Two profiles printed; the melee profile is apoc-navis-shotgun-melee."
+  },
+  {
+    "id": "apoc-navis-shotgun-melee",
+    "name": "Navis Shotgun (melee)",
+    "source": "apocrypha",
+    "page": 355,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Melee profile of the Navis Shotgun (printed in its description, p.355); the ranged profile is apoc-navis-shotgun. Damage printed \"(S) +3\". Second profile of apoc-navis-shotgun; requisition that."
+  },
+  {
+    "id": "apoc-primitive-pistol",
+    "name": "Primitive Pistol",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "SCUM"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 0,
+      "traits": [
+        "Pistol",
+        "Volatile (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption)."
+  },
+  {
+    "id": "apoc-rotor-cannon",
+    "name": "Rotor Cannon",
+    "source": "apocrypha",
+    "page": 354,
+    "category": "Projectile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (5)",
+        "Sustained"
+      ]
+    },
+    "effect": "",
+    "note": "Section headed \"Projectile Weapons\"; its table is captioned \"EXOTIC RANGED WEAPONS\" (print error, the next section's caption). Keywords printed \"PROJECTILE, IMPERIUM,\" with a trailing comma; a third Keyword may be missing. Copied as printed."
+  },
+  {
+    "id": "apoc-animus-speculum",
+    "name": "Animus Speculum",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM CULEXUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Agonizing",
+        "Assault"
+      ]
+    },
+    "effect": "Special: the animus speculum draws power from the assassin’s Force Matrix, described later in this document. It does not use normal Reloads.",
+    "note": "Trait printed \"Agonizing\" (glossary: Agonising), copied as printed."
+  },
+  {
+    "id": "apoc-archeo-revolver",
+    "name": "Archeo-Revolver",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-conversion-beamer",
+    "name": "Conversion Beamer",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        21,
+        42,
+        63
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (4)",
+        "Heavy (8)"
+      ]
+    },
+    "effect": "Special: At medium range, the weapon gains +2 ED, +2 Blast rating, and improves the AP to -2. At long range, the weapon gains +4 ED, +4 Blast rating, and improves the AP to -3.",
+    "note": "Not starred in the table, but its description prints a Special rule."
+  },
+  {
+    "id": "apoc-deathwatch-frag-cannon-shrapnel",
+    "name": "Deathwatch Frag Cannon (Shrapnel)",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "PROJECTILE",
+      "DEATHWATCH"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Barrage",
+        "Blast (10)",
+        "Heavy (6)",
+        "Spread"
+      ]
+    },
+    "effect": "Special: When firing a Deathwatch frag cannon, select either shrapnel or solid shell mode. When the solid shell mode is used, add +2ED to the damage, and increase the AP to -3 when the target is within short range.",
+    "note": "One weapon printed as two rows (Shrapnel, Shell); the Shell mode is apoc-deathwatch-frag-cannon-shell."
+  },
+  {
+    "id": "apoc-deathwatch-frag-cannon-shell",
+    "name": "Deathwatch Frag Cannon (Shell)",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "PROJECTILE",
+      "DEATHWATCH"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Heavy (6)"
+      ]
+    },
+    "effect": "Special: When firing a Deathwatch frag cannon, select either shrapnel or solid shell mode. When the solid shell mode is used, add +2ED to the damage, and increase the AP to -3 when the target is within short range.",
+    "note": "One weapon printed as two rows; the Shrapnel mode is apoc-deathwatch-frag-cannon-shrapnel. Value, Rarity and Keywords printed as ditto marks (“), read as the row above's. The Special's AP -3 at short range is not applied to the stored AP."
+  },
+  {
+    "id": "apoc-executioner-pistol-bolt",
+    "name": "Executioner Pistol (Bolt)",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "BOLT",
+      "NEEDLE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM EVERSOR"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol",
+        "Silent"
+      ]
+    },
+    "effect": "This functions as a combi-weapon (Wrath & Glory rulebook, page 227), fitted with a gene-grip bio-veritor.",
+    "note": "A combi-weapon printed as two rows (Bolt, Needler); the needler is apoc-executioner-pistol-needler."
+  },
+  {
+    "id": "apoc-executioner-pistol-needler",
+    "name": "Executioner Pistol (Needler)",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "BOLT",
+      "NEEDLE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM EVERSOR"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Agonizing",
+        "Inflict (Poisoned 4)",
+        "Pistol",
+        "Silent"
+      ]
+    },
+    "effect": "This functions as a combi-weapon (Wrath & Glory rulebook, page 227), fitted with a gene-grip bio-veritor.",
+    "note": "A combi-weapon printed as two rows; the bolt pistol is apoc-executioner-pistol-bolt. Value, Rarity and Keywords printed as ditto marks (“), read as the row above's. Trait printed \"Agonizing\" (glossary: Agonising), copied as printed."
+  },
+  {
+    "id": "apoc-exitus-longrifle",
+    "name": "Exitus Longrifle",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "PROJECTILE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM VINDICARE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        36,
+        72,
+        108
+      ],
+      "salvo": 1,
+      "traits": [
+        "Sniper (3)",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-exitus-pistol",
+    "name": "Exitus Pistol",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "PROJECTILE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM VINDICARE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-flechette-blaster",
+    "name": "Flechette Blaster",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 5,
+      "traits": [
+        "Pistol",
+        "Spread"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from FSPG's fspg-flechette-blaster (p.123): Damage, Salvo, traits, Value, Rarity."
+  },
+  {
+    "id": "apoc-flechette-carbine",
+    "name": "Flechette Carbine",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 5,
+      "traits": [
+        "Assault",
+        "Spread"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-macrostubber",
+    "name": "Macrostubber",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 5,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from FSPG's fspg-macrostubber (p.123): Damage, ED, Salvo, traits, Value, Rarity."
+  },
+  {
+    "id": "apoc-needlespine-blaster-bolt",
+    "name": "Needlespine Blaster (Bolt)",
+    "source": "apocrypha",
+    "page": 356,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "BOLT",
+      "NEEDLE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM ADAMUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 3,
+      "traits": [
+        "Brutal",
+        "Pistol",
+        "Rapid Fire (1)",
+        "Silent"
+      ]
+    },
+    "effect": "This functions as a combi-weapon (Wrath & Glory rulebook, page 227), fitted with a gene-grip bio-veritor.",
+    "note": "A combi-weapon printed as two rows (Bolt, Needler; the Needler row on p.357); the needler is apoc-needlespine-blaster-needler."
+  },
+  {
+    "id": "apoc-needlespine-blaster-needler",
+    "name": "Needlespine Blaster (Needler)",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "BOLT",
+      "NEEDLE",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM ADAMUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Agonizing",
+        "Fleshbane",
+        "Inflict (Poisoned 4)",
+        "Pistol",
+        "Silent"
+      ]
+    },
+    "effect": "This functions as a combi-weapon (Wrath & Glory rulebook, page 227), fitted with a gene-grip bio-veritor.",
+    "note": "A combi-weapon printed as two rows; the bolt row is apoc-needlespine-blaster-bolt (p.356). Value, Rarity and Keywords printed as ditto marks (“), read as the row above's. Trait printed \"Agonizing\" (glossary: Agonising), copied as printed."
+  },
+  {
+    "id": "apoc-neural-shredder",
+    "name": "Neural Shredder",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM CALLIDUS"
+    ],
+    "weapon": {
+      "damage": 4,
+      "ed": 4,
+      "range": [
+        5,
+        9,
+        14
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Blast (6)"
+      ]
+    },
+    "effect": "Special: A Neural Shredder uses no ammo and never needs to reload. It just works. Nobody knows entirely how. The damage of a Neuro Disruptor is compared to the target’s Resolve, rather than Resilience, and each point of damage inflicted is a Mortal Wound instead of a normal wound. It has no effect against mindless creatures or inanimate objects.",
+    "note": "The Special calls it \"a Neuro Disruptor\", copied as printed."
+  },
+  {
+    "id": "apoc-phosphor-blast-pistol",
+    "name": "Phosphor Blast Pistol",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Inflict (On Fire)",
+        "Luminagen",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-phosphor-carbine",
+    "name": "Phosphor Carbine",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Inflict (On Fire)",
+        "Luminagen"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-phosphor-pistol",
+    "name": "Phosphor Pistol",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Luminagen"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-phosphor-serpenta",
+    "name": "Phosphor Serpenta",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Inflict (On Fire)",
+        "Luminagen"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Luminagen)\" with a stray closing bracket; dropped. Differs from FSPG's fspg-phosphor-serpenta (p.123): ED, traits."
+  },
+  {
+    "id": "apoc-phosphor-torch",
+    "name": "Phosphor Torch",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FIRE",
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (6)",
+        "Inflict (On Fire)",
+        "Spread"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-psilencer",
+    "name": "Psilencer",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE",
+      "GREY KNIGHTS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 6,
+      "traits": [
+        "Force",
+        "Heavy (6)"
+      ]
+    },
+    "effect": "Special: A Psilencer will not function in the hands of any character who does not have the PSYKER keyword.",
+    "note": "Not a printed Requirements line, so no structured requires."
+  },
+  {
+    "id": "apoc-psycannon",
+    "name": "Psycannon",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "FORCE",
+      "GREY KNIGHTS",
+      "ORDO MALLEUS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 4,
+      "traits": [
+        "Brutal",
+        "Force",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-radium-serpenta",
+    "name": "Radium Serpenta",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Rad (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-stubcarbine",
+    "name": "Stubcarbine",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from FSPG's fspg-stubcarbine (p.123): Salvo, Value."
+  },
+  {
+    "id": "apoc-toxin-ejector",
+    "name": "Toxin Ejector",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "GAS",
+      "TEMPLUM VENENUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Blast (4)",
+        "Fleshbane",
+        "Inflict (Poisoned 7)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-transuranic-arquebus",
+    "name": "Transuranic Arquebus",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        30,
+        60,
+        90
+      ],
+      "salvo": 0,
+      "traits": [
+        "Heavy (6)",
+        "Mortal (1)",
+        "Sniper (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Starred in the table, but its description (p.360) prints no additional rule."
+  },
+  {
+    "id": "apoc-volkite-serpenta",
+    "name": "Volkite Serpenta",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "VOLKITE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "range": [
+        5,
+        10,
+        15
+      ],
+      "salvo": 1,
+      "traits": [
+        "Inflict (On Fire)",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-volkite-charger",
+    "name": "Volkite Charger",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "VOLKITE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "range": [
+        8,
+        15,
+        23
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Inflict (On Fire)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed 8/15/23, copied as printed."
+  },
+  {
+    "id": "apoc-webber",
+    "name": "Webber",
+    "source": "apocrypha",
+    "page": 357,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "WEB",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (4)",
+        "Inflict (Restrained 4)"
+      ]
+    },
+    "effect": "Special: Webbers do not inflict damage. Rather, any creature caught in the blast must pass an Athletics test or suffer the Restrained condition. The DN of the test and the rating of the Restrained condition are noted in the weapon’s entry.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Effect from its description (p.360)."
+  },
+  {
+    "id": "apoc-web-pistol",
+    "name": "Web Pistol",
+    "source": "apocrypha",
+    "page": 358,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "WEB",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (2)",
+        "Inflict (Restrained 3)",
+        "Pistol"
+      ]
+    },
+    "effect": "Special: Webbers do not inflict damage. Rather, any creature caught in the blast must pass an Athletics test or suffer the Restrained condition. The DN of the test and the rating of the Restrained condition are noted in the weapon’s entry.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Effect from the Webber description (p.360)."
+  },
+  {
+    "id": "apoc-webber-heavy",
+    "name": "Webber, Heavy",
+    "source": "apocrypha",
+    "page": 358,
+    "category": "Exotic Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "WEB",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (8)",
+        "Heavy (6)",
+        "Inflict (Restrained 5)"
+      ]
+    },
+    "effect": "Special: Webbers do not inflict damage. Rather, any creature caught in the blast must pass an Athletics test or suffer the Restrained condition. The DN of the test and the rating of the Restrained condition are noted in the weapon’s entry.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Name printed \"Webber, Heavy\". Effect from the Webber description (p.360)."
+  },
+  {
+    "id": "apoc-arc-grenade",
+    "name": "Arc Grenade",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ARC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 5,
+      "ap": -1,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Arc (3)",
+        "Blast (6)",
+        "Rad (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. Salvo printed \"-\" (hyphen), read as –."
+  },
+  {
+    "id": "apoc-choke-grenade",
+    "name": "Choke Grenade",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "GAS",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Gas",
+        "Inflict (Poisoned 3)"
+      ]
+    },
+    "effect": "Choke Grenades do not inflict damage. Rather, anyone in the area must pass a DN 3 Toughness test or fall prone and suffer the Poisoned 3 condition. Characters Poisoned by a Choke grenade begin to suffocate (p. 201 of the Wrath & Glory core rulebook).",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-demolition-charge",
+    "name": "Demolition Charge",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -3,
+      "thrown": 2,
+      "salvo": null,
+      "traits": [
+        "Blast (10)"
+      ]
+    },
+    "effect": "A demolition charge cannot be used in a grenade launcher. In addition, they may be placed onto a vehicle or structure within 1m rather than thrown, requiring a Tech test with a DN equal to the vehicle’s Defence. Placed melta bombs do not detonate immediately and can be detonated as a simple action on any of the character’s subsequent turns.",
+    "note": "Range printed \"Strength x2m\" (no \"or as Launcher\"): thrown S x 2. Salvo printed \"-\" (hyphen). Its Special says \"Placed melta bombs\" (copied from the Melta Bombs entry), kept as printed."
+  },
+  {
+    "id": "apoc-fragstorm-grenade-launcher",
+    "name": "Fragstorm Grenade Launcher",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Salvo printed 0. Printed with its own profile, unlike Core's launchers."
+  },
+  {
+    "id": "apoc-melta-bombs",
+    "name": "Melta Bombs",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "MELTA",
+      "IMPERIUM",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -4,
+      "thrown": 2,
+      "salvo": null,
+      "traits": [
+        "Blast (2)",
+        "Melta",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "Any target within a Melta Bomb’s blast counts as within close range for the purposes of the Melta trait. Melta Bombs cannot be used in a grenade launcher. In addition, they may be placed onto a vehicle or structure within 1m rather than thrown, requiring a Tech test with a DN equal to the vehicle’s Defence. Placed melta bombs do not detonate immediately and can be detonated as a simple action on any of the character’s subsequent turns.",
+    "note": "Range printed \"Strength x2m\" (no \"or as Launcher\"): thrown S x 2. FSPG p.124 prints a different Melta Bomb (fspg-melta-bomb)."
+  },
+  {
+    "id": "apoc-poison-globes",
+    "name": "Poison Globes",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "TEMPLUM VENENUM"
+    ],
+    "weapon": {
+      "damage": 6,
+      "ed": 6,
+      "ap": -1,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (4)",
+        "Fleshbane",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": "Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. Salvo printed \"-\" (hyphen). Effect is the Special Issue Grenades rule (p.362) for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-psyk-out-grenades",
+    "name": "Psyk-Out Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "ANATHEMA PSYKANA",
+      "GREY KNIGHTS",
+      "TEMPLUM CULEXUS"
+    ],
+    "weapon": {
+      "damage": 9,
+      "ed": 4,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Blessed (2)"
+      ]
+    },
+    "effect": "PSYKERS and DAEMONS suffer 1 Mortal Wound for each Exalted Icon rolled on the grenades ED. Further, any psychic powers or effects in the blast radius are immediately ended, and any PSYKER within the blast will automatically fail any Psychic Mastery test attempted until the end of their next turn. Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. \"grenades ED\" (no apostrophe) as printed. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-rad-grenades",
+    "name": "Rad Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 10,
+      "ap": -2,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Agonising",
+        "Blast (3d3)",
+        "Inflict (Poisoned 5)",
+        "Rad (2)",
+        "Mortal (1)",
+        "Silent"
+      ]
+    },
+    "effect": "Roll 3d3 to determine the size of the grenade’s blast after the attack is made. A character Poisoned by radiation suffers 1d3 Mortal Wounds at the start of each of their turns. Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Damage printed 0 (not \"–\"). Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-scare-grenade",
+    "name": "Scare Grenade",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "GAS",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Gas",
+        "Inflict (Fear)"
+      ]
+    },
+    "effect": "Scare Grenades do not inflict damage. Rather, anyone in the area must pass a DN 3 Fear test.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-shock-grenades",
+    "name": "Shock Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "Shock Grenades do not inflict damage. Rather, to use a Shock Grenade, make a Ballistic Skill test as an Interaction Attack against your targets’ Resolve (make one test and compare it individually to the Resolve of each enemy in the blast). This inflicts the normal results from an Interaction Attack on each affected target, and all targets must either be hindered or vulnerable—you can’t mix and match.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. FSPG p.124 prints a different Shock Grenade (fspg-shock-grenade)."
+  },
+  {
+    "id": "apoc-smoke-grenades",
+    "name": "Smoke Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "EXPLOSIVE",
+      "[ANY]"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Gas"
+      ]
+    },
+    "effect": "Smoke Grenades do not inflict damage. Rather, attempts to see, or make ranged attacks, through the smoke suffer +4 DN.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-stasis-grenades",
+    "name": "Stasis Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS MECHANICUS",
+      "INQUISITION"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (4/8)"
+      ]
+    },
+    "effect": "Stasis Grenades do not inflict damage. Creatures and objects caught within Blast (4) are frozen in time, and unable to take actions of any kind while the grenade effect remains but cannot be acted against in turn. Creatures and objects outside Blast (4), but within Blast (8) are Hindered (3) and Staggered as they are slowed in time, until the grenade effect remains or they manage to start their turn outside of the Blast. The GM should secretly roll 1d3+1 when the grenade is used: this is the number of rounds the grenade’s effect remains active for. Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. Trait \"Blast (4/8)\" as printed. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-stun-grenades",
+    "name": "Stun Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM",
+      "ADEPTUS ARBITES",
+      "NAVIS IMPERIALIS"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "Photon Grenades do not inflict damage. Rather, each enemy caught in the blast immediately suffers the Blinded and Vulnerable (2) conditions until the end of their next turn.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Its Special says \"Photon Grenades\" (its other name, per the description), kept as printed."
+  },
+  {
+    "id": "apoc-stumm-grenades",
+    "name": "Stumm Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "GAS",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Gas",
+        "Inflict (Hindered 2)",
+        "Inflict (Staggered)"
+      ]
+    },
+    "effect": "Stumm Grenades do not inflict damage. Rather, anyone in the area must pass a DN 3 Toughness test or become Hindered (2) and Staggered until the start of their next turn.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-tanglefoot-grenades",
+    "name": "Tanglefoot Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS MECHANICUS",
+      "ADEPTUS CUSTODES",
+      "HARLEQUINS"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)"
+      ]
+    },
+    "effect": "Tanglefoot Grenades do not inflict damage. Rather, any creature caught in the blast must pass a DN 5 Athletics test or fall Prone and suffer the Staggered condition. The pilot of a vehicle (other than one with the HOVER or FLYER keywords) affected must pass a DN 5 Pilot test or become Restrained. These conditions remain until the end of the affected target’s next turn. Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-toxin-grenades",
+    "name": "Toxin Grenades",
+    "source": "apocrypha",
+    "page": 361,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "GAS",
+      "ADEPTUS MECHANICUS",
+      "INQUISITION",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (7)",
+        "Gas",
+        "Inflict (Poisoned 7)"
+      ]
+    },
+    "effect": "Toxin Grenades do not inflict damage normally. Rather, anyone in the area must pass a DN 7 Toughness test or suffer the Poisoned 7 condition. A creature Poisoned by a Toxin Grenade suffers 2d3 Mortal Wounds at the start of each of their turns. Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-virus-grenades",
+    "name": "Virus Grenades",
+    "source": "apocrypha",
+    "page": 362,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "GAS",
+      "ADEPTUS MECHANICUS",
+      "INQUISITION",
+      "NURGLE"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Gas"
+      ]
+    },
+    "effect": "Virus Grenades do not inflict damage normally. Rather, anyone in the area must pass a DN 7 Toughness test or suffer the Poisoned 7 condition. A creature Poisoned by a Virus Grenade suffers 3d3 Mortal Wounds at the start of each of their turns. When a creature dies from a Virus Grenade, it may infect others. Roll 7d6. The number of Icons rolled is the infection score, which replaces 7 as the Blast rating, the DN for the Toughness test, the Poisoned X rating, and the number of dice rolled for the next infection. When the infection score reaches 0, the virus has mutated into an inert strain and there is no further effect. Special Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. Table prints Blast (6), but its Special speaks of \"7 as the Blast rating\"; both kept as printed. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-vortex-grenades",
+    "name": "Vortex Grenades",
+    "source": "apocrypha",
+    "page": 362,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 13,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "ADEPTUS MECHANICUS",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 20,
+      "ed": 6,
+      "ap": -6,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Mortal (1)",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "A Vortex Grenade’s blast remains in effect after the attack is resolved, and any creature still in the area at the end of their turn suffers the listed damage. The vortex blocks all line of sight and cannot be attacked or fired through. At the start of each combat round, roll 1d6 and consult the following table:\n1-2: The grenade’s Blast is reduced in size by 1d6. If this reduces it to Blast (0), the vortex closes, and the effect ends.\n3-4: The grenade’s effects remain in play.\n5-6: The vortex moves 1d6 metres in a random direction, inflicting its damage on anything it moves into along that path.\nSpecial Issue Grenades: A character seeking to acquire an EXOTIC grenade acquires only one such grenade, and must attempt a new test each time they wish to obtain more: you can’t resupply Vortex Grenades easily.",
+    "note": "Range printed \"Strength x4m\" (no \"or as Launcher\"): thrown S x 4. The 1d6 table is kept as plain lines. Special Issue Grenades rule (p.362) appended for EXOTIC grenades."
+  },
+  {
+    "id": "apoc-web-grenades",
+    "name": "Web Grenades",
+    "source": "apocrypha",
+    "page": 362,
+    "category": "Grenades & Missile Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "WEB",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Inflict (Restrained 4)"
+      ]
+    },
+    "effect": "Web Grenades do not inflict damage. Rather, any creature caught in the blast must pass a DN 4 Athletics test or suffer the Restrained 4 condition.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-blastmaster-single-frequency",
+    "name": "Blastmaster (Single Frequency)",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "SONIC",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (6)",
+        "Cacophony",
+        "Heavy (6)"
+      ]
+    },
+    "effect": "When firing a Blastmaster, choose which profile you wish to use before resolving the attack.",
+    "note": "One weapon printed with two profiles (Single and Varied Frequency), one entry each."
+  },
+  {
+    "id": "apoc-blastmaster-varied-frequency",
+    "name": "Blastmaster (Varied Frequency)",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "SONIC",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (10)",
+        "Cacophony",
+        "Heavy (6)"
+      ]
+    },
+    "effect": "When firing a Blastmaster, choose which profile you wish to use before resolving the attack.",
+    "note": "One weapon printed with two profiles (Single and Varied Frequency), one entry each. Value, Rarity and Keywords printed as ditto marks (\") of the Single Frequency row."
+  },
+  {
+    "id": "apoc-blight-grenade",
+    "name": "Blight Grenade",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "grenade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Inflict (Poisoned 4)"
+      ]
+    },
+    "effect": "Nurgle’s Rot: Any Weapon with the NURGLE keyword and the Inflict (Poisoned X) Trait is coated in a mixture of virulent diseases and deadly warp-toxins. A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Effect is the Nurgle’s Rot rule (p.367) for NURGLE weapons with Inflict (Poisoned X)."
+  },
+  {
+    "id": "apoc-blight-launcher",
+    "name": "Blight Launcher",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Barrage",
+        "Blast (6)",
+        "Inflict (Poisoned 4)"
+      ]
+    },
+    "effect": "Nurgle’s Rot: Any Weapon with the NURGLE keyword and the Inflict (Poisoned X) Trait is coated in a mixture of virulent diseases and deadly warp-toxins. A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the Nurgle’s Rot rule (p.367) for NURGLE weapons with Inflict (Poisoned X)."
+  },
+  {
+    "id": "apoc-daemonic-fire",
+    "name": "Daemonic Fire",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FIRE",
+      "CHAOS",
+      "DAEMON"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Inflict (On Fire)"
+      ]
+    },
+    "effect": "When you make a Salvo attack with Daemonic Fire, suffer 1d3 Shock instead of spending Ammo. When you first obtain Daemonic Fire, it becomes a permanent part of you, and you gain 1d3+1 Corruption points.",
+    "note": "AP printed \"-\" (hyphen), read as –."
+  },
+  {
+    "id": "apoc-doom-siren",
+    "name": "Doom Siren",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SONIC",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (6)",
+        "Cacophony"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-havoc-autocannon",
+    "name": "Havoc Autocannon",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-heavy-warpflamer",
+    "name": "Heavy Warpflamer",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FIRE",
+      "CHAOS",
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 2,
+      "traits": [
+        "Corrupting",
+        "Flamer",
+        "Heavy (6)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hellfyre-missile-rack",
+    "name": "Hellfyre Missile Rack",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "CHAOS",
+      "HERETIC ASTARTES",
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 2,
+      "traits": [
+        "Inflict (Blind)"
+      ]
+    },
+    "effect": "",
+    "note": "\"Inflict (Blind)\" as printed (the Core Condition is Blinded)."
+  },
+  {
+    "id": "apoc-plague-belcher",
+    "name": "Plague Belcher",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PESTILENT",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": 0,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Flamer",
+        "Inflict (Poisoned 4)",
+        "Spread"
+      ]
+    },
+    "effect": "PESTILENT weapons with the Flamer trait do not inflict the On Fire condition. Rather, they inflict the Poisoned 4 condition. Nurgle’s Rot: Any Weapon with the NURGLE keyword and the Inflict (Poisoned X) Trait is coated in a mixture of virulent diseases and deadly warp-toxins. A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "AP printed 0. Effect is the PESTILENT and Nurgle’s Rot rules (p.367)."
+  },
+  {
+    "id": "apoc-plague-spewer",
+    "name": "Plague Spewer",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PESTILENT",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 2,
+      "traits": [
+        "Flamer",
+        "Heavy (6)",
+        "Inflict (Poisoned 4)"
+      ]
+    },
+    "effect": "PESTILENT weapons with the Flamer trait do not inflict the On Fire condition. Rather, they inflict the Poisoned 4 condition. Nurgle’s Rot: Any Weapon with the NURGLE keyword and the Inflict (Poisoned X) Trait is coated in a mixture of virulent diseases and deadly warp-toxins. A character Poisoned by a NURGLE weapon suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Effect is the PESTILENT and Nurgle’s Rot rules (p.367)."
+  },
+  {
+    "id": "apoc-reaper-autocannon",
+    "name": "Reaper Autocannon",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (8)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "A Reaper Autocannon incorporates a bayonet.",
+    "note": "Effect from its description (p.368); no bayonet profile is printed."
+  },
+  {
+    "id": "apoc-reaper-chaincannon",
+    "name": "Reaper Chaincannon",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 8,
+      "traits": [
+        "Heavy (6)",
+        "Rapid Fire (3)",
+        "Sustained"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-sonic-blaster",
+    "name": "Sonic Blaster",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SONIC",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Cacophony"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-soulreaper-cannon",
+    "name": "Soulreaper Cannon",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PROJECTILE",
+      "FIRE",
+      "CHAOS",
+      "TZEENTCH",
+      "HERETIC ASTARTES"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 5,
+      "traits": [
+        "Heavy (7)",
+        "Sustained"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-warpflame-pistol",
+    "name": "Warpflame Pistol",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FIRE",
+      "CHAOS",
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Corrupting",
+        "Flamer",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-warpflamer",
+    "name": "Warpflamer",
+    "source": "apocrypha",
+    "page": 366,
+    "category": "Chaos Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FIRE",
+      "CHAOS",
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Corrupting",
+        "Flamer"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-aeldari-missile-launcher",
+    "name": "Aeldari Missile Launcher",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI"
+    ],
+    "effect": "Range 24/48/72, Salvo –, Heavy (6). Uses the profile of the Missile fired.",
+    "note": "Damage, ED and AP are printed \"Uses the profile of the Missile fired\", so there is no weapon entry: range, salvo and traits are in effect."
+  },
+  {
+    "id": "apoc-aeldari-missile-launcher-sunburst",
+    "name": "Aeldari Missile Launcher: Sunburst Missile",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (10)"
+      ]
+    },
+    "effect": "",
+    "note": "Printed as a \"- Sunburst Missile\" sub-row of the Aeldari Missile Launcher, with its own Value and Rarity. Range printed \"As Launcher\": the launcher's 24/48/72 is filled in (the schema needs a range); its other traits stay on the launcher entry. IoE p.82 prints a different profile (ioe-aeldari-missile-launcher-sunburst)."
+  },
+  {
+    "id": "apoc-aeldari-missile-launcher-starshot",
+    "name": "Aeldari Missile Launcher: Starshot Missile",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Printed as a \"- Starshot Missile\" sub-row of the Aeldari Missile Launcher, with its own Value and Rarity. Range printed \"As Launcher\": the launcher's 24/48/72 is filled in (the schema needs a range); its other traits stay on the launcher entry. IoE p.82 prints a different profile (ioe-aeldari-missile-launcher-starshot)."
+  },
+  {
+    "id": "apoc-avenger-shuriken-catapult",
+    "name": "Avenger Shuriken Catapult",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "SHURIKEN",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Rapid Fire (2)",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-bright-lance",
+    "name": "Bright Lance",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (4)",
+        "Lance"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-deathspinner",
+    "name": "Deathspinner",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MONOFILAMENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (6)",
+        "Brutal",
+        "Inflict (Restrained)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-dragons-breath-flamer",
+    "name": "Dragon's Breath Flamer",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "FIRE",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        10,
+        20,
+        30
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-dragon-fusion-gun",
+    "name": "Dragon Fusion Gun",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "MELTA",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-d-scythe",
+    "name": "D-Scythe",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "DISTORT",
+      "AELDARI",
+      "ASURYANI",
+      "GHOST"
+    ],
+    "weapon": {
+      "damage": 20,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (4)",
+        "Heavy (8)",
+        "Mortal (1)",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "Weapons with the GHOST keyword may only be wielded by Ghost Warrior characters.",
+    "note": "Effect is the Ghost Weapons rule (p.370) for GHOST weapons. Not a printed \"Requirements:\" line, so no requires."
+  },
+  {
+    "id": "apoc-firepike",
+    "name": "Firepike",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "MELTA",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Brutal",
+        "Inflict (On Fire)",
+        "Melta"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-fusion-pistol",
+    "name": "Fusion Pistol",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "MELTA",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Melta",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hallucinogen-grenades",
+    "name": "Hallucinogen Grenades",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GAS",
+      "AELDARI",
+      "HARLEQUINS"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Gas"
+      ]
+    },
+    "effect": "Any creature caught in the blast of a Hallucinogen Grenade must pass a Terror test (TN 5). Further, if a creature suffers a complication on this test, then they also suffer 1d3 mortal wounds.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. \"TN 5\" as printed."
+  },
+  {
+    "id": "apoc-hawks-talon",
+    "name": "Hawk's Talon",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "LAS",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Reliable"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-haywire-grenade",
+    "name": "Haywire Grenade",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (2)",
+        "Haywire (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "apoc-laser-lance",
+    "name": "Laser Lance",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "AELDARI",
+      "ASURYANI",
+      "EXODITE"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Lance"
+      ]
+    },
+    "effect": "When a character wielding a laser lance attacks while mounted (upon a moving vehicle or charging creature), the weapon’s damage rating becomes 14, though it is not modified by the user’s Strength.",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each. Salvo printed 0."
+  },
+  {
+    "id": "apoc-laser-lance-melee",
+    "name": "Laser Lance (Melee)",
+    "source": "apocrypha",
+    "page": 372,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "LAS",
+      "AELDARI",
+      "ASURYANI",
+      "EXODITE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Lance"
+      ]
+    },
+    "effect": "When a character wielding a laser lance attacks while mounted (upon a moving vehicle or charging creature), the weapon’s damage rating becomes 14, though it is not modified by the user’s Strength.",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each. Melee profile printed in its description (p.372): Damage \"(S) +3\", Range 2. Value, Rarity and Keywords from the table row. Second profile of apoc-laser-lance; requisition that."
+  },
+  {
+    "id": "apoc-neuro-disruptor",
+    "name": "Neuro Disruptor",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "damage": 4,
+      "ed": 4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 0,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": "A Neuro Disruptor uses no ammunition and cannot run out of ammunition. It just works. Nobody knows entirely how. The damage of a Neuro Disruptor is compared to the target’s Resolve, rather than Resilience, and each point of damage inflicted is a Mortal Wound instead of a normal wound. It has no effect against mindless creatures or inanimate objects.",
+    "note": "Salvo printed 0."
+  },
+  {
+    "id": "apoc-pack-grenade-launcher",
+    "name": "Pack Grenade Launcher",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "HARLEQUIN"
+    ],
+    "effect": "Range 9/18/27, Salvo –, Assault. Use the profile of the Grenade fired. A Pack Grenade Launcher can carry up to 6 grenades, and additional grenades cannot be loaded during battle.",
+    "note": "Damage, ED and AP are printed \"Use the profile of the Grenade fired\", so there is no weapon entry: range, salvo and traits are in effect."
+  },
+  {
+    "id": "apoc-reaper-launcher",
+    "name": "Reaper Launcher",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "Range 24/48/72, Salvo 4, Heavy (5). Uses the profile of the Missile fired.",
+    "note": "Damage, ED and AP are printed \"Uses the profile of the Missile fired\", so there is no weapon entry: range, salvo and traits are in effect."
+  },
+  {
+    "id": "apoc-reaper-launcher-starswarm",
+    "name": "Reaper Launcher: Starswarm Missile",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 4,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Printed as a \"- Starswarm Missile\" sub-row of the Reaper Launcher, with its own Value and Rarity. Range printed \"As Launcher\": the launcher's 24/48/72 is filled in (the schema needs a range). Salvo printed as a ditto mark (\"), read as the launcher's 4. IoE p.82 prints a different profile (ioe-reaper-launcher-starswarm). Traits cell printed blank."
+  },
+  {
+    "id": "apoc-reaper-launcher-starshot",
+    "name": "Reaper Launcher: Starshot Missile",
+    "source": "apocrypha",
+    "page": 369,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "grenade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "salvo": 4,
+      "traits": [
+        "Barrage",
+        "Blast (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Printed as a \"- Starshot Missile\" sub-row of the Reaper Launcher, with its own Value and Rarity. Range printed \"As Launcher\": the launcher's 24/48/72 is filled in (the schema needs a range). Salvo printed as a ditto mark (\"), read as the launcher's 4. IoE p.82 prints a different profile (ioe-reaper-launcher-starshot)."
+  },
+  {
+    "id": "apoc-scatter-laser",
+    "name": "Scatter Laser",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 6,
+      "traits": [
+        "Heavy (8)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-shuriken-cannon",
+    "name": "Shuriken Cannon",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SHURIKEN",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Assault",
+        "Heavy (3)",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-shuriken-rifle",
+    "name": "Shuriken Rifle",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SHURIKEN",
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)",
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-spinneret-rifle",
+    "name": "Spinneret Rifle",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "MONOFILAMENT",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Rapid Fire (1)",
+        "Mortal (d3)"
+      ]
+    },
+    "effect": "",
+    "note": "\"Mortal (d3)\" as printed."
+  },
+  {
+    "id": "apoc-star-lance",
+    "name": "Star Lance",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "LAS",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Lance"
+      ]
+    },
+    "effect": "When a character wielding a star lance attacks while mounted (upon a moving vehicle or charging creature), the weapon’s damage rating becomes 16, though it is not modified by the user’s Strength.",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each. Salvo printed 0."
+  },
+  {
+    "id": "apoc-star-lance-melee",
+    "name": "Star Lance (Melee)",
+    "source": "apocrypha",
+    "page": 373,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "LAS",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Lance"
+      ]
+    },
+    "effect": "When a character wielding a star lance attacks while mounted (upon a moving vehicle or charging creature), the weapon’s damage rating becomes 16, though it is not modified by the user’s Strength.",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each. Melee profile printed in its description (p.373): Damage \"(S) +5\", Range 2. Value, Rarity and Keywords from the table row. Second profile of apoc-star-lance; requisition that."
+  },
+  {
+    "id": "apoc-starcannon",
+    "name": "Starcannon",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (8)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-sunrifle",
+    "name": "Sunrifle",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "LAS",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 6,
+      "traits": [
+        "Assault",
+        "Inflict (Blinded)",
+        "Sustained"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-swooping-hawk-grenade-pack",
+    "name": "Swooping Hawk Grenade Pack",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "Range Bomb, Salvo –, Assault, Bomb. Use the profile of the Grenade fired. A Swooping Hawk Grenade Pack allows grenades to be dropped on enemies as if they had the Bomb trait.",
+    "note": "Damage, ED and AP are printed \"Use the profile of the Grenade fired\" and Range \"Bomb\", so there is no weapon entry: range, salvo and traits are in effect. IoE p.82 prints a different profile (ioe-swooping-hawk-grenade-pack)."
+  },
+  {
+    "id": "apoc-tempest-launcher",
+    "name": "Tempest Launcher",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXPLOSIVE",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 6,
+      "traits": [
+        "Barrage",
+        "Blast (6)",
+        "Indirect"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-triskele",
+    "name": "Triskele",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault",
+        "Reaping"
+      ]
+    },
+    "effect": "",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each."
+  },
+  {
+    "id": "apoc-triskele-melee",
+    "name": "Triskele (Melee)",
+    "source": "apocrypha",
+    "page": 373,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "POWER",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each. Melee profile printed in its description (p.373): Damage \"(S) +5\", ED 3, AP -2, with no Range or Traits column; range 1 filled in. Value, Rarity and Keywords from the table row. Second profile of apoc-triskele; requisition that."
+  },
+  {
+    "id": "apoc-web-of-skulls",
+    "name": "Web of Skulls",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "POWER",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": "A Web of Skulls ignores up to 4 points of DN increase for making a Multi-Attack as part of a ranged attack, but it can Multi-Attack against a maximum of three targets, each of whom must be within 12m of at least one other target.",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each."
+  },
+  {
+    "id": "apoc-web-of-skulls-melee",
+    "name": "Web of Skulls (Melee)",
+    "source": "apocrypha",
+    "page": 373,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "POWER",
+      "ANCIENT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Overwhelming"
+      ]
+    },
+    "effect": "",
+    "note": "One weapon printed with a ranged profile and a melee profile, one entry each. Melee profile printed in its description (p.373): Damage \"(S) +6\", with no Range column; range 1 filled in. Value, Rarity and Keywords from the table row. Second profile of apoc-web-of-skulls; requisition that."
+  },
+  {
+    "id": "apoc-wraithcannon",
+    "name": "Wraithcannon",
+    "source": "apocrypha",
+    "page": 370,
+    "category": "Aeldari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "DISTORT",
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 20,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Heavy (6)",
+        "Mortal (d3)",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "",
+    "note": "Salvo printed 0. \"Mortal (d3)\" as printed."
+  },
+  {
+    "id": "apoc-blast-pistol",
+    "name": "Blast Pistol",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DARKLIGHT",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "salvo": 1,
+      "traits": [
+        "Brutal",
+        "Pistol"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-blaster",
+    "name": "Blaster",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DARKLIGHT",
+      "DRUKHARI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Brutal"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-casket-of-flensing",
+    "name": "Casket of Flensing",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Inflict (Bleeding)"
+      ]
+    },
+    "effect": "Once a Casket of Flensing has been used, it cannot be used again until after your next Respite."
+  },
+  {
+    "id": "apoc-dark-gate",
+    "name": "Dark Gate",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 6,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)",
+        "Mortal (1)",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "Once a Dark Gate has been used, it cannot be used again until after your next Respite.",
+    "note": "Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. Filed as a weapon, not a grenade: it is reused after each Respite, not used up."
+  },
+  {
+    "id": "apoc-dark-lance",
+    "name": "Dark Lance",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DARKLIGHT",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (4)",
+        "Lance"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-disintegrator-cannon",
+    "name": "Disintegrator Cannon",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PLASMA",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 3,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Traits printed \"–\"."
+  },
+  {
+    "id": "apoc-haywire-blaster",
+    "name": "Haywire Blaster",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 3,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Blast (2)",
+        "Haywire (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Salvo printed 0."
+  },
+  {
+    "id": "apoc-heat-lance",
+    "name": "Heat Lance",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "MELTA",
+      "LAS",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Melta",
+        "Lance"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-hexrifle",
+    "name": "Hexrifle",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy (4)",
+        "Sniper (2)",
+        "Mortal (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-liquifier-gun",
+    "name": "Liquifier Gun",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Agonising",
+        "Assault",
+        "Flamer"
+      ]
+    },
+    "effect": "Unlike other weapons with the Flamer trait, the liquifier gun has Inflict (Poisoned 4) instead of Inflict (On Fire)."
+  },
+  {
+    "id": "apoc-orb-of-despair",
+    "name": "Orb of Despair",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "grenade",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (10)"
+      ]
+    },
+    "effect": "Any creature caught in the blast of an Orb of Despair must pass a Terror test (TN 6). Any creature who fails additionally suffers 1d3+2 Shock.",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one. \"TN 6\" as printed."
+  },
+  {
+    "id": "apoc-ossefactor",
+    "name": "Ossefactor",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Fleshbane",
+        "Inflict (Bleeding)"
+      ]
+    },
+    "effect": "",
+    "note": "Name printed with an asterisk, but its description (p.376) has no Special rule."
+  },
+  {
+    "id": "apoc-phantasm-launcher",
+    "name": "Phantasm Launcher",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "DRUKHARI"
+    ],
+    "effect": "Range 9/18/27, Salvo –, Assault, Blast (4), Gas. Any creature caught in the blast of a Phantasm Grenade must pass a Terror test (TN 5). Further, if a creature suffers a complication on this test, then they also suffer 1d3 mortal wounds.",
+    "note": "Damage, ED and AP printed \"–\", so there is no weapon entry: range, salvo and traits are in effect. Described (p.376) as the \"Phantasm Grenade Launcher\"; IoE p.82 prints a different one (ioe-phantasm-grenade-launcher)."
+  },
+  {
+    "id": "apoc-shredder",
+    "name": "Shredder",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "MONOFILAMENT",
+      "DRUKHARI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Blast (6)",
+        "Brutal",
+        "Inflict (Restrained)"
+      ]
+    },
+    "effect": "",
+    "note": "Salvo printed 0."
+  },
+  {
+    "id": "apoc-shardcarbine",
+    "name": "Shardcarbine",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "SPLINTER",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 5,
+      "ed": 2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault",
+        "Fleshbane"
+      ]
+    },
+    "effect": "Splinter Weapons: A selection of alternative Drukhari poisons is presented on page 393, which can be applied to SPLINTER weapons and weapons with the Inflict (Poisoned X) trait.",
+    "note": "Effect is the Splinter Weapons rule (p.375)."
+  },
+  {
+    "id": "apoc-splinter-cannon",
+    "name": "Splinter Cannon",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "SPLINTER",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 5,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 6,
+      "traits": [
+        "Heavy (4)",
+        "Fleshbane"
+      ]
+    },
+    "effect": "Splinter Weapons: A selection of alternative Drukhari poisons is presented on page 393, which can be applied to SPLINTER weapons and weapons with the Inflict (Poisoned X) trait.",
+    "note": "Effect is the Splinter Weapons rule (p.375)."
+  },
+  {
+    "id": "apoc-splinter-pistol",
+    "name": "Splinter Pistol",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "SPLINTER",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 5,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 2,
+      "traits": [
+        "Fleshbane",
+        "Pistol"
+      ]
+    },
+    "effect": "Splinter Weapons: A selection of alternative Drukhari poisons is presented on page 393, which can be applied to SPLINTER weapons and weapons with the Inflict (Poisoned X) trait.",
+    "note": "Effect is the Splinter Weapons rule (p.375)."
+  },
+  {
+    "id": "apoc-splinter-rifle",
+    "name": "Splinter Rifle",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "SPLINTER",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 5,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Fleshbane",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "Splinter Weapons: A selection of alternative Drukhari poisons is presented on page 393, which can be applied to SPLINTER weapons and weapons with the Inflict (Poisoned X) trait.",
+    "note": "Effect is the Splinter Weapons rule (p.375)."
+  },
+  {
+    "id": "apoc-stinger-pistol",
+    "name": "Stinger Pistol",
+    "source": "apocrypha",
+    "page": 374,
+    "category": "Drukhari Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXOTIC",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Fleshbane",
+        "Inflict (Poisoned 5)",
+        "Tearing"
+      ]
+    },
+    "effect": "Splinter Weapons: A selection of alternative Drukhari poisons is presented on page 393, which can be applied to SPLINTER weapons and weapons with the Inflict (Poisoned X) trait.",
+    "note": "Effect is the Splinter Weapons rule (p.375)."
+  },
+  {
+    "id": "apoc-deffgun",
+    "name": "Deffgun",
+    "source": "apocrypha",
+    "page": 377,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        24,
+        48,
+        72
+      ],
+      "traits": [
+        "Heavy (6)",
+        "Waaagh!"
+      ]
+    },
+    "effect": "Salvo 1d3. Keywords: ORK, plus one of: LAS, PLASMA, PROJECTILE, EXPLOSIVE.",
+    "note": "Salvo printed \"1d3\"; the schema takes a whole number, so salvo is left out and the value is in effect. Keywords printed \"ORK, plus one of: LAS, PLASMA, PROJECTILE, EXPLOSIVE\"; only ORK is stored, the choice is in effect."
+  },
+  {
+    "id": "apoc-kustom-mega-blasta",
+    "name": "Kustom Mega-Blasta",
+    "source": "apocrypha",
+    "page": 377,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "MEK",
+      "PLASMA",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault",
+        "Blast (4)",
+        "Supercharge",
+        "Waaagh!"
+      ]
+    },
+    "effect": "Kustom Weapons: MEK weapons with the Supercharge trait are always considered to be in Supercharge mode: the firer cannot choose not to use it. The additional ED from the trait is included in the weapon’s profile.",
+    "note": "Effect is the Kustom Weapons rule (p.377) for MEK weapons with Supercharge. Traits printed \"Blast (4) Supercharge\" with no comma between; split."
+  },
+  {
+    "id": "apoc-kustom-mega-slugga",
+    "name": "Kustom Mega-Slugga",
+    "source": "apocrypha",
+    "page": 377,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "MEK",
+      "PLASMA",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Supercharge",
+        "Waaagh!"
+      ]
+    },
+    "effect": "Kustom Weapons: MEK weapons with the Supercharge trait are always considered to be in Supercharge mode: the firer cannot choose not to use it. The additional ED from the trait is included in the weapon’s profile.",
+    "note": "Effect is the Kustom Weapons rule (p.377) for MEK weapons with Supercharge."
+  },
+  {
+    "id": "apoc-rokkit-pistol",
+    "name": "Rokkit Pistol",
+    "source": "apocrypha",
+    "page": 377,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": "1d3",
+      "ap": -2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": null,
+      "traits": [
+        "Blast (2)",
+        "Pistol",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-tankbusta-bomb",
+    "name": "Tankbusta Bomb",
+    "source": "apocrypha",
+    "page": 377,
+    "category": "Ork Ranged Weapons",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ORK"
+    ],
+    "effect": "Damage 16, ED 3, AP −3, Range – – –, Salvo –, Brutal, Blast (2), Waaagh!. A Tankbusta Bomb cannot be thrown or fired from a launcher. It must be planted with a Tech test against a vehicle within 1m, with a DN equal to the vehicle’s Defence. The bomb will detonate at the end of the current turn. After placing a Tankbusta Bomb, the character may move 1d3+1 metres away from the bomb and fall Prone as they leap away before the bomb detonates.",
+    "note": "Range printed \"– – –\" (it is planted, not thrown), and the schema needs a range or thrown, so the profile is in effect and there is no weapon entry."
+  },
+  {
+    "id": "apoc-thump-gun",
+    "name": "Thump Gun",
+    "source": "apocrypha",
+    "page": 377,
+    "category": "Ork Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "ORK"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (4)",
+        "Waaagh!"
+      ]
+    },
+    "effect": ""
+  }
+]

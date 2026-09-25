@@ -1,24 +1,11 @@
 import { z } from "zod";
-import { Rarity, type RequisitionKind } from "./requisition.ts";
+import { Requirement } from "./creation.ts";
+import { Rarity, WargearKind, type RequisitionKind } from "./requisition.ts";
 import { Source, sourceCite } from "./source.ts";
 import { Weapon } from "./threat.ts";
 
-// The Wargear catalogue (Core pp.211–247, VoA pp.59–75), for the GM's requisition form. It holds book text, so like the bestiary
-// it is served to the GM only.
-
-// "grenade": Grenades and Missiles, which are requisitioned like Ammo (p.229); their launchers are "weapon".
-// "follower": a companion, servo-skull or drone bought as Wargear; its stat block is a bestiary Threat
-export const WargearKind = z.enum([
-  "weapon",
-  "grenade",
-  "armour",
-  "equipment",
-  "upgrade",
-  "ammo",
-  "augmetic",
-  "follower",
-]);
-export type WargearKind = z.infer<typeof WargearKind>;
+// The Wargear catalogue (Core pp.211–247, VoA pp.59–75, FSPG pp.120–128, IoE pp.77–99, Necrontyr PDF pp.10–13, Apocrypha
+// pp.326–482), for the GM's requisition form. It holds book text, so like the bestiary it is served to the GM only.
 
 // A weapon profile as printed. Melee "S + X" is addStrength + damage X. A thrown range is "S × N" (p.207), so it
 // carries the multiplier N and gets metres from the character's Strength when it joins a sheet. A knife has both: a
@@ -61,6 +48,8 @@ export const Wargear = z.object({
   variant: z.string().min(1).optional(),
   effect: z.string().max(3000).default(""), // the Effect line (equipment, upgrades, augmetics, special ammo)
   note: z.string().max(500).optional(), // a print error copied as printed, or a transcription remark
+  // Who may buy or install it, structured from its printed "Requirements:" line (B.O.N.E, FSPG p.128)
+  requires: z.array(Requirement).optional(),
 });
 export type Wargear = z.infer<typeof Wargear>;
 

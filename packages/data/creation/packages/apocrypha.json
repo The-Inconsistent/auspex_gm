@@ -439,15 +439,18 @@
         "bundle": [
           {
             "name": "Ghosthelm",
-            "qty": 1
+            "qty": 1,
+            "wargearId": "ioe-ghosthelm-lodestar-helm"
           },
           {
             "name": "Runes of Witnessing",
-            "qty": 1
+            "qty": 1,
+            "wargearId": "apoc-runes-of-witnessing"
           },
           {
             "name": "Runes of Warding",
-            "qty": 1
+            "qty": 1,
+            "wargearId": "apoc-runes-of-warding"
           }
         ]
       },
@@ -506,7 +509,7 @@
         "wargear": {
           "name": "Spirit Stone",
           "qty": 1,
-          "wargearId": "spirit-stone"
+          "wargearId": "ioe-spirit-stone-empty"
         }
       }
     ]

@@ -1,0 +1,100 @@
+{
+  "id": "apoc-arco-flagellant",
+  "name": "Arco-Flagellant",
+  "source": "apocrypha",
+  "page": 457,
+  "faction": "imperial",
+  "threat": [
+    null,
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MINISTORUM",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 4,
+    "I": 4,
+    "Wil": 5,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 10,
+    "note": "Implanted Armour: 4 AR"
+  },
+  "defence": 3,
+  "wounds": 11,
+  "shock": null,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Athletics",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Extremis Trigger Word",
+      "text": "An Arco-Flagellant, or a Mob of Arco-Flagellants, may be triggered by uttering a single code-word (either directly, or over a vox). When triggered, Arco-Flagellants become Frenzied and add +2 to their Speed."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Arco-Flails",
+          "damage": 11,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            2
+          ],
+          "traits": [
+            "Agonizing",
+            "Overwhelm",
+            "Reaping"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Penance Through Death",
+      "text": "When an Arco-Flagellant is slain, it immediately makes a melee attack against a single enemy within reach. It then adds +1 to Glory."
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 5d6. This Follower may roll Determination against Mortal Wounds.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "mobAbilities": [
+    {
+      "name": "Berserk Killing Machines",
+      "text": "When a member of this Mob is killed, roll 1d6: on a 5 or 6, they are not killed."
+    }
+  ]
+}

@@ -155,12 +155,14 @@
         "from": [
           {
             "wargear": {
-              "name": "Plasma Incinerator"
+              "name": "Plasma Incinerator",
+              "wargearId": "apoc-plasma-incinerator"
             }
           },
           {
             "wargear": {
-              "name": "Assault Plasma Incinerator"
+              "name": "Assault Plasma Incinerator",
+              "wargearId": "apoc-assault-plasma-incinerator"
             }
           },
           {

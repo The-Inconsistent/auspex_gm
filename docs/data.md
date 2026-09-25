@@ -52,8 +52,8 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | `name` | string | As printed |
 | `source` | a `SOURCES` book id (`packages/shared/src/source.ts`), or `threat-assessment` \| `gutshivas-kommandos`; default `core` | Book id. Omit for core |
 | `page` | positive int | **Printed** page in `source`, not the PDF page |
-| `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` | Grouping for the GM picker |
-| `threat` | array of `T`/`E`/`A`/`M`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column) |
+| `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` \| `votann` | Grouping for the GM picker |
+| `threat` | array of `T`/`E`/`A`/`M` or `null`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column). `null` is a printed "—": no class at that Tier (a follower not yet available); the last Tier is always printed, and `threatClassAt` uses the first printed Tier below it |
 | `keywords` | string[], ≥ 1 | As printed, including `<PLACEHOLDER>` keywords |
 | `attributes` | `{ S, T, A, I, Wil, Int, Fel }`, ints | |
 | `resilience` | `{ value: int, note?: string }` | `note` holds the bracketed part, e.g. the AR |
@@ -70,6 +70,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | `size` | `Tiny` \| `Small` \| `Avg` \| `Large` \| `Huge` \| `Gargantuan` | |
 | `options[]` | `ThreatOption`, default `[]` | Mob and variant options (below) |
 | `mobAbilities[]` | `Ability`, default `[]` | Abilities that apply only while in a Mob |
+| `note` | string, optional | A print error copied as printed, or a transcription remark |
 
 **`Ability`**
 
@@ -331,12 +332,25 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 
 ### Wargear catalogue (`packages/data/wargear/*.json`, `Wargear` in `packages/shared/src/wargear.ts`)
 
-The Core Wargear chapter (printed pp.211–247) and Vow of Absolution's Call to Arms (pp.59–75), one JSON array per
-section, for the GM's requisition form. 277 entries:
+The Core Wargear chapter (printed pp.211–247), Vow of Absolution's Call to Arms (pp.59–75) and the Forsaken System
+Player's Guide armoury (pp.120–128) and Inheritance of Embers' Armoury (pp.77–99), plus the homebrew Legacy of the
+Necrontyr's Vaults of the Tomb Lords (PDF pp.10–13) and An Abundance of Apocrypha's Chapter IV (printed pp.326–482),
+one JSON array per section, for the GM's requisition form. 1,202 entries:
 - Core (219): `melee` (33, pp.211–213), `ranged` (44, pp.217–219), `ranged-xenos-grenades` (21, pp.220–221, 226),
   `upgrades-ammo` (26, pp.227–230), `armour` (28, p.233), `equipment` (41, pp.236–241), `augmetics` (26, pp.243–247).
 - VoA (58, ids prefixed `voa-`): `voa-weapons` (37, tables on pp.62 and 67), `voa-upgrades-armour` (14, pp.68 and 73),
   `voa-equipment` (7, pp.74–75).
+- FSPG (45, ids prefixed `fspg-`): `fspg-weapons` (23, pp.121–124), `fspg-armour-gear` (22, pp.125–128).
+- IoE (154, ids prefixed `ioe-`): `ioe-ranged` (47, pp.79–85), `ioe-melee` (67: melee, grenades, armour and shield
+  generators, pp.86–93), `ioe-gear` (40: helms and masks, upgrades and equipment, drugs, pp.93–99).
+- Necrontyr (26, ids prefixed `necron-`, `page` is the PDF page): `necron` (ranged, melee, armour, wargear).
+- Apocrypha (700, ids prefixed `apoc-`): `apoc-melee` (120, pp.329–345), `apoc-ranged` (200, pp.346–377),
+  `apoc-ranged-upgrades` (100: T'au and Votann ranged, upgrades, ammunition, Drukhari poisons, pp.378–395),
+  `apoc-armour` (85, pp.396–418), `apoc-equipment` (154: tools, drugs, faction equipment, augmetics, pp.419–455),
+  `apoc-followers` (41 `follower` entries, pp.456–482; their 30 stat blocks are `threats/apoc-*.json`). Vehicles
+  (pp.483–495) wait for *Church of Steel*, whose rules they use.
+- IoE reprints of Core's Aeldari-only items supersede them (rules-flow.md §11.46); Core's entry stays, and its `note`
+  names the IoE id.
 - Names printed in both books (Bolt Rifle, Heavy Bolter…) are different profiles; the form lists them with their cite.
 
 | Field | Notes |
@@ -348,6 +362,7 @@ section, for the GM's requisition form. 277 entries:
 | `weapon` | `Weapon` minus `name`, plus `addStrength` and `thrown` (the N of "S × N", p.207). A knife has both a melee `range` and `thrown` |
 | `armour` | `{ ar, invulnerable, powered, traits }` |
 | `effect` | Rules text only (the Effect line); no flavour |
+| `requires` | Who may buy or install it, a `Requirement[]` structured from a printed "Requirements:" line (the line stays in `effect`) |
 | `threatId`, `variant` | A `follower`'s bestiary stat block (required), and which of its `variant` options it is when the book prints one profile with variants (the T'au Drones, Apocrypha p.479). Only followers have them |
 | `note` | Print errors copied as printed, and transcription calls |
 
@@ -367,13 +382,48 @@ Transcription calls, all in each entry's `note`:
   force fields. VoA prints the trait "Bulky (X)" (Core: "Bulk"), and Phobos's "+1 M, +2 Stealth" as in its table.
   Gladius Revelationis and Fames Sanguinius print Value "–". Described-only variants (Stalker Bolt Rifle, Hellstorm
   Heavy Bolter variant, Executor Heavy Bolter, named relics) have no entries.
+- **FSPG** prints Rarity as a number, read as its DN penalty (rules-flow.md §11.44); each `note` keeps the printed
+  number. Keyword print errors: missing commas split (Blessed Blade, Brazier of Holy Fire, Simulacrum Imperialis…), and
+  "ADEPTUS, MECHANICUS" (Flechette Blaster, Macrostubber, Phosphor Serpenta, Stubcarbine) merged into ADEPTUS
+  MECHANICUS so the Keyword matches. Kept as printed: "Excrutiator", "B.O.N.E", "MILITARUM AUXILLA", "2 HANDED", and the
+  Eradication Ray's KROOT keywords. The Kroot Rifle and the Ripper Gun's bayonet print two profiles, so each is two
+  entries, and a starting "Kroot Rifle" or "Ripper Gun (with bayonet)" is a `bundle` of both. Its Mk X Phobos Power
+  Armour (p.125) reprints VoA's without the +1 M, +2 Stealth, so only VoA's is kept. The Grapnel Launcher and Narthecium
+  differ from VoA's and are kept. The Condemnor Boltgun and Bolt Carbine are described on p.122 but have no printed
+  profile, so no entries. Not entries: the Hearing Range sidebar (p.126) and the p.119 species rules for Kroot and
+  Ogryn weapons and abhuman armour Rarity.
+- **IoE:** the Avenger Shuriken Catapult's name is split over three table rows (p.81), and the first two repeat the
+  Bright Lance and Hawk's Talon profiles, so its one entry is the "Catapult" row. Ranger Long Rifle and Hexrifle print
+  range 18/26/54, the Vibro-Cannon a Long range of 65 and "Blast 10", the Shredder "Blast (6, Inflict (Restrained)":
+  kept as printed. The Void Sabre, Witchblade and other p.89 rows print flat Damage, unlike Core's S + X. The Cameleoline
+  Cloak's "ANY" is stored as [ANY]. Two-profile items are one entry per profile (Aeldari Missile Launcher, Reaper
+  Launcher, Razorflail); Rangefinder and Spirit Stone print two prices, so two entries each. Star Glaive and Wireweave
+  Net are described with no table row (null Value and Rarity). Not entries: the War Mask sidebar (p.93, a `mundane`
+  item), The Grey Between and the lore Test (pp.77–78, requisition rules), The Art of the Knife (p.86, in the Knife's
+  `effect`).
+- **Necrontyr** uses the 1st-edition format: one Range value (`range: [48]`), flat melee Damage ("5+1ED"), "Heavy"
+  with no rating, and the Force Shield armour trait, which no book here defines. Its rule that Necron items count as
+  Unique for other races is in every entry's `note`. The Rod of Covenant and Staff of Light print shooting and melee
+  profiles, so two entries each, and a starting one is a `bundle` of both.
+- **Apocrypha** is homebrew: an item it reprints with the same stats as an official entry is left out, and one with
+  different stats is kept, its `note` naming the official id. Where its summary tables (pp.386, 396–398, 419, 434…)
+  and an item's own description disagree, the description wins and the table's values are in `note`, except where
+  the description is plainly copied from a neighbour (Daemonic Rune, Haemonculus' Tools). Keywords get a straight
+  apostrophe (T'AU EMPIRE, as the glossary). A second profile printed only in a description ("Ranged:" on the
+  Guardian Spear, "Melee:" on the Boltstorm Gauntlet…) is its own entry with no Value or Rarity; a starting one is a
+  `bundle` with its base. Two traits keep a book's variant spelling ("Agonizing", "Warp Weapon"), and "Bulky (1)".
+  Section rules (Nurgle's Rot, Combat Drugs, Dark Gifts, Special Issue Grenades…) open each affected item's `effect`.
+  Not entries: the Optional Rules: Adjusted Core Weapon Traits (p.328), the T'au BATTLESUIT, SUPPORT SYSTEM and JUMP
+  JETS keyword rules (p.414), the Astartes armour swaps and RELIC rule (p.401), and the follower rules (p.456).
 - **Not entries:** Weapon Patterns (p.225, a variant rule), Ammo in the Gilead System (p.230), Augmetic Installation and
   Reconstruction rules (pp.242–243), Trinkets & Charms tables (pp.247–251).
 
 ### Rules reference (`packages/data/rules/*.json`, `RuleEntry` in `packages/shared/src/rules.ts`)
 
-One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (pp.208–210), `armour-traits.json`
-(p.232), `combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
+One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (Core pp.208–210, plus FSPG p.120's
+Blessed, IoE p.79's Lance and Gruesome, the Necrontyr's Tesla as `tesla-necrontyr`, and Apocrypha pp.326–328's 25,
+among them its own Tesla), `armour-traits.json` (Core p.232, plus Apocrypha p.398's Agile and Void),
+`combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
 its rating (`Blast (X)`), `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
 the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
 paragraphs split by a blank line. Print errors are kept as printed; tables are plain lines. A section intro is its own

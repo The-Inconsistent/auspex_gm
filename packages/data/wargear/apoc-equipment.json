@@ -1,0 +1,2469 @@
+[
+  {
+    "id": "apoc-apertor",
+    "name": "Apertor",
+    "source": "apocrypha",
+    "page": 419,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "NAVIS IMPERIALIS",
+      "INQUISITION",
+      "ADEPTUS ARBITES"
+    ],
+    "effect": "When you attempt a Tech test to override a door or other technological lock, you add +3 bonus dice to your dice pool."
+  },
+  {
+    "id": "apoc-auspectre",
+    "name": "Auspectre",
+    "source": "apocrypha",
+    "page": 419,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM VANUS"
+    ],
+    "effect": "You may activate an Auspectre as a Simple Action to detect energy emissions, motion, and other life signs within 150 metres."
+  },
+  {
+    "id": "apoc-auto-chastiser",
+    "name": "Auto-Chastiser",
+    "source": "apocrypha",
+    "page": 419,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "effect": "While wearing an Auto-Chastiser, you may re-roll any dice on a skill test which roll 1s. However, any dice which you re-roll which still results in a 1 inflicts 1 Shock."
+  },
+  {
+    "id": "apoc-book-of-judgement-abridged",
+    "name": "Book of Judgement (Abridged)",
+    "source": "apocrypha",
+    "page": 420,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ADEPTUS ARBITES"
+    ],
+    "effect": "",
+    "note": "No Effect printed."
+  },
+  {
+    "id": "apoc-divinator-class-auspex",
+    "name": "Divinator-class Auspex",
+    "source": "apocrypha",
+    "page": 420,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "effect": "A Divinator-class Auspex functions like a normal Auspex in all regards. In addition, when an enemy within 15m moves, the wearer may spend one ammunition to make an immediate ranged attack as a Reflexive Action, at +4 DN, against that enemy. This is a Salvo action and requires that the wearer reloads afterwards.",
+    "note": "Value from the entry (7); the p.419 table prints 8 Very Rare."
+  },
+  {
+    "id": "apoc-etherium",
+    "name": "Etherium",
+    "source": "apocrypha",
+    "page": 420,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM CULEXUS"
+    ],
+    "effect": "You may activate the Etherium as a Simple Action. While active, your Stealth Score cannot ever fall below your Willpower: if ever it would drop below your Willpower, it increases to that level at the start of your next turn. Further, if your Stealth Score is higher than a creature’s Willpower, they cannot perceive you at all—their minds refuse to acknowledge your presence."
+  },
+  {
+    "id": "apoc-explosive-collar",
+    "name": "Explosive Collar",
+    "source": "apocrypha",
+    "page": 420,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "ASTRA MILITARUM"
+    ],
+    "effect": "The control for an explosive collar is held by another character, and has a range of 500m. It can be triggered as a Simple Action, killing the wearer instantly.",
+    "note": "No Effect line printed; effect is the entry's rule paragraph."
+  },
+  {
+    "id": "apoc-force-matrix",
+    "name": "Force Matrix",
+    "source": "apocrypha",
+    "page": 421,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM CULEXUS"
+    ],
+    "effect": "Whenever a PSYKER within 25m of the wearer attempts to use a psychic power (other than Psyniscience or Deny the Witch), the Force Matrix gains a single charge. If a PSYKER within that range suffers psychic phenomena, then the Force Matrix gains one additional charge. Charges may be used as Reloads for the Animus Speculum. Charges gained dissipate during a Regroup or Respite."
+  },
+  {
+    "id": "apoc-grapple-gun",
+    "name": "Grapple Gun",
+    "source": "apocrypha",
+    "page": 421,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "",
+    "note": "No Effect or profile printed."
+  },
+  {
+    "id": "apoc-liber-daemonica",
+    "name": "Liber Daemonica",
+    "source": "apocrypha",
+    "page": 421,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "INQUISITION",
+      "ORDO MALLEUS",
+      "GREY KNIGHTS"
+    ],
+    "effect": "A character reading from the Liber Daemonica may add +Rank bonus dice to any Scholar test regarding combating Daemons and their allies. A character who keeps the book on their person and reads from it routinely gains +2 Conviction."
+  },
+  {
+    "id": "apoc-magnacles",
+    "name": "Magnacles",
+    "source": "apocrypha",
+    "page": 422,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ARBITES",
+      "INQUISITION"
+    ],
+    "effect": "Breaking free of magnacles’ magnetic lock requires a Strength test (DN 5)."
+  },
+  {
+    "id": "apoc-narthecium",
+    "name": "Narthecium",
+    "source": "apocrypha",
+    "page": 422,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "A Narthecium provides all the means to treat battlefield injuries and perform medical procedures in the field. It also adds +2 bonus dice to Medicae tests to treat the injuries of characters of the Adeptus Astartes or Primaris Astartes species. On non-Astartes characters, use of a Narthecium can cause problems, as the equipment within is not meant for frail mortal physiology: a complication will inflict 1 Mortal Wound on a non-Astartes patient.",
+    "note": "Differs from FSPG's fspg-narthecium (p.127): effect, keywords (no IMPERIUM). Differs from VoA's voa-narthecium (p.74): effect, Value, Rarity, keywords."
+  },
+  {
+    "id": "apoc-oath-parchment",
+    "name": "Oath Parchment",
+    "source": "apocrypha",
+    "page": 422,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "ADEPTUS CUSTODES",
+      "ANATHEMA PSYKANA"
+    ],
+    "effect": "After a Respite, you may swear an Oath of Moment, pledging yourself to the completion of a specific objective. If you complete this objective, you gain 1 Wrath point. If you fail in your objective, the GM gains 1 Ruin. You may only have one Oath of Moment at a time."
+  },
+  {
+    "id": "apoc-psychic-hood",
+    "name": "Psychic Hood",
+    "source": "apocrypha",
+    "page": 422,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "INQUISITION",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "effect": "A character wearing a psychic hood may attempt to Deny the Witch as a Reflexive Action in response to an enemy PSYKER using a power, though they may not use a psychic power during their following turn. Further, they may add +Double Rank bonus dice on their Psychic Mastery test to use Deny the Witch.",
+    "note": "Differs from FSPG's fspg-psychic-hood (p.127): effect, Value, keywords."
+  },
+  {
+    "id": "apoc-psyocculum",
+    "name": "Psyocculum",
+    "source": "apocrypha",
+    "page": 423,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTA SORORITAS",
+      "INQUISITION",
+      "ADEPTUS ASTRA TELEPATHICA",
+      "ANATHEMA PSYKANA"
+    ],
+    "effect": "The wearer can attempt to use the Psyniscience ability as if they were a PSYKER but using their Awareness instead of Psychic Mastery."
+  },
+  {
+    "id": "apoc-reductor",
+    "name": "Reductor",
+    "source": "apocrypha",
+    "page": 423,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS ASTARTES"
+    ],
+    "effect": "As an action, an Apothecary can use a Reductor to remove the gene-seed of a deceased Space Marine. This requires a Medicae test (DN 3). Though a grim task, it is a vital one, and an Apothecary who extracts a fallen brother’s gene-seed gains 1 Wrath immediately, as their duty drives them to press on."
+  },
+  {
+    "id": "apoc-sainted-reliquiae",
+    "name": "Sainted Reliquiae",
+    "source": "apocrypha",
+    "page": 423,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "effect": "When you score a Wrath Critical, you may gain 1 Faith Point instead of one Glory point."
+  },
+  {
+    "id": "apoc-sentinel-array",
+    "name": "Sentinel Array",
+    "source": "apocrypha",
+    "page": 423,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM EVERSOR"
+    ],
+    "effect": "The Eversor may choose to make a ranged attack or a melee attack—at the assassin’s discretion—as a Reflexive Action whenever an enemy tries to move away while engaged, even if those enemies use the Fall Back option to do so."
+  },
+  {
+    "id": "apoc-strobe-lumen",
+    "name": "Strobe-Lumen",
+    "source": "apocrypha",
+    "page": 423,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "effect": "When you attempt an Intimidation Interaction Attack, you may activate your Strobe-Lumen. If you do so, increase the rating of the Hindered or Vulnerable condition you inflict by +2.",
+    "note": "The p.419 table prints the name \"423Strobe-Lumen\"; name from the entry."
+  },
+  {
+    "id": "apoc-vindicare-spy-mask",
+    "name": "Vindicare Spy Mask",
+    "source": "apocrypha",
+    "page": 423,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM VINDICARE"
+    ],
+    "effect": "The mask renders the wearer immune to penalties due to darkness and fog and allows the wearer to ignore any modifiers to the targets’ Defence from being in cover."
+  },
+  {
+    "id": "apoc-vox-disruptor-array",
+    "name": "Vox-Disruptor Array",
+    "source": "apocrypha",
+    "page": 424,
+    "category": "Tools & Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "TEMPLUM VANUS"
+    ],
+    "effect": "When active, vox-casters and similar technological forms of communication cease to function within 50m. As a combat action, you may increase this distance with an DN 3 Tech test; success doubles the range, and each shifted Icon doubles the range again."
+  },
+  {
+    "id": "apoc-adrenaline-shot",
+    "name": "Adrenaline Shot",
+    "source": "apocrypha",
+    "page": 425,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nWhen you take an Adrenaline Shot, you immediately regain 1d3+2 Shock, and ignore the penalties for being Wounded until the end of your next turn. Once you have taken an Adrenaline Shot, you cannot benefit from another until your next Regroup.",
+    "note": "Rarity from the entry (Rare); the p.425 table prints 4 Uncommon. Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-alcohol",
+    "name": "Alcohol",
+    "source": "apocrypha",
+    "page": 425,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "A single purchase contains 6 doses. A character gains +1 Resolve for the next hour after drinking. A character who takes a number of doses exceeding their Toughness within one day gains +2 Resolve instead, but also suffers +1DN on all other activities, and will suffer 1d3 Shock when they awaken after their next sleep. Excessive drinking may lead to other side-effects, such as nausea, poor decision-making, and/or unconsciousness."
+  },
+  {
+    "id": "apoc-barrage",
+    "name": "Barrage",
+    "source": "apocrypha",
+    "page": 426,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nTaking a dose of Barrage adds +3 to Strength, Toughness, and Agility for 1d3+2 rounds (or minutes out of combat). After this effect ends, the character suffers 1d3 Wounds, and is Exhausted until their next Regroup. A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-de-tox",
+    "name": "De-Tox",
+    "source": "apocrypha",
+    "page": 426,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nA dose of de-tox immediately ends the effects of any poison or drug currently in the user’s system. However, the effects of this rapid cleansing are debilitating, and the recipient may not take any action during their next turn and are Exhausted until their next Regroup. A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-eversor-combat-drugs",
+    "name": "Eversor Combat Drugs",
+    "source": "apocrypha",
+    "page": 426,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM EVERSOR"
+    ],
+    "effect": "At the start of an Eversor’s turn, they may use a single dose of one of the following combat drugs as a Free Action. A single dose of any of these combat drugs taken by anyone other than an Eversor Assassin inflicts 1d6 mortal wounds instead of their normal effect.\nFury: The Eversor’s Speed is doubled for the duration of this turn.\nTerminus: If the Eversor starts Dying before the start of their next turn, they may continue to act normally for a number of rounds equal to their Toughness. If the Eversor is still Dying after this time, they die immediately, and explode.\nDestroyer: During this turn, if the Eversor scores a critical hit or kills an enemy, they may immediately move up to half their Speed and make one additional melee attack if they are within reach. If this or any subsequent attack this turn also scores a critical hit or reduces an enemy to 0 Wounds, roll a d6: on a 4 or more, the Eversor may make another half-Speed move and another attack.\nOne combat drug dispenser has three doses each of Fury and Destroyer, and a single dose of Terminus."
+  },
+  {
+    "id": "apoc-frenzon",
+    "name": "Frenzon",
+    "source": "apocrypha",
+    "page": 426,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nA character who takes a dose of frenzon immediately becomes Frenzied. This Frenzied state cannot be resisted for a number of rounds equal to 10 minus the recipient’s Toughness score, but after that, the character may attempt to resist the frenzy to end the effect. A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-halo",
+    "name": "Halo",
+    "source": "apocrypha",
+    "page": 427,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nTaking a dose of Halo adds +2 to the user’s Resolve but reduces the character’s Passive Awareness by 1 and adds +2 DN to all Awareness tests. This lasts for 2d6 hours. A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-kick",
+    "name": "Kick",
+    "source": "apocrypha",
+    "page": 427,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nWhen a dose is taken, the character recovers all Shock, and recovers 1d3 Shock at the start of every round for 2d6 combat rounds. Once this ends, the character is Exhausted for 1d3+2 hours.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-lho-sticks",
+    "name": "Lho-Sticks",
+    "source": "apocrypha",
+    "page": 427,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 1,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "A character who smokes lho-sticks during a Regroup recovers 1d3+1 Shock, as the narcotic substance and familiar habit eases their stress and calms them. A single pack of lho-sticks (or the materials to roll one’s own), contains 10 doses."
+  },
+  {
+    "id": "apoc-obscura",
+    "name": "Obscura",
+    "source": "apocrypha",
+    "page": 427,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAOS",
+      "SCUM"
+    ],
+    "effect": "A character who takes obscura is essentially unconscious for 1d3+3 hours, though they are still (just about) capable of walking slowly and talking incoherently in this narcotic stupor. Once the drug’s effects end, the character becomes exhausted for twice as many hours as the drug’s effects lasted, which can be alleviated by taking another dose of obscura. A single purchase contains one dose."
+  },
+  {
+    "id": "apoc-panimune",
+    "name": "Panimune",
+    "source": "apocrypha",
+    "page": 427,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nA dose of Panimune provides +3 bonus dice on all Toughness tests to resist poisons, diseases, and other environmental effects for 1d3+2 hours. After the dose expires, the user is Exhausted until their next Regroup. A new dose before the next Regroup will negate the Exhausted condition, but it will also inflict 1d3 Shock, +1 for each subsequent dose.",
+    "note": "Keywords from the entry; the p.425 table prints \"COMBAT DRUGS, IMPERIUM, SCUM\". Effect still starts with the section's COMBAT DRUGS administering rule (p.425), since the table lists COMBAT DRUGS and the entry names no other way to take it."
+  },
+  {
+    "id": "apoc-polymorphine",
+    "name": "Polymorphine",
+    "source": "apocrypha",
+    "page": 428,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "TEMPLUM CALLIDUS"
+    ],
+    "effect": "A Callidus may take a single dose of Polymorphine at the start of a Regroup (page 196 of the Wrath & Glory core rulebook) and spend the following hour adjusting their form in the desired way. A Callidus can take on the appearance of any humanoid creature of Average size (though they require additional surgical assistance to take on forms with more than the human number of limbs, such as Genestealer Cultists). Creating the appropriate form requires a Deception test (DN 3, or DN 5 if the creature is Xenos), and once the form has been successfully assumed, it adds +4 to the DN of any Awareness or Insight test an attempt to determine that the assassin is not who they seem. The GM will assign a list of Keywords which the assumed form possesses. Resetting to the assassin’s initial form can be done within one round. A single purchase contains two doses: one to transform, and a second to revert to normal."
+  },
+  {
+    "id": "apoc-psychon",
+    "name": "Psychon",
+    "source": "apocrypha",
+    "page": 428,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nTaking a dose of Psychon adds +2 to the user’s Strength and Toughness and makes them Frenzied for 3d6 rounds (or minutes, out of combat). A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-recaff",
+    "name": "Recaff",
+    "source": "apocrypha",
+    "page": 428,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 1,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "effect": "A character who drinks a cup of recaff during a regroup recovers 1d3 Shock and adds +1 bonus dice to any test to remain awake or resist the effects of fatigue or sleeplessness for the next 1d3 hours. Each successive cup of recaff reduces the duration of the benefit by 1 hour, as sleep eventually catches up. A single purchase contains enough to make 10 cups."
+  },
+  {
+    "id": "apoc-reflex",
+    "name": "Reflex",
+    "source": "apocrypha",
+    "page": 428,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nTaking a dose of Reflex adds +2 to the user’s Initiative and allows the character to Keep the Initiative without spending Glory but adds +2DN to the difficulty of all Willpower, Resolve, and Conviction Tests. This lasts for 2d6 rounds (or minutes, out of combat). A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-slaught",
+    "name": "Slaught",
+    "source": "apocrypha",
+    "page": 429,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nTaking a dose of slaught adds +3 to the user’s Agility and Initiative for the next 3d6 rounds (or minutes, out of combat). Once the drug’s effects end, the user must pass a Toughness test (DN 3) or add +2 to the DN of all Agility- and Initiative-based tests for the next 1d3+2 hours. A single purchase contains 3 doses.",
+    "note": "Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-spook",
+    "name": "Spook",
+    "source": "apocrypha",
+    "page": 429,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "SCUM"
+    ],
+    "effect": "When taken by a PSYKER, Spook adds a +2d bonus to all Psychic Mastery tests attempted in the next hour, but they also add +20 to all rolls on the Perils of the Warp table. At the end of the hour, the character must take a DN 5 Corruption test.\nWhen taken by a non-PSYKER keyword, the character must immediately take a DN 5 Corruption test, with failure adding 1d3 Corruption instead of 1. If the character succeeds, they gain the PSYKER keyword, and a Minor Psychic Power (randomly determined using the table on page 258 of the Wrath & Glory rulebook) for the next 1d3+2 hours. A single purchase contains 1 dose."
+  },
+  {
+    "id": "apoc-spur",
+    "name": "Spur",
+    "source": "apocrypha",
+    "page": 429,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "Substances with the COMBAT DRUGS keyword are normally administered using an injector or an inhaler. They can be administered as a Combat Action to either oneself or to another adjacent character.\nTaking a dose of Spur adds +2 to the user’s Speed and Initiative for the next 2d6 minutes. Once the drug’s effects end, the user must pass a Toughness test (DN 3) or become Exhausted for the next hour. A single purchase contains 3 doses.",
+    "note": "No Effect line printed; effect is the rule sentences of the entry's description. Effect starts with the section's COMBAT DRUGS administering rule (p.425)."
+  },
+  {
+    "id": "apoc-synth-skin",
+    "name": "Synth-Skin",
+    "source": "apocrypha",
+    "page": 429,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "OFFICIO MEDICAE"
+    ],
+    "effect": "Synthskin can be applied as a Combat Action, and immediately removes all Bleeding conditions from you or another character within arm’s reach."
+  },
+  {
+    "id": "apoc-torpor",
+    "name": "Torpor",
+    "source": "apocrypha",
+    "page": 429,
+    "category": "Combat Drugs and Consumables",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "INQUISITION",
+      "ADEPTUS ASTRA TELEPATHICA",
+      "ANATHEMA PSYKANA"
+    ],
+    "effect": "A single dose of Torpor lasts for a number of hours equal to 10 minus the subject’s Toughness, during which time the subject counts as Exhausted and Staggered. Further, PSYKERS under the effects of Torpor count their Psychic Mastery rank as 4 less than normal while under the drug’s effects.",
+    "note": "Keywords from the entry; the p.425 table prints \"ANATHAMA PSYKANA\"."
+  },
+  {
+    "id": "apoc-abominatus-combat-stimms",
+    "name": "Abominatus Combat Stimms",
+    "source": "apocrypha",
+    "page": 430,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "COMBAT DRUGS",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "effect": "As a Simple Action, the user may administer a dose of these Combat Stimms, which have an effect which lasts until the start of their next turn. The user may select up to three effects from the following list, and then suffers Mortal Wounds equal to the number of effects chosen:\n+2 dice on Athletics tests\n+2 dice on Weapon Skill tests\nMelee attacks inflict +2ED\n+2 Determination\nIgnore up to 2 points of DN penalty on a Multi-Attack."
+  },
+  {
+    "id": "apoc-aggressor-stimms",
+    "name": "Aggressor Stimms",
+    "source": "apocrypha",
+    "page": 430,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "COMBAT DRUGS",
+      "CHAOS",
+      "KHORNE"
+    ],
+    "effect": "A character may take a dose of Aggressor Stimms as a Simple Action. They immediately suffer 1 Mortal Wound and become Frenzied. Further, they will inflict +2ED on all melee attacks until the end of their next turn. A single purchase contains 8 doses."
+  },
+  {
+    "id": "apoc-allure-of-slaanesh",
+    "name": "Allure of Slaanesh",
+    "source": "apocrypha",
+    "page": 430,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nWhen you make a Persuasion Interaction Attack, enemies affected must also move up to half their Speed directly towards you, avoiding any hazards or obstacles along the way.",
+    "note": "Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-aura-of-acquiescence",
+    "name": "Aura of Acquiescence",
+    "source": "apocrypha",
+    "page": 431,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "SLAANESH"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nWhen an enemy becomes engaged with you, they must immediately pass a DN 3 Resolve test. If they fail, they become Vulnerable (2).",
+    "note": "Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-banner-of-rage",
+    "name": "Banner of Rage",
+    "source": "apocrypha",
+    "page": 431,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "KHORNE",
+      "ICON"
+    ],
+    "effect": "KHORNE DAEMONS within 8m of this banner may re-roll any 1s when rolling Determination. Further, you may unleash the banner’s power as a Combat Action. When the banner is unleashed, all CHAOS allies within 8m immediately become Frenzied. Once you have unleashed the banner’s power, it may not be unleashed again until after your next Regroup."
+  },
+  {
+    "id": "apoc-binding-chains",
+    "name": "Binding Chains",
+    "source": "apocrypha",
+    "page": 431,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "DAEMON"
+    ],
+    "effect": "When these chains are used to bind a living creature, any DAEMON summoned into or possessing that creature is Restrained and suffers +4DN on any Willpower tests to break free. If you wrap the chains around yourself, you gain +3 bonus dice on any Opposed Willpower test made against a DAEMON attempting to possess you and take control.",
+    "note": "Value and Rarity from the entry (6, Rare); the p.430 table prints 7 Very Rare."
+  },
+  {
+    "id": "apoc-blasted-standard",
+    "name": "Blasted Standard",
+    "source": "apocrypha",
+    "page": 431,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAOS",
+      "TZEENTCH",
+      "ICON"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        9
+      ],
+      "traits": [
+        "Corrupting",
+        "Flamer",
+        "Inflict (Terror 5)"
+      ]
+    },
+    "effect": "TZEENTCH DAEMONS within 9m of this banner may re-roll any 1s when rolling Determination. Further, you may unleash the banner’s power as a Combat Action. This counts as a ranged attack with the profile below. Once you have unleashed the banner’s power, it may not be unleashed again until after your next Regroup.",
+    "note": "The unleashed banner's profile prints one Range (9) and no Salvo. \"Corrupting\" is not defined in this chapter's pages."
+  },
+  {
+    "id": "apoc-chaos-icon",
+    "name": "Chaos Icon",
+    "source": "apocrypha",
+    "page": 431,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "KHORNE",
+      "ICON"
+    ],
+    "effect": "DAEMONS within 8m of this banner may re-roll any 1s when rolling Determination. Further, CHAOS allies within 8m gain +2 Resolve.",
+    "note": "Value and Keywords from the entry; the p.430 table prints 6 Rare, \"CHAOS, ICON\" (the entry's KHORNE may be a copy of Banner of Rage's)."
+  },
+  {
+    "id": "apoc-collar-of-khorne",
+    "name": "Collar of Khorne",
+    "source": "apocrypha",
+    "page": 431,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAOS",
+      "KHORNE"
+    ],
+    "effect": "Psychic powers or attacks are immediately negated if they target you or include you in the area of effect. Further, weapons with the Force trait do not gain any bonus damage from the wielder’s Willpower against you.",
+    "note": "Keywords from the entry; the p.430 table prints \"DARK GIFT, CHAOS, KHORNE\". Without DARK GIFT the DARK GIFTS rule (p.430) is not added to its effect."
+  },
+  {
+    "id": "apoc-eye-of-tzeentch",
+    "name": "Eye of Tzeentch",
+    "source": "apocrypha",
+    "page": 432,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "TZEENTCH"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nEach turn during combat, you may re-roll a number of d6 equal to your Rank. You may use these all at once or spread them across multiple rolls. Outside of combat, you may re-roll Rank dice on any test. You also gain +2 bonus dice on all Psychic Mastery tests to use Divination psychic powers.",
+    "note": "Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-grisly-trophies",
+    "name": "Grisly Trophies",
+    "source": "apocrypha",
+    "page": 432,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CHAOS"
+    ],
+    "effect": "You may attempt an Intimidation Interaction Attack as a Simple Action, as long as the target is within 3m of you."
+  },
+  {
+    "id": "apoc-nurgles-rot",
+    "name": "Nurgle’s Rot",
+    "source": "apocrypha",
+    "page": 432,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nAny living creature without the NURGLE keyword within 7m of you at the start of their turn must roll 1d6. If an Exalted Icon is rolled, they immediately suffer the Poisoned (7) condition. While Poisoned from Nurgle’s Rot, a creature suffers 1d3 Mortal Wounds at the start of each of their turns.",
+    "note": "Keywords from the entry; the p.430 table prints \"DARK GIFT, CHAOS, NURGLE, PLAGUE\". Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-nurgling-infestation",
+    "name": "Nurgling Infestation",
+    "source": "apocrypha",
+    "page": 432,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "NURGLE"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nYou are constantly accompanied by a mob of Nurglings. This mob consists of 2d6 Nurglings: the number is rolled at the start of your turn. These Nurglings will take an action on your turn, and will attempt to remain as close to you as possible, and they will attack anyone who attacks you, but they will not listen to your commands.",
+    "note": "Keywords from the entry; the p.430 table prints \"DARK GIFT, CHAOS, NURGLE, DAEMON\". No Nurgling stat block printed here. Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-plague-banner",
+    "name": "Plague Banner",
+    "source": "apocrypha",
+    "page": 432,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "NURGLE",
+      "ICON"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 7,
+      "ap": -2,
+      "range": [
+        14
+      ],
+      "traits": [
+        "Gas",
+        "Blast (7)",
+        "Fleshbane",
+        "Mortal (1)"
+      ]
+    },
+    "effect": "NURGLE DAEMONS within 7m of this banner may re-roll any 1s when rolling Determination. Further, you may unleash the banner’s power as a Combat Action. This counts as a ranged attack with the profile below. Once you have unleashed the banner’s power, it may not be unleashed again until after your next Regroup.",
+    "note": "The unleashed banner's profile prints one Range (14) and no Salvo. \"Gas\", \"Fleshbane\" and \"Mortal (1)\" are not defined in this chapter's pages."
+  },
+  {
+    "id": "apoc-rage-of-khorne",
+    "name": "Rage of Khorne",
+    "source": "apocrypha",
+    "page": 433,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "KHORNE"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nYou may become Frenzied as a Simple Action. While Frenzied, add +3ED to the damage of all melee attacks you make, and reduce the DN increase for melee Multi-Attacks by Double Rank.",
+    "note": "Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-rapturous-standard",
+    "name": "Rapturous Standard",
+    "source": "apocrypha",
+    "page": 433,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAOS",
+      "SLAANESH",
+      "ICON"
+    ],
+    "effect": "SLAANESH DAEMONS within 6m of this banner may re-roll any 1s when rolling Determination. Further, you may unleash the banner’s power as a Combat Action. Until the start of your next turn, all SLAANESH allies within 6m automatically pass Resolve tests, and reduce all Shock they suffer to 0. Once you have unleashed the banner’s power, it may not be unleashed again until after your next Regroup."
+  },
+  {
+    "id": "apoc-talisman-of-burning-blood",
+    "name": "Talisman of Burning Blood",
+    "source": "apocrypha",
+    "page": 433,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "KHORNE"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nYour Speed is increased by +1 when you Run or Charge. This increases to +2 when you are Frenzied.",
+    "note": "Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-talisman-of-tzeentch",
+    "name": "Talisman of Tzeentch",
+    "source": "apocrypha",
+    "page": 433,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DARK GIFT",
+      "CHAOS",
+      "TZEENTCH",
+      "SORCERY"
+    ],
+    "effect": "DARK GIFTS: Any item with the DARK GIFT keyword cannot be lost or removed—they are permanently bound to the character. When you obtain a DARK GIFT item, you must pass a Corruption Test with a DN equal to the Value.\nEnemy PSYKERS within a distance equal to your Intellect x9 metres suffer a Wrath complication on any Wrath die result of 1, 2, or 3.",
+    "note": "Effect starts with the DARK GIFTS rule (p.430)."
+  },
+  {
+    "id": "apoc-warp-talisman",
+    "name": "Warp Talisman",
+    "source": "apocrypha",
+    "page": 433,
+    "category": "Chaos Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "SORCERY"
+    ],
+    "effect": "You may re-roll all failures on a Psychic Mastery test. Once you have used this item, it may not be used until after your next Regroup."
+  },
+  {
+    "id": "apoc-agaith",
+    "name": "Agaith",
+    "source": "apocrypha",
+    "page": 434,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HARLEQUIN"
+    ],
+    "effect": "The wearer of an Agaith causes Fear (DN 3 +Rank)."
+  },
+  {
+    "id": "apoc-anti-grav-platform",
+    "name": "Anti-Grav Platform",
+    "source": "apocrypha",
+    "page": 434,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "ASURYANI"
+    ],
+    "effect": "An Anti-Grav Platform has a Speed of 8 and will automatically attempt to stay within 3m of the operator. It floats about a metre above the ground and will ignore any obstacles or hindrances of that height or smaller. A Heavy weapon mounted on the platform always counts as Braced, and the operator may fire the weapon from up to 3m away, determining line of sight and line of fire from the weapon instead. The platform can be used to carry other heavy equipment, such as Serpent Shield generators.",
+    "note": "Homebrew reprint of ioe-anti-grav-platform (IoE p.95): differs in kind (IoE: upgrade), Value, Rarity, Keywords and effect."
+  },
+  {
+    "id": "apoc-aspect-shrine-banner",
+    "name": "Aspect Shrine Banner",
+    "source": "apocrypha",
+    "page": 435,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 3,
+    "rarity": "Common",
+    "keywords": [
+      "ASURYANI",
+      "ASPECT WARRIOR",
+      "EXARCH"
+    ],
+    "effect": "Allied ASPECT WARRIORS of your Aspect Shrine increase their Resolve and Conviction by +Rank while within 12m of you."
+  },
+  {
+    "id": "apoc-banshee-mask",
+    "name": "Banshee Mask",
+    "source": "apocrypha",
+    "page": 435,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ASURYANI"
+    ],
+    "effect": "When a Howling Banshee charges, all enemies within 3m of the Banshee’s target are paralysed by the war-cry; they cannot perform any Reflexive Actions and suffer the Hindered 2 and Vulnerable 2 conditions. All the effects wear off at the end of the affected characters’ next turn.",
+    "note": "Homebrew reprint of ioe-banshee-mask (IoE p.93): differs in Value, Keywords and effect. Conditions printed \"Hindered 2 and Vulnerable 2\" (no brackets)."
+  },
+  {
+    "id": "apoc-celestial-shield",
+    "name": "Celestial Shield",
+    "source": "apocrypha",
+    "page": 435,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ASURYANI"
+    ],
+    "effect": "You may activate this item as a Reflexive Action when you are the target of a ranged attack. Your Resilience and Determination increases by +2 against ranged attacks until the start of your next turn. Further, while the field is in effect, you may roll Determination against Mortal Wounds.",
+    "note": "A psychic force field with no AR printed, so filed as equipment, not armour."
+  },
+  {
+    "id": "apoc-dark-reaper-rangefinder",
+    "name": "Dark Reaper Rangefinder",
+    "source": "apocrypha",
+    "page": 435,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ASURYANI"
+    ],
+    "effect": "The Reaper Rangefinder allows the wearer to see even in complete darkness or through fog with no penalty. In addition, when a Dark Reaper aims before making a ranged attack, they add +3d to their attack.",
+    "note": "Near-match of IoE's Rangefinder (ioe-rangefinder-standalone / ioe-rangefinder-detachable, IoE p.97): a different item (Value, Rarity, Keywords, effect all differ)."
+  },
+  {
+    "id": "apoc-dread-mask",
+    "name": "Dread Mask",
+    "source": "apocrypha",
+    "page": 436,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "HARLEQUIN"
+    ],
+    "effect": "The wearer of a Dread Mask causes Terror (DN 3 +Rank)."
+  },
+  {
+    "id": "apoc-flip-belt",
+    "name": "Flip-Belt",
+    "source": "apocrypha",
+    "page": 436,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HARLEQUIN"
+    ],
+    "effect": "A character wearing a Flip-Belt ignores the effects of difficult terrain, can ignore any obstacles less than 2m tall or wide during their movement, and may stand up from prone as a free action at any time without penalty. In addition, a Harlequin wearing a flip-belt determines jump distance using their Agility instead of their Strength, and they do not suffer falling damage unless unconscious.",
+    "note": "Homebrew reprint of ioe-flip-belt (IoE p.96): differs in Value, Rarity, Keywords and effect."
+  },
+  {
+    "id": "apoc-ghosthelm",
+    "name": "Ghosthelm",
+    "source": "apocrypha",
+    "page": 436,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FARSEER"
+    ],
+    "effect": "Any DAEMON or other warp entity attempting to perceive, attack, or otherwise interact with a Farseer wearing a Ghosthelm suffers a +2DN penalty to any tests they attempt. In addition, the Farseer no longer rolls on the Perils of the Warp table; instead, they suffer 1d3 Shock, +1 for each Wrath Complication after the first, when they suffer Wrath Complications when using a Psychic Power.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.434) prints Keywords AELDARI, ASURYANI. Homebrew reprint of ioe-ghosthelm-lodestar-helm (IoE p.94, \"Ghosthelm/Lodestar Helm\"): differs in Value, Keywords and effect."
+  },
+  {
+    "id": "apoc-mandiblaster-helm",
+    "name": "Mandiblaster Helm",
+    "source": "apocrypha",
+    "page": 436,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "When the wearer of a Mandiblaster Helm charges into combat, and at the start of each turn they are engaged in combat, roll 1d6. On an Icon, one enemy within 2m suffers 1d3 Mortal Wounds."
+  },
+  {
+    "id": "apoc-phase-field",
+    "name": "Phase Field",
+    "source": "apocrypha",
+    "page": 437,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "You may activate the field when you move. When you do so, you have a Speed of 10, but your movement can take you to any point within your movement distance: you vanish and reappear at your destination, without regard for intervening terrain. The only obstacles you cannot pass are Void Shields and other warp-based barriers. You suffer 1 Shock at the end of any turn in which you used the Phase Field.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.434) prints 10 Very Rare and Keywords AELDARI."
+  },
+  {
+    "id": "apoc-rictus-mask",
+    "name": "Rictus Mask",
+    "source": "apocrypha",
+    "page": 437,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "HARLEQUIN"
+    ],
+    "effect": "The wearer of a Rictus Mask causes Fear (DN 3 +Rank). Further, when the wearer makes an Intimidation Interaction Attack, if the attack is successful, the target is also Pinned as if suppressed by a Salvo 5 weapon.",
+    "note": "Homebrew reprint of ioe-rictus-mask (IoE p.94): same Value and Rarity; differs in Keywords and effect."
+  },
+  {
+    "id": "apoc-runes-of-warding",
+    "name": "Runes of Warding",
+    "source": "apocrypha",
+    "page": 437,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FARSEER"
+    ],
+    "effect": "As a Reflexive Action, when an enemy psyker attempts to use a psychic power within 18m, you may increase the DN of their Psychic Mastery test by +Double Rank.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.434) prints Keywords AELDARI, ASURYANI."
+  },
+  {
+    "id": "apoc-runes-of-witnessing",
+    "name": "Runes of Witnessing",
+    "source": "apocrypha",
+    "page": 437,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FARSEER"
+    ],
+    "effect": "Once per round, when you attempt to use a psychic power, you may re-roll a number of dice on your Psychic Mastery test equal to Double Rank.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.434) prints Keywords AELDARI, ASURYANI. Its flavour text opens \"Runes of Warding are special items\" (copied from Runes of Warding)."
+  },
+  {
+    "id": "apoc-seers-spirit-stone",
+    "name": "Seer’s Spirit Stone",
+    "source": "apocrypha",
+    "page": 437,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FARSEER"
+    ],
+    "effect": "When you attempt to use a psychic power, you may draw upon the power of the soul within the stone. This grants one of two effects: either you gain +Double Rank bonus dice on a single Psychic Mastery test, or you may use the psychic power as a Simple Action. Once used, the stone’s inhabiting soul goes dormant until the next Respite.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.434) prints Keywords AELDARI, ASURYANI. Near-match of spirit-stone (Core p.241) and ioe-spirit-stone-empty / ioe-spirit-stone-inhabited (IoE p.98): a different item (Value, Rarity, Keywords, effect all differ)."
+  },
+  {
+    "id": "apoc-serpent-shield-generator",
+    "name": "Serpent Shield Generator",
+    "source": "apocrypha",
+    "page": 437,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ASURYANI"
+    ],
+    "effect": "While this field is active, all ASURYANI allies within 6m gain +3 to their Resilience against ranged attacks. Further, the field can be discharged as a Combat Action, affecting all enemies in a Blast (6) within 12m of the generator. Enemies hit are Hindered (2) and cannot use any Reflexive Actions until after their next turn.",
+    "note": "No AR printed, so filed as equipment. Near-match of ioe-serpent-shield-platform (IoE p.92, armour AR 1*): differs in kind, Value, Rarity, Keywords and effect."
+  },
+  {
+    "id": "apoc-swooping-hawk-wings",
+    "name": "Swooping Hawk Wings",
+    "source": "apocrypha",
+    "page": 438,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "A warrior wearing Swooping Hawk Wings gains the ability to fly, and a flying speed equal to twice their normal movement speed.",
+    "note": "Homebrew reprint of ioe-swooping-hawk-wings (IoE p.98): differs in Value, Keywords (no ASPECT WARRIOR) and effect wording."
+  },
+  {
+    "id": "apoc-targeting-vane",
+    "name": "Targeting Vane",
+    "source": "apocrypha",
+    "page": 438,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "A warrior wearing a Targeting Vane reduces range DN penalties by 2. In addition, if the warrior aims, they add an additional +1d bonus to the following ranged attack."
+  },
+  {
+    "id": "apoc-warp-spider-jump-generator",
+    "name": "Warp Spider Jump Generator",
+    "source": "apocrypha",
+    "page": 438,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "A warrior wearing a Warp Spider Jump Generator may activate it as a Simple Action. If they do so, then they vanish from the battlefield, and instantly reappear anywhere within 20m. When they reappear, make a Resolve test (DN 3) for the warrior: if they fail, they suffer 1d3 Shock from the harrowing experience, and 1 Mortal Wound if a Complication was rolled.\n\nThe distance jumped may be increased; for every 10m of increased range, add +2 to the DN of the Resolve test that follows and +1 to the number of Mortal Wounds inflicted on a Complication.",
+    "note": "No \"Effect:\" label printed; the two rules paragraphs after the flavour text are the effect."
+  },
+  {
+    "id": "apoc-wraithbone-talisman",
+    "name": "Wraithbone Talisman",
+    "source": "apocrypha",
+    "page": 438,
+    "category": "Aeldari Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "ANHRATHE",
+      "HARLEQUINS"
+    ],
+    "effect": "A character wearing a wraithbone talisman may draw upon the talisman as a Free Action to gain 1 Glory. Once a talisman has been used in this way, it cannot be used again until after the next Regroup.",
+    "note": "Keyword printed \"HARLEQUINS\" (plural; elsewhere HARLEQUIN), in the table and the description; kept as printed."
+  },
+  {
+    "id": "apoc-crucible-of-malediction",
+    "name": "Crucible of Malediction",
+    "source": "apocrypha",
+    "page": 439,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "DRUKHARI",
+      "HAEMACOLYTE"
+    ],
+    "effect": "You may activate this as an Action. Each PSYKER within 18m must immediately pass a Conviction test or suffer 3d3 Mortal Wounds. Once used, you cannot use this item again until after your next Regroup."
+  },
+  {
+    "id": "apoc-haemacolytes-tools",
+    "name": "Haemacolyte’s Tools",
+    "source": "apocrypha",
+    "page": 439,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "DRUKHARI",
+      "HAEMACOLYTE"
+    ],
+    "effect": "Functions as a Medikit. In addition, against a Restrained target, it may be used to make a Medicae Test (DN = target’s Toughness) to inflict 1d3 Shock, +1 Shock per shifted Icon."
+  },
+  {
+    "id": "apoc-haemonculus-tools",
+    "name": "Haemonculus’ Tools",
+    "source": "apocrypha",
+    "page": 439,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BLADE",
+      "DRUKHARI",
+      "HAEMACOLYTE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 6,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Fleshbane"
+      ]
+    },
+    "effect": "Functions as a Medikit. In addition, against a Restrained target, it may be used to make a Medicae Test (DN = target’s Toughness) to inflict 1d3 Shock, +1 Shock per shifted Icon.",
+    "note": "Value, Rarity and Keywords from the table row (p.439); the description prints 5 (Uncommon), DRUKHARI, HAEMACOLYTE: its Effect, Value and Keywords copy Haemacolyte’s Tools, so the table row is kept. Melee profile printed \"(S) +3, ED 6, AP -, Fleshbane\"; no reach printed, [1] assumed. Differs from ioe-haemonculus-tools (IoE p.96) in every field."
+  },
+  {
+    "id": "apoc-hekatarii-combat-drugs",
+    "name": "Hekatarii Combat Drugs",
+    "source": "apocrypha",
+    "page": 440,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "COMBAT DRUGS",
+      "DRUKHARI",
+      "HEKATARII"
+    ],
+    "effect": "The user may administer a single dose as a free action, which will last for about an hour or until the character takes a Regroup (after which, withdrawal symptoms set in, and the character becomes Exhausted until they take a Respite). Anyone using these combat drugs must also make a Corruption test. Taking a second dose of any combat drug before a Respite inflicts 1d3 Shock as well as the desired effect. The drug dispenser contains 6 doses, of whichever of the drugs below the user wishes.\nAdrenalight: While under the drug’s effect, whenever the character charges and makes a successful attack, they may spend a point of Glory to make a second attack.\nGrave Lotus: While under the drug’s effect, the character’s Strength is increased by +3.\nHypex: While under the drug’s effect, the character’s Speed is increased by +2.\nPainbringer: While under the drug’s effect, the character’s Resilience is increased by 2.\nSerpentin: While under the drug’s effect, the character adds +3d to all melee attacks.\nSplintermind: While under the drug’s effect, the character adds +2d to all ranged attacks and their Resolve is increased by +2.",
+    "note": "One dispenser of 6 doses, each chosen from six drugs; kept as one entry. IoE prints the same six drugs as separate items (ioe-adrenalight, ioe-grave-lotus, ioe-hypex, ioe-painbringer, ioe-serpentin, ioe-splintermind, p.99) with different Values, Rarities, Keywords and effects."
+  },
+  {
+    "id": "apoc-tormented-soul-stone",
+    "name": "Tormented Soul Stone",
+    "source": "apocrypha",
+    "page": 440,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "A Wounded Drukhari can draw upon the anguish contained in the stone to immediately recover either 1d3+3 Shock or 1d3+1 Wounds. Once used, the soul stone takes time to recover, and cannot be used until after your next Regroup."
+  },
+  {
+    "id": "apoc-pain-casket",
+    "name": "Pain Casket",
+    "source": "apocrypha",
+    "page": 440,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "Add one Pain point to the Casket whenever an enemy does one of the following within 12 metres: a character suffers three or more Wounds from a single attack, you affect an enemy with an Intimidation interaction attack, a character fails a Resolve test, a character becomes Exhausted. Drukhari within 6 metres of the Casket may, as a Simple Action, draw a Pain point from the Casket to either recover 1d3 Shock or to count towards the Power Through Pain talent.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.439) prints 7 Very Rare."
+  },
+  {
+    "id": "apoc-living-trophy",
+    "name": "Living Trophy",
+    "source": "apocrypha",
+    "page": 440,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "In combat, you recover 1 Shock at the start of each of your turns."
+  },
+  {
+    "id": "apoc-soul-scent-barb",
+    "name": "Soul-Scent Barb",
+    "source": "apocrypha",
+    "page": 440,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "After a Regroup, you may attune the barb to a single foe whose identity you know or who you have some physical artefact of (an item from their possession, or a piece of their body). You gain +3 bonus dice on all Awareness and Survival tests to detect or track them. Further, when you make a ranged attack against that target, you may re-roll any dice which roll a 1."
+  },
+  {
+    "id": "apoc-soul-trap",
+    "name": "Soul-Trap",
+    "source": "apocrypha",
+    "page": 441,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "Whenever you slay an Adversary Threat or Monstrous Creature, you may attempt a Willpower test with a DN equal to the enemy’s Willpower. If you succeed, the enemy’s essence is drawn into the soul-trap, and the stolen power doubles your Strength attribute until your next Regroup."
+  },
+  {
+    "id": "apoc-vexator-mask",
+    "name": "Vexator Mask",
+    "source": "apocrypha",
+    "page": 441,
+    "category": "Drukhari Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "You may make a Deception Interaction Attack against an enemy you are engaged with as a Simple Action. If the attack succeeds, increase the rating of the Hindered or Vulnerable condition by 1."
+  },
+  {
+    "id": "apoc-auto-calibrator",
+    "name": "Auto-Calibrator",
+    "source": "apocrypha",
+    "page": 441,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "Select one weapon you are carrying which has the HunTR trait. You may re-roll any dice which roll 1s when you make a ranged attack with that weapon. You may sync the auto-calibrator to a different HunTR weapon after taking a Respite.",
+    "note": "HunTR is an Apocrypha Weapon Trait."
+  },
+  {
+    "id": "apoc-cyberstimms",
+    "name": "Cyberstimms",
+    "source": "apocrypha",
+    "page": 441,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "CTHONIAN"
+    ],
+    "effect": "You may activate or deactivate the Cyberstimms as a simple action, though they will immediately deactivate when you take a Respite or Regroup. While active, you add +Rank to your Speed when you Run or Charge, you increase your Determination by +Rank, and you recover 1d3 Shock at the start of each turn. However, while they are active, you halve your Passive Awareness (round up) and add +2 DN to all Intellect and Fellowship based tests."
+  },
+  {
+    "id": "apoc-grav-lift-device",
+    "name": "Grav-Lift Device",
+    "source": "apocrypha",
+    "page": 442,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "You may deploy this device as an action. Any LEAGUES OF VOTANN character who begins their turn within 1m of the grav-lift device may choose to gain a Fly speed equal to their normal Speed until the end of their turn."
+  },
+  {
+    "id": "apoc-iron-masters-tools",
+    "name": "Iron-master’s Tools",
+    "source": "apocrypha",
+    "page": 442,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "effect": "You ignore DN penalties to build, repair, maintain, and sabotage Leagues of Votann technology. This also works on Imperial technology, due to the common STC origins of both cultures’ technologies. Furthermore, These tools may be used as a Medipack on any ROBOT character and heal an additional +Rank Wounds when used in this way.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.441) prints 6 Rare. \"Furthermore, These\" capitalised as printed."
+  },
+  {
+    "id": "apoc-kin-medipack",
+    "name": "Kin Medipack",
+    "source": "apocrypha",
+    "page": 442,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "Functions as a Medikit (page 238 of the Wrath & Glory core rulebook). In addition, when the Medipack is used to Heal Wounds on a Kin character, this heals +Rank Wounds.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.441) prints 4 Uncommon."
+  },
+  {
+    "id": "apoc-kognitaar-module",
+    "name": "Kognitâar Module",
+    "source": "apocrypha",
+    "page": 442,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "As a simple action on your turn, you may spend 1 Glory to perform tactical analysis. Mark a single location on the battlefield that you can see, and then choose either attack or defend. This mark lasts until the start of your next turn. When a LEAGUES OF VOTANN character is within 3m of a location marked attack, they may re-roll Rank dice on any attack they make. When a LEAGUES OF VOTANN character is within 3m of a location marked defend, they add +Rank to their Defence and may re-roll Rank dice when rolling Determination."
+  },
+  {
+    "id": "apoc-las-beam-cutter",
+    "name": "Las-Beam Cutter",
+    "source": "apocrypha",
+    "page": 442,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 13,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        5,
+        10,
+        15
+      ],
+      "salvo": 1,
+      "traits": [
+        "Beam",
+        "Pistol",
+        "Unwieldy (1)"
+      ]
+    },
+    "effect": "This grants you a +4 bonus to any Tech test made to cut through obstacles or disassemble large objects. In addition, it may be used as a ranged weapon.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.441) prints 5 Uncommon. Ranged profile printed under \"Ranged: A Las-Beam Cutter can be used as a Ranged weapon\". Beam is an Apocrypha Weapon Trait."
+  },
+  {
+    "id": "apoc-multispectral-visor",
+    "name": "Multispectral Visor",
+    "source": "apocrypha",
+    "page": 443,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "effect": "This functions as Preysense Goggles, allowing you to ignore any penalties to Tests due to visual conditions. In addition, as a simple action, the wearer may scan an object, structure, vehicle, or enemy you can see. All LEAGUES OF VOTANN allies within 9m of you gain +Rank dice on any ranged attack made against that target and improve the AP of their ranged attacks by one (i.e., from -1 to -2).",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.441) prints 5 Uncommon."
+  },
+  {
+    "id": "apoc-multiwave-comms-array",
+    "name": "Multiwave Comms Array",
+    "source": "apocrypha",
+    "page": 443,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "effect": "You can communicate with anyone within 100 kilometres that has a comm unit (a comms array, vox, or similar). In addition, when using this item, the maximum range of Tech interaction attacks is increased to your Intellect Attribute multiplied by Double Rank.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.441) prints 4 Common and Keywords LEAGUES OF VOTANN."
+  },
+  {
+    "id": "apoc-omni-visor",
+    "name": "Omni-Visor",
+    "source": "apocrypha",
+    "page": 443,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "effect": "This functions as Preysense Goggles, allowing you to ignore any penalties to Tests due to visual conditions. In addition, when you make a ranged attack, the target does not receive the benefits of Cover against the attack."
+  },
+  {
+    "id": "apoc-pan-spectral-scanner",
+    "name": "Pan-Spectral Scanner",
+    "source": "apocrypha",
+    "page": 443,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "This functions as an Auspex (page 236 of the Wrath & Glory core rulebook). In addition, the user increases their Passive Awareness by Double Rank."
+  },
+  {
+    "id": "apoc-plasma-torch",
+    "name": "Plasma Torch",
+    "source": "apocrypha",
+    "page": 444,
+    "category": "Leagues of Votann Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Careful",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "This grants you a +4 bonus to any Tech test made to cut or weld objects or obstacles. In addition, it may be used as a melee weapon.",
+    "note": "Melee profile printed \"(S)+8, ED 2, AP -4, Careful, Unwieldy (2)\" under \"Melee: A Plasma Torch can be used as a melee weapon\"; no reach printed, [1] assumed. Careful is an Apocrypha Weapon Trait."
+  },
+  {
+    "id": "apoc-teleport-crest",
+    "name": "Teleport Crest",
+    "source": "apocrypha",
+    "page": 444,
+    "category": "Leagues of Votann Equipment",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LEAGUES OF VOTANN"
+    ],
+    "effect": "This item must be mounted on a suit of LEAGUES OF VOTANN armour but it cannot be mounted if the armour already has another crest (such as a Weavefield Crest). A teleport crest may be used as a Combat Action for a short-range teleport: the wearer vanishes from the battlefield and reappears anywhere within 100m that is more than 9m from an enemy. Once used this way, it cannot be used again until it has been recharged. It can also be used in conjunction with teleportation holds and other larger forms of teleport technology.",
+    "note": "Filed as an upgrade: it is mounted on LEAGUES OF VOTANN armour."
+  },
+  {
+    "id": "apoc-advanced-stabilisation-system",
+    "name": "Advanced Stabilisation System",
+    "source": "apocrypha",
+    "page": 445,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "XV88",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "This system can only be fitted on an XV88 Broadside Battlesuit. When you move and make an attack with a Mounted weapon, you ignore the normal DN increase.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-advanced-targeting-system",
+    "name": "Advanced Targeting System",
+    "source": "apocrypha",
+    "page": 445,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "When you make a ranged attack, each Exalted Icon you shift for Extra Damage adds +2ED rather than 1.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-counterfire-defence-system",
+    "name": "Counterfire Defence System",
+    "source": "apocrypha",
+    "page": 445,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "When you are attacked, you may spend 1 Glory as a Reflexive Action to activate this system. The attack’s number of ED is reduced to 1.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-drone-controller-battlesuit",
+    "name": "Drone Controller (Battlesuit)",
+    "source": "apocrypha",
+    "page": 445,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "Friendly DRONE characters within 12m of you at the start of your turn may add your Tech skill ranks to any of their own skill ranks. Drones within that distance are not affected by the Threat Identification Protocol rule.\nA version of this item which does not have the SUPPORT SYSTEM keyword can be obtained, but the Value is increased by +1 and the Rarity is Rare.",
+    "note": "The table prints two rows, (Battlesuit) and (Personnel); the description (p.445, headed \"Drone Controller\", Value 4 (Uncommon), T’AU EMPIRE, SUPPORT SYSTEM) matches this row. Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-drone-controller-personnel",
+    "name": "Drone Controller (Personnel)",
+    "source": "apocrypha",
+    "page": 445,
+    "category": "T’au Empire Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE"
+    ],
+    "effect": "Friendly DRONE characters within 12m of you at the start of your turn may add your Tech skill ranks to any of their own skill ranks. Drones within that distance are not affected by the Threat Identification Protocol rule.\nA version of this item which does not have the SUPPORT SYSTEM keyword can be obtained, but the Value is increased by +1 and the Rarity is Rare.",
+    "note": "The table's second row: the description's version without the SUPPORT SYSTEM keyword (Value +1, Rarity Rare). Effect shared with apoc-drone-controller-battlesuit."
+  },
+  {
+    "id": "apoc-early-warning-override",
+    "name": "Early Warning Override",
+    "source": "apocrypha",
+    "page": 446,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "When you are Charged, you may use your Reflexive Action and spend 1 ammo to make a ranged attack against the enemy Charging you. This attack is resolved before the Charge begins. This is considered a Salvo option, so you must reload your weapon after this attack before you can fire it again.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-ejection-system",
+    "name": "Ejection System",
+    "source": "apocrypha",
+    "page": 446,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "When you are reduced to 0 Wounds, the suit’s systems eject you. You land 3d6 metres away, in the direction furthest from the enemy. Your battlesuit is destroyed, but you have Wounds remaining equal to 1d3 plus the game’s Tier, and a Pulse Pistol.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword). The flavour text says it is issued only to lone XV8 Crisis Battlesuit pilots of the rank of Shas’vre or higher; no Requirements line is printed."
+  },
+  {
+    "id": "apoc-holographic-projector",
+    "name": "Holographic Projector",
+    "source": "apocrypha",
+    "page": 446,
+    "category": "T’au Empire Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "WATER CASTE"
+    ],
+    "effect": "You may project a holographic decoy to any location you can see; the hologram immediately vanishes if line of sight to the projector is broken. It can take any appearance the user knows. While active, it will carry out simple pre-chosen actions—walking forwards, playing pre-recorded speech. The hologram has a Defence of 1 and is disrupted if it takes any damage. The user may use a Combat Action to give the hologram different instructions or control it directly."
+  },
+  {
+    "id": "apoc-miniaturised-disruption-pod",
+    "name": "Miniaturised Disruption Pod",
+    "source": "apocrypha",
+    "page": 446,
+    "category": "T’au Empire Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "WATER CASTE",
+      "ETHEREAL CASTE"
+    ],
+    "effect": "The wearer’s Defence is increased by +1 against ranged attacks, and enemies attempting a ranged attack cannot gain a bonus from aiming or called shots."
+  },
+  {
+    "id": "apoc-multi-tracker",
+    "name": "Multi-Tracker",
+    "source": "apocrypha",
+    "page": 446,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "Whenever you make a ranged attack at an enemy Mob, or when you make a Multi-Attack, each Exalted Icon shifted allows you to hit one additional enemy. No enemy may be hit more than once by such an attack.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-neuroweb-system-jammer",
+    "name": "Neuroweb System Jammer",
+    "source": "apocrypha",
+    "page": 447,
+    "category": "T’au Empire Equipment",
+    "kind": "equipment",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "PATHFINDER"
+    ],
+    "effect": "This device allows the wielder to make a Tech interaction attack out to a range of five times your Intellect score in metres. In addition, when using the device, you may target multiple enemies with the Interaction Attack, adding +2DN for each enemy after the first, as per a Multi-Attack."
+  },
+  {
+    "id": "apoc-polyglot-hedron",
+    "name": "Polyglot Hedron",
+    "source": "apocrypha",
+    "page": 447,
+    "category": "T’au Empire Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "WATER CASTE"
+    ],
+    "effect": "When you speak into this device, it instantly translates your speech into the desired language. It can be connected to communication systems such as vox casters to broadcast the translated speech. Each polyglot hedron contains hundreds of languages."
+  },
+  {
+    "id": "apoc-stimulant-injector",
+    "name": "Stimulant Injector",
+    "source": "apocrypha",
+    "page": 447,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "When you roll Determination, you may activate your stimulant injector to re-roll all failed dice on the roll, and ignore all Shock gained from that roll. Once this has been used, you cannot use it again until after you have Regrouped, as your body needs time to recover.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-target-analysis-optic",
+    "name": "Target Analysis Optic",
+    "source": "apocrypha",
+    "page": 445,
+    "category": "T’au Empire Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "PATHFINDER"
+    ],
+    "effect": "",
+    "note": "Listed in the T’au Empire Equipment table (p.445) but no description is printed on pp.445–447: no effect."
+  },
+  {
+    "id": "apoc-target-lock",
+    "name": "Target Lock",
+    "source": "apocrypha",
+    "page": 447,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "When you make a ranged attack, the target does not increase their Defence due to being in cover.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-velocity-tracker",
+    "name": "Velocity Tracker",
+    "source": "apocrypha",
+    "page": 447,
+    "category": "T’au Empire Equipment",
+    "kind": "upgrade",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "T'AU EMPIRE",
+      "SUPPORT SYSTEM"
+    ],
+    "effect": "Whenever you make a ranged attack against an enemy which is hovering, moved using a fly speed in its last turn, or which is a vehicle with the Flyer or Hover trait which is currently airborne, add +2 bonus dice to your attack.",
+    "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
+  },
+  {
+    "id": "apoc-aetheric-wave-spars",
+    "name": "Aetheric Wave-Spars",
+    "source": "apocrypha",
+    "page": 448,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CHAOS",
+      "DARK MECHANICUM",
+      "HERETIC"
+    ],
+    "effect": "When you roll a Wrath Critical on a Psychic Mastery test, you may roll one additional Wrath Die immediately (these extra dice cannot themselves generate extra dice).",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.448) prints 7 Very Rare."
+  },
+  {
+    "id": "apoc-autosanguine",
+    "name": "Autosanguine",
+    "source": "apocrypha",
+    "page": 448,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CULT MECHANICUS"
+    ],
+    "effect": "Whenever you regain one or more Wounds, you regain one additional Wound. You also ignore the penalty for being Wounded."
+  },
+  {
+    "id": "apoc-baleful-eye",
+    "name": "Baleful Eye",
+    "source": "apocrypha",
+    "page": 449,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "A character with a Baleful Eye is considered to have a Hot-Shot Laspistol within the eye. The weapon runs from an internal power source, and never runs out of ammunition, but this also means that ammo may not be spent on the weapon’s attacks.",
+    "note": "No profile printed; the Hot-Shot Laspistol is hot-shot-laspistol (Core)."
+  },
+  {
+    "id": "apoc-blade-tines",
+    "name": "Blade-Tines",
+    "source": "apocrypha",
+    "page": 449,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "CHAOS",
+      "DARK MECHANICUM",
+      "DRUKHARI"
+    ],
+    "effect": "Blade-tines grant the recipient +1d on all Medicae tests, and they can be used as a Mono-Knife in melee.",
+    "note": "No profile printed; the Mono-Knife is mono-knife (Core)."
+  },
+  {
+    "id": "apoc-calculus-logi-implant",
+    "name": "Calculus Logi Implant",
+    "source": "apocrypha",
+    "page": 449,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "The recipient has a +2d bonus on all Investigation and Scholar tests."
+  },
+  {
+    "id": "apoc-chem-gland",
+    "name": "Chem Gland",
+    "source": "apocrypha",
+    "page": 449,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "Select a single drug—either Stimm, or a drug with the COMBAT DRUG keyword—for the gland to produce. The character may administer the drug as a free action at the start of their turn. The gland produces the drug, but it takes time and nutrients, producing 3 doses at the end of each Respite.",
+    "note": "\"COMBAT DRUG\" keyword printed singular (the Hekatarii Combat Drugs print COMBAT DRUGS)."
+  },
+  {
+    "id": "apoc-chem-injector",
+    "name": "Chem Injector",
+    "source": "apocrypha",
+    "page": 449,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "ADEPTUS MINISTORUM"
+    ],
+    "effect": "The injector is loaded with a single drug, either Stimm or a drug with the COMBAT DRUG keyword, and a character may have multiple chem injector implants to deliver multiple drugs. The character can administer that drug as a simple action. Some characters with this implant do not have control over them; their injectors are controlled by another character over a vox link.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.448) prints 5 Rare."
+  },
+  {
+    "id": "apoc-data-tether",
+    "name": "Data-Tether",
+    "source": "apocrypha",
+    "page": 449,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "effect": "Characters with a data-tether may communicate silently to similarly-equipped characters within 1km, transmitting their thoughts, status, and sensory data through the implant to one another. A data-tether may be tuned to receive normal vox transmissions from non-Skitarii allies, though this is less efficient."
+  },
+  {
+    "id": "apoc-electoo",
+    "name": "Electoo",
+    "source": "apocrypha",
+    "page": 450,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "An Electoo can be used to store information electronically and can even adjust this information under pre-programmed conditions or when instructed by an outside source. The user has no direct control over the electoo or its contents and may not even be aware of it, unless they have the ADEPTUS MECHANICUS keyword.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.448) prints 3 Common."
+  },
+  {
+    "id": "apoc-electrograft",
+    "name": "Electrograft",
+    "source": "apocrypha",
+    "page": 450,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "A character implanted with an electrograft may gain one of the effects below. A character may receive multiple electrografts, but for every electrograft after the first, the character must change one extra die on Intellect, Willpower, or Fellowship tests to a Wrath die.\n- Learn 1+ Rank additional languages.\n- +Rank dice on tests using a single skill.\n- Remove or alter a memory."
+  },
+  {
+    "id": "apoc-enhanced-data-tether",
+    "name": "Enhanced Data-Tether",
+    "source": "apocrypha",
+    "page": 450,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "effect": "The implant can send and receive data at distances of up to 100km. Further, as enhanced data-tethers are used by Tech-Priests to impart directives to their Skitarii troops, those who bear them are regarded with reverence for they speak for the Omnissiah’s servants. As a result, the recipient and anyone in the group with a normal data-tether may re-roll failures on Resolve tests."
+  },
+  {
+    "id": "apoc-hermetic-infusion",
+    "name": "Hermetic Infusion",
+    "source": "apocrypha",
+    "page": 450,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CULT MECHANICUS"
+    ],
+    "effect": "You gain +2 bonus dice on all Toughness tests to resist poisons, diseases, and radioactivity. In addition, you automatically recover Wounds equal to your Toughness each time you take a Respite. However, anyone attempting a Medicae test on you who lacks the CULT MECHANICUS keyword adds +2 to the test’s DN."
+  },
+  {
+    "id": "apoc-interface-port",
+    "name": "Interface Port",
+    "source": "apocrypha",
+    "page": 450,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "This allows the user faster and smoother access to the valuable information within, and grants a +1d bonus to Scholar, Investigation, and Tech tests while connected to a relevant mechanism or data-spool."
+  },
+  {
+    "id": "apoc-luminen-capacitor",
+    "name": "Luminen Capacitor",
+    "source": "apocrypha",
+    "page": 451,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "CULT MECHANICUS"
+    ],
+    "effect": "A luminen capacitor contains a number of charges equal to the recipient’s Toughness. With a Toughness test, and a minute of meditative focus, the character may spend charges to power machinery. The DN of this test is 2 + charges used, and the number of charges required varies based on the system being charged.\n- 1 charge: simple power cell, illuminator\n- 2 charges: weapon charge pack, data-slate, starship bridge control shrine\n- 3 charges: shuttle electronics, servo skull\n- 4 charges: heavy weapon charge pack, servitor, hololithic projector\n- 5 charges: cogitator core, reactor machine spirit, xenos technology\n\nIf a character would suffer Shock from using an augmetic, then they may spend charges to reduce this, suffering one fewer Shock for each charge spent.\n\nThe luminen capacitor regains its full charges during a Regroup. The character may also siphon power from powered devices and power sources, requiring a Toughness test (DN 3) and an action. Success means the character regains 1d3 charges, plus 1 for each Exalted Icon shifted."
+  },
+  {
+    "id": "apoc-maglev-coils",
+    "name": "Maglev Coils",
+    "source": "apocrypha",
+    "page": 451,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "CULT MECHANICUS"
+    ],
+    "effect": "When activated, the character gains a fly speed equal to their Willpower, but they may not Run or Sprint while flying. Each turn the character remains aloft, they suffer 1 Shock. The character may also use this implant to slow themselves when falling, suffering 1d3 Shock, +1 for every 10 meters fallen, instead of the normal falling damage."
+  },
+  {
+    "id": "apoc-memorance-implant",
+    "name": "Memorance Implant",
+    "source": "apocrypha",
+    "page": 451,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "effect": "The recipient always has a perfect visual record of everything they see, which may be transferred to other data storage if they have a way to connect to those devices (such as an interface port). Further, they gain a +1d bonus on any Investigation or Scholar tests based on information they have already witnessed and recorded."
+  },
+  {
+    "id": "apoc-neuro-aethyric-inhibitor",
+    "name": "Neuro-aethyric Inhibitor",
+    "source": "apocrypha",
+    "page": 451,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "effect": "Your Willpower is reduced by 1. When you suffer a Wrath Complication on a Psychic Mastery test, you may activate this implant: you immediately suffer 1 Mortal Wound. Then, when you roll on the Perils of the Warp table, roll 2d6, and which ever die rolls lowest is the ‘tens’ die."
+  },
+  {
+    "id": "apoc-neurostatic-projector",
+    "name": "Neurostatic Projector",
+    "source": "apocrypha",
+    "page": 451,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "effect": "Creatures within 10 metres of the character add +Rank to the DN of all Intellect tests (including Awareness) and Resolve tests, and reduce their Passive Awareness by the same amount. Allies with the ADEPTUS MECHANICUS keyword receive null-codes which render them immune to this."
+  },
+  {
+    "id": "apoc-omnispex",
+    "name": "Omnispex",
+    "source": "apocrypha",
+    "page": 452,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "effect": "An omnispex functions as an auspex (page 236 of the Wrath & Glory core rulebook). In addition, if the recipient aims at an enemy, then they ignore any Defence bonuses from cover on their next ranged attack. If the recipient is equipped with a data-tether, they may share this bonus with any allies equipped with data-tethers within 10m."
+  },
+  {
+    "id": "apoc-psy-booster",
+    "name": "Psy-Booster",
+    "source": "apocrypha",
+    "page": 452,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "INQUISITION",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "effect": "When you make a Psychic Mastery test, you may re-roll any dice (other than Wrath dice) which roll 1s. However, if any of those dice roll a 1 when being re-rolled, you suffer 1 Shock."
+  },
+  {
+    "id": "apoc-scribe-tines",
+    "name": "Scribe-Tines",
+    "source": "apocrypha",
+    "page": 452,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "ADEPTUS ADMINISTRATUM"
+    ],
+    "effect": "The user gains a +2d bonus on Investigation tests, as they can record and retrieve information quickly."
+  },
+  {
+    "id": "apoc-skinplant",
+    "name": "Skinplant",
+    "source": "apocrypha",
+    "page": 452,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "The character has an illuminated tattoo, with a design of their choosing. This may be permanently lit, or it may remain hidden until a specific trigger (pressure, contracting a muscle, or similar). These are often applied to demonstrate fervour or loyalty and add +1 dice to any Persuasion or Intimidation tests attempted (choose which skill is affected when you gain the Skinplant)."
+  },
+  {
+    "id": "apoc-subdermal-chrono",
+    "name": "Subdermal Chrono",
+    "source": "apocrypha",
+    "page": 452,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "This functions as a chrono, but it is permanently implanted into the character’s skin."
+  },
+  {
+    "id": "apoc-thiefs-light",
+    "name": "Thief’s Light",
+    "source": "apocrypha",
+    "page": 452,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "At will, the user can generate a small amount of light from the palm of one hand.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.448) prints 2 Uncommon."
+  },
+  {
+    "id": "apoc-twitch-mask",
+    "name": "Twitch-mask",
+    "source": "apocrypha",
+    "page": 453,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "IMPERIUM",
+      "SCUM"
+    ],
+    "effect": "You add +2 dice on all Deception tests made to pass yourself off as another person. You may increase this bonus to +4 dice by suffering 1 Shock when you assume the disguise.",
+    "note": "Value, Rarity and Keywords from the description; the table row (p.448) prints 6 Very Rare."
+  },
+  {
+    "id": "apoc-voidskin",
+    "name": "Voidskin",
+    "source": "apocrypha",
+    "page": 453,
+    "category": "Augmetic Implants",
+    "kind": "augmetic",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "IMPERIAL NAVY"
+    ],
+    "effect": "The character gains a +3d bonus on all tests to resist the effects of exposure to hard vacuum, extreme cold, and radiation."
+  },
+  {
+    "id": "apoc-cybork-body",
+    "name": "Cybork Body",
+    "source": "apocrypha",
+    "page": 453,
+    "category": "Ork Bioniks",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "Your Resilience and Determination are both increased by +2.",
+    "note": "Described on p.453 but has no row in the Augmetics table (p.448); Value, Rarity and Keywords from the description."
+  },
+  {
+    "id": "apoc-gyro-stabilised-monowheel",
+    "name": "Gyro-Stabilised Monowheel",
+    "source": "apocrypha",
+    "page": 453,
+    "category": "Ork Bioniks",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "Your Speed is doubled. However, you can no longer climb ladders or stairs, and you can no longer jump without the aid of a ramp. Whenever you attempt to Run, Charge, or Sprint through Difficult Terrain, you must pass an Athletics test (DN 5) or suffer 1d3 Mortal Wounds as you crash."
+  },
+  {
+    "id": "apoc-spike-arm",
+    "name": "Spike Arm",
+    "source": "apocrypha",
+    "page": 453,
+    "category": "Ork Bioniks",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "This is a normal Augmetic Arm, granting you +1 Strength. In addition, your unarmed attacks now deal 3+3ED damage, adding your Strength as normal to the damage rating.",
+    "note": "The unarmed attack (3+3ED, plus Strength) is printed in the text only, with no profile table, so it has no weapon profile here."
+  },
+  {
+    "id": "apoc-squig-attack-arm",
+    "name": "Squig Attack Arm",
+    "source": "apocrypha",
+    "page": 454,
+    "category": "Ork Bioniks",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "This is a normal Augmetic Arm, granting you +1 Strength. In addition, you may release the squig as free action on your turn. The squig immediately attacks the nearest creature of your choice within 1m (if there are no other creatures within 1m, it attacks you), rolling 6 dice for its Weapon Skill test. If it hits, it inflicts 8+4ED damage with the Inflict (Bleeding) trait. Whether or not it hits, the squig then flees, is killed, or skulks away with a chunk of fresh meat. You must load a new squig—requiring a Survival test with a DN of 5—during a Regroup or Respite to use this ability again; complications on this test may result in the squig biting you and escaping, as above.",
+    "note": "The squig's attack (6 dice, 8+4ED, Inflict (Bleeding)) is the squig's, not the wearer's, so it has no weapon profile here."
+  },
+  {
+    "id": "apoc-teleskopik-legz",
+    "name": "Teleskopik Legz",
+    "source": "apocrypha",
+    "page": 454,
+    "category": "Ork Bioniks",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "ORK"
+    ],
+    "effect": "This is a normal pair of Augmetic Legs, granting you +2 Speed and +2m on any jump you perform. In addition, as a simple action, you may extend or retract the legs. When extended, the legs allow you to step over obstacles and gaps up to 2m tall or wide as part of your movement. In addition, when extended, your height is increased by 2m, which may allow you to see over tall obstacles (but may leave you exposed in turn)."
+  },
+  {
+    "id": "apoc-gnarlskin",
+    "name": "Gnarlskin",
+    "source": "apocrypha",
+    "page": 454,
+    "category": "Drukhari Fleshcraft",
+    "kind": "augmetic",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "You gain +2 Resilience.",
+    "note": "Value printed \"5 Rare\" (no brackets) in the description."
+  },
+  {
+    "id": "apoc-osseous-barbs",
+    "name": "Osseous Barbs",
+    "source": "apocrypha",
+    "page": 454,
+    "category": "Drukhari Fleshcraft",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "Your unarmed attacks inflict 2 +3ED damage, adding your Strength score to the base damage as normal. In addition, when you extend the spines, you add +1 bonus die to all Intimidation tests.",
+    "note": "Value printed \"6 Rare\" (no brackets) in the description. The unarmed attack is printed in the text only, with no profile table, so it has no weapon profile here."
+  },
+  {
+    "id": "apoc-vitriolic-humours",
+    "name": "Vitriolic Humours",
+    "source": "apocrypha",
+    "page": 455,
+    "category": "Drukhari Fleshcraft",
+    "kind": "augmetic",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "You no longer suffer any DN increase to tests while Wounded, and your Max Wounds and Max Shock are both increased by +1. In addition, whenever you suffer damage from a melee attack, roll a d6; on an Icon, the attacker suffers a Mortal Wound from the corrosive ichor that spurts from the wound. This increases to d3 Mortal Wounds if the damage inflicted the Bleeding condition. You are also immune to the Poisoned condition and disease.\nAs a result of this, getting any medical treatment is far more difficult and dangerous. Any Medicae Test made on you suffers a +2 DN penalty, and if a Complication occurs, you spray blood exactly as if injured.",
+    "note": "Value printed \"6 Rare\" (no brackets) in the description."
+  },
+  {
+    "id": "apoc-wings",
+    "name": "Wings",
+    "source": "apocrypha",
+    "page": 455,
+    "category": "Drukhari Fleshcraft",
+    "kind": "augmetic",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "effect": "You can fly at twice your walking Speed, though you cannot fly if you are wearing armour which lacks the LIGHT keyword. However, the process of granting you flight has left your body fragile, reducing your Resilience by 1.",
+    "note": "Value printed \"7 Very Rare\" (no brackets) in the description."
+  }
+]

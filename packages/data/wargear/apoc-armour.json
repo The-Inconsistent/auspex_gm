@@ -1,0 +1,2093 @@
+[
+  {
+    "id": "apoc-aeronautica-flight-suit",
+    "name": "Aeronautica Flight Suit",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "IMPERIUM",
+      "AERONAUTICA IMPERIALIS"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "Table row p.396; stats from the description on p.398. Void is an Apocrypha Armour Trait (p.398)."
+  },
+  {
+    "id": "apoc-arbites-carapace",
+    "name": "Arbites Carapace",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Table row p.396; stats from the description on p.398."
+  },
+  {
+    "id": "apoc-assassinorum-bodyglove",
+    "name": "Assassinorum Bodyglove",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LIGHT",
+      "IMPERIUM",
+      "OFFICIO ASSASSINORUM"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Agile"
+      ]
+    },
+    "effect": "Sealed: The suit is completely environmentally sealed and contains sufficient oxygen for 12 hours. GAS weapons, even ones absorbed through the skin, cannot penetrate synskin.",
+    "note": "Table row p.396; stats from the description on p.399. The table prints Value 9 (Very Rare); description's 8 kept. Agile is an Apocrypha Armour Trait (p.398)."
+  },
+  {
+    "id": "apoc-auramite-custodian-power-armour",
+    "name": "Auramite Custodian Power Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "ADEPTUS CUSTODES"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": "Proximity Sensors: The wearer’s Passive Perception is increased by +2.",
+    "note": "Table row p.396; stats from the description on p.399. Name from the table; the description is headed \"Auramite Custodes Power Armour\". The table prints AR 6 and Keywords POWERED, ADEPTUS CUSTODES; description kept."
+  },
+  {
+    "id": "apoc-endurant-shield",
+    "name": "Endurant Shield",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Cumbersome",
+        "Shield"
+      ]
+    },
+    "effect": "",
+    "note": "Table row p.396; stats from the description on p.399. The description prints \"Cumbersome Shield\" with no comma; split as in the table."
+  },
+  {
+    "id": "apoc-navis-armoured-voidsuit",
+    "name": "Navis Armoured Voidsuit",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "NAVIS IMPERIALIS"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "Table row p.396; stats from the description on p.399. The table prints Rarity Uncommon; description's Very Rare kept."
+  },
+  {
+    "id": "apoc-paragon-warsuit",
+    "name": "Paragon Warsuit",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "WARSUIT",
+      "ADEPTA SORORITAS"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": []
+    },
+    "effect": "A Paragon Warsuit may only be worn by a character wearing Sororitas Power Armour.\n\nWarsuit: The wearer’s Toughness is increased by +4 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly.\n\nArmament: The suit is equipped with either a twin Storm Bolter, or a Paragon Grenade Launcher. One arm mounts a Heavy Bolter, Multi-Melta, or Heavy Flamer, while the other mounts a Paragon War Blade or Paragon Mace.",
+    "note": "Table row p.396; stats from the description on p.399. The table prints Powered (6); description's Powered (5) kept. Armament profiles: apoc-twin-storm-bolter, apoc-paragon-grenade-launcher, apoc-paragon-war-blade, apoc-paragon-mace (p.400)."
+  },
+  {
+    "id": "apoc-riot-shield",
+    "name": "Riot Shield",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "IMPERIUM"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Shield"
+      ]
+    },
+    "effect": "",
+    "note": "Table row p.396; stats from the description on p.399."
+  },
+  {
+    "id": "apoc-sicarian-battle-armour",
+    "name": "Sicarian Battle Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Armour Rating: 4/ *1",
+    "note": "Table row p.396; stats from the description on p.400. AR printed \"4/ *1\" (table and description) with no rule for the split; stored as AR 4, the *1 kept in effect. Description headed \"Sicarian Battle-Armour\"."
+  },
+  {
+    "id": "apoc-suppression-shield",
+    "name": "Suppression Shield",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "HEAVY",
+      "SHOCK",
+      "IMPERIUM",
+      "ADEPTUS ARBITES"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Bulk (1)",
+        "Shield"
+      ]
+    },
+    "effect": "Discharge: An enemy who fails a melee attack against someone wielding a suppression shield immediately suffers 1 Shock. Anyone suffering a complication on a melee attack against someone wielding a suppression shield suffers 1d3 Shock.",
+    "note": "Table row p.396; stats from the description on p.400."
+  },
+  {
+    "id": "apoc-vindicare-stealth-suit",
+    "name": "Vindicare Stealth Suit",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "LIGHT",
+      "IMPERIUM",
+      "OFFICIO ASSASSINORUM",
+      "TEMPLUM VINDICARE"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Agile"
+      ]
+    },
+    "effect": "Cameleoline: The photoreactive mimic-fibres in the suit blur’s the wearer’s outline, granting a +2d bonus to Stealth tests and a +2 bonus to Defence when in shadow or in cover.\n\nSealed: The suit is completely environmentally sealed and contains sufficient oxygen for 12 hours. GAS weapons, even ones absorbed through the skin, cannot penetrate synskin.",
+    "note": "Table row p.396; stats from the description on p.400. \"blur’s\" as printed."
+  },
+  {
+    "id": "apoc-vratine-armour",
+    "name": "Vratine Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Imperial Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "IMPERIUM",
+      "SILENT SISTERHOOD"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 2,
+      "traits": [
+        "Agile"
+      ]
+    },
+    "effect": "",
+    "note": "Table row p.396; stats from the description on p.400. The table prints Keywords POWERED, ANATHEMA PSYKANA; description kept."
+  },
+  {
+    "id": "apoc-thunder-mark-i",
+    "name": "Thunder Mark I",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "HEAVY",
+      "POWERED",
+      "RELIC",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": [
+        "Bulky (1)"
+      ]
+    },
+    "effect": "The Emperor’s Presence: The few remaining suits of Thunder Armour are sacred relics of the Emperor’s reunification of Terra and the earliest days of the Great Crusades, and to falter while wearing it is to dishonour the heroes who came before you. Anyone wearing Mark I Thunder armour can withstand one additional Traumatic Injury before they die.",
+    "note": "Table row p.396; stats from the description on p.401. The table's Keywords add IMPERIUM; description kept. \"Bulky (1)\" as printed (Core: Bulk)."
+  },
+  {
+    "id": "apoc-crusade-mark-ii",
+    "name": "Crusade Mark II",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "RELIC",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": "Revered: The wearer of this armour gains +2d on all interaction tests made with other characters with the ADEPTUS ASTARTES keyword.\n\nTroublesome Machine Spirit: If Crusade armour is damaged in some way, the DN for any Tech tests to repair it increase by +2.",
+    "note": "Table row p.396; stats from the description on p.401. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-iron-mark-iii",
+    "name": "Iron Mark III",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "HEAVY",
+      "POWERED",
+      "RELIC",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": [
+        "Bulky (1)",
+        "Void"
+      ]
+    },
+    "effect": "Revered: The wearer of this armour gains +2d on all interaction tests made with other characters with the ADEPTUS ASTARTES keyword.\n\nVulnerable Rear: Attacks from the rear reduce the Armour Rating by 2.",
+    "note": "Table row p.396; stats from the description on p.402. The table's Keywords add IMPERIUM; description kept. \"Bulky (1)\" as printed."
+  },
+  {
+    "id": "apoc-maximus-mark-iv",
+    "name": "Maximus Mark IV",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "Revered: The wearer of this armour gains +2d on all interaction tests made with other characters with the ADEPTUS ASTARTES keyword.",
+    "note": "Table row p.396; stats from the description on p.402. The table's Keywords add IMPERIUM; description kept. VoA p.73 prints Mk IV Imperial Maximus (voa-mk-iv-imperial-maximus) at Powered (2), no rules."
+  },
+  {
+    "id": "apoc-heresy-mark-v",
+    "name": "Heresy Mark V",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "Rugged: The tough, studded outer shell of Heresy armour was ideal for the brutal combat of the Heresy itself. The wearer of this armour may add +1 to their Determination.\n\nSuspicious: This armour remains common amongst the Traitor Legions and draws the incisive gaze of the Inquisition. The wearer adds +1DN to all non-hostile interaction tests with members of the Inquisition.",
+    "note": "Table row p.396; stats from the description on p.402. The table's Keywords add IMPERIUM; description kept. VoA p.73's Mk V Heresy Armour (voa-mk-v-heresy-armour) differs."
+  },
+  {
+    "id": "apoc-corvus-mark-vi",
+    "name": "Corvus Mark VI",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES",
+      "RAVEN GUARD"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "Nimble: Corvus armour is favoured by assault specialists, who find the light weight and smooth movement well-suited to their work. The wearer gains +1 Speed.\n\nLight Construction: The lighter materials used in making Corvus armour are not as durable as those used in later marks. Any called shot against Corvus armour counts the attack’s AP as 1 better.",
+    "note": "Table row p.396; stats from the description on p.403. The table prints Keywords POWERED, IMPERIUM, ADEPTUS ASTARTES; description kept. VoA p.73's Mk VI Corvus Armour (voa-mk-vi-corvus-armour) differs."
+  },
+  {
+    "id": "apoc-errant-mark-viii",
+    "name": "Errant Mark VIII",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "Sign of Authority: The wearer adds +Rank to Leadership tests to command or rally other characters with the ADEPTUS ASTARTES keyword.\n\nThe Benefits of Advancement: A Space Marine character may replace their power armour with armour of this mark when they take an ascension package, as their advancement demonstrates their worthiness for this scarce and potent armour.",
+    "note": "Table row p.396; stats from the description on p.403. The table's Keywords add IMPERIUM; description kept. Same AR, Powered, Value and Rarity as VoA p.73's Mk VIII Errant Armour (voa-mk-viii-errant-armour), which adds IMPERIUM and has no rules."
+  },
+  {
+    "id": "apoc-gravis-mark-x",
+    "name": "Gravis Mark X",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": [
+        "Bulk (1)",
+        "Void"
+      ]
+    },
+    "effect": "Reinforced: The wearer adds +1 to their Toughness while wearing this armour. This increases their Wounds and Determination.",
+    "note": "Table row p.396; stats from the description on p.403. The table's Keywords add IMPERIUM; description kept. VoA p.73's Mk X Gravis Armour (voa-mk-x-gravis-armour) differs."
+  },
+  {
+    "id": "apoc-phobos-mark-x",
+    "name": "Phobos Mark X",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "Silenced: Moving Stealthily only requires a Simple Action and your Movement, rather than a Combat Action and your Movement.",
+    "note": "Table row p.396; stats from the description on p.403. The table's Keywords add IMPERIUM; description kept. VoA p.73's Mk X Phobos Armour (voa-mk-x-phobos-armour) differs."
+  },
+  {
+    "id": "apoc-adamantine-mantle",
+    "name": "Adamantine Mantle",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "LIGHT",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "Heroes’ Mantle: The wearer’s Determination is increased by +3.",
+    "note": "Table row p.396; stats from the description on p.403. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-aegis-armour",
+    "name": "Aegis Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "GREY KNIGHTS"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "The Aegis: Enemy psychic powers which target the wearer suffer +2DN. In addition, the wearer adds +Rank bonus dice when rolling Determination against attacks from a DAEMON.",
+    "note": "Table row p.396; stats from the description on p.404. The table prints Keywords POWERED, IMPERIUM, ADEPTUS ASTARTES, GREY KNIGHTS; description kept."
+  },
+  {
+    "id": "apoc-artificer-armour",
+    "name": "Artificer Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": "Value: 11 (Unique). Techmarines reduce this to 9 (Very Rare) instead.",
+    "note": "Table row p.396; stats from the description on p.404. The table's Keywords add IMPERIUM; description kept. The table prints \"11 Unique*\"; the asterisk is the Techmarine rule. Its own armour, not an upgrade."
+  },
+  {
+    "id": "apoc-cataphractii-terminator-armour",
+    "name": "Cataphractii Terminator Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "HEAVY",
+      "POWERED",
+      "RELIC",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 8,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": [
+        "Bulk (2)",
+        "Cumbersome"
+      ]
+    },
+    "effect": "Cataphractii Field Generator: The wearer may roll Determination against Mortal Wounds. In addition, the wearer adds +2 bonus dice when they roll Determination.",
+    "note": "Table row p.396; stats from the description on p.406. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-tartaros-terminator-armour",
+    "name": "Tartaros Terminator Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "RELIC",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": [
+        "Bulk (1)"
+      ]
+    },
+    "effect": "Tartaros Field Generator: The wearer may roll Determination against Mortal Wounds.",
+    "note": "Table row p.396; stats from the description on p.406. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-aegis-terminator-armour",
+    "name": "Aegis Terminator Armour",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "GREY KNIGHTS"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": [
+        "Cumbersome"
+      ]
+    },
+    "effect": "Aegis Terminatus: The wearer may roll Determination against Mortal Wounds. Further, enemy psychic powers which target the wearer suffer +2DN. Finally, the wearer adds +Rank bonus dice when rolling Determination against any attack from a DAEMON.",
+    "note": "Table row p.396; stats from the description on p.404. The table prints Keywords POWERED, IMPERIUM, ADEPTUS ASTARTES, GREY KNIGHTS; description kept."
+  },
+  {
+    "id": "apoc-centurion-warsuit",
+    "name": "Centurion Warsuit",
+    "source": "apocrypha",
+    "page": 396,
+    "category": "Astartes Armour",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "POWERED",
+      "WARSUIT",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 6,
+      "traits": []
+    },
+    "effect": "A Centurion Warsuit may only be worn by a character wearing Space Marine Power Armour.\n\nWarsuit: The wearer’s Toughness is increased by +2 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly.\n\nAssault Centurion: An Assault Centurion Warsuit is fitted with a Centurion Assault Launcher or a Hurricane Bolter, a pair of Siege Drills, and either a pair of Flamers or a pair of Meltaguns.\n\nDevastator Centurion: A Devastator Centurion is fitted with a Hurricane Bolter or Centurion Missile Launcher, and either a Grav-Cannon, two Heavy Bolters, or two Lascannons.",
+    "note": "Table row p.396; stats from the description on p.405. The table adds Bulk (2), Cumbersome to the description's \"7, Powered (6)\"; description kept. Differs from VoA p.73's (voa-centurion-warsuit). Weapon profiles: apoc-centurion-assault-launcher, apoc-hurricane-bolter, apoc-centurion-missile-launcher, apoc-siege-drill (p.405)."
+  },
+  {
+    "id": "apoc-boarding-shield",
+    "name": "Boarding Shield",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "FORCE FIELD",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Cumbersome",
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "",
+    "note": "Table row p.397; stats from the description on p.406. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-combat-shield",
+    "name": "Combat Shield",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "IMPERIUM",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "Wrist-mounted: The wearer may still wield weapons with the hand carrying this shield, as the shield is affixed to their arm.",
+    "note": "Table row p.397; stats from the description on p.406."
+  },
+  {
+    "id": "apoc-displacer-field",
+    "name": "Displacer Field",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "IMPERIUM"
+    ],
+    "armour": {
+      "ar": 0,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Displacement: When hit by an attack while protected by a displacer field, roll a number of dice equal to the number of ED used on the damage roll. If any of them roll Icons, then the field activates, moving the character a number of metres equal to the number of Icons rolled in a random direction instantly. If the field activates, the attack misses, unless it was a blast or area effect (in which case, it still affects the area, which the character may still be within). If this effect would place you within a solid object, reduce the distance teleported until you are no longer in a solid object.",
+    "note": "Table row p.397; stats from the description on p.407. The table prints AR *0; the description's 0, with no asterisk, kept."
+  },
+  {
+    "id": "apoc-hexagrammic-wards",
+    "name": "Hexagrammic Wards",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "WARD",
+      "INQUISITION",
+      "ADEPTUS ASTRA TELEPATHICA"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Witch-proof: Any attempt to use a psychic power upon a target protected by Hexagrammic Wards increases the difficulty by +4 DN. Hexagrammic wards provide no protection—not even Armour Rating—against non-psychic attacks.",
+    "note": "Table row p.397; stats from the description on p.407. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-iron-halo",
+    "name": "Iron Halo",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "ADEPTUS ASTARTES"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Symbol of Authority: A character wearing an Iron Halo gains +Double Rank bonus dice on all Leadership tests to command characters with the ADEPTUS ASTARTES keyword.",
+    "note": "Table row p.397; stats from the description on p.407. The table's Keywords add IMPERIUM; description kept."
+  },
+  {
+    "id": "apoc-pentagrammic-wards",
+    "name": "Pentagrammic Wards",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "WARD",
+      "ORDO MALLEUS"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Daemonbane: Any creature with the DAEMON keyword attempting to attack or interact with Pentagrammic Wards (or something warded with them) must take a Terror test (DN 5). Pentagrammic wards provide no protection—not even Armour Rating—against attacks from non-Daemons.",
+    "note": "Table row p.397; stats from the description on p.407. The table prints Keywords WARD, IMPERIUM, INQUISITION, ORDO MALLEUS; description kept."
+  },
+  {
+    "id": "apoc-voidsheen-cloak",
+    "name": "Voidsheen Cloak",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "ANATHEMA PSYKANA"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "Blast Diffraction: A character wearing a Voidsheen Cloak adds +2 to their Resilience against attacks with the Blast quality.",
+    "note": "Table row p.397; stats from the description on p.408."
+  },
+  {
+    "id": "apoc-voltagheist-field-generator",
+    "name": "Voltagheist Field Generator",
+    "source": "apocrypha",
+    "page": 397,
+    "category": "Force Shields",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "CULT MECHANICUS"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Discharge: When you charge while wearing a Voltagheist Field generator, roll a d6 for each enemy within 2m of you when you finish the charge. For each 6 rolled, that enemy suffers a Mortal Wound. Any enemy who rolls a 1 on their Wrath die when making a melee attack against you also suffers one Mortal Wound.\n\nLuminen Charge: A Voltagheist field generator will not function unless you have a Luminen Capacitor implant with one or more charges. If the Capacitor has more charges than its normal amount, then add +1 to the Armour Rating of the field for every additional charge you have, to a maximum Armour Rating of 6.",
+    "note": "Table row p.397; stats from the description on p.408. The table prints Keywords FORCE FIELD, ADEPTUS MECHANICUS, CULT MECHANICUS; description kept."
+  },
+  {
+    "id": "apoc-paragon-grenade-launcher",
+    "name": "Paragon Grenade Launcher",
+    "source": "apocrypha",
+    "page": 400,
+    "category": "Paragon Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": false,
+      "damage": 14,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 2,
+      "traits": [
+        "Barrage",
+        "Blast (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Paragon Warsuit armament (apoc-paragon-warsuit); no Value, Rarity or Keywords printed. Prints its own profile (Krak grenades), unlike Core launchers."
+  },
+  {
+    "id": "apoc-twin-storm-bolter",
+    "name": "Twin Storm Bolter",
+    "source": "apocrypha",
+    "page": 400,
+    "category": "Paragon Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 8,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Paragon Warsuit armament (apoc-paragon-warsuit); no Value, Rarity or Keywords printed. AP printed \"–\"."
+  },
+  {
+    "id": "apoc-paragon-war-blade",
+    "name": "Paragon War Blade",
+    "source": "apocrypha",
+    "page": 400,
+    "category": "Paragon Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Blessed (1)",
+        "Reaping"
+      ]
+    },
+    "effect": "",
+    "note": "Paragon Warsuit armament (apoc-paragon-warsuit); no Value, Rarity or Keywords printed."
+  },
+  {
+    "id": "apoc-paragon-mace",
+    "name": "Paragon Mace",
+    "source": "apocrypha",
+    "page": 400,
+    "category": "Paragon Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Blessed (1)",
+        "Brutal",
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Paragon Warsuit armament (apoc-paragon-warsuit); no Value, Rarity or Keywords printed."
+  },
+  {
+    "id": "apoc-centurion-assault-launcher",
+    "name": "Centurion Assault Launcher",
+    "source": "apocrypha",
+    "page": 405,
+    "category": "Centurion Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "When the wearer of this warsuit Charges, they may fire the assault launchers during the charge. The enemy charged, and any other enemies within 3m, must either choose to take a hit (Damage 10 +4ED) or suffer the Hindered and Vulnerable conditions.",
+    "note": "Centurion Warsuit armament (apoc-centurion-warsuit); no Value, Rarity or Keywords printed. No profile table: the hit is in the effect, so no weapon block."
+  },
+  {
+    "id": "apoc-hurricane-bolter",
+    "name": "Hurricane Bolter",
+    "source": "apocrypha",
+    "page": 405,
+    "category": "Centurion Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 6,
+      "traits": [
+        "Brutal",
+        "Rapid Fire (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Centurion Warsuit armament (apoc-centurion-warsuit); no Value, Rarity or Keywords printed. AP printed \"–\"."
+  },
+  {
+    "id": "apoc-centurion-missile-launcher",
+    "name": "Centurion Missile Launcher",
+    "source": "apocrypha",
+    "page": 405,
+    "category": "Centurion Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": false,
+      "damage": 16,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        18,
+        36,
+        54
+      ],
+      "salvo": 6,
+      "traits": [
+        "Barrage",
+        "Blast (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Centurion Warsuit armament (apoc-centurion-warsuit); no Value, Rarity or Keywords printed. Differs from VoA p.67's (voa-centurion-missile-launcher), which fires missiles."
+  },
+  {
+    "id": "apoc-siege-drill",
+    "name": "Siege Drill",
+    "source": "apocrypha",
+    "page": 405,
+    "category": "Centurion Warsuit Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Paired"
+      ]
+    },
+    "effect": "",
+    "note": "Centurion Warsuit armament (apoc-centurion-warsuit); no Value, Rarity or Keywords printed. Range printed \"–\", stored as melee [1]. Differs from VoA p.62's Siege Drills (voa-siege-drills)."
+  },
+  {
+    "id": "apoc-daemonic-rune",
+    "name": "Daemonic Rune",
+    "source": "apocrypha",
+    "page": 409,
+    "category": "Chaos Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "DAEMONIC",
+      "CHAOS"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": "Heroes’ Mantle: The wearer’s Determination is increased by +3.",
+    "note": "Entry keywords printed \"LIGHT, ADEPTUS ASTARTES\" (the Adamantine Mantle's, p.396); stored as the armour table's (p.397) \"DAEMONIC, CHAOS\". Armour Rating printed \"*1; Power Field, Shield\" (semicolon)."
+  },
+  {
+    "id": "apoc-fleshmetal",
+    "name": "Fleshmetal",
+    "source": "apocrypha",
+    "page": 409,
+    "category": "Chaos Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "MUTATED",
+      "CHAOS",
+      "HERETIC ASTARTES"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": "Hideous Symbiosis: Fleshmetal armour cannot be removed. Whenever the wearer rolls Determination, each Exalted Icon causes them to recover 1 Wound.",
+    "note": "Armour Rating printed \"6; Powered (4)\" (semicolon)."
+  },
+  {
+    "id": "apoc-sigil-of-corruption",
+    "name": "Sigil of Corruption",
+    "source": "apocrypha",
+    "page": 409,
+    "category": "Chaos Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "DAEMONIC",
+      "CHAOS"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Blasphemy: The first time a character dons a Sigil of Corruption, they gain +2 Corruption Points."
+  },
+  {
+    "id": "apoc-aura-of-dark-glory",
+    "name": "Aura of Dark Glory",
+    "source": "apocrypha",
+    "page": 409,
+    "category": "Chaos Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "DAEMONIC",
+      "CHAOS"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Chaos Gift: An Aura of Dark Glory cannot be removed. When the character gains an Aura of Dark Glory, they gain +1 Corruption point."
+  },
+  {
+    "id": "apoc-aspect-armour",
+    "name": "Aspect Armour",
+    "source": "apocrypha",
+    "page": 410,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ASURYANI",
+      "ASPECT WARRIOR"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Agile",
+        "Power Field"
+      ]
+    },
+    "effect": "Variants: Heavy Aspect Armour has an Armour Rating of 5, the Bulk (1) trait, and the HEAVY keyword.",
+    "note": "Heavy Aspect Armour is its own entry (apoc-heavy-aspect-armour)."
+  },
+  {
+    "id": "apoc-heavy-aspect-armour",
+    "name": "Heavy Aspect Armour",
+    "source": "apocrypha",
+    "page": 410,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "ASURYANI",
+      "ASPECT WARRIOR"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Agile",
+        "Bulk (1)",
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "Printed as the Aspect Armour Variants line (p.410) and as its own row in the armour table (p.397), which gives Value, Rarity and full Traits."
+  },
+  {
+    "id": "apoc-force-shield",
+    "name": "Force Shield",
+    "source": "apocrypha",
+    "page": 410,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "AELDARI"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field",
+        "Shield"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-holo-suit",
+    "name": "Holo-Suit",
+    "source": "apocrypha",
+    "page": 410,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HOLOGRAM",
+      "LIGHT",
+      "HARLEQUIN"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Agile",
+        "Power Field"
+      ]
+    },
+    "effect": "Domino Field: A Holo-Suit increases the wearer’s Defence based on how much they have moved. It grants +1 Defence if the wearer was stationary last turn. This increases to +2 if the wearer moved, +3 if the wearer Ran, or +4 if the wearer Sprinted."
+  },
+  {
+    "id": "apoc-clone-field",
+    "name": "Clone Field",
+    "source": "apocrypha",
+    "page": 411,
+    "category": "Drukhari Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "HOLOGRAM",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 0,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "A Clone Field cannot be worn with FORCE FIELD armour, as energy fields disrupt the holographic decoys.\nDeceptive Defence: Whenever you are attacked while wearing a Clone Field, roll a d6. On an Icon, the attack is considered to have missed. This has no effect against Blasts or area effect attacks.",
+    "note": "The FORCE FIELD restriction is from the description paragraph."
+  },
+  {
+    "id": "apoc-ghostplate",
+    "name": "Ghostplate",
+    "source": "apocrypha",
+    "page": 411,
+    "category": "Drukhari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "LIGHT",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Agile",
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "Armour Rating printed \"4/*2\" (4, and 2 Invulnerable); the schema holds one rating, stored as 4 non-Invulnerable."
+  },
+  {
+    "id": "apoc-incubus-warsuit",
+    "name": "Incubus Warsuit",
+    "source": "apocrypha",
+    "page": 411,
+    "category": "Drukhari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Tormentor: The nearest enemy within 2 metres of this armour’s wearer cannot take a turn until after everyone else has taken a turn this round."
+  },
+  {
+    "id": "apoc-kabalite-armour",
+    "name": "Kabalite Armour",
+    "source": "apocrypha",
+    "page": 411,
+    "category": "Drukhari Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "LIGHT",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "apoc-shadowfield",
+    "name": "Shadowfield",
+    "source": "apocrypha",
+    "page": 411,
+    "category": "Drukhari Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 8,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Near-Perfect Defence: The wearer of a functioning Shadowfield may roll Determination without suffering Shock and rolls 9d6 when they roll Determination.\nOverload: If the wearer of a Shadowfield takes any damage, the field overloads and will provide no benefit until after the next Regroup."
+  },
+  {
+    "id": "apoc-wychsuit",
+    "name": "Wychsuit",
+    "source": "apocrypha",
+    "page": 411,
+    "category": "Drukhari Armour",
+    "kind": "armour",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Agile"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed Uncommon here; the armour table (p.397) prints \"3 Common\". Entry kept."
+  },
+  {
+    "id": "apoc-kustom-force-field-projekta",
+    "name": "Kustom Force Field Projekta",
+    "source": "apocrypha",
+    "page": 412,
+    "category": "Ork Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "KUSTOM",
+      "ORK"
+    ],
+    "armour": {
+      "ar": 0,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Big Bubble: The generator produces a bubble which covers everything within 20m of the wearer. Any creature within the bubble receives +2 Defence and +2 Resilience against any attack which originated outside the bubble."
+  },
+  {
+    "id": "apoc-sparky-wotzitz",
+    "name": "Sparky Wotzitz",
+    "source": "apocrypha",
+    "page": 412,
+    "category": "Ork Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "KUSTOM",
+      "ORK"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Unreliable: Whenever you roll Determination when wearing Sparky Wotzitz, include a Wrath die. If a 6 is rolled on this Wrath die, the attack is entirely ignored with a flash of light and a thunderous boom. If a 1 is rolled on this Wrath die, the force field fails entirely, and will not function until repaired. It takes a Tech test (DN5) to repair the field, which cannot be done in combat."
+  },
+  {
+    "id": "apoc-ancestral-ward-crest",
+    "name": "Ancestral Ward Crest",
+    "source": "apocrypha",
+    "page": 412,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 0,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Barrier-Tech: The Ancestral Ward Crest has an Invulnerable Armour Rating equal to the wearer’s Psychic Mastery skill ranks.",
+    "note": "Armour Rating printed \"Special\"; stored as 0 Invulnerable (Barrier-Tech sets it). The armour table (p.397) prints \"9 Unique\" and an asterisk on the name; entry's 8 kept. Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-bastium-void-armour",
+    "name": "Bastium Void Armour",
+    "source": "apocrypha",
+    "page": 412,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "HEAVY",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "Armour Rating printed \"5/*4\" (5, and 4 Invulnerable); the schema holds one rating, stored as 5 non-Invulnerable. The armour table (p.397) lists Traits \"Power Field, Void\"; entry's \"Void\" kept. Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-exo-armour",
+    "name": "Exo-Armour",
+    "source": "apocrypha",
+    "page": 412,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "POWERED",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": [
+        "Cumbersome",
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-exo-frame",
+    "name": "Exo-Frame",
+    "source": "apocrypha",
+    "page": 412,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "POWERED",
+      "LEAGUES OF VOTANN",
+      "BRÔKHYR"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 6,
+      "traits": [
+        "Bulk (1)",
+        "Cumbersome",
+        "Void"
+      ]
+    },
+    "effect": "Stable Firing Platform: A Heavy weapon carried by a character in an Exo-Frame always counts as Braced.",
+    "note": "Printed \"Powered (6) Void\" with no comma; split. Powered (6) is higher than Exo-Armour's Powered (5); copied as printed. Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-ram-shield",
+    "name": "RAM Shield",
+    "source": "apocrypha",
+    "page": 413,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "HEAVY",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Shield"
+      ]
+    },
+    "effect": "Integrated Weapon: A RAM Shield contains a built-in Autoch-pattern Combi-bolter (page 383)",
+    "note": "The Combi-bolter is apoc-autoch-pattern-combi-bolter; the cross-reference prints \"page 383\". Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-rampart-crest",
+    "name": "Rampart Crest",
+    "source": "apocrypha",
+    "page": 413,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Extended Field: The protection of a rampart crest can be expanded, granting +2 Resilience to any allies within 6m.",
+    "note": "Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-weavefield-crest",
+    "name": "Weavefield Crest",
+    "source": "apocrypha",
+    "page": 413,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "FORCE FIELD",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "The armour table (p.397) prints \"7 Very Rare\"; entry's \"8 (Unique)\" kept. Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-void-armour",
+    "name": "Void Armour",
+    "source": "apocrypha",
+    "page": 413,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Common",
+    "keywords": [
+      "HEAVY",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-void-suit",
+    "name": "Void Suit",
+    "source": "apocrypha",
+    "page": 413,
+    "category": "Leagues of Votann Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "LIGHT",
+      "LEAGUES OF VOTANN"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords not printed in the entry; taken from the armour table (p.397)."
+  },
+  {
+    "id": "apoc-field-relay-amplifier",
+    "name": "Field Relay Amplifier",
+    "source": "apocrypha",
+    "page": 414,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 0,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Special: This provides no benefits by itself, but it increases the benefit provided by a Guardian Drone’s field generator by +1.",
+    "note": "Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-shield-generator",
+    "name": "Shield Generator",
+    "source": "apocrypha",
+    "page": 414,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "SUPPORT SYSTEM",
+      "T'AU EMPIRE"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "Special: A version of this item without the SUPPORT SYSTEM keyword has a rarity of Unique.",
+    "note": "A SUPPORT SYSTEM: usable only mounted on a BATTLESUIT (p.414). Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-tau-combat-armour",
+    "name": "T'au Combat Armour",
+    "source": "apocrypha",
+    "page": 414,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-tau-flight-suit",
+    "name": "T'au Flight Suit",
+    "source": "apocrypha",
+    "page": 414,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "T'AU EMPIRE"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Void"
+      ]
+    },
+    "effect": "",
+    "note": "The armour table (p.398) adds the AIR CASTE keyword and a \"Special\" Trait with no rule; entry kept. Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-tau-recon-armour",
+    "name": "T'au Recon Armour",
+    "source": "apocrypha",
+    "page": 414,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "LIGHT",
+      "T'AU EMPIRE",
+      "PATHFINDER"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Freedom of Movement: A character wearing Recon Armour adds +1 to their Speed.",
+    "note": "Starts on p.414, stats on p.415. Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-xv15-stealth-battlesuit",
+    "name": "XV15 Stealth Battlesuit",
+    "source": "apocrypha",
+    "page": 415,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "BATTLESUIT",
+      "JUMP JETS",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 2,
+      "traits": []
+    },
+    "effect": "Stealth Field: When active, the Stealth Field increases the wearer’s Defence by +2 and increases the DN to observe or detect the wearer by +2.\nJump Jets: The armour is fitted with jump jets allowing for considerable mobility. The suit has a Speed of 8 (Flying). As a Stealth Battlesuit, moving using this flight speed does not affect the wearer’s Stealth Score.\nArmament: This battlesuit is armed with a single Burst Cannon, modified to grant it the Silent trait. They cannot take a SUPPORT SYSTEM.",
+    "note": "Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-xv25-stealth-battlesuit",
+    "name": "XV25 Stealth Battlesuit",
+    "source": "apocrypha",
+    "page": 415,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BATTLESUIT",
+      "JUMP JETS",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 3,
+      "traits": []
+    },
+    "effect": "Nanocrystalline Structure: The wearer’s Toughness is increased by +2 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly.\nStealth Field: When active, the Stealth Field increases the wearer’s Defence by +2 and increases the DN to observe or detect the wearer by +2.\nJump Jets: The armour is fitted with jump jets allowing for considerable mobility. The suit has a Speed of 8 (Flying). As a Stealth Battlesuit, moving using this flight speed does not affect the wearer’s Stealth Score.\nArmament: This battlesuit is armed with a single Burst Cannon, modified to grant it the Silent trait, or a Fusion Gun. It may take one SUPPORT SYSTEM: either a Target Lock or Drone Controller.",
+    "note": "Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-xv8-crisis-battlesuit",
+    "name": "XV8 Crisis Battlesuit",
+    "source": "apocrypha",
+    "page": 416,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "BATTLESUIT",
+      "HEAVY",
+      "JUMP JETS",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": "Nanocrystalline Structure: The wearer’s Toughness is increased by +4 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly. While within the suit, the wearer’s size is Large.\nJump Jets: The armour is fitted with jump jets allowing for considerable mobility. The suit has a Speed of 8 (Flying).\nArmament: This battlesuit may be equipped with up to three weapons and a single SUPPORT SYSTEM, though any weapon slot may be replaced by an additional SUPPORT SYSTEM.",
+    "note": "Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-xv85-enforcer-battlesuit",
+    "name": "XV85 Enforcer Battlesuit",
+    "source": "apocrypha",
+    "page": 417,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BATTLESUIT",
+      "HEAVY",
+      "JUMP JETS",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": []
+    },
+    "effect": "Hardened Nanocrystalline Structure: The wearer’s Toughness is increased by +5 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly. While within the suit, the wearer’s size is Large.\nJump Jets: The armour is fitted with jump jets allowing for considerable mobility. The suit has a Speed of 8 (Flying).\nArmament: This battlesuit may be equipped with up to four weapons. Any weapon slot may be replaced by a SUPPORT SYSTEM.",
+    "note": "Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-xv86-coldstar-battlesuit",
+    "name": "XV86 Coldstar Battlesuit",
+    "source": "apocrypha",
+    "page": 417,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BATTLESUIT",
+      "HEAVY",
+      "JUMP JETS",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "effect": "Nanocrystalline Structure: The wearer’s Toughness is increased by +4 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly. While within the suit, the wearer’s size is Large.\nFlight Jets: The armour is fitted with jump jets allowing for considerable mobility. The suit has a Speed of 14 (Flying).\nArmament: This battlesuit is fitted with a High output Burst Cannon (below) and may be equipped with up to three other weapons. The High output Burst Cannon may be replaced by another weapon, and any weapon slot may be replaced by a SUPPORT SYSTEM.",
+    "note": "High Output Burst Cannon is apoc-high-output-burst-cannon. Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-high-output-burst-cannon",
+    "name": "High Output Burst Cannon",
+    "source": "apocrypha",
+    "page": 417,
+    "category": "T'au Empire Armour",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 10,
+      "traits": [
+        "Assault",
+        "Rapid Fire (5)",
+        "Heavy (6)"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "The XV86 Coldstar Battlesuit's weapon. Value, Rarity and Keywords not printed."
+  },
+  {
+    "id": "apoc-xv88-broadside-battlesuit",
+    "name": "XV88 Broadside Battlesuit",
+    "source": "apocrypha",
+    "page": 418,
+    "category": "T'au Empire Armour",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BATTLESUIT",
+      "HEAVY",
+      "T'AU EMPIRE",
+      "FIRE CASTE"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 6,
+      "traits": [
+        "Bulk (1)"
+      ]
+    },
+    "effect": "Reinforced Nanocrystalline Structure: The wearer’s Toughness is increased by +4 while they wear this suit. This increases the wearer’s Wounds and Determination accordingly. While within the suit, the wearer’s size is Large.\nStabilisers: The armour may carry weapons with the Mounted (Large) Trait, but if it attempts to fire them in a turn in which it moved, the DN of the attack increases by +2.\nArmament: This battlesuit is fitted with a Heavy Rail Rifle, which may be replaced by twin High Yield Missile Pods. It may also be fitted with two items from the following list: Twin Plasma Rifles, Twin Smart Missile Systems, or a SUPPORT SYSTEM. A warrior using a Broadside Battlesuit may obtain and use items with the XV88 keyword.",
+    "note": "No JUMP JETS keyword printed (entry and table). No item prints the XV88 keyword. Keyword printed \"T’AU EMPIRE\" (typographic apostrophe); stored as \"T'AU EMPIRE\" like the keyword catalogue."
+  },
+  {
+    "id": "apoc-heavy-rail-rifle",
+    "name": "Heavy Rail Rifle",
+    "source": "apocrypha",
+    "page": 418,
+    "category": "T'au Empire Armour",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "damage": 18,
+      "ed": 6,
+      "range": [
+        30,
+        60,
+        90
+      ],
+      "salvo": 2,
+      "traits": [
+        "Mortal (1)",
+        "Mounted (Large)"
+      ],
+      "ap": -4
+    },
+    "effect": "",
+    "note": "An XV88 Broadside Battlesuit weapon. Value, Rarity and Keywords not printed."
+  },
+  {
+    "id": "apoc-twin-high-yield-missile-pods",
+    "name": "Twin High Yield Missile Pods",
+    "source": "apocrypha",
+    "page": 418,
+    "category": "T'au Empire Armour",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 8,
+      "traits": [
+        "Barrage",
+        "Blast (2)",
+        "Mounted (Large)"
+      ],
+      "ap": -2
+    },
+    "effect": "",
+    "note": "An XV88 Broadside Battlesuit weapon. Value, Rarity and Keywords not printed."
+  },
+  {
+    "id": "apoc-twin-plasma-rifles",
+    "name": "Twin Plasma Rifles",
+    "source": "apocrypha",
+    "page": 418,
+    "category": "T'au Empire Armour",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "damage": 16,
+      "ed": 11,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault"
+      ],
+      "ap": -3
+    },
+    "effect": "",
+    "note": "An XV88 Broadside Battlesuit weapon. Value, Rarity and Keywords not printed. ED printed 11 (the single Plasma Rifle, p.378, is ED 3); copied as printed."
+  },
+  {
+    "id": "apoc-twin-smart-missile-systems",
+    "name": "Twin Smart Missile Systems",
+    "source": "apocrypha",
+    "page": 418,
+    "category": "T'au Empire Armour",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        15,
+        30,
+        45
+      ],
+      "salvo": 8,
+      "traits": [
+        "Barrage",
+        "Blast (2)",
+        "Indirect"
+      ]
+    },
+    "effect": "",
+    "note": "An XV88 Broadside Battlesuit weapon. Value, Rarity and Keywords not printed. AP printed \"–\"."
+  }
+]

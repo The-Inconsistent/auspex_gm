@@ -304,6 +304,23 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Clothes, robes, vestments, rags and gang colours are Clothing (Core p.236: "religious vestments, uniforms, or
     protective worker's overalls"). The Rogue Trader's Imperial Frigate (Core p.104) is a `story` grant, a ship the GM
     runs.
+44. **FSPG's numeric Rarity** (pp.120–128) is the Rarity's DN penalty (Core p.206): 0 Common, 1 Uncommon, 2 Rare,
+    3 Very Rare, 4 Unique. The Laud-Hailer prints "Rarity: 0", and the Irregular Acquisition endeavour sets a DN "equal
+    to the Rarity modifier".
+45. **The Ratling Sniper's "Sniper Rifle"** (FSPG p.114) is the Ratling Rifle (FSPG p.123), which its text calls one of
+    "these sniper rifles". The Interrogator's "Excruciator" is the armoury's "Excrutiator" (p.126).
+46. **IoE's Armoury supersedes Core's Aeldari printings** (the newest official printing wins). Aeldari-only items
+    (shuriken weapons, Lasblaster, Ranger Long Rifle, Fusion Gun, Void Sabre, Witchblade, Singing Spear, the Aeldari
+    armours, Shimmershield, Spirit Stone, Bonesinger Shard) link to IoE's entry in every book; Core's entry stays in the
+    catalogue, noting it. Generic items IoE reprints as Aeldari gear (Knife, Flamer, Chainsword, Power Sword, Plasma
+    Grenade, Cameleoline Cloak) link to IoE's only in Aeldari records (from IoE, or an archetype of an Aeldari faction).
+    A starting Spirit Stone is IoE's empty one (p.98), and a Rangefinder the standalone one.
+47. **An official book's starting wargear that no official armoury prints** takes Apocrypha's homebrew profile when it
+    has one: VoA's Bolt Carbine, Occulus Bolt Carbine, Grav-pistol, Plasma Incinerators, Smoke Grenades and Reductor
+    (VoA pp.30–37), the Techmarine's "Mark VII Artificer Power Armour" (Apocrypha's Artificer Armour, p.397), and
+    FSPG's Servo-skull, Cherubim and Combat servitor (Apocrypha's followers). An official profile wins where one
+    exists: VoA's Shock Grenade is FSPG's (p.124). The Eversor Assassin's "Executor pistol"
+    is the Executioner Pistol its section describes as the Eversor sidearm (Apocrypha p.356).
 
 ---
 

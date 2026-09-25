@@ -1,0 +1,616 @@
+[
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-gauss-flayer",
+    "name": "Gauss Flayer",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        48
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"48m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-gauss-blaster",
+    "name": "Gauss Blaster",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        48
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"48m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-gauss-cannon",
+    "name": "Gauss Cannon",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 2,
+      "ap": -3,
+      "range": [
+        48
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"48m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Trait printed \"Heavy\" with no rating (Core: Heavy (X)); copied as printed. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-heavy-gauss-cannon",
+    "name": "Heavy Gauss Cannon",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 18,
+      "ed": 1,
+      "ap": -4,
+      "range": [
+        72
+      ],
+      "salvo": 1,
+      "traits": [
+        "Heavy"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"72m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Trait printed \"Heavy\" with no rating (Core: Heavy (X)); copied as printed. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-rod-of-covenant-shooting",
+    "name": "Rod of Covenant (Shooting)",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        24
+      ],
+      "salvo": 1,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"24m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Shooting profile; the melee profile is necron-rod-of-covenant-melee. Value and Keywords are one cell spanning both rows. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-rod-of-covenant-melee",
+    "name": "Rod of Covenant (Melee)",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 5,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 5+1ED, not S + X. Melee profile, printed in the Ranged Weapons table; the shooting profile is necron-rod-of-covenant-shooting. Range and Salvo printed \"--\" (reach read as 1); Traits blank. Value and Keywords are one cell spanning both rows. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-staff-of-light-shooting",
+    "name": "Staff of Light (Shooting)",
+    "page": 10,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        24
+      ],
+      "salvo": 3,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"24m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Shooting profile; the melee profile is necron-staff-of-light-melee (p.11). Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-staff-of-light-melee",
+    "name": "Staff of Light (Melee)",
+    "page": 11,
+    "category": "Gauss Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "GAUSS",
+      "NECRON"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 5,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 5+1ED, not S + X. Melee profile (top of p.11, Ranged Weapons table); shooting profile: necron-staff-of-light-shooting. Range and Salvo printed \"--\" (reach 1). Traits, Value and Keywords blank after the page break; Value and Keywords taken from the Shooting row, as the Rod of Covenant's merged cell does. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-tesla-carbine",
+    "name": "Tesla Carbine",
+    "page": 11,
+    "category": "Tesla Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "TESLA",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 1,
+      "range": [
+        48
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Tesla"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"48m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. AP printed 0. Tesla is this book's Weapon Trait (p.10). Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-particle-caster",
+    "name": "Particle Caster",
+    "page": 11,
+    "category": "Particle Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "PARTICLE",
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 14,
+      "ed": 1,
+      "range": [
+        24
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"24m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. AP printed 0. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-synaptic-disintegrator",
+    "name": "Synaptic Disintegrator",
+    "page": 11,
+    "category": "Exotic Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        48
+      ],
+      "salvo": 1,
+      "traits": [
+        "Rapid Fire (1)",
+        "Sniper (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed as one value, \"48m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. AP printed 0. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-tachyon-arrow",
+    "name": "Tachyon Arrow",
+    "page": 11,
+    "category": "Exotic Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "weapon": {
+      "damage": 20,
+      "ed": 3,
+      "ap": -5,
+      "range": [
+        240
+      ],
+      "salvo": null,
+      "traits": [
+        "Assault"
+      ]
+    },
+    "effect": "A Tachyon Arrow must be reloaded after each use, taking 1 hour and a successful DN 4 Tech test to do so.",
+    "note": "Range printed as one value, \"240m\" (1st-edition format, no Short/Medium/Long bands); kept as a single range. Salvo printed \"-*\"; the asterisk's footnote is the effect. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-hyperphase-sword",
+    "name": "Hyperphase Sword",
+    "page": 11,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 6,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 6+1ED, not S + X. Range printed blank (reach read as 1). Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-voidblade",
+    "name": "Voidblade",
+    "page": 11,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 5,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 5+1ED, not S + X. Range and Traits printed blank (reach read as 1). Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-voidscythe",
+    "name": "Voidscythe",
+    "page": 11,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON",
+      "TWO-HANDED"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 8,
+      "ed": 3,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 8+3ED, not S + X. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-warscythe",
+    "name": "Warscythe",
+    "page": 11,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON",
+      "TWO-HANDED"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 7,
+      "ed": 2,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 7+2ED, not S + X. Range and Traits printed blank (reach read as 1). Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-heavy-plating",
+    "name": "Heavy Plating",
+    "page": 12,
+    "category": "Armor",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Table printed on p.12 under the ARMOR heading at the foot of p.11. Traits printed blank. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-scaled-cloak",
+    "name": "Scaled Cloak",
+    "page": 12,
+    "category": "Armor",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "armour": {
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Table printed on p.12 under the ARMOR heading at the foot of p.11. Traits printed blank. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-phase-shifter",
+    "name": "Phase Shifter",
+    "page": 12,
+    "category": "Armor",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Force Shield"
+      ]
+    },
+    "effect": "",
+    "note": "Table printed on p.12 under the ARMOR heading at the foot of p.11. AR printed \"*4\" (asterisk before the number): Invulnerable. \"Force Shield\" is not a Core armour Trait and this book does not define it (1st-edition name); copied as printed. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-dispersion-shield",
+    "name": "Dispersion Shield",
+    "page": 12,
+    "category": "Armor",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Force Shield",
+        "Shield"
+      ]
+    },
+    "effect": "",
+    "note": "Table printed on p.12 under the ARMOR heading at the foot of p.11. AR printed \"*1\" (asterisk before the number): Invulnerable. \"Force Shield\" is not a Core armour Trait and this book does not define it (1st-edition name); copied as printed. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-chronometron",
+    "name": "Chronometron",
+    "page": 12,
+    "category": "Wargear",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "NECRON"
+    ],
+    "effect": "Necrons within 6m of a Chronometron gain AV *3 with the Force Shield trait, and gain +1 to Defense. Additionally, once per combat, the bearer of a Chronometron may Seize the Initiative without spending glory.",
+    "note": "\"AV *3\" as printed (read as an Invulnerable Armour Rating 3). \"Force Shield\" is not a Core armour Trait and this book does not define it (1st-edition name); copied as printed. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-canoptek-cloak",
+    "name": "Canoptek Cloak",
+    "page": 12,
+    "category": "Wargear",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "effect": "A specialized platform designed to carry aloft a Cryptek, a Necron with a Canoptek Cloak increases its Speed characteristic to 10, and may fly like a vehicle with the Hover trait. In addition, once per round as a free action, the user may select a vehicle within 6m with the Living Metal trait and make a DN 4 Tech test. It heals d6 wounds instead of d3 wounds that turn if successful.",
+    "note": "Effect kept whole: its first sentence opens with a descriptive clause. Hover and Living Metal are not defined in this book or the Core Wargear chapter. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-dimensional-oubliette-generator",
+    "name": "Dimensional Oubliette Generator",
+    "page": 12,
+    "category": "Wargear",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "effect": "The possessor of this device can, at will, generate a dimensional oubliette, an extradimensional space that can hold a single individual Necron and its wargear. The Necron inside is undetectable by any means, but can see out. It cannot affect the outside world without fully exiting the oubliette. Only the character carrying the generator can enter the Oubliette, and only a Necron can survive inside the airless, hostile environment.",
+    "note": "Description runs from p.12 onto p.13. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-grav-platform",
+    "name": "Grav-Platform",
+    "page": 12,
+    "category": "Wargear",
+    "kind": "augmetic",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "effect": "Less a piece of wargear and more a permanent modification, a Grav Platform replaces the user’s lower half. The bearer’s Speed is increased to 10, and it may fly like a vehicle with the Hover trait. A Necron with a Grav-Platform is always considered to be braced for the purposes of firing heavy weapons.",
+    "note": "Listed in the Wargear table; filed as an augmetic because it replaces the user’s lower half. Description on p.13, which prints \"Grav Platform\" once without the hyphen. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-phylactery",
+    "name": "Phylactery",
+    "page": 12,
+    "category": "Wargear",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "NECRON"
+    ],
+    "effect": "A Necron with a Phylactery heals d3 wounds rather than 1 wound from its Living Metal ability each turn.",
+    "note": "Description runs from p.12 onto p.13. Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  },
+  {
+    "source": "legacy-of-the-necrontyr",
+    "id": "necron-resurrection-orb",
+    "name": "Resurrection Orb",
+    "page": 12,
+    "category": "Wargear",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "NECRON"
+    ],
+    "effect": "Once per session, the bearer of a Resurrection Orb may activate it as an action. When this occurs, all Necrons within 6m that are at 0 wounds or are dead may make an immediate Defiance check. If successful, they return to consciousness with d6 Wounds remaining, even if they were dead.",
+    "note": "Description on p.13. \"Defiance check\" as printed (1st edition). Section rule (p.10): every Necron item counts as Unique to other races; only Necrons requisition it at its printed Rarity."
+  }
+]

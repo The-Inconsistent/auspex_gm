@@ -392,7 +392,8 @@
       },
       {
         "wargear": {
-          "name": "Reductor"
+          "name": "Reductor",
+          "wargearId": "apoc-reductor"
         }
       }
     ],
@@ -477,7 +478,8 @@
       },
       {
         "wargear": {
-          "name": "Skull Helm"
+          "name": "Skull Helm",
+          "wargearId": "fspg-skull-helm"
         }
       },
       {
@@ -667,7 +669,8 @@
       },
       {
         "wargear": {
-          "name": "Occulus Bolt Carbine"
+          "name": "Occulus Bolt Carbine",
+          "wargearId": "apoc-occulus-bolt-carbine"
         }
       },
       {
@@ -699,7 +702,8 @@
       {
         "wargear": {
           "name": "Smoke Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-smoke-grenades"
         }
       },
       {
@@ -785,7 +789,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Mark VII Artificer Power Armour (includes servo-harness)"
+          "name": "Mark VII Artificer Power Armour (includes servo-harness)",
+          "wargearId": "apoc-artificer-armour"
         }
       },
       {
@@ -799,7 +804,8 @@
           },
           {
             "wargear": {
-              "name": "Grav-pistol"
+              "name": "Grav-pistol",
+              "wargearId": "apoc-grav-pistol"
             }
           }
         ]
@@ -972,7 +978,8 @@
       },
       {
         "wargear": {
-          "name": "Psychic Hood"
+          "name": "Psychic Hood",
+          "wargearId": "fspg-psychic-hood"
         }
       },
       {
@@ -1041,7 +1048,8 @@
       },
       {
         "wargear": {
-          "name": "Bolt Carbine"
+          "name": "Bolt Carbine",
+          "wargearId": "apoc-bolt-carbine"
         }
       },
       {
@@ -1073,7 +1081,8 @@
       {
         "wargear": {
           "name": "Shock Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "fspg-shock-grenade"
         }
       },
       {
@@ -1283,7 +1292,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Mark VII Artificer Power Armour (includes servo-harness)"
+          "name": "Mark VII Artificer Power Armour (includes servo-harness)",
+          "wargearId": "apoc-artificer-armour"
         }
       },
       {
@@ -1297,7 +1307,8 @@
           },
           {
             "wargear": {
-              "name": "Grav-pistol"
+              "name": "Grav-pistol",
+              "wargearId": "apoc-grav-pistol"
             }
           }
         ]
@@ -1493,7 +1504,11 @@
                 "wargearId": "voa-bolt-pistol"
               },
               {
-                "name": "Master-crafted Occulus Bolt Carbine"
+                "name": "Master-crafted Occulus Bolt Carbine",
+                "wargearId": "apoc-occulus-bolt-carbine",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Astartes Combat Knife",
@@ -1511,7 +1526,8 @@
               },
               {
                 "name": "Smoke Grenade",
-                "qty": 3
+                "qty": 3,
+                "wargearId": "apoc-smoke-grenades"
               },
               {
                 "name": "Grav-Chute",
@@ -1636,7 +1652,8 @@
       {
         "wargear": {
           "name": "Smoke Grenade",
-          "qty": 3
+          "qty": 3,
+          "wargearId": "apoc-smoke-grenades"
         }
       },
       {

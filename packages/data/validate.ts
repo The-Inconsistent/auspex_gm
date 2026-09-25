@@ -90,6 +90,7 @@ function followerError(follower: boolean, threatId?: string, variant?: string) {
 // Wargear catalogue: schema per file, ids unique across files.
 const wargearDir = new URL("./wargear/", import.meta.url);
 const wargearIds = new Set<string>();
+const wargearRequires: { where: string; requires: unknown }[] = []; // resolved once the creation ids are known
 for (const file of readdirSync(wargearDir)
   .filter((f) => f.endsWith(".json"))
   .sort()) {
@@ -105,6 +106,7 @@ for (const file of readdirSync(wargearDir)
       console.error(`✖ wargear/${file}: duplicate id "${w.id}"`);
     }
     wargearIds.add(w.id);
+    if (w.requires) wargearRequires.push({ where: `wargear/${file} "${w.id}"`, requires: w.requires });
     const err = followerError(w.kind === "follower", w.threatId, w.variant);
     if (err) {
       failed = true;
@@ -342,6 +344,7 @@ for (const { file, r } of creation.get("archetypes")!) {
       `? ${file} "${r.id}": XP ${r.xp}, but ratings + (Tier − 1) × 10 = ${cost} (note "XP as printed" if it's a misprint)`,
     );
 }
+for (const { where, requires } of wargearRequires) checkRefs(requires, where);
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
 console.log(
   `creation: ${storyConditions} GM-judged story conditions, ${mundaneWargear} mundane possessions, ${unresolvedWargear} wargear items not in the catalogue`,

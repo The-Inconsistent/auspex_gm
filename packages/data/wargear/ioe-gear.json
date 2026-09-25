@@ -1,0 +1,652 @@
+[
+  {
+    "id": "ioe-banshee-mask",
+    "name": "Banshee Mask",
+    "source": "inheritance-of-embers",
+    "page": 93,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "HOWLING BANSHEE"
+    ],
+    "effect": "When a Howling Banshee Charges, they may make an Interaction Attack using Intimidate as a Free Action."
+  },
+  {
+    "id": "ioe-beastmaster-mask",
+    "name": "Beastmaster Mask",
+    "source": "inheritance-of-embers",
+    "page": 93,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "BEASTMASTER",
+      "DRUKHARI"
+    ],
+    "effect": "A Beastmaster Mask causes Fear in creatures with the BEAST Keyword within 20m. They can roll Resolve against a DN of the Beastmaster's Rank to resist.",
+    "note": "Fear printed with no rating."
+  },
+  {
+    "id": "ioe-ghosthelm-lodestar-helm",
+    "name": "Ghosthelm/Lodestar Helm",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "ASURYANI"
+    ],
+    "effect": "Aeldari wearing either never roll on the Perils of the Warp table, and must make Psychic Mastery Tests at Unbound or Transcendent Power Levels.",
+    "note": "One entry printed for two helms (\"either\"); kept as one."
+  },
+  {
+    "id": "ioe-harlequin-mask",
+    "name": "Harlequin Mask",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "effect": "Whenever an enemy becomes Engaged with a Harlequin, they must make a DN 3 Fear Test."
+  },
+  {
+    "id": "ioe-mandiblasters",
+    "name": "Mandiblasters",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "STRIKING SCORPION"
+    ],
+    "effect": "If a Striking Scorpion rolls a Wrath Critical on a melee attack Test against a creature Size Average or smaller, the target suffers 3 Mortal Wounds in addition to the Critical Hit's effects.",
+    "note": "No weapon profile printed."
+  },
+  {
+    "id": "ioe-mirror-mask",
+    "name": "Mirror Mask",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "effect": "All Tests made against a Shadowseer take a dice penalty equal to the Shadowseer's Rank –1."
+  },
+  {
+    "id": "ioe-rictus-mask",
+    "name": "Rictus Mask",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DEATH JESTER",
+      "HARLEQUIN"
+    ],
+    "effect": "Any character attempting to move into Engagement with a Harlequin wearing a Rictus Mask must pass a Fear Test with a DN equal to 1 + twice the Harlequin's Rank."
+  },
+  {
+    "id": "ioe-spirit-mask",
+    "name": "Spirit Mask",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "WRAITH CONSTRUCT allies within 5m of a Spiritseer gain +3 ED when inflicting Damage."
+  },
+  {
+    "id": "ioe-tormentor",
+    "name": "Tormentor",
+    "source": "inheritance-of-embers",
+    "page": 94,
+    "category": "Helms and Masks",
+    "kind": "equipment",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "INCUBUS"
+    ],
+    "effect": "Once per encounter, an Incubus may activate their Tormentor. All enemies within 10m must pass a Resolve Test at a DN of the Incubus's Rank or become Terrified."
+  },
+  {
+    "id": "ioe-anti-grav-platform",
+    "name": "Anti-Grav Platform",
+    "source": "inheritance-of-embers",
+    "page": 95,
+    "category": "Upgrades and Equipment",
+    "kind": "upgrade",
+    "value": 8,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "Weapons with a Heavy (X) Trait may be mounted on these floating platforms. This removes the Heavy Trait, but the weapon requires an Aeldari within arm's reach to move, and that Aeldari cannot Sprint."
+  },
+  {
+    "id": "ioe-anti-gravitic-suspensor-crystal",
+    "name": "Anti-Gravitic Suspensor Crystal",
+    "source": "inheritance-of-embers",
+    "page": 95,
+    "category": "Upgrades and Equipment",
+    "kind": "upgrade",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI"
+    ],
+    "effect": "When integrated into Aeldari armour (or bodies) an Anti-Gravitic Suspensor Crystal lets the user Fly at their base Speed. When integrated into a weapon with the Heavy (X) Trait, the Strength requirement to wield that weapon is halved. No more than 1 Anti-Gravitic Suspensor Crystal may be used in this manner."
+  },
+  {
+    "id": "ioe-arena-trophy",
+    "name": "Arena Trophy",
+    "source": "inheritance-of-embers",
+    "page": 95,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDAR",
+      "BEASTMASTER",
+      "DRUKHARI"
+    ],
+    "effect": "When a Wych takes an Arena Trophy, choose the Faction it came from; a famous Militarum general's head would gain the IMPERIUM, ASTRA MILITARUM Keywords, for example. The Drukhari causes Fear (3) in any other character within 20m that shares one or more Keywords with the Arena Trophy.",
+    "note": "Keyword printed \"AELDAR\" (for AELDARI); copied as printed. BEASTMASTER printed though the text is about Wyches."
+  },
+  {
+    "id": "ioe-aspect-shrine",
+    "name": "Aspect Shrine",
+    "source": "inheritance-of-embers",
+    "page": 95,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASPECT SHRINE",
+      "ASURYANI"
+    ],
+    "effect": "An Aspect Warrior may use their Shrine during a Regroup or Respite. They gain their Rank in bonus dice for a single Test relevant to their Aspect (GM is final arbiter), including attack rolls. Cannot be used again until another Regroup or Respite.",
+    "note": "Keyword printed \"ASPECT SHRINE\" without brackets."
+  },
+  {
+    "id": "ioe-blink-pack-jump-generator",
+    "name": "Blink Pack/Jump Generator",
+    "source": "inheritance-of-embers",
+    "page": 95,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "SHADE RUNNER"
+    ],
+    "effect": "Warp Spiders or Shade Runners may make a DN 3 Pilot (A) Test to increase their Speed to 12 when they move, moving horizontally through other characters and ignoring terrain penalties. If the Test fails, their movement deviates according to Scattering rules (Wrath & Glory, page 186). A Complication triggers a roll on the Perils of the Warp table (Wrath & Glory, page 263).",
+    "note": "One entry printed for two devices (Warp Spider Jump Generator, Shade Runner Blink Pack); kept as one."
+  },
+  {
+    "id": "ioe-bonesinger-shard",
+    "name": "Bonesinger Shard",
+    "source": "inheritance-of-embers",
+    "page": 95,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "Bonesingers with a Shard ignore DN penalties for any Tests to build, upgrade, maintain, or destroy Aeldari technology.",
+    "note": "Reprint of Core p.241 Bonesinger Shard (bonesinger-shard) with different keywords and effect text."
+  },
+  {
+    "id": "ioe-cameleoline-cloak",
+    "name": "Cameleoline Cloak",
+    "source": "inheritance-of-embers",
+    "page": 96,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "[ANY]"
+    ],
+    "effect": "Wearer gets +1 bonus die to Stealth (A) Tests and +1 to Defence when in shadow or cover.",
+    "note": "Keyword printed \"ANY\" without brackets (Core prints [ANY]); copied as printed. Reprint of Core p.237 (cameleoline-cloak). Keyword printed \"ANY\", without brackets; stored as [ANY]."
+  },
+  {
+    "id": "ioe-chains-blades-and-hooks",
+    "name": "Chains, Blades and Hooks",
+    "source": "inheritance-of-embers",
+    "page": 96,
+    "category": "Upgrades and Equipment",
+    "kind": "upgrade",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "KABAL"
+    ],
+    "effect": "This item may be purchased up to 3 times. Each time it is purchased, chose one of the following options:\n- Chains: May be used as a Whip, +1 to Grapple attacks.\n- Blades: Successful melee attacks also inflict 1 Bleeding Condition.\n- Hooks: All attempts to grapple the Drukhari increase their DN by 1.",
+    "note": "\"chose\" as printed. Fitted to Kabalite suits; three options, one Value."
+  },
+  {
+    "id": "ioe-channeller-stones",
+    "name": "Channeller Stones",
+    "source": "inheritance-of-embers",
+    "page": 96,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "effect": "Once per turn, the Soul Weaver may reduce the Damage rating of a successful attack to 0. This applies only to the weapon's Damage characteristic, and does not include ED and Shifted Icons which may still cause Wounds."
+  },
+  {
+    "id": "ioe-flip-belt",
+    "name": "Flip-Belt",
+    "source": "inheritance-of-embers",
+    "page": 96,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "effect": "The wearer ignores terrain penalties during movement. They may move past enemies without Engaging or provoking Reflexive attacks (they still provoke Reflexive attacks if already Engaged). They may also substitute Agility for Toughness when rolling Determination.",
+    "note": "Rarity printed \"UNIQUE\" in capitals."
+  },
+  {
+    "id": "ioe-haemonculus-tools",
+    "name": "Haemonculus Tools",
+    "source": "inheritance-of-embers",
+    "page": 96,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "effect": "Haemonculus Tools count as a pair of Mono-Knives that cannot be disarmed. In addition, they may include any 3 of the following items at once:\n- Chirurgeon's Tools\n- Combi-Tool\n- Diagnostor\n- Medkit, Vat-Grown replacements for lost eyes or limbs (Recipient gains 1 Corruption and becomes Hindered for 2d6–Toughness days)\n- Mutagens (Forces a Mutation Test. The Haemonculus can raise or lower the result by 10)\n- 5 doses of any Combat Drug and/or Poison\nThe Haemonculus may change the 3 items in their Tools during a Respite or other downtime. When in their personal quarters/workshop, the Haemonculus has access to all of the above.",
+    "note": "No Mono-Knife profile printed here. Hindered printed with no rating."
+  },
+  {
+    "id": "ioe-hunting-trophy",
+    "name": "Hunting Trophy",
+    "source": "inheritance-of-embers",
+    "page": 96,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "BEASTMASTER",
+      "DRUKHARI"
+    ],
+    "effect": "The Hunting Trophy grants bonus dice to all Intimidation (WP) Tests made against NPCs as follows:\n- Adversary NPCs: Beastmaster wins ties\n- Elite NPCs: +1 dice\n- Troop NPS: +2 dice",
+    "note": "\"Troop NPS\" as printed (for NPCs)."
+  },
+  {
+    "id": "ioe-initiation-brand",
+    "name": "Initiation Brand",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 5,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "KABAL"
+    ],
+    "effect": "An Archon with an Initiation Brand adds their Rank in dice to any social Test against Drukhari sharing the Archon's <keyword>Kabal</Kabal> Keyword. In combat it acts as a Shock Maul (Wrath & Glory, page 212).",
+    "note": "\"<keyword>Kabal</Kabal>\" printed (leaked markup, for [KABAL]); copied as printed. Shock Maul profile not reprinted."
+  },
+  {
+    "id": "ioe-initiation-token",
+    "name": "Initiation Token",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "KABAL"
+    ],
+    "effect": "When taking damage, the owner may instead choose another character with the same KABAL Keyword to take the hit. The new target must be within the owner's move distance."
+  },
+  {
+    "id": "ioe-rangefinder-standalone",
+    "name": "Rangefinder (standalone)",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "ASURYANI"
+    ],
+    "effect": "A Rangefinder combines Magnocular Scope and Preysense Goggles. When used to mark a target (a Full-Round Action in combat), it provides a +2 bonus to all ranged attack Tests against that target, eliminating penalties due to range and environmental conditions.",
+    "note": "Value printed \"10 (standalone), 12 (detachable)\"; split into two entries."
+  },
+  {
+    "id": "ioe-rangefinder-detachable",
+    "name": "Rangefinder (detachable)",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "upgrade",
+    "value": 12,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "ASURYANI"
+    ],
+    "effect": "A Rangefinder combines Magnocular Scope and Preysense Goggles. When used to mark a target (a Full-Round Action in combat), it provides a +2 bonus to all ranged attack Tests against that target, eliminating penalties due to range and environmental conditions.",
+    "note": "Value printed \"10 (standalone), 12 (detachable)\"; split into two entries. Filed as an upgrade: the text says it may display to a weapon scope."
+  },
+  {
+    "id": "ioe-resonator-shard",
+    "name": "Resonator Shard",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "RANGER"
+    ],
+    "effect": "When placed, any Aeldari attuned to a Resonator Shard instinctively knows where it is. Heavy weapons with a Blast rating may target the shard, rolling twice and picking the best result. More precise weapons gain no benefit unless the Shard is attached directly to the target."
+  },
+  {
+    "id": "ioe-ritual-tools",
+    "name": "Ritual Tools",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "ASURYANI"
+    ],
+    "effect": "Aeldari with Ritual Tools may use them during a Regroup to remove 1d3+1 Shock. During a Respite or other extended non-combat scene they may use Ritual Tools to focus their mind on a particular task, adding their Rank in bonus dice to a single, Path-relevant Test."
+  },
+  {
+    "id": "ioe-shrine-of-the-father",
+    "name": "Shrine of the Father",
+    "source": "inheritance-of-embers",
+    "page": 97,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "INCUBUS"
+    ],
+    "effect": "An Incubus with a Shrine of the Father may use it during a Regroup or Respite to contemplate the Killing Strike. Their next successful attack adds their Rank in ED."
+  },
+  {
+    "id": "ioe-spirit-stone-empty",
+    "name": "Spirit Stone (empty)",
+    "source": "inheritance-of-embers",
+    "page": 98,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI"
+    ],
+    "effect": "If an ASURYANI Agent is killed whilst carrying an unoccupied Spirit Stone, their soul retreats into its shell for protection. If retrieved, an ally can implant it into a Wraith Construct, so they can continue to wage war from beyond the grave. Apply the following changes to the Agent:\n- Their Species changes from Aeldari to Wraith Construct (page 13).\n- Their Speed changes to 5, and their Size to Large. They lose the Intense Emotion special ability, any Talents requiring the Aeldari Species, all psychic powers, and the PSYKER Keyword. They gain the WRAITH CONSTRUCT Keyword, and all the special abilities of a Wraith Construct.\n- The Agent increases their Strength to 5, and Toughness to 6, unless they already had Attributes at this level or higher. Any Attributes above the Species Maximums of a Wraith Construct (page 13) are reduced to their Species Maximum.",
+    "note": "Value printed \"7 (empty), 12+ (inhabited)\", Rarity \"Very Rare (empty), Unique (inhabited)\"; split into two entries, each with its part of the text. Reprint of Core p.241 (spirit-stone)."
+  },
+  {
+    "id": "ioe-spirit-stone-inhabited",
+    "name": "Spirit Stone (inhabited)",
+    "source": "inheritance-of-embers",
+    "page": 98,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI"
+    ],
+    "effect": "Once per session, an Ynnari Agent may call upon an inhabited Spirit Stone for aid, granting them either +1 Defence in combat, or +2 to a single Skill. This lasts for 1 combat encounter or scene, as appropriate.",
+    "note": "Value printed \"12+\"; 12 kept. Split from Spirit Stone (empty); this is the Ynnari part of the text."
+  },
+  {
+    "id": "ioe-skyboard",
+    "name": "Skyboard",
+    "source": "inheritance-of-embers",
+    "page": 98,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HELLION",
+      "ANTI-GRAV"
+    ],
+    "effect": "When mounted, the user can Fly at Speed 12 and fire the board's Splinter Pods. If the user rolls a Complication, their Skyboard becomes damaged. A DN 3 Pilot (A) Test is required to stabilise the device — if failed, it crashes to the ground, inflicting d3 Shock and an amount of falling Damage appropriate to the distance fallen (see Wrath & Glory page 201).",
+    "note": "No Splinter Pods profile printed here."
+  },
+  {
+    "id": "ioe-swooping-hawk-wings",
+    "name": "Swooping Hawk Wings",
+    "source": "inheritance-of-embers",
+    "page": 98,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "effect": "The wearer can Fly at double their Speed, as per the Jump Pack rules in Wrath & Glory, page 237."
+  },
+  {
+    "id": "ioe-terms-of-covenant",
+    "name": "Terms of Covenant",
+    "source": "inheritance-of-embers",
+    "page": 98,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "INCUBUS"
+    ],
+    "effect": "When an Incubus or Scourge takes a contract, replace their BLADES FOR HIRE Keyword with the Keyword of their employer. If the Terms are broken, Commorragh grants the aggrieved party considerable leeway in exacting revenge; allies will help, and only the most stubborn enemies will interfere.\nYou cannot use this effect if you already have a [CRAFTWORLD], [COTERIE], [KABAL], [WYCH CULT], [COVEN], [MASQUE] or YNARRI Keyword.",
+    "note": "\"YNARRI\" as printed (for YNNARI). The restriction is not a Requirements line, so no `requires`."
+  },
+  {
+    "id": "ioe-wraithbone-runes",
+    "name": "Wraithbone Runes",
+    "source": "inheritance-of-embers",
+    "page": 98,
+    "category": "Upgrades and Equipment",
+    "kind": "equipment",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "effect": "Wraithbone Runes allow the owner's psychic powers to ignore the restrictions on Power Levels (i.e. if they make a Psychic Mastery Test at Transcendent, they can still make one at Unbound in the same scene). In addition, sustaining a psychic power raises the DN by +1, not +2."
+  },
+  {
+    "id": "ioe-adrenalight",
+    "name": "Adrenalight",
+    "source": "inheritance-of-embers",
+    "page": 99,
+    "category": "Drukhari Combat Drugs",
+    "kind": "equipment",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "effect": "A standard Combat Drug dose lasts 4 Rounds. After this time, a second dose may be used, which lasts 5 Rounds, with further doses extending the duration by 1 Round. If the duration reaches the same number as the user's Toughness, they must pass a DN 3 Toughness Test or suffer from an overdose: the drug inflicts Poisoned instead, at a rating of half the drug's Value rounding up.\nWhen the user makes a Charge or All-Out Attack Action, they make two attack rolls. Both rolls receive the bonus dice.",
+    "note": "Effect starts with the Drugs and Toxins section's dose rule (p.99)."
+  },
+  {
+    "id": "ioe-grave-lotus",
+    "name": "Grave Lotus",
+    "source": "inheritance-of-embers",
+    "page": 99,
+    "category": "Drukhari Combat Drugs",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDAR",
+      "DRUCHARI",
+      "WYCH CULT"
+    ],
+    "effect": "A standard Combat Drug dose lasts 4 Rounds. After this time, a second dose may be used, which lasts 5 Rounds, with further doses extending the duration by 1 Round. If the duration reaches the same number as the user's Toughness, they must pass a DN 3 Toughness Test or suffer from an overdose: the drug inflicts Poisoned instead, at a rating of half the drug's Value rounding up.\nUntil it wears off, the user adds +2 to their Strength Attribute and any Tests based on Strength.",
+    "note": "Effect starts with the Drugs and Toxins section's dose rule (p.99). Keywords printed \"AELDAR, DRUCHARI\" (for AELDARI, DRUKHARI); copied as printed."
+  },
+  {
+    "id": "ioe-hypex",
+    "name": "Hypex",
+    "source": "inheritance-of-embers",
+    "page": 99,
+    "category": "Drukhari Combat Drugs",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "effect": "A standard Combat Drug dose lasts 4 Rounds. After this time, a second dose may be used, which lasts 5 Rounds, with further doses extending the duration by 1 Round. If the duration reaches the same number as the user's Toughness, they must pass a DN 3 Toughness Test or suffer from an overdose: the drug inflicts Poisoned instead, at a rating of half the drug's Value rounding up.\nFor the duration, the user adds +4 to their Speed rating.",
+    "note": "Effect starts with the Drugs and Toxins section's dose rule (p.99)."
+  },
+  {
+    "id": "ioe-painbringer",
+    "name": "Painbringer",
+    "source": "inheritance-of-embers",
+    "page": 99,
+    "category": "Drukhari Combat Drugs",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "effect": "A standard Combat Drug dose lasts 4 Rounds. After this time, a second dose may be used, which lasts 5 Rounds, with further doses extending the duration by 1 Round. If the duration reaches the same number as the user's Toughness, they must pass a DN 3 Toughness Test or suffer from an overdose: the drug inflicts Poisoned instead, at a rating of half the drug's Value rounding up.\nFor the duration, the user gains +1 Resilience.",
+    "note": "Effect starts with the Drugs and Toxins section's dose rule (p.99)."
+  },
+  {
+    "id": "ioe-serpentin",
+    "name": "Serpentin",
+    "source": "inheritance-of-embers",
+    "page": 99,
+    "category": "Drukhari Combat Drugs",
+    "kind": "equipment",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "effect": "A standard Combat Drug dose lasts 4 Rounds. After this time, a second dose may be used, which lasts 5 Rounds, with further doses extending the duration by 1 Round. If the duration reaches the same number as the user's Toughness, they must pass a DN 3 Toughness Test or suffer from an overdose: the drug inflicts Poisoned instead, at a rating of half the drug's Value rounding up.\nFor the duration, the user receives +2 to their Weapon Skill. If used by an Aeldari other than the one it was designed for, the benefits are halved.",
+    "note": "Effect starts with the Drugs and Toxins section's dose rule (p.99)."
+  },
+  {
+    "id": "ioe-splintermind",
+    "name": "Splintermind",
+    "source": "inheritance-of-embers",
+    "page": 99,
+    "category": "Drukhari Combat Drugs",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "effect": "A standard Combat Drug dose lasts 4 Rounds. After this time, a second dose may be used, which lasts 5 Rounds, with further doses extending the duration by 1 Round. If the duration reaches the same number as the user's Toughness, they must pass a DN 3 Toughness Test or suffer from an overdose: the drug inflicts Poisoned instead, at a rating of half the drug's Value rounding up.\nFor the duration, the user receives +2 Ballistic Skill and Leadership. Each dose must be tailored to the specific user, and has no effect on anyone else.",
+    "note": "Effect starts with the Drugs and Toxins section's dose rule (p.99)."
+  }
+]

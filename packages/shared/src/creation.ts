@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { Rarity } from "./requisition.ts";
+import { Rarity, WargearKind } from "./requisition.ts";
 import { ATTRIBUTES, Mods, SKILLS, type Attribute, type Skill } from "./state.ts";
 import { ThreatClass, ThreatSize, Weapon } from "./threat.ts";
 import { Source } from "./source.ts";
-import { WargearKind } from "./wargear.ts";
 
 // The character-creation catalogue: every species, archetype, talent, package, power and table a character is built
 // from, transcribed from the books (docs/data.md, "Creation catalogue"). Records cross-reference each other by id and

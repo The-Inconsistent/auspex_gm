@@ -1,0 +1,91 @@
+{
+  "source": "apocrypha",
+  "bonuses": [
+    {
+      "name": "Animal",
+      "text": "A Gyrinx is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Empathic Bond",
+      "text": "The Follower is linked to its owner via a psychic bond. The Follower and its owner can communicate telepathically while within 6m. While the Follower is within 6m, the owner gains +Rank dice on all Initiative and Intellect tests."
+    },
+    {
+      "name": "Psychic Familiar",
+      "text": "While within 6m of its owner, the owner may add +2d to any Psychic Mastery test they attempt."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Claws",
+          "damage": 3,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "options": [],
+  "mobAbilities": [],
+  "id": "apoc-gyrinx",
+  "name": "Gyrinx",
+  "page": 474,
+  "faction": "aeldari",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ANHRATHE",
+    "HARLEQUIN",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 2,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 3
+  },
+  "defence": 6,
+  "wounds": 4,
+  "shock": 5,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Survival",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "determination": "Spend 1 Glory to roll 1d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Tiny"
+}

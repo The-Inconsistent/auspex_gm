@@ -461,7 +461,8 @@
       "powered": 0,
       "traits": []
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.92 (ioe-corsair-armour)."
   },
   {
     "id": "aeldari-mesh-armour",
@@ -483,7 +484,8 @@
       "powered": 0,
       "traits": []
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.92 (ioe-aeldari-mesh-armour)."
   },
   {
     "id": "rune-armour",
@@ -507,7 +509,8 @@
         "Power Field"
       ]
     },
-    "effect": ""
+    "effect": "",
+    "note": "Superseded by IoE p.92 (ioe-rune-armour)."
   },
   {
     "id": "heavy-mesh-armour",
@@ -577,7 +580,7 @@
       ]
     },
     "effect": "Allies within 5 metres of a Shimmershield gain its Power Field Trait and are able to roll Determination against Mortal Wounds.",
-    "note": "Effect from the description on p.236."
+    "note": "Effect from the description on p.236. Superseded by IoE p.92 (ioe-shimmershield)."
   },
   {
     "id": "ork-flak",

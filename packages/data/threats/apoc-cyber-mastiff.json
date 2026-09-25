@@ -1,0 +1,93 @@
+{
+  "id": "apoc-cyber-mastiff",
+  "name": "Cyber-Mastiff",
+  "source": "apocrypha",
+  "page": 462,
+  "faction": "imperial",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS ARBITES",
+    "ANATHEMA PSYKANA",
+    "SERVITOR",
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 3,
+    "A": 4,
+    "I": 4,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 8,
+    "note": "Mechanical Body: 4 AR"
+  },
+  "defence": 4,
+  "wounds": 5,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Intimidation",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Animal",
+      "text": "A Cyber-Mastiff is unable to take any actions which would require the use of hands."
+    },
+    {
+      "name": "Apprehend",
+      "text": "If an enemy becomes Restrained as a result of a Cyber-Mastiff’s attack, the condition remains while they are engaged with the Cyber-Mastiff—they are restrained by the Cyber-Mastiff’s jaws. If an enemy attempts to break free, the DN is equal to the Cyber-Mastiff’s Strength, and a failed skill test inflicts 1d3 Mortal Wounds."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Machine Jaws",
+          "damage": 10,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Restrained)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 4d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Small"
+}

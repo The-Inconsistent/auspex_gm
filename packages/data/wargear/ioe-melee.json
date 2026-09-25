@@ -1,0 +1,1785 @@
+[
+  {
+    "id": "ioe-glimmersteel-blade",
+    "name": "Glimmersteel Blade",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "MANDRAKE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-hekatarii-blade",
+    "name": "Hekatarii Blade",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "BLADE",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-hellglaive",
+    "name": "Hellglaive",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HELLION"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 6,
+      "range": [
+        2
+      ],
+      "traits": []
+    },
+    "effect": "",
+    "note": "Traits printed \"–\"."
+  },
+  {
+    "id": "ioe-ichor-injector",
+    "name": "Ichor Injector",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 4,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Gruesome",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 4, not (S)+X. Gruesome is an IoE Weapon Trait (p.79)."
+  },
+  {
+    "id": "ioe-impaler",
+    "name": "Impaler",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "BLADE",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-knife",
+    "name": "Knife",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 2,
+    "rarity": "Common",
+    "keywords": [
+      "BLADE",
+      "[ANY]"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 2,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "thrown": 4,
+      "traits": []
+    },
+    "effect": "Drukhari may upgrade a knife with Traits from Wrath & Glory page 208. Doing so doubles the knife’s Value and increases its Rarity one step for the purposes of Requisition Tests. A knife cannot have more than one such upgrade, and Traits with a rating cannot exceed 1.",
+    "note": "Range printed only \"Thrown (Sx4)\"; the melee reach [1] is carried from the Core Knife (p.211), whose stats this row reprints. Effect is 'The Art of the Knife' sidebar (p.86)."
+  },
+  {
+    "id": "ioe-razorflail-sword",
+    "name": "Razorflail: Sword",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "BLADE",
+      "DRUKHARI",
+      "EXOTIC",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "One item printed with two profiles; the whip form is ioe-razorflail-whip."
+  },
+  {
+    "id": "ioe-razorflail-whip",
+    "name": "Razorflail: Whip",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "BLADE",
+      "DRUKHARI",
+      "EXOTIC",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 1,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising",
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "One item printed with two profiles; the sword form is ioe-razorflail-sword."
+  },
+  {
+    "id": "ioe-shardnet",
+    "name": "Shardnet",
+    "source": "inheritance-of-embers",
+    "page": 87,
+    "category": "Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "EXOTIC",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 7,
+      "ed": 1,
+      "ap": -1,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Agonising",
+        "Inflict (Restrained)",
+        "Rending (2)"
+      ]
+    },
+    "effect": "The net deals damage every Turn or until the target succeeds on an Opposed Strength Test against the attacker (or DN 5, if the net was thrown), disentangling themself.",
+    "note": "Damage printed as a flat 7. Effect from the description on p.86, copied as printed (\"every Turn or until\"). The text mentions throwing the net, but no thrown range is printed."
+  },
+  {
+    "id": "ioe-aeldari-power-sword",
+    "name": "Aeldari Power Sword",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-agoniser",
+    "name": "Agoniser",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-archite-glaive",
+    "name": "Archite Glaive",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Unwieldy (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-banshee-blade",
+    "name": "Banshee Blade",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-demiklaive",
+    "name": "Demiklaive",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "INCUBUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Reliable",
+        "Rending (3)"
+      ]
+    },
+    "effect": "Demiklaives can be connected to form a single weapon if required.",
+    "note": "Effect from the description on p.87; the combined weapon has no profile of its own (the Klaive is the two-handed Incubi blade)."
+  },
+  {
+    "id": "ioe-electrocorrosive-whip",
+    "name": "Electrocorrosive Whip",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        4
+      ],
+      "traits": [
+        "Agonising",
+        "Inflict (Hindered 2, Poisoned 5)"
+      ]
+    },
+    "effect": "",
+    "note": "Traits printed \"Inflict (Hindered 2, Poisoned 5)\" as one Inflict with two Conditions; kept as printed."
+  },
+  {
+    "id": "ioe-executioner",
+    "name": "Executioner",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI",
+      "TWO-HANDED"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Keywords printed \"Asury-ani\" (hyphenated across a line) and \"Two-handed\"; kept as TWO-HANDED (Core writes 2-HANDED)."
+  },
+  {
+    "id": "ioe-flesh-gauntlet",
+    "name": "Flesh Gauntlet",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDAR",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 2,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising",
+        "Gruesome",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": "",
+    "note": "Keyword printed \"Aeldar\" (for AELDARI); copied as printed."
+  },
+  {
+    "id": "ioe-ghostaxe",
+    "name": "Ghostaxe",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "WRAITHGUARD"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 13,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 13."
+  },
+  {
+    "id": "ioe-ghostglaive",
+    "name": "Ghostglaive",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "WRAITHGUARD"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 16,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry",
+        "Rending (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 16."
+  },
+  {
+    "id": "ioe-ghostsword",
+    "name": "Ghostsword",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "WRAITHGUARD"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 13,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 13. The description (p.88) is headed \"Ghostsword (x2)\" (wielded in pairs); the table row has no (x2)."
+  },
+  {
+    "id": "ioe-guardian-chainsword",
+    "name": "Guardian Chainsword",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Common",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-harlequins-caress",
+    "name": "Harlequin's Caress",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 0,
+      "ed": 1,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (3)"
+      ]
+    },
+    "effect": "These attacks ignore armour and always deal Mortal Wounds.",
+    "note": "Damage printed \"(S)\": Strength with no bonus. Effect from the description on p.88."
+  },
+  {
+    "id": "ioe-harlequins-embrace",
+    "name": "Harlequin's Embrace",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 1,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (2)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-harlequins-kiss",
+    "name": "Harlequin's Kiss",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 8,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 8."
+  },
+  {
+    "id": "ioe-huskblade",
+    "name": "Huskblade",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-hydra-gauntlets",
+    "name": "Hydra Gauntlets",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "WYCH CULT"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry",
+        "Rending (2)"
+      ]
+    },
+    "effect": "Hydra Gauntlets treat a target’s Defence as 1 lower when attacking.",
+    "note": "Effect from the description on p.88."
+  },
+  {
+    "id": "ioe-jesters-blade",
+    "name": "Jester's Blade",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 4,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "This powered blade, attached to the barrel of a Death Jester’s Shrieker Cannon, turns the heavy weapon into a reaping scythe.",
+    "note": "Damage printed as a flat 9. Filed as a weapon (it has a melee profile), though it is fitted to a Shrieker Cannon. Effect from the description on p.88."
+  },
+  {
+    "id": "ioe-klaive",
+    "name": "Klaive",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "INCUBUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry",
+        "Reliable",
+        "Rending (3)"
+      ]
+    },
+    "effect": "",
+    "note": "Described as two-handed (p.88), but no 2-HANDED Keyword is printed."
+  },
+  {
+    "id": "ioe-mindphase-gauntlet",
+    "name": "Mindphase Gauntlet",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 0,
+      "ed": 1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising"
+      ]
+    },
+    "effect": "It counts as an unarmed attack and does not deal damage conventionally. Instead, it saps strength and willpower. A character hit by a Mindphase Gauntlet must pass a DN 3 Willpower Test or lose 1 Willpower until the end of combat. Multiple hits stack.",
+    "note": "Damage printed \"(S)\": Strength with no bonus, though the effect says it does not deal damage conventionally. Effect from the description on p.88; its flavour clause after \"Multiple hits stack;\" dropped."
+  },
+  {
+    "id": "ioe-miststave",
+    "name": "Miststave",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 8,
+      "ed": 5,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force",
+        "Inflict (Hindered 1)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 8."
+  },
+  {
+    "id": "ioe-void-sabre",
+    "name": "Void Sabre",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 7,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 7 (Core p.213 prints (S)+5). IoE prints no Effect."
+  },
+  {
+    "id": "ioe-master-crafted-void-sabre",
+    "name": "Master Crafted Void Sabre",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 14,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 9."
+  },
+  {
+    "id": "ioe-powerblade",
+    "name": "Powerblade (x2)",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 8,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Name printed \"Powerblade(x2)\" (no space): a pair of Power Blades (p.88). Damage printed as a flat 8. No count set; the profile is one weapon's."
+  },
+  {
+    "id": "ioe-powerglaive",
+    "name": "Powerglaive",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 9. The description (p.90) is headed \"Power Glaive\". Range printed 1 though described as a polearm."
+  },
+  {
+    "id": "ioe-scissorhand",
+    "name": "Scissorhand",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Rending (1)",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-scorpions-chainsword",
+    "name": "Scorpion's Chainsword",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "The description (p.90) is headed \"Scorpion Chainsword\"."
+  },
+  {
+    "id": "ioe-scorpions-claw",
+    "name": "Scorpion's Claw",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 5,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "The Scorpion’s Claw may also integrate a specialised Shuriken Catapult for ranged engagement.",
+    "note": "Damage printed as a flat 9. Effect from the description on p.90; no profile given for the integrated catapult."
+  },
+  {
+    "id": "ioe-singing-spear",
+    "name": "Singing Spear",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Assault",
+        "Force",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "It can also be thrown at a target up to 15m away, returning unerringly to its owner’s hand after the attack.",
+    "note": "Range printed \"1 / Thrown 15\": a fixed 15 m throw, not S × N, so `thrown` is unset and the throw is in effect (from the description, p.90)."
+  },
+  {
+    "id": "ioe-venom-blade",
+    "name": "Venom Blade",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-witch-staff",
+    "name": "Witch Staff",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 11,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 5,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Force",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 9."
+  },
+  {
+    "id": "ioe-witchblade",
+    "name": "Witchblade",
+    "source": "inheritance-of-embers",
+    "page": 89,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 5,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Parry",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "",
+    "note": "Damage printed as a flat 9 (Core p.213 prints (S)+6)."
+  },
+  {
+    "id": "ioe-star-glaive",
+    "name": "Star Glaive",
+    "source": "inheritance-of-embers",
+    "page": 90,
+    "category": "Powered Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "",
+    "note": "Described on p.90 but has no row in the Powered Melee Weapons table: no profile, Value, Rarity or Keywords printed."
+  },
+  {
+    "id": "ioe-fusion-charge",
+    "name": "Fusion Charge",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenade Weapons",
+    "kind": "grenade",
+    "value": 10,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "weapon": {
+      "damage": 16,
+      "ed": 6,
+      "ap": -4,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Melta"
+      ]
+    },
+    "effect": "May only target Vehicles/structures. The shaped charge must be attached carefully, taking a Full-Round Action.",
+    "note": "Name printed \"Fusion charge\" in the table, \"Fusion Charge\" in the description. Traits printed \"Melta, may only target Vehicles/structures\"; the restriction moved to effect, with the Full-Round Action from the description (p.90). Range printed \"Strength x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "ioe-hallucinogen-grenade",
+    "name": "Hallucinogen Grenade",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenade Weapons",
+    "kind": "grenade",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Inflict (Fear 4)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "ioe-haywire-grenade",
+    "name": "Haywire Grenade",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenade Weapons",
+    "kind": "grenade",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "RANGER"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 10,
+      "ap": -4,
+      "thrown": 4,
+      "salvo": null,
+      "traits": []
+    },
+    "effect": "May only target Vehicles.",
+    "note": "Traits printed \"May only target Vehicles\"; moved to effect. The description (p.90) adds that non-Asuryani vehicles are heavily damaged and organic enemies are unharmed. Range printed \"Strength x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "ioe-phantasm-grenade",
+    "name": "Phantasm Grenade",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenade Weapons",
+    "kind": "grenade",
+    "value": 9,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Inflict (Terror 4)"
+      ]
+    },
+    "effect": "",
+    "note": "Damage, ED and AP printed \"–\"; Damage and ED stored as 0. Range printed \"Strength x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "ioe-plasma-grenade",
+    "name": "Plasma Grenade",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenade Weapons",
+    "kind": "grenade",
+    "value": 6,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 5,
+      "ap": -1,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)"
+      ]
+    },
+    "effect": "",
+    "note": "Range printed \"Strength x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "ioe-wireweave-grenade",
+    "name": "Wireweave Grenade",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenade Weapons",
+    "kind": "grenade",
+    "value": 8,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "RANGER"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 5,
+      "ap": -2,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (6)",
+        "Rending (3)"
+      ]
+    },
+    "effect": "In addition to the listed damage, any character hit takes 1 Mortal Wound if they move more than half their Speed within the blast radius until the monofilaments settle, 1 Round later.",
+    "note": "Effect from the description (p.91, headed \"Wireweave Grenades\"). Range printed \"Strength x 4m or as Launcher\": thrown S x 4, or the launcher's range when fired from one."
+  },
+  {
+    "id": "ioe-wireweave-net",
+    "name": "Wireweave Net",
+    "source": "inheritance-of-embers",
+    "page": 91,
+    "category": "Grenades",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "effect": "When activated by proximity trigger or remote signal, they deploy an ankle-high tangle of monofilament wires. Any character entering the area covered by an active Wireweave Net takes 1 Mortal Wound and suffers 1 Mortal Wound each time they move inside the area at more than half their Speed.",
+    "note": "Described on p.91 but has no row in the Grenade Weapons table: no profile, area, Value, Rarity or Keywords printed. First effect sentence trimmed of flavour."
+  },
+  {
+    "id": "ioe-aeldari-mesh-armour",
+    "name": "Aeldari Mesh Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-aspect-armour",
+    "name": "Aspect Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "AR printed with an asterisk and the Invulnerable Trait listed; stored as invulnerable, not repeated in traits (Core p.232: an asterisk is the Invulnerable Trait)."
+  },
+  {
+    "id": "ioe-heavy-aspect-armour",
+    "name": "Heavy Aspect Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "AR printed with an asterisk and the Invulnerable Trait listed; stored as invulnerable, not repeated in traits (Core p.232: an asterisk is the Invulnerable Trait). The description (p.91) is headed \"Aspect Armour (Heavy)\"."
+  },
+  {
+    "id": "ioe-corsair-armour",
+    "name": "Corsair Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-ghostplate-armour",
+    "name": "Ghostplate Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "AR printed with an asterisk and the Invulnerable Trait listed; stored as invulnerable, not repeated in traits (Core p.232: an asterisk is the Invulnerable Trait). The description (p.91) says it incorporates a force shield, but no Power Field Trait is printed."
+  },
+  {
+    "id": "ioe-holo-suit",
+    "name": "Holo-Suit",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN"
+    ],
+    "armour": {
+      "ar": 0,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Holo-suits don’t have DR; rather, they raise the wearer’s Defence and Stealth by 2.",
+    "note": "AR printed 0, Traits blank. Effect from the description on p.91."
+  },
+  {
+    "id": "ioe-incubus-warsuit",
+    "name": "Incubus Warsuit",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "INCUBUS"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "The description (p.91) is headed \"Incubus Armour\"."
+  },
+  {
+    "id": "ioe-kabalite-armour",
+    "name": "Kabalite Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": ""
+  },
+  {
+    "id": "ioe-mesh-implants",
+    "name": "Mesh Implants",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "HAEMONCULUS"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Fear (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Subcutaneous implants (p.92) filed as armour, from the Aeldari Armour table. Fear (2) is printed as a Trait; no armour trait of that name is defined on pp.86–92."
+  },
+  {
+    "id": "ioe-reaper-armour",
+    "name": "Reaper Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASPECT WARRIOR",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Cumbersome",
+        "Always counts as Braced"
+      ]
+    },
+    "effect": "An Aeldari wearing Reaper Armour always counts as Braced when firing weapons with the Heavy Trait.",
+    "note": "AR printed with an asterisk and the Invulnerable Trait listed; stored as invulnerable, not repeated in traits (Core p.232: an asterisk is the Invulnerable Trait). Rarity printed \"Very Rre\". \"Always counts as Braced\" kept in traits as printed; the effect is from the description on p.92."
+  },
+  {
+    "id": "ioe-rune-armour",
+    "name": "Rune Armour",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "SEER"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "AR printed with an asterisk and the Invulnerable Trait listed; stored as invulnerable, not repeated in traits (Core p.232: an asterisk is the Invulnerable Trait)."
+  },
+  {
+    "id": "ioe-wych-suit",
+    "name": "Wych Suit",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Armour",
+    "kind": "armour",
+    "value": 5,
+    "rarity": "Uncommon",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "WYCH CULT"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "The description (p.93) is headed \"Wychsuit\". Keywords printed AELDARI, ASURYANI, WYCH CULT (ASURYANI on a Drukhari Wych Cult suit, as printed)."
+  },
+  {
+    "id": "ioe-force-shield",
+    "name": "Force Shield",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Shield Generators",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "AR printed 3 with no asterisk. No FORCE FIELD Keyword printed, unlike the other shield generators. The description (p.93) likens it to the Rosarius."
+  },
+  {
+    "id": "ioe-gloom-field",
+    "name": "Gloom Field",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Shield Generators",
+    "kind": "armour",
+    "value": 9,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FORCE FIELD",
+      "RANGER"
+    ],
+    "effect": "Rangers within 10m of a Gloom Field always count as being in partial Cover (+1 Defence, stacks with Cameleoline Cloak bonuses).",
+    "note": "AR printed \"–\" and Traits \"Special\": no armour block; the effect is from the description on p.93. Rarity printed \"Very rare\"."
+  },
+  {
+    "id": "ioe-mistshield",
+    "name": "Mistshield",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Shield Generators",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ANHRATHE",
+      "FORCE FIELD"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "AR printed 2 with no asterisk."
+  },
+  {
+    "id": "ioe-serpent-shield-platform",
+    "name": "Serpent Shield Platform",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Shield Generators",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FORCE FIELD"
+    ],
+    "armour": {
+      "ar": 1,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "A shield emitter on a mobile anti-grav platform, protecting the operator and allies within 10m. It can also be overloaded to create a blast of energy: once per encounter, all enemies within 10m of the platform must make a DN 5 Agility Test. Success causes them to become Staggered, while failure knocks them Prone.",
+    "note": "Effect from the description on p.93."
+  },
+  {
+    "id": "ioe-shadowfield",
+    "name": "Shadowfield",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Shield Generators",
+    "kind": "armour",
+    "value": 14,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "DRUKHARI",
+      "FORCE FIELD"
+    ],
+    "armour": {
+      "ar": 4,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "The first time an attack penetrates a Shadow Field and causes at least 1 Wound, the Shadow Field breaks and requires a successful DN 4 Tech-use (Int) Test to repair before it will work again.",
+    "note": "The description (p.93) is headed \"Shadow Field\". Effect from it."
+  },
+  {
+    "id": "ioe-shimmershield",
+    "name": "Shimmershield",
+    "source": "inheritance-of-embers",
+    "page": 92,
+    "category": "Aeldari Shield Generators",
+    "kind": "armour",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "AELDARI",
+      "ASURYANI",
+      "FORCE FIELD"
+    ],
+    "armour": {
+      "ar": 2,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "No Shield Trait and no effect printed (Core p.233 prints both)."
+  }
+]

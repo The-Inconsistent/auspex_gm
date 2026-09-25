@@ -1,0 +1,160 @@
+{
+  "id": "apoc-servo-skull",
+  "name": "Servo Skull",
+  "source": "apocrypha",
+  "page": 470,
+  "faction": "mechanicus",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 2,
+    "I": 4,
+    "Wil": 2,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 2
+  },
+  "defence": 5,
+  "wounds": 3,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Stealth",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Follower is unaffected by abilities that target the mind, and never needs to make a Resolve test to continue fighting."
+    },
+    {
+      "name": "Flight",
+      "text": "Speed is printed as \"10 Flight\"."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Skull Bash",
+          "damage": 3,
+          "ed": 1,
+          "range": [
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 2d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Tiny",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Augur Skull",
+      "text": "The Skull’s Awareness is increased to 8 (Passive 4), and it is fitted with Preysense Goggles and an Auspex."
+    },
+    {
+      "kind": "variant",
+      "name": "Auto-Scribe Skull",
+      "text": "The Skull has a Scholar skill of 6. It grants the owner +2d on all Investigate and Scholar tests."
+    },
+    {
+      "kind": "variant",
+      "name": "Combat Skull",
+      "text": "The Skull has a Weapon Skill of 6. It gains a Mono-Blade: 7 +2 ED / AP -1 / Rending (1)",
+      "weapons": [
+        {
+          "name": "Mono-Blade",
+          "damage": 7,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (1)"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Courier",
+      "text": "The Skull is fitted with an identity scanner and various recording and playback devices. It is programmed to seek out a recipient and deliver messages to them."
+    },
+    {
+      "kind": "variant",
+      "name": "Gheistskull",
+      "text": "Commonly used by the Imperial Navy, a Gheistskull contains a Vox Disruptor Array, and an explosive charge (Frag Grenade). The owner may make Tech Interaction Attacks through the Skull. The explosive charge can be detonated at any time the owner wishes, as a Simple Action, destroying the Skull."
+    },
+    {
+      "kind": "variant",
+      "name": "Gun Skull",
+      "text": "The Skull has a Ballistic Skill of 6. It gains a Laspistol: 7 +1 ED / Range 6-12-18 / Salvo 1 / Reliable. This may be replaced with any other Pistol.",
+      "weapons": [
+        {
+          "name": "Laspistol",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Reliable"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Illuminator",
+      "text": "The Skull is fitted with a powerful light source—a lamp-pack, glow-globe, or brazier of coals."
+    },
+    {
+      "kind": "variant",
+      "name": "Laud Hauler",
+      "text": "The Skull is fitted with a powerful vox-grille, and may replay recorded messages or sounds, or its owner may speak through it over a vox system. Any ability the owner has which uses their voice may determine range from the Skull instead of themselves."
+    },
+    {
+      "kind": "variant",
+      "name": "Medicae Skull",
+      "text": "The Skull is fitted with a Medikit and has a Medicae skill of 6."
+    },
+    {
+      "kind": "variant",
+      "name": "Utility Skull",
+      "text": "The Skull has a combi-tool and a Tech skill of 6. It may assist its owner by adding +2d to Tech tests attempted while it is within 10m."
+    }
+  ]
+}

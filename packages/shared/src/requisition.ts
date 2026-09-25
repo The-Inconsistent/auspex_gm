@@ -59,3 +59,17 @@ export function requisitionOutcome({
 }) {
   return { success: icons + spend >= dn, wealth: Math.max(0, wealth - spend - (complication ? 1 : 0)) };
 }
+
+// "grenade": Grenades and Missiles, which are requisitioned like Ammo (p.229); their launchers are "weapon".
+// "follower": a companion, servo-skull or drone bought as Wargear; its stat block is a bestiary Threat
+export const WargearKind = z.enum([
+  "weapon",
+  "grenade",
+  "armour",
+  "equipment",
+  "upgrade",
+  "ammo",
+  "augmetic",
+  "follower",
+]);
+export type WargearKind = z.infer<typeof WargearKind>;

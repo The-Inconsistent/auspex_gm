@@ -69,6 +69,7 @@
                 "wargear": {
                   "name": "Cherubim",
                   "qty": 1,
+                  "wargearId": "apoc-cherub",
                   "scope": "group"
                 }
               },
@@ -76,6 +77,7 @@
                 "wargear": {
                   "name": "Laud-Hailer",
                   "qty": 1,
+                  "wargearId": "fspg-laud-hailer",
                   "scope": "group"
                 }
               }
@@ -112,6 +114,7 @@
             "wargear": {
               "name": "Servo-skull",
               "qty": 1,
+              "wargearId": "apoc-servo-skull",
               "scope": "group"
             }
           }
@@ -135,6 +138,7 @@
             "wargear": {
               "name": "Combat servitor",
               "qty": 1,
+              "wargearId": "apoc-combat-servitor",
               "scope": "group"
             }
           }
@@ -408,7 +412,8 @@
           {
             "wargear": {
               "name": "Purity Seal",
-              "qty": 1
+              "qty": 1,
+              "wargearId": "fspg-purity-seal"
             }
           }
         ],

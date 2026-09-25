@@ -1,0 +1,89 @@
+{
+  "id": "apoc-chapter-serf",
+  "name": "Chapter Serf",
+  "source": "apocrypha",
+  "page": 460,
+  "faction": "imperial",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS ASTARTES",
+    "[CHAPTER]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 3,
+    "I": 3,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 4,
+    "note": "Armoured Bodyglove: 3 AR"
+  },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 6,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 7,
+        "passive": 4
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Specialist",
+      "text": "Select two skills from the list below. The Chapter Serf has those skills at a rating of 8: Insight, Investigation, Medicae, Persuasion, Pilot, Scholar, Tech."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Laspistol",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Mono-knife",
+          "damage": 6,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (1)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Glory to roll 3d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg"
+}
