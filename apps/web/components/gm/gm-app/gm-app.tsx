@@ -10,6 +10,7 @@ import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
+import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
@@ -36,8 +37,9 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
       <span className="label" style={{ color: "inherit" }}>
         {p}
       </span>
-      <span className="display" style={{ fontSize: 30 }}>
-        {String(state.campaign[p]).padStart(2, "0")}/{String(poolMax(p, players)).padStart(2, "0")}
+      <Seal value={state.campaign[p]} pool={p} size={40} />
+      <span className="dim" style={{ fontSize: 15 }}>
+        /{poolMax(p, players)}
       </span>
       <button className="btn sq" aria-label={`Spend ${p}`} onClick={() => adjustPool(p, -1)}>
         −

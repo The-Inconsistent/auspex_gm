@@ -563,7 +563,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                 </span>
               ))}
             </div>
-            <StatBlock t={sel.stats} />
+            <StatBlock t={sel.stats} tier={state.campaign.tier} />
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
               {sel.stats.personalRuin !== undefined && (
                 <>

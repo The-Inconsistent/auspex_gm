@@ -278,13 +278,66 @@ textarea.input {
   resize: vertical;
 }
 
-/* Block-glyph bars (lib/blocks) need a monospace face to line up. */
+/* A counter beside its track (components/ui/bar). */
 .bar {
-  font-family: var(--mono);
-  font-size: 20px;
-  letter-spacing: 0;
-  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 600;
   white-space: nowrap;
+}
+/* Wound/shock track: framed cells, filled crimson (harm) or ink (components/ui/track). */
+.track {
+  display: inline-flex;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+  flex: none;
+}
+.track > span {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--ink-2);
+  flex: none;
+}
+.track.harm > span.on {
+  background: var(--red);
+  border-color: var(--red);
+}
+.track.ink > span.on {
+  background: var(--ink-2);
+}
+.row.now .track > span {
+  border-color: var(--bone);
+}
+.row.now .track > span.on {
+  background: var(--bone);
+}
+/* Party pools as wax seals (components/ui/seal): brass Glory, crimson Ruin. */
+.seal {
+  flex: none;
+}
+.seal circle:first-child {
+  fill: var(--red-fill);
+  stroke: var(--red-fill);
+}
+.seal.glory circle:first-child {
+  fill: var(--brass);
+  stroke: var(--brass);
+}
+.seal .seal-ring {
+  fill: none;
+  stroke: var(--bone);
+  stroke-opacity: 0.5;
+  stroke-width: 1;
+}
+.seal text {
+  fill: var(--bone);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
 }
 .chip {
   display: inline-flex;
@@ -405,6 +458,130 @@ textarea.input {
   color: var(--red);
   font-weight: 600;
   box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Stat block, as printed (components/ui/stat-block). */
+.sb {
+  border: 1px solid var(--iron-2);
+  background: var(--vellum);
+  font-size: 15px;
+  line-height: 1.35;
+}
+.sb-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 10px;
+  background: var(--iron);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.sb-title i {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--bone-2);
+  white-space: nowrap;
+}
+.sb-grid {
+  display: grid;
+  text-align: center;
+}
+.sb-grid > span {
+  padding: 3px 4px;
+  min-width: 0;
+}
+.sb-head {
+  background: var(--iron-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.sb-head.cur {
+  background: var(--red-fill);
+}
+.sb-v {
+  font-size: 18px;
+  font-weight: 700;
+}
+.sb-shade {
+  background: var(--vellum-2);
+}
+.sb-shade > .label {
+  padding-bottom: 0;
+}
+.sb-band {
+  padding: 3px 10px;
+  background: var(--iron-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.sb-body {
+  padding: 6px 10px;
+}
+.sb-keys {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--red);
+}
+
+/* Table title bar: crimson for Agents, iron for Threats (the tracker's side headers). */
+.tbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--red-fill);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+.tbar.iron {
+  background: var(--iron);
+}
+/* Riveted plate: GM-only content (secrets, GM notes). Players never see one. */
+.plate {
+  padding: 14px 18px;
+  border: 2px solid var(--iron-2);
+  background-color: var(--vellum-2);
+  box-shadow:
+    inset 0 0 0 2px var(--vellum-2),
+    inset 0 0 0 3px var(--line);
+  background-image:
+    radial-gradient(circle at 8px 8px, var(--iron-2) 2.4px, transparent 3px),
+    radial-gradient(circle at calc(100% - 8px) 8px, var(--iron-2) 2.4px, transparent 3px),
+    radial-gradient(circle at 8px calc(100% - 8px), var(--iron-2) 2.4px, transparent 3px),
+    radial-gradient(circle at calc(100% - 8px) calc(100% - 8px), var(--iron-2) 2.4px, transparent 3px);
+}
+/* A handout as a sealed slip of paper. */
+.handout {
+  position: relative;
+  padding: 18px 16px 14px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+  box-shadow:
+    0 2px 0 rgba(31, 26, 22, 0.08),
+    0 10px 18px -12px rgba(31, 26, 22, 0.45);
+}
+/* The acting combatant's card on the player FIGHT tab. */
+.item.now {
+  border: 2px solid var(--red);
+  background: var(--red-tint);
 }
 
 /* GM shell */
@@ -568,9 +745,6 @@ button.row.now:nth-of-type(even) {
   .pool {
     min-height: 40px;
     padding: 0 4px 0 8px;
-  }
-  .pool .display {
-    font-size: 22px !important;
   }
   .pool .btn.sq {
     width: 40px;

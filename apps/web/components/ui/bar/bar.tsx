@@ -1,16 +1,14 @@
-import { blocks } from "@/lib/blocks/blocks";
+import { Track } from "@/components/ui/track/track";
 
 type BarProps = { value: number; max: number | null; danger?: boolean };
 
+// A counter with its track: wounds/shock in the tracker. Harm tracks go crimson once any is taken.
 export function Bar({ value, max, danger }: BarProps) {
   if (max === null) return <span className="dim">—</span>;
   return (
-    <span
-      className="bar"
-      style={{ display: "flex", gap: 6, minWidth: 0, color: danger && value > 0 ? "var(--red)" : undefined }}
-    >
-      <span style={{ overflow: "hidden", minWidth: 0 }}>{blocks({ value, max })}</span>
-      <span style={{ fontSize: 16, flex: "none" }}>
+    <span className="bar">
+      <Track value={value} max={max} tone={danger ? "harm" : "ink"} />
+      <span style={{ flex: "none" }}>
         {value}/{max}
       </span>
     </span>
