@@ -12,7 +12,22 @@
     "name": "PSYKER",
     "source": "core",
     "page": 375,
-    "text": "You are a Psyker, capable of channeling the raw energies of the Warp. If you have this Keyword, you:\n- Know the Universal Psyker Abilities (p.267).\n- Can spend XP to learn psychic powers.\n- Can spend XP to improve your Psychic Mastery Skill.\n\nNone truly know how an individual becomes a Psyker. Some are born with this twisted gift, others are cursed through exposure to the Warp. Becoming a Psyker will dramatically change your character, making them a powerful, feared, and potentially illegal citizen of the Imperium. Talk to your GM and your group before choosing this Keyword."
+    "text": "You are a Psyker, capable of channeling the raw energies of the Warp. If you have this Keyword, you:\n- Know the Universal Psyker Abilities (p.267).\n- Can spend XP to learn psychic powers.\n- Can spend XP to improve your Psychic Mastery Skill.\n\nNone truly know how an individual becomes a Psyker. Some are born with this twisted gift, others are cursed through exposure to the Warp. Becoming a Psyker will dramatically change your character, making them a powerful, feared, and potentially illegal citizen of the Imperium. Talk to your GM and your group before choosing this Keyword.",
+    "grants": [
+      {
+        "power": "psyniscience"
+      },
+      {
+        "power": "deny-the-witch"
+      },
+      {
+        "disciplineAccess": [
+          "minor",
+          "universal"
+        ]
+      }
+    ],
+    "note": "Grants: the Universal Psyker Abilities, Psyniscience and Deny the Witch (Core p.375: \"Know the Universal Psyker Abilities (p.267)\"), and access to Minor Psychic Powers and Smite (the minor and universal disciplines), which \"All Psykers can learn\" (Core p.257). The one Discipline of choice (Disciplines Known, Core p.257) is on each Species."
   },
   {
     "id": "abhuman",

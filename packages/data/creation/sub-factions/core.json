@@ -504,7 +504,12 @@
     "traits": [
       {
         "name": "Bonus",
-        "text": "gain +1 Wealth at the end of every session."
+        "text": "gain +1 Wealth at the end of every session.",
+        "grants": [
+          {
+            "wealthPerSession": 1
+          }
+        ]
       }
     ]
   },

@@ -4,7 +4,7 @@
     "name": "Human",
     "source": "core",
     "page": 29,
-    "note": "Maximums from the table on p.25; Species Keywords from p.38.",
+    "note": "Maximums from the table on p.25; Species Keywords from p.38. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 0,
     "speed": 6,
     "size": "Average",
@@ -27,6 +27,21 @@
       },
       {
         "keyword": "[ANY]"
+      },
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ],
     "abilities": [
@@ -41,7 +56,7 @@
     "name": "Adeptus Astartes",
     "source": "core",
     "page": 29,
-    "note": "Maximums from the table on p.25; Species Keywords from p.38.",
+    "note": "Maximums from the table on p.25; Species Keywords from p.38. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 160,
     "speed": 7,
     "size": "Average",
@@ -85,6 +100,21 @@
             "keyword": "CHAOS"
           }
         ]
+      },
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ],
     "abilities": [
@@ -114,7 +144,7 @@
     "name": "Primaris Astartes",
     "source": "core",
     "page": 29,
-    "note": "Maximums from the table on p.25; Species Keywords from p.38.",
+    "note": "Maximums from the table on p.25; Species Keywords from p.38. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 198,
     "speed": 7,
     "size": "Average",
@@ -173,6 +203,23 @@
     ],
     "countsAs": [
       "adeptus-astartes"
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -180,7 +227,7 @@
     "name": "Ork",
     "source": "core",
     "page": 29,
-    "note": "Maximums from the table on p.25; Species Keywords from p.39.",
+    "note": "Maximums from the table on p.25; Species Keywords from p.39. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 20,
     "speed": 6,
     "size": "Average",
@@ -220,6 +267,23 @@
       {
         "name": "Species Interaction",
         "text": "Differences in culture, language, and biology make communication between any two individuals of different Species difficult, even when they aren't compounded by long histories of horrific mutual warefare.\n\nAll social Tests to interact with a member of another Species suffer a minimum +2 DN penalty (see Chapter 8: Rules for further explanation). As all Astartes were once Human, they do not suffer this penalty, unless another rule or the GM states otherwise."
+      }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ]
   }

@@ -4,7 +4,7 @@
     "name": "Navigator",
     "source": "apocrypha",
     "page": 11,
-    "note": "Size not printed (a Human strain, p.11). No maximums printed (the p.18 table has no Navigator column): Human maximums by GM ruling (docs/rules-flow.md §11.27). No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM). Every Navigator knows The Lidless Stare instead of Smite (p.294): the power grant.",
+    "note": "Size not printed (a Human strain, p.11). No maximums printed (the p.18 table has no Navigator column): Human maximums by GM ruling (docs/rules-flow.md §11.27). No Species Keywords printed; the Navigator archetype (p.119) carries IMPERIUM, NAVIS NOBILITE, [HOUSE], PSYKER. Mutant reads \"IMPERIAL characters\" as printed (the keyword is IMPERIUM). Every Navigator knows The Lidless Stare instead of Smite (p.294): the power grant. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257). Hereditary Mutations changes no Attribute: its +1DN stays in the text; its −1 to derived Traits (Core pp.36–37) is a `choose`: T (Max Wounds, Resilience, Determination), Wil (Max Shock, Resolve, Conviction), I (Defence) or Fel (Influence). S, A and Int derive none (`optional`).",
     "xp": 24,
     "speed": 6,
     "attributes": {
@@ -32,7 +32,39 @@
       },
       {
         "name": "Hereditary Mutations",
-        "text": "Your form has been twisted and distorted by exposure to the Immaterium and by generations of inbreeding. Choose one of your attributes; any skill tests using that attribute suffer +1DN, and any derived traits from that attribute are reduced by 1."
+        "text": "Your form has been twisted and distorted by exposure to the Immaterium and by generations of inbreeding. Choose one of your attributes; any skill tests using that attribute suffer +1DN, and any derived traits from that attribute are reduced by 1.",
+        "grants": [
+          {
+            "choose": 1,
+            "optional": true,
+            "from": [
+              {
+                "mods": {
+                  "maxWounds": -1,
+                  "resilience": -1,
+                  "determination": -1
+                }
+              },
+              {
+                "mods": {
+                  "maxShock": -1,
+                  "resolve": -1,
+                  "conviction": -1
+                }
+              },
+              {
+                "mods": {
+                  "defence": -1
+                }
+              },
+              {
+                "mods": {
+                  "influence": -1
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "max": {
@@ -48,6 +80,21 @@
     "grants": [
       {
         "power": "the-lidless-stare"
+      },
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ]
   },
@@ -56,7 +103,7 @@
     "name": "Beastman",
     "source": "apocrypha",
     "page": 14,
-    "note": "Maximums from the table on p.18. Size not printed (\"slightly taller and broader than the average human\", p.14). No Species Keywords printed. Child of Chaos's +3 Corruption is a `corruption` grant on the ability.",
+    "note": "Maximums from the table on p.18. Size not printed (\"slightly taller and broader than the average human\", p.14). No Species Keywords printed. Child of Chaos's +3 Corruption is a `corruption` grant on the ability. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 20,
     "speed": 7,
     "attributes": {
@@ -82,7 +129,21 @@
       },
       {
         "name": "Horns",
-        "text": "You may make melee attacks with your horns ([S]+5 +2ED / AP –). Thus, you are always armed."
+        "text": "You may make melee attacks with your horns ([S]+5 +2ED / AP –). Thus, you are always armed.",
+        "grants": [
+          {
+            "weapon": {
+              "name": "Horns",
+              "damage": 5,
+              "ed": 2,
+              "range": [
+                1
+              ],
+              "traits": [],
+              "addStrength": true
+            }
+          }
+        ]
       },
       {
         "name": "Bestial Savagery",
@@ -94,6 +155,23 @@
         "grants": [
           {
             "corruption": 3
+          }
+        ]
+      }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
           }
         ]
       }
@@ -132,7 +210,12 @@
       },
       {
         "name": "Dull Soul",
-        "text": "You cannot gain the PSYKER keyword under any circumstances."
+        "text": "You cannot gain the PSYKER keyword under any circumstances.",
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       }
     ]
   },
@@ -171,7 +254,12 @@
       },
       {
         "name": "Dull Soul",
-        "text": "You cannot gain the PSYKER keyword under any circumstances."
+        "text": "You cannot gain the PSYKER keyword under any circumstances.",
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       }
     ]
   },
@@ -214,7 +302,12 @@
       },
       {
         "name": "Dull Soul",
-        "text": "You cannot gain the PSYKER keyword under any circumstances."
+        "text": "You cannot gain the PSYKER keyword under any circumstances.",
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       }
     ]
   },
@@ -257,7 +350,12 @@
       },
       {
         "name": "Dull Soul",
-        "text": "You cannot gain the PSYKER keyword under any circumstances."
+        "text": "You cannot gain the PSYKER keyword under any circumstances.",
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       }
     ]
   },
@@ -298,7 +396,12 @@
       },
       {
         "name": "Dull Soul",
-        "text": "You cannot gain the PSYKER keyword under any circumstances."
+        "text": "You cannot gain the PSYKER keyword under any circumstances.",
+        "grants": [
+          {
+            "neverKeyword": "PSYKER"
+          }
+        ]
       }
     ]
   },
@@ -307,7 +410,7 @@
     "name": "Asuryani Ghost Warrior",
     "source": "apocrypha",
     "page": 6,
-    "note": "Maximums from the table on p.18. Size not printed (the body is \"exactly 10 feet tall\"). No Species Keywords printed; Wraithsight makes it a PSYKER.",
+    "note": "Maximums from the table on p.18. Size not printed (the body is \"exactly 10 feet tall\"). No Species Keywords printed; Wraithsight makes it a PSYKER. Wraithbone Form's natural Armour Rating 5 is `mods.armourRating`; no armour ban is printed (unlike the Wraith Construct's, IoE p.10). Wraithsight's \"may not purchase any psychic powers\" leaves out the PSYKER Disciplines Known grant (Core p.257).",
     "xp": 228,
     "speed": 5,
     "attributes": {
@@ -336,7 +439,14 @@
         "text": "Your robotic body is extremely resistant to harm. Your body naturally has an Armour Rating of 5. In addition, your Determination increases by +3d, and you are immune to the Bleeding, Exhausted, and Poisoned conditions, and cannot suffocate. You are healed using the Tech skill instead of Medicae.",
         "mods": {
           "determination": 3
-        }
+        },
+        "grants": [
+          {
+            "mods": {
+              "armourRating": 5
+            }
+          }
+        ]
       },
       {
         "name": "Wraithsight",
@@ -367,7 +477,7 @@
     "name": "Custodian",
     "source": "apocrypha",
     "page": 7,
-    "note": "Maximums from the table on p.18. Size not printed. No Species Keywords printed.",
+    "note": "Maximums from the table on p.18. Size not printed. No Species Keywords printed. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 330,
     "speed": 7,
     "attributes": {
@@ -407,7 +517,12 @@
       },
       {
         "name": "Despised by the Unholy",
-        "text": "If a Custodian is present in a game, the GM’s starting and maximum Ruin are increased by 1."
+        "text": "If a Custodian is present in a game, the GM’s starting and maximum Ruin are increased by 1.",
+        "grants": [
+          {
+            "gmRuin": 1
+          }
+        ]
       }
     ],
     "max": {
@@ -419,14 +534,31 @@
       "Int": 12,
       "Fel": 10,
       "speed": 9
-    }
+    },
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "kin",
     "name": "Kin",
     "source": "apocrypha",
     "page": 10,
-    "note": "Maximums from the table on p.18 (shared by Kin and Ironkin). Size not printed (\"a little over four feet tall\"). Cloneskein Traits are the option group kin-cloneskein-traits.",
+    "note": "Maximums from the table on p.18 (shared by Kin and Ironkin). Size not printed (\"a little over four feet tall\"). Cloneskein Traits are the option group kin-cloneskein-traits. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 56,
     "speed": 5,
     "attributes": {
@@ -468,6 +600,23 @@
         "name": "Cloneskein",
         "text": "Kin receive the ABHUMAN keyword. In addition, each Kin may select a single Cloneskein Trait from the list below."
       }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -475,7 +624,7 @@
     "name": "Ironkin",
     "source": "apocrypha",
     "page": 10,
-    "note": "Maximums from the table on p.18 (shared by Kin and Ironkin). Size not printed.",
+    "note": "Maximums from the table on p.18 (shared by Kin and Ironkin). Size not printed. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 56,
     "speed": 5,
     "attributes": {
@@ -516,6 +665,23 @@
       {
         "name": "Machine",
         "text": "Ironkin receive the ROBOT keyword. You are immune to the Bleeding and Poisoned conditions and cannot suffocate. You are healed using the Tech skill instead of Medicae."
+      }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ]
   }

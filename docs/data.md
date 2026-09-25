@@ -577,5 +577,10 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   admits them), or is `talentAccess` the gate?
 - Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier
   to Max Shock" is `maxShock: { timesTier: -1 }`.
+- Weirdboy (WAAAGH!), Grey Knight (Sanctic) and Grimnyr (Skeinwrought) grant a discipline and also get the species'
+  one discipline of choice (Core p.257): two in all. Is the archetype's discipline meant to be that one choice?
+- Navigator Hereditary Mutations (Apocrypha p.11): does −1 to Intellect-derived Traits touch Passive Awareness?
+- Change of Kinship (IoE p.58) prints 10 XP for the first Asuryani Path, 20 after; the Paths group (IoE p.10) makes the
+  first free. Which applies when joining the Asuryani?
 - Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
   Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.

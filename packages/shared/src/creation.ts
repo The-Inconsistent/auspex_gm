@@ -108,6 +108,9 @@ const requirements = [
   z.object({ kind: z.literal("species"), anyOf: ids }), // a Species' `countsAs` matches too
   z.object({ kind: z.literal("notSpecies"), anyOf: ids }),
   z.object({ kind: z.literal("archetype"), anyOf: ids }),
+  z.object({ kind: z.literal("notArchetype"), anyOf: ids }), // the Black Carapace: not yet a Scout (VoA p.24)
+  // "if you do not already have a Memorable Injury" (Stay the Course, Core p.154)
+  z.object({ kind: z.literal("memorableInjuries"), max: z.number().int().min(0) }),
   z.object({ kind: z.literal("subFaction"), anyOf: ids }), // a Successor matches its `successorOf` too
   z.object({ kind: z.literal("talent"), anyOf: ids }),
   z.object({ kind: z.literal("notTalent"), anyOf: ids }), // "can't be taken with" (Alpha-level Psyker, Apocrypha p.230)
@@ -182,6 +185,7 @@ const grantOne = z.union([
   z.object({ corruption: Amount }), // negative to lose it: "Lose 2 Corruption per Tier Ascended" (IoE p.59)
   z.object({ faith: Scaled }), // "You gain 1 Faith" (VoA p.31); "+Rank Faith" (FSPG p.104)
   z.object({ memorableInjuries: Amount }), // Agent of the Inquisition (Apocrypha p.211)
+  z.object({ traumaticInjuries: Amount }), // "Roll on the Traumatic Injury (p.195) twice" (Back from the Brink, Core p.150)
   z.object({ mutations: Amount }), // rolls on the Mutation tables (Scavvy, Core p.105; Core p.287)
   z.object({ wrathPerSession: Scaled }), // "An extra Wrath Point … at the start of each future session" (IoE p.59)
   z.object({ wealthPerSession: Scaled }), // "+1 Wealth at the end of each session" (Bad Moons, Core p.82)

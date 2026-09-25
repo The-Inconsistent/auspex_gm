@@ -924,12 +924,6 @@
             "keyword": "PSYKER"
           },
           {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
-          {
             "choose": 1,
             "from": [
               {
@@ -978,9 +972,6 @@
           },
           {
             "power": "smite"
-          },
-          {
-            "chooseDisciplines": 1
           }
         ]
       }
@@ -1053,7 +1044,8 @@
         "attributes": 73,
         "skills": 26
       }
-    }
+    },
+    "note": "The Universal Psyker Abilities come with the PSYKER keyword (Core p.375) and the one Discipline of choice is the Species' default (Disciplines Known, Core p.257), so neither is granted here."
   },
   {
     "source": "core",

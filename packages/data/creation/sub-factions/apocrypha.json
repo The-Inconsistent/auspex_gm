@@ -224,6 +224,14 @@
                 "perRank": 1
               }
             }
+          },
+          {
+            "corruption": {
+              "roll": "1d3",
+              "times": {
+                "timesTier": 1
+              }
+            }
           }
         ]
       }
@@ -244,7 +252,12 @@
         "text": "You add +1 to your Influence, and you gain +1 Wealth at the end of each session.",
         "mods": {
           "influence": 1
-        }
+        },
+        "grants": [
+          {
+            "wealthPerSession": 1
+          }
+        ]
       }
     ],
     "note": "Keyword drops the leading \"The\" (the book prints no keyword form)."
@@ -260,7 +273,14 @@
     "traits": [
       {
         "name": "Elite Artisans",
-        "text": "You add +Rank to Tech skill tests and add +1 to the AR of any armour you wear."
+        "text": "You add +Rank to Tech skill tests and add +1 to the AR of any armour you wear.",
+        "grants": [
+          {
+            "mods": {
+              "armourRating": 1
+            }
+          }
+        ]
       }
     ],
     "note": "Keyword drops the leading \"The\" (the book prints no keyword form)."
@@ -303,7 +323,16 @@
     "traits": [
       {
         "name": "Nomadic Explorers",
-        "text": "You increase your Passive Awareness by +Rank and add +1d to all Pilot skill tests."
+        "text": "You increase your Passive Awareness by +Rank and add +1d to all Pilot skill tests.",
+        "grants": [
+          {
+            "mods": {
+              "passiveAwareness": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ]
   },
@@ -458,7 +487,29 @@
       },
       {
         "name": "Earth Caste",
-        "text": "Earth caste T’au from Bork’an add +2 to their Medicae, Scholar, and Tech skills."
+        "text": "Earth caste T’au from Bork’an add +2 to their Medicae, Scholar, and Tech skills.",
+        "grants": [
+          {
+            "all": [
+              {
+                "skills": [
+                  "Medicae",
+                  "Scholar",
+                  "Tech"
+                ],
+                "add": 2
+              }
+            ],
+            "requires": [
+              {
+                "kind": "species",
+                "anyOf": [
+                  "fio-tau"
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Fire Caste",
@@ -494,7 +545,30 @@
       },
       {
         "name": "Water Caste",
-        "text": "Water caste T’au from Dal’yth add +2 to their Cunning, Deception, Insight, and Persuasion skills."
+        "text": "Water caste T’au from Dal’yth add +2 to their Cunning, Deception, Insight, and Persuasion skills.",
+        "grants": [
+          {
+            "all": [
+              {
+                "skills": [
+                  "Cunning",
+                  "Deception",
+                  "Insight",
+                  "Persuasion"
+                ],
+                "add": 2
+              }
+            ],
+            "requires": [
+              {
+                "kind": "species",
+                "anyOf": [
+                  "por-tau"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ],
     "note": "Trait names are editorial: the book prints bullets led by the bold caste name, or \"All\"."
@@ -730,7 +804,59 @@
     "traits": [
       {
         "name": "In Pursuit of Perfection",
-        "text": "Each Emperor’s Children Space Marine seeks to perfect a single aspect of the arts of warfare.\n\nSelect one of the following skills: Awareness, Ballistic Skill, Leadership, Pilot, Weapon Skill. You gain +Rank dice as a bonus to all uses of that skill."
+        "text": "Each Emperor’s Children Space Marine seeks to perfect a single aspect of the arts of warfare.\n\nSelect one of the following skills: Awareness, Ballistic Skill, Leadership, Pilot, Weapon Skill. You gain +Rank dice as a bonus to all uses of that skill.",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "bonusDice": {
+                  "perRank": 1
+                },
+                "skills": [
+                  "Awareness"
+                ],
+                "when": "all uses of that skill"
+              },
+              {
+                "bonusDice": {
+                  "perRank": 1
+                },
+                "skills": [
+                  "Ballistic Skill"
+                ],
+                "when": "all uses of that skill"
+              },
+              {
+                "bonusDice": {
+                  "perRank": 1
+                },
+                "skills": [
+                  "Leadership"
+                ],
+                "when": "all uses of that skill"
+              },
+              {
+                "bonusDice": {
+                  "perRank": 1
+                },
+                "skills": [
+                  "Pilot"
+                ],
+                "when": "all uses of that skill"
+              },
+              {
+                "bonusDice": {
+                  "perRank": 1
+                },
+                "skills": [
+                  "Weapon Skill"
+                ],
+                "when": "all uses of that skill"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Fear of Imperfection (Tradition)",
@@ -1071,7 +1197,16 @@
     "traits": [
       {
         "name": "Pious Scrutiny",
-        "text": "Your Passive Awareness is increased by +Rank."
+        "text": "Your Passive Awareness is increased by +Rank.",
+        "grants": [
+          {
+            "mods": {
+              "passiveAwareness": {
+                "perRank": 1
+              }
+            }
+          }
+        ]
       }
     ],
     "requires": [

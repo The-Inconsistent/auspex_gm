@@ -32,7 +32,7 @@
     "name": "Armour of Contempt",
     "source": "vow-of-absolution",
     "page": 45,
-    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. The Black Carapace is a Space Marine implant (p.24), not an item, so it is a GM-judged requirement; Scouts lack it until the Advancement Packages (p.27). Also Apocrypha p.231.",
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. The Black Carapace is a Space Marine implant (p.24), not an item, so it is \"not a Scout\": Scouts lack it until the Advancement Packages; Scouts lack it until the Advancement Packages (p.27). Also Apocrypha p.231.",
     "xp": 30,
     "requires": [
       {
@@ -47,8 +47,10 @@
         "min": 5
       },
       {
-        "kind": "gm",
-        "text": "Must have received the Black Carapace"
+        "kind": "notArchetype",
+        "anyOf": [
+          "space-marine-scout"
+        ]
       },
       {
         "kind": "notKeyword",

@@ -984,7 +984,7 @@
       "aeldari"
     ],
     "xp": 56,
-    "note": "Suggested Psychic Powers cite \"page 283/284\" (Core's Runes of Battle pages); resolved to IoE's Runes of Battle records. The ability's Universal Psyker Abilities are granted as Psyniscience and Deny the Witch. Also Core p.114.",
+    "note": "Suggested Psychic Powers cite \"page 283/284\" (Core's Runes of Battle pages); resolved to IoE's Runes of Battle records. The Universal Psyker Abilities (Core p.267) come with the PSYKER keyword (Core p.375). Also Core p.114.",
     "keywords": [
       "AELDARI",
       "ASURYANI",
@@ -1003,12 +1003,6 @@
         "name": "Runes of Battle",
         "text": "You are a warrior and a Psyker both, adapting your powers to either augment your allies or assail your enemies. You know the Universal Psyker Abilities (Wrath & Glory page 267), the Smite psychic power, and a single power of your choice from the Runes of Battle Discipline.",
         "grants": [
-          {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
           {
             "power": "smite"
           },
@@ -1388,7 +1382,7 @@
       "aeldari"
     ],
     "xp": 167,
-    "note": "Print error: Suggested Psychic Powers prints only \"TBD\", so powerIds is empty. The ability's two-power choice is from the Divination, Runes of Fate and Runes of Fortune disciplines; those also hold Apocrypha homebrew powers (Eldritch Storm, and Divination's Auto-Seance and others), which the builder hides as homebrew. The Universal Psyker Abilities are granted as Psyniscience and Deny the Witch.",
+    "note": "Print error: Suggested Psychic Powers prints only \"TBD\", so powerIds is empty. The ability's two-power choice is from the Divination, Runes of Fate and Runes of Fortune disciplines; those also hold Apocrypha homebrew powers (Eldritch Storm, and Divination's Auto-Seance and others), which the builder hides as homebrew. The Universal Psyker Abilities (Core p.267) come with the PSYKER keyword (Core p.375).",
     "keywords": [
       "AELDARI",
       "ASURYANI",
@@ -1411,12 +1405,6 @@
         "name": "The Witch Path",
         "text": "You are a supremely powerful Psyker, specialising in manipulation of the future. You know the Universal Psyker Abilities (Wrath & Glory page 267), and the Smite psychic power. You may choose two powers you know from any of the following Disciplines (so long as you meet the prerequisites): Divination, Runes of Fate, Runes of Fortune.",
         "grants": [
-          {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
           {
             "power": "smite"
           },
@@ -2741,7 +2729,7 @@
     "name": "Shadowseer",
     "source": "inheritance-of-embers",
     "page": 49,
-    "note": "Species printed \"Aeldari/Drukhari\". The Universal Psyker Abilities (Core p.267) are granted as Psyniscience and Deny the Witch. Also Apocrypha p.201.",
+    "note": "Species printed \"Aeldari/Drukhari\". The Universal Psyker Abilities (Core p.267) come with the PSYKER keyword (Core p.375). Also Apocrypha p.201.",
     "factionId": "harlequins",
     "tier": 5,
     "speciesIds": [
@@ -2777,12 +2765,6 @@
         "name": "Phantasmancer",
         "text": "You know the Universal Psyker Abilities (Wrath & Glory page 267), and the Smite psychic power. You may choose two powers you know from any of the following Disciplines (so long as you meet the prerequisites): Divination, Phantasmancy, Telepathy.",
         "grants": [
-          {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
           {
             "power": "smite"
           },
@@ -3254,7 +3236,7 @@
     "name": "Soul Weaver & Wayseeker",
     "source": "inheritance-of-embers",
     "page": 54,
-    "note": "XP printed \"44\" with \"+20\" beneath it (GitHub issue #2). The printed 44 is the ratings alone; 44 + 20 = 64, not 54, so here the mark is not the Archetype Ability's (Tier − 1) × 10. Species printed \"Aeldari, Drukhari\". No Influence printed. PSYKER comes from the ability, not the printed Keywords. The Universal Psyker Abilities (Core p.267) are granted as Psyniscience and Deny the Witch. Suggested Psychic Powers are two sets, both in powerIds: \"Way Seeker: Prescience, Protect/Jinx, Psychometry\" and \"Soul Weaver: Empower/Enervate, Embolden/Horrify, Enhance/Drain\". Wargear \"Corsair Sabre\" is not in the catalogue (Void Sabre?). XP as printed: the total of \"44+20\" (GM ruling, docs/rules-flow.md §11.35).",
+    "note": "XP printed \"44\" with \"+20\" beneath it (GitHub issue #2). The printed 44 is the ratings alone; 44 + 20 = 64, not 54, so here the mark is not the Archetype Ability's (Tier − 1) × 10. Species printed \"Aeldari, Drukhari\". No Influence printed. PSYKER comes from the ability, not the printed Keywords. The Universal Psyker Abilities (Core p.267) come with the PSYKER keyword (Core p.375). Suggested Psychic Powers are two sets, both in powerIds: \"Way Seeker: Prescience, Protect/Jinx, Psychometry\" and \"Soul Weaver: Empower/Enervate, Embolden/Horrify, Enhance/Drain\". Wargear \"Corsair Sabre\" is not in the catalogue (Void Sabre?). XP as printed: the total of \"44+20\" (GM ruling, docs/rules-flow.md §11.35).",
     "factionId": "anhrathe",
     "tier": 2,
     "speciesIds": [
@@ -3285,12 +3267,6 @@
         "grants": [
           {
             "keyword": "PSYKER"
-          },
-          {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
           },
           {
             "power": "smite"

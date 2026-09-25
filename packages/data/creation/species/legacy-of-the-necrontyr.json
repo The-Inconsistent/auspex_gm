@@ -4,7 +4,7 @@
     "name": "Necron",
     "source": "legacy-of-the-necrontyr",
     "page": 3,
-    "note": "Converted from 1st edition (Build Point Cost 60, Base Tier 3); XP is the cost of its ratings, docs/rules-flow.md §11. Attribute Modification +1 Strength, +1 Toughness became S 2, T 2 (rating 1 + modifier); +1 Resolve and +1 Wound are mods on that rule. Base Tier 3 has no Species field. Size not printed. No Attribute Rating Maximums are printed, so max is omitted. The species block prints no Keywords: NECRON and [DYNASTY] come from its archetypes (“Keywords: Necron, <Dynasty>”, p.5). Abilities keep their 1st-edition terms (Defiance checks, AV) as printed.",
+    "note": "Converted from 1st edition (Build Point Cost 60, Base Tier 3); XP is the cost of its ratings, docs/rules-flow.md §11. Attribute Modification +1 Strength, +1 Toughness became S 2, T 2 (rating 1 + modifier); +1 Resolve and +1 Wound are mods on that rule. Base Tier 3 has no Species field. Size not printed. No Attribute Rating Maximums are printed, so max is omitted. The species block prints no Keywords: NECRON and [DYNASTY] come from its archetypes (“Keywords: Necron, <Dynasty>”, p.5). Abilities keep their 1st-edition terms (Defiance checks, AV) as printed. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 8,
     "speed": 5,
     "attributes": {
@@ -37,12 +37,34 @@
       {
         "name": "Soulless Machine",
         "page": 4,
-        "text": "A Necron cannot be affected by any ability or psychic power that would inflict fear or affect the target’s emotions or soul. A Necron never needs to pass Resolve tests in order to keep fighting. A Necron’s Corruption is permanently locked at 0."
+        "text": "A Necron cannot be affected by any ability or psychic power that would inflict fear or affect the target’s emotions or soul. A Necron never needs to pass Resolve tests in order to keep fighting. A Necron’s Corruption is permanently locked at 0.",
+        "grants": [
+          {
+            "never": "corruption"
+          }
+        ]
       },
       {
         "name": "A Galaxy of Enemies",
         "page": 4,
         "text": "A Necron is generally hated by all other races. It suffers a +3DN penalty to all social tests apart from Intimidate when dealing with non-Necrons."
+      }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ]
   }

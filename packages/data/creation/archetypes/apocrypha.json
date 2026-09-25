@@ -1851,7 +1851,7 @@
     "name": "Chaos Sorcerer",
     "source": "apocrypha",
     "page": 167,
-    "note": "KEYWORDS also print: \"You may not select the KHORNE keyword.\" The suggested talents are psychic powers.",
+    "note": "KEYWORDS also print: \"You may not select the KHORNE keyword.\" The suggested talents are psychic powers. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline of your choice\" is the Species' default choice (Disciplines Known, Core p.257), so it isn't granted here.",
     "factionId": "chaos",
     "tier": 4,
     "speciesIds": [
@@ -1897,18 +1897,9 @@
             ]
           },
           {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
-          {
             "disciplineAccess": [
               "dark-hereticus"
             ]
-          },
-          {
-            "chooseDisciplines": 1
           },
           {
             "corruption": {
@@ -3925,7 +3916,7 @@
     "name": "Primaris Librarian",
     "source": "apocrypha",
     "page": 189,
-    "note": "Space Marine Librarian page (Tier 4/Tier 5): two stat blocks. Suggested Talents lists the Librarius powers Fury of the Ancients, Psychic Fortress and Psychic Scourge; they are in powerIds. This is the Primaris block.",
+    "note": "Space Marine Librarian page (Tier 4/Tier 5): two stat blocks. Suggested Talents lists the Librarius powers Fury of the Ancients, Psychic Fortress and Psychic Scourge; they are in powerIds. This is the Primaris block. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline of your choice\" is the Species' default choice (Disciplines Known, Core p.257), so it isn't granted here.",
     "factionId": "adeptus-astartes",
     "tier": 5,
     "speciesIds": [
@@ -3971,15 +3962,6 @@
             "fromDisciplines": [
               "librarius"
             ]
-          },
-          {
-            "chooseDisciplines": 1
-          },
-          {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
           },
           {
             "disciplineAccess": [
@@ -5504,7 +5486,7 @@
       "aeldari"
     ],
     "xp": 72,
-    "note": "The ability name is printed with a trailing colon (\"Path of the Shaper:\"). The Suggested Talents print Focus Will, Webway Step and Wraithtomb, which are psychic powers; they are in powerIds.",
+    "note": "The ability name is printed with a trailing colon (\"Path of the Shaper:\"). The Suggested Talents print Focus Will, Webway Step and Wraithtomb, which are psychic powers; they are in powerIds. The \"one other discipline of your choice\" is the Aeldari Species' default choice (Disciplines Known, Core p.257), so it isn't granted here.",
     "keywords": [
       "AELDARI",
       "ASURYANI",
@@ -5536,9 +5518,6 @@
               "divination",
               "runes-of-shaping"
             ]
-          },
-          {
-            "chooseDisciplines": 1
           }
         ]
       }
@@ -7408,7 +7387,7 @@
       "human"
     ],
     "xp": 32,
-    "note": "The stat block is titled \"CULT WITCH\"; the heading and the Chaos table (p.72) say Rogue Psyker. KEYWORDS also print \"You may not select the KHORNE keyword.\" (in requires). The Suggested Talents print Dark Flame, Soul Shrivel and Touch of Corruption (Core p.281), which are psychic powers; they are in powerIds. \"Battle-Psyker (RR1, p. 61)\" resolved to Battle Psyker.",
+    "note": "The stat block is titled \"CULT WITCH\"; the heading and the Chaos table (p.72) say Rogue Psyker. KEYWORDS also print \"You may not select the KHORNE keyword.\" (in requires). The Suggested Talents print Dark Flame, Soul Shrivel and Touch of Corruption (Core p.281), which are psychic powers; they are in powerIds. \"Battle-Psyker (RR1, p. 61)\" resolved to Battle Psyker. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline of your choice\" is the Species' default choice (Disciplines Known, Core p.257), so it isn't granted here.",
     "keywords": [
       "CHAOS",
       "[MARK OF CHAOS]",
@@ -7436,18 +7415,9 @@
             ]
           },
           {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
-          {
             "disciplineAccess": [
               "maleficarum"
             ]
-          },
-          {
-            "chooseDisciplines": 1
           },
           {
             "corruption": {
@@ -11432,10 +11402,12 @@
             }
           },
           {
-            "chooseDisciplines": 1,
-            "from": [
+            "onlyDisciplines": [
+              "telepathy",
               "divination",
-              "theosophamy"
+              "theosophamy",
+              "minor",
+              "universal"
             ]
           }
         ]
@@ -11509,7 +11481,7 @@
         "skills": 14
       }
     },
-    "note": "The suggested psychic powers (Mind Probe, Psychic Shriek, Psychometry, Scrier's Gaze, Core pp.275–279) are printed under SUGGESTED TALENTS.",
+    "note": "The suggested psychic powers (Mind Probe, Psychic Shriek, Psychometry, Scrier's Gaze, Core pp.275–279) are printed under SUGGESTED TALENTS. The additional Discipline is the Species' default choice (Disciplines Known, Core p.257); `onlyDisciplines` keeps it to Divination or Theosophamy, beside Telepathy and the Minor powers and Smite every Psyker may learn (Core p.257).",
     "source": "apocrypha"
   },
   {

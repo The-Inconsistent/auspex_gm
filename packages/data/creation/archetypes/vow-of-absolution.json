@@ -883,7 +883,7 @@
     "source": "vow-of-absolution",
     "factionId": "adeptus-astartes",
     "page": 36,
-    "note": "Wargear prints “Psychic Hood 3 Frag Grenades” without a comma. “Aquilla” as printed. Also FSPG p.107. Also Apocrypha p.189.",
+    "note": "Wargear prints “Psychic Hood 3 Frag Grenades” without a comma. “Aquilla” as printed. Also FSPG p.107. Also Apocrypha p.189. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline\" is the Species' default choice (Disciplines Known, Core p.257), so only Librarius is granted here.",
     "tier": 4,
     "speciesIds": [
       "adeptus-astartes"
@@ -921,12 +921,6 @@
             "keyword": "PSYKER"
           },
           {
-            "power": "psyniscience"
-          },
-          {
-            "power": "deny-the-witch"
-          },
-          {
             "power": "smite"
           },
           {
@@ -939,9 +933,6 @@
             "fromDisciplines": [
               "librarius"
             ]
-          },
-          {
-            "chooseDisciplines": 1
           }
         ]
       }

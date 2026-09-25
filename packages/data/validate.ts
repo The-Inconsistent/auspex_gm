@@ -221,6 +221,7 @@ const REQUIREMENT_REFS: Record<string, string> = {
   species: "species",
   notSpecies: "species",
   archetype: "archetypes",
+  notArchetype: "archetypes",
   subFaction: "sub-factions",
   talent: "talents",
   notTalent: "talents",

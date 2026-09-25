@@ -374,6 +374,9 @@
             "timesTier": 1
           }
         }
+      },
+      {
+        "never": "corruption"
       }
     ]
   },
@@ -460,6 +463,9 @@
             "influenceAttribute": "Wil"
           }
         ]
+      },
+      {
+        "story": "Gain XP equal to the cost of any powers you already know from the Runes of Fate discipline, as printed."
       }
     ],
     "becomesArchetypeId": "farseer"
@@ -595,7 +601,7 @@
     "name": "Willing Possession",
     "source": "apocrypha",
     "page": 221,
-    "note": "Willpower printed \"4+\". Influence Bonus printed \"+3\", flat (not per Tier). Accursed Vigour's three Attributes and Mutated Form's mutations are chosen at purchase but act only while the daemon's power is used, so they stay in `effect`.",
+    "note": "Willpower printed \"4+\". Influence Bonus printed \"+3\", flat (not per Tier). Accursed Vigour's three Attributes are a `choose` of three `bonusDice` (Tier dice, only while sustained). Mutated Form stays in `effect`: a named Minor mutation (Horns, Spines, Fangs, or Claws, Core p.290) and one Severe mutation, only while the daemon's power is used, which `mutations` (a full Mutation roll, severity included, Core p.287) doesn't fit.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -623,6 +629,53 @@
         "corruption": {
           "perTier": "1d3"
         }
+      },
+      {
+        "choose": 3,
+        "from": [
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Strength Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          },
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Toughness Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          },
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Agility Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          },
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Initiative Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          },
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Willpower Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          },
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Intellect Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          },
+          {
+            "bonusDice": {
+              "timesTier": 1
+            },
+            "when": "Fellowship Tests, while Accursed Vigour is sustained (a Free Action on your turn)"
+          }
+        ]
       }
     ]
   }

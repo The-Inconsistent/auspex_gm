@@ -4,7 +4,7 @@
     "name": "Aeldari",
     "source": "inheritance-of-embers",
     "page": 10,
-    "note": "Maximums from the table on p.20. IoE prints no Species Keywords: keywords and the keyword choice are from Core p.39. Also Core p.29, 10 XP.",
+    "note": "Maximums from the table on p.20. IoE prints no Species Keywords: keywords and the keyword choice are from Core p.39. Also Core p.29, 10 XP. As a PSYKER it learns powers from Divination, Runes of Battle and one other Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 10,
     "speed": 8,
     "size": "Average",
@@ -80,6 +80,27 @@
             ]
           }
         ]
+      },
+      {
+        "all": [
+          {
+            "disciplineAccess": [
+              "divination",
+              "runes-of-battle"
+            ]
+          },
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ]
   },
@@ -88,7 +109,7 @@
     "name": "Drukhari",
     "source": "inheritance-of-embers",
     "page": 10,
-    "note": "Maximums from the table on p.20. IoE prints no Species Keywords. Also Apocrypha p.8.",
+    "note": "Maximums from the table on p.20. IoE prints no Species Keywords. Also Apocrypha p.8. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 10,
     "speed": 8,
     "size": "Average",
@@ -125,6 +146,23 @@
         "page": 20,
         "text": "An Aeldari, Drukhari, or Wraith Construct Agent who fails a Mutation Test always rolls on the Subtle Mutation table (Wrath & Glory page 288). However, an Agent from these Species is rendered unplayable at Corruption Level 4 instead of 5 — at this point, the Agent’s soul is completely defiled by the touch of the Ruinous Powers. An eternity of suffering awaits them, though they may visit this ruin on their former comrades before they inevitably fall."
       }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -132,7 +170,7 @@
     "name": "Wraith Construct",
     "source": "inheritance-of-embers",
     "page": 10,
-    "note": "Maximums from the table on p.20. IoE prints no Species Keywords. p.13: Wraith Constructs do not have Paths, Backgrounds, or Objectives, and may replace the [CRAFTWORLD] Keyword with one chosen from the table on p.12.",
+    "note": "Maximums from the table on p.20. IoE prints no Species Keywords. p.13: Wraith Constructs do not have Paths, Backgrounds, or Objectives, and may replace the [CRAFTWORLD] Keyword with one chosen from the table on p.12. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 90,
     "speed": 5,
     "size": "Large",
@@ -155,7 +193,17 @@
     "abilities": [
       {
         "name": "Wraithbone Form",
-        "text": "Wraith Constructs are immune to the Blinded, Bleeding, and Poisoned Conditions, and cannot Suffocate. They cannot wear armour, but always count as having an Armour Rating (AR) of 5."
+        "text": "Wraith Constructs are immune to the Blinded, Bleeding, and Poisoned Conditions, and cannot Suffocate. They cannot wear armour, but always count as having an Armour Rating (AR) of 5.",
+        "grants": [
+          {
+            "mods": {
+              "armourRating": 5
+            }
+          },
+          {
+            "noArmour": true
+          }
+        ]
       },
       {
         "name": "Wraithsight",
@@ -165,6 +213,23 @@
         "name": "Echoes of the Fall",
         "page": 20,
         "text": "An Aeldari, Drukhari, or Wraith Construct Agent who fails a Mutation Test always rolls on the Subtle Mutation table (Wrath & Glory page 288). However, an Agent from these Species is rendered unplayable at Corruption Level 4 instead of 5 — at this point, the Agent’s soul is completely defiled by the touch of the Ruinous Powers. An eternity of suffering awaits them, though they may visit this ruin on their former comrades before they inevitably fall."
+      }
+    ],
+    "grants": [
+      {
+        "all": [
+          {
+            "chooseDisciplines": 1
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
       }
     ]
   }

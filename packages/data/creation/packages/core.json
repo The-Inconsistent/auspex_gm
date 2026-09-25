@@ -4,7 +4,7 @@
     "name": "Back From The Brink",
     "source": "core",
     "page": 150,
-    "note": "If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice. The two Traumatic Injuries and the augmetics that replace lost parts depend on the rolls, so they are a `story` grant.",
+    "note": "If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice. The augmetics that replace lost parts depend on the injury rolls, so they are a `story` grant.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -20,7 +20,10 @@
         "memorableInjuries": 2
       },
       {
-        "story": "Roll on the Traumatic Injury table (p.195) twice, and replace any lost body parts with augmetics of any Rarity the GM deems appropriate."
+        "traumaticInjuries": 2
+      },
+      {
+        "story": "Replace any lost body parts with the appropriate augmetics, of any Rarity the GM deems appropriate (how many depends on the injury rolls)."
       }
     ]
   },
@@ -145,7 +148,7 @@
     "name": "Psychic Revelations",
     "source": "core",
     "page": 152,
-    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. \"Universal Psychic Powers on p.267\" are Psyniscience and Deny The Witch (universal-psyker-abilities). The Minor powers are a per-Tier choice from the minor discipline. \"Purchase psychic powers from one Discipline of your choice\" is `chooseDisciplines` 1. The \"Changed by the Warp\" box (p.153) is appended to `effect`.",
+    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. The Minor powers are a per-Tier choice from the minor discipline. The \"Universal Psychic Powers on p.267\" come with the PSYKER keyword (Core p.375), and \"one Discipline of your choice\" is the Species' default (Disciplines Known, Core p.257), so neither is granted again. The \"Changed by the Warp\" box (p.153) is appended to `effect`.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -163,21 +166,12 @@
         "power": "smite"
       },
       {
-        "power": "psyniscience"
-      },
-      {
-        "power": "deny-the-witch"
-      },
-      {
         "choose": {
           "perTier": 1
         },
         "fromDisciplines": [
           "minor"
         ]
-      },
-      {
-        "chooseDisciplines": 1
       }
     ]
   },
@@ -237,8 +231,8 @@
             ],
             "requires": [
               {
-                "kind": "gm",
-                "text": "You do not already have a Memorable Injury"
+                "kind": "memorableInjuries",
+                "max": 0
               }
             ]
           },
@@ -256,8 +250,8 @@
             ],
             "requires": [
               {
-                "kind": "gm",
-                "text": "You do not already have a Memorable Injury"
+                "kind": "memorableInjuries",
+                "max": 0
               }
             ]
           }

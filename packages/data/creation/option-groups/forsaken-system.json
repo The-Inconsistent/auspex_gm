@@ -115,7 +115,70 @@
       {
         "name": "Weaponised Biology",
         "page": 99,
-        "text": "Prey Consumed: Any creature with natural weapons (such as Clawed Fiends or Catachan Devils).\n\nYour four-fingered claws evolve into fully fledged weapons. Depending on the savage creature you have consumed they may harden, sharpen, secrete venom, or extend into functional blades.\n\nYour Unarmed Strikes deal (S)+4 Damage / +3 ED, and have one of the following Traits:\n- Brutal\n- Rending (Rank)\n- Inflict (Poison (Rank))\n- Parry"
+        "text": "Prey Consumed: Any creature with natural weapons (such as Clawed Fiends or Catachan Devils).\n\nYour four-fingered claws evolve into fully fledged weapons. Depending on the savage creature you have consumed they may harden, sharpen, secrete venom, or extend into functional blades.\n\nYour Unarmed Strikes deal (S)+4 Damage / +3 ED, and have one of the following Traits:\n- Brutal\n- Rending (Rank)\n- Inflict (Poison (Rank))\n- Parry",
+        "grants": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "weapon": {
+                  "name": "Unarmed Strike",
+                  "damage": 4,
+                  "ed": 3,
+                  "range": [
+                    1
+                  ],
+                  "traits": [
+                    "Brutal"
+                  ],
+                  "addStrength": true
+                }
+              },
+              {
+                "weapon": {
+                  "name": "Unarmed Strike",
+                  "damage": 4,
+                  "ed": 3,
+                  "range": [
+                    1
+                  ],
+                  "traits": [
+                    "Rending (Rank)"
+                  ],
+                  "addStrength": true
+                }
+              },
+              {
+                "weapon": {
+                  "name": "Unarmed Strike",
+                  "damage": 4,
+                  "ed": 3,
+                  "range": [
+                    1
+                  ],
+                  "traits": [
+                    "Inflict (Poison (Rank))"
+                  ],
+                  "addStrength": true
+                }
+              },
+              {
+                "weapon": {
+                  "name": "Unarmed Strike",
+                  "damage": 4,
+                  "ed": 3,
+                  "range": [
+                    1
+                  ],
+                  "traits": [
+                    "Parry"
+                  ],
+                  "addStrength": true
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "text": "A Kroot character starts play with a number of Kroot Mutations equal to their Tier, so if you start playing at Tier 1 with a Kroot character, you may select a single Kroot Mutation to represent the prey they have consumed before your adventures begin. Some Kroot Mutations may not be suitable for starting characters, and are marked with an asterisk. You may gain an additional Kroot Mutation as part of Ascension — work with your GM to determine which Mutation is most applicable based on the prey you have consumed in the course of your adventures.\n\nA Matter of Taste: A Kroot cannot consume any target with the CHAOS or TYRANID Keywords. The reality-mutating powers of the Warp and the ever-shifting, extra-galactic molecular makeup of Tyranid bioforms are both too unstable for a Kroot’s strange genetic osmosis. Kroot also can’t eat mechanical constructs, such as Necrons, Wraithguard, or the augmetics of Skitarii."
