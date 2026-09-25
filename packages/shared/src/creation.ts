@@ -175,6 +175,8 @@ export const WargearItem = z.object({
   // ("Kustom Slugga" = Slugga + Kustom, Core p.209). rules-flow.md §11.42
   upgrades: ids.optional(),
   traitIds: ids.optional(),
+  // A possession no armoury prints and no rule reads ("Bedroll", Core p.105): a sheet line, never a catalogue entry
+  mundane: z.literal(true).optional(),
   scope: z.enum(["character", "group"]).default("character"), // "a servo-skull for the group" (FSPG p.68)
 });
 

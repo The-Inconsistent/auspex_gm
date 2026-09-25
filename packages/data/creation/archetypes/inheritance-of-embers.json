@@ -39,7 +39,8 @@
       },
       {
         "wargear": {
-          "name": "Civilian Clothing"
+          "name": "Civilian Clothing",
+          "wargearId": "clothing"
         }
       },
       {
@@ -193,12 +194,14 @@
       },
       {
         "wargear": {
-          "name": "Bedroll"
+          "name": "Bedroll",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       }
     ],
@@ -1741,12 +1744,14 @@
       },
       {
         "wargear": {
-          "name": "Gang Colours"
+          "name": "Gang Colours",
+          "wargearId": "clothing"
         }
       },
       {
         "wargear": {
-          "name": "Ornamental Skull"
+          "name": "Ornamental Skull",
+          "mundane": true
         }
       }
     ],
@@ -3560,7 +3565,8 @@
       },
       {
         "wargear": {
-          "name": "Court garb"
+          "name": "Court garb",
+          "wargearId": "clothing"
         }
       },
       {

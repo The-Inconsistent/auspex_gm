@@ -97,7 +97,8 @@
       {
         "wargear": {
           "name": "Inquisitorial Rosette",
-          "qty": 1
+          "qty": 1,
+          "wargearId": "symbol-of-authority"
         }
       },
       {

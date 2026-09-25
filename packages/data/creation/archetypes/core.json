@@ -246,7 +246,8 @@
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -445,7 +446,8 @@
       {
         "wargear": {
           "name": "Scroll of Ancient Records",
-          "qty": 3
+          "qty": 3,
+          "mundane": true
         }
       }
     ],
@@ -524,17 +526,20 @@
       },
       {
         "wargear": {
-          "name": "Bedroll"
+          "name": "Bedroll",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Canteen"
+          "name": "Canteen",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Gang colours"
+          "name": "Gang colours",
+          "wargearId": "clothing"
         }
       },
       {
@@ -1008,12 +1013,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -1392,9 +1399,7 @@
     ],
     "wargear": [
       {
-        "wargear": {
-          "name": "Imperial Frigate"
-        }
+        "story": "Imperial Frigate"
       },
       {
         "pick": 2,
@@ -1525,12 +1530,14 @@
       },
       {
         "wargear": {
-          "name": "Bedroll"
+          "name": "Bedroll",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Canteen"
+          "name": "Canteen",
+          "mundane": true
         }
       },
       {
@@ -1945,12 +1952,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming Kit"
+          "name": "Grooming Kit",
+          "mundane": true
         }
       },
       {
@@ -2047,7 +2056,8 @@
       },
       {
         "wargear": {
-          "name": "Maps of the Heartworlds"
+          "name": "Maps of the Heartworlds",
+          "mundane": true
         }
       },
       {

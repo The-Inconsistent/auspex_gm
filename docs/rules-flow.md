@@ -299,6 +299,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     X" (VoA pp.40–41) is X with the Mastercrafted upgrade (Core p.228). The Ork Nob's "Kustom Slugga" and "Kustom
     Choppa" (Core p.115) are the Slugga and Choppa with the Kustom Trait (Core p.209), so each takes a Trait of the
     player's choice when acquired.
+43. **Mundane possessions** (a Bedroll, a Canteen, a Grooming kit, "Maps of the Heartworlds") that no armoury prints
+    and no rule reads stay name-only `mundane` items: a line on the sheet, never a catalogue entry, no Value or Rarity.
+    Clothes, robes, vestments, rags and gang colours are Clothing (Core p.236: "religious vestments, uniforms, or
+    protective worker's overalls"). The Rogue Trader's Imperial Frigate (Core p.104) is a `story` grant, a ship the GM
+    runs.
 
 ---
 

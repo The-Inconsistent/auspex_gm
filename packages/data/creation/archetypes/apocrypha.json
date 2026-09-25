@@ -1689,7 +1689,8 @@
       },
       {
         "wargear": {
-          "name": "collection of jangly baubles"
+          "name": "collection of jangly baubles",
+          "mundane": true
         }
       }
     ],
@@ -1792,7 +1793,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -2326,7 +2328,8 @@
       },
       {
         "wargear": {
-          "name": "armoured copy of the liber daemonica"
+          "name": "armoured copy of the liber daemonica",
+          "mundane": true
         }
       }
     ],
@@ -7762,7 +7765,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -9059,7 +9063,8 @@
       },
       {
         "wargear": {
-          "name": "Tattered blanket"
+          "name": "Tattered blanket",
+          "mundane": true
         }
       },
       {
@@ -9323,7 +9328,8 @@
       },
       {
         "wargear": {
-          "name": "Symbol of devotion (tin aquila, devotional scroll, etc.)"
+          "name": "Symbol of devotion (tin aquila, devotional scroll, etc.)",
+          "mundane": true
         }
       }
     ],
@@ -9747,12 +9753,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -9877,12 +9885,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -10175,7 +10185,8 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
@@ -10289,7 +10300,8 @@
       },
       {
         "wargear": {
-          "name": "Collection of reference texts"
+          "name": "Collection of reference texts",
+          "mundane": true
         }
       },
       {
@@ -10480,7 +10492,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -11419,12 +11432,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {
@@ -11648,12 +11663,14 @@
       },
       {
         "wargear": {
-          "name": "Blanket"
+          "name": "Blanket",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Grooming kit"
+          "name": "Grooming kit",
+          "mundane": true
         }
       },
       {

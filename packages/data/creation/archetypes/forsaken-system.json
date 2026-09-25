@@ -43,7 +43,8 @@
       },
       {
         "wargear": {
-          "name": "Rags"
+          "name": "Rags",
+          "wargearId": "clothing"
         }
       },
       {
@@ -157,7 +158,8 @@
       {
         "wargear": {
           "name": "Books on linguistics and the Imperial Creed",
-          "qty": 1
+          "qty": 1,
+          "mundane": true
         }
       }
     ],
@@ -273,7 +275,8 @@
       },
       {
         "wargear": {
-          "name": "complete records of your martyr"
+          "name": "complete records of your martyr",
+          "mundane": true
         }
       },
       {
@@ -511,7 +514,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -1199,7 +1203,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Ministorum Robes"
+          "name": "Ministorum Robes",
+          "wargearId": "clothing"
         }
       },
       {
@@ -1232,12 +1237,14 @@
       },
       {
         "wargear": {
-          "name": "Ministorum Tomes"
+          "name": "Ministorum Tomes",
+          "mundane": true
         }
       },
       {
         "wargear": {
-          "name": "Portable Lectern"
+          "name": "Portable Lectern",
+          "mundane": true
         }
       }
     ],
@@ -1348,7 +1355,8 @@
       },
       {
         "wargear": {
-          "name": "Ratling Keepsakes"
+          "name": "Ratling Keepsakes",
+          "mundane": true
         }
       }
     ],

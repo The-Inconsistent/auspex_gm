@@ -239,6 +239,7 @@ const wargearCategories = new Set(
   ),
 );
 let unresolvedWargear = 0;
+let mundaneWargear = 0; // printed possessions with no catalogue entry by design (rules-flow.md §11.43)
 // Walks one record, checking every reference and counting the not-yet-structured bits.
 function checkRefs(v: unknown, where: string) {
   if (Array.isArray(v)) return v.forEach((x) => checkRefs(x, where));
@@ -254,7 +255,13 @@ function checkRefs(v: unknown, where: string) {
     for (const ref of o.from as string[]) miss("disciplines", ref, where);
   const reqType = typeof o.kind === "string" ? REQUIREMENT_REFS[o.kind] : undefined;
   if (reqType && Array.isArray(o.anyOf)) for (const ref of o.anyOf as string[]) miss(reqType, ref, where);
-  if (typeof o.qty === "number" && typeof o.name === "string" && !o.wargearId) unresolvedWargear++;
+  if (o.mundane === true) {
+    mundaneWargear++;
+    if (o.wargearId || o.upgrades || o.traitIds) {
+      failed = true;
+      console.error(`✖ ${where}: "${o.name}" is mundane but links the catalogue`);
+    }
+  } else if (typeof o.qty === "number" && typeof o.name === "string" && !o.wargearId) unresolvedWargear++;
   if ((o.upgrades || o.traitIds) && !o.wargearId) {
     failed = true;
     console.error(`✖ ${where}: "${o.name}" has upgrades or traitIds but no base wargearId`);
@@ -316,7 +323,7 @@ for (const { file, r } of creation.get("archetypes")!) {
 }
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
 console.log(
-  `creation: ${storyConditions} GM-judged story conditions, ${unresolvedWargear} wargear items not in the catalogue`,
+  `creation: ${storyConditions} GM-judged story conditions, ${mundaneWargear} mundane possessions, ${unresolvedWargear} wargear items not in the catalogue`,
 );
 for (const [type, n] of pending) console.log(`creation: ${n} references to ${type} pending its wave`);
 

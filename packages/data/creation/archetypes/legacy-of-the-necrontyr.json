@@ -200,7 +200,8 @@
       },
       {
         "wargear": {
-          "name": "Dynastic Crest (symbol of authority)"
+          "name": "Dynastic Crest (symbol of authority)",
+          "wargearId": "symbol-of-authority"
         }
       }
     ],
@@ -254,7 +255,8 @@
       },
       {
         "wargear": {
-          "name": "Crest of the Triarch (Symbol of Authority)"
+          "name": "Crest of the Triarch (Symbol of Authority)",
+          "wargearId": "symbol-of-authority"
         }
       }
     ],
@@ -309,7 +311,8 @@
       },
       {
         "wargear": {
-          "name": "Dynastic Crest (symbol of authority)"
+          "name": "Dynastic Crest (symbol of authority)",
+          "wargearId": "symbol-of-authority"
         }
       }
     ],
@@ -407,7 +410,8 @@
       },
       {
         "wargear": {
-          "name": "Dynastic Crest (symbol of authority)"
+          "name": "Dynastic Crest (symbol of authority)",
+          "wargearId": "symbol-of-authority"
         }
       },
       {

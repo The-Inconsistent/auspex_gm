@@ -406,7 +406,8 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | A Species' XP is the cost of its granted ratings (`ratingsXp`) | `? … "<id>": XP N, but its ratings cost M` warning, silenced by "XP as printed" in the note |
 | An Archetype's XP is its ratings + (Tier − 1) × 10 (`archetypeXp`) | `? … "<id>": XP N, but ratings + (Tier − 1) × 10 = M` warning, silenced by "XP as printed" in the note |
 | Creation coverage against `creation/manifest.json` | `creation <type> <source>: N/M (missing: …)` |
-| Creation summary | `creation/<type>: N records`, and counts of `text` fallbacks and wargear not yet in the catalogue |
+| Creation summary | `creation/<type>: N records`, and counts of GM-judged story conditions, `mundane` possessions and wargear not yet in the catalogue |
+| A `mundane` item links nothing in the catalogue | `✖ creation/… "<id>": "…" is mundane but links the catalogue` |
 
 ---
 
@@ -515,6 +516,8 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
   `wargearId` once the Wargear catalogue has it. A variant no book prints as its own item is the base `wargearId` plus
   `upgrades` (catalogue upgrade ids) and `traitIds` (weapon-trait rule ids): Master-crafted Power Sword, Kustom Slugga
   (rules-flow.md §11.42).
+  A possession no armoury prints and no rule reads (a Bedroll, a Grooming kit) is `mundane`: a sheet line with no
+  catalogue entry (§11.43).
 
 **Sub-faction keywords** ("SPACE WOLVES") are defined by their `SubFaction` record, not by a keyword record; keyword
 records are the glossary Faction Keywords and the `[PLACEHOLDER]`s. A sub-faction's `requires` holds printed
