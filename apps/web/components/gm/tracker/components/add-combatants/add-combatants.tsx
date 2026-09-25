@@ -48,7 +48,13 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
 
   return (
     <div className="keys" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}>
-      <select className="btn" aria-label="Threat" value={threatId} onChange={(e) => setThreatId(e.target.value)}>
+      <select
+        className="btn"
+        style={{ maxWidth: "100%" }}
+        aria-label="Threat"
+        value={threatId}
+        onChange={(e) => setThreatId(e.target.value)}
+      >
         <option value="">+ THREAT…</option>
         {bestiary.map((b) => (
           <option key={b.id} value={b.id}>

@@ -50,7 +50,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 |---|---|---|
 | `id` | string, `^[a-z0-9-]+$` | Must equal the filename without `.json` (validate checks) |
 | `name` | string | As printed |
-| `source` | a `SOURCES` book id (`packages/shared/src/source.ts`), or `threat-assessment` \| `gutshivas-kommandos`; default `core` | Book id. Omit for core |
+| `source` | a `SOURCES` book id (`packages/shared/src/source.ts`), or a `THREAT_ONLY_SOURCES` one (`threat-assessment` \| `gutshivas-kommandos`, `threat.ts`, which also holds their cites); default `core` | Book id. Omit for core |
 | `page` | positive int | **Printed** page in `source`, not the PDF page |
 | `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` \| `votann` | Grouping for the GM picker |
 | `threat` | array of `T`/`E`/`A`/`M` or `null`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column). `null` is a printed "—": no class at that Tier (a follower not yet available); the last Tier is always printed, and `threatClassAt` uses the first printed Tier below it |
@@ -108,7 +108,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | Convention | Detail |
 |---|---|
 | `id` = filename | `ork-boy.json` → `"id": "ork-boy"`. A supplement reprint of a core entry takes a book prefix (`ta-ork-boy`, `ta-kommando`) so both can coexist |
-| `source` | Book id from the enum above; omitted means `core`. A new book goes in `SOURCES` (`source.ts`) first |
+| `source` | Book id from the enum above; omitted means `core`. A new book goes in `SOURCES` (`source.ts`) first, or in `THREAT_ONLY_SOURCES` (`threat.ts`, with its cite) if it has only threats |
 | `page` | Printed page, never the PDF page (see §3 for the offsets) |
 | `threat` | 4 letters for core (Tiers 1–4), 5 when the book prints Tier 5. `threatClassAt(t, tier)` picks `threat[min(tier, length) - 1]`, so a 4-letter entry at a Tier 5 campaign uses its Tier 4 class. Class rules: [rules-flow.md](rules-flow.md) §4, Threat classes |
 | Weapons | Inside an `ACTION` ability (`{ "type": "ACTION", "weapons": [...] }`, usually no name or text), never loose on the threat |

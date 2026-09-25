@@ -1,8 +1,6 @@
-import { ATTRIBUTES, type Threat } from "@wg/shared";
+import { ATTRIBUTES, threatCite, type Threat } from "@wg/shared";
 
 import { weaponLine } from "@/lib/weapon-line/weapon-line";
-
-import { threatCite } from "./constants";
 
 type StatBlockProps = { t: Threat; tier?: number };
 

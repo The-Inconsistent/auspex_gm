@@ -288,6 +288,15 @@ textarea.input {
   font-weight: 600;
   white-space: nowrap;
 }
+/* Read by screen readers, not drawn: the number behind a track shown without one. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 /* Wound/shock track: framed cells, filled crimson (harm) or ink (components/ui/track). */
 .track {
   display: inline-flex;
@@ -912,7 +921,11 @@ button.row.now:nth-of-type(even) {
     border-top: 1px solid var(--line);
   }
   .row {
-    grid-template-columns: 72px minmax(110px, 1.4fr) minmax(110px, 1fr) 104px;
+    /* no floors: at 390px the four columns must fit ~316px; tracks clip their cells before the number */
+    grid-template-columns: 60px minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+  .row.head {
+    letter-spacing: 0.02em;
   }
   .row .hide-sm {
     display: none;

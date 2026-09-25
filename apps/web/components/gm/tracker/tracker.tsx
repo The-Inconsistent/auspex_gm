@@ -401,6 +401,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                         style={{
                           width: 10,
                           height: 10,
+                          flex: "none",
                           background: `var(--marker-${c.marker})`,
                           border: "1.5px solid var(--ink)",
                           display: "inline-block",

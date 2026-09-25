@@ -47,14 +47,21 @@ export function Fight({ state }: FightProps) {
             ) : (
               <div className="item-head">{head}</div>
             )}
-            {c.kind === "pc" && ch && d && <Track value={ch.wounds} max={d.maxWounds} />}
+            {c.kind === "pc" && ch && d && (
+              <span className="bar">
+                <Track value={ch.wounds} max={d.maxWounds} />
+                <span className="sr-only">
+                  Wounds {ch.wounds}/{d.maxWounds}
+                </span>
+              </span>
+            )}
             {c.kind === "threat" &&
               (c.mobCount !== null ? (
                 <span className="bar">
                   ×{c.mobCount} OF {c.mobStart}
                 </span>
               ) : (
-                <Track value={c.wounds} max={c.maxWounds} />
+                <Track value={c.wounds} max={c.maxWounds} label="Wounds" />
               ))}
             <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
               {c.kind === "threat" && <StatusChips items={threatStatus(c)} />}

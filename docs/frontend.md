@@ -500,10 +500,10 @@ no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `R
 | Component | Props | Job |
 |---|---|---|
 | `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | A `Track` plus `value/max`; `—` when `max` is `null`; the track fills crimson when `danger`, ink otherwise |
-| `track/track.tsx` `Track` | `value`, `max`, `tone?: "harm" \| "ink"` | Framed cells from `blocks()`, filled crimson or ink; decorative (`aria-hidden`), so show the number beside it |
+| `track/track.tsx` `Track` | `value`, `max`, `tone?: TrackTone` (`"harm"` or `"ink"`, `track/constants.ts`), `label?` | Framed cells from `blocks()`, filled crimson or ink. Decorative (`aria-hidden`), so show the number beside it or in `.sr-only` text. The one exception is a threat on FIGHT, where players get the scaled bar and not the count: it passes `label` and reads out "Wounds: 3 of 10 marked" |
 | `seal/seal.tsx` `Seal` | `value`, `pool: Pool`, `size?` | A party pool as a wax seal (brass Glory, crimson Ruin), `role="img"` labelled `<value> <pool>` |
 | `theme-toggle/theme-toggle.tsx` `ThemeToggle` | `className?` | The day/night switch (§7): flips `data-theme` on `<html>` and stores it; `constants.ts` holds `THEME_KEY` and the pre-paint `THEME_SCRIPT` |
-| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
+| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite` from `@wg/shared`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
@@ -560,7 +560,7 @@ The toggle's label is swapped by CSS (`.theme-to-night` / `.theme-to-day`), so s
 |---|---|---|
 | `--font-display` → `--display` | Cinzel (variable) | Heads, labels, buttons, tabs, chips: `.display`, `.label`, `.rule`, `.btn`, `.tab`, `.chip`. Stands in for the books' Priori Serif |
 | `--font-serif` → `--serif` | Crimson Pro (variable, with italics) | Body text, the default for everything; counters use its lining tabular figures. Stands in for Caxton |
-| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Only in-world print-outs and typed commands: `pre.text` (handouts), `.cmd input`, and `.bar`'s block glyphs |
+| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Only in-world print-outs and typed commands: `pre.text.slate` (handouts, data-slates) and `.cmd input` |
 
 **Tokens** (`:root`, re-mapped for vigil):
 
@@ -586,7 +586,7 @@ The toggle's label is swapped by CSS (`.theme-to-night` / `.theme-to-day`), so s
 | `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--red-fill)`, `--clerk-color-background: var(--vellum)`, `--clerk-font-family: var(--serif)`, `--clerk-border-radius: 2px`…) |
 
 **Class vocabulary:**
-- Text: `.display`, `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
+- Text: `.sr-only` (read by screen readers, not drawn), `.display`, `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
   `.label`, `.rule` (a section head; the double rule is drawn by `::after`), `.kw` (keywords in crimson small caps).
 - Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px)
   and `.sq` (44px square); `.input`; `.field`.
@@ -616,7 +616,7 @@ The toggle's label is swapped by CSS (`.theme-to-night` / `.theme-to-day`), so s
   - The title takes a full line.
   - The pool controls shrink to 40px.
   - The tracker stacks, with the side panel below the list.
-  - `.row` drops to 4 columns, and `.hide-sm` cells are hidden.
+  - `.row` drops to 4 columns with no minimum widths, so a row fits a 390px phone, and `.hide-sm` cells are hidden.
 - **Player:** phone-first single column. `.vitals` is 2 columns. `.cols` wraps at `minmax(280px, 1fr)`.
 - **Grid cells** get `min-width: 0` (`.row > *`) so bars shrink instead of spilling into the next column.
 
