@@ -5,8 +5,17 @@ import type { NextConfig } from "next";
 // http://api:4000; docs/deploy.md).
 const api = process.env.API_ORIGIN ?? "http://localhost:4000";
 
+// Dev only: phones and tablets open the app at the machine's LAN address, which the dev server refuses unless it is
+// listed here. Script tags still load, because they send no Origin header, but the HMR websocket does and gets a 403 —
+// and Turbopack bootstraps through it, so React never hydrates: the page renders server-side and then does nothing,
+// leaving the table on SYNCING for ever. Comma-separated hosts, e.g. `DEV_ORIGINS=192.168.1.86` (docs/development.md).
+const devOrigins = process.env.DEV_ORIGINS?.split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 const nextConfig: NextConfig = {
   transpilePackages: ["@wg/auth", "@wg/shared"],
+  ...(devOrigins?.length ? { allowedDevOrigins: devOrigins } : {}),
   output: "standalone",
   skipTrailingSlashRedirect: true, // socket.io's path is "/socket.io/"; Next's slash-stripping 308 would break it
   async rewrites() {

@@ -77,10 +77,18 @@ tokens (`test.<secret>.<userId>.<creator|member>`), and the api refuses to start
 Optional: `API_ORIGIN` is where Next reaches the api server-side, for the rewrites and the server-side reads
 (`app/server-api.ts`). The default is `http://localhost:4000`.
 
-**Playing over the LAN:** open the web app at the machine's LAN address (`http://192.168.x.y:3000`). Add that address
-to `WEB_ORIGIN`, next to localhost (`http://localhost:3000,http://192.168.x.y:3000`), then restart the api. Otherwise
-the api rejects the Clerk session (wrong `azp`) and the socket's CORS check. QR codes use the address the GM's browser
-is on, so open the table at the LAN address before showing them.
+**Playing over the LAN:** open the web app at the machine's LAN address (`http://192.168.x.y:3000`). Two settings are
+needed, one per app:
+
+- `WEB_ORIGIN` in `apps/api/.env`, next to localhost (`http://localhost:3000,http://192.168.x.y:3000`), then restart
+  the api. Otherwise the api rejects the Clerk session (wrong `azp`) and the socket's CORS check.
+- `DEV_ORIGINS` in `apps/web/.env.local` (`192.168.x.y`, no scheme or port), which feeds `allowedDevOrigins` in
+  `next.config.ts`. **In dev only, and easy to miss:** without it the page still renders, so it looks like it works,
+  but Turbopack's HMR websocket is refused with a 403 and React never hydrates. Nothing runs on the device — the table
+  sits on `SYNCING…` and a sign-in page comes up blank. Script tags themselves are fine, because they send no `Origin`
+  header, which makes this look like anything but a CORS problem.
+
+QR codes use the address the GM's browser is on, so open the table at the LAN address before showing them.
 
 ## Commands
 
@@ -155,6 +163,7 @@ the local diff when there's no PR.
 | A lost invite or guest QR | Codes are stored as hashes only, so they can't be shown again. Make a new one on PARTY (and REVOKE the old one if it may have leaked). A GM's access is their Clerk account, so there's no GM link to lose |
 | The printed `/c/<id>` link opens on this machine but not on the tablet | It uses the first `WEB_ORIGIN` entry, `localhost`. Swap the host for the LAN address, or put the LAN address first |
 | Read tool refuses a book PDF | Over 100 MB. Render the page with `pdftoppm` ([data.md](data.md)) |
+| A phone opens the app over the LAN, but nothing works: the table sits on `SYNCING…`, sign-in is blank, no errors anywhere | `DEV_ORIGINS` isn't set, so the dev server 403s the HMR websocket and React never hydrates. The page renders server-side and then does nothing. Localhost is unaffected, so it only shows up on devices |
 
 ## Not built yet
 
