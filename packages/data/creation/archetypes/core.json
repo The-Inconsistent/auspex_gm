@@ -2165,12 +2165,20 @@
       },
       {
         "wargear": {
-          "name": "Kustom Slugga"
+          "name": "Kustom Slugga",
+          "wargearId": "slugga",
+          "traitIds": [
+            "kustom"
+          ]
         }
       },
       {
         "wargear": {
-          "name": "Kustom Choppa"
+          "name": "Kustom Choppa",
+          "wargearId": "choppa",
+          "traitIds": [
+            "kustom"
+          ]
         }
       }
     ],

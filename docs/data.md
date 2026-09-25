@@ -400,7 +400,8 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Rules summary | `rules/<file>: N entries` |
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
 | Every `creation/<type>/<source>.json` parses; the filename is a creation source id and matches each record's `source`; ids unique per type | `✖ creation/…` + zod error, `has source`, or `duplicate id` |
-| Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`) | `✖ creation/… "<id>": unknown <type> "…"` |
+| Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`, a wargear item's `upgrades` and weapon-trait `traitIds`) | `✖ creation/… "<id>": unknown <type> "…"` |
+| A wargear item with `upgrades` or `traitIds` has its base `wargearId` | `✖ creation/… "<id>": "…" has upgrades or traitIds but no base wargearId` |
 | One record per thing: a name twice in a type, compared with its `category` and `disciplineId` (and overlapping species, for archetypes) | `✖ creation/<type>: "…" in A and B; keep the newest printing` |
 | A Species' XP is the cost of its granted ratings (`ratingsXp`) | `? … "<id>": XP N, but its ratings cost M` warning, silenced by "XP as printed" in the note |
 | An Archetype's XP is its ratings + (Tier − 1) × 10 (`archetypeXp`) | `? … "<id>": XP N, but ratings + (Tier − 1) × 10 = M` warning, silenced by "XP as printed" in the note |
@@ -511,7 +512,9 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
   (Core p.257: Aeldari Divination, Runes of Battle and one more; everyone else one). A `PsychicPower`'s `useRequires`
   is what using it (not learning it) needs.
 - A wargear item keeps its printed `name`, a `qty` (a number or dice), a `scope` (character or group), and a
-  `wargearId` once the Wargear catalogue has it.
+  `wargearId` once the Wargear catalogue has it. A variant no book prints as its own item is the base `wargearId` plus
+  `upgrades` (catalogue upgrade ids) and `traitIds` (weapon-trait rule ids): Master-crafted Power Sword, Kustom Slugga
+  (rules-flow.md §11.42).
 
 **Sub-faction keywords** ("SPACE WOLVES") are defined by their `SubFaction` record, not by a keyword record; keyword
 records are the glossary Faction Keywords and the `[PLACEHOLDER]`s. A sub-faction's `requires` holds printed

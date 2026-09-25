@@ -103,6 +103,7 @@ for (const file of readdirSync(wargearDir)
 // Rules reference: schema per file, ids unique across files.
 const rulesDir = new URL("./rules/", import.meta.url);
 const ruleIds = new Set<string>();
+const weaponTraitIds = new Set<string>();
 for (const file of readdirSync(rulesDir)
   .filter((f) => f.endsWith(".json"))
   .sort()) {
@@ -118,6 +119,7 @@ for (const file of readdirSync(rulesDir)
       console.error(`✖ rules/${file}: duplicate id "${e.id}"`);
     }
     ruleIds.add(e.id);
+    if (e.kind === "weapon-trait") weaponTraitIds.add(e.id);
   }
   console.log(`rules/${file}: ${r.data.length} entries`);
 }
@@ -167,7 +169,7 @@ let manifest: { done?: string[]; expected?: Record<string, Record<string, string
 try {
   manifest = JSON.parse(readFileSync(new URL("manifest.json", creationDir), "utf8"));
 } catch {}
-const done = new Set(["wargear", ...(manifest.done ?? [])]);
+const done = new Set(["wargear", "weapon-traits", ...(manifest.done ?? [])]);
 const pending = new Map<string, number>();
 const creationIds = (type: CreationType) => new Set(creation.get(type)!.map((x) => x.r.id as string));
 // A sub-faction defines the keyword it fills in ("SPACE WOLVES"), so only glossary keywords need a keyword record.
@@ -185,6 +187,7 @@ const known: Record<string, Set<string>> = {
   "option-groups": creationIds("option-groups"),
   keywords: keywordNames,
   wargear: wargearIds,
+  "weapon-traits": weaponTraitIds,
   threats: new Set(found),
 };
 // Which catalogue an id-holding key points into. The schema keeps these key names unambiguous.
@@ -214,6 +217,8 @@ const REF_KEYS: Record<string, string> = {
   keyword: "keywords",
   keywords: "keywords",
   wargearId: "wargear",
+  upgrades: "wargear",
+  traitIds: "weapon-traits",
 };
 const REQUIREMENT_REFS: Record<string, string> = {
   keyword: "keywords",
@@ -250,6 +255,10 @@ function checkRefs(v: unknown, where: string) {
   const reqType = typeof o.kind === "string" ? REQUIREMENT_REFS[o.kind] : undefined;
   if (reqType && Array.isArray(o.anyOf)) for (const ref of o.anyOf as string[]) miss(reqType, ref, where);
   if (typeof o.qty === "number" && typeof o.name === "string" && !o.wargearId) unresolvedWargear++;
+  if ((o.upgrades || o.traitIds) && !o.wargearId) {
+    failed = true;
+    console.error(`✖ ${where}: "${o.name}" has upgrades or traitIds but no base wargearId`);
+  }
   for (const [k, x] of Object.entries(o)) {
     const type = REF_KEYS[k];
     if (type && typeof x === "string") miss(type, x, where);

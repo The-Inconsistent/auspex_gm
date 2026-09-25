@@ -1402,7 +1402,11 @@
                 "wargearId": "voa-mk-x-tacticus-armour"
               },
               {
-                "name": "Master-crafted Auto Bolt Rifle"
+                "name": "Master-crafted Auto Bolt Rifle",
+                "wargearId": "voa-auto-bolt-rifle",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Bolt Pistol",
@@ -1427,7 +1431,11 @@
                 "wargearId": "voa-mk-x-tacticus-armour"
               },
               {
-                "name": "Master-crafted Power Sword"
+                "name": "Master-crafted Power Sword",
+                "wargearId": "voa-power-sword",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Bolt Pistol",
@@ -1452,7 +1460,11 @@
                 "wargearId": "voa-mk-x-tacticus-armour"
               },
               {
-                "name": "Master-crafted Power Fist"
+                "name": "Master-crafted Power Fist",
+                "wargearId": "voa-power-fist",
+                "upgrades": [
+                  "mastercrafted"
+                ]
               },
               {
                 "name": "Bolt Pistol",
@@ -1594,7 +1606,11 @@
       },
       {
         "wargear": {
-          "name": "Master-crafted Power Sword"
+          "name": "Master-crafted Power Sword",
+          "wargearId": "voa-power-sword",
+          "upgrades": [
+            "mastercrafted"
+          ]
         }
       },
       {

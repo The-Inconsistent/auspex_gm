@@ -170,6 +170,11 @@ export const WargearItem = z.object({
   name: z.string().min(1).max(200),
   qty: z.union([z.number().int().positive(), z.string().regex(/^\d*d\d+([+-]\d+)?$/)]).default(1), // "1d3+1 knifes"
   wargearId: id.optional(),
+  // A variant the books never print as its own item: the base `wargearId` plus fitted catalogue upgrades
+  // ("Master-crafted Power Sword" = Power Sword + Mastercrafted, Core p.228) and gained weapon Traits, by rule id
+  // ("Kustom Slugga" = Slugga + Kustom, Core p.209). rules-flow.md §11.42
+  upgrades: ids.optional(),
+  traitIds: ids.optional(),
   scope: z.enum(["character", "group"]).default("character"), // "a servo-skull for the group" (FSPG p.68)
 });
 

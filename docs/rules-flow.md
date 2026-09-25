@@ -294,6 +294,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     prints "may purchase Prayers": the PRIEST keyword grants the access.
 41. **Joining the Asuryani by Change of Kinship** (IoE p.58): the first Path is free, as the Paths group prints it
     (IoE p.10), not 10 XP as the package prints.
+42. **A named variant of a catalogue item** is the item plus what makes the variant, unless a book prints the variant
+    as its own item (Core's Master-Crafted Laspistol, p.217; IoE's Master Crafted Void Sabre, p.89). "Master-crafted
+    X" (VoA pp.40–41) is X with the Mastercrafted upgrade (Core p.228). The Ork Nob's "Kustom Slugga" and "Kustom
+    Choppa" (Core p.115) are the Slugga and Choppa with the Kustom Trait (Core p.209), so each takes a Trait of the
+    player's choice when acquired.
 
 ---
 
