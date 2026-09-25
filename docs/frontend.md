@@ -168,6 +168,12 @@ const { state, codex, online, send } = useTable(campaignId);
   - On timeout it returns `{ ok: false, error: "No reply from server. Check before retrying" }`. The action may
     still have been applied, and counters are deltas, so tapping again could double it.
   - `send` never throws. Callers check `r.ok` and show `r.error`.
+  - **Tap feedback:** `send` marks the button that triggered it: the focused button, or the last one pressed within
+    1 s (a capture `pointerdown` listener, because iOS doesn't focus tapped buttons). The button gets `aria-busy` until
+    the reply, then `data-sent="ok"` or `"no"` for 600 ms. `globals.css` dims a busy button in a slow pulse and rings
+    a sent one once: in its own text colour when applied, crimson when refused. Every button also darkens while
+    pressed (a `.btn` sinks slightly), since touch screens have no hover. A send without a recent tap, such as the
+    command line's Enter, marks nothing.
 - **Wake lock:** it requests `navigator.wakeLock.request("screen")` on mount and again on every `visibilitychange`
   back to visible, and releases it on unmount. A denial is swallowed on purpose: the screen may dim, and nothing else
   breaks.

@@ -250,6 +250,58 @@ a {
   font-size: 20px;
 }
 
+/* Tap feedback. Tablets and phones have no hover, so every button answers the tap itself: it darkens (and a .btn
+   sinks) while pressed, pulses while the server hasn't answered (use-table sets aria-busy), then rings once in its own
+   text colour when applied, crimson when refused. */
+button {
+  --press: var(--ink);
+  --refused: var(--red);
+  touch-action: manipulation; /* no double-tap-zoom delay */
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 60ms ease-out;
+}
+.band button,
+.tabs:not(.rail, .sub) .tab {
+  --press: var(--bone);
+  --refused: var(--red-on-iron);
+}
+button:active:not(:disabled) {
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--press) 14%, transparent),
+    color-mix(in srgb, var(--press) 14%, transparent)
+  );
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.97);
+}
+button[aria-busy="true"] {
+  cursor: progress;
+  animation: busy 0.8s ease-in-out 120ms infinite alternate;
+}
+button[data-sent] {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  animation: sent 600ms ease-out;
+}
+button[data-sent="no"] {
+  --sent: var(--refused);
+}
+@keyframes busy {
+  to {
+    opacity: 0.5;
+  }
+}
+@keyframes sent {
+  from {
+    outline-color: var(--sent, currentColor);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
+}
+
 .panel {
   border: 1px solid var(--line);
   background: var(--vellum-2);

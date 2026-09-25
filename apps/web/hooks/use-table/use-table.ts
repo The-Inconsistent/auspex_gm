@@ -6,6 +6,8 @@ import type { ActionInput, ActionResult, Codex, LiveState } from "@wg/shared";
 
 const ACK_TIMEOUT_MS = 5000;
 const REFUSED_RETRY_MS = 3000;
+const TAP_WINDOW_MS = 1000;
+const SENT_MS = 600;
 
 export type Send = (a: ActionInput) => Promise<ActionResult>;
 
@@ -61,17 +63,43 @@ export function useTable(campaignId: string) {
     };
   }, []);
 
+  // External system: the DOM. Remembers the last tapped button so `send` can mark it: iOS doesn't focus a tapped
+  // button, so document.activeElement alone would miss phone taps.
+  const tapped = useRef<{ el: HTMLButtonElement; at: number } | null>(null);
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      const el = e.target instanceof Element ? e.target.closest("button") : null;
+      tapped.current = el && { el, at: performance.now() };
+    };
+    document.addEventListener("pointerdown", onDown, true);
+    return () => document.removeEventListener("pointerdown", onDown, true);
+  }, []);
+
+  // Tap feedback (globals.css): the tapped button pulses until the server answers, then rings once, applied or
+  // refused. A send with no recent tap (the command line's Enter) marks nothing.
   const send: Send = useCallback(async (a) => {
-    const s = socket.current;
-    if (!s?.connected) return { ok: false, error: "No signal" };
-    try {
-      const result: ActionResult = await s.timeout(ACK_TIMEOUT_MS).emitWithAck("action", a);
-      return result;
-    } catch {
-      // It may still have applied: counters are deltas, so check the screen before tapping again.
-      return { ok: false, error: "No reply from server. Check before retrying" };
+    const t = tapped.current;
+    const focused = document.activeElement instanceof HTMLButtonElement ? document.activeElement : null;
+    const btn = focused ?? (t && performance.now() - t.at < TAP_WINDOW_MS ? t.el : null);
+    btn?.setAttribute("aria-busy", "true");
+    const result = await emit(socket.current, a);
+    if (btn) {
+      btn.removeAttribute("aria-busy");
+      btn.setAttribute("data-sent", result.ok ? "ok" : "no");
+      setTimeout(() => btn.removeAttribute("data-sent"), SENT_MS);
     }
+    return result;
   }, []);
 
   return { state, codex, online, send };
+}
+
+async function emit(s: Socket | null, a: ActionInput): Promise<ActionResult> {
+  if (!s?.connected) return { ok: false, error: "No signal" };
+  try {
+    return await s.timeout(ACK_TIMEOUT_MS).emitWithAck("action", a);
+  } catch {
+    // It may still have applied: counters are deltas, so check the screen before tapping again.
+    return { ok: false, error: "No reply from server. Check before retrying" };
+  }
 }
