@@ -10,9 +10,11 @@ const builder = await createBuilder();
 const userName = await builder.addParameter("pg-user", { value: "wg" });
 const password = await builder.addParameter("pg-password", { value: "wg", secret: true });
 
-// Deliberately unpinned: this runs Aspire's default Postgres (18.x), a major ahead of
-// docker-compose.yml's 17-alpine. Pinning back to 17 needs the data volume recreated.
+// 17-alpine to match docker-compose.yml; Aspire's default is 18.x, and prod is 16
+// (docs/deploy.md). Changing this major needs the data volume recreated: a 17 binary
+// cannot read an 18 data directory.
 const postgres = await builder.addPostgres("postgres", { port: 5434, userName, password });
+await postgres.withImageTag("17-alpine");
 await postgres.withDataVolume();
 const db = await postgres.addDatabase("wg");
 
@@ -25,9 +27,11 @@ await api.withEnvironment("DATABASE_URL", await db.uriExpression());
 await api.waitFor(db);
 
 // Port pinned to 3000: Next's rewrites and WEB_ORIGIN / Clerk authorizedParties assume it.
+// isProxied: false so Next itself binds 3000 (on every interface) instead of DCP proxying
+// localhost:3000 to a random Next port — phones and tablets at the table need the LAN address.
 const web = await builder.addNextJsApp("web", "../apps/web", { runScriptName: "dev" });
 await web.withBun({ install: false });
-await web.withHttpEndpoint({ port: 3000, env: "PORT" });
+await web.withHttpEndpoint({ port: 3000, targetPort: 3000, env: "PORT", isProxied: false });
 await web.waitFor(api);
 
 await builder.build().run();

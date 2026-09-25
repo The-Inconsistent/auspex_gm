@@ -8,7 +8,7 @@ Setup, day-to-day commands, testing and the gotchas that have already bitten. Fo
 | Tool | Notes |
 | --- | --- |
 | [Bun](https://bun.sh) 1.3+ | Package manager, runtime and test runner. **Don't use npm or pnpm** |
-| Docker or Podman | Runs Postgres 17 (`docker-compose.yml`). Podman works, but has no `docker` binary, so `dev:db` won't run as written — use [Aspire](#aspire) instead |
+| Docker or Podman | Runs Postgres 17 (`docker-compose.yml`), which `dev:db`, `dev`, `test:smoke` and [Aspire](#aspire) all need. Podman works: install `podman-docker` (or Podman Desktop) for the `docker` shim, or use `podman compose` |
 | [Aspire](https://aspire.dev) CLI | Optional. A dashboard with per-resource logs and traces, and health-gated startup ([Aspire](#aspire)) |
 | TypeScript **5.9** | Pinned. TS 7 breaks the Next and Nest toolchains |
 | poppler (`pdftotext`, `pdftoppm`) | Only needed to transcribe from the books ([data.md](data.md)) |
@@ -50,13 +50,21 @@ It orchestrates the same three things `bun run dev` does:
 
 | Resource | How |
 | --- | --- |
-| `postgres` | Its own container, host port 5434, user/password/db all `wg` — matching `docker-compose.yml`, so `apps/api/.env` and drizzle-kit keep working. Separate volume from compose, and **Aspire's default image is Postgres 18.x**, a major ahead of compose's `17-alpine` |
-| `api` | `bun run dev` in `apps/api`, port 4000. `DATABASE_URL` is injected from `db.uriExpression()` (`postgresql://…`), so it runs with no `apps/api/.env` at all. Waits for Postgres |
-| `web` | `next dev` in `apps/web`, port 3000. Waits for the api. Still needs Clerk keys in `.env.local` ([Clerk](#clerk)) |
+| `postgres` | Its own container, `17-alpine`, host port 5434, user/password/db all `wg` — matching `docker-compose.yml`, so `apps/api/.env` and drizzle-kit keep working. The volume is **separate from compose's**, so the two hold different data |
+| `api` | `bun run dev` in `apps/api`, port 4000. Only `DATABASE_URL` is injected, from `db.uriExpression()` (`postgresql://…`); everything else still comes from `apps/api/.env` — `CLERK_SECRET_KEY`, `CLERK_JWT_KEY`, `WEB_ORIGIN`, `ADMIN_KEY`. Delete that file and sign-in silently fails. Waits for Postgres |
+| `web` | `next dev` in `apps/web`, port 3000, unproxied so it binds every interface (phones at the table reach it by LAN address). Waits for the api. Still needs Clerk keys in `.env.local` ([Clerk](#clerk)) |
 
 Ports are pinned deliberately: 4000 and 3000 are what Next's rewrites, `WEB_ORIGIN` and Clerk's `authorizedParties`
 assume. Both JS resources set `withBun({ install: false })` — an installer running inside `apps/*` hangs, because
 `workspace:*` deps only resolve from a root `bun install`.
+
+**Stop the compose Postgres first.** It holds the same port 5434 with the same credentials, and `bun run dev` leaves
+it running after Ctrl-C. Otherwise Aspire's container can't bind and the api hangs on `waitFor(db)` — or worse, you
+connect to whichever won the port and campaigns appear to vanish, because the two containers have separate volumes.
+
+```bash
+docker compose stop postgres
+```
 
 **Podman** needs `DOTNET_ASPIRE_CONTAINER_RUNTIME=podman`, since Aspire defaults to Docker.
 
@@ -193,6 +201,7 @@ the local diff when there's no PR.
 | `aspire run` hangs at "Trusting certificates…" | It wants an OS dialog it can't show. Run `aspire certs trust` in an interactive terminal once |
 | `bun --cwd <dir> run <script>` prints usage and exits 0 | Bun wants `--cwd=<dir>`. The space form is a silent no-op |
 | Aspire starts nothing, socket refused | Podman machine is down, or Aspire is looking for Docker. `podman machine stop; podman machine start`, and set `DOTNET_ASPIRE_CONTAINER_RUNTIME=podman` |
+| `aspire run` hangs on the api, or seeded campaigns "disappear" | The compose Postgres is still on 5434 from an earlier `bun run dev`. `docker compose stop postgres` — the two have separate volumes, so they are different databases with the same credentials |
 | A join link answers "NO SIGNAL" rather than "LINK INVALID" | Not the token: the Next server couldn't reach the api, or got a 5xx (`app/join/[token]/route.ts`). A rejected token gives "LINK INVALID" instead. The api restarts on every file change under `bun --watch` |
 
 ## Not built yet
