@@ -145,7 +145,7 @@ export function Sheet({ me, state, send }: SheetProps) {
       </div>
 
       <div className="stack" style={{ gap: 6 }}>
-        <div className="rule">── CONDITIONS ──</div>
+        <div className="rule">CONDITIONS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
           {me.conditions.map((k) => (
             <button key={k} className="btn sm" aria-label={`Remove ${k}`} onClick={() => toggleCond(k)}>
@@ -169,7 +169,7 @@ export function Sheet({ me, state, send }: SheetProps) {
 
       {s.weapons.length > 0 && (
         <div className="stack" style={{ gap: 6 }}>
-          <div className="rule">── ARMAMENT ──</div>
+          <div className="rule">ARMAMENT</div>
           {s.weapons.map((w) => (
             <div key={w.name}>
               <b>{w.name.toUpperCase()}</b>
@@ -192,7 +192,7 @@ export function Sheet({ me, state, send }: SheetProps) {
       )}
 
       <div className="stack" style={{ gap: 6 }}>
-        <div className="rule">── SUPPLY ──</div>
+        <div className="rule">SUPPLY</div>
         <SupplyRow
           label="Wealth"
           value={s.wealth}
@@ -233,7 +233,7 @@ export function Sheet({ me, state, send }: SheetProps) {
 
       {Object.keys(s.skills).length > 0 && (
         <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">── SKILLS (dice) ──</div>
+          <div className="rule">SKILLS (dice)</div>
           {(Object.keys(SKILLS) as Skill[])
             .filter((k) => s.skills[k])
             .map((k) => (
@@ -251,7 +251,7 @@ export function Sheet({ me, state, send }: SheetProps) {
         ([title, list]) =>
           list.length > 0 && (
             <div key={title} className="stack" style={{ gap: 6 }}>
-              <div className="rule">── {title} ──</div>
+              <div className="rule">{title}</div>
               {list.map((r) => (
                 <div key={r.name}>
                   <b>{r.name}</b>

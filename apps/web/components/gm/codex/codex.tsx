@@ -73,7 +73,7 @@ export function CodexView({ codex, send }: CodexViewProps) {
                   {"revealed" in r && (
                     <button
                       className="btn sm"
-                      style={{ color: r.revealed ? "var(--fg)" : "var(--red)" }}
+                      style={{ color: r.revealed ? "var(--ink)" : "var(--red)" }}
                       onClick={() => toggleRevealed(r)}
                     >
                       {r.revealed ? "REVEALED" : "HIDDEN"}

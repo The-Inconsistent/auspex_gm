@@ -11,6 +11,7 @@ import { Tracker } from "@/components/gm/tracker/tracker";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
+import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
 
 import { GM_TABS, type GmTab } from "./constants";
@@ -31,7 +32,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
     setPoolError(r.ok ? null : r.error);
   };
   const pool = (p: Pool) => (
-    <div key={p} className={`pool ${p === "ruin" ? "ruin" : ""}`}>
+    <div key={p} className={`pool ${p}`}>
       <span className="label" style={{ color: "inherit" }}>
         {p}
       </span>
@@ -50,14 +51,14 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
   return (
     <div className="gm">
       {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
-      <header className="gm-head">
+      <header className="gm-head band">
         <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
           ◂
         </a>
         <div className="display gm-title">
           AUSPEX{" "}
           <span className="dim">
-            // {state.campaign.name.toUpperCase()} // T{state.campaign.tier}
+            · {state.campaign.name.toUpperCase()} · T{state.campaign.tier}
           </span>
         </div>
         {state.encounter && (
@@ -66,12 +67,13 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
           </div>
         )}
         {Pool.options.map(pool)}
+        <ThemeToggle />
         <UserButton />
       </header>
-      <nav className="tabs" role="tablist">
+      <nav className="tabs band torn" role="tablist">
         {GM_TABS.map((t) => (
           <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            [{t}]
+            {t}
           </button>
         ))}
       </nav>

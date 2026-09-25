@@ -56,7 +56,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
         <UserButton />
       </header>
 
-      <div className="rule">── YOUR GAMES ──</div>
+      <div className="rule">YOUR GAMES</div>
       <div className="list">
         {lobby.mine.length === 0 && (
           <div className="dim">
@@ -70,7 +70,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
 
       {others.length > 0 && (
         <>
-          <div className="rule">── RUNNING NOW ──</div>
+          <div className="rule">RUNNING NOW</div>
           <div className="list">
             {others.map((g) => (
               <GameCard key={g.id} game={g} />
@@ -81,7 +81,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
 
       {lobby.canCreate && (
         <form className="panel pad stack" onSubmit={handleCreate}>
-          <div className="rule">── NEW GAME ──</div>
+          <div className="rule">NEW GAME</div>
           <div className="field">
             <label className="label" htmlFor="game-name">
               NAME

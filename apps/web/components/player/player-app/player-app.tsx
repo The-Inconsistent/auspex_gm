@@ -6,6 +6,7 @@ import { sideUpNext, type RuleEntry } from "@wg/shared";
 
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
+import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
 
 import { Fight } from "./components/fight/fight";
@@ -46,12 +47,16 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   return (
     <div className="pl">
       {!online && <div className="badge-offline">NO SIGNAL</div>}
-      <div className={`pl-banner ${myTurn ? "up" : ""}`} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div
+        className={`pl-banner band torn ${myTurn ? "up" : ""}`}
+        style={{ display: "flex", alignItems: "center", gap: 10 }}
+      >
         <div className="display" style={{ fontSize: 26, flex: 1 }}>
           {banner}
         </div>
         {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
             (plain <a>, so nothing prefetches it); rescanning the QR rejoins. */}
+        <ThemeToggle />
         <Show when="signed-in">
           <a href="/" aria-label="Lobby">
             ◂
@@ -70,20 +75,10 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
         {tab === "INTEL" && <Intel codex={codex} state={state} />}
         {tab === "RULES" && <RulesRef rules={rules} />}
       </div>
-      <nav
-        className="tabs"
-        role="tablist"
-        style={{
-          borderTop: "1px solid var(--line)",
-          borderBottom: 0,
-          position: "sticky",
-          bottom: 0,
-          background: "var(--bg)",
-        }}
-      >
+      <nav className="tabs" role="tablist" style={{ position: "sticky", bottom: 0 }}>
         {PLAYER_TABS.map((t) => (
           <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            [{t}]
+            {t}
           </button>
         ))}
       </nav>

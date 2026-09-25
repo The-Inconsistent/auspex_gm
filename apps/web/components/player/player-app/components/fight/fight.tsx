@@ -42,7 +42,7 @@ export function Fight({ state }: FightProps) {
           <div
             key={c.id}
             className="item"
-            style={{ borderColor: now ? "var(--amber)" : undefined, opacity: c.acted ? 0.6 : 1 }}
+            style={{ borderColor: now ? "var(--red)" : undefined, opacity: c.acted ? 0.6 : 1 }}
           >
             {c.kind === "threat" ? (
               <button className="item-head" aria-expanded={open === c.id} onClick={() => toggleOpen(c.id)}>

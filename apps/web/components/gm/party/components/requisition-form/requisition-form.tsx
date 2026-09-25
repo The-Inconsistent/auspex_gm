@@ -108,8 +108,8 @@ export function RequisitionForm({
 
   return (
     <div className="stack panel pad" style={{ gap: 8 }}>
-      <div className="rule">── REQUISITION (p.205) ──</div>
-      {!sessionId && <div className="amber">Start a session first: one Wargear and one Ammo Test per session.</div>}
+      <div className="rule">REQUISITION (p.205)</div>
+      {!sessionId && <div className="accent">Start a session first: one Wargear and one Ammo Test per session.</div>}
       <div className="keys" style={{ paddingTop: 0 }} role="group" aria-label="What">
         {RequisitionKind.options.map((k) => (
           <button
@@ -153,7 +153,7 @@ export function RequisitionForm({
         </div>
       )}
       {picked && (picked.value === null || picked.rarity === null) && (
-        <div className="amber">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>
+        <div className="accent">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>
       )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         <div className="field">
@@ -262,7 +262,7 @@ export function RequisitionForm({
           COMPLICATION (−1 WEALTH)
         </label>
       </div>
-      <div className={out.success ? "amber" : "dim"}>
+      <div className={out.success ? "accent" : "dim"}>
         {out.success ? `SUCCESS: GETS ${gets.toUpperCase()}` : "FAILS"} · WEALTH {c.stats.wealth} → {out.wealth}
       </div>
       <div>

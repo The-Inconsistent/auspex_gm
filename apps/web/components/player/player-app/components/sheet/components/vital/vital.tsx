@@ -12,7 +12,7 @@ type VitalProps = {
 // One big counter card on the player sheet: value, optional max and bar, and −/+ buttons.
 export function Vital({ label, value, max, onMinus, onPlus, danger = false }: VitalProps) {
   return (
-    <div className="vital" style={danger ? { borderColor: "var(--red-line)" } : undefined}>
+    <div className="vital" style={danger ? { borderColor: "var(--red)" } : undefined}>
       <span className="label">{label}</span>
       <span className="num" style={danger ? { color: "var(--red)" } : undefined}>
         {value}

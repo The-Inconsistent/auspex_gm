@@ -10,7 +10,7 @@ export function StatBlock({ t }: StatBlockProps) {
   return (
     <div className="stack" style={{ gap: 8 }}>
       <div className="rule">
-        ── {t.name.toUpperCase()} · {t.source === "core" ? "CORE" : t.source.toUpperCase()} P.{t.page} ──
+        {t.name.toUpperCase()} · {t.source === "core" ? "CORE" : t.source.toUpperCase()} P.{t.page}
       </div>
       <div className="traits">
         {ATTRIBUTES.map((k) => (
@@ -57,7 +57,7 @@ export function StatBlock({ t }: StatBlockProps) {
         <div key={i} className="stack" style={{ gap: 2 }}>
           <div>
             {ab.type && (
-              <span className="amber">
+              <span className="accent">
                 {ab.type}
                 {ab.name ? ": " : ""}
               </span>
@@ -88,7 +88,7 @@ export function StatBlock({ t }: StatBlockProps) {
       </div>
       {t.options.map((o) => (
         <div key={o.name}>
-          <span className="amber">{o.kind === "mob" ? "MOB OPTION" : "VARIANT"}: </span>
+          <span className="accent">{o.kind === "mob" ? "MOB OPTION" : "VARIANT"}: </span>
           <b>{o.name}</b> {o.text}
           {o.weapons.map((w) => (
             <div key={w.name} style={{ paddingLeft: 12 }}>
@@ -99,7 +99,7 @@ export function StatBlock({ t }: StatBlockProps) {
       ))}
       {t.mobAbilities.map((m, i) => (
         <div key={i}>
-          <span className="amber">MOB{m.type ? ` ${m.type}` : ""}: </span>
+          <span className="accent">MOB{m.type ? ` ${m.type}` : ""}: </span>
           <b>{m.name}</b> {m.text}
         </div>
       ))}

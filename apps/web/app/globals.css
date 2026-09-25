@@ -1,44 +1,102 @@
-/* Auspex: cogitator terminal. Tokens from design direction B (canvas 2bu7aCQwZcnnA9JtNAvQWp). */
+/* Auspex: the Imperial Manuscript. Vellum, crimson ink and iron bands, after the Wrath & Glory books' print design.
+   Tokens and mock-ups: canvas LRBEbp8GhgBAFeDk4pohVy. Mirror raw values in lib/tokens/tokens.ts. */
 :root {
-  --bg: #06110b;
-  --panel: #0b1c13;
-  --panel-2: #081610;
-  --line: #1f4d33;
-  --line-dim: #173a26;
-  --fg: #9ef5b5;
-  --dim: #5fa878;
-  --done: #4f8a63;
-  --amber: #ffc266;
-  --red: #ff8a7e;
-  --red-line: #6b2a24;
-  --red-bg: #1a0c0a;
-  --row-active: #10301e;
-  --overlay: rgba(6, 17, 11, 0.96);
-  /* Marker colours match the tags on the physical minis. */
+  --vellum: #f2ecdf;
+  --vellum-2: #e7deca;
+  --vellum-3: #d8cbae;
+  --ink: #1f1a16;
+  --ink-2: #4a4038;
+  --ink-3: #665b4e;
+  --line: #b7a785;
+  /* Crimson means "now" or "harm": the acting combatant, Wounds, the primary action. Never decoration. */
+  --red: #8a1c1c;
+  --red-fill: #8a1c1c; /* fills under bone text; stays dark in vigil */
+  --red-2: #5e1010;
+  --red-tint: rgba(138, 28, 28, 0.07);
+  --red-on-iron: #e8766a;
+  --iron: #2a2522;
+  --iron-2: #3b3430;
+  --bone: #efe7d5;
+  --bone-2: #c9bca3;
+  --brass: #8c6a2f; /* Glory only */
+  --field: rgba(255, 252, 244, 0.55);
+  --stain-a: rgba(140, 106, 47, 0.11);
+  --stain-b: rgba(94, 16, 16, 0.07);
+  --vignette: rgba(70, 45, 20, 0.16);
+  --overlay: rgba(242, 236, 223, 0.97);
+  /* Marker colours match the tags on the physical minis; always drawn in an ink frame, never as text. */
   --marker-red: #ff6b5e;
   --marker-amber: #ffc266;
   --marker-green: #9ef5b5;
   --marker-blue: #7fb0ff;
   --marker-purple: #c79bff;
   --marker-white: #e8f5ec;
+  --serif: var(--font-serif), Georgia, serif;
+  --display: var(--font-display), Georgia, serif;
   --mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
-  --display: var(--font-display), var(--font-mono), monospace;
   /* Clerk sign-in / user menu, themed from the tokens above. */
-  --clerk-color-primary: var(--fg);
-  --clerk-color-primary-foreground: var(--bg);
-  --clerk-color-background: var(--panel);
-  --clerk-color-foreground: var(--fg);
-  --clerk-color-muted-foreground: var(--dim);
-  --clerk-color-muted: var(--panel-2);
-  --clerk-color-input: var(--panel-2);
-  --clerk-color-input-foreground: var(--fg);
+  --clerk-color-primary: var(--red-fill);
+  --clerk-color-primary-foreground: var(--bone);
+  --clerk-color-background: var(--vellum);
+  --clerk-color-foreground: var(--ink);
+  --clerk-color-muted-foreground: var(--ink-3);
+  --clerk-color-muted: var(--vellum-2);
+  --clerk-color-input: var(--vellum);
+  --clerk-color-input-foreground: var(--ink);
   --clerk-color-border: var(--line);
-  --clerk-color-neutral: var(--dim);
+  --clerk-color-neutral: var(--ink-3);
   --clerk-color-danger: var(--red);
-  --clerk-color-ring: var(--fg);
+  --clerk-color-ring: var(--red);
   --clerk-color-modal-backdrop: var(--overlay);
-  --clerk-font-family: var(--mono);
-  --clerk-border-radius: 0;
+  --clerk-font-family: var(--serif);
+  --clerk-border-radius: 2px;
+}
+
+/* Vigil: the night set for dim tables. Same roles, charred page and bone ink. Set by the system preference unless the
+   theme toggle stored a choice (data-theme on <html>, applied before paint in layout.tsx). */
+:root[data-theme="vigil"] {
+  --vellum: #17130f;
+  --vellum-2: #221c17;
+  --vellum-3: #2e2620;
+  --ink: #ece3cf;
+  --ink-2: #c9bca3;
+  --ink-3: #a89a82;
+  --line: #4a3f35;
+  --red: #e0685c;
+  --red-2: #b8392e;
+  --red-tint: rgba(224, 104, 92, 0.09);
+  --iron: #0b0907;
+  --iron-2: #2e2620;
+  --brass: #c29a52;
+  --field: rgba(0, 0, 0, 0.25);
+  --stain-a: rgba(224, 104, 92, 0.08);
+  --stain-b: rgba(0, 0, 0, 0);
+  --vignette: rgba(0, 0, 0, 0.5);
+  --overlay: rgba(23, 19, 15, 0.97);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="vellum"]) {
+    --vellum: #17130f;
+    --vellum-2: #221c17;
+    --vellum-3: #2e2620;
+    --ink: #ece3cf;
+    --ink-2: #c9bca3;
+    --ink-3: #a89a82;
+    --line: #4a3f35;
+    --red: #e0685c;
+    --red-2: #b8392e;
+    --red-tint: rgba(224, 104, 92, 0.09);
+    --iron: #0b0907;
+    --iron-2: #2e2620;
+    --brass: #c29a52;
+    --field: rgba(0, 0, 0, 0.25);
+    --stain-a: rgba(224, 104, 92, 0.08);
+    --stain-b: rgba(0, 0, 0, 0);
+    --vignette: rgba(0, 0, 0, 0.5);
+    --overlay: rgba(23, 19, 15, 0.97);
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -50,11 +108,18 @@ body {
   height: 100%;
 }
 body {
-  background: var(--bg);
-  background-image: repeating-linear-gradient(0deg, rgba(158, 245, 181, 0.035) 0 1px, transparent 1px 3px);
-  color: var(--fg);
-  font-family: var(--mono);
-  font-size: 14px;
+  background-color: var(--vellum);
+  /* Stains and a vignette on the page ground only; panels, tables and buttons stay flat so numbers read at a glance. */
+  background-image:
+    radial-gradient(ellipse 60% 40% at 12% 6%, var(--stain-a), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 92% 96%, var(--stain-b), transparent 70%),
+    radial-gradient(ellipse 130% 95% at 50% 50%, transparent 58%, var(--vignette) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.4;
+  font-variant-numeric: lining-nums tabular-nums;
   -webkit-tap-highlight-color: transparent;
 }
 button,
@@ -68,32 +133,57 @@ button {
   cursor: pointer;
 }
 a {
-  color: var(--fg);
+  color: var(--ink);
+}
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+::selection {
+  background: var(--red-fill);
+  color: var(--bone);
 }
 
 .display {
   font-family: var(--display);
+  font-weight: 700;
   letter-spacing: 0.03em;
 }
 .dim {
-  color: var(--dim);
+  color: var(--ink-3);
 }
-.amber {
-  color: var(--amber);
+.accent {
+  color: var(--red);
 }
 .red {
   color: var(--red);
+  font-weight: 600;
 }
 .label {
-  color: var(--dim);
+  font-family: var(--display);
+  color: var(--ink-3);
   font-size: 12px;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+/* Section head: crimson small caps over the books' double rule. */
 .rule {
-  color: var(--dim);
-  font-size: 12px;
-  letter-spacing: 0.2em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.rule::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  border-top: 2px solid currentColor;
+  border-bottom: 1px solid currentColor;
 }
 .center {
   min-height: 100dvh;
@@ -104,49 +194,65 @@ a {
   font-size: 28px;
 }
 
+/* Buttons: the default is the secondary look, an ink outline with an inner vellum/line double frame. */
 .btn {
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--fg);
+  border: 1px solid var(--ink-2);
+  border-radius: 2px;
+  background: transparent;
+  box-shadow:
+    inset 0 0 0 2px var(--vellum),
+    inset 0 0 0 3px var(--line);
+  color: var(--ink);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  letter-spacing: 0.04em;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
 }
 .btn:hover {
-  border-color: var(--fg);
+  background: var(--red-tint);
 }
 .btn:disabled {
-  opacity: 0.4;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 .btn.primary {
-  background: var(--fg);
-  color: var(--bg);
-  border-color: var(--fg);
-  font-weight: 700;
+  background: var(--red-fill);
+  color: var(--bone);
+  border-color: var(--red-2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.28);
+}
+.btn.primary:hover {
+  background: var(--red-2);
 }
 .btn.danger {
-  border-color: var(--red-line);
+  border-color: var(--red);
   color: var(--red);
-  background: var(--red-bg);
+  background: var(--red-tint);
 }
 .btn.sm {
   min-height: 32px;
-  padding: 0 8px;
+  padding: 0 10px;
   font-size: 12px;
+  box-shadow: none;
 }
 .btn.sq {
   width: 44px;
   padding: 0;
+  font-size: 20px;
 }
 
 .panel {
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--vellum-2);
 }
 .field {
   display: flex;
@@ -154,58 +260,119 @@ a {
   gap: 4px;
 }
 .input {
-  min-height: 40px;
+  min-height: 44px;
   padding: 6px 10px;
   border: 1px solid var(--line);
-  background: var(--panel-2);
+  border-bottom-color: var(--ink-2);
+  border-radius: 2px;
+  background: var(--field);
   outline: 0;
   width: 100%;
 }
 .input:focus {
-  border-color: var(--fg);
+  border-color: var(--red);
+  box-shadow: 0 0 0 1px var(--red);
 }
 textarea.input {
   min-height: 90px;
   resize: vertical;
 }
 
+/* Block-glyph bars (lib/blocks) need a monospace face to line up. */
 .bar {
-  font-family: var(--display);
-  font-size: 22px;
-  letter-spacing: 1px;
+  font-family: var(--mono);
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--red);
   white-space: nowrap;
 }
 .chip {
-  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
   border: 1px solid var(--line);
+  font-family: var(--display);
   font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
   white-space: nowrap;
 }
 .chip.warn {
-  border-color: var(--amber);
-  color: var(--amber);
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-tint);
 }
 .chip.bad {
-  border-color: var(--red-line);
-  color: var(--red);
+  border-color: var(--red-2);
+  color: var(--bone);
+  background: var(--red-fill);
 }
 
+/* Tabs: an iron strip; the active tab is crimson with a bright top stroke. */
 .tabs {
   display: flex;
-  border-bottom: 1px solid var(--line);
+  background: var(--iron);
 }
 .tab {
   flex: 1;
-  min-height: 48px;
+  min-height: 52px;
   border: 0;
-  border-right: 1px solid var(--line);
+  border-top: 3px solid transparent;
+  border-right: 1px solid rgba(0, 0, 0, 0.35);
   background: transparent;
-  letter-spacing: 0.08em;
+  color: var(--bone-2);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.tab:last-child {
+  border-right: 0;
 }
 .tab[aria-selected="true"] {
-  background: var(--fg);
-  color: var(--bg);
-  font-weight: 700;
+  background: var(--red-fill);
+  border-top-color: var(--red-on-iron);
+  color: var(--bone);
+}
+
+/* Iron band: screen headers, bone text. `.band.torn` adds the books' ragged bottom edge. */
+.band {
+  position: relative;
+  background: var(--iron);
+  color: var(--bone);
+}
+.band.torn {
+  z-index: 1;
+}
+.band.torn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 10px;
+  background: inherit;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 14' preserveAspectRatio='none'%3E%3Cpath d='M0 0H400V6L388 11L372 5L356 12L338 6L320 10L300 4L284 11L262 6L244 13L226 5L206 10L188 4L170 12L150 6L132 11L112 4L94 12L76 6L56 10L38 4L20 11L0 6Z'/%3E%3C/svg%3E")
+    0 0 / 100% 100% no-repeat;
+}
+.band a {
+  color: var(--bone);
+}
+.band .dim,
+.band .label {
+  color: var(--bone-2);
+}
+.band .btn:not(.primary) {
+  color: var(--bone);
+  border-color: var(--bone-2);
+  box-shadow:
+    inset 0 0 0 2px var(--iron),
+    inset 0 0 0 3px rgba(239, 231, 213, 0.22);
+}
+.band .btn:not(.primary):hover {
+  background: rgba(239, 231, 213, 0.08);
 }
 
 .badge-offline {
@@ -214,9 +381,13 @@ textarea.input {
   right: 8px;
   z-index: 50;
   padding: 4px 10px;
-  background: var(--red-bg);
-  border: 1px solid var(--red-line);
-  color: var(--red);
+  background: var(--red-fill);
+  border: 1px solid var(--red-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 .refusal {
   position: fixed;
@@ -229,9 +400,11 @@ textarea.input {
   gap: 12px;
   justify-content: space-between;
   padding: 6px 6px 6px 12px;
-  background: var(--red-bg);
-  border: 1px solid var(--red-line);
+  background: var(--vellum-2);
+  border: 2px solid var(--red);
   color: var(--red);
+  font-weight: 600;
+  box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.5);
 }
 
 /* GM shell */
@@ -245,13 +418,12 @@ textarea.input {
   align-items: center;
   gap: 12px;
   padding: 8px 16px;
-  border-bottom: 1px solid var(--line);
   flex-wrap: wrap;
 }
 .gm-title {
   flex: 1;
   min-width: 0;
-  font-size: 30px;
+  font-size: 26px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -259,6 +431,7 @@ textarea.input {
 .gm-body {
   min-height: 0;
   overflow: auto;
+  padding-top: 6px;
 }
 .pool {
   display: flex;
@@ -266,11 +439,14 @@ textarea.input {
   gap: 6px;
   padding: 0 6px 0 12px;
   min-height: 48px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(239, 231, 213, 0.22);
+}
+.pool.glory {
+  border-color: var(--brass);
 }
 .pool.ruin {
-  border-color: var(--red-line);
-  color: var(--red);
+  border-color: var(--red-on-iron);
+  color: var(--red-on-iron);
 }
 
 .tracker {
@@ -288,7 +464,7 @@ textarea.input {
 }
 .tracker-side {
   border-left: 1px solid var(--line);
-  background: var(--panel-2);
+  background: var(--vellum-2);
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -313,21 +489,35 @@ textarea.input {
   min-width: 0;
   overflow: hidden;
 } /* grid cells default to min-content width; let bars shrink, never spill */
+button.row:nth-of-type(even) {
+  background: var(--vellum-2);
+}
 .row.head {
-  min-height: 28px;
-  color: var(--dim);
+  min-height: 30px;
+  background: var(--iron-2);
+  color: var(--bone);
+  font-family: var(--display);
   font-size: 12px;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--line);
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 .row.sel {
-  border-color: var(--fg);
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--vellum);
 }
-.row.now {
-  background: var(--row-active);
+/* The acting combatant: solid crimson, readable from across the table. */
+.row.now,
+button.row.now:nth-of-type(even) {
+  background: var(--red-fill);
+  color: var(--bone);
+}
+.row.now .dim,
+.row.now .accent,
+.row.now .bar {
+  color: inherit;
 }
 .row.done {
-  color: var(--done);
+  color: var(--ink-3);
 }
 .keys {
   display: flex;
@@ -341,18 +531,19 @@ textarea.input {
   gap: 10px;
   min-height: 52px;
   padding: 0 14px;
-  border: 1px solid var(--fg);
-  background: var(--panel);
+  border-top: 3px double var(--ink-2);
+  background: var(--vellum-3);
 }
 .cmd input {
   flex: 1;
   border: 0;
   outline: 0;
   background: transparent;
+  font-family: var(--mono);
   font-size: 16px;
 }
 .cmd:focus-within {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--red);
   outline-offset: 2px;
 } /* the input's own outline is off; ring the bar */
 
@@ -371,7 +562,7 @@ textarea.input {
     gap: 8px;
   }
   .gm-title {
-    font-size: 22px;
+    font-size: 20px;
     flex-basis: 100%;
   }
   .pool {
@@ -379,7 +570,7 @@ textarea.input {
     padding: 0 4px 0 8px;
   }
   .pool .display {
-    font-size: 24px !important;
+    font-size: 22px !important;
   }
   .pool .btn.sq {
     width: 40px;
@@ -411,19 +602,16 @@ textarea.input {
   grid-template-rows: auto 1fr auto;
 }
 .pl-banner {
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--line);
-  background: var(--panel);
+  padding: 12px 16px 10px;
 }
 .pl-banner.up {
-  background: var(--amber);
-  color: var(--bg);
+  background: var(--red-fill);
 }
 .pl-body {
-  padding: 16px;
+  padding: 22px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 .vitals {
   display: grid;
@@ -432,15 +620,20 @@ textarea.input {
 }
 .vital {
   border: 1px solid var(--line);
-  padding: 10px;
+  background: var(--vellum-2);
+  box-shadow:
+    inset 0 0 0 3px var(--vellum-2),
+    inset 0 0 0 4px var(--line);
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 .vital .num {
-  font-family: var(--display);
-  font-size: 48px;
-  line-height: 0.9;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 0.95;
 }
 .traits {
   display: flex;
@@ -458,8 +651,9 @@ textarea.input {
   border-right: 0;
 }
 .traits .v {
-  font-family: var(--display);
-  font-size: 28px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 26px;
   line-height: 1;
 }
 
@@ -470,11 +664,11 @@ textarea.input {
 }
 .item {
   border: 1px solid var(--line);
-  padding: 10px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: var(--panel-2);
+  background: var(--vellum-2);
 }
 .item-head {
   display: flex;
@@ -497,6 +691,7 @@ details.item > summary::-webkit-details-marker {
 }
 details.item > summary::before {
   content: "▸";
+  color: var(--red);
 }
 details.item[open] > summary::before {
   content: "▾";
@@ -520,9 +715,30 @@ details.item[open] > summary::before {
   background: var(--overlay);
   z-index: 40;
 }
+/* Handouts and data-slates: in-world print-outs keep the cogitator face. */
 pre.text {
   white-space: pre-wrap;
   margin: 0;
   font-family: var(--mono);
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* Theme toggle: the label names the theme it switches to. */
+.theme-to-day {
+  display: none;
+}
+:root[data-theme="vigil"] .theme-to-night {
+  display: none;
+}
+:root[data-theme="vigil"] .theme-to-day {
+  display: inline;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="vellum"]) .theme-to-night {
+    display: none;
+  }
+  :root:not([data-theme="vellum"]) .theme-to-day {
+    display: inline;
+  }
 }

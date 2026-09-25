@@ -48,7 +48,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       const img = await QRCode.toDataURL(url, {
         margin: 1,
         width: QR_SIZE,
-        color: { dark: TOKENS.bg, light: TOKENS.fg },
+        color: { dark: TOKENS.ink, light: TOKENS.vellum },
       });
       setQr({ title, url, img });
     } catch (e) {
@@ -152,11 +152,11 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
 
   return (
     <div className="pad stack">
-      {msg && <div className={msg.startsWith("!") ? "red" : "amber"}>{msg}</div>}
+      {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
 
       <section className="cols">
         <div className="panel pad stack">
-          <div className="rule">── SESSION ──</div>
+          <div className="rule">SESSION</div>
           {open ? (
             <>
               <div>SESSION {open.number} IN PROGRESS</div>
@@ -219,7 +219,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
         </div>
 
         <div className="panel pad stack">
-          <div className="rule">── FRAMEWORK (p.18) ──</div>
+          <div className="rule">FRAMEWORK (p.18)</div>
           <div className="field">
             <label className="label" htmlFor="patron">
               PATRON
@@ -241,7 +241,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       </section>
 
       <section className="panel pad stack">
-        <div className="rule">── TABLE ACCESS ──</div>
+        <div className="rule">TABLE ACCESS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
           <button className="btn primary" onClick={inviteRoom}>
             ROOM QR

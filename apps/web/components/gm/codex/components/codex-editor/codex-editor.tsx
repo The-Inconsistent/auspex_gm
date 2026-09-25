@@ -140,7 +140,7 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
             <input
               id={`f-${f.key}`}
               type="checkbox"
-              style={{ width: 24, height: 24, accentColor: "var(--fg)" }}
+              style={{ width: 24, height: 24, accentColor: "var(--red)" }}
               checked={Boolean(draft[f.key])}
               onChange={(e) => setField(f.key, e.target.checked)}
             />

@@ -177,7 +177,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
   if (!enc)
     return (
       <div className="pad stack">
-        <div className="rule">── NO ACTIVE ENCOUNTER ──</div>
+        <div className="rule">NO ACTIVE ENCOUNTER</div>
         <p className="dim">Start one here, or run a beat with a prepared encounter from PREP.</p>
         <div>
           <button className="btn primary" onClick={() => run({ type: "encounter.start" }, "ENCOUNTER STARTED")}>
@@ -346,7 +346,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
           className="panel"
           style={{ display: "flex", gap: 16, alignItems: "center", padding: "8px 12px", flexWrap: "wrap" }}
         >
-          <span className="amber">
+          <span className="accent">
             {current
               ? `▶ ${nameOf(current).toUpperCase()} ACTING`
               : next
@@ -375,7 +375,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
         {Side.options.map((side) => (
           <div key={side} className="list" style={{ gap: 2 }}>
             <div className="rule" style={{ padding: "8px 8px 2px" }}>
-              ── {side.toUpperCase()} ──
+              {side.toUpperCase()}
             </div>
             {rows(side).map((c) => {
               const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
@@ -396,7 +396,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                   aria-pressed={c.id === selected}
                   onClick={() => toggleSelected(c.id)}
                 >
-                  <span className={now ? "amber" : "dim"}>{stateLabel}</span>
+                  <span className={now ? "accent" : "dim"}>{stateLabel}</span>
                   <span style={{ fontWeight: 700, display: "flex", gap: 8, alignItems: "center" }}>
                     {c.kind === "threat" && c.marker && (
                       <span
@@ -406,6 +406,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                           width: 10,
                           height: 10,
                           background: `var(--marker-${c.marker})`,
+                          border: "1.5px solid var(--ink)",
                           display: "inline-block",
                         }}
                       />
@@ -447,7 +448,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                   </span>
                   <span
                     className="hide-sm"
-                    style={{ color: c.kind === "threat" && !c.revealed ? "var(--red)" : "var(--dim)" }}
+                    style={{ color: c.kind === "threat" && !c.revealed ? "var(--red)" : "var(--ink-3)" }}
                   >
                     {c.kind === "pc" ? "FULL" : c.revealed ? "FULL" : "BAR ONLY"}
                   </span>
@@ -461,7 +462,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
         {error && <div className="red">! {error}</div>}
         {amountFor && sel ? (
           <div className="keys">
-            <span className="amber" style={{ alignSelf: "center" }}>
+            <span className="accent" style={{ alignSelf: "center" }}>
               {amountFor.toUpperCase()} → {nameOf(sel).toUpperCase()}:
             </span>
             {AMOUNTS.map((n) => (
@@ -580,7 +581,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
         )}
         {selChar && selDerived && (
           <div className="stack" style={{ gap: 6 }}>
-            <div className="rule">── {selChar.name.toUpperCase()} ──</div>
+            <div className="rule">{selChar.name.toUpperCase()}</div>
             <div className="dim">
               {selChar.stats.archetype} · {selChar.stats.keywords.join(", ")}
             </div>
@@ -610,7 +611,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
             ))}
           </div>
         )}
-        <div className="rule">── VOX LOG ──</div>
+        <div className="rule">VOX LOG</div>
         {log.length === 0 && <div className="dim">No transmissions.</div>}
         {log.map((l) => (
           <div
@@ -619,11 +620,11 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               display: "flex",
               gap: 8,
               alignItems: "center",
-              borderBottom: "1px dashed var(--line-dim)",
+              borderBottom: "1px dashed var(--line)",
               paddingBottom: 6,
             }}
           >
-            <span style={{ flex: 1, fontSize: 13 }} className={l.warn ? "amber" : undefined}>
+            <span style={{ flex: 1, fontSize: 13 }} className={l.warn ? "accent" : undefined}>
               {l.text}
             </span>
             {l.undo && (

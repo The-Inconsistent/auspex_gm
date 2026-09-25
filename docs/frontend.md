@@ -538,45 +538,59 @@ The error text is either the server's `ActionError` message or one of the two cl
 
 ## 7. Styling
 
-The look is "Auspex": a green-phosphor cogitator terminal. Dark green background, phosphor-green text, faint scanlines
-(the `repeating-linear-gradient` on `body`), square borders, upper-case labels, box-drawing rules (`── NAME ──`) and
-`█░` bars. Everything is plain CSS in `app/globals.css`, using short utility and component classes plus inline
-`style` for one-offs.
+The look is the "Imperial Manuscript", after the print design of the Wrath & Glory books: a vellum page with faint
+stains and a vignette (the `radial-gradient`s on `body`), crimson Cinzel section heads over a double rule, iron bands
+with bone text for headers and tabs, riveted-plate framing for GM-only content, and flat panels and tables so numbers
+read at arm's length. None of it uses book art: everything is CSS, plus one SVG mask (the torn band edge). Mock-ups and
+the design language: canvas `LRBEbp8GhgBAFeDk4pohVy`. Everything is plain CSS in `app/globals.css`, using short
+utility and component classes plus inline `style` for one-offs.
+
+**Themes.** `:root` is **vellum** (day). **Vigil** (night: charred page, bone ink, ember red) re-maps the same tokens
+under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
+`ThemeToggle` (`components/ui/theme-toggle/`) stores the choice per device in `localStorage` (`THEME_KEY`), and
+`THEME_SCRIPT`, inlined in `<head>` by `app/layout.tsx`, applies it before first paint (`<html suppressHydrationWarning>`).
+The toggle's label is swapped by CSS (`.theme-to-night` / `.theme-to-day`), so server and client markup match.
 
 **Fonts** come from `next/font/google` in `app/layout.tsx` and are exposed as CSS variables on `<html>`:
 
 | Variable | Font | Use |
 |---|---|---|
-| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Body text, the default for everything |
-| `--font-display` → `--display` | VT323 | Big terminal numerals and titles: `.display`, `.bar`, vitals, trait values |
+| `--font-display` → `--display` | Cinzel (variable) | Heads, labels, buttons, tabs, chips: `.display`, `.label`, `.rule`, `.btn`, `.tab`, `.chip`. Stands in for the books' Priori Serif |
+| `--font-serif` → `--serif` | Crimson Pro (variable, with italics) | Body text, the default for everything; counters use its lining tabular figures. Stands in for Caxton |
+| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Only in-world print-outs and typed commands: `pre.text` (handouts), `.cmd input`, and `.bar`'s block glyphs |
 
-**Tokens** (`:root`):
+**Tokens** (`:root`, re-mapped for vigil):
 
 | Token | Purpose |
 |---|---|
-| `--bg` | Page background (mirrored as `TOKENS.bg`) |
-| `--panel` | Panels, buttons, the command bar, the player banner |
-| `--panel-2` | Inputs, list items, the tracker side panel |
+| `--vellum` | Page background, and the inner frame of buttons (mirrored as `TOKENS.vellum`) |
+| `--vellum-2` | Panels, list items, vitals, zebra rows, the tracker side panel |
+| `--vellum-3` | The command bar and other recessed strips |
+| `--ink`, `--ink-2`, `--ink-3` | Main text (mirrored as `TOKENS.ink`), secondary text and outlines, captions / `.dim` / done rows |
 | `--line` | Default borders and dividers |
-| `--line-dim` | Faint dividers (the vox log's dashed rules) |
-| `--fg` | Main phosphor text, focus borders, primary buttons, the selected tab (mirrored as `TOKENS.fg`) |
-| `--dim` | Secondary text, labels, rules |
-| `--done` | Text on rows that have acted |
-| `--amber` | Warnings, the acting combatant, reminders, success messages, your-turn banner |
-| `--red` | Errors, damage, Ruin, "hidden from players" |
-| `--red-line` | Red borders (danger buttons, Ruin pool, badges) |
-| `--red-bg` | Red surfaces (danger buttons, the offline badge, `Refusal`) |
-| `--row-active` | Background of the tracker row that is acting |
+| `--red` | Crimson ink: section heads, `.accent`, errors, Wounds, "hidden from players", focus rings |
+| `--red-fill`, `--red-2` | Crimson fills under bone text (primary buttons, the acting row, the active tab, your-turn banner) and their borders; `--red-fill` stays dark in vigil |
+| `--red-tint` | Faint crimson wash (hover, `.chip.warn`, danger buttons) |
+| `--red-on-iron` | Crimson that is legible on iron (the Ruin pool, the active tab's top stroke) |
+| `--iron`, `--iron-2` | Bands, tabs (mirrored as `TOKENS.iron`, the browser theme colour); table and stat-block header rows |
+| `--bone`, `--bone-2` | Text on iron and on crimson fills; secondary text on iron |
+| `--brass` | Glory only |
+| `--field` | Input background |
+| `--stain-a`, `--stain-b`, `--vignette` | The page-ground texture |
 | `--overlay` | Near-opaque backdrop for `.overlay` (the QR dialog) |
-| `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
-| `--mono`, `--display` | Font stacks |
-| `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--fg)`, `--clerk-color-background: var(--panel)`, `--clerk-font-family: var(--mono)`, `--clerk-border-radius: 0`…), so they take the Auspex look |
+| `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches, always in an ink frame. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
+| `--serif`, `--display`, `--mono` | Font stacks |
+| `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--red-fill)`, `--clerk-color-background: var(--vellum)`, `--clerk-font-family: var(--serif)`, `--clerk-border-radius: 2px`…) |
 
 **Class vocabulary:**
-- Text: `.display`, `.dim`, `.amber`, `.red`, `.label`, `.rule`.
-- Controls: `.btn`, with `.primary`, `.danger`, `.sm` (32px) and `.sq` (44px square); `.input`; `.field`.
+- Text: `.display`, `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
+  `.label`, `.rule` (a section head; the double rule is drawn by `::after`).
+- Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px)
+  and `.sq` (44px square); `.input`; `.field`.
 - Chips: `.chip`, with `.warn` and `.bad`.
-- Tabs: `.tabs` / `.tab`, with `[aria-selected="true"]` inverted and bold.
+- Tabs: `.tabs` / `.tab`, an iron strip; `[aria-selected="true"]` is crimson with a bright top stroke.
+- Bands: `.band` (iron, bone text; `.btn`, `.dim` and `.label` inside it switch to their on-iron colours) and
+  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, the GM tabs and `.pl-banner`.
 - Layout: `.panel`, `.item`, `.item-head` (a card's full-width header row, 44px tall), `.list`, `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`, `pre.text`.
 - Shells: `.gm*` for the GM, `.tracker*` and `.row*` for the tracker, `.cmd` for the command bar, `.pl*`, `.vitals`,
   `.vital` and `.traits` for the player app.
@@ -632,7 +646,8 @@ This section summarises the binding rules. The full text is in
   - Inputs have a `<label htmlFor>` or an `aria-label`, and chip groups use `role="group"`.
   - State is never shown by colour alone: row state is a word, tabs use weight plus `aria-selected`, the selected
     tracker row has `aria-pressed`, and marker swatches carry an `aria-label`.
-  - Focus stays visible: `.input:focus` switches the border to `--fg`, and `.cmd:focus-within` draws a ring.
+  - Focus stays visible: `:focus-visible` draws a crimson ring, `.input:focus` switches the border to `--red`, and
+    `.cmd:focus-within` rings the command bar.
   - The smallest text is 12px.
   - There's no hex in TSX; colours come from `var(--…)` or `TOKENS`.
 
