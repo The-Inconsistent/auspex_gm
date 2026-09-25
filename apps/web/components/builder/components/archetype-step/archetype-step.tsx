@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ATTRIBUTES, sourceCite, type Archetype } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
-import { titleOf } from "../../utils";
+import { rulesText, titleOf } from "../../utils";
 import { RecordList } from "../record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
@@ -73,6 +73,10 @@ export function ArchetypeStep() {
           meta: `${titleOf(a.factionId)} · Tier ${a.tier}${a.tier < tier ? " (+ Ascension)" : ""} · ${sourceCite(a)}`,
           xp: a.xp,
           blocked: a.tier > tier ? `above Tier ${tier}` : undefined,
+          detail: rulesText({
+            requires: a.requires,
+            effect: a.abilities.map((r) => `${r.name}. ${r.text}`).join("\n\n"),
+          }),
         }))}
         selected={draft.archetypeId ? [draft.archetypeId] : []}
         onPick={pick}

@@ -2,6 +2,7 @@
 import { sourceCite } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
+import { rulesText } from "../../utils";
 import { RecordList } from "../record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
@@ -36,6 +37,7 @@ export function AscensionStep() {
           id: p.id,
           label: p.name,
           meta: sourceCite(p),
+          detail: rulesText(p),
           xp: typeof p.xp === "number" ? p.xp : "perTier" in p.xp ? p.xp.perTier * tier : undefined,
           blocked: p.notAtCreation ? "not at creation" : undefined,
         }))}

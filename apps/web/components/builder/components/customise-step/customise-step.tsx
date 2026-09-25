@@ -12,7 +12,7 @@ import {
 
 import { useBuilder } from "../../builder-context";
 import { ATTRIBUTE_NAMES } from "../../constants";
-import { toggle } from "../../utils";
+import { powerText, rulesText, toggle } from "../../utils";
 import { RecordList } from "../record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
@@ -200,6 +200,12 @@ export function CustomiseStep() {
                 value={t.choice ?? ""}
                 onChange={(e) => setTalentChoice(i, e.target.value)}
               />
+              {rec && (
+                <details>
+                  <summary className="label">RULES</summary>
+                  <pre className="text bld-rules">{rulesText(rec)}</pre>
+                </details>
+              )}
             </div>
           );
         })}
@@ -212,6 +218,7 @@ export function CustomiseStep() {
               id: t.id,
               label: t.name,
               meta: `${t.category === "talent" ? "" : `${t.category} · `}${sourceCite(t)} · ${xpLabel(t.xp)} XP`,
+              detail: rulesText(t),
             }))}
           selected={bought.map((t) => t.id)}
           onPick={(id) =>
@@ -246,6 +253,7 @@ export function CustomiseStep() {
                 id: p.id,
                 label: p.name,
                 meta: `${lookups.disciplines.get(p.disciplineId)?.name ?? p.disciplineId} · ${sourceCite(p)} · ${xpLabel(p.xp)} XP`,
+                detail: powerText(p),
               }))}
             selected={draft.powers ?? []}
             onPick={(id) => update((d) => ({ ...d, powers: toggle(d.powers ?? [], id) }))}
@@ -266,6 +274,7 @@ export function CustomiseStep() {
               id: p.id,
               label: p.name,
               meta: sourceCite(p),
+              detail: rulesText(p),
               xp: typeof p.xp === "number" ? p.xp : undefined,
               blocked: p.notAtCreation ? "not at creation" : undefined,
             }))}

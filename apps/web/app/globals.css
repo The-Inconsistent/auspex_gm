@@ -1511,3 +1511,37 @@ pre.text.slate {
 .bld .sb-title i {
   white-space: normal;
 }
+/* A RecordList row: the pick button, a RULES toggle, and the rules text under it. */
+.bld-row {
+  border-bottom: 1px solid var(--line);
+}
+.bld-row:nth-child(even) {
+  background: var(--vellum-2);
+}
+.bld-row-head {
+  display: flex;
+  align-items: center;
+}
+.bld-row .bld-pick {
+  flex: 1;
+  min-width: 0;
+  border-bottom: 0;
+  background: transparent;
+}
+.bld-row .bld-pick:hover:not(:disabled) {
+  background: var(--red-tint);
+}
+.bld-row .bld-pick[aria-pressed="true"] {
+  background: var(--red-fill);
+  color: var(--bone);
+}
+.bld-rules-btn {
+  flex: none;
+  margin: 0 8px;
+}
+pre.text.bld-rules {
+  padding: 8px 12px 12px;
+  border-top: 1px dashed var(--line);
+  background: var(--vellum);
+  font-size: 15px;
+}

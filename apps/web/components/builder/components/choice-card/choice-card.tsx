@@ -2,7 +2,7 @@
 import { wargearMatches, type BuildChoicePrompt } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
-import { citeLabel } from "../../utils";
+import { citeLabel, powerText, rulesText } from "../../utils";
 import { RecordList, type RecordItem } from "../record-list/record-list";
 
 type ChoiceCardProps = { prompt: BuildChoicePrompt };
@@ -32,7 +32,12 @@ export function ChoiceCard({ prompt: p }: ChoiceCardProps) {
       const f = p.pick.filter;
       items = [...catalogue.wargear.values()]
         .filter((w) => wargearMatches(w, f, { tier, newTier: tier }))
-        .map((w) => ({ id: w.id, label: w.name, meta: `${w.rarity ?? "–"} · Value ${w.value ?? "–"} · ${w.category}` }))
+        .map((w) => ({
+          id: w.id,
+          label: w.name,
+          meta: `${w.rarity ?? "–"} · Value ${w.value ?? "–"} · ${w.category}`,
+          detail: w.effect || undefined,
+        }))
         .sort((a, b) => a.label.localeCompare(b.label));
       break;
     }
@@ -44,14 +49,23 @@ export function ChoiceCard({ prompt: p }: ChoiceCardProps) {
       const from = p.pick.from;
       items = [...lookups.disciplines.values()]
         .filter((d) => !from || from.includes(d.id))
-        .map((d) => ({ id: d.id, label: d.name }));
+        .map((d) => ({
+          id: d.id,
+          label: d.name,
+          detail: rulesText({ requires: d.requires, effect: d.text }) || undefined,
+        }));
       break;
     }
     case "power": {
       const ds = p.pick.disciplines;
       items = [...lookups.powers.values()]
         .filter((pw) => [pw.disciplineId, ...pw.alsoIn].some((d) => ds.includes(d)))
-        .map((pw) => ({ id: pw.id, label: pw.name, meta: lookups.disciplines.get(pw.disciplineId)?.name }));
+        .map((pw) => ({
+          id: pw.id,
+          label: pw.name,
+          meta: lookups.disciplines.get(pw.disciplineId)?.name,
+          detail: powerText(pw),
+        }));
       break;
     }
     case "keyword":
