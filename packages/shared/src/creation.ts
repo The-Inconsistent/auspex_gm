@@ -23,6 +23,27 @@ export const ratingsXp = (r: {
 // Ability, so validate flags the others (a misprint, or a transcription error).
 export const archetypeXp = (a: Parameters<typeof ratingsXp>[0] & { tier: number }) => ratingsXp(a) + (a.tier - 1) * 10;
 
+// Starting XP (Core p.20). A custom Tier's budget ("75, or even 50 XP") is the GM's.
+export const startingXp = (tier: number) => tier * 100;
+// Rank from the XP earned in play: +1 per 40, never above 3 (Core pp.146–147). It stays the same after Ascending.
+export const rankOf = (xpEarned: number) => Math.min(3, 1 + Math.floor(xpEarned / 40));
+// Experience Ascension: 100 XP earned in the current Tier (Core pp.147–148). Milestone Ascension grants the same 100.
+export const ASCENSION_XP = 100;
+// The Tree of Learning (Core p.26): raising a Skill to R with XP needs R Skills with points, that one included.
+// Ratings an archetype or species grants are exempt (rules-flow.md §11.52).
+export const treeOfLearning = (skills: Partial<Record<Skill, number>>, skill: Skill, to: number) =>
+  Object.entries({ ...skills, [skill]: to }).filter(([, v]) => v > 0).length >= to;
+// Starting Wealth = Tier; at creation up to 4 more at 1 XP each (Core p.38, rules-flow.md §11.51).
+export const WEALTH_XP = 1;
+export const MAX_BOUGHT_WEALTH = 4;
+// Languages (Core p.31): Low Gothic for all, one free pick from those your keywords allow, the rest 1 XP each
+// (rules-flow.md §11.48–50).
+export const LANGUAGE_XP = 1;
+// Advanced Character Creation (Core p.38): no Archetype Ability, so bonus XP of Tier × 10; buying one (GM agrees)
+// costs its archetype's Tier × 10.
+export const advancedBonusXp = (tier: number) => tier * 10;
+export const archetypeAbilityXp = (archetypeTier: number) => archetypeTier * 10;
+
 const id = z.string().regex(/^[a-z0-9-]+$/);
 const ids = z.array(id).min(1);
 const keyword = z.string().regex(/^(\[[A-Z0-9' -]+\]|[A-Z0-9' -]+)$/); // as printed: "ADEPTUS ASTARTES", "[CHAPTER]"
@@ -193,6 +214,9 @@ const grantOne = z.union([
   z.object({ influence: Scaled }),
   z.object({ corruption: Amount }), // negative to lose it: "Lose 2 Corruption per Tier Ascended" (IoE p.59)
   z.object({ faith: Scaled }), // "You gain 1 Faith" (VoA p.31); "+Rank Faith" (FSPG p.104)
+  // Extra languages of the player's pick: "Double Rank additional languages" (Apocrypha p.90); `skill`: "equal to your
+  // Scholar rank" (Por, Apocrypha p.16); `xenos`: "one alien language" (Ordo Xenos, Core p.64)
+  z.object({ languages: z.union([Scaled, z.object({ skill })]), xenos: z.literal(true).optional() }),
   z.object({ memorableInjuries: Amount }), // Agent of the Inquisition (Apocrypha p.211)
   z.object({ traumaticInjuries: Amount }), // "Roll on the Traumatic Injury (p.195) twice" (Back from the Brink, Core p.150)
   z.object({ mutations: Amount }), // rolls on the Mutation tables (Scavvy, Core p.105; Core p.287)
@@ -511,7 +535,18 @@ export const Patron = z.object({
 });
 export type Patron = z.infer<typeof Patron>;
 
-// Names, appearance, languages: rolled tables with no rules effect.
+// A language (Core p.31). Low Gothic, which everyone knows, has no record. `keywords`: having any of them allows the
+// one free pick at creation (rules-flow.md §11.48–49); `xenos`: an alien tongue, for "one alien language" grants.
+// Unlisted languages are GM-approved write-ins (§11.50).
+export const Language = z.object({
+  ...record,
+  text: z.string().min(1),
+  keywords: z.array(keyword).min(1),
+  xenos: z.literal(true).optional(),
+});
+export type Language = z.infer<typeof Language>;
+
+// Names and appearance: rolled tables with no rules effect.
 export const FlavourTable = z.object({
   ...record,
   owner: Owner.optional(),
@@ -534,6 +569,7 @@ export const CREATION_TYPES = {
   disciplines: Discipline,
   powers: PsychicPower,
   patrons: Patron,
+  languages: Language,
   flavour: FlavourTable,
 } as const;
 export type CreationType = keyof typeof CREATION_TYPES;

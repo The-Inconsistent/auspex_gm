@@ -321,6 +321,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     FSPG's Servo-skull, Cherubim and Combat servitor (Apocrypha's followers). An official profile wins where one
     exists: VoA's Shock Grenade is FSPG's (p.124). The Eversor Assassin's "Executor pistol"
     is the Executioner Pistol its section describes as the Eversor sidearm (Apocrypha p.356).
+48. **One free language** (Core p.31): "a free additional language" is one, even when several of your keywords
+    qualify. An ADEPTUS MECHANICUS character picks High Gothic or Cant Mechanicus, not both.
+49. **The Languages table's "Keyword Required"** only decides the free pick. Anyone may buy any language for 1 XP with
+    the GM's agreement (Core p.31 asks only for someone to teach it).
+50. **Languages the table doesn't list** (T'au, Thoughtmark, a Navigator House's tongue; Core p.31 "discuss with your
+    GM") are write-ins at 1 XP, approved by the GM.
+51. **Buying Wealth** (Core p.38): "you can buy up to 4 Wealth" is up to 4 bought on top of the starting Tier, at 1 XP
+    each.
+52. **The Tree of Learning** (Core p.26) applies only when raising a Skill with XP: raising it to R needs R Skills with
+    points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
+    fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
 
 ---
 

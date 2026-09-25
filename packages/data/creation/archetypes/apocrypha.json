@@ -10515,6 +10515,11 @@
                 "perRank": 1
               }
             }
+          },
+          {
+            "languages": {
+              "perRank": 2
+            }
           }
         ]
       }

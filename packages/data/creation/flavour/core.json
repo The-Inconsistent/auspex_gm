@@ -402,45 +402,6 @@
     "note": "Derived from the particulars of their brutish behaviour, Ork names are often plosive descriptions or simply rough sounds used to distinguish individuals, for example:"
   },
   {
-    "id": "languages",
-    "name": "Languages",
-    "source": "core",
-    "page": 31,
-    "columns": [
-      "Language",
-      "Description",
-      "Keyword Required"
-    ],
-    "rows": [
-      [
-        "High Gothic",
-        "The ancient language of humanity, said to be spoken by the Emperor Himself. Relics and records from ages past are written in High Gothic.",
-        "ADEPTUS ASTARTES, ADEPTUS MECHANICUS, or ADEPTUS MINISTORUM."
-      ],
-      [
-        "Cant Mechanicus",
-        "An aggregation of separate languages used by cogitators to communicate with one another, filled with the arcane mysteries of the Mechanicus.",
-        "ADEPTUS MECHANICUS"
-      ],
-      [
-        "Glossia",
-        "A coded language that utilises the personal interpretation of metaphors. Glossia is metaphotically encrypted, and can only be decoded by understanding the meaning associated with each word. Used to communicate secretly with other individuals that know the same form of Glossia.",
-        "INQUISITION"
-      ],
-      [
-        "Aeldari Lexicon",
-        "A complex, flowing language augmented with gestures, poses, and references to culture. Written in context-dependent runes, the Aeldari Lexicon is almost impenetrable to outsiders.",
-        "AELDARI"
-      ],
-      [
-        "Ork Language",
-        "A crude, brutal language cobbled together from the lingua of the many Species the Orks have fought. The written language of Orks is very simple, relying on basic pictograms.",
-        "ORK"
-      ]
-    ],
-    "note": "Sidebar 'Languages of the Gilead System'. Every character knows Low Gothic. You can learn an additional language at the cost of 1 XP, provided you have access to someone who can teach the language to you; if the GM agrees, you can spend XP to learn an additional language at character creation. \"You recieve a free additional language at character creation if you have the appropriate Keyword\" (sic, no full stop). Other languages (e.g. Necron hieroglyphs) are by GM discussion. Print errors copied: 'metaphotically' (Glossia)."
-  },
-  {
     "id": "age",
     "name": "Age",
     "source": "core",

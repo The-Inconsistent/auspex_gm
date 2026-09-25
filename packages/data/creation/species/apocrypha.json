@@ -346,7 +346,14 @@
       },
       {
         "name": "Polyglot",
-        "text": "You know additional languages equal to your Scholar rank. When you encounter an unfamiliar language, you gain +Double Rank on Scholar tests to learn or translate that language."
+        "text": "You know additional languages equal to your Scholar rank. When you encounter an unfamiliar language, you gain +Double Rank on Scholar tests to learn or translate that language.",
+        "grants": [
+          {
+            "languages": {
+              "skill": "Scholar"
+            }
+          }
+        ]
       },
       {
         "name": "Dull Soul",

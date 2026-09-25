@@ -506,9 +506,9 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 
 **Status (2026-09-25).** All six books are transcribed and verified against the page images: 113 keywords, 27
 factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 333 talents, 32
-packages, 38 disciplines, 267 powers, 11 Patrons and 28 flavour tables, with every reference resolving. What is left
-is outside the catalogue: 521 starting-wargear items name gear the Wargear catalogue doesn't have yet (the FSPG, IoE,
-Apocrypha and Necron armouries).
+packages, 38 disciplines, 267 powers, 11 Patrons, 5 languages and 27 flavour tables, with every reference resolving.
+What is left is outside the catalogue: 55 starting-wargear items the Wargear catalogue doesn't link yet, waiting on
+rulings, and vehicles (see the Wargear catalogue).
 
 | Type | Record | Holds |
 |---|---|---|
@@ -523,7 +523,8 @@ Apocrypha and Necron armouries).
 | `packages` | `Package` | Ascension and Advancement Packages |
 | `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. A discipline's `requires` is who may learn it (checked for every power in it); a power's `requires` is only its own prerequisite. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords; `alsoIn` lists other disciplines that print it. Minor powers and the free Universal Psyker Abilities are the pseudo-disciplines `minor` and `universal-psyker-abilities` |
 | `patrons` | `Patron` | FSPG Patrons and their Framework options |
-| `flavour` | `FlavourTable` | Names, appearance, languages |
+| `languages` | `Language` | The Core p.31 languages: `keywords` that allow the one free pick, `xenos` for an alien tongue. Low Gothic (everyone) has no record; unlisted languages are GM-approved write-ins (rules-flow.md §11.48–50) |
+| `flavour` | `FlavourTable` | Names, appearance |
 
 **Nothing is free text.** Everything a record requires or gives, at creation or on purchase, is structured, and the
 schema has no free-text form for either. Prose (`effect`, ability and trait `text`, `bonus`) is the printed rule text,
@@ -559,7 +560,8 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
     `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`), `talentAccess`
     (+ `asKeyword`), `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),
     `attribute` (`add` / `to`; "any", "lowest"), `skills` + `add`, `chosenTrait`, `influenceAttribute`, `xpDiscount`
-    (a Talent at a price, or a discipline at a multiplier), `noArmour`, `never` (Faith or Corruption)
+    (a Talent at a price, or a discipline at a multiplier), `noArmour`, `never` (Faith or Corruption), `languages`
+    (scaled, or `{ skill }` for "equal to your Scholar rank"; `xenos` for "one alien language")
   - resources: `wealth`, `wealthPerSession`, `influence`, `corruption`, `faith`, `wrathPerSession`, `ammoPer`,
     `memorableInjuries`, `mutations`, `bonusDice` (scaled), `gmRuin`
   - composition: `all` (optionally `requires`), and `choose` from options, from disciplines, or of Skills; `optional`,

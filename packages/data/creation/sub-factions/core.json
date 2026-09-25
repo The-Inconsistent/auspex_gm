@@ -237,7 +237,13 @@
     "traits": [
       {
         "name": "Bonus",
-        "text": "You are fluent in one alien language, and gain +2 bonus dice on any Scholar and Investigation Tests related to any known xenos."
+        "text": "You are fluent in one alien language, and gain +2 bonus dice on any Scholar and Investigation Tests related to any known xenos.",
+        "grants": [
+          {
+            "languages": 1,
+            "xenos": true
+          }
+        ]
       }
     ],
     "note": "The bonus is printed as an unnamed bullet; \"Bonus\" is our label."
