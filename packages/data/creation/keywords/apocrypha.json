@@ -295,5 +295,21 @@
     "page": 95,
     "text": "",
     "note": "Used from p.95; no book defines it in a keyword list."
+  },
+  {
+    "id": "deathwatch",
+    "name": "DEATHWATCH",
+    "source": "apocrypha",
+    "page": 211,
+    "text": "",
+    "note": "Used from p.211 (Apocryphon Oath); no book defines it in a keyword list."
+  },
+  {
+    "id": "illuminati",
+    "name": "ILLUMINATI",
+    "source": "apocrypha",
+    "page": 215,
+    "text": "",
+    "note": "Used from p.215 (Illuminated); no book defines it in a keyword list."
   }
 ]

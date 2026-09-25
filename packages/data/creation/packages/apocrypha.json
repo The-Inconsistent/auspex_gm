@@ -1,0 +1,533 @@
+[
+  {
+    "id": "a-test-of-faith",
+    "name": "A Test of Faith",
+    "source": "apocrypha",
+    "page": 210,
+    "note": "+1 Faith point and +1 Conviction and Resolve are in effect only (no field).",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "skill",
+        "skill": "Persuasion",
+        "min": 2
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MINISTORUM"
+        ]
+      }
+    ],
+    "effect": "Your faith has always been strong, but seldom has it been tested so strenuously. You encountered some threat, danger, or catastrophe so great that your devotion to the Emperor was put into question… but when you emerged, your piety was rewarded.\n\nStrengthened by the challenge, your faith draws other faithful to you; drawn by the fire in your eyes and the conviction in your voice, and the need to have their own doubts expunged.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: Your faith is strengthened, granting you +1 Faith point. Further, your Conviction and Resolve are both increased by +1.\n\nWARGEAR: Select one weapon you possess. That weapon gains the Blessed (1) trait.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "text": "Select one weapon you possess. That weapon gains the Blessed (1) trait."
+      }
+    ]
+  },
+  {
+    "id": "agent-of-the-inquisition",
+    "name": "Agent of the Inquisition",
+    "source": "apocrypha",
+    "page": 210,
+    "note": "The 3 Corruption points and Memorable Injury are in effect only. Inquisitorial Rosette is not in the Wargear catalogue.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Insight",
+            "min": 2
+          },
+          {
+            "kind": "skill",
+            "skill": "Awareness",
+            "min": 2
+          }
+        ]
+      }
+    ],
+    "effect": "You have been recruited by an Inquisitor to continue the ongoing fight against the Enemies of the Imperium. You’re not merely an informant or minion bearing the Inquisition’s mark, but a trusted associate and confidante of an Inquisitor, with valued skills, experience, and insights, and the ability to wield some measure of their authority.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: Your new status as an Agent of the Inquisition means that they may invoke the name of your Inquisitor to gain +Rank to an Influence or social Skill test involving a character with the IMPERIUM keyword, once per scene.\n\nBecause of the circumstances of your recruitment to the Inquisition, you gain 3 Corruption points and a Memorable Injury.\n\nWARGEAR: Inquisitorial Rosette (symbol of authority), plus up to two items of Rare Wargear, or one item of Very Rare Wargear, with a Value up to 3 + the new Tier.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "keywords": [
+          "INQUISITION",
+          "[ORDO]"
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Inquisitorial Rosette",
+          "qty": 1
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "text": "Up to two items of Rare Wargear with a Value up to 3 + the new Tier"
+          },
+          {
+            "text": "One item of Very Rare Wargear with a Value up to 3 + the new Tier"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "apocryphon-oath",
+    "name": "Apocryphon Oath",
+    "source": "apocrypha",
+    "page": 211,
+    "note": "Deathwatch Kill Team campaign package (docs/kill-team.md). Bolt rounds: one reload each; Kraken and Vengeance are not in the Wargear catalogue.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 4
+      },
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Ballistic Skill",
+            "min": 5
+          },
+          {
+            "kind": "skill",
+            "skill": "Weapon Skill",
+            "min": 5
+          }
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Scholar",
+        "min": 2
+      },
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes",
+          "primaris-astartes"
+        ]
+      }
+    ],
+    "effect": "The Deathwatch Space Marines serve the Ordo Xenos of the Imperial Inquisition as its Chamber Militant, the warriors of last resort when the Inquisition needs access to firepower greater than the Astra Militarum or a team of its own Acolytes or even Throne Agents can provide.\n\nAcross the galaxy there are innumerable hostile alien civilisations that threaten Mankind, from the green-skinned Orks, to the monstrous Tyranids, sadistic Drukhari, spectral C'tan, and undying Necrons. It is the sacred task of the Deathwatch to stand sentry against all these terrible xenos races. They are ready to act when such ancient evils rise to threaten Mankind once more. The Space Marines of the Deathwatch form the first, and often only, line of defence against these inhuman horrors.\n\nUnlike other Space Marines, the ones serving in the Deathwatch are not truly a separate Chapter of the Adeptus Astartes; rather, they are a collection of veteran Space Marines drawn from all the different extant Chapters who serve together in the Inquisition's service for a discrete period of time.\n\nTo be chosen by one's Chapter to serve in the Deathwatch is a great honour for any Space Marine, as only the most elite and experienced members of a Chapter are ever chosen for this extremely hazardous tour of duty, the specifics of which must be kept secret by Inquisitorial order and sacred oath even from a Deathwatch Astartes' home Chapter.\n\nINFLUENCE BONUS: +1 per Tier ascended\n\nSTORY ELEMENT: You join the ranks of the Deathwatch, and you are initiated into secrets that allow you to hunt Xenos more effectively. You receive the normal benefit for having the ORDO XENOS keyword (page 64 of the Wrath & Glory core rulebook) and have access to special Deathwatch arsenals containing rare and specialised equipment.\n\nFurther, due to your specialised training, at each Regroup, you may select a single keyword which relates to a Xenos faction. You add +Rank ED to all attacks against enemies with that keyword.\n\nWARGEAR: One reload each of Dragonfire, Hellfire, Kraken, and Vengeance bolt rounds, and one Weapon Upgrade with a value of up to 7 (Very Rare).",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "keywords": [
+          "DEATHWATCH",
+          "INQUISITION",
+          "ORDO XENOS"
+        ]
+      },
+      {
+        "bundle": [
+          {
+            "name": "Dragonfire Bolt Rounds",
+            "qty": 1,
+            "wargearId": "dragonfire-bolt-rounds"
+          },
+          {
+            "name": "Hellfire Bolt Rounds",
+            "qty": 1,
+            "wargearId": "hellfire-bolt-rounds"
+          },
+          {
+            "name": "Kraken Bolt Rounds",
+            "qty": 1
+          },
+          {
+            "name": "Vengeance Bolt Rounds",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "text": "One Weapon Upgrade with a value of up to 7 (Very Rare)"
+      }
+    ]
+  },
+  {
+    "id": "blessed-by-the-emperor",
+    "name": "Blessed by the Emperor",
+    "source": "apocrypha",
+    "page": 212,
+    "note": "Printed pp.212–213: the four Trials (Faith, Purity, Righteousness, Suffering) and Sainthood are kept in effect; one Trial is active at a time, each completed Trial grants its named ability, all four unlock Sainthood. No schema field tracks Trial progress.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 15
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "text",
+        "text": "At least one Faith talent"
+      }
+    ],
+    "effect": "Your faith in the God-Emperor is absolute and of a magnitude far greater than even the most devout of your sisters. Some have even whispered that you have the potential to become a Saint, one of the greatest heroes of your faith and your Order.\n\nYou are merely a vessel for the glory of the Master of Mankind, and you will serve Him as He wills. What that entails, and what trials you will face, remain to be seen.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: You are faced with trials of faith. Each Trial—described below—requires that certain deeds be performed, but each will provide a reward once those deeds have been completed. When you select this Ascension Package, select a single one of the Trials below. When you have completed that Trial, and received the listed reward, you may select another Trial to replace it. If you manage to complete all four Trials, you may gain Sainthood.\n\nTrial of Faith\n\nA Saint performs miraculous deeds, proof that the Emperor works through them.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- Spend three or more Faith points in a single day.\n- Successfully invoke three or more Hymns of Battle in a single day.\n- Invoke at least one Hymn of Battle with a Wrath Critical.\n- The Glory pool is full at the end of at least one battle that day.\n\nOnce you’ve passed this trial, gain the following ability:\n\nBoundless Faith: You may shift an Exalted Icon to regain 1 Faith.\n\nTrial of Purity\n\nA Saint is so pure that malign sorcery cannot touch their soul, and no wound can stay their body.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- You slay an enemy PSYKER.\n- You resist or avoid the effect of a Psychic Power targeted at you.\n- You roll Determination and reduce the damage suffered to 0.\n- If you become dying during a scene but are subsequently healed.\n\nOnce you’ve passed this trial, gain the following ability:\n\nBlazing Soulfire: You may spend 2 Faith points to unleash a burst of pure Soulfire as a Simple Action. Roll 3d6 for each enemy within 6m: each enemy suffers a Mortal Wound for each Icon rolled. PSYKERS and CHAOS enemies re-roll any dice which result in a failure.\n\nTrial of Righteousness\n\nA Saint will smite the enemies of the Emperor wherever they cower.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- You slay an enemy Adversary Threat.\n- You slay one or more CHAOS Elites or Adversaries, or a mob of CHAOS Troops.\n- If you slay a number of non-Troops enemies in a single battle greater than the game’s Tier.\n- If you inflict one or more Critical Hits or cause 3 or more Mortal Wounds in a single battle.\n\nOnce you’ve passed this trial, gain the following ability:\n\nRighteous Wrath: You may spend 2 Faith points at the end of one of your turns. If you do so, you may take a second turn later in that round.\n\nTrial of Suffering\n\nSuffering is the greatest prayer a Saint can offer the God-Emperor.\n\nTo pass this Trial, you must accomplish any of the following deeds (in any combination) ten times:\n- You become dying.\n- You suffered three or more Mortal Wounds during a single battle.\n- You suffer a Traumatic Injury.\n- You gain the Exhausted condition.\n\nOnce you’ve passed this trial, gain the following ability:\n\nMiraculous Recovery: Your Traumatic Injuries are immediately healed, and new Traumatic Injuries heal immediately upon taking a Respite. Further, you may spend 2 Faith points as a simple action to immediately heal Wounds equal to the game’s Tier.\n\nSainthood\n\nThe ultimate fate for all Saints is martyrdom in the Emperor’s cause. Indeed, to even be considered a Saint, one must die in the Emperor’s service. However, a rare few Saints continue beyond death, being revived by the Emperor’s Light to continue His works.\n\nWhen you die, roll a number of d6 equal to the maximum number of Faith Points you possess. If the number of Icons rolled equals or exceeds two plus the number of times you’ve died, you are miraculously restored to life.\n\nIf you are not restored to life, then you die permanently. However, your martyrdom means any other ADEPTA SORORITAS characters in the scene gain 1 Faith Point for each Trial you have completed.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": []
+  },
+  {
+    "id": "divine-revelation",
+    "name": "Divine Revelation",
+    "source": "apocrypha",
+    "page": 214,
+    "note": "The Faith point and Faith-talent access (as ADEPTUS MINISTORUM) are in effect only.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM",
+          "SCUM"
+        ]
+      }
+    ],
+    "effect": "Whether you believed or not in the God-Emperor previously, you have experienced something which has given you absolute certainty. With this newfound faith, you have gained something of a congregation of your own, a following drawn to your newfound prophetic status.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: Your newfound faith is powerful, even unshakeable, and while you may not be a true priest, your zeal is a match for any of them. You gain 1 Faith point, and you may select Faith talents as if you possessed the ADEPTUS MINISTORUM keyword.\n\nWARGEAR: You gain a single trinket, randomly determined from the tables in the core rulebook or created with your GM. This item is linked in some way to your divine revelation.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "text": "A single trinket, randomly determined from the tables in the core rulebook or created with your GM"
+      }
+    ]
+  },
+  {
+    "id": "glimpse-from-beyond",
+    "name": "Glimpse from Beyond",
+    "source": "apocrypha",
+    "page": 215,
+    "note": "No requirements printed. \"Whether thought soul-scarring clarity\" as printed (\"through\" meant).",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [],
+    "effect": "To see beyond the fragile veil of sanity and purity, to catch even the merest glimpse of things that defy all imagination, is to suffer great trauma. Those who survive are seldom the same, both less than they were, and something more.\n\nSome endure with their minds clear, possessed of a strength and focus that is often startling to those who knew the witness, yet beneath this apparent strength and vigour is a soul blasted and scarred, tainted by exposure to one of the nightmares of the cosmos. Others suffer wretched maladies of the mind, no longer certain of the shape or substance of reality or fully in control of themselves, yet pure of spirit despite all they have witnessed. Others still see their sanity fracture and their purity wither in the presence of such horror.\n\nYet amidst it all comes an insight, an understanding of the unholy that few possess. With the loss of mind or purity comes an instinct that defies reason, to understand things which should not be known. The warped conclusions of these witnesses are often invaluable to those who must brave the terrible perils that lurk in the darkness between the stars.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: Your mind has been touched by something vast and damning. Whether thought soul-scarring clarity or the vile artifice of an insane mind, you hold secrets that no soul should ever possess.\n\nWhenever you attempt an Awareness (Int), Insight (Fel), Investigation (Int), or Scholar (Int) test that relates to the Warp, Chaos, psychic phenomena, or some other forbidden and profane matter, you may choose to add +Rank additional Wrath dice on that test. Each Wrath Critical you roll means the GM must give you a relevant piece of information that you couldn’t possibly know by any normal means. Each Wrath Complication means you gain 1 Corruption Point.\n\nWARGEAR: You gain a single trinket, randomly determined from the tables in the core rulebook or created with your GM. This item is linked in some way to your experiences seeing beyond reality, and it emanates faint echoes of that event.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "text": "A single trinket, randomly determined from the tables in the core rulebook or created with your GM"
+      }
+    ]
+  },
+  {
+    "id": "illuminated",
+    "name": "Illuminated",
+    "source": "apocrypha",
+    "page": 215,
+    "note": "No Wargear printed. Conviction + Tier is in effect only.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 4
+      },
+      {
+        "kind": "species",
+        "anyOf": [
+          "human"
+        ]
+      }
+    ],
+    "effect": "There are those within the Imperium who believe that the Emperor alone is not enough to hold back the onslaught of Chaos. They have foreseen the terrors that await the moment when humanity is most vulnerable. They call themselves Illuminati, and they are bound by a single common experience: they have been possessed by Daemons, and through sheer will they have cast the daemon out. Through this harrowing experience, the Illuminati know the truth of Chaos, and they have become all too aware of the terrible nature of the broken universe they inhabit.\n\nThe Illuminati know of the Fall of the Aeldari and seek to prevent the same happening to Mankind. They know that if Chaos were to triumph during humanity’s development into a psychic species, the universe will end. The Fall of the Aeldari fractured reality and sent shockwaves through Materium and Immaterium both as Slaanesh was born. The fall of Humanity could shatter reality entirely.\n\nThe Illuminati have many plots and schemes and even seem to be working in conjunction with the enigmatic Harlequins of the Aeldari. They are utterly ruthless in their actions and have worked hard to infiltrate many parts of the Imperium… but they must work just as hard to avoid being hunted, for there are those in the Imperium who see the schemes of the Illuminati as a dire threat to the Imperium and the Emperor Himself.\n\nHunted almost to extinction a few decades before the Great Rift opened, the terrors of the Noctis Aeterna have seen a great resurgence in the numbers of Illuminati, and they see recent events as proof that Mankind’s fall may be imminent.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: Your mind and soul are hardened against the powers of Chaos. Your Conviction score is increased by an amount equal to the game’s Tier, and you can never gain Corruption Points. Further, whenever you make a test or opposed test against a CHAOS enemy, power, or effect, you gain +Double Rank bonus dice.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "keyword": "ILLUMINATI"
+      }
+    ]
+  },
+  {
+    "id": "lost-upon-the-seer-path",
+    "name": "Lost Upon the Seer Path",
+    "source": "apocrypha",
+    "page": 216,
+    "note": "Its printed \"KEYWORDS: FARSEER\" is the Farseer archetype, not a keyword (GM ruling, docs/rules-flow.md §11.32): `becomesArchetypeId` farseer, no FARSEER keyword grant. Access to the Runes of Fate discipline and using Willpower for Influence are in effect only. Ghosthelm, Runes of Witnessing and Runes of Warding are not in the Wargear catalogue.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 15
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 6
+      },
+      {
+        "kind": "skill",
+        "skill": "Insight",
+        "min": 6
+      },
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 6
+      },
+      {
+        "kind": "species",
+        "anyOf": [
+          "aeldari"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASURYANI"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ],
+    "effect": "A Farseer is the most potent and respected form of Eldar psyker or Seer. A Farseer has become lost upon the Path of the Seer forever in the same way as the Exarchs are wed eternally to the Path of the Warrior. A council of the most powerful Farseers governs a Craftworld. Farseers possess a wide diversity of psychic specialities with divination being the most common skill. They are most often known for using their vast psychic powers to see the possibilities of the future so that they can manipulate events to better ensure the survival of the Eldar species in the wake of the Fall.\n\nINFLUENCE BONUS: +3. You may use your Willpower instead of your Fellowship to determine your Influence.\n\nSTORY ELEMENT: You gain the Prescience and Scrier’s Gaze psychic powers, if you did not already possess them (if you already possess them, you gain additional XP equal to their costs to spend on other powers). In addition, you may now purchase psychic powers from the Runes of Fate discipline.\n\nWARGEAR: You gain a Ghosthelm, Runes of Witnessing, and Runes of Warding",
+    "influence": 3,
+    "grants": [
+      {
+        "power": "prescience"
+      },
+      {
+        "power": "scriers-gaze"
+      },
+      {
+        "bundle": [
+          {
+            "name": "Ghosthelm",
+            "qty": 1
+          },
+          {
+            "name": "Runes of Witnessing",
+            "qty": 1
+          },
+          {
+            "name": "Runes of Warding",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "becomesArchetypeId": "farseer"
+  },
+  {
+    "id": "reborn",
+    "name": "Reborn",
+    "source": "apocrypha",
+    "page": 217,
+    "note": "No Influence Bonus printed.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 5
+    },
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "aeldari",
+          "drukhari"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "HAEMACOLYTE"
+        ]
+      }
+    ],
+    "effect": "The Ynnari are the members of a newly formed eponymous Eldar group that worship the God Ynnead and believe their race can be saved from the depredation of Slaanesh by helping to bring about the birth of the slumbering god of the dead.\n\nUnder the leadership of the prophet Yvraine, the \"Daughter of Shades,\" the Ynnari seek to fully awaken the Aeldari god of the dead Ynnead, who they believe can defeat Slaanesh and restore the Aeldari species' unity and its lost glory.\n\nA great many Aeldari, hailing from every sub-faction and allegiance save the most conservative and entrenched, have joined their cause. No abstract philosophy is this, for the effects of their new deity can be seen manifesting around them -- the Reborn can draw upon the souls within the Spirit Stones they wear to bolster their own abilities, can siphon the power of those slain nearby to invigorate their attacks, and turn their foes to ashes with the strange weapons and psychic powers they wield.\n\nSTORY ELEMENT: You have been reborn as one of the Ynnari, and you now have a powerful connection to the spirits of the dead. You may attempt a Psychic Mastery test (even if untrained) to communicate with the spirits of Aeldari dead (contained within spirit stones, infinity circuits, Exodite world-spirits, and similar). Further, you gain the Strength From Death ability, below:\n\nSTRENGTH FROM DEATH: Once per round, when a player character, or an Adversary or Elite, or three Troops, dies within 15m of you, you immediately gain +1 Soul token. You may carry a number of Soul tokens up to your Willpower, and unused Soul tokens are lost when you Regroup or take a Respite. Soul tokens may be used as if they were Glory points, but only by you or allied YNNARI characters within 10m.\n\nWARGEAR: Spirit Stone. When carried by an YNNARI character, a Spirit Stone may be used to generate 1d3+1 Soul tokens as a Simple Action. This takes time to recover and cannot be done again until after the next Respite.",
+    "influence": 0,
+    "grants": [
+      {
+        "keyword": "YNNARI"
+      },
+      {
+        "wargear": {
+          "name": "Spirit Stone",
+          "qty": 1,
+          "wargearId": "spirit-stone"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rite-of-duplessence",
+    "name": "Rite of Duplessence",
+    "source": "apocrypha",
+    "page": 217,
+    "note": "No Wargear printed. The Binary Cortex's own Intellect (5, raised with XP) has no field.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Int",
+        "min": 5
+      },
+      {
+        "kind": "skill",
+        "skill": "Scholar",
+        "min": 4
+      },
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 5
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CULT MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "The Adeptus Mechanicus are willing to go to almost any lengths to further their understanding of the arcane sciences they study. In the most extreme cases, some of the oldest Arch-Magi have long since become little more than artificially-sustained brains linked to vast meme-vaults and data-crypts, driven insane by possessing far more knowledge than any human mind can truly comprehend and willingly locked within a steel prison of their own design for centuries. For people such as these, the pursuit of knowledge is something worth paying any price for, and such a disembodied existence, basking in the purity of absolute and incalculable knowledge unfettered by the weaknesses of the flesh, is something that more than a few Tech-Priests aspire to.\n\nTo discard all but the brain in the pursuit of knowledge is not as uncommon as it might seem. In many cases, two Tech-Priests working upon the same project have been known to enter into the deepest of collaborations, a process known as the Rite of Duplessence. This procedure requires that one of the two Tech-Priests shed his flesh and most of his implants to become a disembodied brain, which is then implanted into the body of the other Tech-Priest, their brains linked together so that they can work together more closely. To undertake this rite is looked upon favourably by many Tech-Priests, who particularly applaud the one who willingly takes on the burden of remaining clothed in flesh so that another can be freed of it.\n\nThe union of a Binary Cortex—as the resulting symbiosis of two brains is called—is not always an easy one, however. Each mind within the union is still an independent, free willed entity possessed of its own memories, experiences, opinions and beliefs. While the Rite of Duplessence is seldom performed on two Tech-Priests of radically differing perspectives, differences of opinion can arise, particularly as both minds have no way to be distanced from one another. Even the most logical Tech-Priests are sometimes prone to becoming irritated by such close proximity with a colleague.\n\nThe benefits, however, are vast. When working perfectly in synch with one another, the two Tech-Priests can collaborate on tasks with impossible speed, completing research and solving technical problems faster and more efficiently than either of them could have done alone, able to receive an alternate opinion on their theories instantaneously.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: You gain a Binary Cortex, the mind of a second Tech-Priest implanted into your body to allow you to collaborate more closely with them. This second mind is considered to have an Intellect of 5, and this can be increased by spending XP separately from your own attributes.\n\nThe Binary Cortex can Help on any Intellect-based skill Test you attempt, using their own Intellect. However, whenever they do so, you replace one additional die in your dice pool with a Wrath die. You suffer a Complication if either Wrath die rolls a 1, but you only score a Wrath Critical if both Wrath dice roll 6s.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": []
+  },
+  {
+    "id": "sanctioned-xenos",
+    "name": "Sanctioned Xenos",
+    "source": "apocrypha",
+    "page": 218,
+    "note": "Printed pp.218–219. \"one of the T’au species\" is read as the five T'au castes (aun-, fio-, kor-, por-, shas-tau). No Wargear printed.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 5
+    },
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "aeldari",
+          "drukhari",
+          "kin",
+          "kroot",
+          "ork",
+          "aun-tau",
+          "fio-tau",
+          "kor-tau",
+          "por-tau",
+          "shas-tau"
+        ]
+      }
+    ],
+    "effect": "In the broadest of terms, no human may interact with a xenos creature in any way except violently—such creatures are inherently blasphemous against the God-Emperor and must be eliminated on sight without exception.\n\nFrom a young age, citizens of the Imperium are taught to fear and hate the xenos, and innumerable legions of Imperial Guardsmen are taught of the superiority of Man over all inhuman things as they are drilled in the use of lasgun and bayonet. The number of xenos who have set foot upon human worlds peacefully and survived is small indeed.\n\nBut this is not always the case. Though the Imperium was founded upon a creed of intolerance towards non-humans, peaceful contact with a variety of xenos species actually happens frequently. In most instances, these are short-term alliances or matters of temporary mutual convenience. Just as frequently, illegal contact with xenos cultures is sufficiently commonplace that the Inquisition and the Adeptus Arbites keep a constant watch for potential contamination through contact with xenos; in spite of such vigilance, the “Cold Trade” of xenos goods on the black market still exists. A number of xenos species hire themselves out as mercenaries to a number of other species, for reasons all their own, and there are more than a few unscrupulous Imperial Commanders willing to hire such creatures to bolster their forces, seeing them as the ultimate expendable mercenaries and caring little for their fate.\n\nRogue Traders, Inquisitors, and a few other individuals, have the power to do more, and do so legitimately. These men and women, freed from the normal strictures and feudal requirements of the Imperium, have the influence and authority to make peaceful contact with xenos species for trade, temporary alliance or even to hire them as mercenaries. In some cases, an allied xenos may almost become a trusted companion, highly valued for its skills. Individuals with trusted xenos allies may find that the normal laws and doctrines against consorting with xenos hamper their operations, and in regions on the fringes of the Imperium, a method of sanctioning xenos allies has come about to ease these difficulties.\n\nINFLUENCE BONUS: +1 per Tier ascended.\n\nSTORY ELEMENT: You have been vouched for and deemed sufficiently valuable to the works and cause of the Imperium that you may live within Imperial space for as long as you remain in the service of your patron and the Imperium of Man. You are permitted to set foot upon Imperial worlds, so long as your mark is clearly shown and your patron can be contacted to vouch for your Sanctioning. Because of this, and because you have acquired greater familiarity with the Imperium in your travels than most of your kind, you do not suffer the normal species interaction penalties described on page 29 of the Wrath & Glory Core Rulebook.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "keyword": "IMPERIUM"
+      }
+    ]
+  },
+  {
+    "id": "willing-possession",
+    "name": "Willing Possession",
+    "source": "apocrypha",
+    "page": 221,
+    "note": "Willpower printed \"4+\". Influence Bonus printed \"+3\", flat (not per Tier). The 1d3 Corruption per Tier ascended is in effect only.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 4
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Daemonic Possession is the act of the essence of a Daemon possessing and controlling the body of another being. As Daemons can only exist in the Materium for a limited period before being forced back into the Warp, Daemonic Possession is one of the most common methods for Daemons to enter the material realm. Daemonic Possession can occur involuntarily to those of psychic potential, but the host sometimes willingly gives themselves over to Daemonic Possession, as is the case with Possessed Chaos Space Marines and certain Cultists. Possessed individuals can often be used as gateways to the Warp, allowing Daemons to spill into the Materium.\n\nA character selecting this Ascension Package has invited a daemon into their flesh, granting them tremendous power, at the cost of subjecting their body, mind, and soul to the ravening touch of the Warp. Few who become possessed can endure it for long, often finding their bodies degenerating into spawndom or becoming purely a vessel for the daemon’s will, but some can find a degree of symbiosis with the daemon they are host to, becoming a singular mighty entity.\n\nSTORY ELEMENT: The character is now possessed by a daemon of Chaos. You immediately gain 1d3 Corruption per Tier ascended. Then, you gain a number of benefits:\n- DAEMONIC: You may roll Determination against Mortal Wounds, and you do not suffer Shock when you roll Determination.\n- ACCURSED VIGOUR: Select three attributes when you take this Ascension Package; as a Free Action on your turn, you may gain a number of bonus dice to those attributes equal to the campaign’s Tier. You may sustain this for as many rounds as you wish (or minutes, if outside of combat), but when you stop using this ability, you must pass a Corruption Test with a DN equal to the number of rounds (or minutes) you used this ability. If your Corruption Level reaches 5 while possessed, the Daemon consumes your soul and you cease to exist.\n- MUTATED FORM: While using the daemon’s power, you gain the Horns, Spines, Fangs, or Claws minor mutation (page 290 of the Wrath & Glory rulebook), and a single severe mutation, determined when the character first became possessed.\n\nWargear: None. While manifesting the daemon’s power, it tends to meld your wargear and your flesh together, but this effect is normally reversed when you revert to your mortal state.",
+    "influence": 3,
+    "grants": [
+      {
+        "keyword": "DAEMON"
+      }
+    ]
+  }
+]

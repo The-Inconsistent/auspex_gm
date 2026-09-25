@@ -1,0 +1,591 @@
+[
+  {
+    "id": "archdeacon-merramar-clade",
+    "name": "Archdeacon Merramar Clade",
+    "source": "forsaken-system",
+    "page": 65,
+    "text": "Achdeacon Merramar Clade has led the Enochian Synod, and therefore served as the preeminent spiritual leader of all Gilead, for more than five decades. Softened by a long life of luxury and the Rejuvenat treatments that have prolonged it, Clade’s deep and resounding voice carries with it the full weight and splendour of the Ecclesiarch. He achieved his rank not through faith alone, but also through resilience and cunning.\n\nThe relationship between the Adeptus Ministorum and the Adeptus Astartes is often strained, but the shrine to Tygranus Dalir provides common holy ground for the Enochian Synod and the Absolvers Chapter. In this current age, Clade prioritises this relationship more than ever, for he knows that Enoch’s fanes are tempting targets for the traitors and heretics who gather in the Reach, and even bubble up from the system’s fetid underworld. Meanwhile, the Archdeacon takes for granted that the Battle Sisters of the Sanctified Shield will always remain at his beck and call.\n\nFrom the luxurious spires of the Bastion-Basilica of Saint Urchaeus, Merramar Clade looks down about the heaving and desperate masses. He is not oblivious to their suffering, but he knows that suffering is cleansing. His public addresses, safely vox-cast from within the basilica, extort the masses to face their suffering stoically, for the current challenges are but a test set by the Emperor. As conditions worsen on Enoch, he grows more relentless in calls to despise the weak and faithless.\n\nTo his most trusted staff and bishops — often after several glasses of amasec — Clade laments that the greatest test is to himself, that his suffering is the greatest. After all, his duty is to safeguard the souls of all Enoch, indeed of all Gilead. Their tests are his own.\n\nAgents of the Ecclesiarchy\n\nClade has long required the talents of skilled, trustworthy and discreet agents, but since the emergence of Cicatrix Maledictum, this need is greater than ever before. Some agents have served Clade for years, and their handiwork invisibly marks the ascent of his career. Most have come into his service in the last few years, since the dark days of Noctis Aeterna. Clade prefers always to trust tasks to pious, righteous citizens, but recognises that some deeds are better left to those whose hands are already soiled. For such regrettable missions, Clade tolerates the Scum of the Imperium, even, on occasion, a scavvy who shows the proper remorse and loathing for their sinful existence.\n\nEnoch’s defenders are stretched thin, and so Archdeacon Clade has need of versatile, agile groups of agents to secure his interests on Enoch and across the system. Clade assigns tasks based on the skills and, more importantly perhaps, reputations of his agents. Crusaders, Adepta Sororitas, and other pious warriors — even a handful of somewhat uncomfortable Adeptus Astartes — are tasked with defending Ministorum officials or holdings across the system, or making public examples of heretics and traitors. More discreet agents might move among Enoch’s pilgrims and fishing communities, watching for signs of heresy and sedition.\n\nFor the most sensitive missions, such as spying on rivals and suspected blasphemers within the Imperium’s organisations, Clade needs agents he can easily disavow in the light of day. With the system isolated, it is more important than ever that Clade stays aware of the doings of his rivals and potential enemies within the halls of power. In particular, the Archdeacon fears that the Tech-Priests of Avachrus are taking advantage of the unrest and uncertainty in Gilead to undermine faith in the Ministorum and upset the delicate balance of power that has existed between the two Adeptus for so many millennia. Of course, this means Clade must fight doubly hard to suppress the blasphemous creed of the so-called Omnissiah.\n\nThough Merramar Clade can forgive much among capable agents, he has no stomach for overt blasphemy. The occasional flippant comment toward spiritual matters might earn only a passing rebuke, but disrespect for the Ministorum or the Emperor can have more permanent consequences.\n\nThe Archdeacon offers his agents the greatest reward imaginable: service to the Emperor and the blessing of the Ecclesiarchy. Still, he sees the benefit in providing temporal assets to benefit agents in future missions, and so opens up the boundless coffers of Enoch to those who serve well. In addition to Wealth, Clade can provide rare Wargear and much-sought-after ammo secured through his allies within the Departmento Munitorum.",
+    "options": [
+      {
+        "name": "Sinful Tools",
+        "text": "There are many tasks with which Archdeacon Clade cannot afford to sully the proud servants of the Ministorum and its militant allies; that’s where you come in. As easily deniable assets, you go where gleaming Crusaders and bombastic preachers cannot. You move subtly among the masses and root out blasphemers and heretics, perhaps by demonstrating your own sinful ways.\n\nWhether you subscribe to the notion or not, Clade expects you to show remorse for your sinful ways, treating your missions as penance. Should you be captured by Imperial authorities or the enemies of Humanity, you are expected to die for the Emperor before revealing the Archdeacon’s secrets. In some cases, the Archdeacon prefers members of other Factions, partially to ensure no stain on the reputation of the Ecclesiarchy, partially to ensure he has double agents in other organisations.\n\nExample Missions:\n- Earn the respect — and loyalty — of the reclusive Sanguine Rain Death Cult by participating in their grisly rites.\n- The Avachran Bio-Forge of Corex has not delivered the annual cherubim promised by ancient pact. Find out what they are making instead — and destroy it.",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "ADEPTUS MINISTORUM",
+              "XENOS",
+              "CHAOS"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Tier 2 or below"
+          }
+        ],
+        "wargear": [
+          {
+            "text": "A prayer wafer laced with poison."
+          }
+        ],
+        "bonus": "Increase your Determination value by +1.",
+        "grants": []
+      },
+      {
+        "name": "Blessed Exemplars",
+        "text": "Beacons of righteousness and valour, you travel the system enacting the dictates of the Ecclesiarchy and bringing retribution to the Emperor’s enemies. Wherever you perceive blasphemy, you have the Archdeacon’s blessing to expose and punish it — within the constraints of political reality, of course. As his public agents, Archdeacon Clade expects you to live up to every Imperial ideal and inspire the masses through your glorious deeds.\n\nExample Missions:\n- The blasphemous ravings of someone known as ‘the Voice’ are agitating the residents of one of Enoch’s temporary encampments. Root out this heretic and drag them to the pyre.\n- The masses need a demonstration of Imperial might to renew their faith. Travel to the Reach and bring back the helmet of the piratical Heretic Astartes called Athrakesh the Disemboweler.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          },
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "SCUM"
+            ]
+          },
+          {
+            "kind": "tier",
+            "min": 2
+          }
+        ],
+        "wargear": [
+          {
+            "text": "A cherubim or laud-hailer for the group."
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Persuasion (Fel) Tests against characters with the IMPERIUM Keyword, unless they have the ADEPTUS MECHANICUS Keyword or ADEPTUS ASTARTES Keywords.",
+        "grants": []
+      }
+    ],
+    "note": "Printed \"Achdeacon\" (for Archdeacon) and \"extort the masses\" in the intro, p.65; copied as printed. Sinful Tools' LIMITATIONS, WARGEAR and BONUS boxes are printed at the top of p.67."
+  },
+  {
+    "id": "archdomina-axekra-vakuul",
+    "name": "Archdomina Axekra Vakuul",
+    "source": "forsaken-system",
+    "page": 67,
+    "text": "In the power vacuum left by Princeps Ultima Gol Bessor’s disappearance, Archdomina Axekra Vakuul proclaimed herself regent of all Avachrus. Despite Vakuul’s assurances that she will step down in the unlikely event of Bessor’s return, this represented a drastic increase in authority for one who previously governed a single foundry-city.\n\nVakuul is surprisingly young for a Magos of such influence, being a scant four centuries of age. She is nonetheless overwhelmingly cybernetic, with only a hint of desiccated skin to betray her fleshly origins. The reasons for this are aspirational as much as practical; Vakuul knows the flesh to be weak, and she despises weakness. For Vakuul, ambition is a drive second in strength only to the Motive Force that propels her steel limbs.\n\nEven before recent events, Axekra Vakuul had a reputation for ambition among the more politically minded Tech-Priests of Avachrus. She is ruthless in the drive for greater efficiency and output. The Tech-Adepts, and later Magos, serving below her are familiar with her driving maxim: ‘Be ever forging.’ Some fellow Magos Dominus quietly wonder if even ruling over all Avachrus and its satellites is enough to sate Vakuul.\n\nWith no prospect of obtaining raw materials and resources from beyond the system, Vakuul has taken actions to further secure the Adeptus Mechanicus’ (and her own) iron grip on Gilead’s resources. She has quietly bolstered the numbers of Tech-Priests servicing the smelters and mining equipment of Gilead’s moons Anval and Skaelas, while ‘offering’ to overtake administration of both satellites. Her mechadendrites are also involved in the establishment of Servo-Farms on Ostia, and other efforts to ensure the system’s food supply rests in turn on the Adeptus Mechanicus\n\nVakuul recognises Jakel Varonius’s influence in the system. Perhaps more importantly, she sees that the Varonius Dynasty may represent the system’s best chance of re-establishing contact with the Imperium. For this reason, she sees him as key to ensuring her continued dominance of Avachrus should this come to pass or — even less likely according to her calculations — should Gol Bessor reappear. However, the Archdomina is far too logical to rely on a Rogue Trader’s loyalty to secure her future. Accordingly, she has begun to covertly investigate Jekal’s activities and the history of the Varonius Dynasty.\n\nTo gain Varonius’s favour, Vakuul makes a show of providing whatever technological resources or expertise he requires, while asking for little in return. It is, she says, for the good of the system. In particular, the Archdomina has gladly provided Tech-Priests and servitors as part of Varonius’s overtures to the High King of Nethreus. This serves Vakuul’s interests just as well; it is only right to foster alliance between Avachrus and the pilots of those sacred war machines known as Knights. With the Legio Karuthos absent, the Knights could fill an important gap in the Adeptus Mechanicus’ forces in the event of open conflict with enemies from beyond the system — or within.\n\nThanks to her eyes and ears across the system, it has not escaped the Archdomina’s notice that these times try the faith of many Imperial citizens, and in this, she sees opportunity. The Emperor, in his guise preached by the Ecclesiarchy, seems more distant than ever, while the sacred machines of the Omnissiah sustain the lives of countless in Gilead each day. While Ministorum Priests laud the Emperor’s divine guidance for bringing the Varonius Flotilla safely to Gilead, Vakuul points to a more tangible divine presence — the Warp engines and Geller Fields that delivered the mighty ships.\n\nAgents of the Mechanicus\n\nThe Adeptus Mechanicus is famously insular and secretive. It provides its own soldiers, war machines, spiritual guidance, and expertise. In effect, the Martian Priesthood is an empire within the Imperium — almost wholly self-sufficient. As a consequence, the Magos of the Mechanicus rarely turn outward from their own organisation for assistance. Whether due to the newfound pressures of existence in the Imperium Nihilus or to her razor-honed ambition, Archdomina Vakuul is an exception. Since the days of the Noctis Aeterna, Vakuul has increasingly relied on a variety of servants and mercenaries from outside Avachrus, or outside the Mechanicus entirely, to accomplish her goals.\n\nVakuul’s agents often undertake missions for which she cannot rely on skitarii squads or other officially sanctioned Adeptus Mechanicus forces. This may be to avoid conflict with other Imperial organisations or even to avoid scrutiny from her fellow Magii. For such purposes, Vakuul prefers to include Tech-Priests, unattached Skitarii, and other members of the Adeptus Mechanicus among other agents to ensure the job is done efficiently. For sensitive missions, she ensures these assets cannot be officially connected to her. For missions that do not require such clandestine measures, Vakuul prefers to rely on proven and trusted Adeptus Mechanicus’ agents. However, she is open to ‘joint operations’ with other Imperial operatives, particularly when she can be certain of their loyalty. Agents who serve well can expect to receive rare and high-quality weapons, armour, and tools generally available only to the Mechanicus. Those who sacrifice their bodies for the mission — or vocally share Vakuul’s views on the weakness of flesh — might receive advanced cybernetic replacements. For agents who truly and continuously impress the Archdomina, she may bestow such gifts of technological marvels as only a powerful Magos can access.\n\nTo Axekra Vakuul, her agents are tools. Like any tool, they may be damaged or lost in the course of their use. While she may view all her agents as disposable to varying degrees, she is preferential to those of the Adeptus Mechanicus. After all, by virtue of their induction into the Martian Priesthood, they are clearly superior specimens. This is not to say, however, that Vakuul throws away capable agents on suicide missions, or needlessly abandons them to danger. To do so would be gravely inefficient, an unforgivable sin in the Archdomina’s visual sensors.",
+    "options": [
+      {
+        "name": "Mechavangelists",
+        "text": "You are a motley team from disparate origins, which Archdomina Vakuul employs to achieve clandestine aims. You might spy on Adeptus Ministorum and other Imperial operations across the system. While the scope and details of your missions vary, your underlying purpose is to subtly spread the word of the Omnissiah across the system, while chipping away at the population’s blind faith in the Adeptus Ministorum.\n\nExample Missions:\n- Archdeacon Merramar Clade relies on an anti-grav rostrum and a network of vox-linked laud hailers to deliver his sermons to Enoch’s faithful. To remind both the diocese and the masses of their reliance on the Omnissiah’s gifts, ensure the machine spirits of these systems refuse to provide their services on the upcoming holy day known as Deliverance.\n- Earn the esteem and trust of Inquisitor Tytrona Dikaisune so that she brings you into her organisation. It is imperative that Archdomina Vakuul is aware of the Inquisitor’s doings in the system, and that they do not threaten the interests of Avachrus..",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "AELDARI",
+              "ORK"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "text": "A servo-skull for the group."
+          }
+        ],
+        "bonus": "+1 bonus die to Persuasion (Fel) Tests against characters with the IMPERIUM Keyword.",
+        "grants": []
+      },
+      {
+        "name": "Hammer and/or Anvil",
+        "text": "Hand-picked for your toughness and ruthless efficiency, you are a team of cybernetic warriors and specialists tasked with enforcing the will of the Omnissiah. Your missions might take you into hostile territory to reclaim archeotech from the depths of the space hulk Persephone’s Regret or to visit justice on a heretek cabal of the Voidmire. Within the bounds of Gilead, you may be called upon to defend Adeptus Mechanicus holdings from traitorous rebels, invading xenos, and even rival Imperial operatives.\n\nExample Missions:\n- Auspex scans of the Space Hulk Persephone’s Regret have been made on behalf of the Absolvers on their mission to purge a xenos infestation. The scans revealed a vessel from the Dark Age of Technology intertwined with the Hulk. Infiltrate it whilst avoiding the Astartes purge and eliminating any xenos that stand in your path, and retrieve any archaeotech that remains intact.\n- The so-called Harvest Keepers of Ostia have begun chaining themselves to threshers and other machines, and even sabotaging these tools provided by the Omnissiah. Remind these heretics, and their leader, the Harvest Smith, to show proper reverence.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS MECHANICUS"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "text": "A combat servitor for the group."
+          }
+        ],
+        "bonus": "+2 Bonus Dice to Influence Tests made when requisitioning Wargear from the Adeptus Mechanicus.",
+        "grants": []
+      }
+    ],
+    "note": "Intro p.68 prints the paragraph ending \"rests in turn on the Adeptus Mechanicus\" without a full stop, and \"Jekal’s activities\" (for Jakel); copied as printed. Both Frameworks are on p.69. Mechavangelists' second Example Mission ends \"Avachrus..\" (p.69); copied as printed."
+  },
+  {
+    "id": "master-eshgar-quintus-lorae",
+    "name": "Master Eshgar Quintus Lorae",
+    "source": "forsaken-system",
+    "page": 70,
+    "text": "Master Lorae is a well-fed man of advanced age, his features softened by the Rejuvenat treatment available to one of his means. His skull is studded with cranial plugs for interfacing with the ancient machines that record and collate data pertaining to Ostia’s crop yields. The Sortium-Lord invariably appears in the somber grey robes of a senior adept, fastidiously arranged and in pristine condition. As with everything Lorae does, this is as much for the sake of his own reputation as to set an example for subordinates.\n\nAlthough beneath the senior prefects of Gilead Primus within the Administratum hierarchy, the master of the Sortium has always commanded a remarkable level of respect and authority throughout the system due to the importance of Ostia’s food exports. Since the birth of the Imperium Nihilus, this importance has only grown, and with it, both the influence and scrutiny drawn by Lorae.\n\nMaster Lorae feels no pity for Ostia’s labourers. Every citizen of the Imperium has their place, and it is vital for the function of society that each person do their work diligently and not question that place. To do otherwise is to doubt the Emperor’s divine plan. To that end, Lorae treats the nobility of the Agri World in much the same manner, as spoilt, primitive children beholden to him. He allows them enough of their own tithes to relish positions and power and ensures they serve His mighty bureaucracy.\n\nThe Sortium-Lord is largely traditional and reliant on protocol, but he recognises the current situation is unprecedented. Still, he works to ensure operations on Ostia continue as usual as much as possible. Lorae knows full well that any perceived deviation from protocol, no matter how justified, provides a ready weapon for ambitious subordinates hoping to take advantage of the tumultuous era to unseat him.\n\nAgents of the Administratum\n\nEshgar Quintus Lorae has always relied on the properly appointed Administratum personnel to undertake any task he needed. Ever a patient man, More than once has Lorae waited years for his requests to be processed — longer, when input was needed from subsector-level officials. As much as he adheres to protocol, Lorae recognises that the realities of existence in the wake of the Cicatrix Maledictum are unprecedented. Without astropathic communication, certain actions simply cannot be done by the hallowed books. And as Gilead’s institutions crack ever more under the strain of isolation, Lorae finds himself averse to even relying on the masters of Gilead Primus to approve his activities. It is in these circumstances that Lorae has found himself seeking assistance outside of his own organisation, capable and proactive individuals who get results unencumbered by the wheels of bureaucracy — a notion that terrifies many hidebound Administratum adepts!\n\nDespite the change in his outlook in the past few years, Lorae’s life is dedicated to the Administratum, and he views protocol with the spiritual reverence endemic to his organisation. For this reason, he does not tolerate any violation of Imperial laws or regulations among. Wherever possible, he contrives a bureaucratic loophole to allow for the ‘outsourced’ work, even leaving such matters to the more legal-minded agents when possible. Other missions exist in a sort of grey area between the oft-contradictory regulations and protocols of the Adeptus. Lorae sleeps well having done due diligence by submitting a request for clarification to the subsector authorities, even if he knows such requests will never reach past the Cicatrix Maledictum.\n\nLorae’s agents primarily operate on Ostia and its satellites, whether investigating reports of laxity among agri-labourers or examining discrepancies between crop yield and export weight. The continued protection of the Crown of Blades is paramount, and the Sortium-Lord treats even the scantest rumour of a threat to its proper functioning as the highest priority. Because the Sortium relies so much on the Adeptus Ministorum and Adeptus Mechanicus for the smooth operation of Ostia’s farms, he may assign agents to see after the interests of these organisations on Ostia and abroad.\n\nAs Sortium-Lord of Ostia, Eshgar Lorae has considerable resources at his disposal. Loyal agents can expect to consistently dine well. Lorae’s pull within the Administratum and his contacts within the Departmento Munitorum can obtain virtually any Wargear in standard use in Gilead for agents who consistently impress him.",
+    "options": [
+      {
+        "name": "Paper Punishers",
+        "text": "Master Lorae has deputised you as auditors extremis, charged to uncover bureaucratic heresy among the Sortium and empowered to deal with the perpetrators as you see fit. This includes everything from breaches of protocol to laxity. Even such crimes as theft of Imperial property are your purview, as Master Lorae prefers not to trouble the Adeptus Arbites with such matters during these uncertain times. Though you have the official backing of the Sortium’s master, he expects you to operate with discretion so as not to cause undue disruption among the ranks of the Administratum. You may even operate undercover, taking on (or continuing) a role within the bureaucracy of the Sortium.\n\nExample Missions:\n- The long-forbidden Nonstandard Form G-33a-delta Version XIII has mysteriously reentered circulation. Several scribes have already been driven mad by its paradoxical filing instructions. Find the heretic responsible and eliminate them.\n- Master Lorae has noted an increase in expenditures for common officio materiel — auto-quills, ink, parchment, parchment binders, and so on. He suspects that one or more Adepts may be engaged in the theft and sale of Administratum property. This is akin to stealing from the Emperor’s own hand, and warrants execution should you uncover the culprits.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS ADMINISTRATUM"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "Symbol of Authority with the ADEPTUS ADMINISTRATUM Keyword (badge depicting a quill stylised as a sword)",
+              "qty": 1,
+              "wargearId": "symbol-of-authority"
+            }
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Scholar (Int) Tests pertaining to the Administratum or bureaucracy. You gain the ADEPTUS ADMINISTRATUM Keyword if you do not already have it.",
+        "grants": [
+          {
+            "keyword": "ADEPTUS ADMINISTRATUM"
+          }
+        ]
+      },
+      {
+        "name": "Troubleshooters",
+        "text": "You undertake a variety of missions at the behest of Master Lorae, which can take you anywhere on Ostia and beyond. These missions often fall outside the bounds of official Administratum business, and just as often serve to reinforce Lorae’s personal interests. This could mean gathering information on a rival Sortium Adept or paying tribute to a Magos of Avachrus.\n\nExample Missions:\n- You are to conduct an unscheduled and unannounced test of the Crown of Blades’ defenses. An unmarked, heavily armoured system patrol craft will be provided for your use. Of course, to ensure the validity of the test, you must hold nothing back in your attempt to breach the perimeter. The defense crews certainly won’t!\n- Infiltrate a community under the sway of the Harvest Keepers and turn them against the heretical ideals of the so-called Harvest Smith.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "A sharpened auto-quill with a reservoir of deadly toxin",
+              "qty": 1,
+              "wargearId": "auto-quill"
+            }
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Influence Tests made quen requisitioning Wargear from the Adeptus Administratum.",
+        "grants": []
+      }
+    ],
+    "note": "Paper Punishers' Symbol of Authority is printed \"for each individual\"; Troubleshooters' auto-quill has no printed scope. Paper Punishers requires ADEPTUS ADMINISTRATUM yet its Bonus grants it \"if you do not already have it\", as printed. Printed errors copied: \"Ever a patient man, More than once\", \"regulations among.\" (intro p.70), \"made quen requisitioning\" (Troubleshooters Bonus, p.71). The Paper Punishers boxes are printed top right of p.71."
+  },
+  {
+    "id": "novator-octavia-omincara",
+    "name": "Novator Octavia Omincara",
+    "source": "forsaken-system",
+    "page": 72,
+    "text": "While Jakel Varonius claims the mantle of saviour of the system, it is the Lady Octavia Eceded Omincara, Novator of House Omincara of the Navis Nobilite, whose actions allowed for the current political situation in Gilead. Whether any other Navigator could navigate the Straits of Andraste remains to be seen, but that Lady Octavia accomplished this deed is undeniable. Since the Varonius flotilla’s arrival three years ago, Novator Omincara has been largely content to remain in the background while Jakel Varonius claims brash deeds and forges alliances across the system. This does not mean she is idle.\n\nLady Octavia is inhumanly tall and lean, possessed of a range of motion far beyond that allowed by the number of joints in the holy Human form. That is, at least, according to some stories. Others claim she is soft and sinuous, with gills that process oxygen-rich nutrient baths the way ordinary folk breathe air. The tales all agree that Lady Octavia’s form is deeply aberrant from the Human norm, but these are all surely falsehoods — as a select few members of the Varonius household know, Omincara is certainly Human, yet eerily different in an undefinable way. Regardless of the veracity of these stories, it is undeniable that few have ever stood in the Novator’s presence, and even fewer have seen her outside her opaque meditation chamber or the navigation blister that hangs above the bridge of the Ducal Circlet. Whether this is due to her physical form, or her penchant for privacy has only fuelled the rumours, only a handful could say. To speak frankly of the Novator may earn her displeasure, however, which is enough to deter even Jakel Varonius. Those that Omincara deigns to ‘meet’ with inevitably find themselves in the company of one of her many Navigator consuls, all uniformly outfitted with a cathedral-esque vox headset of her own design so that they may relay her commands.\n\nAs the mistress of House Omincara, Lady Octavia is responsible for its continued survival and success. This remains, as ever, her primary motivation. Even in this dark age, she looks always for opportunities to advance Omincara’s interests, and raise the House’s reputation and influence. In fact, she has become more conniving than ever to ensure House Omincara’s future survival and prosperity. With every passing day the Gilead System remains cut off from the wider Imperium, the importance of Navigators shrinks in the eyes of captains, governors, and generals. With no prospect of Warp travel, it would seem there is little immediate need for Navigators. Lady Octavia is counting on these assumptions to keep her actions undetected.\n\nOctavia knows she could not repeat the feat of passing through the Great Rift, and so is quite certain no Navigator within the system could either. Lest they waste their lives — or worse, affirm the view that Navigators are no longer needed — Novator Omincara has forbidden the scions of her own House from any attempt to travel the Straits of Andraste. She can make no such decree to the Navigators of other Houses, and instead relies on the telling of her own harrowing experience to dissuade them. Still, some Navigators seem determined to attempt the impossible. For these, Octavia must consider other methods.\n\nFor Octavia, maintaining the unique privilege of the Navis Nobilite is of utmost importance, and so she works constantly to remind the rulers of Gilead that their only hope for contacting the Imperium (and reestablishing the interstellar trade that is so vital to their own purses and interests) lies in the Navigators. At the same time, Novator Omincara seeks to elevate her House’s reputation among others. To both ends, the fact of her successful journey through the Great Rift serves as a powerful tool. The Novator is quick to remind other members of the Circlet Council, but seldom has cause to meet with other notables of the system. As a notoriously private Navigator, she can scarcely afford to look desperate by travelling from world to world for social occasions. Nonetheless, Octavia considers it vital to maintain good relations between the Navis Nobilite and the Adeptus Mechanicus and Administratum in the system. The Adeptus Ministorum, unfortunately, she sees as a lost cause; even in the most favorable conditions, the Ecclesiarchy considers Navigators a barely tolerable necessity.\n\nThe suspicion of Navigators is not, in this case, unfounded. Be it through exposure to the malign influence of the Empyrean when travelling through the Great Rift, a nervous breakdown due to discommunication from the light of the Astronomican, or a simple lust for power, Omincara is using the unique opportunities afforded by the Gilead System’s isolation to mount a grand and arcane scheme. Omincara is attempting to create a simulacrum of the Emperor’s Astronomican to bring His light to the darkness of the Imperium Nihilus, fabricating her own ill-fated facsimile of the Golden Throne, and gathering psykers to sacrifice to improve her own psychic capabilities. This misguided mission is certainly doomed to fail, but the Navigator keeps her plans secret, and wields much power from the shadows.\n\nAgents of the Navigator\n\nTo safeguard the interests of her House, Novator Omincara requires trustworthy and capable agents to enact her will beyond the confines of her Sanctum Navis. As the matriarch of an ancient House of the Navis Nobilite, Lady Octavia possesses access to vast resources, including any number of servants, guards, and other official staff. Beyond this, she often requires operatives for tasks both overt and discreet.\n\nNovator Omincara treats most of her agents with polite distance. Only her most trusted agents can expect to receive their instructions from Lady Octavia directly, and even then, probably from the vox units mounted outside the velvet curtains of her isolation pod. Most agents receive their tasks from intermediaries, possibly scribed on dataslates or spoken in hushed voices, depending on the sensitivity of the work at hand. It is a common belief among her servants that the Novator sees much that happens outside her presence, and so they are dutifully obedient at all times, and urge her agents to do the same.\n\nLady Octavia calls upon her agents for all manner of missions intended to bolster House Omincara. Those with a knack for stealth might be tasked with gathering information on or stealing secrets from rival Navigator houses, such as Taliandru, and other Imperial organisations. For agents operating openly, missions might include favours for other Imperial potentates and organizations, whether as part of existing pacts or to set the foundation for future alliances. None know of her clandestine goal to craft her own simulacrum of the Astronomican, though many are engaged in capturing psykers that she might pursue this fools errand. Ostensibly, she collects powerful individuals linked to the Empyrean both for research and to assist the Adeptus Astra Telepathica, but few are ever heard from again after they are brought to the Navator of House Omincara, who rewards the discretion of her psyker hunters well.\n\nA Navigator House’s fortune is built most importantly on its mastery of the Empyrean tides. Agents might be despatched to vaults secreted deep within the hives of Gilead Primus, or to derelicts trapped within Persephone’s Regret, to obtain ancient Warp charts or navigational archaeotech. And rumours persist that the fabled Cosmolabe Empyrius lies somewhere beneath the black stone of Uru.",
+    "options": [
+      {
+        "name": "In Plain Sight",
+        "text": "You are respectable vassals and allies of House Omincara, undertaking myriad visible tasks for Lady Octavia. Your missions often take you to the outskirts of the system, as Navigators begin the long, arduous, and dangerous task of studying the Great Rift or attempting to map the Straits of Andraste. You might be called upon to serve for a lengthy term in the retinue of a House Omincara Navigator as bodyguards, advisors, and diplomats. Your personal reputations are as important as your work, as your every action reflects on the Navis Nobilite.\n\nExample Missions:\n- Owing to a matter of honor, Argo Omincara has challenged Caliope Taliandru to that most rare and ancient practice of the Navigator’s duel. Protect Argo before the duel and ensure the duplicitous Taliandru do not try to gain any unfair advantage.\n- The Magos of Avachrus have provided House Omincara with the use of a survey vessel, possessed of rare and ancient instruments to monitor the flux of the Warp. Accompany and protect Hera Omincara as she probes the Straits of Andraste.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "text": "One Rare item for each individual (the item must be something worn openly and visibly)."
+          }
+        ],
+        "bonus": "Gain the NAVIS NOBILITE Keyword.",
+        "grants": [
+          {
+            "keyword": "NAVIS NOBILITE"
+          }
+        ]
+      },
+      {
+        "name": "Third Eye, Blind",
+        "text": "Unseen and unacknowledged, you perform the tasks that would sully the hands of the Omincara Navigators and scandalise the system. Espionage, sabotage, and wetwork are your trade, and your targets range from the heights of Imperial society to the heretics of the Voidmire. You are as likely to steal secrets and technology from rivals as to safeguard House Omincara’s secrets. Your missions often have you silencing critics of the House, or those who dismiss the importance of Navigators in the Imperium Nihilus. The Novator expects your utter loyalty and any sacrifice necessary to complete your tasks.\n\nExample Missions:\n- The Navigator Gravin Taliandru is set on an attempt to breach the Straights of Andraste. Deter him from this foolish course of action. If it becomes necessary to confine Taliandru to House Omincara’s dungeons — for his own good — then so be it.\n- Jakel Varonius has been in private talks with an emissary of House Narcissus. Whatever the content of these meetings, ensure the emissary does not live to continue them.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          },
+          {
+            "kind": "tier",
+            "min": 3
+          }
+        ],
+        "wargear": [
+          {
+            "text": "Any limbs or organs you lose in the course of your duties are replaced with an augmetic enhancement at the expense of House Omincara."
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Deception (Fel) Tests against characters with the IMPERIUM Keyword.",
+        "grants": []
+      }
+    ],
+    "note": "In Plain Sight's Limitation is printed \"Any character with the IMPERIUM Keyword.\" Printed errors copied: \"this fools errand\", \"the Navator of House Omincara\" (p.73). In Plain Sight's boxes are printed at the top of p.74. Third Eye, Blind's first Example Mission prints \"the Straights of Andraste\" (p.74); copied as printed."
+  },
+  {
+    "id": "ordo-malleus-inquisitor-tytrona-dikaisune",
+    "name": "Ordo Malleus Inquisitor Tytrona Dikaisune",
+    "source": "forsaken-system",
+    "page": 74,
+    "text": "Inquisitor Tytrona Dikaisune is tall and imposing, and all who meet her feel the intense weight of her presence. She has spent several lifetimes battling the archenemy, a fact that none would deny when met with her withering gaze, though extensive Rejuvenat treatments and the highest quality augmetics disguise her many scars. She seldom appears without her ornate, heavy carapace armour and the sacred weapon that symbolises her Ordo Malleus’s membership — a mighty Nemesis Daemon Hammer.\n\nDikaisune is an experienced daemon hunter of the Ordo Malleus, and ranged far across the sector before her arrival in Gilead not long before the opening of the Great Rift. She speaks little of the matter that originally brought her to Gilead, saying only that it is resolved. Although some wonder if this is true or she has unfinished business in the system, none dare question the matter further. The worthies of the system largely treat her with (justified) apprehension, but few would deny that her presence in the system is a blessing. After all, anyone who would deny the benefit of an Ordo Malleus Inquisitor at a time when daemons walk the galaxy is surely a heretic of the worst sort.\n\nThe Inquisitor’s attentions are focused on the Cicatrix Maledictum and its consequences. Cut off from the support of her peers and the wider Imperium, Dikaisune cannot hope to heal this great wound in reality, only to staunch the bleeding. Few of the Imperium’s warriors are prepared to combat the daemonic, and yet to do so has become a necessity on an unprecedented scale. Inquisitor Dikaisune speeds from one warzone or incursion point to another, bolstering Imperial forces with her abilities and leaving what wisdom she can. In times past, Dikaisune would never countenance sharing lore so freely — mere knowledge of the daemonic was grounds for execution for most citizens. In the Gilead System, on the border of the Great Rift itself, the immediacy of the threat prohibits discretion.\n\nTytrona Dikaisune projects an air of suspicion toward all she meets, and her actions and words usually indicate the same. She is not subtle in her scrutiny, asking pointed questions and challenging motivations. Even longstanding allies are not immune to her probing queries. Tytrona intends for her presence to make those around her feel nervous, in order to cause the guilty to slip up and reveal themself. If the occasional innocent is so thrown by Dikaisune as to commit a damning mistake, that is a small price to pay. This air of fear is compounded by Dikaisune’s very public and ongoing presence in the system. It is something that none of Gilead’s leaders, even Jakel Varonius, have experience with. Most Inquisitors operate in secret, revealing themselves to the local authorities only at the culmination of an investigation, if at all. Those Inquisitors famed and feared for their public pogroms and expurgations rarely stay in one place long, always moving on to terrify and purify the next system or sector.\n\nAgents of the Inquisitor-Lord\n\nThe Inquisitor largely operates overtly herself, but relies on discreet acolytes to pursue investigations unseen and unrecorded. In this way, she commands the awe and respect of important personages and common citizens alike, encouraging them to provide her with information and suspicions. At the same time, covert acolytes monitor these same cooperative citizens for signs of treachery. Depending on the nature of the threat they uncover, Dikaisune may expect her agents to deal with it personally, alert her, or call upon local forces for backup.\n\nWith the myriad threats facing the Gilead System, Inquisitor Dikaisune is forced to rely on networks of agents more than ever before. Some arrived in the system with her, but the majority she has recruited, whether directly or through senior agents, since the isolation of Gilead began. Her agents are varied in their origins and approaches; any Imperial who impresses her with their capabilities and dedication is a potential recruit. Indeed, the line between hired mercenary and acolyte is thin. Some agents might not be sure themselves if they are a part of the Inquisition or merely working in the employ of Inquisitor Dikaisune.\n\nWith their access to the wider Imperium cut off, like-minded Inquisitors of the Imperium Nihilus must share resources more than ever. Although there are only a handful of Inquisitors in the system, at most, Dikaisune’s agents might sometimes find themselves working with cells that report to other Inquisitors.\n\nInquisitor Dikaisune is staunchly Puritanical, and tolerates no deviance among her agents. Even in these desperate times, she believes that to use the tools of the enemy is to become the enemy. However, Dikaisune draws a clear line between the heretical and the merely illicit (to the chagrin of certain allies). Certain of Dikaisune’s agents use proscribed combat chems including, according to rumour, those dreaded substances believed to be the sole purview of the Officio Assassinorum. For Inquisitor Dikaisune’s agents, the ends justify any means — save those that flirt with the corruption of Chaos.\n\nSummon the Kill-Team\n\nThe groups of Shadow Warriors Dikaisune employs are each gifted the necessary clearance ciphers to summon one of her Kill-Teams when needed. This does not necessarily mean the GM will be running the Kill-Team as a group of NPCs — if your group are feeling creative, you might like to create an entirely new party of higher Tier characters and play as the Kill-Team yourselves!",
+    "options": [
+      {
+        "name": "Shadow Warriors",
+        "text": "As Inquisitor Dikaisune’s agents, you undertake investigations to root out heresy within the Heartworlds of Gilead. How you do this is largely left to your discretion, although you cannot rely on your mistress’s name or authority. When you are not pursuing a lead at the behest of the Inquisitor or an intermediary, you are expected to proactively seek out suspicious activity. There is no rest for a servant of the Eye That Sleepeth Not. Although Dikaisune is of the Ordo Malleus, neither she nor you can afford to discriminate in the threats you pursue. Any sign of witchcraft, the daemonic, or the xenos deserves your attention.\n\nShe expects you to judge which threats you can purge on your own, and which require the support of local authorities. For truly apocalyptic threats, you know the vox frequencies, astropathic ducts, and clearance ciphers to call in an Inquisition Kill-Team. You also know that abusing this privilege might see you heaped on the pyre as well as your foes.\n\nExample Missions:\n- A series of grisly deaths in the lower reaches of Hive Ammon on Gilead Primus requires investigation. The local enforcers, already stretched thin, attribute the mutilated bodies to gang war, but the consistency of the violence is the hallmark of ritual murder. Determine if some malefic cult is behind the deeds, and to what ends.\n- Rumours speak of individuals gathering at the strange xenos ruins of Ostia under the dark of night to enact profane rites. Discover if this is a divergent custom of the local religion, a xenophile cult, or something even worse.",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "CHAOS",
+              "ORK"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Tier 2 or below"
+          }
+        ],
+        "wargear": [],
+        "bonus": "+1 Bonus Dice on Deception (Fel) Tests against characters with the IMPERIUM Keyword.",
+        "grants": []
+      },
+      {
+        "name": "Kill-Team",
+        "text": "You are an elite Kill-Team assembled by Inquisitor Dikaisune to deal with the threats that local authorities and even ordinary military forces cannot. You may have been selected for your specialised and extensive (and likely forbidden) knowledge or for your skill at arms. If you have been given a mission, it means that the enemy is either extraordinarily powerful or containment measures have failed — a potent Chaos sorcerer, a daemonic incursion, or a xenophile cult supported by alien abominations.\n\nExample Missions:\n- Acolytes have determined Deacon Horatio Vanor of the Enochian Synod is possessed by a daemon of the Warp. Banish the unholy being and destroy all evidence, no matter the cost, lest the terrible truth unleash calamity among the masses.\n- An informant has revealed the presence of an ancient weapon of great power, the Soul Lance, secreted within a vault on Avachrus. Retrieve this archeotech artefact or, if necessary, destroy it lest any other lay claim.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          },
+          {
+            "kind": "tier",
+            "min": 3
+          }
+        ],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "Symbol of Authority with the INQUISITION Keyword",
+              "qty": 1,
+              "wargearId": "symbol-of-authority"
+            }
+          }
+        ],
+        "bonus": "+1 Bonus Dice on Tests against characters with the CHAOS Keyword",
+        "grants": []
+      }
+    ],
+    "note": "Printed heading: ORDO MALLEUS INQUISITOR TYTRONA DIKAISUNE (p.74; intro continues on p.75, Frameworks on p.76). Shadow Warriors' WARGEAR is printed \"None.\" Kill-Team's Symbol of Authority is printed \"for each member of the group\". Kill-Team's Bonus is printed without a full stop. The \"Summon the Kill-Team\" sidebar (p.76) covers both Frameworks, so it sits in the Patron text."
+  },
+  {
+    "id": "brevet-captain-akahir",
+    "name": "Brevet Captain Akahir",
+    "source": "forsaken-system",
+    "page": 77,
+    "text": "Though he stands barely over 7-ft tall, Brevet Captain Akahir looms large among the Astartes of the Absolvers Chapter. The inscrutable ritual scarring popular amongst the Absolvers intermingles with the twisted scars Akahir earned through battling daemons, attesting to the violence of his three years of service. His dark skin has been stretched thin over his enhanced transhuman form since he became an Astartes, his only imperfection a patchwork augmetic eye installed midway through the battle for Villum Fundus.\n\nCaptain Akahir and Jakel Varonius are linked by the infamous distress signal sent by the Absolvers’ missing Chapter Command. The two never discuss the matter in earshot of others, and no one can say if Varonius has shared its contents with Akahir, or if the Astartes Captain already knows the truth. Other council members note a certain tension between the two, but whether the cause is a shared and unspoken burden or a deep mistrust, they could not say.\n\nIn the absence of the Chapter Master and with the anarchy of Noctis Aeterna bearing down on the system, the Absolvers within Gilead had grave need of leadership. It was Chaplain Heractis who took it upon himself to anoint Akahir as Brevet Captain and acting commander of the Absolvers, in recognition of Akahir’s early success in rallying the system’s mortal defenders. In privacy, Heractis spoke also of a prophecy from the forgotten annals of the Chapter’s history, and the role he foresaw for Akahir.\n\nAkahir has shown a greater knack for diplomacy than many of his Battle-Brothers. He tolerates much of the politicking and debate of the Circlet Council with stony silence before voicing his opinion with both tact and finality. Still, relations between the Absolvers and the Varonius Dynasty are tense. Absolvers are known for their inflexibility, and Akahir must constantly struggle to cope with the evanescent whims of the humans on the Circlet Council. If he discovered that Jakel consorts with xenos, it would certainly end their cooperation, and may even lead to bloodshed. Akahir does find some common ground with the cold efficiency of Archdomina Vakuul, and the turmoil of the current age has strengthened bonds between the Absolvers and Avachrus. It is vital for Akahir to maintain and bolster this relationship, as the Absolvers rely on the Forge World to bolster their limited supply of ammunition. Further, Avachrus provides the only path to properly train new Tech-Marines, whose expertise is the only hope of maintaining the Chapter’s Wargear and vehicles should their isolation continue into the future — and Akahir knows optimism is a weakness.\n\nEven with the Astartes as a priority, the Forge World’s production capacity is taxed to its limits and beyond in these times. Out of necessity — and in preparation for the possibility of more difficult times ahead — Akahir has ordered an increased emphasis on melee combat throughout the Chapter. This affects the training regimens taught by Scout Sergeants as much as the daily drills of all Battle-Brothers. This extends even to the war machines of the Absolvers; the Tech-Marines fit Predator tanks and Rhino transports with serrated dozer blades, while anointing massive power fists for the day that the Chapter’s Dreadnoughts rouse for war.\n\nAgents of the Astartes Captain\n\nAlthough Astartes Chapters are largely self-sufficient, they often rely on the Imperium’s intelligence and communication networks  to learn of prime targets and worlds that need their defense. Although their confinement to a single system might seem to narrow the possible battlefields, in truth, the overwhelming threats facing the Gilead make it more important than ever for the Absolvers to deploy their limited forces perfectly. Furthermore, the isolation of the system and turmoil within the usual chains of communication have led Akahir to pursue his own investigations of traitors within the system. Akahir has begun to rely on hand-picked agents, Astartes and mortal, outside of the Codex-approved chain of command to act as his eyes, ears, and blades across the system.\n\nAkahir’s need for reliable, flexible non-Astartes agents stems in part from his misgivings for the methods of many Imperial organisations. He distrusts the Inquisitors’ freedom and underhanded methods, and truly looks poorly upon the Ministorum. He sees the ranking priests of the Ecclesiarchy as soft and hypocritical, exhorting their followers to sacrifice for the Emperor while they enjoy a life of relative luxury. Whereas Space Marines fight on the front lines their whole lives, no matter the rank, many clerics who attain rank step away from battle and indulge in lives of soft comfort. Although some Space Marines are critical of relying on mortals, Akahir recognises that Humans can operate in ways and places where the overtness and awe-inspiring reputation of Astartes would be a hindrance. Although relatively open minded for a Space Marine, Akahir has absolutely no tolerance for mutants and xenos.\n\nLike all Absolvers, Captain Akahir prizes his vows among all else, and he expects the same of his agents. In the same vein, he despises weakness and excuses. Undertaking a mission is a promise to succeed, and excuses for failure only undermine the breach of this vow. Still, Akahir is aware of the difficulty he has relating to mortals, and tries to compensate for this with effusive praise and wilful patience. His attempts to make Humans feel at ease can, in fact, be quite awkward, though Akahir has yet to realise it.\n\nCaptain Akahir’s focus remains on defending against the militant threats to the Imperium, but he has been infected by the suspicions that run through the mortals of the council. As a result, has begun to consider the importance of staying aware of the other Factions’ activities, in the interest of security. Only the Absolvers can be above suspicion, and it is their duty to punish treachery wherever it appears in the system.\n\nThe Captain looks back with fondness on his own experience as a Scout leading a team of motley Imperial agents. Not only does he strongly support this unusual Chapter tradition, but he is more inclined to trust the competence of hand-picked mortal agents. The agents Akahir chooses must be truly dedicated to the protection of Gilead above all other concerns. Akahir has no tolerance for failure, while viewing nearly any level of collateral damage and civilian casualties as acceptable if it gets the job done. Agents must be satisfied with the pride of serving the Emperor, as Akahir has little conception of wealth or personal reward. While ceremonial recognition is common for Astartes, very few commendations are available to Humans. The rewards he offers are eminently practical, such as weapons, armour, and battlefield tools.\n\nDux Mortalium\n\nThe Absolvers rarely stray from the teachings of the Codex Astartes, but the Chapter are loath to abandon their sworn traditions. One such oddity is the Dux Mortalium, in which an aspirational Scout is tasked with leading a Kill-Team of mortal Imperial warriors to prove they are worthy to become a fully-fledged battle brother. The rare scholars with any knowledge of the Absolvers Chapter history speculate that the long-forgotten Chapter Master Behanzin swore an oath to improve the Astartes’ relationship with the mortals they were bound to protect, following the huge loss of life in several tragic battles with traitorous regiments of the Astra Militarum during the Age of Apostasy. This led to the Dux Mortalium, though weather the tradition has improved relations or cemented the idea that mortals are weak in the minds of fledgling Absolvers is up for debate.",
+    "options": [
+      {
+        "name": "Eye, Ear, and Blade",
+        "text": "To uncover threats hidden among the Imperial society of Gilead, Captain Akahir relies on trusted Humans, sometimes led by a Space Marine Scout. As such a group, your missions focus on gathering intelligence and completing covert tasks — and fighting desperately when there is no time to wait for Astartes reinforcements.\n\nExample Missions:\n- Orks have ambushed several Astra Militarum supply ships in recent months, and Captain Akahir suspects — as unlikely as it seems — a traitor within the Departmento Munitorum or the Gilead Gravediggers command structure. Find out how the Orks are predicting the shipping schedules; the Absolvers face battles enough without stepping in to bolster unsupplied Guardsmen across the system.\n- Jakel Varonius has made a number of secretive visits to a large asteroid at the boundary between the Reach and the Voidmire. Discover the reason for this, without alerting the Rogue Trader to your intentions or Akahir’s involvement.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "Tier 2 or below"
+          }
+        ],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "Vox Bead",
+              "qty": 1,
+              "wargearId": "vox-bead"
+            }
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Resolve Tests.",
+        "grants": []
+      },
+      {
+        "name": "Angels of Death",
+        "text": "As proven agents of Captain Akahir, you are regularly despatched into warzones and other deadly locales to accomplish the missions no one else can. Akahir expects victory no matter the odds, even if you must sacrifice your body or life to achieve it. Whether you are Astartes or one of the rare mortals skilled enough to fight alongside the Space Marines, few in Gilead are your equal in war.\n\nYour missions are essentially special operations, in which Akahir tasks you to complete some vital objective on the battlefield, behind enemy lines, or in the most deadly environments of Gilead. You take the fight to the xenos and traitors of the Reach and the Voidmire, and turn the tide in battles on Gilead’s worlds.\n\nExample Missions:\n- The time has come to purge the Space Hulk Perephone’s Regret, and you are to fight in the vanguard. Expect to face overwhelming numbers of Orks and Genestealers. In addition, the Space Hulk’s time in the Warp has surely left it steeped in corruption; beware moral threats and anticipate the traitor-warriors of Chaos.\n- A massive force of Orks have assaulted Ostia, threatening the food supply of the entire system. Join the Absolvers strike force targeting the Warboss leading the Orks. Unconfirmed reports speak of Aeldari fighting against the Orks; as always, know that all xenos are your enemies.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          },
+          {
+            "kind": "tier",
+            "min": 3
+          }
+        ],
+        "wargear": [
+          {
+            "text": "Each member receives 1 Ammo Point at the beginning of each mission."
+          }
+        ],
+        "bonus": "+1 Bonus Dice to attacks targeting Mobs.",
+        "grants": []
+      }
+    ],
+    "note": "Printed as written: “As a result, has begun to consider” (p.78, missing “he”) and “though weather the tradition” (p.78, for “whether”). Eye, Ear, and Blade WARGEAR is “A vox bead for each individual.” The intro keeps the page’s double space after “communication networks”. Angels of Death's first Example Mission prints \"Perephone’s Regret\" (p.79, for Persephone’s); copied as printed."
+  },
+  {
+    "id": "canoness-jeanne-grace-demysa",
+    "name": "Canoness Jeanne Grace d'Emysa",
+    "source": "forsaken-system",
+    "page": 80,
+    "text": "The Canoness Jeanne Grace d’Emysa has led the Order of the Sanctified Shield for more than four decades, and bears the scars of battle to show it. She stands tall on her two fully bionic legs, lost during her time as a Veteran Sister Superior in a near-fatal battle with a Chaos Space Marine. Her cropped white hair frames a serene but severe face.\n\nJeanne Grace d’Emysa rose steadily through the ranks of the Order thanks to her skill in battle, her conviction, and the passion she inspires in the Sisters under her command. As ever, her primary goal is the protection of the Imperium and the destruction of the God-Emperor’s enemies. Her faith remains steadfast as ever, and the wavering faith of those who say the Emperor has abandoned Gilead disgusts her. Those citizens who have been witness to the Sanctified Shield in battle and the miraculous feats they accomplish on the field nearly find their faith bolstered.\n\nTo ensure the Order stands ready to defend against or preempt any threat to the system, Canoness d’Emysa cultivates good relations with other Imperial Factions. In the past, she has largely relied on the diplomats of the Ecclesiarchy and on the Sisters Dialogus of the Order Censura. In view of the uncertainty wrought by the Great Rift, the Canoness takes a more personal hand to remind the leaders of Gilead that the Sisterhood of the Sanctified Shield ceaselessly defends them.\n\nJeanne Grace d’Emysa continues the Order’s centuries-long mission of monitoring the Ecclesiarchy leaders of Gilead to ensure the heresies of the Age of Apostasy never repeat. The situation on Enoch takes up much of her time and attention. Not only must she coordinate the Sororitas’ defenses of major shrines and Ministorum holdings, but she grows ever more concerned by Archdeacon Merramar Clade’s handling of the situation. In her eyes, it is the duty of the Sororitas to battle heretics and traitors, and desperate pilgrims do not these enemies make. In private, candlelit meetings with her most trusted Sisters, d’Emysa makes arrangements for the day — which she prays never comes — that she must remove the Ministorum’s leaders from their positions.\n\nAgents of the Sororitas\n\nCanoness d’Emysa has traditionally relied on  the Sacred Shield and the nonmilitant orders present in the system to accomplish almost any mission she deems necessary under her purview. With the Sororitas stretched thin by the anarchy on Enoch, and the many other threats facing Gilead, she has had to broaden her approaches for the good of the system. She still prefers Sororitas and proven members of the Ecclesiarchy, but she might accept any pious and reliable Imperial citizen into her service.\n\nThe Canoness has little appetite for espionage and skulduggery. Nonetheless, she accepts the need for some degree of such in order to monitor other Imperial institutions and the noble families of the system for signs of apostasy and heresy. It is for missions such as these that d’Emysa is particularly open to non-Sororitas agents. After all, few Sisters outside of the Orders Famulous are suited for such covert matters. d’Emysa fears that the isolation of the system could spur decadence and heresy among the various branches of the Adeptus Terra in the system, and sees the utility of employing those who belong to such organisations or have experience with them to monitor for signs of apostasy.\n\nLess subtle missions for d’Emysa’s agents are often more militant in nature, with a focus on defending Imperial assets. These include acting as bodyguards to preachers and missionaries travelling the system, or defending shrines and other holy sites from xenos and heretics. More proactive missions might find agents battling their way through infested ruins to recover lost relics, or launching pre-emptive strikes on the traitors and xenos of the Reach.\n\nCanoness d’Emysa tolerates no blasphemy or even the merest whiff of heresy. Even for agents who are not formally of the Ministorum, she expects the same piety as she does of any servant of the God-Emperor. However, she accepts that individuals demonstrate their faith in different ways, and some are less overt than others. For potential agents who are not openly zealous, d’Emysa takes time to speak personally so as to gauge the depth of their devotion.",
+    "options": [
+      {
+        "name": "Lay Servants",
+        "text": "Although you may not have formal station within the Ecclesiarchy, your piety and zeal have impressed Canoness d’Emysa. She trusts you to accomplish a variety of missions that fall outside the militant duties of the Order of the Sanctified Shield. Your tasks include information-gathering, rooting out apostasy with the ranks of the Adeptus Terra, and bolstering the faith of the countless citizens of Gilead, from the lowliest helot to the noble lords and ladies of the system. The Canoness is particularly interested in verifying and documenting alleged miracles in Gilead. The Emperor’s people must be shown He is still with them!\n\nExample Missions:\n- Investigate rumours of gluttony, sloth, and even more sinful practices among the leading priests of Theocropolis Extol. Use secrecy and stealth, for you shall receive no overt support, and particularly not should violence ensue.\n- A labourer on Gilead Primus, blinded in an industrial accident, claims that the light of the Emperor lets her see. Ingratiate yourself with this would-be prophet and determine if her claims are genuine, hoax, or even a trick of the Dark Gods.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "Purity Seal",
+              "qty": 1
+            }
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Resolve Tests.",
+        "grants": []
+      },
+      {
+        "name": "Holy Warriors",
+        "text": "Whether a soldier of the Adepta Sororitas, a battle-preacher of the Ministorum, or a pious volunteer, Canoness d’Emysa counts on you to battle the enemies of the Emperor wherever they show themselves. While the bulk of the Order of the Sanctified Shield stands guard over the shrines of Enoch, you undertake special operations across the system. You might plunge into the depths of Gilead Primus’s hive cities to purge rebellious mutant bands, or strike out into the Reach to destroy xenos enclaves. If you truly impress the Canoness with your deeds, she might even despatch you to battle the traitorous Heretic Astartes lurking in the Voidmire.\n\nExample Missions:\n- The unthinkable has happened: the prisoners of the psyker prison Ironwatch have broken their shackles. Only the most blessed and faithful of the Emperor’s warriors can hope to prevail against such unfettered sorcerous hordes.\n- Tensions between Astra Militarum security forces and the hungry pilgrims of the encampment known as Mercytown have come to a boil, and it seems a massacre is imminent. Defuse the situation or, failing that, determine who the faithful are and protect them.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS MINISTORUM"
+            ]
+          },
+          {
+            "kind": "rank",
+            "min": 3
+          }
+        ],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "Symbol of Authority with the ADEPTUS MINISTORUM Keyword",
+              "qty": 1,
+              "wargearId": "symbol-of-authority"
+            }
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Corruption Tests.",
+        "grants": []
+      }
+    ],
+    "note": "Name printed in capitals as “CANONESS JEANNE GRACE D’EMYSA”; the body writes d’Emysa. Lay Servants WARGEAR is “A purity seal for each member of the group.”; the Wargear catalogue has no Purity Seal. Holy Warriors needs Rank 3 or above, not Tier. The Agents section keeps the page’s double space after “relied on”."
+  },
+  {
+    "id": "farseer-lanriel-taranlys",
+    "name": "Farseer Lanriel Taranlys",
+    "source": "forsaken-system",
+    "page": 82,
+    "text": "Tall, graceful, and possessed of an ethereal beauty, Lanriel Taranlys shows all the hallmarks of his species. The set of his features is permanently a display of determination and melancholy, and his head is bare except for a single long braid. Taranlys is normally clad in rune armour in the orange of Ul-Khari when meeting on matters of import or business, particularly if non-Asuryani are present.\n\nFarseer Taranlys carries himself with the air of confidence and mysticism common to Aeldari following the Path of the Seer. When preparing for battle or treating with Humans, Lanriel usually hides his visage behind a full helm of ornate crest. He is formal and exacting in speech; urgency leads to mistakes, which Lanriel abhors.\n\nAs the preeminent Farseer of Ul-Khari, Taranlys feels he has failed the Craftworld by not predicting the emergence of Trollius. This is a burden and sorrow he bears alone, as the only way the Craftworld can survive is by relying on his abilities, and so he cannot admit to such a lapse. Still, his most trusted friends and allies suspect that Taranlys blames himself for this tragic situation befalling the Craftworld\n\nWhile Taranlys has the respect and esteem of all Ul-Khari, there remains tension within the Craftworld owing to his decision to ally with Jakel Varonius. Not all Farseers and Warlocks on the Seer Council supported the act, and among the Craftworld’s warrior-citizens, there is much consternation and confusion regarding the alliance. Ul-Khari has isolated itself from the galaxy for many centuries, and adapting to the new situation is difficult in spite of such entrenched practices. Taranlys maintains it is necessary for the good of the Craftworld, even as he advises the Asuryani against trusting any Mon-Keigh. Ultimately, the alliance is simple pragmatism; though it breaks with tradition, the Craftworld is trapped in one place for the first time in its history. In light of this unprecedented situation, an alliance with Imperial forces — however one-sided or fleeting — reduces the enemies threatening the Craftworld.\n\nOutside of the Varonius Dynasty, relations between Ul-Khari and the Imperials of Gilead are all but nonexistent. With the Orks and Chaos worshipers of the region, there is only overt hostility. Taranlys has found a dedicated ally in Ferianwyr Greensteel, thanks to her oath to protect the Craftworld. Aside from these, the Craftworld seems to have nothing but enemies surrounding it in its imprisoned state. Consequently, Taranlys is open to consider help from any corner, if he is certain he can trust — or use — those offering.\n\nAgents of the Craftworld\n\nA stranded Craftworld is a singular event, and so Farseer Lanriel Taranlys has a singular need of capable agents. The Farseer’s abilities guide him to those who can help, just as they guide those individuals to him, along myriad routes.\n\nTaranyls readily accepts help from any Aeldari who offers it. Rumours persist that he has even considered working with the Drukhari, though it would be a great indiscretion to mention this in his presence. It is common in these times for Ferianwyr of the Greensteel Warriors to offer her Corsairs’ services for an ongoing term, and these Corsairs might take their missions directly from Taranlys. The unusual nature of the Craftworld’s situation gives rise to unusual necessities, and a group of agents serving the Farseer might consist of Aeldari from several Factions, and even Humans alongside.\n\nFarseer Taranlys has particular need of Humans in order to uncover the secrets of Trollius. The emotional resonance in the ice responds uniquely to the presence of Mon-Keigh, and Taranlys believes this must hold the key to overcoming the hostile environment and freeing the Craftworld. Of course, Taranlys prefers that trusted Aeldari accompany the Humans on any missions to explore the ice-world that serves as prison to Ul-Khari. While he acknowledges the necessity of relying on Humans, trust is another matter entirely.\n\nThe Farseer has other uses for Humans willing to serve him — knowingly or not. As long as the Ul-Khari Craftworld remains trapped by the ice of Trollius, it behooves the Farseer to keep apprised of Imperial activities in the system. Although the Farseer’s oracular abilities are potent, they are not limitless — and they are often put to better use than monitoring the actions of Mon-Keigh. For these reasons, Taranlys employs the service of Human agents within Imperial society. Some know not who they serve, perhaps assuming their true employer to be a crime lord, a rebel, or even an Inquisitor.  Unwitting agents receive their instructions via circumspect Rangers who conceal their alien features with heavy garb and decades of practice moving unnoticed among Humanity. Those who willingly serve a xenos might receive psychic visions, wraithstone tablets via deadrop, and — very rarely — meet with the Farseer himself in some isolated location.\n\nThe payment or rewards for those who serve depend on if they know the truth or not. Witting allies receive Wargear of Aeldari make, or other items that have come into the Craftworld’s possession over the millennia. Deceived tools are likely to receive caches of local currency or salable valuables in line with the cover story used by their handlers.",
+    "options": [
+      {
+        "name": "Pawns and Knights",
+        "text": "Whether unwitting Human or subtle Aeldari, you serve the interests of the Ul-Khari Craftworld within the Imperial worlds of the Gilead System. Your missions often involve espionage or sabotage of Imperial Factions and installations, with the purpose of safeguarding the Craftworld and its interests. The visions of Farseer Taranlys range over vast gulfs of space and time, and so the reasons for your missions are seldom clear.\n\nExample Missions:\n- Sabotage Imperial facilities and sow discord on Ostia. If it is a Maiden World, the time will come soon to reclaim it.\n- Taranlys has foreseen that the Astra Militarum officer known as Colonel Felden poses a threat to the Craftworld in the near future. Either ensure his attention is turned elsewhere or eliminate him.",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "CHAOS",
+              "ORK"
+            ]
+          }
+        ],
+        "wargear": [],
+        "bonus": "+1 Bonus Dice to Insight (Fel) Tests.",
+        "grants": []
+      },
+      {
+        "name": "Rooks and Bishops",
+        "text": "The important missions to secure Ul-Khari’s future can only be trusted to Aeldari. Whether you are a native of the Craftworld or have come to its aid in recent times, Farseer Taranlys entrusts you with missions of utmost import. These often include sabotaging Imperial installations for long-term strategic purposes, and just as often include attacking the servants of Chaos for more direct benefits. Your overriding directive is to defend the Craftworld at all costs, and Taranlys expects you to do so even in the rare event that he has not predicted the threat you uncover.\n\nExample Missions:\n- Orks of the Evil Sunz clan have begun converting a large asteroid of the Reach into a ‘Rok’ that, if finished, will one day pose a great threat to Ul-Khari. Fight your way to its heart and sabotage the crude reactors in order to destroy it entirely, and ensure the Big Mek responsible does not survive.\n- Mon-Keigh looters under the leadership of Rogue Trader Varonius hope to profit from the Craftworld’s tragedy. Intercept the scavengers and ensure they lay claim to not even a single shard of Wraithbone.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "AELDARI"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "text": "One Rare item of Aeldari Wargear."
+          }
+        ],
+        "bonus": "+2 Bonus Dice to Resolve Tests when defending Craftworld Ul-Khari.",
+        "grants": []
+      }
+    ],
+    "note": "Printed as written: “befalling the Craftworld” (p.82, no full stop) and “Taranyls readily accepts” (p.82, for Taranlys). Pawns and Knights WARGEAR is “None.” The Agents section keeps the page’s double space after “an Inquisitor.”"
+  },
+  {
+    "id": "ferianwyr-the-emerald-princess",
+    "name": "Ferianwyr, the Emerald Princess",
+    "source": "forsaken-system",
+    "page": 84,
+    "text": "The Aeldari Ferianwyr, the Emerald Princess, has led the Corsair Coterie known, in Low Gothic, as the Greensteel Warriors for many centuries. She and her Coterie came to Gilead decades ago, and have remained after the birth of the Cicatrix Maledictum, though they could leave at any time via the Webway paths they know well. Although the Imperial Navy and shipping interests of Gilead have come to fear her name for generations, the entire experience has been but a dalliance in the Aeldari lifespan.\n\nFerianwyr is somewhat short for an Aeldari, though she still stands above most humans. Her long, black hair is often pulled back, and contrasts with her pale skin. Her large eyes are expressive, though most Humans would find it difficult to get past their white-in-white blankness. The Emerald Princess fully lives the life of a Corsair, and so her whims are as fickle and fierce as the tempests of the Warp. To a Human, she seems unpredictable and erratic, but Aeldari understand this transient behaviour. Ferianwyr has sworn to protect the Ul-Khari Craftworld, a goal readily conceivable by both Aeldari and Human. Humans and other aliens who threaten the Craftworld can expect no quarter or mercy from the Greensteel Warriors.\n\nAmongst the merchant fleet and system defense forces of Gilead, the Emerald Princess is a terrifying legend. Experienced voiders tell of her cruelty and the suddenness with which the Emerald Warriors appear and overtake their prey. There is no standing against the blade skill and point-blank accuracy of the Corsairs, and Ferianwyr is the best by far. The only Humans to have seen her and lived either impressed or amused her — and they are usually at a loss as to how. Although cruel and callous by human standards, Ferianwyr treats her crew well and commands their respect. She does have her own kind of honour, though it is all but indecipherable to a Human mind. Many Corsairs have served under Ferianwyr for decades, respecting her joie de vivre as much as her tactical mind and prowess with a blade.\n\nAgents of the Coterie\n\nThe Emerald Princess welcomes Aeldari of any background to join her. Even those unwilling to forgo their existing allegiance are welcome guests and she happily accepts their aid in piracy or for more unusual tasks. Humans, however, she sees as little more than animals fit only to amuse her. Alliances and truces, such as with Jakel Varonius, are transitory.\n\nWhen it suits her whim, Ferianwyr accepts willing Humans as agents, perhaps even concealing her contempt for them for a time. Of course, she cares nothing for their safety, and might give them missions that almost guarantee their death, simply for her entertainment and that of her crew. She has no tolerance for those who truck with Chaos, viewing all such as enemies. Orks, she finds utterly detestable, though not significantly more so than Humans. In both cases, certain individuals might impress her with their vivacity, or determination. Orks that amuse her are invariably slain, though some Humans are kept alive, and manipulated to esoteric ends.\n\nWhatever form they take, agents serve the Emerald Princess in a number of ways. She might suggest a prime target for piracy when she is otherwise engaged defending the Ul-Khari Craftworld. Conversely, if a target is simply too tempting for Ferianwyr to resist, she may ask reliable agents to keep an eye on things on Trollius. Based on the information she learns during her endeavours, the Corsair Princess tasks her agents with hunting down and destroying the adherents of Chaos, particularly followers of She Who Thirsts. Other missions include sabotaging Imperial defenses, scouting potential targets, and otherwise laying the groundwork for future piracy. Ferianwyr rewards successful agents with select items from her vast trove. At times, these seem perfectly tailored to the interests of the recipient; at others, they seem entirely random. Payment might include a bottle of vintage spirits from an extinct civilisation, an Aeldari-crafted sabre, or a trunk of corpse starch rations originating from the Armageddon system. In the case of Human agents, gifts are much more likely to seem inappropriate, but whether this is due to disdain or misunderstanding is difficult to tell.\n\nIn addition to discrete rewards, the Emerald Princess permits her agents to keep most of the spoils from their own missions. Of course, she expects appropriate tribute in recognition of her authority. Agents who fail to heed this unspoken rule find themselves tasked with increasingly dangerous and foolhardy assignments — or possibly challenged to a duel, depending on Ferianwyr’s mood.",
+    "options": [
+      {
+        "name": "The Elders",
+        "text": "Ferianwyr’s most trusted agents are Aeldari themselves. Regardless of your particular background, this shared heritage earns some measure of esteem and camaraderie. Your missions often mean fighting alongside Ferianwyr, and you are effectively an honorary Greensteel Warrior even if your first allegiance is to your Craftworld, Cabal, or otherwise. In addition to boarding actions and void battles, Ferianwyr relies on you to uncover or assault the bastions of Chaos in the Voidmire. Your missions may be dangerous, but the Emerald Princess respects and values you enough to provide every scrap of information she can, and even the tools you need to prepare.\n\nExample Missions:\n- On Gilead Primus’s moon of Imperia, a group of Human nobility engage in worship of She Who Thirsts. Since the Mon-Keigh have not kept their own house clean, you shall demonstrate how the Greensteel Warriors deal with those who would succor our Great Enemy. Of course, kill any other Humans who get in your way.\n- The time draws near (Has it really been a century already?) for the Steel Circus, that event in which the Greensteel Warriors compete to prove who is the best swordmaster — other than Ferianwyr herself. The Emerald Princess invites you to fight with her favour, and to turn down such an honor would be unthinkable.",
+        "limitations": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "AELDARI"
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "text": "An Aeldari sword inlaid with green gems for each individual."
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Athletics Tests made in zero gravity.",
+        "grants": []
+      },
+      {
+        "name": "A Motley Crew",
+        "text": "Perhaps you are the sole survivor of a ship that fell to the Greensteel Warriors, held your own against a Chaos onslaught, or simply said the right things to a mysterious stranger in a voidport watering hole. One way or another, you’ve impressed — or at least intrigued — the Emerald Princess, Ferianwyr, and now find yourself working for her. Your diverse group performs tasks independently of the bulk of the Corsair fleet. The missions are often rather bizarre, and the reasons for them unclear. At times, they seem almost designed to test your abilities and limits rather than to achieve any real benefit for the Greensteel Warriors.\n\nExample Missions:\n- The Human captain Jakel Varonius has not been showing the proper respect to the Emerald Princess. Leave this green-steel dagger on his pillow as a ‘gift,’ to remind him of Ferianwyr’s generosity. Do what you need to for success, but do not harm Varonius.\n- This armsman from the merchant vessel Beneficent Tide fought well enough to impress Ferianwyr — and died valiantly. Deliver his corpse to his family, whoever and wherever they are, as a show of the Emerald Princess’s mercy.",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "CHAOS"
+            ]
+          }
+        ],
+        "wargear": [],
+        "bonus": "+1 Bonus Dice to Awareness (Int) Tests you make while in an enclosed space (such as the corridors of a ship or hive city).",
+        "grants": []
+      }
+    ],
+    "note": "Printed as written: “the Emerald Warriors appear” (p.84, the Coterie is elsewhere the Greensteel Warriors) and “discrete rewards” (p.85). The Elders’ Aeldari sword is kept as text: the book gives no profile, so it isn’t linked to the Core Sword. A Motley Crew WARGEAR is “None.”"
+  },
+  {
+    "id": "warboss-vazdrok-spikey-smasha",
+    "name": "Warboss Vazdrok Spikey-Smasha",
+    "source": "forsaken-system",
+    "page": 86,
+    "text": "The Warboss known as Vazdrok Spikey-Smasha is a particularly ‘kunning’ Ork of the Blood Axes Clan. He makes his warcamp on a drifting asteroid in the Reach, from which he launches raids across the system. While Kaptin Goldteef and his fleet carve a bloody path across the void, Vazdrok plays a longer game and not-so-silently commends himself for his shrewdness.\n\nThough stooped as any Orkoid, Vazdrok is taller and leaner than the typical specimen of his body mass. His (relatively) wiry muscles pack tremendous strength, and he has gotten where he is by crumping plenty of challengers who underestimated him. Vazdrok views Kaptin Goldteef as another such rival, knowing that ultimately only one Ork can claim dominion over the united Blood Axes of this system. In anticipation of the inevitable conflict, Vazdrok seeks to undermine the alliances that have bolstered Goldteef’s power, including those with Imperials such as Jakel Varonius.\n\nVazdrok’s most innovative and unusual practice was adopting the humie concept of ‘inteli-gitz.’ As he explains to his underlings, ‘dem’s da gitz wot got all da intelz. And da intelz is knowin’ where da best smashin’ and fightin’ is.’ Put into practice, this has entailed extensive use of Kommandos to reconnoitre enemy sites and movements, but Vazdrok has even gone far enough as to employ non-Ork spies. So far, Vazdrok has brutally and decisively dealt with any underlings who question his leadership or general Orkness based on this practice, but only time will tell if Vazdrok’s ideas are too radical. He thinks this will give him exactly the edge he needs to smash Kaptin Goldteef and unite all the Blood Axes of Gilead under his banner.\n\nAs part of his plan to isolate Goldteef, Vazdrok works to forge his own alliances with mercenaries, pirates, and other scum of the Reach — at the cost of their business with Goldteef, when possible. Indeed, Vazdrok has something of a knack for negotiating with Humans.\n\nAgents of the WAAAGH!\n\nLike any Ork Warboss, Vazdrok Spikey-Smasha is utterly self-reliant and doesn’t need any help — he just delegates a lot of things that he can’t be bothered to do himself. Considering Vazdrok’s particularly kunnin’ approach to warfare, this means he actually has quite a lot of work for subordinates, and even for non-Orks willing to take the job.\n\nOrks make up the vast majority of the Warboss’ forces, and though he has occasionally forced ‘Humies’ to do his violent bidding, he doesn’t trust Aeldari for anything, seeing them as weak, cowardly, deceitful, and treacherous. The rare and exceptional Humans Vazdrok chooses to tyrannise rather than kill either die swiftly, or become hardened by their experiences, making them absolute outcasts amongst Imperial society, and even more satisfying foes for the Warboss to crush when the time comes.\n\nVazdrok earned the moniker ‘Spikey-Smasha’ for targeting the toughest of Chaos Space Marines, and growing in strength through defeating many of their number in hard-fought (and thoroughly enjoyed) battles across the Gilead System. Though the Warboss has an Orky knack for identifying the strong, Vazdrok cares little for the fineries of philosophical beliefs. Vazdrok can’t distinguish between run-of-the-mill Scum and Chaos-worshipping heretics. He draws Human agents from the ranks of Reach pirates, hive gangers, Astra Militarum deserters, and others with no loyalty to the Imperium. In the case of Chaos adherents, they are likely using Vazdrok for their own ends as well.Vazdrok uses his agents to gather intel, sabotage enemies, and undermine rival bosses. As one might expect, all of these tasks tend to involve a lot of violence.\n\nAlthough Vazdrok has a certain amount of subtlety in mind when he recruits any Human agent, he really doesn’t care how a group gets the job done, as long as they do. Vazdrok has no patience for failure, weakness, or anything that requires much patience, really. Despite all his cunning, Vazdrok, like all Orks, is focused on the here-and-now, and the visceral.\n\nVazdrok figured out early in his dealings with Humans that they have little interest in Teef, for some reason. Happy to keep those for himself anyway, Vazdrok instead rewards Humie agents with weapons, vehicles, and the chance to live another day. Minor rewards consist of Wargear looted directly from the battlefield, while those who impress the Warboss receive kustom jobs. Unfortunately, these ‘Orkified’ items tend to malfunction or simply fall apart once in the hands of Humans, and so Vazdrok’s favourite Human agents often end up with little to show for their deeds. For Orks, the benefits of Vazdrok’s patronage also include a degree of protection from their rivals. In Ork society, the value of even one less rival trying to bash you cannot be overestimated.",
+    "options": [
+      {
+        "name": "Da Inteli-Gitz",
+        "text": "Somehow, you’ve gotten mixed up with an Ork Warboss. Whether or not you have met Vazdrok personally, he’s got the idea that he can rely on you to conduct clandestine business. Regardless of your agreement to this arrangement, you understand that failure to complete his missions will result in ‘a good krumpin’ for you. Your group likely receives its instructions from an intermediary, probably one of the diminutive Orkoids known as Gretchin. Vazdrok figures that to be less intimidating than a proper Ork Boy. And if he wants to conceal from your group that you are working for an Ork, your handler might instead be two Gretchin wearing a long coat and hat.\n\nYour mission briefs tend to be blunt and confusing, but mostly entail information-gathering or sabotage. The targets range from Imperial institutions to pirates and criminals to Ork rivals of the Warboss. Vazdrok clearly gives little thought to the feasibility of your missions, and the difficulty ranges from laughably trivial to suicidal, if not downright impossible.\n\nExample Missions:\n- Take this small(ish) Squig and hide it in the personal offices of Lord-Militant Taleria Fylamon. Don’t let it eat you first!\n- Infiltrate the Ducal Circlet and find out where Jakel Varonius keeps his best ‘jet,’ then steal it and bring it back for the Warboss’s Meks to improve on.",
+        "limitations": [
+          {
+            "kind": "either",
+            "of": [
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "AELDARI"
+                ]
+              },
+              {
+                "kind": "text",
+                "text": "or at least must wear something that hides the ears"
+              }
+            ]
+          }
+        ],
+        "wargear": [
+          {
+            "text": "A ‘suicide capsule’ that is actually just a bullet."
+          }
+        ],
+        "bonus": "+1 Bonus Dice to Stealth (A) Tests when the action is clearly a risky idea.",
+        "grants": []
+      },
+      {
+        "name": "Da 'Ard Boyz",
+        "text": "Oi! You’s a ded ’ard Boy workin’ for da Warboss Vazdrok Spikey-Smasha. ’E’s da toughest boss in dis ’ol Gillad place, an’ he wants you smashin’ and krumpin’ right dere wif ’im.\n\nUnless he wants ya smashin’ and krumpin’ somewhere else. ’E’s got lotsa plans, ’cause he’s real kunnin’, so you gotta fight allover da place. Just be ready’d krump, OK?\n\nEzample Mishunns:\n- Oi! Dere’s a new kinda Beakie wot’s bigger an’ ’arder’n before, an’ ain’t got no beak! Da Boss wantzta know if dey’s really so tuff. Go find some an’ have a right good rumble! An’ bring back dere ’elmuts for da Boss Pole.\n- ’Ere we go! It’s da time wot send dat Kaptin Goldteef a message! You’ze gotta draw up a fake treasure map and slip it to ‘is boyz. Den when dey get to da place, ya jump ’em! HA!",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "CHAOS"
+            ]
+          }
+        ],
+        "wargear": [],
+        "bonus": "+1 Bonus Dice to Awareness (Int) Tests you make while in an enclosed space (such as the corridors of a ship or hive city).",
+        "grants": []
+      }
+    ],
+    "note": "Da ’Ard Boyz BONUS is printed word for word as A Motley Crew’s (p.85), likely a copy error; kept as printed. Da Inteli-Gitz’s AELDARI limitation has an in-fiction way round it (“or at least must wear something that hides the ears”), so it is an `either`: notKeyword AELDARI, or that text. Printed as written: “as well.Vazdrok” (p.86, no space), “Ezample Mishunns” (p.87, deliberate). Da ’Ard Boyz WARGEAR is “None.”"
+  },
+  {
+    "id": "chaos-lord-maloquence",
+    "name": "Chaos Lord Maloquence",
+    "source": "forsaken-system",
+    "page": 88,
+    "text": "Heavily altered by the Gifts of the Gods and clad in ancient and baroque Power Armor, the Dark Apostle known as Maloquence is held in awe by the Human renegades of the Voidmire and fearful respect by his fellow Traitor Marines. Most believe him to hail from the time of the Great Heresy, yet each time he speaks of that period, the details differ. Whether this is due to Warp-addled memory or deceit, few dare to question.\n\nMaloquence’s ultimate goal is nothing less than the utter destruction of Imperial order within Gilead. He will not rest until every Human in the system sings the praises of the Chaos Gods or lies dead. Equally important, however, is that the Gods, his followers, and his victims recognise Maloquence as the architect of these great deeds. Faith without glory, so he says, is for the weak.\n\nThe Dark Apostle leads the warband known as The Faithful Writ. This distressingly large Chaos warband seems to consist of those originally from the Word Bearers, but no doubt contains defectors from other traitor Legions or worse, renegade members of formally loyal chapters. A high number of the Chaos Marines in the warband are daemonically possessed, thanks in no small part to Maloquence’s gift for summoning the denizens of the Warp. This gift and the number of Possessed within The Faithful Writ have grown dramatically since the opening of the Great Rift. Just as daemons can walk manifest from the Cicatrix Maledictum and cavort along its borders, the frayed and weakened veil is more porous than it was before. Daemons of all kinds gladly answer Maloquence’s summons, and easily pass into the bodies of the willing, walking among the worlds of Gilead until such time as their physical host is destroyed.\n\nWhile his greatest contempt is for the Imperium that wronged him, Maloquence has no shortage of hate for the xenos to be found in the Gilead System. He despises the weak and decadent Aeldari, and views their destruction as an ideal means to grow his favour with the Dark Prince. He showed little surprise at the fate of Craftworld Ul-Khari, and has made it his personal mission to wrench forth the souls within its Infinity Circuit. The Orks, Maloquence sees as a dangerous vermin. He loathes their stupidity, and sees little for them to offer the Dark Gods, even as their unpredictable blundering around the system has the potential to upset the best laid plans.\n\nAgents of the Traitor\n\nThe Heretic Astartes are mighty, but Maloquence sees great utility in cultivating mortal followers throughout the system. It is impractical for a being of his dark magnificence to visit Imperial worlds without good cause, so instructions are often carried through a chain of intermediaries, received in dreams and visions, or in other esoteric ways.\n\nSome agents may not even realise the true nature of their patron or the full extent of the heresy, at least at first. For these agents, whom Maloquence views as useful, if not ready or dedicated enough for the truth, missions are more likely to appear simply illegal. The details of the tasks, as well as the personas of the intermediaries providing instruction, give the appearance of merely committing illicit acts for an ordinary criminal cartel.\n\nOnly the most favoured agents see firsthand the fastness of the Faithful Writ, concealed within an asteroid deep within the Reach. Although its true purpose is lost to time, the facility is certainly ancient beyond Administratum records. The decay of millennia has damaged much of the facility and its contents beyond use or even recognition, yet a number of marvels remain. So far, Maloquence’s hereteks have secured the use of the teleportation platform and its child devices scattered throughout the system. This is a huge boon for the warband, allowing it to strike deep in the heart of Gilead. Should they unlock further archeotech secrets, it could spell doom for the system.",
+    "options": [
+      {
+        "name": "Lost and Damned",
+        "text": "Maloquence fosters numerous covens, cells, and cabals across the system in order to extend his reach. These consist of true devotees, useful maniacs, and whoever else can be trusted to further the aims of the Faithful Writ without compunction or remorse. Little more than disposable pawns at first, who might not know whom they truly serve, these agents nonetheless have the opportunity to grow in power and favour should they succeed in their appointed tasks. Typical missions include sabotaging Imperial organisations, laying the groundwork for summoning rituals, and gathering intel on prime targets for the warband. Many of these missions are a virtual death sentence, but those who defy death certainly have the favour of the Dark Gods.\n\nExample Missions:\n- Assassinate Subprefect Kels Morchid of the Adeptus Administratum on Gilead Primus and bring back a flask of his blood. Dare not ask why.\n- Travel to Gilead Primaris and infiltrate the hive city of Ramoth. At each of the four cardinal points of the hive, inscribe a ritual summoning glyph. Then travel to the centre of the hive and perform the ritual to call forth our allies from the Warp.",
+        "limitations": [],
+        "wargear": [],
+        "bonus": "+1 Bonus Dice on Deception (F) Tests to conceal your heretical ways from Imperials.",
+        "grants": []
+      },
+      {
+        "name": "Slaves to Darkness",
+        "text": "You are among Dark Apostle Maloquence’s favored servants. Whether Astartes, mortal, or mutated beyond definition, you have proved yourself as a true enemy of the Imperium and a devoted vassal of Chaos. Maloquence often tasks you to act as a vanguard for the Faithful Writ, clearing landing zones, assassinating prime targets, and otherwise preparing the way for a full assault. At other times, you fight by his side in the thick of battle, whether on the Imperial worlds of Gilead or against other traitors of the Voidmire, in order to prove the supremacy of The Faithful Writ.\n\nExample Missions:\n- The so-called Archdeacon Merramar Clade leads the church of the Corpse-Emperor in this system. Cast his corpse down from the highest spire on Enoch to show these fools that their dead Emperor offers no protection.\n- An ancient weapon of great power, known as the Soul Lance, lies in the vaults of Avachrus. Retrieve it for your master, and slaughter any fool Tech-Priests who oppose you.",
+        "limitations": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "AELDARI",
+              "ORK"
+            ]
+          },
+          {
+            "kind": "tier",
+            "min": 3
+          }
+        ],
+        "wargear": [
+          {
+            "text": "An icon of the eight-pointed star, hammered from corroded metal or fashioned from human bone."
+          }
+        ],
+        "bonus": "Gain +1 Bonus Dice to Corruption Tests.",
+        "grants": []
+      }
+    ],
+    "note": "Printed as written: “formally loyal chapters” (p.88, for formerly), “Gilead Primaris” (p.89, elsewhere Gilead Primus) and “Deception (F)” (p.89, for Fel). Lost and Damned LIMITATIONS is “None — Maloquence uses any tool that might serve his Dark Gods.” and its WARGEAR “None — make do with what you have to prove yourself.”"
+  }
+]

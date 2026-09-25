@@ -1,23 +1,412 @@
 [
   {
+    "id": "assault-doctrine",
+    "name": "Assault Doctrine",
+    "source": "vow-of-absolution",
+    "page": 27,
+    "kind": "advancement",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 3
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "space-marine-scout"
+        ]
+      }
+    ],
+    "note": "Advancement Package (p.27): bought during play, need not change Tier. The Requirements line prints only \"Adeptus Astartes Species, Tier 3+\"; the Scout requirement and becomesArchetypeId come from the page intro (\"Once a Scout is ready...\") and the Advancing Archetype box (\"These ascension packages change an Agent's Archetype from Scout to Tactical\"). Absolvers who take it become subject to Sanguine Visions (p.83). \"If you don't already have\" the item(s), per the effect; the grants list them unconditionally.",
+    "effect": "You fight at the vanguard of any advance, howling across the battlefield to bring the might of your transhuman physiology to bear.\nYou receive a Bolt Pistol, Chainsword, Mark VII Aquila Power Armour, and Jump Pack if you don't already have them.\n\nYou gain additional +Rank AP on any melee weapon you wield or any ranged weapons with the Pistol Trait.",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "voa-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chainsword",
+          "wargearId": "voa-chainsword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mark VII Aquila Power Armour",
+          "wargearId": "voa-mk-vii-aquila-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Jump Pack",
+          "wargearId": "jump-pack"
+        }
+      }
+    ],
+    "becomesArchetypeId": "tactical-space-marine"
+  },
+  {
+    "id": "devastator-doctrine",
+    "name": "Devastator Doctrine",
+    "source": "vow-of-absolution",
+    "page": 27,
+    "kind": "advancement",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 3
+      },
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "space-marine-scout"
+        ]
+      }
+    ],
+    "note": "Advancement Package (p.27): bought during play, need not change Tier. The Requirements line prints only \"Adeptus Astartes Species, Tier 3+\"; the Scout requirement and becomesArchetypeId come from the page intro (\"Once a Scout is ready...\") and the Advancing Archetype box (\"These ascension packages change an Agent's Archetype from Scout to Tactical\"). Absolvers who take it become subject to Sanguine Visions (p.83). Also prints \"An Agent Ascending from Tier 2 to Tier 3 may purchase this Talent instead of an Ascension Package\" (\"Talent\" as printed). The box says it becomes Tactical, not Devastator Space Marine. \"If you don't already have\" the item(s), per the effect; the grants list them unconditionally.",
+    "effect": "An Astartes who becomes a full battle-brother usually starts as a Devastator Marine, mastering the strategic application of overwhelming firepower.\nYou receive a suit of Mark VII Aquila Power Armour if you don't already have one, and any one of the following weapons:\n- Heavy Bolter\n- Heavy Flamer\n- Lascannon\n- Missile Launcher\n- Multi-Melta\n- Plasma Cannon\n\nYou gain additional +Rank AP when using this weapon. An Agent Ascending from Tier 2 to Tier 3 may purchase this Talent instead of an Ascension Package.",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Mark VII Aquila Power Armour",
+          "wargearId": "voa-mk-vii-aquila-armour"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Heavy Bolter",
+              "wargearId": "voa-heavy-bolter"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Heavy Flamer",
+              "wargearId": "heavy-flamer"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Lascannon",
+              "wargearId": "lascannon"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Missile Launcher",
+              "wargearId": "missile-launcher"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Multi-Melta",
+              "wargearId": "multi-melta"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Cannon",
+              "wargearId": "plasma-cannon"
+            }
+          }
+        ]
+      }
+    ],
+    "becomesArchetypeId": "tactical-space-marine"
+  },
+  {
+    "id": "hellblaster-doctrine",
+    "name": "Hellblaster Doctrine",
+    "source": "vow-of-absolution",
+    "page": 35,
+    "kind": "advancement",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "primaris-intercessor"
+        ]
+      }
+    ],
+    "note": "Advancement Package. The p.35 intro: \"These may be purchased during play, or during Character Creation of a Tier 5 game in place of an Ascension Package.\" Requirements printed as the keyword-styled \"PRIMARIS INTERCESSOR\", read as the Archetype. Plasma Incinerator and Assault Plasma Incinerator are not in the Wargear catalogue. \"If you don't already have\" the item(s), per the effect; the grants list them unconditionally.",
+    "effect": "Primaris Astartes may specialise in particular forms of warfare and death-dealing. Hellblasters focus upon the use of heavy weaponry, like their Devastator kin. However, thanks to the innovations and arcane technologies of Archmagos Dominus Belisarius Cawl, Hellblasters wield variants of Plasma Incinerators.\nIf you don't already have one, you receive one of the following weapons:\n- Plasma Incinerator\n- Assault Plasma Incinerator\n- Plasma Pistol\n\nYou gain an additional +Rank AP when using this weapon. Furthermore, during an adventure, you may ignore the first instance of damage inflicted due to a Complication when firing a Plasma weapon using the Supercharge option.\n\nAdditionally, your skilled use of Plasma weapons allows you to adjust the power cycling of the weapon, and when fired using the Supercharged options, you may trade the bonus Extra Damage for the Spread trait. If you use this ability, you are still at risk of damage from a Complication as normal.",
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Plasma Incinerator"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Assault Plasma Incinerator"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Pistol",
+              "wargearId": "plasma-pistol"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eradicator-doctrine",
+    "name": "Eradicator Doctrine",
+    "source": "vow-of-absolution",
+    "page": 35,
+    "kind": "advancement",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "primaris-intercessor"
+        ]
+      }
+    ],
+    "note": "Advancement Package. The p.35 intro: \"These may be purchased during play, or during Character Creation of a Tier 5 game in place of an Ascension Package.\" Requirements printed as the keyword-styled \"PRIMARIS INTERCESSOR\", read as the Archetype. Heavy Melta Rifle is not in the Wargear catalogue. Printed \"Glory spend\" and \"the advance melta weaponry\". \"If you don't already have\" the item(s), per the effect; the grants list them unconditionally.",
+    "effect": "Similar to their Hellblaster brothers, Eradicators offer fire support to battleline units. Rather than volleys of plasma, Eradicators stride forward in thick Gravis plate, employing the advance melta weaponry of Belisarius Cawl to sunder armour and fortifications alike.\nYou receive Mark X Gravis armour if you don't already have it and one of the following weapons:\n- Melta Rifle\n- Heavy Melta Rifle\n\nYou gain additional +Rank AP when using this weapon. Furthermore, when rolling the Extra Damage dice for an attack made with a melta weapon, you may spend one Glory, up to your Rank Bonus, to add an Extra Damage dice per point of Glory spend to the damage dealt.",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Mark X Gravis armour",
+          "wargearId": "voa-mk-x-gravis-armour"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Melta Rifle",
+              "wargearId": "voa-melta-rifle"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Heavy Melta Rifle"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "heavy-intercessor-doctrine",
+    "name": "Heavy Intercessor Doctrine",
+    "source": "vow-of-absolution",
+    "page": 35,
+    "kind": "advancement",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "primaris-intercessor"
+        ]
+      }
+    ],
+    "note": "Advancement Package. The p.35 intro: \"These may be purchased during play, or during Character Creation of a Tier 5 game in place of an Ascension Package.\" Requirements printed as the keyword-styled \"PRIMARIS INTERCESSOR\", read as the Archetype. Print error, copied as printed: \"You additional +Rank AP\" (missing \"gain\"). \"If you don't already have\" the item(s), per the effect; the grants list them unconditionally.",
+    "effect": "While Eradicators and Hellblasters are deployed to tackle heavily armoured troops and vehicles with their searing energy weapons, Heavy Intercessors lay down a withering storm of bolter rounds to tear through troops.\nYou receive Mark X Gravis armour if you don't already have it and one of the following weapons:\n- Heavy Bolt Rifle\n- Heavy Bolter\n\nYou additional +Rank AP when using this weapon. Furthermore, you gain the Bolter Discipline Talent (see page 45).",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Mark X Gravis armour",
+          "wargearId": "voa-mk-x-gravis-armour"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Heavy Bolt Rifle",
+              "wargearId": "voa-heavy-bolt-rifle"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Heavy Bolter",
+              "wargearId": "voa-heavy-bolter"
+            }
+          }
+        ]
+      },
+      {
+        "talent": "bolter-discipline"
+      }
+    ]
+  },
+  {
+    "id": "assault-intercessor-doctrine",
+    "name": "Assault Intercessor Doctrine",
+    "source": "vow-of-absolution",
+    "page": 35,
+    "kind": "advancement",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "primaris-intercessor"
+        ]
+      }
+    ],
+    "note": "Advancement Package. The p.35 intro: \"These may be purchased during play, or during Character Creation of a Tier 5 game in place of an Ascension Package.\" Requirements printed as the keyword-styled \"PRIMARIS INTERCESSOR\", read as the Archetype. \"Astartes Chainsword\" mapped to the VoA Chainsword (p.62). Printed \"You receive if you don't already have them:\". \"If you don't already have\" the item(s), per the effect; the grants list them unconditionally.",
+    "effect": "With Eradicators, Hellblasters, and Heavy Intercessors shredding the enemy with a hail of gunfire, Assault Intercessors specialise in vicious close combat. These Primaris Intercessors leap from drop pods and Impulsors into the heaving throng of the enemy and tear them asunder with whirring chainswords and staccato bolt rounds from their pistols.\nYou receive if you don't already have them:\n- Heavy Bolt Pistol\n- Astartes Chainsword\n\nYou gain an additional +Rank AP when using these weapons. Furthermore, you gain the Chainsaw Warrior Talent (see page 46)",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Heavy Bolt Pistol",
+          "wargearId": "voa-heavy-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Astartes Chainsword",
+          "wargearId": "voa-chainsword"
+        }
+      },
+      {
+        "talent": "chainsaw-warrior"
+      }
+    ]
+  },
+  {
+    "id": "battle-company-doctrine",
+    "name": "Battle Company Doctrine",
+    "source": "vow-of-absolution",
+    "page": 43,
+    "kind": "ascension",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 3
+      }
+    ],
+    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43). Printed \"and and\". Hatred is repeatable per enemy.",
+    "effect": "You have battled across countless worlds and faced all manner of heretics and xenos threats. You have mastered numerous weapons and and your skills and conviction has earned you a place amongst a Battle Company of the Chapter.\nYou gain the Bolter Discipline, Built Tough or Chainsaw Warrior talent and a further instance of the Hatred talent (against a different enemy if you already possess this talent).\n\nYou gain +2 Influence, and 1 item of Uncommon Wargear.",
+    "influence": 2,
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "talent": "bolter-discipline"
+          },
+          {
+            "talent": "built-tough"
+          },
+          {
+            "talent": "chainsaw-warrior"
+          }
+        ]
+      },
+      {
+        "talent": "hatred"
+      },
+      {
+        "text": "1 item of Uncommon Wargear"
+      }
+    ]
+  },
+  {
     "id": "rubicon-primaris",
     "name": "Rubicon Primaris",
     "source": "vow-of-absolution",
     "page": 43,
-    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43).",
     "kind": "ascension",
     "xp": 80,
     "requires": [
-      { "kind": "species", "anyOf": ["adeptus-astartes"] },
-      { "kind": "tier", "min": 3 }
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 3
+      }
     ],
+    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43). Print errors, copied as printed: \"Assencion\", and \"(pg 34)\" for the Primaris packages on p.35. Apocrypha pp.219–220 prints a different homebrew version (38 XP, S 5, T 5, BS 4+, WS 4+, +1 Influence, Mark X armour); not transcribed, this official printing wins.",
     "effect": "Few Space Marines could refuse the prospect of being remade, stronger and faster, more capable of waging war against the enemies of the Imperium. You have undergone the extensive and agonising operation required to be implanted with the three additional organs needed to join your Primaris brethren and now count yourself among those who have crossed the Rubicon Primaris.\n\nYou gain the Bolter Discipline and the Built Tough talent. You gain the PRIMARIS keyword. In future, you may choose from the Primaris Assencion packages. (pg 34)\n\nYou gain +2 Influence, and 1 item of Uncommon Wargear.",
     "influence": 2,
     "grants": [
-      { "talent": "bolter-discipline" },
-      { "talent": "built-tough" },
-      { "keyword": "PRIMARIS" },
-      { "text": "1 item of Uncommon Wargear" }
+      {
+        "talent": "bolter-discipline"
+      },
+      {
+        "talent": "built-tough"
+      },
+      {
+        "keyword": "PRIMARIS"
+      },
+      {
+        "text": "1 item of Uncommon Wargear"
+      }
+    ]
+  },
+  {
+    "id": "crux-terminatus",
+    "name": "Crux Terminatus",
+    "source": "vow-of-absolution",
+    "page": 43,
+    "kind": "ascension",
+    "xp": 60,
+    "requires": [
+      {
+        "kind": "archetype",
+        "anyOf": [
+          "first-company-veteran",
+          "chaplain",
+          "librarian"
+        ]
+      }
+    ],
+    "note": "Printed under \"If you ascend from Tier 3 to Tier 4, you may purchase one of the following Talents\" (p.43); no Tier Requirement or Influence printed. Requirements printed keyword-styled \"1ST COMPANY VETERAN, CHAPLAIN, OR LIBRARIAN\", read as the VoA Archetypes. The weapon swaps depend on the Archetype, so the weapons are a text grant. Print error, copied as printed: \"Storm Boler\". Apocrypha p.214 prints a different homebrew version (30 XP, BS 5+ or WS 5+, Adeptus Astartes or Primaris, +2 Influence, other wargear); not transcribed, this official printing wins.",
+    "effect": "A 1st Company Veteran, Librarian, or Chaplain may begin with Terminator armour. Terminator armour comes with the following weapon combinations:\n- Storm Bolter and Power Fist or Chainfist as standard.\n- The Storm Boler may be exchanged for a Heavy Flamer or Assault Cannon.\n- Alternatively, the Powerfist/Chainfist may be exchanged for a Power Sword.\n- The Storm Bolter and Powerfist/Chainfist can both be exchanged for a pair of Lightning Claws.\n- If worn by a Chaplain, the Powerfist/Chainfist is replaced with a Crozius Arcanum.\n- If worn by a Librarian, the Powerfist/Chainfist is replaced with a Force Weapon.",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Terminator armour",
+          "wargearId": "terminator-armour"
+        }
+      },
+      {
+        "text": "Terminator armour weapon combination: Storm Bolter and Power Fist or Chainfist as standard, with the exchanges listed in the effect"
+      }
     ]
   }
 ]

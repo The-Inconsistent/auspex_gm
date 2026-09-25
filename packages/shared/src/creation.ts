@@ -306,7 +306,8 @@ export const Package = z.object({
   requires: z.array(Requirement).default([]),
   notAtCreation: z.boolean().default(false),
   effect: z.string().min(1),
-  influence: z.number().int().default(0),
+  // "+2 per Tier Ascended" (Dauntless Reputation, Core p.151) is { perTier: 2 }
+  influence: z.union([z.number().int(), z.object({ perTier: z.number().int() })]).default(0),
   grants: z.array(Grant).default([]),
   becomesArchetypeId: id.optional(), // an Advancement Package that turns one Archetype into another (VoA p.27)
 });
@@ -344,9 +345,11 @@ export const Patron = z.object({
     .array(
       z.object({
         name: z.string().min(1),
+        text: z.string().default(""), // the Framework's description and Example Missions
         limitations: z.array(Requirement).default([]),
         wargear: z.array(Grant).default([]),
         bonus: z.string().min(1),
+        grants: z.array(Grant).default([]), // what the Bonus gives outright: "gain the NAVIS NOBILITE Keyword"
       }),
     )
     .min(1),

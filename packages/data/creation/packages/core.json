@@ -1,0 +1,177 @@
+[
+  {
+    "id": "back-from-the-brink",
+    "name": "Back From The Brink",
+    "source": "core",
+    "page": 150,
+    "note": "If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice. The augmetics depend on the Traumatic Injury rolls, so they stay in `effect`, not `grants`.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [],
+    "effect": "You are dead. Or that's what everyone thinks — whatever horrible fate befell you didn't quite end your life, and any limbs you may have lost have been replaced by augmetics.\n\nThis package requires you to come up with an accident or encounter in which your character could conceivably die. If you choose a battle with a terrible foe, you could establish a nemesis that could reappear later in your adventures. Discuss what could have happened to your character with your GM, especially if you want the other players in your group to hear rumours of your demise before you make a shocking comeback!\n\nOnce you've figured out how you 'died', determine who brought you back. Work with your GM to come up with something appropriate. Whoever your saviors are, they are likely to want some kind of compensation for their generosity.\n\nIs your character's resurrection a second chance to change the world? Or are their cybernetics a shameful scar, a permanent reminder of their failings? Have they sworn revenge against the creature that ravaged their organic body? Or are they wracked by fear from the harrowing memory of death?\n\nKeywords: [ANY] (the Faction of those who saved you)\n\nStory Element: After a horrific encounter, you were somehow reconstructed by the marvels of holy (or unholy) technology.\n\n1. Roll on the Memorable Injury table (p.194) twice.\n2. Roll on the Traumatic Injury (p.195) twice.\n3. Replace any lost body parts with the appropriate augmetics; you may choose an option of any Rarity the GM deems appropriate.\n\nOnly the people who saved you and were responsible for your reconstitution know that you are alive. But news of your death may already have spread, and your new allies may want some form of recompense for saving your life.",
+    "influence": 0,
+    "grants": [
+      {
+        "keyword": "[ANY]"
+      }
+    ]
+  },
+  {
+    "id": "dauntless-reputation",
+    "name": "Dauntless Reputation",
+    "source": "core",
+    "page": 151,
+    "note": "Influence Bonus is printed \"+2 per Tier Ascended\"; `influence` is { perTier }. The Devotees grant waives its Leadership (Wil) prerequisite. If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 30
+    },
+    "requires": [],
+    "effect": "With a single glorious act of extraordinary merit you gained tremendous reputation. Word of your exploits has spread, and you have gained both notoriety and disciples devoted to your cause.\n\nWith greater power comes privilege, and great responsibility. Members of your Faction are likely to regard you with awe and do your bidding. Some may react with jealousy or suspicion, viewing you as an upstart and work against your goals.\n\nYou are expected to act as your reputation dictates; your enemies may use your fame to manipulate you towards their own goals. Consider how your character feels about their station: is it a blessing or a burden?\n\nWork with your GM to figure out what incredible act led to your increased fame; ideally, it should be something that would particularly impress the Faction related to your new Keyword. You might have secured a lost holy relic for the Ministorum, imparted information to the Administratum to save a planet from bureaucratic disaster, or defended a Scum neighbourhood from a tyrannical noble's minions. Your new devotees come from the Faction you helped.\n\nRegardless of how you earned your reputation, you now have a nemesis. Work with your GM to figure out who this might be, or leave it a mystery.\n\nStory Element: You gain:\n- The Devotees Talent (p.132). You do not need to meet the Leadership (Wil) Skill prerequisite.\n- A tremendous reputation with a Faction.\n- A nemesis.",
+    "influence": {
+      "perTier": 2
+    },
+    "grants": [
+      {
+        "keyword": "[ANY]"
+      },
+      {
+        "talent": "devotees"
+      }
+    ]
+  },
+  {
+    "id": "demanding-patron",
+    "name": "Demanding Patron",
+    "source": "core",
+    "page": 151,
+    "note": "Skill Requirement printed \"Persuasion 3+\". If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Persuasion",
+        "min": 3
+      }
+    ],
+    "effect": "Your exploits have caught the attention of someone powerful. They will sponsor your future deeds, though they have demands in return.\n\nWork with your GM to determine who your patron is. They may be a distinguished member of your Faction, an honoured aristocrat of your Species (or another), or a well-connected underworld dealer.\n\nYour patron might not be aligned with your goals, but it is worth considering who your character would — or more importantly would not — work with. Times are dire in the Gilead System and strange bedfellows abound, but everyone has their limits. How you secured this deal with your patron could be an entire adventure in itself, one that pushes your character to their limits to impress your benefactor.\n\nYour patron may be able to provide you with a range of resources depending on their station. A wealthy or militaristic patron might lend you Wealth, Wargear, or vehicles. A connected patron may grant access to otherwise forbidden locations or furnish you with obscure and mysterious information.\n\nYour patron always makes demands in return for these favours. They might ask you to do a task for them — possibly one that contradicts your group's goals. Disobeying a powerful patron or being unable to repay them will certainly lead to punishment.\n\nKeywords: [ANY] (the Faction of your new patron)\n\nStory Element: You now report to a demanding patron between every adventure.\n\nWhen you take this Ascension Package, choose to gain one of the following:\n- Immediately gain 1 item of Rare Wargear with a value of 3 + new Tier.\n- Immediately gain 2 Wealth.\n- Immediately gain +2 Influence per Tier Ascended.",
+    "influence": 0,
+    "grants": [
+      {
+        "keyword": "[ANY]"
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "text": "1 item of Rare Wargear with a value of 3 + new Tier"
+          },
+          {
+            "text": "2 Wealth"
+          },
+          {
+            "text": "+2 Influence per Tier Ascended"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "perfidious-wretch",
+    "name": "Perfidious Wretch",
+    "source": "core",
+    "page": 152,
+    "note": "Also removes \"the Keyword you betrayed\": no grant form removes a keyword, so it is in `effect` only. If no Keyword can be chosen for [ANY], see the \"[ANY] Keyword Options\" box (p.151): Bonus Influence, or GM's Choice.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 5
+    },
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Cunning",
+        "min": 3
+      }
+    ],
+    "effect": "You betrayed your allies to gain favour with another Faction. You may have been seduced by promises of power or material wealth — all too common in the grim darkness of the 41st Millennium. Or you may have developed a radical mindset that no longer aligns with your Faction and better suits another.\n\nConsider the motivations behind your betrayal, the group you are betraying, and the new Faction you are joining. The methods of your betrayal will likely be a harrowing adventure of dark espionage that tests your character's very soul.\n\nYour former Faction will likely take umbrage at your departure, and future interactions may be strained, if not outright hostile. Work with your GM to figure out how you left one organisation and joined another. Your new allies are also less likely to trust a defector, possibly extending to your whole group.\n\nTaking this package can completely change the direction and style of your campaign. It's worth talking to your group before making such an impactful decision. It might not suit the game everyone else wants to play, even if it makes sense narratively. On the other hand, you might all want to join a treacherous rebellion together!\n\nKeywords: Gain [ANY], remove the Keyword you betrayed.\n\nStory Element: Your new allies gift you the following:\n- 3 Wealth.\n- 1 item of Wargear with a value of 3 + new Tier and a Rarity of Rare or lower.\n\nYour disloyalty has earned you the enmity of the Faction you betrayed, and curried the favour of another.",
+    "influence": -2,
+    "grants": [
+      {
+        "keyword": "[ANY]"
+      },
+      {
+        "text": "3 Wealth"
+      },
+      {
+        "text": "1 item of Wargear with a value of 3 + new Tier and a Rarity of Rare or lower"
+      }
+    ]
+  },
+  {
+    "id": "psychic-revelations",
+    "name": "Psychic Revelations",
+    "source": "core",
+    "page": 152,
+    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }. \"Universal Psychic Powers on p.267\" are Psyniscience and Deny The Witch (universal-psyker-abilities). The Minor power is a text grant because its count is per Tier Ascended (a choose/fromDisciplines [\"minor\"] needs a fixed count). \"Purchase psychic powers from one Discipline of your choice\" is access, not a grant: `effect` only. The \"Changed by the Warp\" box (p.153) is appended to `effect`.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [],
+    "effect": "You are now a Psyker. Whether a spontaneous manifestation, the development of latent abilities, or through unbidden exposure to abnormalities of the Warp, you can now channel the occult power of the Immaterium.\n\nBeneath the Warp-torn skies of the Gilead System this phenomenon is becoming more common. Though a Psyker's abilities usually reveal themselves around adolescence, individuals are developing psychic abilities more frequently and at any age. Your latent powers may emerge when you are faced with a particularly stressful situation, such as a perilous physical conflict.\n\nThe Imperium's citizens are instilled from birth with a deep distrust and fear of Psykers. Those who discover they have psychic powers are obliged to turn themselves in to the Adeptus Astra Telepathica immediately. Of course, some individuals may be reluctant to do so, which can cause complications — particularly as any witnesses will also feel the pressure (and fear) to report the Psyker to the authorities.\n\nWork with your GM to create a story of how your psychic powers emerged. Does your character see this supernatural development as a blessing, or a curse? Any witnesses to your awakening, and who you choose to report these new powers to, will also have significant impacts on your story, even before you manifest the Warp at the table.\n\nStory Element: You gain:\n- The Smite psychic power and the Universal Psychic Powers on p.267.\n- One Minor Psychic Power of your choice per Tier Ascended.\n- You may purchase psychic powers from one Discipline of your choice.\n\nChanged by the Warp (p.153): If you are one of the rare and unlucky few to have developed psychic powers after exposure to the Warp, you may choose to take Corruption points to reduce the XP cost of Psychic Revelations, provided your GM agrees. Each Corruption point you take reduces the cost of the package by 5 XP, with a minimum cost of 5 XP.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "keyword": "PSYKER"
+      },
+      {
+        "power": "smite"
+      },
+      {
+        "power": "psyniscience"
+      },
+      {
+        "power": "deny-the-witch"
+      },
+      {
+        "text": "One Minor Psychic Power of your choice per Tier Ascended"
+      }
+    ]
+  },
+  {
+    "id": "stay-the-course",
+    "name": "Stay The Course",
+    "source": "core",
+    "page": 154,
+    "note": "Influence Bonus is printed \"+1 per Tier Ascended\"; `influence` is { perTier }.",
+    "kind": "ascension",
+    "xp": {
+      "perTier": 10
+    },
+    "requires": [],
+    "effect": "You are a veteran of your position, excelling far above your peers. Though not promoted, you have been recognised and rewarded. Your dependability has earned you greater recognition from your Faction. Your peers know you by reputation, if not by appearance, and the mention of your name alone draws attention.\n\nResponsibility comes with this added authority. Your sponsors are more likely to call on you for assistance, or assign you to challenging missions. In some circumstances, you may be assigned temporary authority over allied groups. Your Faction expects you to show discretion as a responsible leader. If your allies meet with an unfortunate outcome, you are likely to receive the brunt of the blame.\n\nAt least one event in your service stands out as a particularly impressive example of your exploits. Peers are interested in hearing about these events and are more likely to trust you for your perseverance and success. Of course, enduring such challenging events are likely to have left you with some physical and mental scars. These could have resulted from one of your adventures, or a behind-the-scenes event of your own invention.\n\nStory Element: If you do not have a Memorable Injury, roll on the Memorable Injury table (p.194) and decide with your GM how you received the Memorable Injury. You may choose to gain 3 Corruption points instead of, or in addition to, a Memorable Injury.\n\nWargear: Choose one of these options:\n- Gain 2 items of Rare Wargear with a value of 3 + new Tier.\n- Gain 1 item of Very Rare Wargear with a value of 3 + new Tier.\n\nThese choices may include augmetics.",
+    "influence": {
+      "perTier": 1
+    },
+    "grants": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "text": "2 items of Rare Wargear with a value of 3 + new Tier"
+          },
+          {
+            "text": "1 item of Very Rare Wargear with a value of 3 + new Tier"
+          }
+        ]
+      }
+    ]
+  }
+]

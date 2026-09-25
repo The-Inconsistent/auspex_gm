@@ -287,6 +287,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     matching their PRIMARIS keyword, though their SPECIES line prints Adeptus Astartes.
 37. **Pariah archetypes include the Pariah template's 30 XP** (Apocrypha p.12): Null-Maiden, Oblivion Knight and
     Novice-Sister, which print a cost without it, gain the 30.
+38. **Lost on the Warrior Path** (IoE p.59) grants the EXARCH keyword, which it makes you in prose: the Exarch Powers
+    (Apocrypha pp.247–253) need it, and Apocrypha's own printing of the package lost the merge to IoE's.
 
 ---
 

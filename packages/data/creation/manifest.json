@@ -8,7 +8,9 @@
     "talents",
     "disciplines",
     "powers",
-    "archetypes"
+    "archetypes",
+    "packages",
+    "patrons"
   ],
   "expected": {
     "archetypes": {
