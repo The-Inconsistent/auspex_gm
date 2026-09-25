@@ -332,6 +332,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 52. **The Tree of Learning** (Core p.26) applies only when raising a Skill with XP: raising it to R needs R Skills with
     points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
     fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
+53. **A granted Talent whose requirements the character doesn't meet** (Rubicon Primaris gives Built Tough, which needs
+    Survival 2, VoA pp.43, 46; pregens.md ambiguity 7): the books don't say whether a grant ignores them. The builder
+    keeps the Talent and asks the GM to tick it, rather than refusing the build. *Proposed; awaiting the GM.*
+54. **Creation Ascension** (Core p.148): one Ascension Package, whose requirements are met at the archetype's Tier
+    (before Ascending). "Per Tier Ascended" counts from the archetype's Tier to the campaign's, and "× the new Tier" XP
+    uses the campaign's Tier. *Proposed; awaiting the GM.*
 
 ---
 

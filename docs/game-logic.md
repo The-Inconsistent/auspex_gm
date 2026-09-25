@@ -15,6 +15,7 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 | | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
+| | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `meets` (every `Requirement` kind), `wargearMatches` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
 | | `apps/api/src/campaign/campaign.actions.ts` | pools, `session.start`, `session.end` |
 | | `apps/api/src/character/character.actions.ts` | `character.adjust` (runs `pcHit`: Exhausted, Dying, Annihilation), `character.respite` |
