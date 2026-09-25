@@ -45,7 +45,7 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 
 | Part | Tech |
 |---|---|
-| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode` |
+| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode`, `lucide-react` |
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |

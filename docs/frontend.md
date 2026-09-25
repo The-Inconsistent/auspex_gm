@@ -5,7 +5,7 @@ api in [backend.md](backend.md), the rules functions in [game-logic.md](game-log
 [development.md](development.md). The binding style rules are in
 [`.claude/frontend-code-style.md`](../.claude/frontend-code-style.md).
 
-Stack: Next.js 16 (App Router), React 19, Clerk through `@wg/auth`, `socket.io-client`, `qrcode`, and plain CSS in
+Stack: Next.js 16 (App Router), React 19, Clerk through `@wg/auth`, `socket.io-client`, `qrcode`, `lucide-react` (icons), and plain CSS in
 `app/globals.css`. There is no UI framework, no client-side data reads and no client router beyond tab state. `/` is the
 lobby, and one table page (`/c/<campaignId>`) renders either the GM app or the player app, depending on the caller's
 seat.
@@ -552,7 +552,7 @@ utility and component classes plus inline `style` for one-offs.
 under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
 `ThemeToggle` (`components/ui/theme-toggle/`) stores the choice per device in `localStorage` (`THEME_KEY`), and
 `THEME_SCRIPT`, inlined in `<head>` by `app/layout.tsx`, applies it before first paint (`<html suppressHydrationWarning>`).
-The toggle's label is swapped by CSS (`.theme-to-night` / `.theme-to-day`), so server and client markup match.
+The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.theme-to-night` / `.theme-to-day`), so server and client markup match.
 
 **Fonts** come from `next/font/google` in `app/layout.tsx` and are exposed as CSS variables on `<html>`:
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
+
 import { THEME_KEY, type Theme } from "./constants";
 
 type ThemeToggleProps = { className?: string };
@@ -11,7 +13,8 @@ function currentTheme(): Theme {
   return matchMedia("(prefers-color-scheme: dark)").matches ? "vigil" : "vellum";
 }
 
-// Day/night switch. The label is swapped by CSS (.theme-to-*), so server and client render the same markup.
+// Day/night switch: a moon in day, a sun at night. The icon is swapped by CSS (.theme-to-*), so server and client
+// render the same markup.
 export function ThemeToggle({ className = "btn sm" }: ThemeToggleProps) {
   // Flips the theme and remembers it on this device; a blocked localStorage just means it won't persist.
   const handleToggle = () => {
@@ -25,9 +28,15 @@ export function ThemeToggle({ className = "btn sm" }: ThemeToggleProps) {
   };
 
   return (
-    <button type="button" className={className} aria-label="Switch between day and night theme" onClick={handleToggle}>
-      <span className="theme-to-night">NIGHT</span>
-      <span className="theme-to-day">DAY</span>
+    <button
+      type="button"
+      className={className}
+      aria-label="Switch between day and night theme"
+      title="Day / night"
+      onClick={handleToggle}
+    >
+      <Moon className="theme-to-night" size={16} aria-hidden="true" />
+      <Sun className="theme-to-day" size={16} aria-hidden="true" />
     </button>
   );
 }
