@@ -116,6 +116,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   // LOAD STATS (JSON): opens the import box for this character, or closes it.
   const toggleImport = (id: string) => setImportFor(importFor === id ? null : id);
 
+  // CANCEL (import box): closes it and drops the pasted JSON.
+  const cancelImport = () => {
+    setImportFor(null);
+    setJson("");
+  };
+
   // END SESSION: awards XP to everyone and saves the recap.
   const endSession = async () =>
     report(await send({ type: "session.end", xp, recap }), `SESSION ENDED · +${xp} XP EACH`);
@@ -310,13 +316,13 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 <button className="btn sm" onClick={() => showGuestQr(c)}>
                   GUEST QR
                 </button>
-                <button className="btn sm" onClick={() => toggleImport(c.id)}>
+                <button className="btn sm" aria-expanded={importFor === c.id} onClick={() => toggleImport(c.id)}>
                   LOAD STATS (JSON)
                 </button>
                 <button className="btn sm" onClick={() => respite(c)}>
                   RESPITE
                 </button>
-                <button className="btn sm" onClick={() => toggleReq(c.id)}>
+                <button className="btn sm" aria-expanded={reqFor === c.id} onClick={() => toggleReq(c.id)}>
                   REQUISITION
                 </button>
                 <button className="btn sm" onClick={() => adjWealth(c, 1)}>
@@ -337,6 +343,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                   sessionId={open?.id ?? null}
                   send={send}
                   onResult={requisitioned}
+                  onCancel={() => setReqFor(null)}
                 />
               )}
               {importFor === c.id && (
@@ -348,9 +355,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     onChange={(e) => setJson(e.target.value)}
                     placeholder='{"species":"Primaris Astartes","attributes":{…}}'
                   />
-                  <div>
+                  <div className="keys">
                     <button className="btn primary" onClick={() => importStats(c.id)}>
                       LOAD
+                    </button>
+                    <button className="btn" onClick={cancelImport}>
+                      CANCEL
                     </button>
                   </div>
                 </div>

@@ -28,6 +28,7 @@ type RequisitionFormProps = {
   sessionId: string | null;
   send: Send;
   onResult: (r: ActionResult, ok: string) => void;
+  onCancel: () => void;
 };
 
 const digits = (v: string) => Number(v.replace(/\D/g, "")) || 0;
@@ -41,6 +42,7 @@ export function RequisitionForm({
   sessionId,
   send,
   onResult,
+  onCancel,
 }: RequisitionFormProps) {
   const [kind, setKind] = useState<RequisitionKind>("wargear");
   const [item, setItem] = useState("");
@@ -265,9 +267,12 @@ export function RequisitionForm({
       <div className={out.success ? "accent" : "dim"}>
         {out.success ? `SUCCESS: GETS ${gets.toUpperCase()}` : "FAILS"} · WEALTH {c.stats.wealth} → {out.wealth}
       </div>
-      <div>
+      <div className="keys">
         <button className="btn primary" disabled={!sessionId || used || !t.eligible || !item.trim()} onClick={record}>
           RECORD
+        </button>
+        <button className="btn" onClick={onCancel}>
+          CANCEL
         </button>
       </div>
     </div>
