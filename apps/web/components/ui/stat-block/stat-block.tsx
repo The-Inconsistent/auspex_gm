@@ -39,7 +39,7 @@ export function StatBlock({ t, tier }: StatBlockProps) {
       </div>
       <div className="sb-body">
         <span className="label">KEYWORDS </span>
-        <span className="sb-keys">{t.keywords.join(", ")}</span>
+        <span className="kw">{t.keywords.join(", ")}</span>
       </div>
       <div className="sb-grid" style={{ gridTemplateColumns: `repeat(${ATTRIBUTES.length}, minmax(0, 1fr))` }}>
         {ATTRIBUTES.map((k) => (
@@ -55,10 +55,10 @@ export function StatBlock({ t, tier }: StatBlockProps) {
       </div>
       <div className="sb-grid sb-shade" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
         <span className="label">DEF</span>
-        <span className="label">WOUNDS</span>
-        <span className="label">SHOCK</span>
+        <span className="label">WND</span>
+        <span className="label">SHK</span>
         <span className="label">RES</span>
-        <span className="label">SPEED</span>
+        <span className="label">SPD</span>
         <span className="sb-v">{t.defence}</span>
         <span className="sb-v">{t.wounds}</span>
         <span className="sb-v">{t.shock ?? "–"}</span>

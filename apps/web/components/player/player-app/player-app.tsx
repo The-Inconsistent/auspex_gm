@@ -51,8 +51,11 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
         className={`pl-banner band torn ${myTurn ? "up" : ""}`}
         style={{ display: "flex", alignItems: "center", gap: 10 }}
       >
-        <div className="display" style={{ fontSize: 26, flex: 1 }}>
-          {banner}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="label">{state.campaign.name.toUpperCase()}</div>
+          <div className="display" style={{ fontSize: 21, lineHeight: 1.15 }}>
+            {banner}
+          </div>
         </div>
         {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
             (plain <a>, so nothing prefetches it); rescanning the QR rejoins. */}

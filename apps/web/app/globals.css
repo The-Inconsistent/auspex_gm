@@ -294,7 +294,7 @@ textarea.input {
   gap: 2px;
   min-width: 0;
   overflow: hidden;
-  flex: none;
+  flex: 0 1 auto; /* in a tight column the cells clip before the number beside them does */
 }
 .track > span {
   width: 10px;
@@ -308,6 +308,9 @@ textarea.input {
 }
 .track.ink > span.on {
   background: var(--ink-2);
+}
+.row .track > span {
+  width: 7px;
 }
 .row.now .track > span {
   border-color: var(--bone);
@@ -516,6 +519,9 @@ textarea.input {
 }
 .sb-shade > .label {
   padding-bottom: 0;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .sb-band {
   padding: 3px 10px;
@@ -529,7 +535,8 @@ textarea.input {
 .sb-body {
   padding: 6px 10px;
 }
-.sb-keys {
+/* Keywords in crimson small caps, as printed. */
+.kw {
   font-family: var(--display);
   font-size: 13px;
   font-weight: 700;
@@ -654,6 +661,8 @@ textarea.input {
   background: transparent;
   border-bottom: 1px solid var(--line);
   gap: 18px;
+  overflow-x: auto; /* more kinds than a phone is wide: scroll the strip, not the page */
+  scrollbar-width: none;
 }
 .tabs.sub .tab {
   flex: none;
@@ -735,7 +744,7 @@ textarea.input {
 
 .tracker {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr) 300px;
   height: 100%;
 }
 .tracker-main {
@@ -758,9 +767,9 @@ textarea.input {
 .row {
   display: grid;
   grid-template-columns:
-    92px minmax(140px, 1.4fr) 56px minmax(120px, 1fr) minmax(100px, 0.8fr) 40px 40px minmax(90px, 1fr)
-    76px;
-  gap: 10px;
+    76px minmax(130px, 1.5fr) 52px minmax(104px, 1fr) minmax(84px, 0.8fr) 34px 34px minmax(92px, 1fr)
+    64px;
+  gap: 8px;
   align-items: center;
   min-height: 48px;
   padding: 0 8px;
@@ -799,6 +808,11 @@ button.row.now:nth-of-type(even) {
 .row.now .accent,
 .row.now .bar {
   color: inherit;
+}
+.row .chip {
+  white-space: normal;
+  line-height: 1.15;
+  padding: 2px 6px;
 }
 .row.done {
   color: var(--ink-3);
@@ -899,6 +913,7 @@ button.row.now:nth-of-type(even) {
 .pl {
   min-height: 100dvh;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
 }
 .pl-banner {

@@ -85,15 +85,11 @@ export function Sheet({ me, state, send }: SheetProps) {
   return (
     <>
       <div>
-        <div className="display" style={{ fontSize: 38, lineHeight: 1 }}>
+        <div className="display" style={{ fontSize: 30, lineHeight: 1.05 }}>
           {me.name.toUpperCase()}
         </div>
-        <div className="label">{[s.archetype, s.species, `T${state.campaign.tier}`].filter(Boolean).join(" · ")}</div>
-        {s.keywords.length > 0 && (
-          <div className="dim" style={{ fontSize: 12 }}>
-            {s.keywords.join(", ")}
-          </div>
-        )}
+        <i className="dim">{[s.archetype, s.species, `Tier ${state.campaign.tier}`].filter(Boolean).join(" · ")}</i>
+        {s.keywords.length > 0 && <div className="kw">{s.keywords.join(" · ")}</div>}
       </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         <StatusChips items={pcStatus(me, d)} />

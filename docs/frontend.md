@@ -499,9 +499,12 @@ no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `R
 
 | Component | Props | Job |
 |---|---|---|
-| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | Block bar plus `value/max`; `—` when `max` is `null`; red when `danger` and `value > 0` |
-| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat` | A threat stat block in terminal form: a source and page rule, attributes, DEF/RES/WND/SHK/SPD, skills, bonuses, abilities and weapons, Determination, Conviction/Resolve/Size/Personal Ruin, options and mob abilities |
-| `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (amber) |
+| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | A `Track` plus `value/max`; `—` when `max` is `null`; the track fills crimson when `danger`, ink otherwise |
+| `track/track.tsx` `Track` | `value`, `max`, `tone?: "harm" \| "ink"` | Framed cells from `blocks()`, filled crimson or ink; decorative (`aria-hidden`), so show the number beside it |
+| `seal/seal.tsx` `Seal` | `value`, `pool: Pool`, `size?` | A party pool as a wax seal (brass Glory, crimson Ruin), `role="img"` labelled `<value> <pool>` |
+| `theme-toggle/theme-toggle.tsx` `ThemeToggle` | `className?` | The day/night switch (§7): flips `data-theme` on `<html>` and stores it; `constants.ts` holds `THEME_KEY` and the pre-paint `THEME_SCRIPT` |
+| `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
+| `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
 
@@ -512,7 +515,7 @@ with `bun test lib`.
 
 | Lib | Export | Job |
 |---|---|---|
-| `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | A `█░` bar scaled to at most 10 cells. Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
+| `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | `{ filled, cells }` for a track scaled to at most 10 cells (drawn by `components/ui/track`). Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
 | `weapon-line/weapon-line.ts` | `weaponLine({ weapon, strength? })` | A one-line weapon profile: `dmg +ED ED · AP · R short/med/long · S salvo · traits`. `addStrength` melee prints `S+X`, or a number when `strength` is given. A `salvo: null` prints `–`, and an absent salvo is omitted |
 | `tokens/tokens.ts` | `TOKENS` (`bg`, `fg`) | Raw colours for places CSS variables can't reach: the QR canvas, the viewport `themeColor` and the manifest. It mirrors `:root`, so change both together |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
@@ -584,22 +587,32 @@ The toggle's label is swapped by CSS (`.theme-to-night` / `.theme-to-day`), so s
 
 **Class vocabulary:**
 - Text: `.display`, `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
-  `.label`, `.rule` (a section head; the double rule is drawn by `::after`).
+  `.label`, `.rule` (a section head; the double rule is drawn by `::after`), `.kw` (keywords in crimson small caps).
 - Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px)
   and `.sq` (44px square); `.input`; `.field`.
-- Chips: `.chip`, with `.warn` and `.bad`.
-- Tabs: `.tabs` / `.tab`, an iron strip; `[aria-selected="true"]` is crimson with a bright top stroke.
+- Chips: `.chip`, with `.warn` and `.bad`; `.now-chip` (the tracker's "▶ X ACTING").
+- Tabs: `.tabs` / `.tab`, an iron strip; `[aria-selected="true"]` is crimson with a bright top stroke. `.tabs.rail` is
+  the GM's right-edge chapter rail (the open tab on a torn crimson stroke, `data-n` numerals behind the rest; a top
+  strip under 900px). `.tabs.sub` is an underlined in-screen strip (codex kinds, rule kinds) that scrolls sideways
+  when it doesn't fit.
 - Bands: `.band` (iron, bone text; `.btn`, `.dim` and `.label` inside it switch to their on-iron colours) and
-  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, the GM tabs and `.pl-banner`.
-- Layout: `.panel`, `.item`, `.item-head` (a card's full-width header row, 44px tall), `.list`, `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`, `pre.text`.
-- Shells: `.gm*` for the GM, `.tracker*` and `.row*` for the tracker, `.cmd` for the command bar, `.pl*`, `.vitals`,
-  `.vital` and `.traits` for the player app.
+  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, `.pl-banner` and the lobby header.
+- Book furniture: `.sb*` (the stat block: `.sb-title`, `.sb-grid`, `.sb-head` with `.cur` for the campaign Tier,
+  `.sb-v`, `.sb-shade`, `.sb-band`, `.sb-body`), `.tbar` (a crimson table title bar; `.iron` for Threats), `.plate`
+  (riveted plate: GM-only content, e.g. the codex editor's GM notes, secrets and hazards), `.handout` (a sealed
+  slip), `.track` (framed wound/shock cells, `.harm` or `.ink`; `components/ui/track`), `.seal` (a pool as a wax seal;
+  `components/ui/seal`).
+- Layout: `.panel`, `.item` (`.now` for the acting card on FIGHT), `.item-head` (a card's full-width header row, 44px
+  tall), `.list` (`.table` for a bordered, gap-less table), `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`,
+  `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono).
+- Shells: `.gm*` for the GM, `.tracker*`, `.turn-strip` and `.row*` for the tracker, `.cmd` for the command bar,
+  `.pl*`, `.vitals`, `.vital` and `.traits` for the player app.
 
 **Layout:**
-- **GM:** tablet-first. `.gm` is a full-height grid (header, tabs, scrolling body). The tracker is a two-column grid:
-  the main list, plus a 320px side panel.
+- **GM:** tablet-first. `.gm` is a full-height grid: the header band and the scrolling body on the left, the
+  112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel.
 - **`@media (max-width: 900px)`** is the only breakpoint:
-  - The GM shell becomes one scrolling page instead of fixed-height panes.
+  - The GM shell becomes one scrolling page instead of fixed-height panes, and the rail becomes a top tab strip.
   - The title takes a full line.
   - The pool controls shrink to 40px.
   - The tracker stacks, with the side panel below the list.

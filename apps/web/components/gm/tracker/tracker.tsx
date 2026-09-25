@@ -407,7 +407,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                         }}
                       />
                     )}
-                    {nameOf(c).toUpperCase()}
+                    {nameOf(c)}
                   </span>
                   <span className="hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>
                   <span>
@@ -442,10 +442,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                       </span>
                     ))}
                   </span>
-                  <span
-                    className="hide-sm"
-                    style={{ color: c.kind === "threat" && !c.revealed ? "var(--red)" : "var(--ink-3)" }}
-                  >
+                  <span className={`hide-sm ${c.kind === "threat" && !c.revealed ? "accent" : "dim"}`}>
                     {c.kind === "pc" ? "FULL" : c.revealed ? "FULL" : "BAR ONLY"}
                   </span>
                 </button>
