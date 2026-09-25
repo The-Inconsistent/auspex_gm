@@ -168,10 +168,14 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
+| Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
+| Bloody Gates | *none* (adventure) | `Wrath & Glory_ Bloody Gates.pdf` | printed |
+| Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
 
-No creation content: Darktide and Litanies of the Lost (official adventures), `Wrath Glory Condensed Rules.docx.pdf`
-(fan quick-reference). The creation `source` ids are `SOURCES` in `packages/shared/src/creation.ts`, separate from
-`Threat.source` and `WargearSource`.
+No creation content: Darktide, Litanies of the Lost, Bloody Gates and Affliction Ascendant (official adventures;
+Affliction Ascendant's "Additional Rules for Psykers" is unread), Church of Steel (travel and vehicles),
+`Wrath Glory Condensed Rules.docx.pdf` (fan quick-reference). The creation `source` ids are `SOURCES` in
+`packages/shared/src/creation.ts`, separate from `Threat.source` and `WargearSource`.
 
 **Daemons book:**
 - The offset was checked on PDF pages 15, 41, 75, 101 and 125, where the folio (bottom right, odd pages only) matches
