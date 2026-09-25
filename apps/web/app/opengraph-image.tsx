@@ -8,7 +8,8 @@ export const alt = "Auspex: Wrath & Glory table companion";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Static cuts of the app's faces (OFL, via Fontsource): ImageResponse needs TTF/OTF/WOFF files, not next/font.
+// Static cuts of the app's faces (SIL OFL 1.1, via Fontsource; licences beside them in assets/*-OFL.txt):
+// ImageResponse needs TTF/OTF/WOFF files, not next/font.
 const [display, serif] = await Promise.all([
   readFile(join(process.cwd(), "assets/Cinzel-Bold.woff")),
   readFile(join(process.cwd(), "assets/CrimsonPro-Italic.woff")),
