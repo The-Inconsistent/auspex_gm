@@ -239,6 +239,11 @@ export function Sheet({ me, state, send }: SheetProps) {
           GEAR: {s.gear.join(" · ")}
         </div>
       )}
+      <div>
+        <a className="btn" href={`/c/${state.campaign.id}/build/${me.id}`}>
+          CHARACTER BUILDER
+        </a>
+      </div>
       <Refusal error={error} onDismiss={() => setError(null)} />
     </>
   );

@@ -91,6 +91,29 @@ name, gist and text, a kind filter, one `<details>` per entry: the gist on the c
 `RulesProvider` with the same rules, so a weapon trait or Condition shown anywhere opens its entry in place (§5,
 `RuleLink`). Nothing new is fetched and the book text stays behind the seat check.
 
+### `/c/<campaignId>/build/<characterId>`: `app/c/[campaignId]/build/[characterId]/page.tsx`
+
+The character builder (issue #9). `<characterId>` is `new` (`NEW_CHARACTER`) for a character not made yet, GM only; a
+player may open only their own. The page checks the seat, fetches `/api/campaigns/:id/creation` (parsed with
+`CreationPayload`) and renders `Builder` (`components/builder/`):
+- **Draft:** the choices so far (`Draft`: a `CharacterBuildInput` with the archetype optional, plus the name), kept in
+  `localStorage` per table and character (`draftKey`), started from the saved `character.build` or blank. START OVER
+  drops it.
+- **Live preview:** every change runs `resolveBuild` from `@wg/shared` (`useMemo`); the screens read its sheet,
+  ledger, `pending`, `choices` (every grant choice with its picker kind and answer) and `problems`. `BuilderContext`
+  (`useBuilder()`) carries the draft, the result and the catalogue lookups.
+- **Screens** (`StepNav`, one tab per Core p.17 step, "N LEFT" per tab): TIER (budget; the GM's HOMEBREW switch, which
+  reloads the page), ARCHETYPE, CUSTOMISE (ratings, USE SUGGESTIONS, Talents, powers for a PSYKER, Advancement
+  Packages), FACTION (placeholder fills, Background and its one bonus, option groups), ASCENSION (only below the
+  campaign's Tier), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
+  ticks and this character's rulings: species, keywords, gear swaps). Grant choices render as `ChoiceCard`s.
+- **Ledger:** a side panel from 900px (`XpLedger`), a fixed bottom bar on a phone (`XpBar`).
+- **Save:** `character.build`; the server re-resolves and refuses anything not ready. Success clears the draft and goes
+  back to the table.
+- Long catalogue lists (`RecordList`) show `LIST_LIMIT` matches and ask for a narrower search instead of virtualising.
+
+Entry points: BUILD / REBUILD per character and NEW FROM BUILDER in PARTY; CHARACTER BUILDER on the player SHEET.
+
 ### `/invite/<code>`: `app/invite/[code]/page.tsx`
 
 The room QR and per-character invite links point here. The page fetches `/api/invites/:code` with `apiGet`:

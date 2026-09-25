@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   ATTRIBUTE_XP,
+  CREATION_TYPES,
   LANGUAGE_XP,
   MAX_BOUGHT_WEALTH,
   SKILL_XP,
@@ -22,7 +23,7 @@ import {
 import { RARITY_DN } from "./requisition.ts";
 import { SOURCES, sourceCite, type Source } from "./source.ts";
 import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, type Mods, type Skill } from "./state.ts";
-import { gearLine, sheetWeapon, type Wargear, type WargearWeapon } from "./wargear.ts";
+import { Wargear, gearLine, sheetWeapon, type WargearWeapon } from "./wargear.ts";
 
 // The character builder (issue #9, docs/data.md §9): a character is the choices made at creation, and its sheet is
 // derived from them by `resolveBuild`, which the web runs for a live preview and the api re-runs before it saves.
@@ -108,7 +109,19 @@ export type PendingChoice = {
   options: string[];
   of?: string;
   cite?: string;
+  pick?: ChoicePick; // answered in `choices[path]`; without it, the builder's own field for that step answers it
 };
+// What a choice in `choices` picks from, so the builder can offer it: option indexes, or ids and names.
+export type ChoicePick =
+  | { kind: "option" }
+  | { kind: "wargear"; filter: WargearFilter }
+  | { kind: "skill"; from: Skill[] }
+  | { kind: "attribute"; from: Attribute[] }
+  | { kind: "discipline"; from: string[] | null }
+  | { kind: "power"; disciplines: string[] }
+  | { kind: "keyword" };
+// Every choice a grant asks for, answered or not, with the current answer: the builder shows them all.
+export type BuildChoicePrompt = PendingChoice & { pick: ChoicePick; answer: BuildChoice };
 // "error" blocks saving; "gm" needs the GM's tick (its path in `gm.approved`) before it does.
 export type BuildProblem = { step: BuildStep; what: string; cite?: string; severity: "error" | "gm"; path?: string };
 // What the build gives that a sheet has no field for: Faith, Corruption, followers, bonus dice in a situation…
@@ -120,6 +133,7 @@ export type ResolvedBuild = {
   spent: number;
   ledger: LedgerRow[];
   pending: PendingChoice[];
+  choices: BuildChoicePrompt[];
   problems: BuildProblem[];
   effects: BuildEffect[];
 };
@@ -132,6 +146,15 @@ export type BuildCatalogue = { creation: Creation; wargear: ReadonlyMap<string, 
 // What GET /api/campaigns/:id/creation serves a seat: the catalogue, filtered to the campaign's allowed books, and the
 // Wargear catalogue the builder's picks and sheet preview read.
 export type CreationPayload = { homebrew: boolean; creation: Creation; wargear: Wargear[] };
+export const CreationPayload = z.object({
+  homebrew: z.boolean(),
+  creation: z.object(
+    Object.fromEntries(Object.entries(CREATION_TYPES).map(([k, schema]) => [k, schema.array()])) as {
+      [K in keyof typeof CREATION_TYPES]: z.ZodArray<(typeof CREATION_TYPES)[K]>;
+    },
+  ),
+  wargear: Wargear.array(),
+});
 export const catalogueOf = (p: CreationPayload): BuildCatalogue => ({
   creation: p.creation,
   wargear: new Map(p.wargear.map((w) => [w.id, w])),
@@ -241,6 +264,7 @@ export function resolveBuild({
   const budget = build.budget ?? startingXp(tier);
   const ledger: LedgerRow[] = [];
   const pending: PendingChoice[] = [];
+  const choices: BuildChoicePrompt[] = [];
   const problems: BuildProblem[] = [];
   const effects: BuildEffect[] = [];
   const deferred: Deferred[] = [];
@@ -315,6 +339,11 @@ export function resolveBuild({
 
   const choiceFor = (path: string) => build.choices[path];
   const ask = (c: PendingChoice) => void pending.push(c);
+  // A choice answered in `choices[path]`: always listed for the builder, and pending until `done`.
+  const choose = (c: PendingChoice & { pick: ChoicePick }, done: boolean) => {
+    choices.push({ ...c, answer: choiceFor(c.path) ?? [] });
+    if (!done) pending.push(c);
+  };
 
   // XP of a Talent, power or package at creation. "× the new Tier" is the campaign Tier (Core p.149).
   const price = (x: XpCost, { path, step, what }: { path: string; step: BuildStep; what: string }): number => {
@@ -332,14 +361,17 @@ export function resolveBuild({
     }
     const pick = choiceFor(`${path}/xp`)?.[0];
     const c = typeof pick === "number" ? x.byChoice[pick] : undefined;
-    if (!c)
-      ask({
+    choose(
+      {
         path: `${path}/xp`,
         step,
         what: `${what}: which price applies`,
         choose: 1,
         options: x.byChoice.map((b) => `${b.xp} XP: ${b.when}`),
-      });
+        pick: { kind: "option" },
+      },
+      !!c,
+    );
     return c?.xp ?? x.byChoice[0]!.xp;
   };
 
@@ -387,8 +419,18 @@ export function resolveBuild({
     if ("choose" in g && "from" in g) {
       const n = scaled(g.choose, o);
       const answer = (choiceFor(o.path) ?? []).filter((x): x is number => typeof x === "number" && x < g.from.length);
-      if (answer.length < n && !(g.optional && choiceFor(o.path)))
-        ask({ path: o.path, step: o.step, what: `Choose ${n}`, choose: n, options: g.from.map(label), cite: o.cite });
+      choose(
+        {
+          path: o.path,
+          step: o.step,
+          what: g.optional ? `Choose up to ${n}` : `Choose ${n}`,
+          choose: n,
+          options: g.from.map(label),
+          cite: o.cite,
+          pick: { kind: "option" },
+        },
+        answer.length >= n || (g.optional && !!choiceFor(o.path)), // an optional choice answered [] is declined
+      );
       if (!g.repeat && new Set(answer).size !== answer.length)
         problem({ step: o.step, severity: "error", what: "The same option was chosen twice", cite: o.cite });
       return answer.slice(0, n).forEach((j, k) => grant(g.from[j]!, { ...o, path: `${o.path}/${k}` }));
@@ -403,16 +445,20 @@ export function resolveBuild({
           what: `${bad.join(", ")} is not one of the Skills offered`,
           cite: o.cite,
         });
-      if (picked.length < g.choose)
-        ask({
+      const from = g.skills ?? (Object.keys(SKILLS) as Skill[]);
+      choose(
+        {
           path: o.path,
           step: o.step,
           what: `Raise ${g.choose} Skill${g.choose > 1 ? "s" : ""} to ${g.rating}`,
           choose: g.choose,
           options: [],
-          of: (g.skills ?? Object.keys(SKILLS)).join(", "),
+          of: from.join(", "),
           cite: o.cite,
-        });
+          pick: { kind: "skill", from },
+        },
+        picked.length >= g.choose,
+      );
       for (const k of picked.slice(0, g.choose)) s.base.skills[k] = Math.max(s.base.skills[k] ?? 0, g.rating);
       return;
     }
@@ -430,8 +476,8 @@ export function resolveBuild({
           });
         else s.powers.add(pw.id);
       }
-      if (picked.length < n)
-        ask({
+      choose(
+        {
           path: o.path,
           step: o.step,
           what: g.random ? `Roll ${n} powers` : `Choose ${n} powers`,
@@ -439,7 +485,10 @@ export function resolveBuild({
           options: [],
           of: `powers of ${g.fromDisciplines.join(", ")}`,
           cite: o.cite,
-        });
+          pick: { kind: "power", disciplines: g.fromDisciplines },
+        },
+        picked.length >= n,
+      );
       return;
     }
     if ("talent" in g) return addTalent(g.talent, { ...o, granted: true });
@@ -471,8 +520,8 @@ export function resolveBuild({
           what: `Wargear pick: ${g.wargearOf.upgrade ?? g.wargearOf.condition}`,
           cite: o.cite,
         });
-      if (picked.length < n)
-        ask({
+      choose(
+        {
           path,
           step: o.step,
           what: `Pick ${n} wargear`,
@@ -480,7 +529,10 @@ export function resolveBuild({
           options: [],
           of: describeFilter(g.wargearOf),
           cite: o.cite,
-        });
+          pick: { kind: "wargear", filter: g.wargearOf },
+        },
+        picked.length >= n,
+      );
       return;
     }
     if ("weapon" in g) {
@@ -510,8 +562,9 @@ export function resolveBuild({
           (x): x is Attribute => typeof x === "string" && (ATTRIBUTES as readonly string[]).includes(x),
         );
         const ok = picked.filter((a) => which === "any" || which.includes(a)).slice(0, 1);
-        if (!ok.length)
-          ask({
+        const from = which === "any" ? [...ATTRIBUTES] : which;
+        choose(
+          {
             path: o.path,
             step: o.step,
             what: "Choose an Attribute",
@@ -519,7 +572,10 @@ export function resolveBuild({
             options: [],
             of: which === "any" ? "any Attribute" : which.join(", "),
             cite: o.cite,
-          });
+            pick: { kind: "attribute", from },
+          },
+          ok.length > 0,
+        );
         targets = ok;
       } else targets = [which];
       for (const a of targets) {
@@ -544,8 +600,8 @@ export function resolveBuild({
       );
       const ok = picked.filter((d) => !g.from || g.from.includes(d)).slice(0, g.chooseDisciplines);
       ok.forEach((d) => s.disciplines.add(d));
-      if (ok.length < g.chooseDisciplines)
-        ask({
+      choose(
+        {
           path: o.path,
           step: o.step,
           what: `Choose ${g.chooseDisciplines} Discipline${g.chooseDisciplines > 1 ? "s" : ""}`,
@@ -553,24 +609,31 @@ export function resolveBuild({
           options: [],
           of: g.from?.join(", ") ?? "any Discipline you may learn",
           cite: o.cite,
-        });
+          pick: { kind: "discipline", from: g.from ?? null },
+        },
+        ok.length >= g.chooseDisciplines,
+      );
       return;
     }
     if ("optionAccess" in g) return void s.optionAccess.add(g.optionAccess);
     if ("neverKeyword" in g) return void s.neverKeywords.add(g.neverKeyword);
     if ("loseKeyword" in g) {
       const k = g.loseKeyword === "[ANY]" ? (choiceFor(o.path)?.[0] as string | undefined) : g.loseKeyword;
-      if (!k)
-        return ask({
-          path: o.path,
-          step: o.step,
-          what: "Choose the Keyword you lose",
-          choose: 1,
-          options: [],
-          of: "one of your Keywords",
-          cite: o.cite,
-        });
-      s.keywords = s.keywords.filter((x) => x !== k);
+      if (g.loseKeyword === "[ANY]")
+        choose(
+          {
+            path: o.path,
+            step: o.step,
+            what: "Choose the Keyword you lose",
+            choose: 1,
+            options: [],
+            of: "one of your Keywords",
+            cite: o.cite,
+            pick: { kind: "keyword" },
+          },
+          !!k,
+        );
+      if (k) s.keywords = s.keywords.filter((x) => x !== k);
       return;
     }
     if ("influenceAttribute" in g) return void (s.influenceAttribute = g.influenceAttribute);
@@ -578,16 +641,20 @@ export function resolveBuild({
       const d = g.xpDiscount;
       if ("talent" in d) return void s.xpDiscounts.talents.set(d.talent, d.xp);
       const disc = d.discipline ?? (choiceFor(o.path)?.[0] as string | undefined);
-      if (!disc)
-        ask({
-          path: o.path,
-          step: o.step,
-          what: "Choose the Discipline you learn cheaper",
-          choose: 1,
-          options: [],
-          of: "a Discipline",
-          cite: o.cite,
-        });
+      if (!d.discipline)
+        choose(
+          {
+            path: o.path,
+            step: o.step,
+            what: "Choose the Discipline you learn cheaper",
+            choose: 1,
+            options: [],
+            of: "a Discipline",
+            cite: o.cite,
+            pick: { kind: "discipline", from: null },
+          },
+          !!disc,
+        );
       return void s.xpDiscounts.disciplines.push({ id: disc, multiplier: d.multiplier });
     }
     if ("story" in g) return problem({ step: o.step, severity: "gm", path: o.path, what: g.story, cite: o.cite });
@@ -599,7 +666,7 @@ export function resolveBuild({
   const arch = ix.archetypes.get(build.archetypeId);
   if (!arch) {
     problem({ step: "archetype", severity: "error", what: `Unknown archetype ${build.archetypeId}` });
-    return { sheet: CharacterStats.parse({}), budget, spent: 0, ledger, pending, problems, effects };
+    return { sheet: CharacterStats.parse({}), budget, spent: 0, ledger, pending, choices, problems, effects };
   }
   allowed(arch, "archetype");
   const archOrigin: Origin = {
@@ -1218,7 +1285,7 @@ export function resolveBuild({
     gear: gear.slice(0, 60).map((g) => g.slice(0, 200)),
     wealth: s.wealth,
   });
-  return { sheet, budget, spent, ledger, pending, problems, effects };
+  return { sheet, budget, spent, ledger, pending, choices, problems, effects };
 }
 
 // ── requirements ─────────────────────────────────────────────────────────────────────────────────────────────────────

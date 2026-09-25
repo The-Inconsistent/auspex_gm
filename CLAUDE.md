@@ -134,12 +134,14 @@ apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessi
 apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM), drop-placeholders.ts (one-off pack fix)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
+                    c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
                     server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
 apps/web/components/lobby/   lobby-view (your games, running now, new game)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
+apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), weapon-line, bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
@@ -234,5 +236,5 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Not built yet
 
-- The character builder UI (the catalogue, `resolveBuild`, `GET /creation` and `character.build` are done: issue #9 steps 1–3)
+- Advancement after creation (issue #9 step 5) and Advanced Creation
 - Server-side undo history (client undo is inverse deltas)

@@ -14,6 +14,7 @@ import {
   type Wargear,
 } from "@wg/shared";
 
+import { NEW_CHARACTER } from "@/components/builder/constants";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { TOKENS } from "@/lib/tokens/tokens";
@@ -310,6 +311,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 {d.resilience}
               </div>
               <div className="keys">
+                <a className="btn sm" href={`/c/${state.campaign.id}/build/${c.id}`}>
+                  {c.build ? "REBUILD" : "BUILD"}
+                </a>
                 <button className="btn sm" onClick={() => inviteCharacter(c)}>
                   INVITE
                 </button>
@@ -378,6 +382,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           placeholder="NEW AGENT NAME"
         />
         <button className="btn">ADD AGENT</button>
+        <a className="btn" href={`/c/${state.campaign.id}/build/${NEW_CHARACTER}`}>
+          NEW FROM BUILDER
+        </a>
       </form>
 
       {qr && <QrDialog qr={qr} onClose={() => setQr(null)} />}
