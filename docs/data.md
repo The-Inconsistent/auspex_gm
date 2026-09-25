@@ -449,7 +449,7 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 **Status (2026-09-25).** All six books are transcribed and verified against the page images: 113 keywords, 27
 factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 333 talents, 32
 packages, 38 disciplines, 267 powers, 11 Patrons and 28 flavour tables, with every reference resolving. What is left
-is outside the catalogue: 497 starting-wargear items name gear the Wargear catalogue doesn't have yet (the FSPG, IoE,
+is outside the catalogue: 521 starting-wargear items name gear the Wargear catalogue doesn't have yet (the FSPG, IoE,
 Apocrypha and Necron armouries).
 
 | Type | Record | Holds |
