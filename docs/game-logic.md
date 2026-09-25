@@ -12,7 +12,7 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 | Layer | File | Holds |
 |---|---|---|
 | Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `skillTotal`, `effectiveStrength`, `poolMax`, `isOut`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
-| | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt` |
+| | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |

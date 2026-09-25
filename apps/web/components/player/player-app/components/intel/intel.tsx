@@ -9,26 +9,26 @@ export function Intel({ codex, state }: IntelProps) {
     <>
       {state.campaign.framework && (
         <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">── MISSION ──</div>
+          <div className="rule">MISSION</div>
           <pre className="text">{state.campaign.framework}</pre>
           {state.campaign.patron && <div className="dim">PATRON: {state.campaign.patron}</div>}
         </div>
       )}
       {last && (
         <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">── PREVIOUSLY (SESSION {last.number}) ──</div>
+          <div className="rule">PREVIOUSLY (SESSION {last.number})</div>
           <pre className="text">{last.recap}</pre>
         </div>
       )}
-      <div className="rule">── HANDOUTS ──</div>
+      <div className="rule">HANDOUTS</div>
       {handouts.length === 0 && <div className="dim">No transmissions received.</div>}
       {handouts.map((h) => (
-        <div key={h.id} className="item">
-          <b>{h.title.toUpperCase()}</b>
-          <pre className="text">{h.body}</pre>
+        <div key={h.id} className="handout stack" style={{ gap: 8 }}>
+          <span className="label">{h.title.toUpperCase()}</span>
+          <pre className="text slate">{h.body}</pre>
         </div>
       ))}
-      <div className="rule">── KNOWN PERSONS ──</div>
+      <div className="rule">KNOWN PERSONS</div>
       {codex.npcs.map((n) => (
         <div key={n.id} className="item">
           <b>{n.name.toUpperCase()}</b>
@@ -36,7 +36,7 @@ export function Intel({ codex, state }: IntelProps) {
           {n.description && <pre className="text">{n.description}</pre>}
         </div>
       ))}
-      <div className="rule">── KNOWN LOCATIONS ──</div>
+      <div className="rule">KNOWN LOCATIONS</div>
       {codex.locations.map((l) => (
         <div key={l.id} className="item">
           <b>{l.name.toUpperCase()}</b>

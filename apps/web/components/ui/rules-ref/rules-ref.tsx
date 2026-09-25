@@ -30,10 +30,10 @@ export function RulesRef({ rules }: RulesRefProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <nav className="tabs" role="tablist" aria-label="Rule kind">
+      <nav className="tabs sub" role="tablist" aria-label="Rule kind">
         {(Object.keys(RULE_FILTERS) as RuleFilter[]).map((f) => (
           <button key={f} role="tab" className="tab" aria-selected={filter === f} onClick={() => setFilter(f)}>
-            [{f}]
+            {f}
           </button>
         ))}
       </nav>

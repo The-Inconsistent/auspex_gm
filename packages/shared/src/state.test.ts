@@ -5,6 +5,7 @@ import {
   Action,
   CharacterStats,
   Threat,
+  threatCite,
   adjustAmmo,
   gearLine,
   requisitionOutcome,
@@ -423,4 +424,10 @@ test("sheetWeapon and gearLine: catalogue entries on a sheet (p.207)", () => {
     }),
     "Tacticus Mk X (AR 5, Powered (4); Core p.233)",
   );
+});
+
+test("threatCite uses the SOURCES cite, or the threat-only one", () => {
+  assert.equal(threatCite({ source: "core", page: 339 }), "Core p.339");
+  assert.equal(threatCite({ source: "vow-of-absolution", page: 43 }), "VoA p.43");
+  assert.equal(threatCite({ source: "gutshivas-kommandos", page: 8 }), "GK p.8");
 });

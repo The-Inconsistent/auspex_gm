@@ -3,6 +3,19 @@ import { SOURCES } from "./source.ts";
 
 // Bestiary format: Core Rulebook p.323. Stats don't vary by Tier, only the Threat class does.
 
+// Threat books that aren't creation/wargear sources, so they have no SOURCES entry. The threat `source` enum is built
+// from these keys, so a new threat-only book can't be added without its cite.
+export const THREAT_ONLY_SOURCES = {
+  "threat-assessment": { cite: "TA" },
+  "gutshivas-kommandos": { cite: "GK" },
+} as const;
+const THREAT_SOURCES = { ...SOURCES, ...THREAT_ONLY_SOURCES };
+export type ThreatSource = keyof typeof THREAT_SOURCES;
+
+// "Core p.339", "TA p.8": a stat block's page cite.
+export const threatCite = ({ source, page }: { source: ThreatSource; page: number }) =>
+  `${THREAT_SOURCES[source].cite} p.${page}`;
+
 export const ThreatClass = z.enum(["T", "E", "A", "M"]); // Troop, Elite, Adversary, Monstrous Creature
 export type ThreatClass = z.infer<typeof ThreatClass>;
 
@@ -42,9 +55,7 @@ export const ThreatOption = z.object({
 export const Threat = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   name: z.string(),
-  source: z
-    .enum([...(Object.keys(SOURCES) as (keyof typeof SOURCES)[]), "threat-assessment", "gutshivas-kommandos"])
-    .default("core"),
+  source: z.enum(Object.keys(THREAT_SOURCES) as [ThreatSource, ...ThreatSource[]]).default("core"),
   page: z.number().int().positive(), // printed page number in `source`
   faction: z.enum([
     "imperial",

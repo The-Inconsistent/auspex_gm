@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "Auspex",
     start_url: "/",
     display: "standalone",
-    background_color: TOKENS.bg,
-    theme_color: TOKENS.bg,
+    background_color: TOKENS.vellum,
+    theme_color: TOKENS.iron,
   };
 }

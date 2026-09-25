@@ -1,7 +1,7 @@
 # Frontend (Next.js · React) Code Style Guidelines
 
 > Sibling to [backend-code-style.md](./backend-code-style.md). Stack: **Next.js 16** (App Router), **React 19**,
-> **socket.io-client**, plain CSS design tokens (the "Auspex" terminal look) in `apps/web/app/globals.css`, and **zod**
+> **socket.io-client**, plain CSS design tokens (the "Imperial Manuscript" look, vellum and vigil themes) in `apps/web/app/globals.css`, and **zod**
 > schemas from `@wg/shared`. Architecture is in the root `CLAUDE.md`.
 
 ## General Principles
@@ -142,7 +142,7 @@ The tracker and codex lists are small (tens of rows), so no virtualisation is ne
 ## UI & Accessibility
 
 - **Focus is always visible.** Never remove an outline without a visible replacement (the border colour changes to
-  `--fg`, or a `:focus-within` ring on a wrapper).
+  `--red`, or a `:focus-within` ring on a wrapper).
 - **Every control has an accessible name.** Icon-only buttons get an `aria-label` naming the action *and* its target
   (`Decrease WOUNDS`). Selects and inputs without a visible label get an `aria-label`.
 - **Labels are associated** (`<label htmlFor>`, or the input nested inside its `<label>`). A group of toggle chips gets

@@ -63,7 +63,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
 
   return (
     <div className="pad stack">
-      {msg && <div className={msg.startsWith("!") ? "red" : "amber"}>{msg}</div>}
+      {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
       <div className="keys">
         {codex.adventures.map((a) => (
           <button key={a.id} className={`btn ${a.id === advId ? "primary" : ""}`} onClick={() => pickAdventure(a.id)}>
@@ -92,7 +92,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
 
       {adv && !editing && (
         <>
-          <div className="rule">── {adv.title.toUpperCase()} · BEATS ──</div>
+          <div className="rule">{adv.title.toUpperCase()} · BEATS</div>
           <div className="list">
             {adv.beats.map((b, i) => (
               <div key={b.id} className="item">

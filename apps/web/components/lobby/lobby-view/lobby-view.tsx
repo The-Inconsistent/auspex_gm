@@ -5,6 +5,8 @@ import { useState, type FormEvent } from "react";
 import { UserButton } from "@wg/auth/react";
 import { TIERS, type Lobby, type LobbyGame } from "@wg/shared";
 
+import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
+
 type LobbyViewProps = { lobby: Lobby };
 
 // One game card. Members open the table; others only see that it's running (joining needs an invite).
@@ -49,14 +51,18 @@ export function LobbyView({ lobby }: LobbyViewProps) {
 
   return (
     <main className="pad stack" style={{ maxWidth: 760, margin: "0 auto" }}>
-      <header style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <div className="display" style={{ fontSize: 34, flex: 1 }}>
-          AUSPEX // LOBBY
+      <header
+        className="band torn"
+        style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", marginBottom: 12 }}
+      >
+        <div className="display" style={{ fontSize: 30, flex: 1 }}>
+          AUSPEX <span className="dim">· LOBBY</span>
         </div>
+        <ThemeToggle />
         <UserButton />
       </header>
 
-      <div className="rule">── YOUR GAMES ──</div>
+      <div className="rule">YOUR GAMES</div>
       <div className="list">
         {lobby.mine.length === 0 && (
           <div className="dim">
@@ -70,7 +76,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
 
       {others.length > 0 && (
         <>
-          <div className="rule">── RUNNING NOW ──</div>
+          <div className="rule">RUNNING NOW</div>
           <div className="list">
             {others.map((g) => (
               <GameCard key={g.id} game={g} />
@@ -81,7 +87,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
 
       {lobby.canCreate && (
         <form className="panel pad stack" onSubmit={handleCreate}>
-          <div className="rule">── NEW GAME ──</div>
+          <div className="rule">NEW GAME</div>
           <div className="field">
             <label className="label" htmlFor="game-name">
               NAME

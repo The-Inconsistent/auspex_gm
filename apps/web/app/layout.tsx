@@ -1,14 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, VT323 } from "next/font/google";
+import { Cinzel, Crimson_Pro, IBM_Plex_Mono } from "next/font/google";
 
 import { AuthProvider } from "@wg/auth/react";
 
+import { THEME_SCRIPT } from "@/components/ui/theme-toggle/constants";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import "./globals.css";
 
+// Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is only for in-world print-outs.
+const display = Cinzel({ subsets: ["latin"], variable: "--font-display" });
+const serif = Crimson_Pro({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-serif" });
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-mono" });
-const display = VT323({ subsets: ["latin"], weight: "400", variable: "--font-display" });
 
 const title = "Auspex — W&G Table";
 const description = "Wrath & Glory table companion";
@@ -21,13 +24,17 @@ export const metadata: Metadata = {
   openGraph: { title, description, siteName: "Auspex", type: "website" },
   twitter: { card: "summary_large_image", title, description },
 };
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: TOKENS.bg };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: TOKENS.iron };
 
 type RootLayoutProps = { children: React.ReactNode };
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${mono.variable} ${display.variable}`}>
+    // suppressHydrationWarning: THEME_SCRIPT may set data-theme on <html> before React hydrates.
+    <html lang="en" className={`${display.variable} ${serif.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <AuthProvider>{children}</AuthProvider>
       </body>

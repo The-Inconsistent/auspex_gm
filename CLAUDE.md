@@ -8,7 +8,8 @@ real miniatures and terrain, so there are **no maps, dice or chat**. The app cov
 - **Players (phones):** live play sheet, the fight as the GM allows them to see it, handouts, known NPCs and
   locations, session recaps.
 
-Everything syncs live. UI style is "Auspex": a green-phosphor cogitator terminal (VT323 + IBM Plex Mono).
+Everything syncs live. UI style is the "Imperial Manuscript", after the books' print design: vellum, crimson ink and iron
+bands (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a night "vigil" theme (`docs/frontend.md` §7).
 
 ## Rules come from the books, never from memory
 
