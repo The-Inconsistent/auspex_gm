@@ -146,6 +146,7 @@ packages/auth/               type.d.ts (Clerk public metadata + session claims),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
                              creation.test.ts (the volkus pregens resolve in the creation catalogue)
+aspire-apphost/     apphost.mts: optional Aspire TypeScript AppHost (Postgres → api → web, with a dashboard)
 ```
 
 ## Commands
@@ -158,6 +159,9 @@ bun run dev                 # whole stack via Turborepo (turbo.json): dev:db fir
 bun run dev:db              # Postgres in Docker on localhost:5434 (5432/5433 are taken on this machine)
 bun run dev:api             # NestJS on :4000, watches src
 bun run dev:web             # Next on :3000; proxies /api and /socket.io to :4000
+aspire run                  # optional: same stack with a dashboard (logs, OTel traces), health-gated startup.
+                            # TypeScript AppHost, no .NET SDK. Podman needs DOTNET_ASPIRE_CONTAINER_RUNTIME=podman.
+                            # Turborepo still owns `build`; deploy unchanged. See docs/development.md §Aspire
 cd apps/api && bun run seed volkus --owner user_2abc…       # packages/data/packs/volkus, that Clerk user as GM; prints /c/<id>
 
 bun run typecheck           # shared + api + web (with test, the Husky pre-commit hook: .husky/pre-commit)
