@@ -1254,7 +1254,8 @@
             "bundle": [
               {
                 "name": "Grenade Launcher",
-                "qty": 1
+                "qty": 1,
+                "wargearId": "militarum-tempestus-grenade-launcher"
               },
               {
                 "name": "Frag Grenade",

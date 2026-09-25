@@ -539,7 +539,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Bolt Sniper Rifle"
+          "name": "Bolt Sniper Rifle",
+          "wargearId": "voa-astartes-sniper-rifle"
         }
       },
       {
@@ -550,7 +551,8 @@
       },
       {
         "wargear": {
-          "name": "Camo Cloak"
+          "name": "Camo Cloak",
+          "wargearId": "cameleoline-cloak"
         }
       },
       {
@@ -653,7 +655,8 @@
       },
       {
         "wargear": {
-          "name": "Divinator-class Auspex"
+          "name": "Divinator-class Auspex",
+          "wargearId": "auspex"
         }
       },
       {
@@ -1723,7 +1726,8 @@
       },
       {
         "wargear": {
-          "name": "Company Standard"
+          "name": "Company Standard",
+          "wargearId": "voa-battle-standard"
         }
       },
       {

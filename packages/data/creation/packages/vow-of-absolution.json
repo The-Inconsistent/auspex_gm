@@ -449,7 +449,8 @@
               {
                 "wargear": {
                   "name": "Chainfist",
-                  "qty": 1
+                  "qty": 1,
+                  "wargearId": "chain-fist"
                 }
               }
             ]
@@ -502,7 +503,8 @@
               {
                 "wargear": {
                   "name": "Chainfist",
-                  "qty": 1
+                  "qty": 1,
+                  "wargearId": "chain-fist"
                 }
               }
             ]
@@ -555,7 +557,8 @@
               {
                 "wargear": {
                   "name": "Chainfist",
-                  "qty": 1
+                  "qty": 1,
+                  "wargearId": "chain-fist"
                 }
               }
             ]
@@ -669,9 +672,10 @@
                 }
               },
               {
-                "wargear": {
-                  "name": "Force Weapon",
-                  "qty": 1
+                "pick": 1,
+                "wargearOf": {
+                  "weapon": "melee",
+                  "nameIncludes": "Force"
                 },
                 "requires": [
                   {
@@ -695,9 +699,10 @@
                 }
               },
               {
-                "wargear": {
-                  "name": "Force Weapon",
-                  "qty": 1
+                "pick": 1,
+                "wargearOf": {
+                  "weapon": "melee",
+                  "nameIncludes": "Force"
                 },
                 "requires": [
                   {
@@ -721,9 +726,10 @@
                 }
               },
               {
-                "wargear": {
-                  "name": "Force Weapon",
-                  "qty": 1
+                "pick": 1,
+                "wargearOf": {
+                  "weapon": "melee",
+                  "nameIncludes": "Force"
                 },
                 "requires": [
                   {

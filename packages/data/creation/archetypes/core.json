@@ -58,7 +58,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -150,7 +151,8 @@
       },
       {
         "wargear": {
-          "name": "Ministorum Robes"
+          "name": "Ministorum Robes",
+          "wargearId": "clothing"
         }
       },
       {
@@ -412,7 +414,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Administratum Robes"
+          "name": "Administratum Robes",
+          "wargearId": "clothing"
         }
       },
       {
@@ -740,7 +743,8 @@
       },
       {
         "wargear": {
-          "name": "Ripped clothes"
+          "name": "Ripped clothes",
+          "wargearId": "clothing"
         }
       }
     ],
@@ -821,7 +825,8 @@
       },
       {
         "wargear": {
-          "name": "Sororitas Vestments"
+          "name": "Sororitas Vestments",
+          "wargearId": "clothing"
         }
       },
       {
@@ -1530,7 +1535,8 @@
       },
       {
         "wargear": {
-          "name": "Tattered Clothes"
+          "name": "Tattered Clothes",
+          "wargearId": "clothing"
         }
       }
     ],
@@ -1841,7 +1847,8 @@
       },
       {
         "wargear": {
-          "name": "Ministorum Robes"
+          "name": "Ministorum Robes",
+          "wargearId": "clothing"
         }
       }
     ],
@@ -2233,7 +2240,8 @@
     "wargear": [
       {
         "wargear": {
-          "name": "Inquisitorial Rosette"
+          "name": "Inquisitorial Rosette",
+          "wargearId": "symbol-of-authority"
         }
       },
       {

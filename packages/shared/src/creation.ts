@@ -181,7 +181,8 @@ const grantOne = z.union([
   z.object({ power: id }),
   z.object({ wargear: WargearItem, requires: z.array(RequirementOne).optional() }), // "(TEMPESTUS SCION only)"
   z.object({ bundle: z.array(WargearItem).min(2) }), // items taken together: "a Bolt Pistol and a Chainsword" (Core p.99)
-  z.object({ pick: Scaled, wargearOf: WargearFilter }), // "any two augmetics" (Core p.109)
+  // "any two augmetics" (Core p.109); `requires`: "If worn by a Librarian … a Force Weapon" (VoA p.43)
+  z.object({ pick: Scaled, wargearOf: WargearFilter, requires: z.array(RequirementOne).optional() }),
   // An innate weapon profile: Baleblasts (IoE p.41); `addStrength` for melee "S + X" (Beastman Horns, Apocrypha p.14)
   z.object({ weapon: Weapon.extend({ addStrength: z.boolean().default(false) }) }),
   z.object({ weaponTrait: z.string().min(1) }), // "one weapon you possess gains the Blessed (1) trait" (Apocrypha p.210)
