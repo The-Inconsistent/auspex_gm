@@ -31,6 +31,10 @@
   --marker-blue: #7fb0ff;
   --marker-purple: #c79bff;
   --marker-white: #e8f5ec;
+  /* Side outlines on the player FIGHT cards: blue for the Agents, orange for the Threats (orange, so it never reads as
+     the crimson of "now"). */
+  --side-agents: #2f5f9e;
+  --side-threats: #b3541e;
   --serif: var(--font-serif), Georgia, serif;
   --display: var(--font-display), Georgia, serif;
   --mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
@@ -73,6 +77,8 @@
   --stain-b: rgba(0, 0, 0, 0);
   --vignette: rgba(0, 0, 0, 0.5);
   --overlay: rgba(23, 19, 15, 0.97);
+  --side-agents: #7fa6e0;
+  --side-threats: #e08a4a;
   color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
@@ -95,6 +101,8 @@
     --stain-b: rgba(0, 0, 0, 0);
     --vignette: rgba(0, 0, 0, 0.5);
     --overlay: rgba(23, 19, 15, 0.97);
+    --side-agents: #7fa6e0;
+    --side-threats: #e08a4a;
     color-scheme: dark;
   }
 }
@@ -646,10 +654,18 @@ textarea.input {
     0 2px 0 rgba(31, 26, 22, 0.08),
     0 10px 18px -12px rgba(31, 26, 22, 0.45);
 }
-/* The acting combatant's card on the player FIGHT tab. */
+/* Player FIGHT cards: outlined in their side's colour; the acting one also gets a crimson ring outside it. */
+.item.agents {
+  border: 2px solid var(--side-agents);
+}
+.item.threats {
+  border: 2px solid var(--side-threats);
+}
 .item.now {
-  border: 2px solid var(--red);
   background: var(--red-tint);
+  box-shadow:
+    0 0 0 2px var(--vellum),
+    0 0 0 4px var(--red);
 }
 
 /* GM shell: header band over the body, with the chapter-tab rail down the right edge (tablet). */
