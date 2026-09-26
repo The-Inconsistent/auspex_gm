@@ -19,7 +19,7 @@ import {
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
-import { weaponLine } from "@/lib/weapon-line/weapon-line";
+import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { Vital } from "./components/vital/vital";
@@ -139,7 +139,7 @@ export function Sheet({ me, state, send }: SheetProps) {
             <div key={w.name}>
               <b>{w.name.toUpperCase()}</b>
               <div className="dim" style={{ fontSize: 13 }}>
-                {weaponLine({ weapon: w, strength: effectiveStrength(s) })}
+                <WeaponLine weapon={w} strength={effectiveStrength(s)} />
               </div>
             </div>
           ))}

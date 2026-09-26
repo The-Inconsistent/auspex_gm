@@ -1,6 +1,6 @@
 import { ATTRIBUTES, threatCite, type RuleEntry, type Threat } from "@wg/shared";
 
-import { weaponLine } from "@/lib/weapon-line/weapon-line";
+import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 
 import { StatLegend } from "./components/stat-legend/stat-legend";
 
@@ -107,7 +107,9 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
                       {w.name}
                       {w.count ? ` (${w.count})` : ""}
                     </b>{" "}
-                    <span className="dim">{weaponLine({ weapon: w })}</span>
+                    <span className="dim">
+                      <WeaponLine weapon={w} />
+                    </span>
                   </div>
                 ))}
               </div>
@@ -142,7 +144,10 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
                 <b>{o.name}</b> {o.text}
                 {o.weapons.map((w) => (
                   <div key={w.name} style={{ paddingLeft: 12 }}>
-                    <b>{w.name}</b> <span className="dim">{weaponLine({ weapon: w })}</span>
+                    <b>{w.name}</b>{" "}
+                    <span className="dim">
+                      <WeaponLine weapon={w} />
+                    </span>
                   </div>
                 ))}
               </div>
