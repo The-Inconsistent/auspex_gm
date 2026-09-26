@@ -119,7 +119,7 @@ test("GM and player share a table", async (t) => {
   t.after(() => player.socket.close());
   await player.until((s) => s.characters.length === 2);
 
-  // Threat at Tier 2 -> Ork Boy is a Troop; stats hidden from players until revealed.
+  // Threat at Tier 2 -> Ork Boy is a Troop; players see its bars, not its stats, until the GM shows them.
   assert.ok((await gm.send({ type: "encounter.start" })).ok);
   const ork = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy", mobCount: 10 });
   assert.ok(ork.ok && ork.id);
@@ -132,7 +132,10 @@ test("GM and player share a table", async (t) => {
 
   await gm.send({ type: "combatant.adjust", id: ork.id, wounds: 2 });
   await player.until((s) => threatOf(s)?.mobCount === 8); // Mob members have 1 Wound each (p.325)
-  await gm.send({ type: "combatant.update", id: ork.id, revealed: true });
+  // Hidden: the phones don't get the threat at all until its mini goes on the table (rules-flow §11.53).
+  await gm.send({ type: "combatant.update", id: ork.id, visibility: "hidden" });
+  await player.until((s) => !!s.encounter && !threatOf(s));
+  await gm.send({ type: "combatant.update", id: ork.id, visibility: "stats" });
   await player.until((s) => threatOf(s)?.stats?.name === "Ork Boy");
 
   // Player permissions.
@@ -429,7 +432,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   await gm.send({ type: "combatant.adjust", id: mob.id, wounds: 1 });
   await gm.until((s) => threatOf(s)?.mobCount === 4 && threatOf(s)?.shock === 0);
 
-  // Players never get the threat id or personal Ruin of an unrevealed Threat.
+  // Players never get the threat id or personal Ruin of an bars-only Threat.
   const issued = await gm.send({ type: "token.issue", characterId: b.id });
   assert.ok(issued.ok && issued.token);
   const player = connect({ auth: { token: issued.token } });

@@ -7,6 +7,7 @@ import {
   THREAT_CLASS_RULES,
   TURN_END_REMINDERS,
   TURN_START_REMINDERS,
+  Visibility,
   canAct,
   canSeize,
   deriveStats,
@@ -36,7 +37,7 @@ import { parseCommand } from "@/lib/command/command";
 import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterField } from "@/lib/command/constants";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
-import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL } from "./constants";
+import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL, VISIBILITY_LABEL } from "./constants";
 import type { LogEntry, Run } from "./types";
 
 type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };
@@ -277,12 +278,13 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     );
   };
 
-  // REVEAL / HIDE: whether players see the selected threat's full stat block.
-  const handleRevealToggle = () => {
+  // PLAYERS picker: what the phones show of the selected threat. Hidden until its mini goes on the table (§11.53).
+  const handleVisibilityPick = (e: ChangeEvent<HTMLSelectElement>) => {
     if (sel?.kind !== "threat") return;
+    const visibility = Visibility.parse(e.target.value);
     void run(
-      { type: "combatant.update", id: sel.id, revealed: !sel.revealed },
-      `${nameOf(sel).toUpperCase()} ${sel.revealed ? "HIDDEN" : "REVEALED"}`,
+      { type: "combatant.update", id: sel.id, visibility },
+      `${nameOf(sel).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
     );
   };
 
@@ -443,8 +445,8 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                       </span>
                     ))}
                   </span>
-                  <span className={`hide-sm ${c.kind === "threat" && !c.revealed ? "accent" : "dim"}`}>
-                    {c.kind === "pc" ? "FULL" : c.revealed ? "FULL" : "BAR ONLY"}
+                  <span className={`hide-sm ${c.kind === "threat" && c.visibility !== "stats" ? "accent" : "dim"}`}>
+                    {VISIBILITY_LABEL[c.kind === "pc" ? "stats" : c.visibility]}
                   </span>
                 </button>
               );
@@ -501,9 +503,18 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                   ))}
                 </select>
                 {sel.kind === "threat" && (
-                  <button className="btn" onClick={handleRevealToggle}>
-                    {sel.revealed ? "HIDE" : "REVEAL"}
-                  </button>
+                  <select
+                    className="btn"
+                    aria-label="What players see"
+                    value={sel.visibility}
+                    onChange={handleVisibilityPick}
+                  >
+                    {Visibility.options.map((v) => (
+                      <option key={v} value={v}>
+                        PLAYERS: {VISIBILITY_LABEL[v]}
+                      </option>
+                    ))}
+                  </select>
                 )}
                 {enc.round === 1 &&
                   !sel.acted &&

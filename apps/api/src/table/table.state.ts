@@ -101,7 +101,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
                   maxWounds: r.statSnapshot!.wounds,
                   maxShock: r.statSnapshot!.shock,
                   conditions: r.conditions,
-                  revealed: r.revealed,
+                  visibility: r.visibility,
                   stats: r.statSnapshot,
                 },
           ),

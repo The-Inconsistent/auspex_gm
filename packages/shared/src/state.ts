@@ -52,6 +52,11 @@ export type CombatantKind = z.infer<typeof CombatantKind>;
 export const Marker = z.enum(["red", "amber", "green", "blue", "purple", "white"]);
 export type Marker = z.infer<typeof Marker>;
 
+// What the players' phones show of a Threat, most hidden first: nothing (its mini isn't on the table yet, §11.53),
+// its bars, or its stat block too.
+export const Visibility = z.enum(["hidden", "bars", "stats"]);
+export type Visibility = z.infer<typeof Visibility>;
+
 export const ATTRIBUTES = ["S", "T", "A", "I", "Wil", "Int", "Fel"] as const;
 export type Attribute = (typeof ATTRIBUTES)[number];
 
@@ -232,8 +237,8 @@ export const ThreatCombatant = z.object({
   maxWounds: z.number().int(), // always visible so players can draw wound bars
   maxShock: z.number().int().nullable(), // null = "–", never suffers Shock (p.324)
   conditions: z.array(z.string()),
-  revealed: z.boolean(),
-  stats: Threat.nullable(), // null in the player view until revealed
+  visibility: Visibility,
+  stats: Threat.nullable(), // null in the player view until visibility is "stats"
 });
 export type ThreatCombatant = z.infer<typeof ThreatCombatant>;
 
@@ -261,6 +266,8 @@ export const LiveState = z.object({
       lastSide: Side.nullable(), // side that acted last; null at the start of a Round
       seizedSide: Side.nullable(), // side that Seized; it can't Seize again until the other side acts
       combatants: z.array(Combatant),
+      // Player view only: sideUpNext before hidden Threats are dropped, so a hidden Threat's Turn still shows as due.
+      upNext: Side.nullable().optional(),
     })
     .nullable(),
   access: z.object({ members: z.array(Member), invites: z.array(Invite) }),
@@ -383,11 +390,14 @@ export const toPlayerView = (s: LiveState): LiveState => ({
   access: { members: s.access.members, invites: [] },
   encounter: s.encounter && {
     ...s.encounter,
-    // Unrevealed: bars, label and Conditions only. The threat id would name the stat block, and personal Ruin is
-    // the GM's.
-    combatants: s.encounter.combatants.map((c) =>
-      c.kind === "threat" && !c.revealed ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
-    ),
+    upNext: sideUpNext(s),
+    // Hidden: not sent at all, so the phones can't even count it. Bars: bars, label and Conditions only. The threat
+    // id would name the stat block, and personal Ruin is the GM's.
+    combatants: s.encounter.combatants
+      .filter((c) => c.kind === "pc" || c.visibility !== "hidden")
+      .map((c) =>
+        c.kind === "threat" && c.visibility === "bars" ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
+      ),
   },
 });
 

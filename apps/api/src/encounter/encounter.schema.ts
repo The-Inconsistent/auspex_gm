@@ -1,5 +1,5 @@
 import { boolean, integer, jsonb, pgTable, text, uuid, type AnyPgColumn } from "drizzle-orm/pg-core";
-import type { CombatantKind, Marker, Side, Threat, ThreatClass } from "@wg/shared";
+import type { CombatantKind, Marker, Side, Threat, ThreatClass, Visibility } from "@wg/shared";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
@@ -39,5 +39,5 @@ export const combatant = pgTable("combatant", {
   shock: integer().notNull().default(0),
   conditions: conditions(),
   expiring: conditions(), // timed Conditions held when this Turn started; they end with it (§11.8)
-  revealed: boolean().notNull().default(false),
+  visibility: text().$type<Visibility>().notNull().default("bars"), // players' view of a threat (§11.53)
 });
