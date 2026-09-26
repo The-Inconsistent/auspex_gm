@@ -384,6 +384,10 @@ export function threatStatus(c: ThreatCombatant): string[] {
   return c.wounds > 0 ? ["Wounded"] : [];
 }
 
+// The player view's currentId while a hidden threat takes its Turn (§11.53).
+export const UNSEEN_ID = "unseen";
+const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
+
 // Players see who's at the table but not the GM's invite links (each one is a way in).
 export const toPlayerView = (s: LiveState): LiveState => ({
   ...s,
@@ -391,10 +395,14 @@ export const toPlayerView = (s: LiveState): LiveState => ({
   encounter: s.encounter && {
     ...s.encounter,
     upNext: sideUpNext(s),
+    // A hidden threat's real id would let players count them, and match it once it shows.
+    currentId: s.encounter.combatants.some((c) => c.id === s.encounter?.currentId && isHidden(c))
+      ? UNSEEN_ID
+      : s.encounter.currentId,
     // Hidden: not sent at all, so the phones can't even count it. Bars: bars, label and Conditions only. The threat
     // id would name the stat block, and personal Ruin is the GM's.
     combatants: s.encounter.combatants
-      .filter((c) => c.kind === "pc" || c.visibility !== "hidden")
+      .filter((c) => !isHidden(c))
       .map((c) =>
         c.kind === "threat" && c.visibility === "bars" ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
       ),

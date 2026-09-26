@@ -27,6 +27,7 @@ import {
   threatStatus,
   toPlayerCodex,
   toPlayerView,
+  UNSEEN_ID,
   type Character,
   type Codex,
   type Combatant,
@@ -133,6 +134,9 @@ test("toPlayerView: a hidden threat's Turn still shows as due", () => {
   const e = toPlayerView(s).encounter!;
   assert.equal(e.upNext, "threats");
   assert.equal(sideUpNext({ ...s, encounter: e }), "agents", "the filtered combatants alone would get it wrong");
+  const acting = (currentId: string) => toPlayerView({ ...s, encounter: { ...s.encounter!, currentId } }).encounter!;
+  assert.equal(acting("h").currentId, UNSEEN_ID, "a hidden threat's real id never reaches the phones");
+  assert.equal(acting("p").currentId, "p");
 });
 
 test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {

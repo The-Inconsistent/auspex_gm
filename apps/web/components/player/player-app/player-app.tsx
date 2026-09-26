@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Show, UserButton } from "@wg/auth/react";
-import type { RuleEntry } from "@wg/shared";
+import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
@@ -37,13 +37,12 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
 
   const names = new Map(state.characters.map((c) => [c.id, c.name]));
   const current = enc?.combatants.find((c) => c.id === enc.currentId);
-  // A current id with no combatant behind it is a hidden threat taking its Turn (§11.53).
   const currentName = current
     ? current.kind === "pc"
       ? names.get(current.characterId)
       : current.label
-    : enc?.currentId
-      ? "Unseen threat"
+    : enc?.currentId === UNSEEN_ID
+      ? "Unseen threat" // a hidden threat taking its Turn (§11.53)
       : null;
   // Worked out before hidden threats were dropped from this view; sideUpNext here would miss their Turns.
   const next = enc?.upNext ?? null;
