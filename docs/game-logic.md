@@ -96,14 +96,12 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 â†
 
 | Action | GM | Player |
 |---|---|---|
-| `pool.adjust` Glory | yes | yes, Â± any delta |
-| `pool.adjust` Ruin | yes | no ("GM only") |
-| `character.adjust` Wounds / Shock / Wrath | any character | own character only |
-| `character.adjust` Traumatic, `raw` (the tracker's undo) | yes | no |
+| `pool.adjust` Glory, Ruin | yes | no ("GM only") |
+| `character.adjust` Wounds / Shock / Wrath / Traumatic, `raw` | yes | no |
 | `character.update` stats, name, conditions | any | own only |
 | `character.update` overrides, `annihilated` | yes | no |
 | `character.supply` Wealth / Ammo | any | own only |
-| `character.respite` | any | own only |
+| `character.respite` | any | no |
 | everything else (turns, Seize, awareness, threats, sessions) | yes | no |
 
 **Ruin is visible to players** (p.320): `toPlayerView` does not strip `campaign.ruin`; the player sheet shows it.

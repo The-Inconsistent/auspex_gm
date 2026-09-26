@@ -136,14 +136,19 @@ test("GM and player share a table", async (t) => {
   await player.until((s) => threatOf(s)?.stats?.name === "Ork Boy");
 
   // Player permissions.
-  assert.ok((await player.send({ type: "character.adjust", id: hero.id, wounds: 3 })).ok);
-  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.wounds === 3);
-  assert.ok((await player.send({ type: "character.adjust", id: hero.id, wounds: -10 })).ok, "clamped, not rejected");
-  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.wounds === 0);
-  assert.ok((await player.send({ type: "pool.adjust", pool: "glory", delta: 1 })).ok);
-  assert.deepEqual(await player.send({ type: "pool.adjust", pool: "ruin", delta: 1 }), { ok: false, error: "GM only" });
-  assert.deepEqual(await player.send({ type: "combatant.remove", id: ork.id }), { ok: false, error: "GM only" });
-  assert.deepEqual(await player.send({ type: "character.adjust", id: other.id, wounds: 1 }), {
+  // Harm, Wrath, Glory and Respite are the GM's.
+  for (const a of [
+    { type: "character.adjust", id: hero.id, wounds: 3 },
+    { type: "character.adjust", id: hero.id, shock: -1 },
+    { type: "character.adjust", id: hero.id, wrath: -1 },
+    { type: "character.respite", id: hero.id },
+    { type: "pool.adjust", pool: "glory", delta: 1 },
+    { type: "pool.adjust", pool: "ruin", delta: 1 },
+    { type: "combatant.remove", id: ork.id },
+  ] as const)
+    assert.deepEqual(await player.send(a), { ok: false, error: "GM only" }, a.type);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 })).ok, "Glory for the Seize below");
+  assert.deepEqual(await player.send({ type: "character.update", id: other.id, conditions: [] }), {
     ok: false,
     error: "Not your character",
   });
@@ -593,8 +598,8 @@ test("accounts: lobby, room and character invites, guests, removing a member", a
   t.after(() => (anaSock.socket.close(), guestSock.socket.close()));
   const seen = await anaSock.until((s) => s.characters.length === 3);
   assert.deepEqual(seen.access.invites, [], "players never see invite links");
-  assert.ok((await anaSock.send({ type: "character.adjust", id: pre.id, wrath: 1 })).ok);
-  assert.deepEqual(await anaSock.send({ type: "character.adjust", id: spare.id, wrath: 1 }), {
+  assert.ok((await anaSock.send({ type: "character.update", id: pre.id, conditions: [] })).ok);
+  assert.deepEqual(await anaSock.send({ type: "character.update", id: spare.id, conditions: [] }), {
     ok: false,
     error: "Not your character",
   });

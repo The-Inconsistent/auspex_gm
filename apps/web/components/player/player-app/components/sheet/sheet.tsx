@@ -23,7 +23,7 @@ import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { Vital } from "./components/vital/vital";
-import { SHEET_COUNTERS, type SheetCounter } from "./constants";
+import { SHEET_COUNTERS } from "./constants";
 
 type SheetProps = { me: Character; state: LiveState; send: Send };
 
@@ -40,12 +40,6 @@ export function Sheet({ me, state, send }: SheetProps) {
     const r = await send(a);
     setError(r.ok ? null : r.error);
   };
-
-  // − / + on Wounds, Shock or Wrath.
-  const adj = (field: SheetCounter, delta: number) => run({ type: "character.adjust", id: me.id, [field]: delta });
-
-  // − / + on the shared Glory pool.
-  const adjGlory = (delta: number) => run({ type: "pool.adjust", pool: "glory", delta });
 
   // − / + on Wealth, or on one Ammo type.
   const supply = (change: { wealth?: number; ammo?: { kind: string; delta: number } }) =>
@@ -96,37 +90,10 @@ export function Sheet({ me, state, send }: SheetProps) {
       </div>
 
       <div className="vitals">
-        <Vital
-          label={SHEET_COUNTERS.wounds.label}
-          value={me.wounds}
-          max={d.maxWounds}
-          onMinus={() => adj("wounds", -1)}
-          onPlus={() => adj("wounds", 1)}
-          remaining
-          danger
-        />
-        <Vital
-          label={SHEET_COUNTERS.shock.label}
-          value={me.shock}
-          max={d.maxShock}
-          onMinus={() => adj("shock", -1)}
-          onPlus={() => adj("shock", 1)}
-          remaining
-        />
-        <Vital
-          label={SHEET_COUNTERS.wrath.label}
-          value={me.wrath}
-          max={null}
-          onMinus={() => adj("wrath", -1)}
-          onPlus={() => adj("wrath", 1)}
-        />
-        <Vital
-          label="PARTY GLORY"
-          value={state.campaign.glory}
-          max={poolMax("glory", players)}
-          onMinus={() => adjGlory(-1)}
-          onPlus={() => adjGlory(1)}
-        />
+        <Vital label={SHEET_COUNTERS.wounds.label} value={me.wounds} max={d.maxWounds} remaining danger />
+        <Vital label={SHEET_COUNTERS.shock.label} value={me.shock} max={d.maxShock} remaining />
+        <Vital label={SHEET_COUNTERS.wrath.label} value={me.wrath} max={null} />
+        <Vital label="PARTY GLORY" value={state.campaign.glory} max={poolMax("glory", players)} />
       </div>
       <div className="dim" style={{ fontSize: 12 }}>
         WRATH: reroll failed dice · narrative declaration · restore {"Rank + Tier"} Shock (p.164). GM RUIN:{" "}
@@ -265,11 +232,6 @@ export function Sheet({ me, state, send }: SheetProps) {
           GEAR: {s.gear.join(" · ")}
         </div>
       )}
-      <div>
-        <button className="btn" onClick={() => run({ type: "character.respite", id: me.id })}>
-          RESPITE (6h rest: Wounds/Shock 0, Wrath 2)
-        </button>
-      </div>
       <Refusal error={error} onDismiss={() => setError(null)} />
     </>
   );

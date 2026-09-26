@@ -147,13 +147,7 @@ export const Action = z.union([
 export type Action = z.infer<typeof Action>;
 export type ActionInput = z.input<typeof Action>; // what clients send: defaulted fields optional
 
-// Actions a player may send; each is further limited to their own character, or the Glory pool.
-export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
-  "character.update",
-  "character.adjust",
-  "character.supply",
-  "character.respite",
-  "pool.adjust",
-]);
+// Actions a player may send, each limited to their own character. Harm, Wrath, Glory and Respite are the GM's.
+export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set(["character.update", "character.supply"]);
 
 export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };
