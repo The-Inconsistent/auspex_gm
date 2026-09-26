@@ -216,7 +216,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `turn.end` | GM | Mark current `acted`, set `lastSide`, keep `seizedSide` only if the same side. Auto new Round when no combatant `canAct` (Slain and Dead ones don't hold it up) | S | p.176 |
 | `combatant.addThreat` | GM | Add a threat from `@wg/data` to the active encounter. Snapshots its stat block and its class at the campaign Tier. `mobCount` makes it a Mob (`mobStart` = `mobCount`). Returns `id` | S | |
 | `combatant.addCharacter` | GM | Add a campaign character as a PC combatant. Refuses one already in (`"Already in this encounter"`). Returns `id` | S | |
-| `combatant.update` | GM | `ambushed` on any combatant. `label`, `mobCount`, `conditions`, `revealed`, `marker` on threat combatants only. `mobCount` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`; `null` makes it a single Threat again and nulls `mobStart` | S | p.325 |
+| `combatant.update` | GM | `ambushed` on any combatant. `label`, `mobCount`, `conditions`, `visibility`, `marker` on threat combatants only. `mobCount` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`; `null` makes it a single Threat again and nulls `mobStart` | S | p.325 |
 | `combatant.adjust` | GM | Threat combatants only. Deltas on `wounds`, `shock`, `personalRuin`, floored at 0. On a Mob, `wounds` removes members (clamped `[0, mobStart]`) instead, and one hit of `shock` above the members' max Shock removes one member (a smaller hit does nothing; a Mob keeps no Shock track). Refuses Shock for a threat whose Shock is "–" | S | p.324, p.325 |
 | `combatant.aware` | GM | Ambushed combatant pays 1 Glory or Ruin by side, then `ambushed = false` | S | p.177 |
 | `combatant.remove` | GM | Delete from the active encounter. `currentId` is nulled by the FK | S | |
@@ -251,7 +251,7 @@ No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
 | `invite` (`auth.schema.ts`) | Invite links | `code_hash`, `mode`, `character_id`, `allow_guests`, `expires_at`, `max_uses` (null = until it expires), `uses`, `revoked_at` | campaign cascade. character cascade |
 | `character` (`character.schema.ts`) | Player characters | `name`, `wounds` (taken, not remaining), `shock`, `wrath`, `traumatic`, `xp`, `conditions text[]` | campaign cascade |
 | `encounter` (`encounter.schema.ts`) | A fight. At most one `active` per campaign, enforced in code, not by a constraint. Ended ones stay as inactive rows | `active`, `round`, `current_id`, `last_side`, `seized_side` | campaign cascade. `current_id` → combatant **set null** |
-| `combatant` (`encounter.schema.ts`) | One PC or threat (or Mob) in an encounter | `order` (display only), `acted`, `ambushed`, `kind`. PC: `character_id`. Threat: `threat_id` (text, no FK: static data), `threat_class`, `label`, `marker`, `mob_count`, `mob_start`, `personal_ruin`, `wounds`, `shock`, `conditions`, `revealed` | encounter cascade. character cascade |
+| `combatant` (`encounter.schema.ts`) | One PC or threat (or Mob) in an encounter | `order` (display only), `acted`, `ambushed`, `kind`. PC: `character_id`. Threat: `threat_id` (text, no FK: static data), `threat_class`, `label`, `marker`, `mob_count`, `mob_start`, `personal_ruin`, `wounds`, `shock`, `conditions`, `visibility` (`hidden` / `bars` / `stats`, default `bars`) | encounter cascade. character cascade |
 | `faction` (`codex.schema.ts`) | Factions | `name`, `keywords text[]`, `stance`, `notes`, `secrets` | campaign cascade |
 | `adventure` | Adventures | `title`, `premise`, `status` | campaign cascade |
 | `beat` | Scenes of an adventure | `adventure_id`, `order`, `title`, `type`, `status`, `read_aloud`, `gm_notes`, `outcome`, `location_id`, `npc_ids uuid[]`, `handout_ids uuid[]` | campaign cascade. adventure **cascade**. location **set null**. The id arrays have no FK |
@@ -298,7 +298,7 @@ are by `number`.
 
 | Function | Hides from players | Keeps |
 |---|---|---|
-| `toPlayerView` (`state.ts`) | `access.invites` → `[]`. On every threat combatant with `revealed: false`: `stats` → null, `threatId` → `""`, `personalRuin` → 0 | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
+| `toPlayerView` (`state.ts`) | `access.invites` → `[]`. `encounter.upNext` ← `sideUpNext` of the full state. Threat combatants with `visibility: "hidden"` are dropped; with `"bars"`: `stats` → null, `threatId` → `""`, `personalRuin` → 0 | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
 | `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
 
 A new field is visible to players unless one of these functions drops it. Decide when you add it.
@@ -405,7 +405,7 @@ It covers:
   for the GM, `403` for a guest player and `401` for someone with no seat. A malformed `wg_token` or `__session` cookie
   gives `401` on `/api/guest` and `/api/lobby` and `unauthorized` on the socket, without crashing the api.
 - **Admin socket:** `auth: { adminKey, campaignId }` opens the table as the seed script does.
-- **Redaction:** threat stats hidden until `revealed`, `maxWounds` visible, and the player codex shows revealed NPCs only,
+- **Redaction:** hidden threats not sent, threat stats withheld until `visibility: "stats"`, `maxWounds` visible, and the player codex shows revealed NPCs only,
   without `gmNotes`.
 - **Mobs:** Wounds remove members, healing is capped at `mobStart`.
 - **Player permissions:** own `character.adjust` passes and clamps at 0. Glory is allowed, Ruin is `"GM only"`,
@@ -430,7 +430,7 @@ It covers:
   - A no-need Seize is refused.
   - `encounter.newRound`, `combatant.remove` and `encounter.end`.
   - Mob size set by hand (`mobStart` follows), and Mob Shock above and below max.
-  - Players get no `threatId` or `personalRuin` for an unrevealed Threat, and no NPC `factionId`.
+  - Players get no `threatId` or `personalRuin` for a bars-only Threat, none of a hidden one, and no NPC `factionId`.
   - Codex reference checks: another campaign's faction, an unknown threat.
   - `beat.reorder`, NPC delete clearing beats' `npcIds`, and `beat.startEncounter`.
 

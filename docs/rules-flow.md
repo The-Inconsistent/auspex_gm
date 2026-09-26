@@ -332,6 +332,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 52. **The Tree of Learning** (Core p.26) applies only when raising a Skill with XP: raising it to R needs R Skills with
     points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
     fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
+53. **What players know of the enemy** is not a rule: Set the Scene (Core p.176) describes the ground, not the foes, and
+    an enemy is found through the fiction (Stealth Score vs Awareness, Core pp.181–182; Ambush, p.177). The phones show
+    what the table shows: a threat whose mini isn't placed yet is `hidden` and never sent to players; once placed it's
+    `bars` (label, bars, Conditions); `stats` adds the stat block. A hidden threat still takes its Turns; players see
+    "Unseen threat acting" and the side that's due, not who.
 
 ---
 
