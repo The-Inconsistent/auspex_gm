@@ -16,6 +16,8 @@ test("ruleKey matches data spellings to printed entry names", () => {
     ["Asault", "Assault"],
     ["Bulky (1)", "Bulk (X)"],
     ["’Ere We Go!", "'Ere We Go!"],
+    ["’Ere We Go", "’Ere We Go!"],
+    ["Agonizing", "Agonising"],
     ["Hindered (2)", "Hindered"],
     ["PINNED", "Pinned"],
   ];

@@ -30,6 +30,7 @@ export const LINKED_RULE_KINDS: readonly RuleKind[] = ["condition", "weapon-trai
 // and hyphens. The aliases are spellings found in threats/ and wargear/.
 const RULE_ALIASES: Record<string, string> = {
   inflicts: "inflict",
+  agonizing: "agonising", // Apocrypha melee wargear
   "warp weapon": "warp weapons",
   asault: "assault", // Meltagun, printed so
   bulky: "bulk", // Vow of Absolution
@@ -40,6 +41,7 @@ export function ruleKey(name: string): string {
     .toLowerCase()
     .replace(/[‘’]/g, "'")
     .replace(/\s*(\(.*\)|\d+)$/, "")
+    .replace(/!$/, "") // armour.json prints "’Ere We Go" without it
     .replace(/-/g, " ")
     .trim();
   return RULE_ALIASES[k] ?? k;
