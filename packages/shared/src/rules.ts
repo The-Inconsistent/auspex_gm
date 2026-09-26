@@ -20,3 +20,23 @@ export const RuleEntry = z.object({
   text: z.string().min(1), // paragraphs separated by a blank line
 });
 export type RuleEntry = z.infer<typeof RuleEntry>;
+
+// Matching key for a trait or Condition as it appears in the data, against an entry's printed name. The rating or
+// parameter goes (`Blast (6)`, `Blast 20`, `Inflict (Poison 7)` → `blast`, `inflict`), and so do case, curly quotes
+// and hyphens. The aliases are spellings found in threats/ and wargear/.
+const RULE_ALIASES: Record<string, string> = {
+  inflicts: "inflict",
+  "warp weapon": "warp weapons",
+  asault: "assault", // Meltagun, printed so
+  bulky: "bulk", // Vow of Absolution
+};
+
+export function ruleKey(name: string): string {
+  const k = name
+    .toLowerCase()
+    .replace(/[‘’]/g, "'")
+    .replace(/\s*(\(.*\)|\d+)$/, "")
+    .replace(/-/g, " ")
+    .trim();
+  return RULE_ALIASES[k] ?? k;
+}
