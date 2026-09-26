@@ -42,7 +42,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
       ? names.get(current.characterId)
       : current.label
     : enc?.currentId === UNSEEN_ID
-      ? "Unseen threat" // a hidden threat taking its Turn (§11.53)
+      ? "Unseen threat" // a hidden threat taking its Turn (§11.56)
       : null;
   // Worked out before hidden threats were dropped from this view; sideUpNext here would miss their Turns.
   const next = enc?.upNext ?? null;

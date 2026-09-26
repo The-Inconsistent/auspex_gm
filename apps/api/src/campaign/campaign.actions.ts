@@ -13,8 +13,16 @@ export type CampaignAction = Extract<
 >;
 
 export async function campaignTier(tx: Tx, campaignId: string) {
-  const [c] = await tx.select({ tier: campaign.tier }).from(campaign).where(eq(campaign.id, campaignId));
-  return c!.tier; // ctx.campaignId comes from a valid token, so the campaign exists
+  return (await campaignRules(tx, campaignId)).tier;
+}
+
+// The campaign settings that rules read: its Tier, and whether the character builder may use homebrew books.
+export async function campaignRules(tx: Tx, campaignId: string) {
+  const [c] = await tx
+    .select({ tier: campaign.tier, homebrew: campaign.homebrew })
+    .from(campaign)
+    .where(eq(campaign.id, campaignId));
+  return c!; // ctx.campaignId comes from a valid token, so the campaign exists
 }
 
 async function playerCount(tx: Tx, campaignId: string) {

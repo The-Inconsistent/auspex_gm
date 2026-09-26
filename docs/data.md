@@ -505,7 +505,9 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 
 ## 9. Creation catalogue
 
-Everything a character is built from, for the character builder (not built yet; nothing serves this data yet). Schemas
+Everything a character is built from, for the character builder. `resolveBuild` (`packages/shared/src/build.ts`) turns a
+`CharacterBuild` (the choices) into a sheet, an XP ledger, the choices still pending and the problems; the acceptance
+test `packages/data/build.test.ts` rebuilds the volkus pregens. Nothing serves this data to clients yet. Schemas
 are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
 file, loaded by `creationCatalogue()` in `index.ts`.
 

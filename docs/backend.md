@@ -66,6 +66,7 @@ is a `400` with `z.prettifyError` text.
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
+| `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
 | `POST /api/join` | the guest token in the body | `{ token: string 1–200 }` | `200` `Ctx`, and `Set-Cookie: wg_token` (flags in §10). The web uses `campaignId` to open the table | `400` bad body. `401 "Invalid or revoked link"` |
 | `GET /api/guest` | `wg_token` cookie | none | `200` `Ctx` of the guest's table, so a returning guest lands back at it | `401` |
 | `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name, `mode`, the invited character or the open ones, `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
@@ -152,10 +153,10 @@ Always the full snapshot, never a diff.
 
 | Action | Extra player check | Refusal |
 |---|---|---|
-| `character.update`, `character.supply` | `a.id === ctx.characterId` | `"Not your character"` |
+| `character.update`, `character.build`, `character.draft`, `character.supply` | `a.id === ctx.characterId` (so a player can't build a new character) | `"Not your character"` |
 | `character.update` | no `overrides` field | `"Overrides are GM only"` |
 
-A player may therefore edit their own character's `name`, `stats` and `conditions`, and spend its Wealth and Ammo. Nothing else:
+A player may therefore edit their own character's `name`, `stats` and `conditions`, spend its Wealth and Ammo, and build it or save a builder draft. Nothing else:
 Wounds, Shock, Wrath, Glory and Respite are the GM's.
 
 ### `touches(action)` → `{ state, codex }`
@@ -192,11 +193,13 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 
 | Type | Who | What it does | Snap | Page |
 |---|---|---|---|---|
-| `campaign.update` | GM | Patch `name`, `tier`, `framework`, `patron`. Existing combatants keep the threat class they were added with | S | |
+| `campaign.update` | GM | Patch `name`, `tier`, `framework`, `patron`, `homebrew` (the builder may use Apocrypha and Necrontyr). Existing combatants keep the threat class they were added with | S | |
 | `pool.adjust` | GM | `pool += delta`, clamped to `[0, poolMax(pool, #characters)]` | S | p.164, p.320 |
 | `session.start` | GM | Every character Wrath → 2. Glory → 0. Ruin → number of characters. Closes any open session (no XP). Inserts session `number = count + 1`. Returns `id` | S C | p.162, p.164, p.320 |
 | `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Fails `"No session in progress"` | S C | p.321 |
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
+| `character.build` | GM; Own | Re-runs `resolveBuild` on `build` with the campaign's homebrew setting, and for an existing character `play` (the campaign's Tier now, `character.xp` earned). A new build is at the campaign's Tier; a made one keeps the Tier it was made at, and a player may change only its `advancement` (and the choices under `advance/`): `"Only your GM changes a character's creation choices once it's made"`. Refuses `"Still to choose: …"` or the first problem. Writes the derived `stats` and the `build` and clears `build_draft`; a made character keeps what play changed (`keepPlay`: Wealth, Ammo, requisitions, gained weapons and gear), a first build keeps `ammo` and `requisitioned`. A player's build keeps the stored `build.gm`. No `id`: inserts a character (GM). Returns `id` | S | Core pp.17–38 |
+| `character.draft` | GM; Own | Stores a builder draft (any JSON object up to `MAX_DRAFT_CHARS`, or null to clear) in `character.build_draft`, shown in LiveState as `draft`. A player's keeps the GM's part (`gm`) of the stored draft or build. `character.build` clears it | S | |
 | `character.update` | GM; Own (no `overrides`) | Patch `name`, `stats`, `overrides`, `conditions`. `stats` and `overrides` replace the whole jsonb value | S | |
 | `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap. Crossing into Dying adds `Prone` if missing. While Dying, a positive `wounds` delta adds 1 Traumatic Injury instead (one per hit), and a negative one sets Wounds to `least(maxWounds, wounds + delta)`, which ends Dying | S | p.193 |
 | `character.supply` | GM; Own | Read-modify-write on `stats`: `wealth` delta floored at 0; `ammo: { kind, delta }` via `adjustAmmo` (floored at 0; −1 on an empty type removes it). Refused past `MAX_AMMO_TYPES` (12). No carry cap (§11.14) | S | p.206, p.229 |
@@ -214,7 +217,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `turn.start` | GM | Set `currentId`. Refused if a turn is running, the combatant is out (`isOut`: `"Dead: no more Turns"` / `"Slain: no more Turns"`), already acted, is ambushed in Round 1, or its side isn't `sideUpNext` | S | p.177, p.193, p.324 |
 | `turn.seize` | GM | As `turn.start`, but out of order. Needs `canSeize` (refused with `"No need to Seize: the <side> act next anyway"` when that side is up anyway), then spends 1 Glory (Agent) or 1 Ruin (Threat) and sets `seizedSide` | S | p.176–177, p.320 |
 | `turn.end` | GM | Mark current `acted`, set `lastSide`, keep `seizedSide` only if the same side. Auto new Round when no combatant `canAct` (Slain and Dead ones don't hold it up) | S | p.176 |
-| `combatant.addThreat` | GM | Add a threat from `@wg/data` to the active encounter. Snapshots its stat block and its class at the campaign Tier. `mobCount` makes it a Mob (`mobStart` = `mobCount`). `visibility` defaults to `bars` (rules-flow §11.53). Returns `id` | S | |
+| `combatant.addThreat` | GM | Add a threat from `@wg/data` to the active encounter. Snapshots its stat block and its class at the campaign Tier. `mobCount` makes it a Mob (`mobStart` = `mobCount`). `visibility` defaults to `bars` (rules-flow §11.56). Returns `id` | S | |
 | `combatant.addCharacter` | GM | Add a campaign character as a PC combatant. Refuses one already in (`"Already in this encounter"`). Returns `id` | S | |
 | `combatant.update` | GM | `ambushed` on any combatant. `label`, `mobCount`, `conditions`, `visibility`, `marker` on threat combatants only. `mobCount` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`; `null` makes it a single Threat again and nulls `mobStart` | S | p.325 |
 | `combatant.adjust` | GM | Threat combatants only. Deltas on `wounds`, `shock`, `personalRuin`, floored at 0. On a Mob, `wounds` removes members (clamped `[0, mobStart]`) instead, and one hit of `shock` above the members' max Shock removes one member (a smaller hit does nothing; a Mob keeps no Shock track). Refuses Shock for a threat whose Shock is "–" | S | p.324, p.325 |

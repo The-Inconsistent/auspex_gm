@@ -26,7 +26,7 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
   stats: null,
 });
 const s: LiveState = {
-  campaign: { id: "c", name: "C", tier: 4, glory: 0, ruin: 0, framework: "", patron: "" },
+  campaign: { id: "c", name: "C", tier: 4, glory: 0, ruin: 0, framework: "", patron: "", homebrew: false },
   access: { members: [], invites: [] },
   characters: [
     {
@@ -41,6 +41,8 @@ const s: LiveState = {
       annihilated: false,
       xp: 0,
       conditions: [],
+      build: null,
+      draft: null,
     },
   ],
   encounter: {

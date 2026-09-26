@@ -1,5 +1,5 @@
 {
-  "id": "3c3a68c9-b9b6-43e7-a2dc-035aa938de61",
+  "id": "bb32792e-1f34-4c8a-a5a9-280a2dda3714",
   "prevId": "ea830d21-cf03-419c-9b77-58d8abab0587",
   "version": "7",
   "dialect": "postgresql",
@@ -381,6 +381,13 @@
           "notNull": true,
           "default": "''"
         },
+        "homebrew": {
+          "name": "homebrew",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -519,6 +526,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'{}'::jsonb"
+        },
+        "build": {
+          "name": "build",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
         },
         "wounds": {
           "name": "wounds",
@@ -1327,13 +1340,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
-        },
-        "visibility": {
-          "name": "visibility",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'bars'"
         }
       },
       "indexes": {},

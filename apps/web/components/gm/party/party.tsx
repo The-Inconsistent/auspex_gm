@@ -14,6 +14,7 @@ import {
   type Wargear,
 } from "@wg/shared";
 
+import { NEW_CHARACTER } from "@/components/builder/constants";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { TOKENS } from "@/lib/tokens/tokens";
@@ -310,6 +311,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 {d.resilience}
               </div>
               <div className="keys">
+                {/* A draft a player sent: the GM ticks what only the GM judges, and saves it. */}
+                <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
+                  {c.draft ? "OPEN DRAFT" : c.build ? "REBUILD" : "BUILD"}
+                </a>
                 <button className="btn sm" onClick={() => inviteCharacter(c)}>
                   INVITE
                 </button>
@@ -378,6 +383,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           placeholder="NEW AGENT NAME"
         />
         <button className="btn">ADD AGENT</button>
+        <a className="btn" href={`/c/${state.campaign.id}/build/${NEW_CHARACTER}`}>
+          NEW FROM BUILDER
+        </a>
       </form>
 
       {qr && <QrDialog qr={qr} onClose={() => setQr(null)} />}

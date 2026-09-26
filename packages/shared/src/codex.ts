@@ -23,7 +23,7 @@ export const EncounterEntry = z.object({
   asMob: z.boolean().default(false),
   marker: Marker.optional(),
   label: z.string().max(100).optional(),
-  visibility: Visibility.optional(), // "hidden" for ambushers and reinforcements (rules-flow §11.53)
+  visibility: Visibility.optional(), // "hidden" for ambushers and reinforcements (rules-flow §11.56)
 });
 
 // ponytail: app limit, not a rule. Bounds the inserts one beat.startEncounter runs in a transaction; a Mob is one row.

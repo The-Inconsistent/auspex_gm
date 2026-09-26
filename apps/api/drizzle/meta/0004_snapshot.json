@@ -1,6 +1,6 @@
 {
-  "id": "07cf9019-0224-4276-90f8-611b9e19b892",
-  "prevId": "3c3a68c9-b9b6-43e7-a2dc-035aa938de61",
+  "id": "bd102325-6d4d-416c-be60-6fc9e19f7428",
+  "prevId": "bb32792e-1f34-4c8a-a5a9-280a2dda3714",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -381,6 +381,13 @@
           "notNull": true,
           "default": "''"
         },
+        "homebrew": {
+          "name": "homebrew",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -519,6 +526,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'{}'::jsonb"
+        },
+        "build": {
+          "name": "build",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "build_draft": {
+          "name": "build_draft",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
         },
         "wounds": {
           "name": "wounds",
@@ -1321,12 +1340,12 @@
           "notNull": true,
           "default": "'{}'::text[]"
         },
-        "visibility": {
-          "name": "visibility",
-          "type": "text",
+        "revealed": {
+          "name": "revealed",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "'bars'"
+          "default": false
         }
       },
       "indexes": {},

@@ -39,5 +39,5 @@ export const combatant = pgTable("combatant", {
   shock: integer().notNull().default(0),
   conditions: conditions(),
   expiring: conditions(), // timed Conditions held when this Turn started; they end with it (§11.8)
-  visibility: text().$type<Visibility>().notNull().default("bars"), // players' view of a threat (§11.53)
+  visibility: text().$type<Visibility>().notNull().default("bars"), // players' view of a threat (§11.56)
 });

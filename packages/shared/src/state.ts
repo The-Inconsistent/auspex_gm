@@ -52,7 +52,7 @@ export type CombatantKind = z.infer<typeof CombatantKind>;
 export const Marker = z.enum(["red", "amber", "green", "blue", "purple", "white"]);
 export type Marker = z.infer<typeof Marker>;
 
-// What the players' phones show of a Threat, most hidden first: nothing (its mini isn't on the table yet, §11.53),
+// What the players' phones show of a Threat, most hidden first: nothing (its mini isn't on the table yet, §11.56),
 // its bars, or its stat block too.
 export const Visibility = z.enum(["hidden", "bars", "stats"]);
 export type Visibility = z.infer<typeof Visibility>;
@@ -209,6 +209,11 @@ export const Character = z.object({
   annihilated: z.boolean(), // one hit over 2 × Max Wounds (p.194)
   xp: z.number().int(),
   conditions: z.array(z.string()),
+  // The creation choices `stats` was derived from (a CharacterBuild, build.ts), or null for a hand-made sheet. Loose
+  // here because build.ts imports this file; the builder parses it with CharacterBuild.
+  build: z.record(z.string(), z.unknown()).nullable(),
+  // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
+  draft: z.record(z.string(), z.unknown()).nullable(),
 });
 export type Character = z.infer<typeof Character>;
 
@@ -256,6 +261,7 @@ export const LiveState = z.object({
     ruin: z.number().int(),
     framework: z.string(),
     patron: z.string(),
+    homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
   }),
   characters: z.array(Character),
   encounter: z
@@ -384,7 +390,7 @@ export function threatStatus(c: ThreatCombatant): string[] {
   return c.wounds > 0 ? ["Wounded"] : [];
 }
 
-// The player view's currentId while a hidden threat takes its Turn (§11.53).
+// The player view's currentId while a hidden threat takes its Turn (§11.56).
 export const UNSEEN_ID = "unseen";
 const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
 

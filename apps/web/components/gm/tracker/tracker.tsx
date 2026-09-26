@@ -280,7 +280,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     );
   };
 
-  // PLAYERS picker: what the phones show of the selected threat. Hidden until its mini goes on the table (§11.53).
+  // PLAYERS picker: what the phones show of the selected threat. Hidden until its mini goes on the table (§11.56).
   const handleVisibilityPick = (visibility: Visibility) => {
     if (sel?.kind !== "threat") return;
     void run(

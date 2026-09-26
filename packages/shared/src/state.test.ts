@@ -84,11 +84,13 @@ const char = (o: Partial<Character>): Character => ({
   annihilated: false,
   xp: 0,
   conditions: [],
+  build: null,
+  draft: null,
   ...o,
 });
 // A Tier 1 table around an encounter; the turn rules need the characters to know who's Dead.
 const table = (e: Encounter, characters: Character[] = []): LiveState => ({
-  campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" },
+  campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "", homebrew: false },
   characters,
   encounter: e,
   access: noAccess,
@@ -96,7 +98,7 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
 
 test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bars and conditions", () => {
   const s: LiveState = {
-    campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "" },
+    campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "", homebrew: false },
     characters: [],
     encounter: enc(
       [

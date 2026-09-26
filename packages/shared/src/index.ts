@@ -9,3 +9,4 @@ export * from "./requisition.ts";
 export * from "./wargear.ts";
 export * from "./rules.ts";
 export * from "./creation.ts";
+export * from "./build.ts";

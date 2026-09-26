@@ -332,7 +332,19 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 52. **The Tree of Learning** (Core p.26) applies only when raising a Skill with XP: raising it to R needs R Skills with
     points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
     fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
-53. **What players know of the enemy** is not a rule: Set the Scene (Core p.176) describes the ground, not the foes, and
+53. **A granted Talent whose requirements the character doesn't meet** (Rubicon Primaris gives Built Tough, which needs
+    Survival 2, VoA pp.43, 46; pregens.md ambiguity 7): the books don't say whether a grant ignores them. The builder
+    keeps the Talent and asks the GM to tick it, rather than refusing the build. *Proposed; awaiting the GM.*
+54. **Creation Ascension** (Core p.148): one Ascension Package, whose requirements are met at the archetype's Tier
+    (before Ascending). "Per Tier Ascended" counts from the archetype's Tier to the campaign's, and "× the new Tier" XP
+    uses the campaign's Tier. *Proposed; awaiting the GM.*
+55. **Advancement in play** (Core pp.146–151): the XP a character has earned (session XP, p.321) buys the same ratings,
+    Talents, powers and languages as at creation, priced from where creation left them, and Advancement Packages
+    (`notAtCreation` ones too). When the group Ascends (the GM raises the campaign's Tier), each character may take one
+    Ascension Package per Tier Ascended, in order: its requirements met at the Tier it leaves, "× the new Tier" priced at
+    the Tier it reaches. A power's "at creation" price (Smite) gives way to its later one. Rank is from the XP earned.
+    The creation budget stays as it was. *Proposed; awaiting the GM.*
+56. **What players know of the enemy** is not a rule: Set the Scene (Core p.176) describes the ground, not the foes, and
     an enemy is found through the fiction (Stealth Score vs Awareness, Core pp.181–182; Ambush, p.177). The phones show
     what the table shows: a threat whose mini isn't placed yet is `hidden` and never sent to players; once placed it's
     `bars` (label, bars, Conditions); `stats` adds the stat block. New threats default to `bars`; the GM adds held-back
