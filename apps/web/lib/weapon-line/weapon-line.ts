@@ -18,3 +18,8 @@ export function weaponProfile({
   ];
   return parts.filter(Boolean).join(" · ");
 }
+
+// The profile and its traits as one string, for places without a RulesProvider where a trait can't be a rule link.
+export function weaponLine(args: Parameters<typeof weaponProfile>[0]) {
+  return [weaponProfile(args), args.weapon.traits.join(", ")].filter(Boolean).join(" · ");
+}

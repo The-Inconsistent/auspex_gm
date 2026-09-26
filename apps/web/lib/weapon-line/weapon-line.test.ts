@@ -3,7 +3,7 @@ import { test } from "node:test";
 
 import type { Weapon } from "@wg/shared";
 
-import { weaponProfile } from "./weapon-line.ts";
+import { weaponLine, weaponProfile } from "./weapon-line.ts";
 
 const knife: Weapon & { addStrength: boolean } = {
   name: "Knife",
@@ -29,4 +29,9 @@ test("Salvo null prints –", () => {
 
 test("ranged weapons list short/medium/long range", () => {
   assert.equal(weaponProfile({ weapon: bolter }), "10 +1 ED · AP -1 · R 12/24/36 · S 2");
+});
+
+test("weaponLine appends the traits", () => {
+  assert.equal(weaponLine({ weapon: bolter }), "10 +1 ED · AP -1 · R 12/24/36 · S 2 · Brutal");
+  assert.equal(weaponLine({ weapon: knife, strength: 5 }), "7 +1 ED · R 1");
 });
