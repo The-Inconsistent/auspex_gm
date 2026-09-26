@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
 import {
   CREATION_TYPES,
+  LINKED_RULE_KINDS,
   type CreationType,
   Pack,
   RuleEntry,
@@ -138,7 +139,7 @@ for (const file of readdirSync(rulesDir)
     }
     ruleIds.add(e.id);
     if (e.kind === "weapon-trait") weaponTraitIds.add(e.id);
-    if (e.kind !== "action") traitKeys.add(ruleKey(e.name));
+    if (LINKED_RULE_KINDS.includes(e.kind)) traitKeys.add(ruleKey(e.name));
   }
   console.log(`rules/${file}: ${r.data.length} entries`);
 }
