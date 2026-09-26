@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { sideUpNext, type RuleEntry } from "@wg/shared";
 
-import { RulesProvider } from "@/components/ui/rules-ref/rules-context";
+import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";

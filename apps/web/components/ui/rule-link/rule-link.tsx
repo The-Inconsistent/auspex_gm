@@ -1,7 +1,7 @@
 "use client";
 import type { ReactNode } from "react";
 
-import { useRules } from "../../rules-context";
+import { useRules } from "@/components/ui/rules-provider/rules-provider";
 
 type RuleLinkProps = { name: string; children?: ReactNode };
 

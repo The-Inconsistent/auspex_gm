@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Side, deriveStats, sideOf, threatStatus, type LiveState, type RuleEntry } from "@wg/shared";
 
-import { RuleLink } from "@/components/ui/rules-ref/components/rule-link/rule-link";
+import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";

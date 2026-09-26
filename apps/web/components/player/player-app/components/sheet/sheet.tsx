@@ -17,7 +17,7 @@ import {
 } from "@wg/shared";
 
 import { Refusal } from "@/components/ui/refusal/refusal";
-import { RuleLink } from "@/components/ui/rules-ref/components/rule-link/rule-link";
+import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";

@@ -9,7 +9,7 @@ import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { Refusal } from "@/components/ui/refusal/refusal";
-import { RulesProvider } from "@/components/ui/rules-ref/rules-context";
+import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";

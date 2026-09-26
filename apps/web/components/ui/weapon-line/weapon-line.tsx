@@ -1,7 +1,7 @@
 "use client";
 import { Fragment } from "react";
 
-import { RuleLink } from "@/components/ui/rules-ref/components/rule-link/rule-link";
+import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { weaponProfile } from "@/lib/weapon-line/weapon-line";
 
 type WeaponLineProps = Parameters<typeof weaponProfile>[0];
