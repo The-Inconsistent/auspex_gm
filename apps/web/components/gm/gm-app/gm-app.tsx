@@ -9,6 +9,7 @@ import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { Refusal } from "@/components/ui/refusal/refusal";
+import { RulesProvider } from "@/components/ui/rules-ref/rules-context";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
@@ -51,51 +52,53 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
   );
 
   return (
-    <div className="gm">
-      {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
-      <header className="gm-head band torn">
-        <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
-          ◂
-        </a>
-        <div className="display gm-title">
-          AUSPEX{" "}
-          <span className="dim">
-            · {state.campaign.name.toUpperCase()} · T{state.campaign.tier}
-          </span>
-        </div>
-        {state.encounter && (
-          <div className="display" style={{ fontSize: 30 }}>
-            RND {String(state.encounter.round).padStart(2, "0")}
+    <RulesProvider rules={rules}>
+      <div className="gm">
+        {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
+        <header className="gm-head band torn">
+          <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
+            ◂
+          </a>
+          <div className="display gm-title">
+            AUSPEX{" "}
+            <span className="dim">
+              · {state.campaign.name.toUpperCase()} · T{state.campaign.tier}
+            </span>
           </div>
-        )}
-        {Pool.options.map(pool)}
-        <ThemeToggle />
-        <UserButton />
-      </header>
-      <nav className="tabs rail" role="tablist" aria-label="GM sections">
-        {GM_TABS.map((t, i) => (
-          <button
-            key={t}
-            role="tab"
-            className="tab"
-            data-n={TAB_NUMERALS[i]}
-            aria-selected={tab === t}
-            onClick={() => setTab(t)}
-          >
-            {t}
-          </button>
-        ))}
-      </nav>
-      <main className="gm-body">
-        {tab === "TRACK" && <Tracker state={state} send={send} bestiary={bestiary} />}
-        {tab === "PREP" && (
-          <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
-        )}
-        {tab === "CODEX" && <CodexView codex={codex} send={send} />}
-        {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
-        {tab === "RULES" && <RulesRef rules={rules} />}
-      </main>
-      <Refusal error={poolError} onDismiss={() => setPoolError(null)} />
-    </div>
+          {state.encounter && (
+            <div className="display" style={{ fontSize: 30 }}>
+              RND {String(state.encounter.round).padStart(2, "0")}
+            </div>
+          )}
+          {Pool.options.map(pool)}
+          <ThemeToggle />
+          <UserButton />
+        </header>
+        <nav className="tabs rail" role="tablist" aria-label="GM sections">
+          {GM_TABS.map((t, i) => (
+            <button
+              key={t}
+              role="tab"
+              className="tab"
+              data-n={TAB_NUMERALS[i]}
+              aria-selected={tab === t}
+              onClick={() => setTab(t)}
+            >
+              {t}
+            </button>
+          ))}
+        </nav>
+        <main className="gm-body">
+          {tab === "TRACK" && <Tracker state={state} send={send} bestiary={bestiary} />}
+          {tab === "PREP" && (
+            <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
+          )}
+          {tab === "CODEX" && <CodexView codex={codex} send={send} />}
+          {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
+          {tab === "RULES" && <RulesRef rules={rules} />}
+        </main>
+        <Refusal error={poolError} onDismiss={() => setPoolError(null)} />
+      </div>
+    </RulesProvider>
   );
 }
