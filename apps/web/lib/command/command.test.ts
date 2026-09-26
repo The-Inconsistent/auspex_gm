@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { CharacterStats, type LiveState, type ThreatCombatant } from "@wg/shared";
+import { CharacterDetail, CharacterStats, type LiveState, type ThreatCombatant } from "@wg/shared";
 
 import { parseCommand } from "./command.ts";
 
@@ -41,6 +41,7 @@ const s: LiveState = {
       annihilated: false,
       xp: 0,
       conditions: [],
+      detail: CharacterDetail.parse({}),
       build: null,
       draft: null,
     },

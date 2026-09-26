@@ -2,10 +2,10 @@ import { z } from "zod";
 import { Source } from "./source.ts";
 
 // The rules reference: Conditions (Core pp.197–200), weapon traits (pp.208–210), armour traits (p.232), combat
-// actions (pp.177–190) and the stat block terms (Bestiary Format, p.323), transcribed from the books. It holds book
+// actions (pp.177–190), the stat block terms (Bestiary Format, p.323) and Bringing Your Character to Life (p.34), transcribed from the books. It holds book
 // text, so it is served to seats only (GM or player), never bundled into the client.
 
-export const RuleKind = z.enum(["condition", "weapon-trait", "armour-trait", "action", "stat"]);
+export const RuleKind = z.enum(["condition", "weapon-trait", "armour-trait", "action", "stat", "character"]);
 export type RuleKind = z.infer<typeof RuleKind>;
 
 export const RuleEntry = z.object({

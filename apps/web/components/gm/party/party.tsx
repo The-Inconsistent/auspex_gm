@@ -3,6 +3,8 @@ import QRCode from "qrcode";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
+  AMMO_TYPES,
+  CONDITIONS,
   CharacterStats,
   deriveStats,
   pcStatus,
@@ -138,12 +140,39 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const respite = async (c: Character) =>
     report(await send({ type: "character.respite", id: c.id }), `${c.name.toUpperCase()} RESPITE`);
 
-  // ±1 WEALTH: the GM's adventure award or loot (p.206); players spend their own from the sheet.
+  // ±1 WEALTH: the GM's adventure award or loot (p.206); players spend their own from the sheet but never add.
   const adjWealth = async (c: Character, wealth: number) =>
     report(
       await send({ type: "character.supply", id: c.id, wealth }),
       `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
     );
+
+  // ±1 AMMO: loot or an award of one type (§11.57), starting the type if it's new; −1 takes back a slip, and at 0
+  // drops the type. The type stays typed for repeat taps.
+  const adjAmmo = async (e: FormEvent<HTMLFormElement>, c: Character) => {
+    e.preventDefault();
+    const kind = String(new FormData(e.currentTarget).get("kind") ?? "").trim();
+    const delta = (e.nativeEvent as SubmitEvent).submitter?.getAttribute("value") === "-1" ? -1 : 1;
+    if (!kind) return;
+    report(
+      await send({ type: "character.supply", id: c.id, ammo: { kind, delta } }),
+      `${c.name.toUpperCase()} ${delta > 0 ? "+" : ""}${delta} ${kind.toUpperCase()} AMMO`,
+    );
+  };
+
+  // ±COND: toggles a Condition on the character, in or out of a fight (the tracker reaches only combatants).
+  const handleConditionPick = async (e: ChangeEvent<HTMLSelectElement>, c: Character) => {
+    const k = e.target.value;
+    const on = !c.conditions.includes(k);
+    report(
+      await send({
+        type: "character.update",
+        id: c.id,
+        conditions: on ? [...c.conditions, k] : c.conditions.filter((x) => x !== k),
+      }),
+      `${c.name.toUpperCase()} ${on ? "+" : "−"}${k.toUpperCase()}`,
+    );
+  };
 
   // REVOKE GUEST QR: kills every guest token (and guest socket) for the character; signed-in members keep their seat.
   const revoke = async (c: Character) =>
@@ -305,6 +334,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 {Object.entries(c.stats.ammo)
                   .map(([k, n]) => `${n} ${k}`)
                   .join(", ") || "NONE"}
+                {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
               </div>
               <div className="dim">
                 WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}
@@ -340,6 +370,34 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                   REVOKE GUEST QR
                 </button>
               </div>
+              <form style={{ display: "flex", gap: 6, flexWrap: "wrap" }} onSubmit={(e) => adjAmmo(e, c)}>
+                <input
+                  className="input"
+                  name="kind"
+                  list="ammo-types"
+                  aria-label={`Ammo type for ${c.name}`}
+                  placeholder="AMMO TYPE"
+                />
+                <button className="btn sm" value="1">
+                  +1 AMMO
+                </button>
+                <button className="btn sm" value="-1">
+                  −1 AMMO
+                </button>
+                <select
+                  className="btn sm"
+                  aria-label={`Toggle condition on ${c.name}`}
+                  value=""
+                  onChange={(e) => handleConditionPick(e, c)}
+                >
+                  <option value="">±COND</option>
+                  {CONDITIONS.map((k) => (
+                    <option key={k} value={k}>
+                      {c.conditions.includes(k) ? `− ${k}` : `+ ${k}`}
+                    </option>
+                  ))}
+                </select>
+              </form>
               {reqFor === c.id && (
                 <RequisitionForm
                   character={c}
@@ -374,6 +432,11 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           );
         })}
       </div>
+      <datalist id="ammo-types">
+        {AMMO_TYPES.map((t) => (
+          <option key={t} value={t} />
+        ))}
+      </datalist>
       <form style={{ display: "flex", gap: 8 }} onSubmit={handleAddCharacter}>
         <input
           className="input"

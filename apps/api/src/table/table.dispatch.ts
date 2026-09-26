@@ -38,6 +38,12 @@ function authorize(ctx: Ctx, a: Action) {
     fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
+  // A player's sheet changes through the builder; raw stats would also carry Wealth and Ammo past the check below.
+  if (a.type === "character.update" && a.stats) fail("Stats are GM only");
+  if (a.type === "character.update" && a.conditions) fail("Conditions are the GM's");
+  // Players spend their own Wealth and Ammo; only the GM grants them (p.206; Ammo, rules-flow §11.57).
+  if (a.type === "character.supply" && ((a.wealth ?? 0) > 0 || (a.ammo?.delta ?? 0) > 0))
+    fail("Only the GM grants Wealth and Ammo");
 }
 
 export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {

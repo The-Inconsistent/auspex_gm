@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   Action,
+  CharacterDetail,
   CharacterStats,
   Threat,
   threatCite,
@@ -84,6 +85,7 @@ const char = (o: Partial<Character>): Character => ({
   annihilated: false,
   xp: 0,
   conditions: [],
+  detail: CharacterDetail.parse({}),
   build: null,
   draft: null,
   ...o,

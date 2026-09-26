@@ -1,0 +1,1 @@
+ALTER TABLE "character" ADD COLUMN "detail" jsonb DEFAULT '{}'::jsonb NOT NULL;

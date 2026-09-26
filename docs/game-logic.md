@@ -99,9 +99,10 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 |---|---|---|
 | `pool.adjust` Glory, Ruin | yes | no ("GM only") |
 | `character.adjust` Wounds / Shock / Wrath / Traumatic, `raw` | yes | no |
-| `character.update` stats, name, conditions | any | own only |
+| `character.update` name, detail | any | own only |
+| `character.update` stats, conditions | any | no |
 | `character.update` overrides, `annihilated` | yes | no |
-| `character.supply` Wealth / Ammo | any | own only |
+| `character.supply` Wealth / Ammo | any, ± | own only, spend (−) only |
 | `character.respite` | any | no |
 | everything else (turns, Seize, awareness, threats, sessions) | yes | no |
 
@@ -120,7 +121,8 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 - "Unless continuing mid-action" (p.162) is the GM's call: just don't press START SESSION.
 - Respite does **not** touch Traumatic Injuries or Conditions.
 - **Supply** (`character.supply`, p.206, p.229): Wealth and per-type Ammo live in `stats` (`wealth`, `ammo`) as counters.
-  Players spend their own from the sheet; the GM awards Wealth from PARTY. Nothing is spent automatically: Reloads
+  Players only spend their own from the sheet (`authorize()` refuses a positive delta); the GM awards Wealth and Ammo
+  from PARTY (§11.57). Conditions are the GM's too (the tracker, or ±COND in PARTY outside a fight). Nothing is spent automatically: Reloads
   and Influence Tests happen at the table. `adjustAmmo` is the shared helper (tested).
 - **Requisition** (`packages/shared/src/requisition.ts`, pp.205–206, p.229): `requisitionTest` (shared Keywords,
   [ANY] per §11.15, bonus dice, DN = Value + `RARITY_DN`), `requisitionOutcome` (Wealth tops up a failed roll,

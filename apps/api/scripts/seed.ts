@@ -74,7 +74,7 @@ for (const { key, beats, ...data } of pack.adventures) {
     );
 }
 for (const c of pack.characters)
-  await send({ type: "character.create", name: c.name, stats: c.stats }, `character ${c.name}`);
+  await send({ type: "character.create", name: c.name, stats: c.stats, detail: c.detail }, `character ${c.name}`);
 
 socket.close();
 console.log(

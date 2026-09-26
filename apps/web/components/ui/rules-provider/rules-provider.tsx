@@ -6,7 +6,11 @@ import { LINKED_RULE_KINDS, ruleKey, type RuleEntry } from "@wg/shared";
 
 import { RuleItem } from "@/components/ui/rule-item/rule-item";
 
-type Rules = { find: (name: string) => RuleEntry[]; open: (entries: RuleEntry[]) => void };
+type Rules = {
+  find: (name: string) => RuleEntry[];
+  get: (id: string) => RuleEntry | undefined; // an entry that isn't a trait, by id
+  open: (entries: RuleEntry[]) => void;
+};
 
 const RulesContext = createContext<Rules | null>(null);
 
@@ -31,6 +35,7 @@ export function RulesProvider({ rules, children }: RulesProviderProps) {
   const value = useMemo<Rules>(
     () => ({
       find: (name) => byKey.get(ruleKey(name)) ?? [],
+      get: (id) => rules.find((r) => r.id === id),
       open: (entries) => {
         // Render the new entries before showModal() picks what to focus; otherwise it focuses the old rule, which
         // then unmounts and drops focus to <body>.
@@ -38,7 +43,7 @@ export function RulesProvider({ rules, children }: RulesProviderProps) {
         dialog.current?.showModal();
       },
     }),
-    [byKey],
+    [byKey, rules],
   );
 
   return (

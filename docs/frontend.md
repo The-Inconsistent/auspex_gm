@@ -490,7 +490,9 @@ The tests are in `lib/command/command.test.ts`.
 | LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
 | RESPITE | `character.respite` | |
 | REQUISITION | `character.requisition` | Opens `RequisitionForm`: the ITEM field searches the catalogue (`<datalist>`); an exact name fills kind (`requisitionKindOf`), Value, Rarity and Keywords, shows the page and effect, and sends `wargearId`. Otherwise kind (WARGEAR / AMMO / GRENADES), item, Value, Rarity, item Keywords, a ranged weapon's ammo type. It shows the DN, the dice to roll (Influence + bonus dice), the matched Keywords, and refuses when there's no match or this session's Test is used. The GM enters the Icons, Wealth spent (only up to the shortfall) and a Complication, then RECORD |
-| +1 WEALTH / −1 WEALTH | `character.supply { wealth: ±1 }` | The GM's award (Core p.206). The line above the buttons shows Wealth and Ammo |
+| +1 WEALTH / −1 WEALTH | `character.supply { wealth: ±1 }` | The GM's award (Core p.206). The line above the buttons shows Wealth, Ammo and Conditions |
+| +1 AMMO / −1 AMMO | `character.supply { ammo: { kind, delta: ±1 } }` | AMMO TYPE field with the `AMMO_TYPES` datalist; +1 starts a new type, −1 at 0 drops it (§11.57). The type stays filled for repeat taps |
+| ±COND | `character.update { conditions }` | Toggles a Condition on the character, also outside a fight (the tracker reaches only combatants) |
 | REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
 
 Every code (room, invite, guest) goes through `showCode`: it builds `${location.origin}/…` into a `QR_SIZE` (320px) PNG
@@ -515,7 +517,7 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
-| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions (each is a name, which opens its rule, and a separate `×`, which removes it); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type, + AMMO with an `AMMO_TYPES` datalist) | Their own Wealth and Ammo (±1, `character.supply`; × on an empty type removes it), their own Conditions (`character.update`) (Wounds, Shock, Wrath, Glory and RESPITE are GM only) |
+| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions, read-only (each name opens its rule); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type) | Spending their own Wealth and Ammo (−1, `character.supply`; × on an empty type removes it). Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
 | FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
 | INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
 
@@ -531,8 +533,9 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
   stat source are blanked, an NPC's `factionId` is null, and so is a location's `parentId` unless the parent is
   revealed.
 
-The server's `authorize()` also limits which actions a player can send: only their own character, no `overrides`,
-no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `Refusal` banner. See
+The server's `authorize()` also limits which actions a player can send: only their own character's `name` and `detail`
+(no `stats`, `overrides` or Conditions), spending Wealth and Ammo but never granting them, the builder, and nothing
+else. The sheet shows every refusal in its `Refusal` banner. See
 [backend.md](backend.md).
 
 ---

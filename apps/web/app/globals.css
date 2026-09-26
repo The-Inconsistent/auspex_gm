@@ -1213,7 +1213,7 @@ details.rule-item > pre.text {
   text-decoration: underline dotted;
   text-underline-offset: 3px;
 }
-/* A Condition on the sheet: its name (the rule) and × (remove) share one frame. */
+/* A Condition on the player sheet, framed; its name opens the rule. */
 .cond {
   display: inline-flex;
   align-items: stretch;
@@ -1230,13 +1230,6 @@ details.rule-item > pre.text {
   align-items: center;
   margin: 0;
   padding: 0 10px;
-}
-.cond > button:last-child {
-  justify-content: center;
-  min-width: 32px;
-  border: 0;
-  border-left: 1px solid var(--line);
-  background: none;
 }
 dialog.rule-dialog {
   width: min(640px, calc(100vw - 32px));

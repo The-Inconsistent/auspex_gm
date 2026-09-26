@@ -1,6 +1,7 @@
 import { and, eq, isNull } from "drizzle-orm";
 import {
   CharacterBuild,
+  CharacterDetail,
   CharacterStats,
   Overrides,
   adjustAmmo,
@@ -50,6 +51,7 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
     ...row,
     stats: CharacterStats.parse(row.stats),
     overrides: Overrides.parse(row.overrides),
+    detail: CharacterDetail.parse(row.detail),
     draft: row.buildDraft,
   };
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
@@ -82,7 +84,7 @@ export async function applyCharacterAction(
     case "character.create": {
       const [c] = await tx
         .insert(character)
-        .values({ campaignId: cid, name: a.name, stats: a.stats ?? {} })
+        .values({ campaignId: cid, name: a.name, stats: a.stats ?? {}, detail: a.detail ?? {} })
         .returning({ id: character.id });
       return { ok: true, id: c!.id }; // the row was just inserted
     }
@@ -131,13 +133,19 @@ export async function applyCharacterAction(
       if (row) {
         await tx
           .update(character)
-          .set({ stats, build, buildDraft: null, ...(a.name ? { name: a.name } : {}) })
+          .set({
+            stats,
+            build,
+            buildDraft: null,
+            ...(a.name ? { name: a.name } : {}),
+            ...(a.detail ? { detail: a.detail } : {}),
+          })
           .where(eq(character.id, row.id));
         return { ok: true, id: row.id };
       }
       const [c] = await tx
         .insert(character)
-        .values({ campaignId: cid, name: a.name ?? "Unnamed", stats, build })
+        .values({ campaignId: cid, name: a.name ?? "Unnamed", stats, build, detail: a.detail ?? {} })
         .returning({ id: character.id });
       return { ok: true, id: c!.id }; // the row was just inserted
     }

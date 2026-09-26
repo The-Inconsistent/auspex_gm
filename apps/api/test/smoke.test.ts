@@ -167,16 +167,33 @@ test("GM and player share a table", async (t) => {
     ok: false,
     error: "Not your character",
   });
-  // Supply (p.206, p.229): the player spends their own Wealth and Ammo, per type.
-  assert.ok(
-    (await player.send({ type: "character.supply", id: hero.id, wealth: 2, ammo: { kind: "Bolt", delta: 3 } })).ok,
-  );
+  assert.deepEqual(await player.send({ type: "character.update", id: hero.id, conditions: [] }), {
+    ok: false,
+    error: "Conditions are the GM's",
+  });
+  assert.deepEqual(await player.send({ type: "character.update", id: hero.id, stats: { wealth: 99 } }), {
+    ok: false,
+    error: "Stats are GM only",
+  });
+  // Adding Detail (Core pp.32–36): a player writes their own character's; the parts left out are empty.
+  assert.ok((await player.send({ type: "character.update", id: hero.id, detail: { past: "Hive Tertius" } })).ok);
+  await player.until((s) => {
+    const d = s.characters.find((c) => c.id === hero.id)?.detail;
+    return d?.past === "Hive Tertius" && d.appearance === "";
+  });
+  // Supply (p.206, p.229): the GM grants Wealth and Ammo, per type; the player only spends their own.
+  for (const grant of [{ wealth: 1 }, { ammo: { kind: "Bolt", delta: 1 } }])
+    assert.deepEqual(await player.send({ type: "character.supply", id: hero.id, ...grant }), {
+      ok: false,
+      error: "Only the GM grants Wealth and Ammo",
+    });
+  assert.ok((await gm.send({ type: "character.supply", id: hero.id, wealth: 2, ammo: { kind: "Bolt", delta: 3 } })).ok);
   await player.send({ type: "character.supply", id: hero.id, wealth: -5, ammo: { kind: "Bolt", delta: -1 } });
   await gm.until((s) => {
     const st = s.characters.find((c) => c.id === hero.id)?.stats;
     return st?.wealth === 0 && st.ammo.Bolt === 2;
   });
-  assert.deepEqual(await player.send({ type: "character.supply", id: other.id, wealth: 1 }), {
+  assert.deepEqual(await player.send({ type: "character.supply", id: other.id, wealth: -1 }), {
     ok: false,
     error: "Not your character",
   });
@@ -613,8 +630,8 @@ test("accounts: lobby, room and character invites, guests, removing a member", a
   t.after(() => (anaSock.socket.close(), guestSock.socket.close()));
   const seen = await anaSock.until((s) => s.characters.length === 3);
   assert.deepEqual(seen.access.invites, [], "players never see invite links");
-  assert.ok((await anaSock.send({ type: "character.update", id: pre.id, conditions: [] })).ok);
-  assert.deepEqual(await anaSock.send({ type: "character.update", id: spare.id, conditions: [] }), {
+  assert.ok((await anaSock.send({ type: "character.supply", id: pre.id, wealth: -1 })).ok);
+  assert.deepEqual(await anaSock.send({ type: "character.supply", id: spare.id, wealth: -1 }), {
     ok: false,
     error: "Not your character",
   });

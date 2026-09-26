@@ -1,6 +1,6 @@
-type SupplyRowProps = { label: string; value: number; onMinus: () => void; onPlus: () => void; removable?: boolean };
+type SupplyRowProps = { label: string; value: number; onMinus: () => void; onPlus?: () => void; removable?: boolean };
 
-// One −/value/+ line in the sheet's SUPPLY section. `removable`: − at 0 drops the row (an empty ammo type).
+// One −/value(/+) line in a SUPPLY section; no `onPlus` on the player sheet, where only the GM grants. `removable`: − at 0 drops the row (an empty ammo type).
 export function SupplyRow({ label, value, onMinus, onPlus, removable = false }: SupplyRowProps) {
   const remove = removable && value === 0;
   return (
@@ -12,9 +12,11 @@ export function SupplyRow({ label, value, onMinus, onPlus, removable = false }: 
       <span className="display" style={{ fontSize: 26, minWidth: 28, textAlign: "center" }}>
         {value}
       </span>
-      <button className="btn sm" aria-label={`Increase ${label}`} onClick={onPlus}>
-        +
-      </button>
+      {onPlus && (
+        <button className="btn sm" aria-label={`Increase ${label}`} onClick={onPlus}>
+          +
+        </button>
+      )}
     </div>
   );
 }

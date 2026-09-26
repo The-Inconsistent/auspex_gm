@@ -17,4 +17,5 @@ export const RULE_KIND_LABELS: Record<RuleKind, string> = {
   "armour-trait": "ARMOUR TRAIT",
   action: "ACTION",
   stat: "STAT BLOCK",
+  character: "CHARACTER",
 };

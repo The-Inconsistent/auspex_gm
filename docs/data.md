@@ -429,7 +429,10 @@ Blessed, IoE p.79's Lance and Gruesome, the Necrontyr's Tesla as `tesla-necronty
 among them its own Tesla), `armour-traits.json` (Core p.232, plus Apocrypha p.398's Agile and Void),
 `combat-actions.json` (pp.177–190), `stat-block.json` (kind `stat`: every value a threat stat block prints, in
 printed order, from the Bestiary Format legend p.323 and the pages it points to; attributes pp.119–120, Speed p.180,
-Size p.191, weapon profile pp.207–208, Mobs p.324, Resolve and Personal Ruin p.325). Each entry is `id` (unique across
+Size p.191, weapon profile pp.207–208, Mobs p.324, Resolve and Personal Ruin p.325), `character.json` (kind
+`character`: Bringing Your Character to Life, Core p.34, behind the (?) beside WHO YOU ARE on the sheet and in the
+builder; the Ten Questions keep their headings only, and question 10, "Why Are You In The Gilead System?", is left
+out because it belongs to the Core book's setting, not to every campaign). Each entry is `id` (unique across
 files), `kind`, `name` as printed with its rating (`Blast (X)`), `abbr` (stats only: the stat block's label, `SHK`),
 `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
 the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
