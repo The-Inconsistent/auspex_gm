@@ -349,34 +349,34 @@ textarea.input {
   clip-path: inset(50%);
   white-space: nowrap;
 }
-/* Wound/shock track: framed cells, filled crimson (harm) or ink (components/ui/track). */
+/* Wound/shock bar: a frame filled crimson (harm) or ink (components/ui/track). */
 .track {
   display: inline-flex;
-  gap: 2px;
-  min-width: 0;
-  overflow: hidden;
-  flex: 0 1 auto; /* in a tight column the cells clip before the number beside them does */
-}
-.track > span {
-  width: 10px;
+  width: 100px;
+  min-width: 24px;
   height: 10px;
   border: 1px solid var(--ink-2);
-  flex: none;
+  flex: 0 1 auto; /* in a tight column the bar shrinks before the number beside it does */
 }
-.track.harm > span.on {
+.track > span {
+  height: 100%;
+}
+.track.harm > span {
   background: var(--red);
-  border-color: var(--red);
 }
-.track.ink > span.on {
+.track.ink > span {
   background: var(--ink-2);
 }
-.row .track > span {
-  width: 7px;
+.vital .track {
+  width: 100%;
 }
-.row.now .track > span {
+.row .track {
+  width: 80px;
+}
+.row.now .track {
   border-color: var(--bone);
 }
-.row.now .track > span.on {
+.row.now .track > span {
   background: var(--bone);
 }
 /* Party pools as wax seals (components/ui/seal): brass Glory, crimson Ruin. */

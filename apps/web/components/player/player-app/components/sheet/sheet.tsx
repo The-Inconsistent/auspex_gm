@@ -102,6 +102,7 @@ export function Sheet({ me, state, send }: SheetProps) {
           max={d.maxWounds}
           onMinus={() => adj("wounds", -1)}
           onPlus={() => adj("wounds", 1)}
+          remaining
           danger
         />
         <Vital
@@ -110,6 +111,7 @@ export function Sheet({ me, state, send }: SheetProps) {
           max={d.maxShock}
           onMinus={() => adj("shock", -1)}
           onPlus={() => adj("shock", 1)}
+          remaining
         />
         <Vital
           label={SHEET_COUNTERS.wrath.label}

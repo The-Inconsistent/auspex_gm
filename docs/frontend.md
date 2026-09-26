@@ -217,7 +217,7 @@ selected, and tapping one toggles `selected`.
 | STATE | A word, never colour alone: `▶ ACTING`, `DONE`, `AMBUSHED` (Round 1 only), `READY` |
 | DESIGNATION | The name, with a marker swatch for threats that have a marker |
 | CLASS | `AGENT`, or `THREAT_CLASS_LABEL[threatClass]` (TROOP / ELITE / ADVERSARY / MONSTROUS) |
-| WOUNDS | A `Bar` (red once damaged). Mobs show `×count OF start` instead |
+| WOUNDS | A `Bar` of Wounds left (red once damaged). Mobs show `×count OF start` instead |
 | SHOCK | A `Bar`, or `—` when max Shock is `null` |
 | DEF / RES | PCs: from `deriveStats`. Threats: from the snapshotted `stats` |
 | STATUS | `StatusChips` from `pcStatus` / `threatStatus`, plus Condition chips |
@@ -480,8 +480,8 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
-| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds, Shock, Wrath and PARTY GLORY; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions; armament (`weaponLine` with `effectiveStrength`) and armour; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type, + AMMO with an `AMMO_TYPES` datalist) | Their own Wounds, Shock and Wrath (±1, `character.adjust`), Wealth and Ammo (±1, `character.supply`; × on an empty type removes it), party Glory (±1, `pool.adjust`), their own Conditions (`character.update`), RESPITE (`character.respite`) |
-| FIGHT | `components/fight/fight.tsx` | Every combatant as a card (`div.item`): `▶` on the one acting, dimmed once done, a Wounds block bar (mobs show `×count OF start`), threat status chips, and Conditions. A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed; a PC card's header is plain | Nothing |
+| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left, a draining bar, HIT/HEAL), Wrath and PARTY GLORY; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions; armament (`weaponLine` with `effectiveStrength`) and armour; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type, + AMMO with an `AMMO_TYPES` datalist) | Their own Wounds, Shock and Wrath (±1, `character.adjust`), Wealth and Ammo (±1, `character.supply`; × on an empty type removes it), party Glory (±1, `pool.adjust`), their own Conditions (`character.update`), RESPITE (`character.respite`) |
+| FIGHT | `components/fight/fight.tsx` | Every combatant as a card (`div.item`): `▶` on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions. A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed; a PC card's header is plain | Nothing |
 | INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
@@ -505,8 +505,8 @@ no `traumatic`, and the Glory pool only. The sheet shows every refusal in its `R
 
 | Component | Props | Job |
 |---|---|---|
-| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | A `Track` plus `value/max`; `—` when `max` is `null`; the track fills crimson when `danger`, ink otherwise |
-| `track/track.tsx` `Track` | `value`, `max`, `tone?: TrackTone` (`"harm"` or `"ink"`, `track/constants.ts`), `label?` | Framed cells from `blocks()`, filled crimson or ink. Decorative (`aria-hidden`), so show the number beside it or in `.sr-only` text. The one exception is a threat on FIGHT, where players get the scaled bar and not the count: it passes `label` and reads out "Wounds: 3 of 10 marked" |
+| `bar/bar.tsx` `Bar` | `value`, `max: number \| null`, `danger?` | `value` is harm taken; shows a `Track` of what's left plus `left/max`, so the bar drains; `—` when `max` is `null`; crimson when `danger`, ink otherwise |
+| `track/track.tsx` `Track` | `value`, `max`, `tone?: TrackTone` (`"harm"` or `"ink"`, `track/constants.ts`), `label?` | One framed bar filled to `value/max` in `blocks()` steps, crimson or ink. Harm callers pass what's left. Decorative (`aria-hidden`), so show the number beside it or in `.sr-only` text. The one exception is a threat on FIGHT, where players get the coarse bar and not the count: it passes `label` and reads out "Wounds: about 70% left" |
 | `seal/seal.tsx` `Seal` | `value`, `pool: Pool`, `size?` | A party pool as a wax seal (brass Glory, crimson Ruin), `role="img"` labelled `<value> <pool>` |
 | `theme-toggle/theme-toggle.tsx` `ThemeToggle` | `className?` | The day/night switch (§7): flips `data-theme` on `<html>` and stores it; `constants.ts` holds `THEME_KEY` and the pre-paint `THEME_SCRIPT` |
 | `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite` from `@wg/shared`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
