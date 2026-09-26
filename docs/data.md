@@ -427,11 +427,15 @@ Transcription calls, all in each entry's `note`:
 One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (Core pp.208–210, plus FSPG p.120's
 Blessed, IoE p.79's Lance and Gruesome, the Necrontyr's Tesla as `tesla-necrontyr`, and Apocrypha pp.326–328's 25,
 among them its own Tesla), `armour-traits.json` (Core p.232, plus Apocrypha p.398's Agile and Void),
-`combat-actions.json` (pp.177–190). Each entry is `id` (unique across files), `kind`, `name` as printed with
-its rating (`Blast (X)`), `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
+`combat-actions.json` (pp.177–190), `stat-block.json` (kind `stat`: every value a threat stat block prints, in
+printed order, from the Bestiary Format legend p.323 and the pages it points to; attributes pp.119–120, Speed p.180,
+Size p.191, weapon profile pp.207–208, Mobs p.324, Resolve and Personal Ruin p.325). Each entry is `id` (unique across
+files), `kind`, `name` as printed with its rating (`Blast (X)`), `abbr` (stats only: the stat block's label, `SHK`),
+`type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
 the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
 paragraphs split by a blank line. Print errors are kept as printed; tables are plain lines. A section intro is its own
-entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`. To add a
+entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`. The player
+FIGHT tab hands the `stat` entries to the stat block's (?) legend. To add a
 kind (psychic powers, talents), extend `RuleKind` and add a file.
 
 ---

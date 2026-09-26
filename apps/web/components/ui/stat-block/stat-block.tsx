@@ -1,12 +1,15 @@
-import { ATTRIBUTES, threatCite, type Threat } from "@wg/shared";
+import { ATTRIBUTES, threatCite, type RuleEntry, type Threat } from "@wg/shared";
 
 import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
-type StatBlockProps = { t: Threat; tier?: number };
+import { StatLegend } from "./components/stat-legend/stat-legend";
+
+type StatBlockProps = { t: Threat; tier?: number; legend?: RuleEntry[] };
 
 // Threat stat block laid out as printed (Core p.323): title bar, Tier/Threat grid, keywords, attributes, then the
-// sub-bands. The numbers come from the data files; `tier` highlights the campaign's column.
-export function StatBlock({ t, tier }: StatBlockProps) {
+// sub-bands. The numbers come from the data files; `tier` highlights the campaign's column. `legend` (the stat rules)
+// adds the (?) that explains each value.
+export function StatBlock({ t, tier, legend }: StatBlockProps) {
   const a = t.attributes;
   const tiers = t.threat.length;
   return (
@@ -14,6 +17,7 @@ export function StatBlock({ t, tier }: StatBlockProps) {
       <div className="sb-title">
         <span>{t.name.toUpperCase()}</span>
         <i>{threatCite(t)}</i>
+        {legend && legend.length > 0 && <StatLegend entries={legend} />}
       </div>
       <div className="sb-grid" style={{ gridTemplateColumns: `64px repeat(${tiers}, minmax(0, 1fr))` }}>
         <span className="sb-head" style={{ textAlign: "left" }}>

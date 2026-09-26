@@ -30,12 +30,13 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
   }
 }
 
-// Rules reference for any seat, sorted by name. Empty on failure; the RULES tab then says so.
+// Rules reference for any seat, in file order (the stat legend reads in printed order; the RULES tab sorts by name).
+// Empty on failure; the RULES tab then says so.
 async function loadRules(campaignId: string): Promise<RuleEntry[]> {
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/rules`);
     const parsed = RuleEntry.array().safeParse(res.ok ? await res.json() : null);
-    return parsed.success ? parsed.data.sort((a, b) => a.name.localeCompare(b.name)) : [];
+    return parsed.success ? parsed.data : [];
   } catch {
     return [];
   }

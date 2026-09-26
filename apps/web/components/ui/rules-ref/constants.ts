@@ -7,6 +7,7 @@ export const RULE_FILTERS = {
   WEAPON: "weapon-trait",
   ARMOUR: "armour-trait",
   ACTIONS: "action",
+  STATS: "stat",
 } as const satisfies Record<string, RuleKind | null>;
 export type RuleFilter = keyof typeof RULE_FILTERS;
 
@@ -15,4 +16,5 @@ export const RULE_KIND_LABELS: Record<RuleKind, string> = {
   "weapon-trait": "WEAPON TRAIT",
   "armour-trait": "ARMOUR TRAIT",
   action: "ACTION",
+  stat: "STAT BLOCK",
 };

@@ -74,7 +74,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
       </div>
       <div className="pl-body">
         {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
-        {tab === "FIGHT" && <Fight state={state} />}
+        {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
         {tab === "INTEL" && <Intel codex={codex} state={state} />}
         {tab === "RULES" && <RulesRef rules={rules} />}
       </div>

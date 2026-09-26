@@ -1,0 +1,357 @@
+[
+  {
+    "id": "stat-tier-threat",
+    "kind": "stat",
+    "name": "Tier and Threat",
+    "abbr": "TIER",
+    "source": "core",
+    "page": 323,
+    "gist": "Threats come in four classes; a Threat's class depends on the campaign Tier, shown in its stat block's top-left grid.",
+    "text": "Some Threats are more dangerous than others. The four categories of Threats each represent a different level of opposition: Troops, Elites, Adversaries, and Monstrous Creatures.\n\nThis classification may vary by Tier, so each bestiary entry includes a Threat classification on the top left of the Bestiary entry with Tier recommendations to help you judge which Threats are appropriate to your campaign. An Ork Kommando might be a terrifying Adversary to a Tier 1 group, but a trifling Troop for a Tier 4 group."
+  },
+  {
+    "id": "stat-troop",
+    "kind": "stat",
+    "name": "Troops",
+    "abbr": "T",
+    "source": "core",
+    "page": 323,
+    "gist": "Weak, expendable foes: can form Mobs, no Critical Hits or Complications, no Determination without Ruin, no Ammo.",
+    "text": "The unnamed hordes of faceless and expendable enemies. Though individually weak, they can be a formidable threat en masse. As the faceless minions of greater powers, Troops:\n\n• Can form Mobs (p.324).\n• Can’t inflict Critical Hits, but may have specific Wrath abilities.\n• Don’t suffer Complications, unless they have a specific Complication ability.\n• Can’t roll Determination unless you spend a point of Ruin.\n• Don’t track Ammo and don’t use Salvo Options."
+  },
+  {
+    "id": "stat-elite",
+    "kind": "stat",
+    "name": "Elites",
+    "abbr": "E",
+    "source": "core",
+    "page": 323,
+    "gist": "Dangerous lieutenants: normal Wrath Dice, Determination only for 1 Ruin, usually 3 Ammo, may use Salvo Options.",
+    "text": "Raw power, skill, or experience make Elites powerful and deadly enemies on the battlefield. Whether commanding a Mob of Troops or acting as the bodyguard for an Adversary, Elites can be as dangerous as any Agent in combat.\n\nAs the lieutenants of Adversaries or intimidating leaders in their own right, Elites use the normal rules for Wrath Dice but can’t roll Determination unless you spend a point of Ruin. Elites usually carry three Ammo into a fight and may use Salvo Options."
+  },
+  {
+    "id": "stat-adversary",
+    "kind": "stat",
+    "name": "Adversaries",
+    "abbr": "A",
+    "source": "core",
+    "page": 323,
+    "gist": "The true villains: normal Wrath Dice and Determination, usually personal Ruin, unlimited Ammo, may use Salvo Options.",
+    "text": "Adversaries are the true villains of Wrath & Glory. An Adversary will often appear multiple times during a campaign and play a part in characters’ arcs.\n\nAs Adversaries play a larger role in the story than the Troops and Elites they marshal, they use Wrath Dice and Determination as normal, and usually have personal Ruin they can use to perform Ruin Actions (p.325). As the most dangerous Threat on any battlefield, they are considered to have as much Ammo as necessary to finish the fight, and may use Salvo Options."
+  },
+  {
+    "id": "stat-monstrous-creature",
+    "kind": "stat",
+    "name": "Monstrous Creatures",
+    "abbr": "M",
+    "source": "core",
+    "page": 323,
+    "gist": "Engines of destruction: like Adversaries, but immune to Fear, Pinned and Staggered, and they cause Terror.",
+    "text": "Monstrous Creatures are dangerous Threats capable of laying waste to dozens of lesser opponents, often sporting titanic melee weapons or other devastating weaponry. Engines of raw destruction, Monstrous Creatures are similar to Adversaries, but also:\n\n• Are immune to Fear, Pinned, and Staggered (pp.199-200).\n• Cause Terror (see p.200)."
+  },
+  {
+    "id": "stat-keywords",
+    "kind": "stat",
+    "name": "Keywords",
+    "source": "core",
+    "page": 323,
+    "gist": "The Keywords the Threat has.",
+    "text": "Any Keywords the Threat has."
+  },
+  {
+    "id": "stat-strength",
+    "kind": "stat",
+    "name": "Strength",
+    "abbr": "S",
+    "source": "core",
+    "page": 119,
+    "gist": "Raw physical power: athletics, which weapons you wield well, and melee damage",
+    "text": "Your raw physical power.\n\nStrength affects your athletic prowess, the weapons you can lift and wield well, and how much damage you can do in melee combat.\n\nLow Strength characters might be physically weak, or unable to shift their weight into a melee weapon. High Strength characters are muscular and athletic, and able to lift, jump, and climb."
+  },
+  {
+    "id": "stat-toughness",
+    "kind": "stat",
+    "name": "Toughness",
+    "abbr": "T",
+    "source": "core",
+    "page": 119,
+    "gist": "Endurance: how much damage you take before dying, and resisting toxins, disease and damage",
+    "text": "Your endurance and ability to resist toxin and disease.\n\nToughness affects how much damage you can take before dying as well as your ability to resist and ignore damage.\n\nLow-Toughness characters might be feeble, whilst high-Toughness characters can shrug off attacks that would kill or maim others."
+  },
+  {
+    "id": "stat-agility",
+    "kind": "stat",
+    "name": "Agility",
+    "abbr": "A",
+    "source": "core",
+    "page": 119,
+    "gist": "Dexterity and coordination: ranged accuracy, piloting, fine motor control (not speed)",
+    "text": "Your dexterity and coordination.\n\nAgility affects your accuracy with ranged weapons, your ability to pilot complex machines, and your control over your movement. Agility is a measure of your fine motor skills rather than your speed.\n\nLow-Agility characters might be clumsy, whilst high-Agility characters are graceful and dextrous."
+  },
+  {
+    "id": "stat-initiative",
+    "kind": "stat",
+    "name": "Initiative",
+    "abbr": "I",
+    "source": "core",
+    "page": 119,
+    "gist": "Reflexes and reaction speed: split-second decisions, especially in melee",
+    "text": "Your reflexes and reaction speed.\n\nInitiative affects your ability to make split-second decisions in high-pressure situations, particularly in melee combat. Initiative measures your instinctive ability to react quickly.\n\nLow-Initiative characters might be indecisive, whilst high-Initiative characters are quick and reactive."
+  },
+  {
+    "id": "stat-willpower",
+    "kind": "stat",
+    "name": "Willpower",
+    "abbr": "WIL",
+    "source": "core",
+    "page": 120,
+    "gist": "Self-control and mental fortitude: resisting temptation and the Warp, keeping cool in battle",
+    "text": "Your self-control and mental fortitude.\n\nWillpower affects how well you can resist temptation, control or ignore the powers of the Warp, and keep a cool head in battle. Willpower can be used to bend others to your desires, and measures your drive to survive in harsh conditions.\n\nLow-Willpower characters are easily swayed. High-Willpower characters are resolute and focused."
+  },
+  {
+    "id": "stat-intellect",
+    "kind": "stat",
+    "name": "Intellect",
+    "abbr": "INT",
+    "source": "core",
+    "page": 120,
+    "gist": "Processing and recalling information: observation, problem solving, history, tech, medicine",
+    "text": "Your ability to process, retain, and apply information.\n\nIntellect affects your ability to observe and take in details, solve problems, and recall information, including your comprehension of history, technology, and medicine.\n\nLow-Intellect characters might be forgetful or oblivious. High-Intellect characters are observant and knowledgeable."
+  },
+  {
+    "id": "stat-fellowship",
+    "kind": "stat",
+    "name": "Fellowship",
+    "abbr": "FEL",
+    "source": "core",
+    "page": 120,
+    "gist": "Force of personality: reading social cues, persuading, charming, lying, detecting deceit",
+    "text": "The power of your personality.\n\nFellowship affects your ability to pick up on social cues, persuade individuals in conversation, fit in with a crowd, to charm or lie, and to detect deceit. Fellowship is your general social presence and empathic ability.\n\nLow-Fellowship characters might be socially awkward, whilst high-Fellowship characters are charismatic."
+  },
+  {
+    "id": "stat-defence",
+    "kind": "stat",
+    "name": "Defence",
+    "abbr": "DEF",
+    "source": "core",
+    "page": 36,
+    "gist": "How hard you are to hit: attack rolls must equal or beat it. Initiative −1",
+    "text": "Your ability to dodge blows and bullets; essentially how hard you are to hit.\n\nYour Defence is equal to your Initiative rating –1. When anyone makes an attack against you, their attack roll must equal or exceed your Defence to hit you. Defence is effectively the Difficulty Number of any attack roll."
+  },
+  {
+    "id": "stat-wounds",
+    "kind": "stat",
+    "name": "Wounds",
+    "abbr": "WND",
+    "source": "core",
+    "page": 37,
+    "gist": "Injuries you can take; damage over Resilience becomes Wounds. Over max you are Dying. 2×Tier + T",
+    "text": "A measure of how many injuries you can suffer before you potentially die.\n\nYour Maximum Wounds Trait is equal to double your Tier plus your Toughness Rating. When an enemy hits you with an attack and does more damage than your Resilience, the remaining damage is inflicted as Wounds. When your Wounds exceed your Maximum Wounds you are Dying (p.193). You can recover Wounds through use of the Medicae Skill (p.124) and resting (p.196)."
+  },
+  {
+    "id": "stat-shock",
+    "kind": "stat",
+    "name": "Shock",
+    "abbr": "SHK",
+    "source": "core",
+    "page": 37,
+    "gist": "Mental trauma you can take; over max you are Exhausted. Willpower + Tier; recover by resting",
+    "text": "A measure of how much mental trauma you can take before your will breaks.\n\nYour Maximum Shock is equal to your Willpower rating plus your Tier. You suffer Shock when you use Determination and when you are pushed to your psychological limits. When you suffer more Shock than your Maximum, you are Exhausted (p.199). You can recover Shock by resting (p.196)."
+  },
+  {
+    "id": "stat-resilience",
+    "kind": "stat",
+    "name": "Resilience",
+    "abbr": "RES",
+    "source": "core",
+    "page": 36,
+    "gist": "Subtracted from damage you take; attacks must beat it to Wound. Toughness +1 + Armour Rating",
+    "text": "A representation of how well you can withstand injuries; the same attack might seriously injure one person and result in a minor flesh wound to another. Your base Resilience is your Toughness rating +1. If you are wearing any armour, add its Armour Rating to your base Resilience for your Total Resilience. When you get hit with an attack, you subtract your Resilience from any damage you take. Your enemies need to deal more damage than your Resilience when they attack in order to deal Wounds to you."
+  },
+  {
+    "id": "stat-speed",
+    "kind": "stat",
+    "name": "Speed",
+    "abbr": "SPD",
+    "source": "core",
+    "page": 180,
+    "gist": "Metres you can move in a Turn with Standard Movement",
+    "text": "During a Turn you can move your Speed in metres. You don’t have to use all of your Movement; you can move as little as you want or not at all. There is no additional Movement cost for changing elevation if you are using an incline, stairs, or a ladder. You may take any other Action at any point during a Standard Movement, unless the rules for that Action state otherwise."
+  },
+  {
+    "id": "stat-skills",
+    "kind": "stat",
+    "name": "Skills",
+    "source": "core",
+    "page": 323,
+    "gist": "Dice pool per Skill (Skill + Attribute already added); a Default Skill covers any Skill not listed.",
+    "text": "The dice pool the Threat uses for each Skill. The Skills listed incorporate both the Skill Rating and its linked Attribute Rating, so when you see Ballistic Skill 6, you roll 6 dice. Some entries have a Default Skill; you can roll that dice pool for any unlisted Skill."
+  },
+  {
+    "id": "stat-bonuses",
+    "kind": "stat",
+    "name": "Bonuses",
+    "source": "core",
+    "page": 323,
+    "gist": "Special rules that apply to this Threat.",
+    "text": "Any special rules that apply to this Threat."
+  },
+  {
+    "id": "stat-battlecry",
+    "kind": "stat",
+    "name": "Battlecry",
+    "source": "core",
+    "page": 323,
+    "gist": "Free Action ability that fires once, at the start of combat or on the Threat's first turn.",
+    "text": "A Free Action ability that activates at the start of combat, or when the Threat takes its first turn. These abilities only activate once."
+  },
+  {
+    "id": "stat-action",
+    "kind": "stat",
+    "name": "Action",
+    "source": "core",
+    "page": 323,
+    "gist": "The Combat Actions the Threat can take.",
+    "text": "A list of Combat Actions the Threat can take."
+  },
+  {
+    "id": "stat-damage",
+    "kind": "stat",
+    "name": "Damage and Extra Damage Dice",
+    "abbr": "ED",
+    "source": "core",
+    "page": 207,
+    "gist": "Damage is a weapon's base damage; ED is how many extra damage dice you roll on a hit",
+    "text": "Damage: The weapon’s base Damage Value.\n\nExtra Damage Dice (ED): The amount of Extra Damage Dice you roll when you hit with this weapon. (See page 183 for more on Extra Damage Dice.)"
+  },
+  {
+    "id": "stat-ap",
+    "kind": "stat",
+    "name": "Armour Penetration",
+    "abbr": "AP",
+    "source": "core",
+    "page": 207,
+    "gist": "Subtracted from the target's Total Resilience on a hit; Invulnerable (*) armour ignores it",
+    "text": "Armour Penetration (AP): How well a weapon penetrates armour and personal protection. When a weapon with AP hits, the AP rating is subtracted from the target’s Total Resilience.\n\nSome armour is Invulnerable, which is designated with an asterisk (*). The Total Resilience of a target wearing Invulnerable armour is immune to AP."
+  },
+  {
+    "id": "stat-range",
+    "kind": "stat",
+    "name": "Range",
+    "abbr": "R",
+    "source": "core",
+    "page": 207,
+    "gist": "How far a weapon hits. Ranged: +1 die at Short, +2 Defence past Medium, no attack at Long",
+    "text": "Range: The effective distance at which an attack from this weapon can hit a target.\n\n• Melee Weapon Range: Unless otherwise listed, a melee weapon has a range of 1 metre. Any Threats within this range are Engaged (p.184) with you.\n• Ranged Weapon Ranges: The Short, Medium, and Long ranges of a weapon. You gain +1 bonus die when attacking Threats within Short range. When you attack a Threat beyond Medium range, the target gains +2 Defence. You cannot attack targets at or beyond Long range.\n• Thrown Weapon Range: If a weapon can be thrown, it is listed in the weapon’s Range. The thrown Range of a weapon is based on your Strength, such as S x 4; if your Strength is 3, your Range is 12. Instead of selecting a target, you can throw a weapon at any point within Range by succeeding on a DN 3 Ballistic Skill (A) Test. If you fail the Test, see Scattering on p.186. The rules for Short and Medium Range do not apply to Thrown Weapons."
+  },
+  {
+    "id": "stat-salvo",
+    "kind": "stat",
+    "name": "Salvo",
+    "abbr": "S",
+    "source": "core",
+    "page": 208,
+    "gist": "Weapon's rate of fire and magazine; sets bonuses for Salvo Options like Full Auto",
+    "text": "Salvo: A measure of how quickly a weapon can fire and the amount of bullets in it’s magazine. Salvo is used to determine bonuses for Salvo Options like Full Auto (see Salvo Rules, p.185). You must use a Simple Action and a point of Ammo to Reload after using a Salvo Option."
+  },
+  {
+    "id": "stat-ruin",
+    "kind": "stat",
+    "name": "Ruin",
+    "source": "core",
+    "page": 323,
+    "gist": "The Ruin Actions the Threat can take.",
+    "text": "Any Ruin Actions the Threat can take."
+  },
+  {
+    "id": "stat-wrath",
+    "kind": "stat",
+    "name": "Wrath",
+    "source": "core",
+    "page": 323,
+    "gist": "Special rules that trigger when the Threat rolls a Wrath Critical.",
+    "text": "Any special rules that activate when the Threat rolls a Wrath Critical."
+  },
+  {
+    "id": "stat-complication",
+    "kind": "stat",
+    "name": "Complication",
+    "source": "core",
+    "page": 323,
+    "gist": "Special rules that trigger when the Threat rolls a Complication.",
+    "text": "Any special rules that activate when the Threat rolls a Complication."
+  },
+  {
+    "id": "stat-reaction",
+    "kind": "stat",
+    "name": "Reaction",
+    "source": "core",
+    "page": 323,
+    "gist": "Reflexive Actions the Threat can take, and what triggers them.",
+    "text": "Any Reflexive Actions the Threat can take, and what triggers them."
+  },
+  {
+    "id": "stat-determination",
+    "kind": "stat",
+    "name": "Determination",
+    "source": "core",
+    "page": 323,
+    "gist": "What the Threat needs to roll Determination, and its dice pool.",
+    "text": "Any requirements for the Threat to roll Determination, as well as their dice pool."
+  },
+  {
+    "id": "stat-annihilation",
+    "kind": "stat",
+    "name": "Annihilation",
+    "source": "core",
+    "page": 323,
+    "gist": "Ability that triggers when the Threat dies or is Dying.",
+    "text": "An ability that activates when the Threat dies or is Dying."
+  },
+  {
+    "id": "stat-conviction",
+    "kind": "stat",
+    "name": "Conviction",
+    "source": "core",
+    "page": 37,
+    "gist": "Dice pool for Corruption Tests to resist corruption and Chaos. Starts equal to Willpower",
+    "text": "Whenever you try to resist corruption or the forces of Chaos, you make a Corruption Test. When you make a Corruption Test, your dice pool is equal to your Conviction. Your starting Conviction is equal to your Willpower. More information on Conviction can be found on p.286."
+  },
+  {
+    "id": "stat-resolve",
+    "kind": "stat",
+    "name": "Resolve",
+    "source": "core",
+    "page": 325,
+    "gist": "When a Threat's nerve might break, the GM calls a Resolve Test (usually DN 3); on a fail, it flees.",
+    "text": "Even hardy enemies may break and run when the tide of battle turns against them. You can roll a Resolve Test for a Threat whenever they are in a situation where their nerve might break. If they fail, they flee.\n\nThe GM decides when a Threat should make a Resolve Test. The trigger could be gaining a certain number of Wounds, or becoming Exhausted. Some abilities can trigger Resolve Tests, as could particularly impressive uses of the Intimidation Skill.\n\nUsually, the DN of a Resolve Test is 3, but may increase if a Threat has already seen an ally flee or the situation is particularly dire."
+  },
+  {
+    "id": "stat-size",
+    "kind": "stat",
+    "name": "Size",
+    "source": "core",
+    "page": 191,
+    "gist": "How big a creature is (Tiny to Gargantuan); changes how hard it is to hit and to detect",
+    "text": "Every character and creature in Wrath & Glory has a Size Trait. Size affects how difficult a character is to hit and how stealthy it can be. Sizes range from Tiny all the way to Gargantuan. See the Size Categories table on the next page for details on how Size affects attacks and Stealth.\n\nSIZE CATEGORIES (Size: Examples; Attack Test Modifier; Score Reduction)\n• Tiny: Servo Skull, Cherub, Tyranid Ripper; +2 Defence; +2 DN to detect\n• Small: Gun Drone, Grot, Ratling, Gyrinx; +1 Defence; +1 DN to detect\n• Average: Human, Eldar, T’au, Space Marine; -; -\n• Large: Space Marine Terminator, Necron Destroyer, Tyranid Warrior, Ogryn; +1 bonus dice to hit; +1 bonus dice to detect\n• Huge: Dreadnaught, Wraithlord, Hive Tyrant; +2 bonus dice to hit; +2 bonus dice to detect\n• Gargantuan: Greater Daemon, Land Raider, Baneblade; +3 bonus dice to hit; +3 bonus dice to detect"
+  },
+  {
+    "id": "stat-personal-ruin",
+    "kind": "stat",
+    "name": "Personal Ruin",
+    "source": "core",
+    "page": 325,
+    "gist": "Champions may have Personal Ruin; the GM spends 1 Ruin after an Agent's Turn to trigger a Champion's Ruin Action.",
+    "text": "Some Threats are considered Champions. Champions can take Ruin Actions, and may have Personal Ruin. Normally, there should only be one Champion in a Scene. The GM can make any Threat a Champion.\n\nAt the end of any Agent’s Turn, the GM may spend a point of Ruin to activate a Champion’s Ruin Actions. A Ruin Action does not count as a Turn — after a Ruin Action is resolved, it is their Turn or another Threat’s Turn."
+  },
+  {
+    "id": "stat-mob",
+    "kind": "stat",
+    "name": "Mobs",
+    "abbr": "MOB",
+    "source": "core",
+    "page": 324,
+    "gist": "A group of identical Troops acting as one Threat with one Turn a Round; form one as a Free Action.",
+    "text": "A Mob is a group of near identical Threats, for example, a crowd of ten Ork Boyz. If you have a lot of Troop Threats, it’s often easier to treat the group as a single individual with one Turn in each Round.\n\nMobs can only be formed of Troops, and they should be the same Threat; for example, all Ork Boyz or all Chaos Cultists. This means you can use one Threat profile for the entire Mob.\n\nIf you have two or more Troop Threats that share a profile, you can form them into a Mob as a Free Action on any individual’s Turn. The Mob then takes its turn immediately; the other individuals in the Mob lose their place in the Initiative order.\n\nYou can also start a combat with Troops already in a Mob."
+  }
+]

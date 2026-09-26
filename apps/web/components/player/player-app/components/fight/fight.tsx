@@ -1,15 +1,15 @@
 "use client";
 import { useMemo, useState } from "react";
 
-import { Side, deriveStats, sideOf, threatStatus, type LiveState } from "@wg/shared";
+import { Side, deriveStats, sideOf, threatStatus, type LiveState, type RuleEntry } from "@wg/shared";
 
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";
 
-type FightProps = { state: LiveState };
+type FightProps = { state: LiveState; legend: RuleEntry[] };
 
-export function Fight({ state }: FightProps) {
+export function Fight({ state, legend }: FightProps) {
   const [open, setOpen] = useState<string | null>(null);
   const chars = useMemo(() => new Map(state.characters.map((c) => [c.id, c])), [state.characters]);
   const enc = state.encounter;
@@ -85,7 +85,7 @@ export function Fight({ state }: FightProps) {
                 {open === c.id &&
                   c.kind === "threat" &&
                   (c.stats ? (
-                    <StatBlock t={c.stats} tier={state.campaign.tier} />
+                    <StatBlock t={c.stats} tier={state.campaign.tier} legend={legend} />
                   ) : (
                     <span className="dim">DATA RESTRICTED BY GM.</span>
                   ))}

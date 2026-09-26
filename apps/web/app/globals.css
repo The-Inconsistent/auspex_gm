@@ -559,6 +559,54 @@ textarea.input {
   letter-spacing: 0;
   color: var(--bone-2);
   white-space: nowrap;
+  margin-left: auto; /* keeps the cite beside the (?) on the right */
+}
+/* The (?) on a stat block and its legend dialog (components/ui/stat-block/components/stat-legend). */
+.sb-help {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--bone-2);
+  border-radius: 50%;
+  background: none;
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  align-self: center;
+}
+dialog.legend {
+  width: min(560px, calc(100vw - 32px));
+  max-height: 85dvh;
+  padding: 0;
+  border: 1px solid var(--iron-2);
+  background: var(--vellum);
+  color: var(--ink);
+  overflow: auto;
+  /* It sits inside .sb-title in the DOM, so drop the title bar's display face. */
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+dialog.legend::backdrop {
+  background: var(--overlay);
+}
+dialog.legend .sb-title {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  align-items: center;
+}
+dialog.legend .sb-title .btn {
+  border-color: var(--bone-2);
+  box-shadow: none;
+  color: var(--bone);
+}
+dialog.legend .list {
+  padding: 10px;
 }
 .sb-grid {
   display: grid;
@@ -1101,6 +1149,31 @@ details.item > summary::before {
 }
 details.item[open] > summary::before {
   content: "▾";
+}
+/* Rules entry (components/ui/rule-item): the term as a header, kind and cite as a small-caps sub-header, then the gist
+   and, when opened, the book text as body copy under a rule. */
+.rule-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.rule-meta {
+  font-size: 11px;
+  margin-left: auto;
+}
+.rule-gist {
+  flex-basis: 100%;
+  padding-left: 18px; /* under the name, past the ▸ */
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.4;
+}
+details.rule-item > pre.text {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 16px;
 }
 .stack {
   display: flex;
