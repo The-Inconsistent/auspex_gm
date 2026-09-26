@@ -204,6 +204,11 @@ export const Character = z.object({
   annihilated: z.boolean(), // one hit over 2 × Max Wounds (p.194)
   xp: z.number().int(),
   conditions: z.array(z.string()),
+  // The creation choices `stats` was derived from (a CharacterBuild, build.ts), or null for a hand-made sheet. Loose
+  // here because build.ts imports this file; the builder parses it with CharacterBuild.
+  build: z.record(z.string(), z.unknown()).nullable(),
+  // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
+  draft: z.record(z.string(), z.unknown()).nullable(),
 });
 export type Character = z.infer<typeof Character>;
 
@@ -251,6 +256,7 @@ export const LiveState = z.object({
     ruin: z.number().int(),
     framework: z.string(),
     patron: z.string(),
+    homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
   }),
   characters: z.array(Character),
   encounter: z

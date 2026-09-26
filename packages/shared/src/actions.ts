@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
 import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./state.ts";
@@ -6,6 +7,8 @@ import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./sta
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
 const conditions = z.array(z.string().max(60)).max(30);
+// A builder draft is a few KB; this is room for every choice twice over, and a cap on what a socket can store.
+export const MAX_DRAFT_CHARS = 64_000;
 
 const codexSave = (Object.keys(CodexInput) as (keyof typeof CodexInput)[]).map((kind) =>
   z.object({ type: z.literal("codex.save"), kind: z.literal(kind), id: id.optional(), data: CodexInput[kind] }),
@@ -20,6 +23,7 @@ export const Action = z.union([
       tier: Tier.optional(),
       framework: z.string().max(5000).optional(),
       patron: z.string().max(200).optional(),
+      homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
 
@@ -80,6 +84,24 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),
+    // Save a character from its creation choices (build.ts). The server re-runs resolveBuild, refuses a build that
+    // isn't ready, and writes the sheet it derives. No id: a new character (GM only).
+    z.object({
+      type: z.literal("character.build"),
+      id: id.optional(),
+      name: z.string().min(1).max(100).optional(),
+      build: CharacterBuild,
+    }),
+    // A builder draft kept on the server, so the GM can open a player's half-made character, tick what only the GM
+    // judges and save it. Any shape the builder writes (it may lack an archetype yet); null clears it.
+    z.object({
+      type: z.literal("character.draft"),
+      id,
+      draft: z
+        .record(z.string(), z.unknown())
+        .refine((d) => JSON.stringify(d).length <= MAX_DRAFT_CHARS, "The draft is too large")
+        .nullable(),
+    }),
 
     z.object({ type: z.literal("token.issue"), characterId: id }),
     z.object({ type: z.literal("token.revoke"), characterId: id }),
@@ -148,6 +170,11 @@ export type Action = z.infer<typeof Action>;
 export type ActionInput = z.input<typeof Action>; // what clients send: defaulted fields optional
 
 // Actions a player may send, each limited to their own character. Harm, Wrath, Glory and Respite are the GM's.
-export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set(["character.update", "character.supply"]);
+export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
+  "character.update",
+  "character.build",
+  "character.draft",
+  "character.supply",
+]);
 
 export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };

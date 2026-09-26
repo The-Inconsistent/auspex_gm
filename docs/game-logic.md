@@ -15,6 +15,7 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 | | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
+| | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `meets` (every `Requirement` kind), `wargearMatches` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
 | | `apps/api/src/campaign/campaign.actions.ts` | pools, `session.start`, `session.end` |
 | | `apps/api/src/character/character.actions.ts` | `character.adjust` (runs `pcHit`: Exhausted, Dying, Annihilation), `character.respite` |
@@ -128,7 +129,8 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 - **Catalogue items on a sheet** (`packages/shared/src/wargear.ts`): `sheetWeapon` turns a catalogue weapon into a sheet
   weapon (thrown range = N × Strength, p.207; a knife keeps its reach and gets a `Thrown (X m)` trait), `gearLine`
   makes the gear string (armour's AR and Powered, and the page), `requisitionKindOf` maps `grenade`/`ammo` to the Ammo Test.
-- Not tracked: Objectives, automatic Wealth awards, Rank from XP, Regroup healing (p.196). Regroup is a manual HEAL.
+- Not tracked: Objectives, automatic Wealth awards, Regroup healing (p.196). Regroup is a manual HEAL. Rank from XP
+  is the builder's (`rankOf` in `resolveBuild`), for Rank requirements and "+Rank" grants when XP is spent.
 
 **Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the
 tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1).

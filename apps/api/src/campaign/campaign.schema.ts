@@ -1,4 +1,4 @@
-import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { body, createdAt } from "../core/sql.ts";
 
 export const campaign = pgTable("campaign", {
@@ -9,6 +9,7 @@ export const campaign = pgTable("campaign", {
   ruin: integer().notNull().default(0),
   framework: text().notNull().default(""),
   patron: text().notNull().default(""),
+  homebrew: boolean().notNull().default(false), // the character builder may use the homebrew books (issue #9)
   createdAt: createdAt(),
 });
 

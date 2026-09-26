@@ -28,7 +28,13 @@ export function kicks(a: Action): Kick | null {
 function authorize(ctx: Ctx, a: Action) {
   if (ctx.role === "gm") return;
   if (!PLAYER_ACTIONS.has(a.type)) fail("GM only");
-  if ((a.type === "character.update" || a.type === "character.supply") && a.id !== ctx.characterId)
+  if (
+    (a.type === "character.update" ||
+      a.type === "character.build" ||
+      a.type === "character.draft" ||
+      a.type === "character.supply") &&
+    a.id !== ctx.characterId
+  )
     fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
@@ -45,6 +51,8 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
 
     case "character.create":
     case "character.update":
+    case "character.build":
+    case "character.draft":
     case "character.adjust":
     case "character.supply":
     case "character.requisition":
