@@ -1,4 +1,4 @@
-import type { ThreatClass, Visibility } from "@wg/shared";
+import type { ThreatClass } from "@wg/shared";
 
 // Quick-pick amounts after DMG / HEAL / SHOCK / RECOVER.
 export const AMOUNTS = [1, 2, 3, 4, 5, 6, 8, 10] as const;
@@ -11,11 +11,4 @@ export const THREAT_CLASS_LABEL: Record<ThreatClass, string> = {
   E: "ELITE",
   A: "ADVERSARY",
   M: "MONSTROUS",
-};
-
-// What the players' phones show of a threat (rules-flow §11.53).
-export const VISIBILITY_LABEL: Record<Visibility, string> = {
-  hidden: "HIDDEN",
-  bars: "BAR ONLY",
-  stats: "FULL",
 };

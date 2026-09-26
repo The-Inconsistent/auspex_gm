@@ -110,6 +110,7 @@ export const Action = z.union([
       label: z.string().max(100).optional(),
       mobCount: z.number().int().min(2).max(500).optional(),
       marker: Marker.optional(),
+      visibility: Visibility.optional(), // "hidden" adds it without a flash on the phones (rules-flow §11.53)
     }),
     z.object({ type: z.literal("combatant.addCharacter"), characterId: id }),
     z.object({

@@ -237,7 +237,7 @@ acted (dimmed). Below 900px, the columns marked `.hide-sm` (CLASS, SHOCK, DEF, R
 | SEIZE · 1 GLORY / 1 RUIN | As START TURN, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
 | DMG / HEAL / SHOCK / RECOVER | A row is selected | Opens the amount pad |
 | ±COND select | A row is selected | Toggles one of `CONDITIONS` (`character.update` or `combatant.update` with the full list) |
-| PLAYERS: select | A threat is selected | `combatant.update { visibility }`: HIDDEN, BAR ONLY or FULL (rules-flow §11.53) |
+| PLAYERS: select (`VisibilitySelect`) | A threat is selected | `combatant.update { visibility }`: HIDDEN, BAR ONLY or FULL (rules-flow §11.53) |
 | AMBUSH / AWARE · cost | Round 1, and the selected row hasn't acted | `combatant.update { ambushed: true }` / `combatant.aware` |
 | REMOVE | A row is selected | `combatant.remove`, then clears the selection |
 | NEW ROUND, END ENC | Always | `encounter.newRound`, `encounter.end` |
@@ -289,6 +289,7 @@ handlers (`runCommand`), so they fire the same reminders. What the reminders say
 - The `+ THREAT…` select lists the bestiary as `name (source p.N)`.
 - `MOB #` accepts digits only. A value of 2 or more adds the threat as a mob of that size.
 - An optional MARKER select.
+- A `VisibilitySelect` (PLAYERS: BAR ONLY by default, kept between adds) so a held-back threat goes in hidden.
 - ADD sends `combatant.addThreat`.
 - `+ PARTY (n)` sends one `combatant.addCharacter` for each character not yet in the fight, in order.
 - All of these go through `run`, so they are logged and their errors show on the tracker error line.
@@ -402,7 +403,7 @@ The tests are in `lib/command/command.test.ts`.
   - read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`)
   - location
   - NPC and handout toggle chips (`aria-pressed`)
-  - the prepared encounter entries: threat, count (at least 1), a MOB checkbox and a marker
+  - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
 
   It also shows the Threat Assessment sizing guideline for the current party size and the current enemy count.
   SAVE BEAT creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
@@ -488,7 +489,8 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:
-- A `hidden` threat isn't sent. The banner reads `UNSEEN THREAT ACTING` on its Turn and takes the side that's due from
+- A `hidden` threat isn't sent, and `currentId` is `UNSEEN_ID` on its Turn. The banner then reads `UNSEEN THREAT ACTING`
+  and takes the side that's due from
   `encounter.upNext`, since `sideUpNext` on the filtered combatants would miss the hidden threat's Turn.
 - A `bars` threat's `stats` is `null`, its `threatId` is `""` and its `personalRuin` is 0. Its bars, mob count and
   Conditions still come through.

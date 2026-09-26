@@ -322,6 +322,7 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 | `LiveState.campaign` | everything, including Ruin | — |
 | `LiveState.characters` | every character, in full | — |
 | `LiveState.encounter.upNext` | `sideUpNext` of the full state (player view only) | — |
+| `LiveState.encounter.currentId` | as is, unless a hidden threat is acting | → `UNSEEN_ID` |
 | threat combatant, `visibility: "hidden"` | nothing: left out of `combatants` | all |
 | threat combatant, `visibility: "bars"` | label, marker, class, mob count, Wounds / Shock and their maxima, Conditions, turn flags | `stats` → null, `threatId` → `""`, `personalRuin` → 0 |
 | threat combatant, `visibility: "stats"` | all of the above plus `stats` | — |
@@ -331,13 +332,13 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 | `Codex.handouts` | revealed ones only | — |
 | `Codex.sessions` | all, with recaps | — |
 
-- **Threat visibility** (rules-flow §11.53): the tracker's PLAYERS picker sends `combatant.update { visibility }`; new
-  threats start at `bars`. The `threatId` is withheld, but
+- **Threat visibility** (rules-flow §11.53): the tracker's PLAYERS picker sends `combatant.update { visibility }`. New
+  threats start at `bars` unless `combatant.addThreat` or the `EncounterEntry` says `hidden` (or `stats`). The `threatId` is withheld, but
   the label defaults to the stat-block name, so rename the label if the identity itself is the secret.
 
 ## 9. Prepared encounters (`beat.startEncounter`)
 
-A beat's `encounter` is a list of `EncounterEntry { threatId, count, asMob, marker?, label? }`.
+A beat's `encounter` is a list of `EncounterEntry { threatId, count, asMob, marker?, label?, visibility? }`.
 
 1. Every `threatId` is checked against the loaded bestiary before anything is written.
 2. A new encounter starts (any active one is deactivated).

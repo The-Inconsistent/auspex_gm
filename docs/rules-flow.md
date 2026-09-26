@@ -335,8 +335,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 53. **What players know of the enemy** is not a rule: Set the Scene (Core p.176) describes the ground, not the foes, and
     an enemy is found through the fiction (Stealth Score vs Awareness, Core pp.181–182; Ambush, p.177). The phones show
     what the table shows: a threat whose mini isn't placed yet is `hidden` and never sent to players; once placed it's
-    `bars` (label, bars, Conditions); `stats` adds the stat block. A hidden threat still takes its Turns; players see
-    "Unseen threat acting" and the side that's due, not who.
+    `bars` (label, bars, Conditions); `stats` adds the stat block. New threats default to `bars`; the GM adds held-back
+    ones (ambushers, snipers, reinforcements) as `hidden`, from the tracker or in the beat's prepared encounter, so
+    they never flash on the phones. A hidden threat still takes its Turns; players see "Unseen threat acting" and the
+    side that's due, never which one (its id is replaced by `UNSEEN_ID`).
 
 ---
 

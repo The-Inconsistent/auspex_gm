@@ -137,6 +137,16 @@ test("GM and player share a table", async (t) => {
   await player.until((s) => !!s.encounter && !threatOf(s));
   await gm.send({ type: "combatant.update", id: ork.id, visibility: "stats" });
   await player.until((s) => threatOf(s)?.stats?.name === "Ork Boy");
+  // Added hidden: in no player broadcast, not even the add's own. Broadcasts arrive in order, so once the player sees
+  // the later marker, every earlier one has been checked.
+  const seen = new Set<string>();
+  player.socket.on("state", (s: LiveState) => s.encounter?.combatants.forEach((c) => seen.add(c.id)));
+  const sniper = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy", visibility: "hidden" });
+  assert.ok(sniper.ok && sniper.id);
+  await gm.send({ type: "combatant.update", id: ork.id, marker: "red" });
+  await player.until((s) => threatOf(s)?.marker === "red");
+  assert.ok(!seen.has(sniper.id), "a threat added hidden never reaches the phones");
+  await gm.send({ type: "combatant.remove", id: sniper.id });
 
   // Player permissions.
   // Harm, Wrath, Glory and Respite are the GM's.

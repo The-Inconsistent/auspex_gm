@@ -20,6 +20,7 @@ import {
   type Marker,
   type Side,
   type Threat,
+  type Visibility,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
@@ -86,7 +87,16 @@ async function addThreat(
     label,
     mobCount,
     marker,
-  }: { encounterId: string; tier: number; threat: Threat; label?: string; mobCount?: number; marker?: Marker },
+    visibility,
+  }: {
+    encounterId: string;
+    tier: number;
+    threat: Threat;
+    label?: string;
+    mobCount?: number;
+    marker?: Marker;
+    visibility?: Visibility;
+  },
 ) {
   const [c] = await tx
     .insert(combatant)
@@ -102,6 +112,7 @@ async function addThreat(
       mobStart: mobCount ?? null,
       personalRuin: t.personalRuin ?? 0,
       marker: marker ?? null,
+      visibility, // undefined takes the column default, bars
     })
     .returning({ id: combatant.id });
   return c!.id; // the row was just inserted
@@ -230,6 +241,7 @@ export async function applyEncounterAction(
           label: a.label,
           mobCount: a.mobCount,
           marker: a.marker,
+          visibility: a.visibility,
         }),
       };
     }
@@ -361,7 +373,15 @@ export async function applyEncounterAction(
       for (const e of entries) {
         const t = threats.get(e.threatId)!; // every entry was checked against `threats` above
         if (e.asMob && e.count > 1)
-          await addThreat(tx, { encounterId, tier, threat: t, label: e.label, mobCount: e.count, marker: e.marker });
+          await addThreat(tx, {
+            encounterId,
+            tier,
+            threat: t,
+            label: e.label,
+            mobCount: e.count,
+            marker: e.marker,
+            visibility: e.visibility,
+          });
         else
           for (let i = 0; i < e.count; i++)
             await addThreat(tx, {
@@ -370,6 +390,7 @@ export async function applyEncounterAction(
               threat: t,
               label: e.count > 1 ? `${e.label ?? t.name} ${i + 1}` : e.label,
               marker: e.marker,
+              visibility: e.visibility,
             });
       }
       await tx.update(beat).set({ status: "active" }).where(eq(beat.id, b.id));

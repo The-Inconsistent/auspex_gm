@@ -3,6 +3,7 @@ import { useState, type ChangeEvent } from "react";
 
 import { BeatType, Marker, type BeatStatus, type Codex, type Threat } from "@wg/shared";
 
+import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { Beat, EncounterEntry } from "../../types";
@@ -225,6 +226,11 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
                 </option>
               ))}
             </select>
+            <VisibilitySelect
+              className="input"
+              value={e.visibility ?? "bars"}
+              onChange={(visibility) => setEntry(i, { visibility })}
+            />
             <button
               className="btn sm danger"
               aria-label={`Remove encounter entry ${i + 1}`}

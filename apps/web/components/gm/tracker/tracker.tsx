@@ -7,7 +7,6 @@ import {
   THREAT_CLASS_RULES,
   TURN_END_REMINDERS,
   TURN_START_REMINDERS,
-  Visibility,
   canAct,
   canSeize,
   deriveStats,
@@ -26,18 +25,21 @@ import {
   type Combatant,
   type LiveState,
   type Threat,
+  type Visibility,
 } from "@wg/shared";
 
 import { Bar } from "@/components/ui/bar/bar";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { VISIBILITY_LABEL } from "@/components/ui/visibility-select/constants";
+import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 import { parseCommand } from "@/lib/command/command";
 import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterField } from "@/lib/command/constants";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
-import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL, VISIBILITY_LABEL } from "./constants";
+import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL } from "./constants";
 import type { LogEntry, Run } from "./types";
 
 type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };
@@ -279,9 +281,8 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
   };
 
   // PLAYERS picker: what the phones show of the selected threat. Hidden until its mini goes on the table (§11.53).
-  const handleVisibilityPick = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleVisibilityPick = (visibility: Visibility) => {
     if (sel?.kind !== "threat") return;
-    const visibility = Visibility.parse(e.target.value);
     void run(
       { type: "combatant.update", id: sel.id, visibility },
       `${nameOf(sel).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
@@ -502,20 +503,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                     </option>
                   ))}
                 </select>
-                {sel.kind === "threat" && (
-                  <select
-                    className="btn"
-                    aria-label="What players see"
-                    value={sel.visibility}
-                    onChange={handleVisibilityPick}
-                  >
-                    {Visibility.options.map((v) => (
-                      <option key={v} value={v}>
-                        PLAYERS: {VISIBILITY_LABEL[v]}
-                      </option>
-                    ))}
-                  </select>
-                )}
+                {sel.kind === "threat" && <VisibilitySelect value={sel.visibility} onChange={handleVisibilityPick} />}
                 {enc.round === 1 &&
                   !sel.acted &&
                   (sel.ambushed ? (
