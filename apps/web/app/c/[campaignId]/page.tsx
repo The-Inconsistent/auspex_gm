@@ -1,7 +1,7 @@
-import { Me, RuleEntry, Threat, Wargear } from "@wg/shared";
+import { Me, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
-import { apiGet } from "@/app/server-api";
+import { apiGet, loadRules } from "@/app/server-api";
 import { GmApp } from "@/components/gm/gm-app/gm-app";
 import { PlayerApp } from "@/components/player/player-app/player-app";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
@@ -25,18 +25,6 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
     const res = await apiGet(`/api/campaigns/${campaignId}/wargear`);
     const parsed = Wargear.array().safeParse(res.ok ? await res.json() : null);
     return parsed.success ? parsed.data.sort((a, b) => a.name.localeCompare(b.name)) : [];
-  } catch {
-    return [];
-  }
-}
-
-// Rules reference for any seat, in file order (the stat legend reads in printed order; the RULES tab sorts by name).
-// Empty on failure; the RULES tab then says so.
-async function loadRules(campaignId: string): Promise<RuleEntry[]> {
-  try {
-    const res = await apiGet(`/api/campaigns/${campaignId}/rules`);
-    const parsed = RuleEntry.array().safeParse(res.ok ? await res.json() : null);
-    return parsed.success ? parsed.data : [];
   } catch {
     return [];
   }

@@ -12,10 +12,12 @@ import {
   skillTotal,
   type ActionInput,
   type Character,
+  type CharacterDetail,
   type LiveState,
   type Skill,
 } from "@wg/shared";
 
+import { DetailFields, DetailHelp, DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
@@ -34,6 +36,7 @@ export function Sheet({ me, state, send }: SheetProps) {
   const [pickCond, setPickCond] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [newAmmo, setNewAmmo] = useState("");
+  const [detail, setDetail] = useState<Partial<CharacterDetail> | null>(null); // the text being edited, or null
   const players = state.characters.length;
 
   // Sends an action; a refusal (e.g. no Respite while Dying, p.197) shows the server's reason.
@@ -53,6 +56,14 @@ export function Sheet({ me, state, send }: SheetProps) {
     if (!kind) return;
     void supply({ ammo: { kind, delta: 1 } });
     setNewAmmo("");
+  };
+
+  // SAVE on the detail: writes it and closes the editor, or keeps it open with the server's reason.
+  const saveDetail = async () => {
+    if (!detail) return;
+    const r = await send({ type: "character.update", id: me.id, detail });
+    setError(r.ok ? null : r.error);
+    if (r.ok) setDetail(null);
   };
 
   // Condition chip: adds the Condition, or removes it if already on.
@@ -234,6 +245,38 @@ export function Sheet({ me, state, send }: SheetProps) {
             </div>
           ),
       )}
+      <div className="stack" style={{ gap: 6 }}>
+        <div className="rule">
+          <span>WHO YOU ARE</span>
+          <DetailHelp />
+        </div>
+        {detail ? (
+          <>
+            <DetailFields idPrefix="sheet-detail" value={detail} onChange={setDetail} />
+            <div className="keys" style={{ paddingTop: 0 }}>
+              <button className="btn sm primary" onClick={saveDetail}>
+                SAVE
+              </button>
+              <button className="btn sm" onClick={() => setDetail(null)}>
+                CANCEL
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            {hasDetail(me.detail) ? (
+              <DetailView detail={me.detail} />
+            ) : (
+              <div className="dim">Appearance, past, personality: not written yet.</div>
+            )}
+            <div>
+              <button className="btn sm" onClick={() => setDetail(me.detail)}>
+                {hasDetail(me.detail) ? "EDIT" : "WRITE"}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
       {s.gear.length > 0 && (
         <div className="dim" style={{ fontSize: 13 }}>
           GEAR: {s.gear.join(" · ")}

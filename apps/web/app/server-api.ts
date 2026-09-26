@@ -1,6 +1,7 @@
 import { cookies, headers as requestHeaders } from "next/headers";
 
 import { sessionToken } from "@wg/auth/next";
+import { RuleEntry } from "@wg/shared";
 
 import { API_ORIGIN, TOKEN_COOKIE } from "@/app/constants";
 
@@ -16,4 +17,16 @@ export async function apiGet(path: string) {
   if (guest) headers.cookie = `${TOKEN_COOKIE}=${encodeURIComponent(guest)}`;
   const res = await fetch(`${API_ORIGIN}${path}`, { headers, cache: "no-store" });
   return res;
+}
+
+// Rules reference for any seat, in file order (the stat legend reads in printed order; the RULES tab sorts by name).
+// Empty on failure; the RULES tab then says so.
+export async function loadRules(campaignId: string): Promise<RuleEntry[]> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/rules`);
+    const parsed = RuleEntry.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : [];
+  } catch {
+    return [];
+  }
 }

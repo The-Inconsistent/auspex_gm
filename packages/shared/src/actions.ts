@@ -2,7 +2,7 @@ import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
-import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier, Visibility } from "./state.ts";
+import { CharacterDetail, CharacterStats, InviteMode, Marker, Overrides, Pool, Tier, Visibility } from "./state.ts";
 
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
@@ -39,6 +39,7 @@ export const Action = z.union([
       type: z.literal("character.create"),
       name: z.string().min(1).max(100),
       stats: CharacterStats.optional(),
+      detail: CharacterDetail.optional(),
     }),
     z.object({
       type: z.literal("character.update"),
@@ -47,6 +48,7 @@ export const Action = z.union([
       stats: CharacterStats.optional(),
       overrides: Overrides.optional(),
       conditions: conditions.optional(),
+      detail: CharacterDetail.optional(),
       annihilated: z.boolean().optional(), // GM only: undoes an Annihilation (p.194)
     }),
     // Wounds and Shock go through the damage rules (pcHit, pp.193-199). raw (GM only, the tracker's undo) skips them.
@@ -90,6 +92,7 @@ export const Action = z.union([
       type: z.literal("character.build"),
       id: id.optional(),
       name: z.string().min(1).max(100).optional(),
+      detail: CharacterDetail.optional(),
       build: CharacterBuild,
     }),
     // A builder draft kept on the server, so the GM can open a player's half-made character, tick what only the GM

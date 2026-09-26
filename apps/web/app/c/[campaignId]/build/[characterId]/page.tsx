@@ -1,7 +1,7 @@
 import { CreationPayload, Me } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
-import { apiGet } from "@/app/server-api";
+import { apiGet, loadRules } from "@/app/server-api";
 import { Builder } from "@/components/builder/builder";
 import { NEW_CHARACTER } from "@/components/builder/constants";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
@@ -37,7 +37,9 @@ export default async function Build({ params }: BuildProps) {
   const characterId = p.characterId === NEW_CHARACTER ? null : p.characterId;
   if (me.role !== "gm" && (!characterId || characterId !== me.characterId))
     return <StatusScreen text="ONLY YOUR OWN CHARACTER. ASK YOUR GM." />;
-  const catalogue = await loadCatalogue(me.campaignId);
+  const [catalogue, rules] = await Promise.all([loadCatalogue(me.campaignId), loadRules(me.campaignId)]);
   if (!catalogue) return <StatusScreen text="CREATION DATA UNAVAILABLE. TRY AGAIN." />;
-  return <Builder campaignId={me.campaignId} characterId={characterId} role={me.role} payload={catalogue} />;
+  return (
+    <Builder campaignId={me.campaignId} characterId={characterId} role={me.role} payload={catalogue} rules={rules} />
+  );
 }

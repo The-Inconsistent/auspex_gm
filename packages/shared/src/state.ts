@@ -193,6 +193,12 @@ export function deriveStats({
 }
 export type DerivedStats = ReturnType<typeof deriveStats>;
 
+// Who the character is, written by the player: Adding Detail (Core pp.32–36). Appearance (pp.32–33), then the Ten
+// Questions, split as the book splits them: Your Past (1–5, pp.34–35) and Your Personality (6–10, pp.35–36).
+const detailText = z.string().max(4000).default("");
+export const CharacterDetail = z.object({ appearance: detailText, past: detailText, personality: detailText });
+export type CharacterDetail = z.infer<typeof CharacterDetail>;
+
 // Glory: max(6, players + 2) (p.164). Ruin: 2 × players (p.320).
 export const poolMax = (pool: Pool, players: number) =>
   pool === "glory" ? Math.max(6, players + 2) : Math.max(1, players * 2);
@@ -209,6 +215,7 @@ export const Character = z.object({
   annihilated: z.boolean(), // one hit over 2 × Max Wounds (p.194)
   xp: z.number().int(),
   conditions: z.array(z.string()),
+  detail: CharacterDetail,
   // The creation choices `stats` was derived from (a CharacterBuild, build.ts), or null for a hand-made sheet. Loose
   // here because build.ts imports this file; the builder parses it with CharacterBuild.
   build: z.record(z.string(), z.unknown()).nullable(),

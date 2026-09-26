@@ -3,11 +3,14 @@ import { useState } from "react";
 
 import { LANGUAGE_XP, MAX_BOUGHT_WEALTH, WEALTH_XP } from "@wg/shared";
 
+import { DetailFields, DetailHelp } from "@/components/ui/character-detail/character-detail";
+
 import { useBuilder } from "../../builder-context";
 import { toggle } from "../../utils";
 import { StepChoices } from "../step-choices/step-choices";
 
-// Adding detail (Core pp.30–38): the name, languages (p.31, rules-flow.md §11.48–50) and Wealth (p.38, §11.51).
+// Adding detail (Core pp.30–38): the name, languages (p.31, rules-flow.md §11.48–50), Wealth (p.38, §11.51), and who the
+// character is (pp.32–36).
 export function DetailStep() {
   const { draft, update, resolved: r, lookups, tier, go } = useBuilder();
   const [writeIn, setWriteIn] = useState("");
@@ -147,6 +150,23 @@ export function DetailStep() {
             +
           </button>
         </div>
+      </section>
+
+      <section className="stack">
+        <div className="tbar">
+          <span>
+            WHO YOU ARE <DetailHelp />
+          </span>
+          <span>Core pp.32–36</span>
+        </div>
+        <div className="dim">
+          Optional. Write as much or as little as you like; you can change it later on your sheet.
+        </div>
+        <DetailFields
+          idPrefix="bld-detail"
+          value={draft.detail ?? {}}
+          onChange={(detail) => update((d) => ({ ...d, detail }))}
+        />
       </section>
 
       <StepChoices step="detail" />

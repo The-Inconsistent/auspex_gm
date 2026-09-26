@@ -21,7 +21,7 @@ export const wargearList = (): Wargear[] =>
   jsonFiles(wargearDir).flatMap((f) => Wargear.array().parse(json(new URL(f, wargearDir))));
 export const wargear: ReadonlyMap<string, Wargear> = new Map(wargearList().map((w) => [w.id, w]));
 
-// rules/<kind>.json: the rules reference, book text served to any seat (Core pp.177–232).
+// rules/<kind>.json: the rules reference, book text served to any seat (Core p.34, pp.177–232).
 const rulesDir = new URL("./rules/", import.meta.url);
 export const rulesList = (): RuleEntry[] =>
   jsonFiles(rulesDir).flatMap((f) => RuleEntry.array().parse(json(new URL(f, rulesDir))));

@@ -1,13 +1,26 @@
 "use client";
 import { createContext, useContext } from "react";
 
-import type { BuildCatalogue, BuildChoice, CharacterBuildInput, Creation, ResolvedBuild, Role } from "@wg/shared";
+import type {
+  BuildCatalogue,
+  BuildChoice,
+  CharacterBuildInput,
+  CharacterDetail,
+  Creation,
+  ResolvedBuild,
+  Role,
+} from "@wg/shared";
 
 import type { BuilderStep } from "./constants";
 
-// A build still being made: no archetype yet is allowed, and the name travels with it until it's saved. `savedAt`
-// (ms) picks the newer of this device's draft and the one sent to the table.
-export type Draft = Omit<CharacterBuildInput, "archetypeId"> & { archetypeId?: string; name: string; savedAt?: number };
+// A build still being made: no archetype yet is allowed, and the name and detail travel with it until it's saved.
+// `savedAt` (ms) picks the newer of this device's draft and the one sent to the table.
+export type Draft = Omit<CharacterBuildInput, "archetypeId"> & {
+  archetypeId?: string;
+  name: string;
+  detail?: Partial<CharacterDetail>;
+  savedAt?: number;
+};
 
 // Catalogue lookups by id, built once per payload.
 export type Lookups = {

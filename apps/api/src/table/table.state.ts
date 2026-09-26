@@ -1,5 +1,5 @@
 import { and, asc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
-import { CharacterStats, Overrides, type Codex, type Combatant, type LiveState } from "@wg/shared";
+import { CharacterDetail, CharacterStats, Overrides, type Codex, type Combatant, type LiveState } from "@wg/shared";
 import { appUser, invite, membership } from "../auth/auth.schema.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -60,7 +60,22 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       homebrew: c.homebrew,
     },
     characters: chars.map(
-      ({ id, name, stats, overrides, build, buildDraft, wounds, shock, wrath, traumatic, annihilated, xp, conditions }) => ({
+      ({
+        id,
+        name,
+        stats,
+        overrides,
+        build,
+        buildDraft,
+        wounds,
+        shock,
+        wrath,
+        traumatic,
+        annihilated,
+        xp,
+        conditions,
+        detail,
+      }) => ({
         id,
         name,
         stats: CharacterStats.parse(stats),
@@ -72,6 +87,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
         annihilated,
         xp,
         conditions,
+        detail: CharacterDetail.parse(detail),
         build: build ?? null,
         draft: buildDraft ?? null,
       }),

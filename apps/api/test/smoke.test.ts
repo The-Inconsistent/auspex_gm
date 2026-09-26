@@ -167,6 +167,12 @@ test("GM and player share a table", async (t) => {
     ok: false,
     error: "Not your character",
   });
+  // Adding Detail (Core pp.32–36): a player writes their own character's; the parts left out are empty.
+  assert.ok((await player.send({ type: "character.update", id: hero.id, detail: { past: "Hive Tertius" } })).ok);
+  await player.until((s) => {
+    const d = s.characters.find((c) => c.id === hero.id)?.detail;
+    return d?.past === "Hive Tertius" && d.appearance === "";
+  });
   // Supply (p.206, p.229): the player spends their own Wealth and Ammo, per type.
   assert.ok(
     (await player.send({ type: "character.supply", id: hero.id, wealth: 2, ammo: { kind: "Bolt", delta: 3 } })).ok,

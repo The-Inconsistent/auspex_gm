@@ -11,10 +11,12 @@ import {
   type CreationPayload,
   type LiveState,
   type ResolvedBuild,
+  type RuleEntry,
   type Role,
 } from "@wg/shared";
 
 import { Refusal } from "@/components/ui/refusal/refusal";
+import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable, type Send } from "@/hooks/use-table/use-table";
@@ -32,23 +34,36 @@ import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
 import { draftKey, type BuilderStep } from "./constants";
 
-type BuilderProps = { campaignId: string; characterId: string | null; role: Role; payload: CreationPayload };
+type BuilderProps = {
+  campaignId: string;
+  characterId: string | null;
+  role: Role;
+  payload: CreationPayload;
+  rules: RuleEntry[];
+};
 
 // The character builder (issue #9 step 4): waits for the table, then works on a draft of the build.
-export function Builder({ campaignId, characterId, role, payload }: BuilderProps) {
+export function Builder({ campaignId, characterId, role, payload, rules }: BuilderProps) {
   const { state, online, send } = useTable(campaignId);
   if (!state) return <StatusScreen text="SYNCING COGITATOR…" />;
   const character = characterId ? state.characters.find((c) => c.id === characterId) : undefined;
   if (characterId && !character) return <StatusScreen text="CHARACTER NOT FOUND." />;
   return (
-    <Workshop
-      key={characterId ?? "new"}
-      {...{ campaignId, characterId, role, payload, state, online, send, character }}
-    />
+    <RulesProvider rules={rules}>
+      <Workshop
+        key={characterId ?? "new"}
+        {...{ campaignId, characterId, role, payload, state, online, send, character }}
+      />
+    </RulesProvider>
   );
 }
 
-type WorkshopProps = BuilderProps & { state: LiveState; online: boolean; send: Send; character?: Character };
+type WorkshopProps = Omit<BuilderProps, "rules"> & {
+  state: LiveState;
+  online: boolean;
+  send: Send;
+  character?: Character;
+};
 
 // A draft to start from: the newer of this device's and the one sent to the table (a player's, for the GM to tick),
 // else the character's saved build, else a blank one.
@@ -64,10 +79,11 @@ function initialDraft({ key, character, tier }: { key: string; character?: Chara
   const newest = [local, sent]
     .filter((d): d is Draft => d !== null)
     .sort((a, b) => (b.savedAt ?? 0) - (a.savedAt ?? 0))[0];
-  if (newest) return newest;
+  // A draft from before the builder kept the detail starts from the character's.
+  if (newest) return { detail: character?.detail, ...newest };
   const saved = CharacterBuild.safeParse(character?.build);
-  if (saved.success) return { ...saved.data, name: character?.name ?? "" };
-  return { tier, name: character?.name ?? "" };
+  if (saved.success) return { ...saved.data, name: character?.name ?? "", detail: character?.detail };
+  return { tier, name: character?.name ?? "", detail: character?.detail };
 }
 
 function Workshop({ campaignId, characterId, role, payload, state, online, send, character }: WorkshopProps) {
@@ -94,7 +110,7 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
   // The live sheet: every change re-resolves the whole build, so a later choice that breaks an earlier one shows up.
   const resolved = useMemo((): ResolvedBuild | null => {
     if (!draft.archetypeId) return null;
-    const { name: _, savedAt: __, archetypeId, ...rest } = draft;
+    const { name: _, detail: __, savedAt: ___, archetypeId, ...rest } = draft;
     try {
       return resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
     } catch {
@@ -156,11 +172,12 @@ function Workshop({ campaignId, characterId, role, payload, state, online, send,
   // SAVE: the server re-resolves the build and writes the sheet; back to the table once it's saved.
   const save = async () => {
     if (!draft.archetypeId) return;
-    const { name, archetypeId, savedAt: _, ...rest } = draft;
+    const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
     const r = await send({
       type: "character.build",
       id: characterId ?? undefined,
       name: name.trim() || undefined,
+      detail,
       build: { ...rest, archetypeId },
     });
     if (!r.ok) return setError(r.error);

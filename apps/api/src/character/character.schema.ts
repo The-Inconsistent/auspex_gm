@@ -1,3 +1,4 @@
+import type { CharacterDetail } from "@wg/shared";
 import { boolean, integer, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
@@ -20,5 +21,6 @@ export const character = pgTable("character", {
   annihilated: boolean().notNull().default(false), // one hit over 2 × Max Wounds (p.194)
   xp: integer().notNull().default(0),
   conditions: conditions(),
+  detail: jsonb().$type<Partial<CharacterDetail>>().notNull().default({}), // Adding Detail (Core pp.32–36)
   createdAt: createdAt(),
 });
