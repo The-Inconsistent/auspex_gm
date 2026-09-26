@@ -20,3 +20,29 @@ export const RuleEntry = z.object({
   text: z.string().min(1), // paragraphs separated by a blank line
 });
 export type RuleEntry = z.infer<typeof RuleEntry>;
+
+// The kinds a trait or Condition name in the data can link to. Action names and stat block terms ("Defence",
+// "Wounds") aren't traits, so a lookup leaves them out.
+export const LINKED_RULE_KINDS: readonly RuleKind[] = ["condition", "weapon-trait", "armour-trait"];
+
+// Matching key for a trait or Condition as it appears in the data, against an entry's printed name. The rating or
+// parameter goes (`Blast (6)`, `Blast 20`, `Inflict (Poison 7)` → `blast`, `inflict`), and so do case, curly quotes
+// and hyphens. The aliases are spellings found in threats/ and wargear/.
+const RULE_ALIASES: Record<string, string> = {
+  inflicts: "inflict",
+  agonizing: "agonising", // Apocrypha melee wargear
+  "warp weapon": "warp weapons",
+  asault: "assault", // Meltagun, printed so
+  bulky: "bulk", // Vow of Absolution
+};
+
+export function ruleKey(name: string): string {
+  const k = name
+    .toLowerCase()
+    .replace(/[‘’]/g, "'")
+    .replace(/\s*(\(.*\)|\d+)$/, "")
+    .replace(/!$/, "") // armour.json prints "’Ere We Go" without it
+    .replace(/-/g, " ")
+    .trim();
+  return RULE_ALIASES[k] ?? k;
+}

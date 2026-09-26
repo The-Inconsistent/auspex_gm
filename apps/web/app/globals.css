@@ -1194,6 +1194,61 @@ details.rule-item > pre.text {
   background: var(--overlay);
   z-index: 40;
 }
+/* A trait or Condition that opens its rule: a dotted underline, so it isn't told by colour alone. The padding with
+   matching negative margin gives a 32px touch target without making the weapon line taller. */
+.rule-link {
+  display: inline;
+  padding: 8px 2px;
+  margin: -8px -2px;
+  border: 0;
+  background: none;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  letter-spacing: inherit;
+}
+.rule-link:hover {
+  color: var(--red);
+}
+.rule-link > .chip {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+/* A Condition on the sheet: its name (the rule) and × (remove) share one frame. */
+.cond {
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 32px;
+  border: 1px solid var(--ink-2);
+  border-radius: 2px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.cond > * {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 10px;
+}
+.cond > button:last-child {
+  justify-content: center;
+  min-width: 32px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: none;
+}
+dialog.rule-dialog {
+  width: min(640px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 1px solid var(--ink-2);
+  background: var(--vellum);
+  color: var(--ink);
+}
+dialog.rule-dialog::backdrop {
+  background: color-mix(in srgb, var(--iron) 55%, transparent); /* the sheet stays visible behind */
+}
 /* Long text keeps its line breaks; `.slate` is an in-world print-out (handouts, data-slates) in the cogitator face. */
 pre.text {
   white-space: pre-wrap;

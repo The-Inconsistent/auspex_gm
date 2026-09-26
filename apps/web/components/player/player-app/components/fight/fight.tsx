@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Side, deriveStats, sideOf, threatStatus, type LiveState, type RuleEntry } from "@wg/shared";
 
+import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";
@@ -77,9 +78,9 @@ export function Fight({ state, legend }: FightProps) {
                 <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                   {c.kind === "threat" && <StatusChips items={threatStatus(c)} />}
                   {(c.kind === "pc" ? (ch?.conditions ?? []) : c.conditions).map((k) => (
-                    <span key={k} className="chip">
-                      {k.toUpperCase()}
-                    </span>
+                    <RuleLink key={k} name={k}>
+                      <span className="chip">{k.toUpperCase()}</span>
+                    </RuleLink>
                   ))}
                 </div>
                 {open === c.id &&

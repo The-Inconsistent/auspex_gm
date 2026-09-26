@@ -2,11 +2,13 @@ import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
 import {
   CREATION_TYPES,
+  LINKED_RULE_KINDS,
   type CreationType,
   Pack,
   RuleEntry,
   archetypeXp,
   ratingsXp,
+  ruleKey,
   SOURCES,
   Threat,
   Wargear,
@@ -120,6 +122,7 @@ for (const file of readdirSync(wargearDir)
 const rulesDir = new URL("./rules/", import.meta.url);
 const ruleIds = new Set<string>();
 const weaponTraitIds = new Set<string>();
+const traitKeys = new Set<string>(); // ruleKey of every Condition and trait, for the trait-name check at the end
 for (const file of readdirSync(rulesDir)
   .filter((f) => f.endsWith(".json"))
   .sort()) {
@@ -136,6 +139,7 @@ for (const file of readdirSync(rulesDir)
     }
     ruleIds.add(e.id);
     if (e.kind === "weapon-trait") weaponTraitIds.add(e.id);
+    if (LINKED_RULE_KINDS.includes(e.kind)) traitKeys.add(ruleKey(e.name));
   }
   console.log(`rules/${file}: ${r.data.length} entries`);
 }
@@ -373,5 +377,23 @@ for (const name of packNames()) {
     `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`,
   );
 }
+
+// Trait names the app can't link to a rule (the web's RuleLink leaves them as plain text). A warning, not a failure:
+// some are real traits missing from rules/ or a new spelling for the ruleKey aliases, others aren't traits at all.
+const unlinked = new Set<string>();
+const collectTraits = (v: unknown): void => {
+  if (Array.isArray(v)) return v.forEach(collectTraits);
+  if (!v || typeof v !== "object") return;
+  for (const [k, x] of Object.entries(v)) {
+    if (k === "traits" && Array.isArray(x)) {
+      for (const t of x) if (typeof t === "string" && !traitKeys.has(ruleKey(t))) unlinked.add(t);
+    } else collectTraits(x);
+  }
+};
+for (const d of [dir, wargearDir])
+  for (const f of readdirSync(d).filter((f) => f.endsWith(".json")))
+    collectTraits(JSON.parse(readFileSync(new URL(f, d), "utf8")));
+for (const name of packNames()) collectTraits(loadPackRaw(name));
+if (unlinked.size) console.warn(`? ${unlinked.size} trait names match no rule: ${[...unlinked].sort().join(", ")}`);
 
 process.exit(failed ? 1 : 0);

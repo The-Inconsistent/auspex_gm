@@ -17,9 +17,10 @@ import {
 } from "@wg/shared";
 
 import { Refusal } from "@/components/ui/refusal/refusal";
+import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
-import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { Vital } from "./components/vital/vital";
@@ -112,10 +113,16 @@ export function Sheet({ me, state, send }: SheetProps) {
       <div className="stack" style={{ gap: 6 }}>
         <div className="rule">CONDITIONS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
+          {/* The name opens the rule and × removes it: two controls, so reading a rule never drops the Condition. */}
           {me.conditions.map((k) => (
-            <button key={k} className="btn sm" aria-label={`Remove ${k}`} onClick={() => toggleCond(k)}>
-              {k.toUpperCase()} ×
-            </button>
+            <span key={k} role="group" aria-label={k} className="cond">
+              <RuleLink name={k}>
+                <span>{k.toUpperCase()}</span>
+              </RuleLink>
+              <button aria-label={`Remove ${k}`} onClick={() => toggleCond(k)}>
+                ×
+              </button>
+            </span>
           ))}
           <button className="btn sm" onClick={() => setPickCond(!pickCond)}>
             {pickCond ? "DONE" : "+ COND"}
@@ -139,7 +146,7 @@ export function Sheet({ me, state, send }: SheetProps) {
             <div key={w.name}>
               <b>{w.name.toUpperCase()}</b>
               <div className="dim" style={{ fontSize: 13 }}>
-                {weaponLine({ weapon: w, strength: effectiveStrength(s) })}
+                <WeaponLine weapon={w} strength={effectiveStrength(s)} />
               </div>
             </div>
           ))}

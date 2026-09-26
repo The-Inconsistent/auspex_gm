@@ -30,10 +30,10 @@ import {
 import { Bar } from "@/components/ui/bar/bar";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 import { parseCommand } from "@/lib/command/command";
 import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterField } from "@/lib/command/constants";
-import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
 import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL } from "./constants";
@@ -600,7 +600,9 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
             {selChar.stats.weapons.map((w) => (
               <div key={w.name}>
                 <b>{w.name}</b>{" "}
-                <span className="dim">{weaponLine({ weapon: w, strength: effectiveStrength(selChar.stats) })}</span>
+                <span className="dim">
+                  <WeaponLine weapon={w} strength={effectiveStrength(selChar.stats)} />
+                </span>
               </div>
             ))}
           </div>

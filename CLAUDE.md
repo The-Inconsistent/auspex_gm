@@ -139,7 +139,8 @@ apps/web/components/lobby/   lobby-view (your games, running now, new game)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
-apps/web/components/ui/      rules-ref (the RULES tab, GM and player), bar, stat-block, status-chips, status-screen, refusal
+apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
+                             to read its rule), weapon-line, bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts

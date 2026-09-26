@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { sideUpNext, type RuleEntry } from "@wg/shared";
 
+import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
@@ -45,46 +46,48 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
       : `RND ${String(enc.round).padStart(2, "0")} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
 
   return (
-    <div className="pl">
-      {!online && <div className="badge-offline">NO SIGNAL</div>}
-      <div
-        className={`pl-banner band torn ${myTurn ? "up" : ""}`}
-        style={{ display: "flex", alignItems: "center", gap: 10 }}
-      >
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="label">{state.campaign.name.toUpperCase()}</div>
-          <div className="display" style={{ fontSize: 21, lineHeight: 1.15 }}>
-            {banner}
+    <RulesProvider rules={rules}>
+      <div className="pl">
+        {!online && <div className="badge-offline">NO SIGNAL</div>}
+        <div
+          className={`pl-banner band torn ${myTurn ? "up" : ""}`}
+          style={{ display: "flex", alignItems: "center", gap: 10 }}
+        >
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="label">{state.campaign.name.toUpperCase()}</div>
+            <div className="display" style={{ fontSize: 21, lineHeight: 1.15 }}>
+              {banner}
+            </div>
           </div>
-        </div>
-        {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
+          {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
             (plain <a>, so nothing prefetches it); rescanning the QR rejoins. */}
-        <ThemeToggle />
-        <Show when="signed-in">
-          <a href="/" aria-label="Lobby">
-            ◂
-          </a>
-          <UserButton />
-        </Show>
-        <Show when="signed-out">
-          <a className="btn sm" href="/leave">
-            LEAVE
-          </a>
-        </Show>
+          <ThemeToggle />
+          <Show when="signed-in">
+            <a href="/" aria-label="Lobby">
+              ◂
+            </a>
+            <UserButton />
+          </Show>
+          <Show when="signed-out">
+            <a className="btn sm" href="/leave">
+              LEAVE
+            </a>
+          </Show>
+        </div>
+        <div className="pl-body">
+          {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
+          {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
+          {tab === "INTEL" && <Intel codex={codex} state={state} />}
+          {tab === "RULES" && <RulesRef rules={rules} />}
+        </div>
+        <nav className="tabs" role="tablist" style={{ position: "sticky", bottom: 0 }}>
+          {PLAYER_TABS.map((t) => (
+            <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+              {t}
+            </button>
+          ))}
+        </nav>
       </div>
-      <div className="pl-body">
-        {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
-        {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
-        {tab === "INTEL" && <Intel codex={codex} state={state} />}
-        {tab === "RULES" && <RulesRef rules={rules} />}
-      </div>
-      <nav className="tabs" role="tablist" style={{ position: "sticky", bottom: 0 }}>
-        {PLAYER_TABS.map((t) => (
-          <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            {t}
-          </button>
-        ))}
-      </nav>
-    </div>
+    </RulesProvider>
   );
 }
