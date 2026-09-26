@@ -61,7 +61,7 @@ export const Action = z.union([
       traumatic: delta.optional(),
       raw: z.boolean().optional(),
     }),
-    // Wealth (p.206) and Ammo by type (p.229); players spend their own, the GM awards.
+    // Wealth (p.206) and Ammo by type (p.229); players spend their own (negative deltas only), the GM awards (§11.57).
     z.object({
       type: z.literal("character.supply"),
       id,
@@ -173,7 +173,8 @@ export const Action = z.union([
 export type Action = z.infer<typeof Action>;
 export type ActionInput = z.input<typeof Action>; // what clients send: defaulted fields optional
 
-// Actions a player may send, each limited to their own character. Harm, Wrath, Glory and Respite are the GM's.
+// Actions a player may send, each limited to their own character. Harm, Wrath, Glory, Respite, Conditions and
+// granting Wealth or Ammo are the GM's (authorize() in table.dispatch.ts).
 export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.update",
   "character.build",

@@ -155,9 +155,13 @@ Always the full snapshot, never a diff.
 |---|---|---|
 | `character.update`, `character.build`, `character.draft`, `character.supply` | `a.id === ctx.characterId` (so a player can't build a new character) | `"Not your character"` |
 | `character.update` | no `overrides` field | `"Overrides are GM only"` |
+| `character.update` | no `annihilated` field | `"GM only"` |
+| `character.update` | no `stats` field | `"Stats are GM only"` |
+| `character.update` | no `conditions` field | `"Conditions are the GM's"` |
+| `character.supply` | no positive `wealth` or `ammo.delta` | `"Only the GM grants Wealth and Ammo"` (§11.57) |
 
-A player may therefore edit their own character's `name`, `stats` and `conditions`, spend its Wealth and Ammo, and build it or save a builder draft. Nothing else:
-Wounds, Shock, Wrath, Glory and Respite are the GM's.
+A player may therefore edit their own character's `name` and `detail`, spend its Wealth and Ammo, and build it or save a builder draft. Nothing else:
+Wounds, Shock, Wrath, Glory, Respite, Conditions, raw `stats` and granting Wealth or Ammo are the GM's.
 
 ### `touches(action)` → `{ state, codex }`
 
@@ -200,9 +204,9 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
 | `character.build` | GM; Own | Re-runs `resolveBuild` on `build` with the campaign's homebrew setting, and for an existing character `play` (the campaign's Tier now, `character.xp` earned). A new build is at the campaign's Tier; a made one keeps the Tier it was made at, and a player may change only its `advancement` (and the choices under `advance/`): `"Only your GM changes a character's creation choices once it's made"`. Refuses `"Still to choose: …"` or the first problem. Writes the derived `stats` and the `build` and clears `build_draft`; a made character keeps what play changed (`keepPlay`: Wealth, Ammo, requisitions, gained weapons and gear), a first build keeps `ammo` and `requisitioned`. A player's build keeps the stored `build.gm`. No `id`: inserts a character (GM). Returns `id` | S | Core pp.17–38 |
 | `character.draft` | GM; Own | Stores a builder draft (any JSON object up to `MAX_DRAFT_CHARS`, or null to clear) in `character.build_draft`, shown in LiveState as `draft`. A player's keeps the GM's part (`gm`) of the stored draft or build. `character.build` clears it | S | |
-| `character.update` | GM; Own (no `overrides`) | Patch `name`, `stats`, `overrides`, `conditions`. `stats` and `overrides` replace the whole jsonb value | S | |
+| `character.update` | GM; Own (`name`, `detail` only) | Patch `name`, `stats`, `overrides`, `conditions`. `stats` and `overrides` replace the whole jsonb value | S | |
 | `character.adjust` | GM; Own (no `traumatic`) | Deltas on `wounds`, `shock`, `wrath`, `traumatic`, each floored at 0, no cap. Crossing into Dying adds `Prone` if missing. While Dying, a positive `wounds` delta adds 1 Traumatic Injury instead (one per hit), and a negative one sets Wounds to `least(maxWounds, wounds + delta)`, which ends Dying | S | p.193 |
-| `character.supply` | GM; Own | Read-modify-write on `stats`: `wealth` delta floored at 0; `ammo: { kind, delta }` via `adjustAmmo` (floored at 0; −1 on an empty type removes it). Refused past `MAX_AMMO_TYPES` (12). No carry cap (§11.14) | S | p.206, p.229 |
+| `character.supply` | GM; Own (negative deltas only) | Read-modify-write on `stats`: `wealth` delta floored at 0; `ammo: { kind, delta }` via `adjustAmmo` (floored at 0; −1 on an empty type removes it). Refused past `MAX_AMMO_TYPES` (12). No carry cap (§11.14) | S | p.206, p.229 |
 | `character.requisition` | GM | Refused without an open session, when this session's slot (`wargear`, or `ammo` for ammo and grenades) is already used, with no Keyword in common (`requisitionTest`), when `spend` exceeds Wealth, or when Wealth is spent on a roll that already succeeded. Success (`icons + spend ≥ Value + Rarity`): with a `wargearId`, a catalogue weapon or grenade joins `weapons` once (`sheetWeapon`: thrown range = N × effective Strength) and other items become a `gearLine`; without one, wargear → `gear` as typed. Plus 1 `loadedWith` Ammo; ammo → +3 of that type; grenades → +5 − Rarity. Wealth −= `spend` (+1 on a Complication). Stats go through `saveStats` (schema-checked) | S | pp.205–206, p.229 |
 | `character.respite` | GM | Wounds 0, Shock 0, Wrath 2. Refused while Dead or Dying (`pcStatus`, via `healthOf()`) | S | p.193, p.197 |
 | `character.delete` | GM | Delete. Cascades to tokens and combatant rows. Kicks the player | S | |
@@ -443,7 +447,8 @@ Pure rules functions are unit-tested in `packages/shared` (`bun run test`), see 
 
 ### Add an action
 
-Worked example: a hypothetical `character.clearConditions` that a player may send for their own character.
+Worked example: a hypothetical `character.clearConditions` that a player may send for their own character (today
+Conditions are GM only, §11.57; the example only shows the steps).
 
 1. **Schema.** In `packages/shared/src/actions.ts`, add a member to the discriminated union:
    ```ts

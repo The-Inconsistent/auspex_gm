@@ -351,6 +351,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     ones (ambushers, snipers, reinforcements) as `hidden`, from the tracker or in the beat's prepared encounter, so
     they never flash on the phones. A hidden threat still takes its Turns; players see "Unseen threat acting" and the
     side that's due, never which one (its id is replaced by `UNSEEN_ID`).
+57. **Who changes Conditions, Wealth and Ammo in play.** "The GM may award you Wealth" (Core p.206); the books don't
+    say who adds Ammo or Conditions. House decision: the GM grants all three and a player only spends their own Wealth
+    and Ammo (a Reload, p.185; an Icon on an Influence Test, p.206). Sharing Ammo (Core p.229) is the giver's −1 on
+    their sheet and the GM's +1 in PARTY. Conditions are set and cleared by the GM, from the tracker in a fight or
+    PARTY outside one.
 
 ---
 
