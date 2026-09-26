@@ -42,7 +42,7 @@ export function RulesProvider({ rules, children }: { rules: RuleEntry[]; childre
           that lands on the <dialog> itself is on the backdrop; iOS Safari has no `closedby`. */}
       <dialog
         ref={dialog}
-        className="rule"
+        className="rule-dialog"
         aria-label={`Rule: ${shown.map((r) => r.name).join(", ")}`}
         onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
       >
