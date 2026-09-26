@@ -121,7 +121,7 @@ test("GM and player share a table", async (t) => {
   t.after(() => player.socket.close());
   await player.until((s) => s.characters.length === 2);
 
-  // Threat at Tier 2 -> Ork Boy is a Troop; stats hidden from players until revealed.
+  // Threat at Tier 2 -> Ork Boy is a Troop; players see its bars, not its stats, until the GM shows them.
   assert.ok((await gm.send({ type: "encounter.start" })).ok);
   const ork = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy", mobCount: 10 });
   assert.ok(ork.ok && ork.id);
@@ -134,8 +134,21 @@ test("GM and player share a table", async (t) => {
 
   await gm.send({ type: "combatant.adjust", id: ork.id, wounds: 2 });
   await player.until((s) => threatOf(s)?.mobCount === 8); // Mob members have 1 Wound each (p.325)
-  await gm.send({ type: "combatant.update", id: ork.id, revealed: true });
+  // Hidden: the phones don't get the threat at all until its mini goes on the table (rules-flow §11.56).
+  await gm.send({ type: "combatant.update", id: ork.id, visibility: "hidden" });
+  await player.until((s) => !!s.encounter && !threatOf(s));
+  await gm.send({ type: "combatant.update", id: ork.id, visibility: "stats" });
   await player.until((s) => threatOf(s)?.stats?.name === "Ork Boy");
+  // Added hidden: in no player broadcast, not even the add's own. Broadcasts arrive in order, so once the player sees
+  // the later marker, every earlier one has been checked.
+  const seen = new Set<string>();
+  player.socket.on("state", (s: LiveState) => s.encounter?.combatants.forEach((c) => seen.add(c.id)));
+  const sniper = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy", visibility: "hidden" });
+  assert.ok(sniper.ok && sniper.id);
+  await gm.send({ type: "combatant.update", id: ork.id, marker: "red" });
+  await player.until((s) => threatOf(s)?.marker === "red");
+  assert.ok(!seen.has(sniper.id), "a threat added hidden never reaches the phones");
+  await gm.send({ type: "combatant.remove", id: sniper.id });
 
   // Player permissions.
   // Harm, Wrath, Glory and Respite are the GM's.
@@ -431,7 +444,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   await gm.send({ type: "combatant.adjust", id: mob.id, wounds: 1 });
   await gm.until((s) => threatOf(s)?.mobCount === 4 && threatOf(s)?.shock === 0);
 
-  // Players never get the threat id or personal Ruin of an unrevealed Threat.
+  // Players never get the threat id or personal Ruin of an bars-only Threat.
   const issued = await gm.send({ type: "token.issue", characterId: b.id });
   assert.ok(issued.ok && issued.token);
   const player = connect({ auth: { token: issued.token } });

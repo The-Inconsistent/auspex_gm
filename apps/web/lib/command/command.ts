@@ -26,6 +26,7 @@ const VERBS: Record<string, string> = {
   aware: "aware",
   ambush: "ambush",
   reveal: "reveal",
+  show: "show",
   hide: "hide",
   mob: "mob",
   wrath: "wrath",
@@ -147,10 +148,13 @@ export function parseCommand({
       return { actions: [{ type: "combatant.aware", id: t.combatantId }] };
     case "ambush":
       return { actions: [{ type: "combatant.update", id: t.combatantId, ambushed: true }] };
+    // What the phones show (rules-flow §11.56): hide = nothing, show = bars, reveal = the stat block too.
     case "reveal":
-      return { actions: [{ type: "combatant.update", id: t.combatantId, revealed: true }] };
+      return { actions: [{ type: "combatant.update", id: t.combatantId, visibility: "stats" }] };
+    case "show":
+      return { actions: [{ type: "combatant.update", id: t.combatantId, visibility: "bars" }] };
     case "hide":
-      return { actions: [{ type: "combatant.update", id: t.combatantId, revealed: false }] };
+      return { actions: [{ type: "combatant.update", id: t.combatantId, visibility: "hidden" }] };
     case "mob":
       return amount === null
         ? { error: "mob needs a count: <name> mob 6" }

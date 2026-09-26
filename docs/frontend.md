@@ -255,7 +255,7 @@ selected, and tapping one toggles `selected`.
 | SHOCK | A `Bar`, or `—` when max Shock is `null` |
 | DEF / RES | PCs: from `deriveStats`. Threats: from the snapshotted `stats` |
 | STATUS | `StatusChips` from `pcStatus` / `threatStatus`, plus Condition chips |
-| PLAYERS | What the phones see: `FULL`, or `BAR ONLY` in red for an unrevealed threat |
+| PLAYERS | What the phones see (`VISIBILITY_LABEL`): `FULL`, or in red `BAR ONLY` / `HIDDEN` (not sent at all) |
 
 Row CSS classes: `.now` is the one acting (highlighted background), `.sel` is selected (fg border), and `.done` has
 acted (dimmed). Below 900px, the columns marked `.hide-sm` (CLASS, SHOCK, DEF, RES, PLAYERS) are hidden.
@@ -269,7 +269,7 @@ acted (dimmed). Below 900px, the columns marked `.hide-sm` (CLASS, SHOCK, DEF, R
 | SEIZE · 1 GLORY / 1 RUIN | As START TURN, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
 | DMG / HEAL / SHOCK / RECOVER | A row is selected | Opens the amount pad |
 | ±COND select | A row is selected | Toggles one of `CONDITIONS` (`character.update` or `combatant.update` with the full list) |
-| REVEAL / HIDE | A threat is selected | `combatant.update { revealed }` |
+| PLAYERS: select (`VisibilitySelect`) | A threat is selected | `combatant.update { visibility }`: HIDDEN, BAR ONLY or FULL (rules-flow §11.56) |
 | AMBUSH / AWARE · cost | Round 1, and the selected row hasn't acted | `combatant.update { ambushed: true }` / `combatant.aware` |
 | REMOVE | A row is selected | `combatant.remove`, then clears the selection |
 | NEW ROUND, END ENC | Always | `encounter.newRound`, `encounter.end` |
@@ -321,6 +321,7 @@ handlers (`runCommand`), so they fire the same reminders. What the reminders say
 - The `+ THREAT…` select lists the bestiary as `name (source p.N)`.
 - `MOB #` accepts digits only. A value of 2 or more adds the threat as a mob of that size.
 - An optional MARKER select.
+- A `VisibilitySelect` (PLAYERS: BAR ONLY by default, kept between adds) so a held-back threat goes in hidden.
 - ADD sends `combatant.addThreat`.
 - `+ PARTY (n)` sends one `combatant.addCharacter` for each character not yet in the fight, in order.
 - All of these go through `run`, so they are logged and their errors show on the tracker error line.
@@ -356,7 +357,7 @@ treated as part of the target name.
 | seize | `seize` | `turn.seize` | `turn.seize` | none |
 | aware | `aware` | `combatant.aware` | `combatant.aware` | none |
 | ambush | `ambush` | `combatant.update { ambushed: true }` | same | none |
-| reveal / hide | `reveal`, `hide` | `combatant.update { revealed }` | same | none |
+| hide / show / reveal | `hide`, `show`, `reveal` | `combatant.update { visibility }`: `hidden`, `bars`, `stats` | same | none |
 | mob | `mob` | `combatant.update { mobCount: n }` | same | **required** (`mob needs a count: <name> mob 6`) |
 | remove | `remove` | `combatant.remove` | same | none |
 
@@ -434,7 +435,7 @@ The tests are in `lib/command/command.test.ts`.
   - read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`)
   - location
   - NPC and handout toggle chips (`aria-pressed`)
-  - the prepared encounter entries: threat, count (at least 1), a MOB checkbox and a marker
+  - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
 
   It also shows the Threat Assessment sizing guideline for the current party size and the current enemy count.
   SAVE BEAT creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
@@ -515,12 +516,15 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
 | SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions (each is a name, which opens its rule, and a separate `×`, which removes it); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type, + AMMO with an `AMMO_TYPES` datalist) | Their own Wealth and Ammo (±1, `character.supply`; × on an empty type removes it), their own Conditions (`character.update`) (Wounds, Shock, Wrath, Glory and RESPITE are GM only) |
-| FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` if it isn't revealed; a PC card's header is plain | Nothing |
+| FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
 | INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:
-- An unrevealed threat's `stats` is `null`, its `threatId` is `""` and its `personalRuin` is 0. Its bars, mob count and
+- A `hidden` threat isn't sent, and `currentId` is `UNSEEN_ID` on its Turn. The banner then reads `UNSEEN THREAT ACTING`
+  and takes the side that's due from
+  `encounter.upNext`, since `sideUpNext` on the filtered combatants would miss the hidden threat's Turn.
+- A `bars` threat's `stats` is `null`, its `threatId` is `""` and its `personalRuin` is 0. Its bars, mob count and
   Conditions still come through.
 - Factions and adventures (with their beats) are never sent.
 - NPCs, locations and handouts are sent only once `revealed`. Even then, GM notes, secrets, hazards and an NPC's

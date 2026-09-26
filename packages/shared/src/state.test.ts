@@ -27,6 +27,7 @@ import {
   threatStatus,
   toPlayerCodex,
   toPlayerView,
+  UNSEEN_ID,
   type Character,
   type Codex,
   type Combatant,
@@ -55,7 +56,7 @@ const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant =
   maxWounds: 6,
   maxShock: 2,
   conditions: ["Prone"],
-  revealed: false,
+  visibility: "bars",
   stats: orkBoy,
   ...o,
 });
@@ -95,11 +96,19 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
   access: noAccess,
 });
 
-test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", () => {
+test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bars and conditions", () => {
   const s: LiveState = {
     campaign: { id: "c", name: "C", tier: 1, glory: 0, ruin: 0, framework: "", patron: "", homebrew: false },
     characters: [],
-    encounter: enc([threat("a"), threat("b", { revealed: true }), pc("p")]),
+    encounter: enc(
+      [
+        threat("a"),
+        threat("b", { visibility: "stats" }),
+        threat("h", { visibility: "hidden" }),
+        pc("p", { acted: true }),
+      ],
+      { lastSide: "agents" },
+    ),
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -110,13 +119,26 @@ test("toPlayerView hides unrevealed threat stats, keeps bars and conditions", ()
   assert.equal(hidden.maxWounds, 6);
   assert.deepEqual(hidden.conditions, ["Prone"]);
   assert.equal(shown.stats?.name, "Ork Boy");
-  assert.deepEqual(p, pc("p"));
+  assert.deepEqual(p, pc("p", { acted: true }));
+  assert.equal(toPlayerView(s).encounter!.combatants.length, 3, "the hidden threat isn't sent at all");
   assert.notEqual((s.encounter!.combatants[0] as ThreatCombatant).stats, null, "input not mutated");
   assert.deepEqual(
     toPlayerView(s).access,
     { members: s.access.members, invites: [] },
     "players see who's seated, never the invite links",
   );
+});
+
+test("toPlayerView: a hidden threat's Turn still shows as due", () => {
+  const s = table(
+    enc([threat("a", { acted: true }), threat("h", { visibility: "hidden" }), pc("p")], { lastSide: "agents" }),
+  );
+  const e = toPlayerView(s).encounter!;
+  assert.equal(e.upNext, "threats");
+  assert.equal(sideUpNext({ ...s, encounter: e }), "agents", "the filtered combatants alone would get it wrong");
+  const acting = (currentId: string) => toPlayerView({ ...s, encounter: { ...s.encounter!, currentId } }).encounter!;
+  assert.equal(acting("h").currentId, UNSEEN_ID, "a hidden threat's real id never reaches the phones");
+  assert.equal(acting("p").currentId, "p");
 });
 
 test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {

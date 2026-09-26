@@ -2,7 +2,7 @@ import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
-import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier } from "./state.ts";
+import { CharacterStats, InviteMode, Marker, Overrides, Pool, Tier, Visibility } from "./state.ts";
 
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
@@ -132,6 +132,7 @@ export const Action = z.union([
       label: z.string().max(100).optional(),
       mobCount: z.number().int().min(2).max(500).optional(),
       marker: Marker.optional(),
+      visibility: Visibility.optional(), // "hidden" adds it without a flash on the phones (rules-flow §11.56)
     }),
     z.object({ type: z.literal("combatant.addCharacter"), characterId: id }),
     z.object({
@@ -140,7 +141,7 @@ export const Action = z.union([
       label: z.string().min(1).max(100).optional(),
       mobCount: z.number().int().min(0).max(500).nullable().optional(),
       conditions: conditions.optional(),
-      revealed: z.boolean().optional(),
+      visibility: Visibility.optional(),
       marker: Marker.nullable().optional(),
       ambushed: z.boolean().optional(),
     }),

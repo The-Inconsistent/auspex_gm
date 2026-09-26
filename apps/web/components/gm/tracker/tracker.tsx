@@ -25,11 +25,14 @@ import {
   type Combatant,
   type LiveState,
   type Threat,
+  type Visibility,
 } from "@wg/shared";
 
 import { Bar } from "@/components/ui/bar/bar";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { VISIBILITY_LABEL } from "@/components/ui/visibility-select/constants";
+import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 import { parseCommand } from "@/lib/command/command";
@@ -277,12 +280,12 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     );
   };
 
-  // REVEAL / HIDE: whether players see the selected threat's full stat block.
-  const handleRevealToggle = () => {
+  // PLAYERS picker: what the phones show of the selected threat. Hidden until its mini goes on the table (§11.56).
+  const handleVisibilityPick = (visibility: Visibility) => {
     if (sel?.kind !== "threat") return;
     void run(
-      { type: "combatant.update", id: sel.id, revealed: !sel.revealed },
-      `${nameOf(sel).toUpperCase()} ${sel.revealed ? "HIDDEN" : "REVEALED"}`,
+      { type: "combatant.update", id: sel.id, visibility },
+      `${nameOf(sel).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
     );
   };
 
@@ -443,8 +446,8 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                       </span>
                     ))}
                   </span>
-                  <span className={`hide-sm ${c.kind === "threat" && !c.revealed ? "accent" : "dim"}`}>
-                    {c.kind === "pc" ? "FULL" : c.revealed ? "FULL" : "BAR ONLY"}
+                  <span className={`hide-sm ${c.kind === "threat" && c.visibility !== "stats" ? "accent" : "dim"}`}>
+                    {VISIBILITY_LABEL[c.kind === "pc" ? "stats" : c.visibility]}
                   </span>
                 </button>
               );
@@ -500,11 +503,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                     </option>
                   ))}
                 </select>
-                {sel.kind === "threat" && (
-                  <button className="btn" onClick={handleRevealToggle}>
-                    {sel.revealed ? "HIDE" : "REVEAL"}
-                  </button>
-                )}
+                {sel.kind === "threat" && <VisibilitySelect value={sel.visibility} onChange={handleVisibilityPick} />}
                 {enc.round === 1 &&
                   !sel.acted &&
                   (sel.ambushed ? (

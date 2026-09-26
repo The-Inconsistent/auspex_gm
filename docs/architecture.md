@@ -79,7 +79,7 @@ Keeping them separate means a Wounds tap doesn't resend every NPC. A reconnectin
 connect, so there's no resync logic. Each snapshot is a few KB.
 
 Each campaign has two rooms: `c:<id>:gm` gets snapshots as-is, and `c:<id>:players` gets them through `toPlayerView` /
-`toPlayerCodex`. Those functions drop unrevealed threat stats, GM notes, secrets, factions, adventures and hidden
+`toPlayerCodex`. Those functions drop hidden threats, bars-only threat stats, GM notes, secrets, factions, adventures and hidden
 entries. What's hidden is listed in [game-logic.md](game-logic.md).
 
 ## Access: accounts and guests

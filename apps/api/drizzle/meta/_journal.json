@@ -36,6 +36,20 @@
       "when": 1790360818883,
       "tag": "0004_brown_the_executioner",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790449021120,
+      "tag": "0005_threat_visibility",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790449027851,
+      "tag": "0006_drop_revealed",
+      "breakpoints": true
     }
   ]
 }

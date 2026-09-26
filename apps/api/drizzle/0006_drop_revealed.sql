@@ -1,0 +1,1 @@
+ALTER TABLE "combatant" DROP COLUMN "revealed";

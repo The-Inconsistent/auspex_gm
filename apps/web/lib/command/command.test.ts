@@ -22,7 +22,7 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
   maxWounds: 5,
   maxShock: 4,
   conditions: ["Prone"],
-  revealed: false,
+  visibility: "bars",
   stats: null,
 });
 const s: LiveState = {
@@ -121,4 +121,10 @@ test("errors are specific", () => {
     (parseCommand({ input: "hollan wrath 1", state: s, selected: null }) as { error: string }).error,
     /Threats don't have Wrath/,
   );
+});
+
+test("hide, show and reveal set what the phones see", () => {
+  assert.deepEqual(ok("hollan hide"), [{ type: "combatant.update", id: "t1", visibility: "hidden" }]);
+  assert.deepEqual(ok("hollan show"), [{ type: "combatant.update", id: "t1", visibility: "bars" }]);
+  assert.deepEqual(ok("hollan reveal"), [{ type: "combatant.update", id: "t1", visibility: "stats" }]);
 });

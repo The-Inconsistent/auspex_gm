@@ -72,8 +72,8 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
   - `state` (`LiveState`): campaign pools, characters, active encounter.
   - `codex` (`Codex`): factions, adventures and beats, locations, NPCs, handouts, sessions.
   - `touches(action)` decides which of the two to rebroadcast.
-  - The GM room gets everything. The players room gets `toPlayerView` / `toPlayerCodex`, which drop unrevealed
-    threat stats, GM notes, secrets and hidden entries.
+  - The GM room gets everything. The players room gets `toPlayerView` / `toPlayerCodex`, which drop hidden
+    threats, bars-only threat stats, GM notes, secrets and hidden entries.
 - **Access: Clerk accounts, plus guest QR tokens.**
   - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
     member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user

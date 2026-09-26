@@ -1,7 +1,9 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { Marker, type LiveState, type Threat } from "@wg/shared";
+import { Marker, type LiveState, type Threat, type Visibility } from "@wg/shared";
+
+import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 
 import type { Run } from "../../types";
 
@@ -11,6 +13,8 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   const [threatId, setThreatId] = useState("");
   const [mob, setMob] = useState("");
   const [marker, setMarker] = useState<Marker | null>(null);
+  // Kept between adds, like the marker: a GM placing reinforcements adds several hidden in a row.
+  const [visibility, setVisibility] = useState<Visibility>("bars");
   const inFight = new Set(state.encounter?.combatants.flatMap((c) => (c.kind === "pc" ? [c.characterId] : [])));
   const missing = state.characters.filter((c) => !inFight.has(c.id));
   const threat = bestiary.find((x) => x.id === threatId);
@@ -33,6 +37,7 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
         threatId: threat.id,
         ...(isMob ? { mobCount } : {}),
         ...(marker ? { marker } : {}),
+        visibility,
       },
       `+ ${threat.name.toUpperCase()}${isMob ? ` ×${mob}` : ""}`,
     );
@@ -79,6 +84,7 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
           </option>
         ))}
       </select>
+      <VisibilitySelect value={visibility} onChange={setVisibility} />
       <button className="btn" disabled={!threat} onClick={handleAdd}>
         ADD
       </button>

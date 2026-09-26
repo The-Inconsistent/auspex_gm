@@ -34,7 +34,7 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book, so for now they are Quick NPCs; custom blocks built from the Skitarius (p.101) and Tech-Priest (p.109)
   archetypes would need a new `statSource` kind.
-- **Prepared encounter**: a list of `{threatId, count, asMob, marker, label}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
+- **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
   loads it into the tracker. The builder shows the Threat Assessment p.8 guideline: *two Troops per Agent, half in a
   Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
