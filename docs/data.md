@@ -457,6 +457,7 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Wargear summary | `wargear/<file>: N entries` |
 | Every `rules/*.json` parses as `RuleEntry[]`; ids unique across files | `✖ rules/<file>` + zod error, or `duplicate id` |
 | Rules summary | `rules/<file>: N entries` |
+| Every `traits` string in `threats/`, `wargear/` and packs that `ruleKey` can't match to a `LINKED_RULE_KINDS` entry. The web shows these as plain text instead of a rule link. Some are missing rules or new spellings (add an alias to `ruleKey` in `packages/shared/src/rules.ts`); others aren't traits at all | `? N trait names match no rule: …` warning, not a failure |
 | Pack summary | `pack <name>: N characters, N NPCs, N beats` |
 | Every `creation/<type>/<source>.json` parses; the filename is a creation source id and matches each record's `source`; ids unique per type | `✖ creation/…` + zod error, `has source`, or `duplicate id` |
 | Every creation id reference resolves (factions, species, sub-factions, archetypes, talents, powers, disciplines, keyword names, `wargearId`, a wargear item's `upgrades` and weapon-trait `traitIds`) | `✖ creation/… "<id>": unknown <type> "…"` |
