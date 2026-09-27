@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 
 import type { ActionInput, Character, Codex } from "@wg/shared";
 
@@ -7,6 +7,7 @@ import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
+import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
@@ -15,6 +16,11 @@ type CodexViewProps = { codex: Codex; characters: Character[]; send: Send };
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
 const stripId = ({ id, revealedAt, ...rest }: Row) => rest;
+// A button inside <summary> would also open or close the row; run its action only.
+const only = (fn: () => void) => (e: MouseEvent) => {
+  e.preventDefault();
+  fn();
+};
 
 export function CodexView({ codex, characters, send }: CodexViewProps) {
   const [kind, setKind] = useState<CodexKind>("npc");
@@ -69,21 +75,31 @@ export function CodexView({ codex, characters, send }: CodexViewProps) {
             <div className="list">
               {rows.length === 0 && <div className="dim">Nothing recorded yet.</div>}
               {rows.map((r) => (
-                <div key={r.id} className="item" style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                  <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
-                  {"revealed" in r && (
-                    <button
-                      className="btn sm"
-                      style={{ color: r.revealed ? "var(--ink)" : "var(--red)" }}
-                      onClick={() => toggleRevealed(r)}
-                    >
-                      {r.revealed ? "REVEALED" : "HIDDEN"}
+                <details key={r.id} className="item">
+                  <summary className="item-head">
+                    <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
+                    {"revealed" in r && (
+                      <button
+                        className="btn sm"
+                        style={{ color: r.revealed ? "var(--ink)" : "var(--red)" }}
+                        onClick={only(() => toggleRevealed(r))}
+                      >
+                        {r.revealed ? "REVEALED" : "HIDDEN"}
+                      </button>
+                    )}
+                    <button className="btn sm" onClick={only(() => setEditing(r))}>
+                      EDIT
                     </button>
+                  </summary>
+                  {CODEX_KINDS[kind].read.map(([key, label]) =>
+                    r[key] ? (
+                      <div key={key} className={GM_ONLY_FIELDS.has(key) ? "field plate" : "field"}>
+                        <span className="label">{label}</span>
+                        <pre className="text">{String(r[key])}</pre>
+                      </div>
+                    ) : null,
                   )}
-                  <button className="btn sm" onClick={() => setEditing(r)}>
-                    EDIT
-                  </button>
-                </div>
+                </details>
               ))}
             </div>
           </>

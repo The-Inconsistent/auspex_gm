@@ -76,6 +76,38 @@ export function Sheet({ me, state, send }: SheetProps) {
         <i className="dim">{[s.archetype, s.species, `Tier ${state.campaign.tier}`].filter(Boolean).join(" · ")}</i>
         {s.keywords.length > 0 && <div className="kw">{s.keywords.join(" · ")}</div>}
       </div>
+      <div className="stack" style={{ gap: 6 }}>
+        <div className="rule">
+          <span>WHO YOU ARE</span>
+          <DetailHelp />
+        </div>
+        {detail ? (
+          <>
+            <DetailFields idPrefix="sheet-detail" value={detail} onChange={setDetail} />
+            <div className="keys" style={{ paddingTop: 0 }}>
+              <button className="btn sm primary" onClick={saveDetail}>
+                SAVE
+              </button>
+              <button className="btn sm" onClick={() => setDetail(null)}>
+                CANCEL
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            {hasDetail(me.detail) ? (
+              <DetailView detail={me.detail} />
+            ) : (
+              <div className="dim">Appearance, past, personality: not written yet.</div>
+            )}
+            <div>
+              <button className="btn sm" onClick={() => setDetail(me.detail)}>
+                {hasDetail(me.detail) ? "EDIT" : "WRITE"}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         <StatusChips items={pcStatus(me, d)} />
       </div>
@@ -116,17 +148,20 @@ export function Sheet({ me, state, send }: SheetProps) {
         </div>
       )}
 
-      {/* From the GM, to this Agent only (toPlayerView blanks everyone else's). */}
+      {/* From the GM, to this Agent only (toPlayerView blanks everyone else's). Closed by default so a phone left
+          on the table doesn't show them to the player beside it. */}
       {me.objectives.length > 0 && (
-        <div className="stack" style={{ gap: 6 }}>
-          <div className="rule">OBJECTIVES</div>
-          {me.objectives.map((o, i) => (
-            <div key={i} className={o.done ? "dim" : undefined}>
-              <span style={{ textDecoration: o.done ? "line-through" : undefined }}>{o.text}</span>
-              {o.done && <span className="sr-only"> (done)</span>}
-            </div>
-          ))}
-        </div>
+        <details className="item">
+          <summary className="rule">SECRET OBJECTIVES · TAP TO REVEAL</summary>
+          <div className="stack" style={{ gap: 6 }}>
+            {me.objectives.map((o, i) => (
+              <div key={i} className={o.done ? "dim" : undefined}>
+                <span style={{ textDecoration: o.done ? "line-through" : undefined }}>{o.text}</span>
+                {o.done && <span className="sr-only"> (done)</span>}
+              </div>
+            ))}
+          </div>
+        </details>
       )}
 
       {s.weapons.length > 0 && (
@@ -202,38 +237,6 @@ export function Sheet({ me, state, send }: SheetProps) {
             </div>
           ),
       )}
-      <div className="stack" style={{ gap: 6 }}>
-        <div className="rule">
-          <span>WHO YOU ARE</span>
-          <DetailHelp />
-        </div>
-        {detail ? (
-          <>
-            <DetailFields idPrefix="sheet-detail" value={detail} onChange={setDetail} />
-            <div className="keys" style={{ paddingTop: 0 }}>
-              <button className="btn sm primary" onClick={saveDetail}>
-                SAVE
-              </button>
-              <button className="btn sm" onClick={() => setDetail(null)}>
-                CANCEL
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            {hasDetail(me.detail) ? (
-              <DetailView detail={me.detail} />
-            ) : (
-              <div className="dim">Appearance, past, personality: not written yet.</div>
-            )}
-            <div>
-              <button className="btn sm" onClick={() => setDetail(me.detail)}>
-                {hasDetail(me.detail) ? "EDIT" : "WRITE"}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
       {s.gear.length > 0 && (
         <div className="dim" style={{ fontSize: 13 }}>
           GEAR: {s.gear.join(" · ")}
