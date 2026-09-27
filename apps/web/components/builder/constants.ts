@@ -35,9 +35,6 @@ export const STEP_CITES: Record<BuildStep, string> = {
   advance: "Core pp.146–151",
 };
 
-// Long catalogue lists (205 archetypes, 333 talents, 1,202 wargear items) show this many matches; the search narrows.
-export const LIST_LIMIT = 40;
-
 // Where a draft waits between visits on this device, per table and character.
 export const draftKey = ({ campaignId, characterId }: { campaignId: string; characterId: string | null }) =>
   `wg-build:${campaignId}:${characterId ?? NEW_CHARACTER}`;

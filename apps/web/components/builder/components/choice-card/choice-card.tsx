@@ -3,7 +3,7 @@ import { wargearMatches, type BuildChoicePrompt } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
 import { citeLabel, powerText, rulesText } from "../../utils";
-import { RecordList, type RecordItem } from "../record-list/record-list";
+import { RecordList, type RecordItem } from "@/components/ui/record-list/record-list";
 
 type ChoiceCardProps = { prompt: BuildChoicePrompt };
 

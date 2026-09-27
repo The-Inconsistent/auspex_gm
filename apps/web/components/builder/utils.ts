@@ -30,12 +30,6 @@ export function stepsFor({
 export const leftIn = (r: ResolvedBuild | null, step: BuildStep) =>
   r ? r.pending.filter((p) => p.step === step).length + r.problems.filter((p) => p.step === step).length : 0;
 
-// Case-insensitive match of a search box against any of the texts.
-export const matches = (q: string, ...texts: string[]) => {
-  const n = q.trim().toLowerCase();
-  return !n || texts.some((t) => t.toLowerCase().includes(n));
-};
-
 // Adds x to the list, or takes it out.
 export const toggle = <T>(list: readonly T[], x: T) => (list.includes(x) ? list.filter((y) => y !== x) : [...list, x]);
 

@@ -1,7 +1,7 @@
 import { cookies, headers as requestHeaders } from "next/headers";
 
 import { sessionToken } from "@wg/auth/next";
-import { RuleEntry } from "@wg/shared";
+import { CreationPayload, RuleEntry } from "@wg/shared";
 
 import { API_ORIGIN, TOKEN_COOKIE } from "@/app/constants";
 
@@ -28,5 +28,16 @@ export async function loadRules(campaignId: string): Promise<RuleEntry[]> {
     return parsed.success ? parsed.data : [];
   } catch {
     return [];
+  }
+}
+
+// The creation catalogue for this table (book text, seats only). null on failure; callers say so or go without.
+export async function loadCreation(campaignId: string): Promise<CreationPayload | null> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/creation`);
+    const parsed = CreationPayload.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
   }
 }

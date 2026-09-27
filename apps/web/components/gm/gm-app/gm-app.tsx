@@ -15,12 +15,19 @@ import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
+import type { SheetRules } from "@/lib/sheet-rules/sheet-rules";
 
 import { GM_TABS, TAB_NUMERALS, type GmTab } from "./constants";
 
-type GmAppProps = { campaignId: string; bestiary: Threat[]; wargear: Wargear[]; rules: RuleEntry[] };
+type GmAppProps = {
+  campaignId: string;
+  bestiary: Threat[];
+  wargear: Wargear[];
+  rules: RuleEntry[];
+  sheetRules: SheetRules;
+};
 
-export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
+export function GmApp({ campaignId, bestiary, wargear, rules, sheetRules }: GmAppProps) {
   const { state, codex, online, send } = useTable(campaignId);
   const [tab, setTab] = useState<GmTab>("TRACK");
   const [poolError, setPoolError] = useState<string | null>(null);
@@ -94,7 +101,9 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
             <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
           )}
           {tab === "CODEX" && <CodexView codex={codex} characters={state.characters} send={send} />}
-          {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
+          {tab === "PARTY" && (
+            <Party state={state} codex={codex} send={send} wargear={wargear} sheetRules={sheetRules} />
+          )}
           {tab === "RULES" && <RulesRef rules={rules} />}
         </main>
         <Refusal error={poolError} onDismiss={() => setPoolError(null)} />

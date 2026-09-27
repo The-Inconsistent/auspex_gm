@@ -22,6 +22,7 @@ import { NEW_CHARACTER } from "@/components/builder/constants";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
+import type { SheetRules } from "@/lib/sheet-rules/sheet-rules";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import { CharacterEditor } from "./components/character-editor/character-editor";
@@ -31,9 +32,9 @@ import { RequisitionForm } from "./components/requisition-form/requisition-form"
 import { SheetDialog } from "./components/sheet-dialog/sheet-dialog";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
-type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[] };
+type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[]; sheetRules: SheetRules };
 
-export function Party({ state, codex, send, wargear }: PartyProps) {
+export function Party({ state, codex, send, wargear, sheetRules }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
@@ -435,6 +436,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     <CharacterEditor
                       character={c}
                       tier={state.campaign.tier}
+                      sheetRules={sheetRules}
                       send={send}
                       onResult={report}
                       onClose={() => setEditFor(null)}

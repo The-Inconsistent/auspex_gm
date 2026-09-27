@@ -14,7 +14,7 @@ import {
 import { useBuilder, type Draft } from "../../builder-context";
 import { ATTRIBUTE_NAMES } from "../../constants";
 import { citeLabel, powerText, rulesText, toggle } from "../../utils";
-import { RecordList } from "../record-list/record-list";
+import { RecordList } from "@/components/ui/record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
 const MAX_SKILL = 8; // the sheet's Skill ratings (Core p.25)

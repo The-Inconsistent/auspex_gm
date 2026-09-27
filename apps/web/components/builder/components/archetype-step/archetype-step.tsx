@@ -5,7 +5,7 @@ import { ATTRIBUTES, sourceCite, type Archetype } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
 import { rulesText, titleOf } from "../../utils";
-import { RecordList } from "../record-list/record-list";
+import { RecordList } from "@/components/ui/record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
 // Choose your Archetype (Core pp.21–22). Its XP already includes its species' (p.29); a lower Tier than the campaign's

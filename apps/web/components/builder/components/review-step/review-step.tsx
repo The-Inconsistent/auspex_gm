@@ -7,7 +7,7 @@ import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
 import { useBuilder } from "../../builder-context";
 import { toggle } from "../../utils";
-import { RecordList } from "../record-list/record-list";
+import { RecordList } from "@/components/ui/record-list/record-list";
 import { XpLedger } from "../xp-ledger/xp-ledger";
 
 type ReviewStepProps = { onSave: () => void };

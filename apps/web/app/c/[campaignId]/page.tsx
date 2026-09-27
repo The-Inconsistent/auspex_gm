@@ -1,10 +1,11 @@
 import { Me, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
-import { apiGet, loadRules } from "@/app/server-api";
+import { apiGet, loadCreation, loadRules } from "@/app/server-api";
 import { GmApp } from "@/components/gm/gm-app/gm-app";
 import { PlayerApp } from "@/components/player/player-app/player-app";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
+import { sheetRules } from "@/lib/sheet-rules/sheet-rules";
 
 type TableProps = { params: Promise<{ campaignId: string }> };
 
@@ -45,12 +46,16 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear, rules] = await Promise.all([
+    const [bestiary, wargear, rules, creation] = await Promise.all([
       loadBestiary(me.campaignId),
       loadWargear(me.campaignId),
       loadRules(me.campaignId),
+      loadCreation(me.campaignId),
     ]);
-    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} rules={rules} />;
+    // Only the Talents and Abilities reach the client, for PARTY's EDIT on a hand-made sheet; empty on failure.
+    // ponytail: parses the whole ~2 MB catalogue per GM page load for them; a GM-only route with just these if it drags.
+    const sheet = creation ? sheetRules(creation.creation) : { abilities: [], talents: [] };
+    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} rules={rules} sheetRules={sheet} />;
   }
   if (!me.characterId) return <StatusScreen text="NO CHARACTER YET. ASK YOUR GM." />;
   return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} rules={await loadRules(me.campaignId)} />;

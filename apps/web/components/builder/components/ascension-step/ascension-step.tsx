@@ -3,7 +3,7 @@ import { sourceCite } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
 import { rulesText } from "../../utils";
-import { RecordList } from "../record-list/record-list";
+import { RecordList } from "@/components/ui/record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
 // Creation Ascension (Core p.148, rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension

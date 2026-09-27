@@ -1,8 +1,13 @@
 "use client";
 import { useId, useState } from "react";
 
-import { LIST_LIMIT } from "../../constants";
-import { matches } from "../../utils";
+import { LIST_LIMIT } from "./constants";
+
+// Case-insensitive match of a search box against any of the texts.
+const matches = (q: string, ...texts: string[]) => {
+  const n = q.trim().toLowerCase();
+  return !n || texts.some((t) => t.toLowerCase().includes(n));
+};
 
 // `detail`: the record's rules text (a Talent's effect, a power's profile), shown under the row on RULES.
 export type RecordItem = { id: string; label: string; meta?: string; xp?: number; blocked?: string; detail?: string };
@@ -44,6 +49,7 @@ export function RecordList({ items, selected, onPick, label, searchable = items.
             <div key={i.id} className="bld-row">
               <div className="bld-row-head">
                 <button
+                  type="button"
                   className="bld-pick"
                   aria-pressed={on}
                   disabled={!!i.blocked && !on}
@@ -64,6 +70,7 @@ export function RecordList({ items, selected, onPick, label, searchable = items.
                 </button>
                 {i.detail && (
                   <button
+                    type="button"
                     className="btn sm bld-rules-btn"
                     aria-expanded={expanded}
                     aria-controls={`${id}-${i.id}`}
