@@ -21,6 +21,7 @@ import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { TOKENS } from "@/lib/tokens/tokens";
 
+import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
@@ -398,6 +399,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                   ))}
                 </select>
               </form>
+              <ObjectivesEditor character={c} send={send} onResult={report} />
               {reqFor === c.id && (
                 <RequisitionForm
                   character={c}

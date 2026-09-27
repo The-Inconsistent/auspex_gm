@@ -365,6 +365,47 @@ test("GM and player share a table", async (t) => {
   assert.equal((await post("/join", { token: issued.token })).status, 401);
 });
 
+test("private notes: a handout's audience and an Agent's objectives reach only that Agent's player", async (t) => {
+  const gm = await newCampaign("Private notes", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A", objectives: [{ text: "Find the relic" }] });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    const p = connect({ auth: { token: issued.token } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+
+  const objectives = (s: LiveState) => s.characters.map((c) => c.objectives.map((o) => o.text));
+  assert.deepEqual(objectives(await pa.until(() => true)), [["Find the relic"], []], "character.create takes them");
+  assert.deepEqual(objectives(await pb.until(() => true)), [[], []], "another Agent's objectives are blanked");
+  assert.equal((await pb.send({ type: "character.objectives", characterId: b.id, objectives: [] })).ok, false);
+  assert.ok(
+    (await gm.send({ type: "character.objectives", characterId: b.id, objectives: [{ text: "Trust no one" }] })).ok,
+  );
+  await pb.until((s) => objectives(s)[1]?.[0] === "Trust no one");
+  await pa.until((s) => objectives(s)[0]?.length === 1 && objectives(s)[1]?.length === 0);
+
+  const handout = (title: string, audience: string[]) =>
+    gm.send({ type: "codex.save", kind: "handout", data: { title, revealed: true, audience } });
+  assert.equal((await handout("Forged", [crypto.randomUUID()])).ok, false, "audience ids must be this campaign's");
+  assert.ok((await handout("For A", [a.id])).ok);
+  assert.ok((await handout("For all", [])).ok);
+  const titles = (p: typeof pa) => p.codex()?.handouts.map((h) => h.title) ?? [];
+  await eventually(() => titles(pa).length === 2 && titles(pb).length === 1, "both players get their codex");
+  assert.deepEqual(titles(pa), ["For A", "For all"]);
+  assert.deepEqual(titles(pb), ["For all"], "a private handout never reaches another player");
+
+  // Deleting its only reader hides the handout again, rather than showing it to everyone.
+  assert.ok((await gm.send({ type: "character.delete", id: a.id })).ok);
+  await eventually(() => gm.codex()?.handouts.find((h) => h.title === "For A")?.revealed === false, "hidden again");
+});
+
 test("a malformed login cookie is refused, not fatal", async () => {
   const bad = { cookie: "wg_token=%; __session=%" }; // decodeURIComponent throws on these
   assert.equal((await get("/guest", bad)).status, 401);

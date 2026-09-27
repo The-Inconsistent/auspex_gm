@@ -93,8 +93,8 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
     await socket.join(ctx.role === "gm" ? r.gm : r.players);
     const gm = ctx.role === "gm";
     const [state, codex] = await Promise.all([loadState(ctx.campaignId), loadCodex(ctx.campaignId)]);
-    if (state) socket.emit("state", gm ? state : toPlayerView(state));
-    socket.emit("codex", gm ? codex : toPlayerCodex(codex));
+    if (state) socket.emit("state", gm ? state : toPlayerView(state, ctx.characterId));
+    socket.emit("codex", gm ? codex : toPlayerCodex(codex, ctx.characterId));
   }
 
   @SubscribeMessage("action")
@@ -162,17 +162,28 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
 
   private async broadcast(campaignId: string, what: { state: boolean; codex: boolean }) {
     const r = rooms(campaignId);
+    // ponytail: per-socket fan-out, fine at table scale; per-character rooms if it grows
+    const players = await this.server.in(r.players).fetchSockets();
+    // Each player sees their own view (private handouts, their objectives), computed once per character.
+    const toPlayers = (event: string, view: (characterId: string | null) => unknown) => {
+      const views = new Map<string | null, unknown>();
+      for (const s of players) {
+        const id = (s.data as Ctx).characterId;
+        if (!views.has(id)) views.set(id, view(id));
+        s.emit(event, views.get(id));
+      }
+    };
     if (what.state) {
       const state = await loadState(campaignId);
       if (state) {
         this.server.to(r.gm).emit("state", state);
-        this.server.to(r.players).emit("state", toPlayerView(state));
+        toPlayers("state", (id) => toPlayerView(state, id));
       }
     }
     if (what.codex) {
       const codex = await loadCodex(campaignId);
       this.server.to(r.gm).emit("codex", codex);
-      this.server.to(r.players).emit("codex", toPlayerCodex(codex));
+      toPlayers("codex", (id) => toPlayerCodex(codex, id));
     }
   }
 

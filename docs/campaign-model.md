@@ -39,6 +39,9 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
   by the same server-side view as hidden threat stats.
+- **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those
+  Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
+  (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.
 
 ## Screens
 

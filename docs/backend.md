@@ -305,10 +305,10 @@ are by `number`.
 
 | Function | Hides from players | Keeps |
 |---|---|---|
-| `toPlayerView` (`state.ts`) | `access.invites` → `[]`. `encounter.upNext` ← `sideUpNext` of the full state; `currentId` → `UNSEEN_ID` while a hidden threat acts. Threat combatants with `visibility: "hidden"` are dropped; with `"bars"`: `stats` → null, `threatId` → `""`, `personalRuin` → 0 | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
-| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
+| `toPlayerView` (`state.ts`) | `access.invites` → `[]`. `encounter.upNext` ← `sideUpNext` of the full state; `currentId` → `UNSEEN_ID` while a hidden threat acts. Threat combatants with `visibility: "hidden"` are dropped; with `"bars"`: `stats` → null, `threatId` → `""`, `personalRuin` → 0. Every other character's `objectives` → `[]` | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
+| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed. A handout whose `audience` is set and excludes the viewer; `audience` → the viewer's own id only | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
 
-A new field is visible to players unless one of these functions drops it. Decide when you add it.
+Both take the viewer's `characterId`; the gateway emits one view per character. A new field is visible to players unless one of these functions drops it. Decide when you add it.
 
 ## 9. Concurrency and counters
 

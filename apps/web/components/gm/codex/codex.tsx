@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import type { ActionInput, Codex } from "@wg/shared";
+import type { ActionInput, Character, Codex } from "@wg/shared";
 
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -10,13 +10,13 @@ import { CodexEditor } from "./components/codex-editor/codex-editor";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
-type CodexViewProps = { codex: Codex; send: Send };
+type CodexViewProps = { codex: Codex; characters: Character[]; send: Send };
 
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
 const stripId = ({ id, revealedAt, ...rest }: Row) => rest;
 
-export function CodexView({ codex, send }: CodexViewProps) {
+export function CodexView({ codex, characters, send }: CodexViewProps) {
   const [kind, setKind] = useState<CodexKind>("npc");
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +54,7 @@ export function CodexView({ codex, send }: CodexViewProps) {
             key={editing === "new" ? "new" : editing.id}
             kind={kind}
             codex={codex}
+            characters={characters}
             send={send}
             row={editing === "new" ? null : editing}
             onDone={() => setEditing(null)}

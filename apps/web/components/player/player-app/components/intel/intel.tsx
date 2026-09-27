@@ -24,7 +24,11 @@ export function Intel({ codex, state }: IntelProps) {
       {handouts.length === 0 && <div className="dim">No transmissions received.</div>}
       {handouts.map((h) => (
         <div key={h.id} className="handout stack" style={{ gap: 8 }}>
-          <span className="label">{h.title.toUpperCase()}</span>
+          <span className="label">
+            {h.title.toUpperCase()}
+            {/* toPlayerCodex leaves the viewer alone in a private handout's audience. */}
+            {h.audience.length > 0 && " · FOR YOUR EYES ONLY"}
+          </span>
           <pre className="text slate">{h.body}</pre>
         </div>
       ))}

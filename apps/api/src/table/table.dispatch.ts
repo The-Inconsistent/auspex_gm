@@ -12,7 +12,9 @@ import { applyEncounterAction } from "../encounter/encounter.actions.ts";
 export function touches(a: Action): { state: boolean; codex: boolean } {
   if (a.type === "codex.save" || a.type === "codex.delete" || a.type === "beat.reorder")
     return { state: false, codex: true };
-  if (a.type === "beat.startEncounter" || a.type.startsWith("session.")) return { state: true, codex: true };
+  // character.delete drops the Agent from handout audiences (character.actions).
+  if (a.type === "beat.startEncounter" || a.type === "character.delete" || a.type.startsWith("session."))
+    return { state: true, codex: true };
   return { state: true, codex: false };
 }
 
@@ -62,6 +64,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "character.adjust":
     case "character.supply":
     case "character.requisition":
+    case "character.objectives":
     case "character.respite":
     case "character.delete":
     case "token.issue":

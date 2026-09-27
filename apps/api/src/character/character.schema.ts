@@ -1,4 +1,4 @@
-import type { CharacterDetail } from "@wg/shared";
+import type { CharacterDetail, Objective } from "@wg/shared";
 import { boolean, integer, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
@@ -22,5 +22,6 @@ export const character = pgTable("character", {
   xp: integer().notNull().default(0),
   conditions: conditions(),
   detail: jsonb().$type<Partial<CharacterDetail>>().notNull().default({}), // Adding Detail (Core pp.32–36)
+  objectives: jsonb().$type<Objective[]>().notNull().default([]), // the GM's notes to this Agent's player only
   createdAt: createdAt(),
 });

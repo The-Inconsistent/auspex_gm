@@ -5,6 +5,7 @@ export const FIELD_TYPES = {
   bool: { empty: false },
   list: { empty: [] },
   select: { empty: "" },
+  picks: { empty: [] }, // toggle chips over `options`, stored as the chosen values
 } as const;
 export type FieldType = keyof typeof FIELD_TYPES;
 

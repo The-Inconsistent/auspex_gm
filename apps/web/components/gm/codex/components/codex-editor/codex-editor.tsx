@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { Attitude, FactionStance, type ActionInput, type Codex } from "@wg/shared";
+import { Attitude, FactionStance, type ActionInput, type Character, type Codex } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -11,12 +11,20 @@ import { FIELD_TYPES, GM_ONLY_FIELDS, type FieldType } from "./constants";
 
 type Option = [value: string, label: string];
 type Field = { key: string; label: string; type: FieldType; options?: Option[] };
-type CodexEditorProps = { kind: CodexKind; codex: Codex; send: Send; row: Row | null; onDone: () => void };
+type CodexEditorProps = {
+  kind: CodexKind;
+  codex: Codex;
+  characters: Character[];
+  send: Send;
+  row: Row | null;
+  onDone: () => void;
+};
 
 const upperOptions = (values: readonly string[]): Option[] => values.map((v) => [v, v.toUpperCase()]);
 const NONE: Option = ["", "—"];
+const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
-function fieldsFor(kind: CodexKind, codex: Codex): Field[] {
+function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex; characters: Character[] }): Field[] {
   switch (kind) {
     case "npc":
       return [
@@ -53,6 +61,12 @@ function fieldsFor(kind: CodexKind, codex: Codex): Field[] {
         { key: "title", label: "TITLE", type: "text" },
         { key: "body", label: "TEXT", type: "area" },
         { key: "revealed", label: "SENT TO PLAYERS", type: "bool" },
+        {
+          key: "audience",
+          label: "REVEAL TO",
+          type: "picks",
+          options: characters.map((c): Option => [c.id, c.name]),
+        },
       ];
     case "faction":
       return [
@@ -65,8 +79,8 @@ function fieldsFor(kind: CodexKind, codex: Codex): Field[] {
   }
 }
 
-export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps) {
-  const fields = fieldsFor(kind, codex);
+export function CodexEditor({ kind, codex, characters, send, row, onDone }: CodexEditorProps) {
+  const fields = fieldsFor({ kind, codex, characters });
   const [draft, setDraft] = useState<Record<string, unknown>>(() => {
     // Start from the whole row, so fields with no input here (an NPC's statSource) survive a save; zod strips the rest.
     const init: Record<string, unknown> = { ...row };
@@ -109,9 +123,16 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
     <div className="panel pad stack">
       {fields.map((f) => (
         <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
-          <label className="label" htmlFor={`f-${f.key}`}>
-            {f.label}
-          </label>
+          {f.type === "picks" ? (
+            // None picked means every player (toPlayerCodex); say so, since an empty group reads as "nobody".
+            <span className="label" id={`f-${f.key}`}>
+              {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
+            </span>
+          ) : (
+            <label className="label" htmlFor={`f-${f.key}`}>
+              {f.label}
+            </label>
+          )}
           {f.type === "text" && (
             <input
               id={`f-${f.key}`}
@@ -144,6 +165,24 @@ export function CodexEditor({ kind, codex, send, row, onDone }: CodexEditorProps
               checked={Boolean(draft[f.key])}
               onChange={(e) => setField(f.key, e.target.checked)}
             />
+          )}
+          {f.type === "picks" && (
+            <div className="keys" role="group" aria-labelledby={`f-${f.key}`} style={{ paddingTop: 0 }}>
+              {f.options?.map(([v, l]) => {
+                const picked = (draft[f.key] as string[]).includes(v);
+                return (
+                  <button
+                    key={v}
+                    className={`btn sm ${picked ? "primary" : ""}`}
+                    aria-pressed={picked}
+                    onClick={() => setField(f.key, toggled(draft[f.key] as string[], v))}
+                  >
+                    {l}
+                  </button>
+                );
+              })}
+              {!f.options?.length && <span className="dim">Add Agents in PARTY.</span>}
+            </div>
           )}
           {f.type === "select" && (
             <select

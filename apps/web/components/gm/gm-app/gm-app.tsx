@@ -93,7 +93,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
           {tab === "PREP" && (
             <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
           )}
-          {tab === "CODEX" && <CodexView codex={codex} send={send} />}
+          {tab === "CODEX" && <CodexView codex={codex} characters={state.characters} send={send} />}
           {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
           {tab === "RULES" && <RulesRef rules={rules} />}
         </main>

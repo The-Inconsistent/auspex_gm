@@ -116,6 +116,19 @@ export function Sheet({ me, state, send }: SheetProps) {
         </div>
       )}
 
+      {/* From the GM, to this Agent only (toPlayerView blanks everyone else's). */}
+      {me.objectives.length > 0 && (
+        <div className="stack" style={{ gap: 6 }}>
+          <div className="rule">OBJECTIVES</div>
+          {me.objectives.map((o, i) => (
+            <div key={i} className={o.done ? "dim" : undefined}>
+              <span style={{ textDecoration: o.done ? "line-through" : undefined }}>{o.text}</span>
+              {o.done && <span className="sr-only"> (done)</span>}
+            </div>
+          ))}
+        </div>
+      )}
+
       {s.weapons.length > 0 && (
         <div className="stack" style={{ gap: 6 }}>
           <div className="rule">ARMAMENT</div>

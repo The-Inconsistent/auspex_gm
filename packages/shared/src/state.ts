@@ -199,6 +199,12 @@ const detailText = z.string().max(4000).default("");
 export const CharacterDetail = z.object({ appearance: detailText, past: detailText, personality: detailText });
 export type CharacterDetail = z.infer<typeof CharacterDetail>;
 
+// The GM's private notes to one Agent (docs/campaign-model.md): only that character's player sees them.
+export const MAX_OBJECTIVES = 20;
+export const Objective = z.object({ text: z.string().trim().min(1).max(500), done: z.boolean().default(false) });
+export type Objective = z.infer<typeof Objective>;
+export const Objectives = z.array(Objective).max(MAX_OBJECTIVES);
+
 // Glory: max(6, players + 2) (p.164). Ruin: 2 × players (p.320).
 export const poolMax = (pool: Pool, players: number) =>
   pool === "glory" ? Math.max(6, players + 2) : Math.max(1, players * 2);
@@ -216,6 +222,7 @@ export const Character = z.object({
   xp: z.number().int(),
   conditions: z.array(z.string()),
   detail: CharacterDetail,
+  objectives: z.array(Objective), // blanked for every other player (toPlayerView)
   // The creation choices `stats` was derived from (a CharacterBuild, build.ts), or null for a hand-made sheet. Loose
   // here because build.ts imports this file; the builder parses it with CharacterBuild.
   build: z.record(z.string(), z.unknown()).nullable(),
@@ -401,9 +408,11 @@ export function threatStatus(c: ThreatCombatant): string[] {
 export const UNSEEN_ID = "unseen";
 const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
 
-// Players see who's at the table but not the GM's invite links (each one is a way in).
-export const toPlayerView = (s: LiveState): LiveState => ({
+// What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
+// invite links (each one is a way in), nor another Agent's objectives.
+export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
+  characters: s.characters.map((c) => (c.id === characterId ? c : { ...c, objectives: [] })),
   access: { members: s.access.members, invites: [] },
   encounter: s.encounter && {
     ...s.encounter,

@@ -42,6 +42,7 @@ const s: LiveState = {
       xp: 0,
       conditions: [],
       detail: CharacterDetail.parse({}),
+      objectives: [],
       build: null,
       draft: null,
     },
