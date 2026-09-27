@@ -561,7 +561,7 @@ textarea.input {
   white-space: nowrap;
   margin-left: auto; /* keeps the cite beside the (?) on the right */
 }
-/* The (?) on a stat block and its legend dialog (components/ui/stat-block/components/stat-legend). */
+/* The (?) on a stat block and its legend dialog (components/ui/legend). */
 .sb-help {
   flex: none;
   width: 28px;

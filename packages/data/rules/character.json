@@ -7,5 +7,68 @@
     "page": 34,
     "gist": "Your character has memories, emotions and desires; sample questions on their past and personality help find them.",
     "text": "Your character is more than numbers on a piece of paper; they are alive and have their own memories, emotions, and desires. Some players write detailed backstories for their characters. Others are influenced by what happens in the game, figuring out who they are as they react to the world around them.\n\nWith your Framework in mind, and a few details from your Faction, you can create a character you want to play that the rest of the group will want to play with. Think about your character’s ambitions and beliefs, and how they relate to the Framework. This ensures your party binds together and will help you tell stories you’ll enjoy.\n\nYou and your group might want to interweave each of your characters’ backstories together, helping to come up with dynamic and dramatic events as a group to make a prelude to your adventures. Your characters might all be very different, but you’ll still be a team — there to defend each other with a gun and a blade when the blood starts to flow.\n\nTen Questions\n\nOne useful method for detailing your character’s personality and background is to ask questions about them. This section provides a list of sample questions. If any of your answers make you want to change something about your character — their Attributes, Skills, Talents, or even their Archetype — feel free to do so, provided your character still fits into the group's Framework. You might also like to share some of your backstory with the GM to allow them to integrate your character’s history into the campaign.\n\nYour Faction and any Backgrounds you rolled may partially answer some of these questions, but exactly what happened to your character is up to you. If you answer these questions you’ll have a well fleshed out character, but they still have plenty of room to grow and change. You’ll know who your character is, but it remains to be seen what they do on their adventures and what they will become.\n\nYour Past\n• 1. Where Are You From?\n• 2. How Were You Raised?\n• 3. How Did You Join Your Faction?\n• 4. Who Are Your Friends?\n• 5. What Are Your Most Significant Memories?\n\nYour Personality\n• 6. What Is Your Greatest Desire?\n• 7. What Is Your Greatest Fear?\n• 8. What Do You Believe In?\n• 9. To Whom, Or What, Are You Loyal?"
+  },
+  {
+    "id": "trait-resolve",
+    "kind": "character",
+    "name": "Resolve",
+    "source": "core",
+    "page": 37,
+    "gist": "Courage and morale, used to resist Fear and other psychological conditions; starts at Willpower −1.",
+    "text": "Your courage and overall morale. Your starting Resolve is equal to your Willpower –1, with a minimum of 1. Resolve is used to resist Fear (p.199) and other psychological conditions."
+  },
+  {
+    "id": "trait-passive-awareness",
+    "kind": "character",
+    "name": "Passive Awareness",
+    "source": "core",
+    "page": 37,
+    "gist": "Noticing the unusual without searching: half your Awareness Skill total, rounded up.",
+    "text": "Your ability to notice the unusual and sense threats when you aren’t actively searching your environment.\n\nYour Passive Awareness is equal to half your Awareness (Int) Skill total, rounded up if necessary."
+  },
+  {
+    "id": "trait-influence",
+    "kind": "character",
+    "name": "Influence",
+    "source": "core",
+    "page": 37,
+    "gist": "Social authority and reputation, tested to acquire items in civilised places; starts at Fellowship −1.",
+    "text": "A measure of your societal authority and reputation.\n\nWhen you are in a civilised environment you can make Influence tests to exploit authority and acquire items (p.205). Your starting Influence is equal to your Fellowship –1.\n\nUnlike your Skills, Influence is only applicable when you are dealing within the social contract of civilisation. The Imperium is functionally a feudal system; your rank or your breeding can entitle you to many goods and services.\n\nCertain Talents and abilities can increase your Influence. The GM may award you additional Influence if you gain significant political power, assets, or a reputation that can be leveraged.\n\nOther Influence\n\nAs Influence is intrinsically linked to the society of your Faction, it works differently in different societies.\n\nThe Adeptus Mechanicus value information over all else. If you have the ADEPTUS MECHANICUS keyword and are testing your Influence against the Adeptus Mechanicus, you can calculate your Influence using Intellect instead of Fellowship.\n\nTo Orks, biggest is best. If you have the ORK keyword and are testing your Influence in Ork ‘kultur’, you can calculate your Influence using Strength instead of Fellowship."
+  },
+  {
+    "id": "trait-wealth",
+    "kind": "character",
+    "name": "Wealth",
+    "source": "core",
+    "page": 38,
+    "gist": "Valuables for buying wargear and bribes; starts at your Tier, up to 4 more at 1 XP each at creation.",
+    "text": "A measure of the valuable resources you own. You can use Wealth to purchase wargear and make bribes. Each point of Wealth could be a literal cache of Throne Gelt, the currency of the Imperium, or it could be something else of value; a piece of fine art, a xenos artefact, or some other rare oddity.\n\nYour starting Wealth is equal to your Tier and may be modified by your abilities or Talents. You may spend XP to buy more Wealth when you create your character; each extra point of Wealth costs 1 XP, and you can buy up to 4 Wealth. For more information on using Wealth see p.206."
+  },
+  {
+    "id": "character-skills",
+    "kind": "character",
+    "name": "Skills",
+    "source": "core",
+    "page": 121,
+    "gist": "A Skill Test rolls your Skill rating plus its linked Attribute; Skills can be 0, Attributes never are.",
+    "text": "Your character’s Skills represent their experience and training. If your character has been educated on a topic or practised it sufficiently, they’ll have points in that Skill. Some Species instinctively have better Skills than Humans through innate knowledge, common behaviours, or unique biology.\n\nMost rolls in Wrath & Glory are Skill Tests, in which you roll a number of dice equal to your character’s Skill rating plus the linked Attribute rating. The linked Attribute is shown next to the Skill on your character sheet, and abbreviated next to each Skill in this chapter.\n\nAs Attributes represent your character’s actual body and mind, they always have a minimum of 1 point. Your character can be clumsy, frail, or weak willed, but can’t have a rating of 0 in any Attribute. As Skills are based on training and experiences, your character can have a Skill Rating of 0. If your character is untrained or hasn’t devoted any time or effort to a Skill, they won’t have a Skill Rating.\n\nThe higher your character’s Skill Rating, the more trained in that Skill they are. Skill Rating 1 represents basic training and competency, while Skill Rating 8 represents potentially decades of study and a complete and near impossible understanding of the field."
+  },
+  {
+    "id": "character-wrath",
+    "kind": "character",
+    "name": "Wrath Points",
+    "source": "core",
+    "page": 164,
+    "gist": "Spend 1 to reroll a Test's 1s–3s, add a narrative detail, or restore Shock; you start each session with 2.",
+    "text": "Wrath Points represent your inner fire, your will to succeed, and the Emperor’s light shining on you for one lucky moment. You can spend Wrath to change the outcomes of Tests and change the world itself in your favour.\n\nSpending Wrath Points\n\nYou can spend a Wrath Point to:\n\nReroll Failures\nAfter you’ve rolled your dice pool for a Test, you can spend a Wrath Point to reroll every 1, 2, and 3 in the results, potentially earning more Icons. You can only do this once per Test, and you can’t reroll a Wrath Die that rolled a Complication.\n\nNarrative Declaration\nAdd a minor narrative element to the current scene. The GM has the final call on what can and can’t be added, but if they decline, the Wrath Point is not spent. Work together to tell your story your way!\n\nRestore Shock\nAs an Action, you can spend a Wrath Point to recover Shock equal to your Rank + your Tier (p.195). You can only do this if you are conscious.\n\nGaining Wrath Points\n\nYou start every session with 2 Wrath Points. Unless your GM states otherwise, they don’t carry over from the last session — you always start with 2.\n\nThe GM can award Wrath Points whenever they feel like it’s appropriate. Potential reasons to award Wrath Points include good roleplaying, character development, or doing something glorious. You can also earn a Wrath Point by successfully completing your Objective for the session (p.43)."
+  },
+  {
+    "id": "character-glory",
+    "kind": "character",
+    "name": "Glory",
+    "source": "core",
+    "page": 164,
+    "gist": "The group's shared pool: bonus dice, extra damage, worse Critical Hits, or Seize the Initiative.",
+    "text": "Glory is a resource you can earn and spend as a group to overcome the terrifying obstacles of the 41st Millennium. Glory represents the will to prevail, the power of camaraderie, and the collective determination of a group of like-minded individuals. You and your allies are the stars of the story and have the power to change the fate of the Gilead System — at least partially. Spending Glory gives you more options and control over the story you’re telling, potentially creating game-changing situations.\n\nGaining Glory\n\nYou and your party begin each session with 0 Glory in your collective pool. Any player can Shift an Exalted Icon to add 1 Glory to the pool. You can only do this once per Test.\n\nWhenever you roll a Wrath Critical on a Test, you add 1 Glory to the pool.\n\nThe Glory pool has a maximum of either 6 or the number of players +2, whichever value is higher. When the pool is at maximum, any additional Glory you generate is lost. Use it or lose it!\n\nSpending Glory\n\nAnyone in the group can choose to spend Glory. It’s a resource everyone contributes to and has access to. It’s polite to ask the rest of the group if you can use some of the shared Glory. Usually they’ll say yes, as you’re working as a team, but you might need to save your Glory for when the situation is (even more) perilous. In any case, asking won’t hurt, and make sure everyone at the table stays comfortable.\n\nGlory can be used in four ways, detailed below:\n\nIncrease Dice Pool\nYou can spend Glory to add bonus dice to any Test. Each point of Glory spent increases the number of bonus dice by 1. You can only do this after the initial roll and any re-roll of failures using Wrath. The bonus dice you gain through this option can’t be rerolled. You can only use this option once per Test.\n\nIncrease Damage\nYou can spend Glory to increase the damage of a successful attack. Each Glory spent adds 1 to the total damage value. You may spend as much Glory as you want to increase damage.\n\nIncrease Severity Of A Critical Hit\nYou can spend Glory to improve the effect of Critical Hits (p.198).\n\nSeize The Initiative\nYou can spend a point of Glory to Seize the Initiative during combat (p.177)."
   }
 ]

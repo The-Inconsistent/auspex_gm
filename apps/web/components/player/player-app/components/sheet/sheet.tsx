@@ -16,15 +16,17 @@ import {
 } from "@wg/shared";
 
 import { DetailFields, DetailHelp, DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
+import { Legend } from "@/components/ui/legend/legend";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
+import { useRules } from "@/components/ui/rules-provider/rules-provider";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { Vital } from "./components/vital/vital";
-import { SHEET_COUNTERS } from "./constants";
+import { SHEET_COUNTERS, SHEET_LEGEND } from "./constants";
 
 type SheetProps = { me: Character; state: LiveState; send: Send };
 
@@ -34,6 +36,12 @@ export function Sheet({ me, state, send }: SheetProps) {
   const [error, setError] = useState<string | null>(null);
   const [detail, setDetail] = useState<Partial<CharacterDetail> | null>(null); // the text being edited, or null
   const players = state.characters.length;
+  const { get } = useRules();
+  // Each rule under the sheet's own label (RSLV, not Resolve), so a player finds what they're looking at.
+  const legend = SHEET_LEGEND.flatMap(([abbr, id]) => {
+    const r = get(id);
+    return r ? [{ ...r, abbr }] : [];
+  });
 
   // Sends an action; a refusal (e.g. no Respite while Dying, p.197) shows the server's reason.
   const run = async (a: ActionInput) => {
@@ -123,6 +131,10 @@ export function Sheet({ me, state, send }: SheetProps) {
         {state.campaign.ruin}
       </div>
 
+      <div className="rule">
+        <span>TRAITS</span>
+        {legend.length > 0 && <Legend title="Reading your sheet" entries={legend} inline />}
+      </div>
       <div className="traits">
         {traits.map(([k, v]) => (
           <div key={k}>
