@@ -39,6 +39,9 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
   by the same server-side view as hidden threat stats.
+- **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those
+  Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
+  (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.
 
 ## Screens
 
@@ -69,4 +72,7 @@ they uncover a hidden tomb world. What lies beneath, and why are the Mechanicus 
   a **Troop** (Tier row E E T T), so they come in Mobs led by an Elite or Adversary.
 - **Tomb**: Necrons, Threat Assessment pp.131–156.
 - **Mechanicus**: Quick NPCs for now (see above).
-- The session 1 beat outline is in the chat plan and gets written into the seed pack once the characters are settled.
+- **Patron**: Inquisitor Marie Von Xardt, Ordo Xenos (FSPG p.26). She directs the Watch station under Enoch's northern tundra.
+- **Session 1** (the six scenes of the 2026-09-27 campaign bible: briefing, drop, camp, Magos, ambush, below the seal) is
+  in the seed pack, `packages/data/packs/volkus/pack.json`. Session 2 ("The Tomb Beneath") is an outline of beat titles.
+  A handout meant for one Agent (Von Xardt's private order) ships with an empty audience; the GM sets it at the table.

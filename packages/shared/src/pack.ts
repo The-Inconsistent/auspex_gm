@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CodexInput } from "./codex.ts";
-import { CharacterDetail, CharacterStats, Tier } from "./state.ts";
+import { CharacterDetail, CharacterStats, Objectives, Tier } from "./state.ts";
 
 // A content pack: a whole campaign start (framework, codex, adventure, characters) as data, loaded by
 // `apps/api/scripts/seed.ts` through the normal action pipeline. Entries reference each other by `key`.
@@ -35,7 +35,14 @@ export const Pack = z
       )
       .default([]),
     characters: z
-      .array(z.object({ name: z.string().min(1).max(100), stats: CharacterStats, detail: CharacterDetail.optional() }))
+      .array(
+        z.object({
+          name: z.string().min(1).max(100),
+          stats: CharacterStats,
+          detail: CharacterDetail.optional(),
+          objectives: Objectives.optional(),
+        }),
+      )
       .default([]),
   })
   .superRefine((p, ctx) => {

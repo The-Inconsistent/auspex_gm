@@ -73,7 +73,8 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
   - `codex` (`Codex`): factions, adventures and beats, locations, NPCs, handouts, sessions.
   - `touches(action)` decides which of the two to rebroadcast.
   - The GM room gets everything. The players room gets `toPlayerView` / `toPlayerCodex`, which drop hidden
-    threats, bars-only threat stats, GM notes, secrets and hidden entries.
+    threats, bars-only threat stats, GM notes, secrets and hidden entries. They filter per viewer (`characterId`):
+    the gateway emits to each player socket, so private handouts (`audience`) and objectives reach only their Agent.
 - **Access: Clerk accounts, plus guest QR tokens.**
   - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
     member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user

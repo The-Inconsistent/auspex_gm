@@ -143,7 +143,7 @@
     "name": "Apocryphon Oath",
     "source": "apocrypha",
     "page": 211,
-    "note": "Deathwatch Kill Team campaign package (docs/kill-team.md). Bolt rounds: one reload each; Kraken and Vengeance are not in the Wargear catalogue.",
+    "note": "Deathwatch Kill Team campaign package (docs/kill-team.md). Bolt rounds: one reload each; Vengeance is not in the Wargear catalogue.",
     "kind": "ascension",
     "xp": {
       "perTier": 10
@@ -208,7 +208,8 @@
           },
           {
             "name": "Kraken Bolt Rounds",
-            "qty": 1
+            "qty": 1,
+            "wargearId": "kraken-bolt-rounds"
           },
           {
             "name": "Vengeance Bolt Rounds",

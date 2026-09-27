@@ -1,0 +1,258 @@
+{
+  "name": "Brother Tancred Varn",
+  "stats": {
+    "species": "Primaris Astartes",
+    "archetype": "Primaris Intercessor + Heavy Intercessor Doctrine",
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "IMPERIUM",
+      "PRIMARIS",
+      "IMPERIAL FISTS",
+      "DEATHWATCH"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "A": 5,
+      "I": 5,
+      "Wil": 3,
+      "Int": 3,
+      "Fel": 1
+    },
+    "skills": {
+      "Athletics": 4,
+      "Awareness": 3,
+      "Ballistic Skill": 6,
+      "Stealth": 3,
+      "Tech": 3,
+      "Weapon Skill": 3
+    },
+    "armour": {
+      "name": "Mk X Gravis",
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "speed": 7,
+    "mods": {
+      "maxWounds": 4,
+      "resolve": 1,
+      "influence": 1,
+      "determination": 2
+    },
+    "abilities": [
+      {
+        "name": "Intercessor Focus",
+        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a ranged weapon with the PRIMARIS Keyword. The Bolt Rifle and Heavy Bolt Pistol qualify (Core p.217); his Deathwatch weapons do not.",
+        "page": "Core p.117"
+      },
+      {
+        "name": "Heavy Intercessor Doctrine",
+        "text": "You receive Mark X Gravis armour if you don't already have it and one of the following weapons: Heavy Bolt Rifle, Heavy Bolter. You additional +Rank AP when using this weapon. Furthermore, you gain the Bolter Discipline Talent (see page 45). He chose the Heavy Bolter, which the Deathwatch armoury swapped out, so the +Rank AP applies to none of his weapons.",
+        "page": "VoA p.35"
+      },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Honour the Chapter (Primaris)",
+        "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter. Your Resolve increases by +1. As a Primaris, you ignore any impurities in your Chapter Gene-Seed, and also gain +3 Wounds.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Space Marine Implants",
+        "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Siege Masters",
+        "text": "You may reroll Double Rank dice once per attack against a building, fortification, or enemy in cover. You may also add +Rank bonus dice whenever you make a Test related to architectural engineering. Against a wall or bulkhead he is breaching, and against Kommandos in cover.",
+        "page": "Core p.73"
+      },
+      {
+        "name": "Background",
+        "text": "Origin Killer Instinct (+1 Max Wounds); Accomplishment Crusader (+1 Determination); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
+        "page": "Core p.72"
+      }
+    ],
+    "talents": [
+      {
+        "name": "Bolter Discipline",
+        "text": "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating.",
+        "page": "VoA p.45"
+      },
+      {
+        "name": "Legacy of the Primarch",
+        "text": "[IMPERIAL FISTS]: Once per game session, you may draw on your knowledge of siege warfare to reduce by (Rank) either the DN of a Test made to attack a building, fortification, or enemy in cover, or the DN of a Test related to architectural engineering.",
+        "page": "VoA p.48"
+      }
+    ],
+    "weapons": [
+      {
+        "name": "Hellstorm Bolt Rifle",
+        "damage": 10,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          15,
+          30,
+          45
+        ],
+        "salvo": 2,
+        "traits": [
+          "Brutal",
+          "Rapid Fire (3)"
+        ]
+      },
+      {
+        "name": "Grenade Launcher (Frag)",
+        "damage": 10,
+        "ed": 4,
+        "range": [
+          12,
+          24,
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Assault",
+          "Blast (6)",
+          "Fires one of his Frag Grenades"
+        ]
+      },
+      {
+        "name": "Grenade Launcher (Krak)",
+        "damage": 14,
+        "ed": 5,
+        "ap": -2,
+        "range": [
+          12,
+          24,
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Assault",
+          "Blast (4)",
+          "Fires one of his Krak Grenades"
+        ]
+      },
+      {
+        "name": "Melta Bomb",
+        "count": 1,
+        "damage": 16,
+        "ed": 4,
+        "ap": -4,
+        "range": [
+          18
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)",
+          "Thrown S×2 m"
+        ]
+      },
+      {
+        "name": "Bolt Rifle",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          15,
+          30,
+          45
+        ],
+        "salvo": 2,
+        "traits": [
+          "Brutal",
+          "Rapid Fire (3)"
+        ]
+      },
+      {
+        "name": "Heavy Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          6,
+          12,
+          18
+        ],
+        "salvo": 1,
+        "traits": [
+          "Brutal",
+          "Pistol",
+          "Rapid Fire (2)"
+        ]
+      },
+      {
+        "name": "Astartes Combat Knife",
+        "damage": 3,
+        "addStrength": true,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          1
+        ],
+        "traits": [
+          "Reliable"
+        ]
+      },
+      {
+        "name": "Frag Grenade",
+        "count": 3,
+        "damage": 10,
+        "ed": 4,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (6)"
+        ]
+      },
+      {
+        "name": "Krak Grenade",
+        "count": 3,
+        "damage": 14,
+        "ed": 5,
+        "ap": -2,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)"
+        ]
+      }
+    ],
+    "gear": [
+      "Astartes Grenade Launcher (VoA p.67): Range 12/24/36, Assault; fires his Frag or Krak Grenades (VoA p.64)",
+      "Spare armour: Mk X Tacticus (AR 5, Powered (4)); only one suit's AR counts at a time (Core p.231)",
+      "Ballistic Appeasement Auto-Reliquary (Core p.236): clear a jammed weapon as a Free Action",
+      "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
+    ],
+    "wealth": 4,
+    "ammo": {
+      "Dragonfire Bolt": 1,
+      "Bolt": 2
+    }
+  },
+  "detail": {
+    "portrait": "deathwatch-breacher-veteran",
+    "personality": "A patient, immovable son of Dorn who treats every breach as a siege to be won. He keeps a tally of Ork skulls etched on his bolt rifle's casing, and gets quietly annoyed whenever someone suggests falling back."
+  },
+  "objectives": [
+    {
+      "text": "Chapter: hold a position against the horde without falling back.",
+      "done": false
+    },
+    {
+      "text": "Secret: take 5 Ork skulls for your bolter's tally.",
+      "done": false
+    }
+  ]
+}

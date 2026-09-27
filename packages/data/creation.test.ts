@@ -21,12 +21,6 @@ const ledger = new Map(
     ),
   ].map((m) => [norm(m[1]!), Number(m[2])]),
 );
-// Where a GM ruling moved the catalogue away from what the pregens were built on.
-const RULED: Record<string, { xp: number; why: string }> = {
-  // docs/rules-flow.md §11.34: VoA's printing (357) is kept; the pregen was built on Core p.117 (300).
-  primarisintercessor: { xp: 357, why: "§11.34" },
-};
-
 for (const { name, stats } of loadPack("volkus").characters) {
   test(`${name}: species, archetype, packages, talents and chapter resolve`, () => {
     assert.ok(
@@ -37,7 +31,7 @@ for (const { name, stats } of loadPack("volkus").characters) {
     const [archetype, ...packages] = stats.archetype.split(" + ");
     const a = byName(c.archetypes, archetype!);
     assert.ok(a, archetype);
-    assert.equal(a.xp, RULED[norm(a.name)]?.xp ?? ledger.get(norm(archetype!)));
+    assert.equal(a.xp, ledger.get(norm(archetype!)));
     for (const p of packages) {
       const pkg = byName(c.packages, p);
       assert.ok(pkg, p);
@@ -46,16 +40,22 @@ for (const { name, stats } of loadPack("volkus").characters) {
 
     for (const t of stats.talents) assert.ok(byName(c.talents, t.name), t.name);
 
-    // The Chapter is the keyword a chapter sub-faction fills in; the sheet carries its traits, bar the Gene-seed ones
-    // a Primaris ignores (Core p.71).
-    const chapter = c["sub-factions"].find((s) => s.type === "chapter" && stats.keywords.includes(s.keyword));
-    assert.ok(chapter, stats.keywords.join(", "));
+    // A sub-faction (Chapter, Order, Forge World…) is the keyword it fills in; the sheet carries its traits, bar the
+    // Gene-seed ones a Primaris ignores (Core p.71). A [CHAPTER] archetype must have its Chapter.
+    const subs = c["sub-factions"].filter((s) => stats.keywords.includes(s.keyword));
+    // The Red Scorpions have no catalogue record and, by GM ruling, no Chapter Traits (kill-team.md ruling 13).
+    if (a.keywords.includes("[CHAPTER]") && !stats.keywords.includes("RED SCORPIONS"))
+      assert.ok(
+        subs.some((s) => s.type === "chapter"),
+        stats.keywords.join(", "),
+      );
     const abilities = stats.abilities.map((r) => norm(r.name));
-    for (const trait of chapter.traits.filter((t) => !t.geneSeed))
+    for (const trait of subs.flatMap((s) => s.traits).filter((t) => !t.geneSeed))
       assert.ok(abilities.includes(norm(trait.name)), trait.name);
   });
 }
 
 test("pregen ledgers cover every archetype and package the pregens use", () => {
-  assert.ok(ledger.size >= 7, `${ledger.size} ledger rows`);
+  for (const { stats } of loadPack("volkus").characters)
+    for (const part of stats.archetype.split(" + ")) assert.ok(ledger.has(norm(part)), part);
 });

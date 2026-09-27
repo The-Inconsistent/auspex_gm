@@ -86,6 +86,7 @@ const char = (o: Partial<Character>): Character => ({
   xp: 0,
   conditions: [],
   detail: CharacterDetail.parse({}),
+  objectives: [],
   build: null,
   draft: null,
   ...o,
@@ -116,29 +117,68 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
     },
   };
-  const [hidden, shown, p] = toPlayerView(s).encounter!.combatants as [ThreatCombatant, ThreatCombatant, Combatant];
+  const [hidden, shown, p] = toPlayerView(s, null).encounter!.combatants as [
+    ThreatCombatant,
+    ThreatCombatant,
+    Combatant,
+  ];
   assert.equal(hidden.stats, null);
   assert.equal(hidden.maxWounds, 6);
   assert.deepEqual(hidden.conditions, ["Prone"]);
   assert.equal(shown.stats?.name, "Ork Boy");
   assert.deepEqual(p, pc("p", { acted: true }));
-  assert.equal(toPlayerView(s).encounter!.combatants.length, 3, "the hidden threat isn't sent at all");
+  assert.equal(toPlayerView(s, null).encounter!.combatants.length, 3, "the hidden threat isn't sent at all");
   assert.notEqual((s.encounter!.combatants[0] as ThreatCombatant).stats, null, "input not mutated");
   assert.deepEqual(
-    toPlayerView(s).access,
+    toPlayerView(s, null).access,
     { members: s.access.members, invites: [] },
     "players see who's seated, never the invite links",
   );
+});
+
+test("toPlayerView: each player gets only their own Agent's objectives", () => {
+  const goal = [{ text: "Recover the relic", done: false }];
+  const s = table(enc([]), [char({ id: "a", objectives: goal }), char({ id: "b", objectives: goal })]);
+  const objectives = (viewer: string | null) => toPlayerView(s, viewer).characters.map((c) => c.objectives);
+  assert.deepEqual(objectives("a"), [goal, []]);
+  assert.deepEqual(objectives("b"), [[], goal]);
+  assert.deepEqual(objectives(null), [[], []], "a player without a character sees none");
+});
+
+test("toPlayerCodex: a handout with an audience reaches only those Agents", () => {
+  const h = (id: string, o: Partial<Codex["handouts"][number]> = {}): Codex["handouts"][number] => ({
+    id,
+    title: id,
+    body: "",
+    revealed: true,
+    audience: [],
+    revealedAt: null,
+    ...o,
+  });
+  const codex: Codex = {
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [h("public"), h("for-a", { audience: ["a", "c"] }), h("unrevealed", { revealed: false })],
+    sessions: [],
+  };
+  const titles = (viewer: string | null) => toPlayerCodex(codex, viewer).handouts.map((x) => x.title);
+  assert.deepEqual(titles("a"), ["public", "for-a"]);
+  assert.deepEqual(titles("b"), ["public"]);
+  assert.deepEqual(titles(null), ["public"]);
+  assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
 });
 
 test("toPlayerView: a hidden threat's Turn still shows as due", () => {
   const s = table(
     enc([threat("a", { acted: true }), threat("h", { visibility: "hidden" }), pc("p")], { lastSide: "agents" }),
   );
-  const e = toPlayerView(s).encounter!;
+  const e = toPlayerView(s, null).encounter!;
   assert.equal(e.upNext, "threats");
   assert.equal(sideUpNext({ ...s, encounter: e }), "agents", "the filtered combatants alone would get it wrong");
-  const acting = (currentId: string) => toPlayerView({ ...s, encounter: { ...s.encounter!, currentId } }).encounter!;
+  const acting = (currentId: string) =>
+    toPlayerView({ ...s, encounter: { ...s.encounter!, currentId } }, null).encounter!;
   assert.equal(acting("h").currentId, UNSEEN_ID, "a hidden threat's real id never reaches the phones");
   assert.equal(acting("p").currentId, "p");
 });
@@ -366,7 +406,7 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
     handouts: [],
     sessions: [],
   };
-  const p = toPlayerCodex(codex);
+  const p = toPlayerCodex(codex, null);
   assert.deepEqual(
     p.npcs.map((n) => n.name),
     ["Magos"],

@@ -2349,5 +2349,115 @@
         "rating": 4
       }
     ]
+  },
+  {
+    "id": "primaris-intercessor",
+    "name": "Primaris Intercessor",
+    "source": "core",
+    "factionId": "adeptus-astartes",
+    "page": 117,
+    "note": "GM ruling (docs/rules-flow.md §11.34): Core p.117's block is used, not VoA p.34's. Also VoA p.34, misprinted: its XP (357), Attributes, Skills, Wargear and Influence (+2) are exactly the Astartes Techmarine's (VoA p.39), and its Suggested block (ratings, XP 46 / 58, talents) is exactly the Primaris Eliminator's (VoA p.32); only its name, Keywords and ability (Intercessor Focus) are the Intercessor's own. VoA prints SPECIES “Adeptus Astartes”; Core prints Primaris Astartes. No suggested Talents printed.",
+    "tier": 4,
+    "speciesIds": [
+      "primaris-astartes"
+    ],
+    "xp": 300,
+    "keywords": [
+      "ADEPTUS ASTARTES",
+      "IMPERIUM",
+      "PRIMARIS",
+      "[CHAPTER]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "A": 5,
+      "I": 5,
+      "Wil": 3,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 3,
+      "Ballistic Skill": 6,
+      "Stealth": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Intercessor Focus",
+        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a ranged weapon with the PRIMARIS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Mark X Tacticus Power Armour",
+          "wargearId": "tacticus-mk-x"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Rifle",
+          "wargearId": "bolt-rifle"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Heavy Bolt Pistol",
+          "wargearId": "heavy-bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Astartes Combat Knife",
+          "wargearId": "astartes-combat-knife"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Ballistic Appeasement Autoreliquary",
+          "wargearId": "ballistic-appeasement-auto-reliquary-absolutis-pattern"
+        }
+      }
+    ],
+    "influence": 1,
+    "suggested": {
+      "attributes": {
+        "S": 6,
+        "T": 6,
+        "A": 6,
+        "I": 5,
+        "Wil": 3,
+        "Int": 3,
+        "Fel": 1
+      },
+      "skills": {
+        "Athletics": 3,
+        "Awareness": 4,
+        "Ballistic Skill": 6,
+        "Scholar": 2,
+        "Stealth": 3,
+        "Weapon Skill": 4
+      },
+      "xp": {
+        "attributes": 40,
+        "skills": 22
+      }
+    }
   }
 ]

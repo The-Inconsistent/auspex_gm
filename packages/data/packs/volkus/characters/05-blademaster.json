@@ -1,56 +1,55 @@
 {
-  "name": "Brother Castiel Varro",
+  "name": "Brother Sariel Voss",
   "stats": {
     "species": "Primaris Astartes",
-    "archetype": "Primaris Reiver",
+    "archetype": "Tactical Space Marine + Rubicon Primaris",
     "keywords": [
       "IMPERIUM",
       "ADEPTUS ASTARTES",
+      "DARK ANGELS",
       "PRIMARIS",
-      "BLOOD ANGELS",
       "DEATHWATCH"
     ],
     "attributes": {
-      "S": 6,
+      "S": 5,
       "T": 5,
-      "A": 4,
-      "I": 6,
-      "Wil": 5,
+      "A": 5,
+      "I": 5,
+      "Wil": 3,
       "Int": 3,
       "Fel": 1
     },
     "skills": {
       "Athletics": 3,
       "Awareness": 3,
-      "Ballistic Skill": 4,
-      "Intimidation": 3,
+      "Ballistic Skill": 5,
+      "Intimidation": 1,
+      "Leadership": 1,
+      "Scholar": 1,
       "Stealth": 3,
+      "Survival": 2,
       "Weapon Skill": 6
     },
     "armour": {
-      "name": "Mk X Phobos",
-      "ar": 4,
+      "name": "Mk X Tacticus",
+      "ar": 5,
       "invulnerable": false,
-      "powered": 3,
-      "traits": [
-        "+1 Movement",
-        "+2 bonus dice to Stealth (A) Tests"
-      ]
+      "powered": 4,
+      "traits": []
     },
     "speed": 7,
     "mods": {
       "maxWounds": 4,
       "resolve": 1,
       "conviction": 1,
-      "influence": 1,
-      "speed": 1,
+      "influence": 4,
       "determination": 1
     },
     "abilities": [
       {
-        "name": "Terror Tactics",
-        "text": "When your Stealth Score is reduced to 0 or you Ambush a Threat, you can choose for all enemies who can see or hear you to take a Terror Test, with a DN equal to 1 + Rank. At Rank 1, that is DN 2.",
-        "page": "VoA p.37"
+        "name": "Tactical Versatility",
+        "text": "Your training has prepared you for any circumstance. When you make a Critical Hit you may roll twice on the Critical Hit Table and choose either result.",
+        "page": "Core p.113"
       },
       {
         "name": "Defender of Humanity",
@@ -68,8 +67,13 @@
         "page": "Core p.29"
       },
       {
-        "name": "Savage Echoes",
-        "text": "You may reroll Double Rank dice once per melee attack Test.",
+        "name": "Grim Resolve",
+        "text": "You may reroll Double Rank dice once per ranged attack Test when you Aim (p.189).",
+        "page": "Core p.73"
+      },
+      {
+        "name": "The Unforgiven (Tradition)",
+        "text": "You suffer a +2 DN penalty to any social Tests made against anyone outside of your Chapter. This is a Tradition, not Gene-seed, so it applies, including with his kill-team brothers.",
         "page": "Core p.73"
       },
       {
@@ -80,53 +84,50 @@
     ],
     "talents": [
       {
-        "name": "Trademark Weapon (xenophase blade)",
-        "text": "Whenever you make a successful attack with your Trademark Weapon, you deal +Double Rank additional ED. If you lose or destroy your Trademark Weapon, you can no longer receive any benefits from this Talent.",
-        "page": "Core p.141"
+        "name": "Bolter Discipline",
+        "text": "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating.",
+        "page": "VoA p.45"
       },
       {
-        "name": "Furious Charge",
-        "text": "You gain +Rank to any melee attack you make as part of a Charge (p.188). [GM] Read as +Rank bonus dice.",
-        "page": "Core p.134"
+        "name": "Built Tough",
+        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself.",
+        "page": "VoA p.46"
       }
     ],
     "weapons": [
       {
         "name": "Xenophase blade",
-        "damage": 6,
+        "damage": 5,
         "addStrength": true,
-        "ed": 7,
+        "ed": 4,
         "ap": -3,
         "range": [
           1
         ],
         "traits": [
-          "Brutal",
           "Parry",
-          "ED includes +2 Trademark Weapon"
+          "Duelling Grip (+1 bonus die)"
         ]
       },
       {
-        "name": "Bolt Carbine",
+        "name": "Boltgun",
         "damage": 10,
         "ed": 1,
-        "ap": -1,
         "range": [
-          15,
-          30,
-          45
+          12,
+          24,
+          36
         ],
         "salvo": 2,
         "traits": [
           "Brutal",
-          "Rapid Fire (2)"
+          "Rapid Fire (3)"
         ]
       },
       {
-        "name": "Heavy Bolt Pistol",
+        "name": "Bolt Pistol",
         "damage": 10,
         "ed": 1,
-        "ap": -1,
         "range": [
           6,
           12,
@@ -135,7 +136,8 @@
         "salvo": 1,
         "traits": [
           "Brutal",
-          "Pistol"
+          "Pistol",
+          "Rapid Fire (2)"
         ]
       },
       {
@@ -164,23 +166,11 @@
         "traits": [
           "Blast (4)"
         ]
-      },
-      {
-        "name": "Shock Grenade",
-        "count": 3,
-        "damage": 10,
-        "ed": 4,
-        "range": [
-          36
-        ],
-        "salvo": null,
-        "traits": [
-          "Blast (6)"
-        ]
       }
     ],
     "gear": [
-      "Grav-Chute (Core p.237): hover or control a fall for up to one hour; recharge the solar battery by leaving it in sunlight for one hour",
+      "Xenophase blade: a Power Sword (VoA p.62), the Kill Team's name for it [GM]",
+      "Duelling Grip on the xenophase blade (Rubicon Uncommon item, Core p.228): +1 bonus die on Attack Tests using this weapon",
       "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
     ],
     "wealth": 4,
@@ -190,6 +180,17 @@
     }
   },
   "detail": {
-    "personality": "He is graceful, soft-spoken and always polite, which is what makes the sudden violence so unsettling. He paints a drop of red on his blade for every xenos champion he has slain, and he fears the day the painting stops being art."
-  }
+    "portrait": "deathwatch-blademaster-veteran",
+    "personality": "Carries a xenophase blade and a private list of names. He duels like a confession: patient, precise, final."
+  },
+  "objectives": [
+    {
+      "text": "Chapter: slay a champion in single combat.",
+      "done": false
+    },
+    {
+      "text": "Secret: learn why your xenophase blade hums near the crypt, and tell no one outside the Chapter.",
+      "done": false
+    }
+  ]
 }

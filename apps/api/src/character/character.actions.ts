@@ -1,8 +1,9 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import {
   CharacterBuild,
   CharacterDetail,
   CharacterStats,
+  Objectives,
   Overrides,
   adjustAmmo,
   buildReady,
@@ -29,6 +30,7 @@ import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
 import { session } from "../campaign/campaign.schema.ts";
+import { handout } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
@@ -52,6 +54,7 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
     stats: CharacterStats.parse(row.stats),
     overrides: Overrides.parse(row.overrides),
     detail: CharacterDetail.parse(row.detail),
+    objectives: Objectives.parse(row.objectives),
     draft: row.buildDraft,
   };
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
@@ -84,7 +87,13 @@ export async function applyCharacterAction(
     case "character.create": {
       const [c] = await tx
         .insert(character)
-        .values({ campaignId: cid, name: a.name, stats: a.stats ?? {}, detail: a.detail ?? {} })
+        .values({
+          campaignId: cid,
+          name: a.name,
+          stats: a.stats ?? {},
+          detail: a.detail ?? {},
+          objectives: a.objectives ?? [],
+        })
         .returning({ id: character.id });
       return { ok: true, id: c!.id }; // the row was just inserted
     }
@@ -247,6 +256,15 @@ export async function applyCharacterAction(
       return { ok: true };
     }
 
+    case "character.objectives": {
+      const r = await tx
+        .update(character)
+        .set({ objectives: a.objectives })
+        .where(inCampaign(a.characterId))
+        .returning({ id: character.id });
+      return r.length ? { ok: true } : fail("Character not found");
+    }
+
     case "character.respite": {
       const { dying, dead } = await healthOf(tx, {
         campaignId: cid,
@@ -260,7 +278,17 @@ export async function applyCharacterAction(
 
     case "character.delete": {
       const r = await tx.delete(character).where(inCampaign(a.id)).returning({ id: character.id });
-      return r.length ? { ok: true } : fail("Character not found");
+      if (!r.length) fail("Character not found");
+      // Handout audiences have no FK. A handout meant only for this Agent is hidden again rather than left with an
+      // empty audience, which would show it to everyone (the SET reads the old audience).
+      await tx
+        .update(handout)
+        .set({
+          audience: sql`array_remove(${handout.audience}, ${a.id}::uuid)`,
+          revealed: sql`${handout.revealed} and cardinality(${handout.audience}) > 1`,
+        })
+        .where(and(eq(handout.campaignId, cid), sql`${a.id}::uuid = any(${handout.audience})`));
+      return { ok: true };
     }
 
     case "token.issue": {

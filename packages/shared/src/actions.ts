@@ -2,7 +2,17 @@ import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
-import { CharacterDetail, CharacterStats, InviteMode, Marker, Overrides, Pool, Tier, Visibility } from "./state.ts";
+import {
+  CharacterDetail,
+  CharacterStats,
+  InviteMode,
+  Marker,
+  Objectives,
+  Overrides,
+  Pool,
+  Tier,
+  Visibility,
+} from "./state.ts";
 
 const id = z.uuid();
 const delta = z.number().int().min(-100).max(100);
@@ -40,6 +50,7 @@ export const Action = z.union([
       name: z.string().min(1).max(100),
       stats: CharacterStats.optional(),
       detail: CharacterDetail.optional(),
+      objectives: Objectives.optional(),
     }),
     z.object({
       type: z.literal("character.update"),
@@ -84,6 +95,8 @@ export const Action = z.union([
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
       wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
     }),
+    // GM only: replaces the Agent's private objectives (only its player sees them).
+    z.object({ type: z.literal("character.objectives"), characterId: id, objectives: Objectives }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),
     // Save a character from its creation choices (build.ts). The server re-runs resolveBuild, refuses a build that

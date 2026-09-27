@@ -3,6 +3,7 @@ import { threats } from "@wg/data";
 import type { z } from "zod";
 import type { Action, ActionResult, CodexInput } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
+import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { adventure, beat, faction, handout, location, npc } from "./codex.schema.ts";
@@ -10,7 +11,7 @@ import { adventure, beat, faction, handout, location, npc } from "./codex.schema
 export type CodexAction = Extract<Action, { type: "codex.save" | "codex.delete" | "beat.reorder" }>;
 
 const codexTable = { faction, adventure, beat, location, npc, handout } as const;
-type RefTable = typeof faction | typeof adventure | typeof location | typeof npc | typeof handout;
+type RefTable = typeof faction | typeof adventure | typeof location | typeof npc | typeof handout | typeof character;
 
 // Every id the client sends must name a row of this campaign; the FKs alone would accept another campaign's row.
 async function checkRefs(
@@ -63,6 +64,8 @@ export async function applyCodexAction(
         if (parentId && parentId === a.id) fail("A location can't be inside itself");
         await refs(location, [parentId], "Parent location");
       }
+      if (a.kind === "handout")
+        await refs(character, (a.data as z.output<typeof CodexInput.handout>).audience, "Audience character");
       // First reveal stamps the time; later saves keep it (only an UPDATE can read the old value).
       if (a.kind === "handout")
         data.revealedAt = !data.revealed ? null : a.id ? sql`coalesce(${handout.revealedAt}, now())` : new Date();

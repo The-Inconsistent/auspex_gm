@@ -91,7 +91,12 @@ export const CodexInput = {
     statSource: StatSource.default({ kind: "none" }),
     revealed: z.boolean().default(false),
   }),
-  handout: z.object({ title: text(200), body: text(20000).default(""), revealed: z.boolean().default(false) }),
+  handout: z.object({
+    title: text(200),
+    body: text(20000).default(""),
+    revealed: z.boolean().default(false),
+    audience: z.array(id).max(20).default([]), // character ids it's revealed to; empty = every player
+  }),
 } as const;
 export type CodexKind = keyof typeof CodexInput;
 export const CODEX_KINDS = Object.keys(CodexInput) as CodexKind[];
@@ -106,9 +111,10 @@ export type Codex = {
   sessions: { id: string; number: number; startedAt: string; endedAt: string | null; recap: string; xp: number }[];
 };
 
-// Players see revealed NPCs, locations and handouts, without GM notes or secrets, plus session recaps.
-// Ids that point at something hidden (factions, an unrevealed parent location) are cleared too.
-export function toPlayerCodex(c: Codex): Codex {
+// What one player's phone gets (null: a player without a character): revealed NPCs, locations and handouts, without GM
+// notes or secrets, plus session recaps. A handout with an audience reaches only those Agents' players. Ids that point
+// at something hidden (factions, an unrevealed parent location, the rest of an audience) are cleared too.
+export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
   const shownLocations = new Set(c.locations.filter((l) => l.revealed).map((l) => l.id));
   return {
     factions: [],
@@ -124,7 +130,9 @@ export function toPlayerCodex(c: Codex): Codex {
     npcs: c.npcs
       .filter((n) => n.revealed)
       .map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
-    handouts: c.handouts.filter((h) => h.revealed),
+    handouts: c.handouts
+      .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
+      .map((h) => ({ ...h, audience: h.audience.length && characterId ? [characterId] : [] })),
     sessions: c.sessions,
   };
 }

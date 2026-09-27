@@ -78,4 +78,5 @@ export const handout = pgTable("handout", {
   body: body(),
   revealed: boolean().notNull().default(false),
   revealedAt: timestamp({ withTimezone: true }),
+  audience: ids(), // character ids; empty = every player. No FK in a uuid array: character.delete clears them.
 });

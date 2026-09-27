@@ -1,5 +1,13 @@
 import { and, asc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
-import { CharacterDetail, CharacterStats, Overrides, type Codex, type Combatant, type LiveState } from "@wg/shared";
+import {
+  CharacterDetail,
+  CharacterStats,
+  Objectives,
+  Overrides,
+  type Codex,
+  type Combatant,
+  type LiveState,
+} from "@wg/shared";
 import { appUser, invite, membership } from "../auth/auth.schema.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -75,6 +83,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
         xp,
         conditions,
         detail,
+        objectives,
       }) => ({
         id,
         name,
@@ -88,6 +97,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
         xp,
         conditions,
         detail: CharacterDetail.parse(detail),
+        objectives: Objectives.parse(objectives),
         build: build ?? null,
         draft: buildDraft ?? null,
       }),

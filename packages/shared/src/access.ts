@@ -28,7 +28,7 @@ export const InvitePreview = z.object({
   campaignName: z.string(),
   mode: InviteMode,
   character: CharacterRef.nullable(), // the invited character (mode "character")
-  openCharacters: z.array(CharacterRef), // unclaimed characters to pick from (mode "room")
+  openCharacters: z.array(CharacterRef.extend({ portrait: z.string() })), // unclaimed characters to pick from (mode "room")
   allowGuests: z.boolean(),
   signedIn: z.boolean(),
   member: z.boolean(),

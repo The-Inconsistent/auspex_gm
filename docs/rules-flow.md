@@ -279,11 +279,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     (HARLEQUIN). FARSEER in Apocrypha's prerequisites is the Farseer archetype, not a keyword.
 33. **Grey Knights** know Rites of Banishment instead of Smite (Apocrypha p.267): the sub-faction grants it, like the
     Navigator species grants The Lidless Stare.
-34. **VoA's Primaris Intercessor** (p.34) is kept over Core p.117 although its ratings, wargear and XP copy the
-    Techmarine's (p.39): VoA is the newer printing.
+34. **The Primaris Intercessor is Core p.117's** (300 XP), not VoA p.34's (user ruling, 2026-09-27). VoA's block is
+    misprinted: its 357 XP, ratings, wargear and Influence copy the Techmarine's (VoA p.39), and its suggested block the
+    Eliminator's (VoA p.32). So the catalogue takes the whole Core block, not only its price, and the record sits in
+    `creation/archetypes/core.json`, an exception to "the first source in `SOURCES` order wins" (docs/data.md §9).
+    This replaces the earlier ruling that kept VoA's printing.
 35. **"N+M" archetype XP** (VoA pp.38–42 "335+30", "295+20"; IoE pp.54–56 "+20"/"+30" under the XP) is the total N+M:
     the second figure is the Archetype Ability's cost, printed separately. This settles the XP half of issue #2.
-36. **VoA's Primaris Eliminator, Incursor, Intercessor and Reiver** (pp.32–37) require the Primaris Astartes species,
+36. **VoA's Primaris Eliminator, Incursor and Reiver** (pp.32–37) require the Primaris Astartes species,
     matching their PRIMARIS keyword, though their SPECIES line prints Adeptus Astartes.
 37. **Pariah archetypes include the Pariah template's 30 XP** (Apocrypha p.12): Null-Maiden, Oblivion Knight and
     Novice-Sister, which print a cost without it, gain the 30.

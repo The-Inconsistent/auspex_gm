@@ -952,6 +952,22 @@ button.row.now:nth-of-type(even) {
 .row.done {
   color: var(--ink-3);
 }
+/* Miniature photos (lib/portraits). The thumb crops to the head, which sits top-centre in every photo; rows without
+   one keep an empty slot of the same size so names stay aligned. */
+.portrait-thumb {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  object-fit: cover;
+  object-position: center top;
+}
+.portrait {
+  height: 96px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left;
+}
 .keys {
   display: flex;
   gap: 8px;

@@ -1,8 +1,11 @@
 "use client";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import type { AcceptInvite, InvitePreview } from "@wg/shared";
+
+import { portrait } from "@/lib/portraits/portraits";
 
 type InviteAcceptProps = { code: string; preview: InvitePreview };
 
@@ -73,11 +76,21 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
             <div className="rule">PICK YOUR AGENT</div>
             <div className="keys" style={{ paddingTop: 0 }}>
               {p.openCharacters.length === 0 && <span className="dim">Every agent is taken. Start a new one:</span>}
-              {p.openCharacters.map((c) => (
-                <button key={c.id} className="btn" disabled={busy} onClick={() => accept({ characterId: c.id })}>
-                  {c.name.toUpperCase()}
-                </button>
-              ))}
+              {p.openCharacters.map((c) => {
+                const pic = portrait(c.portrait);
+                return (
+                  <button
+                    key={c.id}
+                    className="btn"
+                    style={pic ? { flexDirection: "column", padding: "8px 14px" } : undefined}
+                    disabled={busy}
+                    onClick={() => accept({ characterId: c.id })}
+                  >
+                    {pic && <Image src={pic} alt="" height={192} className="portrait" />}
+                    {c.name.toUpperCase()}
+                  </button>
+                );
+              })}
             </div>
             <form style={{ display: "flex", gap: 8 }} onSubmit={handleNew}>
               <input

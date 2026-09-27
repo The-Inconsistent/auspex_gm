@@ -1,0 +1,193 @@
+{
+  "name": "Brother Kael Tirrow",
+  "stats": {
+    "species": "Primaris Astartes",
+    "archetype": "Primaris Hellblaster",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "ULTRAMARINES",
+      "DEATHWATCH"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "A": 6,
+      "I": 5,
+      "Wil": 4,
+      "Int": 3,
+      "Fel": 1
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 4,
+      "Ballistic Skill": 6,
+      "Scholar": 1,
+      "Stealth": 3,
+      "Tech": 4,
+      "Weapon Skill": 3
+    },
+    "armour": {
+      "name": "Mk X Tacticus",
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "speed": 7,
+    "mods": {
+      "maxWounds": 3,
+      "maxShock": 1,
+      "resolve": 1,
+      "influence": 2,
+      "determination": 1
+    },
+    "abilities": [
+      {
+        "name": "Hellblaster Focus",
+        "text": "When you make an attack with a PLASMA weapon, you may re-roll up to Double Rank dice.",
+        "page": "Apocrypha p.183"
+      },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Honour the Chapter (Primaris)",
+        "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter. Your Resolve increases by +1. As a Primaris, you ignore any impurities in your Chapter Gene-Seed, and also gain +3 Wounds.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Space Marine Implants",
+        "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Tactical Versatility (Ultramarines)",
+        "text": "Exemplars of the Codex Astartes, the Ultramarines wage war with the utmost flexibility, able to turn any situation to their advantage. You may Shift for Glory twice as part of a Test. The Chapter trait, not the Tactical Space Marine's archetype ability of the same name (Core p.113). He is an Emperor's Spear, an Ultramarines Successor, and takes the Ultramarines traits (kill-team.md ruling 13).",
+        "page": "Core p.74"
+      },
+      {
+        "name": "Pride of Ultramar (Tradition)",
+        "text": "The Imperium looks to the Ultramarines as paragons of the virtues of Astartes, and each strives to excel that reputation; strong in body, but restrained in mind, a tactical and clear-headed protector of Humanity. You start each session with 1 Wrath Point instead of 2. A Tradition, not Gene-seed, so it applies to a Primaris: Wrath 1 at the start of each session.",
+        "page": "Core p.74"
+      },
+      {
+        "name": "Background",
+        "text": "Origin Cunning (+1 Determination); Accomplishment Cleanse and Purge (+1 Max Shock); Goal Advancement (+1 Influence).",
+        "page": "Core p.72"
+      }
+    ],
+    "talents": [
+      {
+        "name": "Deadshot",
+        "text": "You are a skilled shot, trained to carefully target your enemies' weak points. When you take the Aim action (p.189) and make a Called Shot (p.187) you double the bonus ED you receive.",
+        "page": "Core p.131"
+      },
+      {
+        "name": "Duty Until Death",
+        "text": "Whenever you suffer more Wounds than your Max Wounds, you can use this Talent. You may take your next Turn normally; you begin Dying at the end of that Turn. You may choose to take your next Turn immediately after activating this Talent, potentially interrupting an enemy's Turn. If you roll a Complication on any Test, you take a Traumatic Wound.",
+        "page": "Core p.133"
+      }
+    ],
+    "weapons": [
+      {
+        "name": "Heavy Plasma Incinerator",
+        "damage": 16,
+        "ed": 2,
+        "ap": -4,
+        "range": [
+          18,
+          36,
+          54
+        ],
+        "salvo": 1,
+        "traits": [
+          "Heavy (4)",
+          "Supercharge"
+        ]
+      },
+      {
+        "name": "Heavy Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          6,
+          12,
+          18
+        ],
+        "salvo": 1,
+        "traits": [
+          "Brutal",
+          "Pistol"
+        ]
+      },
+      {
+        "name": "Astartes Combat Knife",
+        "damage": 3,
+        "addStrength": true,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          1
+        ],
+        "traits": [
+          "Reliable"
+        ]
+      },
+      {
+        "name": "Frag Grenade",
+        "count": 3,
+        "damage": 10,
+        "ed": 4,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (6)"
+        ]
+      },
+      {
+        "name": "Krak Grenade",
+        "count": 3,
+        "damage": 14,
+        "ed": 5,
+        "ap": -2,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)"
+        ]
+      }
+    ],
+    "gear": [
+      "Backpack ammunition supply for the Heavy Plasma Incinerator (Apocrypha p.352), as an Ammo Backpack (Core p.229): carry 10 more Ammo; came stocked with 3 (in the Plasma count)",
+      "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
+    ],
+    "wealth": 4,
+    "ammo": {
+      "Plasma": 5,
+      "Dragonfire Bolt": 1
+    }
+  },
+  "detail": {
+    "portrait": "deathwatch-gunner-veteran",
+    "personality": "A son of the Elara's Veil, raised among the war-tribes of a Chapter long cut off from the Imperium. He cherishes wargear as heirlooms and trades in relics the way his Chapter always has, with whoever keeps its guns firing."
+  },
+  "objectives": [
+    {
+      "text": "Chapter: recover one intact archeotech device.",
+      "done": false
+    },
+    {
+      "text": "Secret: trade it to the Magos for Mechanicus favour, not hand it to the Inquisitor.",
+      "done": false
+    }
+  ]
+}
