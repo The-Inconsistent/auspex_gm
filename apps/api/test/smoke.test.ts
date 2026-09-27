@@ -555,12 +555,12 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
     "deleted NPC cleared from beats",
   );
 
-  // A prepared beat starts an encounter with the party and its threats.
+  // A prepared beat starts an encounter with the active Agents (only B holds a guest token) and its threats.
   assert.ok((await gm.send({ type: "beat.startEncounter", id: b2.id })).ok);
   await gm.until(
     (s) =>
       s.encounter?.combatants.filter((x) => x.kind === "threat").length === 2 &&
-      s.encounter.combatants.filter((x) => x.kind === "pc").length === 3,
+      s.encounter.combatants.flatMap((x) => (x.kind === "pc" ? [x.characterId] : [])).join() === b.id,
   );
 });
 
@@ -738,6 +738,36 @@ const disruptor = {
   talents: [{ id: "wraith-slipping" }, { id: "bolter-discipline" }, { id: "silent" }],
   languages: { picks: ["high-gothic"] },
 };
+
+test("seat.leave: a player gives the Agent back to the room QR", async (t) => {
+  const gm = await newCampaign("Leave", 2);
+  t.after(() => gm.socket.close());
+  const cid = gm.campaignId;
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  const room = await gm.send({ type: "invite.create", mode: "room" });
+  assert.ok(a.ok && a.id && b.ok && b.id && room.ok && room.token);
+  const open = async () =>
+    ((await (await get(`/invites/${room.token}`)).json()) as { openCharacters: { id: string }[] }).openCharacters
+      .map((c) => c.id)
+      .sort();
+
+  const leaver = clerk("leaver");
+  assert.equal((await post(`/invites/${room.token}/accept`, { characterId: a.id }, bearer(leaver))).status, 200);
+  const guest = await post(`/invites/${room.token}/accept`, { characterId: b.id, asGuest: true });
+  const guestCookie = (guest.headers.get("set-cookie") ?? "").split(";")[0]!;
+  assert.deepEqual(await open(), [], "both Agents claimed");
+  await gm.until((s) => s.access.guests.includes(b.id!) && s.access.members.some((m) => m.characterId === a.id));
+
+  const member = connect({ auth: { campaignId: cid, clerkToken: leaver } });
+  const guestSock = connect({ auth: { campaignId: cid }, headers: { cookie: guestCookie } });
+  t.after(() => (member.socket.close(), guestSock.socket.close()));
+  assert.deepEqual(await gm.send({ type: "seat.leave" }), { ok: false, error: "Only a seated player can leave" });
+  assert.ok((await member.send({ type: "seat.leave" })).ok);
+  assert.ok((await guestSock.send({ type: "seat.leave" })).ok);
+  await gm.until((s) => s.access.guests.length === 0 && !s.access.members.some((m) => m.userId === "leaver"));
+  assert.deepEqual(await open(), [a.id, b.id].sort(), "the room QR offers both again");
+});
 
 test("character builder: the creation catalogue for seats, and character.build decided by the server", async (t) => {
   const gm = await newCampaign("Builder", 4);

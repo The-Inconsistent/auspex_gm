@@ -94,6 +94,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "invite.create":
     case "invite.revoke":
     case "member.remove":
+    case "seat.leave":
       return applyAccessAction(tx, { ctx, action });
   }
 }

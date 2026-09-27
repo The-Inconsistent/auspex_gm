@@ -72,7 +72,7 @@ const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter => 
   combatants,
   ...o,
 });
-const noAccess: LiveState["access"] = { members: [], invites: [] };
+const noAccess: LiveState["access"] = { members: [], invites: [], guests: [] };
 const char = (o: Partial<Character>): Character => ({
   id: "x",
   name: "x",
@@ -115,6 +115,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
+      guests: [],
     },
   };
   const [hidden, shown, p] = toPlayerView(s, null).encounter!.combatants as [
@@ -131,7 +132,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
   assert.notEqual((s.encounter!.combatants[0] as ThreatCombatant).stats, null, "input not mutated");
   assert.deepEqual(
     toPlayerView(s, null).access,
-    { members: s.access.members, invites: [] },
+    { members: s.access.members, invites: [], guests: [] },
     "players see who's seated, never the invite links",
   );
 });

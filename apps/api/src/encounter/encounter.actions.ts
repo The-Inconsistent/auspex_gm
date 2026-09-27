@@ -23,6 +23,7 @@ import {
   type Visibility,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
+import { claimedCharacterIds } from "../auth/invite.service.ts";
 import { campaignTier } from "../campaign/campaign.actions.ts";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { ownCharacter } from "../character/character.actions.ts";
@@ -356,7 +357,7 @@ export async function applyEncounterAction(
       return r.length ? { ok: true } : fail("Combatant not found"); // current_id is cleared by the FK
     }
 
-    // Start the beat's prepared encounter: every party character plus its threats.
+    // Start the beat's prepared encounter: every active Agent (reserve ones stay out) plus its threats.
     case "beat.startEncounter": {
       const [b] = await tx
         .select()
@@ -368,8 +369,7 @@ export async function applyEncounterAction(
       if (missing) fail(`Unknown threat "${missing.threatId}"`);
       const tier = await campaignTier(tx, cid);
       const encounterId = await startEncounter(tx, cid);
-      for (const ch of await tx.select({ id: character.id }).from(character).where(eq(character.campaignId, cid)))
-        await addPc(tx, { encounterId, characterId: ch.id });
+      for (const characterId of await claimedCharacterIds(tx, cid)) await addPc(tx, { encounterId, characterId });
       for (const e of entries) {
         const t = threats.get(e.threatId)!; // every entry was checked against `threats` above
         if (e.asMob && e.count > 1)

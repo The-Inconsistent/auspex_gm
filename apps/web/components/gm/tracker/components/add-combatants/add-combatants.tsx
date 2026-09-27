@@ -1,7 +1,7 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { Marker, type LiveState, type Threat, type Visibility } from "@wg/shared";
+import { activeCharacterIds, Marker, type LiveState, type Threat, type Visibility } from "@wg/shared";
 
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 
@@ -16,7 +16,8 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   // Kept between adds, like the marker: a GM placing reinforcements adds several hidden in a row.
   const [visibility, setVisibility] = useState<Visibility>("bars");
   const inFight = new Set(state.encounter?.combatants.flatMap((c) => (c.kind === "pc" ? [c.characterId] : [])));
-  const missing = state.characters.filter((c) => !inFight.has(c.id));
+  const active = activeCharacterIds(state.access); // reserve Agents stay out of the fight
+  const missing = state.characters.filter((c) => active.has(c.id) && !inFight.has(c.id));
   const threat = bestiary.find((x) => x.id === threatId);
   const mobCount = Number(mob);
 

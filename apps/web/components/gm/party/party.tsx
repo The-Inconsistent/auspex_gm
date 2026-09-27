@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
 import QRCode from "qrcode";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
+  activeCharacterIds,
   AMMO_TYPES,
   CONDITIONS,
   CharacterStats,
@@ -44,6 +45,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const open = codex.sessions.find((s) => !s.endedAt);
   const { members, invites } = state.access;
   const seatOf = (characterId: string) => members.find((m) => m.characterId === characterId);
+  const active = activeCharacterIds(state.access);
+  const isActive = (id: string) => active.has(id);
+  const groups = [
+    ["ACTIVE AGENTS", state.characters.filter((c) => isActive(c.id))],
+    ["IN RESERVE", state.characters.filter((c) => !isActive(c.id))],
+  ] as const;
   const nameOf = (characterId: string | null) => state.characters.find((c) => c.id === characterId)?.name ?? "?";
 
   const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
@@ -321,122 +328,135 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
         ))}
       </section>
       <div className="list">
-        {state.characters.map((c) => {
-          const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });
-          const pic = portrait(c.detail.portrait);
-          return (
-            <div key={c.id} className="item">
-              {pic && <Image src={pic} alt="" height={192} className="portrait" />}
-              <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-                <b style={{ flex: 1 }}>{c.name.toUpperCase()}</b>
-                <span className="dim">{c.stats.archetype || "NO STATS YET"}</span>
-                <StatusChips items={pcStatus(c, d)} />
-                <span className="dim">XP {c.xp}</span>
-              </div>
-              <div className="dim">{seatOf(c.id) ? `PLAYED BY ${seatOf(c.id)!.name.toUpperCase()}` : "OPEN SEAT"}</div>
-              <div className="dim">
-                WEALTH {c.stats.wealth} · AMMO{" "}
-                {Object.entries(c.stats.ammo)
-                  .map(([k, n]) => `${n} ${k}`)
-                  .join(", ") || "NONE"}
-                {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
-              </div>
-              <div className="dim">
-                WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}
-                {d.resilience}
-              </div>
-              <div className="keys">
-                {/* A draft a player sent: the GM ticks what only the GM judges, and saves it. */}
-                <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
-                  {c.draft ? "OPEN DRAFT" : c.build ? "REBUILD" : "BUILD"}
-                </a>
-                <button className="btn sm" onClick={() => inviteCharacter(c)}>
-                  INVITE
-                </button>
-                <button className="btn sm" onClick={() => showGuestQr(c)}>
-                  GUEST QR
-                </button>
-                <button className="btn sm" aria-expanded={importFor === c.id} onClick={() => toggleImport(c.id)}>
-                  LOAD STATS (JSON)
-                </button>
-                <button className="btn sm" onClick={() => respite(c)}>
-                  RESPITE
-                </button>
-                <button className="btn sm" aria-expanded={reqFor === c.id} onClick={() => toggleReq(c.id)}>
-                  REQUISITION
-                </button>
-                <button className="btn sm" onClick={() => adjWealth(c, 1)}>
-                  +1 WEALTH
-                </button>
-                <button className="btn sm" onClick={() => adjWealth(c, -1)}>
-                  −1 WEALTH
-                </button>
-                <button className="btn sm danger" onClick={() => revoke(c)}>
-                  REVOKE GUEST QR
-                </button>
-              </div>
-              <form style={{ display: "flex", gap: 6, flexWrap: "wrap" }} onSubmit={(e) => adjAmmo(e, c)}>
-                <input
-                  className="input"
-                  name="kind"
-                  list="ammo-types"
-                  aria-label={`Ammo type for ${c.name}`}
-                  placeholder="AMMO TYPE"
-                />
-                <button className="btn sm" value="1">
-                  +1 AMMO
-                </button>
-                <button className="btn sm" value="-1">
-                  −1 AMMO
-                </button>
-                <select
-                  className="btn sm"
-                  aria-label={`Toggle condition on ${c.name}`}
-                  value=""
-                  onChange={(e) => handleConditionPick(e, c)}
-                >
-                  <option value="">±COND</option>
-                  {CONDITIONS.map((k) => (
-                    <option key={k} value={k}>
-                      {c.conditions.includes(k) ? `− ${k}` : `+ ${k}`}
-                    </option>
-                  ))}
-                </select>
-              </form>
-              <ObjectivesEditor character={c} send={send} onResult={report} />
-              {reqFor === c.id && (
-                <RequisitionForm
-                  character={c}
-                  catalogue={wargear}
-                  influence={d.influence}
-                  sessionId={open?.id ?? null}
-                  send={send}
-                  onResult={requisitioned}
-                  onCancel={() => setReqFor(null)}
-                />
-              )}
-              {importFor === c.id && (
-                <div className="stack">
-                  <textarea
-                    className="input"
-                    aria-label="Stats JSON"
-                    value={json}
-                    onChange={(e) => setJson(e.target.value)}
-                    placeholder='{"species":"Primaris Astartes","attributes":{…}}'
-                  />
+        {groups.map(([title, list]) => (
+          <Fragment key={title}>
+            <div className="rule">
+              {title} ({list.length})
+            </div>
+            {list.map((c) => {
+              const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });
+              const pic = portrait(c.detail.portrait);
+              return (
+                <div key={c.id} className="item">
+                  {pic && <Image src={pic} alt="" height={192} className="portrait" />}
+                  <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+                    <b style={{ flex: 1 }}>{c.name.toUpperCase()}</b>
+                    <span className="dim">{c.stats.archetype || "NO STATS YET"}</span>
+                    <StatusChips items={pcStatus(c, d)} />
+                    <span className="dim">XP {c.xp}</span>
+                  </div>
+                  <div className="dim">
+                    {seatOf(c.id)
+                      ? `PLAYED BY ${seatOf(c.id)!.name.toUpperCase()}`
+                      : isActive(c.id)
+                        ? "PLAYED BY A GUEST"
+                        : "OPEN SEAT"}
+                  </div>
+                  <div className="dim">
+                    WEALTH {c.stats.wealth} · AMMO{" "}
+                    {Object.entries(c.stats.ammo)
+                      .map(([k, n]) => `${n} ${k}`)
+                      .join(", ") || "NONE"}
+                    {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
+                  </div>
+                  <div className="dim">
+                    WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}
+                    {d.resilience}
+                  </div>
                   <div className="keys">
-                    <button className="btn primary" onClick={() => importStats(c.id)}>
-                      LOAD
+                    {/* A draft a player sent: the GM ticks what only the GM judges, and saves it. */}
+                    <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
+                      {c.draft ? "OPEN DRAFT" : c.build ? "REBUILD" : "BUILD"}
+                    </a>
+                    <button className="btn sm" onClick={() => inviteCharacter(c)}>
+                      INVITE
                     </button>
-                    <button className="btn" onClick={cancelImport}>
-                      CANCEL
+                    <button className="btn sm" onClick={() => showGuestQr(c)}>
+                      GUEST QR
+                    </button>
+                    <button className="btn sm" aria-expanded={importFor === c.id} onClick={() => toggleImport(c.id)}>
+                      LOAD STATS (JSON)
+                    </button>
+                    <button className="btn sm" onClick={() => respite(c)}>
+                      RESPITE
+                    </button>
+                    <button className="btn sm" aria-expanded={reqFor === c.id} onClick={() => toggleReq(c.id)}>
+                      REQUISITION
+                    </button>
+                    <button className="btn sm" onClick={() => adjWealth(c, 1)}>
+                      +1 WEALTH
+                    </button>
+                    <button className="btn sm" onClick={() => adjWealth(c, -1)}>
+                      −1 WEALTH
+                    </button>
+                    <button className="btn sm danger" onClick={() => revoke(c)}>
+                      REVOKE GUEST QR
                     </button>
                   </div>
+                  <form style={{ display: "flex", gap: 6, flexWrap: "wrap" }} onSubmit={(e) => adjAmmo(e, c)}>
+                    <input
+                      className="input"
+                      name="kind"
+                      list="ammo-types"
+                      aria-label={`Ammo type for ${c.name}`}
+                      placeholder="AMMO TYPE"
+                    />
+                    <button className="btn sm" value="1">
+                      +1 AMMO
+                    </button>
+                    <button className="btn sm" value="-1">
+                      −1 AMMO
+                    </button>
+                    <select
+                      className="btn sm"
+                      aria-label={`Toggle condition on ${c.name}`}
+                      value=""
+                      onChange={(e) => handleConditionPick(e, c)}
+                    >
+                      <option value="">±COND</option>
+                      {CONDITIONS.map((k) => (
+                        <option key={k} value={k}>
+                          {c.conditions.includes(k) ? `− ${k}` : `+ ${k}`}
+                        </option>
+                      ))}
+                    </select>
+                  </form>
+                  <ObjectivesEditor character={c} send={send} onResult={report} />
+                  {reqFor === c.id && (
+                    <RequisitionForm
+                      character={c}
+                      catalogue={wargear}
+                      influence={d.influence}
+                      sessionId={open?.id ?? null}
+                      send={send}
+                      onResult={requisitioned}
+                      onCancel={() => setReqFor(null)}
+                    />
+                  )}
+                  {importFor === c.id && (
+                    <div className="stack">
+                      <textarea
+                        className="input"
+                        aria-label="Stats JSON"
+                        value={json}
+                        onChange={(e) => setJson(e.target.value)}
+                        placeholder='{"species":"Primaris Astartes","attributes":{…}}'
+                      />
+                      <div className="keys">
+                        <button className="btn primary" onClick={() => importStats(c.id)}>
+                          LOAD
+                        </button>
+                        <button className="btn" onClick={cancelImport}>
+                          CANCEL
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        })}
+              );
+            })}
+          </Fragment>
+        ))}
       </div>
       <datalist id="ammo-types">
         {AMMO_TYPES.map((t) => (

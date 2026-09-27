@@ -24,9 +24,21 @@ async function liveInvite(conn: Db, code: string) {
   return row ?? fail("This invite has expired or was already used. Ask your GM for a new one");
 }
 
-// Characters nobody has claimed yet: no member plays them and no live guest token points at them.
+// Characters someone plays: a member holds the seat or a live guest token points at them (activeCharacterIds, web).
+export async function claimedCharacterIds(conn: Db, campaignId: string): Promise<Set<string>> {
+  const [members, guests] = await Promise.all([
+    conn.select({ characterId: membership.characterId }).from(membership).where(eq(membership.campaignId, campaignId)),
+    conn
+      .select({ characterId: accessToken.characterId })
+      .from(accessToken)
+      .where(and(eq(accessToken.campaignId, campaignId), isNull(accessToken.revokedAt))),
+  ]);
+  return new Set([...members, ...guests].flatMap((r) => (r.characterId ? [r.characterId] : [])));
+}
+
+// Characters nobody has claimed yet.
 async function openCharacters(conn: Db, campaignId: string) {
-  const [chars, members, guests] = await Promise.all([
+  const [chars, claimed] = await Promise.all([
     conn
       .select({
         id: character.id,
@@ -35,13 +47,8 @@ async function openCharacters(conn: Db, campaignId: string) {
       })
       .from(character)
       .where(eq(character.campaignId, campaignId)),
-    conn.select({ characterId: membership.characterId }).from(membership).where(eq(membership.campaignId, campaignId)),
-    conn
-      .select({ characterId: accessToken.characterId })
-      .from(accessToken)
-      .where(and(eq(accessToken.campaignId, campaignId), isNull(accessToken.revokedAt))),
+    claimedCharacterIds(conn, campaignId),
   ]);
-  const claimed = new Set([...members, ...guests].map((r) => r.characterId));
   return chars.filter((c) => !claimed.has(c.id));
 }
 

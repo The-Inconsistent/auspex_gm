@@ -132,6 +132,8 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("invite.revoke"), id }),
     z.object({ type: z.literal("member.remove"), userId: z.string().min(1).max(100) }),
+    // A player gives up their seat: the Agent goes back to reserve and the room QR offers it again.
+    z.object({ type: z.literal("seat.leave") }),
 
     z.object({ type: z.literal("encounter.start") }),
     z.object({ type: z.literal("encounter.end") }),
@@ -193,6 +195,7 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.build",
   "character.draft",
   "character.supply",
+  "seat.leave",
 ]);
 
 export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };

@@ -3,12 +3,15 @@ import type { Action, ActionResult } from "@wg/shared";
 import { ownCharacter } from "../character/character.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
-import { invite, membership } from "./auth.schema.ts";
+import { accessToken, invite, membership } from "./auth.schema.ts";
 import { hash, newSecret, type Ctx } from "./auth.service.ts";
 
-export type AccessAction = Extract<Action, { type: "invite.create" | "invite.revoke" | "member.remove" }>;
+export type AccessAction = Extract<
+  Action,
+  { type: "invite.create" | "invite.revoke" | "member.remove" | "seat.leave" }
+>;
 
-// GM-only (not in PLAYER_ACTIONS): invite links and removing a signed-in member.
+// GM-only (not in PLAYER_ACTIONS): invite links and removing a signed-in member. seat.leave is the player's own.
 export async function applyAccessAction(
   tx: Tx,
   { ctx, action: a }: { ctx: Ctx; action: AccessAction },
@@ -53,6 +56,25 @@ export async function applyAccessAction(
         .where(and(eq(membership.campaignId, cid), eq(membership.userId, a.userId)))
         .returning({ id: membership.id });
       return r.length ? { ok: true } : fail("Member not found");
+    }
+    case "seat.leave": {
+      // No kick: the phone navigates away on the ack, and a kick would drop the socket before the ack reaches it.
+      if (ctx.role !== "player" || !ctx.characterId) fail("Only a seated player can leave");
+      if (ctx.userId)
+        await tx.delete(membership).where(and(eq(membership.campaignId, cid), eq(membership.userId, ctx.userId)));
+      // ponytail: a guest can't be told apart from another phone on the same Agent's QR, so all its guest tokens go.
+      else
+        await tx
+          .update(accessToken)
+          .set({ revokedAt: new Date() })
+          .where(
+            and(
+              eq(accessToken.campaignId, cid),
+              eq(accessToken.characterId, ctx.characterId),
+              isNull(accessToken.revokedAt),
+            ),
+          );
+      return { ok: true };
     }
   }
 }

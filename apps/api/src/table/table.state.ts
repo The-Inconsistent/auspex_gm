@@ -8,7 +8,7 @@ import {
   type Combatant,
   type LiveState,
 } from "@wg/shared";
-import { appUser, invite, membership } from "../auth/auth.schema.ts";
+import { accessToken, appUser, invite, membership } from "../auth/auth.schema.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
@@ -55,6 +55,10 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       ),
     )
     .orderBy(asc(invite.createdAt));
+  const guests = await conn
+    .selectDistinct({ characterId: accessToken.characterId })
+    .from(accessToken)
+    .where(and(eq(accessToken.campaignId, campaignId), isNull(accessToken.revokedAt)));
 
   return {
     campaign: {
@@ -147,6 +151,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
         uses: i.uses,
         maxUses: i.maxUses,
       })),
+      guests: guests.flatMap((g) => (g.characterId ? [g.characterId] : [])),
     },
   };
 }

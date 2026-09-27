@@ -296,9 +296,15 @@ export const LiveState = z.object({
       upNext: Side.nullable().optional(),
     })
     .nullable(),
-  access: z.object({ members: z.array(Member), invites: z.array(Invite) }),
+  // guests: characters a live guest QR token points at (no account, so not in members).
+  access: z.object({ members: z.array(Member), invites: z.array(Invite), guests: z.array(z.string()) }),
 });
 export type LiveState = z.infer<typeof LiveState>;
+
+// Agents in play: a signed-in player or a live guest QR holds them. The rest wait in reserve (PARTY), and only
+// active Agents join a fight.
+export const activeCharacterIds = (a: LiveState["access"]): Set<string> =>
+  new Set([...a.members.flatMap((m) => (m.role === "player" && m.characterId ? [m.characterId] : [])), ...a.guests]);
 export type Encounter = NonNullable<LiveState["encounter"]>;
 
 // Slain threats and Dead characters are out of the fight: they take no Turns and don't hold up the Round
@@ -419,7 +425,7 @@ const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidd
 export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
   characters: s.characters.map((c) => (c.id === characterId ? c : { ...c, objectives: [] })),
-  access: { members: s.access.members, invites: [] },
+  access: { members: s.access.members, invites: [], guests: [] },
   encounter: s.encounter && {
     ...s.encounter,
     upNext: sideUpNext(s),

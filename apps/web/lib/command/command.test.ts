@@ -27,7 +27,7 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
 });
 const s: LiveState = {
   campaign: { id: "c", name: "C", tier: 4, glory: 0, ruin: 0, framework: "", patron: "", homebrew: false },
-  access: { members: [], invites: [] },
+  access: { members: [], invites: [], guests: [] },
   characters: [
     {
       id: "ch1",

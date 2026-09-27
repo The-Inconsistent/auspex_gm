@@ -19,11 +19,20 @@ type PlayerAppProps = { campaignId: string; characterId: string; rules: RuleEntr
 
 export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   const { state, codex, online, send } = useTable(campaignId);
+
   const [tab, setTab] = useState<PlayerTab>("SHEET");
   const me = state?.characters.find((c) => c.id === characterId);
   const enc = state?.encounter ?? null;
   const myCombatant = enc?.combatants.find((c) => c.kind === "pc" && c.characterId === characterId);
   const myTurn = !!enc && !!myCombatant && enc.currentId === myCombatant.id;
+  // LEAVE: give the seat back first, then /leave drops a guest cookie and goes home.
+  const leave = async () => {
+    if (!window.confirm(`Leave ${me?.name ?? "this seat"}? Another player can then pick this Agent.`)) return;
+    const r = await send({ type: "seat.leave" });
+    // /leave is a route handler that expires the httpOnly cookie, so it needs a full navigation, not a router push.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    if (r.ok) window.location.href = "/leave";
+  };
 
   // External system: the device vibration motor (navigator.vibrate). Buzz once when it becomes your turn.
   const wasMyTurn = useRef(false);
@@ -66,8 +75,8 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
               {banner}
             </div>
           </div>
-          {/* Signed-in players get the lobby and account menu. Guests only get LEAVE, which forgets this phone's QR seat
-            (plain <a>, so nothing prefetches it); rescanning the QR rejoins. */}
+          {/* Signed-in players also get the lobby and account menu. LEAVE gives up the seat: the Agent goes back to
+            reserve and the room QR offers it again; /leave then forgets a guest's cookie. */}
           <ThemeToggle />
           <Show when="signed-in">
             <a href="/" aria-label="Lobby">
@@ -75,11 +84,9 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
             </a>
             <UserButton />
           </Show>
-          <Show when="signed-out">
-            <a className="btn sm" href="/leave">
-              LEAVE
-            </a>
-          </Show>
+          <button className="btn sm" onClick={leave}>
+            LEAVE
+          </button>
         </div>
         <div className="pl-body">
           {tab === "SHEET" && <Sheet me={me} state={state} send={send} />}
