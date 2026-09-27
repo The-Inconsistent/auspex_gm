@@ -28,6 +28,7 @@ import { CharacterEditor } from "./components/character-editor/character-editor"
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
+import { SheetDialog } from "./components/sheet-dialog/sheet-dialog";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
 type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[] };
@@ -373,6 +374,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
                       {c.draft ? "OPEN DRAFT" : c.build ? "REBUILD" : "BUILD"}
                     </a>
+                    <SheetDialog character={c} state={state} send={send} />
                     <button className="btn sm" aria-expanded={editFor === c.id} onClick={() => toggleEdit(c.id)}>
                       EDIT
                     </button>

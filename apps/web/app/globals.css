@@ -561,7 +561,7 @@ textarea.input {
   white-space: nowrap;
   margin-left: auto; /* keeps the cite beside the (?) on the right */
 }
-/* The (?) on a stat block and its legend dialog (components/ui/legend). */
+/* The (?) on a stat block and its legend dialog (components/ui/legend); the GM's sheet dialog (party/sheet-dialog) shares it. */
 .sb-help {
   flex: none;
   width: 28px;
@@ -577,7 +577,8 @@ textarea.input {
   line-height: 1;
   align-self: center;
 }
-dialog.legend {
+dialog.legend,
+dialog.sheet {
   width: min(560px, calc(100vw - 32px));
   max-height: 85dvh;
   padding: 0;
@@ -591,16 +592,19 @@ dialog.legend {
   font-weight: 400;
   letter-spacing: normal;
 }
-dialog.legend::backdrop {
+dialog.legend::backdrop,
+dialog.sheet::backdrop {
   background: var(--overlay);
 }
-dialog.legend .sb-title {
+dialog.legend .sb-title,
+dialog.sheet .sb-title {
   position: sticky;
   top: 0;
   z-index: 1;
   align-items: center;
 }
-dialog.legend .sb-title .btn {
+dialog.legend .sb-title .btn,
+dialog.sheet .sb-title .btn {
   border-color: var(--bone-2);
   box-shadow: none;
   color: var(--bone);

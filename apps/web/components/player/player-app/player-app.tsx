@@ -6,13 +6,13 @@ import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
+import { Sheet } from "@/components/ui/sheet/sheet";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable } from "@/hooks/use-table/use-table";
 
 import { Fight } from "./components/fight/fight";
 import { Intel } from "./components/intel/intel";
-import { Sheet } from "./components/sheet/sheet";
 import { PLAYER_TABS, TURN_VIBRATION, type PlayerTab } from "./constants";
 
 type PlayerAppProps = { campaignId: string; characterId: string; rules: RuleEntry[] };
