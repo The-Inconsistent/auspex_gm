@@ -9,15 +9,33 @@ import { BeatEditor } from "./components/beat-editor/beat-editor";
 import type { Beat } from "./types";
 import { stripBeat } from "./utils";
 
+// What PREP shows under each beat; GM notes sit on the plate like the codex's GM-only fields.
+const beatFields = [
+  ["readAloud", "READ ALOUD", false],
+  ["gmNotes", "GM NOTES / SECRETS", true],
+  ["outcome", "OUTCOME", false],
+] as const;
+
 type PrepProps = { state: LiveState; codex: Codex; send: Send; bestiary: Threat[]; onRun: () => void };
 
 export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
   const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
   const [editing, setEditing] = useState<Beat | "new" | null>(null);
   const [title, setTitle] = useState("");
+  const [advDraft, setAdvDraft] = useState<{ title: string; premise: string } | null>(null); // adventure being edited
   const [msg, setMsg] = useState<string | null>(null);
   const adv = codex.adventures.find((a) => a.id === advId) ?? null;
   const players = state.characters.length;
+
+  // Names for a beat's location, NPCs and handouts; ids the codex no longer has are skipped.
+  const links = (b: Beat) =>
+    (
+      [
+        ["LOCATION", codex.locations.filter((l) => l.id === b.locationId).map((l) => l.name)],
+        ["NPCS", codex.npcs.filter((n) => b.npcIds.includes(n.id)).map((n) => n.name)],
+        ["HANDOUTS", codex.handouts.filter((h) => b.handoutIds.includes(h.id)).map((h) => h.title)],
+      ] as const
+    ).flatMap(([label, names]) => (names.length ? [[label, names.join(", ")] as const] : []));
 
   const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
 
@@ -42,6 +60,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
   const pickAdventure = (id: string) => {
     setAdvId(id);
     setEditing(null);
+    setAdvDraft(null);
   };
 
   // New adventure form: creates it and switches to it.
@@ -52,6 +71,19 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
     report(r, "ADVENTURE CREATED");
     if (r.ok && r.id) setAdvId(r.id);
     setTitle("");
+  };
+
+  // SAVE on the adventure: keeps its status (codex.save would reset it to the default) and closes the editor.
+  const saveAdventure = async () => {
+    if (!adv || !advDraft?.title.trim()) return;
+    const r = await send({
+      type: "codex.save",
+      kind: "adventure",
+      id: adv.id,
+      data: { title: advDraft.title.trim(), premise: advDraft.premise, status: adv.status },
+    });
+    report(r, "ADVENTURE SAVED");
+    if (r.ok) setAdvDraft(null);
   };
 
   // RUN BEAT: puts the beat's prepared encounter live and jumps to the tracker.
@@ -92,6 +124,55 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
 
       {adv && !editing && (
         <>
+          {advDraft ? (
+            <div className="stack">
+              <div className="field">
+                <label className="label" htmlFor="adv-title">
+                  TITLE
+                </label>
+                <input
+                  id="adv-title"
+                  className="input"
+                  value={advDraft.title}
+                  onChange={(e) => setAdvDraft({ ...advDraft, title: e.target.value })}
+                />
+              </div>
+              <div className="field">
+                <label className="label" htmlFor="adv-premise">
+                  PREMISE / GM NOTES
+                </label>
+                <textarea
+                  id="adv-premise"
+                  className="input"
+                  value={advDraft.premise}
+                  onChange={(e) => setAdvDraft({ ...advDraft, premise: e.target.value })}
+                />
+              </div>
+              <div className="keys">
+                <button className="btn sm primary" onClick={saveAdventure}>
+                  SAVE
+                </button>
+                <button className="btn sm" onClick={() => setAdvDraft(null)}>
+                  CANCEL
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* The premise holds the hidden truth, so it stays closed like the beats' GM notes. */}
+              {adv.premise && (
+                <details className="field plate">
+                  <summary className="label">PREMISE · TAP TO REVEAL</summary>
+                  <pre className="text">{adv.premise}</pre>
+                </details>
+              )}
+              <div>
+                <button className="btn sm" onClick={() => setAdvDraft({ title: adv.title, premise: adv.premise })}>
+                  EDIT ADVENTURE
+                </button>
+              </div>
+            </>
+          )}
           <div className="rule">{adv.title.toUpperCase()} · BEATS</div>
           <div className="list">
             {adv.beats.map((b, i) => (
@@ -102,7 +183,25 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
                   <span className="chip">{b.type.toUpperCase()}</span>
                   <span className={`chip ${b.status === "active" ? "warn" : ""}`}>{b.status.toUpperCase()}</span>
                 </div>
-                {b.readAloud && <pre className="text dim">{b.readAloud}</pre>}
+                {beatFields.map(([key, label, gmOnly]) =>
+                  !b[key] ? null : gmOnly ? (
+                    // Closed by default so a player glancing at the tablet doesn't read them.
+                    <details key={key} className="field plate">
+                      <summary className="label">{label} · TAP TO REVEAL</summary>
+                      <pre className="text">{b[key]}</pre>
+                    </details>
+                  ) : (
+                    <div key={key} className="field">
+                      <span className="label">{label}</span>
+                      <pre className="text">{b[key]}</pre>
+                    </div>
+                  ),
+                )}
+                {links(b).map(([label, names]) => (
+                  <div key={label} className="dim">
+                    {label}: {names}
+                  </div>
+                ))}
                 {b.encounter.length > 0 && (
                   <div className="dim">
                     ENCOUNTER:{" "}
