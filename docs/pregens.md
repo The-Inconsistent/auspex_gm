@@ -500,7 +500,7 @@ target is a single elite.
 
 **Objectives** (the player's own, hidden from the others):
 - Chapter: get the dig-site workers out alive.
-- Secret: keep your brothers from killing any human bystander.
+- Secret: keep your brothers from killing any human guardsmen.
 
 ---
 
@@ -1116,7 +1116,7 @@ Pain Glove Endurant makes him immune to Fear: he holds the breach.
 
 **Objectives** (the player's own, hidden from the others):
 - Chapter: hold a position against the horde without falling back.
-- Secret: take 30 Ork skulls for your bolter's tally.
+- Secret: take 5 Ork skulls for your bolter's tally.
 
 ---
 
