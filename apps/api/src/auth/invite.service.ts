@@ -27,7 +27,14 @@ async function liveInvite(conn: Db, code: string) {
 // Characters nobody has claimed yet: no member plays them and no live guest token points at them.
 async function openCharacters(conn: Db, campaignId: string) {
   const [chars, members, guests] = await Promise.all([
-    conn.select({ id: character.id, name: character.name }).from(character).where(eq(character.campaignId, campaignId)),
+    conn
+      .select({
+        id: character.id,
+        name: character.name,
+        portrait: sql<string>`coalesce(${character.detail}->>'portrait', '')`, // detail is jsonb, maybe without one
+      })
+      .from(character)
+      .where(eq(character.campaignId, campaignId)),
     conn.select({ characterId: membership.characterId }).from(membership).where(eq(membership.campaignId, campaignId)),
     conn
       .select({ characterId: accessToken.characterId })

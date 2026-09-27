@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
@@ -37,6 +38,7 @@ import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 import { parseCommand } from "@/lib/command/command";
 import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterField } from "@/lib/command/constants";
+import { combatantPortrait } from "@/lib/portraits/portraits";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
 import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL } from "./constants";
@@ -196,6 +198,10 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
   const selChar = sel?.kind === "pc" ? chars.get(sel.characterId) : undefined;
   const selDerived = selChar ? derivedOf(selChar) : null;
   const rows = (side: Side) => enc.combatants.filter((c) => sideOf(c) === side);
+  // Portrait slots only when some combatant has one, so a campaign without portraits keeps its narrow rows.
+  const portraitOf = (c: Combatant) =>
+    combatantPortrait({ combatant: c, character: c.kind === "pc" ? chars.get(c.characterId) : undefined });
+  const portraits = enc.combatants.some((c) => portraitOf(c));
   const done = (side: Side) => `${rows(side).filter((c) => c.acted).length}/${rows(side).length}`;
   const seizeCost = sel && sideOf(sel) === "agents" ? "1 GLORY" : "1 RUIN";
 
@@ -381,6 +387,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               const d = ch ? derivedOf(ch) : null;
               const now = c.id === enc.currentId;
               const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
+              const pic = portraits ? portraitOf(c) : undefined;
               const stateLabel = now
                 ? "▶ ACTING"
                 : c.acted
@@ -397,6 +404,11 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                 >
                   <span className={now ? "accent" : "dim"}>{stateLabel}</span>
                   <span style={{ fontWeight: 700, display: "flex", gap: 8, alignItems: "center" }}>
+                    {pic ? (
+                      <Image src={pic} alt="" width={120} className="portrait-thumb hide-sm" />
+                    ) : (
+                      portraits && <span className="portrait-thumb hide-sm" />
+                    )}
                     {c.kind === "threat" && c.marker && (
                       <span
                         role="img"

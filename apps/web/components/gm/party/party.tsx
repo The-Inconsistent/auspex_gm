@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import QRCode from "qrcode";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
@@ -19,6 +20,7 @@ import {
 import { NEW_CHARACTER } from "@/components/builder/constants";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
+import { portrait } from "@/lib/portraits/portraits";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
@@ -321,8 +323,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       <div className="list">
         {state.characters.map((c) => {
           const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });
+          const pic = portrait(c.detail.portrait);
           return (
             <div key={c.id} className="item">
+              {pic && <Image src={pic} alt="" height={192} className="portrait" />}
               <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                 <b style={{ flex: 1 }}>{c.name.toUpperCase()}</b>
                 <span className="dim">{c.stats.archetype || "NO STATS YET"}</span>

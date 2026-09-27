@@ -196,7 +196,13 @@ export type DerivedStats = ReturnType<typeof deriveStats>;
 // Who the character is, written by the player: Adding Detail (Core pp.32–36). Appearance (pp.32–33), then the Ten
 // Questions, split as the book splits them: Your Past (1–5, pp.34–35) and Your Personality (6–10, pp.35–36).
 const detailText = z.string().max(4000).default("");
-export const CharacterDetail = z.object({ appearance: detailText, past: detailText, personality: detailText });
+// portrait: a slug the web maps to a bundled image (apps/web/lib/portraits); an unknown one shows none.
+export const CharacterDetail = z.object({
+  appearance: detailText,
+  past: detailText,
+  personality: detailText,
+  portrait: z.string().max(64).default(""),
+});
 export type CharacterDetail = z.infer<typeof CharacterDetail>;
 
 // The GM's private notes to one Agent (docs/campaign-model.md): only that character's player sees them.
