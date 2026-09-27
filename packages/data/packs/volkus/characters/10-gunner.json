@@ -1,0 +1,194 @@
+{
+  "name": "Brother Kordan Vex",
+  "stats": {
+    "species": "Primaris Astartes",
+    "archetype": "Primaris Hellblaster",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "IRON HANDS",
+      "DEATHWATCH"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "A": 6,
+      "I": 5,
+      "Wil": 4,
+      "Int": 3,
+      "Fel": 1
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 4,
+      "Ballistic Skill": 6,
+      "Scholar": 1,
+      "Stealth": 3,
+      "Tech": 4,
+      "Weapon Skill": 3
+    },
+    "armour": {
+      "name": "Mk X Tacticus",
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "speed": 7,
+    "mods": {
+      "maxWounds": 3,
+      "maxShock": 1,
+      "resolve": 1,
+      "influence": 2,
+      "determination": 1
+    },
+    "abilities": [
+      {
+        "name": "Hellblaster Focus",
+        "text": "When you make an attack with a PLASMA weapon, you may re-roll up to Double Rank dice.",
+        "page": "Apocrypha p.183"
+      },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Honour the Chapter (Primaris)",
+        "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter. Your Resolve increases by +1. As a Primaris, you ignore any impurities in your Chapter Gene-Seed, and also gain +3 Wounds.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Space Marine Implants",
+        "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "The Flesh Is Weak",
+        "text": "Iron Hands draw strength and surety by purging weakness from their forms. Choose one Augmetic Enhancement (p.242). You do not suffer the penalties of being Wounded (p.193). You gain +1 bonus die to Willpower Tests for every augmetic you have. His augmetic is an Augmetic Eye (Reticule), so +1 die to Willpower Tests.",
+        "page": "Core p.73"
+      },
+      {
+        "name": "Ruthless Logic (Tradition)",
+        "text": "Suppressing all emotion and developing an unfeeling logic, their meticulous and apathetic nature make them cold allies to all but the Adeptus Mechanicus. You suffer a +2 DN penalty to Fellowship-based Tests made against a target that does not have the IRON HANDS or ADEPTUS MECHANICUS Keywords. This is a Tradition, not Gene-seed, so it applies, including with his kill-team brothers.",
+        "page": "Core p.73"
+      },
+      {
+        "name": "Background",
+        "text": "Origin Cunning (+1 Determination); Accomplishment Cleanse and Purge (+1 Max Shock); Goal Advancement (+1 Influence).",
+        "page": "Core p.72"
+      }
+    ],
+    "talents": [
+      {
+        "name": "Deadshot",
+        "text": "You are a skilled shot, trained to carefully target your enemies' weak points. When you take the Aim action (p.189) and make a Called Shot (p.187) you double the bonus ED you receive.",
+        "page": "Core p.131"
+      },
+      {
+        "name": "Duty Until Death",
+        "text": "Whenever you suffer more Wounds than your Max Wounds, you can use this Talent. You may take your next Turn normally; you begin Dying at the end of that Turn. You may choose to take your next Turn immediately after activating this Talent, potentially interrupting an enemy's Turn. If you roll a Complication on any Test, you take a Traumatic Wound.",
+        "page": "Core p.133"
+      }
+    ],
+    "weapons": [
+      {
+        "name": "Heavy Plasma Incinerator",
+        "damage": 16,
+        "ed": 2,
+        "ap": -4,
+        "range": [
+          18,
+          36,
+          54
+        ],
+        "salvo": 1,
+        "traits": [
+          "Heavy (4)",
+          "Supercharge"
+        ]
+      },
+      {
+        "name": "Heavy Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          6,
+          12,
+          18
+        ],
+        "salvo": 1,
+        "traits": [
+          "Brutal",
+          "Pistol"
+        ]
+      },
+      {
+        "name": "Astartes Combat Knife",
+        "damage": 3,
+        "addStrength": true,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          1
+        ],
+        "traits": [
+          "Reliable"
+        ]
+      },
+      {
+        "name": "Frag Grenade",
+        "count": 3,
+        "damage": 10,
+        "ed": 4,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (6)"
+        ]
+      },
+      {
+        "name": "Krak Grenade",
+        "count": 3,
+        "damage": 14,
+        "ed": 5,
+        "ap": -2,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)"
+        ]
+      }
+    ],
+    "gear": [
+      "Augmetic Eye, Reticule (The Flesh Is Weak, Core p.243): +1 bonus die to ranged Attack Tests",
+      "Backpack ammunition supply for the Heavy Plasma Incinerator (Apocrypha p.352), as an Ammo Backpack (Core p.229): carry 10 more Ammo; came stocked with 3 (in the Plasma count)",
+      "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
+    ],
+    "wealth": 4,
+    "ammo": {
+      "Plasma": 5,
+      "Dragonfire Bolt": 1
+    }
+  },
+  "detail": {
+    "portrait": "deathwatch-gunner-veteran",
+    "personality": "More augmetic than flesh, he reports his own wounds as percentages and treats the incinerator's overheating as a flaw he is personally correcting."
+  },
+  "objectives": [
+    {
+      "text": "Chapter: recover one intact archeotech device.",
+      "done": false
+    },
+    {
+      "text": "Secret: deliver it to the Magos, not the Inquisitor.",
+      "done": false
+    }
+  ]
+}

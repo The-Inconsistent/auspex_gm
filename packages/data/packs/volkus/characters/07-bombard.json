@@ -1,0 +1,167 @@
+{
+  "name": "Brother Idrian Kostas",
+  "stats": {
+    "species": "Primaris Astartes",
+    "archetype": "Primaris Aggressor",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS ASTARTES",
+      "PRIMARIS",
+      "CRIMSON FISTS",
+      "DEATHWATCH"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 6,
+      "A": 5,
+      "I": 5,
+      "Wil": 4,
+      "Int": 3,
+      "Fel": 1
+    },
+    "skills": {
+      "Athletics": 3,
+      "Awareness": 4,
+      "Ballistic Skill": 6,
+      "Stealth": 3,
+      "Survival": 3,
+      "Weapon Skill": 3
+    },
+    "armour": {
+      "name": "Mk X Gravis",
+      "ar": 6,
+      "invulnerable": false,
+      "powered": 4,
+      "traits": []
+    },
+    "speed": 7,
+    "mods": {
+      "maxWounds": 3,
+      "resolve": 2,
+      "influence": 1,
+      "determination": 2
+    },
+    "abilities": [
+      {
+        "name": "Firestorm",
+        "text": "When you make a ranged attack and do not move during your turn, you increase the Salvo of your weapons by +Rank. In addition, when you wield a pair of Auto Boltstorm Gauntlets or Flamestorm Gauntlets, you may benefit from the Dual Wield or Simultaneous Strike talents even though those weapons lack the Pistol trait. Standing still, the Frag Cannon's Salvo is 3, so Barrage raises Shrapnel's Blast to 13 on a Salvo attack (Apocrypha p.326). He carries no gauntlets, so the second sentence never applies.",
+        "page": "Apocrypha p.181"
+      },
+      {
+        "name": "Defender of Humanity",
+        "text": "Add +Rank Icons to any successful attack against a Mob.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Honour the Chapter (Primaris)",
+        "text": "You are subject to the orders of your chapter master, and must honour the beliefs and traditions of your chapter. Your Resolve increases by +1. As a Primaris, you ignore any impurities in your Chapter Gene-Seed, and also gain +3 Wounds.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "Space Marine Implants",
+        "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate.",
+        "page": "Core p.29"
+      },
+      {
+        "name": "No Matter the Odds",
+        "text": "You will not yield in the face of overwhelming odds. When making an attack while you and your allies are outnumbered at least two-to-one, you may add Rank dice to your Ballistic Skill or Weapon Skill test.",
+        "page": "Apocrypha p.27"
+      },
+      {
+        "name": "Background",
+        "text": "Origin Courage (+1 Resolve); Accomplishment Crusader (+1 Determination: sworn against Orks); Goal Vengeance (+1 Determination: the Orks who nearly wiped out his Chapter, Apocrypha p.27). Determination is 8 (T 6 + 2).",
+        "page": "Core p.72"
+      }
+    ],
+    "talents": [
+      {
+        "name": "Fearless",
+        "text": "You automatically pass any Fear Test. You are immune to Intimidation (Wil) Interaction Attacks.",
+        "page": "Core p.133"
+      },
+      {
+        "name": "Transhuman Physiology",
+        "text": "When an attack deals less than (Rank) Wounds to you, you may immediately choose to convert them to Shock as if you had automatically received (Rank) Icons while rolling Determination. In addition, when converting Wounds to Shock through this method or with standard Determination rolls, you receive one less Shock per instance of conversion, to a minimum of 1.",
+        "page": "VoA p.50"
+      }
+    ],
+    "weapons": [
+      {
+        "name": "Deathwatch Frag Cannon (Shrapnel)",
+        "damage": 14,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          4,
+          8,
+          12
+        ],
+        "salvo": 2,
+        "traits": [
+          "Assault",
+          "Barrage",
+          "Blast (10)",
+          "Heavy (6)",
+          "Spread"
+        ]
+      },
+      {
+        "name": "Deathwatch Frag Cannon (Shell)",
+        "damage": 16,
+        "ed": 2,
+        "ap": -2,
+        "range": [
+          12,
+          24,
+          36
+        ],
+        "salvo": 2,
+        "traits": [
+          "Assault",
+          "Heavy (6)",
+          "AP −3 at Short range (Special)"
+        ]
+      },
+      {
+        "name": "Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "range": [
+          6,
+          12,
+          18
+        ],
+        "salvo": 1,
+        "traits": [
+          "Brutal",
+          "Pistol"
+        ]
+      }
+    ],
+    "gear": [
+      "Ammo Backpack (Core p.229): carry 10 additional Ammo; it came stocked with 3",
+      "Ballistic Appeasement Auto-Reliquary (Core p.236): clear a jammed weapon as a Free Action",
+      "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
+    ],
+    "wealth": 4,
+    "ammo": {
+      "Projectile": 4,
+      "Kraken Bolt": 1,
+      "Bolt": 1
+    }
+  },
+  "detail": {
+    "portrait": "deathwatch-bombard-veteran",
+    "personality": "His Chapter was nearly wiped out and rebuilt. He rations ammunition like bread and laughs only when the odds are hopeless, which is when the frag cannon speaks."
+  },
+  "objectives": [
+    {
+      "text": "Chapter: let no Ork escape the site.",
+      "done": false
+    },
+    {
+      "text": "Secret: kill Gutshiva yourself.",
+      "done": false
+    }
+  ]
+}

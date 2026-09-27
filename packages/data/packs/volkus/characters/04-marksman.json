@@ -163,5 +163,15 @@
   "detail": {
     "portrait": "deathwatch-marksman-veteran",
     "personality": "He is courteous, distant and unreadable. He answers questions with questions and keeps a private list of names he will not explain. He is certain someone in every briefing is lying, and he is usually right."
-  }
+  },
+  "objectives": [
+    {
+      "text": "Chapter: trust no word from outside the Watch.",
+      "done": false
+    },
+    {
+      "text": "Secret: put the name of whoever buried the breach report on your list, and prove it.",
+      "done": false
+    }
+  ]
 }

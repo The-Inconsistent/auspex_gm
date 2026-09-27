@@ -1013,6 +1013,8 @@ export function resolveBuild({
 
   // ── what fills each [PLACEHOLDER], once every keyword is known ──
   const primaris = () => s.keywords.includes("PRIMARIS");
+  // A filled [PLACEHOLDER] still counts as held: "[CHAPTER] Keyword" (VoA p.48) means any Chapter.
+  const filled = new Set<string>();
   for (const k of [...s.keywords]) {
     if (!k.startsWith("[")) continue;
     const kw = ix.keywords.get(k);
@@ -1024,7 +1026,10 @@ export function resolveBuild({
       tiersAscended: 0,
       granted: true,
     };
-    const replace = (to: string) => (s.keywords = s.keywords.map((x) => (x === k ? to : x)));
+    const replace = (to: string) => {
+      filled.add(k);
+      s.keywords = s.keywords.map((x) => (x === k ? to : x));
+    };
     if (!fill) {
       const options = catalogue.creation["sub-factions"].filter(
         (x) => x.type === kw?.placeholder && (catalogue.homebrew || official(x.source)),
@@ -1333,7 +1338,7 @@ export function resolveBuild({
   function ctx(): BuildCtx {
     return {
       ...ratings(),
-      keywords: new Set(s.keywords),
+      keywords: new Set([...s.keywords, ...filled]),
       species: species ? [species.id, ...species.countsAs] : [],
       archetypeId: arch!.id,
       subFactionIds: new Set(s.subFactionIds),

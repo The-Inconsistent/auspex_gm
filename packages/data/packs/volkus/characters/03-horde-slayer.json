@@ -1,5 +1,5 @@
 {
-  "name": "Brother Tancred Varn",
+  "name": "Brother Hesh Tu'var",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Intercessor + Heavy Intercessor Doctrine",
@@ -7,7 +7,7 @@
       "ADEPTUS ASTARTES",
       "IMPERIUM",
       "PRIMARIS",
-      "IMPERIAL FISTS",
+      "SALAMANDERS",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -20,12 +20,12 @@
       "Fel": 1
     },
     "skills": {
-      "Athletics": 4,
+      "Athletics": 3,
       "Awareness": 4,
       "Ballistic Skill": 6,
-      "Intimidation": 2,
       "Stealth": 3,
-      "Weapon Skill": 4
+      "Tech": 2,
+      "Weapon Skill": 3
     },
     "armour": {
       "name": "Mk X Gravis",
@@ -36,10 +36,11 @@
     },
     "speed": 7,
     "mods": {
-      "maxWounds": 4,
+      "maxWounds": 3,
       "resolve": 1,
-      "influence": 1,
-      "determination": 2
+      "influence": 2,
+      "conviction": 1,
+      "determination": 1
     },
     "abilities": [
       {
@@ -68,13 +69,13 @@
         "page": "Core p.29"
       },
       {
-        "name": "Siege Masters",
-        "text": "You may reroll Double Rank dice once per attack against a building, fortification, or enemy in cover. You may also add +Rank bonus dice whenever you make a Test related to architectural engineering.",
-        "page": "Core p.73"
+        "name": "Promethean Cult",
+        "text": "Forged in fire, Salamanders are masters of purging flame and blazing weapons. You may reroll Rank dice once per attack Test made using a weapon with the FIRE or MELTA Keywords. You may reroll Double Rank dice once each time you roll Determination against a damage from a source with the FIRE or MELTA Keyword. None of his weapons has FIRE or MELTA: his bolt weapons are BOLT (Core p.217, VoA p.67) and his grenades EXPLOSIVE (Core p.220), so only the Determination reroll applies, against enemy flamers and meltas.",
+        "page": "Core p.74"
       },
       {
         "name": "Background",
-        "text": "Origin Killer Instinct (+1 Max Wounds); Accomplishment Crusader (+1 Determination: sworn against Orks); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
+        "text": "Origin Cunning (+1 Determination); Accomplishment Badge of Honour (+1 Influence: he risked his life to rescue mortals in peril); Goal Honour the Chapter (+1 Conviction). Determination is 7 (T 6 + 1).",
         "page": "Core p.72"
       }
     ],
@@ -83,6 +84,11 @@
         "name": "Bolter Discipline",
         "text": "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating.",
         "page": "VoA p.45"
+      },
+      {
+        "name": "Master Artisan",
+        "text": "Whenever you make an attack with one of your own weapons (i.e., any weapon with which you began the current adventure), you may re-roll up to Rank dice on the attack. He forged the Heavy Bolter himself, but every weapon he began the adventure with counts.",
+        "page": "Apocrypha p.239"
       }
     ],
     "weapons": [
@@ -190,6 +196,16 @@
   },
   "detail": {
     "portrait": "deathwatch-horde-slayer-veteran",
-    "personality": "A patient, immovable son of Dorn who treats every firefight as a siege to be outlasted. He keeps a tally of Ork skulls etched on his heavy bolter's casing, and gets quietly annoyed whenever someone suggests falling back."
-  }
+    "personality": "A Nocturnean smith who forges his own Infernus-pattern heavy bolter. He has held the front line in many Tyranid wars, which earned him the title Horde-Slayer."
+  },
+  "objectives": [
+    {
+      "text": "Chapter: get the dig-site workers out alive.",
+      "done": false
+    },
+    {
+      "text": "Secret: keep your brothers from killing any human bystander.",
+      "done": false
+    }
+  ]
 }

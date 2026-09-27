@@ -216,5 +216,15 @@
   "detail": {
     "portrait": "deathwatch-disruptor-veteran",
     "personality": "He speaks in clipped vox-cant even face to face, and he counts the enemy's transmissions the way other marines count kills. He believes a war is won the moment the enemy stops talking to itself."
-  }
+  },
+  "objectives": [
+    {
+      "text": "Chapter: silence the Kommandos' comms before the killing starts.",
+      "done": false
+    },
+    {
+      "text": "Secret: find out who else has been transmitting from Volkus.",
+      "done": false
+    }
+  ]
 }

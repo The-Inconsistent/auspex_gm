@@ -15,6 +15,9 @@ import {
 } from "@wg/shared";
 import { loadPackRaw, packNames } from "./index.ts";
 
+// Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
+const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
+
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
 const EXPECTED = [
   "imperial-citizen",
@@ -72,7 +75,7 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
     console.error(`✖ ${file}: id "${r.data.id}" doesn't match filename`);
     continue;
   }
-  if (r.data.source === "core" && !EXPECTED.includes(r.data.id))
+  if (r.data.source === "core" && !EXPECTED.includes(r.data.id) && !HOUSE_VARIANTS.includes(r.data.id))
     console.warn(`? ${file}: core source but not in the core bestiary list`);
   found.push(r.data.id);
   variantsOf.set(r.data.id, new Set(r.data.options.filter((o) => o.kind === "variant").map((o) => o.name)));

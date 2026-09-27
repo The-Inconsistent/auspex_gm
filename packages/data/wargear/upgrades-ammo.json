@@ -43,6 +43,8 @@
     "effect": "Only for weapons with the BOLT Keyword. The weapon gains the Spread Trait. The weapon ignores Defence bonuses from cover." },
   { "id": "hellfire-bolt-rounds", "name": "Hellfire Bolt Rounds", "source": "core", "page": 230, "category": "Special Bolt Ammo", "kind": "ammo", "value": 6, "rarity": "Very Rare", "keywords": ["IMPERIUM", "ADEPTUS ASTARTES"],
     "effect": "Only for weapons with the BOLT Keyword. +3 ED against organic targets. +2 ED against inorganic targets." },
+  { "id": "kraken-bolt-rounds", "name": "Kraken Bolt Rounds", "source": "core", "page": 231, "category": "Special Bolt Ammo", "kind": "ammo", "value": 6, "rarity": "Very Rare", "keywords": ["IMPERIUM", "ADEPTUS ASTARTES"],
+    "effect": "Only for weapons with the BOLT Keyword. AP -2" },
 
   { "id": "ammo-backpack", "name": "Ammo Backpack", "source": "core", "page": 229, "category": "Ammo Containers", "kind": "equipment", "value": 5, "rarity": "Uncommon", "keywords": ["[ANY]"],
     "effect": "You can carry 10 additional Ammo. Comes stocked with 3 available Ammo." },
