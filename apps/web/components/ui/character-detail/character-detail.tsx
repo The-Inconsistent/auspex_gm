@@ -52,13 +52,15 @@ export function DetailFields({ value, onChange, idPrefix }: DetailFieldsProps) {
   );
 }
 
-// The parts written so far, read-only; nothing when none are.
+// The parts written so far, read-only, each folded (they can run long); nothing when none are.
 export function DetailView({ detail }: { detail: CharacterDetail }) {
   return DETAIL_FIELDS.filter((f) => detail[f.key].trim()).map((f) => (
-    <div key={f.key}>
-      <b>{f.label}</b>
+    <details key={f.key} className="item">
+      <summary className="item-head">
+        <b>{f.label}</b>
+      </summary>
       <div style={{ fontSize: 14, whiteSpace: "pre-wrap" }}>{detail[f.key]}</div>
-    </div>
+    </details>
   ));
 }
 
