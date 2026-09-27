@@ -1,5 +1,5 @@
 {
-  "name": "Brother Kordan Vex",
+  "name": "Brother Kael Tirrow",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Hellblaster",
@@ -7,7 +7,7 @@
       "IMPERIUM",
       "ADEPTUS ASTARTES",
       "PRIMARIS",
-      "IRON HANDS",
+      "ULTRAMARINES",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -65,14 +65,14 @@
         "page": "Core p.29"
       },
       {
-        "name": "The Flesh Is Weak",
-        "text": "Iron Hands draw strength and surety by purging weakness from their forms. Choose one Augmetic Enhancement (p.242). You do not suffer the penalties of being Wounded (p.193). You gain +1 bonus die to Willpower Tests for every augmetic you have. His augmetic is an Augmetic Eye (Reticule), so +1 die to Willpower Tests.",
-        "page": "Core p.73"
+        "name": "Tactical Versatility (Ultramarines)",
+        "text": "Exemplars of the Codex Astartes, the Ultramarines wage war with the utmost flexibility, able to turn any situation to their advantage. You may Shift for Glory twice as part of a Test. The Chapter trait, not the Tactical Space Marine's archetype ability of the same name (Core p.113). He is an Emperor's Spear, an Ultramarines Successor, and takes the Ultramarines traits (kill-team.md ruling 13).",
+        "page": "Core p.74"
       },
       {
-        "name": "Ruthless Logic (Tradition)",
-        "text": "Suppressing all emotion and developing an unfeeling logic, their meticulous and apathetic nature make them cold allies to all but the Adeptus Mechanicus. You suffer a +2 DN penalty to Fellowship-based Tests made against a target that does not have the IRON HANDS or ADEPTUS MECHANICUS Keywords. This is a Tradition, not Gene-seed, so it applies, including with his kill-team brothers.",
-        "page": "Core p.73"
+        "name": "Pride of Ultramar (Tradition)",
+        "text": "The Imperium looks to the Ultramarines as paragons of the virtues of Astartes, and each strives to excel that reputation; strong in body, but restrained in mind, a tactical and clear-headed protector of Humanity. You start each session with 1 Wrath Point instead of 2. A Tradition, not Gene-seed, so it applies to a Primaris: Wrath 1 at the start of each session.",
+        "page": "Core p.74"
       },
       {
         "name": "Background",
@@ -167,7 +167,6 @@
       }
     ],
     "gear": [
-      "Augmetic Eye, Reticule (The Flesh Is Weak, Core p.243): +1 bonus die to ranged Attack Tests",
       "Backpack ammunition supply for the Heavy Plasma Incinerator (Apocrypha p.352), as an Ammo Backpack (Core p.229): carry 10 more Ammo; came stocked with 3 (in the Plasma count)",
       "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
     ],
@@ -179,7 +178,7 @@
   },
   "detail": {
     "portrait": "deathwatch-gunner-veteran",
-    "personality": "More augmetic than flesh, he reports his own wounds as percentages and treats the incinerator's overheating as a flaw he is personally correcting."
+    "personality": "A son of the Elara's Veil, raised among the war-tribes of a Chapter long cut off from the Imperium. He cherishes wargear as heirlooms and trades in relics the way his Chapter always has, with whoever keeps its guns firing."
   },
   "objectives": [
     {
@@ -187,7 +186,7 @@
       "done": false
     },
     {
-      "text": "Secret: deliver it to the Magos, not the Inquisitor.",
+      "text": "Secret: trade it to the Magos for Mechanicus favour, not hand it to the Inquisitor.",
       "done": false
     }
   ]

@@ -1,12 +1,12 @@
 {
-  "name": "Brother Anselm Grieve",
+  "name": "Brother Sigurd Hrafnsson",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Assault Space Marine + Rubicon Primaris",
     "keywords": [
       "IMPERIUM",
       "ADEPTUS ASTARTES",
-      "ABSOLVERS",
+      "SPACE WOLVES",
       "PRIMARIS",
       "DEATHWATCH"
     ],
@@ -66,14 +66,9 @@
         "page": "Core p.29"
       },
       {
-        "name": "Savage Echoes",
-        "text": "Masters of assault combat, Blood Angels are driven by a furious desire to avenge their fallen Primarch. You may reroll Double Rank dice once per melee attack Test. The Absolvers are a Blood Angels Successor and take its Chapter Traits (VoA p.78, rules-flow.md §11.23).",
-        "page": "Core p.73"
-      },
-      {
-        "name": "The Red Thirst (Gene-seed)",
-        "text": "The dark flaw of the Chapter is a secret well kept — they harbour a destructive yearning, a battle fury, and an almost insatiable blood-hunger. Whenever you are in melee combat and see blood, you must make a DN 3 Willpower Test. If you fail, you are Frenzied (Core p.199). This applies to him although he is Primaris (rules-flow.md §11.23).",
-        "page": "Core p.73"
+        "name": "Hunters Unleashed",
+        "text": "The Chapters kinship with wolves extends to enhanced senses and an almost feral fighting style replete with savage grace. You have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133).",
+        "page": "Core p.74"
       },
       {
         "name": "Background",
@@ -96,6 +91,16 @@
         "name": "Hammer of Wrath",
         "text": "When equipped with a Jump Pack (Wrath & Glory Core Rulebook, page 237), you may spend one Wrath to make any attack you make as part of a flying Charge deal Mortal Wounds for damage.",
         "page": "VoA p.47"
+      },
+      {
+        "name": "Acute Sense (smell)",
+        "text": "Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice.",
+        "page": "Core p.129"
+      },
+      {
+        "name": "Dual Wield",
+        "text": "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. You may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon.",
+        "page": "Core p.133"
       }
     ],
     "weapons": [
@@ -171,15 +176,15 @@
   },
   "detail": {
     "portrait": "deathwatch-demolisher-veteran",
-    "personality": "He swore a penitent's vow before the Watch took him, and swings the hammer as if one more blow might earn the absolution his Chapter is never granted."
+    "personality": "Took a penitent's oath before the Watch claimed him. Years ago his reckless charge cost Grimsson two pack-brothers, and Grimsson carried him out of the breach anyway. He swings the hammer as if one more blow might square the debt."
   },
   "objectives": [
     {
-      "text": "Chapter: keep your vow of penance through the mission.",
+      "text": "Chapter: keep your oath of penance through the mission.",
       "done": false
     },
     {
-      "text": "Secret: report what lies beneath Volkus to Castle Grigori, whatever the Inquisitor orders.",
+      "text": "Secret: send word of what lies beneath Volkus to the Fang, whatever the Inquisitor orders.",
       "done": false
     }
   ]

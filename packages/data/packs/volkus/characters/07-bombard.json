@@ -2,12 +2,12 @@
   "name": "Brother Idrian Kostas",
   "stats": {
     "species": "Primaris Astartes",
-    "archetype": "Primaris Aggressor",
+    "archetype": "Primaris Intercessor + Heavy Intercessor Doctrine",
     "keywords": [
-      "IMPERIUM",
       "ADEPTUS ASTARTES",
+      "IMPERIUM",
       "PRIMARIS",
-      "CRIMSON FISTS",
+      "FLESH TEARERS",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -21,10 +21,9 @@
     },
     "skills": {
       "Athletics": 3,
-      "Awareness": 4,
+      "Awareness": 3,
       "Ballistic Skill": 6,
       "Stealth": 3,
-      "Survival": 3,
       "Weapon Skill": 3
     },
     "armour": {
@@ -43,9 +42,14 @@
     },
     "abilities": [
       {
-        "name": "Firestorm",
-        "text": "When you make a ranged attack and do not move during your turn, you increase the Salvo of your weapons by +Rank. In addition, when you wield a pair of Auto Boltstorm Gauntlets or Flamestorm Gauntlets, you may benefit from the Dual Wield or Simultaneous Strike talents even though those weapons lack the Pistol trait. Standing still, the Frag Cannon's Salvo is 3, so Barrage raises Shrapnel's Blast to 13 on a Salvo attack (Apocrypha p.326). He carries no gauntlets, so the second sentence never applies.",
-        "page": "Apocrypha p.181"
+        "name": "Intercessor Focus",
+        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a ranged weapon with the PRIMARIS Keyword. The Bolt Rifle and Heavy Bolt Pistol qualify (Core p.217); his Deathwatch weapons do not.",
+        "page": "Core p.117"
+      },
+      {
+        "name": "Heavy Intercessor Doctrine",
+        "text": "You receive Mark X Gravis armour if you don't already have it and one of the following weapons: Heavy Bolt Rifle, Heavy Bolter. You additional +Rank AP when using this weapon. Furthermore, you gain the Bolter Discipline Talent (see page 45). He chose the Heavy Bolter, which the Deathwatch armoury swapped out, so the +Rank AP applies to none of his weapons.",
+        "page": "VoA p.35"
       },
       {
         "name": "Defender of Humanity",
@@ -63,26 +67,26 @@
         "page": "Core p.29"
       },
       {
-        "name": "No Matter the Odds",
-        "text": "You will not yield in the face of overwhelming odds. When making an attack while you and your allies are outnumbered at least two-to-one, you may add Rank dice to your Ballistic Skill or Weapon Skill test.",
-        "page": "Apocrypha p.27"
+        "name": "Fury Within",
+        "text": "You are possessed of a bloodthirsty recklessness. When properly directed, this murderous ferocity makes you unstoppable. You may re-roll Double Rank dice once per melee attack Test. In addition, if you shift one or more Icons on a melee attack, improve the AP of your attack by 1 (i.e., from -1 to -2).",
+        "page": "Apocrypha p.28"
       },
       {
         "name": "Background",
-        "text": "Origin Courage (+1 Resolve); Accomplishment Crusader (+1 Determination: sworn against Orks); Goal Vengeance (+1 Determination: the Orks who nearly wiped out his Chapter, Apocrypha p.27). Determination is 8 (T 6 + 2).",
+        "text": "Origin Courage (+1 Resolve); Accomplishment Crusader (+1 Determination); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
         "page": "Core p.72"
       }
     ],
     "talents": [
       {
+        "name": "Bolter Discipline",
+        "text": "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating.",
+        "page": "VoA p.45"
+      },
+      {
         "name": "Fearless",
         "text": "You automatically pass any Fear Test. You are immune to Intimidation (Wil) Interaction Attacks.",
         "page": "Core p.133"
-      },
-      {
-        "name": "Transhuman Physiology",
-        "text": "When an attack deals less than (Rank) Wounds to you, you may immediately choose to convert them to Shock as if you had automatically received (Rank) Icons while rolling Determination. In addition, when converting Wounds to Shock through this method or with standard Determination rolls, you receive one less Shock per instance of conversion, to a minimum of 1.",
-        "page": "VoA p.50"
       }
     ],
     "weapons": [
@@ -123,9 +127,26 @@
         ]
       },
       {
-        "name": "Bolt Pistol",
+        "name": "Bolt Rifle",
         "damage": 10,
         "ed": 1,
+        "ap": -1,
+        "range": [
+          15,
+          30,
+          45
+        ],
+        "salvo": 2,
+        "traits": [
+          "Brutal",
+          "Rapid Fire (3)"
+        ]
+      },
+      {
+        "name": "Heavy Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
         "range": [
           6,
           12,
@@ -134,25 +155,65 @@
         "salvo": 1,
         "traits": [
           "Brutal",
-          "Pistol"
+          "Pistol",
+          "Rapid Fire (2)"
+        ]
+      },
+      {
+        "name": "Astartes Combat Knife",
+        "damage": 3,
+        "addStrength": true,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          1
+        ],
+        "traits": [
+          "Reliable"
+        ]
+      },
+      {
+        "name": "Frag Grenade",
+        "count": 3,
+        "damage": 10,
+        "ed": 4,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (6)"
+        ]
+      },
+      {
+        "name": "Krak Grenade",
+        "count": 3,
+        "damage": 14,
+        "ed": 5,
+        "ap": -2,
+        "range": [
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)"
         ]
       }
     ],
     "gear": [
-      "Ammo Backpack (Core p.229): carry 10 additional Ammo; it came stocked with 3",
+      "Spare armour: Mk X Tacticus (AR 5, Powered (4)); only one suit's AR counts at a time (Core p.231)",
       "Ballistic Appeasement Auto-Reliquary (Core p.236): clear a jammed weapon as a Free Action",
       "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
     ],
     "wealth": 4,
     "ammo": {
-      "Projectile": 4,
-      "Kraken Bolt": 1,
-      "Bolt": 1
+      "Projectile": 2,
+      "Kraken Bolt": 1
     }
   },
   "detail": {
     "portrait": "deathwatch-bombard-veteran",
-    "personality": "His Chapter was nearly wiped out and rebuilt. He rations ammunition like bread and laughs only when the odds are hopeless, which is when the frag cannon speaks."
+    "personality": "His Chapter was nearly wiped out and rebuilt. He rations ammunition like bread and laughs only when the odds are hopeless, which is when the frag cannon speaks. He knows the Red Thirst from the inside, and he watches Sarrius the way a man watches his own reflection."
   },
   "objectives": [
     {

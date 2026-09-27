@@ -1,12 +1,12 @@
 {
-  "name": "Brother Josmane Hald",
+  "name": "Brother Hjalmar Grimsson",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Tactical Space Marine + Rubicon Primaris",
     "keywords": [
       "IMPERIUM",
       "ADEPTUS ASTARTES",
-      "BLACK TEMPLARS",
+      "SPACE WOLVES",
       "PRIMARIS",
       "DEATHWATCH"
     ],
@@ -67,9 +67,9 @@
         "page": "Core p.29"
       },
       {
-        "name": "Righteous Zeal",
-        "text": "Your hatred permits you to show no mercy, nor does it permit you to yield while the enemy draws breath. When you charge, you may re-roll up to Rank dice on your Weapon Skill test. In addition, you may re-roll Rank dice when you roll Determination.",
-        "page": "Apocrypha p.27"
+        "name": "Hunters Unleashed",
+        "text": "The Chapters kinship with wolves extends to enhanced senses and an almost feral fighting style replete with savage grace. You have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133).",
+        "page": "Core p.74"
       },
       {
         "name": "Background",
@@ -87,6 +87,16 @@
         "name": "Built Tough",
         "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself.",
         "page": "VoA p.46"
+      },
+      {
+        "name": "Acute Sense (smell)",
+        "text": "Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice.",
+        "page": "Core p.129"
+      },
+      {
+        "name": "Dual Wield",
+        "text": "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. You may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon.",
+        "page": "Core p.133"
       }
     ],
     "weapons": [
@@ -175,7 +185,7 @@
   },
   "detail": {
     "portrait": "deathwatch-aegis-veteran",
-    "personality": "Speaks only in scripture. He stands in the breach so no brother has to, and treats every xenos as an error to be corrected."
+    "personality": "A Fenrisian shield-bearer who trusts his nose over any auspex. He stands in the breach so no brother has to, and sings the saga of every one that held."
   },
   "objectives": [
     {

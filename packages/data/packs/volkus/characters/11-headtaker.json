@@ -1,5 +1,5 @@
 {
-  "name": "Brother Temur Khal",
+  "name": "Brother Lucan Sarrius",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Reiver",
@@ -7,7 +7,7 @@
       "IMPERIUM",
       "ADEPTUS ASTARTES",
       "PRIMARIS",
-      "WHITE SCARS",
+      "BLOOD ANGELS",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -68,14 +68,9 @@
         "page": "Core p.29"
       },
       {
-        "name": "Lightning Assault",
-        "text": "Favouring fast-attack bikes to achieve their famed agile strikes, White Scars are proficient at attacking at speeds that would be otherwise unwieldy. You may reroll Double Rank dice once each time you make a Pilot (A) Test. You triple your Speed when you Charge (p.188).",
-        "page": "Core p.75"
-      },
-      {
-        "name": "Ritual Scarring (Tradition)",
-        "text": "Inductees to the chapter mark the flesh of their faces deeply with their blades. You suffer a +1 DN penalty to any Fellowship-based Test made against any target that could be frightened of your appearance.",
-        "page": "Core p.75"
+        "name": "Savage Echoes",
+        "text": "You may reroll Double Rank dice once per melee attack Test.",
+        "page": "Core p.73"
       },
       {
         "name": "Background",
@@ -95,9 +90,9 @@
         "page": "Core p.133"
       },
       {
-        "name": "Raiding Master",
-        "text": "You gain +(Rank) dice to all Tests to plan and execute a raid or ambush. You also gain the same bonus to Tests to detect or prevent enemies from raiding or ambushing you and your allies.",
-        "page": "VoA p.49"
+        "name": "Echo of Sanguinius",
+        "text": "You may declare you have had a vision after a Respite (Core p.196). If you do, ask the GM one question about events related to your mission. The GM must answer truthfully, although they do not need to tell the whole truth and may be cryptic in their response. However, after your vision, the closeness to Sanguinius' spirit haunts you. If you have the PRIMARIS Keyword, you are affected by the Blood Angels gene-seed flaw (Core pp.71–73) despite your refined origin: The Red Thirst (Core p.73), a DN 3 Willpower Test on seeing blood in melee, or Frenzied.",
+        "page": "VoA p.46"
       }
     ],
     "weapons": [
@@ -230,7 +225,7 @@
   },
   "detail": {
     "portrait": "deathwatch-headtaker-veteran",
-    "personality": "A Chogorian hunter who ties a knot for every xenos leader he beheads. He jokes at the worst moments and is never where the enemy last saw him."
+    "personality": "A Baalite hunter who paints a drop of red on his knife for every xenos leader he beheads. Graceful and patient, he is never where the enemy last saw him. The Red Thirst runs in him too, and it shows after every kill, which worries Kostas more than any xenos does."
   },
   "objectives": [
     {

@@ -1,12 +1,12 @@
 {
-  "name": "Watch Sergeant Ulfgar Kaldsson",
+  "name": "Watch Sergeant Qaan Toghril",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Tactical Space Marine + Rubicon Primaris",
     "keywords": [
       "IMPERIUM",
       "ADEPTUS ASTARTES",
-      "SPACE WOLVES",
+      "WHITE SCARS",
       "PRIMARIS",
       "DEATHWATCH"
     ],
@@ -65,9 +65,14 @@
         "page": "Core p.29"
       },
       {
-        "name": "Hunters Unleashed",
-        "text": "The Chapters kinship with wolves extends to enhanced senses and an almost feral fighting style replete with savage grace. You have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133).",
-        "page": "Core p.74"
+        "name": "Lightning Assault",
+        "text": "Favouring fast-attack bikes to achieve their famed agile strikes, White Scars are proficient at attacking at speeds that would be otherwise unwieldy. You may reroll Double Rank dice once each time you make a Pilot (A) Test. You triple your Speed when you Charge (p.188).",
+        "page": "Core p.75"
+      },
+      {
+        "name": "Ritual Scarring (Tradition)",
+        "text": "Inductees to the chapter mark the flesh of their faces deeply with their blades. You suffer a +1 DN penalty to any Fellowship-based Test made against any target that could be frightened of your appearance.",
+        "page": "Core p.75"
       },
       {
         "name": "Background",
@@ -85,16 +90,6 @@
         "name": "Built Tough",
         "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself.",
         "page": "VoA p.46"
-      },
-      {
-        "name": "Acute Sense (smell)",
-        "text": "Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice.",
-        "page": "Core p.129"
-      },
-      {
-        "name": "Dual Wield",
-        "text": "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. You may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon.",
-        "page": "Core p.133"
       }
     ],
     "weapons": [
@@ -184,11 +179,11 @@
   },
   "detail": {
     "portrait": "deathwatch-watch-sergeant",
-    "personality": "A Fenrisian skald who keeps an oral saga of every kill team he has led, and the names of those who didn't come home. Loud in the mess hall and silent on the vox, he trusts the xenos-hunters of other Chapters more than he lets on."
+    "personality": "A Chogorian storyteller who keeps the song-cycle of every kill team he has led, and of every brother it lost."
   },
   "objectives": [
     {
-      "text": "Chapter: record one brother's deed each session for the saga.",
+      "text": "Chapter: add one brother's deed to the song-cycle each session.",
       "done": false
     },
     {

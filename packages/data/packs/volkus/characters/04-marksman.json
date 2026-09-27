@@ -1,5 +1,5 @@
 {
-  "name": "Brother Zadkiel Morn",
+  "name": "Brother Aurelian Tarsus",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Eliminator",
@@ -7,7 +7,7 @@
       "IMPERIUM",
       "ADEPTUS ASTARTES",
       "PRIMARIS",
-      "DARK ANGELS",
+      "RED SCORPIONS",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -66,16 +66,6 @@
         "name": "Space Marine Implants",
         "text": "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of the 22 implants (p.75) if the GM agrees it is appropriate.",
         "page": "Core p.29"
-      },
-      {
-        "name": "Grim Resolve",
-        "text": "You may reroll Double Rank dice once per ranged attack Test when you Aim (p.189).",
-        "page": "Core p.73"
-      },
-      {
-        "name": "The Unforgiven (Tradition)",
-        "text": "You suffer a +2 DN penalty to any social Tests made against anyone outside of your Chapter. This is a Tradition, not Gene-seed, so it applies, including with his kill-team brothers.",
-        "page": "Core p.73"
       },
       {
         "name": "Background",
@@ -162,15 +152,15 @@
   },
   "detail": {
     "portrait": "deathwatch-marksman-veteran",
-    "personality": "He is courteous, distant and unreadable. He answers questions with questions and keeps a private list of names he will not explain. He is certain someone in every briefing is lying, and he is usually right."
+    "personality": "A Red Scorpion, of a Chapter whose origins are unknown, and his brothers question him for it. His Chapter refuses to serve beside xenos or anyone it deems tainted by mutation, even sanctioned Abhumans such as Ogryns and Ratlings. He trusts a plan only once it has survived contact, and is sure every briefing hides a lie."
   },
   "objectives": [
     {
-      "text": "Chapter: trust no word from outside the Watch.",
+      "text": "Chapter: let no one tainted by xenos or mutation fight at your side.",
       "done": false
     },
     {
-      "text": "Secret: put the name of whoever buried the breach report on your list, and prove it.",
+      "text": "Secret: prove who buried the breach report, and bring the proof to Von Xardt.",
       "done": false
     }
   ]

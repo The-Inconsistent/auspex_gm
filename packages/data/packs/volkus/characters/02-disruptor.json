@@ -1,5 +1,5 @@
 {
-  "name": "Brother Veyl Corsa",
+  "name": "Brother Octavius Serren",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Incursor",
@@ -7,7 +7,7 @@
       "IMPERIUM",
       "ADEPTUS ASTARTES",
       "PRIMARIS",
-      "RAVEN GUARD",
+      "ULTRAMARINES",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -22,7 +22,7 @@
     "skills": {
       "Athletics": 3,
       "Awareness": 4,
-      "Ballistic Skill": 5,
+      "Ballistic Skill": 4,
       "Stealth": 5,
       "Survival": 2,
       "Tech": 5,
@@ -69,8 +69,13 @@
         "page": "Core p.29"
       },
       {
-        "name": "Master Of Shadows",
-        "text": "You may reroll Rank dice once per Stealth (A) Test. Running, using a Jump Pack, or similar circumstances do not affect your Stealth (A) Tests.",
+        "name": "Tactical Versatility (Ultramarines)",
+        "text": "Exemplars of the Codex Astartes, the Ultramarines wage war with the utmost flexibility, able to turn any situation to their advantage. You may Shift for Glory twice as part of a Test. The Chapter trait, not the Tactical Space Marine's archetype ability of the same name (Core p.113).",
+        "page": "Core p.74"
+      },
+      {
+        "name": "Pride of Ultramar (Tradition)",
+        "text": "The Imperium looks to the Ultramarines as paragons of the virtues of Astartes, and each strives to excel that reputation; strong in body, but restrained in mind, a tactical and clear-headed protector of Humanity. You start each session with 1 Wrath Point instead of 2. A Tradition, not Gene-seed, so it applies to a Primaris: Wrath 1 at the start of each session.",
         "page": "Core p.74"
       },
       {
@@ -81,9 +86,9 @@
     ],
     "talents": [
       {
-        "name": "Wraith-Slipping",
-        "text": "You may ignore penalties to Stealth (A) Tests from your size, wargear, or lack of camouflage.",
-        "page": "VoA p.50"
+        "name": "Codex Innovator",
+        "text": "When executing a strategic plan or tactic that you helped create, you add + (Rank) dice to all Leadership (Wil) and Persuasion (Fel) Tests to guide others through the details. In addition, if you have at least one hour to plan for an upcoming encounter or mission, you receive one bonus Wrath point that can only be spent on a Narrative Declaration (Core p.164) relevant to your plan. This Wrath point can carry over between sessions, but you may never possess more than one bonus Wrath point from this Talent.",
+        "page": "VoA p.45"
       },
       {
         "name": "Bolter Discipline",
@@ -215,7 +220,7 @@
   },
   "detail": {
     "portrait": "deathwatch-disruptor-veteran",
-    "personality": "He speaks in clipped vox-cant even face to face, and he counts the enemy's transmissions the way other marines count kills. He believes a war is won the moment the enemy stops talking to itself."
+    "personality": "Counts every enemy transmission and files it by Codex signal doctrine. A war is won when the enemy stops talking."
   },
   "objectives": [
     {

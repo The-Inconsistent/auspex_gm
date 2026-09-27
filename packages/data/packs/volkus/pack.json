@@ -2,8 +2,8 @@
   "campaign": {
     "name": "Volkus Dig Site",
     "tier": 4,
-    "patron": "Inquisitor Maren Solace, Ordo Xenos",
-    "framework": "Deathwatch Kill Team. Five Primaris battle-brothers seconded from their Chapters to the Deathwatch station on Enoch's northern pole (Core p.303), serving the Long Vigil against the xenos. An Inquisitor of the Ordo Xenos directs the team; each brother answers to the Watch, but still honours his Chapter (Honour the Chapter, Core p.29).\n\nFirst mission: eliminate an Ork Kommando infestation at the Volkus archeotech dig site on Gilead Primus, and learn why the Adeptus Mechanicus is so desperate to reclaim it."
+    "patron": "Inquisitor Marie Von Xardt, Ordo Xenos",
+    "framework": "Deathwatch Kill Team. Primaris battle-brothers seconded from their Chapters to the Watch station hidden under the frozen northern tundra of Enoch (FSPG p.26, Core p.303), serving the Long Vigil against the xenos. Inquisitor Marie Von Xardt of the Ordo Xenos directs the station; each brother answers to the Watch, but still honours his Chapter (Honour the Chapter, Core p.29).\n\nFirst mission: an Ork Kommando mob has overrun Volkus, an archeotech dig site on Gilead Primus. The Mandate: kill the Orks, secure the site, report any non-Ork xenos. Archdomina Vakuul's retinue is demanding the site back."
   },
   "factions": [
     {
@@ -11,32 +11,32 @@
       "name": "Ordo Xenos",
       "keywords": ["INQUISITION", "IMPERIUM", "[ORDO]"],
       "stance": "ally",
-      "notes": "The Inquisition's watch against the alien. The Deathwatch is its Chamber Militant (Core p.64, p.303). Inquisitors are perhaps the only humans who can order Astartes (VoA p.122).",
-      "secrets": "The Inquisitor already suspects Volkus sits on a xenos structure. She sent the Kill Team for the Orks and to see what the Mechanicus is hiding."
+      "notes": "The Inquisition's watch against the alien. The Deathwatch is its Chamber Militant (Core p.64, p.303). Inquisitors are perhaps the only humans who can order Astartes (VoA p.122). In Gilead, Inquisitor Marie Von Xardt works closely with the Watch, especially against Aeldari raiders (FSPG p.26).",
+      "secrets": "Von Xardt suspects Rogue Trader Varonius (FSPG p.26), who secretly hires Blood Axe mercenaries (Core p.311). [GM ruling 2026-09-27] Varonius had nothing to do with Volkus: the tellyporta misfire was an accident, and he stays her background suspicion.\n\nShe expects the Mechanicus to lie about Volkus and wants proof, not a fight. Her private order to one brother (Scene 1): anything from below the seal comes to her, sealed. [GM] Her standing order: no witness reports the Deathwatch."
     },
     {
       "key": "deathwatch",
       "name": "Deathwatch (Enoch Watch Station)",
       "keywords": ["DEATHWATCH", "ADEPTUS ASTARTES", "IMPERIUM"],
       "stance": "ally",
-      "notes": "The Kill Team's home. The station on Enoch's northern pole; forces there work in kill teams or alone (Core p.303).",
-      "secrets": ""
+      "notes": "The Kill Team's home: a secret base under the frozen northern tundra of Enoch. A mere dozen or so brothers, but their reach is vast; an auspex-cloaked Corvus Blackstar ferries kill-teams across the system (FSPG p.26). Forces there work in kill teams or alone (Core p.303). The six operatives the players didn't pick wait at the station as reinforcements.",
+      "secrets": "Few in Gilead know the Deathwatch is within the system at all (FSPG p.26). [GM] No witness may report it: Von Xardt's standing order. The Gilead Gravediggers at Volkus (Scene 3) have never heard of it."
     },
     {
       "key": "mechanicus",
       "name": "Adeptus Mechanicus (Archdomina Vakuul's retinue)",
       "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM"],
       "stance": "rival",
-      "notes": "Claims Volkus as a Mechanicus excavation. Polite, obstructive, and very interested in anything the Kill Team finds.",
-      "secrets": "Archdomina Vakuul wants archeotech and STCs, and trades arms production for them (VoA p.20–21). Her dig team breached a sealed stratum of non-human construction three weeks ago and she buried the report. She wants the tomb, not the Orks, dealt with — and she wants it intact."
+      "notes": "Claims Volkus as a Mechanicus excavation and demands it back. Led by Archdomina Aexekra Vakuul of Belaxia (FSPG pp.67–69). Their doctrine lets them study alien technology \"to pierce the Night Wall\" (FSPG p.43).\n\nWho else could come (FSPG p.42): Explorator Kappo Lev, [GM] a rival Magos who wants the cache; Magos Jynn Rho, a hunter of Hereteks and [GM] Vakuul's danger if her xenos dig becomes known; Skitarii Commander Metril, 87th Gilead Cohort, the muscle when the Mechanicus returns. Skitarii use the Quick NPC row at Tier 4 (Core p.326, ruling 2026-09-27).",
+      "secrets": "[GM] Vakuul's dig breached a lower void 21 days ago. She buried the breach report and answered with her seal and one word: continue (data-slate log 0-5-2). She wants the crypt intact, for the Chronomantic Array components inside, and the Inquisition blind.\n\nShe uses deniable outsiders who can never be linked to her (FSPG p.68), and will not knowingly step into an Inquisitorial cold war (Litanies of the Lost p.72): that is why she buried the report instead of fighting over it. She approaches only Astartes whose Chapter has Mechanicus ties or bad blood with the Inquisition (Litanies p.71): Voss (Dark Angels), and Grimsson and Hrafnsson (Space Wolves).\n\nMagos Tessaly-7 disobeyed her by sealing the shaft when the constructs came up. Tessaly-7's burst transmission (Scene 4) brings the Mechanicus back in Scene 7."
     },
     {
       "key": "kommandos",
       "name": "Gutshiva's Kommandos",
       "keywords": ["ORK", "KOMMANDO"],
       "stance": "enemy",
-      "notes": "A mob of Ork Kommandos led by the cunning Nob Gutshiva (Gutshiva's Kommandos p.3, p.8).",
-      "secrets": "[GM adaptation] They were never meant to be here. Muntz 'nerz's crude tellyporta was supposed to drop them under Hive Gulgatha (GK p.3); it misfired and scattered them into the Volkus workings. They have been raiding the dig camp for gear and are now looking for a way home."
+      "notes": "A mob of Ork Kommandos led by the cunning Nob Gutshiva (Gutshiva's Kommandos p.3, p.8). Sneaky Gitz ambushes, tripwires and crude traps, big knives (Threat Assessment p.88).",
+      "secrets": "[GM] They are lost. Muntz 'nerz's faulty tellyporta was aimed under Hive Gulgatha (GK p.3); it dropped them into Volkus instead, so their tracks start nowhere. Gutshiva's leadership has been shaky since.\n\nThe mob is fracturing: Gruzbag wants Gutshiva's arm and his place (GK pp.14–15), and Da Runtz secretly serve Mek Wrencha (GK pp.19–20), who is planning a takeover.\n\n[GM] They think the crypt is Goldteef's lost teef (FSPG pp.60–61) and tunnel toward it every night from the collapsed terrace; that is why they haven't left.\n\nOther named Orks, all backstabbers to play against each other: Mek Tiknek (p.13, blamed for the tellyporta), Dok Bitzbak (p.11, obsessed with teleport tech), Groof da Yoof (p.17, a Stormboy), Mek Wrencha (p.20)."
     },
     {
       "key": "necrons",
@@ -44,15 +44,23 @@
       "keywords": ["NECRON"],
       "stance": "enemy",
       "notes": "Unknown to the Kill Team at the start of play.",
-      "secrets": "A Necron tomb, sealed for millions of years and maintained by Canopteks (TA p.131–132). The Mechanicus breach has begun to wake it. Threat Assessment's Gilead backstory (rival Lezektekhan crypts and caches hidden around the system, TA p.133–134) and the Perfidia Upswell flashpoint (TA p.134) are both good models: the longer the Imperials fight over it, the more of it wakes."
+      "secrets": "[GM ruling 2026-09-27] The Volkus cache belongs to Cryptek Anephteh of the Lezektekhan Dynasty and holds components of the Chronomantic Array (Threat Assessment pp.132–135). The Array was built around a stolen C'tan shard; when it absorbed a stellar flare it tore their tomb world apart, and the pieces fell across Gilead. Anephteh blocks all long-range Necron communication; his Luminous Vaults lie under Enoch's ocean (the next arc). Lord Ka'lalek, stranded on the Seker-Ka at the system's edge, sends small teams to reactivate caches and wreck Anephteh's schemes. TA p.135: an attack that makes no sense until you learn a crypt lies beneath. Spelling varies in the book (pp.133–134); we use Anephteh.\n\nWAKING TRACK [GM] (Dark Bidding's response track, Litanies of the Lost p.73). Starts at Stage 1. Advances one step on a Complication, the GM spending 1 Ruin (at most once per session), or reckless noise (a firefight in the dig, an explosion). When it rises, tell the table through the fiction: tremors, a scarab glimpsed, the auspex spiking.\n1 Stirring: Canoptek Scarabs (TA p.145) in the lower shafts. The walls hum.\n2 Wardens: a Canoptek Wraith (p.155) hunts intruders one at a time; a Canoptek Reanimator (p.145) wakes.\n3 The ranks: a Mob of Necron Warriors (p.142) and Cryptothralls (p.152).\n4 The Cryptek's hand: a Technomancer (p.139), Anephteh's servant, defends the Array components.\n5 Ka'lalek's strike: Deathmarks (p.146) or Lychguard (p.148) with a Royal Warden (p.138), to seize or wreck the cache; a three-way fight with the Orks.\n\nSetting it back: sealing a shaft, jamming a node or destroying a generator is a roadblock (a Cunning or Stealth Test as printed, plus [GM] Tech, or a Shift on another Test). Each roadblock costs the GM one extra Ruin or Complication to advance the track. Destroying the Technomancer jumps straight to Stage 5.\n\nAlmost every Necron has Living Metal and Reanimation Protocols; a Reanimator or Technomancer nearby makes both worse."
+    },
+    {
+      "key": "gravediggers",
+      "name": "Gilead Gravediggers",
+      "keywords": ["ASTRA MILITARUM", "IMPERIUM"],
+      "stance": "neutral",
+      "notes": "An Astra Militarum regiment. Captain Amalia de Vartavan was sent to deal with the Orks (Gutshiva's Kommandos p.4). At Volkus, five Astra Militarum Troopers are left (Core p.328, a Troop Mob), dug in at the pump-house above the camp. Neutral and practical; allies if the team handles first contact well.",
+      "secrets": "[GM] Reports from Volkus pulled de Vartavan here. Nobody has told them the Deathwatch exists (FSPG p.26), and Von Xardt's standing order is that no witness reports it. How the team keeps them quiet is their problem: an oath, the Inquisition, or worse. That presses Tu'var's secret objective (keep his brothers from killing any human guardsmen).\n\nTwo troopers were dragged off alive three nights ago; they are Gutshiva's leverage in the lair (Scene 5)."
     }
   ],
   "locations": [
     {
       "key": "enoch-station",
       "name": "Deathwatch Station, Enoch",
-      "description": "The Watch station on Enoch's frozen northern pole. Grey stone, black armour, silver trim, and the constant hum of the station's cogitators.",
-      "gmNotes": "Briefing location. Core p.303.",
+      "description": "The Watch station, hidden under the ice of Enoch's northern pole. Grey stone, black armour, silver trim, and the hum of borrowed power. In the strategium, a hololith turns slowly.",
+      "gmNotes": "Briefing location (Scene 1). FSPG p.26, Core p.303. Few in Gilead know it exists. The six brothers the players didn't pick wait here as reinforcements. An auspex-cloaked Corvus Blackstar carries the team to Volkus.",
       "hazards": "",
       "revealed": true
     },
@@ -66,19 +74,28 @@
     },
     {
       "key": "volkus",
-      "name": "Volkus Dig Site",
+      "name": "Volkus",
       "parent": "gilead-primus",
-      "description": "An archeotech excavation in the crimson wastes: terraced strip-mine walls, a prefab camp, cranes and ore-haulers, and a deep central shaft sealed with Mechanicus wards.",
-      "gmNotes": "[GM adaptation] The Mechanicus dig here for the riches and archeotech of Gilead's former inhabitants (GK p.6). Nobody on-site will admit what the deep shaft reached.",
-      "hazards": "Pick or roll 1d66 per Tier (4 rolls) on a fitting Battlezone Hazard Table (Threat Assessment p.9–21). Good fits: dust storms, unstable terraces, abandoned machinery.",
+      "description": "A district drowned in grey rockcrete, set solid mid-wave over rooftops, spires and the tops of hab-blocks. One road has been cut through it, down to the dig mouth: a black shaft ringed with Mechanicus scaffolds. The Adeptus Mechanicus claims it as an archeotech excavation.",
+      "gmNotes": "[GM] No book names Volkus; it is ours. It is modelled on Gulgatha's sub-districts drowned in quick-setting rockcrete, dug out for archeotech, where mummified dead are found preserved in their dying moments (Gutshiva's Kommandos p.6).\n\nScene 2 is the drop onto the rim. The Kommando Snipa Boy watches the road from a rockcrete ridge. The Mechanicus dig reached Anephteh's cache 21 days ago (see The Sleepers Below).",
+      "hazards": "Tripwires: two stikkbomb tripwires on the road (Kommandos set crude traps, Threat Assessment p.88). Awareness (Int) DN 3 spots one before it's crossed (Shift: both). Tech (Int) DN 3 disarms one; keep 1 stikkbomb. A crossed tripwire is the Kommando's Stikkbombz profile (9 +5 ED, Blast 6, Core p.355) and counts as reckless noise on the Waking track.\n\nThe Battlezone Hazard Tables (Threat Assessment pp.9–21) also fit: dust, unstable rockcrete, abandoned machinery.",
       "revealed": true
     },
     {
       "key": "volkus-camp",
       "name": "Excavation Camp",
       "parent": "volkus",
-      "description": "Prefab habs and a cogitator shrine. Doors hang open; servitors lie where they fell. Crude glyphs and toothy grins are daubed on the walls in grease.",
-      "gmNotes": "Kommando raids stripped it. The cogitator shrine's data-core survived (handout: recovered data-slate).",
+      "description": "A bowl cut from the rockcrete: prefab habs, a cogitator shrine, cranes frozen mid-lift. Every door hangs open. Servitors lie where they fell, and toothy grins are daubed on the walls in engine grease. Beyond the camp, the rockcrete walls are full of shapes: people, set solid mid-step, hands raised as if in prayer.",
+      "gmNotes": "Scenes 3 and 4. The shrine's data-core still glows amber (Recovered Data-Slate). Magos Tessaly-7 is sealed inside the shrine with a Servo-skull and two Combat Servitors. Four indentured diggers hide in an ore-hauler cab. Two Runts strip a crane.\n\nThe frozen dead are victims of an old rockcrete flood (GK p.6); one pair of praying hands grips a shard of green-black metal, the same as the wall below the seal. Three servitors were taken apart with surgical precision, and every servitor is missing its power cell: the scarabs took them to repair the breach.",
+      "hazards": "A firefight or an explosion in the camp is reckless noise: it advances the Waking track.",
+      "revealed": false
+    },
+    {
+      "key": "volkus-pumphouse",
+      "name": "Pump-house",
+      "parent": "volkus",
+      "description": "A squat pump-house on the rockcrete above the camp, sandbagged and loopholed.",
+      "gmNotes": "The Gilead Gravediggers' position (Scene 3): Captain Amalia de Vartavan and five Astra Militarum Troopers (Core p.328). They open fire on five huge black-armoured figures coming out of the dust unless someone speaks first; [GM] Leadership (Wil) or Persuasion (Fel) DN 3 stops them.",
       "hazards": "",
       "revealed": false
     },
@@ -86,42 +103,42 @@
       "key": "kommando-lair",
       "name": "Collapsed Terrace",
       "parent": "volkus",
-      "description": "A landslide of red rock where an upper mining terrace fell in. Perfect cover. Something in there smells of fungus and promethium.",
-      "gmNotes": "Gutshiva's camp: looted crates, a half-built tellyporta beacon. The ambush happens on approach.",
-      "hazards": "Loose rock: Difficult Terrain (Speed halved, Core p.181). Cover everywhere (+1 or +2 Defence, Core p.181).",
+      "description": "The upper terrace has come down in a slope of broken rockcrete and red rock, all overhangs and dark pockets. It smells of fungus and promethium.",
+      "gmNotes": "Gutshiva's lair (Scene 5). Half-buried in the rubble: Muntz 'nerz's tellyporta beacon, half rebuilt, a tangle of cables and brass rings that crackles with green light and screams (an Ork is fused into it, GK p.3). Tech (Int) DN 4 wrecks it and cuts off Gutshiva's fallback.\n\nAn Ork tunnel runs from the back of the lair to the shaft. Two captive Gravediggers are tied up at the back.",
+      "hazards": "Loose rock: Difficult Terrain (Speed halved, Core p.181). Cover everywhere (+1 or +2 Defence, Core p.181). Thin rockcrete walls: the Breacha Boy bursts through them (Shoot Through Cover, Core p.189). A rokkit or Dudd can bring rock down, which is one more step on the Waking track.",
       "revealed": false
     },
     {
       "key": "volkus-shaft",
-      "name": "The Deep Shaft",
+      "name": "Below the Seal",
       "parent": "volkus",
-      "description": "The main excavation shaft. At the bottom, the rock gives way to smooth green-black stone that is cold to the touch and hums faintly.",
-      "gmNotes": "The breach into the tomb. Canoptek Scarabs have started repairing the damage the Mechanicus did.",
-      "hazards": "Darkness (vision penalties, Core p.191) unless the team brings light. Falling: 5 m or more = 1 Mortal Wound +1d3 per extra 5 m (Core p.201).",
+      "description": "The shaft drops two hundred metres into the dark. Mechanicus scaffolds cling to the walls for most of the way down, then stop. Below them the rock turns smooth, green-black and faintly warm, cut with circles and crescents too precise for any hand.",
+      "gmNotes": "Scene 6. The Magos's seal lies at the bottom in pieces, its edges bent outward: it was forced from below by hundreds of scarabs. A long-mummified Magos Explorator (Quintus Tet-9 Ascending, Threat Assessment p.132) lies at the base, clutching his cogitator stack. The walls repair themselves around the cut, and scarabs carry servitor power cells inside them.",
+      "hazards": "Climb: the scaffolds stop short; the last stretch is Athletics (S) DN 3. Falling: 5 m or more = 1 Mortal Wound +1d3 per extra 5 m (Core p.201).\nDarkness: pitch dark below the scaffolds. Total darkness is +4 DN to Ballistic Skill (Core p.191); [GM] helm lamps make it very dim light, +2.",
       "revealed": false
     }
   ],
   "npcs": [
     {
       "key": "inquisitor",
-      "name": "Inquisitor Maren Solace",
+      "name": "Inquisitor Marie Von Xardt",
       "faction": "ordo-xenos",
-      "role": "Patron. Ordo Xenos Inquisitor",
-      "description": "Grey-haired, precise, never raises her voice. She speaks to the Kill Team as colleagues, not tools.",
-      "gmNotes": "Use her to open the session and to explain the rules of engagement: kill the Orks, do not provoke the Mechanicus, report anything xenos that is not Ork.",
-      "secrets": "She suspects a xenos structure under Volkus and wants proof before the Mechanicus buries it.",
+      "role": "Patron. Ordo Xenos Inquisitor who directs the Watch in Gilead (FSPG p.26)",
+      "description": "Clinical and unhurried. She studies the alien the way others study scripture, and her humour is dry and grim: she has no patience for xenos airs, and none for anything that crawls out of a hole (Core p.76, p.368).",
+      "gmNotes": "Scene 1 briefing. Rules of engagement: kill the Orks, secure the site, report any non-Ork xenos. Insight (Fel) DN 3 on her: she is holding something back about the Mechanicus (Shift: she expects them to lie, and wants proof, not a fight). Voss's Unforgiven: +2 DN on Insight on her.",
+      "secrets": "She suspects the Mechanicus is hiding what the Volkus dig reached, and wants proof before Vakuul buries it. She also suspects Rogue Trader Varonius (FSPG p.26); [GM ruling 2026-09-27] he had nothing to do with Volkus.\n\nHer private order to one brother: \"Watch the Magos. Anything from below the seal comes to me, sealed. No one else.\" It sets her against Tirrow's and Hrafnsson's secret objectives. Standing order [GM]: no witness reports the Deathwatch.",
       "attitude": "friendly",
       "statSource": { "kind": "quick", "tier": 4 },
       "revealed": true
     },
     {
       "key": "magos",
-      "name": "Magos Explorator Tessaly-7",
+      "name": "Magos Tessaly-7",
       "faction": "mechanicus",
-      "role": "Senior surviving Mechanicus officer on-site",
-      "description": "More machine than woman. Speaks in clipped binaric-inflected Gothic; her mechadendrites never stop moving.",
-      "gmNotes": "Social encounter. She is Uncooperative (+2 DN to social Tests, Core p.168). A successful Insight (Fel) Test reveals she is afraid of something other than the Orks. A Shift can improve her Attitude one step (p.168).",
-      "secrets": "She ordered the deep shaft sealed after the breach and has been hiding in the camp's shrine. She will trade what she knows for safe passage and a promise that the Mechanicus keeps the find.",
+      "role": "Tech-Priest left behind to guard the Volkus dig",
+      "description": "Most of her is brass, and all of it is still. She stands wired into the cogitator bank of the camp shrine, and speaks flat and precise through the servo-skull that drifts ahead of her.",
+      "gmNotes": "[GM] Scene 4. Uncooperative: +2 DN on social Tests (Core p.168). Quick NPC, Tier 4 (Core p.326). With her: a Servo-skull (Core p.336) and two Combat Servitors (Core p.334), standing idle. She wants to keep the find for Belaxia, and keep her own disobedience hidden. She ordered the diggers to keep digging after the 'little metal things' came up the shaft.",
+      "secrets": "What she gives up, one rung per success (a Shift climbs one further):\n1. The breach happened 21 days ago. The material repairs itself.\n2. Archdomina Vakuul's seal came with a single word: continue. Reports go to Belaxia only.\n3. She sealed the shaft herself when the constructs came up, against Vakuul's orders. The Orks arrived the next night.\n4. A dormant Canoptek Scarab sits in a stasis casket under the altar. She means to send it to Vakuul. It is not fully dormant: opening the casket advances the Waking track.\n\nShe sent a burst transmission to Belaxia the moment the team arrived (Tech (Int) DN 4 finds it). It is why the Mechanicus comes back in Scene 7.",
       "attitude": "uncooperative",
       "statSource": { "kind": "quick", "tier": 4 },
       "revealed": false
@@ -130,10 +147,10 @@
       "key": "vakuul",
       "name": "Archdomina Aexekra Vakuul",
       "faction": "mechanicus",
-      "role": "Mechanicus power broker on the Circlet Council (VoA p.20–21)",
-      "description": "",
-      "gmNotes": "Off-screen in session 1. The Magos answers to her.",
-      "secrets": "Wants archeotech and STCs above all (VoA p.21). She will send Skitarii to reclaim Volkus the moment she learns the Orks are gone.",
+      "role": "Archdomina of Belaxia, self-proclaimed regent of Avachrus (FSPG pp.67–69, Core p.297)",
+      "description": "About 400 years old and almost wholly machine. She despises weakness. Her maxim: \"Be ever forging.\"",
+      "gmNotes": "Off-screen in Session 1; her demand for Volkus arrives with the briefing. The book spells her first name Axekra and Aexekra; we use Aexekra. She wants archeotech and STCs above all (VoA p.21). Her likely Astartes contacts (Litanies of the Lost p.71): Voss, Grimsson, Hrafnsson. Voss's list can land on her.",
+      "secrets": "[GM] She buried the breach report three weeks ago and sealed log 0-5-2 with one word: continue. She wants the crypt intact (the Chronomantic Array components) and the Inquisition blind; doctrine lets her study xenos tech \"to pierce the Night Wall\" (FSPG p.43). When she can't use Skitarii, she hires outsiders who can never be linked to her (FSPG p.68). She will not knowingly step into an Inquisitorial cold war (Litanies of the Lost p.72).",
       "attitude": "neutral",
       "statSource": { "kind": "none" },
       "revealed": false
@@ -142,10 +159,10 @@
       "key": "gutshiva",
       "name": "Boss Gutshiva",
       "faction": "kommandos",
-      "role": "Nob leader of the Kommandos",
-      "description": "",
-      "gmNotes": "Elite at Tier 4 with 4 personal Ruin (Gutshiva's Kommandos p.8). VoA p.121: let him escape when the fight turns — a boss the players want back is worth more than one they kill in round two.",
-      "secrets": "Wants the tellyporta fixed so he can get his boyz somewhere with more fighting.",
+      "role": "Nob leader of the Kommandos (GK p.8)",
+      "description": "A hulking, cunning Nob with a Power Klaw, a Rokkit Launcher and an Attack Squig at his heel. He hums while he waits in the dark.",
+      "gmNotes": "Elite at Tier 4, Champion, 4 personal Ruin (Gutshiva's Kommandos p.8). I'm Da Boss! (1 Ruin: every Ork within 10 m gets +2 dice to Weapon Skill). Orks Is Never Defeated (he sacrifices 1 Shock and a dying Ork near him gets one last attack). His leadership has been shaky since the tellyporta disaster.\n\nScene 5: below half Wounds, or when the Mob breaks, he dives into the Ork tunnel toward the shaft. VoA p.121: a boss the players want back is worth more than one they kill in round two.",
+      "secrets": "Wants the tellyporta fixed. [GM] Thinks the crypt below is Goldteef's lost teef (FSPG pp.60–61). If he escapes, he is below the seal in Scene 6, hacking at the wall and surrounded by scarabs, and will bargain with the team: \"Oi, beakies! Dese little gits are eatin' me boyz!\"",
       "attitude": "hostile",
       "statSource": { "kind": "bestiary", "threatId": "gutshiva" },
       "revealed": false
@@ -155,11 +172,23 @@
       "name": "Dudd the Bomb Squig",
       "faction": "kommandos",
       "role": "A 'lucky' unexploded bomb squig (GK p.18)",
-      "description": "",
-      "gmNotes": "Comic relief with teeth. If the players capture it, it is a walking breaching charge.",
-      "secrets": "",
+      "description": "A round, grinning squig with a bomb strapped to its back that has never gone off. The Kommandos think he's lucky.",
+      "gmNotes": "Explodes on 1 Ruin or on a Complication near him: 14 +4 ED, AP −1, Blast 4 (GK p.18). The table's panic button in Scene 5. If the players capture him, he is a walking breaching charge.",
+      "secrets": "The heavy thing the Orks dragged down the road toward the shaft (Scene 2) was Dudd's crate of stikkbombs.",
       "attitude": "hostile",
       "statSource": { "kind": "bestiary", "threatId": "dudd-the-bomb-squig" },
+      "revealed": false
+    },
+    {
+      "key": "gruzbag",
+      "name": "Gruzbag",
+      "faction": "kommandos",
+      "role": "Kommando with a bionik arm; Gutshiva's rival (GK pp.14–15)",
+      "description": "A Kommando with a crude bionik arm that spits flame or bullets whenever it feels like it. He watches his boss more closely than he watches the enemy.",
+      "gmNotes": "Troop (GK p.15). His Bionik Arm fires Burna and Dakka at random. Scene 5: he isn't fighting yet; he watches from the ridge.\n\nTurning him: Persuasion (Fel) DN 3 +4 (Hostile), or Intimidation (Wil) at the same DN, because Orks respect force (Core p.168). Success: his Bionik Arm turns on Gutshiva for one Round. Shift: he joins the team until the boss is dead, then turns on them. If Gutshiva dies, Gruzbag rules the remnant or dies with it.",
+      "secrets": "Wants Gutshiva's arm and his place (GK p.14).",
+      "attitude": "hostile",
+      "statSource": { "kind": "bestiary", "threatId": "gruzbag" },
       "revealed": false
     },
     {
@@ -167,11 +196,23 @@
       "name": "Muntz 'nerz",
       "faction": "kommandos",
       "role": "Rogue Mekboy who built the tellyporta (GK p.3)",
-      "description": "",
-      "gmNotes": "Off-screen. A thread for later sessions: where is the other end of the tellyporta?",
+      "description": "A rogue Mekboy with more ambition than sense. His crude tellyporta was meant to put the Kommandos somewhere else entirely.",
+      "gmNotes": "Off-screen. The beacon in the lair is his tellyporta, half rebuilt; an Ork is fused into it (GK p.3). A thread for later sessions: where is the other end, under Hive Gulgatha?",
       "secrets": "",
       "attitude": "hostile",
       "statSource": { "kind": "none" },
+      "revealed": false
+    },
+    {
+      "key": "captain-de-vartavan",
+      "name": "Captain Amalia de Vartavan",
+      "faction": "gravediggers",
+      "role": "Captain, Gilead Gravediggers (GK p.4)",
+      "description": "A practical Guard officer holding a pump-house with the last five of her squad. She has fought these Orks every night and has no patience for anyone who hasn't.",
+      "gmNotes": "Scene 3. Quick NPC, Tier 3 (Core p.326). Neutral and practical. First contact: her squad opens fire unless someone speaks first; [GM] Leadership (Wil) or Persuasion (Fel) DN 3 stops them.\n\nWhat she knows: the Orks strike every night from the terrace; the Magos refused them entry to the shrine; two troopers were dragged off alive three nights ago. They are tied up in the lair (Scene 5). If they survive and the team brought her squad, the Troopers give covering fire as one Mob (Core p.328). Every Gravedigger who dies counts against Tu'var's objective.",
+      "secrets": "[GM] Reports from Volkus pulled her here. She has never heard of the Deathwatch (FSPG p.26), and Von Xardt's standing order is that no witness reports it.",
+      "attitude": "neutral",
+      "statSource": { "kind": "quick", "tier": 3 },
       "revealed": false
     }
   ],
@@ -179,13 +220,19 @@
     {
       "key": "mandate",
       "title": "Ordo Xenos Mandate",
-      "body": "+++ ORDO XENOS // SEALED FOR KILL TEAM ONLY +++\n\nTARGET: Ork infiltrators, designation KOMMANDO, operating at Volkus Dig Site, Gilead Primus.\nOBJECTIVE 1: Locate and eliminate the xenos. Leadership priority.\nOBJECTIVE 2: Secure the excavation. Do not permit its destruction.\nOBJECTIVE 3: Report ANY xenos presence that is not Ork. Do not engage it without authorisation.\n\nThe Adeptus Mechanicus holds a writ over Volkus. Extend them every courtesy. Believe nothing they tell you.\n\n— M. S., Ordo Xenos",
+      "body": "+++ ORDO XENOS // SEALED FOR KILL TEAM ONLY +++\n\nTARGET: Ork infiltrators, designation KOMMANDO, operating at Volkus Dig Site, Gilead Primus.\nOBJECTIVE 1: Locate and eliminate the xenos. Leadership priority.\nOBJECTIVE 2: Secure the excavation. Do not permit its destruction.\nOBJECTIVE 3: Report ANY xenos presence that is not Ork. Do not engage it without authorisation.\n\nThe Adeptus Mechanicus holds a writ over Volkus. Extend them every courtesy. Believe nothing they tell you.\n\n— M. V. X., Ordo Xenos",
       "revealed": true
+    },
+    {
+      "key": "von-xardt-order",
+      "title": "Private Order",
+      "body": "+++ ORDO XENOS // FOR ONE BROTHER ONLY // DESTROY AFTER READING +++\n\nWatch the Magos. Anything from below the seal comes to me, sealed. No one else.\n\n— M. V. X.",
+      "revealed": false
     },
     {
       "key": "data-slate",
       "title": "Recovered Data-Slate (Mechanicus)",
-      "body": "…LOG 0-4-7. SHAFT DEPTH 212 M. STRATUM TRANSITION. MATERIAL: UNKNOWN. NOT STONE. NOT ANY METAL IN THE CATALOGUE.\n…LOG 0-5-1. SURFACE WARM. SURFACE REPAIRS ITSELF WHERE CUT. RECOMMEND HALT.\n…LOG 0-5-2. ARCHDOMINA'S SEAL RECEIVED. CONTINUE.\n…LOG 0-6-0. SMALL CONSTRUCTS OBSERVED IN THE BREACH. METALLIC. MANY-LEGGED. THEY ARE TAKING OUR TOOLS APART.\n…LOG 0-6-3. SHAFT SEALED BY ORDER OF THE MAGOS. THE ORKS CAME THE NEXT NIGHT.",
+      "body": "+++ VOLKUS EXCAVATION // DATA-CORE RECOVERY // PARTIAL +++\n\n…LOG 0-4-7 [21 DAYS AGO]. SHAFT DEPTH 212 M. STRATUM TRANSITION. MATERIAL: UNKNOWN. NOT STONE. NOT ANY METAL IN THE CATALOGUE.\n…LOG 0-5-1. SURFACE WARM. SURFACE REPAIRS ITSELF WHERE CUT. RECOMMEND HALT.\n…LOG 0-5-2. ARCHDOMINA'S SEAL RECEIVED. CONTINUE.\n…LOG 0-6-0. SMALL CONSTRUCTS OBSERVED IN THE BREACH. METALLIC. MANY-LEGGED. THEY ARE TAKING OUR TOOLS APART.\n…LOG 0-6-3. SHAFT SEALED BY ORDER OF THE MAGOS. THE ORKS CAME THE NEXT NIGHT.",
       "revealed": false
     },
     {
@@ -197,7 +244,13 @@
     {
       "key": "glyphs",
       "title": "Glyph Rubbing",
-      "body": "Rows of interlocking circles and crescent lines, cut with impossible precision into the green-black stone. Not Ork. Not Aeldari. Not anything in the Watch's archives you can recall. A battle-brother with Scholar may try a DN 5 Scholar (Int) Test; success: these are Necron.",
+      "body": "Rows of interlocking circles and crescent lines, cut with impossible precision into the green-black stone. Not Ork. Not Aeldari. The Watch's archives hold only a few fragments of script like it, every one recovered from a Necron site.",
+      "revealed": false
+    },
+    {
+      "key": "quintus-log",
+      "title": "Log of Quintus Tet-9 Ascending",
+      "body": "+++ PERSONAL LOG // MAGOS EXPLORATOR QUINTUS TET-9 ASCENDING +++\n+++ COGITATOR STACK DAMAGED // FRAGMENTS RECOVERED +++\n\n…Decades beneath the crust, and I have catalogued their bones as others catalogue saints. Dead metal. Dead halls. Now, at last, a site that is not dead.\n\n…First the small ones. Many-legged, no larger than a servo-skull, pouring from seams in the stone. They ignore me. They are mending the walls.\n\n…Then the great shapes I had logged as ruin. Battered, pitted monoliths, drawing power. Moving.\n\n…Now the complex forms. They rise confused, acting on instinct, walking halls that lead nowhere, as if the halls remember a shape that is gone.\n\n…I have not reported this. I will not, until I understand it.\n\n…The seam behind me has closed. This find is either my ascension or my execution.",
       "revealed": false
     }
   ],
@@ -205,57 +258,58 @@
     {
       "key": "session-1",
       "title": "Session 1: Kommandos at Volkus",
-      "premise": "A first session for a first-time GM and new players. It teaches the rules in order: Tests (beat 2), combat, ambush, Mobs and Seize the Initiative (beat 3), investigation (beat 4), social Tests (beat 5), and a short fight that ends on a cliffhanger (beat 6). Expect about 3–4 hours.",
+      "premise": "Session 1 of the campaign bible (2026-09-27): six scenes, each ending on a reveal. The team is sent to kill Orks, but the Orks are only the surface. Beneath them lies Anephteh's Necron cache, which the Mechanicus has known about for weeks and wants to keep for itself. About 3.5 hours: briefing 20 min, drop 30, camp 40, Magos 30, ambush 60, below the seal 30.\n\nKeep the Waking track on paper (The Sleepers Below faction): it starts at Stage 1 and advances on Complications, 1 Ruin (once per session) and reckless noise.\n\nEach agent carries a Chapter and a secret objective on his phone. [GM] Completing one earns +1 Glory, or XP at session end (compare Core p.43). Rewards: about 10 XP per session (Core p.321); Wealth sparing, around 1 per player per 3–4 sessions.",
       "status": "planned",
       "beats": [
         {
-          "title": "Briefing at the Watch Station",
+          "title": "Briefing at the Watch",
           "type": "briefing",
           "location": "enoch-station",
           "npcs": ["inquisitor"],
-          "handouts": ["mandate"],
-          "readAloud": "The Watch station's briefing hall is cold enough that your breath would fog, if you still breathed like mortals. Inquisitor Solace does not wait for pleasantries. 'Orks,' she says, and the hololith fills with a red desert and a scar of terraced mine workings. 'Kommandos. At a Mechanicus dig called Volkus. Kill them. And bring me back whatever the Mechanicus doesn't want me to see.'",
-          "gmNotes": "Before play (Threat Assessment p.6 advises this):\n• Explain Wrath (each player starts with 2, Core p.164), Glory (party pool, starts at 0, max 7 for 5 players, p.164) and Ruin (yours, starts at 5, max 10, visible to players, p.320).\n• Start the session in the app (PARTY → START SESSION): it resets Wrath, Glory and Ruin.\n• Each player rolls a d6 for their Objective (Core p.43).\nSend the Mandate handout to phones (CODEX → HANDOUTS → reveal).",
+          "handouts": ["mandate", "von-xardt-order"],
+          "readAloud": "Under the ice of Enoch's northern pole, the Watch station hums with borrowed power. In the strategium, a hololith turns slowly: a district of Gilead Primus drowned in grey rockcrete, with a single dig shaft sunk through it like a needle. Inquisitor Marie Von Xardt does not turn from it when you enter. \"Volkus,\" she says. \"An archeotech dig. Six days ago the Mechanicus stopped answering. Yesterday Archdomina Vakuul demanded it back. Orks are in her way. You are in theirs.\"",
+          "gmNotes": "No combat, about 20 minutes. By the end the team has the Mandate and one reason to distrust the Mechanicus, and one brother carries a private order.\n\nBefore play: PARTY → START SESSION (resets Wrath, Glory and Ruin). Reveal the Mandate to every phone. Deal the private objectives: each agent's Chapter and secret objectives are already on his player's phone, so have them read them now. Each player rolls his session objective on the Astartes table (Core p.72).\n\nTests (the DNs are GM choices; DN 3 is a standard Test, Core p.160):\n• Scholar (Int) DN 3 on Kommandos: Sneaky Gitz ambushes, tripwires and crude traps, big knives (Threat Assessment p.88). Shift: no Ork force is anywhere near Gilead Primus; they came by some other road.\n• Investigation (Int) DN 4 on the dig's survey logs: the breach into a lower void was logged 21 days ago; Vakuul's demand came yesterday. Shift: the log's date stamp was re-sealed with a Belaxian cipher.\n• Insight (Fel) DN 3 on Von Xardt: she is holding something back about the Mechanicus. Shift: she expects them to lie, and wants proof, not a fight. Voss's Unforgiven +2 DN applies.\n\nHidden: as the team leaves, Von Xardt holds back one brother, Toghril by default or whoever succeeded at Insight, and gives him the Private Order: \"Watch the Magos. Anything from below the seal comes to me, sealed. No one else.\" The pack can't name a character, so at the table set the handout's audience to that ONE agent, then reveal it. It sets her against Tirrow's and Hrafnsson's secret objectives.\n\nNote who learned the breach date: it pays off in Scene 4.\n\nNext: the Corvus Blackstar drops them at the rim of Volkus (Scene 2).",
           "outcome": "",
           "encounter": []
         },
         {
-          "title": "Drop into Volkus",
+          "title": "The Drop into Volkus",
           "type": "travel",
           "location": "volkus",
           "npcs": [],
           "handouts": [],
-          "readAloud": "The gunship's ramp drops into a wall of red dust. Below, the dig site is silent: cranes frozen, a hab door banging in the wind. On the upper terraces, something glints and is gone.",
-          "gmNotes": "Teach Tests (Core p.158–161): pool = Attribute + Skill, one die is the Wrath Die, 4–5 = Icon, 6 = two Icons. Standard DN 3 (p.160).\n• Awareness (Int) DN 3 to spot the glint (the Kommando lookout). Anyone who succeeds will not be ambushed in beat 3.\n• Survival (Wil) DN 3 to read the tracks: Ork boots, heavy loads, heading for the collapsed terrace.\n• Roll or pick hazards for the Volkus location (see its hazards note).",
-          "outcome": "",
-          "encounter": []
-        },
-        {
-          "title": "Kommando Ambush",
-          "type": "combat",
-          "location": "kommando-lair",
-          "npcs": ["gutshiva", "dudd"],
-          "handouts": [],
-          "readAloud": "The rockslide explodes into movement. Green shapes that were boulders a heartbeat ago rise with knives and sluggas, and a voice bellows from the ridge: 'Oi! Da big shiny 'umies! Get 'em, ladz!'",
-          "gmNotes": "Run it with PREP → RUN BEAT (it loads the whole team plus these Threats).\n• Ambush (Core p.177): in the tracker, mark any brother who failed beat 2's Awareness as AMBUSHED. They lose their Round 1 turn unless the party pays 1 Glory each (AWARE button).\n• Turns alternate (p.177): the players pick an Agent, then you pick a Threat. Show them Seize the Initiative (1 Glory: a second Agent acts before the Orks).\n• Mobs (p.324–325): every Kommando in a Mob has 1 Wound, so each hit that beats Resilience kills one, and every Icon over Defence kills another. Space Marines add +Rank Icons against Mobs (Defender of Humanity, Core p.29).\n• Troops die outright when they take more Shock than their max (p.324).\n• Gutshiva is an Elite with 4 personal Ruin. When he's losing, spend Ruin and let him escape (VoA p.121).\n• Encounter size follows Threat Assessment p.8 (2 Troops per Agent, half in Mobs, +1 Elite), a little bigger because the Agents are Space Marines.",
+          "readAloud": "The Blackstar's cloak drops away twenty metres above the rim. Below, Volkus is a grey sea of rockcrete, set solid mid-wave over rooftops, spires and the tops of hab-blocks. One road has been cut through it, down to the dig mouth: a black shaft ringed with Mechanicus scaffolds. Nothing moves. The dust on the road is full of bootprints far too wide for any human.",
+          "gmNotes": "About 30 minutes, the first taste of Kommando cunning. The team reaches the camp knowing they're watched and that the Orks planned for company.\n\nThe Snipa Boy watches the road from a rockcrete ridge. Roll his Stealth (A), 8 dice (Core p.355); his Icons become his Stealth Score for the scene (Core p.181). Spotting him takes Awareness (Int) or Passive Awareness against that score.\n• Spotted: the team chooses how the fight opens.\n• Not spotted: his first shot is a Surprise Attack (+2 dice, +2 ED, Core p.181) and the team is ambushed (Core p.177). His Big Shoota is Silent.\nHis marker stays hidden, off the phones, until he's spotted or fires. If he's losing, he runs for the lair to warn Gutshiva.\n\nTwo stikkbomb tripwires on the road (Threat Assessment p.88: Kommandos set crude traps). A crossed one is the Kommando's Stikkbombz profile (9 +5 ED, Blast 6) and counts as reckless noise on the Waking track.\n\nTests (GM DNs; DN 3 standard, Core p.160):\n• Awareness (Int) on the ridge, DN = the Snipa's Stealth Score: spot him. Shift: also see the second tripwire.\n• Awareness (Int) DN 3 on the road: spot a tripwire before it's crossed. Shift: both.\n• Survival (Wil) DN 3 on the tracks: about a dozen Orks, dragging something heavy toward the shaft, not away. Shift: the tracks begin nowhere: no landing, no vehicle.\n• Tech (Int) DN 3 on a tripwire: disarm it; keep 1 stikkbomb. Shift: it was wired by someone who knows Mechanicus demolition charges.\n\nHidden: the Orks came by tellyporta, so the tracks start nowhere (pays off in Scene 5). The heavy thing they dragged is Dudd's crate of stikkbombs. Noise here can start the Waking track. Serren's objective: a clever Snipa raises no vox chatter at all.\n\nBranches: if the Snipa escapes, the lair is ready and the Kommandos ambush the team in Scene 5. If he dies silently, the team keeps the initiative.",
           "outcome": "",
           "encounter": [
-            { "threatId": "kommando", "count": 6, "asMob": true, "marker": "red", "label": "Kommandos (Red)" },
-            { "threatId": "kommando", "count": 6, "asMob": true, "marker": "amber", "label": "Kommandos (Amber)" },
-            { "threatId": "gutshiva", "count": 1, "asMob": false, "marker": "white", "label": "Boss Gutshiva" },
-            { "threatId": "dudd-the-bomb-squig", "count": 1, "asMob": false, "marker": "green", "label": "Dudd" }
+            {
+              "threatId": "kommando-snipa-boy",
+              "count": 1,
+              "asMob": false,
+              "marker": "amber",
+              "label": "Snipa (ridge)",
+              "visibility": "hidden"
+            }
           ]
         },
         {
           "title": "The Silent Camp",
           "type": "investigation",
           "location": "volkus-camp",
-          "npcs": [],
-          "handouts": ["data-slate", "auspex", "glyphs"],
-          "readAloud": "The excavation camp has been picked clean. Servitors lie where they fell, stripped of anything that could be bolted onto a Shoota. In the cogitator shrine, a single data-core still glows amber.",
-          "gmNotes": "Investigation (VoA p.121: Marines gather intel for the next strike, they don't sift crime scenes). Let each specialist shine:\n• Disruptor: Tech (Int) DN 3 to pull the data-core → reveal 'Recovered Data-Slate'.\n• Anyone with an auspex: Awareness DN 4 at the deep shaft → reveal 'Auspex Return'.\n• At the shaft's edge they find cut stone with glyphs → reveal 'Glyph Rubbing'.\nReveal handouts to phones as they are found.",
+          "npcs": ["captain-de-vartavan"],
+          "handouts": ["data-slate", "auspex"],
+          "readAloud": "The dig camp sits in a bowl cut from the rockcrete: prefab habs, a cogitator shrine, cranes frozen mid-lift. Every door hangs open. Servitors lie where they fell, and toothy grins are daubed on the walls in engine grease. In the shrine a single data-core still glows amber. Beyond the camp, the rockcrete walls are full of shapes: people, set solid mid-step, hands raised as if in prayer.",
+          "gmNotes": "About 40 minutes. The team leaves knowing three things: the Mechanicus reached something that isn't stone, Vakuul told them to keep digging, and the Orks are heading down, not out. Marines gather intelligence for the next strike; they don't sift a crime scene (VoA p.121). Keep it brisk. Reveal each handout when it's found.\n\nTests (GM DNs; DN 3 standard, Core p.160):\n• Tech (Int) DN 3 on the data-core: Recovered Data-Slate. Shift: log 0-5-2 carries Vakuul's personal seal; tell Tarsus privately if he's present (his objective: prove who buried the breach report, and bring the proof to Von Xardt).\n• Awareness (Int) DN 4 with an auspex at the shaft head: Auspex Return. Shift: the power rises in steps, not smoothly; it's the Waking track, say which stage.\n• Investigation (Int) DN 3 on the dead: the diggers died to Ork blades; three servitors were taken apart with surgical precision. Shift: every servitor is missing its power cell.\n• Scholar (Int) DN 3 on the frozen dead: victims of an old rockcrete flood (GK p.6). Shift: one pair of praying hands grips a shard of green-black metal; Voss's blade hums beside it.\n• Survival (Wil) DN 3 on the Ork sign: they camped here, then moved into the collapsed terrace above. Shift: drag marks run from the terrace to the shaft and back, night after night.\nThe Ordo Xenos benefit adds 2 dice to Scholar or Investigation on known xenos (Core p.64); the pregens don't have it yet.\n\nSurvivors: four indentured diggers in an ore-hauler cab fear the Magos more than the Orks; she made them keep digging after the 'little metal things' came up. Persuasion (Fel) DN 3 gets their story; Intimidation (Wil) works too, but they flee. Tu'var's objective: get them out alive.\n\nOptional: two Runts (Grot, Core p.358) strip a crane (this encounter, hidden). One caught alive + Intimidation (Wil) DN 3 [GM]: \"Da boss finks dere's shiny under da ground. Da Kaptin's lost teef!\" [GM] Goldteef's hoard (FSPG pp.60–61). An escaped Runt warns the lair (Scene 5).\n\nGravediggers, at the pump-house above the camp: Captain de Vartavan and five Astra Militarum Troopers (Core p.328, a Troop Mob). ALLIES: not in this encounter. First contact: they fire on the black-armoured figures unless someone speaks first; [GM] Leadership (Wil) or Persuasion (Fel) DN 3. They know: the Orks strike nightly from the terrace; the Magos refused them the shrine; two troopers were taken alive three nights ago (in the lair). Few in Gilead know the Watch exists (FSPG p.26); [GM] no witness may report it. Keeping them quiet (oath, Inquisition, or worse) presses Tu'var's secret objective.\n\nHidden: the Orks think the crypt is treasure and tunnel toward it every night. The power cells went to the scarabs repairing the breach. A firefight or explosion here advances the Waking track.\n\nLeads: the data-core's glow → the shrine and the Magos (Scene 4). The tracks and any Runt → the lair (Scene 5).",
           "outcome": "",
-          "encounter": []
+          "encounter": [
+            {
+              "threatId": "grot",
+              "count": 2,
+              "asMob": false,
+              "label": "Runt",
+              "visibility": "hidden"
+            }
+          ]
         },
         {
           "title": "The Magos Who Stayed",
@@ -263,40 +317,130 @@
           "location": "volkus-camp",
           "npcs": ["magos"],
           "handouts": [],
-          "readAloud": "A servo-skull drifts from behind the shrine's altar, lens whirring, and a voice follows it: 'Identify. You are… not Orks. Praise the Omnissiah. And you will leave my excavation as you found it.'",
-          "gmNotes": "Social encounter.\n• The Magos is Uncooperative: +2 DN (Core p.168).\n• Insight (Fel): she's afraid, and not of the Orks.\n• Persuasion (Fel) or Intimidation (Wil) at DN 3 +2: she admits the breach and that the shaft was sealed by her order.\n• A Shift on a success improves her Attitude one step (p.168).\n• She demands the find stays Mechanicus property. That is the hook for the rivalry.",
+          "readAloud": "A servo-skull drifts out from behind the shrine's altar, its lens whirring. A voice follows it, flat and precise: \"Identify. You are… not Orks. Praise the Omnissiah. You will leave my excavation exactly as you found it.\" Behind the skull, wired into the cogitator bank, stands Magos Tessaly-7. Most of her is brass, and all of it is still.",
+          "gmNotes": "About 30 minutes. Ends on a choice: deal with the Mechanicus, arrest their Magos, or silence her. The choice shapes Scene 7.\n\nTessaly-7: Uncooperative, +2 DN on social Tests (Core p.168); Quick NPC Tier 4 (Core p.326). With her: a Servo-skull (Core p.336) and two Combat Servitors (Core p.334), standing idle. She wants the find kept for Belaxia and her own disobedience hidden.\n\nWhat she gives up: one rung per success; a Shift climbs one further. With the Data-Slate from Scene 3 in hand, [GM] +2 bonus dice against her.\n1. The breach happened 21 days ago. The material repairs itself.\n2. Vakuul's seal came with a single word: continue. Reports go to Belaxia only.\n3. She sealed the shaft herself when the constructs came up, against Vakuul's orders. The Orks arrived the next night.\n4. Her secret: a dormant Canoptek Scarab in a stasis casket under the altar. She means to send it to Vakuul.\n\nTests (GM DNs; DN 3 standard, Core p.160):\n• Insight (Fel) DN 3 +2: she's afraid, and not of the Orks. Shift: she fears Vakuul more than anything under the ground.\n• Persuasion (Fel) DN 3 +2: climb one rung. Shift: improve her Attitude one step (Core p.168).\n• Intimidation (Wil) DN 3 +2: climb one rung. Shift: she turns Hostile and reports everything to Belaxia.\n• Influence, pulling Inquisitorial rank, DN GM sets: she obeys one order (guide, codes, or stand aside). Shift: the team shares only the IMPERIUM keyword with her (Core p.169).\n• Tech (Int) DN 4, Serren or anyone with an auspex: she sent a burst transmission to Belaxia the moment the team arrived. Shift: they read its content (Serren's objective).\nVoss (Unforgiven) takes +2 DN on Fellowship Tests.\n\nThe contested artefact: the casket pits Grimsson (let no xenos artefact leave) against Tirrow (trade it to the Magos) and Von Xardt's private order (anything from below comes to her). Let the brothers argue it out; the GM doesn't rule. The scarab isn't fully dormant: opening the casket advances the Waking track.\n\nBranches:\n• Deal: she lends her servo-skull as a guide and gives them the shaft codes; they keep quiet to the Inquisitor. Scene 7: the Mechanicus arrives Friendly, and Von Xardt's order has been broken.\n• Arrest: she is taken for the Inquisition. Scene 7: Commander Metril arrives Hostile and demands her back.\n• Silence her: the servitors wake and fight (start this encounter). Voss gets a name for his list. Scene 7: the Mechanicus arrives Hostile, with Skitarii (Core p.326 row).\n\nHidden: her burst transmission is why the Mechanicus comes back in Scene 7.\n\nLead: \"The greenskins come from the collapsed terrace. Every night. Toward my shaft.\" (Scene 5)",
           "outcome": "",
-          "encounter": []
+          "encounter": [
+            {
+              "threatId": "servo-skull",
+              "count": 1,
+              "asMob": false,
+              "label": "Servo-skull (if she's silenced)",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "combat-servitor",
+              "count": 2,
+              "asMob": false,
+              "label": "Servitor (if she's silenced)",
+              "visibility": "hidden"
+            }
+          ]
+        },
+        {
+          "title": "Kommando Ambush",
+          "type": "combat",
+          "location": "kommando-lair",
+          "npcs": ["gutshiva", "dudd", "gruzbag"],
+          "handouts": [],
+          "readAloud": "The upper terrace has come down in a slope of broken rockcrete and red rock, all overhangs and dark pockets. It smells of fungus and promethium. Somewhere inside, an Ork is humming. Half-buried in the rubble, a tangle of cables and brass rings crackles with green light. Every few seconds it spits sparks, and something inside it screams.",
+          "gmNotes": "The big fight, about 60 minutes. Gutshiva should get away down the Ork tunnel toward the shaft, unless the team earns the kill.\n\nWho ambushes whom (from Scene 2):\n• The Snipa escaped: the Kommandos are waiting. Sneaky Gitz lets them use their Stealth pool of 8 for any Test in the ambush round (Core p.355). The team is ambushed and skips Round 1 (Core p.177) unless they spend 1 Glory each to become aware.\n• The Snipa died silently: each brother makes a Stealth (A) Test for his Stealth Score (Core p.181) against the Kommandos' Passive Awareness 3, or Awareness 6 if alert. The first shot is a Surprise Attack (+2 dice, +2 ED) and the Orks are ambushed.\n\nRoster per Threat Assessment p.8 for five Agents. Every marker but Gutshiva starts hidden: show each on the phones as its mini hits the table. Remove the Snipa if he died in Scene 2. Gruzbag isn't fighting yet: he watches from the ridge.\n\nRunning it:\n• Mobs: +1 die per member, capped at half the Mob. Each Icon over Defence kills one more member. At half dead, DN 3 Resolve Test at the end of the Round (Core pp.324–325). One special per two members (campaign ruling).\n• I'm Da Boss! (1 Ruin): Orks within 10 m get +2 dice to Weapon Skill. Save it for a surrounded brother.\n• Orks Is Never Defeated: Gutshiva sacrifices 1 Shock and a dying Ork near him gets one last attack.\n• Dudd, the panic button: explodes on 1 Ruin or a Complication (14 +4 ED, AP −1, Blast 4).\n• Breacha bursts through thin rockcrete walls (Shoot Through Cover, Core p.189). Slasha throws Knives, then closes with Multi-Attack.\n• Waking track: +1 for the firefight, +1 more if Dudd or a rokkit brings rock down.\n\nCaptives: two Gravediggers tied up at the back as Gutshiva's leverage; he holds a choppa to one's throat to stop a charge. If they survive and de Vartavan's squad came, the Troopers give covering fire as one Mob (Core p.328). Every Gravedigger who dies counts against Tu'var's objective, whoever's shot it was.\n\nTurning Gruzbag (he wants Gutshiva's arm and place, GK p.14): Persuasion (Fel) DN 3 +4 (Hostile), or Intimidation (Wil) at the same DN (Core p.168). Success: his Bionik Arm turns on Gutshiva for one Round. Shift: he joins the team until the boss is dead, then turns on them.\n\nGutshiva's escape: below half Wounds, or when the Mob breaks, he dives into the tunnel. Stop him by blocking it (Athletics (S) DN 3, or a brother in the way); killing him first (Voss's single-combat challenge; Kostas and Sarrius want him dead); or wrecking the beacon (Tech (Int) DN 4 on the brass rings), which cuts off his fallback and Dok's hope of teleport tech (GK p.10).\n\nHidden: the Comms Boy (red Mob) is the only Ork with a vox; killing him first is Serren's objective and stops the mob calling the Kommandos in the shaft. The beacon is Muntz 'nerz's tellyporta, half rebuilt; the screaming is an Ork fused into it (GK p.3).\nObjectives: Varn's 5 skulls; Voss's champion; Kostas and Sarrius on Gutshiva (Sarrius first, unseen); Serren's Comms Boy.\n\nBranches: if Gutshiva escapes, he's below the seal in Scene 6 and brings the scarabs up early. If he's dead, Gruzbag rules the remnant or dies with it.",
+          "outcome": "",
+          "encounter": [
+            { "threatId": "gutshiva", "count": 1, "asMob": false, "marker": "white", "label": "Boss Gutshiva" },
+            {
+              "threatId": "kommando",
+              "count": 6,
+              "asMob": true,
+              "marker": "red",
+              "label": "Mob (Boy×2, Comms, Burna, Rokkit, Dakka)",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "kommando-breacha-boy",
+              "count": 1,
+              "asMob": false,
+              "marker": "amber",
+              "label": "Breacha",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "kommando-slasha-boy",
+              "count": 1,
+              "asMob": false,
+              "marker": "amber",
+              "label": "Slasha",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "kommando-snipa-boy",
+              "count": 1,
+              "asMob": false,
+              "marker": "amber",
+              "label": "Snipa (if he survived S2)",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "dudd-the-bomb-squig",
+              "count": 1,
+              "asMob": false,
+              "marker": "green",
+              "label": "Dudd",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "gruzbag",
+              "count": 1,
+              "asMob": false,
+              "marker": "blue",
+              "label": "Gruzbag",
+              "visibility": "hidden"
+            }
+          ]
         },
         {
           "title": "Below the Seal",
           "type": "revelation",
           "location": "volkus-shaft",
           "npcs": [],
-          "handouts": [],
-          "readAloud": "The Mechanicus wards spark and fail as you cut through them. The shaft drops into darkness. At the bottom, the rock simply stops, and smooth green-black stone begins. Along the seam, dozens of small metal things are working, rebuilding the wall the Mechanicus broke. As one, they stop, and turn toward you.",
-          "gmNotes": "A short fight, then the cliffhanger.\n• Canoptek Scarabs are Troops at Tier 4 (Threat Assessment p.145). Let the team win this.\n• When the last Scarab falls, describe a deep green light kindling far below, and rows of shapes standing in the dark that were not standing a moment ago. End the session there (Core p.321: end on a revelation or cliffhanger).\n• After the game: PARTY → END SESSION, 10 XP each (p.321), write a recap for the phones.",
+          "handouts": ["glyphs", "quintus-log"],
+          "readAloud": "The shaft drops two hundred metres into the dark. Mechanicus scaffolds cling to the walls for most of the way down, then stop. Below them the rock changes: smooth, green-black, and faintly warm through a gauntlet. It is cut with circles and crescents too precise for any hand. At the bottom, the Magos's seal lies in pieces. Its edges are bent outward.",
+          "gmNotes": "Closes Session 1, about 30 minutes. The team learns the xenos under Volkus are not Orks, and ends on the realisation that the seal was pushed open from inside.\n\nGetting down:\n• The scaffolds reach most of the way. The last stretch is Athletics (S) DN 3, falling damage on a failure (Core p.201).\n• Sarrius's Grav-Chute and Grapnel, and Hrafnsson's Jump Pack, simply get them down; either can carry a line for the others.\n• Pitch dark below the scaffolds: total darkness is +4 DN to Ballistic Skill (Core p.191); [GM] helm lamps bring it to very dim light, +2.\n\nTests (GM DNs; DN 3 standard, Core p.160):\n• Scholar (Int) DN 5 on the glyphs: they are Necron; reveal Glyph Rubbing. Shift: one sequence repeats, a dynastic mark; [GM] Lezektekhan (Threat Assessment p.133). (The DN 5 moved here from the old handout body, so players never see it.)\n• Investigation (Int) DN 3 at the base: a dead Magos Explorator, long mummified, clutching a cogitator stack. Shift: the stack still holds his log; reveal the Quintus Tet-9 log.\n• Awareness (Int) DN 3: the walls are repairing themselves, slowly, around the cut. Shift: tiny many-legged shapes move inside the walls, carrying servitor power cells.\n• Tech (Int) DN 3 on the seal: forced from below, not from above. Shift: whatever forced it was small, and there were hundreds of them.\n\nQuintus Tet-9 Ascending (Threat Assessment p.132) spent decades underground hunting Necron remains, then left to witness a major facility waking. [GM] This was the one. The handout is in our words, not the book's.\n\nThreats: a Mob of 10 Canoptek Scarabs (Threat Assessment p.145, Troop, Waking stage 1). They pour from the walls when anyone touches the glyphs or the log. Living Metal and Reanimation Protocols. Self-Destruction for 1 Ruin: 4 +1 ED, Blast 2, +1 to both per extra Scarab.\nIf Gutshiva escaped in Scene 5, he is here, hacking at the wall with the Power Klaw, surrounded by scarabs: add him to the fight for a three-way brawl. He'll bargain (\"Oi, beakies! Dese little gits are eatin' me boyz!\"); Orks respect Intimidation (Core p.168).\n\nHidden: Voss's xenophase blade hums loudest at the wall (his objective). The green-black shard from Scene 3 is the same metal as the wall. For Grimsson's and Tirrow's objectives, what leaves Volkus is now live.\n\nCliffhanger: at Waking stage 2 or higher, end on this: the wall beside you ripples like water, and something long and segmented slides out of the solid stone. Its single eye opens. That's the Canoptek Wraith (Threat Assessment p.155, hidden in this encounter); it opens Scene 8. At stage 1, end on the silence after the scarabs, with the seal's edges bent outward.\n\nSession end: PARTY → END SESSION. About 10 XP (Core p.321), plus Glory or XP for completed objectives. Wounds carried into Session 2 stay on the sheets.",
           "outcome": "",
           "encounter": [
-            { "threatId": "canoptek-scarab", "count": 10, "asMob": true, "marker": "purple", "label": "Canoptek Scarabs" }
+            {
+              "threatId": "canoptek-scarab",
+              "count": 10,
+              "asMob": true,
+              "marker": "purple",
+              "label": "Canoptek Scarabs",
+              "visibility": "hidden"
+            },
+            {
+              "threatId": "canoptek-wraith",
+              "count": 1,
+              "asMob": false,
+              "label": "Wraith (Waking stage 2+)",
+              "visibility": "hidden"
+            }
           ]
         }
       ]
     },
     {
       "key": "tomb-beneath",
-      "title": "Next: The Tomb Beneath (outline)",
-      "premise": "Session 2+ outline, using Cascading Effects (VoA p.123): write down what each antagonist does next, and change it after every session based on what the Kill Team did.\n• Mechanicus: Vakuul sends Skitarii to reclaim Volkus the moment the Orks are gone.\n• Orks: Gutshiva (if he escaped) wants the tellyporta fixed; Muntz 'nerz's other end is under Hive Gulgatha (GK p.3–7).\n• Necrons: the tomb keeps waking. Every session without a decision, stronger Necrons stir (TA p.134). Destroy it, seal it, or let the Mechanicus have it?",
+      "title": "Session 2: The Tomb Beneath (outline)",
+      "premise": "Session 2 outline from the campaign bible; each scene gets worked up in full later. Use Cascading Effects (VoA p.123): write down what each antagonist does next, and change it after every session based on what the Kill Team did.\n• Mechanicus: Tessaly-7's burst transmission brings Commander Metril's Skitarii back to demand the site. How they arrive (Friendly or Hostile) depends on Scene 4's deal, arrest or silence.\n• Orks: Gutshiva (if he escaped) or Gruzbag leads the remnant; Muntz 'nerz's tellyporta beacon and its other end under Hive Gulgatha (GK p.3–7).\n• Necrons: the Waking track keeps rising (The Sleepers Below). Stages 2–4 fill the halls; stage 5 is Ka'lalek's strike.",
       "status": "planned",
       "beats": [
         {
           "title": "The Mechanicus Return",
           "type": "social",
           "location": "volkus",
-          "npcs": ["magos", "vakuul"],
+          "npcs": ["magos", "vakuul", "inquisitor", "captain-de-vartavan"],
           "handouts": [],
           "readAloud": "",
-          "gmNotes": "Skitarii arrive with a writ. Negotiate, bluff, or stand in their way (VoA p.121: Marines' hardest obstacles are political). Build Skitarii from the Quick NPC table (Core p.326) or the Skitarius archetype (Core p.101).",
+          "gmNotes": "Scene 7. Commander Metril's Skitarii demand the site; Von Xardt orders it held; de Vartavan's Gravediggers are caught between them. Negotiate, bluff, or stand in their way (VoA p.121: Marines' hardest obstacles are political). Skitarii use the Quick NPC row at Tier 4 (Core p.326, ruling 2026-09-27). Hrafnsson's and Tirrow's objectives pull against the Inquisitor.",
           "outcome": "",
           "encounter": []
         },
@@ -307,12 +451,23 @@
           "npcs": [],
           "handouts": [],
           "readAloud": "",
-          "gmNotes": "Necron Warriors (Troops at Tier 4, TA p.142) in a Mob of 10, with an Elite: a Canoptek Reanimator (TA p.145) to show Reanimation Protocols. Remember Necrons give respected foes an 'honourable' death (TA p.135).",
+          "gmNotes": "Scene 8, Waking stages 2–4. Array components in stasis. The Technomancer serves Anephteh; its data points to Enoch's ocean. Necron Warriors (Troops at Tier 4, TA p.142) in a Mob of 10, with a Canoptek Reanimator (TA p.145) to show Reanimation Protocols. Remember Necrons give respected foes an 'honourable' death (TA p.135).",
           "outcome": "",
           "encounter": [
             { "threatId": "necron-warrior", "count": 10, "asMob": true, "marker": "green", "label": "Necron Warriors" },
             { "threatId": "canoptek-reanimator", "count": 1, "asMob": false, "marker": "white", "label": "Reanimator" }
           ]
+        },
+        {
+          "title": "Ka'lalek's Strike",
+          "type": "combat",
+          "location": "volkus-shaft",
+          "npcs": [],
+          "handouts": [],
+          "readAloud": "",
+          "gmNotes": "Scene 9, Waking stage 5. A three-way fight: the Ork remnant, Ka'lalek's raiders and the Watch. Who ends up with the component: destroyed, Von Xardt, or Vakuul. Content comes later.",
+          "outcome": "",
+          "encounter": []
         }
       ]
     }

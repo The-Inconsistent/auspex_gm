@@ -45,17 +45,17 @@ Sheets, names and full kit are in `docs/pregens.md`. There is no one-Gravis limi
 
 | Operative (Kill Team role) | Chapter | Archetype | Kit from the books |
 |---|---|---|---|
-| **Watch Sergeant**: leader, plasma pistol + power weapon | Space Wolves | Tactical Space Marine + Rubicon Primaris (VoA p.28, p.43) | Rubicon's Uncommon item, plus [GM] Plasma Pistol and Power Sword (VoA p.62) |
-| **Disruptor**: jams comms, feeds targeting data | Raven Guard | Primaris **Incursor** (VoA p.33) | Printed kit; [GM] add the **Omni-Scrambler** (VoA p.74) |
+| **Watch Sergeant**: leader, plasma pistol + power weapon | White Scars | Tactical Space Marine + Rubicon Primaris (VoA p.28, p.43) | Rubicon's Uncommon item, plus [GM] Plasma Pistol and Power Sword (VoA p.62) |
+| **Disruptor**: jams comms, feeds targeting data | Ultramarines | Primaris **Incursor** (VoA p.33) | Printed kit; [GM] add the **Omni-Scrambler** (VoA p.74) |
 | **Horde-Slayer**: Gravis armour, infernus heavy bolter vs swarms | Salamanders | Primaris **Intercessor** (Core p.117) + Heavy Intercessor (VoA p.35) | Infernus heavy bolter = **Heavy Bolter** (Core p.217) |
-| **Marksman**: stalker bolt rifle | Dark Angels | Primaris **Eliminator** (VoA p.32) | Printed kit: Bolt Sniper Rifle, Camo Cloak, Mk X Phobos |
-| **Blademaster**: champion duellist, xenophase blade | Blood Angels | Tactical Space Marine + Rubicon Primaris (VoA p.28, p.43) | Xenophase blade = **Power Sword** (VoA p.62) |
-| **Aegis** | Black Templars | Tactical Space Marine + Rubicon Primaris (VoA p.28, p.43) | see `docs/pregens.md` |
-| **Bombard** | Crimson Fists | Primaris **Aggressor** (Apoc p.181) | printed kit |
-| **Breacher** | Imperial Fists | Primaris **Aggressor** (Apoc p.181) | printed kit |
-| **Demolisher** | Absolvers | **Assault Space Marine** (Apoc p.137) + Rubicon Primaris (VoA p.43) | printed kit |
-| **Gunner** | Iron Hands | Primaris **Hellblaster** (Apoc p.183) | printed kit |
-| **Headtaker** | White Scars | Primaris **Reiver** (VoA p.37) | printed kit |
+| **Marksman**: stalker bolt rifle | Red Scorpions (no Chapter Traits) | Primaris **Eliminator** (VoA p.32) | Printed kit: Bolt Sniper Rifle, Camo Cloak, Mk X Phobos |
+| **Blademaster**: champion duellist, xenophase blade | Dark Angels | Tactical Space Marine + Rubicon Primaris (VoA p.28, p.43) | Xenophase blade = **Power Sword** (VoA p.62) |
+| **Aegis** | Space Wolves | Tactical Space Marine + Rubicon Primaris (VoA p.28, p.43) | see `docs/pregens.md` |
+| **Bombard** | Flesh Tearers (Apoc p.28) | Primaris **Intercessor** (Core p.117) + Heavy Intercessor (VoA p.35) | Heavy Bolter → [GM] **Deathwatch Frag Cannon** (Apoc p.356) |
+| **Breacher** | Imperial Fists | Primaris **Intercessor** (Core p.117) + Heavy Intercessor (VoA p.35) | Heavy Bolter → [GM] **Hellstorm Bolt Rifle** + Astartes Grenade Launcher (VoA p.67) + Melta Bomb (FSPG p.124) |
+| **Demolisher** | Space Wolves | **Assault Space Marine** (Apoc p.137) + Rubicon Primaris (VoA p.43) | printed kit |
+| **Gunner** | Emperor's Spears (Ultramarines traits) | Primaris **Hellblaster** (Apoc p.183) | printed kit |
+| **Headtaker** | Blood Angels | Primaris **Reiver** (VoA p.37) | printed kit |
 
 **Special Issue Ammunition** carries over as the core special Bolt rounds (Core p.229–230): Dragonfire, Hellfire,
 Kraken. [GM] each marine starts with one type.
@@ -93,6 +93,35 @@ Kraken. [GM] each marine starts with one type.
 12. **Horde-Slayer and Breacher swap people**: the Horde-Slayer is Brother Hesh Tu'var (Salamanders), the Breacher
     Brother Tancred Varn (Imperial Fists). Each keeps its operative, archetype and kit; the name, Chapter, Background,
     personality, objectives and Chapter Talents moved (`docs/pregens.md` §§3, 8).
+13. **New Chapters** for nine pregens; each keeps its operative, archetype route and kit (`docs/pregens.md`):
+    - Watch Sergeant Qaan Toghril: White Scars (was Space Wolves).
+    - Brother Octavius Serren (Disruptor): Ultramarines (was Raven Guard).
+    - Brother Aurelian Tarsus (Marksman): **Red Scorpions**, of unknown origin. [GM] The Chapter has **no Chapter Traits**:
+      Core p.71 says a Chapter of unknown succession "may take the Chapter Traits of any of the First Founding Chapters",
+      and this one takes none. The catalogue has no Red Scorpions record (it is book data), so his build writes RED
+      SCORPIONS into [CHAPTER], which the builder flags (rules-flow.md §11.25); the tests pin that one problem.
+    - Brother Sariel Voss (Blademaster): Dark Angels (was Blood Angels).
+    - Brother Hjalmar Grimsson (Aegis): Space Wolves (was Black Templars, so no longer homebrew).
+    - Brother Idrian Kostas (Bombard): Flesh Tearers (Apoc p.28, a Blood Angels Successor; was Crimson Fists).
+    - Brother Sigurd Hrafnsson (Demolisher): Space Wolves, Grimsson's Chapter (was Absolvers, so §11.23 and decision 4 no
+      longer reach any pregen).
+    - Brother Kael Tirrow (Gunner): Emperor's Spears, an Ultramarines Successor (was Iron Hands). The catalogue has no
+      Emperor's Spears record, so [GM] his [CHAPTER] is filled with ULTRAMARINES and he takes its traits (Core p.71,
+      "Successor Chapters").
+    - Brother Lucan Sarrius (Headtaker): Blood Angels (was White Scars).
+    The **Ultramarines are now in**, replacing the earlier choice to leave them out: the user chose them for the Disruptor
+    and (by succession) the Gunner, and *Pride of Ultramar (Tradition)* applies as printed: "You start each session with 1
+    Wrath Point instead of 2" (Core p.74). The app's session start sets every character to Wrath 2 (Core p.164), so the GM
+    takes 1 Wrath off those two sheets. Chapter-restricted Talents were swapped: the Disruptor's Wraith-Slipping (Raven
+    Guard, VoA p.50, 10 XP) for Codex Innovator (Ultramarines, VoA p.45, 20 XP), paid for by leaving his Ballistic Skill at
+    the Incursor's 4; the Headtaker's Raiding Master (White Scars, VoA p.49) for Echo of Sanguinius (Blood Angels, VoA p.46),
+    at the same 10 XP. The Blood Angels' and Flesh Tearers' Red Thirst stays
+    narrative for Sarrius and Kostas (Primaris ignore Gene-seed traits, Core p.71), except after an Echo of Sanguinius
+    vision.
+14. **Bombard and Breacher rebuilt** on Primaris Intercessor (Core p.117, 300 XP) + Heavy Intercessor Doctrine (VoA p.35,
+    60 XP), like the Horde-Slayer, instead of the Apocrypha Primaris Aggressor. The Doctrine's Heavy Bolter is swapped for
+    each one's Deathwatch kit; the Breacher's launcher fires the Intercessor's own grenades. The Bombard stays homebrew
+    (Flesh Tearers, Frag Cannon); the Breacher needs none.
 
 ## Kommandos
 

@@ -2,10 +2,10 @@
   "name": "Brother Tancred Varn",
   "stats": {
     "species": "Primaris Astartes",
-    "archetype": "Primaris Aggressor",
+    "archetype": "Primaris Intercessor + Heavy Intercessor Doctrine",
     "keywords": [
-      "IMPERIUM",
       "ADEPTUS ASTARTES",
+      "IMPERIUM",
       "PRIMARIS",
       "IMPERIAL FISTS",
       "DEATHWATCH"
@@ -15,17 +15,17 @@
       "T": 6,
       "A": 5,
       "I": 5,
-      "Wil": 5,
+      "Wil": 3,
       "Int": 3,
       "Fel": 1
     },
     "skills": {
       "Athletics": 4,
-      "Awareness": 4,
-      "Ballistic Skill": 5,
+      "Awareness": 3,
+      "Ballistic Skill": 6,
       "Stealth": 3,
       "Tech": 3,
-      "Weapon Skill": 4
+      "Weapon Skill": 3
     },
     "armour": {
       "name": "Mk X Gravis",
@@ -43,9 +43,14 @@
     },
     "abilities": [
       {
-        "name": "Firestorm",
-        "text": "When you make a ranged attack and do not move during your turn, you increase the Salvo of your weapons by +Rank. In addition, when you wield a pair of Auto Boltstorm Gauntlets or Flamestorm Gauntlets, you may benefit from the Dual Wield or Simultaneous Strike talents even though those weapons lack the Pistol trait. Standing still, the Hellstorm Bolt Rifle's Salvo is 3. The launcher and grenades have Salvo –, so it does nothing for them; he carries no gauntlets.",
-        "page": "Apocrypha p.181"
+        "name": "Intercessor Focus",
+        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a ranged weapon with the PRIMARIS Keyword. The Bolt Rifle and Heavy Bolt Pistol qualify (Core p.217); his Deathwatch weapons do not.",
+        "page": "Core p.117"
+      },
+      {
+        "name": "Heavy Intercessor Doctrine",
+        "text": "You receive Mark X Gravis armour if you don't already have it and one of the following weapons: Heavy Bolt Rifle, Heavy Bolter. You additional +Rank AP when using this weapon. Furthermore, you gain the Bolter Discipline Talent (see page 45). He chose the Heavy Bolter, which the Deathwatch armoury swapped out, so the +Rank AP applies to none of his weapons.",
+        "page": "VoA p.35"
       },
       {
         "name": "Defender of Humanity",
@@ -69,20 +74,20 @@
       },
       {
         "name": "Background",
-        "text": "Origin Killer Instinct (+1 Max Wounds); Accomplishment Crusader (+1 Determination: sworn against Orks); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
+        "text": "Origin Killer Instinct (+1 Max Wounds); Accomplishment Crusader (+1 Determination); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
         "page": "Core p.72"
       }
     ],
     "talents": [
       {
+        "name": "Bolter Discipline",
+        "text": "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating.",
+        "page": "VoA p.45"
+      },
+      {
         "name": "Legacy of the Primarch",
         "text": "[IMPERIAL FISTS]: Once per game session, you may draw on your knowledge of siege warfare to reduce by (Rank) either the DN of a Test made to attack a building, fortification, or enemy in cover, or the DN of a Test related to architectural engineering.",
         "page": "VoA p.48"
-      },
-      {
-        "name": "Pain Glove Endurant",
-        "text": "You ignore penalties to Tests caused by pain. In addition, you are immune to Fear.",
-        "page": "VoA p.49"
       }
     ],
     "weapons": [
@@ -99,7 +104,7 @@
         "salvo": 2,
         "traits": [
           "Brutal",
-          "Rapid Fire (2)"
+          "Rapid Fire (3)"
         ]
       },
       {
@@ -151,6 +156,52 @@
         ]
       },
       {
+        "name": "Bolt Rifle",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          15,
+          30,
+          45
+        ],
+        "salvo": 2,
+        "traits": [
+          "Brutal",
+          "Rapid Fire (3)"
+        ]
+      },
+      {
+        "name": "Heavy Bolt Pistol",
+        "damage": 10,
+        "ed": 1,
+        "ap": -1,
+        "range": [
+          6,
+          12,
+          18
+        ],
+        "salvo": 1,
+        "traits": [
+          "Brutal",
+          "Pistol",
+          "Rapid Fire (2)"
+        ]
+      },
+      {
+        "name": "Astartes Combat Knife",
+        "damage": 3,
+        "addStrength": true,
+        "ed": 2,
+        "ap": -1,
+        "range": [
+          1
+        ],
+        "traits": [
+          "Reliable"
+        ]
+      },
+      {
         "name": "Frag Grenade",
         "count": 3,
         "damage": 10,
@@ -180,14 +231,14 @@
     ],
     "gear": [
       "Astartes Grenade Launcher (VoA p.67): Range 12/24/36, Assault; fires his Frag or Krak Grenades (VoA p.64)",
-      "Ammo Backpack (Core p.229): carry 10 additional Ammo; it came stocked with 3",
+      "Spare armour: Mk X Tacticus (AR 5, Powered (4)); only one suit's AR counts at a time (Core p.231)",
       "Ballistic Appeasement Auto-Reliquary (Core p.236): clear a jammed weapon as a Free Action",
       "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
     ],
     "wealth": 4,
     "ammo": {
       "Dragonfire Bolt": 1,
-      "Bolt": 5
+      "Bolt": 2
     }
   },
   "detail": {

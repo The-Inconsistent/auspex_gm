@@ -8,35 +8,37 @@ checked on pp.26–75). **Apocrypha** = An Abundance of Apocrypha (homebrew, all
 
 | # | Operative | Name | Archetype | Chapter | XP spent | Unspent |
 |---|---|---|---|---|---|---|
-| 1 | Watch Sergeant | Watch Sergeant Ulfgar Kaldsson | Tactical Space Marine + Rubicon Primaris | Space Wolves | 400 | 0 |
-| 2 | Disruptor | Brother Veyl Corsa | Primaris Incursor | Raven Guard | 399 | 1 |
+| 1 | Watch Sergeant | Watch Sergeant Qaan Toghril | Tactical Space Marine + Rubicon Primaris | White Scars | 400 | 0 |
+| 2 | Disruptor | Brother Octavius Serren | Primaris Incursor | Ultramarines | 399 | 1 |
 | 3 | Horde-Slayer | Brother Hesh Tu'var | Primaris Intercessor + Heavy Intercessor Doctrine | Salamanders | 399 | 1 |
-| 4 | Marksman | Brother Zadkiel Morn | Primaris Eliminator | Dark Angels | 399 | 1 |
-| 5 | Blademaster | Brother Castiel Varro | Tactical Space Marine + Rubicon Primaris | Blood Angels | 400 | 0 |
-| 6 | Aegis | Brother Josmane Hald | Tactical Space Marine + Rubicon Primaris | Black Templars | 400 | 0 |
-| 7 | Bombard | Brother Idrian Kostas | Primaris Aggressor | Crimson Fists | 400 | 0 |
-| 8 | Breacher | Brother Tancred Varn | Primaris Aggressor | Imperial Fists | 399 | 1 |
-| 9 | Demolisher | Brother Anselm Grieve | Assault Space Marine + Rubicon Primaris | Absolvers | 400 | 0 |
-| 10 | Gunner | Brother Kordan Vex | Primaris Hellblaster | Iron Hands | 400 | 0 |
-| 11 | Headtaker | Brother Temur Khal | Primaris Reiver | White Scars | 399 | 1 |
+| 4 | Marksman | Brother Aurelian Tarsus | Primaris Eliminator | Red Scorpions (no traits) | 399 | 1 |
+| 5 | Blademaster | Brother Sariel Voss | Tactical Space Marine + Rubicon Primaris | Dark Angels | 400 | 0 |
+| 6 | Aegis | Brother Hjalmar Grimsson | Tactical Space Marine + Rubicon Primaris | Space Wolves | 400 | 0 |
+| 7 | Bombard | Brother Idrian Kostas | Primaris Intercessor + Heavy Intercessor Doctrine | Flesh Tearers | 400 | 0 |
+| 8 | Breacher | Brother Tancred Varn | Primaris Intercessor + Heavy Intercessor Doctrine | Imperial Fists | 400 | 0 |
+| 9 | Demolisher | Brother Sigurd Hrafnsson | Assault Space Marine + Rubicon Primaris | Space Wolves | 400 | 0 |
+| 10 | Gunner | Brother Kael Tirrow | Primaris Hellblaster | Emperor's Spears (Ultramarines traits) | 400 | 0 |
+| 11 | Headtaker | Brother Lucan Sarrius | Primaris Reiver | Blood Angels | 399 | 1 |
 
-Why these Chapters: each Chapter trait matches the marine's job. The eleven Chapters are all different, and none has
-a drawback that affects a Primaris marine, except the Dark Angels', Iron Hands' and White Scars' Traditions and the
-Absolvers' Red Thirst (rules-flow.md §11.23). Ultramarines were left out on purpose:
-their *Pride of Ultramar (Tradition)* sets starting Wrath to 1 (Core p.74), and this brief calls for Wrath 2.
+Chapters: the user set them (2026-09-27, kill-team.md ruling 13), except the Horde-Slayer's and the Breacher's. Two pairs
+share a Chapter or its traits: the Aegis and Demolisher are both Space Wolves, and the Disruptor and Gunner both use the
+Ultramarines traits. The Red Scorpions Marksman has no Chapter Traits [GM]. The drawbacks that reach a Primaris marine are
+the Traditions of the Dark Angels, White Scars and Ultramarines: the *Pride of Ultramar* means the Disruptor and Gunner
+start each session with **Wrath 1**, not 2 (Core p.74).
 
-- Space Wolves (Sergeant): free Dual Wield covers his pistol and sword.
-- Raven Guard (Disruptor): better Stealth.
+- White Scars (Sergeant): triple Speed on the Charge, to close with pistol and sword.
+- Ultramarines (Disruptor): Shift for Glory twice in one Test (Core p.166 allows once).
 - Salamanders (Horde-Slayer): Determination rerolls against fire and melta, and Master Artisan (Apocrypha p.239) rerolls
   with the heavy bolter he forged. Promethean Cult's attack rerolls need FIRE or MELTA, and a heavy bolter is BOLT.
-- Dark Angels (Marksman): rerolls when he Aims.
-- Blood Angels (Blademaster): rerolls in melee.
-- Black Templars (Aegis, Apocrypha): rerolls on the Charge and on Determination.
-- Crimson Fists (Bombard, Apocrypha): extra dice when outnumbered two-to-one.
+- Red Scorpions (Marksman): no Chapter Traits (Core p.71 lets a Chapter of unknown succession take a First Founding
+  Chapter's, but only "may").
+- Dark Angels (Blademaster): rerolls when he Aims (his Boltgun and pistol, not the blade).
+- Space Wolves (Aegis): Acute Sense (smell) and Dual Wield.
+- Flesh Tearers (Bombard, Apocrypha): melee rerolls, and +1 AP when he Shifts on a melee attack.
 - Imperial Fists (Breacher): rerolls against walls, bulkheads and Kommandos in cover.
-- Absolvers (Demolisher): the Blood Angels' melee rerolls.
-- Iron Hands (Gunner): no Wounded penalties, and an augmetic eye.
-- White Scars (Headtaker): triple Speed on the Charge.
+- Space Wolves (Demolisher): Acute Sense (smell); Dual Wield doesn't work with his two-handed hammer.
+- Emperor's Spears (Gunner): the Ultramarines' Glory Shift.
+- Blood Angels (Headtaker): rerolls in melee, with his knives.
 
 ---
 
@@ -65,7 +67,8 @@ their *Pride of Ultramar (Tradition)* sets starting Wrath to 1 (Core p.74), and 
   Every Primaris build is within them.
 - **Tree of Learning** (Core p.26): "You must have points in a number of Skills as the highest Rating your character has
   in a single Skill." Each sheet shows this check.
-- **Wrath:** "You start every session with 2 Wrath Points" (Core p.164). **Every agent starts each session with Wrath 2.**
+- **Wrath:** "You start every session with 2 Wrath Points" (Core p.164). **Every agent starts each session with Wrath 2,**
+  except the Disruptor and Gunner: Wrath 1 (Pride of Ultramar, Core p.74).
   You also earn 1 Wrath for completing your session Objective (Core p.164).
 
 **Species: Primaris Astartes** (Core p.29). [GM] Every Primaris agent uses this species (kill-team.md decision 1). Size: Average. Speed: 7.
@@ -139,12 +142,12 @@ They work only in weapons with the BOLT keyword (Core p.230).
 
 ---
 
-## 1. Watch Sergeant — "Watch Sergeant Ulfgar Kaldsson"
+## 1. Watch Sergeant — "Watch Sergeant Qaan Toghril"
 
-**Role:** leader and close-quarters officer. **Chapter:** Space Wolves. **Archetype:** Tactical Space Marine (Tier 3,
+**Role:** leader and close-quarters officer. **Chapter:** White Scars. **Archetype:** Tactical Space Marine (Tier 3,
 Core p.113), raised to Tier 4 by Creation Ascension (Core p.148) with the **Rubicon Primaris** Ascension Package (VoA p.43).
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, SPACE WOLVES, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, WHITE SCARS, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -207,9 +210,11 @@ Chapter* (+1 Conviction).
 - **Archetype: Tactical Versatility** (Core p.113). "Your training has prepared you for any circumstance. When you make a
   Critical Hit you may roll twice on the Critical Hit Table and choose either result."
 - **Species:** see *Primaris Astartes* above (Core p.29).
-- **Chapter: Hunters Unleashed** (Core p.74). "The Chapters kinship with wolves extends to enhanced senses and an almost feral
-  fighting style replete with savage grace. You have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133)."
-- *Savage Within (Gene-seed)* (Core p.74, "You cannot Fall Back") is **ignored**, because he is Primaris (Core p.71).
+- **Chapter: Lightning Assault** (Core p.75). "You may reroll Double Rank dice once each time you make a Pilot (A) Test. You
+  triple your Speed when you Charge (p.188)."
+- **Chapter: Ritual Scarring (Tradition)** (Core p.75). "You suffer a +1 DN penalty to any Fellowship-based Test made against
+  any target that could be frightened of your appearance." A Tradition, not a Gene-seed trait, so it applies to a Primaris.
+  Leadership is Willpower, so his orders don't suffer it.
 
 ### Talents
 
@@ -217,8 +222,6 @@ Chapter* (+1 Conviction).
 |---|---|---|
 | Bolter Discipline | Rubicon (VoA p.45) | "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating." |
 | Built Tough | Rubicon (VoA p.46) | "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself." |
-| Acute Sense (smell) | Chapter (Core p.129) | "Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice." |
-| Dual Wield | Chapter (Core p.133) | "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. You may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon." |
 
 ### Wargear
 
@@ -246,24 +249,26 @@ Tactical kit (Core p.113), Rubicon item (VoA p.43), and the Deathwatch swaps [GM
 - Power Sword: WS 9 + 1 (Grip) = **10**, Damage 14.
 - Boltgun and Plasma Pistol: BS **10**.
 - Leadership: **7**.
+- Charge: Speed 7, tripled (Lightning Assault; ambiguity 25).
 
-**Personality hook.** A Fenrisian skald who keeps an oral saga of every kill team he has led, and the names of those who didn't
-come home. Loud in the mess hall and silent on the vox, he trusts the xenos-hunters of other Chapters more than he lets on.
+**Personality hook.** A Chogorian storyteller who keeps the song-cycle of every kill team he has led, and of every brother it
+lost.
 
-**In combat:** Close in with the plasma pistol and the sword together. Dual Wield makes a two-weapon Multi-Attack cheap,
-and on a Critical Hit you roll the table twice and keep the better result.
+**In combat:** Charge in at triple Speed and open with the sword; the plasma pistol fires while Engaged (Pistol). On a
+Critical Hit you roll the table twice and keep the better result. He has no Dual Wield, so a pistol-and-sword Multi-Attack
+takes the full DN penalty.
 
 **Objectives** (the player's own, hidden from the others):
-- Chapter: record one brother's deed each session for the saga.
+- Chapter: add one brother's deed to the song-cycle each session.
 - Secret: bring every brother home, even if the Mandate fails.
 
 ---
 
-## 2. Disruptor — "Brother Veyl Corsa"
+## 2. Disruptor — "Brother Octavius Serren"
 
-**Role:** comms jamming, demolitions, scouting. **Chapter:** Raven Guard. **Archetype:** Primaris Incursor (Tier 4, VoA p.33).
+**Role:** comms jamming, demolitions, scouting. **Chapter:** Ultramarines. **Archetype:** Primaris Incursor (Tier 4, VoA p.33).
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, RAVEN GUARD, DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, ULTRAMARINES, DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -274,9 +279,8 @@ and on a Critical Hit you roll the table twice and keep the better result.
 | Attribute | Intellect 4→5 | 15 | 303 |
 | Skill | Tech 4→5 | 10 | 313 |
 | Skill | Stealth 3→5 (8+10) | 18 | 331 |
-| Skill | Ballistic Skill 4→5 | 10 | 341 |
-| Skill | Awareness 3→4 | 8 | 349 |
-| Talent | Wraith-Slipping (VoA p.50; A 5+, Raven Guard) | 10 | 359 |
+| Skill | Awareness 3→4 | 8 | 339 |
+| Talent | Codex Innovator (VoA p.45; Int 5+, Ultramarines) | 20 | 359 |
 | Talent | Bolter Discipline (VoA p.45) | 20 | 379 |
 | Talent | Silent (Core p.139) | 20 | **399** |
 
@@ -296,7 +300,7 @@ Incursor base (VoA p.33): S5 T5 A4 I5 Wil4 Int4.
 |---|---|---|
 | Athletics (S) | 3 | 8 |
 | Awareness (Int) | 4 | 9 |
-| Ballistic Skill (A) | 5 | 10 |
+| Ballistic Skill (A) | 4 | 9 |
 | Stealth (A) | 5 | 10 (+2 Phobos = 12) |
 | Survival (Wil) | 2 | 6 |
 | Tech (Int) | 5 | 10 (+3 Omni-Scrambler to disrupt comms = 13) |
@@ -329,15 +333,18 @@ Tree of Learning: the highest skill is 5 and 7 skills are trained. ✓
   attacks. When placing explosives, you may make a DN 3 Tech Test, and add +Rank bonus to both Damage and AP to the attack."
   [GM] "+Rank bonus extra damage" is read as +Rank ED.
 - **Species:** *Primaris Astartes* (Core p.29).
-- **Chapter: Master Of Shadows** (Core p.74). "You may reroll Rank dice once per Stealth (A) Test. Running, using a Jump Pack,
-  or similar circumstances do not affect your Stealth (A) Tests."
-- *Dark Heritage (Gene-seed)* (Core p.74) is **ignored** (Primaris, Core p.71).
+- **Chapter: Tactical Versatility** (Core p.74). "You may Shift for Glory twice as part of a Test." Core p.166 allows it once
+  per Test ("You can always Shift an Exalted Icon to add 1 point of Glory to the pool shared by the party"). The Chapter
+  trait, not the Tactical Space Marine's archetype ability of the same name (ambiguity 13).
+- **Chapter: Pride of Ultramar (Tradition)** (Core p.74). "You start each session with 1 Wrath Point instead of 2." A
+  Tradition, not Gene-seed, so it **applies**: he starts every session with **Wrath 1**. The app's session start sets every
+  character to Wrath 2, so the GM takes 1 Wrath off his sheet.
 
 ### Talents
 
 | Talent | Page | Effect |
 |---|---|---|
-| Wraith-Slipping | VoA p.50 | "You may ignore penalties to Stealth (A) Tests from your size, wargear, or lack of camouflage." |
+| Codex Innovator | VoA p.45 | "When executing a strategic plan or tactic that you helped create, you add + (Rank) dice to all Leadership (Wil) and Persuasion (Fel) Tests to guide others through the details. In addition, if you have at least one hour to plan for an upcoming encounter or mission, you receive one bonus Wrath point that can only be spent on a Narrative Declaration (Wrath & Glory Core Rulebook, page 164) relevant to your plan. This Wrath point can carry over between sessions, but you may never possess more than one bonus Wrath point from this Talent." It replaces Wraith-Slipping (Raven Guard only, VoA p.50); its extra 10 XP comes from leaving Ballistic Skill at the Incursor's 4 (user ruling 2026-09-27). |
 | Bolter Discipline | VoA p.45 | BOLT weapons gain Rapid Fire (2); if they already have it, +Rank to the rating. |
 | Silent | Core p.139 | "You can move at full Speed when Moving Stealthily (p.182). Whenever your Stealth Score would be reduced, reduce it by 1 fewer." |
 
@@ -367,12 +374,14 @@ Incursor kit (VoA p.33), plus the Omni-Scrambler [GM] (kill-team.md).
 - **Ammo** [GM]: 1 Dragonfire Bolt (Spread; ignores Defence bonuses from cover, Core p.230), 2 Bolt.
 
 **Key dice pools.**
-- Carbine: BS **10**.
-- Stealth: **12** (reroll 1 die).
+- Carbine and Bolt Pistol: BS **9**.
+- Stealth: **12**.
+- Wrath: **1** at the start of each session (Pride of Ultramar), plus at most 1 bonus Wrath from Codex Innovator after an
+  hour's planning, for a Narrative Declaration only.
 - Tech: **10**, or **13** to jam comms.
 
-**Personality hook.** He speaks in clipped vox-cant even face to face, and he counts the enemy's transmissions the way other
-marines count kills. He believes a war is won the moment the enemy stops talking to itself.
+**Personality hook.** Counts every enemy transmission and files it by Codex signal doctrine. A war is won when the enemy
+stops talking.
 
 **In combat:** Stay hidden and jam the enemy's vox first. Throw grenades into packed Mobs (Blast plus Explosive Fury, and
 Defender of Humanity adds Icons). Load Dragonfire when Kommandos go to ground in cover.
@@ -504,11 +513,12 @@ target is a single elite.
 
 ---
 
-## 4. Marksman — "Brother Zadkiel Morn"
+## 4. Marksman — "Brother Aurelian Tarsus"
 
-**Role:** long-range assassin. **Chapter:** Dark Angels. **Archetype:** Primaris Eliminator (Tier 4, VoA p.32).
+**Role:** long-range assassin. **Chapter:** Red Scorpions, of unknown origin, with **no Chapter Traits** [GM]
+(kill-team.md ruling 13). **Archetype:** Primaris Eliminator (Tier 4, VoA p.32).
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, DARK ANGELS, DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, RED SCORPIONS, DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -572,9 +582,9 @@ Tree of Learning: the highest skill is 6 and 6 skills are trained. ✓
   attack either inflicts a further 1d3 Mortal Wounds, or allows you to make a free Movement action once the attack is
   finished."
 - **Species:** *Primaris Astartes* (Core p.29).
-- **Chapter: Grim Resolve** (Core p.73). "You may reroll Double Rank dice once per ranged attack Test when you Aim (p.189)."
-- **Chapter: The Unforgiven (Tradition)** (Core p.73). "You suffer a +2 DN penalty to any social Tests made against anyone
-  outside of your Chapter." This is a Tradition, not Gene-seed, so it **applies**, including with his kill-team brothers.
+- **Chapter: none.** The Red Scorpions' origins are unknown. Core p.71 says a Chapter "of unknown succession" *may* take the
+  Chapter Traits of any First Founding Chapter; [GM] this one takes none (kill-team.md ruling 13). His [CHAPTER] keyword
+  is the written-in RED SCORPIONS; the builder has no Red Scorpions record, and flags the write-in (rules-flow.md §11.25).
 
 ### Talents
 
@@ -601,29 +611,30 @@ Eliminator kit (VoA p.32).
 - **Ammo** [GM]: 1 Kraken Bolt (AP −2, Core p.231), 2 Bolt.
 
 **Key dice pools.**
-- Aimed shot: BS 12 + 1 (Aim) + 1 (Sniper) = **14 dice**, rerolling 2 (Grim Resolve).
+- Aimed shot: BS 12 + 1 (Aim) + 1 (Sniper) = **14 dice**.
 - Aimed damage: 10 + **5 ED** (1 base, 2 Sniper, 2 Trademark).
 
-**Personality hook.** He is courteous, distant and unreadable. He answers questions with questions and keeps a private list of
-names he will not explain. He is certain someone in every briefing is lying, and he is usually right.
+**Personality hook.** A Red Scorpion, of a Chapter whose origins are unknown, and his brothers question him for it. His
+Chapter refuses to serve beside xenos or anyone it deems tainted by mutation, even sanctioned Abhumans such as Ogryns and
+Ratlings. He trusts a plan only once it has survived contact, and is sure every briefing hides a lie.
 
-**In combat:** Don't move. Aim every turn to get +1 die, +2 ED and 2 rerolls. A 6 on the Wrath die then either adds 1d3 Mortal
-Wounds or lets you relocate for free. Load Kraken for armoured targets.
+**In combat:** Don't move. Aim every turn to get +1 die and +2 ED. A 6 on the Wrath die then either adds 1d3 Mortal Wounds or
+lets you relocate for free. Load Kraken for armoured targets.
 
 **Objectives** (the player's own, hidden from the others):
-- Chapter: trust no word from outside the Watch.
-- Secret: put the name of whoever buried the breach report on your list, and prove it.
+- Chapter: let no one tainted by xenos or mutation fight at your side.
+- Secret: prove who buried the breach report, and bring the proof to Von Xardt.
 
 ---
 
-## 5. Blademaster — "Brother Castiel Varro"
+## 5. Blademaster — "Brother Sariel Voss"
 
-**Role:** champion duellist. **Chapter:** Blood Angels. **Archetype:** Tactical Space Marine (Tier 3, VoA p.28; also Core
+**Role:** champion duellist. **Chapter:** Dark Angels. **Archetype:** Tactical Space Marine (Tier 3, VoA p.28; also Core
 p.113), raised to Tier 4 by Creation Ascension (Core p.148) with the **Rubicon Primaris** Ascension Package (VoA p.43).
 His combat knife is replaced by a Power Sword (VoA p.62), which the Kill Team calls the **xenophase blade** [GM]
 (kill-team.md).
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, BLOOD ANGELS, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, DARK ANGELS, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -686,8 +697,10 @@ Tree of Learning: the highest skill is 6 and 9 skills are trained. ✓
 - **Archetype: Tactical Versatility** (Core p.113). "Your training has prepared you for any circumstance. When you make a
   Critical Hit you may roll twice on the Critical Hit Table and choose either result."
 - **Species:** *Primaris Astartes* (Core p.29).
-- **Chapter: Savage Echoes** (Core p.73). "You may reroll Double Rank dice once per melee attack Test."
-- *The Red Thirst (Gene-seed)* (Core p.73) is **ignored** (Primaris, Core p.71).
+- **Chapter: Grim Resolve** (Core p.73). "You may reroll Double Rank dice once per ranged attack Test when you Aim (p.189)."
+  Ranged only: it never helps the blade.
+- **Chapter: The Unforgiven (Tradition)** (Core p.73). "You suffer a +2 DN penalty to any social Tests made against anyone
+  outside of your Chapter." This is a Tradition, not Gene-seed, so it **applies**, including with his kill-team brothers.
 
 ### Talents
 
@@ -716,29 +729,29 @@ Tactical kit (VoA p.28), Rubicon item (VoA p.43), and the Deathwatch swaps [GM]:
 - **Ammo** [GM]: 1 Dragonfire Bolt (Spread; ignores Defence bonuses from cover, Core p.230) for the Bolt Pistol, 2 Bolt.
 
 **Key dice pools.**
-- Blade: WS 11 + 1 (Grip) = **12**. On a Charge, +1 = **13 dice**, rerolling 2 (Savage Echoes).
+- Blade: WS 11 + 1 (Grip) = **12**. On a Charge, +1 = **13 dice**.
 - Blade damage: 14, 4 ED, AP −3.
-- Bolt Pistol, fired while Engaged: BS **10**.
+- Bolt Pistol, fired while Engaged: BS **10**. Boltgun or pistol when he Aims: BS 11, rerolling 2 (Grim Resolve).
 
-**Personality hook.** He is graceful, soft-spoken and always polite, which is what makes the sudden violence so unsettling.
-He paints a drop of red on his blade for every xenos champion he has slain, and he fears the day the painting stops being art.
+**Personality hook.** Carries a xenophase blade and a private list of names. He duels like a confession: patient, precise,
+final.
 
-**In combat:** Charge the biggest xenos in reach: 13 dice with 2 rerolls, and a Critical Hit rolls the table twice.
-Parry makes you harder to hit in melee, and the Dragonfire pistol clears the chaff around your duel.
+**In combat:** Charge the biggest xenos in reach: 13 dice, and a Critical Hit rolls the table twice. Parry makes you harder
+to hit in melee, and the Dragonfire pistol clears the chaff around your duel. Out of reach, Aim the Boltgun for Grim
+Resolve's 2 rerolls.
 
 **Objectives** (the player's own, hidden from the others):
 - Chapter: slay a champion in single combat.
-- Secret: learn why your xenophase blade hums near the crypt.
+- Secret: learn why your xenophase blade hums near the crypt, and tell no one outside the Chapter.
 
 ---
 
-## 6. Aegis — "Brother Josmane Hald"
+## 6. Aegis — "Brother Hjalmar Grimsson"
 
-**Role:** shield-bearer who holds the breach. **Chapter:** Black Templars (Apocrypha p.27, homebrew, allowed for the
-pregens by the user's 2026-09-27 ruling). **Archetype:** Tactical Space Marine (Tier 3, Core p.113), raised to Tier 4 by
+**Role:** shield-bearer who holds the breach. **Chapter:** Space Wolves (Core p.74). **Archetype:** Tactical Space Marine (Tier 3, Core p.113), raised to Tier 4 by
 Creation Ascension (Core p.148) with the **Rubicon Primaris** Ascension Package (VoA p.43), as for the Watch Sergeant.
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, BLACK TEMPLARS, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, SPACE WOLVES, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -801,12 +814,10 @@ Chapter* (+1 Conviction).
 - **Archetype: Tactical Versatility** (Core p.113). "Your training has prepared you for any circumstance. When you make a
   Critical Hit you may roll twice on the Critical Hit Table and choose either result."
 - **Species:** see *Primaris Astartes* above (Core p.29).
-- **Chapter: Righteous Zeal** (Apocrypha p.27). "Your hatred permits you to show no mercy, nor does it permit you to yield
-  while the enemy draws breath. When you charge, you may re-roll up to Rank dice on your Weapon Skill test. In addition,
-  you may re-roll Rank dice when you roll Determination."
-- *Gene-Seed Flaw (Gene-Seed)* (Apocrypha p.27, missing implants 12 and 17) is **ignored**, because he is Primaris
-  (Core p.71).
-- Black Templars may never take the PSYKER keyword (Apocrypha p.27).
+- **Chapter: Hunters Unleashed** (Core p.74). "The Chapters kinship with wolves extends to enhanced senses and an almost feral
+  fighting style replete with savage grace. You have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133)."
+  [GM] His Acute Sense is smell.
+- *Savage Within (Gene-seed)* (Core p.74, "You cannot Fall Back") is **ignored**, because he is Primaris (Core p.71).
 
 ### Talents
 
@@ -814,6 +825,8 @@ Chapter* (+1 Conviction).
 |---|---|---|
 | Bolter Discipline | Rubicon (VoA p.45) | "When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon's Rapid Fire rating." |
 | Built Tough | Rubicon (VoA p.46) | "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself." |
+| Acute Sense (smell) | Chapter (Core p.129) | "Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice." |
+| Dual Wield | Chapter (Core p.133) | "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. You may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon." |
 
 ### Wargear
 
@@ -842,41 +855,39 @@ Tactical kit (Core p.113), Rubicon item (VoA p.43), and the Deathwatch swaps [GM
 - **Ammo** [GM]: 1 Kraken Bolt (AP −2, Core p.231), 2 Bolt. Both his BOLT weapons have AP "–".
 
 **Key dice pools.**
-- Power Maul: WS 10 + 1 (Grip) = **11**, Damage 14, Brutal. On a Charge, +1 = **12 dice**, rerolling 1 (Righteous Zeal).
+- Power Maul: WS 10 + 1 (Grip) = **11**, Damage 14, Brutal. On a Charge, +1 = **12 dice**.
 - Bolt Pistol and Boltgun: BS **10**.
-- Determination: **6 dice**, rerolling 1 (Righteous Zeal); with the shield, also against Mortal Wounds.
+- Determination: **6 dice**; with the shield, also against Mortal Wounds.
+- Awareness by smell: 6 + 1 (Acute Sense) = **7**.
 - Survival (Built Tough, to patch himself up): **6**.
 
-**Personality hook.** Speaks only in scripture. He stands in the breach so no brother has to, and treats every xenos as an
-error to be corrected.
+**Personality hook.** A Fenrisian shield-bearer who trusts his nose over any auspex. He stands in the breach so no brother
+has to, and sings the saga of every one that held.
 
 **In combat:** Stand in the doorway with the shield up: Defence 6 and Resilience 13 while the GM agrees it blocks. Charge
-whatever comes through with the maul, rerolling a Weapon Skill die, and reroll a Determination die whenever you soak.
+whatever comes through with the maul. Dual Wield needs a weapon in each hand, so it helps only when he slings the shield
+and fights maul and Bolt Pistol together.
 
 ---
 
 ## 7. Bombard — "Brother Idrian Kostas"
 
-**Role:** heavy fire support against massed foes. **Chapter:** Crimson Fists (Apocrypha p.27, Successor of the Imperial
-Fists). **Archetype:** Primaris Aggressor (Tier 4, Apocrypha p.181). Homebrew: the campaign must allow *An Abundance of
-Apocrypha* (user ruling 2026-09-27).
+**Role:** heavy fire support against massed foes. **Chapter:** Flesh Tearers (Apocrypha p.28, homebrew, Successor of the
+Blood Angels). **Archetype:** Primaris Intercessor (Tier 4, **Core p.117**; rules-flow.md §11.34) with the **Heavy
+Intercessor Doctrine** (VoA p.35), as for the Horde-Slayer: [GM] allowed at creation (kill-team.md decision 2), rebuilt on
+it by user ruling 2026-09-27 (kill-team.md ruling 14). His Chapter and the Frag Cannon are homebrew: the campaign must allow
+*An Abundance of Apocrypha* (user ruling 2026-09-27).
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, CRIMSON FISTS, DEATHWATCH [GM].
+**Keywords:** ADEPTUS ASTARTES, IMPERIUM, PRIMARIS, FLESH TEARERS, DEATHWATCH [GM].
 
 ### XP ledger (400)
 
 | Step | Purchase | Cost | Running |
 |---|---|---|---|
-| Archetype | Primaris Aggressor (Apocrypha p.181) | 228 | 228 |
-| Attribute | Toughness 5→6 | 20 | 248 |
-| Attribute | Agility 4→5 | 15 | 263 |
-| Attribute | Initiative 4→5 | 15 | 278 |
-| Attribute | Willpower 3→4 | 10 | 288 |
-| Skill | Ballistic Skill 4→6 (10+12) | 22 | 310 |
-| Skill | Awareness 3→4 | 8 | 318 |
-| Skill | Survival 0→3 (2+4+6; sixth skill, needed for the Tree of Learning with BS 6) | 12 | 330 |
-| Talent | Fearless (Core p.133; Wil 4+) | 30 | 360 |
-| Talent | Transhuman Physiology (VoA p.50; T 6+) | 40 | **400** |
+| Archetype | Primaris Intercessor (Core p.117) | 300 | 300 |
+| Package | Heavy Intercessor Doctrine (VoA p.35; requires PRIMARIS INTERCESSOR) [GM at creation] | 60 | 360 |
+| Attribute | Willpower 3→4 (meets Fearless's Wil 4+, Core p.133) | 10 | 370 |
+| Talent | Fearless (Core p.133; Wil 4+) | 30 | **400** |
 
 **Unspent: 0.**
 
@@ -886,22 +897,22 @@ Apocrypha* (user ruling 2026-09-27).
 |---|---|---|---|---|---|---|---|
 | 5 (9 in armour) | 6 | 5 | 5 | 4 | 3 | 1 | 7 |
 
-Aggressor base (Apocrypha p.181): S5 T5 A4 I4 Wil3 Int3. Fel is 1 by default.
+Intercessor base (Core p.117): S5 T6 A5 I5 Wil3 Int3.
 
 ### Skills (rating + attribute = dice pool)
 
 | Skill | Rating | Total |
 |---|---|---|
 | Athletics (S) | 3 | 8 |
-| Awareness (Int) | 4 | 7 |
-| Ballistic Skill (A) | 6 | 11 (12 when outnumbered two-to-one, No Matter the Odds) |
+| Awareness (Int) | 3 | 6 |
+| Ballistic Skill (A) | 6 | 11 (13 with PRIMARIS weapons, Intercessor Focus) |
 | Stealth (A) | 3 | 8 |
-| Survival (Wil) | 3 | 7 |
 | Weapon Skill (I) | 3 | 8 |
 
 Every other skill is 0.
 
-Tree of Learning: the highest skill is 6 and 6 skills are trained. ✓
+Tree of Learning: the highest skill is 6 and 5 skills are trained. All five ratings are the archetype's, which the Tree of
+Learning doesn't check (rules-flow.md §11.52; ambiguity 6).
 
 ### Traits (Core pp.36–37)
 
@@ -914,122 +925,133 @@ Tree of Learning: the highest skill is 6 and 6 skills are trained. ✓
 | Max Shock | Wil 4 + Tier 4 | **8** |
 | Resolve | Wil 4 − 1 + 1 (Honour the Chapter) + 1 (Courage) | **5** |
 | Conviction | Wil 4 | **4** |
-| Influence | Fel 1 − 1 + 1 (Aggressor) | **1** |
-| Passive Awareness | ½ × Awareness 7, rounded up | **4** |
+| Influence | Fel 1 − 1 + 1 (Intercessor) | **1** |
+| Passive Awareness | ½ × Awareness 6 | **3** |
 
 **Background** (Core p.72): Origin *Courage* (+1 Resolve); Accomplishment *Crusader* (+1 Determination: sworn against Orks);
-Goal *Vengeance* (+1 Determination: the Orks who nearly wiped out his Chapter, Apocrypha p.27).
+Goal *Vengeance* (+1 Determination).
 
 ### Abilities
 
-- **Archetype: Firestorm** (Apocrypha p.181). "When you make a ranged attack and do not move during your turn, you increase
-  the Salvo of your weapons by +Rank. In addition, when you wield a pair of Auto Boltstorm Gauntlets or Flamestorm
-  Gauntlets, you may benefit from the Dual Wield or Simultaneous Strike talents even though those weapons lack the Pistol
-  trait." Standing still, the Frag Cannon's Salvo is **3**. [GM] Barrage (Apocrypha p.326: "When this weapon makes a Salvo
-  attack, increase the weapon's Blast rating by the weapon's Salvo value") uses that raised Salvo, so Shrapnel's Blast is
-  **13** on a stationary Salvo attack. He carries no gauntlets, so the second sentence never applies.
-- **Species:** *Primaris Astartes* (Core p.29). The Aggressor already lists Primaris Astartes as its species.
-- **Chapter: No Matter the Odds** (Apocrypha p.27). "You will not yield in the face of overwhelming odds. When making an
-  attack while you and your allies are outnumbered at least two-to-one, you may add Rank dice to your Ballistic Skill or
-  Weapon Skill test."
-- *Gene-Seed Flaw (Gene-Seed)* (Apocrypha p.27, missing implants 12 and 17) is **ignored** (Primaris, Core p.71).
+- **Archetype: Intercessor Focus** (Core p.117). "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a
+  ranged weapon with the PRIMARIS Keyword." The Bolt Rifle and Heavy Bolt Pistol qualify (Core p.217); the Frag Cannon
+  (EXPLOSIVE, PROJECTILE, DEATHWATCH) doesn't.
+- **Heavy Intercessor Doctrine** (VoA p.35). "You receive Mark X Gravis armour if you don't already have it and one of the
+  following weapons: Heavy Bolt Rifle, Heavy Bolter. You additional +Rank AP when using this weapon. Furthermore, you gain the
+  Bolter Discipline Talent (see page 45)." He chose the **Heavy Bolter**, which the Deathwatch armoury swaps for the Frag
+  Cannon [GM], so the +Rank AP applies to none of his weapons (GM choice 22).
+- **Species:** *Primaris Astartes* (Core p.29).
+- **Chapter: Fury Within** (Apocrypha p.28). "You may re-roll Double Rank dice once per melee attack Test. In addition, if you
+  shift one or more Icons on a melee attack, improve the AP of your attack by 1 (i.e., from -1 to -2)."
+- *The Red Thirst (Gene-seed)* (Apocrypha p.28, DN 4) is **ignored** (Primaris, Core p.71). The Flesh Tearers have traits
+  of their own, so rules-flow.md §11.23 (a traitless Successor takes its founder's flaw) doesn't apply. The Red Thirst in his
+  personality is narrative only: no Test, no Frenzy (GM choice 17).
 
 ### Talents
 
-| Talent | Page | Effect |
+| Talent | Source | Effect |
 |---|---|---|
+| Bolter Discipline | Heavy Intercessor Doctrine (VoA p.45) | BOLT weapons gain Rapid Fire (2); if they already have it, +Rank to the rating. |
 | Fearless | Core p.133 | "You automatically pass any Fear Test. You are immune to Intimidation (Wil) Interaction Attacks." |
-| Transhuman Physiology | VoA p.50 | "When an attack deals less than (Rank) Wounds to you, you may immediately choose to convert them to Shock as if you had automatically received (Rank) Icons while rolling Determination. In addition, when converting Wounds to Shock through this method or with standard Determination rolls, you receive one less Shock per instance of conversion, to a minimum of 1." |
 
 ### Wargear
 
-Aggressor kit (Apocrypha p.181), with the gauntlets swapped for the Deathwatch kit [GM] (kill-team.md decision 2):
-- Fragstorm Grenade Launcher and 2 Auto Boltstorm Gauntlets become the **Deathwatch Frag Cannon** (Apocrypha p.356) [GM].
-- He also gets a **Bolt Pistol** (VoA p.67) [GM].
+Intercessor kit (Core p.117) and the Doctrine (VoA p.35), with the Doctrine's Heavy Bolter swapped for the Deathwatch kit
+[GM] (kill-team.md decision 2):
+- The Heavy Bolter becomes the **Deathwatch Frag Cannon** (Apocrypha p.356) [GM]. His sidearm is the Intercessor's Heavy
+  Bolt Pistol.
 
 | Weapon | Damage | ED | AP | Range | Salvo | Traits | Page |
 |---|---|---|---|---|---|---|---|
-| **Deathwatch Frag Cannon (Shrapnel)** | 14 | 2 | −1 | 4/8/12 | 2 (3 standing still) | Assault, Barrage, Blast (10), Heavy (6), Spread | Apocrypha p.356 |
-| **Deathwatch Frag Cannon (Shell)** | 16 | 2 | −2 (−3 at Short range) | 12/24/36 | 2 (3 standing still) | Assault, Heavy (6) | Apocrypha p.356 |
-| Bolt Pistol | 10 | 1 | – | 6/12/18 | 1 | Brutal, Pistol | VoA p.67 |
+| **Deathwatch Frag Cannon (Shrapnel)** | 14 | 2 | −1 | 4/8/12 | 2 | Assault, Barrage, Blast (10), Heavy (6), Spread | Apocrypha p.356 |
+| **Deathwatch Frag Cannon (Shell)** | 16 | 2 | −2 (−3 at Short range) | 12/24/36 | 2 | Assault, Heavy (6) | Apocrypha p.356 |
+| Bolt Rifle | 10 | 1 | −1 | 15/30/45 | 2 | Brutal, Rapid Fire (**3**) | Core p.217 |
+| Heavy Bolt Pistol | 10 | 1 | −1 | 6/12/18 | 1 | Brutal, Pistol, Rapid Fire (**2**) | Core p.217 |
+| Astartes Combat Knife | (S)+3 = **12** | 2 | −1 | melee | – | Reliable | VoA p.62 |
+| Frag Grenade ×3 | 10 | 4 | – | S×4 = 36 m | – | Blast (6) | Core p.220 |
+| Krak Grenade ×3 | 14 | 5 | −2 | S×4 = 36 m | – | Blast (4) | Core p.220 |
 
 - **Frag Cannon:** one weapon, two modes. "When firing a Deathwatch frag cannon, select either shrapnel or solid shell mode.
   When the solid shell mode is used, add +2ED to the damage, and increase the AP to -3 when the target is within short
   range." [GM] The printed Shell row is used as is (the "+2" is read as the row's Damage 16 over Shrapnel's 14, not added
   again), plus AP −3 at Short range. Keywords EXPLOSIVE, PROJECTILE, DEATHWATCH: it reloads with Projectile Ammo (Core p.229).
+- **Barrage** (Apocrypha p.326): "When this weapon makes a Salvo attack, increase the weapon's Blast rating by the weapon's
+  Salvo value": Shrapnel's Blast is **12** on a Salvo attack.
 - **Heavy (6)** is met: Strength 5 + Powered 4 = 9 (Core p.232). Powered also stops a Heavy-weapon Complication from knocking
   him Prone (Core p.232).
-- He has **no melee weapon**: the Aggressor's only melee profiles were the gauntlets, which he swapped out [GM]. In melee
-  he makes an Unarmed Strike (Core p.183): "An unarmed strike uses your Strength Attribute as the Damage value and has +1
-  ED", so Damage 9 in armour, +1 ED.
-- **Armour:** Mk X Gravis, AR 6, Powered (4) (VoA p.73; Apocrypha p.181 lists "Mark X Gravis Power Armour").
-- **Ammo Backpack** (Core p.229): "You can carry 10 additional Ammo." It comes "stocked with 3 available Ammo".
+- **Armour (worn):** Mk X Gravis, AR 6, Powered (4) (VoA pp.72–73), from the Doctrine.
+- **Also owned:** Mk X Tacticus (AR 5, Powered (4)), as for the Horde-Slayer (GM choice 12). Only one suit's AR counts at a
+  time (Core p.231).
 - **Ballistic Appeasement Auto-Reliquary** (Core p.236): "Clear a jammed weapon as a Free Action."
-- **Ammo:** 3 at creation (Core p.229) plus the backpack's 3. [GM] 1 Kraken Bolt (AP −2, Core p.231) for the pistol, whose
-  base AP is "–"; 1 Bolt; 4 Projectile for the Frag Cannon.
+- **Ammo** [GM]: the 3 at creation (Core p.229) are 1 Kraken Bolt (AP −2, Core p.231) for the Heavy Bolt Pistol, and 2
+  Projectile for the Frag Cannon. Special Bolt rounds work in any BOLT weapon (Core p.230), and the Heavy Bolt Pistol is BOLT
+  (Core p.217). Its base AP is −1, so whether Kraken's AP −2 replaces it or adds to it (ambiguity 9) matters here: the GM
+  rules at the table.
 
 **Key dice pools.**
-- Frag Cannon: BS **11**, **12** when outnumbered two-to-one. Shrapnel at Short range hits everyone within 3 m of each other
-  (Spread) and gets +3 dice against a Mob (Core p.210).
-- Bolt Pistol: BS **11**.
+- Frag Cannon: BS **11**. Shrapnel at Short range hits everyone within 3 m of each other (Spread) and gets +3 dice against a
+  Mob (Core p.210).
+- Bolt Rifle and Heavy Bolt Pistol: BS **13** (Intercessor Focus).
+- Knife: WS **8**, rerolling 2 (Fury Within).
 
-**Personality hook.** His Chapter was nearly wiped out and rebuilt. He rations ammunition like bread and laughs only when
-the odds are hopeless, which is when the frag cannon speaks.
+**Personality hook.** His Chapter serves the Emperor truly, but carries Sanguinius's flaws worse than most. Its brutality once
+brought an Inquisition investigation for heresy, and it stands cleared, for now. Nearly wiped out and rebuilt, he rations
+ammunition like bread and laughs only when the odds are hopeless. He knows the Red Thirst from the inside, and he watches
+Sarrius the way a man watches his own reflection.
 
-**In combat:** Plant your feet and fire Shrapnel into the Mob: Firestorm lifts the Salvo to 3, Barrage lifts the Blast to 13,
-Spread adds +3 dice, and Defender of Humanity adds Icons. Against a single tough target, switch to Shell at Short range for
-AP −3. Kommando Mobs outnumber the team, so No Matter the Odds adds a die to almost every shot.
+**In combat:** Fire Shrapnel into the Mob: Barrage lifts the Blast to 12, Spread adds +3 dice, and Defender of Humanity adds
+Icons. Against a single tough target, switch to Shell at Short range for AP −3, or to the Bolt Rifle for +2 dice. Fear never
+stops him (Fearless).
+
+**Objectives** (the player's own, hidden from the others):
+- Chapter: let no Ork escape the site.
+- Secret: kill Gutshiva yourself.
 
 ---
 
 ## 8. Breacher — "Brother Tancred Varn"
 
-**Role:** breaching and demolitions. **Chapter:** Imperial Fists (Core p.73). **Archetype:** Primaris Aggressor (Tier 4,
-Apocrypha p.181). Homebrew: the campaign must allow *An Abundance of Apocrypha* (user ruling 2026-09-27).
+**Role:** breaching and demolitions. **Chapter:** Imperial Fists (Core p.73). **Archetype:** Primaris Intercessor (Tier 4,
+**Core p.117**; rules-flow.md §11.34) with the **Heavy Intercessor Doctrine** (VoA p.35), as for the Horde-Slayer: [GM]
+allowed at creation (kill-team.md decision 2), rebuilt on it by user ruling 2026-09-27 (kill-team.md ruling 14). No
+homebrew.
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, IMPERIAL FISTS, DEATHWATCH [GM].
+**Keywords:** ADEPTUS ASTARTES, IMPERIUM, PRIMARIS, IMPERIAL FISTS, DEATHWATCH [GM].
 
 ### XP ledger (400)
 
 | Step | Purchase | Cost | Running |
 |---|---|---|---|
-| Archetype | Primaris Aggressor (Apocrypha p.181) | 228 | 228 |
-| Attribute | Toughness 5→6 | 20 | 248 |
-| Attribute | Agility 4→5 | 15 | 263 |
-| Attribute | Initiative 4→5 | 15 | 278 |
-| Attribute | Willpower 3→5 (10+15; meets Pain Glove Endurant's Wil 5+, VoA p.49) | 25 | 303 |
-| Skill | Ballistic Skill 4→5 | 10 | 313 |
-| Skill | Tech 0→3 (2+4+6) | 12 | 325 |
-| Skill | Athletics 3→4 | 8 | 333 |
-| Skill | Awareness 3→4 | 8 | 341 |
-| Skill | Weapon Skill 3→4 | 8 | 349 |
-| Talent | Legacy of the Primarch (VoA p.48; [CHAPTER] keyword) | 20 | 369 |
-| Talent | Pain Glove Endurant (VoA p.49; Wil 5+, Imperial Fists) | 30 | **399** |
+| Archetype | Primaris Intercessor (Core p.117) | 300 | 300 |
+| Package | Heavy Intercessor Doctrine (VoA p.35; requires PRIMARIS INTERCESSOR) [GM at creation] | 60 | 360 |
+| Talent | Legacy of the Primarch (VoA p.48; [CHAPTER] keyword) | 20 | 380 |
+| Skill | Tech 0→3 (2+4+6) | 12 | 392 |
+| Skill | Athletics 3→4 | 8 | **400** |
 
-**Unspent: 1.**
+**Unspent: 0.**
 
 ### Attributes
 
 | S | T | A | I | Wil | Int | Fel | Speed |
 |---|---|---|---|---|---|---|---|
-| 5 (9 in armour) | 6 | 5 | 5 | 5 | 3 | 1 | 7 |
+| 5 (9 in armour) | 6 | 5 | 5 | 3 | 3 | 1 | 7 |
 
-Aggressor base (Apocrypha p.181): S5 T5 A4 I4 Wil3 Int3. Fel is 1 by default.
+Intercessor base (Core p.117): S5 T6 A5 I5 Wil3 Int3.
 
 ### Skills (rating + attribute = dice pool)
 
 | Skill | Rating | Total |
 |---|---|---|
 | Athletics (S) | 4 | 9 |
-| Awareness (Int) | 4 | 7 |
-| Ballistic Skill (A) | 5 | 10 |
+| Awareness (Int) | 3 | 6 |
+| Ballistic Skill (A) | 6 | 11 (13 with PRIMARIS weapons, Intercessor Focus) |
 | Stealth (A) | 3 | 8 |
 | Tech (Int) | 3 | 6 |
-| Weapon Skill (I) | 4 | 9 |
+| Weapon Skill (I) | 3 | 8 |
 
 Every other skill is 0.
 
-Tree of Learning: the highest skill is 5 and 6 skills are trained. ✓
+Tree of Learning: the highest skill is 6 and 6 skills are trained. ✓
 
 ### Traits (Core pp.36–37)
 
@@ -1039,23 +1061,25 @@ Tree of Learning: the highest skill is 5 and 6 skills are trained. ✓
 | Resilience | T 6 + 1 + AR 6 (Gravis) | **13** |
 | Max Wounds | 2×4 + T 6 + 3 (Primaris) + 1 (Killer Instinct) | **18** |
 | Determination | T 6 + 1 (Crusader) + 1 (Vengeance) | **8** |
-| Max Shock | Wil 5 + Tier 4 | **9** |
-| Resolve | Wil 5 − 1 + 1 (Honour the Chapter) | **5** |
-| Conviction | Wil 5 | **5** |
-| Influence | Fel 1 − 1 + 1 (Aggressor) | **1** |
-| Passive Awareness | ½ × Awareness 7, rounded up | **4** |
+| Max Shock | Wil 3 + Tier 4 | **7** |
+| Resolve | Wil 3 − 1 + 1 (Honour the Chapter) | **3** |
+| Conviction | Wil 3 | **3** |
+| Influence | Fel 1 − 1 + 1 (Intercessor) | **1** |
+| Passive Awareness | ½ × Awareness 6 | **3** |
 
 **Background** (Core p.72): Origin *Killer Instinct* (+1 Max Wounds); Accomplishment *Crusader* (+1 Determination: sworn
 against Orks); Goal *Vengeance* (+1 Determination).
 
 ### Abilities
 
-- **Archetype: Firestorm** (Apocrypha p.181). "When you make a ranged attack and do not move during your turn, you increase
-  the Salvo of your weapons by +Rank. In addition, when you wield a pair of Auto Boltstorm Gauntlets or Flamestorm
-  Gauntlets, you may benefit from the Dual Wield or Simultaneous Strike talents even though those weapons lack the Pistol
-  trait." Standing still, the Hellstorm Bolt Rifle's Salvo is **3**. The launcher and grenades have Salvo "–", so it does
-  nothing for them. He carries no gauntlets.
-- **Species:** *Primaris Astartes* (Core p.29). The Aggressor already lists Primaris Astartes as its species.
+- **Archetype: Intercessor Focus** (Core p.117). "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a
+  ranged weapon with the PRIMARIS Keyword." The Bolt Rifle and Heavy Bolt Pistol qualify (Core p.217); the VoA Hellstorm
+  Bolt Rifle and the grenade launcher don't.
+- **Heavy Intercessor Doctrine** (VoA p.35). "You receive Mark X Gravis armour if you don't already have it and one of the
+  following weapons: Heavy Bolt Rifle, Heavy Bolter. You additional +Rank AP when using this weapon. Furthermore, you gain the
+  Bolter Discipline Talent (see page 45)." He chose the **Heavy Bolter**, which the Deathwatch armoury swaps for his breaching
+  kit [GM], so the +Rank AP applies to none of his weapons (GM choice 22).
+- **Species:** *Primaris Astartes* (Core p.29).
 - **Chapter: Siege Masters** (Core p.73). "You may reroll Double Rank dice once per attack against a building, fortification,
   or enemy in cover. You may also add +Rank bonus dice whenever you make a Test related to architectural engineering."
   Every breach is an attack against a building or fortification.
@@ -1063,24 +1087,31 @@ against Orks); Goal *Vengeance* (+1 Determination).
 
 ### Talents
 
-| Talent | Page | Effect |
+| Talent | Source | Effect |
 |---|---|---|
+| Bolter Discipline | Heavy Intercessor Doctrine (VoA p.45) | BOLT weapons gain Rapid Fire (2); if they already have it, +Rank to the rating. |
 | Legacy of the Primarch | VoA p.48 | "[IMPERIAL FISTS]: Once per game session, you may draw on your knowledge of siege warfare to reduce by (Rank) either the DN of a Test made to attack a building, fortification, or enemy in cover, or the DN of a Test related to architectural engineering." |
-| Pain Glove Endurant | VoA p.49 | "You ignore penalties to Tests caused by pain. In addition, you are immune to Fear." |
+
+Pain Glove Endurant (VoA p.49), which the Aggressor build took, needs Willpower 5: 25 XP more than the 40 the Intercessor
+leaves.
 
 ### Wargear
 
-Aggressor kit (Apocrypha p.181), with the gauntlets swapped for the Deathwatch kit [GM] (kill-team.md decision 2):
-- Fragstorm Grenade Launcher and 2 Auto Boltstorm Gauntlets become the **Hellstorm Bolt Rifle** (VoA p.67), the **Astartes
-  Grenade Launcher** (VoA p.67) as the Kill Team auxiliary grenade launcher, and a **Melta Bomb** (FSPG p.124) [GM].
-- He also gets **3 Frag and 3 Krak Grenades** (Core p.220) [GM], because the Aggressor prints none.
+Intercessor kit (Core p.117) and the Doctrine (VoA p.35), with the Doctrine's Heavy Bolter swapped for the Deathwatch kit
+[GM] (kill-team.md decision 2):
+- The Heavy Bolter becomes the **Hellstorm Bolt Rifle** (VoA p.67), the **Astartes Grenade Launcher** (VoA p.67) as the Kill
+  Team auxiliary grenade launcher, and a **Melta Bomb** (FSPG p.124) [GM].
+- The launcher fires the Intercessor's own 3 Frag and 3 Krak Grenades (Core p.220), so none are added.
 
 | Weapon | Damage | ED | AP | Range | Salvo | Traits | Page |
 |---|---|---|---|---|---|---|---|
-| **Hellstorm Bolt Rifle** | 10 | 2 | −1 | 15/30/45 | 2 (3 standing still) | Brutal, Rapid Fire (2) | VoA p.67 |
+| **Hellstorm Bolt Rifle** | 10 | 2 | −1 | 15/30/45 | 2 | Brutal, Rapid Fire (**3**: 2 +1 from Bolter Discipline) | VoA p.67 |
 | Astartes Grenade Launcher (Frag) | 10 | 4 | – | 12/24/36 | – | Assault, Blast (6) | VoA p.67, Core p.220 |
 | Astartes Grenade Launcher (Krak) | 14 | 5 | −2 | 12/24/36 | – | Assault, Blast (4) | VoA p.67, Core p.220 |
 | **Melta Bomb** ×1 | 16 | 4 | −4 | S×2 = 18 m | – | Blast (4) | FSPG p.124 |
+| Bolt Rifle | 10 | 1 | −1 | 15/30/45 | 2 | Brutal, Rapid Fire (**3**) | Core p.217 |
+| Heavy Bolt Pistol | 10 | 1 | −1 | 6/12/18 | 1 | Brutal, Pistol, Rapid Fire (**2**) | Core p.217 |
+| Astartes Combat Knife | (S)+3 = **12** | 2 | −1 | melee | – | Reliable | VoA p.62 |
 | Frag Grenade ×3 | 10 | 4 | – | S×4 = 36 m | – | Blast (6) | Core p.220 |
 | Krak Grenade ×3 | 14 | 5 | −2 | S×4 = 36 m | – | Blast (4) | Core p.220 |
 
@@ -1092,18 +1123,16 @@ Aggressor kit (Apocrypha p.181), with the gauntlets swapped for the Deathwatch k
   time they are fired or thrown" (Core p.229). The grenades print "(S) x4m or as Launcher" (Core p.220).
 - **Melta Bomb:** [GM] thrown only. FSPG p.124 prints "(S) x2m or as Launcher", but VoA p.64 loads the Astartes launcher
   with Frag or Krak. Its keywords are EXPLOSIVE, IMPERIUM, with no MELTA.
-- He has **no melee weapon**: the Aggressor's only melee profiles were the gauntlets, which he swapped out [GM]. In melee
-  he makes an Unarmed Strike (Core p.183): "An unarmed strike uses your Strength Attribute as the Damage value and has +1
-  ED", so Damage 9 in armour, +1 ED.
-- **Armour:** Mk X Gravis, AR 6, Powered (4) (VoA p.73; Apocrypha p.181 lists "Mark X Gravis Power Armour").
-- **Ammo Backpack** (Core p.229): "You can carry 10 additional Ammo." It comes "stocked with 3 available Ammo".
+- **Armour (worn):** Mk X Gravis, AR 6, Powered (4) (VoA pp.72–73), from the Doctrine.
+- **Also owned:** Mk X Tacticus (AR 5, Powered (4)), as for the Horde-Slayer (GM choice 12). Only one suit's AR counts at a
+  time (Core p.231).
 - **Ballistic Appeasement Auto-Reliquary** (Core p.236): "Clear a jammed weapon as a Free Action."
-- **Ammo:** 3 at creation (Core p.229) plus the backpack's 3. [GM] 1 Dragonfire Bolt (Spread; ignores Defence bonuses from
-  cover, Core p.230), 5 Bolt.
+- **Ammo** [GM]: 1 Dragonfire Bolt (Spread; ignores Defence bonuses from cover, Core p.230), 2 Bolt.
 
 **Key dice pools.**
-- Hellstorm Bolt Rifle and grenade launcher: BS **10**, rerolling 2 dice against a wall, a bulkhead or a foe in cover
+- Hellstorm Bolt Rifle and grenade launcher: BS **11**, rerolling 2 dice against a wall, a bulkhead or a foe in cover
   (Siege Masters).
+- Bolt Rifle: BS **13** (Intercessor Focus), ED 1 against the Hellstorm's 2.
 - Tech: **6**.
 
 **Personality hook.** A patient, immovable son of Dorn who treats every breach as a siege to be won. He keeps a tally of
@@ -1112,7 +1141,6 @@ Ork skulls etched on his bolt rifle's casing, and gets quietly annoyed whenever 
 **In combat:** Krak through the wall with the launcher (VoA p.64: Astartes launchers "mouse-hole" through buildings),
 rerolling 2 dice with Siege Masters, then Frag the room behind it. Save the Melta Bomb for a bulkhead or a big target, and
 Legacy of the Primarch's −1 DN for the breach that must not fail. Load Dragonfire when Kommandos go to ground in cover.
-Pain Glove Endurant makes him immune to Fear: he holds the breach.
 
 **Objectives** (the player's own, hidden from the others):
 - Chapter: hold a position against the horde without falling back.
@@ -1120,16 +1148,14 @@ Pain Glove Endurant makes him immune to Fear: he holds the breach.
 
 ---
 
-## 9. Demolisher — "Brother Anselm Grieve"
+## 9. Demolisher — "Brother Sigurd Hrafnsson"
 
-*Placeholder name.*
-
-**Role:** jump-pack breacher with a heavy thunder hammer. **Chapter:** Absolvers. **Archetype:** Assault Space Marine
+**Role:** jump-pack breacher with a heavy thunder hammer. **Chapter:** Space Wolves (Core p.74), the Aegis's Chapter. **Archetype:** Assault Space Marine
 (Tier 3, **Apocrypha p.137**, homebrew), raised to Tier 4 by Creation Ascension (Core p.148) with the **Rubicon Primaris**
 Ascension Package (VoA p.43). Apocrypha is allowed for the pregens (user ruling 2026-09-27). His Chainsword is replaced by a
 **Heavy Thunder Hammer** [GM].
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, ABSOLVERS, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, SPACE WOLVES, PRIMARIS (from Rubicon, VoA p.43), DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -1140,7 +1166,7 @@ Ascension Package (VoA p.43). Apocrypha is allowed for the pregens (user ruling 
 | Skill | Survival 0→2 (2+4; meets Built Tough's Survival 2+, VoA p.46) | 6 | 356 |
 | Talent | Hammer of Wrath (VoA p.47; Pilot 4+) | 20 | 376 |
 | Skill | Weapon Skill 4→5 | 10 | 386 |
-| Attribute | Willpower 3→4 (against the Red Thirst) | 10 | 396 |
+| Attribute | Willpower 3→4 | 10 | 396 |
 | Skill | Scholar 1→2 | 4 | **400** |
 
 **Unspent: 0.**
@@ -1194,13 +1220,10 @@ Chapter* (+1 Conviction).
   the point where you land must pass an Agility test (DN 2 +Rank) or be knocked Prone." At Rank 1, that is DN 3. (Printed
   without "within".)
 - **Species:** see *Primaris Astartes* above (Core p.29).
-- **Chapter:** the Absolvers are a Blood Angels Successor (VoA pp.30, 78) and take the Blood Angels Chapter Traits
-  (rules-flow.md §11.23).
-  - **Savage Echoes** (Core p.73). "You may reroll Double Rank dice once per melee attack Test."
-  - **The Red Thirst (Gene-seed)** (Core p.73). "Whenever you are in melee combat and see blood, you must make a DN 3 Willpower
-    Test. If you fail, you are Frenzied." It **applies**, although he is Primaris: §11.23 overrides Core p.71 for the
-    Absolvers. Frenzied (Core p.199): he may resist with a DN 3 Willpower Test at the start of his Turn; otherwise he charges
-    the nearest visible enemy, is immune to Fear, can't be Pinned, must use All-Out Attack, and gains +1 Strength.
+- **Chapter: Hunters Unleashed** (Core p.74). "The Chapters kinship with wolves extends to enhanced senses and an almost feral
+  fighting style replete with savage grace. You have the Acute Sense Talent (p.129) and the Dual Wield Talent (p.133)."
+  [GM] His Acute Sense is smell.
+- *Savage Within (Gene-seed)* (Core p.74, "You cannot Fall Back") is **ignored**, because he is Primaris (Core p.71).
 
 ### Talents
 
@@ -1208,6 +1231,8 @@ Chapter* (+1 Conviction).
 |---|---|---|
 | Bolter Discipline | Rubicon (VoA p.45) | BOLT weapons gain Rapid Fire (2); if they already have it, +Rank to the rating. |
 | Built Tough | Rubicon (VoA p.46) | "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself." |
+| Acute Sense (smell) | Chapter (Core p.129) | "Whenever you make an Awareness Test based on that sense, you gain +Rank bonus dice." |
+| Dual Wield | Chapter (Core p.133) | "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. …" The Heavy Thunder Hammer is 2-HANDED, so it never applies with the hammer. |
 | Hammer of Wrath | VoA p.47 | "When equipped with a Jump Pack (Wrath & Glory Core Rulebook, page 237), you may spend one Wrath to make any attack you make as part of a flying Charge deal Mortal Wounds for damage." |
 
 ### Wargear
@@ -1235,30 +1260,34 @@ Assault kit (Apocrypha p.137), Rubicon item (VoA p.43), and the Deathwatch swaps
 - **Ammo** [GM]: 1 Hellfire Bolt (+3 ED against organic targets, +2 against inorganic, Core p.230), 2 Bolt.
 
 **Key dice pools.**
-- Heavy Thunder Hammer: WS **10** at +3 DN (Unwieldy). On a jump-pack Charge, +1 (Charge) = **11 dice**, rerolling 2 (Savage
-  Echoes); for 1 Wrath the hit deals Mortal Wounds (Hammer of Wrath talent).
+- Heavy Thunder Hammer: WS **10** at +3 DN (Unwieldy). On a jump-pack Charge, +1 (Charge) = **11 dice**; for 1 Wrath the hit
+  deals Mortal Wounds (Hammer of Wrath talent).
 - Hammer damage: 19 + 8 ED, Brutal.
 - Jump Pack flight: Pilot **9** against DN 3.
-- Red Thirst: Willpower **4** against DN 3.
+- Awareness by smell: 6 + 1 (Acute Sense) = **7**.
 
-**Personality hook.** He swore a penitent's vow before the Watch took him, and swings the hammer as if one more blow might earn
-the absolution his Chapter is never granted.
+**Personality hook.** Took a penitent's oath before the Watch claimed him. Years ago his reckless charge cost Grimsson two
+pack-brothers, and Grimsson carried him out of the breach anyway. He swings the hammer as if one more blow might square the
+debt.
 
 **In combat:** Fly in with the jump pack and Charge. Landing knocks nearby foes Prone (DN 3 Agility), and 1 Wrath turns the
-hammer's hit into Mortal Wounds. Pick targets where the +3 DN is worth it: Elites, Adversaries and vehicles. Once blood flows,
-roll Willpower against the Red Thirst.
+hammer's hit into Mortal Wounds. Pick targets where the +3 DN is worth it: Elites, Adversaries and vehicles.
+
+**Objectives** (the player's own, hidden from the others):
+- Chapter: keep your oath of penance through the mission.
+- Secret: send word of what lies beneath Volkus to the Fang, whatever the Inquisitor orders.
 
 ---
 
-## 10. Gunner — "Brother Kordan Vex"
+## 10. Gunner — "Brother Kael Tirrow"
 
-*Placeholder name.*
-
-**Role:** heavy plasma support against elites and armour. **Chapter:** Iron Hands. **Archetype:** Primaris Hellblaster
+**Role:** heavy plasma support against elites and armour. **Chapter:** Emperor's Spears, an Ultramarines Successor, on the
+Ultramarines Chapter Traits (Core p.74; kill-team.md ruling 13). **Archetype:** Primaris Hellblaster
 (Tier 4, **Apocrypha p.183**, homebrew). Apocrypha is allowed for the pregens (user ruling 2026-09-27). His Plasma
 Incinerator is replaced by a **Heavy Plasma Incinerator** [GM].
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, IRON HANDS, DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, ULTRAMARINES, DEATHWATCH [GM]. [GM] The catalogue has no Emperor's
+Spears record, so his [CHAPTER] is filled with ULTRAMARINES, which carries the traits; at the table he is an Emperor's Spear.
 
 ### XP ledger (400)
 
@@ -1286,7 +1315,7 @@ Incinerator is replaced by a **Heavy Plasma Incinerator** [GM].
 
 Hellblaster base (Apocrypha p.183): S5 T5 A4 I4 Wil3 Int3. Its Suggested Attributes (S6 T6 A6, 75 XP), Skills (40 XP) and
 Talents (Deadshot, Duty Unto Death, Tenacious) come to 185 XP of the 172 left; he keeps A 6, T 6, BS 6, Awareness 4, Deadshot
-and Duty Until Death, skips S 6 (Powered already meets Heavy (4)) and Tenacious, and takes Iron Hands Tech instead.
+and Duty Until Death, skips S 6 (Powered already meets Heavy (4)) and Tenacious, and takes Tech instead.
 
 ### Skills (rating + attribute = dice pool)
 
@@ -1294,7 +1323,7 @@ and Duty Until Death, skips S 6 (Powered already meets Heavy (4)) and Tenacious,
 |---|---|---|
 | Athletics (S) | 3 | 8 |
 | Awareness (Int) | 4 | 7 |
-| Ballistic Skill (A) | 6 | 12 (13 with the Reticule eye) |
+| Ballistic Skill (A) | 6 | 12 |
 | Scholar (Int) | 1 | 4 |
 | Stealth (A) | 3 | 9 |
 | Tech (Int) | 4 | 7 |
@@ -1326,13 +1355,12 @@ Tree of Learning: the highest skill is 6 and 7 skills are trained. ✓
 - **Archetype: Hellblaster Focus** (Apocrypha p.183). "When you make an attack with a PLASMA weapon, you may re-roll up to
   Double Rank dice." The Heavy Plasma Incinerator has the PLASMA keyword (Apocrypha p.351).
 - **Species:** *Primaris Astartes* (Core p.29).
-- **Chapter: The Flesh Is Weak** (Core p.73). "Choose one Augmetic Enhancement (p.242). You do not suffer the penalties of being
-  Wounded (p.193). You gain +1 bonus die to Willpower Tests for every augmetic you have." He chose an **Augmetic Eye**
-  (Reticule), so +1 die to Willpower Tests.
-- **Chapter: Ruthless Logic (Tradition)** (Core p.73). "You suffer a +2 DN penalty to Fellowship-based Tests made against a
-  target that does not have the IRON HANDS or ADEPTUS MECHANICUS Keywords." This is a Tradition, not Gene-seed, so it
-  **applies**, including with his kill-team brothers.
-- Iron Hands have no (Gene-seed) trait (Core p.73).
+- **Chapter: Tactical Versatility** (Core p.74). "You may Shift for Glory twice as part of a Test." Core p.166 allows it once
+  per Test. The Chapter trait, not the Tactical Space Marine's archetype ability of the same name (ambiguity 13).
+- **Chapter: Pride of Ultramar (Tradition)** (Core p.74). "You start each session with 1 Wrath Point instead of 2." A
+  Tradition, not Gene-seed, so it **applies**: he starts every session with **Wrath 1**. The app's session start sets every
+  character to Wrath 2, so the GM takes 1 Wrath off his sheet.
+- Ultramarines have no (Gene-seed) trait (Core p.74).
 
 ### Talents
 
@@ -1357,7 +1385,6 @@ Hellblaster kit (Apocrypha p.183), with the Plasma Incinerator swapped for a Hea
 - **Heavy (4):** Strength 9 in armour meets it, and Powered stops a Heavy-weapon Complication from knocking him Prone
   (Core p.232).
 - **Armour:** Mark X Tacticus, AR 5, Powered (4) (Core p.233).
-- **Augmetic Eye** (Core p.243, from The Flesh Is Weak), Reticule: "+1 bonus die to ranged Attack Tests."
 - **Backpack ammunition supply** (Apocrypha p.352: "A Heavy Plasma Incinerator comes with a backpack ammunition supply.")
   [GM] read as an Ammo Backpack (Core p.229): "You can carry 10 additional Ammo. Comes stocked with 3 available Ammo." The 3
   are Plasma.
@@ -1365,25 +1392,28 @@ Hellblaster kit (Apocrypha p.183), with the Plasma Incinerator swapped for a Hea
   3 Plasma: **5 Plasma**.
 
 **Key dice pools.**
-- Heavy Plasma Incinerator: BS 12 + 1 (Reticule) = **13**, **14** when he Aims, rerolling 2 (Hellblaster Focus).
+- Heavy Plasma Incinerator: BS **12**, **13** when he Aims, rerolling 2 (Hellblaster Focus).
 - Damage: 16, 2 ED, AP −4. Supercharged: **5 ED**, but a Complication deals 1d6 Mortal Wounds to him.
-- Willpower Tests: 4 + 1 (The Flesh Is Weak) = **5**.
+- Wrath: **1** at the start of each session (Pride of Ultramar).
 
-**Personality hook.** More augmetic than flesh, he reports his own wounds as percentages and treats the incinerator's overheating
-as a flaw he is personally correcting.
+**Personality hook.** A son of the Elara's Veil, raised among the war-tribes of a Chapter long cut off from the Imperium. He
+cherishes wargear as heirlooms and trades in relics the way his Chapter always has, with whoever keeps its guns firing.
 
 **In combat:** Stand still, Aim and fire at the biggest target: AP −4 goes through Necron armour. Supercharge only when the kill
-matters, and spend the rerolls on the dice that would miss. Wounds don't slow him (The Flesh Is Weak), and past Max Wounds Duty
-Until Death buys one more Turn.
+matters, and spend the rerolls on the dice that would miss. Past Max Wounds, Duty Until Death buys one more Turn.
+
+**Objectives** (the player's own, hidden from the others):
+- Chapter: recover one intact archeotech device.
+- Secret: trade it to the Magos for Mechanicus favour, not hand it to the Inquisitor.
 
 ---
 
-## 11. Headtaker — "Brother Temur Khal"
+## 11. Headtaker — "Brother Lucan Sarrius"
 
-**Role:** stealth assassin who takes the enemy leader's head. **Chapter:** White Scars. **Archetype:** Primaris Reiver
+**Role:** stealth assassin who takes the enemy leader's head. **Chapter:** Blood Angels. **Archetype:** Primaris Reiver
 (Tier 4, VoA p.37), with the printed kit plus a second combat knife and a Grapnel Launcher [GM].
 
-**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, WHITE SCARS, DEATHWATCH [GM].
+**Keywords:** IMPERIUM, ADEPTUS ASTARTES, PRIMARIS, BLOOD ANGELS, DEATHWATCH [GM].
 
 ### XP ledger (400)
 
@@ -1396,7 +1426,7 @@ Until Death buys one more Turn.
 | Skill | Survival 0→2 (2+4) | 6 | 349 |
 | Talent | Eliminator (Core p.133; Stealth 2+) | 20 | 369 |
 | Talent | Dual Wield (Core p.133) | 20 | 389 |
-| Talent | Raiding Master (VoA p.49; Initiative 5+, White Scars) | 10 | **399** |
+| Talent | Echo of Sanguinius (VoA p.46; Blood Angels) | 10 | **399** |
 
 **Unspent: 1.**
 
@@ -1446,10 +1476,9 @@ Goal *Advancement* (+1 Influence).
 - **Archetype: Terror Tactics** (VoA p.37). "When your Stealth Score is reduced to 0 or you Ambush a Threat, you can choose for
   all enemies who can see or hear you to take a Terror Test, with a DN equal to 1 + Rank." At Rank 1, that is DN 2.
 - **Species:** *Primaris Astartes* (Core p.29).
-- **Chapter: Lightning Assault** (Core p.75). "You may reroll Double Rank dice once each time you make a Pilot (A) Test. You
-  triple your Speed when you Charge (p.188)."
-- **Chapter: Ritual Scarring (Tradition)** (Core p.75). "You suffer a +1 DN penalty to any Fellowship-based Test made against
-  any target that could be frightened of your appearance." A Tradition, not a Gene-seed trait, so it applies to a Primaris.
+- **Chapter: Savage Echoes** (Core p.73). "You may reroll Double Rank dice once per melee attack Test."
+- *The Red Thirst (Gene-seed)* (Core p.73) is **ignored** (Primaris, Core p.71), until he has a vision (Echo of
+  Sanguinius, below). Outside that, the Red Thirst in his personality is narrative only: no Test, no Frenzy.
 
 ### Talents
 
@@ -1457,7 +1486,7 @@ Goal *Advancement* (+1 Influence).
 |---|---|---|
 | Eliminator | Core p.133 | "When you have a Stealth Score (p.181) and you attack an enemy that is unaware of you, you may add your Stealth Score as ED, in addition to the bonuses received from a Surprise Attack (p.182). Any decrease to your Stealth Score is resolved after the attack." |
 | Dual Wield | Core p.133 | "When you wield one weapon in each hand the DN penalty for using the Multi-Attack option is reduced by 2. Each weapon must have the Pistol Trait or be a one-handed melee weapon. You may also use a different weapon you are wielding for each of your Multi-Attacks, rolling damage separately for each weapon." |
-| Raiding Master | VoA p.49 | "You gain +(Rank) dice to all Tests to plan and execute a raid or ambush. You also gain the same bonus to Tests to detect or prevent enemies from raiding or ambushing you and your allies." |
+| Echo of Sanguinius | VoA p.46 | "You may declare you have had a vision after a Respite (Wrath & Glory Core Rulebook, page 196). If you do, ask the GM one question about events related to your mission. The GM must answer truthfully, although they do not need to tell the whole truth and may be cryptic in their response. However, after your vision, the closeness to Sanguinius' spirit haunts you. If you have the PRIMARIS Keyword, you are affected by the Blood Angels gene-seed flaw (Wrath & Glory Core Rulebook, pages 71-73) despite your refined origin." For him that is The Red Thirst (Core p.73): a DN 3 Willpower Test on seeing blood in melee, or Frenzied. How long it lasts isn't printed (ambiguity 27). It replaces Raiding Master (White Scars only, VoA p.49) at the same 10 XP: intelligence for planning the raid. |
 
 ### Wargear
 
@@ -1487,26 +1516,27 @@ Reiver kit (VoA p.37), plus a second Astartes Combat Knife and a Grapnel Launche
 - **Ammo** [GM]: 1 Hellfire Bolt (+3 ED against organic targets, +2 ED against inorganic, Core p.230), 2 Bolt.
 
 **Key dice pools.**
-- Knives: WS **11**, Damage 11, ED 2, AP −1. Against an unaware enemy, add his Stealth Score as ED (Eliminator), on top of
-  the Surprise Attack bonuses (Core p.182).
+- Knives: WS **11**, Damage 11, ED 2, AP −1, rerolling 2 dice (Savage Echoes). Against an unaware enemy, add his Stealth
+  Score as ED (Eliminator), on top of the Surprise Attack bonuses (Core p.182).
 - Two-knife Multi-Attack: the DN penalty is 2 lower (Dual Wield).
-- Stealth: **12** (with Phobos). Planning or springing an ambush: +1 die (Raiding Master).
+- Stealth: **12** (with Phobos).
 - Heavy Bolt Pistol and Bolt Carbine: BS **9**.
-- Charge: Speed 8, tripled (Lightning Assault).
 
-**Personality hook.** A Chogorian hunter who ties a knot for every xenos leader he beheads. He jokes at the worst moments and
-is never where the enemy last saw him.
+**Personality hook.** A Baalite hunter who paints a drop of red on his knife for every xenos leader he beheads. Graceful and
+patient, he is never where the enemy last saw him. The Red Thirst runs in him too, and it shows after every kill, which
+worries Kostas more than any xenos does.
 
 **In combat:** Go in first and unseen: grapnel up, drop in on the Grav-Chute, and open on the leader while it's unaware,
-adding the Stealth Score to the knife's ED. Then Multi-Attack with both knives, and let Terror Tactics shake the rest when
-your Stealth Score runs out.
+adding the Stealth Score to the knife's ED. Then Multi-Attack with both knives, rerolling 2 dice on each melee Test, and let
+Terror Tactics shake the rest when your Stealth Score runs out. After a Respite, a vision can tell you where the leader
+waits, at the price of the Red Thirst.
 
 ---
 
 ## Every [GM] choice
 
 1. Every agent is a **Primaris Astartes** (Core p.29), including the Incursor, Eliminator and Reiver. Their VoA pages list
-   "Adeptus Astartes" (kill-team.md decision 1). Apocrypha's Aggressor and Hellblaster already list Primaris Astartes.
+   "Adeptus Astartes" (kill-team.md decision 1). Apocrypha's Hellblaster already lists Primaris Astartes.
 2. **Sergeant, Blademaster, Aegis and Demolisher: Rubicon Primaris makes them Primaris Astartes.** VoA p.43 grants only the PRIMARIS keyword
    and talents. [GM] They gain the Primaris species abilities, including +3 Wounds, but no free attribute increase: their
    attributes stay the Tactical ones.
@@ -1517,27 +1547,27 @@ your Stealth Score runs out.
    - Disruptor: adds the Omni-Scrambler.
    - Blademaster: Combat Knife becomes Power Sword (VoA p.62), renamed the "xenophase blade".
    - Aegis: Combat Knife becomes Power Maul (FSPG p.121), and a Storm Shield (Core p.233, Unique) is added.
-   - Bombard: the Fragstorm Grenade Launcher and 2 Auto Boltstorm Gauntlets become the Deathwatch Frag Cannon
-     (Apocrypha p.356) plus a Bolt Pistol (VoA p.67).
-   - Breacher: the same launcher and gauntlets become the Hellstorm Bolt Rifle (VoA p.67, not Apocrypha p.346), the
-     Astartes Grenade Launcher (VoA p.67) as the Kill Team auxiliary grenade launcher, and a Melta Bomb (FSPG p.124).
-     3 Frag and 3 Krak Grenades (Core p.220) are added, because the Aggressor prints none.
-   - Bombard and Breacher keep Mk X Gravis, the Ammo Backpack and the Auto-Reliquary as printed. With the gauntlets gone
-     they carry **no melee weapon** and fight with an Unarmed Strike (Core p.183: Damage = Strength, +1 ED).
+   - Bombard: the Heavy Intercessor Doctrine's Heavy Bolter becomes the Deathwatch Frag Cannon (Apocrypha p.356).
+   - Breacher: the same Heavy Bolter becomes the Hellstorm Bolt Rifle (VoA p.67, not Apocrypha p.346), the Astartes
+     Grenade Launcher (VoA p.67) as the Kill Team auxiliary grenade launcher, and a Melta Bomb (FSPG p.124). The launcher
+     fires the Intercessor's own Frag and Krak Grenades.
+   - Bombard and Breacher keep the rest of the Intercessor kit (Core p.117): Bolt Rifle, Heavy Bolt Pistol, Astartes
+     Combat Knife, grenades, Auto-Reliquary, and Mk X Gravis from the Doctrine.
    - Demolisher: Astartes Chainsword becomes a Heavy Thunder Hammer (VoA p.62); the Jump Pack is kept.
    - Gunner: Plasma Incinerator becomes a Heavy Plasma Incinerator (Apocrypha p.351).
    - Headtaker: adds a second Astartes Combat Knife (VoA p.62) and a Grapnel Launcher (VoA p.67 attack profile; FSPG
      p.126 climbing rule).
-5. **Heavy Intercessor Doctrine bought at creation** for its listed 60 XP. VoA p.35 allows it during play, or at Tier 5
-   creation.
+5. **Heavy Intercessor Doctrine bought at creation** for its listed 60 XP, by the Horde-Slayer, Bombard and Breacher.
+   VoA p.35 allows it during play, or at Tier 5 creation.
 6. **DEATHWATCH keyword** for every agent (kill-team.md decision 3).
 7. **Special Bolt rounds:** 1 of each marine's 3 starting Ammo (Core p.229) is special.
-   - Kraken: Sergeant, Marksman, Aegis and Bombard (for his Bolt Pistol).
+   - Kraken: Sergeant, Marksman, Aegis and Bombard (for his Heavy Bolt Pistol).
    - Dragonfire: Disruptor, Blademaster, Breacher and Gunner.
    - Hellfire: Horde-Slayer, Demolisher and Headtaker.
-   - The Sergeant's third Ammo is Plasma, for his pistol. The Gunner's other 2 are Plasma; the Bombard's backpack Ammo is
+   - The Sergeant's third Ammo is Plasma, for his pistol. The Gunner's other 2 are Plasma; the Bombard's other 2 are
      Projectile, for the Frag Cannon.
-   - Kraken went only to weapons with base AP "–", so its unclear stacking (see below) never matters.
+   - Kraken went to weapons with base AP "–", so its unclear stacking (ambiguity 9) doesn't matter, except for the
+     Bombard's Heavy Bolt Pistol (AP −1), where the GM rules.
 8. **Proxy profiles for kit with no stats in either book:**
    - Occulus Bolt Carbine: Bolt Rifle (Core p.217).
    - Bolt Sniper Rifle: Astartes Sniper Rifle (VoA p.67).
@@ -1552,27 +1582,31 @@ your Stealth Score runs out.
 11. **Rubicon's Uncommon Wargear:** a Duelling Grip (Core p.228) on the Sergeant's Power Sword, the Blademaster's
     xenophase blade and the Aegis's Power Maul; a Chaplet Ecclesiasticus (Core p.237) for the Demolisher, although its
     item keywords (IMPERIUM, ADEPTUS MINISTORUM, ADEPTA SORORITAS) don't match his: Rubicon's grant names only a Rarity.
-12. **Horde-Slayer keeps his Mk X Tacticus** as a spare. The Doctrine gives Gravis "if you don't already have it" but
-    doesn't say whether Tacticus is kept.
+12. **Horde-Slayer, Bombard and Breacher keep their Mk X Tacticus** as a spare. The Doctrine gives Gravis "if you don't
+    already have it" but doesn't say whether Tacticus is kept.
 13. Background entries were **chosen, not rolled** (allowed by Core p.30).
-14. **Apocrypha homebrew** is allowed for the pregens (user ruling 2026-09-27): the Aegis's Black Templars (p.27), the
-    Bombard's Crimson Fists (p.27), the Aggressor (p.181) for the Bombard and Breacher, the Assault Space Marine (p.137)
-    for the Demolisher, Master Artisan (p.239) for the Horde-Slayer, and the Hellblaster (p.183) and Heavy Plasma
-    Incinerator (p.351) for the Gunner.
+14. **Apocrypha homebrew** is allowed for the pregens (user ruling 2026-09-27): the Bombard's Flesh Tearers (p.28) and
+    Deathwatch Frag Cannon (p.356), the Assault Space Marine (p.137) for the Demolisher, Master Artisan (p.239) for the
+    Horde-Slayer, and the Hellblaster (p.183) and Heavy Plasma Incinerator (p.351) for the Gunner.
 15. **The Storm Shield's Bulk (1)** slows the Aegis while he carries it (Speed 6): Core p.232 speaks of "the wearer", and
     a shield is "carried instead of worn".
 16. **Bombard: Frag Cannon Shell mode** uses the printed Shell row (Damage 16, ED 2, AP −2), plus the Special's AP −3 at
     Short range. The Special's "+2ED" is read as describing the row's +2 over Shrapnel, not added again.
-17. **Bombard: Firestorm and Barrage stack.** Firestorm's +Rank Salvo (Apocrypha p.181) counts toward Barrage's "increase
-    the weapon's Blast rating by the weapon's Salvo value" (Apocrypha p.326): Blast 13 on a stationary Shrapnel Salvo.
+17. **Bombard and Headtaker: the Red Thirst is narrative only.** It is a (Gene-seed) trait, which a Primaris ignores (Core
+    p.71), and their Chapters (Flesh Tearers, Blood Angels) print traits of their own, so rules-flow.md §11.23 doesn't reach
+    them. The one exception is the Headtaker's Echo of Sanguinius (VoA p.46), whose vision imposes it.
 18. **Breacher: the Melta Bomb is thrown only,** because VoA p.64 loads the Astartes launcher with Frag or Krak. Its
     keywords (FSPG p.124) are EXPLOSIVE, IMPERIUM, with no MELTA. No agent carries a FIRE or MELTA weapon, so the
     Horde-Slayer's Promethean Cult (Core p.74) rerolls only his Determination against enemy flamers and meltas.
-19. **Demolisher: the Red Thirst applies** although he is Primaris (rules-flow.md §11.23), and Absolvers vows stay
-    narrative (kill-team.md decision 4).
+19. **Marksman: the Red Scorpions have no Chapter Traits.** Their origin is unknown; Core p.71 lets such a Chapter take a
+    First Founding Chapter's traits, but only "may" (kill-team.md ruling 13).
 20. **Gunner: the Hellblaster's "backpack ammunition supply"** (Apocrypha p.352) is read as Core's Ammo Backpack (p.229):
     +10 Ammo carried, stocked with 3, which are Plasma.
-21. **Gunner: The Flesh Is Weak's augmetic** is an Augmetic Eye, Reticule option (Core p.243).
+21. **Gunner: the Emperor's Spears take the Ultramarines traits** as an Ultramarines Successor (Core p.71 "Successor
+    Chapters"). The catalogue has no Emperor's Spears record, so his [CHAPTER] is filled with ULTRAMARINES (kill-team.md
+    ruling 13).
+22. **Bombard and Breacher: the Heavy Intercessor Doctrine's +Rank AP is lost.** VoA p.35 gives it to "this weapon", the
+    Heavy Bolter they chose, which the Deathwatch armoury swaps out.
 
 ## Book ambiguities and errata found
 
@@ -1614,7 +1648,8 @@ your Stealth Score runs out.
     - The Core Aim rule is on p.188, although Grim Resolve cites p.189.
     - Chapter traits are on Core pp.73–74 (pp.71–74 including the intro). The Space Marine implants list is p.75.
 13. **The Ultramarines "Tactical Versatility" Chapter trait** (Shift for Glory twice, Core p.74) has the same name as the
-    Tactical Space Marine **archetype ability** (roll the Critical table twice, Core p.113). They are different rules.
+    Tactical Space Marine **archetype ability** (roll the Critical table twice, Core p.113). They are different rules. The
+    Disruptor and Gunner have the Chapter trait; the Sergeant, Blademaster and Aegis the archetype ability.
 14. **A Storm Shield with worn armour.** Core p.232's Shield trait adds the shield's AR to Resilience, and "If you are
     wearing Invulnerable Armour, AP does not affect your Resilience". It doesn't say whether AP still cuts the worn
     Tacticus's AR when the only Invulnerable AR is the shield's 2. Core p.232's example uses the shield alone. Not settled
@@ -1623,7 +1658,8 @@ your Stealth Score runs out.
     mode adds "+2ED" and AP −3 at Short range. The row and the Special disagree on whether the +2 is Damage or ED. Its
     Value, Rarity and Keywords are printed as ditto marks.
 16. **Primaris Aggressor (Apocrypha p.181):** the ability is printed "Firestorm." with a full stop. Its wargear has no
-    grenades and no melee weapon besides the gauntlets, so a gauntlet swap leaves him with none.
+    grenades and no melee weapon besides the gauntlets, so a gauntlet swap leaves him with none. No pregen uses it now: the
+    Bombard and Breacher were rebuilt on the Intercessor (kill-team.md ruling 14).
 17. **Two Hellstorm Bolt Rifles:** VoA p.67 (10 / ED 2 / AP −1 / Salvo 2 / Brutal, Rapid Fire (2), Rare) and Apocrypha
     p.346 (12 / ED 1 / AP – / Salvo 3 / Assault, Brutal, Heavy (4), Rapid Fire (3), Very Rare, PRIMARIS, with an
     Ammunition Drum). VoA is used.
@@ -1647,3 +1683,5 @@ your Stealth Score runs out.
 25. **Lightning Assault** (Core p.75): "You triple your Speed when you Charge" doesn't say whether that replaces the
     Charge's double Speed (Core p.188) or multiplies it.
 26. **Apocrypha's Bolt Carbine** (p.346) prints range 12/14/36 (24 is likely meant); copied as printed.
+27. **Echo of Sanguinius** (VoA p.46): after a vision, a Primaris "is affected by the Blood Angels gene-seed flaw". It
+    doesn't say for how long: the next scene, the session, or for good. The GM rules at the table.

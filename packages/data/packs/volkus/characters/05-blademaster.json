@@ -1,12 +1,12 @@
 {
-  "name": "Brother Castiel Varro",
+  "name": "Brother Sariel Voss",
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Tactical Space Marine + Rubicon Primaris",
     "keywords": [
       "IMPERIUM",
       "ADEPTUS ASTARTES",
-      "BLOOD ANGELS",
+      "DARK ANGELS",
       "PRIMARIS",
       "DEATHWATCH"
     ],
@@ -67,8 +67,13 @@
         "page": "Core p.29"
       },
       {
-        "name": "Savage Echoes",
-        "text": "You may reroll Double Rank dice once per melee attack Test.",
+        "name": "Grim Resolve",
+        "text": "You may reroll Double Rank dice once per ranged attack Test when you Aim (p.189).",
+        "page": "Core p.73"
+      },
+      {
+        "name": "The Unforgiven (Tradition)",
+        "text": "You suffer a +2 DN penalty to any social Tests made against anyone outside of your Chapter. This is a Tradition, not Gene-seed, so it applies, including with his kill-team brothers.",
         "page": "Core p.73"
       },
       {
@@ -176,7 +181,7 @@
   },
   "detail": {
     "portrait": "deathwatch-blademaster-veteran",
-    "personality": "He is graceful, soft-spoken and always polite, which is what makes the sudden violence so unsettling. He paints a drop of red on his blade for every xenos champion he has slain, and he fears the day the painting stops being art."
+    "personality": "Carries a xenophase blade and a private list of names. He duels like a confession: patient, precise, final."
   },
   "objectives": [
     {
@@ -184,7 +189,7 @@
       "done": false
     },
     {
-      "text": "Secret: learn why your xenophase blade hums near the crypt.",
+      "text": "Secret: learn why your xenophase blade hums near the crypt, and tell no one outside the Chapter.",
       "done": false
     }
   ]

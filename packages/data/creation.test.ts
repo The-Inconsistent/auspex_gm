@@ -43,7 +43,8 @@ for (const { name, stats } of loadPack("volkus").characters) {
     // A sub-faction (Chapter, Order, Forge World…) is the keyword it fills in; the sheet carries its traits, bar the
     // Gene-seed ones a Primaris ignores (Core p.71). A [CHAPTER] archetype must have its Chapter.
     const subs = c["sub-factions"].filter((s) => stats.keywords.includes(s.keyword));
-    if (a.keywords.includes("[CHAPTER]"))
+    // The Red Scorpions have no catalogue record and, by GM ruling, no Chapter Traits (kill-team.md ruling 13).
+    if (a.keywords.includes("[CHAPTER]") && !stats.keywords.includes("RED SCORPIONS"))
       assert.ok(
         subs.some((s) => s.type === "chapter"),
         stats.keywords.join(", "),
