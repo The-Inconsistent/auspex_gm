@@ -74,8 +74,7 @@ start each session with **Wrath 1**, not 2 (Core p.74).
 **Species: Primaris Astartes** (Core p.29). [GM] Every Primaris agent uses this species (kill-team.md decision 1). Size: Average. Speed: 7.
 - **Defender of Humanity:** "Add +Rank Icons to any successful attack against a Mob."
 - **Honour the Chapter (Primaris):** "You are subject to the orders of your chapter master, and must honour the beliefs and
-  traditions of your chapter. Your Resolve increases by +1. As a Primaris, you ignore any impurities in your Chapter
-  Gene-Seed, and also gain +3 Wounds."
+  traditions of your chapter. Your Resolve increases by +1. As a Primaris, you gain +3 Wounds."
 - **Space Marine Implants:** "You are immune to the Bleeding Condition. You gain +1 bonus dice to any test related to one of
   the 22 implants (p.75) if the GM agrees it is appropriate."
 - Chapter traits with "(Gene-seed)" in the title are ignored for Primaris (Core p.71).
