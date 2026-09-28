@@ -40,11 +40,13 @@ export function useBookServer(serveBooks: ServeBooks) {
     return reply;
   }, []);
 
-  // External system: the table socket. Tells the api which books this tablet serves; empty or unmounted stops it.
+  // External system: the table socket. Tells the api which books this tablet serves, or none.
   useEffect(() => {
     const sources = (Object.keys(files) as ThreatSource[]).filter((s) => files[s]);
     serveBooks(serving && sources.length ? { sources, render } : null);
   }, [files, serving, render, serveBooks]);
+  // External system: the table socket. Leaving the GM app stops serving. It's separate from the effect above so that
+  // picking another book doesn't tell the table "none" first, which would flicker every player's links.
   useEffect(() => () => serveBooks(null), [serveBooks]);
 
   const pick = (source: ThreatSource, file: File | null) => {
