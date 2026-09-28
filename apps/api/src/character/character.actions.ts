@@ -6,7 +6,6 @@ import {
   Objectives,
   Overrides,
   adjustAmmo,
-  buildReady,
   creationKey,
   keepPlay,
   deriveStats,
@@ -35,7 +34,7 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
 import { character } from "./character.schema.ts";
-import { buildCatalogue } from "./creation.service.ts";
+import { buildCatalogue, buildRefusal } from "./creation.service.ts";
 
 export type CharacterAction = Extract<Action, { type: `character.${string}` | `token.${string}` }>;
 
@@ -124,14 +123,8 @@ export async function applyCharacterAction(
         build,
         play: row ? { tier, xpEarned: row.xp } : undefined,
       });
-      if (!buildReady(r)) {
-        const next = r.pending[0];
-        fail(
-          next
-            ? `Still to choose: ${next.what}`
-            : `${r.problems[0]!.what}${r.problems[0]!.cite ? ` (${r.problems[0]!.cite})` : ""}`,
-        );
-      }
+      const refusal = buildRefusal(r);
+      if (refusal) fail(refusal);
       // A character already made keeps what play changed (keepPlay); a first build keeps only Ammo and requisitions.
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old

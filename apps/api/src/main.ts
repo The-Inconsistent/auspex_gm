@@ -18,4 +18,12 @@ app.use(["/api/join", "/api/guest", "/api/invites"], (req: Request, res: Respons
   res.status(429).json({ message: "Too many requests. Wait a minute." });
 });
 
+// The character library (issue #14): signed in, but the builder autosaves, so it gets its own, wider window. A debounced
+// autosave is a handful a minute; this leaves room for several tabs and the catalogue fetch behind one NAT.
+const allowLibrary = limiter({ max: 240, windowMs: 60_000 });
+app.use(["/api/library", "/api/creation", "/api/rules"], (req: Request, res: Response, next: NextFunction) => {
+  if (allowLibrary(clientIp(req.headers, req.socket.remoteAddress))) return next();
+  res.status(429).json({ message: "Too many requests. Wait a minute." });
+});
+
 await app.listen(Number(process.env.PORT ?? 4000));

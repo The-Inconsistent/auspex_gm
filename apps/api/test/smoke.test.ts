@@ -5,13 +5,17 @@ import assert from "node:assert/strict";
 import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
+  LIBRARY_CAP,
   deriveStats,
   poolMax,
   type ActionInput,
   type ActionResult,
   type Codex,
   type CreationPayload,
+  type LibraryCharacter,
+  type LibraryEntry,
   type LiveState,
+  type RuleEntry,
   type ThreatCombatant,
 } from "@wg/shared";
 
@@ -29,6 +33,16 @@ const post = (path: string, body: unknown, headers: Record<string, string> = {})
     headers: { "content-type": "application/json", ...headers },
     body: JSON.stringify(body),
   });
+
+const put = (path: string, body: unknown, headers: Record<string, string> = {}) =>
+  fetch(`${API}/api${path}`, {
+    method: "PUT",
+    headers: { "content-type": "application/json", ...headers },
+    body: JSON.stringify(body),
+  });
+
+const del = (path: string, headers: Record<string, string> = {}) =>
+  fetch(`${API}/api${path}`, { method: "DELETE", headers });
 
 // A socket as a GM or player: `auth` carries campaignId plus a Clerk test token, a guest token or the admin key;
 // `headers` can carry a guest cookie instead.
@@ -897,4 +911,88 @@ test("the guest door is rate limited per caller IP", async () => {
   for (let i = 0; i < 60; i++) assert.equal((await from("203.0.113.9")).status, 401);
   assert.equal((await from("203.0.113.9")).status, 429);
   assert.equal((await from("203.0.113.10")).status, 401, "another caller is unaffected");
+});
+
+test("the character library: a signed-in user builds without a campaign (issue #14)", async () => {
+  const owner = clerk("library-owner");
+  const stranger = clerk("library-stranger");
+
+  // Book text needs an account: no seat, but no anonymous callers and no guests either.
+  assert.equal((await get("/library")).status, 401);
+  assert.equal((await get("/creation")).status, 401);
+  assert.equal((await get("/rules")).status, 401);
+  assert.equal(
+    (await get("/library", { cookie: "wg_token=not-a-clerk-session" })).status,
+    401,
+    "a guest has no library",
+  );
+
+  // The catalogue outside a campaign: the caller picks the books, because no campaign decides for them.
+  const official = await get("/creation", bearer(owner));
+  assert.equal(official.status, 200);
+  const plain = (await official.json()) as CreationPayload;
+  assert.equal(plain.homebrew, false);
+  assert.ok(!plain.creation.archetypes.some((a) => a.source === "apocrypha"));
+  const etag = official.headers.get("etag")!;
+  assert.equal((await get("/creation", { ...bearer(owner), "if-none-match": etag })).status, 304);
+  const homebrew = (await (await get("/creation?homebrew=1", bearer(owner))).json()) as CreationPayload;
+  assert.ok(homebrew.creation.archetypes.some((a) => a.source === "apocrypha"));
+  assert.ok(((await (await get("/rules", bearer(owner))).json()) as RuleEntry[]).length > 0);
+
+  // A new character starts empty, so the builder has a row to autosave its draft to.
+  const created = await post("/library", {}, bearer(owner));
+  assert.equal(created.status, 201);
+  const { id } = (await created.json()) as LibraryCharacter;
+  assert.deepEqual(
+    ((await (await get("/library", bearer(owner))).json()) as LibraryCharacter[]).map((c) => [c.id, c.done]),
+    [[id, false]],
+  );
+  assert.deepEqual((await (await get("/library", bearer(stranger))).json()) as LibraryCharacter[], []);
+
+  // A draft autosaves as any shape the builder writes; a build is re-resolved here and refused unless it's ready.
+  assert.equal(
+    (await put(`/library/${id}`, { name: "Veyl", draft: { tier: 4, name: "Veyl" } }, bearer(owner))).status,
+    200,
+  );
+  const { languages: _, ...noLanguage } = disruptor;
+  const refused = await put(`/library/${id}`, { build: noLanguage }, bearer(owner));
+  assert.equal(refused.status, 400);
+  assert.equal(
+    ((await refused.json()) as { message: string }).message,
+    "Still to choose: Choose 1 free language",
+    "the library refuses a build in the builder's words",
+  );
+  const saved = await put(
+    `/library/${id}`,
+    { build: { ...disruptor, gm: { keywords: ["DEATHWATCH"] } } },
+    bearer(owner),
+  );
+  assert.equal(saved.status, 200);
+  assert.deepEqual(
+    { ...((await saved.json()) as LibraryCharacter), id: "", updatedAt: "" },
+    { id: "", name: "Veyl", tier: 4, archetype: "Primaris Incursor", homebrew: false, done: true, updatedAt: "" },
+  );
+  const entry = (await (await get(`/library/${id}`, bearer(owner))).json()) as LibraryEntry;
+  assert.equal(entry.build?.archetypeId, "primaris-incursor");
+  assert.deepEqual(entry.build?.gm.keywords, [], "the GM's part belongs to a table, not to the library");
+
+  // Another user's character is not found, never forbidden: a 403 would tell them the id exists.
+  assert.equal((await get(`/library/${id}`, bearer(stranger))).status, 404);
+  assert.equal((await put(`/library/${id}`, { name: "Theirs" }, bearer(stranger))).status, 404);
+  assert.equal((await del(`/library/${id}`, bearer(stranger))).status, 404);
+  assert.equal(entry.name, "Veyl", "and it is untouched");
+
+  // One account is bounded: 20 characters (LIBRARY_CAP), then it has to delete one.
+  const capped = clerk("library-hoarder");
+  for (let i = 1; i < LIBRARY_CAP; i++) assert.equal((await post("/library", {}, bearer(capped))).status, 201);
+  const over = await post("/library", {}, bearer(capped));
+  assert.equal(over.status, 201, `${LIBRARY_CAP} fit`);
+  const refusedCap = await post("/library", {}, bearer(capped));
+  assert.equal(refusedCap.status, 400);
+  assert.match(((await refusedCap.json()) as { message: string }).message, /at most 20 characters/);
+  assert.equal((await del(`/library/${((await over.json()) as LibraryCharacter).id}`, bearer(capped))).status, 200);
+  assert.equal((await post("/library", {}, bearer(capped))).status, 201, "a deletion makes room again");
+
+  assert.equal((await del(`/library/${id}`, bearer(owner))).status, 200);
+  assert.equal((await get(`/library/${id}`, bearer(owner))).status, 404);
 });

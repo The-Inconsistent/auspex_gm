@@ -20,6 +20,7 @@ import { COOKIE, readCookie, resolveCtx, resolveGuest, signedInUser } from "../a
 import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
+import { sendCached } from "../core/http.ts";
 import { creationPayload } from "../character/creation.service.ts";
 import { TableGateway } from "../table/table.gateway.ts";
 import {
@@ -133,17 +134,7 @@ export class CampaignController {
     const campaignId = parse(CampaignId, id);
     const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
-    const p = creationPayload(await campaignHomebrew(campaignId));
-    res.set({
-      "content-type": "application/json",
-      "cache-control": "private, no-cache",
-      vary: "accept-encoding",
-      etag: p.etag,
-    });
-    if (req.headers["if-none-match"] === p.etag) return void res.status(304).end();
-    if (/\bgzip\b/.test(req.headers["accept-encoding"] ?? ""))
-      return void res.set("content-encoding", "gzip").send(p.gzip);
-    res.send(p.json);
+    sendCached(req, res, creationPayload(await campaignHomebrew(campaignId)));
   }
 
   // Guest QR (/join/<token>): the token moves into an httpOnly cookie. Returns the table to open.

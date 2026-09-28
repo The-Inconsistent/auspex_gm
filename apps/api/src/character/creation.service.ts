@@ -1,7 +1,15 @@
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { creationCatalogue, wargear } from "@wg/data";
-import { SOURCES, officialOnly, type BuildCatalogue, type CreationPayload } from "@wg/shared";
+import {
+  SOURCES,
+  buildReady,
+  officialOnly,
+  type BuildCatalogue,
+  type CreationPayload,
+  type ResolvedBuild,
+} from "@wg/shared";
+import type { CachedPayload } from "../core/http.ts";
 
 // The character-creation catalogue (packages/data/creation, docs/data.md §9), parsed at startup so a bad file fails fast.
 const creation = creationCatalogue();
@@ -10,10 +18,19 @@ const creation = creationCatalogue();
 // when the campaign doesn't allow them.
 export const buildCatalogue = (homebrew: boolean): BuildCatalogue => ({ creation, wargear, homebrew });
 
+// Why a resolved build can't be saved yet, as the builder's refusal reads it, or null when it's ready. Shared by
+// `character.build` and the library's PUT, so both refuse in the same words.
+export function buildRefusal(r: ResolvedBuild): string | null {
+  if (buildReady(r)) return null;
+  const next = r.pending[0];
+  if (next) return `Still to choose: ${next.what}`;
+  const problem = r.problems[0]!; // not ready and nothing pending: there is a problem
+  return `${problem.what}${problem.cite ? ` (${problem.cite})` : ""}`;
+}
+
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.
-type Payload = { json: Buffer; gzip: Buffer; etag: string };
-const payloads = new Map<boolean, Payload>();
-export function creationPayload(homebrew: boolean): Payload {
+const payloads = new Map<boolean, CachedPayload>();
+export function creationPayload(homebrew: boolean): CachedPayload {
   const cached = payloads.get(homebrew);
   if (cached) return cached;
   const body: CreationPayload = {
