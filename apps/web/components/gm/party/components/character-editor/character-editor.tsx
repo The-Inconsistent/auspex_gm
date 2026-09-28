@@ -1,5 +1,5 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { Fragment, useState, type FormEvent, type ReactNode } from "react";
 
 import {
   deriveStats,
@@ -33,6 +33,48 @@ type CharacterEditorProps = {
 const ratedSkills = (read: (k: Skill) => number | undefined): CharacterStats["skills"] =>
   Object.fromEntries((Object.keys(SKILLS) as Skill[]).map((k) => [k, read(k)]).filter(([, v]) => v));
 
+const MAX_SKILL = 8; // the sheet's Skill ratings (Core p.25)
+const MAX_ATTRIBUTE = 12; // ATTRIBUTE_XP's last rating (Core p.24)
+
+type RatingRowProps = {
+  label: ReactNode;
+  name: string; // for the buttons' screen-reader labels
+  value: number;
+  min: number;
+  max: number;
+  dice?: number; // a Skill's pool; none on an Attribute row
+  onChange: (v: number) => void;
+};
+
+// One −/+ rating line, laid out like the builder's CUSTOMISE rows (.bld-rate).
+function RatingRow({ label, name, value, min, max, dice, onChange }: RatingRowProps) {
+  return (
+    <div className={value || dice === undefined ? "bld-rate" : "bld-rate dim"}>
+      <span>{label}</span>
+      <span className="bld-v">{value}</span>
+      <button
+        type="button"
+        className="btn sq sm"
+        aria-label={`Lower ${name}`}
+        disabled={value <= min}
+        onClick={() => onChange(value - 1)}
+      >
+        −
+      </button>
+      <button
+        type="button"
+        className="btn sq sm"
+        aria-label={`Raise ${name}`}
+        disabled={value >= max}
+        onClick={() => onChange(value + 1)}
+      >
+        +
+      </button>
+      <span className="bld-cite">{dice !== undefined && `${dice} dice`}</span>
+    </div>
+  );
+}
+
 const DETAIL_FIELDS = [
   ["appearance", "APPEARANCE (pp.32–33)"],
   ["past", "YOUR PAST (pp.34–35)"],
@@ -40,15 +82,17 @@ const DETAIL_FIELDS = [
 ] as const;
 
 // The GM's edit of a character outside the builder: name, portrait, detail, Trait overrides, which win over the
-// derived value (deriveStats), and a hand-made sheet's Skills, Talents and Abilities. The rest of the sheet changes through the builder or
+// derived value (deriveStats), and a hand-made sheet's Attributes, Skills, Talents and Abilities. The rest of the sheet changes through the builder or
 // LOAD STATS. The fields start from the character as it was when EDIT opened; SAVE sends them all at once.
 export function CharacterEditor({ character: c, tier, sheetRules, send, onResult, onClose }: CharacterEditorProps) {
   // The Traits without overrides, shown as each field's placeholder.
   const derived = deriveStats({ stats: c.stats, overrides: {}, tier });
-  // A built character's Skills, Talents and Abilities are re-derived from its build on every save, so they change in the
+  // A built character's Attributes, Skills, Talents and Abilities are re-derived from its build on every save, so they change in the
   // builder, which checks prerequisites and XP. A hand-made sheet (a pack pregen, LOAD STATS) keeps its lists as written.
   // No XP is charged here: the GM is writing the sheet, not buying it.
   const handMade = !c.build;
+  const [attributes, setAttributes] = useState(c.stats.attributes);
+  const [skills, setSkills] = useState(c.stats.skills);
   const [talents, setTalents] = useState(c.stats.talents);
   const [abilities, setAbilities] = useState(c.stats.abilities);
 
@@ -66,19 +110,12 @@ export function CharacterEditor({ character: c, tier, sheetRules, send, onResult
       if (!/^\d+$/.test(v)) return onResult({ ok: false, error: `${OVERRIDE_LABELS[k]} must be a whole number` }, "");
       overrides[k] = Number(v);
     }
-    let skills: CharacterStats["skills"] = {};
-    if (handMade) {
-      for (const k of Object.keys(SKILLS) as Skill[]) {
-        const v = text(`skill-${k}`).trim();
-        if (v && !/^[0-8]$/.test(v)) return onResult({ ok: false, error: `${k} must be a rating from 0 to 8` }, "");
-      }
-      skills = ratedSkills((k) => Number(text(`skill-${k}`).trim() || 0)); // Skill ratings run 0–8 (Core p.25)
-    }
     // Stats only if the sheet changed, spread over the live sheet so a Wealth or Ammo change since EDIT opened stays.
     const listsChanged =
       handMade &&
-      JSON.stringify({ skills, talents, abilities }) !==
+      JSON.stringify({ attributes, skills: ratedSkills((k) => skills[k]), talents, abilities }) !==
         JSON.stringify({
+          attributes: c.stats.attributes,
           skills: ratedSkills((k) => c.stats.skills[k]),
           talents: c.stats.talents,
           abilities: c.stats.abilities,
@@ -88,7 +125,9 @@ export function CharacterEditor({ character: c, tier, sheetRules, send, onResult
       id: c.id,
       name,
       overrides,
-      ...(listsChanged && { stats: { ...c.stats, skills, talents, abilities } }),
+      ...(listsChanged && {
+        stats: { ...c.stats, attributes, skills: ratedSkills((k) => skills[k]), talents, abilities },
+      }),
       detail: {
         appearance: text("appearance"),
         past: text("past"),
@@ -131,43 +170,38 @@ export function CharacterEditor({ character: c, tier, sheetRules, send, onResult
       ))}
       {handMade ? (
         <>
-          <span className="label">SKILLS (rating; blank or 0 removes it)</span>
-          {ATTRIBUTES.map((attr) => {
-            const skills = (Object.keys(SKILLS) as Skill[]).filter((k) => SKILLS[k] === attr);
-            if (!skills.length) return null; // Toughness links no Skill (p.372)
-            return (
-              <div key={attr} className="field">
-                <span className="display" style={{ fontSize: 14, letterSpacing: "0.12em" }}>
-                  {ATTRIBUTE_NAMES[attr].toUpperCase()}
-                </span>
-                {/* Box before name, so every box sits against its own Skill and the columns line up. */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-                    gap: "6px 24px",
-                  }}
-                >
-                  {skills.map((k) => (
-                    <div key={k} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <input
-                        id={`skill-${k}-${c.id}`}
-                        className="input"
-                        name={`skill-${k}`}
-                        inputMode="numeric"
-                        placeholder="0"
-                        defaultValue={c.stats.skills[k] || ""}
-                        style={{ width: 56, textAlign: "center" }}
-                      />
-                      <label className="label" htmlFor={`skill-${k}-${c.id}`} style={{ whiteSpace: "nowrap" }}>
-                        {k.toUpperCase()}
-                      </label>
-                    </div>
+          <div className="label" style={{ display: "flex" }}>
+            <span style={{ flex: 1 }}>ATTRIBUTES AND SKILLS</span>
+            <span>DICE = Skill + Attribute (Core p.21)</span>
+          </div>
+          <div className="list table">
+            {ATTRIBUTES.map((a) => (
+              <Fragment key={a}>
+                <RatingRow
+                  label={<b>{ATTRIBUTE_NAMES[a].toUpperCase()}</b>}
+                  name={ATTRIBUTE_NAMES[a]}
+                  value={attributes[a]}
+                  min={1}
+                  max={MAX_ATTRIBUTE}
+                  onChange={(v) => setAttributes({ ...attributes, [a]: v })}
+                />
+                {(Object.keys(SKILLS) as Skill[])
+                  .filter((k) => SKILLS[k] === a)
+                  .map((k) => (
+                    <RatingRow
+                      key={k}
+                      label={<span style={{ paddingLeft: 16 }}>{k}</span>}
+                      name={k}
+                      value={skills[k] ?? 0}
+                      min={0}
+                      max={MAX_SKILL}
+                      dice={(skills[k] ?? 0) + attributes[a]}
+                      onChange={(v) => setSkills({ ...skills, [k]: v })}
+                    />
                   ))}
-                </div>
-              </div>
-            );
-          })}
+              </Fragment>
+            ))}
+          </div>
           <RuleListEditor
             title="TALENTS"
             owner={c.name}
@@ -183,14 +217,15 @@ export function CharacterEditor({ character: c, tier, sheetRules, send, onResult
             onChange={setAbilities}
           />
           <div className="dim" style={{ fontSize: 12 }}>
-            A Skill, Talent or Ability changed here doesn&apos;t change bonuses (Wounds, Resolve, Keywords…) or XP: set
-            those with OVERRIDES.
+            An Attribute feeds its Traits (Defence, Resilience, Wounds…). A Skill, Talent or Ability changed here
+            doesn&apos;t change bonuses (Wounds, Resolve, Keywords…), and nothing here costs XP: set bonuses with
+            OVERRIDES.
           </div>
         </>
       ) : (
         <div className="dim" style={{ fontSize: 12 }}>
-          This character&apos;s Skills, Talents and Abilities come from its build: change them with REBUILD, which
-          checks prerequisites and XP.
+          This character&apos;s Attributes, Skills, Talents and Abilities come from its build: change them with REBUILD,
+          which checks prerequisites and XP.
         </div>
       )}
       <span className="label">OVERRIDES (GM only; blank keeps the derived value, shown greyed)</span>

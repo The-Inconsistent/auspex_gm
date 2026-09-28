@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import {
+  ATTRIBUTES,
   SKILLS,
   deriveStats,
   effectiveStrength,
@@ -15,6 +16,7 @@ import {
   type Skill,
 } from "@wg/shared";
 
+import { ATTRIBUTE_NAMES } from "@/components/builder/constants";
 import { DetailFields, DetailHelp, DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { Legend } from "@/components/ui/legend/legend";
 import { Refusal } from "@/components/ui/refusal/refusal";
@@ -218,21 +220,43 @@ export function Sheet({ me, state, send }: SheetProps) {
         </div>
       </div>
 
-      {Object.keys(s.skills).length > 0 && (
-        <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">SKILLS (dice)</div>
-          {(Object.keys(SKILLS) as Skill[])
-            .filter((k) => s.skills[k])
-            .map((k) => (
-              <div key={k} style={{ display: "flex" }}>
-                <span style={{ flex: 1 }}>{k}</span>
-                <span className="display" style={{ fontSize: 22 }}>
-                  {skillTotal(s, k)}
-                </span>
-              </div>
-            ))}
+      <div className="stack" style={{ gap: 4 }}>
+        <div className="rule">ATTRIBUTES AND SKILLS</div>
+        <div className="label" style={{ display: "flex" }}>
+          <span style={{ flex: 1 }} />
+          <span style={{ width: 64, textAlign: "right" }}>RATING</span>
+          <span style={{ width: 64, textAlign: "right" }}>DICE</span>
         </div>
-      )}
+        {/* A Test rolls Skill + Attribute (Core p.21), so an unrated Skill still rolls its Attribute: shown greyed. */}
+        {ATTRIBUTES.map((a) => (
+          <div key={a} className="stack" style={{ gap: 2 }}>
+            <div style={{ display: "flex", alignItems: "baseline" }}>
+              <span className="display" style={{ flex: 1, letterSpacing: "0.12em" }}>
+                {ATTRIBUTE_NAMES[a].toUpperCase()}
+              </span>
+              <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
+                {s.attributes[a]}
+              </span>
+              <span style={{ width: 64 }} />
+            </div>
+            {(Object.keys(SKILLS) as Skill[])
+              .filter((k) => SKILLS[k] === a)
+              .map((k) => (
+                <div
+                  key={k}
+                  className={s.skills[k] ? undefined : "dim"}
+                  style={{ display: "flex", alignItems: "baseline", paddingLeft: 16 }}
+                >
+                  <span style={{ flex: 1 }}>{k}</span>
+                  <span style={{ width: 64, textAlign: "right" }}>{s.skills[k] ?? 0}</span>
+                  <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
+                    {skillTotal(s, k)}
+                  </span>
+                </div>
+              ))}
+          </div>
+        ))}
+      </div>
 
       {rulesLists.map(
         ([title, list]) =>
