@@ -86,6 +86,24 @@ entries. What's hidden is listed in [game-logic.md](game-logic.md). Both take th
 emits to each player socket, computing one view per character: a handout's `audience` and an Agent's `objectives`
 reach only their own player.
 
+## Book pages, served from the GM's tablet
+
+Players can read a cited page ("Core p.113") while the GM's tablet serves that book. The PDFs never leave the GM's
+device: the GM picks them in the BOOKS tab (`gm/books`, `hooks/use-book-server`), and pdf.js renders one page on
+request. These are socket events outside the action path, since they change no game state:
+
+```text
+GM tablet ── book:serving { sources } ──▶ gateway: socket.data.books ──▶ book:available { sources } to both rooms
+player ── book:request { source, page } ──▶ gateway ──▶ a GM socket serving that source (ack, 15 s)
+player ◀── ack { ok, image: JPEG } ◀── gateway ◀── GM tablet renders printed page + BOOKS[source].offset
+```
+
+- Nothing is stored. The gateway keeps only `socket.data.books`, so a GM tab closing or losing signal stops serving,
+  and `handleDisconnect` turns the players' links back into text.
+- Only a GM socket's ack can answer, and the image goes back in the asker's own ack, so no other player receives it.
+- `book:request` is limited to 30 per minute per socket, and a page is capped at `MAX_PAGE_BYTES`.
+- Cites are parsed from the text the sheet stores (`parseCite`). The UI is `PageCite` inside `BooksProvider`.
+
 ## Access: accounts and guests
 
 Three kinds of caller reach a table:

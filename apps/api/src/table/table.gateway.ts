@@ -151,7 +151,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     }
     // Only a GM socket answers, but check the shape before passing it on.
     const r = reply as { ok?: unknown; image?: unknown; error?: unknown } | null;
-    if (r?.ok === true && Buffer.isBuffer(r.image) && r.image.byteLength <= MAX_PAGE_BYTES) {
+    if (r?.ok === true && Buffer.isBuffer(r.image) && r.image.byteLength > 0 && r.image.byteLength <= MAX_PAGE_BYTES) {
       return { ok: true, image: r.image as unknown as ArrayBuffer };
     }
     return {
