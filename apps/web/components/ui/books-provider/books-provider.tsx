@@ -11,7 +11,8 @@ type Books = {
   open: (p: BookPage, cite: string) => void;
 };
 
-const BooksContext = createContext<Books | null>(null);
+// Off the table (the invite page, the builder) nothing is served, so cites there stay plain text rather than throwing.
+const BooksContext = createContext<Books>({ serves: () => false, open: () => {} });
 
 type BooksProviderProps = { books: ThreatSource[]; requestPage: RequestPage; children: ReactNode };
 
@@ -84,7 +85,5 @@ export function BooksProvider({ books, requestPage, children }: BooksProviderPro
 const release = (s: Shown) => s.url && URL.revokeObjectURL(s.url);
 
 export function useBooks(): Books {
-  const books = use(BooksContext);
-  if (!books) throw new Error("useBooks outside BooksProvider");
-  return books;
+  return use(BooksContext);
 }
