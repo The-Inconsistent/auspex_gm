@@ -17,7 +17,7 @@ const ACK_TIMEOUT_MS = 5000;
 const REFUSED_RETRY_MS = 3000;
 const TAP_WINDOW_MS = 1000;
 const SENT_MS = 600;
-// The GM's tablet renders the page (books.ts), then the api relays it; the api gives up after 15 s.
+// The GM's tablet renders the page (hooks/use-book-server), then the api relays it; the api gives up after 15 s.
 const PAGE_TIMEOUT_MS = 20_000;
 
 export type Send = (a: ActionInput) => Promise<ActionResult>;
