@@ -6,11 +6,23 @@ import {
   WebSocketGateway,
   WebSocketServer,
   type OnGatewayConnection,
+  type OnGatewayDisconnect,
   type OnGatewayInit,
 } from "@nestjs/websockets";
 import type { Server, Socket } from "socket.io";
 import { z } from "zod";
-import { Action, toPlayerCodex, toPlayerView, type ActionResult } from "@wg/shared";
+import {
+  Action,
+  BookPage,
+  BookServing,
+  MAX_PAGE_BYTES,
+  toPlayerCodex,
+  toPlayerView,
+  type ActionResult,
+  type BookAvailable,
+  type BookReply,
+  type ThreatSource,
+} from "@wg/shared";
 import { eq } from "drizzle-orm";
 import { resolveCtx, resolveGuest, type Ctx } from "../auth/auth.service.ts";
 import { campaign } from "../campaign/campaign.schema.ts";
@@ -36,6 +48,12 @@ const Handshake = z.object({
 // actions: a GM tapping fast stays far below 2/s over a minute.
 const allowConnect = limiter({ max: 60, windowMs: 60_000 });
 const allowAction = limiter({ max: 120, windowMs: 60_000 });
+// A player flipping through cited pages; each one costs the GM's tablet a render.
+const allowPage = limiter({ max: 30, windowMs: 60_000 });
+const PAGE_TIMEOUT_MS = 15_000;
+
+// A GM socket that serves book pages from its own PDFs (book:serving). Presence only, so it dies with the socket.
+type Seat = Ctx & { books?: ThreatSource[] };
 
 async function handshakeCtx({ auth, headers }: { auth: unknown; headers: { cookie?: string } }): Promise<Ctx | null> {
   const h = Handshake.safeParse(auth ?? {});
@@ -60,8 +78,9 @@ async function handshakeCtx({ auth, headers }: { auth: unknown; headers: { cooki
 // WEB_ORIGIN may list several origins (localhost and the LAN address), comma separated.
 @WebSocketGateway({
   cors: { origin: process.env.WEB_ORIGIN?.split(",").map((o) => o.trim()) ?? false, credentials: true },
+  maxHttpBufferSize: MAX_PAGE_BYTES + 100_000, // a relayed book page (book:request), plus the ack envelope
 })
-export class TableGateway implements OnGatewayInit, OnGatewayConnection {
+export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server!: Server;
   private readonly log = new Logger(TableGateway.name);
   // ponytail: in-process per-campaign queue, assumes one api instance; pg advisory locks if we ever scale out
@@ -95,6 +114,47 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
     const [state, codex] = await Promise.all([loadState(ctx.campaignId), loadCodex(ctx.campaignId)]);
     if (state) socket.emit("state", gm ? state : toPlayerView(state, ctx.characterId));
     socket.emit("codex", gm ? codex : toPlayerCodex(codex, ctx.characterId));
+    this.announceBooks(ctx.campaignId, socket);
+  }
+
+  // A serving GM left (closed the tab, lost signal): the players' page links go back to plain text.
+  handleDisconnect(socket: Socket) {
+    const seat = socket.data as Seat | undefined;
+    if (seat?.books?.length) this.announceBooks(seat.campaignId);
+  }
+
+  // The GM's tablet serves these books from PDFs picked on that device; an empty list stops serving.
+  @SubscribeMessage("book:serving")
+  onBookServing(@ConnectedSocket() socket: Socket, @MessageBody() body: unknown) {
+    const seat = socket.data as Seat;
+    const parsed = BookServing.safeParse(body);
+    if (seat.role !== "gm" || !parsed.success) return;
+    seat.books = parsed.data.sources;
+    this.announceBooks(seat.campaignId);
+  }
+
+  // Any seat asks for one page; a GM socket serving that book renders it and the image comes back in this ack only.
+  // Nothing is stored. ponytail: any page of a served book, allow-list the cited pages if the table ever needs it
+  @SubscribeMessage("book:request")
+  async onBookRequest(@ConnectedSocket() socket: Socket, @MessageBody() body: unknown): Promise<BookReply> {
+    const seat = socket.data as Seat;
+    if (!allowPage(socket.id)) return { ok: false, error: "Too many pages. Slow down." };
+    const parsed = BookPage.safeParse(body);
+    if (!parsed.success) return { ok: false, error: z.prettifyError(parsed.error) };
+    const server = this.bookServers(seat.campaignId).find((s) => (s.data as Seat).books?.includes(parsed.data.source));
+    if (!server) return { ok: false, error: "The GM isn't serving that book." };
+    let reply: unknown;
+    try {
+      reply = await server.timeout(PAGE_TIMEOUT_MS).emitWithAck("book:request", parsed.data);
+    } catch {
+      return { ok: false, error: "No reply from the GM's tablet." };
+    }
+    // Only a GM socket answers, but check the shape before passing it on.
+    const r = reply as { ok?: unknown; image?: unknown; error?: unknown } | null;
+    if (r?.ok === true && Buffer.isBuffer(r.image) && r.image.byteLength <= MAX_PAGE_BYTES) {
+      return { ok: true, image: r.image as unknown as ArrayBuffer };
+    }
+    return { ok: false, error: typeof r?.error === "string" ? r.error.slice(0, 200) : "The GM's tablet couldn't render it." };
   }
 
   @SubscribeMessage("action")
@@ -158,6 +218,21 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection {
       })(),
     );
     return run;
+  }
+
+  // This campaign's GM sockets that serve at least one book. Local sockets: one api instance, as the queue assumes.
+  private bookServers(campaignId: string): Socket[] {
+    const ids = this.server.sockets.adapter.rooms.get(rooms(campaignId).gm) ?? new Set<string>();
+    return [...ids]
+      .map((id) => this.server.sockets.sockets.get(id))
+      .filter((s): s is Socket => !!(s?.data as Seat | undefined)?.books?.length);
+  }
+
+  // Which books any GM is serving right now, to everyone at the table (or to one socket that just joined).
+  private announceBooks(campaignId: string, to?: Socket) {
+    const sources = [...new Set(this.bookServers(campaignId).flatMap((s) => (s.data as Seat).books ?? []))];
+    const r = rooms(campaignId);
+    (to ?? this.server.to([r.gm, r.players])).emit("book:available", { sources } satisfies BookAvailable);
   }
 
   private async broadcast(campaignId: string, what: { state: boolean; codex: boolean }) {

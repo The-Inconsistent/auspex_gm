@@ -10,7 +10,7 @@ export const THREAT_ONLY_SOURCES = {
   "gutshivas-kommandos": { cite: "GK" },
   "high-altar-of-technology": { cite: "HAT" }, // homebrew Mechanicus supplement, no printed pages: PDF pages
 } as const;
-const THREAT_SOURCES = { ...SOURCES, ...THREAT_ONLY_SOURCES };
+export const THREAT_SOURCES = { ...SOURCES, ...THREAT_ONLY_SOURCES };
 export type ThreatSource = keyof typeof THREAT_SOURCES;
 
 // "Core p.339", "TA p.8": a stat block's page cite.

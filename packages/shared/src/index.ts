@@ -11,3 +11,4 @@ export * from "./rules.ts";
 export * from "./creation.ts";
 export * from "./build.ts";
 export * from "./library.ts";
+export * from "./book.ts";
