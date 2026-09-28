@@ -35,7 +35,9 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
     100 MB; render with `pdftoppm -f N -l N -r 110 -png "<pdf>" <scratch>/p` and Read the PNG.
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
-  repo private and never serve book content to anyone without a seat (`/api/campaigns/:id/threats` and `/wargear` are GM-only; `/rules` and `/creation` need any seat).
+  repo private and never serve book content to anyone without an account (`/api/campaigns/:id/threats` and `/wargear` are
+  GM-only; `/rules` and `/creation` need any seat; their seatless twins `/api/rules` and `/api/creation`, for the
+  character library, need a signed-in Clerk user — sign-up is invite only, and that is the gate).
 
 ## Stack
 
@@ -65,6 +67,9 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
   2. It first calls `authorize(ctx)`, which checks the caller's role and ownership.
   3. The gateway rebroadcasts.
   Actions are serialised per campaign with an in-process queue, which assumes a single api instance.
+  The one exception is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
+  campaign is nobody's live state, so there is no room to broadcast to and no action to queue. It's plain REST, scoped
+  to the owner, and still re-resolves a build server-side before saving it.
 - **The server decides.** Counters take deltas (`+2 Wounds`), clamped at 0 and capped where the rules cap them,
   so simultaneous taps never overwrite each other. Postgres holds all live state; the server keeps no in-memory
   game state.
@@ -126,7 +131,10 @@ apps/api/src/
                access.actions.ts (invite.create/revoke, member.remove)
   campaign/    campaign.controller.ts (REST: campaigns, lobby, me, threats, join, guest, invites), campaign.service.ts,
                campaign.actions.ts (campaign, pools, sessions), campaign.schema.ts
-  character/   character.actions.ts (characters, guest tokens), character.schema.ts
+  character/   character.actions.ts (characters, guest tokens), character.schema.ts,
+               creation.service.ts (buildCatalogue, creationPayload, buildRefusal)
+  library/     library.controller.ts (REST: creation, rules, library CRUD for a signed-in user),
+               library.service.ts, library.schema.ts (library_character: characters outside any campaign)
   encounter/   encounter.actions.ts (encounters, turns, combatants, beat.startEncounter), encounter.schema.ts
   codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
@@ -136,18 +144,20 @@ apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
                     c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),
+                    library/[characterId]/page.tsx (the builder without a campaign), library/new/route.ts (start one),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
-                    server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
-apps/web/components/lobby/   lobby-view (your games, running now, new game)
+                    server-api.ts (apiGet/apiSend: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
+apps/web/components/lobby/   lobby-view (your games, your characters, running now, new game)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
-apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger)
+apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
+                             campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), weapon-line, bar, stat-block, status-chips, status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
-packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
+packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
@@ -230,7 +240,8 @@ These are binding; follow them when writing code and use them when reviewing:
 - **Next rewrites:** `skipTrailingSlashRedirect` plus an explicit `/socket.io/` rewrite are required, otherwise
   socket.io's handshake gets a 308 or 404.
 - **Rate limits** (`apps/api/src/core/rate-limit.ts`, in-process): 60/min per IP on `/api/join`, `/api/guest` and
-  `/api/invites`, 60 socket connects/min per IP, 120 actions/min per socket (the admin key is exempt, for `seed.ts`).
+  `/api/invites`, 240/min per IP on `/api/library`, `/api/creation` and `/api/rules` (the library builder autosaves),
+  60 socket connects/min per IP, 120 actions/min per socket (the admin key is exempt, for `seed.ts`).
   The IP is `CF-Connecting-IP`, so Next's server-side fetches to the api must forward it.
 - **Style:** match the surrounding code. Comments say *why*, with page cites. Deliberate shortcuts are marked
   `// ponytail: <ceiling>, <upgrade path>`.

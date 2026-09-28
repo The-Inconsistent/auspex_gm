@@ -359,6 +359,21 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     and Ammo (a Reload, p.185; an Icon on an Influence Test, p.206). Sharing Ammo (Core p.229) is the giver's −1 on
     their sheet and the GM's +1 in PARTY. Conditions are set and cleared by the GM, from the tracker in a fight or
     PARTY outside one.
+58. **A character built outside a campaign** (the personal library, issue #14). The books know nothing of characters
+    without a game, so the app decides: the library holds the creation choices only, and the campaign is the authority
+    the moment one comes in.
+    - **Tier.** A character comes in only at the campaign's Tier, because the Tier sets the XP budget (Core p.20) and
+      the Traits (Core pp.36–37). A mismatch is refused in the builder, and by `character.build` if it's sent anyway.
+      A character already made keeps the Tier it was made at, so a library character at another Tier can never replace
+      it; rebuild it in the library for that Tier instead.
+    - **Homebrew.** The campaign's setting wins: a character built with the homebrew books can't come into a table that
+      doesn't allow them.
+    - **The GM's part stays at the table.** Rulings and ticks (species by ruling, granted keywords, gear swaps, GM
+      questions) are judgements about *that table's* character, so a library character never carries one and an import
+      clears it. Importing onto a character the GM has already ruled on leaves those rulings as they stand: the draft a
+      player sends keeps the GM's stored part, and the GM clears them (CLEAR TICKS) if the new build makes them wrong.
+    - **The copy is a snapshot**, like a threat's stat block joining an encounter: later library edits don't change the
+      campaign character, and XP earned in play belongs to the campaign character alone.
 
 ---
 
