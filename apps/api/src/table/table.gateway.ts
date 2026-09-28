@@ -154,7 +154,10 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     if (r?.ok === true && Buffer.isBuffer(r.image) && r.image.byteLength <= MAX_PAGE_BYTES) {
       return { ok: true, image: r.image as unknown as ArrayBuffer };
     }
-    return { ok: false, error: typeof r?.error === "string" ? r.error.slice(0, 200) : "The GM's tablet couldn't render it." };
+    return {
+      ok: false,
+      error: typeof r?.error === "string" ? r.error.slice(0, 200) : "The GM's tablet couldn't render it.",
+    };
   }
 
   @SubscribeMessage("action")

@@ -1,5 +1,6 @@
 import { sourceCite, type RuleEntry } from "@wg/shared";
 
+import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { RULE_KIND_LABELS } from "@/components/ui/rules-ref/constants";
 
 type RuleItemProps = { r: RuleEntry; open?: boolean };
@@ -16,7 +17,7 @@ export function RuleItem({ r, open }: RuleItemProps) {
           {r.name}
         </b>
         <span className="label rule-meta">
-          {r.type ?? RULE_KIND_LABELS[r.kind]} · {sourceCite(r)}
+          {r.type ?? RULE_KIND_LABELS[r.kind]} · <PageCite cite={sourceCite(r)} />
         </span>
         <span className="rule-gist">{r.gist}</span>
       </summary>

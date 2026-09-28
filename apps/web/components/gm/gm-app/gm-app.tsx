@@ -4,16 +4,19 @@ import { useState } from "react";
 import { UserButton } from "@wg/auth/react";
 import { Pool, poolMax, type RuleEntry, type Threat, type Wargear } from "@wg/shared";
 
+import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
 import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
+import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
+import { useBookServer } from "@/hooks/use-book-server/use-book-server";
 import { useTable } from "@/hooks/use-table/use-table";
 import type { SheetRules } from "@/lib/sheet-rules/sheet-rules";
 
@@ -28,7 +31,8 @@ type GmAppProps = {
 };
 
 export function GmApp({ campaignId, bestiary, wargear, rules, sheetRules }: GmAppProps) {
-  const { state, codex, online, send } = useTable(campaignId);
+  const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
+  const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>("TRACK");
   const [poolError, setPoolError] = useState<string | null>(null);
   if (!state || !codex) return <StatusScreen text="SYNCING COGITATOR…" />;
@@ -59,55 +63,58 @@ export function GmApp({ campaignId, bestiary, wargear, rules, sheetRules }: GmAp
   );
 
   return (
-    <RulesProvider rules={rules}>
-      <div className="gm">
-        {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
-        <header className="gm-head band torn">
-          <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
-            ◂
-          </a>
-          <div className="display gm-title">
-            AUSPEX{" "}
-            <span className="dim">
-              · {state.campaign.name.toUpperCase()} · T{state.campaign.tier}
-            </span>
-          </div>
-          {state.encounter && (
-            <div className="display" style={{ fontSize: 30 }}>
-              RND {String(state.encounter.round).padStart(2, "0")}
+    <BooksProvider books={books} requestPage={requestPage}>
+      <RulesProvider rules={rules}>
+        <div className="gm">
+          {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
+          <header className="gm-head band torn">
+            <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
+              ◂
+            </a>
+            <div className="display gm-title">
+              AUSPEX{" "}
+              <span className="dim">
+                · {state.campaign.name.toUpperCase()} · T{state.campaign.tier}
+              </span>
             </div>
-          )}
-          {Pool.options.map(pool)}
-          <ThemeToggle />
-          <UserButton />
-        </header>
-        <nav className="tabs rail" role="tablist" aria-label="GM sections">
-          {GM_TABS.map((t, i) => (
-            <button
-              key={t}
-              role="tab"
-              className="tab"
-              data-n={TAB_NUMERALS[i]}
-              aria-selected={tab === t}
-              onClick={() => setTab(t)}
-            >
-              {t}
-            </button>
-          ))}
-        </nav>
-        <main className="gm-body">
-          {tab === "TRACK" && <Tracker state={state} send={send} bestiary={bestiary} />}
-          {tab === "PREP" && (
-            <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
-          )}
-          {tab === "CODEX" && <CodexView codex={codex} characters={state.characters} send={send} />}
-          {tab === "PARTY" && (
-            <Party state={state} codex={codex} send={send} wargear={wargear} sheetRules={sheetRules} />
-          )}
-          {tab === "RULES" && <RulesRef rules={rules} />}
-        </main>
-        <Refusal error={poolError} onDismiss={() => setPoolError(null)} />
-      </div>
-    </RulesProvider>
+            {state.encounter && (
+              <div className="display" style={{ fontSize: 30 }}>
+                RND {String(state.encounter.round).padStart(2, "0")}
+              </div>
+            )}
+            {Pool.options.map(pool)}
+            <ThemeToggle />
+            <UserButton />
+          </header>
+          <nav className="tabs rail" role="tablist" aria-label="GM sections">
+            {GM_TABS.map((t, i) => (
+              <button
+                key={t}
+                role="tab"
+                className="tab"
+                data-n={TAB_NUMERALS[i]}
+                aria-selected={tab === t}
+                onClick={() => setTab(t)}
+              >
+                {t}
+              </button>
+            ))}
+          </nav>
+          <main className="gm-body">
+            {tab === "TRACK" && <Tracker state={state} send={send} bestiary={bestiary} />}
+            {tab === "PREP" && (
+              <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
+            )}
+            {tab === "CODEX" && <CodexView codex={codex} characters={state.characters} send={send} />}
+            {tab === "PARTY" && (
+              <Party state={state} codex={codex} send={send} wargear={wargear} sheetRules={sheetRules} />
+            )}
+            {tab === "RULES" && <RulesRef rules={rules} />}
+            {tab === "BOOKS" && <Books server={bookServer} />}
+          </main>
+          <Refusal error={poolError} onDismiss={() => setPoolError(null)} />
+        </div>
+      </RulesProvider>
+    </BooksProvider>
   );
 }
