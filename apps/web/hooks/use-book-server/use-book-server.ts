@@ -6,9 +6,7 @@ import { BOOKS, MAX_PAGE_BYTES, pdfPage, type BookReply, type ThreatSource } fro
 
 import type { RenderPage } from "@/hooks/use-table/use-table";
 
-// Wide enough to read small print on a phone with a pinch, small enough to stay a few hundred KB as JPEG.
-const PAGE_WIDTH_PX = 1400;
-const JPEG_QUALITY = [0.8, 0.6];
+import { JPEG_QUALITY, PAGE_WIDTH_PX } from "./constants";
 
 type ServeBooks = (next: { sources: ThreatSource[]; render: RenderPage } | null) => void;
 
