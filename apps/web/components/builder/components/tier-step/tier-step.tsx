@@ -4,11 +4,12 @@ import { useState } from "react";
 import { TIERS, startingXp } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
+import { ImportLibrary } from "../import-library/import-library";
 
 // Framework and Tier (Core pp.18–20). At a table the budget comes from the campaign's Tier, and the GM decides whether
 // the builder may use the homebrew books; in the library (issue #14) both are the character's owner's to pick.
 export function TierStep() {
-  const { tier, tierEditable, setTier, homebrew, setHomebrew, go } = useBuilder();
+  const { tier, tierEditable, setTier, homebrew, setHomebrew, importable, go } = useBuilder();
   const [error, setError] = useState<string | null>(null);
 
   // HOMEBREW switch: saves the setting, then reloads, because the catalogue is served already filtered.
@@ -50,6 +51,7 @@ export function TierStep() {
           Rank 1 (Core p.36). The GM sets the Tier and the Framework in PARTY.
         </p>
       )}
+      {importable && <ImportLibrary />}
       <div className="plate stack">
         <div className="rule">SOURCES</div>
         <p>

@@ -1006,3 +1006,44 @@ test("the character library: a signed-in user builds without a campaign (issue #
   assert.equal((await del(`/library/${id}`, bearer(owner))).status, 200);
   assert.equal((await get(`/library/${id}`, bearer(owner))).status, 404);
 });
+
+test("a library character comes into a campaign as a copy (issue #14 step 4)", async (t) => {
+  const owner = clerk(`import-${Date.now()}`);
+  const created = await post("/library", {}, bearer(owner));
+  const { id } = (await created.json()) as LibraryCharacter;
+  assert.equal((await put(`/library/${id}`, { name: "Sila", build: disruptor }, bearer(owner))).status, 200);
+  const { build } = (await (await get(`/library/${id}`, bearer(owner))).json()) as LibraryEntry;
+  assert.ok(build, "the library holds the finished build");
+
+  // The import is a copy made in the builder, so the server sees the ordinary `character.build` (no new action).
+  const table = await newCampaign("Import", 4);
+  t.after(() => table.socket.close());
+  const brought = await table.send({ type: "character.build", name: "Sila", build });
+  assert.ok(brought.ok && brought.id, JSON.stringify(brought));
+  const sila = (await table.until((s) => s.characters.some((c) => c.id === brought.id))).characters.find(
+    (c) => c.id === brought.id,
+  )!;
+  assert.equal(sila.stats.archetype, "Primaris Incursor");
+
+  // Later library edits don't reach the campaign character: it was snapshotted on the way in.
+  assert.equal(
+    (
+      await put(
+        `/library/${id}`,
+        { name: "Sila Renamed", build: { ...disruptor, skills: { ...disruptor.skills, Stealth: 4 } } },
+        bearer(owner),
+      )
+    ).status,
+    200,
+  );
+  const after = (await table.until(() => true)).characters.find((c) => c.id === brought.id)!;
+  assert.deepEqual([after.name, after.stats.skills.Stealth], ["Sila", 5], "the campaign copy is untouched");
+
+  // A campaign only takes a character built for its own Tier; the builder blocks it first, the server refuses it too.
+  const other = await newCampaign("ImportT2", 2);
+  t.after(() => other.socket.close());
+  assert.deepEqual(await other.send({ type: "character.build", name: "Sila", build }), {
+    ok: false,
+    error: "This campaign is Tier 2; build for Tier 2",
+  });
+});

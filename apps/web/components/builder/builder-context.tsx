@@ -42,6 +42,7 @@ export type BuilderValue = {
   setHomebrew: ((next: boolean) => Promise<string | null>) | null;
   play: { tier: number; xpEarned: number } | null; // a character in play: the group's Tier now and the XP earned
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
+  importable: boolean; // a campaign's builder can take a copy of a character from the caller's library (issue #14)
   role: Role;
   go: (step: BuilderStep) => void;
   // SEND TO GM: puts the draft on the table for the GM (null for a character not made yet).

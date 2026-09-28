@@ -51,6 +51,7 @@ type Bench = {
   save: (draft: Draft) => Promise<string | null>; // the error, or null once saved
   sendDraft: ((draft: Draft) => Promise<string | null>) | null;
   autosave: ((draft: Draft) => void) | null; // the library saves as you go; a table waits for SEND TO GM
+  canImport: boolean; // a table takes a copy from the caller's library; the library itself has nowhere to import from
   sentDraft: boolean;
   backHref: string;
   banner: string | null; // the strip along the top: no signal, or a draft that didn't save
@@ -150,6 +151,7 @@ function TableBench({
           }
         : null,
       autosave: null,
+      canImport: true, // a seat at a table can take a copy from the caller's own library (issue #14 step 4)
       sentDraft: !!character?.draft,
       backHref: `/c/${campaignId}`,
       banner: online ? null : "NO SIGNAL · RECONNECTING",
@@ -224,6 +226,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
       },
       sendDraft: null, // bring it into a campaign from that campaign's builder instead (issue #14 step 4)
       autosave,
+      canImport: false, // already in the library: it is the library's own builder
       sentDraft: false,
       backHref: "/",
       banner,
@@ -324,12 +327,13 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
       setHomebrew: bench.setHomebrew,
       play,
       made,
+      importable: bench.canImport && !locked,
       role,
       go,
       sendDraft: bench.sendDraft ? () => bench.sendDraft!({ ...draft, savedAt: Date.now() }) : null,
       sentDraft: bench.sentDraft,
     };
-  }, [draft, resolved, catalogue, lookups, tier, play, made, role, bench]);
+  }, [draft, resolved, catalogue, lookups, tier, play, made, locked, role, bench]);
 
   // START OVER: drops the draft on this device and goes back to the saved build, or a blank one.
   const startOver = () => {
