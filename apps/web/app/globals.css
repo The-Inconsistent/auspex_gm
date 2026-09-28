@@ -972,6 +972,20 @@ button.row.now:nth-of-type(even) {
   object-fit: contain;
   object-position: left;
 }
+/* Invite: one open Agent per line, the photo in a fixed box so names line up (components/invite/invite-accept). */
+.pick {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+}
+.pick .portrait-thumb {
+  width: 72px;
+  height: 72px;
+}
 .keys {
   display: flex;
   gap: 8px;

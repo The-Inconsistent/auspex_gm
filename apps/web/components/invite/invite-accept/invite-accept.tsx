@@ -5,12 +5,15 @@ import { useState, type FormEvent } from "react";
 
 import type { AcceptInvite, InvitePreview } from "@wg/shared";
 
+import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
+import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { portrait } from "@/lib/portraits/portraits";
 
 type InviteAcceptProps = { code: string; preview: InvitePreview };
 
 // Claim a seat from an invite: the invited character, an open one, or a new one (room invites). Signed-in users become
-// members; guests (if the GM allowed them) get a QR-style guest cookie.
+// members; guests (if the GM allowed them) get a QR-style guest cookie. SHEET shows each Agent read-only first, with no
+// rules to link to (they need a seat), hence the empty RulesProvider.
 export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
   const router = useRouter();
   const [newName, setNewName] = useState("");
@@ -40,79 +43,95 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
   };
 
   return (
-    <main className="center pad">
-      <div className="panel pad stack" style={{ maxWidth: 480, width: "100%" }}>
-        <div className="display" style={{ fontSize: 30 }}>
-          JOIN {p.campaignName.toUpperCase()}
-        </div>
-        {p.member && (
-          <a className="btn primary" href={`/c/${p.campaignId}`}>
-            YOU&apos;RE SEATED · OPEN TABLE
-          </a>
-        )}
-
-        {!p.member && !p.signedIn && (
-          <div className="stack">
-            <a className="btn primary" href={`/sign-in?redirect_url=${encodeURIComponent(here)}`}>
-              SIGN IN TO JOIN
-            </a>
-            {p.allowGuests ? (
-              <div className="dim">Or join as a guest below: no account, this device only.</div>
-            ) : (
-              <div className="dim">This table needs an account.</div>
-            )}
+    <RulesProvider rules={[]}>
+      <main className="center pad">
+        <div className="panel pad stack" style={{ maxWidth: 480, width: "100%" }}>
+          <div className="display" style={{ fontSize: 30 }}>
+            JOIN {p.campaignName.toUpperCase()}
           </div>
-        )}
+          {p.member && (
+            <a className="btn primary" href={`/c/${p.campaignId}`}>
+              YOU&apos;RE SEATED · OPEN TABLE
+            </a>
+          )}
 
-        {!p.member && canClaim && p.mode === "character" && p.character && (
-          <button className="btn primary" disabled={busy} onClick={() => accept({})}>
-            PLAY {p.character.name.toUpperCase()}
-            {p.signedIn ? "" : " AS GUEST"}
-          </button>
-        )}
+          {!p.member && !p.signedIn && (
+            <div className="stack">
+              <a className="btn primary" href={`/sign-in?redirect_url=${encodeURIComponent(here)}`}>
+                SIGN IN TO JOIN
+              </a>
+              {p.allowGuests ? (
+                <div className="dim">Or join as a guest below: no account, this device only.</div>
+              ) : (
+                <div className="dim">This table needs an account.</div>
+              )}
+            </div>
+          )}
 
-        {!p.member && canClaim && p.mode === "room" && (
-          <>
-            <div className="rule">PICK YOUR AGENT</div>
+          {!p.member && canClaim && p.mode === "character" && p.character && (
             <div className="keys" style={{ paddingTop: 0 }}>
+              <button className="btn primary" disabled={busy} onClick={() => accept({})}>
+                PLAY {p.character.name.toUpperCase()}
+                {p.signedIn ? "" : " AS GUEST"}
+              </button>
+              <SheetDialog me={p.character} tier={p.tier} />
+            </div>
+          )}
+
+          {!p.member && canClaim && p.mode === "room" && (
+            <>
+              <div className="rule">PICK YOUR AGENT</div>
               {p.openCharacters.length === 0 && <span className="dim">Every agent is taken. Start a new one:</span>}
               {p.openCharacters.map((c) => {
-                const pic = portrait(c.portrait);
+                const pic = portrait(c.detail.portrait);
                 return (
-                  <button
-                    key={c.id}
-                    className="btn"
-                    style={pic ? { flexDirection: "column", padding: "8px 14px" } : undefined}
-                    disabled={busy}
-                    onClick={() => accept({ characterId: c.id })}
-                  >
-                    {pic && <Image src={pic} alt="" height={192} className="portrait" />}
-                    {c.name.toUpperCase()}
-                  </button>
+                  <div key={c.id} className="pick">
+                    {pic ? (
+                      <Image src={pic} alt="" width={144} className="portrait-thumb" />
+                    ) : (
+                      <span className="portrait-thumb" />
+                    )}
+                    <div className="stack" style={{ gap: 4, flex: 1, minWidth: 0 }}>
+                      <b>{c.name.toUpperCase()}</b>
+                      <i className="dim">
+                        {[c.stats.archetype, c.stats.species].filter(Boolean).join(" · ") || "No sheet yet"}
+                      </i>
+                      <div className="keys" style={{ paddingTop: 2 }}>
+                        <button
+                          className="btn sm primary"
+                          disabled={busy}
+                          onClick={() => accept({ characterId: c.id })}
+                        >
+                          PLAY
+                        </button>
+                        <SheetDialog me={c} tier={p.tier} />
+                      </div>
+                    </div>
+                  </div>
                 );
               })}
-            </div>
-            <form style={{ display: "flex", gap: 8 }} onSubmit={handleNew}>
-              <input
-                className="input"
-                aria-label="New character name"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="NEW AGENT NAME"
-              />
-              <button className="btn" disabled={busy}>
-                NEW
-              </button>
-            </form>
-          </>
-        )}
+              <form style={{ display: "flex", gap: 8 }} onSubmit={handleNew}>
+                <input
+                  className="input"
+                  aria-label="New character name"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="NEW AGENT NAME"
+                />
+                <button className="btn" disabled={busy}>
+                  NEW
+                </button>
+              </form>
+            </>
+          )}
 
-        {error && (
-          <div className="red" role="alert">
-            ! {error}
-          </div>
-        )}
-      </div>
-    </main>
+          {error && (
+            <div className="red" role="alert">
+              ! {error}
+            </div>
+          )}
+        </div>
+      </main>
+    </RulesProvider>
   );
 }

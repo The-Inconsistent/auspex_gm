@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { InviteMode, Role, Tier } from "./state.ts";
+import { Character, InviteMode, Role, Tier } from "./state.ts";
 
 // REST shapes for signed-in (Clerk) users outside a table: the lobby, creating a game, and invite links.
 
@@ -20,15 +20,16 @@ export type Lobby = z.infer<typeof Lobby>;
 
 export const CreateGame = z.object({ name: z.string().min(1).max(100), tier: Tier });
 
-const CharacterRef = z.object({ id: z.string(), name: z.string() });
-
 // What /invite/<code> shows before accepting.
 export const InvitePreview = z.object({
   campaignId: z.string(),
   campaignName: z.string(),
+  tier: Tier,
   mode: InviteMode,
-  character: CharacterRef.nullable(), // the invited character (mode "character")
-  openCharacters: z.array(CharacterRef.extend({ portrait: z.string() })), // unclaimed characters to pick from (mode "room")
+  // Read-only sheets, so a player can choose before taking a seat: objectives blanked, Ability and Talent text
+  // stripped (book prose needs a seat, CLAUDE.md; the page cites stay).
+  character: Character.nullable(), // the invited character (mode "character")
+  openCharacters: z.array(Character), // unclaimed characters to pick from (mode "room")
   allowGuests: z.boolean(),
   signedIn: z.boolean(),
   member: z.boolean(),

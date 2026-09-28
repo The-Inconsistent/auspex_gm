@@ -1,11 +1,12 @@
-import { and, eq, gt, isNull, or, sql } from "drizzle-orm";
+import { and, asc, eq, gt, isNull, or, sql } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
-import { AcceptInvite, type InvitePreview } from "@wg/shared";
+import { AcceptInvite, type Character, type InvitePreview } from "@wg/shared";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { db, type Db, type Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { accessToken, invite, membership } from "./auth.schema.ts";
+import { toCharacter } from "../table/table.state.ts";
 import { hash, issueToken } from "./auth.service.ts";
 
 // A live invite by its code: not revoked, not expired, uses left.
@@ -39,28 +40,33 @@ export async function claimedCharacterIds(conn: Db, campaignId: string): Promise
 // Characters nobody has claimed yet.
 async function openCharacters(conn: Db, campaignId: string) {
   const [chars, claimed] = await Promise.all([
-    conn
-      .select({
-        id: character.id,
-        name: character.name,
-        portrait: sql<string>`coalesce(${character.detail}->>'portrait', '')`, // detail is jsonb, maybe without one
-      })
-      .from(character)
-      .where(eq(character.campaignId, campaignId)),
+    conn.select({ id: character.id }).from(character).where(eq(character.campaignId, campaignId)),
     claimedCharacterIds(conn, campaignId),
   ]);
   return chars.filter((c) => !claimed.has(c.id));
 }
 
+// A sheet for someone who holds an invite but no seat yet: no objectives, no book prose (see InvitePreview).
+const previewSheet = (c: Character): Character => {
+  const bare = (list: Character["stats"]["talents"]) => list.map((r) => ({ ...r, text: "" }));
+  return {
+    ...c,
+    objectives: [],
+    stats: { ...c.stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents) },
+  };
+};
+
 export async function previewInvite({ code, user }: { code: string; user: AuthUser | null }): Promise<InvitePreview> {
   const inv = await liveInvite(db, code);
-  const [c] = await db.select({ name: campaign.name }).from(campaign).where(eq(campaign.id, inv.campaignId));
-  const [ch] = inv.characterId
-    ? await db
-        .select({ id: character.id, name: character.name })
-        .from(character)
-        .where(eq(character.id, inv.characterId))
-    : [];
+  const [c] = await db
+    .select({ name: campaign.name, tier: campaign.tier })
+    .from(campaign)
+    .where(eq(campaign.id, inv.campaignId));
+  const [chars, claimed] = await Promise.all([
+    db.select().from(character).where(eq(character.campaignId, inv.campaignId)).orderBy(asc(character.createdAt)),
+    claimedCharacterIds(db, inv.campaignId),
+  ]);
+  const ch = chars.find((r) => r.id === inv.characterId);
   const [m] = user
     ? await db
         .select({ id: membership.id })
@@ -70,9 +76,11 @@ export async function previewInvite({ code, user }: { code: string; user: AuthUs
   return {
     campaignId: inv.campaignId,
     campaignName: c?.name ?? "?",
+    tier: c?.tier ?? 1,
     mode: inv.mode,
-    character: ch ?? null,
-    openCharacters: inv.mode === "room" ? await openCharacters(db, inv.campaignId) : [],
+    character: ch ? previewSheet(toCharacter(ch)) : null,
+    openCharacters:
+      inv.mode === "room" ? chars.filter((r) => !claimed.has(r.id)).map((r) => previewSheet(toCharacter(r))) : [],
     allowGuests: inv.allowGuests,
     signedIn: !!user,
     member: !!m,

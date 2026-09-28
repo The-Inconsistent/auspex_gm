@@ -133,8 +133,10 @@ The room QR and per-character invite links point here. The page fetches `/api/in
   - Already a member: YOU'RE SEATED · OPEN TABLE.
   - Signed out: SIGN IN TO JOIN (to `/sign-in?redirect_url=/invite/<code>`), plus a note that guests may join below, or
     that the table needs an account when `allowGuests` is false.
-  - A character invite: PLAY <NAME> (or PLAY <NAME> AS GUEST).
-  - A room invite: PICK YOUR AGENT from `openCharacters`, or a NEW AGENT NAME form.
+  - A character invite: PLAY <NAME> (or PLAY <NAME> AS GUEST), and SHEET.
+  - A room invite: PICK YOUR AGENT from `openCharacters` (portrait, name, archetype, PLAY and SHEET), or a NEW AGENT
+    NAME form.
+  - SHEET is `SheetDialog` without `table`: the play sheet, read-only, so a player can compare Agents before choosing.
   - Each choice POSTs to `/api/invites/:code/accept` from the browser, with `asGuest` set when signed out, then pushes
     to `/c/<campaignId>`. A refusal (such as "That character is already taken") shows inline.
 

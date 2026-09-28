@@ -69,7 +69,7 @@ is a `400` with `z.prettifyError` text.
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
 | `POST /api/join` | the guest token in the body | `{ token: string 1–200 }` | `200` `Ctx`, and `Set-Cookie: wg_token` (flags in §10). The web uses `campaignId` to open the table | `400` bad body. `401 "Invalid or revoked link"` |
 | `GET /api/guest` | `wg_token` cookie | none | `200` `Ctx` of the guest's table, so a returning guest lands back at it | `401` |
-| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name, `mode`, the invited character or the open ones, `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
+| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name and Tier, `mode`, the invited character or the open ones as read-only `Character` sheets (objectives blanked, Ability and Talent text stripped: book prose needs a seat), `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
 | `POST /api/invites/:code/accept` | Clerk, or none with `asGuest` | `AcceptInvite`: `characterId?`, `newCharacterName?`, `asGuest` | `200 { campaignId }`. A guest also gets `Set-Cookie: wg_token` | `400` with the refusal (see §10) |
 
 `/api/me` and `/api/threats` no longer exist; both moved under `/api/campaigns/:id/`. `createCampaign` inserts the

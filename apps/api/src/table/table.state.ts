@@ -4,6 +4,7 @@ import {
   CharacterStats,
   Objectives,
   Overrides,
+  type Character,
   type Codex,
   type Combatant,
   type LiveState,
@@ -14,6 +15,41 @@ import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
 import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
+
+// A character row as the table sees it (LiveState, the invite preview).
+export const toCharacter = ({
+  id,
+  name,
+  stats,
+  overrides,
+  build,
+  buildDraft,
+  wounds,
+  shock,
+  wrath,
+  traumatic,
+  annihilated,
+  xp,
+  conditions,
+  detail,
+  objectives,
+}: typeof character.$inferSelect): Character => ({
+  id,
+  name,
+  stats: CharacterStats.parse(stats),
+  overrides: Overrides.parse(overrides),
+  wounds,
+  shock,
+  wrath,
+  traumatic,
+  annihilated,
+  xp,
+  conditions,
+  detail: CharacterDetail.parse(detail),
+  objectives: Objectives.parse(objectives),
+  build: build ?? null,
+  draft: buildDraft ?? null,
+});
 
 // `conn` lets an action read the live state inside its own transaction (the turn rules in encounter.actions).
 export async function loadState(campaignId: string, conn: Db = db): Promise<LiveState | null> {
@@ -71,41 +107,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       patron: c.patron,
       homebrew: c.homebrew,
     },
-    characters: chars.map(
-      ({
-        id,
-        name,
-        stats,
-        overrides,
-        build,
-        buildDraft,
-        wounds,
-        shock,
-        wrath,
-        traumatic,
-        annihilated,
-        xp,
-        conditions,
-        detail,
-        objectives,
-      }) => ({
-        id,
-        name,
-        stats: CharacterStats.parse(stats),
-        overrides: Overrides.parse(overrides),
-        wounds,
-        shock,
-        wrath,
-        traumatic,
-        annihilated,
-        xp,
-        conditions,
-        detail: CharacterDetail.parse(detail),
-        objectives: Objectives.parse(objectives),
-        build: build ?? null,
-        draft: buildDraft ?? null,
-      }),
-    ),
+    characters: chars.map(toCharacter),
     encounter: enc
       ? {
           id: enc.id,

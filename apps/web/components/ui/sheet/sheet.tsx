@@ -30,14 +30,18 @@ import { SupplyRow } from "./components/supply-row/supply-row";
 import { Vital } from "./components/vital/vital";
 import { SHEET_COUNTERS, SHEET_LEGEND } from "./constants";
 
-type SheetProps = { me: Character; state: LiveState; send: Send };
+// `table` is the live game; without it (the invite page, before a seat) the sheet is read-only.
+export type SheetProps = {
+  me: Character;
+  tier: LiveState["campaign"]["tier"];
+  table?: { state: LiveState; send: Send };
+};
 
-export function Sheet({ me, state, send }: SheetProps) {
+export function Sheet({ me, tier, table }: SheetProps) {
   const s = me.stats;
-  const d = deriveStats({ stats: s, overrides: me.overrides, tier: state.campaign.tier });
+  const d = deriveStats({ stats: s, overrides: me.overrides, tier });
   const [error, setError] = useState<string | null>(null);
   const [detail, setDetail] = useState<Partial<CharacterDetail> | null>(null); // the text being edited, or null
-  const players = state.characters.length;
   const { get } = useRules();
   // Each rule under the sheet's own label (RSLV, not Resolve), so a player finds what they're looking at.
   const legend = SHEET_LEGEND.flatMap(([abbr, id]) => {
@@ -47,7 +51,8 @@ export function Sheet({ me, state, send }: SheetProps) {
 
   // Sends an action; a refusal (e.g. no Respite while Dying, p.197) shows the server's reason.
   const run = async (a: ActionInput) => {
-    const r = await send(a);
+    if (!table) return;
+    const r = await table.send(a);
     setError(r.ok ? null : r.error);
   };
 
@@ -57,8 +62,8 @@ export function Sheet({ me, state, send }: SheetProps) {
 
   // SAVE on the detail: writes it and closes the editor, or keeps it open with the server's reason.
   const saveDetail = async () => {
-    if (!detail) return;
-    const r = await send({ type: "character.update", id: me.id, detail });
+    if (!detail || !table) return;
+    const r = await table.send({ type: "character.update", id: me.id, detail });
     setError(r.ok ? null : r.error);
     if (r.ok) setDetail(null);
   };
@@ -83,7 +88,7 @@ export function Sheet({ me, state, send }: SheetProps) {
         <div className="display" style={{ fontSize: 30, lineHeight: 1.05 }}>
           {me.name.toUpperCase()}
         </div>
-        <i className="dim">{[s.archetype, s.species, `Tier ${state.campaign.tier}`].filter(Boolean).join(" · ")}</i>
+        <i className="dim">{[s.archetype, s.species, `Tier ${tier}`].filter(Boolean).join(" · ")}</i>
         {s.keywords.length > 0 && <div className="kw">{s.keywords.join(" · ")}</div>}
       </div>
       <div className="stack" style={{ gap: 6 }}>
@@ -110,11 +115,13 @@ export function Sheet({ me, state, send }: SheetProps) {
             ) : (
               <div className="dim">Appearance, past, personality: not written yet.</div>
             )}
-            <div>
-              <button className="btn sm" onClick={() => setDetail(me.detail)}>
-                {hasDetail(me.detail) ? "EDIT" : "WRITE"}
-              </button>
-            </div>
+            {table && (
+              <div>
+                <button className="btn sm" onClick={() => setDetail(me.detail)}>
+                  {hasDetail(me.detail) ? "EDIT" : "WRITE"}
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -126,11 +133,17 @@ export function Sheet({ me, state, send }: SheetProps) {
         <Vital label={SHEET_COUNTERS.wounds.label} value={me.wounds} max={d.maxWounds} remaining danger />
         <Vital label={SHEET_COUNTERS.shock.label} value={me.shock} max={d.maxShock} remaining />
         <Vital label={SHEET_COUNTERS.wrath.label} value={me.wrath} max={null} />
-        <Vital label="PARTY GLORY" value={state.campaign.glory} max={poolMax("glory", players)} />
+        {table && (
+          <Vital
+            label="PARTY GLORY"
+            value={table.state.campaign.glory}
+            max={poolMax("glory", table.state.characters.length)}
+          />
+        )}
       </div>
       <div className="dim" style={{ fontSize: 12 }}>
-        WRATH: reroll failed dice · narrative declaration · restore {"Rank + Tier"} Shock (p.164). GM RUIN:{" "}
-        {state.campaign.ruin}
+        WRATH: reroll failed dice · narrative declaration · restore {"Rank + Tier"} Shock (p.164).
+        {table && ` GM RUIN: ${table.state.campaign.ruin}`}
       </div>
 
       <div className="rule">
@@ -204,14 +217,14 @@ export function Sheet({ me, state, send }: SheetProps) {
 
       <div className="stack" style={{ gap: 6 }}>
         <div className="rule">SUPPLY</div>
-        <SupplyRow label="Wealth" value={s.wealth} onMinus={() => supply({ wealth: -1 })} />
+        <SupplyRow label="Wealth" value={s.wealth} onMinus={table && (() => supply({ wealth: -1 }))} />
         {Object.entries(s.ammo).map(([kind, n]) => (
           <SupplyRow
             key={kind}
             label={`${kind} ammo`}
             value={n}
             removable
-            onMinus={() => supply({ ammo: { kind, delta: -1 } })}
+            onMinus={table && (() => supply({ ammo: { kind, delta: -1 } }))}
           />
         ))}
         <div className="dim" style={{ fontSize: 12 }}>
@@ -267,7 +280,7 @@ export function Sheet({ me, state, send }: SheetProps) {
                 <div key={r.name}>
                   <b>{r.name}</b>
                   {r.page && <span className="dim"> ({r.page})</span>}
-                  <div style={{ fontSize: 13 }}>{r.text}</div>
+                  {r.text && <div style={{ fontSize: 13 }}>{r.text}</div>}
                 </div>
               ))}
             </div>
@@ -278,11 +291,13 @@ export function Sheet({ me, state, send }: SheetProps) {
           GEAR: {s.gear.join(" · ")}
         </div>
       )}
-      <div>
-        <a className="btn" href={`/c/${state.campaign.id}/build/${me.id}`}>
-          {me.build ? "SPEND XP (BUILDER)" : "CHARACTER BUILDER"}
-        </a>
-      </div>
+      {table && (
+        <div>
+          <a className="btn" href={`/c/${table.state.campaign.id}/build/${me.id}`}>
+            {me.build ? "SPEND XP (BUILDER)" : "CHARACTER BUILDER"}
+          </a>
+        </div>
+      )}
       <Refusal error={error} onDismiss={() => setError(null)} />
     </>
   );
