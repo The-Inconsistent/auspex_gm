@@ -48,13 +48,22 @@ export function useBookServer(serveBooks: ServeBooks) {
   useEffect(() => () => serveBooks(null), [serveBooks]);
 
   const pick = (source: ThreatSource, file: File | null) => {
-    void books.current.get(source)?.task?.then((t) => t.destroy());
+    void closeDoc(books.current.get(source)?.task);
     if (file) books.current.set(source, { file });
     else books.current.delete(source);
     setFiles((f) => ({ ...f, [source]: file ?? undefined }));
   };
 
   return { files, pick, serving, setServing, served };
+}
+
+// Frees a replaced book's parsed PDF. One that never opened has nothing to free.
+async function closeDoc(task: Promise<PDFDocumentLoadingTask> | undefined) {
+  try {
+    await (await task)?.destroy();
+  } catch {
+    // It failed to load, so there is nothing to destroy.
+  }
 }
 
 async function openDoc(file: File) {
@@ -80,14 +89,15 @@ async function renderPage(doc: PDFDocumentProxy, n: number): Promise<BookReply> 
   }
 }
 
-// pdf.js loads only on the GM's tablet, and only once a book is asked for.
-let lib: Promise<typeof import("pdfjs-dist")> | null = null;
-function pdfjsLib() {
-  lib ??= import("pdfjs-dist").then((pdfjs) => {
-    pdfjs.GlobalWorkerOptions.workerPort = new Worker(new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url), {
-      type: "module",
-    });
-    return pdfjs;
+// pdf.js loads only on the GM's tablet, and only once a book is asked for. Only a loaded module is kept, so a failed
+// chunk load (a signal blip) is retried on the next request instead of failing every page until a reload.
+let lib: typeof import("pdfjs-dist") | null = null;
+async function pdfjsLib() {
+  if (lib) return lib;
+  const pdfjs = await import("pdfjs-dist");
+  pdfjs.GlobalWorkerOptions.workerPort ??= new Worker(new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url), {
+    type: "module",
   });
-  return lib;
+  lib = pdfjs;
+  return pdfjs;
 }

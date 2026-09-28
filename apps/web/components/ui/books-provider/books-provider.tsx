@@ -29,17 +29,16 @@ export function BooksProvider({ books, requestPage, children }: BooksProviderPro
   const value = useMemo<Books>(
     () => ({
       serves: (source) => books.includes(source),
-      open: (p, cite) => {
+      open: async (p, cite) => {
         const n = ++latest.current;
         flushSync(() => setShown((s) => (release(s), { n, cite })));
         dialog.current?.showModal();
-        void requestPage(p).then((r) => {
-          if (latest.current !== n) return;
-          const next = r.ok
-            ? { url: URL.createObjectURL(new Blob([r.image], { type: "image/jpeg" })) }
-            : { error: r.error };
-          setShown((s) => (s.n === n ? { ...s, ...next } : s));
-        });
+        const r = await requestPage(p);
+        if (latest.current !== n) return;
+        const next = r.ok
+          ? { url: URL.createObjectURL(new Blob([r.image], { type: "image/jpeg" })) }
+          : { error: r.error };
+        setShown((s) => (s.n === n ? { ...s, ...next } : s));
       },
     }),
     [books, requestPage],

@@ -59,10 +59,14 @@ export function useTable(campaignId: string) {
     s.on("state", setState);
     s.on("codex", setCodex);
     s.on("book:available", (a: BookAvailable) => setBooks(a.sources));
-    s.on("book:request", (p: BookPage, ack: (r: BookReply) => void) => {
+    s.on("book:request", async (p: BookPage, ack: (r: BookReply) => void) => {
       const render = serving.current?.render;
       if (!render) return ack({ ok: false, error: "The GM isn't serving that book." });
-      render(p).then(ack, () => ack({ ok: false, error: "The GM's tablet couldn't render it." }));
+      try {
+        ack(await render(p));
+      } catch {
+        ack({ ok: false, error: "The GM's tablet couldn't render it." });
+      }
     });
     return () => {
       clearTimeout(retry);
