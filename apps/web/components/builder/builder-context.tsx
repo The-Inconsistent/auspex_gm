@@ -35,6 +35,11 @@ export type BuilderValue = {
   catalogue: BuildCatalogue;
   lookups: Lookups;
   tier: number; // the Tier the character is made at
+  tierEditable: boolean; // the library's owner picks it; a campaign's Tier is the GM's (issue #14)
+  setTier: (tier: number) => void;
+  homebrew: boolean; // whether the catalogue includes the homebrew books
+  // Changes that: the GM at a table, the owner in their library. null when it isn't this caller's to change.
+  setHomebrew: ((next: boolean) => Promise<string | null>) | null;
   play: { tier: number; xpEarned: number } | null; // a character in play: the group's Tier now and the XP earned
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
   role: Role;

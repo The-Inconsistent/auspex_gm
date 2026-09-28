@@ -914,8 +914,10 @@ test("the guest door is rate limited per caller IP", async () => {
 });
 
 test("the character library: a signed-in user builds without a campaign (issue #14)", async () => {
-  const owner = clerk("library-owner");
-  const stranger = clerk("library-stranger");
+  // A fresh user per run: library rows outlive a test, unlike a campaign, which each test creates for itself.
+  const who = `library-${Date.now()}`;
+  const owner = clerk(`${who}-owner`);
+  const stranger = clerk(`${who}-stranger`);
 
   // Book text needs an account: no seat, but no anonymous callers and no guests either.
   assert.equal((await get("/library")).status, 401);
@@ -983,7 +985,7 @@ test("the character library: a signed-in user builds without a campaign (issue #
   assert.equal(entry.name, "Veyl", "and it is untouched");
 
   // One account is bounded: 20 characters (LIBRARY_CAP), then it has to delete one.
-  const capped = clerk("library-hoarder");
+  const capped = clerk(`${who}-hoarder`);
   for (let i = 1; i < LIBRARY_CAP; i++) assert.equal((await post("/library", {}, bearer(capped))).status, 201);
   const over = await post("/library", {}, bearer(capped));
   assert.equal(over.status, 201, `${LIBRARY_CAP} fit`);

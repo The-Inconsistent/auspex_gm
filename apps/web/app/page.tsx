@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import { signedInUserId } from "@wg/auth/next";
 import { Lobby, Me } from "@wg/shared";
 
-import { JOIN_ERRORS, type JoinError } from "@/app/constants";
+import { JOIN_ERRORS, LIBRARY_ERRORS, isLibraryError, type JoinError } from "@/app/constants";
 import { apiGet } from "@/app/server-api";
 import { LobbyView } from "@/components/lobby/lobby-view/lobby-view";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 
-type HomeProps = { searchParams: Promise<{ join?: string | string[] }> };
+type HomeProps = { searchParams: Promise<{ join?: string | string[]; library?: string | string[] }> };
 
 const isJoinError = (v: unknown): v is JoinError => typeof v === "string" && Object.hasOwn(JOIN_ERRORS, v);
 
@@ -25,8 +25,10 @@ async function guestTable(): Promise<string | null> {
 
 // The lobby for signed-in users; guests go back to their table; everyone else is asked to sign in.
 export default async function Home({ searchParams }: HomeProps) {
-  const { join } = await searchParams;
+  const { join, library } = await searchParams;
   if (isJoinError(join)) return <StatusScreen text={JOIN_ERRORS[join]} />;
+  // /library/new couldn't start a character (issue #14): the cap, or the api.
+  if (isLibraryError(library)) return <StatusScreen text={LIBRARY_ERRORS[library]} />;
 
   const userId = await signedInUserId();
   if (!userId) {
