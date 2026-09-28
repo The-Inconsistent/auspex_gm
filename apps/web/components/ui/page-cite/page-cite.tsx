@@ -1,4 +1,6 @@
 "use client";
+import type { MouseEvent } from "react";
+
 import { parseCite } from "@wg/shared";
 
 import { useBooks } from "@/components/ui/books-provider/books-provider";
@@ -10,18 +12,16 @@ export function PageCite({ cite }: PageCiteProps) {
   const { serves, open } = useBooks();
   const p = parseCite(cite);
   if (!p || !serves(p.source)) return <>{cite}</>;
+
+  // Opens the page. Inside a rule's <summary>, the tap mustn't also toggle the rule.
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    open(p, cite);
+  };
+
   return (
-    <button
-      type="button"
-      className="rule-link"
-      aria-label={`Open book page ${cite}`}
-      onClick={(e) => {
-        // Inside a rule's <summary>: open the page, don't toggle the rule.
-        e.preventDefault();
-        e.stopPropagation();
-        open(p, cite);
-      }}
-    >
+    <button type="button" className="rule-link" aria-label={`Open book page ${cite}`} onClick={handleClick}>
       {cite}
     </button>
   );
