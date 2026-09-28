@@ -37,7 +37,8 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
   repo private and never serve book content to anyone without an account (`/api/campaigns/:id/threats` and `/wargear` are
   GM-only; `/rules` and `/creation` need any seat; their seatless twins `/api/rules` and `/api/creation`, for the
-  character library, need a signed-in Clerk user — sign-up is invite only, and that is the gate).
+  character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
+  **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
 
 ## Stack
 

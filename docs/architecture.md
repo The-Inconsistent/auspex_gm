@@ -11,7 +11,7 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
 | GM on a tablet, players on phones | Mobile-first web app, no install. Screens stay awake (Wake Lock) |
 | Several people tap at the same time | The server decides. Counters change by **delta**, never by overwriting a value |
 | Players must not see what the GM hides | The server redacts every snapshot sent to players. The client never receives hidden data |
-| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token), and the repo is private |
+| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token); the builder's catalogue outside a table needs a Clerk account, and Clerk is Invite-only. The repo is private |
 | Rules must match the books | Rules live in one tested package, and each one cites its page |
 
 ## Shape

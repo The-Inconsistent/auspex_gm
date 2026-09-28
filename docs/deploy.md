@@ -53,7 +53,8 @@ Then, in Clerk:
 4. Create the **production** instance for `auspex.ydothien.work`.
 5. Add the CNAME records it lists in Cloudflare, set to **DNS only** (grey cloud). Clerk's DNS check fails behind
    the proxy.
-6. Re-create the session-token claims and the `creator` role ([development.md](development.md#clerk)).
+6. Set **Access mode** to **Invite-only**, and re-create the session-token claims and the `creator` role
+   ([development.md](development.md#clerk)). A new instance starts Open, which would expose the book content.
 
 In GitHub (`JunMaxwell/auspex_gm`):
 

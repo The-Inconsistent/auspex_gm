@@ -81,7 +81,7 @@ text.
 | `DELETE /api/library/:id` | Clerk, owner | none | `200 { ok: true }` | `401`. `404` |
 | `POST /api/join` | the guest token in the body | `{ token: string 1–200 }` | `200` `Ctx`, and `Set-Cookie: wg_token` (flags in §10). The web uses `campaignId` to open the table | `400` bad body. `401 "Invalid or revoked link"` |
 | `GET /api/guest` | `wg_token` cookie | none | `200` `Ctx` of the guest's table, so a returning guest lands back at it | `401` |
-| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name and Tier, `mode`, the invited character or the open ones as read-only `Character` sheets (objectives blanked, Ability and Talent text stripped: book prose needs a seat), `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
+| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name and Tier, `mode`, the invited character or the open ones as read-only `Character` sheets (objectives blanked, Ability and Talent text stripped: the preview needs no account, and book prose needs a seat or an account, §3.1), `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
 | `POST /api/invites/:code/accept` | Clerk, or none with `asGuest` | `AcceptInvite`: `characterId?`, `newCharacterName?`, `asGuest` | `200 { campaignId }`. A guest also gets `Set-Cookie: wg_token` | `400` with the refusal (see §10) |
 
 ### 3.1 The character library: REST outside the action path (issue #14)
@@ -97,7 +97,8 @@ What still holds:
   and refuses anything not ready, through the same `buildRefusal` as `character.build`, so both refuse in the same words.
 - **Scope.** A row that isn't the caller's is a `404`, never a `403`: a `403` would tell them the id exists.
 - **Book text needs an account.** `/api/creation` and `/api/rules` serve book content without a seat, so the account is
-  the gate and Clerk sign-up is invite only (`CLAUDE.md`, Copyright). If sign-up ever opens, these need a role check —
+  the gate, and it holds because Clerk's Access mode is Invite-only (`docs/development.md` §Clerk, `CLAUDE.md`,
+  Copyright). If sign-up ever opens, these need a role check —
   marked `// ponytail:` on the controller.
 - **Bounded.** `LIBRARY_CAP` (20, `packages/shared/src/library.ts`) per account. The count is a check-then-act outside
   any queue, so a user racing themselves may land one over; the cap bounds an account, it isn't exact.
