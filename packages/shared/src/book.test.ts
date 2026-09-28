@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseCite, pdfPage } from "./book.ts";
+import { BookAck, MAX_PAGE_BYTES, parseCite, pdfPage } from "./book.ts";
 
 test("pdfPage applies each book's offset (docs/data.md §3)", () => {
   assert.equal(pdfPage({ source: "core", page: 113 }), 114);
@@ -16,4 +16,13 @@ test("parseCite reads the cites the app prints", () => {
   assert.equal(parseCite("p.75"), null);
   assert.equal(parseCite("Homebrew p.3"), null);
   assert.equal(parseCite("Core p.12, VoA p.4"), null);
+});
+
+test("BookAck accepts one non-empty page image or a refusal, nothing else", () => {
+  assert.ok(BookAck.safeParse({ ok: true, image: Buffer.from([0xff, 0xd8]) }).success);
+  assert.ok(BookAck.safeParse({ ok: false, error: "no page" }).success);
+  assert.equal(BookAck.safeParse({ ok: true, image: Buffer.alloc(0) }).success, false);
+  assert.equal(BookAck.safeParse({ ok: true, image: Buffer.alloc(MAX_PAGE_BYTES + 1) }).success, false);
+  assert.equal(BookAck.safeParse({ ok: true, image: "not binary" }).success, false);
+  assert.equal(BookAck.safeParse(null).success, false);
 });

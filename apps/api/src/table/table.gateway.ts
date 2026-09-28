@@ -13,6 +13,7 @@ import type { Server, Socket } from "socket.io";
 import { z } from "zod";
 import {
   Action,
+  BookAck,
   BookPage,
   BookServing,
   MAX_PAGE_BYTES,
@@ -20,7 +21,6 @@ import {
   toPlayerView,
   type ActionResult,
   type BookAvailable,
-  type BookReply,
   type ThreatSource,
 } from "@wg/shared";
 import { eq } from "drizzle-orm";
@@ -136,7 +136,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   // Any seat asks for one page; a GM socket serving that book renders it and the image comes back in this ack only.
   // Nothing is stored. ponytail: any page of a served book, allow-list the cited pages if the table ever needs it
   @SubscribeMessage("book:request")
-  async onBookRequest(@ConnectedSocket() socket: Socket, @MessageBody() body: unknown): Promise<BookReply> {
+  async onBookRequest(@ConnectedSocket() socket: Socket, @MessageBody() body: unknown): Promise<BookAck> {
     const seat = socket.data as Seat;
     if (!allowPage(socket.id)) return { ok: false, error: "Too many pages. Slow down." };
     const parsed = BookPage.safeParse(body);
@@ -149,15 +149,10 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     } catch {
       return { ok: false, error: "No reply from the GM's tablet." };
     }
-    // Only a GM socket answers, but check the shape before passing it on.
-    const r = reply as { ok?: unknown; image?: unknown; error?: unknown } | null;
-    if (r?.ok === true && Buffer.isBuffer(r.image) && r.image.byteLength > 0 && r.image.byteLength <= MAX_PAGE_BYTES) {
-      return { ok: true, image: r.image as unknown as ArrayBuffer };
-    }
-    return {
-      ok: false,
-      error: typeof r?.error === "string" ? r.error.slice(0, 200) : "The GM's tablet couldn't render it.",
-    };
+    // Only a GM socket answers, but its reply is still parsed before it's passed on. The player's client receives the
+    // image as an ArrayBuffer (BookReply).
+    const ack = BookAck.safeParse(reply);
+    return ack.success ? ack.data : { ok: false, error: "The GM's tablet couldn't render it." };
   }
 
   @SubscribeMessage("action")

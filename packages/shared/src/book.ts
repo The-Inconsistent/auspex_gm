@@ -38,3 +38,13 @@ export type BookAvailable = { sources: ThreatSource[] };
 // A JPEG of one page, about 150–400 KB at the width the GM renders.
 export const MAX_PAGE_BYTES = 1_500_000;
 export type BookReply = { ok: true; image: ArrayBuffer } | { ok: false; error: string };
+// The GM tablet's ack as the api receives it: socket.io hands binary over as a Node Buffer, which is a Uint8Array
+// (checked as that, so this module still loads in the browser). Untrusted until parsed, like any socket payload.
+export const BookAck = z.discriminatedUnion("ok", [
+  z.object({
+    ok: z.literal(true),
+    image: z.instanceof(Uint8Array).refine((b) => b.byteLength > 0 && b.byteLength <= MAX_PAGE_BYTES, "page size"),
+  }),
+  z.object({ ok: z.literal(false), error: z.string().transform((e) => e.slice(0, 200)) }),
+]);
+export type BookAck = z.infer<typeof BookAck>;
