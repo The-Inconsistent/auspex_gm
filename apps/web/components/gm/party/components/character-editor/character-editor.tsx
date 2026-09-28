@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 
 import {
   deriveStats,
+  ATTRIBUTES,
   SKILLS,
   type ActionResult,
   type CharacterStats,
@@ -11,6 +12,7 @@ import {
   type Skill,
 } from "@wg/shared";
 
+import { ATTRIBUTE_NAMES } from "@/components/builder/constants";
 import type { Send } from "@/hooks/use-table/use-table";
 import { PORTRAITS } from "@/lib/portraits/portraits";
 import type { SheetRules } from "@/lib/sheet-rules/sheet-rules";
@@ -130,23 +132,42 @@ export function CharacterEditor({ character: c, tier, sheetRules, send, onResult
       {handMade ? (
         <>
           <span className="label">SKILLS (rating; blank or 0 removes it)</span>
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {(Object.entries(SKILLS) as [Skill, string][]).map(([k, attr]) => (
-              <div key={k} className="field" style={{ width: 120 }}>
-                <label className="label" htmlFor={`skill-${k}-${c.id}`}>
-                  {k.toUpperCase()} ({attr.toUpperCase()})
-                </label>
-                <input
-                  id={`skill-${k}-${c.id}`}
-                  className="input"
-                  name={`skill-${k}`}
-                  inputMode="numeric"
-                  placeholder="0"
-                  defaultValue={c.stats.skills[k] || ""}
-                />
+          {ATTRIBUTES.map((attr) => {
+            const skills = (Object.keys(SKILLS) as Skill[]).filter((k) => SKILLS[k] === attr);
+            if (!skills.length) return null; // Toughness links no Skill (p.372)
+            return (
+              <div key={attr} className="field">
+                <span className="display" style={{ fontSize: 14, letterSpacing: "0.12em" }}>
+                  {ATTRIBUTE_NAMES[attr].toUpperCase()}
+                </span>
+                {/* Box before name, so every box sits against its own Skill and the columns line up. */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                    gap: "6px 24px",
+                  }}
+                >
+                  {skills.map((k) => (
+                    <div key={k} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        id={`skill-${k}-${c.id}`}
+                        className="input"
+                        name={`skill-${k}`}
+                        inputMode="numeric"
+                        placeholder="0"
+                        defaultValue={c.stats.skills[k] || ""}
+                        style={{ width: 56, textAlign: "center" }}
+                      />
+                      <label className="label" htmlFor={`skill-${k}-${c.id}`} style={{ whiteSpace: "nowrap" }}>
+                        {k.toUpperCase()}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
           <RuleListEditor
             title="TALENTS"
             owner={c.name}
