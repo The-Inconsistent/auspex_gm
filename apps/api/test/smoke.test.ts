@@ -14,6 +14,7 @@ import {
   type CreationPayload,
   type LibraryCharacter,
   type LibraryEntry,
+  type Lobby,
   type LiveState,
   type RuleEntry,
   type ThreatCombatant,
@@ -974,6 +975,13 @@ test("the character library: a signed-in user builds without a campaign (issue #
     { ...((await saved.json()) as LibraryCharacter), id: "", updatedAt: "" },
     { id: "", name: "Veyl", tier: 4, archetype: "Primaris Incursor", homebrew: false, done: true, updatedAt: "" },
   );
+  // The lobby carries the library, so YOUR CHARACTERS lists them without a second request (issue #14 step 3).
+  const inLobby = ((await (await get("/lobby", bearer(owner))).json()) as Lobby).characters;
+  assert.deepEqual(
+    inLobby.map((c) => [c.name, c.tier, c.archetype, c.done]),
+    [["Veyl", 4, "Primaris Incursor", true]],
+  );
+
   const entry = (await (await get(`/library/${id}`, bearer(owner))).json()) as LibraryEntry;
   assert.equal(entry.build?.archetypeId, "primaris-incursor");
   assert.deepEqual(entry.build?.gm.keywords, [], "the GM's part belongs to a table, not to the library");

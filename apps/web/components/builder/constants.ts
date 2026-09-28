@@ -71,6 +71,3 @@ export const BONUS_LABELS: Record<Bonus, string> = {
   passiveAwareness: "Passive Awareness",
   corruption: "Corruption",
 };
-
-// The Tiers a character can be built at (Core p.19), for the library's Tier picker.
-export const TIERS = [1, 2, 3, 4, 5] as const;

@@ -1,10 +1,9 @@
 "use client";
 import { useState } from "react";
 
-import { startingXp } from "@wg/shared";
+import { TIERS, startingXp } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
-import { TIERS } from "../../constants";
 
 // Framework and Tier (Core pp.18–20). At a table the budget comes from the campaign's Tier, and the GM decides whether
 // the builder may use the homebrew books; in the library (issue #14) both are the character's owner's to pick.
