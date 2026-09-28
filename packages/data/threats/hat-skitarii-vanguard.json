@@ -1,0 +1,185 @@
+{
+  "id": "hat-skitarii-vanguard",
+  "name": "Skitarii Vanguard",
+  "source": "high-altar-of-technology",
+  "page": 28,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "HUMAN",
+    "IMPERIAL",
+    "ADEPTUS MECHANICUS",
+    "<FORGE WORLD>"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 4,
+    "A": 4,
+    "I": 3,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 9,
+    "note": "Auto-Cuirass 3; Soak 4"
+  },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 5,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      },
+      {
+        "name": "Tech",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Heavily Augmented",
+      "text": "A Skitarius’ body is designed to withstand the rigours of war. Skitarii do not bleed and they gain +3d to toughness rolls made to resist radiation, corrosion, and environmental energy hazards."
+    },
+    {
+      "name": "Rad-Saturation",
+      "text": "The continual leaking of radiation from the Vanguard’s weapons and armor is a silent killer, inflicting invisible damage to those it engages in close range. When a character without this ability first comes within 2 meters of a Vanguard in combat, they must make a DN 3 Toughness test. Those wearing environmentally sealed armor gain a +1/2d per AV bonus to the Toughness test. If failed, the affected character suffers a -1 to toughness (reducing resilience as well) as long as he remains within 2 meters. Only make one test per combat; if the test is passed or failed, it is passed or failed for the rest of the combat, for all Skitarii Vanguards present in the combat."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Radium Carbine",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            36
+          ],
+          "salvo": 3,
+          "traits": [
+            "Assault",
+            "Rad (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Skitarii Alpha",
+      "text": "Those who have gained the Crux Mechanicus and replaced more than 50% of their body with cybernetic reconstructions are often awarded the title of Alpha. If the combat includes 5 or more Skitarii, it is appropriate to replace one with an Alpha. All Skitarii Alphas gain a +1 to fellowship and increase the AV of their Auto-Cuirass to 4, bringing total resilience to 10. They also gain an Enhanced Data Tether or an Omnispex. A Skitarii Alpha may replace their weapon with one melee weapon and one pistol from the following:",
+      "weapons": [
+        {
+          "name": "Radium Pistol",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            24
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Rad (2)"
+          ]
+        },
+        {
+          "name": "Arc Pistol",
+          "damage": 14,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            24
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Arc (2)"
+          ]
+        },
+        {
+          "name": "Phosphor Blast Pistol",
+          "damage": 12,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            24
+          ],
+          "salvo": 1,
+          "traits": [
+            "Blaze",
+            "Pistol",
+            "Phosphor"
+          ]
+        },
+        {
+          "name": "Arc Maul",
+          "damage": 9,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Arc (2)",
+            "Brutal"
+          ]
+        },
+        {
+          "name": "Power Sword",
+          "damage": 8,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Taser Goad",
+          "damage": 8,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Taser",
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Special Weapons",
+      "text": "In mobs of 5 or more, up to two Rangers/Vanguard may replace their regular weapon with one of the following: Arc Rifle, Plasma Caliver, Transuranic Arquebus. For each 5 additional Skitarii in the mob, you may replace another standard weapon with one of these special weapons."
+    }
+  ]
+}

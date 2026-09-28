@@ -1,0 +1,74 @@
+{
+  "id": "hat-kataphron-battle-servitor",
+  "name": "Kataphron Battle Servitor",
+  "source": "high-altar-of-technology",
+  "page": 27,
+  "faction": "mechanicus",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["IMPERIAL", "ADEPTUS MECHANICUS", "SERVITOR"],
+  "attributes": { "S": 7, "T": 7, "A": 2, "I": 3, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 12, "note": "Battle Plate 5; Soak 6" },
+  "defence": 4,
+  "wounds": 8,
+  "shock": 2,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Heavy Tracks", "text": "A Kataphron Battle Servitor’s immense weight and wide frame causes its movement to be slow but relentless. A Kataphron cannot move more than its base movement in a turn, but is always considered to be braced, and ignores any penalties to movement from rough terrain." },
+    { "name": "Incantation of the Iron Soul", "text": "Servitors are unaffected by powers and abilities that affect the mind. They never need to make Conviction tests to continue fighting." }
+  ],
+  "abilities": [
+    {
+      "name": "Attacks",
+      "text": "A Kataphron Battle Servitor can be loaded out in either Breacher or Destroyer configuration, which allows different weapons to be equipped. Choose one of the four profiles below."
+    }
+  ],
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Breacher: Hydraulic Claw and Torsion Cannon",
+      "text": "Hydraulic Claw: 14+2ED; AP-1; Brutal, Unwieldy (2). Torsion Cannon: 16+3ED; AP-4; Range 48m; Salvo 1; Heavy (6), Grav",
+      "weapons": [
+        { "name": "Hydraulic Claw", "damage": 14, "ed": 2, "ap": -1, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] },
+        { "name": "Torsion Cannon", "damage": 16, "ed": 3, "ap": -4, "range": [48], "salvo": 1, "traits": ["Heavy (6)", "Grav"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Breacher: Arc Claw and Heavy Arc Rifle",
+      "text": "Arc Claw: 13+1ED; AP-1; Arc (2). Heavy Arc Rifle: 14+2ED; AP-2; Range 72m; Salvo 2; Arc (4), Heavy (6)",
+      "weapons": [
+        { "name": "Arc Claw", "damage": 13, "ed": 1, "ap": -1, "range": [1], "traits": ["Arc (2)"] },
+        { "name": "Heavy Arc Rifle", "damage": 14, "ed": 2, "ap": -2, "range": [72], "salvo": 2, "traits": ["Arc (4)", "Heavy (6)"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Destroyer: Plasma Culverin and Phosphor Blaster",
+      "text": "Plasma Culverin: 15+3ED; AP-3; Range 72m; Salvo 3; Heavy (6), Supercharge. Phosphor Blaster: 12+2ED; AP-1; Range 48m; Salvo 1; Blaze, Rapid Fire (1), Phosphor",
+      "weapons": [
+        { "name": "Plasma Culverin", "damage": 15, "ed": 3, "ap": -3, "range": [72], "salvo": 3, "traits": ["Heavy (6)", "Supercharge"] },
+        { "name": "Phosphor Blaster", "damage": 12, "ed": 2, "ap": -1, "range": [48], "salvo": 1, "traits": ["Blaze", "Rapid Fire (1)", "Phosphor"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Destroyer: Heavy Grav-Cannon and Cognis Flamer",
+      "text": "Heavy Grav-Cannon: 12+2ED; AP-3; 60m; Salvo 5; Heavy (6), Grav. Cognis Flamer: 10+1ED; AP 0; Range 16m; Salvo 1; Assault, Blast(Medium), Blaze, Cognis, Spread",
+      "weapons": [
+        { "name": "Heavy Grav-Cannon", "damage": 12, "ed": 2, "ap": -3, "range": [60], "salvo": 5, "traits": ["Heavy (6)", "Grav"] },
+        { "name": "Cognis Flamer", "damage": 10, "ed": 1, "range": [16], "salvo": 1, "traits": ["Assault", "Blast(Medium)", "Blaze", "Cognis", "Spread"] }
+      ]
+    }
+  ]
+}

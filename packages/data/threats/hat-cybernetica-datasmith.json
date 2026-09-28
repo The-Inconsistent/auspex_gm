@@ -1,0 +1,45 @@
+{
+  "id": "hat-cybernetica-datasmith",
+  "name": "Cybernetica Datasmith",
+  "source": "high-altar-of-technology",
+  "page": 32,
+  "faction": "mechanicus",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>"],
+  "attributes": { "S": 5, "T": 5, "A": 5, "I": 5, "Wil": 5, "Int": 6, "Fel": 4 },
+  "resilience": { "value": 11, "note": "Power Armor 5; Soak 5" },
+  "defence": 4,
+  "wounds": 10,
+  "shock": 4,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 5 },
+      { "name": "Weapon Skill", "dice": 9 },
+      { "name": "Ballistic Skill", "dice": 9 },
+      { "name": "Tech", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Automata Mechanic", "text": "Cybernetica Datasmiths automatically reduce the time by half for any Tech test. They add +1d on Tech tests made to fix or repair a damaged machine and +3d on Tech tests made to repair a damaged Battle-Automata." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Power Fist", "damage": 12, "ed": 2, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] },
+        { "name": "Gamma Pistol", "damage": 14, "ed": 2, "ap": -3, "range": [24], "salvo": 1, "traits": ["Pistol", "Gamma"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Datasmith",
+      "text": "As a free action, at the beginning of his turn, a Cybernetica Datasmith may make a DN 2 Tech test. If successful, he may change the battle protocols of any Kastelan Robots within 12m. He may individually select which protocol each robot changes to."
+    }
+  ],
+  "conviction": 5,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Wargear: Refractor Field (AV *3, Force Shield)."
+}

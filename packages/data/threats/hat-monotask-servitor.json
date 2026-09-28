@@ -1,0 +1,33 @@
+{
+  "id": "hat-monotask-servitor",
+  "name": "Monotask Servitor",
+  "source": "high-altar-of-technology",
+  "page": 27,
+  "faction": "mechanicus",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["IMPERIAL", "ADEPTUS MECHANICUS", "SERVITOR"],
+  "attributes": { "S": 4, "T": 3, "A": 2, "I": 3, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 6, "note": "Augmetic Implants 1; Soak 4" },
+  "defence": 3,
+  "wounds": 3,
+  "shock": 2,
+  "skills": {
+    "default": 4,
+    "list": [{ "name": "Awareness", "dice": 4, "passive": 3 }]
+  },
+  "bonuses": [
+    { "name": "Monotask", "text": "Choose a single non-combat/social skill. The servitor is considered to have a total value of 5 in that skill." },
+    { "name": "Incantation of the Iron Soul", "text": "Servitors are unaffected by powers and abilities that affect the mind." },
+    { "name": "Wargear", "text": "A servitor is often equipped with a single tool appropriate to its task, such as a combi-tool for a repair servitor or a diagnostor for a medical servitor. This tool is integrated into the servitor’s body and neither needs power nor can be removed without killing the servitor." }
+  ],
+  "abilities": [
+    {
+      "name": "Attacks",
+      "text": "A monotask servitor is not programmed for combat, and generally cannot attack. Use the Combat Servitor profile (Core Rulebook) for a servitor that is built for warfare."
+    }
+  ],
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg"
+}

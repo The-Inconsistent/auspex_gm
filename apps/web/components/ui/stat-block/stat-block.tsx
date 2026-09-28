@@ -50,7 +50,7 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
         ))}
         {ATTRIBUTES.map((k) => (
           <span key={k} className="sb-v">
-            {a[k]}
+            {a[k] ?? "–"}
           </span>
         ))}
       </div>
@@ -126,8 +126,8 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
         <span className="label">CONVICTION</span>
         <span className="label">RESOLVE</span>
         <span className="label">SIZE</span>
-        <span className="sb-v">{t.conviction}</span>
-        <span className="sb-v">{t.resolve}</span>
+        <span className="sb-v">{t.conviction ?? "–"}</span>
+        <span className="sb-v">{t.resolve ?? "–"}</span>
         <span className="sb-v">{t.size}</span>
       </div>
       {t.personalRuin && <div className="sb-body">Personal Ruin {t.personalRuin}</div>}
