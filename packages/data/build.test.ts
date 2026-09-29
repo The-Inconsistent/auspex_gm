@@ -5,7 +5,11 @@ import {
   buildReady,
   keepPlay,
   resolveBuild,
+  applyUpgrades,
+  sheetWeapon,
+  upgradeRefusal,
   wargearMatches,
+  type WargearWeapon,
   type CharacterBuildInput,
   type CharacterStats,
 } from "@wg/shared";
@@ -337,4 +341,78 @@ test("wargearMatches: an upgrade's fit is as narrow as the book prints it", () =
   const platform = wargear.get("ioe-anti-grav-platform")!.upgrade!.fits;
   assert.ok(wargearMatches(heavy, platform, at));
   assert.ok(!wargearMatches(carbine, platform, at));
+});
+
+// Issue #15 step 3: a fitted upgrade changes the profile the sheet shows (Core pp.227–228), and the base stays stored.
+test("applyUpgrades: the fitted profile, with what only the GM can apply printed under it", () => {
+  const carbine = wargear.get("apoc-bolt-carbine")!;
+  const base = sheetWeapon(carbine as { name: string; weapon: WargearWeapon }, 4);
+  assert.ok(
+    base.traits.some((t) => t.startsWith("Rapid Fire")),
+    "the carbine is Rapid Fire (2)",
+  );
+
+  // Mastercrafted: "gains the Reliable Trait. You gain +2 bonus dice to any Attack Test" (Core p.228).
+  const was = [...base.traits];
+  const mc = applyUpgrades(base, [wargear.get("mastercrafted")!]);
+  assert.ok(mc.weapon.traits.includes("Reliable"));
+  assert.ok(mc.notes.some((n) => n.includes("2 bonus dice")));
+  assert.deepEqual(base.traits, was, "the base weapon is untouched: the sheet derives, it doesn't rewrite");
+  // The carbine prints Reliable already, so the Trait isn't carried twice.
+  assert.equal(mc.weapon.traits.filter((t) => t === "Reliable").length, 1);
+
+  // The M40 moves a rating the weapon already has, rather than removing the Trait (VoA p.68).
+  const m40 = applyUpgrades(base, [wargear.get("voa-m40-targeting-system")!]);
+  assert.ok(m40.weapon.traits.includes("Sniper (2)"));
+  // The carbine is Rapid Fire (1); −1 leaves an inert Trait, so it comes off rather than printing "Rapid Fire (0)".
+  assert.ok(!m40.weapon.traits.some((t) => t.startsWith("Rapid Fire")));
+  assert.equal(m40.weapon.salvo, (base.salvo ?? 0) - 1);
+
+  // Folding Stock: the Pistol Trait goes, and each range band moves by its own amount (Apocrypha p.388).
+  const pistol = wargear.get("bolt-pistol")!;
+  const stock = applyUpgrades(sheetWeapon(pistol as { name: string; weapon: WargearWeapon }, 4), [
+    wargear.get("apoc-folding-stock")!,
+  ]);
+  assert.ok(!stock.weapon.traits.some((t) => t.startsWith("Pistol")));
+  assert.deepEqual(
+    stock.weapon.range,
+    pistol.weapon!.range!.map((r, i) => r + [3, 6, 9][i]!),
+  );
+});
+
+test("upgradeRefusal: three at most, one of each slot, Distinction exempt (Core pp.227–228)", () => {
+  const at = { tier: 4, newTier: 4 };
+  const matches = (w: Parameters<typeof wargearMatches>[0], f: Parameters<typeof wargearMatches>[1]) =>
+    wargearMatches(w, f, at);
+  const carbine = wargear.get("apoc-bolt-carbine")!;
+  const sight = wargear.get("magnocular-scope")!;
+  const scope2 = wargear.get("red-dot-sight")!;
+  const brake = wargear.get("percussive-muzzle-brake")!;
+  const drum = wargear.get("ammo-drum")!;
+  const distinction = wargear.get("distinction")!;
+  const fit = (upgrade: typeof sight, fitted: (typeof sight)[]) =>
+    upgradeRefusal({ upgrade, item: carbine, fitted, matches });
+
+  assert.equal(fit(sight, []), null);
+  assert.match(fit(sight, [sight])!, /already has/, "the same upgrade twice");
+  assert.match(fit(scope2, [sight])!, /already has a sight/, "two scopes (Core p.227)");
+  assert.equal(fit(brake, [sight, drum]), null, "different slots");
+  assert.match(fit(brake, [sight, drum, wargear.get("bayonet-lug")!])!, /3 upgrades/, "the maximum");
+  // Distinction doesn't count toward the maximum (Core p.228), so it still goes on a full weapon.
+  assert.equal(fit(distinction, [sight, drum, wargear.get("bayonet-lug")!]), null);
+  // An armour upgrade doesn't fit a weapon.
+  assert.match(fit(wargear.get("voa-adamantine-cuirass")!, [])!, /doesn't fit/);
+});
+
+test("keepPlay: a rebuild keeps the upgrades fitted to a weapon in play (#15 step 3)", () => {
+  const previous = { ...PREGENS[1]!.build };
+  const before = resolveBuild({ catalogue, build: previous }).sheet;
+  const gun = before.weapons[0]!;
+  const played = {
+    ...before,
+    weapons: before.weapons.with(0, { ...gun, wargearId: gun.wargearId ?? "x", upgrades: ["mastercrafted"] }),
+  };
+  const next = inPlay({ ...previous, advancement: { packages: [] } }, { tier: 4, xpEarned: 0 }).sheet;
+  const kept = keepPlay({ previous: played, next });
+  assert.deepEqual(kept.weapons[0]!.upgrades, ["mastercrafted"], "fitted in play, kept through a rebuild");
 });

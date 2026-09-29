@@ -95,6 +95,21 @@ export const Action = z.union([
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
       wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
     }),
+    // Fit a catalogue upgrade to one of the character's weapons, or take it off again (Core p.227, §11.60–§11.62).
+    // The server checks the fit, the maximum of three and the one-per-slot rule, and moves the upgrade off the gear
+    // line it was requisitioned onto. `weapon` is the weapon's name on the sheet, which is unique there.
+    z.object({
+      type: z.literal("character.fitUpgrade"),
+      id,
+      weapon: z.string().trim().min(1).max(100),
+      upgradeId: z.string().min(1).max(100),
+    }),
+    z.object({
+      type: z.literal("character.removeUpgrade"),
+      id,
+      weapon: z.string().trim().min(1).max(100),
+      upgradeId: z.string().min(1).max(100),
+    }),
     // GM only: replaces the Agent's private objectives (only its player sees them).
     z.object({ type: z.literal("character.objectives"), characterId: id, objectives: Objectives }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
@@ -198,6 +213,10 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.build",
   "character.draft",
   "character.supply",
+  // Fitting an upgrade is instant and takes no Test (§11.60), and the upgrade is already the character's, so a player
+  // does it on their own weapons.
+  "character.fitUpgrade",
+  "character.removeUpgrade",
   "seat.leave",
 ]);
 

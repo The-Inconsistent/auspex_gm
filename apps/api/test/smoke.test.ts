@@ -331,6 +331,58 @@ test("GM and player share a table", async (t) => {
       st.ammo["Frag Grenade"] === 4
     );
   });
+  // Fitting an upgrade (Core pp.227-228, rules-flow §11.60-§11.62): instant, no Test, but the fit, the maximum of
+  // three and one-per-slot are the server's to check. The Laspistol just requisitioned is the weapon.
+  const fit = { type: "character.fitUpgrade" as const, id: hero.id!, weapon: "Laspistol" };
+  // A player fits only what their character owns; the GM grants (§11.57).
+  assert.deepEqual(await player.send({ ...fit, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Hero doesn't have Magnocular Scope to fit",
+  });
+  assert.deepEqual(await player.send({ ...fit, id: other.id!, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Not your character",
+  });
+  assert.ok((await gm.send({ ...fit, upgradeId: "magnocular-scope" })).ok);
+  await gm.until((s) =>
+    Boolean(
+      s.characters
+        .find((c) => c.id === hero.id)
+        ?.stats.weapons.find((w) => w.name === "Laspistol")
+        ?.upgrades?.includes("magnocular-scope"),
+    ),
+  );
+  assert.deepEqual(await gm.send({ ...fit, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Laspistol already has Magnocular Scope",
+  });
+  assert.deepEqual(await gm.send({ ...fit, upgradeId: "red-dot-sight" }), {
+    ok: false,
+    error: "Laspistol already has a sight: Magnocular Scope (Core p.227)",
+  });
+  // An armour upgrade doesn't go on a weapon, and nothing outside the catalogue goes on anything.
+  const armourFit = await gm.send({ ...fit, upgradeId: "voa-adamantine-cuirass" });
+  assert.match(armourFit.ok ? "fitted" : armourFit.error, /not a weapon/);
+  assert.deepEqual(await gm.send({ ...fit, upgradeId: "no-such-upgrade" }), { ok: false, error: "Unknown upgrade" });
+  assert.deepEqual(await gm.send({ ...fit, weapon: "Nothing", upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: 'Hero has no weapon called "Nothing"',
+  });
+  // Taking it off puts it back in the character's gear, so their own player can fit it again.
+  const { type: _fitType, ...onLaspistol } = fit;
+  assert.ok((await gm.send({ type: "character.removeUpgrade", ...onLaspistol, upgradeId: "magnocular-scope" })).ok);
+  await gm.until((s) =>
+    Boolean(s.characters.find((c) => c.id === hero.id)?.stats.gear.some((g) => g.startsWith("Magnocular Scope"))),
+  );
+  assert.ok((await player.send({ ...fit, upgradeId: "magnocular-scope" })).ok);
+  await gm.until((s) => {
+    const st = s.characters.find((c) => c.id === hero.id)?.stats;
+    return (
+      st?.weapons.find((w) => w.name === "Laspistol")?.upgrades?.length === 1 &&
+      !st.gear.some((g) => g.startsWith("Magnocular Scope"))
+    );
+  });
+
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumped." })).ok);
   await gm.until((s) => s.characters.every((c) => c.xp === 10));
 

@@ -24,7 +24,7 @@ import {
 import { RARITY_DN } from "./requisition.ts";
 import { SOURCES, sourceCite, type Source } from "./source.ts";
 import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, Mods, type Skill } from "./state.ts";
-import { Wargear, gearLine, sheetWeapon, type WargearWeapon } from "./wargear.ts";
+import { Wargear, applyUpgrades, gearLine, sheetWeapon, type WargearWeapon } from "./wargear.ts";
 
 // The character builder (issue #9, docs/data.md §9): a character is the choices made at creation, and its sheet is
 // derived from them by `resolveBuild`, which the web runs for a live preview and the api re-runs before it saves.
@@ -1449,12 +1449,19 @@ export function resolveBuild({
     ...armourItems
       .filter((x) => x.w?.weapon)
       .map(({ g, w }) => {
-        const out = sheetWeapon({ name: g.name, weapon: w!.weapon! }, strength);
-        const extra = (g.upgrades ?? []).map((u) => catalogue.wargear.get(u)?.name ?? u).concat(g.traitIds ?? []);
+        const base = sheetWeapon({ name: g.name, weapon: w!.weapon! }, strength);
+        // Starting wargear's upgrades change the profile (Core p.227), rather than only naming themselves on it. The
+        // catalogue is GM-only, so a player's phone can't resolve an upgrade id: the name and what it does are baked
+        // in here, and the ids stay for a later re-derive.
+        const fitted = (g.upgrades ?? []).map((u) => catalogue.wargear.get(u)).filter((u) => u !== undefined);
+        const { weapon: up, notes } = applyUpgrades(base, fitted);
+        const extra = [...fitted.map((u) => u.name), ...(g.traitIds ?? [])];
         return {
-          ...out,
-          count: typeof g.qty === "number" && g.qty > 1 ? g.qty : out.count,
-          traits: [...out.traits, ...extra],
+          ...up,
+          count: typeof g.qty === "number" && g.qty > 1 ? g.qty : base.count,
+          traits: [...up.traits, ...extra, ...notes],
+          wargearId: w!.id,
+          upgrades: g.upgrades?.length ? [...g.upgrades] : undefined,
         };
       }),
   ];
@@ -1792,6 +1799,15 @@ export function keepPlay({
   next: CharacterStats;
   before?: CharacterStats;
 }): CharacterStats {
+  // Upgrades fitted in play belong to the weapon, not to the build, so a rebuild keeps them: the same weapon (by
+  // catalogue entry, or by name for a sheet made before upgrades were modelled) carries both sides' ids.
+  const sameWeapon = (a: CharacterStats["weapons"][number], b: CharacterStats["weapons"][number]) =>
+    a.wargearId && b.wargearId ? a.wargearId === b.wargearId : a.name === b.name;
+  const played = previous.weapons.map((w) => {
+    const from = next.weapons.find((n) => sameWeapon(w, n));
+    const ids = [...new Set([...(w.upgrades ?? []), ...(from?.upgrades ?? [])])];
+    return { ...w, wargearId: w.wargearId ?? from?.wargearId, upgrades: ids.length ? ids : undefined };
+  });
   const weapons = new Set([...previous.weapons, ...before.weapons].map((w) => w.name));
   const gear = new Set([...previous.gear, ...before.gear]);
   const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
@@ -1803,7 +1819,7 @@ export function keepPlay({
     ...next,
     mods: speed ? { ...mods, speed } : mods,
     armour,
-    weapons: [...previous.weapons, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
+    weapons: [...played, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
     gear: [
       ...previous.gear,
       ...shedArmour,

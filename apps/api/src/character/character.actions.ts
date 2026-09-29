@@ -19,6 +19,8 @@ import {
   requisitionYield,
   resolveBuild,
   sheetWeapon,
+  upgradeRefusal,
+  wargearMatches,
   type Action,
   type ActionResult,
   type Character,
@@ -251,13 +253,72 @@ export async function applyCharacterAction(
         if (item?.weapon && !stats.weapons.some((w) => w.name === item.name))
           stats.weapons = [
             ...stats.weapons,
-            sheetWeapon(item as { name: string; weapon: WargearWeapon }, effectiveStrength(stats)),
+            // `wargearId` is what a later fitUpgrade checks the upgrade's `fits` against (§11.60).
+            {
+              ...sheetWeapon(item as { name: string; weapon: WargearWeapon }, effectiveStrength(stats)),
+              wargearId: item.id,
+            },
           ];
         if (a.kind === "wargear") {
           if (!item?.weapon) stats.gear = [...stats.gear, item ? gearLine(item) : a.item];
           if (a.loadedWith) stats.ammo = adjustAmmo(stats.ammo, { kind: a.loadedWith, delta: 1 });
         } else stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
       }
+      await saveStats(tx, { id: a.id, stats });
+      return { ok: true };
+    }
+
+    // Fitting is instant and takes no Test (§11.60), so this only checks what the book checks: the fit, the maximum of
+    // three and one per slot. The base profile stays stored; the sheet derives the upgraded one (applyUpgrades).
+    case "character.fitUpgrade":
+    case "character.removeUpgrade": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const stats = CharacterStats.parse(row.stats);
+      const at = stats.weapons.findIndex((w) => w.name === a.weapon);
+      if (at < 0) fail(`${row.name} has no weapon called "${a.weapon}"`);
+      const weapon = stats.weapons[at]!;
+      const entry = wargear.get(a.upgradeId) ?? fail("Unknown upgrade");
+      if (!entry.upgrade) fail(`${entry.name} isn't an upgrade`);
+      const fitted = (weapon.upgrades ?? []).map((u) => wargear.get(u)).filter((w) => w !== undefined);
+
+      if (a.type === "character.removeUpgrade") {
+        const which = (weapon.upgrades ?? []).indexOf(a.upgradeId);
+        if (which < 0) fail(`${weapon.name} has no ${entry.name} fitted`);
+        const upgrades = (weapon.upgrades ?? []).filter((_, i) => i !== which);
+        stats.weapons = stats.weapons.with(at, { ...weapon, upgrades: upgrades.length ? upgrades : undefined });
+        // It comes off the weapon and back into the character's gear, where a requisitioned upgrade starts.
+        stats.gear = [...stats.gear, gearLine(entry)];
+        await saveStats(tx, { id: a.id, stats });
+        return { ok: true };
+      }
+
+      // The weapon's catalogue entry: what `fits` is checked against. A sheet made before upgrades were modelled has
+      // no `wargearId`, so fall back to its name, which the builder and requisition both take from the catalogue.
+      const base =
+        (weapon.wargearId ? wargear.get(weapon.wargearId) : undefined) ??
+        [...wargear.values()].find((w) => w.name === weapon.name);
+      if (!base) fail(`The catalogue doesn't hold "${weapon.name}", so the fit can't be checked: rebuild the sheet`);
+      if (entry.upgrade.fits.kinds?.every((k) => k !== base.kind))
+        fail(`${entry.name} goes on ${entry.upgrade.fits.kinds.join(" or ")}, not a weapon (issue #15)`);
+      const { tier } = await campaignRules(tx, cid);
+      const refusal = upgradeRefusal({
+        upgrade: entry,
+        item: base,
+        fitted,
+        matches: (w, f) => wargearMatches(w, f, { tier, newTier: tier }),
+      });
+      if (refusal) fail(refusal);
+
+      // The upgrade must be one the character owns: it arrives as a gear line from a requisition (p.205). The GM may
+      // fit one that isn't there, the way they grant anything else (§11.57).
+      const owned = stats.gear.findIndex((g) => g === entry.name || g.startsWith(`${entry.name} (`));
+      if (owned < 0 && ctx.role !== "gm") fail(`${row.name} doesn't have ${entry.name} to fit`);
+      if (owned >= 0) stats.gear = stats.gear.filter((_, i) => i !== owned);
+      stats.weapons = stats.weapons.with(at, {
+        ...weapon,
+        wargearId: base.id,
+        upgrades: [...(weapon.upgrades ?? []), entry.id],
+      });
       await saveStats(tx, { id: a.id, stats });
       return { ok: true };
     }

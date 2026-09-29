@@ -141,3 +141,126 @@ export function gearLine({ name, armour: a, source, page }: Pick<Wargear, "name"
 // Which requisition Test a catalogue item takes: Ammo and Grenades share the session's Ammo Test (p.205, p.229).
 export const requisitionKindOf = (kind: WargearKind): RequisitionKind =>
   kind === "ammo" || kind === "grenade" ? kind : "wargear";
+// ── fitting upgrades (Core pp.227–228, rules-flow.md §11.60–§11.62) ──────────────────────────────────────────────────
+
+// An item takes at most three upgrades; Distinction doesn't count toward that (Core p.228, `exempt: "max"`).
+export const MAX_UPGRADES = 3;
+
+// A Trait's printed name from its rules id, for a profile the sheet shows: "rapid-fire" → "Rapid Fire". The rules
+// reference isn't in this package, so a caller that has it (the api, the RULES tab) passes `traitName` instead.
+const titleCase = (id: string) =>
+  id
+    .split("-")
+    .map((w) => w[0]!.toUpperCase() + w.slice(1))
+    .join(" ");
+const traitKey = (t: string) => t.split("(")[0]!.trim().toLowerCase();
+const rated = (name: string, rating?: number) => (rating === undefined ? name : `${name} (${rating})`);
+
+// Why an upgrade can't be fitted, or null. The catalogue entry, the item it would go on, and what is already fitted.
+export function upgradeRefusal({
+  upgrade,
+  item,
+  fitted,
+  matches,
+}: {
+  upgrade: Wargear;
+  item: Wargear;
+  fitted: Wargear[];
+  matches: (w: Wargear, f: WargearFilter) => boolean;
+}): string | null {
+  const u = upgrade.upgrade;
+  if (!u) return `${upgrade.name} isn't an upgrade`;
+  if (fitted.some((f) => f.id === upgrade.id) && !u.copies) return `${item.name} already has ${upgrade.name}`;
+  if (u.copies && fitted.filter((f) => f.id === upgrade.id).length >= u.copies)
+    return `${upgrade.name} goes on at most ${u.copies} times (its own limit)`;
+  if (!matches(item, u.fits)) return `${upgrade.name} doesn't fit ${item.name}`;
+  // The maximum of three counts the upgrades that count (Core p.228).
+  if (u.exempt !== "max" && fitted.filter((f) => f.upgrade?.exempt !== "max").length >= MAX_UPGRADES)
+    return `${item.name} already has ${MAX_UPGRADES} upgrades (Core p.227)`;
+  // "Only one of each type": a slot is taken unless the upgrade is exempt, or is another copy of its own entry.
+  if (u.exempt !== "slot") {
+    const taken = fitted.find((f) => f.upgrade?.slot === u.slot && f.upgrade.exempt !== "slot" && f.id !== upgrade.id);
+    if (taken) return `${item.name} already has a ${u.slot}: ${taken.name} (Core p.227)`;
+  }
+  return null;
+}
+
+// The profile an upgraded weapon shows, and the prose the sheet prints under it. Pure: the base weapon stays as it is
+// stored, so a later data fix re-derives rather than rewriting what was made (like a threat's snapshot).
+export function applyUpgrades(
+  weapon: Weapon,
+  upgrades: Wargear[],
+  { traitName = titleCase }: { traitName?: (id: string) => string } = {},
+): { weapon: Weapon; notes: string[] } {
+  let traits = [...weapon.traits];
+  let { damage, ed, ap, salvo, range } = weapon;
+  const notes: string[] = [];
+
+  for (const entry of upgrades) {
+    for (const m of entry.upgrade?.mods ?? []) {
+      switch (m.kind) {
+        case "trait": {
+          const name = traitName(m.traitId);
+          const at = traits.findIndex((t) => traitKey(t) === traitKey(name));
+          // It already has the Trait: the better rating stands, rather than the weapon carrying it twice.
+          if (at < 0) traits.push(rated(name, m.rating));
+          else if (m.rating !== undefined) {
+            const had = Number(traits[at]!.match(/\((\d+)\)/)?.[1] ?? 0);
+            traits[at] = rated(name, Math.max(had, m.rating));
+          }
+          break;
+        }
+        case "removeTrait":
+          traits = traits.filter((t) => traitKey(t) !== traitKey(traitName(m.traitId)));
+          break;
+        case "traitRating": {
+          // Moves a rating the weapon already has; a weapon without the Trait is untouched (VoA p.68).
+          const name = traitName(m.traitId);
+          const at = traits.findIndex((t) => traitKey(t) === traitKey(name));
+          if (at >= 0) {
+            const had = Number(traits[at]!.match(/\((\d+)\)/)?.[1] ?? 0);
+            const now = had + m.delta;
+            // A rating of 0 is an inert Trait (Rapid Fire (0) adds no dice), so it comes off the profile instead.
+            if (now <= 0) traits = traits.filter((_, i) => i !== at);
+            else traits[at] = rated(name, now);
+          }
+          break;
+        }
+        case "damage":
+          damage += m.delta;
+          break;
+        case "ed":
+          // A rolled ED ("1d3") can't take a delta, so it stays and the change is printed.
+          if (typeof ed === "number") ed += m.delta;
+          else notes.push(`ED ${m.delta >= 0 ? "+" : ""}${m.delta}, on a rolled ${String(ed)}`);
+          break;
+        case "ap":
+          ap = (ap ?? 0) + m.delta;
+          break;
+        case "salvo":
+          if (typeof salvo === "number") salvo = Math.max(0, salvo + m.delta);
+          break;
+        case "range":
+          range = range.map((r, i) =>
+            Math.max(1, Math.round(r * (m.multiply ?? 1) + (m.delta ?? 0) + (m.bands?.[i] ?? 0))),
+          );
+          break;
+        case "ar": // armour's, and never a weapon's: fitting to armour is not built yet (issue #15)
+          notes.push(`AR ${m.delta >= 0 ? "+" : ""}${m.delta}`);
+          break;
+        case "bonusDice":
+          notes.push(
+            `${m.dice >= 0 ? "+" : ""}${m.dice} bonus ${Math.abs(m.dice) === 1 ? "die" : "dice"} to ${m.when}`,
+          );
+          break;
+        case "gm":
+          notes.push(m.what);
+          break;
+      }
+    }
+  }
+  return {
+    weapon: { ...weapon, damage, ed, ap, salvo, range, traits },
+    notes,
+  };
+}

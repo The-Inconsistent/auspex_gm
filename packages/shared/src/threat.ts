@@ -29,6 +29,10 @@ export const Weapon = z.object({
   range: z.array(z.number().int().positive()).min(1).max(3), // [1] melee, [16] thrown, [S, M, L] ranged
   salvo: z.number().int().nonnegative().nullable().optional(), // null = "–"
   traits: z.array(z.string()).default([]),
+  // On a character's sheet only: the catalogue entry this profile came from, and the upgrades fitted to it
+  // (Core p.227, rules-flow.md §11.60–§11.62). `applyUpgrades` derives the shown profile from the two.
+  wargearId: z.string().optional(),
+  upgrades: z.array(z.string()).max(8).optional(),
 });
 export type Weapon = z.infer<typeof Weapon>;
 
