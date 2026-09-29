@@ -361,6 +361,28 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     PARTY outside one.
 58. **The GM's Ruin is GM-only.** Core p.320 says the Ruin pool "should be visible to the players". House decision:
     it isn't. `toPlayerView` sends players Ruin 0 and their sheet doesn't show it; the GM announces a spend at the table.
+59. **A character built outside a campaign** (the personal library, issue #14). The books know nothing of characters
+    without a game, so the app decides: the library holds the creation choices only, and the campaign is the authority
+    the moment one comes in.
+    - **Tier.** A character comes in only at the campaign's Tier, because the Tier sets the XP budget (Core p.20) and
+      the Traits (Core pp.36–37). A mismatch is refused in the builder, and by `character.build` if it's sent anyway.
+      A character already made keeps the Tier it was made at, so a library character at another Tier can never replace
+      it; rebuild it in the library for that Tier instead.
+    - **Homebrew.** The campaign's setting wins: a character built with the homebrew books can't come into a table that
+      doesn't allow them.
+    - **The GM's part stays at the table.** Rulings and ticks (species by ruling, granted keywords, gear swaps, GM
+      questions) are judgements about *that table's* character, so a library character never carries one: a build saved
+      to the library is stored with `gm` cleared. On the way in, what happens depends on who saves, and the two differ:
+      a **player's** draft keeps the GM's stored part (`character.draft` re-attaches `buildDraft.gm ?? build.gm`), so
+      rulings made for the old build survive an import and the GM clears them (CLEAR TICKS) if they no longer fit; a
+      **GM** saving a build sends their own part as the builder has it, so an import they save replaces it. *Proposed;
+      awaiting the GM — the alternative is for an import to clear the part on both paths.*
+    - **What only a GM judges waits for the campaign's GM.** A story grant (the Rogue Trader's Imperial Frigate, Core
+      p.104), a Talent whose XP the GM adds, a conditional Wargear pick: the library has no GM to tick them, so a
+      library build is finished once nothing else is left, and those items stay open. On import they are open again on the campaign's REVIEW, where the player
+      sends the draft and the GM ticks and saves, as for any build.
+    - **The copy is a snapshot**, like a threat's stat block joining an encounter: later library edits don't change the
+      campaign character, and XP earned in play belongs to the campaign character alone.
 
 ---
 

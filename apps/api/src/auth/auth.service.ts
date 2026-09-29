@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { SESSION_COOKIE, bearerOf, verifySession, type AuthUser } from "@wg/auth/api";
 import type { Role } from "@wg/shared";
 import { db, type Tx } from "../core/db.ts";
@@ -51,7 +51,13 @@ export async function signedInUser(headers: { authorization?: string; cookie?: s
     await db
       .insert(appUser)
       .values({ id: user.userId, name: user.name })
-      .onConflictDoUpdate({ target: appUser.id, set: { name: user.name, updatedAt: new Date() } });
+      // Only when it actually changed: the library builder autosaves every couple of seconds, and rewriting the same
+      // name on each request would churn a row version per save for nothing.
+      .onConflictDoUpdate({
+        target: appUser.id,
+        set: { name: user.name, updatedAt: new Date() },
+        setWhere: sql`${appUser.name} is distinct from ${user.name}`,
+      });
   }
   return user;
 }

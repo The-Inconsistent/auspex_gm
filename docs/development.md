@@ -73,6 +73,9 @@ docker compose stop postgres
 Accounts come from Clerk. Guests with a QR token don't need one, but the GM does. One-time setup:
 
 1. Create a Clerk application on the free **Hobby** plan, and enable the sign-in methods you want.
+   Under **User & authentication → Access mode**, pick **Invite-only**. This is load-bearing: `/api/creation` and
+   `/api/rules` serve book content to any signed-in user (`docs/backend.md` §3.1), so an Open instance would hand the
+   catalogue to anyone who registers. Invited users still sign up at `/sign-up`, from their invitation link.
 2. In the Dashboard, under **Sessions → Customize session token**, add these claims. The api reads the name and the
    creator role from the session token, so it never calls Clerk (`packages/auth/src/api.ts`):
 
@@ -80,7 +83,8 @@ Accounts come from Clerk. Guests with a QR token don't need one, but the GM does
    { "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }
    ```
 
-3. Sign up once in the app, then under **Users →** your user, set **public metadata** to `{ "role": "creator" }`. Only
+3. Invite yourself under **Users → Invite** and sign up from the link (or **Create user**), then under **Users →**
+   your user, set **public metadata** to `{ "role": "creator" }`. Only
    creators see NEW GAME in the lobby. There's no in-app way to grant it; set it by hand for each GM.
 4. Copy the keys from **API keys**:
 

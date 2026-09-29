@@ -11,7 +11,7 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
 | GM on a tablet, players on phones | Mobile-first web app, no install. Screens stay awake (Wake Lock) |
 | Several people tap at the same time | The server decides. Counters change by **delta**, never by overwriting a value |
 | Players must not see what the GM hides | The server redacts every snapshot sent to players. The client never receives hidden data |
-| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token), and the repo is private |
+| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token); the builder's catalogue outside a table needs a Clerk account, and Clerk is Invite-only. The repo is private |
 | Rules must match the books | Rules live in one tested package, and each one cites its page |
 
 ## Shape
@@ -26,7 +26,7 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
         │
         └──▶ apps/api   NestJS on Bun (verifies Clerk session tokens itself)
                 ├─ REST       lobby, create campaign (creator or admin key), invites, guest join (token → cookie),
-                │             your seat (me), threats (GM only)
+                │             your seat (me), threats (GM only), your character library (signed in, no campaign)
                 └─ Socket.IO  the live table: every change is an `action`, every result is a snapshot
                         │
                         ▼
@@ -63,8 +63,10 @@ client send(action) ──▶ gateway ──▶ parse (zod) ──▶ db.transac
 - **Refusals** (`ActionError`) come back as `{ ok: false, error }`, and the UI shows the reason. Once the transaction
   has committed, the client is told "ok" even if the broadcast afterwards fails, so a retap can't apply the change twice.
 - There are no Server Actions and no REST writes for game state. REST only covers setup (creating a campaign),
-  identity (join, me, the lobby) and invites. Accepting an invite changes who sits at a table, so it runs through
-  `TableGateway.mutate`: the same per-campaign queue, then the same broadcast.
+  identity (join, me, the lobby), invites and the character library. Accepting an invite changes who sits at a table,
+  so it runs through `TableGateway.mutate`: the same per-campaign queue, then the same broadcast. A library character
+  (issue #14) belongs to no table and is nobody's live state, so it writes over plain REST scoped to its owner —
+  the documented exception, in [backend.md](backend.md) §3.1.
 
 ## Two snapshots, full state
 

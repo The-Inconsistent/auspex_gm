@@ -41,3 +41,25 @@ export async function loadCreation(campaignId: string): Promise<CreationPayload 
     return null;
   }
 }
+
+// The rules reference for a signed-in user outside any campaign (issue #14). Empty on failure, like loadRules.
+export async function loadRulesSignedIn(): Promise<RuleEntry[]> {
+  try {
+    const res = await apiGet("/api/rules");
+    const parsed = RuleEntry.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : [];
+  } catch {
+    return [];
+  }
+}
+
+// The creation catalogue outside any campaign: the character's own homebrew setting picks the books.
+export async function loadCreationFor(homebrew: boolean): Promise<CreationPayload | null> {
+  try {
+    const res = await apiGet(`/api/creation?homebrew=${homebrew ? 1 : 0}`);
+    const parsed = CreationPayload.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
+}

@@ -39,6 +39,12 @@ export const STEP_CITES: Record<BuildStep, string> = {
 export const draftKey = ({ campaignId, characterId }: { campaignId: string; characterId: string | null }) =>
   `wg-build:${campaignId}:${characterId ?? NEW_CHARACTER}`;
 
+// The same, for a character in the signed-in user's own library (issue #14).
+export const libraryDraftKey = (id: string) => `wg-build:library:${id}`;
+
+// How long the library builder waits after the last change before saving the draft, so a burst of taps is one PUT.
+export const AUTOSAVE_MS = 1500;
+
 // Full names for the Attribute keys, for labels and screen readers.
 export const ATTRIBUTE_NAMES: Record<Attribute, string> = {
   S: "Strength",

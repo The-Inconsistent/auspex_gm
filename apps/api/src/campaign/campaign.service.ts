@@ -6,6 +6,7 @@ import type { Lobby, LobbyGame, Role, RuleEntry, Threat, Wargear } from "@wg/sha
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { db } from "../core/db.ts";
+import { listLibrary } from "../library/library.service.ts";
 import { campaign, session } from "./campaign.schema.ts";
 
 // Constant-time compare against ADMIN_KEY (scripts only; people sign in with Clerk).
@@ -40,15 +41,18 @@ export function createCampaign({
 
 // The lobby: the caller's games, and every game with a session in progress (as cards only; opening one needs a seat).
 export async function lobby(user: AuthUser): Promise<Lobby> {
-  const [mine, running] = await Promise.all([
+  // `characters` is their own library (issue #14): it belongs to no game, so it's listed whether or not they have a
+  // seat anywhere.
+  const [mine, running, characters] = await Promise.all([
     db
       .select({ campaignId: membership.campaignId, role: membership.role })
       .from(membership)
       .where(eq(membership.userId, user.userId)),
     db.select({ campaignId: session.campaignId, number: session.number }).from(session).where(isNull(session.endedAt)),
+    listLibrary(user.userId),
   ]);
   const ids = [...new Set([...mine, ...running].map((r) => r.campaignId))];
-  if (!ids.length) return { canCreate: user.creator, mine: [], running: [] };
+  if (!ids.length) return { canCreate: user.creator, mine: [], running: [], characters };
 
   const [camps, gms, players] = await Promise.all([
     db
@@ -84,7 +88,7 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
   };
   const cards = (list: { campaignId: string }[]) =>
     list.map((r) => card(r.campaignId)).filter((g): g is LobbyGame => !!g);
-  return { canCreate: user.creator, mine: cards(mine), running: cards(running) };
+  return { canCreate: user.creator, mine: cards(mine), running: cards(running), characters };
 }
 
 // Whether the campaign's character builder may use the homebrew books (a REST read, outside any action).

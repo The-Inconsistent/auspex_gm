@@ -5,13 +5,18 @@ import assert from "node:assert/strict";
 import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
+  LIBRARY_CAP,
+  Lobby,
   deriveStats,
   poolMax,
   type ActionInput,
   type ActionResult,
   type Codex,
   type CreationPayload,
+  type LibraryCharacter,
+  type LibraryEntry,
   type LiveState,
+  type RuleEntry,
   type ThreatCombatant,
 } from "@wg/shared";
 
@@ -29,6 +34,16 @@ const post = (path: string, body: unknown, headers: Record<string, string> = {})
     headers: { "content-type": "application/json", ...headers },
     body: JSON.stringify(body),
   });
+
+const put = (path: string, body: unknown, headers: Record<string, string> = {}) =>
+  fetch(`${API}/api${path}`, {
+    method: "PUT",
+    headers: { "content-type": "application/json", ...headers },
+    body: JSON.stringify(body),
+  });
+
+const del = (path: string, headers: Record<string, string> = {}) =>
+  fetch(`${API}/api${path}`, { method: "DELETE", headers });
 
 // A socket as a GM or player: `auth` carries campaignId plus a Clerk test token, a guest token or the admin key;
 // `headers` can carry a guest cookie instead.
@@ -897,4 +912,169 @@ test("the guest door is rate limited per caller IP", async () => {
   for (let i = 0; i < 60; i++) assert.equal((await from("203.0.113.9")).status, 401);
   assert.equal((await from("203.0.113.9")).status, 429);
   assert.equal((await from("203.0.113.10")).status, 401, "another caller is unaffected");
+});
+
+test("the character library: a signed-in user builds without a campaign (issue #14)", async () => {
+  // A fresh user per run: library rows outlive a test, unlike a campaign, which each test creates for itself.
+  const who = `library-${Date.now()}`;
+  const owner = clerk(`${who}-owner`);
+  const stranger = clerk(`${who}-stranger`);
+
+  // Book text needs an account: no seat, but no anonymous callers and no guests either.
+  assert.equal((await get("/library")).status, 401);
+  assert.equal((await get("/creation")).status, 401);
+  assert.equal((await get("/rules")).status, 401);
+  assert.equal(
+    (await get("/library", { cookie: "wg_token=not-a-clerk-session" })).status,
+    401,
+    "a guest has no library",
+  );
+
+  // The catalogue outside a campaign: the caller picks the books, because no campaign decides for them.
+  const official = await get("/creation", bearer(owner));
+  assert.equal(official.status, 200);
+  const plain = (await official.json()) as CreationPayload;
+  assert.equal(plain.homebrew, false);
+  assert.ok(!plain.creation.archetypes.some((a) => a.source === "apocrypha"));
+  const etag = official.headers.get("etag")!;
+  assert.equal((await get("/creation", { ...bearer(owner), "if-none-match": etag })).status, 304);
+  const homebrew = (await (await get("/creation?homebrew=1", bearer(owner))).json()) as CreationPayload;
+  assert.ok(homebrew.creation.archetypes.some((a) => a.source === "apocrypha"));
+  assert.ok(((await (await get("/rules", bearer(owner))).json()) as RuleEntry[]).length > 0);
+
+  // A new character starts empty, so the builder has a row to autosave its draft to.
+  const created = await post("/library", {}, bearer(owner));
+  assert.equal(created.status, 201);
+  const { id } = (await created.json()) as LibraryCharacter;
+  assert.deepEqual(
+    ((await (await get("/library", bearer(owner))).json()) as LibraryCharacter[]).map((c) => [c.id, c.done]),
+    [[id, false]],
+  );
+  assert.deepEqual((await (await get("/library", bearer(stranger))).json()) as LibraryCharacter[], []);
+
+  // A draft autosaves as any shape the builder writes; a build is re-resolved here and refused unless it's ready.
+  assert.equal(
+    (await put(`/library/${id}`, { name: "Veyl", draft: { tier: 4, name: "Veyl" } }, bearer(owner))).status,
+    200,
+  );
+  const { languages: _, ...noLanguage } = disruptor;
+  const refused = await put(`/library/${id}`, { build: noLanguage }, bearer(owner));
+  assert.equal(refused.status, 400);
+  assert.equal(
+    ((await refused.json()) as { message: string }).message,
+    "Still to choose: Choose 1 free language",
+    "the library refuses a build in the builder's words",
+  );
+  const saved = await put(
+    `/library/${id}`,
+    { build: { ...disruptor, gm: { keywords: ["DEATHWATCH"] } } },
+    bearer(owner),
+  );
+  assert.equal(saved.status, 200);
+  assert.deepEqual(
+    { ...((await saved.json()) as LibraryCharacter), id: "", updatedAt: "" },
+    { id: "", name: "Veyl", tier: 4, archetype: "Primaris Incursor", homebrew: false, done: true, updatedAt: "" },
+  );
+  // The lobby carries the library, so YOUR CHARACTERS lists them without a second request (issue #14 step 3).
+  const inLobby = ((await (await get("/lobby", bearer(owner))).json()) as Lobby).characters;
+  assert.deepEqual(
+    inLobby.map((c) => [c.name, c.tier, c.archetype, c.done]),
+    [["Veyl", 4, "Primaris Incursor", true]],
+  );
+
+  const entry = (await (await get(`/library/${id}`, bearer(owner))).json()) as LibraryEntry;
+  assert.equal(entry.build?.archetypeId, "primaris-incursor");
+  assert.deepEqual(entry.build?.gm.keywords, [], "the GM's part belongs to a table, not to the library");
+
+  // Another user's character is not found, never forbidden: a 403 would tell them the id exists.
+  assert.equal((await get(`/library/${id}`, bearer(stranger))).status, 404);
+  assert.equal((await put(`/library/${id}`, { name: "Theirs" }, bearer(stranger))).status, 404);
+  assert.equal((await del(`/library/${id}`, bearer(stranger))).status, 404);
+  assert.equal(entry.name, "Veyl", "and it is untouched");
+
+  // A draft is stored as the builder writes it, so a Tier outside 1–5 can't reach the lobby's schema and take the whole
+  // lobby down with it.
+  assert.equal((await put(`/library/${id}`, { draft: { tier: 0, name: "Bad" } }, bearer(owner))).status, 200);
+  assert.equal(
+    Lobby.safeParse(await (await get("/lobby", bearer(owner))).json()).success,
+    true,
+    "the lobby still parses with a bad draft Tier",
+  );
+
+  // One account is bounded: 20 characters (LIBRARY_CAP), then it has to delete one. The cap is exact, so a burst of
+  // concurrent posts can't overshoot it (the insert locks the owner's row).
+  const capped = clerk(`${who}-hoarder`);
+  const burst = await Promise.all(Array.from({ length: LIBRARY_CAP + 10 }, () => post("/library", {}, bearer(capped))));
+  assert.equal(burst.filter((r) => r.status === 201).length, LIBRARY_CAP, `${LIBRARY_CAP} created, the rest refused`);
+  const refusedCap = burst.find((r) => r.status === 400)!;
+  assert.match(((await refusedCap.json()) as { message: string }).message, /at most 20 characters/);
+  const over = burst.find((r) => r.status === 201)!;
+  assert.equal((await del(`/library/${((await over.json()) as LibraryCharacter).id}`, bearer(capped))).status, 200);
+  assert.equal((await post("/library", {}, bearer(capped))).status, 201, "a deletion makes room again");
+
+  assert.equal((await del(`/library/${id}`, bearer(owner))).status, 200);
+  assert.equal((await get(`/library/${id}`, bearer(owner))).status, 404);
+});
+
+test("a library character comes into a campaign as a copy (issue #14 step 4)", async (t) => {
+  const owner = clerk(`import-${Date.now()}`);
+  const created = await post("/library", {}, bearer(owner));
+  const { id } = (await created.json()) as LibraryCharacter;
+  assert.equal((await put(`/library/${id}`, { name: "Sila", build: disruptor }, bearer(owner))).status, 200);
+  const { build } = (await (await get(`/library/${id}`, bearer(owner))).json()) as LibraryEntry;
+  assert.ok(build, "the library holds the finished build");
+
+  // The import is a copy made in the builder, so the server sees the ordinary `character.build` (no new action).
+  const table = await newCampaign("Import", 4);
+  t.after(() => table.socket.close());
+  const brought = await table.send({ type: "character.build", name: "Sila", build });
+  assert.ok(brought.ok && brought.id, JSON.stringify(brought));
+  const sila = (await table.until((s) => s.characters.some((c) => c.id === brought.id))).characters.find(
+    (c) => c.id === brought.id,
+  )!;
+  assert.equal(sila.stats.archetype, "Primaris Incursor");
+
+  // Later library edits don't reach the campaign character: it was snapshotted on the way in.
+  assert.equal(
+    (
+      await put(
+        `/library/${id}`,
+        { name: "Sila Renamed", build: { ...disruptor, skills: { ...disruptor.skills, Stealth: 4 } } },
+        bearer(owner),
+      )
+    ).status,
+    200,
+  );
+  const after = (await table.until(() => true)).characters.find((c) => c.id === brought.id)!;
+  assert.deepEqual([after.name, after.stats.skills.Stealth], ["Sila", 5], "the campaign copy is untouched");
+
+  // A campaign only takes a character built for its own Tier; the builder blocks it first, the server refuses it too.
+  const other = await newCampaign("ImportT2", 2);
+  t.after(() => other.socket.close());
+  assert.deepEqual(await other.send({ type: "character.build", name: "Sila", build }), {
+    ok: false,
+    error: "This campaign is Tier 2; build for Tier 2",
+  });
+
+  // What only a GM judges waits for the campaign's GM (rules-flow §11.59): the library finishes a build with it open,
+  // and the table refuses it until the GM ticks it. Augmetic's XP is "20 plus the Value": the GM adds it (Core p.129).
+  const augmented = {
+    ...disruptor,
+    talents: [{ id: "wraith-slipping" }, { id: "bolter-discipline" }, { id: "augmetic" }],
+    choices: { "talent/augmetic/0": [0], "talent/augmetic/0/0": ["augmetic-eye", "augmetic-arm"] },
+  };
+  const gmLater = await put(`/library/${id}`, { build: augmented }, bearer(owner));
+  assert.equal(gmLater.status, 200, "the library leaves the GM's items open");
+  assert.equal(((await gmLater.json()) as LibraryCharacter).done, true);
+  const xp = "Augmetic costs 20 XP plus the Value of the augmetic you choose: the GM adds it";
+  assert.deepEqual(await table.send({ type: "character.build", name: "Aug", build: augmented }), {
+    ok: false,
+    error: xp,
+  });
+  const ticked = await table.send({
+    type: "character.build",
+    name: "Aug",
+    build: { ...augmented, gm: { approved: ["talent/augmetic/xp"] } },
+  });
+  assert.ok(ticked.ok, JSON.stringify(ticked));
 });

@@ -1,34 +1,57 @@
 "use client";
 import { useState } from "react";
 
-import { startingXp } from "@wg/shared";
-
-import type { Send } from "@/hooks/use-table/use-table";
+import { TIERS, startingXp } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
+import { ImportLibrary } from "../import-library/import-library";
 
-type TierStepProps = { homebrew: boolean; send: Send };
-
-// Framework and Tier (Core pp.18–20): the budget comes from the campaign's Tier. The GM also decides here whether the
-// builder may use the homebrew books.
-export function TierStep({ homebrew, send }: TierStepProps) {
-  const { tier, role, go } = useBuilder();
+// Framework and Tier (Core pp.18–20). At a table the budget comes from the campaign's Tier, and the GM decides whether
+// the builder may use the homebrew books; in the library (issue #14) both are the character's owner's to pick.
+export function TierStep() {
+  const { tier, tierEditable, setTier, homebrew, setHomebrew, importable, go } = useBuilder();
   const [error, setError] = useState<string | null>(null);
 
-  // HOMEBREW switch (GM): saves the campaign setting, then reloads, because the catalogue is served already filtered.
+  // HOMEBREW switch: saves the setting, then reloads, because the catalogue is served already filtered.
   const toggleHomebrew = async () => {
-    const r = await send({ type: "campaign.update", homebrew: !homebrew });
-    if (!r.ok) return setError(r.error);
+    const failure = await setHomebrew?.(!homebrew);
+    if (failure) return setError(failure);
     window.location.reload();
   };
 
   return (
     <div className="stack">
       <div className="rule">FRAMEWORK AND TIER</div>
-      <p>
-        The campaign is <b>Tier {tier}</b>, so the character starts with <b>{startingXp(tier)} XP</b> (Core p.20) at
-        Rank 1 (Core p.36). The GM sets the Tier and the Framework in PARTY.
-      </p>
+      {tierEditable ? (
+        <>
+          <p>
+            A character starts with <b>{startingXp(tier)} XP</b> (Core p.20) at Rank 1 (Core p.36). Build at the Tier
+            the game you have in mind plays at: a campaign only takes a character made at its own Tier.
+          </p>
+          <div className="field">
+            <span className="label">TIER</span>
+            <div className="keys">
+              {TIERS.map((t) => (
+                <button
+                  key={t}
+                  className={`btn${t === tier ? " primary" : ""}`}
+                  aria-pressed={t === tier}
+                  onClick={() => setTier(t)}
+                >
+                  T{t}
+                  <span className="dim"> · {startingXp(t)} XP</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <p>
+          The campaign is <b>Tier {tier}</b>, so the character starts with <b>{startingXp(tier)} XP</b> (Core p.20) at
+          Rank 1 (Core p.36). The GM sets the Tier and the Framework in PARTY.
+        </p>
+      )}
+      {importable && <ImportLibrary />}
       <div className="plate stack">
         <div className="rule">SOURCES</div>
         <p>
@@ -36,7 +59,7 @@ export function TierStep({ homebrew, send }: TierStepProps) {
             ? "Homebrew is allowed: An Abundance of Apocrypha and Legacy of the Necrontyr are in the lists."
             : "Official books only. An Abundance of Apocrypha and Legacy of the Necrontyr are left out."}
         </p>
-        {role === "gm" ? (
+        {setHomebrew ? (
           <div>
             <button className="btn" aria-pressed={homebrew} onClick={toggleHomebrew}>
               {homebrew ? "TURN HOMEBREW OFF" : "ALLOW HOMEBREW"}

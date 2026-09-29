@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LibraryCharacter } from "./library.ts";
 import { Character, InviteMode, Role, Tier } from "./state.ts";
 
 // REST shapes for signed-in (Clerk) users outside a table: the lobby, creating a game, and invite links.
@@ -14,8 +15,14 @@ export const LobbyGame = z.object({
 });
 export type LobbyGame = z.infer<typeof LobbyGame>;
 
-// Anyone signed in sees every running game as a card; only members can open one.
-export const Lobby = z.object({ canCreate: z.boolean(), mine: z.array(LobbyGame), running: z.array(LobbyGame) });
+// Anyone signed in sees every running game as a card; only members can open one. `characters` is their own library
+// (issue #14), which belongs to no game.
+export const Lobby = z.object({
+  canCreate: z.boolean(),
+  mine: z.array(LobbyGame),
+  running: z.array(LobbyGame),
+  characters: z.array(LibraryCharacter),
+});
 export type Lobby = z.infer<typeof Lobby>;
 
 export const CreateGame = z.object({ name: z.string().min(1).max(100), tier: Tier });

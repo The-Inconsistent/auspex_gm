@@ -20,6 +20,7 @@ seat.
 | `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen` |
 | `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
 | `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
+| `/library/<characterId>` | `app/library/[characterId]/page.tsx` | Server Component | The builder on a character in the signed-in user's own library (issue #14): no campaign, no seat |
 | `/join/<token>` | `app/join/[token]/route.ts` | Route handler (`GET`) | Swaps a guest token for the guest cookie, then redirects to its table with a 303 |
 | `/manifest.webmanifest` | `app/manifest.ts` | Metadata route | "Add to home screen": `display: standalone`, `start_url: /`, colours from `TOKENS.bg` |
 | `/api/*`, `/socket.io/*` | `next.config.ts` | Rewrites (dev only) | Proxied to the api |
@@ -34,6 +35,8 @@ wraps the body in `<AuthProvider>` (`@wg/auth/react`: `ClerkProvider` with `sign
 - **`proxy.ts`** (Next 16's middleware file) runs `authMiddleware()` (`@wg/auth/next`, Clerk's `clerkMiddleware`) so Clerk can keep its session fresh. It protects
   nothing: each page decides whether it needs a signed-in user, because guests join without an account. Its matcher
   excludes `/api`, `/socket.io`, `_next` and static files; the api checks the Clerk token itself.
+- **`loadRulesSignedIn()`** and **`loadCreationFor(homebrew)`** are the library's loaders, hitting the seatless
+  `/api/rules` and `/api/creation`.
 - **`apiGet(path)`** calls the api directly at `API_ORIGIN` (`app/constants.ts`, env `API_ORIGIN`, default
   `http://localhost:4000`) with `cache: "no-store"`. It sends the Clerk session as `Authorization: Bearer
   <sessionToken()>` (`@wg/auth/next`), and forwards the guest cookie (`TOKEN_COOKIE` = `wg_token`), which is httpOnly, so only the
@@ -53,10 +56,14 @@ The checks run in this order, and the first one that matches decides what render
 | Signed in, `/api/lobby` fails, errors or doesn't parse as `Lobby` | `JOIN_ERRORS.nosignal` |
 | Signed in | `<LobbyView lobby={…} />` |
 
-**`LobbyView`** (`components/lobby/lobby-view/lobby-view.tsx`) has Clerk's `<UserButton />` in the header and three
+**`LobbyView`** (`components/lobby/lobby-view/lobby-view.tsx`) has Clerk's `<UserButton />` in the header and four
 sections:
 
 - **YOUR GAMES** (`lobby.mine`): a card per seat with a GM or PLAYER chip and OPEN (to `/c/<id>`).
+- **YOUR CHARACTERS** (`lobby.characters`, issue #14): the caller's own library — the Tier, the archetype once the build
+  resolves, ready or in progress, and a homebrew mark. OPEN goes to `/library/<id>`; DELETE asks once (the button turns
+  to CONFIRM), because no GM owns these, then `router.refresh()`. NEW CHARACTER posts an empty row and opens its
+  builder, with the count beside it, and is disabled at `LIBRARY_CAP`.
 - **RUNNING NOW**: games with a session in progress where the caller has no seat (`running` filtered to `role: null`).
   They're cards only, with no OPEN: joining needs an invite.
 - **NEW GAME**, only when `lobby.canCreate` (the Clerk creator role): a name and a Tier from `TIERS`. CREATE AS GM POSTs
@@ -122,6 +129,42 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
 
 Entry points: BUILD / REBUILD per character and NEW FROM BUILDER in PARTY; CHARACTER BUILDER (SPEND XP once made) on
 the player SHEET.
+
+### `/library/<characterId>`: the builder without a campaign
+
+Issue #14. The same builder on a character the signed-in user owns and no table does. Everything the two differ in sits
+in one `Bench` (`components/builder/builder.tsx`): the Tier and who picks it, the books, where the draft is kept, how it
+saves, whether it can import, and the strip along the top. `TableBench` builds one from the socket, `LibraryBuilder`
+from the library row, and the `Workshop` below is the same screen either way.
+
+In library mode:
+
+- **No `useTable`:** no socket, no live state. The page loads the row (`/api/library/:id` → `LibraryEntry`), then the
+  catalogue for that row's own `homebrew` and the rules reference.
+- **The owner picks the Tier** (`TIERS`, with each Tier's starting XP) and the homebrew books per character; the switch
+  saves and calls `router.refresh()`, because the catalogue is served already filtered.
+- **Drafts autosave** to the library `AUTOSAVE_MS` (1.5 s) after the last change, keyed `wg-build:library:<id>` on the
+  device. A failed save shows in the top strip; the draft is still on the device. Which draft an open starts from is
+  `pickDraft` (`components/builder/utils.ts`, unit-tested): the newer of this device's and the row's, except that a build
+  finished on another device after this device wrote its draft wins, because that draft is a stale half-build. Opening a
+  character never autosaves (the first render only writes the device's copy), and SAVE and START OVER drop a pending one
+  (`cancelAutosave`), so a debounced draft can't land on a row that was just finished.
+- **No GM part:** `role: "player"`, so no `GmPart`, no archetype GM notes, and no SEND TO GM — a library character has
+  no GM to send to. `made` is false and there's no `play`: advancement belongs to the campaign copy.
+- **NEW CHARACTER** posts an empty row from the lobby and pushes to it, so the builder has somewhere to autosave. It's a
+  POST rather than a link on purpose: the session cookie is `SameSite=Lax`, so a plain GET that writes would let a
+  cross-site navigation create characters in someone's library. At `LIBRARY_CAP` the button is disabled, and the api
+  refuses anyway.
+- The lobby's **YOUR CHARACTERS** (`LobbyView`, from `Lobby.characters`) lists them with OPEN, a confirm-once DELETE,
+  and NEW CHARACTER with the count, disabled at the cap.
+
+**IMPORT FROM LIBRARY** (`components/builder/components/import-library/`) runs the other way, on a *campaign* builder's
+TIER step (`importable`: a table, and not a player's locked character). It lists the caller's library, copies the chosen
+build into this draft with `gm` cleared, and jumps to REVIEW; the existing flow then saves it (a player sends it to the
+GM, the GM ticks and saves). The picker refuses a character built at another Tier, one needing homebrew this campaign
+doesn't allow, and one still in progress — each row says which — so a mismatch never reaches the server, which refuses
+it anyway. The import is a copy: later library edits don't change the campaign character. A guest on a QR code has no
+account, so the picker says so instead of showing an empty list.
 
 ### `/invite/<code>`: `app/invite/[code]/page.tsx`
 

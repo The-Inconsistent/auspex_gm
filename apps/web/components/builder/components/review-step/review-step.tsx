@@ -25,7 +25,7 @@ const TRAITS = [
 
 // Review and save: the sheet exactly as the play sheet will show it, the ledger, what is left, and the GM's part.
 export function ReviewStep({ onSave }: ReviewStepProps) {
-  const { draft, resolved: r, tier, role, go, sendDraft, sentDraft } = useBuilder();
+  const { draft, resolved: r, tier, role, go, sendDraft, sentDraft, gmLater } = useBuilder();
   const [sendMsg, setSendMsg] = useState<string | null>(null);
 
   // SEND TO GM: the draft goes on the table; the GM opens it here, ticks what only the GM judges, and saves.
@@ -47,9 +47,10 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
   const s = r.sheet;
   const now = r.advancement?.tier ?? tier; // the Tier the group plays at: Traits use it (Core pp.36–37)
   const d = deriveStats({ stats: s, overrides: {}, tier: now });
-  const ready = buildReady(r);
-  const left = r.pending.length + r.problems.length;
   const gmItems = r.problems.some((p) => p.severity === "gm");
+  // In the library, only GM items left is ready: the campaign's GM ticks them after the import (rules-flow §11.59).
+  const ready = buildReady(r) || (gmLater && !r.pending.length && r.problems.every((p) => p.severity === "gm"));
+  const left = r.pending.length + r.problems.length;
 
   return (
     <div className="stack">
@@ -150,7 +151,9 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
         )}
         <span className="dim">
           {ready
-            ? "The server checks the build again and writes the sheet."
+            ? gmItems
+              ? "The GM items wait for your campaign's GM, once you bring this character into a game."
+              : "The server checks the build again and writes the sheet."
             : `${left} thing${left === 1 ? "" : "s"} to settle first${
                 gmItems && role !== "gm" ? "; send it to your GM for the GM items" : ""
               }.`}

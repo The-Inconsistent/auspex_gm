@@ -16,10 +16,15 @@ and the bestiary.
 `src/main.ts`:
 
 1. `runMigrations()` (`core/db.ts`) applies `apps/api/drizzle/` before Nest starts. A failed migration stops the process.
-2. `NestFactory.create(AppModule)`. `AppModule` wires one controller (`CampaignController`) and one provider (`TableGateway`).
-   There's no DI beyond that: feature code is plain functions that take a `tx`.
+2. `NestFactory.create(AppModule)`. `AppModule` wires two controllers (`CampaignController`, `LibraryController`) and one
+   provider (`TableGateway`). There's no DI beyond that: feature code is plain functions that take a `tx`.
 3. Global prefix `api`, so REST lives under `/api/*`. Socket.IO keeps its default path `/socket.io/`.
-4. `enableShutdownHooks()`, then listen on `PORT` (default 4000).
+4. Two in-process rate limiters (`core/rate-limit.ts`, fixed windows): 60/min **per IP** on the unauthenticated door
+   (`/api/join`, `/api/guest`, `/api/invites`), and 120/min **per caller** on the library routes (`/api/library`,
+   `/api/creation`, `/api/rules`), keyed by a hash of their session token and falling back to the IP when there is
+   none — a whole table building together sits behind one NAT, and the builder autosaves, so one shared bucket would cut
+   them off. Over either, a `429`.
+5. `enableShutdownHooks()`, then listen on `PORT` (default 4000).
 
 `@wg/data` loads and zod-parses every threat JSON at import time, so a malformed file fails at startup ([data.md](data.md)).
 
@@ -33,8 +38,9 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 |---|---|---|
 | `core/` | DB client, error type, SQL helpers | `db.ts`: `db`, `Tx`, `Db` (either), `runMigrations`. `errors.ts`: `ActionError`, `fail(msg): never`. `sql.ts`: `bump` (clamped delta), column builders `conditions`, `createdAt`, `body` |
 | `auth/` | Clerk users, seats, invites, guest tokens and the cookie | Clerk itself is in `@wg/auth/api` (`packages/auth/src/api.ts`): `SESSION_COOKIE` (`"__session"`), `AuthUser`, `verifySession`, `bearerOf`, `testSessionToken`. `auth.schema.ts`: `accessToken`, `appUser`, `membership`, `invite`. `auth.service.ts`: `COOKIE` (`"wg_token"`), `Ctx`, `hash`, `newSecret`, `issueToken`, `resolveGuest`, `readCookie`, `signedInUser`, `resolveCtx`. `invite.service.ts`: `previewInvite`, `acceptInvite`. `access.actions.ts`: `AccessAction`, `applyAccessAction` |
-| `campaign/` | Campaign row, pools, sessions; all REST | `campaign.controller.ts`: `CampaignController`. `campaign.service.ts`: `isAdmin`, `createCampaign`, `lobby`, `listThreats`. `campaign.actions.ts`: `CampaignAction`, `applyCampaignAction`, `campaignTier`. `campaign.schema.ts`: `campaign`, `session`, `owned()` |
-| `character/` | Characters and guest tokens | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character` |
+| `campaign/` | Campaign row, pools, sessions; the table's REST | `campaign.controller.ts`: `CampaignController`. `campaign.service.ts`: `isAdmin`, `createCampaign`, `lobby`, `listThreats`. `campaign.actions.ts`: `CampaignAction`, `applyCampaignAction`, `campaignTier`. `campaign.schema.ts`: `campaign`, `session`, `owned()` |
+| `character/` | Characters and guest tokens; the creation catalogue every builder resolves against | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character`. `creation.service.ts`: `buildCatalogue`, `creationPayload`, `buildRefusal` (why a resolved build can't be saved, in the words both `character.build` and the library use) |
+| `library/` | Characters a signed-in user owns outside any campaign, and their REST (issue #14) | `library.controller.ts`: `LibraryController`. `library.service.ts`: `listLibrary`, `readLibrary`, `createLibraryCharacter`, `saveLibraryCharacter`, `deleteLibraryCharacter`. `library.schema.ts`: `libraryCharacter` |
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the six tables |
 | `table/` | The socket | `table.gateway.ts`: `TableGateway`. `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
@@ -49,8 +55,9 @@ Rules:
 
 ## 3. REST endpoints
 
-All in `campaign/campaign.controller.ts`. Bodies and path params are zod-parsed by the local `parse()`, and a failure
-is a `400` with `z.prettifyError` text.
+In `campaign/campaign.controller.ts` (a table's) and `library/library.controller.ts` (a signed-in user's own, outside any
+table). Bodies and path params are zod-parsed by the local `parse()`, and a failure is a `400` with `z.prettifyError`
+text.
 
 - **Clerk** means a Clerk session token: `Authorization: Bearer …` (server-side Next) or the `__session` cookie (the
   browser, through the rewrites), verified by `signedInUser()` (§10). An invalid or missing one counts as signed out.
@@ -61,16 +68,56 @@ is a `400` with `z.prettifyError` text.
 | Method, path | Auth | Body | Success | Errors |
 |---|---|---|---|---|
 | `POST /api/campaigns` | `x-admin-key` equal to `ADMIN_KEY` (constant-time, `isAdmin`), else Clerk with the creator role | `{ name: string 1–100, tier: 1–5 }` (`CreateGame`), plus `ownerUserId` with the admin key | `201 { campaignId }`. The creator, or `ownerUserId`, is seated as GM | `401` not signed in. `403 "Only creators can start a game"`. `400` bad body |
-| `GET /api/lobby` | Clerk | none | `200 Lobby` (`packages/shared/src/access.ts`): `canCreate`, `mine`, `running` | `401` |
+| `GET /api/lobby` | Clerk | none | `200 Lobby` (`packages/shared/src/access.ts`): `canCreate`, `mine`, `running`, `characters` (the caller's library, §3.1) | `401` |
 | `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
+| `GET /api/creation?homebrew=0\|1` | Clerk | none | `200 CreationPayload`, the same body and `ETag` as the campaign route, but the caller picks the books, because no campaign decides for them — so an account with no seat can read the homebrew books that a seated player at an official-only table can't | `401` |
+| `GET /api/rules` | Clerk | none | `200 RuleEntry[]`, for the library builder's rule links | `401` |
+| `GET /api/library` | Clerk | none | `200 LibraryCharacter[]`, the caller's own, newest first | `401` |
+| `POST /api/library` | Clerk | `{ name?, homebrew? }` (`NewLibraryCharacter`) | `201 LibraryCharacter`, an empty row for the builder to autosave into | `400` at `LIBRARY_CAP` (20). `401` |
+| `GET /api/library/:id` | Clerk, owner | none | `200 LibraryEntry`: the card plus `build`, `draft` and `detail` | `401`. `404` not the caller's |
+| `PUT /api/library/:id` | Clerk, owner | `LibrarySave`: `name?`, `homebrew?`, `detail?`, `build?` (null drops it), `draft?` | `200 LibraryCharacter` | `400` with the build's refusal. `401`. `404` |
+| `DELETE /api/library/:id` | Clerk, owner | none | `200 { ok: true }` | `401`. `404` |
 | `POST /api/join` | the guest token in the body | `{ token: string 1–200 }` | `200` `Ctx`, and `Set-Cookie: wg_token` (flags in §10). The web uses `campaignId` to open the table | `400` bad body. `401 "Invalid or revoked link"` |
 | `GET /api/guest` | `wg_token` cookie | none | `200` `Ctx` of the guest's table, so a returning guest lands back at it | `401` |
-| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name and Tier, `mode`, the invited character or the open ones as read-only `Character` sheets (objectives blanked, Ability and Talent text stripped: book prose needs a seat), `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
+| `GET /api/invites/:code` | none; Clerk if present | none | `200 InvitePreview`: campaign name and Tier, `mode`, the invited character or the open ones as read-only `Character` sheets (objectives blanked, Ability and Talent text stripped: the preview needs no account, and book prose needs a seat or an account, §3.1), `allowGuests`, `signedIn`, `member` | `400` expired, revoked or used up |
 | `POST /api/invites/:code/accept` | Clerk, or none with `asGuest` | `AcceptInvite`: `characterId?`, `newCharacterName?`, `asGuest` | `200 { campaignId }`. A guest also gets `Set-Cookie: wg_token` | `400` with the refusal (see §10) |
+
+### 3.1 The character library: REST outside the action path (issue #14)
+
+A signed-in user owns characters that belong to no campaign, built from the same builder without a seat. This is the
+**documented exception to "one mutation path"** (§5, and the root `CLAUDE.md`): a library character is nobody's live
+state, so there is no campaign room to broadcast to and no action to serialise. Plain REST, `db` without a transaction,
+every read and write filtered by `owner_user_id`.
+
+What still holds:
+
+- **The server decides.** `PUT` with a `build` re-runs `resolveBuild` against `buildCatalogue(homebrew)` with no `play`
+  and refuses anything not ready, through the same `buildRefusal` as `character.build`, so both refuse in the same words.
+  One difference, `gmLater`: problems only a GM judges (`severity: "gm"`) don't block a library save, because there is
+  no GM to tick them; they come back on the campaign's REVIEW after the import (`docs/rules-flow.md` §11.59).
+- **Scope.** A row that isn't the caller's is a `404`, never a `403`: a `403` would tell them the id exists.
+- **Book text needs an account.** `/api/creation` and `/api/rules` serve book content without a seat, so the account is
+  the gate, and it holds because Clerk's Access mode is Invite-only (`docs/development.md` §Clerk, `CLAUDE.md`,
+  Copyright). If sign-up ever opens, these need a role check —
+  marked `// ponytail:` on the controller.
+- **Bounded.** `LIBRARY_CAP` (20, `packages/shared/src/library.ts`) per account, and exactly: counting and inserting is a
+  check-then-act, and REST doesn't run in the gateway's queue, so `createLibraryCharacter` locks the owner's `app_user`
+  row (`select … for update`) for the transaction. Without it, concurrent posts all read the same count and all insert.
+- **The draft is stored as the builder writes it**, so nothing downstream trusts its shape: `tierOf` parses the Tier
+  (a bad one would break `Lobby`'s schema and take the lobby down with it), and the builder parses a draft it reads back
+  (`StoredDraft`, `@wg/shared`).
+- **The GM's part never travels.** A saved build is stored with `gm` cleared: rulings and ticks are made at a table,
+  about that table's character.
+
+Bringing one into a campaign adds no action: the campaign's builder copies the build into its draft (IMPORT FROM
+LIBRARY), and the existing `character.draft` / `character.build` flow saves it. The copy is a snapshot, like a threat's
+stat block joining an encounter, so later library edits don't change the campaign character, and advancement stays with
+the campaign character. A Tier or homebrew mismatch is refused in the builder before it's sent, and by `campaignRules`
+in `character.build` if it is.
 
 `/api/me` and `/api/threats` no longer exist; both moved under `/api/campaigns/:id/`. `createCampaign` inserts the
 campaign and the GM's `membership` in one transaction. The admin key's `ownerUserId` gets an `app_user` placeholder
@@ -256,6 +303,7 @@ No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
 | `app_user` (`auth.schema.ts`) | Clerk users seen by the api | `id` (Clerk user id), `name` (refreshed from the session token on each request), `updated_at` | none |
 | `membership` (`auth.schema.ts`) | A signed-in user's seat at one table | `user_id`, `role`, `character_id` | campaign cascade. app_user cascade. character **set null** |
 | `invite` (`auth.schema.ts`) | Invite links | `code_hash`, `mode`, `character_id`, `allow_guests`, `expires_at`, `max_uses` (null = until it expires), `uses`, `revoked_at` | campaign cascade. character cascade |
+| `library_character` (`library.schema.ts`) | A character a signed-in user owns outside any campaign (§3.1) | `owner_user_id`, `name`, `build` (null until finished), `draft`, `homebrew`, `detail`, `updated_at`; indexed on the owner | app_user cascade |
 | `character` (`character.schema.ts`) | Player characters | `name`, `wounds` (taken, not remaining), `shock`, `wrath`, `traumatic`, `xp`, `conditions text[]` | campaign cascade |
 | `encounter` (`encounter.schema.ts`) | A fight. At most one `active` per campaign, enforced in code, not by a constraint. Ended ones stay as inactive rows | `active`, `round`, `current_id`, `last_side`, `seized_side` | campaign cascade. `current_id` → combatant **set null** |
 | `combatant` (`encounter.schema.ts`) | One PC or threat (or Mob) in an encounter | `order` (display only), `acted`, `ambushed`, `kind`. PC: `character_id`. Threat: `threat_id` (text, no FK: static data), `threat_class`, `label`, `marker`, `mob_count`, `mob_start`, `personal_ruin`, `wounds`, `shock`, `conditions`, `visibility` (`hidden` / `bars` / `stats`, default `bars`) | encounter cascade. character cascade |
@@ -393,8 +441,9 @@ Because seeding goes through the socket, it gets the same validation, scoping an
 ## 12. Testing
 
 `apps/api/test/smoke.test.ts`: end-to-end over HTTP and Socket.IO against a running api and Postgres (`node:test` run by
-`bun test`). There are 4 tests. Each run creates fresh campaigns ("Smoke", "Edge" and "Elsewhere" for the edge cases,
-and "Invites") and leaves them in the DB.
+`bun test`). Each run creates fresh campaigns ("Smoke", "Edge" and "Elsewhere" for the edge cases, "Invites", "Builder",
+"Import"…) and leaves them in the DB. Library rows outlive a run the way a campaign doesn't, so the library tests make a
+fresh Clerk user id per run instead.
 
 The api must run with `CLERK_TEST_SECRET` set (dev only), and the test must see the same value: it signs in as Clerk
 users with test tokens (`test.<secret>.<userId>.<creator|member>`, §10), sent as `Bearer` headers and socket
@@ -440,6 +489,13 @@ It covers:
   - Players get no `threatId` or `personalRuin` for a bars-only Threat, none of a hidden one, and no NPC `factionId`.
   - Codex reference checks: another campaign's faction, an unknown threat.
   - `beat.reorder`, NPC delete clearing beats' `npcIds`, and `beat.startEncounter`.
+
+- **The character library** (§3.1): `/library`, `/creation` and `/rules` are `401` signed out and for a guest cookie.
+  The catalogue's `ETag` gives a `304`, and `?homebrew=1` brings the homebrew books in. CRUD as the owner, a `404` on
+  every verb for another user, a build refused in the builder's words, `gm` cleared on the way in, `LIBRARY_CAP`
+  enforced and freed by a delete, and the lobby carrying the same characters.
+- **Import** (§3.1): a library build saved into a Tier 4 campaign through plain `character.build`, the campaign copy
+  unchanged by later library edits, and a Tier 2 campaign refusing it ("This campaign is Tier 2; build for Tier 2").
 
 Pure rules functions are unit-tested in `packages/shared` (`bun run test`), see [game-logic.md](game-logic.md).
 
