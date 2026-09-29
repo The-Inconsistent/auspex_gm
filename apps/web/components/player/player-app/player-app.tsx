@@ -9,6 +9,7 @@ import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Sheet } from "@/components/ui/sheet/sheet";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
+import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
 import { useTable } from "@/hooks/use-table/use-table";
 
 import { Fight } from "./components/fight/fight";
@@ -89,6 +90,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
           </button>
         </div>
         <div className="pl-body">
+          {myTurn && <TurnActions />}
           {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
           {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
           {tab === "INTEL" && <Intel codex={codex} state={state} />}

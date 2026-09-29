@@ -32,6 +32,7 @@ import {
 import { Bar } from "@/components/ui/bar/bar";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
 import { VISIBILITY_LABEL } from "@/components/ui/visibility-select/constants";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
@@ -468,6 +469,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
         ))}
 
         <div style={{ flex: 1 }} />
+        {current && <TurnActions />}
         {error && <div className="red">! {error}</div>}
         {amountFor && sel ? (
           <div className="keys">
