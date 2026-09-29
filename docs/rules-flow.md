@@ -30,7 +30,7 @@ Rank from total XP earned: 0–39 = 1, 40–79 = 2, 80–99 = 3 (max 3); 100+ in
 | **Ruin** (GM) | players | **2 × players**; overflow lost | +1 when a player fails a Corruption Test, fails a Fear Test, or the GM rolls a 6 on the Wrath Die; optional: +1 instead of narrating a Complication | p.320, p.163 |
 | **Personal Ruin** (Champion threat) | per stat block | — | — | p.323, p.325 |
 
-Ruin is **visible to the players** (p.320).
+Ruin is **visible to the players** (p.320), but [HOUSE] the app keeps it GM-only (§11.58).
 
 **Spends**
 
@@ -359,6 +359,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     and Ammo (a Reload, p.185; an Icon on an Influence Test, p.206). Sharing Ammo (Core p.229) is the giver's −1 on
     their sheet and the GM's +1 in PARTY. Conditions are set and cleared by the GM, from the tracker in a fight or
     PARTY outside one.
+58. **The GM's Ruin is GM-only.** Core p.320 says the Ruin pool "should be visible to the players". House decision:
+    it isn't. `toPlayerView` sends players Ruin 0 and their sheet doesn't show it; the GM announces a spend at the table.
 
 ---
 
