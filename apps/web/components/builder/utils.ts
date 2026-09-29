@@ -1,5 +1,6 @@
 import {
   CharacterBuild,
+  StoredDraft,
   type BuildStep,
   type CharacterDetail,
   type PsychicPower,
@@ -148,4 +149,13 @@ export function pickDraft({ local, start, tier }: { local: Draft | null; start: 
   const saved = CharacterBuild.safeParse(start.build);
   if (saved.success) return { ...saved.data, name: start.name, detail: start.detail };
   return { tier, name: start.name, detail: start.detail };
+}
+
+// A draft the builder wrote earlier, from this device's storage or from the server: parsed (`StoredDraft`, @wg/shared)
+// rather than trusted, because neither store checks its shape. A draft an older builder wrote, or one that's been
+// tampered with, is dropped and the builder falls back to the saved build.
+export function draftOf(value: unknown): Draft | null {
+  const parsed = StoredDraft.safeParse(value);
+  // The name and Tier are checked above; the choices ride along for `resolveBuild` to parse.
+  return parsed.success ? (parsed.data as Draft) : null;
 }

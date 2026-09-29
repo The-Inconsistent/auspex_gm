@@ -145,9 +145,9 @@ apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
                     c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),
-                    library/[characterId]/page.tsx (the builder without a campaign), library/new/route.ts (start one),
+                    library/[characterId]/page.tsx (the builder without a campaign),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
-                    server-api.ts (apiGet/apiSend: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
+                    server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
 apps/web/components/lobby/   lobby-view (your games, your characters, running now, new game)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)

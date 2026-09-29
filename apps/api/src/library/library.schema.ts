@@ -1,5 +1,5 @@
-import type { CharacterDetail } from "@wg/shared";
 import { boolean, index, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import type { CharacterDetail } from "@wg/shared";
 import { appUser } from "../auth/auth.schema.ts";
 import { createdAt } from "../core/sql.ts";
 

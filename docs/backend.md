@@ -74,7 +74,7 @@ text.
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
-| `GET /api/creation?homebrew=0\|1` | Clerk | none | `200 CreationPayload`, the same body and `ETag` as the campaign route, but the caller picks the books: no campaign decides for them | `401` |
+| `GET /api/creation?homebrew=0\|1` | Clerk | none | `200 CreationPayload`, the same body and `ETag` as the campaign route, but the caller picks the books, because no campaign decides for them — so an account with no seat can read the homebrew books that a seated player at an official-only table can't | `401` |
 | `GET /api/rules` | Clerk | none | `200 RuleEntry[]`, for the library builder's rule links | `401` |
 | `GET /api/library` | Clerk | none | `200 LibraryCharacter[]`, the caller's own, newest first | `401` |
 | `POST /api/library` | Clerk | `{ name?, homebrew? }` (`NewLibraryCharacter`) | `201 LibraryCharacter`, an empty row for the builder to autosave into | `400` at `LIBRARY_CAP` (20). `401` |
@@ -102,8 +102,12 @@ What still holds:
   the gate, and it holds because Clerk's Access mode is Invite-only (`docs/development.md` §Clerk, `CLAUDE.md`,
   Copyright). If sign-up ever opens, these need a role check —
   marked `// ponytail:` on the controller.
-- **Bounded.** `LIBRARY_CAP` (20, `packages/shared/src/library.ts`) per account. The count is a check-then-act outside
-  any queue, so a user racing themselves may land one over; the cap bounds an account, it isn't exact.
+- **Bounded.** `LIBRARY_CAP` (20, `packages/shared/src/library.ts`) per account, and exactly: counting and inserting is a
+  check-then-act, and REST doesn't run in the gateway's queue, so `createLibraryCharacter` locks the owner's `app_user`
+  row (`select … for update`) for the transaction. Without it, concurrent posts all read the same count and all insert.
+- **The draft is stored as the builder writes it**, so nothing downstream trusts its shape: `tierOf` parses the Tier
+  (a bad one would break `Lobby`'s schema and take the lobby down with it), and the builder parses a draft it reads back
+  (`StoredDraft`, `@wg/shared`).
 - **The GM's part never travels.** A saved build is stored with `gm` cleared: rulings and ticks are made at a table,
   about that table's character.
 

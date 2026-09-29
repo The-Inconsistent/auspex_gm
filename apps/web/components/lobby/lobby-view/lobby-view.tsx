@@ -84,6 +84,20 @@ export function LobbyView({ lobby }: LobbyViewProps) {
     router.refresh();
   };
 
+  // NEW CHARACTER: starts an empty library row, then opens its builder. A POST from here rather than a link, so a
+  // cross-site navigation can't create characters in someone's library on their behalf (the session cookie is Lax).
+  const handleNewCharacter = async () => {
+    setError(null);
+    const res = await fetch("/api/library", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}",
+    }).catch(() => null);
+    const body = (await res?.json().catch(() => null)) as { id?: string; message?: string } | null;
+    if (!res?.ok || !body?.id) return setError(body?.message ?? "Couldn't start a character.");
+    router.push(`/library/${body.id}`);
+  };
+
   // NEW GAME: creates the campaign with you as GM, then opens it. Setup is REST, not a table action.
   const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -133,16 +147,9 @@ export function LobbyView({ lobby }: LobbyViewProps) {
         ))}
       </div>
       <div className="keys" style={{ alignItems: "center" }}>
-        {/* A link, because /library/new starts the row server-side and redirects into its builder. */}
-        {full ? (
-          <button className="btn" disabled>
-            NEW CHARACTER
-          </button>
-        ) : (
-          <a className="btn primary" href="/library/new">
-            NEW CHARACTER
-          </a>
-        )}
+        <button className="btn primary" disabled={full} onClick={handleNewCharacter}>
+          NEW CHARACTER
+        </button>
         <span className="dim">
           {lobby.characters.length} of {LIBRARY_CAP}
           {full ? " · delete one to make room" : ""}

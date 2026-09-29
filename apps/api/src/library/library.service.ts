@@ -1,14 +1,16 @@
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, sql } from "drizzle-orm";
 import {
   CharacterBuild,
   CharacterDetail,
   LIBRARY_CAP,
+  Tier,
   resolveBuild,
   type LibraryCharacter,
   type LibraryEntry,
   type LibrarySave,
   type NewLibraryCharacter,
 } from "@wg/shared";
+import { appUser } from "../auth/auth.schema.ts";
 import { buildCatalogue, buildRefusal } from "../character/creation.service.ts";
 import { db } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
@@ -19,12 +21,12 @@ import { libraryCharacter } from "./library.schema.ts";
 
 type Row = typeof libraryCharacter.$inferSelect;
 
-// The Tier a character is being built at: the finished build's, else the draft's, else none yet.
+// The Tier a character is being built at: the finished build's, else the draft's, else none yet. The draft is stored as
+// the builder writes it, so its Tier is parsed rather than trusted: a bad one would make the whole lobby fail to load.
 function tierOf(row: Row): number | null {
   const built = CharacterBuild.safeParse(row.build);
   if (built.success) return built.data.tier;
-  const tier = row.draft?.tier;
-  return typeof tier === "number" ? tier : null;
+  return Tier.safeParse(row.draft?.tier).data ?? null;
 }
 
 // The archetype's name for the card, resolved from a finished build only: a draft may not have one yet, and resolving
@@ -58,7 +60,7 @@ const entry = (row: Row): LibraryEntry => ({
 
 // Every read and write is scoped to the caller: another user's character is simply not found (null here, a 404 at the
 // controller, never a 403, which would tell them the id exists).
-async function own(userId: string, id: string): Promise<Row | null> {
+async function own({ userId, id }: { userId: string; id: string }): Promise<Row | null> {
   const [row] = await db
     .select()
     .from(libraryCharacter)
@@ -76,7 +78,7 @@ export async function listLibrary(userId: string): Promise<LibraryCharacter[]> {
 }
 
 export async function readLibrary({ userId, id }: { userId: string; id: string }): Promise<LibraryEntry | null> {
-  const row = await own(userId, id);
+  const row = await own({ userId, id });
   return row && entry(row);
 }
 
@@ -85,18 +87,22 @@ export async function createLibraryCharacter({
   body,
 }: {
   userId: string;
-  body: NewLibraryCharacter & { homebrew: boolean };
+  body: NewLibraryCharacter;
 }): Promise<LibraryCharacter> {
-  // The cap is a check-then-act outside the action queue, so it holds only for one request at a time; a user racing
-  // themselves may end up one over. Harmless here: the cap exists to bound one account, not to be exact.
-  // ponytail: exact cap, an insert … where (select count(*) …) < cap
-  const [n] = await db.select({ n: count() }).from(libraryCharacter).where(eq(libraryCharacter.ownerUserId, userId));
-  if ((n?.n ?? 0) >= LIBRARY_CAP) fail(`You keep at most ${LIBRARY_CAP} characters. Delete one first.`);
-  const [row] = await db
-    .insert(libraryCharacter)
-    .values({ ownerUserId: userId, name: body.name ?? "", homebrew: body.homebrew })
-    .returning();
-  return card(row!); // the row was just inserted
+  // Counting and inserting is a check-then-act, and this is REST, so the gateway's per-campaign queue doesn't serialise
+  // it: concurrent posts (two tabs, a retried link) would all read the same count and every one of them would insert.
+  // Locking the owner's `app_user` row for the transaction serialises one user's creations, which makes the cap exact.
+  const row = await db.transaction(async (tx) => {
+    await tx.execute(sql`select 1 from ${appUser} where ${appUser.id} = ${userId} for update`);
+    const [n] = await tx.select({ n: count() }).from(libraryCharacter).where(eq(libraryCharacter.ownerUserId, userId));
+    if ((n?.n ?? 0) >= LIBRARY_CAP) fail(`You keep at most ${LIBRARY_CAP} characters. Delete one first.`);
+    const [inserted] = await tx
+      .insert(libraryCharacter)
+      .values({ ownerUserId: userId, name: body.name ?? "", homebrew: body.homebrew })
+      .returning();
+    return inserted!; // the row was just inserted
+  });
+  return card(row);
 }
 
 export async function saveLibraryCharacter({
@@ -108,7 +114,7 @@ export async function saveLibraryCharacter({
   id: string;
   body: LibrarySave;
 }): Promise<LibraryCharacter | null> {
-  const row = await own(userId, id);
+  const row = await own({ userId, id });
   if (!row) return null;
   const homebrew = body.homebrew ?? row.homebrew;
   // The server decides, as `character.build` does: a build is re-resolved here and refused unless it's ready. No

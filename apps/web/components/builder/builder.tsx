@@ -33,7 +33,7 @@ import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
 import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
-import { pickDraft, type DraftStart } from "./utils";
+import { draftOf, pickDraft, type DraftStart } from "./utils";
 
 // Where the builder works: a campaign's table, or the signed-in user's own library (issue #14). Everything the two
 // differ in is here, so the builder itself is the same screen either way.
@@ -56,6 +56,7 @@ type Bench = {
   canImport: boolean; // a table takes a copy from the caller's library; the library itself has nowhere to import from
   sentDraft: boolean;
   backHref: string;
+  backLabel: string; // an icon-only control names its target, not just the action
   banner: string | null; // the strip along the top: no signal, or a draft that didn't save
 };
 
@@ -127,7 +128,7 @@ function TableBench({
         name: character?.name ?? "",
         detail: character?.detail,
         build: character?.build,
-        draft: character?.draft as Draft | null,
+        draft: draftOf(character?.draft),
       },
       save: async (draft) => {
         const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
@@ -157,6 +158,7 @@ function TableBench({
       canImport: true, // a seat at a table can take a copy from the caller's own library (issue #14 step 4)
       sentDraft: !!character?.draft,
       backHref: `/c/${campaignId}`,
+      backLabel: "Back to the table",
       banner: online ? null : "NO SIGNAL · RECONNECTING",
     }),
     [tier, state.campaign.homebrew, role, character, xpEarned, campaignId, characterId, send, online],
@@ -172,6 +174,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
   const router = useRouter();
   const [banner, setBanner] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  // External system: the debounce timer, dropped when the builder closes so a save can't fire into an unmounted page.
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const put = useCallback(
@@ -225,7 +228,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
         name: entry.name,
         detail: entry.detail,
         build: entry.build,
-        draft: entry.draft as Draft | null,
+        draft: draftOf(entry.draft),
         savedAt: Date.parse(entry.updatedAt) || undefined,
       },
       save: async (draft) => {
@@ -239,6 +242,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
       canImport: false, // already in the library: it is the library's own builder
       sentDraft: false,
       backHref: "/",
+      backLabel: "Back to your characters",
       banner,
     }),
     [entry, put, router, autosave, banner],
@@ -256,7 +260,7 @@ function initialDraft({ key, start, tier }: { key: string; start: DraftStart; ti
   let local: Draft | null = null;
   try {
     const stored = localStorage.getItem(key);
-    if (stored) local = JSON.parse(stored) as Draft;
+    if (stored) local = draftOf(JSON.parse(stored));
   } catch {
     // Storage blocked or a draft from an older builder: start from the saved draft or the saved build instead.
   }
@@ -377,7 +381,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
       <div className="bld">
         {bench.banner && <div className="badge-offline">{bench.banner}</div>}
         <header className="band torn bld-head">
-          <a href={bench.backHref} aria-label="Back" className="display" style={{ fontSize: 30 }}>
+          <a href={bench.backHref} aria-label={bench.backLabel} className="display" style={{ fontSize: 30 }}>
             ◂
           </a>
           <div className="display gm-title">

@@ -68,7 +68,7 @@ export class LibraryController {
   @Get("creation")
   async creation(@Query("homebrew") homebrew: string | undefined, @Req() req: Request, @Res() res: Response) {
     await this.caller(req);
-    sendCached(req, res, creationPayload(homebrew === "1" || homebrew === "true"));
+    sendCached({ req, res, payload: creationPayload(homebrew === "1" || homebrew === "true") });
   }
 
   // Rules reference, for the builder's rule links outside a campaign.

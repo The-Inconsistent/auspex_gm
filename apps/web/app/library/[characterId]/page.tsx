@@ -15,7 +15,8 @@ export default async function LibraryBuild({ params }: LibraryBuildProps) {
   try {
     const res = await apiGet(`/api/library/${encodeURIComponent(characterId)}`);
     if (res.status === 401) return <StatusScreen text="SIGN IN TO BUILD A CHARACTER." />;
-    if (res.status === 404) return <StatusScreen text="CHARACTER NOT FOUND." />;
+    // 400 is an id that isn't a uuid, so it's nobody's character either.
+    if (res.status === 404 || res.status === 400) return <StatusScreen text="CHARACTER NOT FOUND." />;
     const parsed = LibraryEntry.safeParse(res.ok ? await res.json() : null);
     if (!parsed.success) return <StatusScreen text={JOIN_ERRORS.nosignal} />;
     entry = parsed.data;

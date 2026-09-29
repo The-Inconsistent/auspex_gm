@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
   LIBRARY_CAP,
+  Lobby,
   deriveStats,
   poolMax,
   type ActionInput,
@@ -14,7 +15,6 @@ import {
   type CreationPayload,
   type LibraryCharacter,
   type LibraryEntry,
-  type Lobby,
   type LiveState,
   type RuleEntry,
   type ThreatCombatant,
@@ -992,14 +992,23 @@ test("the character library: a signed-in user builds without a campaign (issue #
   assert.equal((await del(`/library/${id}`, bearer(stranger))).status, 404);
   assert.equal(entry.name, "Veyl", "and it is untouched");
 
-  // One account is bounded: 20 characters (LIBRARY_CAP), then it has to delete one.
+  // A draft is stored as the builder writes it, so a Tier outside 1–5 can't reach the lobby's schema and take the whole
+  // lobby down with it.
+  assert.equal((await put(`/library/${id}`, { draft: { tier: 0, name: "Bad" } }, bearer(owner))).status, 200);
+  assert.equal(
+    Lobby.safeParse(await (await get("/lobby", bearer(owner))).json()).success,
+    true,
+    "the lobby still parses with a bad draft Tier",
+  );
+
+  // One account is bounded: 20 characters (LIBRARY_CAP), then it has to delete one. The cap is exact, so a burst of
+  // concurrent posts can't overshoot it (the insert locks the owner's row).
   const capped = clerk(`${who}-hoarder`);
-  for (let i = 1; i < LIBRARY_CAP; i++) assert.equal((await post("/library", {}, bearer(capped))).status, 201);
-  const over = await post("/library", {}, bearer(capped));
-  assert.equal(over.status, 201, `${LIBRARY_CAP} fit`);
-  const refusedCap = await post("/library", {}, bearer(capped));
-  assert.equal(refusedCap.status, 400);
+  const burst = await Promise.all(Array.from({ length: LIBRARY_CAP + 10 }, () => post("/library", {}, bearer(capped))));
+  assert.equal(burst.filter((r) => r.status === 201).length, LIBRARY_CAP, `${LIBRARY_CAP} created, the rest refused`);
+  const refusedCap = burst.find((r) => r.status === 400)!;
   assert.match(((await refusedCap.json()) as { message: string }).message, /at most 20 characters/);
+  const over = burst.find((r) => r.status === 201)!;
   assert.equal((await del(`/library/${((await over.json()) as LibraryCharacter).id}`, bearer(capped))).status, 200);
   assert.equal((await post("/library", {}, bearer(capped))).status, 201, "a deletion makes room again");
 

@@ -134,7 +134,7 @@ export class CampaignController {
     const campaignId = parse(CampaignId, id);
     const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
-    sendCached(req, res, creationPayload(await campaignHomebrew(campaignId)));
+    sendCached({ req, res, payload: creationPayload(await campaignHomebrew(campaignId)) });
   }
 
   // Guest QR (/join/<token>): the token moves into an httpOnly cookie. Returns the table to open.

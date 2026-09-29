@@ -21,7 +21,6 @@ seat.
 | `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
 | `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
 | `/library/<characterId>` | `app/library/[characterId]/page.tsx` | Server Component | The builder on a character in the signed-in user's own library (issue #14): no campaign, no seat |
-| `/library/new` | `app/library/new/route.ts` | Route handler (`GET`) | Starts an empty library character and redirects into its builder with a 303 |
 | `/join/<token>` | `app/join/[token]/route.ts` | Route handler (`GET`) | Swaps a guest token for the guest cookie, then redirects to its table with a 303 |
 | `/manifest.webmanifest` | `app/manifest.ts` | Metadata route | "Add to home screen": `display: standalone`, `start_url: /`, colours from `TOKENS.bg` |
 | `/api/*`, `/socket.io/*` | `next.config.ts` | Rewrites (dev only) | Proxied to the api |
@@ -36,9 +35,8 @@ wraps the body in `<AuthProvider>` (`@wg/auth/react`: `ClerkProvider` with `sign
 - **`proxy.ts`** (Next 16's middleware file) runs `authMiddleware()` (`@wg/auth/next`, Clerk's `clerkMiddleware`) so Clerk can keep its session fresh. It protects
   nothing: each page decides whether it needs a signed-in user, because guests join without an account. Its matcher
   excludes `/api`, `/socket.io`, `_next` and static files; the api checks the Clerk token itself.
-- **`apiSend(path, { method, body })`** is the same identity for a write, where a page has no browser to do it:
-  `/library/new` posts with it. `loadRulesSignedIn()` and `loadCreationFor(homebrew)` are the library's loaders, hitting
-  the seatless `/api/rules` and `/api/creation`.
+- **`loadRulesSignedIn()`** and **`loadCreationFor(homebrew)`** are the library's loaders, hitting the seatless
+  `/api/rules` and `/api/creation`.
 - **`apiGet(path)`** calls the api directly at `API_ORIGIN` (`app/constants.ts`, env `API_ORIGIN`, default
   `http://localhost:4000`) with `cache: "no-store"`. It sends the Clerk session as `Authorization: Bearer
   <sessionToken()>` (`@wg/auth/next`), and forwards the guest cookie (`TOKEN_COOKIE` = `wg_token`), which is httpOnly, so only the
@@ -53,7 +51,6 @@ The checks run in this order, and the first one that matches decides what render
 | Condition | Renders |
 |---|---|
 | `?join=invalid` or `?join=nosignal` (checked **before** anything else) | `JOIN_ERRORS[join]` |
-| `?library=full` or `?library=nosignal` (from `/library/new`) | `LIBRARY_ERRORS[library]` |
 | Signed out, and `/api/guest` finds a guest cookie's table | a redirect to `/c/<campaignId>` |
 | Signed out | The sign-in landing: AUSPEX, SIGN IN (to `/sign-in`), and a hint that guests scan the GM's QR code |
 | Signed in, `/api/lobby` fails, errors or doesn't parse as `Lobby` | `JOIN_ERRORS.nosignal` |
@@ -65,8 +62,8 @@ sections:
 - **YOUR GAMES** (`lobby.mine`): a card per seat with a GM or PLAYER chip and OPEN (to `/c/<id>`).
 - **YOUR CHARACTERS** (`lobby.characters`, issue #14): the caller's own library — the Tier, the archetype once the build
   resolves, ready or in progress, and a homebrew mark. OPEN goes to `/library/<id>`; DELETE asks once (the button turns
-  to CONFIRM), because no GM owns these, then `router.refresh()`. NEW CHARACTER links to `/library/new` with the count
-  beside it, and is a disabled button at `LIBRARY_CAP`.
+  to CONFIRM), because no GM owns these, then `router.refresh()`. NEW CHARACTER posts an empty row and opens its
+  builder, with the count beside it, and is disabled at `LIBRARY_CAP`.
 - **RUNNING NOW**: games with a session in progress where the caller has no seat (`running` filtered to `role: null`).
   They're cards only, with no OPEN: joining needs an invite.
 - **NEW GAME**, only when `lobby.canCreate` (the Clerk creator role): a name and a Tier from `TIERS`. CREATE AS GM POSTs
@@ -154,8 +151,10 @@ In library mode:
   (`cancelAutosave`), so a debounced draft can't land on a row that was just finished.
 - **No GM part:** `role: "player"`, so no `GmPart`, no archetype GM notes, and no SEND TO GM — a library character has
   no GM to send to. `made` is false and there's no `play`: advancement belongs to the campaign copy.
-- **`/library/new`** posts an empty row and redirects to it, so the builder has somewhere to autosave. At `LIBRARY_CAP`
-  it bounces to the lobby with `?library=full` (`LIBRARY_ERRORS`).
+- **NEW CHARACTER** posts an empty row from the lobby and pushes to it, so the builder has somewhere to autosave. It's a
+  POST rather than a link on purpose: the session cookie is `SameSite=Lax`, so a plain GET that writes would let a
+  cross-site navigation create characters in someone's library. At `LIBRARY_CAP` the button is disabled, and the api
+  refuses anyway.
 - The lobby's **YOUR CHARACTERS** (`LobbyView`, from `Lobby.characters`) lists them with OPEN, a confirm-once DELETE,
   and NEW CHARACTER with the count, disabled at the cap.
 

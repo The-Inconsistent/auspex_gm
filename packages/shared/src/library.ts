@@ -42,11 +42,20 @@ export const LibrarySave = z.object({
     .nullable()
     .optional(),
 });
-export type LibrarySave = z.input<typeof LibrarySave>;
+export type LibrarySave = z.infer<typeof LibrarySave>;
+export type LibrarySaveInput = z.input<typeof LibrarySave>;
 
 // POST /api/library starts an empty character, so the builder has a row to autosave its draft to.
 export const NewLibraryCharacter = z.object({
   name: z.string().trim().max(100).optional(),
   homebrew: z.boolean().default(false),
 });
-export type NewLibraryCharacter = z.input<typeof NewLibraryCharacter>;
+export type NewLibraryCharacter = z.infer<typeof NewLibraryCharacter>; // parsed: `homebrew` has its default
+export type NewLibraryCharacterInput = z.input<typeof NewLibraryCharacter>;
+
+// A builder draft read back from storage or from the server. Neither side validates the whole shape on the way in
+// (`LibrarySave.draft` and `character.draft` take whatever the builder writes, so an older builder's draft still
+// loads), so this checks the few fields the builder reads before it resolves anything; the rest of the choices ride
+// along and `resolveBuild` parses them.
+export const StoredDraft = z.looseObject({ name: z.string(), tier: Tier, savedAt: z.number().optional() });
+export type StoredDraft = z.infer<typeof StoredDraft>;
