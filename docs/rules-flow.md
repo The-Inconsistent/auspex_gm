@@ -369,9 +369,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     - **Homebrew.** The campaign's setting wins: a character built with the homebrew books can't come into a table that
       doesn't allow them.
     - **The GM's part stays at the table.** Rulings and ticks (species by ruling, granted keywords, gear swaps, GM
-      questions) are judgements about *that table's* character, so a library character never carries one and an import
-      clears it. Importing onto a character the GM has already ruled on leaves those rulings as they stand: the draft a
-      player sends keeps the GM's stored part, and the GM clears them (CLEAR TICKS) if the new build makes them wrong.
+      questions) are judgements about *that table's* character, so a library character never carries one: a build saved
+      to the library is stored with `gm` cleared. On the way in, what happens depends on who saves, and the two differ:
+      a **player's** draft keeps the GM's stored part (`character.draft` re-attaches `buildDraft.gm ?? build.gm`), so
+      rulings made for the old build survive an import and the GM clears them (CLEAR TICKS) if they no longer fit; a
+      **GM** saving a build sends their own part as the builder has it, so an import they save replaces it. *Proposed;
+      awaiting the GM — the alternative is for an import to clear the part on both paths.*
     - **The copy is a snapshot**, like a threat's stat block joining an encounter: later library edits don't change the
       campaign character, and XP earned in play belongs to the campaign character alone.
 

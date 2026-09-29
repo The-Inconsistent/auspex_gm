@@ -1,4 +1,11 @@
-import type { BuildStep, PsychicPower, Requirement, ResolvedBuild } from "@wg/shared";
+import {
+  CharacterBuild,
+  type BuildStep,
+  type CharacterDetail,
+  type PsychicPower,
+  type Requirement,
+  type ResolvedBuild,
+} from "@wg/shared";
 
 import type { Draft, Lookups } from "./builder-context";
 import { ATTRIBUTE_NAMES, BUILDER_STEPS, type BuilderStep } from "./constants";
@@ -116,3 +123,29 @@ export const powerText = (p: PsychicPower) =>
   ]
     .filter(Boolean)
     .join("\n\n");
+
+// Where a builder starts from: the character's name and detail, the build it last saved, and the draft kept away from
+// this device (a player's on the table, the library row's). `savedAt` (ms) is when that build was last saved elsewhere;
+// a table has one device per character, so it has none.
+export type DraftStart = {
+  name: string;
+  detail?: Partial<CharacterDetail>;
+  build?: unknown;
+  draft?: Draft | null;
+  savedAt?: number;
+};
+
+// Which draft the builder opens on: the newer of this device's and the one saved away from it, else the saved build,
+// else a blank one at `tier`. A build finished elsewhere after this device wrote its draft wins, because that draft is
+// a stale half-build and the server dropped its own copy when it saved.
+export function pickDraft({ local, start, tier }: { local: Draft | null; start: DraftStart; tier: number }): Draft {
+  const stale = !!local && !!start.build && start.savedAt !== undefined && (local.savedAt ?? 0) < start.savedAt;
+  const newest = [stale ? null : local, start.draft ?? null]
+    .filter((d): d is Draft => d !== null)
+    .sort((a, b) => (b.savedAt ?? 0) - (a.savedAt ?? 0))[0];
+  // A draft from before the builder kept the detail starts from the character's.
+  if (newest) return { detail: start.detail, ...newest };
+  const saved = CharacterBuild.safeParse(start.build);
+  if (saved.success) return { ...saved.data, name: start.name, detail: start.detail };
+  return { tier, name: start.name, detail: start.detail };
+}

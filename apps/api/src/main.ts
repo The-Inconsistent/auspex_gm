@@ -1,7 +1,10 @@
 import "reflect-metadata";
+import { createHash } from "node:crypto";
 import { NestFactory } from "@nestjs/core";
 import type { NextFunction, Request, Response } from "express";
+import { SESSION_COOKIE, bearerOf } from "@wg/auth/api";
 import { AppModule } from "./app.module.ts";
+import { readCookie } from "./auth/auth.service.ts";
 import { runMigrations } from "./core/db.ts";
 import { clientIp, limiter } from "./core/rate-limit.ts";
 
@@ -18,11 +21,20 @@ app.use(["/api/join", "/api/guest", "/api/invites"], (req: Request, res: Respons
   res.status(429).json({ message: "Too many requests. Wait a minute." });
 });
 
-// The character library (issue #14): signed in, but the builder autosaves, so it gets its own, wider window. A debounced
-// autosave is a handful a minute; this leaves room for several tabs and the catalogue fetch behind one NAT.
-const allowLibrary = limiter({ max: 240, windowMs: 60_000 });
+// The character library (issue #14): signed in, and the builder autosaves, so it gets its own window, per caller rather
+// than per IP. A whole table building together sits behind one NAT, and one shared bucket would cut their autosaves off;
+// each has their own session. Callers with no session (all of these answer 401) fall back to the IP.
+// ponytail: the session token rotates about every 60s, so a determined caller gets a fresh bucket; key it by the Clerk
+// user id once the middleware can see one without a DB write
+const allowLibrary = limiter({ max: 120, windowMs: 60_000 });
+const libraryKey = (req: Request) => {
+  const session = bearerOf(req.headers.authorization) ?? readCookie(req.headers.cookie, SESSION_COOKIE);
+  return session
+    ? `s:${createHash("sha256").update(session).digest("base64url")}` // hashed: tokens don't belong in memory whole
+    : `ip:${clientIp(req.headers, req.socket.remoteAddress)}`;
+};
 app.use(["/api/library", "/api/creation", "/api/rules"], (req: Request, res: Response, next: NextFunction) => {
-  if (allowLibrary(clientIp(req.headers, req.socket.remoteAddress))) return next();
+  if (allowLibrary(libraryKey(req))) return next();
   res.status(429).json({ message: "Too many requests. Wait a minute." });
 });
 

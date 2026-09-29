@@ -19,9 +19,11 @@ and the bestiary.
 2. `NestFactory.create(AppModule)`. `AppModule` wires two controllers (`CampaignController`, `LibraryController`) and one
    provider (`TableGateway`). There's no DI beyond that: feature code is plain functions that take a `tx`.
 3. Global prefix `api`, so REST lives under `/api/*`. Socket.IO keeps its default path `/socket.io/`.
-4. Two in-process rate limiters (`core/rate-limit.ts`, fixed windows per caller IP): 60/min on the unauthenticated door
-   (`/api/join`, `/api/guest`, `/api/invites`) and 240/min on the signed-in library routes (`/api/library`,
-   `/api/creation`, `/api/rules`), which are wider because the builder autosaves. Over either, a `429`.
+4. Two in-process rate limiters (`core/rate-limit.ts`, fixed windows): 60/min **per IP** on the unauthenticated door
+   (`/api/join`, `/api/guest`, `/api/invites`), and 120/min **per caller** on the library routes (`/api/library`,
+   `/api/creation`, `/api/rules`), keyed by a hash of their session token and falling back to the IP when there is
+   none — a whole table building together sits behind one NAT, and the builder autosaves, so one shared bucket would cut
+   them off. Over either, a `429`.
 5. `enableShutdownHooks()`, then listen on `PORT` (default 4000).
 
 `@wg/data` loads and zod-parses every threat JSON at import time, so a malformed file fails at startup ([data.md](data.md)).

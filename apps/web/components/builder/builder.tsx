@@ -3,12 +3,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
-  CharacterBuild,
   catalogueOf,
   resolveBuild,
   type BuildChoice,
   type Character,
-  type CharacterDetail,
   type CreationPayload,
   type LibraryEntry,
   type LiveState,
@@ -35,11 +33,12 @@ import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
 import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
+import { pickDraft, type DraftStart } from "./utils";
 
 // Where the builder works: a campaign's table, or the signed-in user's own library (issue #14). Everything the two
 // differ in is here, so the builder itself is the same screen either way.
 type Bench = {
-  tier: number; // the Tier the character is made at
+  tier: number; // the Tier a character made here starts at: the campaign's now, or the library row's
   tierEditable: boolean; // the library lets its owner pick; a campaign's Tier is the GM's, set in PARTY
   homebrew: boolean;
   setHomebrew: ((next: boolean) => Promise<string | null>) | null; // null: not this caller's to change
@@ -47,10 +46,13 @@ type Bench = {
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
   play: { tier: number; xpEarned: number } | null;
   key: string; // where this device keeps the draft
-  start: { name: string; detail?: Partial<CharacterDetail>; build?: unknown; draft?: Draft | null };
+  // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. A table has
+  // one device per character, so it has none.
+  start: DraftStart;
   save: (draft: Draft) => Promise<string | null>; // the error, or null once saved
   sendDraft: ((draft: Draft) => Promise<string | null>) | null;
   autosave: ((draft: Draft) => void) | null; // the library saves as you go; a table waits for SEND TO GM
+  cancelAutosave: (() => void) | null; // drops a debounced save that a finished build has overtaken
   canImport: boolean; // a table takes a copy from the caller's library; the library itself has nowhere to import from
   sentDraft: boolean;
   backHref: string;
@@ -151,6 +153,7 @@ function TableBench({
           }
         : null,
       autosave: null,
+      cancelAutosave: null,
       canImport: true, // a seat at a table can take a copy from the caller's own library (issue #14 step 4)
       sentDraft: !!character?.draft,
       backHref: `/c/${campaignId}`,
@@ -218,7 +221,13 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
       made: false, // a library character has earned no XP; advancement belongs to the campaign copy
       play: null,
       key: libraryDraftKey(entry.id),
-      start: { name: entry.name, detail: entry.detail, build: entry.build, draft: entry.draft as Draft | null },
+      start: {
+        name: entry.name,
+        detail: entry.detail,
+        build: entry.build,
+        draft: entry.draft as Draft | null,
+        savedAt: Date.parse(entry.updatedAt) || undefined,
+      },
       save: async (draft) => {
         const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
         if (!archetypeId) return "Choose an archetype first";
@@ -226,6 +235,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
       },
       sendDraft: null, // bring it into a campaign from that campaign's builder instead (issue #14 step 4)
       autosave,
+      cancelAutosave: () => clearTimeout(timer.current),
       canImport: false, // already in the library: it is the library's own builder
       sentDraft: false,
       backHref: "/",
@@ -241,9 +251,8 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
   );
 }
 
-// A draft to start from: the newer of this device's and the one saved away from it (a player's on the table, or the
-// library's), else the saved build, else a blank one.
-function initialDraft({ key, start, tier }: { key: string; start: Bench["start"]; tier: number }): Draft {
+// The draft this device kept, if any. Which one the builder opens on is `pickDraft` (utils.ts), where it's tested.
+function initialDraft({ key, start, tier }: { key: string; start: DraftStart; tier: number }): Draft {
   let local: Draft | null = null;
   try {
     const stored = localStorage.getItem(key);
@@ -251,14 +260,7 @@ function initialDraft({ key, start, tier }: { key: string; start: Bench["start"]
   } catch {
     // Storage blocked or a draft from an older builder: start from the saved draft or the saved build instead.
   }
-  const newest = [local, start.draft ?? null]
-    .filter((d): d is Draft => d !== null)
-    .sort((a, b) => (b.savedAt ?? 0) - (a.savedAt ?? 0))[0];
-  // A draft from before the builder kept the detail starts from the character's.
-  if (newest) return { detail: start.detail, ...newest };
-  const saved = CharacterBuild.safeParse(start.build);
-  if (saved.success) return { ...saved.data, name: start.name, detail: start.detail };
-  return { tier, name: start.name, detail: start.detail };
+  return pickDraft({ local, start, tier });
 }
 
 type WorkshopProps = { bench: Bench; payload: CreationPayload; onSaved: () => void };
@@ -269,8 +271,12 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   const locked = made && role !== "gm";
   const [step, setStep] = useState<BuilderStep>(locked ? "advance" : draft.archetypeId ? "customise" : "tier");
   const [error, setError] = useState<string | null>(null);
-  // The Tier the build is made at: the campaign's, or the one the library's owner picked.
-  const tier = bench.tierEditable ? draft.tier : bench.tier;
+  // The Tier the build is made at. It stays the draft's own: a character keeps the Tier it was made at (Core p.20 sets
+  // the budget from it), and the campaign's Tier now travels separately as `play.tier` (build.ts), so a group that
+  // Ascends doesn't rewrite its characters' creation Tier. A blank draft starts at the bench's (`initialDraft`).
+  const tier = draft.tier;
+  // What the header says: at a table, the Tier the group plays at now; in the library, the one being built at.
+  const shownTier = bench.tierEditable ? draft.tier : bench.tier;
 
   const catalogue = useMemo(() => catalogueOf(payload), [payload]);
   const lookups = useMemo(
@@ -282,27 +288,29 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   );
 
   // The live sheet: every change re-resolves the whole build, so a later choice that breaks an earlier one shows up.
-  // `tier` wins over the draft's, so a draft made before the GM changed the campaign's Tier resolves at the table's.
   const resolved = useMemo((): ResolvedBuild | null => {
     if (!draft.archetypeId) return null;
     const { name: _, detail: __, savedAt: ___, archetypeId, ...rest } = draft;
     try {
-      return resolveBuild({ catalogue, build: { ...rest, tier, archetypeId }, play: play ?? undefined });
+      return resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
     } catch {
       return null; // a malformed draft (an older builder's): START OVER clears it
     }
-  }, [draft, tier, catalogue, play]);
+  }, [draft, catalogue, play]);
 
   // External systems: localStorage, so a half-made character survives a closed tab on this device, and the library,
-  // which keeps the draft for the next device.
+  // which keeps the draft for the next device. Opening a character changes nothing, so the first render only writes
+  // this device's copy: without that, opening a finished character would push a draft back onto it.
   const autosave = bench.autosave;
+  const opened = useRef(false);
   useEffect(() => {
     try {
       localStorage.setItem(key, JSON.stringify(draft));
     } catch {
       // Storage blocked (private mode): the draft lives only in this tab.
     }
-    autosave?.(draft);
+    if (opened.current) autosave?.(draft);
+    opened.current = true;
   }, [key, draft, autosave]);
 
   const value = useMemo((): BuilderValue => {
@@ -335,20 +343,26 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
     };
   }, [draft, resolved, catalogue, lookups, tier, play, made, locked, role, bench]);
 
-  // START OVER: drops the draft on this device and goes back to the saved build, or a blank one.
+  // START OVER: drops the draft on this device and goes back to the saved build, or a blank one. At a table a draft
+  // sent to the GM lives on the character, not here, so it survives and is picked up again; in the library the stored
+  // draft is this same draft's copy, so it goes too.
   const startOver = () => {
     try {
       localStorage.removeItem(key);
     } catch {
       // nothing stored
     }
-    setDraft(initialDraft({ key, start: { ...start, draft: null }, tier }));
+    bench.cancelAutosave?.();
+    const kept = bench.autosave ? null : start.draft;
+    setDraft(initialDraft({ key, start: { ...start, draft: kept }, tier: bench.tier }));
     setStep("tier");
   };
 
-  // SAVE: the server re-resolves the build and writes the sheet; away from the builder once it's saved.
+  // SAVE: the server re-resolves the build and writes the sheet; away from the builder once it's saved. The pending
+  // autosave is dropped first, so a debounced draft can't land on the row just after the finished build did.
   const save = async () => {
-    const failure = await bench.save({ ...draft, tier });
+    bench.cancelAutosave?.();
+    const failure = await bench.save(draft);
     if (failure) return setError(failure);
     try {
       localStorage.removeItem(key);
@@ -368,7 +382,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
           </a>
           <div className="display gm-title">
             {draft.name.trim() ? draft.name.toUpperCase() : "NEW CHARACTER"}
-            <span className="dim"> · BUILDER · T{tier}</span>
+            <span className="dim"> · BUILDER · T{shownTier}</span>
           </div>
           <button className="btn sm" onClick={startOver}>
             START OVER

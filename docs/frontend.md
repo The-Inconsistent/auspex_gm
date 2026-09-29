@@ -147,8 +147,11 @@ In library mode:
 - **The owner picks the Tier** (`TIERS`, with each Tier's starting XP) and the homebrew books per character; the switch
   saves and calls `router.refresh()`, because the catalogue is served already filtered.
 - **Drafts autosave** to the library `AUTOSAVE_MS` (1.5 s) after the last change, keyed `wg-build:library:<id>` on the
-  device. The newer of the two wins on open, as at a table. A failed save shows in the top strip; the draft is still on
-  the device.
+  device. A failed save shows in the top strip; the draft is still on the device. Which draft an open starts from is
+  `pickDraft` (`components/builder/utils.ts`, unit-tested): the newer of this device's and the row's, except that a build
+  finished on another device after this device wrote its draft wins, because that draft is a stale half-build. Opening a
+  character never autosaves (the first render only writes the device's copy), and SAVE and START OVER drop a pending one
+  (`cancelAutosave`), so a debounced draft can't land on a row that was just finished.
 - **No GM part:** `role: "player"`, so no `GmPart`, no archetype GM notes, and no SEND TO GM — a library character has
   no GM to send to. `made` is false and there's no `play`: advancement belongs to the campaign copy.
 - **`/library/new`** posts an empty row and redirects to it, so the builder has somewhere to autosave. At `LIBRARY_CAP`
