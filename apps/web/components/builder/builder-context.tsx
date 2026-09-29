@@ -48,6 +48,7 @@ export type BuilderValue = {
   // SEND TO GM: puts the draft on the table for the GM (null for a character not made yet).
   sendDraft: (() => Promise<string | null>) | null;
   sentDraft: boolean; // a draft is waiting on the table
+  gmLater: boolean; // the library: SAVE may leave what only a GM judges for the campaign's GM
 };
 
 export const BuilderContext = createContext<BuilderValue | null>(null);

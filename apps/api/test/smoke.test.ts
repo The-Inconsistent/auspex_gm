@@ -1055,4 +1055,26 @@ test("a library character comes into a campaign as a copy (issue #14 step 4)", a
     ok: false,
     error: "This campaign is Tier 2; build for Tier 2",
   });
+
+  // What only a GM judges waits for the campaign's GM (rules-flow §11.58): the library finishes a build with it open,
+  // and the table refuses it until the GM ticks it. Augmetic's XP is "20 plus the Value": the GM adds it (Core p.129).
+  const augmented = {
+    ...disruptor,
+    talents: [{ id: "wraith-slipping" }, { id: "bolter-discipline" }, { id: "augmetic" }],
+    choices: { "talent/augmetic/0": [0], "talent/augmetic/0/0": ["augmetic-eye", "augmetic-arm"] },
+  };
+  const gmLater = await put(`/library/${id}`, { build: augmented }, bearer(owner));
+  assert.equal(gmLater.status, 200, "the library leaves the GM's items open");
+  assert.equal(((await gmLater.json()) as LibraryCharacter).done, true);
+  const xp = "Augmetic costs 20 XP plus the Value of the augmetic you choose: the GM adds it";
+  assert.deepEqual(await table.send({ type: "character.build", name: "Aug", build: augmented }), {
+    ok: false,
+    error: xp,
+  });
+  const ticked = await table.send({
+    type: "character.build",
+    name: "Aug",
+    build: { ...augmented, gm: { approved: ["talent/augmetic/xp"] } },
+  });
+  assert.ok(ticked.ok, JSON.stringify(ticked));
 });

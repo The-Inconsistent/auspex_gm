@@ -54,6 +54,7 @@ type Bench = {
   autosave: ((draft: Draft) => void) | null; // the library saves as you go; a table waits for SEND TO GM
   cancelAutosave: (() => void) | null; // drops a debounced save that a finished build has overtaken
   canImport: boolean; // a table takes a copy from the caller's library; the library itself has nowhere to import from
+  gmLater: boolean; // no GM here: what only a GM judges waits for the campaign's GM after the import (rules-flow §11.58)
   sentDraft: boolean;
   backHref: string;
   backLabel: string; // an icon-only control names its target, not just the action
@@ -156,6 +157,7 @@ function TableBench({
       autosave: null,
       cancelAutosave: null,
       canImport: true, // a seat at a table can take a copy from the caller's own library (issue #14 step 4)
+      gmLater: false, // the table's GM is here to tick
       sentDraft: !!character?.draft,
       backHref: `/c/${campaignId}`,
       backLabel: "Back to the table",
@@ -240,6 +242,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
       autosave,
       cancelAutosave: () => clearTimeout(timer.current),
       canImport: false, // already in the library: it is the library's own builder
+      gmLater: true,
       sentDraft: false,
       backHref: "/",
       backLabel: "Back to your characters",
@@ -344,6 +347,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
       go,
       sendDraft: bench.sendDraft ? () => bench.sendDraft!({ ...draft, savedAt: Date.now() }) : null,
       sentDraft: bench.sentDraft,
+      gmLater: bench.gmLater,
     };
   }, [draft, resolved, catalogue, lookups, tier, play, made, locked, role, bench]);
 

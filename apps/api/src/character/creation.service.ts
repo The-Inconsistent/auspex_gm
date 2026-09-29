@@ -1,14 +1,7 @@
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { creationCatalogue, wargear } from "@wg/data";
-import {
-  SOURCES,
-  buildReady,
-  officialOnly,
-  type BuildCatalogue,
-  type CreationPayload,
-  type ResolvedBuild,
-} from "@wg/shared";
+import { SOURCES, officialOnly, type BuildCatalogue, type CreationPayload, type ResolvedBuild } from "@wg/shared";
 import type { CachedPayload } from "../core/http.ts";
 
 // The character-creation catalogue (packages/data/creation, docs/data.md §9), parsed at startup so a bad file fails fast.
@@ -19,13 +12,13 @@ const creation = creationCatalogue();
 export const buildCatalogue = (homebrew: boolean): BuildCatalogue => ({ creation, wargear, homebrew });
 
 // Why a resolved build can't be saved yet, as the builder's refusal reads it, or null when it's ready. Shared by
-// `character.build` and the library's PUT, so both refuse in the same words.
-export function buildRefusal(r: ResolvedBuild): string | null {
-  if (buildReady(r)) return null;
+// `character.build` and the library's PUT, so both refuse in the same words. `gmLater`: the library has no GM, so what
+// only a GM judges waits for the campaign's GM after the import (docs/rules-flow.md §11.58).
+export function buildRefusal(r: ResolvedBuild, { gmLater = false }: { gmLater?: boolean } = {}): string | null {
   const next = r.pending[0];
   if (next) return `Still to choose: ${next.what}`;
-  const problem = r.problems[0]!; // not ready and nothing pending: there is a problem
-  return `${problem.what}${problem.cite ? ` (${problem.cite})` : ""}`;
+  const problem = r.problems.find((p) => !gmLater || p.severity !== "gm");
+  return problem ? `${problem.what}${problem.cite ? ` (${problem.cite})` : ""}` : null;
 }
 
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.

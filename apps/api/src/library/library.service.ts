@@ -117,15 +117,17 @@ export async function saveLibraryCharacter({
   const row = await own({ userId, id });
   if (!row) return null;
   const homebrew = body.homebrew ?? row.homebrew;
-  // The server decides, as `character.build` does: a build is re-resolved here and refused unless it's ready. No
-  // `play`: a library character has earned no XP, and advancement belongs to the campaign copy.
+  // The server decides, as `character.build` does: a build is re-resolved here and refused unless it's ready, bar what
+  // only a GM judges, which waits for the campaign's GM (§11.58). No `play`: a library character has earned no XP, and
+  // advancement belongs to the campaign copy.
   let build: Record<string, unknown> | null | undefined;
   if (body.build !== undefined) {
     if (body.build === null) build = null;
     else {
       // The GM's part is the GM's, made at their table: a library character never carries one.
       const parsed = CharacterBuild.parse({ ...body.build, gm: undefined });
-      const refusal = buildRefusal(resolveBuild({ catalogue: buildCatalogue(homebrew), build: parsed }));
+      const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build: parsed });
+      const refusal = buildRefusal(r, { gmLater: true });
       if (refusal) fail(refusal);
       build = parsed;
     }

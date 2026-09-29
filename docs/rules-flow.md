@@ -375,6 +375,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
       rulings made for the old build survive an import and the GM clears them (CLEAR TICKS) if they no longer fit; a
       **GM** saving a build sends their own part as the builder has it, so an import they save replaces it. *Proposed;
       awaiting the GM — the alternative is for an import to clear the part on both paths.*
+    - **What only a GM judges waits for the campaign's GM.** A story grant (the Rogue Trader's Imperial Frigate, Core
+      p.104), a Talent whose XP the GM adds, a conditional Wargear pick: the library has no GM to tick them, so a
+      library build is finished once nothing else is left, and those items stay open. On import they are open again on the campaign's REVIEW, where the player
+      sends the draft and the GM ticks and saves, as for any build.
     - **The copy is a snapshot**, like a threat's stat block joining an encounter: later library edits don't change the
       campaign character, and XP earned in play belongs to the campaign character alone.
 

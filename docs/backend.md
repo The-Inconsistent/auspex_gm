@@ -97,6 +97,8 @@ What still holds:
 
 - **The server decides.** `PUT` with a `build` re-runs `resolveBuild` against `buildCatalogue(homebrew)` with no `play`
   and refuses anything not ready, through the same `buildRefusal` as `character.build`, so both refuse in the same words.
+  One difference, `gmLater`: problems only a GM judges (`severity: "gm"`) don't block a library save, because there is
+  no GM to tick them; they come back on the campaign's REVIEW after the import (`docs/rules-flow.md` §11.58).
 - **Scope.** A row that isn't the caller's is a `404`, never a `403`: a `403` would tell them the id exists.
 - **Book text needs an account.** `/api/creation` and `/api/rules` serve book content without a seat, so the account is
   the gate, and it holds because Clerk's Access mode is Invite-only (`docs/development.md` §Clerk, `CLAUDE.md`,
