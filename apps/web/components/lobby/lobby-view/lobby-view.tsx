@@ -71,6 +71,8 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const [name, setName] = useState("");
   const [tier, setTier] = useState(1);
   const [error, setError] = useState<string | null>(null);
+  // Its own line: NEW GAME's error sits in a form only creators see, and anyone may keep a library.
+  const [libraryError, setLibraryError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
   const others = lobby.running.filter((g) => !g.role);
   const full = lobby.characters.length >= LIBRARY_CAP;
@@ -80,21 +82,22 @@ export function LobbyView({ lobby }: LobbyViewProps) {
     if (confirming !== id) return setConfirming(id);
     setConfirming(null);
     const res = await fetch(`/api/library/${id}`, { method: "DELETE" }).catch(() => null);
-    if (!res?.ok) return setError("Couldn't delete that character.");
+    if (!res?.ok) return setLibraryError("Couldn't delete that character.");
     router.refresh();
   };
 
   // NEW CHARACTER: starts an empty library row, then opens its builder. A POST from here rather than a link, so a
   // cross-site navigation can't create characters in someone's library on their behalf (the session cookie is Lax).
   const handleNewCharacter = async () => {
-    setError(null);
+    setLibraryError(null);
     const res = await fetch("/api/library", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: "{}",
     }).catch(() => null);
-    const body = (await res?.json().catch(() => null)) as { id?: string; message?: string } | null;
-    if (!res?.ok || !body?.id) return setError(body?.message ?? "Couldn't start a character.");
+    const body = (await res?.json().catch(() => null)) as { id?: unknown; message?: unknown } | null;
+    if (!res?.ok || typeof body?.id !== "string")
+      return setLibraryError(typeof body?.message === "string" ? body.message : "Couldn't start a character.");
     router.push(`/library/${body.id}`);
   };
 
@@ -155,6 +158,11 @@ export function LobbyView({ lobby }: LobbyViewProps) {
           {full ? " · delete one to make room" : ""}
         </span>
       </div>
+      {libraryError && (
+        <div className="red" role="alert">
+          ! {libraryError}
+        </div>
+      )}
 
       {others.length > 0 && (
         <>

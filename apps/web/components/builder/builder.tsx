@@ -188,8 +188,8 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
           body: JSON.stringify(body),
         });
         if (res.ok) return null;
-        const message = ((await res.json().catch(() => null)) as { message?: string } | null)?.message;
-        return message ?? "The library didn't save that. Try again.";
+        const reply = (await res.json().catch(() => null)) as { message?: unknown } | null;
+        return typeof reply?.message === "string" ? reply.message : "The library didn't save that. Try again.";
       } catch {
         return "No signal. The draft is still on this device.";
       }

@@ -142,9 +142,9 @@ export async function saveLibraryCharacter({
       ...(build !== undefined ? { build } : {}),
       updatedAt: new Date(),
     })
-    .where(eq(libraryCharacter.id, row.id))
+    .where(and(eq(libraryCharacter.id, row.id), eq(libraryCharacter.ownerUserId, userId)))
     .returning();
-  return card(saved!); // the row was just updated
+  return saved ? card(saved) : null; // null: deleted since the read, a 404 like any row that isn't there
 }
 
 export async function deleteLibraryCharacter({ userId, id }: { userId: string; id: string }) {
