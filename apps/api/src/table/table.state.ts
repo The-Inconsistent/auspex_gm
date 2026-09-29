@@ -4,11 +4,13 @@ import {
   CharacterStats,
   Objectives,
   Overrides,
+  withUpgrades,
   type Character,
   type Codex,
   type Combatant,
   type LiveState,
 } from "@wg/shared";
+import { wargear } from "@wg/data";
 import { accessToken, appUser, invite, membership } from "../auth/auth.schema.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -37,7 +39,9 @@ export const toCharacter = ({
 }: typeof character.$inferSelect): Character => ({
   id,
   name,
-  stats: CharacterStats.parse(stats),
+  // The sheet as shown, not as stored: the fitted upgrades are applied here (Core p.227, §11.60), so a phone doesn't
+  // need the 2 MB catalogue to read its own weapons and the stored profile stays the printed one.
+  stats: withUpgrades(CharacterStats.parse(stats), wargear),
   overrides: Overrides.parse(overrides),
   wounds,
   shock,

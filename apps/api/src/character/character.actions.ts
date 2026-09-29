@@ -21,9 +21,11 @@ import {
   sheetWeapon,
   upgradeRefusal,
   wargearMatches,
+  withUpgrades,
   type Action,
   type ActionResult,
   type Character,
+  type Wargear,
   type WargearWeapon,
 } from "@wg/shared";
 import { wargear } from "@wg/data";
@@ -78,6 +80,47 @@ async function saveStats(tx: Tx, { id, stats }: { id: string; stats: CharacterSt
   await tx.update(character).set({ stats: r.data }).where(eq(character.id, id));
 }
 
+// CharacterStats.gear's cap, so a write that would overflow it says so rather than failing the whole sheet's parse.
+const MAX_GEAR = 60;
+
+// Catalogue entries by name, for a sheet weapon made before `wargearId` was stored. 120 names are shared by two books
+// (apoc-force-shield and ioe-force-shield), so an ambiguous one is refused rather than guessed: checking a fit against
+// the wrong book's keywords would accept upgrades the printed item can't take.
+const byName = new Map<string, Wargear[]>();
+for (const w of wargear.values()) byName.set(w.name, [...(byName.get(w.name) ?? []), w]);
+
+// What the table sees is the derived sheet (`withUpgrades` in table.state), and the GM's character editor sends a patch
+// built from it, so an incoming weapon may carry upgrades already applied. Storing that would apply them twice on the
+// next read. `upgradeNames` is set only by `withUpgrades`, so it marks a derived profile: those weapons are replaced by
+// the stored ones, which is what the editor means anyway — it edits attributes, skills, talents and abilities.
+function storedProfiles(incoming: CharacterStats, stored: CharacterStats): CharacterStats {
+  if (!incoming.weapons.some((w) => w.upgradeNames)) return incoming;
+  return {
+    ...incoming,
+    weapons: incoming.weapons.map((w) => {
+      if (!w.upgradeNames) return w;
+      const { upgradeNames: _names, notes: _notes, ...rest } = w;
+      const was = stored.weapons.find((s) => (w.wargearId ? s.wargearId === w.wargearId : s.name === w.name));
+      return was ?? rest;
+    }),
+  };
+}
+
+// The catalogue entry a sheet weapon came from, or a refusal. It must hold a weapon profile for a fit to be checked.
+function baseOf(weapon: { name: string; wargearId?: string }): Wargear {
+  const byId = weapon.wargearId ? wargear.get(weapon.wargearId) : undefined;
+  const named = byName.get(weapon.name) ?? [];
+  const found = byId ?? (named.length === 1 ? named[0] : undefined);
+  if (!found)
+    fail(
+      named.length > 1
+        ? `More than one catalogue item is called "${weapon.name}", so the fit can't be checked: rebuild the sheet`
+        : `The catalogue doesn't hold "${weapon.name}", so the fit can't be checked: rebuild the sheet`,
+    );
+  if (!found.weapon) fail(`"${found.name}" isn't a weapon in the catalogue`);
+  return found;
+}
+
 export async function applyCharacterAction(
   tx: Tx,
   { ctx, action: a }: { ctx: Ctx; action: CharacterAction },
@@ -103,6 +146,11 @@ export async function applyCharacterAction(
     case "character.update": {
       const { type, id, ...patch } = a;
       if (Object.keys(patch).length === 0) return { ok: true };
+      // A sheet sent back from the table carries its upgrades applied; only the printed profile is stored.
+      if (patch.stats) {
+        const row = await ownCharacter(tx, { campaignId: cid, id });
+        patch.stats = storedProfiles(patch.stats, CharacterStats.parse(row.stats));
+      }
       const r = await tx.update(character).set(patch).where(inCampaign(id)).returning({ id: character.id });
       return r.length ? { ok: true } : fail("Character not found");
     }
@@ -269,7 +317,8 @@ export async function applyCharacterAction(
     }
 
     // Fitting is instant and takes no Test (§11.60), so this only checks what the book checks: the fit, the maximum of
-    // three and one per slot. The base profile stays stored; the sheet derives the upgraded one (applyUpgrades).
+    // three and one per slot. What is written is the id, in `fitted`; the profile stays as printed and `withUpgrades`
+    // derives what the sheet shows, so nothing is applied twice.
     case "character.fitUpgrade":
     case "character.removeUpgrade": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
@@ -279,31 +328,40 @@ export async function applyCharacterAction(
       const weapon = stats.weapons[at]!;
       const entry = wargear.get(a.upgradeId) ?? fail("Unknown upgrade");
       if (!entry.upgrade) fail(`${entry.name} isn't an upgrade`);
-      const fitted = (weapon.upgrades ?? []).map((u) => wargear.get(u)).filter((w) => w !== undefined);
 
       if (a.type === "character.removeUpgrade") {
-        const which = (weapon.upgrades ?? []).indexOf(a.upgradeId);
-        if (which < 0) fail(`${weapon.name} has no ${entry.name} fitted`);
-        const upgrades = (weapon.upgrades ?? []).filter((_, i) => i !== which);
-        stats.weapons = stats.weapons.with(at, { ...weapon, upgrades: upgrades.length ? upgrades : undefined });
+        // Only what was fitted in play comes off here: an upgrade the build gives the weapon (§11.42) goes in the
+        // builder, or the next rebuild would put it back.
+        const which = (weapon.fitted ?? []).indexOf(a.upgradeId);
+        if (which < 0)
+          fail(
+            (weapon.upgrades ?? []).includes(a.upgradeId)
+              ? `${entry.name} is part of ${weapon.name} as it was built: change the build to take it off`
+              : `${weapon.name} has no ${entry.name} fitted`,
+          );
+        if (stats.gear.length >= MAX_GEAR) fail(`${row.name}'s gear list is full (${MAX_GEAR} lines)`);
+        const left = (weapon.fitted ?? []).filter((_, i) => i !== which);
+        stats.weapons = stats.weapons.with(at, { ...weapon, fitted: left.length ? left : undefined });
         // It comes off the weapon and back into the character's gear, where a requisitioned upgrade starts.
         stats.gear = [...stats.gear, gearLine(entry)];
         await saveStats(tx, { id: a.id, stats });
         return { ok: true };
       }
 
-      // The weapon's catalogue entry: what `fits` is checked against. A sheet made before upgrades were modelled has
-      // no `wargearId`, so fall back to its name, which the builder and requisition both take from the catalogue.
-      const base =
-        (weapon.wargearId ? wargear.get(weapon.wargearId) : undefined) ??
-        [...wargear.values()].find((w) => w.name === weapon.name);
-      if (!base) fail(`The catalogue doesn't hold "${weapon.name}", so the fit can't be checked: rebuild the sheet`);
-      if (entry.upgrade.fits.kinds?.every((k) => k !== base.kind))
-        fail(`${entry.name} goes on ${entry.upgrade.fits.kinds.join(" or ")}, not a weapon (issue #15)`);
+      // What `fits` is checked against is the weapon as it is now, upgrades included, so a Trait an earlier upgrade
+      // added or removed counts: the Anti-Grav Platform takes Heavy off, which is what a not-Heavy upgrade needs.
+      const base = baseOf(weapon);
+      const fitted = [...(weapon.upgrades ?? []), ...(weapon.fitted ?? [])]
+        .map((u) => wargear.get(u))
+        .filter((w) => w !== undefined);
+      const shown = withUpgrades({ weapons: [weapon] }, wargear).weapons[0]!;
+      const now = { ...base, weapon: { ...base.weapon!, traits: shown.traits } };
+      if (entry.upgrade.fits.kinds && !entry.upgrade.fits.kinds.includes(base.kind))
+        fail(`${entry.name} fits ${entry.upgrade.fits.kinds.join(" or ")}; ${base.name} is ${base.kind} (issue #15)`);
       const { tier } = await campaignRules(tx, cid);
       const refusal = upgradeRefusal({
         upgrade: entry,
-        item: base,
+        item: now,
         fitted,
         matches: (w, f) => wargearMatches(w, f, { tier, newTier: tier }),
       });
@@ -317,7 +375,7 @@ export async function applyCharacterAction(
       stats.weapons = stats.weapons.with(at, {
         ...weapon,
         wargearId: base.id,
-        upgrades: [...(weapon.upgrades ?? []), entry.id],
+        fitted: [...(weapon.fitted ?? []), entry.id],
       });
       await saveStats(tx, { id: a.id, stats });
       return { ok: true };

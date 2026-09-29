@@ -343,13 +343,30 @@ test("GM and player share a table", async (t) => {
     ok: false,
     error: "Not your character",
   });
+  // What the table receives is the derived sheet, so the fit has to show on the weapon itself, not only as an id.
+  assert.ok((await gm.send({ ...fit, upgradeId: "mastercrafted" })).ok);
+  const shown = await gm.until((s) => {
+    const w = s.characters.find((c) => c.id === hero.id)?.stats.weapons.find((x) => x.name === "Laspistol");
+    return Boolean(w?.fitted?.includes("mastercrafted") && w.traits.includes("Reliable"));
+  });
+  const laspistol = shown.characters.find((c) => c.id === hero.id)!.stats.weapons.find((w) => w.name === "Laspistol")!;
+  assert.deepEqual(laspistol.upgradeNames, ["Mastercrafted"]);
+  assert.ok(
+    laspistol.notes?.some((n) => n.includes("bonus dice")),
+    "the prose the GM applies (Core p.228)",
+  );
+  assert.ok(
+    (await gm.send({ type: "character.removeUpgrade", id: hero.id!, weapon: "Laspistol", upgradeId: "mastercrafted" }))
+      .ok,
+  );
+
   assert.ok((await gm.send({ ...fit, upgradeId: "magnocular-scope" })).ok);
   await gm.until((s) =>
     Boolean(
       s.characters
         .find((c) => c.id === hero.id)
         ?.stats.weapons.find((w) => w.name === "Laspistol")
-        ?.upgrades?.includes("magnocular-scope"),
+        ?.fitted?.includes("magnocular-scope"),
     ),
   );
   assert.deepEqual(await gm.send({ ...fit, upgradeId: "magnocular-scope" }), {
@@ -362,7 +379,7 @@ test("GM and player share a table", async (t) => {
   });
   // An armour upgrade doesn't go on a weapon, and nothing outside the catalogue goes on anything.
   const armourFit = await gm.send({ ...fit, upgradeId: "voa-adamantine-cuirass" });
-  assert.match(armourFit.ok ? "fitted" : armourFit.error, /not a weapon/);
+  assert.match(armourFit.ok ? "fitted" : armourFit.error, /fits armour/);
   assert.deepEqual(await gm.send({ ...fit, upgradeId: "no-such-upgrade" }), { ok: false, error: "Unknown upgrade" });
   assert.deepEqual(await gm.send({ ...fit, weapon: "Nothing", upgradeId: "magnocular-scope" }), {
     ok: false,
@@ -378,7 +395,7 @@ test("GM and player share a table", async (t) => {
   await gm.until((s) => {
     const st = s.characters.find((c) => c.id === hero.id)?.stats;
     return (
-      st?.weapons.find((w) => w.name === "Laspistol")?.upgrades?.length === 1 &&
+      st?.weapons.find((w) => w.name === "Laspistol")?.fitted?.length === 1 &&
       !st.gear.some((g) => g.startsWith("Magnocular Scope"))
     );
   });

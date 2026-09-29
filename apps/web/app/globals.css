@@ -160,6 +160,16 @@ a {
 .dim {
   color: var(--ink-3);
 }
+/* What a fitted upgrade leaves to the GM (Core p.227): its own line under the weapon, not a Trait on the profile. */
+.wpn-note {
+  display: block;
+  color: var(--ink-3);
+  font-size: 0.85em;
+  font-style: italic;
+}
+.wpn-note::before {
+  content: "↳ ";
+}
 .accent {
   color: var(--red);
 }

@@ -9,6 +9,7 @@ import {
   sheetWeapon,
   upgradeRefusal,
   wargearMatches,
+  withUpgrades,
   type WargearWeapon,
   type CharacterBuildInput,
   type CharacterStats,
@@ -404,15 +405,78 @@ test("upgradeRefusal: three at most, one of each slot, Distinction exempt (Core 
   assert.match(fit(wargear.get("voa-adamantine-cuirass")!, [])!, /doesn't fit/);
 });
 
-test("keepPlay: a rebuild keeps the upgrades fitted to a weapon in play (#15 step 3)", () => {
+test("keepPlay: a rebuild keeps what was fitted in play and takes the build's own upgrades again", () => {
   const previous = { ...PREGENS[1]!.build };
   const before = resolveBuild({ catalogue, build: previous }).sheet;
   const gun = before.weapons[0]!;
   const played = {
     ...before,
-    weapons: before.weapons.with(0, { ...gun, wargearId: gun.wargearId ?? "x", upgrades: ["mastercrafted"] }),
+    weapons: before.weapons.with(0, {
+      ...gun,
+      wargearId: gun.wargearId ?? "x",
+      fitted: ["magnocular-scope"], // fitted at the table
+      upgrades: ["mastercrafted"], // pretend the old build gave it one, and the new build doesn't
+    }),
   };
   const next = inPlay({ ...previous, advancement: { packages: [] } }, { tier: 4, xpEarned: 0 }).sheet;
   const kept = keepPlay({ previous: played, next });
-  assert.deepEqual(kept.weapons[0]!.upgrades, ["mastercrafted"], "fitted in play, kept through a rebuild");
+  assert.deepEqual(kept.weapons[0]!.fitted, ["magnocular-scope"], "fitted in play, kept through a rebuild");
+  assert.deepEqual(
+    kept.weapons[0]!.upgrades,
+    next.weapons[0]!.upgrades,
+    "the build's upgrades come from the new build, so dropping one in the builder drops it here",
+  );
+
+  // A weapon gained in play has no counterpart in the build, so what it carries was fitted at the table and stays.
+  const looted = {
+    name: "Looted Choppa",
+    damage: 4,
+    ed: 1,
+    range: [1],
+    traits: [],
+    addStrength: true,
+    upgrades: ["mastercrafted"],
+  };
+  const withLoot = keepPlay({ previous: { ...played, weapons: [...played.weapons, looted] }, next });
+  const back = withLoot.weapons.find((w) => w.name === "Looted Choppa")!;
+  assert.deepEqual(back.fitted, ["mastercrafted"], "an id on a play-gained weapon is a play fitting");
+});
+
+test("withUpgrades: derives the shown sheet, and applying it twice changes nothing more (#15 step 3)", () => {
+  const carbine = wargear.get("apoc-bolt-carbine")!;
+  const stored = {
+    weapons: [
+      {
+        ...sheetWeapon(carbine as { name: string; weapon: WargearWeapon }, 4),
+        wargearId: "apoc-bolt-carbine",
+        fitted: ["apoc-darkstar-weapon"], // damage +2, ED +1: a numeric mod, so double-applying would show
+      },
+    ],
+  };
+  const shown = withUpgrades(stored, wargear);
+  const w = shown.weapons[0]!;
+  assert.equal(w.damage, stored.weapons[0]!.damage + 2);
+  assert.equal(w.ed, (stored.weapons[0]!.ed as number) + 1);
+  assert.deepEqual(w.upgradeNames, ["Darkstar Weapon"]);
+  assert.ok(w.notes?.length, "the prose the GM applies");
+  // The stored sheet is untouched, so deriving from it again gives the same answer rather than compounding.
+  assert.deepEqual(withUpgrades(stored, wargear).weapons[0], w, "derive is idempotent on the stored sheet");
+  assert.equal(stored.weapons[0]!.damage, carbine.weapon!.damage, "nothing was written back onto the base");
+});
+
+test("applyUpgrades: a change a profile can't hold is printed, never silently dropped", () => {
+  // Percussive Muzzle Brake is +1 Salvo; 68 catalogue weapons print Salvo "–", which has no track to add to (p.207).
+  const brake = wargear.get("percussive-muzzle-brake")!;
+  const noSalvo = { name: "Test", damage: 5, ed: 1, range: [10], salvo: null, traits: [] };
+  const r = applyUpgrades(noSalvo, [brake]);
+  assert.equal(r.weapon.salvo, null, "no track is invented");
+  assert.ok(
+    r.notes.some((n) => n.includes("Salvo +1")),
+    "the GM is told instead",
+  );
+
+  // AP is a penalty, so it never rises above 0, and a weapon with no AP that gains none keeps none (Weapon.ap).
+  const up = { ...brake, upgrade: { ...brake.upgrade!, mods: [{ kind: "ap" as const, delta: 2 }] } };
+  assert.equal(applyUpgrades({ ...noSalvo, ap: -1 }, [up]).weapon.ap, 0);
+  assert.equal(applyUpgrades(noSalvo, [up]).weapon.ap, undefined, "no AP printed, none gained");
 });

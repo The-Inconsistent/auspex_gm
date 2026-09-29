@@ -234,11 +234,16 @@ export function applyUpgrades(
           if (typeof ed === "number") ed += m.delta;
           else notes.push(`ED ${m.delta >= 0 ? "+" : ""}${m.delta}, on a rolled ${String(ed)}`);
           break;
-        case "ap":
-          ap = (ap ?? 0) + m.delta;
+        case "ap": {
+          // AP is a penalty, so it never goes above 0 (Weapon.ap); a weapon with no AP that gains none keeps none.
+          const now = Math.min(0, (ap ?? 0) + m.delta);
+          ap = ap === undefined && now === 0 ? undefined : now;
           break;
+        }
         case "salvo":
+          // A weapon printed "–" has no Salvo track (p.207), so a change to it is the GM's call, not a silent 0 + X.
           if (typeof salvo === "number") salvo = Math.max(0, salvo + m.delta);
+          else notes.push(`Salvo ${m.delta >= 0 ? "+" : ""}${m.delta}, on a weapon printed "–"`);
           break;
         case "range":
           range = range.map((r, i) =>
@@ -262,5 +267,28 @@ export function applyUpgrades(
   return {
     weapon: { ...weapon, damage, ed, ap, salvo, range, traits },
     notes,
+  };
+}
+
+// The sheet as it is shown: every weapon's fitted upgrades applied, their names listed and the prose they leave to the
+// GM printed under them. The stored sheet keeps the printed profile and the ids, so this is the only place the two meet
+// and nothing is ever applied twice. The api runs it for the live sheet (a phone doesn't hold the catalogue), and the
+// builder runs it for its preview.
+export function withUpgrades<T extends { weapons: Weapon[] }>(
+  stats: T,
+  catalogue: ReadonlyMap<string, Wargear>,
+  opts: { traitName?: (id: string) => string } = {},
+): T {
+  return {
+    ...stats,
+    weapons: stats.weapons.map((w) => {
+      const ids = [...(w.upgrades ?? []), ...(w.fitted ?? [])];
+      if (ids.length === 0) return w;
+      const fitted = ids.map((id) => catalogue.get(id)).filter((u) => u !== undefined);
+      const { weapon, notes } = applyUpgrades(w, fitted, opts);
+      // An id the catalogue no longer holds keeps its place, so a rename shows as the id rather than vanishing.
+      const names = ids.map((id) => catalogue.get(id)?.name ?? id);
+      return { ...weapon, upgradeNames: names, notes: notes.length ? notes : undefined };
+    }),
   };
 }

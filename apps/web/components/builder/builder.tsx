@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   catalogueOf,
   resolveBuild,
+  withUpgrades,
   type BuildChoice,
   type Character,
   type CharacterStats,
@@ -360,7 +361,10 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
     if (!draft.archetypeId) return null;
     const { name: _, detail: __, savedAt: ___, builtAt: ____, archetypeId, ...rest } = draft;
     try {
-      return resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
+      const r = resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
+      // The sheet is stored with the printed profile and the upgrade ids; the preview shows them applied, as the table
+      // will (Core p.227). Only the build is sent to the server, which re-resolves it, so this is display alone.
+      return { ...r, sheet: withUpgrades(r.sheet, catalogue.wargear) };
     } catch {
       return null; // a malformed draft (an older builder's): START OVER clears it
     }
