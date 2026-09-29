@@ -1682,6 +1682,27 @@
       "LEAGUES OF VOTANN"
     ],
     "effect": "This item must be mounted on a suit of LEAGUES OF VOTANN armour but it cannot be mounted if the armour already has another crest (such as a Weavefield Crest). A teleport crest may be used as a Combat Action for a short-range teleport: the wearer vanishes from the battlefield and reappears anywhere within 100m that is more than 9m from an enemy. Once used this way, it cannot be used again until it has been recharged. It can also be used in conjunction with teleportation holds and other larger forms of teleport technology.",
+    "upgrade": {
+      "slot": "crest",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "LEAGUES OF VOTANN"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Combat Action: teleport to any spot within 100m that is more than 9m from an enemy; not again until recharged"
+        },
+        {
+          "kind": "gm",
+          "what": "may also be used with teleportation holds and larger teleport technology"
+        }
+      ]
+    },
     "note": "Filed as an upgrade: it is mounted on LEAGUES OF VOTANN armour."
   },
   {
@@ -1699,6 +1720,22 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "This system can only be fitted on an XV88 Broadside Battlesuit. When you move and make an attack with a Mounted weapon, you ignore the normal DN increase.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "nameIncludes": "XV88 Broadside"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "attacking with a Mounted weapon in a turn you moved: ignore the normal DN increase"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1715,6 +1752,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "When you make a ranged attack, each Exalted Icon you shift for Extra Damage adds +2ED rather than 1.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "ranged attacks: each Exalted Icon shifted for Extra Damage adds +2ED rather than +1"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1731,6 +1786,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "When you are attacked, you may spend 1 Glory as a Reflexive Action to activate this system. The attack’s number of ED is reduced to 1.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "when attacked, Reflexive Action and 1 Glory: that attack's ED is reduced to 1"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1747,6 +1820,28 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "Friendly DRONE characters within 12m of you at the start of your turn may add your Tech skill ranks to any of their own skill ranks. Drones within that distance are not affected by the Threat Identification Protocol rule.\nA version of this item which does not have the SUPPORT SYSTEM keyword can be obtained, but the Value is increased by +1 and the Rarity is Rare.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "friendly DRONES within 12m at the start of your turn may add your Tech ranks to any of their own skill ranks"
+        },
+        {
+          "kind": "gm",
+          "what": "Drones within 12m are not affected by the Threat Identification Protocol rule"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "The table prints two rows, (Battlesuit) and (Personnel); the description (p.445, headed \"Drone Controller\", Value 4 (Uncommon), T’AU EMPIRE, SUPPORT SYSTEM) matches this row. Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1778,6 +1873,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "When you are Charged, you may use your Reflexive Action and spend 1 ammo to make a ranged attack against the enemy Charging you. This attack is resolved before the Charge begins. This is considered a Salvo option, so you must reload your weapon after this attack before you can fire it again.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "when Charged: Reflexive Action and 1 ammo to shoot the charger before the Charge; a Salvo option, so reload after"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1794,6 +1907,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "When you are reduced to 0 Wounds, the suit’s systems eject you. You land 3d6 metres away, in the direction furthest from the enemy. Your battlesuit is destroyed, but you have Wounds remaining equal to 1d3 plus the game’s Tier, and a Pulse Pistol.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "at 0 Wounds you are ejected 3d6m away from the enemy; the battlesuit is destroyed, you keep 1d3 + Tier Wounds and a Pulse Pistol"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword). The flavour text says it is issued only to lone XV8 Crisis Battlesuit pilots of the rank of Shas’vre or higher; no Requirements line is printed."
   },
   {
@@ -1841,6 +1972,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "Whenever you make a ranged attack at an enemy Mob, or when you make a Multi-Attack, each Exalted Icon shifted allows you to hit one additional enemy. No enemy may be hit more than once by such an attack.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "ranged attack on a Mob, or a Multi-Attack: each Exalted Icon shifted hits one more enemy, none hit twice"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1887,6 +2036,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "When you roll Determination, you may activate your stimulant injector to re-roll all failed dice on the roll, and ignore all Shock gained from that roll. Once this has been used, you cannot use it again until after you have Regrouped, as your body needs time to recover.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "once per Regroup, on a Determination roll: re-roll all failed dice and ignore all Shock gained from that roll"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1919,6 +2086,24 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "When you make a ranged attack, the target does not increase their Defence due to being in cover.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "your ranged targets gain no Defence increase from being in cover"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {
@@ -1935,6 +2120,25 @@
       "SUPPORT SYSTEM"
     ],
     "effect": "Whenever you make a ranged attack against an enemy which is hovering, moved using a fly speed in its last turn, or which is a vehicle with the Flyer or Hover trait which is currently airborne, add +2 bonus dice to your attack.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "BATTLESUIT"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "bonusDice",
+          "dice": 2,
+          "when": "ranged attacks on an enemy hovering, flying in its last turn, or an airborne Flyer or Hover vehicle"
+        }
+      ],
+      "exempt": "slot"
+    },
     "note": "Filed as an upgrade: a Battlesuit Support System (SUPPORT SYSTEM keyword)."
   },
   {

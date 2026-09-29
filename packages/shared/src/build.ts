@@ -1644,6 +1644,13 @@ export function wargearMatches(w: Wargear, f: WargearFilter, { tier, newTier }: 
   if (f.categories && !f.categories.includes(w.category)) return false;
   if (f.nameIncludes && !norm(w.name).includes(norm(f.nameIncludes))) return false;
   if (f.wargearKeywords && !w.keywords.some((k) => f.wargearKeywords!.includes(k))) return false;
+  if (f.allKeywords && !f.allKeywords.every((k) => w.keywords.includes(k))) return false;
+  if (f.weaponTraits || f.notWeaponTraits) {
+    // Traits are printed with their rating ("Heavy (3)"); the filter names the Trait alone.
+    const traits = [...(w.weapon?.traits ?? []), ...(w.armour?.traits ?? [])].map((t) => norm(t.split("(")[0]!));
+    if (f.weaponTraits && !f.weaponTraits.some((t) => traits.includes(norm(t)))) return false;
+    if (f.notWeaponTraits?.some((t) => traits.includes(norm(t)))) return false;
+  }
   if (f.maxValue !== undefined) {
     const max =
       typeof f.maxValue === "number"
@@ -1703,6 +1710,9 @@ function describeFilter(f: WargearFilter): string {
     f.categories?.join(" or "),
     f.nameIncludes && `"${f.nameIncludes}"`,
     f.wargearKeywords && `with ${f.wargearKeywords.join(" or ")}`,
+    f.allKeywords && `with ${f.allKeywords.join(" and ")}`,
+    f.weaponTraits && `with the ${f.weaponTraits.join(" or ")} Trait`,
+    f.notWeaponTraits && `without the ${f.notWeaponTraits.join(" or ")} Trait`,
     f.maxValue !== undefined &&
       `Value ≤ ${typeof f.maxValue === "number" ? f.maxValue : "tierPlus" in f.maxValue ? `Tier + ${f.maxValue.tierPlus}` : `new Tier + ${f.maxValue.newTierPlus}`}`,
   ].filter(Boolean);

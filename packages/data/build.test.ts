@@ -1,7 +1,14 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { buildReady, keepPlay, resolveBuild, type CharacterBuildInput } from "@wg/shared";
+import {
+  buildReady,
+  keepPlay,
+  resolveBuild,
+  wargearMatches,
+  type CharacterBuildInput,
+  type CharacterStats,
+} from "@wg/shared";
 import { creationCatalogue, loadPack, wargear } from "./index.ts";
 
 // Issue #9 step 1 and #18 acceptance: every volkus pregen (docs/pregens.md), rebuilt from the build its pack file
@@ -305,4 +312,29 @@ test("Mk X Phobos's +1 Speed follows the suit worn (VoA p.72)", () => {
   const kept = keepPlay({ previous: { ...phobos, armour: tacticus }, next: phobos, before: phobos });
   assert.equal(kept.armour.name, "Mk X Tacticus");
   assert.equal(kept.mods.speed ?? 0, (phobos.mods.speed ?? 0) - 1);
+});
+
+// Issue #15 step 2: an upgrade's `fits` is the printed compatibility line, so the filter has to say what the book says.
+// These three fields exist because a keyword list alone read every printed "and" as an "or" (rules-flow.md §11.64).
+test("wargearMatches: an upgrade's fit is as narrow as the book prints it", () => {
+  const at = { tier: 4, newTier: 4 };
+  // The M40 fits "any weapon with the BOLT and ADEPTUS ASTARTES Keywords" (VoA p.68): both, not either.
+  const m40 = wargear.get("voa-m40-targeting-system")!.upgrade!.fits;
+  const carbine = wargear.get("apoc-bolt-carbine")!;
+  assert.ok(wargearMatches(carbine, m40, at), "BOLT and ADEPTUS ASTARTES");
+  assert.ok(!wargearMatches({ ...carbine, keywords: ["BOLT"] }, m40, at), "BOLT alone");
+  assert.ok(!wargearMatches({ ...carbine, keywords: ["ADEPTUS ASTARTES"] }, m40, at), "ADEPTUS ASTARTES alone");
+  // Core's own Boltgun is BOLT, IMPERIUM: an Astartes weapon by use, not by Keyword, so the M40 doesn't fit it.
+  assert.ok(!wargearMatches(wargear.get("boltgun")!, m40, at));
+
+  // "a weapon that does not have the Heavy Trait" (Core p.228). The rating is printed; the filter names the Trait.
+  const brake = wargear.get("percussive-muzzle-brake")!.upgrade!.fits;
+  const heavy = { ...carbine, weapon: { ...carbine.weapon!, traits: ["Heavy (5)"] } };
+  assert.ok(wargearMatches(carbine, brake, at));
+  assert.ok(!wargearMatches(heavy, brake, at), "Heavy (5) is the Heavy Trait");
+
+  // The Anti-Grav Platform is the other way round: it fits only what has Heavy (IoE p.95).
+  const platform = wargear.get("ioe-anti-grav-platform")!.upgrade!.fits;
+  assert.ok(wargearMatches(heavy, platform, at));
+  assert.ok(!wargearMatches(carbine, platform, at));
 });

@@ -156,7 +156,22 @@
       "AELDARI",
       "ASURYANI"
     ],
-    "effect": "Weapons with a Heavy (X) Trait may be mounted on these floating platforms. This removes the Heavy Trait, but the weapon requires an Aeldari within arm's reach to move, and that Aeldari cannot Sprint."
+    "effect": "Weapons with a Heavy (X) Trait may be mounted on these floating platforms. This removes the Heavy Trait, but the weapon requires an Aeldari within arm's reach to move, and that Aeldari cannot Sprint.",
+    "upgrade": {
+      "slot": "mount",
+      "fits": {
+        "kinds": [
+          "weapon"
+        ],
+        "weaponTraits": [
+          "Heavy"
+        ]
+      },
+      "mods": [
+        { "kind": "removeTrait", "traitId": "heavy" },
+        { "kind": "gm", "what": "the platform needs an Aeldari within arm's reach to move it, and that Aeldari cannot Sprint" }
+      ]
+    }
   },
   {
     "id": "ioe-anti-gravitic-suspensor-crystal",
@@ -170,7 +185,22 @@
     "keywords": [
       "AELDARI"
     ],
-    "effect": "When integrated into Aeldari armour (or bodies) an Anti-Gravitic Suspensor Crystal lets the user Fly at their base Speed. When integrated into a weapon with the Heavy (X) Trait, the Strength requirement to wield that weapon is halved. No more than 1 Anti-Gravitic Suspensor Crystal may be used in this manner."
+    "effect": "When integrated into Aeldari armour (or bodies) an Anti-Gravitic Suspensor Crystal lets the user Fly at their base Speed. When integrated into a weapon with the Heavy (X) Trait, the Strength requirement to wield that weapon is halved. No more than 1 Anti-Gravitic Suspensor Crystal may be used in this manner.",
+    "upgrade": {
+      "slot": "system",
+      "fits": {
+        "kinds": [
+          "armour",
+          "weapon"
+        ],
+        "condition": "Aeldari armour (or a body), or a weapon with a Heavy (X) Trait"
+      },
+      "mods": [
+        { "kind": "gm", "what": "in Aeldari armour or a body: the user may Fly at their base Speed" },
+        { "kind": "gm", "what": "in a weapon with Heavy (X): the Strength requirement to wield it is halved" },
+        { "kind": "gm", "what": "no more than 1 Suspensor Crystal may be used in this manner" }
+      ]
+    }
   },
   {
     "id": "ioe-arena-trophy",
@@ -269,6 +299,25 @@
       "KABAL"
     ],
     "effect": "This item may be purchased up to 3 times. Each time it is purchased, chose one of the following options:\n- Chains: May be used as a Whip, +1 to Grapple attacks.\n- Blades: Successful melee attacks also inflict 1 Bleeding Condition.\n- Hooks: All attempts to grapple the Drukhari increase their DN by 1.",
+    "upgrade": {
+      "slot": "plate",
+      "fits": {
+        "kinds": [
+          "armour"
+        ],
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "condition": "a Kabalite suit; the Hooks option reads on the Drukhari wearer"
+      },
+      "mods": [
+        { "kind": "gm", "what": "on each purchase choose one option: Chains, Blades or Hooks" },
+        { "kind": "gm", "what": "Chains: may be used as a Whip, +1 to Grapple attacks" },
+        { "kind": "gm", "what": "Blades: successful melee attacks also inflict 1 Bleeding Condition" },
+        { "kind": "gm", "what": "Hooks: all attempts to grapple the wearer increase their DN by 1" }
+      ],
+      "copies": 3
+    },
     "note": "\"chose\" as printed. Fitted to Kabalite suits; three options, one Value."
   },
   {
@@ -401,6 +450,17 @@
       "ASURYANI"
     ],
     "effect": "A Rangefinder combines Magnocular Scope and Preysense Goggles. When used to mark a target (a Full-Round Action in combat), it provides a +2 bonus to all ranged attack Tests against that target, eliminating penalties due to range and environmental conditions.",
+    "upgrade": {
+      "slot": "sight",
+      "fits": {
+        "weapon": "ranged"
+      },
+      "mods": [
+        { "kind": "bonusDice", "dice": 2, "when": "ranged attack Tests against a target marked with this Rangefinder" },
+        { "kind": "gm", "what": "marking a target is a Full-Round Action; attacks on it also ignore range and environmental penalties" },
+        { "kind": "gm", "what": "detachable: the wearer may move it to another weapon between scenes" }
+      ]
+    },
     "note": "Value printed \"10 (standalone), 12 (detachable)\"; split into two entries. Filed as an upgrade: the text says it may display to a weapon scope."
   },
   {

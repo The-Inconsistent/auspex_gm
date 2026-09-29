@@ -99,6 +99,14 @@ export const WargearFilter = z.object({
   categories: z.array(z.string().min(1)).min(1).optional(), // `Wargear.category`: "Augmetic Enhancements"
   nameIncludes: z.string().min(1).optional(), // "Mechadendrite", "Drone"
   wargearKeywords: z.array(z.string().min(1)).min(1).optional(), // the item has any of these (BOLT, IMPERIUM, PROJECTILE)
+  // The item has *all* of these: "any weapon with the BOLT and ADEPTUS ASTARTES Keywords" (VoA p.68). `wargearKeywords`
+  // is any-of, so a printed "and" needs this one or the filter is wider than the book.
+  allKeywords: z.array(z.string().min(1)).min(1).optional(),
+  // A printed weapon Trait the item has, by name without its rating: "any LAS weapon with the Pistol trait"
+  // (Apocrypha p.389), "weapons with a Heavy (X) Trait" (IoE p.95). Any of them matches.
+  weaponTraits: z.array(z.string().min(1)).min(1).optional(),
+  // A printed Trait the item must *not* have: "which does not have the Heavy trait" (Apocrypha p.388)
+  notWeaponTraits: z.array(z.string().min(1)).min(1).optional(),
   maxValue: z
     .union([
       z.number().int().min(0),

@@ -1509,6 +1509,21 @@
       "AELDARI"
     ],
     "effect": "Any melee weapon with the FORCE keyword may take this upgrade.\nWhen the wielder of this weapon succeeds at using a psychic power, they may store Exalted Icons rolled on that Psychic Mastery test. These icons may be spent to gain additional dice on subsequent Psychic Mastery tests, or to purchase Potency options on psychic powers used later. The weapon may store a maximum of 3 Exalted Icons.",
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "weapon": "melee",
+        "wargearKeywords": [
+          "FORCE"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "On a successful psychic power, store Exalted Icons from that Psychic Mastery Test (max 3); spend them for bonus dice on later Psychic Mastery Tests or for Potency options."
+        }
+      ]
+    },
     "note": "Keyword printed \"IMPERIAL\" (not IMPERIUM) in both the table and the entry; copied as printed."
   },
   {
@@ -1525,6 +1540,34 @@
       "LEAGUES OF VOTANN"
     ],
     "effect": "Any melee weapon with the BLADE keyword may take this upgrade.\nThe weapon’s damage is increased by +2, and it gains +1ED and the Mortal (1) trait. Further, damage inflicted by a Darkstar weapon cannot be negated by rolling Determination.",
+    "upgrade": {
+      "slot": "craft",
+      "fits": {
+        "weapon": "melee",
+        "wargearKeywords": [
+          "BLADE"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "damage",
+          "delta": 2
+        },
+        {
+          "kind": "ed",
+          "delta": 1
+        },
+        {
+          "kind": "trait",
+          "traitId": "mortal",
+          "rating": 1
+        },
+        {
+          "kind": "gm",
+          "what": "Damage inflicted by a Darkstar weapon cannot be negated by rolling Determination."
+        }
+      ]
+    },
     "note": "Not in the p.386 Weapon Upgrades table; Value and Keywords from its entry."
   },
   {
@@ -1542,6 +1585,35 @@
       "JOKAERO"
     ],
     "effect": "Any LAS, MELTA, FIRE, or NEEDLE weapon with the Pistol trait may be upgraded to a Digital Weapon.\nThe weapon’s ranges are halved, the weapon has only 1 reload, and it can only be reloaded during a Regroup. A character wearing multiple Digital Weapons may fire up to three as part of a Multi-Action.",
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "weapon": "ranged",
+        "wargearKeywords": [
+          "LAS",
+          "MELTA",
+          "FIRE",
+          "NEEDLE"
+        ],
+        "weaponTraits": [
+          "Pistol"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "range",
+          "multiply": 0.5
+        },
+        {
+          "kind": "gm",
+          "what": "The weapon has only 1 reload, and can only be reloaded during a Regroup."
+        },
+        {
+          "kind": "gm",
+          "what": "A character wearing several Digital Weapons may fire up to three of them as part of a Multi-Action."
+        }
+      ]
+    },
     "note": "Keywords from the entry; the p.386 table prints \"IMPERIAL, AELDARI, JOKAERO\"."
   },
   {
@@ -1556,7 +1628,22 @@
     "keywords": [
       "[ANY]"
     ],
-    "effect": "Any melee weapon with the BLADE keyword may take this upgrade.\nThe wielder of the weapon may spend a Simple Action during combat applying venom to the blade from a hidden reservoir. The weapon gains the Inflict (Poisoned 3) trait until the end of the current scene."
+    "effect": "Any melee weapon with the BLADE keyword may take this upgrade.\nThe wielder of the weapon may spend a Simple Action during combat applying venom to the blade from a hidden reservoir. The weapon gains the Inflict (Poisoned 3) trait until the end of the current scene.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "weapon": "melee",
+        "wargearKeywords": [
+          "BLADE"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "The wielder spends a Simple Action applying venom from a hidden reservoir; the weapon then has Inflict (Poisoned 3) until the end of the scene."
+        }
+      ]
+    }
   },
   {
     "id": "apoc-exterminator-cartridge",
@@ -1574,6 +1661,20 @@
       "ADEPTUS MINISTORUM"
     ],
     "effect": "An Exterminator may be mounted onto any other weapon, and it counts as a hand flamer which may only be fired once.",
+    "upgrade": {
+      "slot": "attachment",
+      "fits": {
+        "kinds": [
+          "weapon"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Counts as a hand flamer mounted on the weapon, which may only be fired once."
+        }
+      ]
+    },
     "note": "No Effect line printed; effect is the entry's rule sentence."
   },
   {
@@ -1589,7 +1690,30 @@
       "IMPERIUM",
       "SCUM"
     ],
-    "effect": "A Folding Stock can be fitted onto any Pistol weapon.\nThe weapon loses the Pistol trait, but its Short range is increased by +3, its medium range is increased by +6, and its long range is increased by 9."
+    "effect": "A Folding Stock can be fitted onto any Pistol weapon.\nThe weapon loses the Pistol trait, but its Short range is increased by +3, its medium range is increased by +6, and its long range is increased by 9.",
+    "upgrade": {
+      "slot": "grip",
+      "fits": {
+        "weapon": "ranged",
+        "weaponTraits": [
+          "Pistol"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "removeTrait",
+          "traitId": "pistol"
+        },
+        {
+          "kind": "range",
+          "bands": [
+            3,
+            6,
+            9
+          ]
+        }
+      ]
+    }
   },
   {
     "id": "apoc-foregrip",
@@ -1605,7 +1729,30 @@
       "SCUM"
     ],
     "effect": "A Folding Stock can be fitted onto any Assault or Rapid Fire weapon which does not have the Heavy trait.\nThe weapon gains the Assault trait, if it did not already have it. If the weapon already had the Assault trait, it instead ignores the DN increase for firing as part of a Sprint action.",
-    "note": "Printed \"A Folding Stock can be fitted onto…\" in the Foregrip entry (a copy slip for Foregrip); copied as printed."
+    "upgrade": {
+      "slot": "grip",
+      "fits": {
+        "weapon": "ranged",
+        "weaponTraits": [
+          "Assault",
+          "Rapid Fire"
+        ],
+        "notWeaponTraits": [
+          "Heavy"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "trait",
+          "traitId": "assault"
+        },
+        {
+          "kind": "gm",
+          "what": "If the weapon already had Assault, it instead ignores the DN increase for firing as part of a Sprint action."
+        }
+      ]
+    },
+    "note": "Printed \"A Folding Stock can be fitted onto…\" in the Foregrip entry (a copy slip for Foregrip); copied as printed. The effect text needs checking against Apocrypha p.388: it opens \"A Folding Stock can be fitted onto…\", so the compatibility line, and possibly the effect, may be the Folding Stock's. The `upgrade` block follows the entry's name (a foregrip) and its second paragraph."
   },
   {
     "id": "apoc-independent-weapon-mount-pistol",
@@ -1620,6 +1767,21 @@
       "[ANY]"
     ],
     "effect": "This heavy bracing allows a single ranged weapon to be mounted along the arm, on a shoulder, or somewhere else on the character’s body or armour. It allows the user to keep both hands free to use other weapons or tools.\nThe value and rarity of this mod varies by weapon size\nValue: 4 (Rare) for Pistols, 6 (Rare) for non-Heavy weapons, 8 (Very Rare) for Heavy weapons.",
+    "upgrade": {
+      "slot": "mount",
+      "fits": {
+        "weapon": "ranged",
+        "weaponTraits": [
+          "Pistol"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Mounted on the arm, shoulder or armour: the user keeps both hands free for other weapons or tools."
+        }
+      ]
+    },
     "note": "Value varies by weapon size, so split into three entries (names ours). The p.386 table prints only \"6 Rare\". No Effect line printed; effect is the entry's rule text."
   },
   {
@@ -1635,6 +1797,21 @@
       "[ANY]"
     ],
     "effect": "This heavy bracing allows a single ranged weapon to be mounted along the arm, on a shoulder, or somewhere else on the character’s body or armour. It allows the user to keep both hands free to use other weapons or tools.\nThe value and rarity of this mod varies by weapon size\nValue: 4 (Rare) for Pistols, 6 (Rare) for non-Heavy weapons, 8 (Very Rare) for Heavy weapons.",
+    "upgrade": {
+      "slot": "mount",
+      "fits": {
+        "weapon": "ranged",
+        "notWeaponTraits": [
+          "Heavy"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Mounted on the arm, shoulder or armour: the user keeps both hands free for other weapons or tools."
+        }
+      ]
+    },
     "note": "Value varies by weapon size, so split into three entries (names ours). The p.386 table prints only \"6 Rare\". No Effect line printed; effect is the entry's rule text."
   },
   {
@@ -1650,6 +1827,21 @@
       "[ANY]"
     ],
     "effect": "This heavy bracing allows a single ranged weapon to be mounted along the arm, on a shoulder, or somewhere else on the character’s body or armour. It allows the user to keep both hands free to use other weapons or tools.\nThe value and rarity of this mod varies by weapon size\nValue: 4 (Rare) for Pistols, 6 (Rare) for non-Heavy weapons, 8 (Very Rare) for Heavy weapons.",
+    "upgrade": {
+      "slot": "mount",
+      "fits": {
+        "weapon": "ranged",
+        "weaponTraits": [
+          "Heavy"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Mounted on the arm, shoulder or armour: the user keeps both hands free for other weapons or tools."
+        }
+      ]
+    },
     "note": "Value varies by weapon size, so split into three entries (names ours). The p.386 table prints only \"6 Rare\". No Effect line printed; effect is the entry's rule text."
   },
   {
@@ -1664,7 +1856,21 @@
     "keywords": [
       "LEAGUES OF VOTANN"
     ],
-    "effect": "Any MASS DRIVER weapon may take this upgrade.\nThe weapon gains +3 ED."
+    "effect": "Any MASS DRIVER weapon may take this upgrade.\nThe weapon gains +3 ED.",
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "wargearKeywords": [
+          "MASS DRIVER"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "ed",
+          "delta": 3
+        }
+      ]
+    }
   },
   {
     "id": "apoc-matched-pair",
@@ -1679,6 +1885,22 @@
       "[ANY]"
     ],
     "effect": "This modification may be applied to a pair of identical melee weapons or to a pair of identical pistols. If either weapon has any other upgrades, both must have that upgrade.\nThe weapons gain the Paired trait.",
+    "upgrade": {
+      "slot": "craft",
+      "fits": {
+        "condition": "a pair of identical melee weapons, or a pair of identical Pistols; the upgrade is taken on both"
+      },
+      "mods": [
+        {
+          "kind": "trait",
+          "traitId": "paired"
+        },
+        {
+          "kind": "gm",
+          "what": "If either weapon has any other upgrade, both weapons must have that upgrade."
+        }
+      ]
+    },
     "note": "The entry prints Keywords \"ANY\" without brackets; the p.386 table prints \"[ANY]\", used here."
   },
   {
@@ -1695,7 +1917,32 @@
       "ASTRA MILITARUM",
       "SCUM"
     ],
-    "effect": "This modification may be applied to any las weapon which lacks the Heavy trait.\n+2 ED, weapon loses the Reliable trait and reduces Salvo by 1."
+    "effect": "This modification may be applied to any las weapon which lacks the Heavy trait.\n+2 ED, weapon loses the Reliable trait and reduces Salvo by 1.",
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "wargearKeywords": [
+          "LAS"
+        ],
+        "notWeaponTraits": [
+          "Heavy"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "ed",
+          "delta": 2
+        },
+        {
+          "kind": "removeTrait",
+          "traitId": "reliable"
+        },
+        {
+          "kind": "salvo",
+          "delta": -1
+        }
+      ]
+    }
   },
   {
     "id": "apoc-powered-blade",
@@ -1711,6 +1958,18 @@
       "ASURYANI"
     ],
     "effect": "You may use this weapon as a Power Blade.",
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "weapon": "melee"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "The weapon may be used as a Power Blade (Core p.214)."
+        }
+      ]
+    },
     "note": "Keywords from the entry; the p.386 table prints only \"AELDARI\"."
   },
   {
@@ -1726,7 +1985,21 @@
       "IMPERIUM",
       "ADEPTUS MINISTORUM"
     ],
-    "effect": "This quality may only be applied to melee weapons, and cannot be applied to unique weapons, or weapons of Xenos or Chaos manufacture.\nThe weapon gains the Blessed (2) trait."
+    "effect": "This quality may only be applied to melee weapons, and cannot be applied to unique weapons, or weapons of Xenos or Chaos manufacture.\nThe weapon gains the Blessed (2) trait.",
+    "upgrade": {
+      "slot": "craft",
+      "fits": {
+        "weapon": "melee",
+        "condition": "not a unique weapon, and not of Xenos or Chaos manufacture"
+      },
+      "mods": [
+        {
+          "kind": "trait",
+          "traitId": "blessed",
+          "rating": 2
+        }
+      ]
+    }
   },
   {
     "id": "apoc-suspensor-rig",
@@ -1740,7 +2013,21 @@
     "keywords": [
       "[ANY]"
     ],
-    "effect": "This quality may be applied to any Heavy weapon.\nThe weapon is always considered to be braced, even when the user is moving."
+    "effect": "This quality may be applied to any Heavy weapon.\nThe weapon is always considered to be braced, even when the user is moving.",
+    "upgrade": {
+      "slot": "mount",
+      "fits": {
+        "weaponTraits": [
+          "Heavy"
+        ]
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "The weapon is always considered to be braced, even while the user is moving."
+        }
+      ]
+    }
   },
   {
     "id": "apoc-warp-focus",
@@ -1755,6 +2042,18 @@
       "CHAOS"
     ],
     "effect": "This may be added to any melee weapon.\nAdd +2d3 metres to the range of any psychic power the wielder uses while wielding this weapon.",
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "weapon": "melee"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Add +2d3 metres to the range of any psychic power the wielder uses while wielding this weapon."
+        }
+      ]
+    },
     "note": "Not in the p.386 Weapon Upgrades table; Value and Keywords from its entry."
   },
   {
@@ -2055,6 +2354,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile Poisoned, the target may not roll Determination.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target may not roll Determination."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2071,6 +2393,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile the target is Poisoned, they suffer a Mortal Wound at the start of each Turn.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target suffers a Mortal Wound at the start of each Turn."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2087,6 +2432,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target is left enfeebled and vulnerable. While poisoned, the target halves their Resilience, rounding up.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target halves their Resilience, rounding up."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2103,6 +2471,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target suffers the Frenzied condition while the Poisoned effect lasts, and they are incapable of distinguishing friend from foe while Frenzied. Any attempts to remove the Frenzied condition fail while the Poisoned effect remains.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target is Frenzied and cannot tell friend from foe; attempts to remove Frenzied fail while the Poisoned effect remains."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2119,6 +2510,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target gasps for air while Poisoned, and begins to suffocate, as described on page 201 of the Wrath & Glory rulebook.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target gasps for air and begins to suffocate (Core p.201)."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2135,6 +2549,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target’s blood becomes volatile while Poisoned; whenever the character suffers damage, is knocked prone, runs, or sprints, they suffer 1d3 Mortal Wounds.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target suffers 1d3 Mortal Wounds whenever they take damage, are knocked prone, run or sprint."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2151,6 +2588,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile the target is Poisoned, any of the target’s allies within 5m are Staggered.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While the target is Poisoned, any of their allies within 5 m are Staggered."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2167,6 +2627,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target’s senses are overwhelmed with pain while Poisoned; the character suffers 1d3 Shock at the start of each of their turns, and doubles the amount of Shock they suffer from other sources.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target suffers 1d3 Shock at the start of each of their turns and doubles the Shock they suffer from other sources."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2183,6 +2666,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nWhile the target is Poisoned, any of the target’s allies within 5m adds +2DN to Resolve Tests.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While the target is Poisoned, any of their allies within 5 m add +2DN to Resolve Tests."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2199,6 +2705,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target is filled with dread while Poisoned; the character is under the effects of Terror while Poisoned and they cannot recover from Terror until after the Poisoned effect is ended. Ork characters become Frenzied instead, while Adeptus Astartes and Primaris Astartes characters are completely unaffected by this poison.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target is under Terror and cannot recover until it ends. Orks become Frenzied instead; Adeptus Astartes and Primaris are unaffected."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2215,6 +2744,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target bleeds profusely while Poisoned and suffers the Bleeding condition while the Poisoned effect lasts. Any attempts to remove the Bleeding condition fail while the Poisoned effect remains.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target is Bleeding, and attempts to remove Bleeding fail while the Poisoned effect remains."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2231,6 +2783,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nThe target’s psychic abilities are impaired while Poisoned, suffering +4DN on all Psychic Mastery Tests, and inflicting 1d3 Shock each time a Psychic Mastery Test is attempted.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "While Poisoned, the target suffers +4DN on all Psychic Mastery Tests and 1d3 Shock each time one is attempted."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   },
   {
@@ -2247,6 +2822,29 @@
       "TOXIN"
     ],
     "effect": "These upgrades may be used on any DRUKHARI weapon with the Fleshbane trait or with the Inflict (Poisoned X), applying an additional effect upon any target who suffers one or more wounds from the weapon. This adds the Inflict (Poisoned 3) trait to the weapon, if it does not already have that trait or a better version, and applies a specific effect determined by the poison.\nAt the start of the victim’s first turn after suffering the Poisoned condition, if they fail the Toughness test to shake off the effects then they suffer enough Mortal Wounds to exceed their Max Wounds by 1, then they immediately suffer a Traumatic Injury and begin Dying.",
+    "upgrade": {
+      "slot": "coating",
+      "fits": {
+        "wargearKeywords": [
+          "DRUKHARI"
+        ],
+        "weaponTraits": [
+          "Fleshbane",
+          "Inflict"
+        ],
+        "condition": "the Inflict Trait must be Inflict (Poisoned X)"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "Adds Inflict (Poisoned 3) unless the weapon already has that Trait or better; the poison's effect applies to any target that suffers one or more Wounds from it."
+        },
+        {
+          "kind": "gm",
+          "what": "If the target fails the Toughness test on their first turn after being Poisoned, they suffer enough Mortal Wounds to exceed Max Wounds by 1, take a Traumatic Injury and begin Dying."
+        }
+      ]
+    },
     "note": "Effect starts with the Drukhari Poisons section rule (p.393)."
   }
 ]
