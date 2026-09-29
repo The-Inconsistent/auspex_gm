@@ -345,10 +345,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     uses the campaign's Tier. *Proposed; awaiting the GM.*
 55. **Advancement in play** (Core pp.146–151): the XP a character has earned (session XP, p.321) buys the same ratings,
     Talents, powers and languages as at creation, priced from where creation left them, and Advancement Packages
-    (`notAtCreation` ones too). When the group Ascends (the GM raises the campaign's Tier), each character may take one
-    Ascension Package per Tier Ascended, in order: its requirements met at the Tier it leaves, "× the new Tier" priced at
-    the Tier it reaches. A power's "at creation" price (Smite) gives way to its later one. Rank is from the XP earned.
-    The creation budget stays as it was. *Proposed; awaiting the GM.*
+    (`notAtCreation` ones too). When the group Ascends (the GM raises the campaign's Tier), each character takes **one**
+    Ascension Package for that Ascension, "regardless of the amount of Tiers you are ascending" (Core p.148) — this
+    corrects an earlier reading of one package per Tier Ascended. Its requirements are met at the Tier the character
+    leaves, "× the new Tier" is priced at the Tier reached, and "per Tier Ascended" on the package itself (Dauntless
+    Reputation's Influence, Core p.151) still counts every Tier the one Ascension crossed. The campaign records no
+    history of its Ascensions, only the Tier it is at now, so the builder reads the whole distance from the character's
+    creation Tier to the campaign's Tier as a single Ascension and allows one Ascension Package bought in play; a group
+    that Ascends twice in one campaign needs that record first (issue #15). A power's "at creation" price (Smite) gives
+    way to its later one. Rank is from the XP earned. The creation budget stays as it was.
+    *Proposed; awaiting the GM.* The code still buys one package per Tier (`build.ts`, §12).
 56. **What players know of the enemy** is not a rule: Set the Scene (Core p.176) describes the ground, not the foes, and
     an enemy is found through the fiction (Stealth Score vs Awareness, Core pp.181–182; Ambush, p.177). The phones show
     what the table shows: a threat whose mini isn't placed yet is `hidden` and never sent to players; once placed it's
@@ -408,6 +414,65 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     the list (none for these three, Divination or Theosophamy for the Astropath), and a power bought from outside it is
     an error. Archetypes that print "one other discipline of your choice" (Chaos Sorcerer, Rogue Psyker, the
     Librarians, Bonesinger) take that one as the species' choice, unchanged.
+63. **Fitting an upgrade is instant** — Core p.227 says an upgrade applies "usually instantly", and prints no Test, no
+    time and no tools. House decision: fitting or removing an upgrade costs no Tech Test and no downtime, so the app
+    treats it as part of the item from the moment it is attached, never as an action in a fight. The "usually" is the
+    GM's: they may call for a Tech (Int) Test when the fiction gives them one (fitting it under fire, in the field,
+    with no workshop), the way §11.14 leaves the ammo carry limit to the table. *Proposed; awaiting the GM.*
+64. **What counts as an upgrade "type"** — Core p.227 caps a weapon at three upgrades, "and only one of each type — you
+    can't attach two grips or two scopes to the same weapon"; Distinction is exempt from the maximum (p.228). Grips and
+    scopes are the only types the book names, and the catalogue holds 61 upgrades across Core, VoA, IoE and Apocrypha.
+    House decision: every upgrade carries a `slot` (the book's "type", named `slot` in the data because `type` is
+    taken) from a short closed vocabulary, transcribed with the entry. The transcriber proposes the slot from the
+    printed text and the GM confirms it before the entry is merged; `validate.ts` enforces the vocabulary, so a new
+    upgrade can't invent a slot in passing. The vocabulary:
+    - **On a weapon:** `sight` (Magnocular Scope, Red-Dot Sight, Preysense Sight, and the M40 Targeting System, which
+      VoA p.68 fits "instead of a normal scope"); `grip` (Duelling Grip, Foregrip, Folding Stock, Gene-Grip
+      Bio-Verator); `muzzle` (Silencer, Percussive Muzzle Brake); `magazine` (Ammo Drum, Autoloader); `bayonet`
+      (Bayonet Lug, Chain Bayonet); `attachment`, a second weapon carried on the first (Combi Weapon, Exterminator
+      Cartridge); `mount`, bracing that carries the weapon (Independent Weapon Mount, Suspensor Rig, Anti-Grav
+      Platform); `core`, the works (Megathoule Accelerator, Overcharge Capacitor, Mass Accelerator, Aethyric
+      Capacitor, Warp Focus, Powered Blade, Digital Weapon); `craft`, a quality of the whole weapon (Mastercrafted,
+      Sanctified, Darkstar, and Distinction, which keeps a slot although it doesn't count toward the three); and
+      `coating` (Envenomed Blade and the Drukhari toxins, Apocrypha pp.393–395, one substance on one blade).
+    - **On armour:** `crest` (Teleport Crest, Apocrypha p.444, which prints the rule itself: no second crest); `plate`,
+      something worn over or in place of a piece of the suit (Adamantine Cuirass, VoA p.73, which replaces the chest
+      piece; Chains, Blades and Hooks, IoE p.96); and `system` (the T'au support systems, Apocrypha pp.445–447).
+    - **The awkward ones,** where the printed text doesn't settle the slot and the GM's word decides: **Matched Pair**
+      (Apocrypha p.388) is a property of two weapons, not one, so it takes `craft` on both, and its rule that the
+      other upgrades must be matched stays the GM's to police. The **Independent Weapon Mount** is one upgrade priced
+      three ways (Pistol, non-Heavy, Heavy), not three slots. The **Anti-Gravitic Suspensor Crystal** (IoE p.95) fits
+      either a weapon or armour — `mount` on the one, `system` on the other — and its printed "no more than 1" holds
+      whichever it is. **Chains, Blades and Hooks** (IoE p.96) is bought up to three times, once per option, so its
+      own limit wins over one-per-`plate`. The **Rangefinder (detachable)** (IoE p.97) is a `sight` the wearer moves
+      between weapons between scenes. The strain is the **T'au support systems**: ten entries share `system`, so
+      one-per-slot would leave a battlesuit a single one, which their own text contradicts. Proposal: SUPPORT SYSTEM
+      entries are exempt from one-per-slot the way Distinction is exempt from the maximum, and still spend the three.
+      *Proposed; awaiting the GM.*
+65. **Armour takes the weapon limit** — Core p.227 caps upgrades at three, one of each type, and prints it of weapons
+    alone; no book gives armour a limit. House decision: armour takes the same cap — at most three upgrades, one per
+    `slot` — because the reason for the rule (a finite number of places to bolt something on) reads the same on a suit
+    as on a rifle, and one rule is easier at the table than two. It binds few entries today: the Adamantine Cuirass
+    (VoA p.73), the Teleport Crest (Apocrypha p.444), the ten T'au support systems (Apocrypha pp.445–447), the
+    Anti-Gravitic Suspensor Crystal and Chains, Blades and Hooks (IoE pp.95–96) — and, with §11.64's exemption for
+    SUPPORT SYSTEM, it is a battlesuit that feels it first. If the GM would rather leave armour uncapped, drop the
+    maximum and keep one-per-`slot`, which is the part the data needs. *Proposed; awaiting the GM.*
+66. **Ascension is the group's decision, not one character's** (Core pp.147–148): Experience Ascension asks that "every
+    character in your group has earned 100 or more total XP in the current Tier" and that the group "collectively
+    decide" to raise the Tier; Milestone Ascension is the GM's call and gives every character 100 XP (Core p.148). So
+    a character who passes 100 XP in the current Tier first does not Ascend alone. The campaign holds one Tier, and a
+    character Ascends only when the GM raises it, all of them together. What does follow one character's XP is Rank
+    (Core p.146, +1 per 40, at most 3), which is why a character can meet Rank 3 — and so Archetype Ascension
+    (§11.67) — long before the group is near Ascending. A solo Ascension, for a party at mixed Tiers, would be a house
+    rule of our own and is not modelled; the table can revisit it. *Proposed; awaiting the GM.*
+67. **"An Archetype of their Faction"** in Archetype Ascension (Core p.155) is read as the same `factionId`: the
+    Archetype the player picks must name the Faction record the old Archetype names, not merely share a keyword. The
+    book's own example, a Space Marine Scout becoming a Tactical Space Marine, is one Faction on that reading (both
+    `adeptus-astartes`). The sub-faction is not part of the match: a Chapter, Craftworld, Forge World or Coterie
+    keyword rides along unchanged, with everything else the character keeps. The new Archetype must be at the Tier
+    Ascended to, the character needs Rank 3 (80 XP earned, Core p.146) and the GM's agreement, and XP is spent until
+    their Attributes and Skills equal or exceed the new Archetype's; they then gain its abilities, Wargear and
+    Influence, and none of its Attribute or Skill bonuses. *Proposed; awaiting the GM.*
 
 ---
 
@@ -433,4 +498,8 @@ Implementation details: [game-logic.md](game-logic.md).
 | Annihilation | done | `pcHit`: one hit over 2 × Max Wounds sets `character.annihilated` → Dead (p.194, §11.7); GM RESTORE / undo clears it. Agents only: an Adversary over max Wounds is already the GM's call (§11.10) |
 | Exhausted → Mortal Wounds | done | `exhaustedShock` in `pcHit` and `combatant.adjust` (p.199, §11.12); single Threats too, Mobs keep no Shock track |
 | Timed Conditions | done | Hindered, Staggered, Vulnerable (`isTimed`): `turn.start` / `turn.seize` arm the ones held (`combatant.expiring`), `turn.end` removes them (§11.8). Pinned doesn't expire (the attacker isn't tracked) |
+| Advancement in play | partial | ADVANCE spends XP on ratings, Talents, powers, languages and packages (`resolveBuild`). No XP-to-spend or Rank on the sheet, no LEVEL UP, no purchase history (issue #15 step 5) |
+| Ascension Package count | **wrong** | §11.55 now reads Core p.148 as one package per Ascension; `build.ts` (the `ascended` / `from` loop) still sells one per Tier Ascended, and the builder's copy says so. Fixed with the Ascension flow (issue #15 step 6) |
+| Ascension in play | not built | No eligibility tracking (100 XP in the current Tier), no Milestone +100 XP, no `campaign.ascend`, no Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) (issue #15 steps 6–7) |
+| Wargear upgrades | not built | Upgrades are catalogue entries with prose only: no `slot`, no `fits`, no modifiers, and starting-wargear upgrades land as trait names (`build.ts`). Nothing fits one to a weapon in play (Core pp.227–228; §11.63–§11.65) (issue #15 steps 2–4) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |

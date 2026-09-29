@@ -382,5 +382,7 @@ Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / 
 Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
-Known gaps against the spec: none open; Pinned doesn't expire because the attacker isn't tracked. The live list is
+Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked, and the advancement side is
+open — wargear upgrades, the level-up flow and Ascension (rules-flow.md §11.60–§11.64, issue #15), including one
+Ascension Package per Tier where §11.55 now says one per Ascension. The live list is
 [rules-flow.md](rules-flow.md) §12.
