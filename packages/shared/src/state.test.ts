@@ -146,6 +146,12 @@ test("toPlayerView: each player gets only their own Agent's objectives", () => {
   assert.deepEqual(objectives(null), [[], []], "a player without a character sees none");
 });
 
+test("toPlayerView: the GM's Ruin isn't sent", () => {
+  const s = table(enc([]), []);
+  s.campaign.ruin = 3;
+  assert.equal(toPlayerView(s, null).campaign.ruin, 0);
+});
+
 test("toPlayerCodex: a handout with an audience reaches only those Agents", () => {
   const h = (id: string, o: Partial<Codex["handouts"][number]> = {}): Codex["handouts"][number] => ({
     id,

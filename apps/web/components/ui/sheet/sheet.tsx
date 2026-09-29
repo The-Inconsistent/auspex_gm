@@ -143,7 +143,6 @@ export function Sheet({ me, tier, table }: SheetProps) {
       </div>
       <div className="dim" style={{ fontSize: 12 }}>
         WRATH: reroll failed dice · narrative declaration · restore {"Rank + Tier"} Shock (p.164).
-        {table && ` GM RUIN: ${table.state.campaign.ruin}`}
       </div>
 
       <div className="rule">

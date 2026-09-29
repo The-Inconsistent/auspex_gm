@@ -82,7 +82,7 @@ Kraken. [GM] each marine starts with one type.
    (VoA p.62); breacha ram = Power Klaw (Core p.213); throwing knives = Knife (Core p.211, Thrown, not Silent);
    Snipa = Big Shoota (Core p.220) + Magnocular Scope (Core p.228) + Silencer (Core p.229); the Comms Boy keeps the
    Slugga.
-6. **Skitarii** use the Tier 4 row of the Quick NPC table (Core p.326).
+6. **Skitarii and tech-priests** use the homebrew High Altar of Technology stat blocks (`hat-*`, PDF pp.21–35), since no official book prints them.
 7. **The Volkus cache** belongs to Cryptek Anephteh (TA pp.133–134). Ka'lalek's raid is stage 5 of a "Waking" track,
    reskinned from LotL p.73's five-stage response track.
 8. **Varonius** had no part in it: it was a tellyporta accident.
@@ -153,7 +153,7 @@ copied from another block (`ta-kommando.json` note); the campaign fields the Cor
 |---|---|---|
 | Ork Kommandos | Kommando Core p.355; Boss Gutshiva GK p.8; Dudd GK p.18; Grot Core p.358 | Kommando, Grot and Dudd = **Troop**, so they come in Mobs; Gutshiva = **Elite** |
 | Necrons (Cryptek Anephteh's cache) | TA pp.131–156 (Anephteh pp.133–134) | see each stat block |
-| Adeptus Mechanicus (Skitarii) | no bestiary entries: the Tier 4 row of the Quick NPC table (Core p.326) | GM sets |
+| Adeptus Mechanicus (Skitarii, tech-priests) | High Altar of Technology (homebrew) PDF pp.21–35: Skitarii Vanguard p.28, Ranger p.29, Sicarans pp.30–31, Kataphron p.27, Enginseer p.31, Datasmith p.32, Electro-Priests p.33, Dominus p.34, Kastelan p.21 | see each stat block (Tier 4: Skitarii and Electro-Priests Troop, Sicarans and Kataphron Elite) |
 
 Encounter guideline (TA p.8): two Troops per Agent, half in a Mob, plus one Elite or Adversary. For five Space Marines
 that is **Gutshiva + 10 Troops**. TA p.8 adds that "optimised groups may require larger, tougher, or more numerous

@@ -13,7 +13,7 @@ export const buildCatalogue = (homebrew: boolean): BuildCatalogue => ({ creation
 
 // Why a resolved build can't be saved yet, as the builder's refusal reads it, or null when it's ready. Shared by
 // `character.build` and the library's PUT, so both refuse in the same words. `gmLater`: the library has no GM, so what
-// only a GM judges waits for the campaign's GM after the import (docs/rules-flow.md §11.58).
+// only a GM judges waits for the campaign's GM after the import (docs/rules-flow.md §11.59).
 export function buildRefusal(r: ResolvedBuild, { gmLater = false }: { gmLater?: boolean } = {}): string | null {
   const next = r.pending[0];
   if (next) return `Still to choose: ${next.what}`;

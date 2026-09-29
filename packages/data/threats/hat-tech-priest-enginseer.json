@@ -1,0 +1,41 @@
+{
+  "id": "hat-tech-priest-enginseer",
+  "name": "Tech-Priest Enginseer",
+  "source": "high-altar-of-technology",
+  "page": 31,
+  "faction": "mechanicus",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>", "ASTRA MILITARUM"],
+  "attributes": { "S": 4, "T": 4, "A": 4, "I": 4, "Wil": 4, "Int": 5, "Fel": 4 },
+  "resilience": { "value": 8, "note": "Light Power Armor 4; Soak 4" },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Awareness", "dice": 7, "passive": 4 },
+      { "name": "Weapon Skill", "dice": 8 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Tech", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Rite of Repair", "text": "Tech-Priests automatically reduce the time by half for any Tech test. They add +1d on Tech tests made to fix or repair a damaged machine." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Omnissian Axe", "damage": 9, "ed": 2, "ap": -2, "range": [2] },
+        { "name": "Servo-Arm", "damage": 10, "ed": 2, "ap": -3, "range": [1], "traits": ["Unwieldy (2)"] },
+        { "name": "Laspistol", "damage": 7, "ed": 1, "range": [24], "traits": ["Pistol", "Steadfast"] }
+      ]
+    }
+  ],
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Stat block on PDF p.32, heading on p.31. Keyword printed \"Astra Militarum (if attached to a regiment)\". Melee reach printed \"Range 2m (M)\" / \"Range 1m (M)\". Wargear: 3 vials Sacred Machine Oil, Auspex, Combi-tool. Profile also represents a basic tech-priest."
+}

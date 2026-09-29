@@ -55,7 +55,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | `faction` | `imperial` \| `heretic` \| `daemon` \| `ork` \| `aeldari` \| `drukhari` \| `genestealer` \| `necron` \| `tau` \| `mechanicus` \| `votann` | Grouping for the GM picker |
 | `threat` | array of `T`/`E`/`A`/`M` or `null`, 4–5 entries | Class at Tier 1..4 (supplements print a Tier 5 column). `null` is a printed "—": no class at that Tier (a follower not yet available); the last Tier is always printed, and `threatClassAt` uses the first printed Tier below it |
 | `keywords` | string[], ≥ 1 | As printed, including `<PLACEHOLDER>` keywords |
-| `attributes` | `{ S, T, A, I, Wil, Int, Fel }`, ints | |
+| `attributes` | `{ S, T, A, I, Wil, Int, Fel }`, ints; `T`, `Wil`, `Fel` may be `null` | `null` = a printed "–": no score, auto-passes those Tests (the High Altar of Technology's Battle-Automata) |
 | `resilience` | `{ value: int, note?: string }` | `note` holds the bracketed part, e.g. the AR |
 | `defence` | int | |
 | `wounds` | positive int | Max Wounds |
@@ -66,7 +66,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | `bonuses[]` | `{ name, text }`, default `[]` | The BONUSES box |
 | `abilities[]` | `Ability`, default `[]` | The ABILITIES box (below) |
 | `determination` | string, optional | The DETERMINATION line as printed |
-| `conviction`, `resolve`, `speed` | int | |
+| `conviction`, `resolve`, `speed` | int; `conviction`, `resolve` may be `null` | `null` as for `attributes` |
 | `size` | `Tiny` \| `Small` \| `Avg` \| `Large` \| `Huge` \| `Gargantuan` | |
 | `options[]` | `ThreatOption`, default `[]` | Mob and variant options (below) |
 | `mobAbilities[]` | `Ability`, default `[]` | Abilities that apply only while in a Mob |
@@ -168,6 +168,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
+| The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
 | Bloody Gates | *none* (adventure) | `Wrath & Glory_ Bloody Gates.pdf` | printed |
 | Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
@@ -229,6 +230,27 @@ All 36 Core threats (pp.327–371) are in. Print errors are copied as printed, e
   Tactical Space Marine's swaps), Runtherd (p.358).
 - **Faction calls:** Chrono Gladiator `imperial`; Combat Servitor and Servo-Skull `mechanicus`; Poxwalker and Chaos
   Spawn `heretic` (by keyword, though printed among the daemons).
+
+### The High Altar of Technology transcription notes
+
+12 homebrew Adeptus Mechanicus threats (`hat-*`, PDF pp.21–35, "Legions of the Omnissiah" plus the Kastelan Robot).
+The book uses the 1st-edition stat layout, mapped as follows:
+- **Page** is the PDF page of the heading (the book has no folios); a block that runs on says so in `note`.
+- **Threat Classification** prose ("Adversary for Tiers 1-2, Elites for tiers 3+") → 5 letters.
+- **Intellect** → `Int`. **Soak** has no 2nd-edition field, so it is appended to the Resilience note ("Battle Plate
+  5; Soak 6"). **Passive Awareness** → an `Awareness` skill rolling the Default pool (an unlisted skill rolls Default,
+  Core p.324), with the printed Passive.
+- **Weapons:** one Range value (`[48]`), as the Necrontyr wargear; "Range 2m (M)" melee → `[2]`.
+- **Loadout choices** ("Choose one of the four profiles") → an untyped "Attacks" ability with the printed sentence,
+  and one `variant` per loadout, with no base ACTION unless a default is named (the Dominus's Omnissian Axe).
+- **Sidebars:** Skitarii Alphas and Special Weapons (p.30) on both Ranger and Vanguard; Sicaran Princeps (p.31) on
+  both Sicarans. Their stat changes live in the option text.
+- **Kastelan "--"** Toughness, Willpower, Fellowship, Resolve and Conviction → `null` (Battle-Automata auto-passes).
+  Its table keywords (ROBOT) differ from the text's (BATTLE-AUTOMATA); the table is kept, both in `note`.
+- **Kept as printed:** "Sicaran" for Sicarian (ids `hat-sicaran-*`), "Chorclaw", "Blast(Medium)", Kataphron's Iron
+  Soul "Conviction tests". Named with no printed profile: Arc Rifle, Plasma Caliver, Transuranic Arquebus.
+- **Not transcribed:** the vehicle-format walkers (Ballistarii, Sydonian Dragoon, Onager Dunecrawler, pp.20–21), the
+  wargear, Forge Worlds and archetypes.
 
 ---
 

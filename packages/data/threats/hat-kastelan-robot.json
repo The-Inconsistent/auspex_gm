@@ -1,0 +1,151 @@
+{
+  "id": "hat-kastelan-robot",
+  "name": "Kastelan Robot",
+  "source": "high-altar-of-technology",
+  "page": 21,
+  "faction": "mechanicus",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ROBOT",
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "<FORGE WORLD>"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": null,
+    "A": 4,
+    "I": 4,
+    "Wil": null,
+    "Int": 2,
+    "Fel": null
+  },
+  "resilience": {
+    "value": 17,
+    "note": "Walker; Soak 8"
+  },
+  "defence": 4,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 5,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Repulsor Grid",
+      "text": "A Kastelan Robot has a Force Shield with AV *5. When attempting to soak wounds, if two or more 6s are rolled on the soak roll, the enemy that made the attack suffers a mortal wound."
+    },
+    {
+      "name": "Battle Protocols",
+      "text": "Kastelan Robots can have one of three battle protocols active at a time. A Kastelan Robot begins combat with Aegis Protocol active and cannot change to another except by the actions of a Cybernetica Datasmith."
+    },
+    {
+      "name": "Aegis Protocol",
+      "text": "The Kastelan robot adds 2 to its resilience and increases the AV of its Repulsor Grid force shield to 7."
+    },
+    {
+      "name": "Conqueror Protocol",
+      "text": "The Kastelan cannot fire any ranged weapons it has equipped, but may ignore up to 2DN penalty for making a melee Multi-Attack."
+    },
+    {
+      "name": "Protector Protocol",
+      "text": "The Kastelan cannot use any melee weapons it has equipped and cannot move, but doubles the Salvo rating for all its ranged weapons."
+    },
+    {
+      "name": "Battle-Automata",
+      "text": "A Robot is not alive, and therefore ignores any effects that would affect the mind or physiology, such as poisons, radiation, disease, or mind-affecting psychic powers. A Robot does not have a toughness, willpower, fellowship, resolve or conviction score and is considered to automatically pass those tests if it is required to make them, except where the GM determines otherwise."
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Attacks",
+      "text": "A Kastelan Robot is generally found in one of two configurations:"
+    }
+  ],
+  "conviction": null,
+  "resolve": null,
+  "speed": 8,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Kastelan Fists and Incendine Combustor",
+      "text": "Kastelan Fists (18+2ED; AP-3; Brutal) Incendine Combustor (12+2ED; AP-1; Range 16m; Salvo 2; Blast (Large), Blaze, Heavy (6), Spread)",
+      "weapons": [
+        {
+          "name": "Kastelan Fists",
+          "damage": 18,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        },
+        {
+          "name": "Incendine Combustor",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            16
+          ],
+          "salvo": 2,
+          "traits": [
+            "Blast (Large)",
+            "Blaze",
+            "Heavy (6)",
+            "Spread"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "3x Heavy Phosphor Blaster",
+      "text": "3x Heavy Phosphor Blaster (14+2ED; AP-2; 72m; Salvo 3; Blaze, Heavy (6), Phosphor). All three Phosphor Blasters may be fired individually each turn.",
+      "weapons": [
+        {
+          "name": "Heavy Phosphor Blaster",
+          "count": 3,
+          "damage": 14,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            72
+          ],
+          "salvo": 3,
+          "traits": [
+            "Blaze",
+            "Heavy (6)",
+            "Phosphor"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Toughness, Willpower, Fellowship, Resolve, Conviction print \"--\" (null; see Battle-Automata). Treated as a vehicle for most purposes; this profile covers the Kastelan and its \"pilot\". The table prints Keywords Robot, Imperium, Adeptus Mechanicus, <FORGE WORLD>; the text under it prints Battle-Automata, Imperium, Adeptus Mechanicus, <FORGE WORLD>; table kept. Value: 14 (Unique)."
+}

@@ -1,0 +1,59 @@
+{
+  "id": "hat-sicaran-infiltrator",
+  "name": "Sicaran Infiltrator",
+  "source": "high-altar-of-technology",
+  "page": 31,
+  "faction": "mechanicus",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>"],
+  "attributes": { "S": 4, "T": 4, "A": 5, "I": 4, "Wil": 4, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 10, "note": "Augmetic Plating 4; Soak 4" },
+  "defence": 4,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Weapon Skill", "dice": 8 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Awareness", "dice": 7, "passive": 4 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Heavily Augmented", "text": "A Skitarius' body is designed to withstand the rigours of war. Skitarii do not bleed and they gain +3d to toughness rolls made to resist radiation, corrosion, and environmental energy hazards." },
+    { "name": "Neurostatic Aura", "text": "In effect a jamming device for the brain, Neurostatic confuses and disrupts the workings of those nearby. Those within 6m of any Sicaran Infiltrators take a -1d penalty to any tests based on Willpower, including Conviction and Resolve." }
+  ],
+  "abilities": [
+    { "name": "Attacks", "text": "Each Sicaran Infiltrator will either have a Stubcarbine and a Power Sword or a Flechette Blaster and a Taser Goad:" }
+  ],
+  "conviction": 5,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Stubcarbine and Power Sword",
+      "text": "Stubcarbine and Power Sword",
+      "weapons": [
+        { "name": "Stubcarbine", "damage": 10, "ed": 1, "range": [24], "salvo": 3, "traits": ["Pistol"] },
+        { "name": "Power Sword", "damage": 9, "ed": 1, "ap": -3, "range": [1], "traits": ["Parry"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Flechette Blaster and Taser Goad",
+      "text": "Flechette Blaster and Taser Goad",
+      "weapons": [
+        { "name": "Flechette Blaster", "damage": 7, "ed": 1, "range": [24], "salvo": 5, "traits": ["Pistol"] },
+        { "name": "Taser Goad", "damage": 9, "ed": 2, "range": [1], "traits": ["Taser", "Parry"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Sicaran Princeps",
+      "text": "A Princeps functions much in the way of an Alpha or Sergeant, directing the activities of a squad of Ruststalkers and infiltrators. If there are at least 5 Sicarans involved in the combat, you may want to replace one with a Princeps. All Sicaran Princeps gain a +1 to fellowship and increase the AV of their Augmetic Plating by 1, to a total resilience of 11. A Sicaran Infiltrator Princeps may choose between the two standard loadouts for Infiltrators."
+    }
+  ],
+  "note": "'Sicaran' (for Sicarian) copied as printed. No Ballistic Skill printed, although it carries pistols. Princeps option: the 'Sicaran Princeps' sidebar (PDF p.31)."
+}

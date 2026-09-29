@@ -48,7 +48,7 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
   const now = r.advancement?.tier ?? tier; // the Tier the group plays at: Traits use it (Core pp.36–37)
   const d = deriveStats({ stats: s, overrides: {}, tier: now });
   const gmItems = r.problems.some((p) => p.severity === "gm");
-  // In the library, only GM items left is ready: the campaign's GM ticks them after the import (rules-flow §11.58).
+  // In the library, only GM items left is ready: the campaign's GM ticks them after the import (rules-flow §11.59).
   const ready = buildReady(r) || (gmLater && !r.pending.length && r.problems.every((p) => p.severity === "gm"));
   const left = r.pending.length + r.problems.length;
 

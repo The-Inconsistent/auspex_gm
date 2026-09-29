@@ -1,0 +1,61 @@
+{
+  "id": "hat-sicaran-ruststalker",
+  "name": "Sicaran Ruststalker",
+  "source": "high-altar-of-technology",
+  "page": 30,
+  "faction": "mechanicus",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>"],
+  "attributes": { "S": 4, "T": 4, "A": 5, "I": 4, "Wil": 4, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 10, "note": "Augmetic Plating 4; Soak 4" },
+  "defence": 4,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Weapon Skill", "dice": 8 },
+      { "name": "Awareness", "dice": 7, "passive": 4 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Heavily Augmented", "text": "A Skitarius' body is designed to withstand the rigours of war. Skitarii do not bleed and they gain +3d to toughness rolls made to resist radiation, corrosion, and environmental energy hazards." }
+  ],
+  "abilities": [
+    { "name": "Attacks", "text": "Each Sicaran Ruststalker will either have two Transonic Blades or a Transonic Razor and a Chordclaw:" }
+  ],
+  "conviction": 5,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Two Transonic Blades",
+      "text": "2x Transonic Blade",
+      "weapons": [
+        { "name": "Transonic Blade", "count": 2, "damage": 9, "ed": 2, "range": [1], "traits": ["Rending", "Parry"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Transonic Razor and Chordclaw",
+      "text": "Transonic Razor and Chordclaw",
+      "weapons": [
+        { "name": "Transonic Razor", "damage": 9, "ed": 1, "range": [1], "traits": ["Rending"] },
+        { "name": "Chordclaw", "damage": 9, "ed": 3, "range": [1], "traits": ["Rending"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Sicaran Princeps",
+      "text": "A Princeps functions much in the way of an Alpha or Sergeant, directing the activities of a squad of Ruststalkers and infiltrators. If there are at least 5 Sicarans involved in the combat, you may want to replace one with a Princeps. All Sicaran Princeps gain a +1 to fellowship and increase the AV of their Augmetic Plating by 1, to a total resilience of 11. A Sicaran Ruststalker Princeps has two Transonic Blades and may additionally take either a Chorclaw or a Transonic Razor.",
+      "weapons": [
+        { "name": "Transonic Blade", "count": 2, "damage": 9, "ed": 2, "range": [1], "traits": ["Rending", "Parry"] },
+        { "name": "Transonic Razor", "damage": 9, "ed": 1, "range": [1], "traits": ["Rending"] },
+        { "name": "Chordclaw", "damage": 9, "ed": 3, "range": [1], "traits": ["Rending"] }
+      ]
+    }
+  ],
+  "note": "'Sicaran' (for Sicarian) and 'Chorclaw' (Princeps text) copied as printed. Princeps option: the 'Sicaran Princeps' sidebar (PDF p.31); it lists both extra weapons, of which the Princeps takes one."
+}

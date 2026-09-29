@@ -54,7 +54,7 @@ type Bench = {
   autosave: ((draft: Draft) => void) | null; // the library saves as you go; a table waits for SEND TO GM
   cancelAutosave: (() => void) | null; // drops a debounced save that a finished build has overtaken
   canImport: boolean; // a table takes a copy from the caller's library; the library itself has nowhere to import from
-  gmLater: boolean; // no GM here: what only a GM judges waits for the campaign's GM after the import (rules-flow §11.58)
+  gmLater: boolean; // no GM here: what only a GM judges waits for the campaign's GM after the import (rules-flow §11.59)
   sentDraft: boolean;
   backHref: string;
   backLabel: string; // an icon-only control names its target, not just the action

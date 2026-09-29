@@ -32,8 +32,7 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   a checklist. There is no workflow engine: beats are an ordered list the GM can reorder, skip or add to mid-session.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
-  book, so for now they are Quick NPCs; custom blocks built from the Skitarius (p.101) and Tech-Priest (p.109)
-  archetypes would need a new `statSource` kind.
+  book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats, docs/data.md §4).
 - **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
   loads it into the tracker. The builder shows the Threat Assessment p.8 guideline: *two Troops per Agent, half in a
   Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.
@@ -71,7 +70,7 @@ they uncover a hidden tomb world. What lies beneath, and why are the Mechanicus 
 - **Kommandos**: Gutshiva's Kommandos (NPCs and hooks), Threat Assessment p.89, core p.355. At Tier 4 a Kommando is
   a **Troop** (Tier row E E T T), so they come in Mobs led by an Elite or Adversary.
 - **Tomb**: Necrons, Threat Assessment pp.131–156.
-- **Mechanicus**: Quick NPCs for now (see above).
+- **Mechanicus**: the High Altar of Technology stat blocks (`hat-*`, see above).
 - **Patron**: Inquisitor Marie Von Xardt, Ordo Xenos (FSPG p.26). She directs the Watch station under Enoch's northern tundra.
 - **Session 1** (the six scenes of the 2026-09-27 campaign bible: briefing, drop, camp, Magos, ambush, below the seal) is
   in the seed pack, `packages/data/packs/volkus/pack.json`. Session 2 ("The Tomb Beneath") is an outline of beat titles.

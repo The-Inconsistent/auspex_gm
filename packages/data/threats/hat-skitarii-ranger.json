@@ -1,0 +1,60 @@
+{
+  "id": "hat-skitarii-ranger",
+  "name": "Skitarii Ranger",
+  "source": "high-altar-of-technology",
+  "page": 29,
+  "faction": "mechanicus",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>"],
+  "attributes": { "S": 3, "T": 4, "A": 4, "I": 3, "Wil": 3, "Int": 3, "Fel": 3 },
+  "resilience": { "value": 9, "note": "Auto-Cuirass 3; Soak 4" },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 6 },
+      { "name": "Tech", "dice": 6 },
+      { "name": "Awareness", "dice": 5, "passive": 3 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Heavily Augmented", "text": "A Skitarius' body is designed to withstand the rigours of war. Skitarii do not bleed and they gain +3d to toughness rolls made to resist radiation, corrosion, and environmental energy hazards." },
+    { "name": "Relentless Trackers", "text": "Those finding themselves hunted down by a Skitarii Ranger will find evading their pursuers harder than suspected, due to the advanced sensors equipped on their armor and their specialized training. If a Ranger is using Survival or Stealth to track or hide from a target, they gain +1d to said tests." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Galvanic Rifle", "damage": 10, "ed": 1, "range": [120], "salvo": 2, "traits": ["Rapid Fire (1)", "Penetrating (1)"] }
+      ]
+    }
+  ],
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Skitarii Alpha",
+      "text": "Those who have gained the Crux Mechanicus and replaced more than 50% of their body with cybernetic reconstructions are often awarded the title of Alpha. If the combat includes 5 or more Skitarii, it is appropriate to replace one with an Alpha. All Skitarii Alphas gain a +1 to fellowship and increase the AV of their Auto-Cuirass to 4, bringing total resilience to 10. They also gain an Enhanced Data Tether or an Omnispex. A Skitarii Alpha may replace their weapon with one melee weapon and one pistol from the following:",
+      "weapons": [
+        { "name": "Radium Pistol", "damage": 7, "ed": 1, "range": [24], "salvo": 1, "traits": ["Pistol", "Rad (2)"] },
+        { "name": "Arc Pistol", "damage": 14, "ed": 1, "ap": -1, "range": [24], "salvo": 1, "traits": ["Pistol", "Arc (2)"] },
+        { "name": "Phosphor Blast Pistol", "damage": 12, "ed": 1, "ap": -1, "range": [24], "salvo": 1, "traits": ["Blaze", "Pistol", "Phosphor"] },
+        { "name": "Arc Maul", "damage": 9, "ed": 2, "ap": -1, "range": [1], "traits": ["Arc (2)", "Brutal"] },
+        { "name": "Power Sword", "damage": 8, "ed": 1, "ap": -3, "range": [1], "traits": ["Parry"] },
+        { "name": "Taser Goad", "damage": 8, "ed": 2, "range": [1], "traits": ["Taser", "Parry"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Special Weapons",
+      "text": "In mobs of 5 or more, up to two Rangers/Vanguard may replace their regular weapon with one of the following: Arc Rifle, Plasma Caliver, Transuranic Arquebus. For each 5 additional Skitarii in the mob, you may replace another standard weapon with one of these special weapons."
+    }
+  ],
+  "note": "Alpha and Special Weapons options: the 'Skitarii Alphas and Special Weapons' sidebar (PDF p.30), shared with the Skitarii Vanguard. The book prints no profiles for Arc Rifle, Plasma Caliver or Transuranic Arquebus, nor for the Enhanced Data Tether or Omnispex."
+}

@@ -421,9 +421,10 @@ export const UNSEEN_ID = "unseen";
 const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
 
 // What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
-// invite links (each one is a way in), nor another Agent's objectives.
+// invite links (each one is a way in), nor another Agent's objectives, nor the GM's Ruin (docs/rules-flow.md §11.58).
 export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
+  campaign: { ...s.campaign, ruin: 0 },
   characters: s.characters.map((c) => (c.id === characterId ? c : { ...c, objectives: [] })),
   access: { members: s.access.members, invites: [], guests: [] },
   encounter: s.encounter && {

@@ -8,6 +8,7 @@ import { SOURCES } from "./source.ts";
 export const THREAT_ONLY_SOURCES = {
   "threat-assessment": { cite: "TA" },
   "gutshivas-kommandos": { cite: "GK" },
+  "high-altar-of-technology": { cite: "HAT" }, // homebrew Mechanicus supplement, no printed pages: PDF pages
 } as const;
 const THREAT_SOURCES = { ...SOURCES, ...THREAT_ONLY_SOURCES };
 export type ThreatSource = keyof typeof THREAT_SOURCES;
@@ -78,14 +79,15 @@ export const Threat = z.object({
     .max(5)
     .refine((t) => t.at(-1) !== null, "the last Tier is printed"),
   keywords: z.array(z.string()).min(1),
+  // null = a printed "–": no score, the Threat auto-passes those Tests (the High Altar of Technology's Kastelan Robot, PDF p.22)
   attributes: z.object({
     S: z.number().int(),
-    T: z.number().int(),
+    T: z.number().int().nullable(),
     A: z.number().int(),
     I: z.number().int(),
-    Wil: z.number().int(),
+    Wil: z.number().int().nullable(),
     Int: z.number().int(),
-    Fel: z.number().int(),
+    Fel: z.number().int().nullable(),
   }),
   resilience: z.object({ value: z.number().int(), note: z.string().optional() }),
   defence: z.number().int(),
@@ -99,8 +101,8 @@ export const Threat = z.object({
   bonuses: z.array(z.object({ name: z.string(), text: z.string() })).default([]),
   abilities: z.array(Ability).default([]),
   determination: z.string().optional(),
-  conviction: z.number().int(),
-  resolve: z.number().int(),
+  conviction: z.number().int().nullable(), // null = "–", as attributes
+  resolve: z.number().int().nullable(),
   speed: z.number().int(),
   size: ThreatSize,
   options: z.array(ThreatOption).default([]),

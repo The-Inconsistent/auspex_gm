@@ -1,0 +1,40 @@
+{
+  "id": "hat-corpuscarii-electro-priest",
+  "name": "Corpuscarii Electro-Priest",
+  "source": "high-altar-of-technology",
+  "page": 33,
+  "faction": "mechanicus",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 3, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 4, "note": "Soak 3" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 4 },
+      { "name": "Weapon Skill", "dice": 6 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Tech", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Voltagheist Field", "text": "Shrouded in electricity, Electro-Priests throw themselves into battle, bringing their shared arcs of electricity with them. All Electro-Priests are considered to have a Force Shield with AV *3. When making a Charge, roll a d6. On a roll of 6, the target of the charge suffers a Mortal Wound." },
+    { "name": "Fanatical Devotion", "text": "The intense faith of the Electro-Priests allows them to fight on in the face of fatal injuries. An Electro-Priest may soak wounds without having to spend Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Electrostatic Gauntlets (shooting)", "damage": 12, "ed": 2, "range": [48], "salvo": 3, "traits": ["Assault", "Taser"] },
+        { "name": "Electrostatic Gauntlets (melee)", "damage": 12, "ed": 2, "range": [1], "traits": ["Taser"] }
+      ]
+    }
+  ],
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg"
+}

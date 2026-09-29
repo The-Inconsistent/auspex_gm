@@ -1,0 +1,41 @@
+{
+  "id": "hat-fulgurite-electro-priest",
+  "name": "Fulgurite Electro-Priest",
+  "source": "high-altar-of-technology",
+  "page": 33,
+  "faction": "mechanicus",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["HUMAN", "IMPERIAL", "ADEPTUS MECHANICUS", "<FORGE WORLD>"],
+  "attributes": { "S": 4, "T": 3, "A": 3, "I": 3, "Wil": 3, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 4, "note": "Soak 3" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 4 },
+      { "name": "Weapon Skill", "dice": 7 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Tech", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Voltagheist Field", "text": "Shrouded in electricity, Electro-Priests throw themselves into battle, bringing their shared arcs of electricity with them. All Electro-Priests are considered to have a Force Shield with AV *3. When making a Charge, roll a d6. On a roll of 6, the target of the charge suffers a Mortal Wound." },
+    { "name": "Siphoned Vigor", "text": "A Fulgurite Electro-Priest that reduces an enemy to zero wounds with its Electroleech Stave increases the AV of its Voltagheist Field to *4 for the remainder of the combat." },
+    { "name": "Fanatical Devotion", "text": "The intense faith of the Electro-Priests allows them to fight on in the face of fatal injuries. An Electro-Priest may soak wounds without having to spend Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Electroleech Stave", "damage": 9, "ed": 2, "ap": -2, "range": [2], "traits": ["Rending"] }
+      ]
+    }
+  ],
+  "conviction": 4,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Stat block runs onto PDF p.34. Melee reach printed \"Range 2m (M)\"."
+}
