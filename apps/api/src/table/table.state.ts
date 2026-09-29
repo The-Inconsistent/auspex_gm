@@ -18,6 +18,19 @@ import { adventure, beat, faction, handout, location, npc } from "../codex/codex
 import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
 
+// Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
+// is the api's, so this is where an id can be put next to a name for the phones (Core p.227, §11.60).
+const upgradesByLine = new Map(
+  [...wargear.values()]
+    .filter((w) => w.upgrade)
+    .map((w) => [w.name, { id: w.id, name: w.name, slot: w.upgrade!.slot }] as const),
+);
+const ownedUpgrades = (gear: string[]) =>
+  gear
+    .map((g) => upgradesByLine.get(g.replace(/ \(.*$/, "")))
+    .filter((u) => u !== undefined)
+    .map((u) => ({ ...u }));
+
 // A character row as the table sees it (LiveState, the invite preview).
 export const toCharacter = ({
   id,
@@ -42,6 +55,7 @@ export const toCharacter = ({
   // The sheet as shown, not as stored: the fitted upgrades are applied here (Core p.227, §11.60), so a phone doesn't
   // need the 2 MB catalogue to read its own weapons and the stored profile stays the printed one.
   stats: withUpgrades(CharacterStats.parse(stats), wargear),
+  ownedUpgrades: ownedUpgrades(CharacterStats.parse(stats).gear),
   overrides: Overrides.parse(overrides),
   wounds,
   shock,

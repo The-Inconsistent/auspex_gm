@@ -400,8 +400,46 @@ test("GM and player share a table", async (t) => {
     );
   });
 
+  // The upgrades the character holds in gear reach the phones as ids, so a sheet can offer the fit without the
+  // catalogue (#15 step 4).
+  await gm.until((s) => {
+    const owned = s.characters.find((c) => c.id === hero.id)?.ownedUpgrades ?? [];
+    // The Mastercrafted taken off earlier is back in gear, named and with its slot, ready to be fitted again.
+    return owned.some((u) => u.id === "mastercrafted" && u.name === "Mastercrafted" && u.slot === "craft");
+  });
+
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumped." })).ok);
   await gm.until((s) => s.characters.every((c) => c.xp === 10));
+
+  // Requisitioning an upgrade onto a weapon (#15 step 4): the fit is checked before the Test is recorded, so a target
+  // that can't take it costs the session nothing and the GM can record the roll again.
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  await gm.until((s) => s.campaign.glory === 0);
+  const rqUp = {
+    type: "character.requisition" as const,
+    id: hero.id!,
+    kind: "wargear" as const,
+    item: "Red-Dot Sight",
+    wargearId: "red-dot-sight",
+    value: 5,
+    rarity: "Uncommon" as const,
+    keywords: ["[ANY]"],
+    icons: 6,
+  };
+  assert.deepEqual(await gm.send({ ...rqUp, fitTo: "Frag Grenade" }), {
+    ok: false,
+    error: "Red-Dot Sight fits weapon; Frag Grenade is grenade (issue #15)",
+  });
+  // A sight is already on the Laspistol, so the slot refuses this one too — again before the Test is spent.
+  assert.deepEqual(await gm.send({ ...rqUp, fitTo: "Laspistol" }), {
+    ok: false,
+    error: "Laspistol already has a sight: Magnocular Scope (Core p.227)",
+  });
+  // Neither refusal used up the session's Wargear Test: the same item requisitioned into gear still works.
+  assert.ok((await gm.send(rqUp)).ok);
+  await gm.until((s) =>
+    Boolean(s.characters.find((c) => c.id === hero.id)?.ownedUpgrades.some((u) => u.id === "red-dot-sight")),
+  );
 
   // Codex: players only see revealed entries, without GM notes.
   const secret = await gm.send({

@@ -94,6 +94,9 @@ export const Action = z.union([
       complication: z.boolean().default(false),
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
       wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
+      // An upgrade goes straight onto this weapon of the character's on a success, instead of waiting in gear
+      // (Core p.227, §11.60). The fit is checked before the Test is recorded, so a bad target costs no Test.
+      fitTo: z.string().trim().min(1).max(100).optional(),
     }),
     // Fit a catalogue upgrade to one of the character's weapons, or take it off again (Core p.227, §11.60–§11.62).
     // The server checks the fit, the maximum of three and the one-per-slot rule, and moves the upgrade off the gear

@@ -46,6 +46,7 @@ const s: LiveState = {
       build: null,
       draft: null,
       builtAt: null,
+      ownedUpgrades: [],
     },
   ],
   encounter: {

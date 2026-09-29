@@ -28,6 +28,7 @@ import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { SupplyRow } from "./components/supply-row/supply-row";
+import { UpgradeRow } from "./components/upgrade-row/upgrade-row";
 import { Vital } from "./components/vital/vital";
 import { SHEET_COUNTERS, SHEET_LEGEND } from "./constants";
 
@@ -200,6 +201,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
               <div className="dim" style={{ fontSize: 13 }}>
                 <WeaponLine weapon={w} strength={effectiveStrength(s)} />
               </div>
+              {table && <UpgradeRow me={me} weapon={w} send={table.send} onRefusal={setError} />}
             </div>
           ))}
           {s.armour.name && (

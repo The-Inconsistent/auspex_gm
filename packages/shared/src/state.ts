@@ -235,6 +235,9 @@ export const Character = z.object({
   // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
   draft: z.record(z.string(), z.unknown()).nullable(),
   builtAt: z.number().int().nullable(), // when the build was last saved (ms), so the builder drops older device drafts
+  // Derived, not stored: the upgrades this character holds in gear and could fit to a weapon (Core p.227, §11.63), so
+  // a phone can offer the choice without the 2 MB catalogue. The server checks the fit again when one is sent.
+  ownedUpgrades: z.array(z.object({ id: z.string(), name: z.string(), slot: z.string() })).default([]),
 });
 export type Character = z.infer<typeof Character>;
 

@@ -339,6 +339,13 @@ button[data-sent="no"] {
   outline: 0;
   width: 100%;
 }
+/* A select or field that sits inline in a row of small buttons (the sheet's FIT control), like .btn.sm. */
+.input.sm {
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  width: auto;
+}
 .input:focus {
   border-color: var(--red);
   box-shadow: 0 0 0 1px var(--red);

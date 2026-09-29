@@ -58,6 +58,7 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
     overrides: Overrides.parse(row.overrides),
     detail: CharacterDetail.parse(row.detail),
     objectives: Objectives.parse(row.objectives),
+    ownedUpgrades: [], // the damage rules don't read it; the table's copy comes from toCharacter
     draft: row.buildDraft,
     builtAt: row.builtAt?.getTime() ?? null,
   };
@@ -102,6 +103,46 @@ function storedProfiles(incoming: CharacterStats, stored: CharacterStats): Chara
       const { upgradeNames: _names, notes: _notes, ...rest } = w;
       const was = stored.weapons.find((s) => (w.wargearId ? s.wargearId === w.wargearId : s.name === w.name));
       return was ?? rest;
+    }),
+  };
+}
+
+// Fits one upgrade to one of the character's weapons, or refuses (Core pp.227–228, §11.60–§11.62). Shared by
+// `character.fitUpgrade` and a requisition that hands the item straight to a weapon, so both check the same things.
+// It writes the id into `fitted` and never the result: `withUpgrades` derives what the sheet shows.
+function fitUpgrade(
+  stats: CharacterStats,
+  { weapon: name, entry, tier }: { weapon: string; entry: Wargear; tier: number },
+): CharacterStats {
+  const at = stats.weapons.findIndex((w) => w.name === name);
+  if (at < 0) fail(`No weapon called "${name}"`);
+  const weapon = stats.weapons[at]!;
+  if (!entry.upgrade) fail(`${entry.name} isn't an upgrade`);
+  const base = baseOf(weapon);
+  // An upgrade goes on a weapon unless its own `fits` names other kinds: "any ranged weapon" doesn't make a Frag
+  // Grenade (kind `grenade`, and ranged when thrown) a candidate for a Red-Dot Sight.
+  const kinds = entry.upgrade.fits.kinds ?? ["weapon"];
+  if (!kinds.includes(base.kind))
+    fail(`${entry.name} fits ${kinds.join(" or ")}; ${base.name} is ${base.kind} (issue #15)`);
+  // What `fits` is checked against is the weapon as it is now, upgrades included, so a Trait an earlier upgrade added
+  // or removed counts: the Anti-Grav Platform takes Heavy off, which is what a not-Heavy upgrade needs.
+  const fitted = [...(weapon.upgrades ?? []), ...(weapon.fitted ?? [])]
+    .map((u) => wargear.get(u))
+    .filter((w) => w !== undefined);
+  const shown = withUpgrades({ weapons: [weapon] }, wargear).weapons[0]!;
+  const refusal = upgradeRefusal({
+    upgrade: entry,
+    item: { ...base, weapon: { ...base.weapon!, traits: shown.traits } },
+    fitted,
+    matches: (w, f) => wargearMatches(w, f, { tier, newTier: tier }),
+  });
+  if (refusal) fail(refusal);
+  return {
+    ...stats,
+    weapons: stats.weapons.with(at, {
+      ...weapon,
+      wargearId: base.id,
+      fitted: [...(weapon.fitted ?? []), entry.id],
     }),
   };
 }
@@ -286,6 +327,13 @@ export async function applyCharacterAction(
       if (!t.eligible) fail("No Keyword in common with the item: it can't be requisitioned (p.205)");
       if (a.spend > stats.wealth) fail(`${row.name} has only ${stats.wealth} Wealth`);
       if (a.spend > 0 && a.icons >= t.dn) fail("Wealth only buys Icons on a failed Test (p.205)");
+      // Fitting on success is checked here, before the session's Test is spent: a target that can't take the upgrade
+      // refuses the whole action, so the GM can record it again rather than losing the Test (p.205).
+      const { tier } = await campaignRules(tx, cid);
+      if (a.fitTo !== undefined) {
+        if (!item?.upgrade) fail("Only an upgrade can be fitted to a weapon");
+        fitUpgrade(stats, { weapon: a.fitTo, entry: item, tier });
+      }
 
       const out = requisitionOutcome({
         dn: t.dn,
@@ -308,7 +356,10 @@ export async function applyCharacterAction(
             },
           ];
         if (a.kind === "wargear") {
-          if (!item?.weapon) stats.gear = [...stats.gear, item ? gearLine(item) : a.item];
+          // An upgrade the GM named a weapon for goes straight on it; anything else is a gear line.
+          if (a.fitTo !== undefined && item?.upgrade)
+            Object.assign(stats, fitUpgrade(stats, { weapon: a.fitTo, entry: item, tier }));
+          else if (!item?.weapon) stats.gear = [...stats.gear, item ? gearLine(item) : a.item];
           if (a.loadedWith) stats.ammo = adjustAmmo(stats.ammo, { kind: a.loadedWith, delta: 1 });
         } else stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
       }
@@ -348,36 +399,13 @@ export async function applyCharacterAction(
         return { ok: true };
       }
 
-      // What `fits` is checked against is the weapon as it is now, upgrades included, so a Trait an earlier upgrade
-      // added or removed counts: the Anti-Grav Platform takes Heavy off, which is what a not-Heavy upgrade needs.
-      const base = baseOf(weapon);
-      const fitted = [...(weapon.upgrades ?? []), ...(weapon.fitted ?? [])]
-        .map((u) => wargear.get(u))
-        .filter((w) => w !== undefined);
-      const shown = withUpgrades({ weapons: [weapon] }, wargear).weapons[0]!;
-      const now = { ...base, weapon: { ...base.weapon!, traits: shown.traits } };
-      if (entry.upgrade.fits.kinds && !entry.upgrade.fits.kinds.includes(base.kind))
-        fail(`${entry.name} fits ${entry.upgrade.fits.kinds.join(" or ")}; ${base.name} is ${base.kind} (issue #15)`);
       const { tier } = await campaignRules(tx, cid);
-      const refusal = upgradeRefusal({
-        upgrade: entry,
-        item: now,
-        fitted,
-        matches: (w, f) => wargearMatches(w, f, { tier, newTier: tier }),
-      });
-      if (refusal) fail(refusal);
-
       // The upgrade must be one the character owns: it arrives as a gear line from a requisition (p.205). The GM may
       // fit one that isn't there, the way they grant anything else (§11.57).
       const owned = stats.gear.findIndex((g) => g === entry.name || g.startsWith(`${entry.name} (`));
       if (owned < 0 && ctx.role !== "gm") fail(`${row.name} doesn't have ${entry.name} to fit`);
       if (owned >= 0) stats.gear = stats.gear.filter((_, i) => i !== owned);
-      stats.weapons = stats.weapons.with(at, {
-        ...weapon,
-        wargearId: base.id,
-        fitted: [...(weapon.fitted ?? []), entry.id],
-      });
-      await saveStats(tx, { id: a.id, stats });
+      await saveStats(tx, { id: a.id, stats: fitUpgrade(stats, { weapon: a.weapon, entry, tier }) });
       return { ok: true };
     }
 
