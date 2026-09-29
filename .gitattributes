@@ -1,0 +1,14 @@
+# Text files are LF everywhere, in the repo and in the working tree. Without this, a Windows checkout with
+# `core.autocrlf=true` writes CRLF, while Prettier writes LF, so `bun run format:check` reports every file the developer
+# hasn't run `bun run format` over — a difference no commit can fix, because git normalises it away.
+* text=auto eol=lf
+
+# Fonts and images are bytes, never line endings.
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.webp binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
