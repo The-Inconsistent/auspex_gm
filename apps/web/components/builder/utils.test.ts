@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
 import type { Draft, Lookups } from "./builder-context.tsx";
-import { mergeOverrides, pickDraft, stepFromQuery, stepsFor } from "./utils.ts";
+import { asBuilderStep, mergeOverrides, pickDraft, stepFromQuery, stepsFor } from "./utils.ts";
 
 // The volkus Disruptor's choices, cut down to what CharacterBuild needs (packages/data/build.test.ts has the whole one).
 const build = { tier: 1, archetypeId: "primaris-incursor" };
@@ -135,5 +135,14 @@ describe("stepFromQuery", () => {
     assert.equal(stepFromQuery(""), null);
     assert.equal(stepFromQuery("?step=toString"), null);
     assert.equal(stepFromQuery("?step=nowhere"), null);
+  });
+
+  // The page reads the query on the server and hands the step in, so the value arrives as searchParams gives it: a
+  // string, absent, or (a repeated parameter) an array.
+  test("asBuilderStep takes what searchParams hands the page", () => {
+    assert.equal(asBuilderStep("advance"), "advance");
+    assert.equal(asBuilderStep(undefined), null);
+    assert.equal(asBuilderStep(["advance", "review"]), null);
+    assert.equal(asBuilderStep("nowhere"), null);
   });
 });

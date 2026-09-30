@@ -38,11 +38,13 @@ export function stepsFor({
   );
 }
 
-// The screen a link asked for, from a URL's query string ("?step=advance"). Anything that doesn't name a screen is
-// ignored, so a stale or hand-typed link just opens the builder where it would have opened anyway.
+// The screen a link asked for. Anything that doesn't name one is ignored, so a stale or hand-typed link just opens the
+// builder where it would have opened anyway. The page reads it on the server (`searchParams`) and passes it in, so the
+// first render is the same on both sides; `stepFromQuery` is the same thing from a query string, for tests and links.
+export const asBuilderStep = (asked: unknown): BuilderStep | null => BUILDER_STEPS.find((s) => s === asked) ?? null;
+
 export function stepFromQuery(search: string): BuilderStep | null {
-  const asked = new URLSearchParams(search).get(BUILD_STEP_PARAM);
-  return BUILDER_STEPS.find((s) => s === asked) ?? null;
+  return asBuilderStep(new URLSearchParams(search).get(BUILD_STEP_PARAM));
 }
 
 // What still blocks a step: choices left and problems that aren't the GM's tick.

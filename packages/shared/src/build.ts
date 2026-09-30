@@ -162,7 +162,7 @@ export type ResolvedBuild = {
   problems: BuildProblem[];
   effects: BuildEffect[];
   // In play: the XP earned (the advancement budget), what advancement spends of it, what is left, Rank, the Tier now.
-  advancement: { budget: number; spent: number; toSpend: number; rank: number; tier: number } | null;
+  advancement: { budget: number; spent: number; rank: number; tier: number } | null;
 };
 
 // Ready to save: nothing left to choose, nothing wrong, and every GM question ticked.
@@ -897,7 +897,7 @@ export function resolveBuild({
       problem({ step: "advance", severity: "error", what: `Unknown package ${pid}` });
       continue;
     }
-    if (!allowed(p, "advance")) continue;
+    if (!allowed(p, p.kind === "ascension" ? "ascension" : "advance")) continue;
     if (p.kind === "ascension") {
       ascensionsTaken += 1;
       if (ascendedTiers === 0)
@@ -964,7 +964,7 @@ export function resolveBuild({
   if (archAscension) {
     const to = ix.archetypes.get(archAscension.archetypeId);
     if (!to) problem({ step: "ascension", severity: "error", what: `Unknown archetype ${archAscension.archetypeId}` });
-    else if (allowed(to, "advance")) {
+    else if (allowed(to, "ascension")) {
       const path = `advance/archetype/${to.id}`;
       if (ascendedTiers === 0)
         problem({
@@ -1429,7 +1429,7 @@ export function resolveBuild({
     ];
     if (short.length)
       problem({
-        step: "advance",
+        step: "ascension",
         severity: "error",
         what: `${want.name} needs ${short.join(", ")}`,
         cite: "Core p.155",
@@ -1637,9 +1637,7 @@ export function resolveBuild({
     gear: gear.slice(0, 60).map((g) => g.slice(0, 200)),
     wealth: s.wealth,
   });
-  const advancement = play
-    ? { budget: earned, spent: advanceSpent, toSpend: Math.max(0, earned - advanceSpent), rank, tier: nowTier }
-    : null;
+  const advancement = play ? { budget: earned, spent: advanceSpent, rank, tier: nowTier } : null;
   return { sheet, budget, spent, ledger, pending, choices, problems, effects, advancement };
 }
 

@@ -464,7 +464,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     character Ascends only when the GM raises it, all of them together. What does follow one character's XP is Rank
     (Core p.146, +1 per 40, at most 3), which is why a character can meet Rank 3 — and so Archetype Ascension
     (§11.67) — long before the group is near Ascending. A solo Ascension, for a party at mixed Tiers, would be a house
-    rule of our own and is not modelled; the table can revisit it. *Proposed; awaiting the GM.*
+    rule of our own and is not modelled; the table can revisit it.
+    A **Dead** character is not one of "every character in your group": it neither has to reach the 100 XP nor holds the
+    party at its Tier, since nothing removes its record and it would otherwise block the group for ever. Raising the
+    Tier by hand (`campaign.update`) restarts the window the same way `campaign.ascend` does, so the XP that paid for
+    one Ascension can't pay for the next. *Proposed; awaiting the GM.*
 67. **"An Archetype of their Faction"** in Archetype Ascension (Core p.155) is read as the same `factionId`: the
     Archetype the player picks must name the Faction record the old Archetype names, not merely share a keyword. The
     book's own example, a Space Marine Scout becoming a Tactical Space Marine, is one Faction on that reading (both

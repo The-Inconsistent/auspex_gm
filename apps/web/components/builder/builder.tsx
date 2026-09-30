@@ -36,7 +36,7 @@ import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
 import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
-import { draftOf, mergeOverrides, pickDraft, stepFromQuery, type DraftStart } from "./utils";
+import { draftOf, mergeOverrides, pickDraft, type DraftStart } from "./utils";
 
 // The GM's overrides as the builder opened on them and as they are now; `mergeOverrides` saves only the difference.
 type OverrideEdit = { base: Overrides; edited: Overrides };
@@ -81,10 +81,11 @@ type BuilderProps = {
   role: Role;
   payload: CreationPayload;
   rules: RuleEntry[];
+  initialStep?: BuilderStep; // the screen "?step=" asked for, read by the page on the server
 };
 
 // The character builder at a table (issue #9 step 4): waits for the table, then works on a draft of the build.
-export function Builder({ campaignId, characterId, role, payload, rules }: BuilderProps) {
+export function Builder({ campaignId, characterId, role, payload, rules, initialStep }: BuilderProps) {
   const router = useRouter();
   const { state, online, send } = useTable(campaignId);
   if (!state) return <StatusScreen text="SYNCING COGITATOR…" />;
@@ -93,6 +94,7 @@ export function Builder({ campaignId, characterId, role, payload, rules }: Build
   return (
     <RulesProvider rules={rules}>
       <TableBench
+        initialStep={initialStep}
         key={characterId ?? "new"}
         {...{ campaignId, characterId, role, payload, state, online, send, character, router }}
       />
@@ -119,6 +121,7 @@ function TableBench({
   send,
   character,
   router,
+  initialStep,
 }: TableBenchProps) {
   const tier = state.campaign.tier;
   const xpEarned = character?.xp;
@@ -218,7 +221,14 @@ function TableBench({
     }),
     [tier, state.campaign.homebrew, role, character, xpEarned, campaignId, characterId, send, online],
   );
-  return <Workshop bench={bench} payload={payload} onSaved={() => router.push(`/c/${campaignId}`)} />;
+  return (
+    <Workshop
+      bench={bench}
+      payload={payload}
+      initialStep={initialStep}
+      onSaved={() => router.push(`/c/${campaignId}`)}
+    />
+  );
 }
 
 type LibraryBuilderProps = { entry: LibraryEntry; payload: CreationPayload; rules: RuleEntry[] };
@@ -339,21 +349,19 @@ function initialDraft({
   return stamp === undefined || picked.builtAt !== undefined ? picked : { ...picked, builtAt: stamp };
 }
 
-type WorkshopProps = { bench: Bench; payload: CreationPayload; onSaved: () => void };
+type WorkshopProps = { bench: Bench; payload: CreationPayload; onSaved: () => void; initialStep?: BuilderStep };
 
-function Workshop({ bench, payload, onSaved }: WorkshopProps) {
+function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
   const { key, start, made, play, role } = bench;
   const [draft, setDraft] = useState<Draft>(() => initialDraft({ key, start, tier: bench.tier, stamp: bench.stamp }));
   const locked = made && role !== "gm";
-  // Which screen this opens on. A link may ask for one ("?step=advance", the sheet's LEVEL UP badge), but only for a
-  // character already made: the library's bench renders on the server too, where there is no URL to read, and it has no
-  // ADVANCE screen to ask for. `useSearchParams` would push the whole builder out of the prerender, and the page that
-  // renders it is not this component's to wrap in a <Suspense>.
+  // Which screen this opens on. A link may ask for one ("?step=advance", the sheet's LEVEL UP badge), and the page
+  // reads that on the server and passes it in: deciding it here from `window` would render one screen in the prerender
+  // and another after hydration, and `useSearchParams` would push the whole builder out of the prerender.
   const [step, setStep] = useState<BuilderStep>(
-    () =>
-      (made && typeof window !== "undefined" ? stepFromQuery(window.location.search) : null) ??
-      (locked ? "advance" : draft.archetypeId ? "customise" : "tier"),
+    (made && initialStep) || (locked ? "advance" : draft.archetypeId ? "customise" : "tier"),
   );
+
   const [error, setError] = useState<string | null>(null);
   const [overrides, setOverrides] = useState(bench.overrides);
   const [openedOverrides] = useState(bench.overrides); // what `mergeOverrides` compares the edits with

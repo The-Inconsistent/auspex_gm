@@ -56,7 +56,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   ] as const;
   const nameOf = (characterId: string | null) => state.characters.find((c) => c.id === characterId)?.name ?? "?";
 
-  const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
+  // A refusal, or what the action did. An ack may also carry `notices`: lines only the server can know, because they
+  // compare before with after — who crossed a Rank on `session.end`, whether the group may Ascend (Core pp.146–147).
+  const report = (r: ActionResult, ok: string) =>
+    setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`);
 
   // Renders a join URL as a full-screen QR code.
   const showCode = async ({ title, url }: { title: string; url: string }) => {

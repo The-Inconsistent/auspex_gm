@@ -1467,3 +1467,52 @@ test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp
     error: "Tier 5 is the highest Tier; there is nothing to Ascend to",
   });
 });
+
+// Core p.147 asks it of "every character in your group", and nothing removes a dead character's record, so a casualty
+// would otherwise hold the party at its Tier for ever (rules-flow.md §11.63).
+test("Ascension: a Dead character neither has to earn 100 XP nor blocks the group", async (t) => {
+  const gm = await newCampaign("Fallen", 2);
+  t.after(() => gm.socket.close());
+  const live = await gm.send({ type: "character.create", name: "Survivor" });
+  const lost = await gm.send({ type: "character.create", name: "Fallen" });
+  assert.ok(live.ok && live.id && lost.ok && lost.id);
+  await gm.until((s) => s.characters.length === 2);
+
+  // Only the survivor earns the XP; the other is killed outright (p.194).
+  assert.ok((await gm.send({ type: "character.adjust", id: live.id!, wrath: 0 })).ok);
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "session.end", xp: ASCENSION_XP, recap: "" })).ok);
+  await gm.until((s) => s.characters.every((c) => c.xp === ASCENSION_XP));
+  // Both are at 100 now, so take the XP back off the one that dies: it is short, and Dead.
+  assert.ok((await gm.send({ type: "character.update", id: lost.id!, annihilated: true })).ok);
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "experience" })).ok);
+  await gm.until((s) => s.campaign.tier === 3);
+
+  // With nobody left alive there is nothing to Ascend, rather than a Tier that rises over a table of corpses.
+  assert.ok((await gm.send({ type: "character.update", id: live.id!, annihilated: true })).ok);
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "milestone" }), {
+    ok: false,
+    error: "This campaign has no living characters to Ascend",
+  });
+});
+
+// Raising the Tier by hand is still an Ascension as far as the rules are concerned: the 100-XP window has to restart,
+// or the XP that paid for this Tier would pay for the next one too (Core p.147).
+test("Ascension: campaign.update's Tier restarts the 100-XP window", async (t) => {
+  const gm = await newCampaign("ByHand", 2);
+  t.after(() => gm.socket.close());
+  const c = await gm.send({ type: "character.create", name: "Hand" });
+  assert.ok(c.ok && c.id);
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "session.end", xp: ASCENSION_XP, recap: "" })).ok);
+  await gm.until((s) => s.characters.every((x) => x.xp === ASCENSION_XP));
+
+  assert.ok((await gm.send({ type: "campaign.update", tier: 3 })).ok);
+  await gm.until((s) => s.campaign.tier === 3 && s.characters.every((x) => x.xpAtAscension === ASCENSION_XP));
+  // Without the reset this would succeed on the XP that already paid for Tier 3.
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Hand has not earned 100 XP in Tier 3 yet (Core p.147)",
+  });
+});

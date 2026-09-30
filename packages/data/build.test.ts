@@ -219,7 +219,7 @@ test("in play, purchases spend the XP earned, priced from where creation left th
   );
   assert.deepEqual(r.problems, []);
   assert.equal(r.spent, 399, "the creation budget is untouched");
-  assert.deepEqual(r.advancement, { budget: 40, spent: 12 + 20, toSpend: 40 - 32, rank: 2, tier: 4 });
+  assert.deepEqual(r.advancement, { budget: 40, spent: 12 + 20, rank: 2, tier: 4 });
   assert.equal(r.sheet.skills.Stealth, 6);
 });
 
@@ -349,6 +349,12 @@ test("Archetype Ascension: ratings the character is short of are named (Core p.1
   assert.ok(short, "the shortfall is a problem");
   for (const want of ["Initiative 4 of 5", "Ballistic Skill 3 of 5", "Survival 0 of 1"])
     assert.ok(short!.what.includes(want), `${want} in "${short!.what}"`);
+  // It has to reach the screen that offers the Ascension, or the player is refused with the reason on another tab.
+  assert.equal(short!.step, "ascension");
+  assert.ok(
+    r.problems.filter((p) => p.what.includes("Tactical Space Marine")).every((p) => p.step === "ascension"),
+    "every Archetype Ascension problem is the ASCENSION screen's",
+  );
 });
 
 test("Archetype Ascension: Rank 3, the same Faction, the new Tier, and not both ways at once", () => {
