@@ -209,7 +209,7 @@ test("over budget is a problem (Core p.20)", () => {
 
 // ── advancement: XP earned in play (issue #9 step 5) ──
 
-const inPlay = (build: CharacterBuildInput, play: { tier: number; xpEarned: number }) =>
+const inPlay = (build: CharacterBuildInput, play: { tier: number; xpEarned: number; packageWaived?: boolean }) =>
   resolveBuild({ catalogue, build, play });
 
 test("in play, purchases spend the XP earned, priced from where creation left the ratings (Core pp.24–25, 146)", () => {
@@ -219,7 +219,7 @@ test("in play, purchases spend the XP earned, priced from where creation left th
   );
   assert.deepEqual(r.problems, []);
   assert.equal(r.spent, 399, "the creation budget is untouched");
-  assert.deepEqual(r.advancement, { budget: 40, spent: 12 + 20, rank: 2, tier: 4 });
+  assert.deepEqual(r.advancement, { budget: 40, spent: 12 + 20, toSpend: 40 - 32, rank: 2, tier: 4 });
   assert.equal(r.sheet.skills.Stealth, 6);
 });
 
@@ -236,10 +236,142 @@ test("Rank comes from the XP earned: +1 per 40, at most 3 (Core pp.146–147)", 
 
 test("an Ascension Package in play needs the group to have Ascended (rules-flow.md §11.55)", () => {
   const b = { ...incursor, advancement: { packages: ["back-from-the-brink"] } };
-  assert.ok(inPlay(b, { tier: 4, xpEarned: 100 }).problems.some((p) => p.what.includes("no Ascension to Tier 5")));
+  assert.ok(inPlay(b, { tier: 4, xpEarned: 100 }).problems.some((p) => p.what.includes("there has been no Ascension")));
   const up = inPlay(b, { tier: 5, xpEarned: 100 });
   assert.ok(!up.problems.some((p) => p.what.includes("Ascension")));
   assert.equal(up.ledger.find((l) => l.pool && l.what.startsWith("Back From The Brink"))?.xp, 50, "10 × the new Tier");
+});
+
+test("an Ascension is asked for one package, however many Tiers it crosses (Core p.148, §11.55)", () => {
+  // A Tier-3 Tactical Space Marine whose group has Ascended to Tier 5: one Ascension, two Tiers.
+  const marine: CharacterBuildInput = { ...PREGENS[0]!.build, tier: 3, packages: [] };
+  const play = { tier: 5, xpEarned: 100 };
+  const none = inPlay(marine, play);
+  assert.ok(
+    none.pending.some((p) => p.what === "Buy one Ascension Package (Tier 3 → 5)"),
+    "the Ascension's second step is asked for (Core p.148)",
+  );
+  const one = inPlay({ ...marine, advancement: { packages: ["back-from-the-brink"] } }, play);
+  assert.ok(!one.problems.some((p) => p.what.includes("Ascension")), "one package, two Tiers, is legal");
+  assert.equal(
+    one.ledger.find((l) => l.pool && l.what.startsWith("Back From The Brink"))?.xp,
+    50,
+    "10 × the new Tier, not the first Tier crossed",
+  );
+  const two = inPlay({ ...marine, advancement: { packages: ["back-from-the-brink", "stay-the-course"] } }, play);
+  assert.ok(
+    two.problems.some((p) => p.what.includes("one Ascension Package for the Ascension")),
+    "a second package is refused",
+  );
+});
+
+test("the GM may waive the Ascension Package on a Milestone Ascension (Core p.148 step 2)", () => {
+  const marine: CharacterBuildInput = { ...PREGENS[0]!.build, tier: 3, packages: [] };
+  const waived = inPlay(marine, { tier: 5, xpEarned: 100, packageWaived: true });
+  assert.ok(!waived.pending.some((p) => p.what.startsWith("Buy one Ascension Package")));
+});
+
+// ── Archetype Ascension (Core p.155, rules-flow.md §11.64) ──
+
+// The book's own example: a Space Marine Scout (Tier 2) becomes a Tactical Space Marine (Tier 3), both ADEPTUS ASTARTES.
+const scout: CharacterBuildInput = {
+  tier: 2,
+  archetypeId: "space-marine-scout",
+  fills: { "[CHAPTER]": { id: "ultramarines" } },
+  background: {
+    tableId: ASTARTES_BG,
+    origin: "Courage",
+    accomplishment: "Badge of Honour",
+    goal: "Honour the Chapter",
+    bonus: "origin",
+  },
+  languages: HIGH_GOTHIC,
+  choices: {
+    "species/adeptus-astartes/0": [0], // IMPERIUM, not CHAOS (Core p.29)
+    "archetype/space-marine-scout/wargear/4": [0], // the Boltgun
+  },
+};
+// What the Tactical Space Marine's ratings need over the Scout's, bought with the XP earned (Core p.155).
+const toTactical = {
+  archetypeAscension: { archetypeId: "tactical-space-marine" },
+  attributes: { T: 5, A: 5, I: 5 },
+  skills: { "Ballistic Skill": 5, "Weapon Skill": 4, Leadership: 1, Scholar: 1, Survival: 1 },
+};
+
+test("Archetype Ascension: the new Archetype's ratings must be bought, its abilities are granted (Core p.155)", () => {
+  const r = inPlay({ ...scout, advancement: toTactical }, { tier: 3, xpEarned: 200 });
+  const errors = r.problems.filter((p) => p.severity === "error").map((p) => p.what);
+  assert.deepEqual(errors, [], "nothing short");
+  assert.deepEqual(r.pending, []);
+  // The GM's agreement is the one thing left, and the tick clears it.
+  const gm = r.problems.find((p) => p.severity === "gm" && p.what.includes("Archetype Ascension"));
+  assert.ok(gm, "the GM agrees to the new Archetype");
+  const ticked = inPlay(
+    { ...scout, advancement: toTactical, gm: { approved: [gm!.path!] } },
+    { tier: 3, xpEarned: 200 },
+  );
+  assert.deepEqual(ticked.problems, []);
+  assert.ok(
+    ticked.sheet.abilities.some((a) => a.name === "Tactical Versatility"),
+    "the new Archetype's ability",
+  );
+  assert.ok(
+    ticked.sheet.abilities.some((a) => a.name === "Use the Terrain"),
+    "and the old one's, which it keeps",
+  );
+  assert.equal(ticked.sheet.mods.influence, 1 + 2, "the Scout's Influence plus the Tactical Marine's (Core p.155)");
+  assert.ok(
+    ticked.sheet.weapons.some((w) => w.name === "Krak Grenade"),
+    "the new Archetype's Wargear",
+  );
+  // Its Power Armour is the better suit, so it is the one worn and the Scout Armour falls to gear (Core p.231).
+  assert.equal(ticked.sheet.armour.name, "Aquila Mk VII Power Armour");
+  assert.equal(ticked.sheet.archetype, "Space Marine Scout + Tactical Space Marine");
+  assert.equal(ticked.advancement?.tier, 3);
+});
+
+test("Archetype Ascension: ratings the character is short of are named (Core p.155)", () => {
+  const r = inPlay(
+    { ...scout, advancement: { ...toTactical, attributes: { T: 5, A: 5 }, skills: {} } },
+    { tier: 3, xpEarned: 200 },
+  );
+  const short = r.problems.find((p) => p.what.startsWith("Tactical Space Marine needs"));
+  assert.ok(short, "the shortfall is a problem");
+  for (const want of ["Initiative 4 of 5", "Ballistic Skill 3 of 5", "Survival 0 of 1"])
+    assert.ok(short!.what.includes(want), `${want} in "${short!.what}"`);
+});
+
+test("Archetype Ascension: Rank 3, the same Faction, the new Tier, and not both ways at once", () => {
+  const at = { tier: 3, xpEarned: 200 };
+  assert.ok(
+    inPlay({ ...scout, advancement: toTactical }, { ...at, xpEarned: 79 }).problems.some((p) =>
+      p.what.startsWith("Archetype Ascension needs Rank 3"),
+    ),
+    "Rank 3 is 80 XP earned (Core p.146)",
+  );
+  assert.ok(
+    inPlay(
+      { ...scout, advancement: { ...toTactical, archetypeAscension: { archetypeId: "ork-nob" } } },
+      at,
+    ).problems.some((p) => p.what.includes("is not an Archetype of Space Marine Scout's Faction")),
+    "the same factionId (§11.64)",
+  );
+  assert.ok(
+    inPlay({ ...scout, advancement: toTactical }, { tier: 4, xpEarned: 200 }).problems.some((p) =>
+      p.what.includes("is Tier 3, not the Tier 4 the group Ascended to"),
+    ),
+  );
+  assert.ok(
+    inPlay({ ...scout, advancement: { ...toTactical, packages: ["back-from-the-brink"] } }, at).problems.some(
+      (p) => p.what === "An Ascension takes an Ascension Package or an Archetype Ascension, not both",
+    ),
+  );
+  assert.ok(
+    !inPlay({ ...scout, advancement: toTactical }, at).pending.some((p) =>
+      p.what.startsWith("Buy one Ascension Package"),
+    ),
+    "an Archetype Ascension is the Ascension's second step (Core p.148)",
+  );
 });
 
 test("keepPlay: a rebuild in play keeps Wealth, Ammo and what play added; the new build's items join", () => {
