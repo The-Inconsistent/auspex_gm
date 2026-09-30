@@ -108,7 +108,7 @@ Full documentation is in [`docs/`](docs/README.md). Code style and review rules 
 Live at **https://auspex.ydothien.work**, on the same VPS as the other projects, at no extra cost.
 
 - A push to `main` that touches app code runs **Build images** (`.github/workflows/images.yml`), which pushes the
-  private images `ghcr.io/junmaxwell/glory-gm-{api,web}:latest`.
+  private images `ghcr.io/the-inconsistent/glory-gm-{api,web}:latest`.
 - Then hit **Pull & redeploy** on the `auspex-gm` stack in Dockhand (`docker-compose.prod.yml`). The VPS never builds.
 - Pangolin terminates TLS and forwards to web on host `:3004`. Next's rewrites proxy `/api` and `/socket.io` to the
   api, which uses its own `wg` database in the shared Postgres.

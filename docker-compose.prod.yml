@@ -17,7 +17,7 @@ name: auspex
 
 services:
   api:
-    image: ghcr.io/junmaxwell/glory-gm-api:latest
+    image: ghcr.io/the-inconsistent/glory-gm-api:latest
     restart: unless-stopped
     environment:
       # WG_DB_PASSWORD must be URL-safe (hex): it's interpolated into a URL, and @ : / ? # % would mangle it.
@@ -32,7 +32,7 @@ services:
 
   web:
     # Baked in at build: the Clerk publishable key and API_ORIGIN=http://api:4000 for the rewrites.
-    image: ghcr.io/junmaxwell/glory-gm-web:latest
+    image: ghcr.io/the-inconsistent/glory-gm-web:latest
     restart: unless-stopped
     depends_on: [api]
     environment:

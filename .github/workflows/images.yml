@@ -58,7 +58,7 @@ jobs:
           # A single plain manifest. The default provenance attestation is stored as an *untagged* version that the
           # tag points at, and the prune step below would delete it, breaking `:latest`.
           provenance: false
-          tags: ghcr.io/junmaxwell/glory-gm-${{ matrix.app }}:latest
+          tags: ghcr.io/the-inconsistent/glory-gm-${{ matrix.app }}:latest
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
           build-args: |
             NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.CLERK_PUBLISHABLE_KEY }}
