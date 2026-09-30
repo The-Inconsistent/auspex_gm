@@ -383,6 +383,5 @@ Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battle
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
 Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked; upgrades can be fitted to a
-weapon but not to armour; and the level-up flow and Ascension are open (rules-flow.md §11.63–§11.64, issue #15),
-including one Ascension Package per Tier where §11.55 now says one per Ascension. The live list is
+weapon but not to armour; and no purchase history records *when* an advancement was bought. The live list is
 [rules-flow.md](rules-flow.md) §12.

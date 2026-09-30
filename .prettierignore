@@ -5,3 +5,5 @@ books/
 *.md
 # Stat blocks transcribed from the books; kept in their hand-written layout.
 packages/data/**/*.json
+# A subagent's git worktree is a second copy of the repo: formatting it would rewrite files another agent is editing.
+.claude/worktrees/

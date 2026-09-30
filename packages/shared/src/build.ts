@@ -902,14 +902,14 @@ export function resolveBuild({
       ascensionsTaken += 1;
       if (ascendedTiers === 0)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `${p.name}: the group is still Tier ${nowTier}, so there has been no Ascension`,
           cite: "Core p.148",
         });
       else if (ascensionsTaken > 1)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `${p.name}: one Ascension Package for the Ascension, however many Tiers it crossed`,
           cite: "Core p.148",
@@ -917,7 +917,7 @@ export function resolveBuild({
     }
     const po: Origin = {
       path: `advance/package/${p.id}`,
-      step: "advance",
+      step: p.kind === "ascension" ? "ascension" : "advance",
       cite: cite(p),
       // "per Tier Ascended" on the package itself (Dauntless Reputation's Influence, Core p.151) counts every Tier
       // the one Ascension crossed.
@@ -963,60 +963,60 @@ export function resolveBuild({
   const archAscension = build.advancement.archetypeAscension;
   if (archAscension) {
     const to = ix.archetypes.get(archAscension.archetypeId);
-    if (!to) problem({ step: "advance", severity: "error", what: `Unknown archetype ${archAscension.archetypeId}` });
+    if (!to) problem({ step: "ascension", severity: "error", what: `Unknown archetype ${archAscension.archetypeId}` });
     else if (allowed(to, "advance")) {
       const path = `advance/archetype/${to.id}`;
       if (ascendedTiers === 0)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `${to.name}: the group is still Tier ${nowTier}, so there has been no Ascension`,
           cite: "Core p.148",
         });
       if (ascensionsTaken > 0)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: "An Ascension takes an Ascension Package or an Archetype Ascension, not both",
           cite: "Core p.148",
         });
       if (rank < 3)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `Archetype Ascension needs Rank 3; ${play?.xpEarned ?? 0} XP earned is Rank ${rank}`,
           cite: "Core pp.146, 155",
         });
       if (to.factionId !== arch.factionId)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `${to.name} is not an Archetype of ${arch.name}'s Faction`,
           cite: "Core p.155",
         });
       if (to.tier !== nowTier)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `${to.name} is Tier ${to.tier}, not the Tier ${nowTier} the group Ascended to`,
           cite: "Core p.155",
         });
       if (speciesId && !build.gm.species && !to.speciesIds.includes(speciesId))
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
           what: `${to.name} is not open to ${species?.name ?? speciesId}`,
           cite: cite(to),
         });
       // The book gives the new Archetype for "a story reason", with the GM's agreement (Core p.155, §11.64).
       problem({
-        step: "advance",
+        step: "ascension",
         severity: "gm",
         path,
         what: `Archetype Ascension to ${to.name}: the GM agrees`,
         cite: "Core p.155",
       });
-      const ao: Origin = { path, step: "advance", cite: cite(to), tiersAscended: ascendedTiers, granted: true };
+      const ao: Origin = { path, step: "ascension", cite: cite(to), tiersAscended: ascendedTiers, granted: true };
       to.keywords.forEach(addKeyword);
       ownRules(to.abilities).forEach((r) => addRule(r, ao));
       to.grants.forEach((g, i) => grant(g, { ...ao, path: `${ao.path}/${i}` }));
@@ -1033,7 +1033,7 @@ export function resolveBuild({
   if (ascendedTiers > 0 && ascensionsTaken === 0 && !archAscension && !play?.packageWaived)
     ask({
       path: "advance/ascension",
-      step: "advance",
+      step: "ascension",
       what: `Buy one Ascension Package (Tier ${tier} → ${nowTier})`,
       choose: 1,
       options: [],

@@ -251,6 +251,16 @@ test("an Ascension is asked for one package, however many Tiers it crosses (Core
     none.pending.some((p) => p.what === "Buy one Ascension Package (Tier 3 → 5)"),
     "the Ascension's second step is asked for (Core p.148)",
   );
+  // It belongs to the ASCENSION screen, which is where the builder offers the choice; the path stays under `advance/`
+  // because what a character buys in play is still theirs to change (creationKey).
+  assert.deepEqual(
+    none.pending.find((p) => p.what.startsWith("Buy one Ascension Package")),
+    {
+      ...none.pending.find((p) => p.what.startsWith("Buy one Ascension Package"))!,
+      step: "ascension",
+      path: "advance/ascension",
+    },
+  );
   const one = inPlay({ ...marine, advancement: { packages: ["back-from-the-brink"] } }, play);
   assert.ok(!one.problems.some((p) => p.what.includes("Ascension")), "one package, two Tiers, is legal");
   assert.equal(

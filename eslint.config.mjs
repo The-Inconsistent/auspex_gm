@@ -15,6 +15,9 @@ export default defineConfig([
     "**/next-env.d.ts",
     "**/.aspire/**",
     "aspire-apphost/dist/**",
+    // A subagent's git worktree is a second copy of the repo under this one: linting it reports the same files twice,
+    // and its own node_modules may not be installed, which fails the Next rules outright.
+    ".claude/worktrees/**",
   ]),
   // typescript-eslint recommended, for every package.
   ...nextTs,

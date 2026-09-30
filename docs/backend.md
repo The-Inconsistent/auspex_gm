@@ -178,7 +178,9 @@ the middleware and would take the process down. `smoke.test.ts` covers this.
 ### The `action` event (`onAction`)
 
 Clients call `emitWithAck("action", ActionInput)` and receive an `ActionResult`:
-`{ ok: true, id?, token? } | { ok: false, error }`.
+`{ ok: true, id?, token?, notices? } | { ok: false, error }`. `notices` is one-off text for whoever sent the action,
+for something no snapshot can show afterwards: `session.end` reports who crossed a Rank (it needs the XP from before
+and after the award) and whether the group may now Ascend.
 
 1. **Parse** `Action.safeParse(body)`. A failure acks `{ ok: false, error: <prettified zod error> }` at once, outside the queue.
 2. **Queue** on `serial(ctx.campaignId, …)`.
@@ -265,9 +267,10 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | Type | Who | What it does | Snap | Page |
 |---|---|---|---|---|
 | `campaign.update` | GM | Patch `name`, `tier`, `framework`, `patron`, `homebrew` (the builder may use Apocrypha and Necrontyr). Existing combatants keep the threat class they were added with | S | |
+| `campaign.ascend` | GM | Raises the Tier by 1 for the whole group (Core pp.147–148, §11.63). `kind: "experience"` needs every character at 100+ XP in the current Tier (`xp − xpAtAscension`) and names who is short; `kind: "milestone"` is the GM's call and first awards every character 100 XP (step 1). Then the Tier moves (refused at Tier 5, and refused with no characters), every character's `xpAtAscension` becomes its post-award `xp`, and `ascensionPackageWaived` takes `waivePackage` — so a waiver is honoured and the next Ascension clears it. One transaction, delta SQL, no read-modify-write | S | Core pp.147–148 |
 | `pool.adjust` | GM | `pool += delta`, clamped to `[0, poolMax(pool, #characters)]` | S | p.164, p.320 |
 | `session.start` | GM | Every character Wrath → 2. Glory → 0. Ruin → number of characters. Closes any open session (no XP). Inserts session `number = count + 1`. Returns `id` | S C | p.162, p.164, p.320 |
-| `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Fails `"No session in progress"` | S C | p.321 |
+| `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Acks `notices`: each character that crossed a Rank (Core p.146) and, when every one of them has 100+ XP in the current Tier, that the group may Ascend (Core p.147). Fails `"No session in progress"` | S C | p.321 |
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
 | `character.build` | GM; Own | Re-runs `resolveBuild` on `build` with the campaign's homebrew setting, and for an existing character `play` (the campaign's Tier now, `character.xp` earned). A new build is at the campaign's Tier; a made one keeps the Tier it was made at, and a player may change only its `advancement` (and the choices under `advance/`): `"Only your GM changes a character's creation choices once it's made"`. Refuses `"Still to choose: …"` or the first problem. Writes the derived `stats`, the `build` and `built_at` (now: the builder drops device drafts older than it) and clears `build_draft`; a made character keeps what play changed (`keepPlay`: Wealth, Ammo, requisitions, gained weapons and gear) and gains only the weapons and gear the new build adds over the stored one (so a save with no changes changes nothing), a first build keeps `ammo` and `requisitioned`. A player's build keeps the stored `build.gm`. `keepSheet` (GM only, refused from a player as `"GM only"`): a first build over a hand-made sheet keeps its weapon, armour and gear lines and Wealth, as `keepPlay` would (the volkus pregens, `scripts/attach-builds.ts`). No `id`: inserts a character (GM). Returns `id` | S | Core pp.17–38 |
 | `character.draft` | GM; Own | Stores a builder draft (any JSON object up to `MAX_DRAFT_CHARS`, or null to clear) in `character.build_draft`, shown in LiveState as `draft`. A player's keeps the GM's part (`gm`) of the stored draft or build. `character.build` clears it | S | |
@@ -326,7 +329,7 @@ No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
 | `membership` (`auth.schema.ts`) | A signed-in user's seat at one table | `user_id`, `role`, `character_id` | campaign cascade. app_user cascade. character **set null** |
 | `invite` (`auth.schema.ts`) | Invite links | `code_hash`, `mode`, `character_id`, `allow_guests`, `expires_at`, `max_uses` (null = until it expires), `uses`, `revoked_at` | campaign cascade. character cascade |
 | `library_character` (`library.schema.ts`) | A character a signed-in user owns outside any campaign (§3.1) | `owner_user_id`, `name`, `build` (null until finished), `draft`, `homebrew`, `detail`, `updated_at`; indexed on the owner | app_user cascade |
-| `character` (`character.schema.ts`) | Player characters | `name`, `wounds` (taken, not remaining), `shock`, `wrath`, `traumatic`, `xp`, `conditions text[]` | campaign cascade |
+| `character` (`character.schema.ts`) | Player characters | `name`, `wounds` (taken, not remaining), `shock`, `wrath`, `traumatic`, `xp`, `xp_spent` (what advancement has spent, from `resolveBuild`), `xp_at_ascension` (the `xp` at the last Ascension, so "100 XP in this Tier" is `xp − xp_at_ascension`), `ascension_package_waived` (Core p.148 step 2), `conditions text[]` | campaign cascade |
 | `encounter` (`encounter.schema.ts`) | A fight. At most one `active` per campaign, enforced in code, not by a constraint. Ended ones stay as inactive rows | `active`, `round`, `current_id`, `last_side`, `seized_side` | campaign cascade. `current_id` → combatant **set null** |
 | `combatant` (`encounter.schema.ts`) | One PC or threat (or Mob) in an encounter | `order` (display only), `acted`, `ambushed`, `kind`. PC: `character_id`. Threat: `threat_id` (text, no FK: static data), `threat_class`, `label`, `marker`, `mob_count`, `mob_start`, `personal_ruin`, `wounds`, `shock`, `conditions`, `visibility` (`hidden` / `bars` / `stats`, default `bars`) | encounter cascade. character cascade |
 | `faction` (`codex.schema.ts`) | Factions | `name`, `keywords text[]`, `stance`, `notes`, `secrets` | campaign cascade |
