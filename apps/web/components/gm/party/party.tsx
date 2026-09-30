@@ -24,6 +24,7 @@ import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
+import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
@@ -79,7 +80,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const showGuestQr = async (c: Character) => {
     const r = await send({ type: "token.issue", characterId: c.id });
     if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: c.name, url: `${window.location.origin}/join/${r.token}` });
+    await showCode({ title: c.name, url: `${shareOrigin(window.location)}/join/${r.token}` });
   };
 
   // INVITE: a single-use link for one character; the player signs in (or joins as a guest) and takes that seat.
@@ -91,14 +92,14 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       hours: CHARACTER_INVITE_HOURS,
     });
     if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: `${c.name} invite`, url: `${window.location.origin}/invite/${r.token}` });
+    await showCode({ title: `${c.name} invite`, url: `${shareOrigin(window.location)}/invite/${r.token}` });
   };
 
   // ROOM QR: one code for the whole table tonight; each player claims an open agent or starts a new one.
   const inviteRoom = async () => {
     const r = await send({ type: "invite.create", mode: "room", hours: ROOM_INVITE_HOURS });
     if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: "Room", url: `${window.location.origin}/invite/${r.token}` });
+    await showCode({ title: "Room", url: `${shareOrigin(window.location)}/invite/${r.token}` });
   };
 
   // REVOKE (invite): the link stops working; anyone already seated keeps their seat.
