@@ -383,6 +383,13 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
       sends the draft and the GM ticks and saves, as for any build.
     - **The copy is a snapshot**, like a threat's stat block joining an encounter: later library edits don't change the
       campaign character, and XP earned in play belongs to the campaign character alone.
+60. **Corsair Backgrounds** (Aeldari: Inheritance of Embers p.14). Corsairs "count former Asuryani, Drukhari, and
+    Harlequins among their number" and "pick Keywords, Backgrounds, and Goals that match", as the Ynnari use "the
+    Background and Objectives of your Agent's original sub-faction" (p.20). So a Corsair archetype takes an Asuryani,
+    Drukhari or Harlequins Background table (the faction's `backgroundsFrom`); the Anhrathe table prints only Objectives
+    and isn't offered. Asuryani Paths stay off, as p.14 says. Whether the Corsair's species fits the former faction is the GM's
+    call. *Open (GitHub issue #2):* the "Anhrathe Goal table" p.14 names isn't printed, and only ANHRATHE OBJECTIVES is.
+    Our PDF is from 11 Jan 2024; check the updated PDF (around May 2024) before ruling.
 
 ---
 

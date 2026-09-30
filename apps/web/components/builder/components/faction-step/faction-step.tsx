@@ -29,7 +29,14 @@ export function FactionStep() {
     ("speciesId" in o && o.speciesId === speciesId) ||
     ("speciesIds" in o && !!speciesId && o.speciesIds.includes(speciesId)) ||
     ("subFactionId" in o && subFactionIds.includes(o.subFactionId));
-  const tables = [...lookups.backgrounds.values()].filter((t) => owns(t.owner));
+  // A Corsair takes the Background of their former faction (rules-flow.md §11.60); an Objectives-only table (Anhrathe)
+  // has nothing to choose.
+  const from = lookups.factions.get(arch.factionId)?.backgroundsFrom ?? [];
+  const tables = [...lookups.backgrounds.values()].filter(
+    (t) =>
+      (owns(t.owner) || ("factionId" in t.owner && from.includes(t.owner.factionId))) &&
+      BACKGROUND_ROWS.some((row) => t[row].length > 0),
+  );
   const groups = [...lookups["option-groups"].values()].filter((g) => owns(g.owner));
   const bg = draft.background;
   const table = bg ? lookups.backgrounds.get(bg.tableId) : undefined;
