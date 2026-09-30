@@ -404,6 +404,44 @@ textarea.input {
 .row.now .track > span {
   background: var(--bone);
 }
+/* ASCEND on PARTY (Core pp.147-148): one line per character, the shortfall in words, then the two Ascensions. */
+.asc-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line);
+}
+.asc-row:last-of-type {
+  border-bottom: 0;
+}
+.asc-row .who {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+/* Waiving the Ascension Package (Core p.148 step 2): a tick the GM sets before sending the Ascension. */
+.asc-waive {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: var(--vellum);
+  cursor: pointer;
+}
+.asc-waive:has(input:checked) {
+  border-color: var(--red);
+  background: var(--red-tint);
+}
+.asc-waive input {
+  accent-color: var(--red-fill);
+  margin-top: 5px;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
 /* Party pools as wax seals (components/ui/seal): brass Glory, crimson Ruin. */
 .seal {
   flex: none;
@@ -517,6 +555,22 @@ textarea.input {
   background: rgba(239, 231, 213, 0.08);
 }
 
+/* LEVEL UP: XP earned and not spent yet, on the sheet's head; it links to the builder's ADVANCE screen (Core
+   pp.146-151). Crimson means "now", so it reads as something waiting to be done, and the words carry it as well. */
+.badge-up {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 10px;
+  background: var(--red-fill);
+  border: 1px solid var(--red-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
 .badge-offline {
   position: fixed;
   top: 8px;
@@ -1117,6 +1171,17 @@ button.row.now:nth-of-type(even) {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+/* The sheet's XP line: earned, what advancement has left to spend, Rank (Core p.146), then LEVEL UP. */
+.sheet-xp {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.sheet-xp b {
+  font-family: var(--display);
+  font-size: 18px;
 }
 .vitals {
   display: grid;

@@ -52,10 +52,10 @@ const withPurchases = (d: Draft, layer: Layer, p: Purchases): Draft =>
   layer === "creation" ? { ...d, ...p, languages: d.languages } : { ...d, advancement: { ...d.advancement, ...p } };
 
 // Customise (Core pp.22–26): Attributes and Skills bought with XP, Talents, psychic powers and Advancement Packages.
-// As ADVANCE, the same for the XP earned in play (Core pp.146–151): Rank from it, and an Ascension Package for each Tier
-// the group has Ascended since creation (rules-flow.md §11.55).
+// As ADVANCE, the same for the XP earned in play (Core pp.146–151), with Rank from it. The Ascension the group owes has
+// its own screen (ASCENSION, Core p.148), because one Ascension takes one package or an Archetype Ascension (§11.55).
 export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
-  const { draft, update: updateDraft, resolved: r, lookups, go, tier, play } = useBuilder();
+  const { draft, update: updateDraft, resolved: r, lookups, go, tier, ascending } = useBuilder();
   const inPlay = layer === "advancement";
   const mine = purchasesOf(draft, layer);
   // Edits this layer's purchases.
@@ -77,7 +77,6 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
   const max = (speciesId ? lookups.species.get(speciesId)?.max : undefined) ?? undefined;
   const sheet = r.sheet;
   const psyker = sheet.keywords.includes("PSYKER");
-  const ascensionOpen = !!play && play.tier > tier;
 
   // USE SUGGESTIONS: the archetype's suggested Attributes, Skills and Talents (Core p.22), bought in one go.
   const useSuggestions = () =>
@@ -300,24 +299,29 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
 
       <section className="stack">
         <div className="tbar iron">
-          <span>{inPlay && ascensionOpen ? "PACKAGES" : "ADVANCEMENT PACKAGES"}</span>
+          <span>ADVANCEMENT PACKAGES</span>
           <span>{inPlay ? "IN PLAY" : "AT CREATION"}</span>
         </div>
-        {inPlay && ascensionOpen && (
-          <div className="dim">
-            The group has Ascended since this character was made: take an Ascension Package for each Tier, in order (
-            {citeLabel("rules-flow.md §11.55")}).
+        {inPlay && ascending && (
+          <div className="keys" style={{ alignItems: "center", paddingTop: 0 }}>
+            <span style={{ flex: "1 1 220px" }} className="dim">
+              The group has Ascended since this character was made: the one Ascension Package, or Archetype Ascension,
+              is on the ASCENSION screen ({citeLabel("rules-flow.md §11.55")}).
+            </span>
+            <button className="btn sm" onClick={() => go("ascension")}>
+              GO TO ASCENSION
+            </button>
           </div>
         )}
         <RecordList
           label="Search packages"
           searchable
           items={[...lookups.packages.values()]
-            .filter((p) => p.kind === "advancement" || (inPlay && ascensionOpen))
+            .filter((p) => p.kind === "advancement")
             .map((p) => ({
               id: p.id,
               label: p.name,
-              meta: `${p.kind === "ascension" ? "Ascension · " : ""}${sourceCite(p)}`,
+              meta: sourceCite(p),
               detail: rulesText(p),
               xp: typeof p.xp === "number" ? p.xp : undefined,
               blocked: p.notAtCreation && !inPlay ? "not at creation" : undefined,

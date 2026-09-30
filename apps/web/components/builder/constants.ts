@@ -35,6 +35,10 @@ export const STEP_CITES: Record<BuildStep, string> = {
   advance: "Core pp.146–151",
 };
 
+// The builder picks its own screen, so a link that wants a particular one says so in the query
+// (`/c/<id>/build/<charId>?step=advance`, the sheet's LEVEL UP badge). Read by `stepFromQuery` (utils.ts).
+export const BUILD_STEP_PARAM = "step";
+
 // Where a draft waits between visits on this device, per table and character.
 export const draftKey = ({ campaignId, characterId }: { campaignId: string; characterId: string | null }) =>
   `wg-build:${campaignId}:${characterId ?? NEW_CHARACTER}`;

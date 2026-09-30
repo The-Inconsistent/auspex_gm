@@ -36,7 +36,7 @@ import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
 import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
-import { draftOf, mergeOverrides, pickDraft, type DraftStart } from "./utils";
+import { draftOf, mergeOverrides, pickDraft, stepFromQuery, type DraftStart } from "./utils";
 
 // The GM's overrides as the builder opened on them and as they are now; `mergeOverrides` saves only the difference.
 type OverrideEdit = { base: Overrides; edited: Overrides };
@@ -50,7 +50,7 @@ type Bench = {
   setHomebrew: ((next: boolean) => Promise<string | null>) | null; // null: not this caller's to change
   role: Role;
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
-  play: { tier: number; xpEarned: number } | null;
+  play: { tier: number; xpEarned: number; xpAtAscension?: number; packageWaived?: boolean } | null;
   key: string; // where this device keeps the draft
   // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. At a table
   // the GM's tablet, the player's phone or a script (attach-builds.ts) may save it, so it's the character's `builtAt`.
@@ -139,7 +139,17 @@ function TableBench({
           : null,
       role,
       made: !!character?.build,
-      play: xpEarned === undefined ? null : { tier, xpEarned },
+      // In play the Ascension fields ride along: `xpAtAscension` is what the XP stood at when the group last Ascended
+      // (PARTY's ASCEND panel uses the same), and a waived package is the GM's (Core p.148 step 2).
+      play:
+        xpEarned === undefined
+          ? null
+          : {
+              tier,
+              xpEarned,
+              xpAtAscension: character?.xpAtAscension,
+              packageWaived: character?.ascensionPackageWaived,
+            },
       key: draftKey({ campaignId, characterId }),
       start: {
         name: character?.name ?? "",
@@ -335,7 +345,15 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   const { key, start, made, play, role } = bench;
   const [draft, setDraft] = useState<Draft>(() => initialDraft({ key, start, tier: bench.tier, stamp: bench.stamp }));
   const locked = made && role !== "gm";
-  const [step, setStep] = useState<BuilderStep>(locked ? "advance" : draft.archetypeId ? "customise" : "tier");
+  // Which screen this opens on. A link may ask for one ("?step=advance", the sheet's LEVEL UP badge), but only for a
+  // character already made: the library's bench renders on the server too, where there is no URL to read, and it has no
+  // ADVANCE screen to ask for. `useSearchParams` would push the whole builder out of the prerender, and the page that
+  // renders it is not this component's to wrap in a <Suspense>.
+  const [step, setStep] = useState<BuilderStep>(
+    () =>
+      (made && typeof window !== "undefined" ? stepFromQuery(window.location.search) : null) ??
+      (locked ? "advance" : draft.archetypeId ? "customise" : "tier"),
+  );
   const [error, setError] = useState<string | null>(null);
   const [overrides, setOverrides] = useState(bench.overrides);
   const [openedOverrides] = useState(bench.overrides); // what `mergeOverrides` compares the edits with
@@ -406,6 +424,9 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
       homebrew: bench.homebrew,
       setHomebrew: bench.setHomebrew,
       play,
+      // The group's Tier has passed the one this character was made at, so it owes this Ascension's package or an
+      // Archetype Ascension (Core p.148, rules-flow.md §11.55).
+      ascending: !!play && play.tier > tier,
       made,
       importable: bench.canImport && !locked,
       role,

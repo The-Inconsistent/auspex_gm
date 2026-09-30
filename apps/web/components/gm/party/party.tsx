@@ -10,6 +10,7 @@ import {
   CharacterStats,
   deriveStats,
   pcStatus,
+  rankOf,
   type ActionResult,
   type Character,
   type Codex,
@@ -25,6 +26,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
 import { TOKENS } from "@/lib/tokens/tokens";
 
+import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
@@ -291,6 +293,8 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
         </div>
       </section>
 
+      <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
+
       <section className="panel pad stack">
         <div className="rule">TABLE ACCESS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
@@ -348,7 +352,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     <b style={{ flex: 1 }}>{c.name.toUpperCase()}</b>
                     <span className="dim">{c.stats.archetype || "NO STATS YET"}</span>
                     <StatusChips items={pcStatus(c, d)} />
-                    <span className="dim">XP {c.xp}</span>
+                    {/* Rank follows this character's own XP (Core p.146); what is left to spend is what advancement
+                        hasn't bought yet, so the GM can nudge people between sessions. */}
+                    <span className="dim">
+                      XP {c.xp} · RANK {rankOf(c.xp)}
+                    </span>
+                    {c.xp > c.xpSpent && <span className="accent">{c.xp - c.xpSpent} XP TO SPEND</span>}
                   </div>
                   <div className="dim">
                     {seatOf(c.id)
