@@ -14,7 +14,7 @@ phone ──HTTPS──▶ Pangolin (TLS) ──▶ host :3004 ──▶ web (Ne
 | | |
 |---|---|
 | URL | `https://auspex.ydothien.work`, a Pangolin resource pointing at host `:3004`, **with Pangolin SSO off** (guests on a QR code have no Pangolin login; Clerk and guest tokens are the auth) |
-| Images | `ghcr.io/junmaxwell/glory-gm-{api,web}:latest`, **private**: they carry book text |
+| Images | `ghcr.io/the-inconsistent/glory-gm-{api,web}:latest`, **private**: they carry book text |
 | Build | `.github/workflows/images.yml`, on a push to `main` that touches app code |
 | Deploy | **By hand:** "Pull & redeploy" on the `auspex` stack in Dockhand |
 | Stack | `docker-compose.prod.yml` (Dockhand git stack `auspex-gm`, compose path set to that file). Dockhand's stack name overrides the compose `name:`, so containers are `auspex-gm-api-1` and `auspex-gm-web-1` |
@@ -56,7 +56,7 @@ Then, in Clerk:
 6. Set **Access mode** to **Invite-only**, and re-create the session-token claims and the `creator` role
    ([development.md](development.md#clerk)). A new instance starts Open, which would expose the book content.
 
-In GitHub (`JunMaxwell/auspex_gm`):
+In GitHub (`The-Inconsistent/auspex_gm`):
 
 7. In the **`prod` environment** (Settings → Environments → prod), add the **variable** `CLERK_PUBLISHABLE_KEY` =
    `pk_live_…`. It must be a variable, not a secret: the workflow reads `vars.`.
@@ -64,7 +64,7 @@ In GitHub (`JunMaxwell/auspex_gm`):
 
 In Dockhand:
 
-9. Add a git stack for `JunMaxwell/auspex_gm` with compose file `docker-compose.prod.yml`, and set its env:
+9. Add a git stack for `The-Inconsistent/auspex_gm` with compose file `docker-compose.prod.yml`, and set its env:
 
    | Var | Value |
    |---|---|
@@ -103,8 +103,8 @@ Finally, back in the VPS shell:
 Build both images, tag them with the GHCR names, and point the api at the dev database's network:
 
 ```bash
-docker build -f apps/api/Dockerfile -t ghcr.io/junmaxwell/glory-gm-api:latest .
-docker build -f apps/web/Dockerfile --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_… -t ghcr.io/junmaxwell/glory-gm-web:latest .
+docker build -f apps/api/Dockerfile -t ghcr.io/the-inconsistent/glory-gm-api:latest .
+docker build -f apps/web/Dockerfile --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_… -t ghcr.io/the-inconsistent/glory-gm-web:latest .
 set -a; source apps/api/.env; set +a
 CLERK_TEST_SECRET= WG_DB_PASSWORD=wg ADMIN_KEY=test WEB_ORIGIN=http://localhost:3004 COOKIE_SECURE=false \
   PG_NETWORK=wrath_glory_default docker compose -f docker-compose.prod.yml -p auspex-local up -d
