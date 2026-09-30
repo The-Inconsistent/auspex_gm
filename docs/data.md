@@ -548,7 +548,7 @@ rulings, and vehicles (see the Wargear catalogue).
 | Type | Record | Holds |
 |---|---|---|
 | `keywords` | `Keyword` | Faction Keywords by printed name (`"ADEPTUS ASTARTES"`, `"[CHAPTER]"`); a bracketed one names the `placeholder` sub-faction type that fills it |
-| `factions` | `Faction` | Adeptus Astartes, Asuryani… |
+| `factions` | `Faction` | Adeptus Astartes, Asuryani…; `backgroundsFrom` lists the factions whose Background tables its Agents take (Anhrathe → Asuryani, Drukhari, Harlequins, rules-flow.md §11.60) |
 | `sub-factions` | `SubFaction` | Chapters, Orders, Forge Worlds, Craftworlds…: `type`, `factionId`, the `keyword` it fills in, `traits` (with `geneSeed`) |
 | `species` | `Species` | XP, Speed, Size, granted Attributes and Skills, maximums, Species Keywords, abilities, and `countsAs`: the species it also counts as for requirements (Primaris → Adeptus Astartes) |
 | `backgrounds` | `BackgroundTable` | Origin / Accomplishment / Goal rows with their `bonus`, and Objectives; owned by a faction, species or sub-faction |
@@ -661,7 +661,8 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
 
 **Open questions for the GM** (not yet decided; they go in rules-flow.md §11 once decided):
 
-- GitHub issue #2: the missing Anhrathe Goal table (IoE p.14). (Its +20 / +30 XP half is settled by §11.35.)
+- GitHub issue #2: the missing Anhrathe Goal table (IoE p.14); only ANHRATHE OBJECTIVES is printed. Check the updated
+  PDF (around May 2024; ours is from Jan 2024) before ruling. Corsair Backgrounds are settled by §11.60; the +20 / +30 XP half by §11.35.
 - Species details still missing: no Size for any Apocrypha species or the Necron.
 - Archetype print problems kept as printed, pending a ruling: Howling Banshee's SKILLS copy the Ranger's (IoE p.27);
   Lexmechanic prints "SKILLS: 3" with no Skill names (FSPG p.117); Corsair Prince's keywords read "AELDARI, ASURYANI,

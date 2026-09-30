@@ -21,7 +21,8 @@
     "source": "inheritance-of-embers",
     "page": 14,
     "text": "",
-    "note": "Headed \"CORSAIRS\"; Anhrathe is the Keyword (ANHRATHE). Rule names are editorial: the book prints these rules unnamed. p.14 says Corsairs may use \"the Anhrathe Goal table\", but no such table is printed.",
+    "note": "Headed \"CORSAIRS\"; Anhrathe is the Keyword (ANHRATHE). Rule names are editorial: the book prints these rules unnamed. Corsairs take the Background of their former faction (rules-flow.md §11.60). p.14 says Corsairs may use \"the Anhrathe Goal table\", but only ANHRATHE OBJECTIVES is printed (GitHub issue #2).",
+    "backgroundsFrom": ["asuryani", "drukhari", "harlequins"],
     "rules": [
       {
         "name": "Corsair Agents",

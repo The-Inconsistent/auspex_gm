@@ -216,6 +216,7 @@ const known: Record<string, Set<string>> = {
 // Which catalogue an id-holding key points into. The schema keeps these key names unambiguous.
 const REF_KEYS: Record<string, string> = {
   factionId: "factions",
+  backgroundsFrom: "factions",
   speciesId: "species",
   speciesIds: "species",
   countsAs: "species",
