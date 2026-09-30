@@ -44,6 +44,14 @@ export const Action = z.union([
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
+    // The group Ascends: the campaign's Tier goes up by one, for everyone at once (Core pp.147–148, §11.63).
+    // `experience`: every character must have earned 100 XP in the current Tier. `milestone`: the GM's call, which
+    // first gives every character 100 XP (Core p.148 step 1) and may waive the Ascension Package (step 2).
+    z.object({
+      type: z.literal("campaign.ascend"),
+      kind: z.enum(["experience", "milestone"]),
+      waivePackage: z.boolean().default(false),
+    }),
 
     z.object({
       type: z.literal("character.create"),
@@ -223,4 +231,7 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "seat.leave",
 ]);
 
-export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };
+// `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry
+// them — they compare before with after (who crossed a Rank boundary on session.end, Core p.146) — and they are
+// one-off, like the vox log at the table, not state to render later.
+export type ActionResult = { ok: true; id?: string; token?: string; notices?: string[] } | { ok: false; error: string };

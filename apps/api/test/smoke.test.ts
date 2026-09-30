@@ -5,8 +5,10 @@ import assert from "node:assert/strict";
 import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
+  ASCENSION_XP,
   LIBRARY_CAP,
   Lobby,
+  SKILL_XP,
   deriveStats,
   poolMax,
   type ActionInput,
@@ -936,6 +938,7 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.deepEqual(veyl.stats.attributes, { S: 5, T: 5, A: 5, I: 5, Wil: 4, Int: 5, Fel: 1 });
   assert.equal(veyl.build?.archetypeId, "primaris-incursor");
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
+  assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 
   // Refused: a build with choices left, one over budget, one for another Tier.
   const { languages: _, ...noLanguage } = disruptor;
@@ -1039,6 +1042,8 @@ test("character builder: the creation catalogue for seats, and character.build d
     await gm.until((s) => s.characters.find((c) => c.id === made.id)?.stats.skills.Stealth === 6)
   ).characters.find((c) => c.id === made.id)!;
   assert.equal(advanced.stats.wealth, before.stats.wealth, "play's Wealth is kept");
+  // What advancement spent is stored, so a sheet shows the XP left without resolving the build (#15 step 5).
+  assert.equal(advanced.xpSpent, SKILL_XP[6]! - SKILL_XP[5]!, "Stealth 5 → 6, priced from where creation left it");
 
   // A sheet written in another hand (a pregen's printed lines, issue #18) survives a save with no build changes: the
   // rebuild adds only what the build adds over the stored one. The new name marks the save's broadcast.
@@ -1378,4 +1383,87 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(fresh.codex.sessions.length, 0);
   assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
   assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
+});
+
+test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp.147-148)", async (t) => {
+  const gm = await newCampaign("Ascend", 2);
+  t.after(() => gm.socket.close());
+  const kell = await gm.send({ type: "character.create", name: "Kell" });
+  const vyn = await gm.send({ type: "character.create", name: "Vyn" });
+  assert.ok(kell.ok && kell.id && vyn.ok && vyn.id);
+  await gm.until((s) => s.characters.length === 2);
+
+  // Ascending is the group's decision and the GM's action (§11.66); a player can't raise the table's Tier.
+  const issued = await gm.send({ type: "token.issue", characterId: kell.id! });
+  assert.ok(issued.ok && issued.token);
+  const player = connect({ auth: { token: issued.token } });
+  t.after(() => player.socket.close());
+  await player.until((s) => s.characters.length === 2);
+  assert.deepEqual(await player.send({ type: "campaign.ascend", kind: "milestone" }), {
+    ok: false,
+    error: "GM only",
+  });
+
+  // Experience Ascension: every character needs 100 XP earned in the current Tier (Core p.147).
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Kell and Vyn have not earned 100 XP in Tier 2 yet (Core p.147)",
+  });
+
+  // Session end awards the XP and tells the GM what it crossed: Rank (Core p.146) and the group's eligibility (p.147).
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.deepEqual(await gm.send({ type: "session.end", xp: 45, recap: "" }), {
+    ok: true,
+    notices: ["Kell reached Rank 2 (Core p.146)", "Vyn reached Rank 2 (Core p.146)"],
+  });
+  await gm.until((s) => s.characters.every((c) => c.xp === 45));
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.deepEqual(await gm.send({ type: "session.end", xp: 55, recap: "" }), {
+    ok: true,
+    notices: [
+      "Kell reached Rank 3 (Core p.146)",
+      "Vyn reached Rank 3 (Core p.146)",
+      `Everyone has earned ${ASCENSION_XP} XP in Tier 2: the group may Ascend (Core p.147)`,
+    ],
+  });
+  await gm.until((s) => s.characters.every((c) => c.xp === ASCENSION_XP));
+
+  // A character who joined after the XP was awarded holds the group back, and is named on their own.
+  const late = await gm.send({ type: "character.create", name: "Latecomer" });
+  assert.ok(late.ok && late.id);
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Latecomer has not earned 100 XP in Tier 2 yet (Core p.147)",
+  });
+  assert.ok((await gm.send({ type: "character.delete", id: late.id! })).ok);
+  await gm.until((s) => s.characters.length === 2);
+
+  // Experience Ascension: the Tier goes up, XP is untouched, and the 100-XP window restarts from here.
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "experience" })).ok);
+  const ascended = await gm.until((s) => s.campaign.tier === 3);
+  assert.ok(
+    ascended.characters.every((c) => c.xp === 100 && c.xpAtAscension === 100 && !c.ascensionPackageWaived),
+    JSON.stringify(ascended.characters.map((c) => [c.xp, c.xpAtAscension])),
+  );
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Kell and Vyn have not earned 100 XP in Tier 3 yet (Core p.147)",
+  });
+
+  // Milestone Ascension is the GM's call: 100 XP each first (Core p.148 step 1), and the package may be waived (step 2).
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone", waivePackage: true })).ok);
+  const milestone = await gm.until((s) => s.campaign.tier === 4);
+  assert.ok(
+    milestone.characters.every((c) => c.xp === 200 && c.xpAtAscension === 200 && c.ascensionPackageWaived),
+    JSON.stringify(milestone.characters.map((c) => [c.xp, c.xpAtAscension, c.ascensionPackageWaived])),
+  );
+
+  // Tier 5 is the last one, and the next Ascension clears the waive.
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone" })).ok);
+  const top = await gm.until((s) => s.campaign.tier === 5);
+  assert.ok(top.characters.every((c) => c.xp === 300 && !c.ascensionPackageWaived));
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "milestone" }), {
+    ok: false,
+    error: "Tier 5 is the highest Tier; there is nothing to Ascend to",
+  });
 });

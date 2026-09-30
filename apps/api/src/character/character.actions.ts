@@ -228,12 +228,16 @@ export async function applyCharacterAction(
           : a.keepSheet
             ? keepPlay({ previous: old, next: r.sheet, before: r.sheet })
             : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
+      // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
+      // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.
+      const xpSpent = r.advancement?.spent ?? 0;
       if (row) {
         await tx
           .update(character)
           .set({
             stats,
             build,
+            xpSpent,
             buildDraft: null,
             builtAt: new Date(),
             ...(a.name ? { name: a.name } : {}),
@@ -249,6 +253,7 @@ export async function applyCharacterAction(
           name: a.name ?? "Unnamed",
           stats,
           build,
+          xpSpent,
           detail: a.detail ?? {},
           builtAt: new Date(),
         })

@@ -55,6 +55,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
   authorize(ctx, action);
   switch (action.type) {
     case "campaign.update":
+    case "campaign.ascend":
     case "pool.adjust":
     case "session.start":
     case "session.end":

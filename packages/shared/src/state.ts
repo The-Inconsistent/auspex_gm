@@ -226,6 +226,11 @@ export const Character = z.object({
   traumatic: z.number().int(), // Traumatic Injuries while Dying (p.193)
   annihilated: z.boolean(), // one hit over 2 × Max Wounds (p.194)
   xp: z.number().int(),
+  // Advancement in play (§11.55): what the saved build spends of the XP earned, so `xp - xpSpent` is what's left.
+  xpSpent: z.number().int(),
+  // `xp` at the group's last Ascension, so 100 XP "in the current Tier" (Core p.147) is `xp - xpAtAscension`.
+  xpAtAscension: z.number().int(),
+  ascensionPackageWaived: z.boolean(), // the GM waived this Ascension's package (Core p.148 step 2)
   conditions: z.array(z.string()),
   detail: CharacterDetail,
   objectives: z.array(Objective), // blanked for every other player (toPlayerView)

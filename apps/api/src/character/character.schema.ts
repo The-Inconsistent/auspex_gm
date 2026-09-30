@@ -22,6 +22,15 @@ export const character = pgTable("character", {
   traumatic: integer().notNull().default(0),
   annihilated: boolean().notNull().default(false), // one hit over 2 × Max Wounds (p.194)
   xp: integer().notNull().default(0),
+  // What advancement has spent of the XP earned in play (resolveBuild's `advancement.spent`, §11.55), written by
+  // `character.build`. XP left to spend is `xp - xpSpent`, so a sheet can show it without the creation catalogue.
+  xpSpent: integer().notNull().default(0),
+  // `xp` when the group last Ascended, so "100 or more XP earned in the current Tier" (Core p.147) is
+  // `xp - xpAtAscension >= ASCENSION_XP`. 0 until the first Ascension: all XP so far belongs to the starting Tier.
+  xpAtAscension: integer().notNull().default(0),
+  // The GM waived this character's Ascension Package for the Ascension just made (Core p.148 step 2); cleared by the
+  // next Ascension.
+  ascensionPackageWaived: boolean().notNull().default(false),
   conditions: conditions(),
   detail: jsonb().$type<Partial<CharacterDetail>>().notNull().default({}), // Adding Detail (Core pp.32–36)
   objectives: jsonb().$type<Objective[]>().notNull().default([]), // the GM's notes to this Agent's player only
