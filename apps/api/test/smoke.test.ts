@@ -11,6 +11,9 @@ import {
   poolMax,
   type ActionInput,
   type ActionResult,
+  type BookAvailable,
+  type BookPage,
+  type BookReply,
   type Codex,
   type CreationPayload,
   type LibraryCharacter,
@@ -904,6 +907,48 @@ test("character builder: the creation catalogue for seats, and character.build d
     await gm.until((s) => s.characters.find((c) => c.id === made.id)?.stats.skills.Stealth === 6)
   ).characters.find((c) => c.id === made.id)!;
   assert.equal(advanced.stats.wealth, before.stats.wealth, "play's Wealth is kept");
+});
+
+test("book pages: a GM tablet serves one page, relayed back to the player who asked", async (t) => {
+  const gm = await newCampaign("Books", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token } });
+  t.after(() => p.socket.close());
+  let available: string[] | null = null;
+  p.socket.on("book:available", (b: BookAvailable) => (available = b.sources));
+  const ask = (page: unknown, source = "core") =>
+    p.socket.emitWithAck("book:request", { source, page }) as Promise<BookReply>;
+  await eventually(() => available?.length === 0, "nothing served on connect");
+  assert.deepEqual(await ask(113), { ok: false, error: "The GM isn't serving that book." });
+
+  // A player can't claim to serve; only a GM socket answers requests.
+  p.socket.emit("book:serving", { sources: ["core"] });
+  assert.equal((await ask(113)).ok, false, "a player's book:serving is ignored");
+
+  // The GM tablet's render, stubbed: a JPEG-ish buffer that carries the page it was asked for.
+  const asked: BookPage[] = [];
+  gm.socket.on("book:request", (req: BookPage, ack: (r: BookReply) => void) => {
+    asked.push(req);
+    ack({ ok: true, image: new Uint8Array([0xff, 0xd8, req.page]).buffer });
+  });
+  gm.socket.emit("book:serving", { sources: ["core"] });
+  await eventually(() => !!available?.includes("core"), "players hear the GM is serving Core");
+  const r = await ask(113);
+  assert.ok(r.ok);
+  assert.deepEqual([...new Uint8Array(r.image)], [0xff, 0xd8, 113]);
+  assert.deepEqual(asked, [{ source: "core", page: 113 }], "the printed page goes to the tablet (it adds the offset)");
+  assert.deepEqual(await ask(113, "threat-assessment"), { ok: false, error: "The GM isn't serving that book." });
+  assert.equal((await ask(0)).ok, false, "pages start at 1");
+  assert.equal(asked.length, 1, "refused requests never reach the tablet");
+
+  // The tablet leaving (tab closed, signal lost) turns the links back into text.
+  gm.socket.close();
+  await eventually(() => available?.length === 0, "a GM leaving stops serving");
+  assert.equal((await ask(113)).ok, false);
 });
 
 test("the guest door is rate limited per caller IP", async () => {

@@ -1,6 +1,7 @@
 import { ATTRIBUTES, threatCite, type RuleEntry, type Threat } from "@wg/shared";
 
 import { Legend } from "@/components/ui/legend/legend";
+import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 
 type StatBlockProps = { t: Threat; tier?: number; legend?: RuleEntry[] };
@@ -15,7 +16,9 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
     <div className="sb">
       <div className="sb-title">
         <span>{t.name.toUpperCase()}</span>
-        <i>{threatCite(t)}</i>
+        <i>
+          <PageCite cite={threatCite(t)} />
+        </i>
         {legend && legend.length > 0 && <Legend title="Reading a stat block" entries={legend} />}
       </div>
       <div className="sb-grid" style={{ gridTemplateColumns: `64px repeat(${tiers}, minmax(0, 1fr))` }}>

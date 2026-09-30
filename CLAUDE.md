@@ -39,6 +39,8 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   GM-only; `/rules` and `/creation` need any seat; their seatless twins `/api/rules` and `/api/creation`, for the
   character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
   **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
+  Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
+  the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`).
 
 ## Stack
 

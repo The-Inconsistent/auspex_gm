@@ -19,6 +19,7 @@ import {
 import { ATTRIBUTE_NAMES } from "@/components/builder/constants";
 import { DetailFields, DetailHelp, DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { Legend } from "@/components/ui/legend/legend";
+import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { useRules } from "@/components/ui/rules-provider/rules-provider";
@@ -278,7 +279,12 @@ export function Sheet({ me, tier, table }: SheetProps) {
               {list.map((r) => (
                 <div key={r.name}>
                   <b>{r.name}</b>
-                  {r.page && <span className="dim"> ({r.page})</span>}
+                  {r.page && (
+                    <span className="dim">
+                      {" "}
+                      (<PageCite cite={r.page} />)
+                    </span>
+                  )}
                   {r.text && <div style={{ fontSize: 13 }}>{r.text}</div>}
                 </div>
               ))}
