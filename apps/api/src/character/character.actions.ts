@@ -123,7 +123,7 @@ function fitUpgrade(
   // Grenade (kind `grenade`, and ranged when thrown) a candidate for a Red-Dot Sight.
   const kinds = entry.upgrade.fits.kinds ?? ["weapon"];
   if (!kinds.includes(base.kind))
-    fail(`${entry.name} fits ${kinds.join(" or ")}; ${base.name} is ${base.kind} (issue #15)`);
+    fail(`${entry.name} fits ${kinds.join(" or ")}; ${base.name} is ${base.kind} (rules-flow.md §11.64)`);
   // What `fits` is checked against is the weapon as it is now, upgrades included, so a Trait an earlier upgrade added
   // or removed counts: the Anti-Grav Platform takes Heavy off, which is what a not-Heavy upgrade needs.
   const fitted = [...(weapon.upgrades ?? []), ...(weapon.fitted ?? [])]

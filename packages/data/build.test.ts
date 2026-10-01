@@ -606,7 +606,8 @@ test("keepPlay: a rebuild keeps what was fitted in play and takes the build's ow
     "the build's upgrades come from the new build, so dropping one in the builder drops it here",
   );
 
-  // A weapon gained in play has no counterpart in the build, so what it carries was fitted at the table and stays.
+  // A weapon the build no longer gives keeps its build upgrades as the build's: moved to `fitted`, removeUpgrade could
+  // turn one into a gear line, and a rebuild that gives the weapon back would apply it twice.
   const looted = {
     name: "Looted Choppa",
     damage: 4,
@@ -618,7 +619,26 @@ test("keepPlay: a rebuild keeps what was fitted in play and takes the build's ow
   };
   const withLoot = keepPlay({ previous: { ...played, weapons: [...played.weapons, looted] }, next });
   const back = withLoot.weapons.find((w) => w.name === "Looted Choppa")!;
-  assert.deepEqual(back.fitted, ["mastercrafted"], "an id on a play-gained weapon is a play fitting");
+  assert.deepEqual([back.upgrades, back.fitted], [["mastercrafted"], undefined]);
+
+  // Toggled back on, the build's id isn't also counted as fitted.
+  const twice = keepPlay({
+    previous: { ...played, weapons: played.weapons.with(0, { ...played.weapons[0]!, fitted: ["mastercrafted"] }) },
+    next: { ...next, weapons: next.weapons.with(0, { ...next.weapons[0]!, upgrades: ["mastercrafted"] }) },
+  });
+  assert.deepEqual([twice.weapons[0]!.upgrades, twice.weapons[0]!.fitted], [["mastercrafted"], undefined]);
+
+  // A requisitioned copy of a build weapon is its own: the build's upgrades stay on the build's one.
+  const copy = { ...next.weapons[0]!, name: `${next.weapons[0]!.name} (requisitioned)`, upgrades: undefined };
+  const built = { ...next.weapons[0]!, upgrades: ["mastercrafted"] };
+  const pair = keepPlay({
+    previous: { ...played, weapons: [built, copy] },
+    next: { ...next, weapons: [built] },
+  });
+  assert.deepEqual(
+    pair.weapons.map((w) => w.upgrades),
+    [["mastercrafted"], undefined],
+  );
 });
 
 test("withUpgrades: derives the shown sheet, and applying it twice changes nothing more (#15 step 3)", () => {

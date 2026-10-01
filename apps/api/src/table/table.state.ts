@@ -27,7 +27,7 @@ const upgradesByLine = new Map(
 );
 const ownedUpgrades = (gear: string[]) =>
   gear
-    .map((g) => upgradesByLine.get(g.replace(/ \(.*$/, "")))
+    .map((g) => upgradesByLine.get(g.replace(/ \([^()]*\)$/, ""))) // only the cite: a name may hold brackets too
     .filter((u) => u !== undefined)
     .map((u) => ({ ...u }));
 

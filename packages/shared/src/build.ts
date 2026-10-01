@@ -1930,19 +1930,27 @@ export function keepPlay({
   // the new build says the starting wargear carries (a build edit that drops one drops it here), and `fitted` is what
   // was fitted in play, which no rebuild may touch. Merging them into one list would make a removal indistinguishable
   // from something fitted at the table.
-  const sameWeapon = (a: CharacterStats["weapons"][number], b: CharacterStats["weapons"][number]) =>
-    a.wargearId && b.wargearId ? a.wargearId === b.wargearId : a.name === b.name;
+  // Each build weapon answers for one weapon held, by name first (a requisitioned copy of a build weapon is its own),
+  // then by catalogue entry for a sheet made before upgrades were modelled.
+  const unmatched = [...next.weapons];
+  const counterpart = (w: CharacterStats["weapons"][number]) => {
+    let i = unmatched.findIndex((n) => n.name === w.name);
+    if (i < 0 && w.wargearId) i = unmatched.findIndex((n) => n.wargearId === w.wargearId);
+    return i < 0 ? undefined : unmatched.splice(i, 1)[0];
+  };
   const played = previous.weapons.map((w) => {
-    const from = next.weapons.find((n) => sameWeapon(w, n));
-    // A weapon with no counterpart in the new build was gained in play, so anything on it was fitted at the table.
-    const fitted = [...new Set([...(w.fitted ?? []), ...(from ? [] : (w.upgrades ?? []))])];
+    const from = counterpart(w);
+    // A weapon the new build no longer gives keeps what its build gave, still as the build's: moving it to `fitted`
+    // would let removeUpgrade turn it into a gear line, and a rebuild that gives the weapon back would add it twice.
+    const upgrades = from ? (from.upgrades ?? []) : (w.upgrades ?? []);
+    const fitted = (w.fitted ?? []).filter((id) => !upgrades.includes(id));
     const { upgrades: _, fitted: __, ...line } = w;
     const wargearId = w.wargearId ?? from?.wargearId;
     // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed.
     return {
       ...line,
       ...(wargearId && { wargearId }),
-      ...(from?.upgrades?.length && { upgrades: from.upgrades }),
+      ...(upgrades.length && { upgrades }),
       ...(fitted.length && { fitted }),
     };
   });

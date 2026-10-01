@@ -469,7 +469,7 @@ test("GM and player share a table", async (t) => {
   };
   assert.deepEqual(await gm.send({ ...rqUp, fitTo: "Frag Grenade" }), {
     ok: false,
-    error: "Red-Dot Sight fits weapon; Frag Grenade is grenade (issue #15)",
+    error: "Red-Dot Sight fits weapon; Frag Grenade is grenade (rules-flow.md §11.64)",
   });
   // A sight is already on the Laspistol, so the slot refuses this one too — again before the Test is spent.
   assert.deepEqual(await gm.send({ ...rqUp, fitTo: "Laspistol" }), {

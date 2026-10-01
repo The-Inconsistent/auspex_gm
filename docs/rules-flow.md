@@ -450,6 +450,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
       between weapons between scenes. The strain is the **T'au support systems**: ten entries share `system`, so
       one-per-slot would leave a battlesuit a single one, which their own text contradicts. Proposal: SUPPORT SYSTEM
       entries are exempt from one-per-slot the way Distinction is exempt from the maximum, and still spend the three.
+    - **What a fitted upgrade does to the profile,** where the printed text stops short: an upgrade fits a weapon
+      unless its `fits` names another kind, so a weapon upgrade ("any ranged weapon", Core p.227) doesn't go on a
+      grenade or a launcher's missile, which are ammunition; an upgrade granting a Trait the weapon already has keeps
+      the better rating rather than carrying the Trait twice; and a rating lowered to 0 ("reduces any Salvo and
+      Rapid Fire ratings it has by -1", VoA p.68) takes the Trait off, since Rapid Fire (0) adds nothing.
       *Proposed; awaiting the GM.*
 65. **Armour takes the weapon limit** — Core p.227 caps upgrades at three, one of each type, and prints it of weapons
     alone; no book gives armour a limit. House decision: armour takes the same cap — at most three upgrades, one per
