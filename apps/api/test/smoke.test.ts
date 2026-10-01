@@ -976,6 +976,12 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.equal(veyl.stats.archetype, "Primaris Incursor");
   assert.deepEqual(veyl.stats.attributes, { S: 5, T: 5, A: 5, I: 5, Wil: 4, Int: 5, Fel: 1 });
   assert.equal(veyl.build?.archetypeId, "primaris-incursor");
+  // Standing weapon effects (rules-flow.md §11.68) are applied on read: Bolter Discipline gives the Occulus Bolt
+  // Carbine's Rapid Fire (1) +Rank, at Rank 1 here.
+  const carbine = (c: { stats: { weapons: { name: string; traits: string[]; effects?: string[] }[] } }) =>
+    c.stats.weapons.find((w) => w.name === "Occulus Bolt Carbine")!;
+  assert.ok(carbine(veyl).traits.includes("Rapid Fire (2)"), JSON.stringify(carbine(veyl)));
+  assert.deepEqual(carbine(veyl).effects, ["Bolter Discipline"]);
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
   assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 
@@ -1059,6 +1065,8 @@ test("character builder: the creation catalogue for seats, and character.build d
   const before = (await gm.until((s) => s.characters.find((c) => c.id === made.id)?.xp === 40)).characters.find(
     (c) => c.id === made.id,
   )!;
+  // 40 XP is Rank 2 (Core p.146): the line follows with no rebuild, because the Rank is read, not stored.
+  assert.ok(carbine(before).traits.includes("Rapid Fire (3)"), JSON.stringify(carbine(before)));
   assert.deepEqual(
     await player.send({ type: "character.build", id: made.id, build: { ...disruptor, attributes: { A: 6 } } }),
     { ok: false, error: "Only your GM changes a character's creation choices once it's made" },
@@ -1088,7 +1096,14 @@ test("character builder: the creation catalogue for seats, and character.build d
   // rebuild adds only what the build adds over the stored one. The new name marks the save's broadcast.
   const printed = {
     ...advanced.stats,
-    weapons: advanced.stats.weapons.map((w) => ({ ...w, name: `${w.name} (printed)` })),
+    // Written by hand: no catalogue entry, so no upgrades or Talents applied to it (rules-flow.md §11.68). A line the
+    // table shows carries those marks, and the server would put back the stored one in its place (storedProfiles).
+    weapons: advanced.stats.weapons.map(
+      ({ wargearId: _id, upgrades: _u, upgradeNames: _n, effects: _e, notes: _no, ...w }) => ({
+        ...w,
+        name: `${w.name} (printed)`,
+      }),
+    ),
   };
   assert.ok((await gm.send({ type: "character.update", id: made.id, stats: printed })).ok);
   const unchanged = { ...disruptor, advancement: { skills: { Stealth: 6 } } };
@@ -1098,7 +1113,9 @@ test("character builder: the creation catalogue for seats, and character.build d
   ).characters.find((c) => c.id === made.id)!;
   assert.deepEqual(resaved.stats.weapons, printed.weapons);
 
-  // keepSheet (GM only): a first build over a hand-made sheet keeps its lines, in the same action (attach-builds.ts).
+  // keepSheet (GM only): a first build over a hand-made sheet keeps its armour and gear lines, in the same action. Its
+  // weapons are the build's, with their Talents applied on read; a hand-written one the build has none of by name (a
+  // GM's own profile) stays (rules-flow.md §11.68).
   assert.deepEqual(await player.send({ type: "character.build", id: made.id, build: unchanged, keepSheet: true }), {
     ok: false,
     error: "GM only",
@@ -1109,7 +1126,10 @@ test("character builder: the creation catalogue for seats, and character.build d
   const attached = (await gm.until((s) => !!s.characters.find((c) => c.id === sheet.id)?.build)).characters.find(
     (c) => c.id === sheet.id,
   )!;
-  assert.deepEqual(attached.stats.weapons, printed.weapons, "the hand-made lines stay");
+  const names = attached.stats.weapons.map((w) => w.name);
+  for (const w of printed.weapons) assert.ok(names.includes(w.name), `${w.name} stays`);
+  assert.ok(names.includes("Occulus Bolt Carbine"), "the build's weapons join them");
+  assert.deepEqual(attached.stats.gear, printed.gear, "the hand-made gear lines stay");
 });
 
 test("book pages: a GM tablet serves one page, relayed back to the player who asked", async (t) => {

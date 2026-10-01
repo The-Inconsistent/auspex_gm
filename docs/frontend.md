@@ -123,6 +123,10 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
 - **Save:** `character.build`; the server re-resolves and refuses anything not ready. Then, for the GM, a
   `character.update { overrides }` with the Traits REVIEW changed merged over the live ones (`mergeOverrides`): they
   live on the character, not in the build or the draft. A new character's id is kept, so a retry doesn't add another. Success clears the draft and goes back to the table.
+- **Weapon lines** show the profile as the table plays it: the fitted upgrades (`withUpgrades`), then the standing
+  weapon effects at the Rank the XP earned gives (`withWeaponEffects`, rules-flow.md §11.68), with "with Bolter
+  Discipline" naming what changed it and the notes (re-rolls, bonus dice, GM calls) under it, each cited. The api
+  applies both for the live sheet (`toCharacter`), the builder for its REVIEW preview.
 - **GM part** (REVIEW, GM only): ticks, species and keywords by ruling, gear swaps, BONUSES BY RULING (`gm.mods`, added
   to a Trait) and OVERRIDES (pin a Trait, `character.overrides`). DETAIL has the portrait (`detail.portrait`).
 - **SAVE DETAILS ONLY** (the GM, on a character that exists): `character.update` with the name, detail and the

@@ -237,7 +237,8 @@
       "gear": {
         "remove": [
           "Aquila Mk VII Power Armour",
-          "Astartes Combat Knife"
+          "Astartes Combat Knife",
+          "Duelling Grip"
         ],
         "add": [
           {
@@ -246,7 +247,10 @@
           },
           {
             "name": "Xenophase blade",
-            "wargearId": "voa-power-sword"
+            "wargearId": "voa-power-sword",
+            "upgrades": [
+              "duelling-grip"
+            ]
           }
         ]
       },

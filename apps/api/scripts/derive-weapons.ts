@@ -1,0 +1,79 @@
+// Usage: bun scripts/derive-weapons.ts <campaign id> [--dry-run]
+// One-off for characters built before issue #27, through the normal socket actions (admin key). Every built character
+// gets the standing weapon effects its build gives (`stats.weaponEffects`, rules-flow.md §11.68), which a sheet saved
+// before #27 lacks, so the table applies them on read. A volkus agent also swaps its printed weapon lines, which worked
+// the Talents in by hand, for its build's catalogue lines; a line the build has no weapon of that name for stays (a
+// GM's own profile, a weapon gained in play). A volkus agent is rewritten even when it has effects: a rebuild before
+// this ran may have tagged a printed line with its catalogue id, which would count its Talent twice. The result is the
+// same each time, so it's safe to run twice. --dry-run prints each line as the table would show it, before and after,
+// and sends nothing.
+// ponytail: one-off; delete once the live campaigns are fixed.
+import { io } from "socket.io-client";
+import {
+  rankOf,
+  resolveBuild,
+  withUpgrades,
+  withWeaponEffects,
+  type ActionInput,
+  type ActionResult,
+  type CharacterStats,
+  type LiveState,
+  type Weapon,
+} from "@wg/shared";
+import { creationCatalogue, loadPack, wargear } from "@wg/data";
+
+const campaignId = process.argv[2];
+const dryRun = process.argv.includes("--dry-run");
+if (!campaignId || campaignId.startsWith("--"))
+  throw new Error("Usage: bun scripts/derive-weapons.ts <campaign id> [--dry-run]");
+const pack = loadPack("volkus");
+
+const api = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
+const socket = io(api, {
+  auth: { adminKey: process.env.ADMIN_KEY, campaignId },
+  transports: ["websocket"],
+  reconnection: false,
+});
+const state = await new Promise<LiveState>(
+  (ok, fail) => (socket.once("state", ok), socket.once("connect_error", fail)),
+);
+
+async function send(a: ActionInput, what: string) {
+  const r = (await socket.emitWithAck("action", a)) as ActionResult;
+  if (!r.ok) throw new Error(`${what}: ${r.error}`);
+  console.log(`  sent ${what}`);
+}
+
+const line = (w: Weapon) => `${w.name} ${w.damage}/${w.ed}/${w.ap ?? 0}/S${w.salvo ?? "–"} [${w.traits.join(", ")}]`;
+// The state is the sheet as the table shows it already; a sheet about to be stored is shown the way the table will.
+const shown = (stats: CharacterStats, xp: number) =>
+  withWeaponEffects(withUpgrades(stats, wargear), { rank: rankOf(xp), catalogue: wargear }).weapons.map(line);
+
+console.log(`${state.campaign.name}${dryRun ? " (dry run)" : ""}`);
+for (const c of state.characters) {
+  if (!c.build) continue;
+  const printed = pack.characters.some((p) => p.name === c.name);
+  if (c.stats.weaponEffects && !printed) {
+    console.log(`${c.name}: skipped (has its weapon effects)`);
+    continue;
+  }
+  const r = resolveBuild({
+    catalogue: { creation: creationCatalogue(), wargear, homebrew: state.campaign.homebrew },
+    build: c.build as never, // parsed by resolveBuild
+    play: { tier: state.campaign.tier, xpEarned: c.xp },
+  });
+  // A line the build has no weapon of that name for stays as written, as `keepSheet` keeps it.
+  const kept = c.stats.weapons.filter((w) => !r.sheet.weapons.some((d) => d.name === w.name));
+  const weapons = printed ? [...r.sheet.weapons, ...kept].slice(0, 20) : c.stats.weapons;
+  const next = { ...c.stats, weapons, weaponEffects: r.sheet.weaponEffects };
+  console.log(`${c.name}: ${r.sheet.weaponEffects?.map((e) => e.source).join(", ") || "no weapon effects"}`);
+  if (printed) {
+    const before = c.stats.weapons.map(line);
+    const after = shown(next, c.xp);
+    for (const l of before.filter((l) => !after.includes(l))) console.log(`    - ${l}`);
+    for (const l of after.filter((l) => !before.includes(l))) console.log(`    + ${l}`);
+  }
+  if (!dryRun) await send({ type: "character.update", id: c.id, stats: next }, `weapons ${c.name}`);
+}
+
+socket.close();
