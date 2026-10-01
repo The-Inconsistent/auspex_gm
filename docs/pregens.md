@@ -1588,7 +1588,7 @@ waits, at the price of the Red Thirst.
     Deathwatch Frag Cannon (p.356), the Assault Space Marine (p.137) for the Demolisher, Master Artisan (p.239) for the
     Horde-Slayer, and the Hellblaster (p.183) and Heavy Plasma Incinerator (p.351) for the Gunner.
 15. **The Storm Shield's Bulk (1)** slows the Aegis while he carries it (Speed 6): Core p.232 speaks of "the wearer", and
-    a shield is "carried instead of worn".
+    a shield is "carried instead of worn". The builder doesn't apply Bulk, so his build has it as `gm.mods` speed −1.
 16. **Bombard: Frag Cannon Shell mode** uses the printed Shell row (Damage 16, ED 2, AP −2), plus the Special's AP −3 at
     Short range. The Special's "+2ED" is read as describing the row's +2 over Shrapnel, not added again.
 17. **Bombard and Headtaker: the Red Thirst is narrative only.** It is a (Gene-seed) trait, which a Primaris ignores (Core

@@ -196,5 +196,74 @@
       "text": "Secret: stop the Magos taking anything from the crypt.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "tactical-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "space-wolves"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Courage",
+      "accomplishment": "Crusader",
+      "goal": "Honour the Chapter",
+      "bonus": "accomplishment"
+    },
+    "attributes": {
+      "S": 5,
+      "Wil": 4
+    },
+    "skills": {
+      "Weapon Skill": 5,
+      "Survival": 2,
+      "Scholar": 2
+    },
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "duelling-grip"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Mk VII Power Armour",
+          "Astartes Combat Knife"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Power Maul",
+            "wargearId": "fspg-power-maul"
+          },
+          {
+            "name": "Storm Shield",
+            "wargearId": "storm-shield"
+          }
+        ]
+      },
+      "mods": {
+        "resolve": 1,
+        "conviction": 1,
+        "speed": -1
+      }
+    }
+  }
 }

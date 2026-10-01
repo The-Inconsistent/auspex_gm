@@ -1726,10 +1726,20 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
 
 // A rebuild of a character already in play keeps what play changed: Wealth, Ammo and requisitions, and the armament
 // and gear gained since (a requisitioned weapon, loot). What the new build adds joins them; nothing is dropped, and the
-// better armour is worn (only one suit counts, Core p.231).
-export function keepPlay({ previous, next }: { previous: CharacterStats; next: CharacterStats }): CharacterStats {
-  const weapons = new Set(previous.weapons.map((w) => w.name));
-  const gear = new Set(previous.gear);
+// better armour is worn (only one suit counts, Core p.231). `before`, the sheet the stored build derives, says what the
+// new build adds: what both builds give is already on the sheet, maybe written in another hand (a pregen's printed
+// lines, issue #18), so a rebuild with no changes changes nothing.
+export function keepPlay({
+  previous,
+  next,
+  before = previous,
+}: {
+  previous: CharacterStats;
+  next: CharacterStats;
+  before?: CharacterStats;
+}): CharacterStats {
+  const weapons = new Set([...previous.weapons, ...before.weapons].map((w) => w.name));
+  const gear = new Set([...previous.gear, ...before.gear]);
   const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
   const shedArmour = previous.armour.name && previous.armour.name !== armour.name ? [previous.armour.name] : [];
   return {

@@ -1,14 +1,15 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { buildReady, keepPlay, resolveBuild, type CharacterBuildInput, type CharacterStats } from "@wg/shared";
+import { buildReady, keepPlay, resolveBuild, type CharacterBuildInput } from "@wg/shared";
 import { creationCatalogue, loadPack, wargear } from "./index.ts";
 
-// Issue #9 step 1 acceptance: every volkus pregen (docs/pregens.md), rebuilt from the choices its sheet records, comes
-// out at the XP of its ledger and with its sheet. One difference is pinned, because a GM ruling moved the catalogue away
-// from what the pregens were built on: one Background bonus (rules-flow.md §11.22).
+// Issue #9 step 1 and #18 acceptance: every volkus pregen (docs/pregens.md), rebuilt from the build its pack file
+// carries, comes out at the XP of its ledger and with the sheet the pack prints. The GM's part of each build holds
+// the rulings that make it so (pregens.md "Every [GM] choice").
+const volkus = loadPack("volkus");
 const catalogue = { creation: creationCatalogue(), wargear, homebrew: false };
-const pack = new Map(loadPack("volkus").characters.map((c) => [c.name, c.stats]));
+const PREGENS = volkus.characters.map((c, i) => ({ n: i + 1, name: c.name, want: c.stats, build: c.build! }));
 const norm = (s: string) =>
   s
     .toLowerCase()
@@ -24,376 +25,21 @@ const ledgerOf = (n: number) => {
   ].map((m) => Number(m[1]));
 };
 
-const ASTARTES_BG = "adeptus-astartes";
-const HIGH_GOTHIC = { picks: ["high-gothic"] }; // free with ADEPTUS ASTARTES (Core p.31)
-const DEATHWATCH = { keywords: ["DEATHWATCH"] }; // docs/kill-team.md decision 3
-
-type Pregen = {
-  n: number;
-  name: string;
-  build: CharacterBuildInput;
-  // The Background bonuses the pregen applies beyond the one the build keeps (§11.22).
-  extraBonuses: Partial<Record<keyof CharacterStats["mods"], number>>;
-  homebrew?: boolean; // the pregen uses homebrew (Apocrypha) records, which the user allows for pregens
-  problems?: string[]; // problems a GM ruling pins on purpose (the Red Scorpions write-in, kill-team.md ruling 13)
-};
-
-const PREGENS: Pregen[] = [
-  {
-    n: 1,
-    name: "Watch Sergeant Qaan Toghril",
-    build: {
-      tier: 4,
-      archetypeId: "tactical-space-marine",
-      packages: ["rubicon-primaris"],
-      fills: { "[CHAPTER]": { id: "white-scars" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Courage",
-        accomplishment: "Badge of Honour",
-        goal: "Honour the Chapter",
-        bonus: "origin",
-      },
-      attributes: { S: 5, Wil: 4 },
-      skills: { Leadership: 3, Survival: 2, Scholar: 2 },
-      languages: HIGH_GOTHIC,
-      choices: { "package/rubicon-primaris/3": ["duelling-grip"] }, // Rubicon's Uncommon item (pregens GM choice 11)
-      gm: {
-        ...DEATHWATCH,
-        species: "primaris-astartes", // pregens GM choice 2
-        gear: {
-          // pregens GM choices 3 and 4
-          remove: ["Aquila Mk VII Power Armour", "Bolt Pistol", "Astartes Combat Knife"],
-          add: [
-            { name: "Mk X Tacticus", wargearId: "voa-mk-x-tacticus-armour" },
-            { name: "Plasma Pistol", wargearId: "plasma-pistol" },
-            { name: "Power Sword", wargearId: "voa-power-sword" },
-          ],
-        },
-      },
-    },
-    extraBonuses: { influence: 1, conviction: 1 },
-  },
-  {
-    n: 2,
-    name: "Brother Octavius Serren",
-    build: {
-      tier: 4,
-      archetypeId: "primaris-incursor",
-      fills: { "[CHAPTER]": { id: "ultramarines" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Cunning",
-        accomplishment: "Cleanse and Purge",
-        goal: "Vengeance",
-        bonus: "origin",
-      },
-      attributes: { A: 5, Int: 5 },
-      skills: { Tech: 5, Stealth: 5, Awareness: 4 },
-      talents: [{ id: "codex-innovator" }, { id: "bolter-discipline" }, { id: "silent" }],
-      languages: HIGH_GOTHIC,
-      gm: { ...DEATHWATCH, gear: { add: [{ name: "Omni-Scrambler", wargearId: "voa-omni-scrambler" }] } },
-    },
-    extraBonuses: { maxShock: 1, determination: 1 },
-  },
-  {
-    n: 3,
-    name: "Brother Hesh Tu'var",
-    homebrew: true, // Master Artisan (Apocrypha p.239)
-    build: {
-      tier: 4,
-      archetypeId: "primaris-intercessor", // Core p.117 (§11.34)
-      packages: ["heavy-intercessor-doctrine"], // at creation: pregens GM choice 5
-      fills: { "[CHAPTER]": { id: "salamanders" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Cunning",
-        accomplishment: "Badge of Honour",
-        goal: "Honour the Chapter",
-        bonus: "origin",
-      },
-      attributes: { Wil: 4 },
-      skills: { Awareness: 4, Tech: 2 },
-      talents: [{ id: "master-artisan" }],
-      languages: HIGH_GOTHIC,
-      choices: { "package/heavy-intercessor-doctrine/1": [1] }, // the Heavy Bolter
-      gm: DEATHWATCH,
-    },
-    extraBonuses: { influence: 1, conviction: 1 },
-  },
-  {
-    n: 4,
-    name: "Brother Aurelian Tarsus",
-    // Red Scorpions: no catalogue record and no Chapter Traits (kill-team.md ruling 13). [CHAPTER] isn't a write-in
-    // keyword (rules-flow.md §11.25), so the build pins that one problem.
-    problems: ["[CHAPTER] can't be written in; choose one the books print"],
-    build: {
-      tier: 4,
-      archetypeId: "primaris-eliminator",
-      fills: { "[CHAPTER]": { writeIn: "RED SCORPIONS" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Cunning",
-        accomplishment: "Cleanse and Purge",
-        goal: "Advancement",
-        bonus: "origin",
-      },
-      attributes: { A: 6, Int: 4 },
-      skills: { "Ballistic Skill": 6, Stealth: 5, Awareness: 4, Survival: 1, Athletics: 4 },
-      talents: [{ id: "trademark-weapon", choice: "Bolt Sniper Rifle" }],
-      languages: HIGH_GOTHIC,
-      gm: DEATHWATCH,
-    },
-    extraBonuses: { maxShock: 1, influence: 1 },
-  },
-  {
-    n: 5,
-    name: "Brother Sariel Voss",
-    build: {
-      tier: 4,
-      archetypeId: "tactical-space-marine",
-      packages: ["rubicon-primaris"],
-      fills: { "[CHAPTER]": { id: "dark-angels" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Killer Instinct",
-        accomplishment: "Crusader",
-        goal: "Honour the Chapter",
-        bonus: "origin",
-      },
-      attributes: { S: 5 },
-      skills: { "Weapon Skill": 6, Survival: 2, Intimidation: 1 },
-      languages: HIGH_GOTHIC,
-      choices: { "package/rubicon-primaris/3": ["duelling-grip"] }, // Rubicon's Uncommon item
-      gm: {
-        ...DEATHWATCH,
-        species: "primaris-astartes", // pregens GM choice 2
-        gear: {
-          remove: ["Aquila Mk VII Power Armour", "Astartes Combat Knife"],
-          add: [
-            { name: "Mk X Tacticus", wargearId: "voa-mk-x-tacticus-armour" },
-            { name: "Xenophase blade", wargearId: "voa-power-sword" },
-          ],
-        },
-      },
-    },
-    extraBonuses: { determination: 1, conviction: 1 },
-  },
-  {
-    n: 6,
-    name: "Brother Hjalmar Grimsson",
-    build: {
-      tier: 4,
-      archetypeId: "tactical-space-marine",
-      packages: ["rubicon-primaris"],
-      fills: { "[CHAPTER]": { id: "space-wolves" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Courage",
-        accomplishment: "Crusader",
-        goal: "Honour the Chapter",
-        bonus: "accomplishment",
-      },
-      attributes: { S: 5, Wil: 4 },
-      skills: { "Weapon Skill": 5, Survival: 2, Scholar: 2 },
-      languages: HIGH_GOTHIC,
-      choices: { "package/rubicon-primaris/3": ["duelling-grip"] }, // Rubicon's Uncommon item, on the Power Maul
-      gm: {
-        ...DEATHWATCH,
-        species: "primaris-astartes", // pregens GM choice 2
-        gear: {
-          remove: ["Aquila Mk VII Power Armour", "Astartes Combat Knife"],
-          add: [
-            { name: "Mk X Tacticus", wargearId: "voa-mk-x-tacticus-armour" },
-            { name: "Power Maul", wargearId: "fspg-power-maul" },
-            { name: "Storm Shield", wargearId: "storm-shield" },
-          ],
-        },
-      },
-    },
-    // speed −1 isn't a Background bonus: the Storm Shield's Bulk (1) (Core p.232), which the build doesn't apply
-    extraBonuses: { resolve: 1, conviction: 1, speed: -1 },
-  },
-  {
-    n: 7,
-    name: "Brother Idrian Kostas",
-    homebrew: true, // Flesh Tearers (Apocrypha p.28) and the Deathwatch Frag Cannon (Apocrypha p.356)
-    build: {
-      tier: 4,
-      archetypeId: "primaris-intercessor", // Core p.117 (§11.34)
-      packages: ["heavy-intercessor-doctrine"], // at creation: pregens GM choice 5
-      fills: { "[CHAPTER]": { id: "flesh-tearers" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Courage",
-        accomplishment: "Crusader",
-        goal: "Vengeance",
-        bonus: "origin",
-      },
-      attributes: { Wil: 4 },
-      talents: [{ id: "fearless" }],
-      languages: HIGH_GOTHIC,
-      choices: { "package/heavy-intercessor-doctrine/1": [1] }, // the Heavy Bolter, swapped out below
-      gm: {
-        ...DEATHWATCH,
-        gear: {
-          // pregens Bombard GM choice: the Heavy Bolter becomes the Frag Cannon
-          remove: ["Heavy Bolter"],
-          add: [
-            { name: "Deathwatch Frag Cannon (Shrapnel)", wargearId: "apoc-deathwatch-frag-cannon-shrapnel" },
-            { name: "Deathwatch Frag Cannon (Shell)", wargearId: "apoc-deathwatch-frag-cannon-shell" },
-          ],
-        },
-      },
-    },
-    extraBonuses: { determination: 2 },
-  },
-  {
-    n: 8,
-    name: "Brother Tancred Varn",
-    build: {
-      tier: 4,
-      archetypeId: "primaris-intercessor", // Core p.117 (§11.34)
-      packages: ["heavy-intercessor-doctrine"], // at creation: pregens GM choice 5
-      fills: { "[CHAPTER]": { id: "imperial-fists" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Killer Instinct",
-        accomplishment: "Crusader",
-        goal: "Vengeance",
-        bonus: "origin",
-      },
-      skills: { Tech: 3, Athletics: 4 },
-      talents: [{ id: "legacy-of-the-primarch" }],
-      languages: HIGH_GOTHIC,
-      choices: { "package/heavy-intercessor-doctrine/1": [1] }, // the Heavy Bolter, swapped out below
-      gm: {
-        ...DEATHWATCH,
-        gear: {
-          // pregens Breacher GM choice: the Heavy Bolter becomes the Hellstorm Bolt Rifle, the grenade launcher and a
-          // Melta Bomb; the Intercessor already carries the 3 Frag and 3 Krak Grenades the launcher fires
-          remove: ["Heavy Bolter"],
-          add: [
-            { name: "Hellstorm Bolt Rifle", wargearId: "voa-hellstorm-bolt-rifle" },
-            { name: "Astartes Grenade Launcher", wargearId: "voa-astartes-grenade-launcher" },
-            { name: "Melta Bomb", wargearId: "fspg-melta-bomb" },
-          ],
-        },
-      },
-    },
-    extraBonuses: { determination: 2 },
-  },
-  {
-    n: 9,
-    name: "Brother Sigurd Hrafnsson",
-    homebrew: true,
-    build: {
-      tier: 4,
-      archetypeId: "assault-space-marine",
-      packages: ["rubicon-primaris"],
-      fills: { "[CHAPTER]": { id: "space-wolves" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Courage",
-        accomplishment: "Crusader",
-        goal: "Honour the Chapter",
-        bonus: "origin",
-      },
-      attributes: { Wil: 4 },
-      skills: { "Weapon Skill": 5, Survival: 2, Scholar: 2 },
-      talents: [{ id: "hammer-of-wrath" }],
-      languages: HIGH_GOTHIC,
-      choices: { "package/rubicon-primaris/3": ["chaplet-ecclesiasticus"] }, // Rubicon's Uncommon item
-      gm: {
-        ...DEATHWATCH,
-        species: "primaris-astartes", // as pregens GM choice 2
-        gear: {
-          remove: ["Aquila Power Armour", "Astartes Chainsword"],
-          add: [
-            { name: "Mk X Tacticus", wargearId: "voa-mk-x-tacticus-armour" },
-            { name: "Heavy Thunder Hammer", wargearId: "voa-heavy-thunder-hammer" },
-          ],
-        },
-      },
-    },
-    extraBonuses: { determination: 1, conviction: 1 },
-  },
-  {
-    n: 10,
-    name: "Brother Kael Tirrow",
-    homebrew: true,
-    build: {
-      tier: 4,
-      archetypeId: "primaris-hellblaster",
-      fills: { "[CHAPTER]": { id: "ultramarines" } }, // Emperor's Spears, an Ultramarines Successor (kill-team.md ruling 13)
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Cunning",
-        accomplishment: "Cleanse and Purge",
-        goal: "Advancement",
-        bonus: "origin",
-      },
-      attributes: { A: 6, T: 6, I: 5, Wil: 4 },
-      skills: { "Ballistic Skill": 6, Awareness: 4, Tech: 4, Scholar: 1 },
-      talents: [{ id: "deadshot" }, { id: "duty-until-death" }],
-      languages: HIGH_GOTHIC,
-      gm: {
-        ...DEATHWATCH,
-        gear: {
-          remove: ["Plasma Incinerator"],
-          add: [{ name: "Heavy Plasma Incinerator", wargearId: "apoc-heavy-plasma-incinerator" }],
-        },
-      },
-    },
-    extraBonuses: { maxShock: 1, influence: 1 },
-  },
-  {
-    n: 11,
-    name: "Brother Lucan Sarrius",
-    build: {
-      tier: 4,
-      archetypeId: "primaris-reiver",
-      fills: { "[CHAPTER]": { id: "blood-angels" } },
-      background: {
-        tableId: ASTARTES_BG,
-        origin: "Killer Instinct",
-        accomplishment: "Crusader",
-        goal: "Advancement",
-        bonus: "origin",
-      },
-      attributes: { A: 5 },
-      skills: { "Weapon Skill": 6, Stealth: 5, Survival: 2 },
-      talents: [{ id: "eliminator" }, { id: "dual-wield" }, { id: "echo-of-sanguinius" }],
-      languages: HIGH_GOTHIC,
-      gm: {
-        ...DEATHWATCH,
-        gear: {
-          add: [
-            { name: "Astartes Combat Knife (off hand)", wargearId: "voa-astartes-combat-knife" },
-            { name: "Grapnel Launcher", wargearId: "voa-grapnel-launcher" },
-          ],
-        },
-      },
-    },
-    extraBonuses: { determination: 1, influence: 1 },
-  },
-];
-
-test("every volkus pregen has a build here", () => {
-  assert.deepEqual([...pack.keys()].sort(), PREGENS.map((p) => p.name).sort());
+test("every volkus pregen carries a build", () => {
+  assert.equal(PREGENS.length, 11);
+  for (const p of PREGENS) assert.ok(p.build, p.name);
 });
 
-for (const p of PREGENS) {
+for (const { want, ...p } of PREGENS) {
   test(`${p.name}: the build resolves to the pregen's ledger and sheet`, () => {
-    const r = resolveBuild({ catalogue: { ...catalogue, homebrew: p.homebrew ?? false }, build: p.build });
-    const want = pack.get(p.name)!;
+    const r = resolveBuild({ catalogue: { ...catalogue, homebrew: volkus.campaign.homebrew }, build: p.build });
     assert.deepEqual(r.pending, [], "nothing left to choose");
     assert.deepEqual(
       r.problems.map((x) => x.what),
-      p.problems ?? [],
+      [],
       "no problems",
     );
-    assert.equal(buildReady(r), !p.problems);
+    assert.ok(buildReady(r));
 
     assert.equal(
       r.spent,
@@ -422,11 +68,14 @@ for (const p of PREGENS) {
     for (const a of want.abilities.filter((x) => !packages.includes(norm(x.name))))
       assert.ok(abilities.includes(norm(a.name)), a.name);
 
-    // §11.22: the pregens apply all three Background bonuses; the build keeps one.
-    const mods = { ...s.mods };
-    for (const [k, v] of Object.entries(p.extraBonuses))
-      mods[k as keyof typeof mods] = (mods[k as keyof typeof mods] ?? 0) + v;
-    assert.deepEqual(mods, want.mods);
+    assert.deepEqual(s.mods, want.mods); // the extra Background bonuses are the GM's (pregens.md GM choice 23)
+
+    // The live sheet keeps the printed weapon, armour and gear lines, which work Talents and upgrades into the profiles
+    // (Bolter Discipline's Rapid Fire); a rebuild with no changes adds no catalogue lines beside them (issue #18).
+    const kept = keepPlay({ previous: want, next: s, before: s });
+    assert.deepEqual(kept.weapons, want.weapons);
+    assert.deepEqual(kept.armour, want.armour);
+    assert.deepEqual(kept.gear, want.gear);
   });
 }
 

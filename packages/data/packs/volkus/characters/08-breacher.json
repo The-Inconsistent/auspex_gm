@@ -254,5 +254,70 @@
       "text": "Secret: take 5 Ork skulls for your bolter's tally.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-intercessor",
+    "packages": [
+      "heavy-intercessor-doctrine"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "imperial-fists"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Killer Instinct",
+      "accomplishment": "Crusader",
+      "goal": "Vengeance",
+      "bonus": "origin"
+    },
+    "skills": {
+      "Tech": 3,
+      "Athletics": 4
+    },
+    "talents": [
+      {
+        "id": "legacy-of-the-primarch"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/heavy-intercessor-doctrine/1": [
+        1
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "remove": [
+          "Heavy Bolter"
+        ],
+        "add": [
+          {
+            "name": "Hellstorm Bolt Rifle",
+            "wargearId": "voa-hellstorm-bolt-rifle"
+          },
+          {
+            "name": "Astartes Grenade Launcher",
+            "wargearId": "voa-astartes-grenade-launcher"
+          },
+          {
+            "name": "Melta Bomb",
+            "wargearId": "fspg-melta-bomb"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 2
+      }
+    }
+  }
 }

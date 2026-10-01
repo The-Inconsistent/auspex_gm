@@ -236,5 +236,66 @@
       "text": "Secret: be first into every fight, unseen.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-reiver",
+    "fills": {
+      "[CHAPTER]": {
+        "id": "blood-angels"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Killer Instinct",
+      "accomplishment": "Crusader",
+      "goal": "Advancement",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "A": 5
+    },
+    "skills": {
+      "Weapon Skill": 6,
+      "Stealth": 5,
+      "Survival": 2
+    },
+    "talents": [
+      {
+        "id": "eliminator"
+      },
+      {
+        "id": "dual-wield"
+      },
+      {
+        "id": "echo-of-sanguinius"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "add": [
+          {
+            "name": "Astartes Combat Knife (off hand)",
+            "wargearId": "voa-astartes-combat-knife"
+          },
+          {
+            "name": "Grapnel Launcher",
+            "wargearId": "voa-grapnel-launcher"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 1,
+        "influence": 1
+      }
+    }
+  }
 }

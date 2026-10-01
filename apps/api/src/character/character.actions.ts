@@ -118,19 +118,21 @@ export async function applyCharacterAction(
         if (ctx.role !== "gm" && creationKey(build) !== creationKey(made.data))
           fail("Only your GM changes a character's creation choices once it's made");
       } else if (build.tier !== tier) fail(`This campaign is Tier ${tier}; build for Tier ${tier}`);
-      const r = resolveBuild({
-        catalogue: buildCatalogue(homebrew),
-        build,
-        play: row ? { tier, xpEarned: row.xp } : undefined,
-      });
+      const play = row ? { tier, xpEarned: row.xp } : undefined;
+      const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build, play });
       const refusal = buildRefusal(r);
       if (refusal) fail(refusal);
-      // A character already made keeps what play changed (keepPlay); a first build keeps only Ammo and requisitions.
+      // A character already made keeps what play changed (keepPlay), and gains only what the new build adds over the
+      // stored one; a first build keeps only Ammo and requisitions.
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old
         ? r.sheet
         : made?.success
-          ? keepPlay({ previous: old, next: r.sheet })
+          ? keepPlay({
+              previous: old,
+              next: r.sheet,
+              before: resolveBuild({ catalogue: buildCatalogue(homebrew), build: made.data, play }).sheet,
+            })
           : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       if (row) {
         await tx

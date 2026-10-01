@@ -2,6 +2,7 @@
   "campaign": {
     "name": "Volkus Dig Site",
     "tier": 4,
+    "homebrew": true,
     "patron": "Inquisitor Marie Von Xardt, Ordo Xenos",
     "framework": "Deathwatch Kill Team. Primaris battle-brothers seconded from their Chapters to the Watch station hidden under the frozen northern tundra of Enoch (FSPG p.26, Core p.303), serving the Long Vigil against the xenos. Inquisitor Marie Von Xardt of the Ordo Xenos directs the station; each brother answers to the Watch, but still honours his Chapter (Honour the Chapter, Core p.29).\n\nFirst mission: an Ork Kommando mob has overrun Volkus, an archeotech dig site on Gilead Primus. The Mandate: kill the Orks, secure the site, report any non-Ork xenos. Archdomina Vakuul's retinue is demanding the site back."
   },

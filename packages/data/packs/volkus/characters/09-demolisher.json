@@ -187,5 +187,73 @@
       "text": "Secret: send word of what lies beneath Volkus to the Fang, whatever the Inquisitor orders.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "assault-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "space-wolves"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Courage",
+      "accomplishment": "Crusader",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "Wil": 4
+    },
+    "skills": {
+      "Weapon Skill": 5,
+      "Survival": 2,
+      "Scholar": 2
+    },
+    "talents": [
+      {
+        "id": "hammer-of-wrath"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "chaplet-ecclesiasticus"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Power Armour",
+          "Astartes Chainsword"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Heavy Thunder Hammer",
+            "wargearId": "voa-heavy-thunder-hammer"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 1,
+        "conviction": 1
+      }
+    }
+  }
 }

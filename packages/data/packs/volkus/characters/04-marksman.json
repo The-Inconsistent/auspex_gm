@@ -163,5 +163,55 @@
       "text": "Secret: prove who buried the breach report, and bring the proof to Von Xardt.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-eliminator",
+    "fills": {
+      "[CHAPTER]": {
+        "writeIn": "RED SCORPIONS"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Cunning",
+      "accomplishment": "Cleanse and Purge",
+      "goal": "Advancement",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "A": 6,
+      "Int": 4
+    },
+    "skills": {
+      "Ballistic Skill": 6,
+      "Stealth": 5,
+      "Awareness": 4,
+      "Survival": 1,
+      "Athletics": 4
+    },
+    "talents": [
+      {
+        "id": "trademark-weapon",
+        "choice": "Bolt Sniper Rifle"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "mods": {
+        "maxShock": 1,
+        "influence": 1
+      },
+      "approved": [
+        "fill/chapter"
+      ]
+    }
+  }
 }

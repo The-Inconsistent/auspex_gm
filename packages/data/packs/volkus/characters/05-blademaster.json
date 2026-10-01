@@ -192,5 +192,68 @@
       "text": "Secret: learn why your xenophase blade hums near the crypt, and tell no one outside the Chapter.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "tactical-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "dark-angels"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Killer Instinct",
+      "accomplishment": "Crusader",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "S": 5
+    },
+    "skills": {
+      "Weapon Skill": 6,
+      "Survival": 2,
+      "Intimidation": 1
+    },
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "duelling-grip"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Mk VII Power Armour",
+          "Astartes Combat Knife"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Xenophase blade",
+            "wargearId": "voa-power-sword"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 1,
+        "conviction": 1
+      }
+    }
+  }
 }

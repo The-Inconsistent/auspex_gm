@@ -190,5 +190,74 @@
       "text": "Secret: bring every brother home, even if the Mandate fails.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "tactical-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "white-scars"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Courage",
+      "accomplishment": "Badge of Honour",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "S": 5,
+      "Wil": 4
+    },
+    "skills": {
+      "Leadership": 3,
+      "Survival": 2,
+      "Scholar": 2
+    },
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "duelling-grip"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Mk VII Power Armour",
+          "Bolt Pistol",
+          "Astartes Combat Knife"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Plasma Pistol",
+            "wargearId": "plasma-pistol"
+          },
+          {
+            "name": "Power Sword",
+            "wargearId": "voa-power-sword"
+          }
+        ]
+      },
+      "mods": {
+        "influence": 1,
+        "conviction": 1
+      }
+    }
+  }
 }
