@@ -74,6 +74,8 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   // Its own line: NEW GAME's error sits in a form only creators see, and anyone may keep a library.
   const [libraryError, setLibraryError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
+  const [fresh, setFresh] = useState(false);
+  const [importError, setImportError] = useState<string | null>(null);
   const others = lobby.running.filter((g) => !g.role);
   const full = lobby.characters.length >= LIBRARY_CAP;
 
@@ -112,6 +114,28 @@ export function LobbyView({ lobby }: LobbyViewProps) {
     }).catch(() => null);
     const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
     if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
+    router.push(`/c/${body.campaignId}`);
+  };
+
+  // IMPORT GAME: a file from a GM's EXPORT becomes a new campaign with you as GM. FRESH START resets play for a new group.
+  const handleImport = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setImportError(null);
+    const picked = new FormData(e.currentTarget).get("file");
+    if (!(picked instanceof File) || !picked.size) return setImportError("Pick an exported .json file.");
+    let file: unknown;
+    try {
+      file = JSON.parse(await picked.text());
+    } catch {
+      return setImportError("That file isn't a campaign export.");
+    }
+    const res = await fetch("/api/campaigns/import", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ file, fresh }),
+    }).catch(() => null);
+    const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
+    if (!res?.ok || !body?.campaignId) return setImportError(body?.message ?? "No signal");
     router.push(`/c/${body.campaignId}`);
   };
 
@@ -215,6 +239,30 @@ export function LobbyView({ lobby }: LobbyViewProps) {
           )}
           <div>
             <button className="btn primary">CREATE AS GM</button>
+          </div>
+        </form>
+      )}
+
+      {lobby.canCreate && (
+        <form className="panel pad stack" onSubmit={handleImport}>
+          <div className="rule">IMPORT GAME</div>
+          <div className="field">
+            <label className="label" htmlFor="import-file">
+              EXPORTED FILE
+            </label>
+            <input id="import-file" name="file" className="input" type="file" accept=".json,application/json" />
+          </div>
+          <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            <input type="checkbox" checked={fresh} onChange={(e) => setFresh(e.target.checked)} /> FRESH START: reset
+            sessions, reveals and wounds for a new group
+          </label>
+          {importError && (
+            <div className="red" role="alert">
+              ! {importError}
+            </div>
+          )}
+          <div>
+            <button className="btn primary">IMPORT AS GM</button>
           </div>
         </form>
       )}

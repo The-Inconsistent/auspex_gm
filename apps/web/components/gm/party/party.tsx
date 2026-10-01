@@ -282,7 +282,11 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           <div>
             <button className="btn" onClick={saveFramework}>
               SAVE
-            </button>
+            </button>{" "}
+            {/* The whole campaign as a file, for a backup or the lobby's IMPORT GAME. */}
+            <a className="btn" href={`/api/campaigns/${state.campaign.id}/export`} download>
+              EXPORT
+            </a>
           </div>
         </div>
       </section>

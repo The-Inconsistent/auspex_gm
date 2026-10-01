@@ -72,6 +72,8 @@ text.
 | `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
+| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 2 MB | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a handout audience naming an Agent not in the file |
+| `GET /api/campaigns/:id/export` | Seat, GM only | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`) | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
 | `GET /api/creation?homebrew=0\|1` | Clerk | none | `200 CreationPayload`, the same body and `ETag` as the campaign route, but the caller picks the books, because no campaign decides for them — so an account with no seat can read the homebrew books that a seated player at an official-only table can't | `401` |
@@ -125,6 +127,24 @@ named "GM" until they sign in. `lobby()` returns the caller's games (`mine`) and
 (`running`, with `role` null where the caller has no seat); a card never opens a table. `/threats`, `/wargear` and `/rules`
 are the REST routes that serve book content: the first two are GM-only, the rules reference needs any seat (see
 CLAUDE.md, Copyright).
+
+**Export and import** (`exportCampaign`, `importCampaign` in `campaign.service.ts`). An export is the `LiveState` and
+the `Codex`, minus the seats (members, invites, guest tokens), the active encounter and builder drafts. It's GM-only,
+because it carries GM notes, secrets and the book text in the sheets. Import doesn't replay actions, which would lose
+counters, sessions and reveal times. It writes every row directly, inside `createCampaign`'s transaction (`fill`):
+- each row gets a fresh id
+- references are remapped through those new ids, and one pointing outside the file is dropped
+- threat ids go through the same `checkThreats` as `codex.save`
+- a handout audience must name Agents in the file, like `codex.save`: an empty audience means every player, so a
+  dropped reader would leak a private handout
+- each row's `createdAt` is its place in the file (one transaction shares one `now()`, and lists load in `createdAt`
+  order)
+- the 2 MB JSON parser is mounted on this route only, after its rate limit; every other route keeps Express's 100 kB
+- builds are stored as exported, since a GM can already set any sheet with `character.update`
+
+`fresh` (`freshStart`) keeps the sheets, builds and XP, because a build's XP ledger is spent against `xp`. It resets
+the rest: sessions are dropped, the pools emptied, every reveal undone, every Agent rested, and adventures and beats
+go back to `planned`.
 
 ## 4. Socket lifecycle (`table/table.gateway.ts`)
 
