@@ -75,7 +75,7 @@ export class LibraryController {
   @Get("rules")
   async rules(@Req() req: Request) {
     await this.caller(req);
-    return listRules();
+    return listRules({ gm: false });
   }
 
   @Get("library")

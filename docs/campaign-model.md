@@ -16,7 +16,7 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
  ├─ Adventure    title, premise, status (planned | running | done)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
- │               clueIds[], encounter (prepared roster), exits[], outcome
+ │               clueIds[], encounter (prepared roster), exits[], tests[], outcome
  ├─ Location     name, parentId (planet → site → chamber), description, gmNotes,
  │               hazards (Battlezone tables, Threat Assessment p.9–21), revealed
  ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
@@ -37,6 +37,10 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   Exits are planning notes: DONE never follows one, because Core p.318 (step 5) warns against forcing one path.
   `codex.save` refuses a target outside the beat's adventure, deleting a beat clears it from exits (the label stays),
   import remaps it, and a pack's exits are labels only, since pack beats have no key to point at.
+- **Tests** (issue #39): what the scene asks the Agents to roll. Each `BeatTest` has a kind (skill, attribute, opposed,
+  influence, resolve, corruption), the Skill or Attribute its kind needs (a Skill's Attribute comes from `SKILLS`), a
+  DN (none for an Opposed Test), who rolls (one Agent or each), its purpose, up to five planned Shifts and what success
+  and failure bring. See [rules-flow.md](rules-flow.md) §7.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and

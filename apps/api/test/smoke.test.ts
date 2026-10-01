@@ -602,9 +602,15 @@ test("GM and player share a table", async (t) => {
   const catalogue = await get(`/campaigns/${campaignId}/wargear`, bearer(gmClerk));
   assert.ok(catalogue.status === 200 && ((await catalogue.json()) as unknown[]).length > 100);
   assert.equal((await get(`/campaigns/${campaignId}/wargear`, { cookie: `wg_token=${issued.token}` })).status, 403);
-  // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't.
+  // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
+  // Gamemaster chapter reaches only the GM (§11.71).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });
-  assert.ok(rules.status === 200 && ((await rules.json()) as unknown[]).length > 50);
+  assert.equal(rules.status, 200);
+  const playerRules = ((await rules.json()) as RuleEntry[]).map((r) => r.id);
+  assert.ok(playerRules.length > 50 && playerRules.includes("test-shifting"));
+  assert.ok(!playerRules.includes("test-fail-forward"), "Fail Forward is the GM's");
+  const gmRules = (await (await get(`/campaigns/${campaignId}/rules`, bearer(gmClerk))).json()) as RuleEntry[];
+  assert.ok(gmRules.some((r) => r.id === "test-fail-forward"));
   assert.equal((await get(`/campaigns/${campaignId}/rules`, bearer(clerk("stranger")))).status, 401);
 
   // Scripts (seed) open a table with the admin key.
@@ -857,6 +863,36 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   assert.equal(kept.goal, "Learn what Vex wants");
   assert.ok((await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: { ...kept, status: "active" } })).ok);
   assert.equal(player.codex()?.adventures.length, 0, "scenes never reach a phone");
+  // Scene Tests (issue #39): the kind sets the pool, and a combination the book doesn't have is refused.
+  const tested = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    id: b1.id,
+    data: {
+      ...kept,
+      tests: [
+        { kind: "skill", skill: "Insight", dn: 5, who: "each", shifts: ["She lies about the gallery"] },
+        { kind: "opposed", skill: "Persuasion" },
+      ],
+    },
+  });
+  assert.ok(tested.ok);
+  await eventually(
+    () =>
+      gm
+        .codex()
+        ?.adventures[0]?.beats.find((x) => x.id === b1.id)
+        ?.tests.map((x) => `${x.kind}:${x.skill}:${x.dn}:${x.shifts.length}`)
+        .join() === "skill:Insight:5:1,opposed:Persuasion:null:0",
+    "scene Tests saved",
+  );
+  const bad = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    id: b1.id,
+    data: { ...kept, tests: [{ kind: "opposed", skill: "Persuasion", dn: 3 }] },
+  });
+  assert.ok(!bad.ok && bad.error.includes("An Opposed Test has no DN"), "an Opposed Test with a DN is refused");
   await eventually(() => player.codex()?.npcs[0]?.factionId === null, "players don't get hidden faction ids");
   assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: vex.id })).ok);
   await eventually(
@@ -1406,7 +1442,8 @@ test("the character library: a signed-in user builds without a campaign (issue #
   assert.equal((await get("/creation", { ...bearer(owner), "if-none-match": etag })).status, 304);
   const homebrew = (await (await get("/creation?homebrew=1", bearer(owner))).json()) as CreationPayload;
   assert.ok(homebrew.creation.archetypes.some((a) => a.source === "apocrypha"));
-  assert.ok(((await (await get("/rules", bearer(owner))).json()) as RuleEntry[]).length > 0);
+  const seatless = ((await (await get("/rules", bearer(owner))).json()) as RuleEntry[]).map((r) => r.id);
+  assert.ok(seatless.length > 0 && !seatless.includes("test-fail-forward"), "no seat, no Gamemaster chapter");
 
   // A new character starts empty, so the builder has a row to autosave its draft to.
   const created = await post("/library", {}, bearer(owner));
@@ -1592,6 +1629,7 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
     title: "Regroup",
     goal: "Hold the lift",
     exits: [{ label: "Again", beatId: ambush.id }],
+    tests: [{ kind: "resolve", dn: 5, who: "each" }],
   };
   assert.ok((await gm.send({ type: "codex.save", kind: "beat", data: regroup })).ok);
   assert.ok((await gm.send({ type: "session.start" })).ok);
@@ -1652,12 +1690,13 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(b?.locationId, locs.find((l) => l.name === "Spire")?.id);
   assert.deepEqual(b?.handoutIds, [h?.id]);
   assert.equal(b?.status, "done");
-  // An exit follows its target to the new id (issue #38).
+  // An exit follows its target to the new id (issue #38), and the Tests come along (issue #39).
   const exitTo = (codex: Codex) => {
     const [first, second] = codex.adventures[0]!.beats;
-    return [second?.goal, second?.exits[0]?.beatId === first?.id && first?.id !== ambush.id];
+    const t = second?.tests[0];
+    return [second?.goal, second?.exits[0]?.beatId === first?.id && first?.id !== ambush.id, `${t?.kind} ${t?.dn}`];
   };
-  assert.deepEqual(exitTo(whole.codex), ["Hold the lift", true]);
+  assert.deepEqual(exitTo(whole.codex), ["Hold the lift", true, "resolve 5"]);
   assert.equal(whole.codex.sessions.length, 1);
   assert.equal((await get("/lobby", bearer(gm.gmClerk)).then((r) => r.json())).mine.length >= 2, true);
 
@@ -1665,7 +1704,7 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(fresh.state.characters[0]?.wounds, 0);
   assert.equal(fresh.codex.sessions.length, 0);
   assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
-  assert.deepEqual(exitTo(fresh.codex), ["Hold the lift", true]);
+  assert.deepEqual(exitTo(fresh.codex), ["Hold the lift", true, "resolve 5"]);
   assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
 });
 

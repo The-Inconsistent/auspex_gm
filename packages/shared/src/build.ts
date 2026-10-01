@@ -28,6 +28,7 @@ import {
 import { RARITY_DN } from "./requisition.ts";
 import { SOURCES, sourceCite, type Source } from "./source.ts";
 import {
+  ATTRIBUTE_NAMES,
   ATTRIBUTES,
   CharacterStats,
   SKILLS,
@@ -1990,15 +1991,6 @@ export function withWeaponEffects<T extends { weapons: Weapon[]; weaponEffects?:
 
 // ── labels ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-const ATTRIBUTE_NAMES: Record<Attribute, string> = {
-  S: "Strength",
-  T: "Toughness",
-  A: "Agility",
-  I: "Initiative",
-  Wil: "Willpower",
-  Int: "Intellect",
-  Fel: "Fellowship",
-};
 const capital = (s: string) => s[0]!.toUpperCase() + s.slice(1);
 const bonusName = (b: string) =>
   ({ maxWounds: "Max Wounds", maxShock: "Max Shock", passiveAwareness: "Passive Awareness" })[b] ?? capital(b);

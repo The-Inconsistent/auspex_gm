@@ -224,4 +224,5 @@ export async function campaignHomebrew(campaignId: string) {
 export const listThreats = (): Threat[] => [...threats.values()];
 export const listWargear = (): Wargear[] => [...wargear.values()];
 const rules = rulesList(); // parsed at startup, so a bad file fails fast
-export const listRules = (): RuleEntry[] => rules;
+// Entries flagged `gm` come from the Gamemaster chapter, so a player seat (or the seatless builder) never gets them.
+export const listRules = ({ gm }: { gm: boolean }): RuleEntry[] => (gm ? rules : rules.filter((r) => !r.gm));

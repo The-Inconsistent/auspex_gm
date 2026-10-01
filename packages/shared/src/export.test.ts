@@ -51,9 +51,9 @@ test("an export round-trips through its schema", () => {
   assert.deepEqual(CampaignExport.parse(JSON.parse(JSON.stringify(file))), file);
 });
 
-test("a file from before scene goals and exits still loads (issue #38)", () => {
+test("a file from before scene goals, exits and Tests still loads (issues #38, #39)", () => {
   const [b] = file.codex.adventures[0]!.beats;
-  assert.deepEqual([b!.goal, b!.exits], ["", []]);
+  assert.deepEqual([b!.goal, b!.exits, b!.tests], ["", [], []]);
 });
 
 test("an exit is a bounded label, with no target unless the GM picks one", () => {

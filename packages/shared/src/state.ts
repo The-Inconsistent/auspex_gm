@@ -60,6 +60,15 @@ export type Visibility = z.infer<typeof Visibility>;
 
 export const ATTRIBUTES = ["S", "T", "A", "I", "Wil", "Int", "Fel"] as const;
 export type Attribute = (typeof ATTRIBUTES)[number];
+export const ATTRIBUTE_NAMES: Record<Attribute, string> = {
+  S: "Strength",
+  T: "Toughness",
+  A: "Agility",
+  I: "Initiative",
+  Wil: "Willpower",
+  Int: "Intellect",
+  Fel: "Fellowship",
+};
 
 // Skill → linked Attribute, as printed on the character sheet (p.372).
 export const SKILLS = {
