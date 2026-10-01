@@ -507,8 +507,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
       a note.
     - Only a weapon that came from the Wargear catalogue (`wargearId`) is matched: a hand-written line may already
       count the Talent, and it would count twice. A hand-written line a rebuild matched to its catalogue entry (so an
-      upgrade can be fitted to it) is marked `asPrinted` and isn't matched either: the volkus pregens' printed lines,
-      until `derive-weapons.ts` swaps them for their builds' lines.
+      upgrade can be fitted to it) is marked `asPrinted` and isn't matched either, as on a sheet written by hand before
+      #27. The live volkus agents' printed lines were swapped for their builds' lines by a one-off script (issue #27).
     - **A weapon that deals no damage** (a Smoke Grenade: Damage 0, ED 0) takes no Talent +Damage or +ED: Explosive
       Fury adds to "successful attacks", and smoke makes none. A melee weapon printed Damage 0 deals Strength (S + 0)
       and a grenade with ED on Damage 0 still deals damage, so those take them.

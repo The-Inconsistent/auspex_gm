@@ -785,7 +785,7 @@ test("a printed line a rebuild tags with its catalogue entry isn't given its Tal
   // A campaign seeded before #27 keeps the printed lines, which count Bolter Discipline already: Rapid Fire (3).
   const p = PREGENS.find((x) => x.name === "Watch Sergeant Qaan Toghril")!;
   const next = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
-  const rebuilt = keepPlay({ previous: p.want, next, before: next }); // a rebuild before derive-weapons ran
+  const rebuilt = keepPlay({ previous: p.want, next, before: next }); // a rebuild before the #27 migration ran
   const boltgun = rebuilt.weapons.find((w) => w.name === "Boltgun")!;
   assert.ok(boltgun.wargearId && boltgun.asPrinted, "tagged, and marked as printed");
   const shown = withWeaponEffects(rebuilt, { rank: 1, catalogue: wargear });

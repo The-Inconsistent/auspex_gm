@@ -107,7 +107,7 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   `savedAt`), kept in `localStorage` per table and character (`draftKey`). It starts from the newer of that and the
   draft sent to the table (`character.draft`, `Character.draft`), else the saved `character.build`, else blank. A
   table's draft records the save it was opened on (`Draft.builtAt`, from `Character.builtAt`); once the character has
-  been built again since, from another device or by a script (`derive-weapons.ts`, and before it the issue #18 migration), the draft is stale and
+  been built again since, from another device or by a script (the issue #18 and #27 migrations), the draft is stale and
   dropped, detail and all, with no clocks compared. START OVER drops the local one.
 - **SEND TO GM** (players, on REVIEW): puts the draft on the table. PARTY then shows OPEN DRAFT for that character; the
   GM ticks what only the GM judges and saves, which clears the draft.
