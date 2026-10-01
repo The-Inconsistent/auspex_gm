@@ -392,6 +392,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     and isn't offered. Asuryani Paths stay off, as p.14 says. Whether the Corsair's species fits the former faction is the GM's
     call. *Open (GitHub issue #2):* the "Anhrathe Goal table" p.14 names isn't printed, and only ANHRATHE OBJECTIVES is.
     Our PDF is from 11 Jan 2024; check the updated PDF (around May 2024) before ruling.
+61. **Change of Kinship at creation joins only the Ynnari** (Aeldari: Inheritance of Embers pp.20, 58; GitHub issue #7).
+    p.58 says the package "cannot be chosen as Creation Ascension", but p.20 lets AELDARI Agents join the Ynnari by
+    it, "If you purchase this Ascension Package in character creation", and no archetype is native to the Ynnari. The
+    specific rule wins for its case: at Creation Ascension (Core p.148, so only when the campaign's Tier is above the
+    archetype's) the package may be taken to join the Ynnari, and to join any other kindred it waits for an Ascension in
+    play. The package carries `atCreationWith: "YNNARI"`, and the build checks the kindred chosen. As p.20 says, such an
+    Agent keeps the Background of the original sub-faction (faction Background tables follow the archetype's faction)
+    and takes no Asuryani Paths (every Path option is `notKeyword: YNNARI`).
 
 ---
 
