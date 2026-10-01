@@ -1,0 +1,194 @@
+{
+  "id": "dh-legionary",
+  "name": "Legionary",
+  "source": "daemons-and-heretics",
+  "page": 35,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 6,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 12,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 10,
+  "shock": 6,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 1 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Chainsword",
+          "damage": 13,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        },
+        {
+          "name": "Boltgun",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "Rapid Fire (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "They are also armed with Frag and Krak Grenades."
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6D6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Aspiring Champion",
+      "text": "An Aspiring Champion leads a band of Legionaries. They have the following additional wargear and Ruin action.",
+      "weapons": [
+        {
+          "name": "Daemon Blade",
+          "damage": 13,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (1)"
+          ]
+        },
+        {
+          "name": "Plasma Pistol",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Supercharge"
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "type": "RUIN",
+          "name": "Death to the False Emperor!",
+          "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test."
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Havocs (p.34)",
+      "text": "Havocs are the Heretic Astartes equivalent of Devastator squads. Havocs may carry reaper autocannons, lascannons, heavy bolters, missile launchers, or reaper chain cannons. A Havoc Champion may be armed with flamer, meltagun or plasma gun, and chainsword. A Havoc Champion replaces their RUIN action with the following.",
+      "abilities": [
+        {
+          "type": "RUIN",
+          "name": "Annihilation!",
+          "text": "Spend 1 Ruin. Heavy weapon attacks made by Havocs within 6m gain the Brutal trait for 1 round."
+        }
+      ]
+    }
+  ],
+  "note": "Printed with an 'Or,' between Chainsword and Boltgun: a Legionary carries one or the other. Closest Core block is chaos-space-marine (different name and stats). The Havocs sidebar (p.34) sits on the page before and names no block; attached here as a variant."
+}

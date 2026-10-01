@@ -1,0 +1,168 @@
+{
+  "id": "dh-master-of-possession",
+  "name": "Master of Possession",
+  "source": "daemons-and-heretics",
+  "page": 44,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>",
+    "PSYKER"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 5,
+    "I": 6,
+    "Wil": 7,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "5 AR"
+  },
+  "defence": 5,
+  "wounds": 17,
+  "shock": 12,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 12,
+        "passive": 6
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Leadership",
+        "dice": 9
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 11
+      },
+      {
+        "name": "Scholar",
+        "dice": 11
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    },
+    {
+      "name": "Warp Touched",
+      "text": "Whenever a Master of Possession rolls a Psychic Mastery (Wil) Test, they gain bonus Wrath dice equal to the Tier of the game."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Sacrificial Dagger",
+          "damage": 10,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (1)"
+          ]
+        },
+        {
+          "name": "Staff of Possession",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Force"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Maleficarum",
+      "text": "The Master of Possession attempts to activate Smite or a Maleficarum psychic power (W&G p.280)."
+    },
+    {
+      "type": "BATTLECRY",
+      "name": "Slaughter of the Gods",
+      "text": "The Master of Possession uses their sacrificial dagger to slay a friendly non-daemonic Heretic Astartes within 6m. Doing so provides the Master of Possession a bonus 2 dice to their next Psychic Mastery (Wil) test."
+    },
+    {
+      "type": "WRATH",
+      "name": "Soulbane",
+      "text": "When this Threat makes a Critical Hit against a target with the PSYKER keyword, when attack with a Staff of Possession, they target suffers 1d3 Mortal Wounds in additional to the Critical Hit's effects."
+    },
+    {
+      "type": "RUIN",
+      "name": "Psychic Storm",
+      "text": "Spend 1 Ruin. The Master of Possession attempts to activate a psychic power or Deny the Witch (W&G p.267)."
+    },
+    {
+      "type": "RUIN",
+      "name": "Whispers of the Warp",
+      "text": "Spend 1 Ruin. Target PSYKER within 20m of this Threat adds +10 to their Perils of the Warp result."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7D6.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Print errors copied as printed in Soulbane: 'when attack with', 'they target suffers', 'in additional to'."
+}

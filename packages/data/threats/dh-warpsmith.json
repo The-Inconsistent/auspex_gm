@@ -1,0 +1,175 @@
+{
+  "id": "dh-warpsmith",
+  "name": "Warpsmith",
+  "source": "daemons-and-heretics",
+  "page": 43,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 5,
+    "I": 5,
+    "Wil": 6,
+    "Int": 5,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 15,
+    "note": "7 AR"
+  },
+  "defence": 4,
+  "wounds": 17,
+  "shock": 11,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Scholar",
+        "dice": 8
+      },
+      {
+        "name": "Tech",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    },
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2 DN, as though it had the Dual Wield Talent (W&G, page 133)."
+    }
+  ],
+  "abilities": [
+    {
+      "text": "A Warpsmith benefits from an Augmetic Arm, Augmetic Eye, Augmetic Legs, and two Ballistic Mechadendrites and Utility Mechadendrites."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Plasma Pistol",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Superchange"
+          ]
+        },
+        {
+          "name": "Power Axe",
+          "damage": 14,
+          "ed": 5,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (1)"
+          ]
+        },
+        {
+          "name": "Flamer Tendril",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": 1,
+          "traits": [
+            "Flamer",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Melta Tendril",
+          "damage": 16,
+          "ed": 1,
+          "ap": -4,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Utility Tendrils",
+          "damage": 8,
+          "ed": 3,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Enrage Machine Spirit!",
+      "text": "Spend 1 Ruin to enrage a Daemonic Machine Spirit in friendly vehicle within 6m. The vehicle benefits from a firther +1 bonus die to all combat actions for the round."
+    }
+  ],
+  "determination": "More Machine than Man: Spend 1 Ruin to roll 7D6. Warpsmiths can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Print errors copied as printed: 'firther' (further), trait 'Superchange' (Supercharge)."
+}

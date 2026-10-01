@@ -1,0 +1,116 @@
+{
+  "id": "dh-warp-talon",
+  "name": "Warp Talon",
+  "source": "daemons-and-heretics",
+  "page": 39,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>",
+    "DAEMON"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 6,
+    "A": 6,
+    "I": 6,
+    "Wil": 5,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 12,
+    "note": "5 AR"
+  },
+  "defence": 5,
+  "wounds": 12,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Warp Rift",
+      "text": "The Warp Talon emerges from the Warp. All opponents of the Warp Talon must make a DN 3 Initiative Test or are Ambushed. Additionally, all opponents of the Warp Talon must make a DN 3 Fear Test."
+    },
+    {
+      "type": "RUIN",
+      "name": "Empyrean Return",
+      "text": "Spend 1 Ruin. The Warp Talon disappears into the Warp. At the start of its next Turn, the Warp Talon may reappear using its BATTLECRY: Warp Rift."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Warp Claws",
+          "damage": 12,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Rend (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Jump Pack",
+      "text": "A Warp Talon may fly at double Speed by making a DN3 Pilot (A) Test, ignoring terrain. If they fail this test then their movement deviates according to the Scattering (W&G p.186) rules. A Complication on this test triggers a crash, and the Warp Talon suffers 1d3 Shock and falling damage (p.201)"
+    },
+    {
+      "type": "WRATH",
+      "name": "Reality Slice",
+      "text": "When this Threat successfully hits with a Wrath Critical in melee this Threat deals +2 Mortal Wounds, and 1D3 Shock."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Warp Talons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Trait 'Rend (2)' printed (Core catalogue says Rending)."
+}

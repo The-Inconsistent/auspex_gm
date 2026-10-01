@@ -1,0 +1,133 @@
+{
+  "id": "dh-master-of-executions",
+  "name": "Master of Executions",
+  "source": "daemons-and-heretics",
+  "page": 46,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF KHORNE>"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 5,
+    "I": 7,
+    "Wil": 5,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 15,
+  "shock": 10,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 11
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has the Mark of Chaos(KHORNE) (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Axe of Dismemberment",
+          "damage": 14,
+          "ed": 3,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Limb Slicer",
+      "text": "Spend 1 Ruin. When this Threat successfully hits they deal +2 Mortal Wounds."
+    },
+    {
+      "type": "WRATH",
+      "name": "Head Taker",
+      "text": "When this Threat successfully hits with their Axe of Dismemberment with a Wrath Critical in melee they roll twice on the Critical Hit table and select the best result."
+    },
+    {
+      "text": "The Threat is also armed with Frag and Krak Grenades."
+    },
+    {
+      "type": "REACTION",
+      "name": "Warp-Sighted Butcher",
+      "text": "This Threat may make a free move in response to a target declaring a Charge action, and so interpose itself between the target the Threat being charged, and become the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7D6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Print error copied as printed in Warp-Sighted Butcher: 'between the target the Threat being charged'. Keyword printed <MARK OF KHORNE> in place of <MARK OF CHAOS>."
+}

@@ -1,0 +1,140 @@
+{
+  "id": "dh-sorcerer",
+  "name": "Sorcerer",
+  "source": "daemons-and-heretics",
+  "page": 41,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>",
+    "PSYKER"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 5,
+    "I": 5,
+    "Wil": 6,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 15,
+  "shock": 10,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Leadership",
+        "dice": 9
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 9
+      },
+      {
+        "name": "Scholar",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    },
+    {
+      "name": "Warp Touched",
+      "text": "Whenever a Sorcerer rolls a Psychic Mastery (Wil) Test, they gain bonus Wrath dice equal to the Tier of the game."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Forcestave",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Force"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Maleficarum",
+      "text": "The Sorcerer attempts to activate Smite or a Maleficarum psychic power (W&G p.280)."
+    },
+    {
+      "type": "RUIN",
+      "name": "Psychic Storm",
+      "text": "Spend 1 Ruin. The Sorcerer attempts to activate a psychic power or Deny the Witch (W&G p.267)."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7D6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg"
+}

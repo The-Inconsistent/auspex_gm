@@ -1,0 +1,171 @@
+{
+  "id": "dh-raptor",
+  "name": "Raptor",
+  "source": "daemons-and-heretics",
+  "page": 39,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 6,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 12,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 10,
+  "shock": 6,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 1 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Chainsword",
+          "damage": 13,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "They are also armed with Frag and Krak Grenades."
+    },
+    {
+      "name": "Jump Pack",
+      "text": "A Raptor may fly at double Speed by making a DN 3 Pilot (A) Test, ignoring terrain. If they fail this test, their movement deviates according to the Scattering (W&G p.186) rules. A Complication on this test triggers a crash, and the Raptor suffers 1d3 Shock and falling damage (p.201)"
+    },
+    {
+      "type": "WRATH",
+      "name": "Terror From the Skies",
+      "text": "When this Threat successfully hits with a Wrath Critical in melee on a turn that they made a charge using their Jump Pack, this Threat deals +1 Mortal Wound, and 1D3 Shock."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6D6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Raptor Champion",
+      "text": "A Raptor Champion leads a band of Legionaries. They have the following wargear and Ruin action.",
+      "weapons": [
+        {
+          "name": "Power Fist",
+          "damage": 13,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unweildy (2)"
+          ]
+        },
+        {
+          "name": "Plasma Pistol",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Supercharge"
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "type": "RUIN",
+          "name": "Death to the False Emperor!",
+          "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test."
+        }
+      ]
+    }
+  ],
+  "note": "Print error copied as printed: trait 'Unweildy (2)' (Unwieldy)."
+}

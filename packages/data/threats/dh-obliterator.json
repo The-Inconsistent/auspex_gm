@@ -1,0 +1,158 @@
+{
+  "id": "dh-obliterator",
+  "name": "Obliterator",
+  "source": "daemons-and-heretics",
+  "page": 40,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>",
+    "DAEMON"
+  ],
+  "attributes": {
+    "S": 10,
+    "T": 10,
+    "A": 5,
+    "I": 6,
+    "Wil": 5,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 18,
+    "note": "7 AR"
+  },
+  "defence": 5,
+  "wounds": 20,
+  "shock": 10,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Intimidation",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Agent of Apocalypse",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "text": "Before declaring a target, the Obliterator must choose the mode of fire from the three below. This is used for the round of combat."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Warp Hail",
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 6,
+          "traits": []
+        },
+        {
+          "name": "Ruinous Salvo",
+          "damage": 14,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 3,
+          "traits": []
+        },
+        {
+          "name": "Focused Malice",
+          "damage": 18,
+          "ed": 3,
+          "ap": -3,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": []
+        }
+      ]
+    },
+    {
+      "text": "In melee combat the Obliterator uses its Crushing Fists"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Crushing Fists",
+          "damage": 15,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2 DN, as though is had the Dual Wield Talent (W&G, page 133)."
+    },
+    {
+      "type": "RUIN",
+      "name": "Witness Annihilation!",
+      "text": "Spend 1 Ruin to increase the Salvo rating of an attack by 1."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 10d6. Obliterators can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Large",
+  "note": "Print error copied as printed: Second Strike reads 'as though is had'. No Architect of Ruin bonus; Agent of Apocalypse is the Champion bonus under another name (personal Ruin 2)."
+}

@@ -1,0 +1,215 @@
+{
+  "id": "dh-chosen",
+  "name": "Chosen",
+  "source": "daemons-and-heretics",
+  "page": 36,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 5,
+    "I": 6,
+    "Wil": 5,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 13,
+    "note": "5AR"
+  },
+  "defence": 5,
+  "wounds": 13,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Intimitation",
+        "dice": 8
+      },
+      {
+        "name": "Leadership",
+        "dice": 8
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Chainsword",
+          "damage": 13,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        },
+        {
+          "name": "Boltgun",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "Plasma Pistol",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Superchange"
+          ]
+        },
+        {
+          "name": "Power Fist",
+          "damage": 13,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unweildy (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Chosen frequently carry a wide array of weapons, including combi-flamer, combi-plasma, and combi-melta guns, power fists, and plasma pistols."
+    },
+    {
+      "text": "They are also armed with Frag and Krak Grenades."
+    },
+    {
+      "type": "WRATH",
+      "name": "Wanton Slaughter",
+      "text": "When a Chosen successfully hits with a Wrath Critical in melee they deal +2 Mortal Wounds."
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7D6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Chosen Champion",
+      "text": "A Chosen Champion leads a band of Legionaries. They have the following wargear and Ruin action.",
+      "weapons": [
+        {
+          "name": "Accursed Weapon",
+          "damage": 15,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (2)"
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "type": "RUIN",
+          "name": "Death to the False Emperor!",
+          "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test."
+        }
+      ]
+    }
+  ],
+  "note": "Print errors copied as printed: skill 'Intimitation' (Intimidation), trait 'Superchange' (Supercharge) and 'Unweildy (2)' (Unweildy printed; Unwieldy). Printed with an 'Or,' between Chainsword and Boltgun."
+}
