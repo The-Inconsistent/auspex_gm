@@ -450,6 +450,84 @@ test("GM and player share a table", async (t) => {
     return owned.some((u) => u.id === "mastercrafted" && u.name === "Mastercrafted" && u.slot === "craft");
   });
 
+  // Upgrades on armour (issue #32 item 3, §11.65): the suit is a host like a weapon, under the same cap, and what is
+  // fitted reaches the AR the table reads. Hero wears nothing until the GM gives them a suit.
+  const onSuit = { type: "character.fitUpgrade" as const, id: hero.id!, host: "armour" as const };
+  assert.deepEqual(await gm.send({ ...onSuit, upgradeId: "voa-adamantine-cuirass" }), {
+    ok: false,
+    error: "Hero wears no armour",
+  });
+  const suited = (await gm.until((s) => s.characters.some((c) => c.id === hero.id))).characters.find(
+    (c) => c.id === hero.id,
+  )!.stats;
+  assert.ok(
+    (
+      await gm.send({
+        type: "character.update",
+        id: hero.id!,
+        stats: {
+          ...suited,
+          armour: { name: "Mk VII Aquila Armour", wargearId: "voa-mk-vii-aquila-armour", ar: 5, powered: 3 },
+          gear: [...suited.gear, "Adamantine Cuirass (Vow of Absolution p.73)"],
+        },
+      })
+    ).ok,
+  );
+  // A player fits one the character holds; the AR and the Trait it grants show on the derived sheet (VoA p.73).
+  assert.ok((await player.send({ ...onSuit, upgradeId: "voa-adamantine-cuirass" })).ok);
+  const worn = (
+    await gm.until((s) => !!s.characters.find((c) => c.id === hero.id)?.stats.armour.fitted?.length)
+  ).characters.find((c) => c.id === hero.id)!.stats.armour;
+  assert.equal(worn.ar, 6, "5 printed + 1 (VoA p.73)");
+  assert.ok(worn.traits.includes("Bulk (1)"));
+  assert.deepEqual(worn.upgradeNames, ["Adamantine Cuirass"]);
+  assert.ok(
+    worn.notes?.some((n) => n.includes("Flight Speed")),
+    "the prose the GM applies",
+  );
+  // The notes are rules text, so an invite holder sees the AR but not them; the AR is the profile, so it stays.
+  const suitInvite = await gm.send({ type: "invite.create", mode: "character", characterId: hero.id! });
+  assert.ok(suitInvite.ok && suitInvite.token);
+  const peeked = ((await (await get(`/invites/${suitInvite.token}`)).json()) as { character: Character }).character
+    .stats.armour;
+  assert.equal(peeked.ar, 6);
+  assert.equal(peeked.notes, undefined);
+  assert.equal(peeked.upgradeNames, undefined);
+  // The GM's editor sends the derived sheet back; storing it would apply the +1 AR twice (storedProfiles).
+  assert.ok((await gm.send({ type: "character.update", id: hero.id!, stats: { ...suited, armour: worn } })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.stats.armour.ar === 6);
+  // One per slot and three at most hold on a suit too (§11.65): a second `plate`, then a full suit.
+  assert.deepEqual(await gm.send({ ...onSuit, upgradeId: "ioe-chains-blades-and-hooks" }), {
+    ok: false,
+    error: "Chains, Blades and Hooks doesn't fit Mk VII Aquila Armour",
+  });
+  assert.deepEqual(await gm.send({ ...onSuit, upgradeId: "voa-adamantine-cuirass" }), {
+    ok: false,
+    error: "Mk VII Aquila Armour already has Adamantine Cuirass",
+  });
+  // Matched Pair reads on two weapons at once, so it is the GM's to fit, never a player's (§11.64).
+  assert.deepEqual(await player.send({ ...fit, upgradeId: "apoc-matched-pair" }), {
+    ok: false,
+    error: "Matched Pair is the GM's to fit: it reads on two weapons at once (rules-flow.md §11.64)",
+  });
+  // Naming no weapon is only allowed for the armour host.
+  const noHost = await gm.send({ type: "character.fitUpgrade", id: hero.id!, upgradeId: "magnocular-scope" });
+  assert.match(noHost.ok ? "fitted" : noHost.error, /Name the weapon/);
+  // Taking it off the suit puts it back in gear and the AR with it.
+  assert.ok(
+    (
+      await gm.send({
+        type: "character.removeUpgrade",
+        ...{ id: hero.id!, host: "armour" as const },
+        upgradeId: "voa-adamantine-cuirass",
+      })
+    ).ok,
+  );
+  await gm.until((s) => {
+    const st = s.characters.find((c) => c.id === hero.id)?.stats;
+    return st?.armour.ar === 5 && st.gear.some((g) => g.startsWith("Adamantine Cuirass"));
+  });
+
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumped." })).ok);
   await gm.until((s) => s.characters.every((c) => c.xp === 10));
 
@@ -1078,7 +1156,9 @@ test("character builder: the creation catalogue for seats, and character.build d
 
   // Advancement (issue #9 step 5): a session's XP is spent from the builder; play's Wealth survives the rebuild, and a
   // player can't change the creation choices any more.
-  assert.ok((await gm.send({ type: "session.start" })).ok);
+  const first = await gm.send({ type: "session.start" });
+  assert.ok(first.ok);
+  assert.equal(first.notices, undefined, "nothing earned yet, so nothing to nudge about");
   assert.ok((await gm.send({ type: "session.end", xp: 40, recap: "" })).ok);
   assert.ok((await player.send({ type: "character.supply", id: made.id!, wealth: -1 })).ok);
   const before = (await gm.until((s) => s.characters.find((c) => c.id === made.id)?.xp === 40)).characters.find(
@@ -1110,6 +1190,55 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.equal(advanced.stats.wealth, before.stats.wealth, "play's Wealth is kept");
   // What advancement spent is stored, so a sheet shows the XP left without resolving the build (#15 step 5).
   assert.equal(advanced.xpSpent, SKILL_XP[6]! - SKILL_XP[5]!, "Stealth 5 → 6, priced from where creation left it");
+
+  // The purchase history (§11.69): bought between sessions, so it belongs to the session whose XP paid for it.
+  const historyOf = (c: Character) =>
+    (c.build?.advancement as { boughtIn?: Record<string, number> } | undefined)?.boughtIn;
+  assert.deepEqual(historyOf(advanced), { "advance/skill/Stealth/6": 1 });
+
+  // XP is spent between sessions (Core p.146), so the next session's start names whoever still has some (issue #32).
+  const nudged = await gm.send({ type: "session.start" });
+  assert.ok(nudged.ok);
+  assert.deepEqual(nudged.notices, [
+    `Unspent XP: Veyl ${40 - (SKILL_XP[6]! - SKILL_XP[5]!)} — ADVANCE spends it (Core p.146, p.148)`,
+  ]);
+
+  // A date is the server's: a client that makes one up is ignored, and what is bought now is stamped with session 2.
+  assert.ok(
+    (
+      await player.send({
+        type: "character.build",
+        id: made.id,
+        build: {
+          ...disruptor,
+          advancement: {
+            skills: { Stealth: 6 },
+            languages: ["glossia"],
+            boughtIn: { "advance/skill/Stealth/6": 99, "advance/language/glossia": 99 },
+          },
+        },
+      })
+    ).ok,
+  );
+  const learned = (
+    await gm.until((s) => !!historyOf(s.characters.find((c) => c.id === made.id)!)?.["advance/language/glossia"])
+  ).characters.find((c) => c.id === made.id)!;
+  assert.deepEqual(historyOf(learned), { "advance/skill/Stealth/6": 1, "advance/language/glossia": 2 });
+
+  // A purchase taken back takes its date with it.
+  assert.ok(
+    (
+      await player.send({
+        type: "character.build",
+        id: made.id,
+        build: { ...disruptor, advancement: { skills: { Stealth: 6 } } },
+      })
+    ).ok,
+  );
+  const pruned = (
+    await gm.until((s) => !historyOf(s.characters.find((c) => c.id === made.id)!)?.["advance/language/glossia"])
+  ).characters.find((c) => c.id === made.id)!;
+  assert.deepEqual(historyOf(pruned), { "advance/skill/Stealth/6": 1 });
 
   // A sheet written in another hand (a pregen's printed lines, issue #18) survives a save with no build changes: the
   // rebuild adds only what the build adds over the stored one. The new name marks the save's broadcast.

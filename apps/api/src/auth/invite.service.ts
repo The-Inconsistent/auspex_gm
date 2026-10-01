@@ -49,14 +49,16 @@ async function openCharacters(conn: Db, campaignId: string) {
 // A sheet for someone who holds an invite but no seat yet: no objectives, no book prose (see InvitePreview).
 const previewSheet = (c: Character): Character => {
   const bare = (list: Character["stats"]["talents"]) => list.map((r) => ({ ...r, text: "" }));
-  // A fitted upgrade's notes are its rules text (withUpgrades, Core p.227), so they need a seat too, and so do the
-  // standing weapon effects: their notes and `gm` mods are book prose (rules-flow.md §11.68). The profile numbers stay.
+  // A fitted upgrade's notes are its rules text (withUpgrades, Core p.227), so they need a seat too — on the suit as
+  // much as on a weapon — and so do the standing weapon effects: their notes and `gm` mods are book prose
+  // (rules-flow.md §11.68). The profile numbers stay, the AR and Traits an upgrade changed with them.
   const weapons = c.stats.weapons.map(({ notes: _, upgradeNames: __, effects: ___, ...w }) => w);
   const { weaponEffects: _effects, ...stats } = c.stats;
+  const { notes: _n, upgradeNames: _u, ...armour } = c.stats.armour;
   return {
     ...c,
     objectives: [],
-    stats: { ...stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons },
+    stats: { ...stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons, armour },
   };
 };
 

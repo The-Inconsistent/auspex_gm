@@ -50,6 +50,12 @@ export const UPGRADE_SLOTS = [
 export const UpgradeSlot = z.enum(UPGRADE_SLOTS);
 export type UpgradeSlot = z.infer<typeof UpgradeSlot>;
 
+// What an upgrade is fitted to. Three things key off it: `fits.kinds`, an entry's per-host slot (`slotOn`) and the
+// action's host (§11.64–§11.65).
+export const UPGRADE_HOSTS = ["weapon", "armour"] as const;
+export const UpgradeHost = z.enum(UPGRADE_HOSTS);
+export type UpgradeHost = z.infer<typeof UpgradeHost>;
+
 // The structured part of an upgrade's printed effect: what the fitted profile shows, in fixed amounts (`weaponMods`,
 // creation.ts, which a Talent's weapon effect shares with Rank amounts).
 export const UpgradeMod = weaponMods(z.number().int());
@@ -65,6 +71,14 @@ export const Upgrade = z.object({
   // other nine but isn't one-per-slot (§11.64).
   exempt: z.enum(["max", "slot"]).optional(),
   copies: z.number().int().min(2).optional(), // its own printed limit: "may be purchased up to 3 times" (IoE p.96)
+  // One entry that fits either host and is a different "type" on each: the Anti-Gravitic Suspensor Crystal is the
+  // bracing that carries a Heavy weapon (`mount`) and a system inside Aeldari armour (`system`) — one entry in the book,
+  // so one entry here, with its printed "no more than 1" holding whichever it is (IoE p.95, §11.64). `slot` is what it
+  // is on any host this doesn't name.
+  slotOn: z.partialRecord(UpgradeHost, UpgradeSlot).optional(),
+  // Matched Pair is a property of two weapons, not one (Apocrypha p.388, §11.64): the player's picker doesn't offer it,
+  // and the GM fits it on both and polices the pairing.
+  gmOnly: z.boolean().optional(),
 });
 export type Upgrade = z.infer<typeof Upgrade>;
 
@@ -132,17 +146,51 @@ const titleCase = (id: string) =>
 const traitKey = (t: string) => t.split("(")[0]!.trim().toLowerCase();
 const rated = (name: string, rating?: number) => (rating === undefined ? name : `${name} (${rating})`);
 
+// The slot an upgrade takes on this host: the same for all but the Suspensor Crystal (§11.64).
+export const slotOf = (u: Upgrade, host: UpgradeHost = "weapon"): UpgradeSlot => u.slotOn?.[host] ?? u.slot;
+
+// The three Trait mods, which read the same on a weapon's profile and on a suit's, so both paths share them and can't
+// drift. Returns the Traits after the mod; anything else is the caller's.
+function traitMods(
+  traits: string[],
+  m: Extract<UpgradeMod, { kind: "trait" | "removeTrait" | "traitRating" }>,
+  traitName: (id: string) => string,
+): string[] {
+  const name = traitName(m.traitId);
+  const at = traits.findIndex((t) => traitKey(t) === traitKey(name));
+  switch (m.kind) {
+    case "trait": {
+      // It already has the Trait: the better rating stands, rather than the item carrying it twice.
+      if (at < 0) return [...traits, rated(name, m.rating)];
+      if (m.rating === undefined) return traits;
+      const had = Number(traits[at]!.match(/\((\d+)\)/)?.[1] ?? 0);
+      return traits.with(at, rated(name, Math.max(had, m.rating)));
+    }
+    case "removeTrait":
+      return traits.filter((t) => traitKey(t) !== traitKey(name));
+    case "traitRating": {
+      // Moves a rating the item already has; one without that Trait is untouched (VoA p.68).
+      if (at < 0) return traits;
+      const now = Number(traits[at]!.match(/\((\d+)\)/)?.[1] ?? 0) + m.delta;
+      // A rating of 0 is an inert Trait (Rapid Fire (0) adds no dice), so it comes off the profile instead.
+      return now <= 0 ? traits.filter((_, i) => i !== at) : traits.with(at, rated(name, now));
+    }
+  }
+}
+
 // Why an upgrade can't be fitted, or null. The catalogue entry, the item it would go on, and what is already fitted.
 export function upgradeRefusal({
   upgrade,
   item,
   fitted,
   matches,
+  host = "weapon",
 }: {
   upgrade: Wargear;
   item: Wargear;
   fitted: Wargear[];
   matches: (w: Wargear, f: WargearFilter) => boolean;
+  host?: UpgradeHost;
 }): string | null {
   const u = upgrade.upgrade;
   if (!u) return `${upgrade.name} isn't an upgrade`;
@@ -150,13 +198,17 @@ export function upgradeRefusal({
   if (u.copies && fitted.filter((f) => f.id === upgrade.id).length >= u.copies)
     return `${upgrade.name} goes on at most ${u.copies} times (its own limit)`;
   if (!matches(item, u.fits)) return `${upgrade.name} doesn't fit ${item.name}`;
-  // The maximum of three counts the upgrades that count (Core p.228).
+  // The maximum of three counts the upgrades that count (Core p.228). Armour takes the same cap, which is the GM's
+  // ruling, not the book's: one rule reads the same on a suit as on a rifle (§11.65).
   if (u.exempt !== "max" && fitted.filter((f) => f.upgrade?.exempt !== "max").length >= MAX_UPGRADES)
     return `${item.name} already has ${MAX_UPGRADES} upgrades (Core p.227)`;
   // "Only one of each type": a slot is taken unless the upgrade is exempt, or is another copy of its own entry.
+  const slot = slotOf(u, host);
   if (u.exempt !== "slot") {
-    const taken = fitted.find((f) => f.upgrade?.slot === u.slot && f.upgrade.exempt !== "slot" && f.id !== upgrade.id);
-    if (taken) return `${item.name} already has a ${u.slot}: ${taken.name} (Core p.227)`;
+    const taken = fitted.find(
+      (f) => f.upgrade && slotOf(f.upgrade, host) === slot && f.upgrade.exempt !== "slot" && f.id !== upgrade.id,
+    );
+    if (taken) return `${item.name} already has a ${slot}: ${taken.name} (Core p.227)`;
   }
   return null;
 }
@@ -188,33 +240,13 @@ export function applyMods(
 
   for (const m of mods) {
     switch (m.kind) {
-      case "trait": {
-        const name = traitName(m.traitId);
-        const at = traits.findIndex((t) => traitKey(t) === traitKey(name));
-        // It already has the Trait: the better rating stands, rather than the weapon carrying it twice.
-        if (at < 0) traits.push(rated(name, m.rating));
-        else if (m.rating !== undefined) {
-          const had = Number(traits[at]!.match(/\((\d+)\)/)?.[1] ?? 0);
-          traits[at] = rated(name, Math.max(had, m.rating));
-        }
-        break;
-      }
+      // The three Trait mods read the same on a weapon's profile and on a suit's, so both paths share them and
+      // can't drift (§11.65).
+      case "trait":
       case "removeTrait":
-        traits = traits.filter((t) => traitKey(t) !== traitKey(traitName(m.traitId)));
+      case "traitRating":
+        traits = traitMods(traits, m, traitName);
         break;
-      case "traitRating": {
-        // Moves a rating the weapon already has; a weapon without the Trait is untouched (VoA p.68).
-        const name = traitName(m.traitId);
-        const at = traits.findIndex((t) => traitKey(t) === traitKey(name));
-        if (at >= 0) {
-          const had = Number(traits[at]!.match(/\((\d+)\)/)?.[1] ?? 0);
-          const now = had + m.delta;
-          // A rating of 0 is an inert Trait (Rapid Fire (0) adds no dice), so it comes off the profile instead.
-          if (now <= 0) traits = traits.filter((_, i) => i !== at);
-          else traits[at] = rated(name, now);
-        }
-        break;
-      }
       case "damage":
         damage += m.delta;
         break;
@@ -242,7 +274,7 @@ export function applyMods(
           Math.max(1, Math.round(r * (m.multiply ?? 1) + (m.delta ?? 0) + (m.bands?.[i] ?? 0))),
         );
         break;
-      case "ar": // armour's, and never a weapon's: fitting to armour is not built yet (issue #15)
+      case "ar": // armour's, and never a weapon's, so on a weapon it is prose: see applyArmourUpgrades
         notes.push(`AR ${m.delta >= 0 ? "+" : ""}${m.delta}`);
         break;
       case "bonusDice":
@@ -259,25 +291,92 @@ export function applyMods(
   };
 }
 
-// The sheet as it is shown: every weapon's fitted upgrades applied, their names listed and the prose they leave to the
-// GM printed under them. The stored sheet keeps the printed profile and the ids, so this is the only place the two meet
-// and nothing is ever applied twice. The api runs it for the live sheet (a phone doesn't hold the catalogue), and the
-// builder runs it for its preview.
-export function withUpgrades<T extends { weapons: Weapon[] }>(
+// The sheet's armour, as much of it as fitting an upgrade reads. The schema is `CharacterStats.armour` in state.ts,
+// which this package can't import from here without a cycle (creation.ts → state.ts → wargear.ts).
+export type SheetArmourLike = {
+  ar: number;
+  traits: string[];
+  wargearId?: string;
+  upgrades?: string[];
+  fitted?: string[];
+  upgradeNames?: string[];
+  notes?: string[];
+};
+
+// The profile an upgraded suit shows, and the prose the sheet prints under it (Core pp.227–228, §11.65). The twin of
+// `applyUpgrades`, and pure the same way: the stored suit stays as printed, so a later data fix re-derives. A mod that
+// reads on a weapon's profile (damage, ED, AP, Salvo, range) is printed as a note rather than dropped, so a
+// mis-transcribed entry shows at the table instead of going quiet.
+export function applyArmourUpgrades<A extends { ar: number; traits: string[] }>(
+  armour: A,
+  upgrades: Wargear[],
+  { traitName = titleCase }: { traitName?: (id: string) => string } = {},
+): { armour: A; notes: string[] } {
+  let traits = [...armour.traits];
+  let ar = armour.ar;
+  const notes: string[] = [];
+
+  for (const entry of upgrades) {
+    for (const m of entry.upgrade?.mods ?? []) {
+      switch (m.kind) {
+        case "trait":
+        case "removeTrait":
+        case "traitRating":
+          traits = traitMods(traits, m, traitName);
+          break;
+        case "ar":
+          ar = Math.min(20, Math.max(0, ar + m.delta)); // CharacterStats.armour.ar's bounds
+          break;
+        case "damage":
+        case "ed":
+        case "ap":
+        case "setAp":
+        case "salvo":
+        case "range":
+          notes.push(`${m.kind} reads on a weapon's profile, not on armour`);
+          break;
+        case "bonusDice":
+          notes.push(
+            `${m.dice >= 0 ? "+" : ""}${m.dice} bonus ${Math.abs(m.dice) === 1 ? "die" : "dice"} to ${m.when}`,
+          );
+          break;
+        case "gm":
+          notes.push(m.what);
+          break;
+      }
+    }
+  }
+  return { armour: { ...armour, ar, traits }, notes };
+}
+
+// The sheet as it is shown: every weapon's and the suit's fitted upgrades applied, their names listed and the prose they
+// leave to the GM printed under them. The stored sheet keeps the printed profile and the ids, so this is the only place
+// the two meet and nothing is ever applied twice. The api runs it for the live sheet (a phone doesn't hold the
+// catalogue), and the builder runs it for its preview. `armour` is optional, so a caller probing one weapon can pass
+// `{ weapons: [w] }`.
+export function withUpgrades<T extends { weapons: Weapon[]; armour?: SheetArmourLike }>(
   stats: T,
   catalogue: ReadonlyMap<string, Wargear>,
   opts: { traitName?: (id: string) => string } = {},
 ): T {
+  // An id the catalogue no longer holds keeps its place, so a rename shows as the id rather than vanishing.
+  const named = (ids: string[]) => ids.map((id) => catalogue.get(id)?.name ?? id);
+  const entries = (ids: string[]) => ids.map((id) => catalogue.get(id)).filter((u) => u !== undefined);
+  const suit = stats.armour;
+  const suitIds = [...(suit?.upgrades ?? []), ...(suit?.fitted ?? [])];
   return {
     ...stats,
+    ...(suit && suitIds.length > 0
+      ? (() => {
+          const { armour, notes } = applyArmourUpgrades(suit, entries(suitIds), opts);
+          return { armour: { ...armour, upgradeNames: named(suitIds), notes: notes.length ? notes : undefined } };
+        })()
+      : {}),
     weapons: stats.weapons.map((w) => {
       const ids = [...(w.upgrades ?? []), ...(w.fitted ?? [])];
       if (ids.length === 0) return w;
-      const fitted = ids.map((id) => catalogue.get(id)).filter((u) => u !== undefined);
-      const { weapon, notes } = applyUpgrades(w, fitted, opts);
-      // An id the catalogue no longer holds keeps its place, so a rename shows as the id rather than vanishing.
-      const names = ids.map((id) => catalogue.get(id)?.name ?? id);
-      return { ...weapon, upgradeNames: names, notes: notes.length ? notes : undefined };
+      const { weapon, notes } = applyUpgrades(w, entries(ids), opts);
+      return { ...weapon, upgradeNames: named(ids), notes: notes.length ? notes : undefined };
     }),
   };
 }

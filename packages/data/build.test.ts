@@ -2,7 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
+  ATTRIBUTE_XP,
+  CharacterBuild,
+  SKILL_XP,
   buildReady,
+  slotOf,
+  creationKey,
   deriveStats,
   keepPlay,
   keepSheetWeapons,
@@ -14,6 +19,8 @@ import {
   withUpgrades,
   withWeaponEffects,
   ruleKey,
+  type SheetArmourLike,
+  type Wargear,
   type Weapon,
   type WargearWeapon,
   type CharacterBuildInput,
@@ -123,7 +130,9 @@ for (const { want, ...p } of PREGENS) {
       assert.deepEqual(profile(w), profile(p), p.name);
     }
     const kept = keepPlay({ previous: want, next: s, before: s });
-    assert.deepEqual(kept.armour, want.armour);
+    // The rebuild may tag the printed suit with its catalogue entry, so an upgrade can be fitted to it (§11.65).
+    const { wargearId: _suit, ...keptArmour } = kept.armour;
+    assert.deepEqual(keptArmour, want.armour);
     assert.deepEqual(kept.gear, want.gear);
   });
 }
@@ -256,6 +265,76 @@ test("in play, purchases spend the XP earned, priced from where creation left th
   assert.equal(r.spent, 399, "the creation budget is untouched");
   assert.deepEqual(r.advancement, { budget: 40, spent: 12 + 20, rank: 2, tier: 4 });
   assert.equal(r.sheet.skills.Stealth, 6);
+});
+
+// ── the purchase history (issue #32, §11.69) ──
+
+test("the history dates the ledger and prices nothing (§11.69)", () => {
+  const advancement = { skills: { Stealth: 6 }, talents: [{ id: "furious-charge" }], languages: ["glossia"] };
+  const play = { tier: 4, xpEarned: 60 };
+  const plain = inPlay({ ...incursor, advancement }, play);
+  const keys = plain.ledger.filter((l) => l.pool).map((l) => l.key);
+  assert.deepEqual(keys, ["advance/talent/furious-charge", "advance/skill/Stealth/6", "advance/language/glossia"]);
+  // The same build with every purchase dated resolves to the same XP, the same rows and the same problems.
+  const boughtIn = Object.fromEntries(keys.map((k, i) => [k, i + 1]));
+  const dated = inPlay({ ...incursor, advancement: { ...advancement, boughtIn } }, play);
+  assert.deepEqual(dated.advancement, plain.advancement);
+  assert.deepEqual(dated.problems, plain.problems);
+  assert.deepEqual(
+    dated.ledger.map((l) => [l.what, l.xp]),
+    plain.ledger.map((l) => [l.what, l.xp]),
+  );
+  assert.deepEqual(
+    dated.ledger.filter((l) => l.pool).map((l) => l.session),
+    [1, 2, 3],
+  );
+  // A date is not a creation choice, so a player may still save a build that gains one.
+  assert.equal(
+    creationKey(CharacterBuild.parse({ ...incursor, advancement })),
+    creationKey(CharacterBuild.parse({ ...incursor, advancement: { ...advancement, boughtIn } })),
+  );
+});
+
+test("a rating is one purchase per rating point, so a later raise keeps the earlier dates (§11.69)", () => {
+  const six = inPlay({ ...incursor, advancement: { attributes: { S: 6 } } }, { tier: 4, xpEarned: 200 });
+  const rows = six.ledger.filter((l) => l.pool);
+  assert.deepEqual(
+    rows.map((l) => [l.what, l.xp, l.key]),
+    [["Strength 5 → 6", ATTRIBUTE_XP[6]! - ATTRIBUTE_XP[5]!, "advance/attribute/S/6"]],
+  );
+  const seven = inPlay({ ...incursor, advancement: { attributes: { S: 7 } } }, { tier: 4, xpEarned: 200 });
+  const later = seven.ledger.filter((l) => l.pool);
+  assert.deepEqual(
+    later.map((l) => l.key),
+    ["advance/attribute/S/6", "advance/attribute/S/7"],
+  );
+  // Split rows cost what the one row cost: the tables are cumulative.
+  assert.equal(
+    later.reduce((n, l) => n + l.xp, 0),
+    ATTRIBUTE_XP[7]! - ATTRIBUTE_XP[5]!,
+  );
+  const skill = inPlay({ ...incursor, advancement: { skills: { Stealth: 7 } } }, { tier: 4, xpEarned: 200 });
+  const skills = skill.ledger.filter((l) => l.pool);
+  assert.deepEqual(
+    skills.map((l) => l.key),
+    ["advance/skill/Stealth/6", "advance/skill/Stealth/7"],
+  );
+  assert.equal(
+    skills.reduce((n, l) => n + l.xp, 0),
+    SKILL_XP[7]! - SKILL_XP[5]!,
+  );
+});
+
+test("a Talent's bracket pick is part of its key, and an Archetype Ascension has a row to date (§11.69)", () => {
+  const hatred = inPlay(
+    { ...incursor, advancement: { talents: [{ id: "hatred", choice: "Orks" }] } },
+    { tier: 4, xpEarned: 40 },
+  );
+  assert.equal(hatred.ledger.find((l) => l.pool)?.key, "advance/talent/hatred:Orks");
+  const ascended = inPlay({ ...scout, advancement: toTactical }, { tier: 3, xpEarned: 200 });
+  const row = ascended.ledger.find((l) => l.key === "advance/ascension/tactical-space-marine");
+  assert.ok(row, "the Ascension is on the ledger, so the history can date it");
+  assert.equal(row.xp, 0, "what it costs is the ratings bought to match (Core p.155)");
 });
 
 test("in play, spending more than was earned is a problem", () => {
@@ -702,6 +781,117 @@ test("withUpgrades: derives the shown sheet, and applying it twice changes nothi
   // The stored sheet is untouched, so deriving from it again gives the same answer rather than compounding.
   assert.deepEqual(withUpgrades(stored, wargear).weapons[0], w, "derive is idempotent on the stored sheet");
   assert.equal(stored.weapons[0]!.damage, carbine.weapon!.damage, "nothing was written back onto the base");
+});
+
+// ── upgrades on armour (issue #32 item 3, §11.65) ──
+
+test("withUpgrades: a suit's upgrades reach its AR and Traits, and Resilience with them (§11.65)", () => {
+  const cuirass = wargear.get("voa-adamantine-cuirass")!;
+  const suit = wargear.get("voa-mk-vii-aquila-armour")!; // POWERED, ADEPTUS ASTARTES: what the Cuirass fits (VoA p.73)
+  const stored: { weapons: []; armour: SheetArmourLike & { name: string } } = {
+    weapons: [],
+    armour: {
+      name: suit.name,
+      ...suit.armour!,
+      wargearId: suit.id,
+      fitted: ["voa-adamantine-cuirass"], // +1 AR and Bulk (1), VoA p.73
+    },
+  };
+  const shown = withUpgrades(stored, wargear).armour!;
+  assert.equal(shown.ar, suit.armour!.ar + 1);
+  assert.ok(shown.traits.includes("Bulk (1)"));
+  assert.deepEqual(shown.upgradeNames, [cuirass.name]);
+  assert.ok(
+    shown.notes?.some((n) => n.includes("Flight Speed")),
+    "the prose the GM applies",
+  );
+  assert.equal(stored.armour.ar, suit.armour!.ar, "nothing was written back onto the stored suit");
+  assert.deepEqual(withUpgrades(stored, wargear).armour, shown, "derive is idempotent on the stored sheet");
+
+  // Resilience counts the AR as worn (Core p.231), so the server's damage math has to read the derived sheet.
+  const sheet = resolveBuild({ catalogue, build: PREGENS[1]!.build }).sheet;
+  const base = deriveStats({ stats: sheet, overrides: {}, tier: 4 });
+  const upgraded = deriveStats({
+    stats: withUpgrades({ ...sheet, armour: { ...sheet.armour, fitted: ["voa-adamantine-cuirass"] } }, wargear),
+    overrides: {},
+    tier: 4,
+  });
+  assert.equal(upgraded.resilience, base.resilience + 1);
+});
+
+test("upgradeRefusal: armour takes the weapon's cap, and a slot may differ by host (§11.64–§11.65)", () => {
+  const at = { tier: 4, newTier: 4 };
+  const matches = (w: Parameters<typeof wargearMatches>[0], f: Parameters<typeof wargearMatches>[1]) =>
+    wargearMatches(w, f, at);
+  // A T'au battlesuit: ten SUPPORT SYSTEM entries share `system`, and all are armour's (Apocrypha pp.445–447).
+  const suit = [...wargear.values()].find(
+    (w) => w.armour && w.keywords.includes("BATTLESUIT") && w.keywords.includes("T'AU EMPIRE"),
+  )!;
+  const systems = [
+    "apoc-target-lock",
+    "apoc-multi-tracker",
+    "apoc-velocity-tracker",
+    "apoc-early-warning-override",
+  ].map((id) => wargear.get(id)!);
+  const fit = (upgrade: Wargear, fitted: Wargear[]) =>
+    upgradeRefusal({ upgrade, item: suit, fitted, matches, host: "armour" });
+  // SUPPORT SYSTEM is exempt from one-per-slot (§11.64), so two coexist …
+  assert.equal(fit(systems[1]!, [systems[0]!]), null);
+  // … and still spend the three the GM's ruling gives a suit (§11.65).
+  assert.match(fit(systems[3]!, systems.slice(0, 3))!, /3 upgrades/);
+
+  // One crest, as the Teleport Crest's own rule says (Apocrypha p.444).
+  const votann = [...wargear.values()].find((w) => w.armour && w.keywords.includes("LEAGUES OF VOTANN"))!;
+  const crest = wargear.get("apoc-teleport-crest")!;
+  const other = { ...crest, id: "test-second-crest", name: "Weavefield Crest" };
+  assert.match(
+    upgradeRefusal({ upgrade: other, item: votann, fitted: [crest], matches, host: "armour" })!,
+    /already has a crest/,
+  );
+
+  // The Suspensor Crystal is a `mount` on a weapon and a `system` in armour, one entry either way (IoE p.95).
+  const crystal = wargear.get("ioe-anti-gravitic-suspensor-crystal")!;
+  assert.equal(slotOf(crystal.upgrade!, "weapon"), "mount");
+  assert.equal(slotOf(crystal.upgrade!, "armour"), "system");
+  // So in armour it takes the `system` slot (the T'au's ten are exempt from one-per-slot, so a second system of its own
+  // kind is what collides), and on a weapon it collides with a weapon's mount, not with either host's other slot.
+  const otherSystem = { ...crystal, id: "test-other-system", name: "Another System" };
+  assert.match(
+    upgradeRefusal({ upgrade: crystal, item: suit, fitted: [otherSystem], matches: () => true, host: "armour" })!,
+    /already has a system/,
+  );
+  const heavy = wargear.get("apoc-bolt-carbine")!;
+  assert.match(
+    upgradeRefusal({
+      upgrade: crystal,
+      item: heavy,
+      fitted: [wargear.get("ioe-anti-grav-platform")!],
+      matches: () => true,
+    })!,
+    /already has a mount/,
+  );
+
+  // Chains, Blades and Hooks goes on three times, its own limit beating one-per-`plate` (IoE p.96).
+  const chains = wargear.get("ioe-chains-blades-and-hooks")!;
+  const kabalite = [...wargear.values()].find((w) => w.armour && w.keywords.includes("DRUKHARI"))!;
+  const onChains = (fitted: Wargear[]) =>
+    upgradeRefusal({ upgrade: chains, item: kabalite, fitted, matches: () => true, host: "armour" });
+  assert.equal(onChains([chains, chains]), null);
+  assert.match(onChains([chains, chains, chains])!, /at most 3 times/);
+});
+
+test("keepPlay: a suit keeps what was fitted to it in play, and loses it when the suit changes (§11.65)", () => {
+  const previous = { ...PREGENS[1]!.build };
+  const before = resolveBuild({ catalogue, build: previous }).sheet;
+  const played = { ...before, armour: { ...before.armour, fitted: ["voa-adamantine-cuirass"] } };
+  const next = inPlay({ ...previous, advancement: { packages: [] } }, { tier: 4, xpEarned: 0 }).sheet;
+  assert.deepEqual(keepPlay({ previous: played, next }).armour.fitted, ["voa-adamantine-cuirass"]);
+  // A suit printed on a hand-made sheet (issue #18) takes the build's catalogue id, or nothing could be fitted to it.
+  const printed = { ...played, armour: { ...played.armour, wargearId: undefined, fitted: undefined } };
+  assert.equal(keepPlay({ previous: printed, next }).armour.wargearId, next.armour.wargearId);
+  // A better suit from a rebuild is worn instead, and what was bolted to the old one doesn't follow it.
+  const heavier = { ...next, armour: { ...next.armour, name: "Mk X Gravis Armour", ar: next.armour.ar + 2 } };
+  assert.equal(keepPlay({ previous: played, next: heavier }).armour.fitted, undefined);
 });
 
 test("applyUpgrades: a change a profile can't hold is printed, never silently dropped", () => {

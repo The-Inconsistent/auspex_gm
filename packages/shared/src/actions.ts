@@ -2,6 +2,7 @@ import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
+import { UpgradeHost } from "./wargear.ts";
 import {
   CharacterDetail,
   CharacterStats,
@@ -110,21 +111,29 @@ export const Action = z.union([
       // (Core p.227, §11.63). The fit is checked before the Test is recorded, so a bad target costs no Test.
       fitTo: z.string().trim().min(1).max(100).optional(),
     }),
-    // Fit a catalogue upgrade to one of the character's weapons, or take it off again (Core p.227, §11.63–§11.65).
-    // The server checks the fit, the maximum of three and the one-per-slot rule, and moves the upgrade off the gear
-    // line it was requisitioned onto. `weapon` is the weapon's name on the sheet, which is unique there.
-    z.object({
-      type: z.literal("character.fitUpgrade"),
-      id,
-      weapon: z.string().trim().min(1).max(100),
-      upgradeId: z.string().min(1).max(100),
-    }),
-    z.object({
-      type: z.literal("character.removeUpgrade"),
-      id,
-      weapon: z.string().trim().min(1).max(100),
-      upgradeId: z.string().min(1).max(100),
-    }),
+    // Fit a catalogue upgrade to one of the character's weapons or to the armour they wear, or take it off again
+    // (Core p.227, §11.63–§11.65). The server checks the fit, the maximum of three and the one-per-slot rule, and moves
+    // the upgrade off the gear line it was requisitioned onto. `host` defaults to "weapon", so a client that knows only
+    // weapons is unchanged; `weapon` is the weapon's name on the sheet, which is unique there, and the armour host needs
+    // no name, because a character wears one suit (Core p.231).
+    z
+      .object({
+        type: z.literal("character.fitUpgrade"),
+        id,
+        host: UpgradeHost.prefault("weapon"),
+        weapon: z.string().trim().min(1).max(100).optional(),
+        upgradeId: z.string().min(1).max(100),
+      })
+      .refine((a) => a.host === "armour" || a.weapon !== undefined, "Name the weapon to fit the upgrade to"),
+    z
+      .object({
+        type: z.literal("character.removeUpgrade"),
+        id,
+        host: UpgradeHost.prefault("weapon"),
+        weapon: z.string().trim().min(1).max(100).optional(),
+        upgradeId: z.string().min(1).max(100),
+      })
+      .refine((a) => a.host === "armour" || a.weapon !== undefined, "Name the weapon to take the upgrade off"),
     // GM only: replaces the Agent's private objectives (only its player sees them).
     z.object({ type: z.literal("character.objectives"), characterId: id, objectives: Objectives }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying

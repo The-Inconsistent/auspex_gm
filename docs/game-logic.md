@@ -15,7 +15,7 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 | | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
-| | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `meets` (every `Requirement` kind), `wargearMatches` |
+| | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `purchaseKey` (the key an advancement purchase is dated by, §11.69), `meets` (every `Requirement` kind), `wargearMatches` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
 | | `apps/api/src/campaign/campaign.actions.ts` | pools, `session.start`, `session.end` |
 | | `apps/api/src/character/character.actions.ts` | `character.adjust` (runs `pcHit`: Exhausted, Dying, Annihilation), `character.respite` |
@@ -383,6 +383,5 @@ Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / 
 Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
-Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked; upgrades can be fitted to a
-weapon but not to armour; and no purchase history records *when* an advancement was bought. The live list is
+Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked. The live list is
 [rules-flow.md](rules-flow.md) §12.

@@ -199,8 +199,10 @@
         { "kind": "gm", "what": "in Aeldari armour or a body: the user may Fly at their base Speed" },
         { "kind": "gm", "what": "in a weapon with Heavy (X): the Strength requirement to wield it is halved" },
         { "kind": "gm", "what": "no more than 1 Suspensor Crystal may be used in this manner" }
-      ]
-    }
+      ],
+      "slotOn": { "weapon": "mount", "armour": "system" }
+    },
+    "note": "One printed item on either host, so one entry with a slot per host (rules-flow.md §11.64): the bracing that carries a Heavy weapon, or a system inside Aeldari armour."
   },
   {
     "id": "ioe-arena-trophy",

@@ -77,8 +77,45 @@ export const Advancement = z
     // Archetype Ascension (Core p.155): an Archetype of the same Faction at the Tier Ascended to, in place of an
     // Ascension Package. It gives that Archetype's abilities, Keywords, Wargear and Influence, not its ratings.
     archetypeAscension: z.object({ archetypeId: id }).optional(),
+    // When each purchase was bought: the session number it first appeared in, keyed by `purchaseKey` (§11.69). The
+    // server stamps it and throws a client's copy away, because "when" is the table's fact, not the builder's. Nothing
+    // is priced from it — `resolveBuild` only reads it to label the ledger — so a build resolves to the same XP with it
+    // and without it, and a build saved before it existed simply has none.
+    boughtIn: z.record(z.string().min(1).max(200), z.number().int().min(1).max(10_000)).prefault({}),
   })
   .prefault({});
+
+// A purchase made in play, as a stable key for the history (`Advancement.boughtIn`, §11.69). A rating is one key per
+// rating point reached, so buying the same Attribute again later leaves the earlier point's session alone; a Talent's
+// bracket pick is part of it (Hatred [Orks] is not Hatred [Tyranids]); `~n` separates the second and later copies of an
+// otherwise identical purchase (a repeatable Talent taken twice with the same pick).
+export type Purchase =
+  | { kind: "attribute"; attribute: Attribute; rating: number }
+  | { kind: "skill"; skill: Skill; rating: number }
+  | { kind: "talent"; id: string; choice?: string }
+  | { kind: "power"; id: string }
+  | { kind: "package"; id: string }
+  | { kind: "language"; name: string }
+  | { kind: "ascension"; archetypeId: string };
+
+export function purchaseKey(p: Purchase): string {
+  switch (p.kind) {
+    case "attribute":
+      return `advance/attribute/${p.attribute}/${p.rating}`;
+    case "skill":
+      return `advance/skill/${p.skill}/${p.rating}`;
+    case "talent":
+      return `advance/talent/${p.id}${p.choice ? `:${p.choice}` : ""}`;
+    case "power":
+      return `advance/power/${p.id}`;
+    case "package":
+      return `advance/package/${p.id}`;
+    case "language":
+      return `advance/language/${p.name}`;
+    case "ascension":
+      return `advance/ascension/${p.archetypeId}`;
+  }
+}
 
 export const CharacterBuild = z.object({
   tier: Tier, // the campaign Tier the character is made for
@@ -135,8 +172,18 @@ export const CharacterBuild = z.object({
 export type CharacterBuild = z.infer<typeof CharacterBuild>;
 export type CharacterBuildInput = z.input<typeof CharacterBuild>;
 
-// `pool`: "advancement" for XP earned in play; absent for the creation budget.
-export type LedgerRow = { what: string; xp: number; cite?: string; step: BuildStep; pool?: "advancement" };
+// `pool`: "advancement" for XP earned in play; absent for the creation budget. `key` and `session` are the purchase
+// history (§11.69), only ever on an advancement row: `key` is what `Advancement.boughtIn` is keyed by, `session` the
+// session number stamped for it, absent until a save stamps one.
+export type LedgerRow = {
+  what: string;
+  xp: number;
+  cite?: string;
+  step: BuildStep;
+  pool?: "advancement";
+  key?: string;
+  session?: number;
+};
 // A choice still to make: `choose` of `options` (labels, answered by index) or, when `options` is empty, of the ids
 // or names `of` describes.
 export type PendingChoice = {
@@ -326,6 +373,16 @@ export function resolveBuild({
   const problem = (p: BuildProblem) => {
     if (p.severity === "gm" && p.path && approved.has(p.path)) return;
     problems.push(p);
+  };
+  // The purchase history is a label on an advancement row and nothing else: no price, no problem and no sheet field
+  // reads it, so a build resolves identically with and without it (§11.69). `~n` keeps two identical purchases apart.
+  const copies = new Map<string, number>();
+  const dated = (p: Purchase) => {
+    const base = purchaseKey(p);
+    const n = (copies.get(base) ?? 0) + 1;
+    copies.set(base, n);
+    const key = n > 1 ? `${base}~${n}` : base;
+    return { key, session: build.advancement.boughtIn[key] };
   };
   const allowed = (r: { name: string; source: Source; page: number }, step: BuildStep) => {
     if (catalogue.homebrew || official(r.source)) return true;
@@ -968,6 +1025,7 @@ export function resolveBuild({
       cite: cite(p),
       step: "advance",
       pool: "advancement",
+      ...dated({ kind: "package", id: p.id }),
     });
     packageNames.push(p.name);
     s.mods.influence =
@@ -1044,6 +1102,16 @@ export function resolveBuild({
         path,
         what: `Archetype Ascension to ${to.name}: the GM agrees`,
         cite: "Core p.155",
+      });
+      // 0 XP of its own: what it costs is the Ascension slot it takes and the ratings bought to match (Core p.155). It
+      // is on the ledger so the history can date it and ADVANCE says what the Ascension went on (§11.69).
+      ledger.push({
+        what: `${to.name} (Archetype Ascension)`,
+        xp: 0,
+        cite: "Core p.155",
+        step: "ascension",
+        pool: "advancement",
+        ...dated({ kind: "ascension", archetypeId: to.id }),
       });
       const ao: Origin = { path, step: "ascension", cite: cite(to), tiersAscended: 1, granted: true };
       to.keywords.forEach(addKeyword);
@@ -1291,6 +1359,7 @@ export function resolveBuild({
         cite: cite(rec),
         step,
         pool,
+        ...(pool ? dated({ kind: "talent", id: rec.id, choice: t.choice }) : {}),
       });
       addTalent(rec.id, { path, step, cite: cite(rec), tiersAscended: 0, granted: false }, t.choice);
     }
@@ -1355,6 +1424,7 @@ export function resolveBuild({
         cite: cite(p),
         step,
         pool,
+        ...(pool ? dated({ kind: "power", id: p.id }) : {}),
       });
       s.powers.add(p.id);
       const po: Origin = { path: `power/${p.id}`, step, cite: cite(p), tiersAscended: 0, granted: false };
@@ -1386,31 +1456,36 @@ export function resolveBuild({
       step: "customise",
     });
   }
-  // In play: ratings raised from where creation left them.
+  // In play: ratings raised from where creation left them, one row per rating point, which is how they are bought
+  // (Core p.24) and what the history is keyed by (§11.69). The XP is unchanged: the tables are cumulative.
   for (const [a, to] of Object.entries(build.advancement.attributes) as [Attribute, number][]) {
     const from = attributes[a];
     if (to <= from) continue;
     attributes[a] = to;
-    ledger.push({
-      what: `${ATTRIBUTE_NAMES[a]} ${from} → ${to}`,
-      xp: ATTRIBUTE_XP[to]! - ATTRIBUTE_XP[from]!,
-      cite: "Core p.24",
-      step: "advance",
-      pool: "advancement",
-    });
+    for (let r = from + 1; r <= to; r++)
+      ledger.push({
+        what: `${ATTRIBUTE_NAMES[a]} ${r - 1} → ${r}`,
+        xp: ATTRIBUTE_XP[r]! - ATTRIBUTE_XP[r - 1]!,
+        cite: "Core p.24",
+        step: "advance",
+        pool: "advancement",
+        ...dated({ kind: "attribute", attribute: a, rating: r }),
+      });
   }
   const created = { ...skills };
   for (const [k, to] of Object.entries(build.advancement.skills) as [Skill, number][]) {
     const from = skills[k] ?? 0;
     if (to <= from) continue;
     skills[k] = to;
-    ledger.push({
-      what: `${k} ${from} → ${to}`,
-      xp: SKILL_XP[to]! - SKILL_XP[from]!,
-      cite: "Core p.25",
-      step: "advance",
-      pool: "advancement",
-    });
+    for (let r = from + 1; r <= to; r++)
+      ledger.push({
+        what: `${k} ${r - 1} → ${r}`,
+        xp: SKILL_XP[r]! - SKILL_XP[r - 1]!,
+        cite: "Core p.25",
+        step: "advance",
+        pool: "advancement",
+        ...dated({ kind: "skill", skill: k, rating: r }),
+      });
   }
   // Species maximums (Core p.25), for every rating however it was reached.
   for (const a of ATTRIBUTES) {
@@ -1521,6 +1596,7 @@ export function resolveBuild({
       cite: "Core p.31",
       step: "advance",
       pool: "advancement",
+      ...dated({ kind: "language", name: l }),
     });
   const dupes = [...picks, ...bought, ...learned].filter((l, i, all) => all.indexOf(l) !== i);
   if (dupes.length) problem({ step: "detail", severity: "error", what: `${dupes.join(", ")} taken twice` });
@@ -1591,7 +1667,15 @@ export function resolveBuild({
   // Worn armour: the best AR the character owns; only one suit counts at a time (Core p.231).
   const worn = armourItems.filter((x) => x.w?.armour).sort((a, b) => b.w!.armour!.ar - a.w!.armour!.ar)[0];
   const armour = worn
-    ? { name: worn.g.name, ...worn.w!.armour!, ar: worn.w!.armour!.ar + (s.mods.armourRating ?? 0) }
+    ? {
+        name: worn.g.name,
+        ...worn.w!.armour!,
+        ar: worn.w!.armour!.ar + (s.mods.armourRating ?? 0),
+        // As printed, with the build's upgrade ids beside it, the way a weapon carries them: `withUpgrades` applies them
+        // on the way out, so storing the result would double-apply (Core pp.227–228, §11.65).
+        wargearId: worn.w!.id,
+        upgrades: worn.g.upgrades?.length ? [...worn.g.upgrades] : undefined,
+      }
     : { name: "", ar: s.mods.armourRating ?? 0, invulnerable: false, powered: 0, traits: [] };
   const strength = attributes.S + armour.powered; // Powered (X), Core p.232
   const weapons = [
@@ -2077,7 +2161,19 @@ export function keepPlay({
   });
   const weapons = new Set([...previous.weapons, ...before.weapons].map((w) => w.name));
   const gear = new Set([...previous.gear, ...before.gear]);
-  const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
+  const better = next.armour.ar > previous.armour.ar || !previous.armour.name;
+  // The suit kept keeps what was fitted to it in play, even when the new build's copy of the same suit wins on AR (a mod
+  // the build added). The comparison is of printed AR, because a fitted +1 AR is derived and never stored (§11.65).
+  // ponytail: a rebuild that changes the suit loses what was fitted to the old one; putting those back as gear needs the
+  // catalogue, which this function doesn't hold — pass a `gearLine` callback in if a table hits it.
+  const sameSuit = !!previous.armour.name && previous.armour.name === next.armour.name;
+  const fittedTo = sameSuit ? previous.armour.fitted : undefined;
+  // A suit printed on a hand-made sheet (a pregen's, issue #18) takes its catalogue id from the build's suit of the same
+  // name, the way a printed weapon does above: without it nothing can be fitted to it until the sheet is rebuilt.
+  const wornId = previous.armour.wargearId ?? (sameSuit ? next.armour.wargearId : undefined);
+  const armour = better
+    ? { ...next.armour, ...(fittedTo?.length ? { fitted: fittedTo } : {}) }
+    : { ...previous.armour, ...(wornId ? { wargearId: wornId } : {}) };
   const shedArmour = previous.armour.name && previous.armour.name !== armour.name ? [previous.armour.name] : [];
   // The Speed a suit gives (Mk X Phobos) follows the suit worn, not the one the new build would wear.
   const speed = (next.mods.speed ?? 0) - movement(next.armour) + movement(armour);
@@ -2101,8 +2197,8 @@ export function keepPlay({
 }
 
 // The creation part of a build, as a stable string: what a player may no longer change once the character is made
-// (everything but the advancement, the choices its grants ask for, and the GM's part). Keys are sorted, so two builds
-// with the same choices compare equal however their objects were put together.
+// (everything but the advancement — its purchase history included — the choices its grants ask for, and the GM's part).
+// Keys are sorted, so two builds with the same choices compare equal however their objects were put together.
 export function creationKey(b: CharacterBuild): string {
   const part = {
     ...b,

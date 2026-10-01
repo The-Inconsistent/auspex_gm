@@ -25,7 +25,21 @@ import { combatant, encounter } from "../encounter/encounter.schema.ts";
 const upgradesByLine = new Map(
   [...wargear.values()]
     .filter((w) => w.upgrade)
-    .map((w) => [w.name, { id: w.id, name: w.name, slot: w.upgrade!.slot }] as const),
+    .map(
+      (w) =>
+        [
+          w.name,
+          {
+            id: w.id,
+            name: w.name,
+            slot: w.upgrade!.slot,
+            // What it may be fitted to, so a phone offers a suit's system on the armour and not on a rifle (§11.64). An
+            // entry naming neither host is offered nowhere, which is the safe default.
+            hosts: (w.upgrade!.fits.kinds ?? ["weapon"]).filter((k) => k === "weapon" || k === "armour"),
+            ...(w.upgrade!.gmOnly ? { gmOnly: true } : {}),
+          },
+        ] as const,
+    ),
 );
 const ownedUpgrades = (gear: string[]) =>
   gear

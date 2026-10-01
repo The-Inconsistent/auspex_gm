@@ -258,6 +258,3 @@ These are binding; follow them when writing code and use them when reviewing:
 
 - Advanced Creation (Core pp.38–39)
 - Server-side undo history (client undo is inverse deltas)
-- Upgrades fitted to **armour** (12 of the 62 are armour's: the sheet's `armour` carries no upgrades, so fitting one is
-  refused). Weapons take them (`character.fitUpgrade`, Core p.227)
-- A purchase history for advancement: what a character bought is in its build, when it bought it isn't recorded
