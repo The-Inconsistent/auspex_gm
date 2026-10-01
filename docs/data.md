@@ -163,13 +163,15 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Threat Assessment | `threat-assessment` | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` | `Wrath & Glory_ Vow of Absolution.pdf` | printed |
-| Threat Assessment: Daemons | *none yet* | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
+| Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules; threats not yet) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
 | Forsaken System Player's Guide | `forsaken-system` (creation only) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
+| Redacted Records | *none yet* (creation, GitHub issue #24) | `Wrath & Glory_ Redacted Records.pdf` | not checked yet |
+| Redacted Records 2 | *none yet* (creation, GitHub issue #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | not checked yet |
 | Bloody Gates | *none* (adventure) | `Wrath & Glory_ Bloody Gates.pdf` | printed |
 | Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
 
@@ -183,8 +185,8 @@ Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only
   the PDF page. Even and full-art pages have no folio.
 - This PDF has **no text layer**. `pdftotext` returns nothing and `pdffonts` lists no fonts, so work from page images
   only (§4).
-- It is not in the `source` enum yet, so a Daemons threat can't validate until an id is added to `Threat.source` in
-  `packages/shared/src/threat.ts`.
+- Its threats (about 60 stat blocks, pp.17–111) aren't transcribed yet; the id is ready for them (`THREAT_SOURCES` spreads
+  `SOURCES`). The vehicles (pp.107–111) use Church of Steel's format and wait with it.
 
 ---
 
@@ -361,9 +363,17 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 The Core Wargear chapter (printed pp.211–247), Vow of Absolution's Call to Arms (pp.59–75) and the Forsaken System
 Player's Guide armoury (pp.120–128) and Inheritance of Embers' Armoury (pp.77–99), plus the homebrew Legacy of the
 Necrontyr's Vaults of the Tomb Lords (PDF pp.10–13) and An Abundance of Apocrypha's Chapter IV (printed pp.326–482),
-one JSON array per section, for the GM's requisition form. 1,202 entries:
+and the relics of Threat Assessment: Daemons & Heretics, one JSON array per section, for the GM's requisition form. 1,228
+entries:
 - Core (219): `melee` (33, pp.211–213), `ranged` (44, pp.217–219), `ranged-xenos-grenades` (21, pp.220–221, 226),
   `upgrades-ammo` (26, pp.227–230), `armour` (28, p.233), `equipment` (41, pp.236–241), `augmetics` (26, pp.243–247).
+- Daemons & Heretics (26, ids prefixed `dh-`): `dh-relics`: Chaos Terminator Armour (p.37) and the Relics of Tzeentch
+  (pp.60–61), Nurgle (pp.74–75), Khorne (pp.88–89) and Slaanesh (pp.103–104). Every relic is Unique. "Must have the Mark
+  of X" is a keyword requirement on the god, and "Psyker" is PSYKER. A relic only a named daemon may carry (Skullreaver:
+  "Only a Bloodthirster") needs DAEMON plus a `gm` requirement. The Terminator armour's printed "Chaos[Legion], Mark of
+  Chaos" is split into CHAOS, [LEGION] and [MARK OF CHAOS]. Soulbane prints a melee and a pistol profile, so it is two
+  entries. A'rgath, which takes the form of any bladed weapon, has no `weapon`. Armour of Scorn's Invulnerable applies
+  only below 14 base Damage, so `invulnerable` is false and the condition is in `effect`.
 - VoA (58, ids prefixed `voa-`): `voa-weapons` (37, tables on pp.62 and 67), `voa-upgrades-armour` (14, pp.68 and 73),
   `voa-equipment` (7, pp.74–75).
 - FSPG (45, ids prefixed `fspg-`): `fspg-weapons` (23, pp.121–124), `fspg-armour-gear` (22, pp.125–128).
@@ -447,7 +457,7 @@ Transcription calls, all in each entry's `note`:
 ### Rules reference (`packages/data/rules/*.json`, `RuleEntry` in `packages/shared/src/rules.ts`)
 
 One file per `kind`: `conditions.json` (Core pp.197–200), `weapon-traits.json` (Core pp.208–210, plus FSPG p.120's
-Blessed, IoE p.79's Lance and Gruesome, the Necrontyr's Tesla as `tesla-necrontyr`, and Apocrypha pp.326–328's 25,
+Blessed, Daemons & Heretics p.103's Sonic Weapon, IoE p.79's Lance and Gruesome, the Necrontyr's Tesla as `tesla-necrontyr`, and Apocrypha pp.326–328's 25,
 among them its own Tesla), `armour-traits.json` (Core p.232, plus Apocrypha p.398's Agile and Void),
 `combat-actions.json` (pp.177–190), `stat-block.json` (kind `stat`: every value a threat stat block prints, in
 printed order, from the Bestiary Format legend p.323 and the pages it points to; attributes pp.119–120, Speed p.180,
@@ -539,9 +549,9 @@ test `packages/data/build.test.ts` rebuilds the volkus pregens. Nothing serves t
 are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
 file, loaded by `creationCatalogue()` in `index.ts`.
 
-**Status (2026-09-25).** All six books are transcribed and verified against the page images: 113 keywords, 27
-factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 333 talents, 32
-packages, 38 disciplines, 267 powers, 11 Patrons, 5 languages and 27 flavour tables, with every reference resolving.
+**Status (2026-10-01).** All seven books are transcribed and verified against the page images: 113 keywords, 27
+factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 336 talents, 32
+packages, 41 disciplines, 291 powers, 11 Patrons, 5 languages and 27 flavour tables, with every reference resolving.
 What is left is outside the catalogue: 55 starting-wargear items the Wargear catalogue doesn't link yet, waiting on
 rulings, and vehicles (see the Wargear catalogue).
 
@@ -626,7 +636,7 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
 
 **Transcribing.**
 - **One record per thing.** When several books print the same species, archetype or talent, transcribe only the first
-  source in `SOURCES` order (VoA, IoE, FSPG, Core, then the homebrew Apocrypha and Necrontyr), and cite the others in
+  source in `SOURCES` order (D&H, VoA, IoE, FSPG, Core, then the homebrew Apocrypha and Necrontyr), and cite the others in
   `note` ("Also Core p.113, 277 XP"). Official always beats homebrew; Apocrypha's `##` entries have FSPG versions.
 - **Fill what the newer printing leaves out.** A Species' `keywords`, `grants`, `max` and `size` that the winning
   printing doesn't print are taken from the older one, and the note says so (IoE's Aeldari has Core p.39's Species
@@ -639,6 +649,20 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   one does, the older one's apply (IoE's Runes of Battle takes Core p.271's PSYKER + AELDARI).
 - **One record per thing means per category** (and per discipline, for powers). An Apocrypha Exarch Power named Evade is not the Evade talent: they
   get different ids (`evade-exarch`), and dedup compares category and name.
+- **Daemons & Heretics (Psychic Diabolus, pp.113–125):**
+  - Its Prayers to the Dark Gods are `prayer` talents that need only CHAOS (p.114: "Any Agent with the CHAOS Keyword can
+    purchase…"). Each prints "You gain +1 Corruption." in its Effect, which is a purchase grant, as on Core's Betrayer.
+  - Three of them (Benediction of Darkness, Dark Zealotry, Litany of Despair) share a name and category with Apocrypha
+    prayers, so the official printing replaces those, and each `note` cites the Apocrypha version. Apocrypha's Dark
+    Apostle suggestions now point at the official ones.
+  - Its Maleficarum powers join Core's `maleficarum`. Death Hex, Diabolic Strength and Warptime are also Apocrypha Dark
+    Hereticus powers, so the new ones carry the discipline in their id (`death-hex-maleficarum`), and so does
+    `delightful-agonies-soulstain`.
+  - Pandaemoniac, Soulstain and Warprot require PSYKER, CHAOS and none of the other three gods. "A Psyker with the
+    TZEENTCH Keyword can always purchase powers from the Pandaemoniac Discipline, without it counting as one of the
+    limited number of Disciplines they can learn" (p.118, likewise pp.121, 123) is a PSYKER-gated `disciplineAccess`
+    grant on the Core TZEENTCH, SLAANESH and NURGLE keyword records. It reaches the god keyword however it came: a
+    Mark of Chaos, or an archetype that prints it (Tzaangor, Plague Marine).
 - **Where an index and an entry disagree, the entry is the rule.** Note the difference.
 - **Bracketed names drop the placeholder from the id** and repeat once per choice (`repeatable: "perChoice"`): "Hatred [Any]" is `hatred`, "Loremaster [Keyword]" is
   `loremaster`, as Core's contents page lists them.
@@ -668,7 +692,8 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   Lexmechanic prints "SKILLS: 3" with no Skill names (FSPG p.117); Corsair Prince's keywords read "AELDARI, ASURYANI,
   [CRAFTWORLD]" (IoE p.56; ANHRATHE, [COTERIE] meant?); Venenum Assassin prints TEMPLUM VANUS (Apocrypha); the Corsair
   "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
-- Apocrypha suggests talents from "RR1" (Redacted Records), a book not in `books/`; they are listed in notes only.
+- Apocrypha suggests talents from "RR1" and "RR2" (Redacted Records and Redacted Records 2); they are listed in notes only
+  until those books are transcribed (GitHub issue #24).
 - GitHub issue #7: Change of Kinship (IoE p.58) is "not at creation", but the Ynnari rule (p.20) speaks of buying it
   at creation.
 - Magisterial House "+Rank to Wealth" (Apocrypha p.53) is read as a one-off grant at creation.
@@ -678,5 +703,7 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
 - GitHub issue #8: Weirdboy (WAAAGH!), Grey Knight (Sanctic) and Grimnyr (Skeinwrought) grant a discipline and also
   get the species' one discipline of choice (Core p.257): two in all. Is the archetype's discipline meant to be that one choice?
 - Navigator Hereditary Mutations (Apocrypha p.11): does −1 to Intellect-derived Traits touch Passive Awareness?
-- Chaos character creation waits for the official Chaos books (GitHub issue #3). Until then Core p.87 "Creating a
-  Traitor" stays as rule text on the `chaos` faction, and Apocrypha's Chaos content is transcribed as homebrew.
+- Chaos character creation (GitHub issue #3): Threat Assessment: Daemons & Heretics prints no archetypes and doesn't
+  revisit Core p.87 "Creating a Traitor", so those recipes stay as rule text on the `chaos` faction. Apocrypha's Chaos
+  archetypes have no official counterpart and stay as homebrew. Revisit when an official Chaos player book prints
+  archetypes.
