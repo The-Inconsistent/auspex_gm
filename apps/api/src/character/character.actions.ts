@@ -124,7 +124,7 @@ export async function applyCharacterAction(
       const refusal = buildRefusal(r);
       if (refusal) fail(refusal);
       // A character already made keeps what play changed (keepPlay), and gains only what the new build adds over the
-      // stored one; a first build keeps only Ammo and requisitions.
+      // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's lines too.
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old
         ? r.sheet
@@ -134,7 +134,9 @@ export async function applyCharacterAction(
               next: r.sheet,
               before: resolveBuild({ catalogue: buildCatalogue(homebrew), build: made.data, play }).sheet,
             })
-          : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
+          : a.keepSheet
+            ? keepPlay({ previous: old, next: r.sheet, before: r.sheet })
+            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       if (row) {
         await tx
           .update(character)

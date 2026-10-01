@@ -1463,9 +1463,7 @@ export function resolveBuild({
     if (s.mods[k]) mods[k] = s.mods[k];
   // An Ork's Influence uses Strength (Core p.29): the sheet derives it from Fellowship, so the difference is a mod.
   if (s.influenceAttribute) mods.influence = (mods.influence ?? 0) + attributes[s.influenceAttribute] - attributes.Fel;
-  // Mk X Phobos: "+1 Movement" (VoA p.72), the armour trait "+1 M"; your Movement is your Speed (Core p.180).
-  const movement = armour.traits.map((t) => /^\+(\d+) M$/.exec(t)?.[1]).find(Boolean);
-  if (movement) mods.speed = (mods.speed ?? 0) + Number(movement);
+  if (movement(armour)) mods.speed = (mods.speed ?? 0) + movement(armour);
   for (const [k, v] of Object.entries(build.gm.mods) as [keyof typeof mods, number][])
     if (v) mods[k] = (mods[k] ?? 0) + v;
   for (const p of s.powers) {
@@ -1749,6 +1747,11 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
   return out;
 }
 
+// Mk X Phobos: "+1 Movement" (VoA p.72), the armour trait "+1 M" (a printed pregen sheet spells it out); your Movement
+// is your Speed (Core p.180).
+const movement = (armour: { traits: string[] }) =>
+  Number(armour.traits.map((t) => /^\+(\d+) M(?:ovement)?$/.exec(t)?.[1]).find(Boolean) ?? 0);
+
 // A rebuild of a character already in play keeps what play changed: Wealth, Ammo and requisitions, and the armament
 // and gear gained since (a requisitioned weapon, loot). What the new build adds joins them; nothing is dropped, and the
 // better armour is worn (only one suit counts, Core p.231). `before`, the sheet the stored build derives, says what the
@@ -1767,8 +1770,12 @@ export function keepPlay({
   const gear = new Set([...previous.gear, ...before.gear]);
   const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
   const shedArmour = previous.armour.name && previous.armour.name !== armour.name ? [previous.armour.name] : [];
+  // The Speed a suit gives (Mk X Phobos) follows the suit worn, not the one the new build would wear.
+  const speed = (next.mods.speed ?? 0) - movement(next.armour) + movement(armour);
+  const { speed: _, ...mods } = next.mods;
   return {
     ...next,
+    mods: speed ? { ...mods, speed } : mods,
     armour,
     weapons: [...previous.weapons, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
     gear: [

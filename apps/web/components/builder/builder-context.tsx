@@ -21,6 +21,7 @@ export type Draft = Omit<CharacterBuildInput, "archetypeId"> & {
   name: string;
   detail?: Partial<CharacterDetail>;
   savedAt?: number;
+  builtAt?: number; // a table's: the character's `builtAt` when this draft was opened (0: no build yet), see pickDraft
 };
 
 // Catalogue lookups by id, built once per payload.

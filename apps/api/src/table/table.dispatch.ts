@@ -39,6 +39,7 @@ function authorize(ctx: Ctx, a: Action) {
   )
     fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
+  if (a.type === "character.build" && a.keepSheet) fail("GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
   // A player's sheet changes through the builder; raw stats would also carry Wealth and Ammo past the check below.
   if (a.type === "character.update" && a.stats) fail("Stats are GM only");

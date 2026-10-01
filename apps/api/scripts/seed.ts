@@ -5,7 +5,6 @@
 import { io } from "socket.io-client";
 import type { ActionInput, ActionResult } from "@wg/shared";
 import { loadPack } from "@wg/data";
-import { attachBuild } from "./attach-build.ts";
 
 const args = process.argv.slice(2);
 const name = args.find((a) => !a.startsWith("--") && args[args.indexOf(a) - 1] !== "--owner");
@@ -87,7 +86,8 @@ for (const c of pack.characters) {
     { type: "character.create", name: c.name, stats: c.stats, detail: c.detail, objectives: c.objectives },
     `character ${c.name}`,
   ))!;
-  if (c.build) await attachBuild({ socket, send }, { id, name: c.name, build: c.build, printed: c.stats });
+  // The build, keeping the printed weapon, armour and gear lines, which work Talents into the profiles (issue #18).
+  if (c.build) await send({ type: "character.build", id, build: c.build, keepSheet: true }, `build ${c.name}`);
 }
 
 socket.close();

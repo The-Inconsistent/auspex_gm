@@ -254,3 +254,25 @@ test("a granted Talent with options asks for one; a bought one must be one of th
   assert.ok(bought("smel").includes("Acute Sense: choose one of sight, hearing, smell, taste, touch"));
   assert.ok(bought().includes("Acute Sense: choose what it applies to"));
 });
+
+test("keepPlay with before: printed lines stay, and only what the new build adds over the stored one joins them", () => {
+  const stored = resolveBuild({ catalogue, build: incursor }).sheet;
+  const printed = { ...stored, weapons: stored.weapons.map((w) => ({ ...w, name: `${w.name} (printed)` })) };
+  const knife = { name: "Looted Choppa", damage: 4, ed: 1, range: [1], traits: [], addStrength: true };
+  const next = { ...stored, weapons: [...stored.weapons, knife], gear: [...stored.gear, "Grav-Chute"] };
+  const kept = keepPlay({ previous: printed, next, before: stored });
+  assert.deepEqual(
+    kept.weapons.map((w) => w.name),
+    [...printed.weapons.map((w) => w.name), "Looted Choppa"],
+  );
+  assert.ok(kept.gear.includes("Grav-Chute"));
+});
+
+test("Mk X Phobos's +1 Speed follows the suit worn (VoA p.72)", () => {
+  const phobos = resolveBuild({ catalogue, build: incursor }).sheet; // the Disruptor wears Mk X Phobos
+  assert.ok(phobos.armour.traits.includes("+1 M"));
+  const tacticus = { name: "Mk X Tacticus", ar: 5, invulnerable: false, powered: 4, traits: [] };
+  const kept = keepPlay({ previous: { ...phobos, armour: tacticus }, next: phobos, before: phobos });
+  assert.equal(kept.armour.name, "Mk X Tacticus");
+  assert.equal(kept.mods.speed ?? 0, (phobos.mods.speed ?? 0) - 1);
+});

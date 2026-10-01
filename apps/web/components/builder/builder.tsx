@@ -7,6 +7,7 @@ import {
   resolveBuild,
   type BuildChoice,
   type Character,
+  type CharacterStats,
   type CreationPayload,
   type LibraryEntry,
   type LiveState,
@@ -33,8 +34,11 @@ import { StepNav } from "./components/step-nav/step-nav";
 import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
-import { AUTOSAVE_MS, OVERRIDE_LABELS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
-import { draftOf, pickDraft, type DraftStart } from "./utils";
+import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
+import { draftOf, mergeOverrides, pickDraft, type DraftStart } from "./utils";
+
+// The GM's overrides as the builder opened on them and as they are now; `mergeOverrides` saves only the difference.
+type OverrideEdit = { base: Overrides; edited: Overrides };
 
 // Where the builder works: a campaign's table, or the signed-in user's own library (issue #14). Everything the two
 // differ in is here, so the builder itself is the same screen either way.
@@ -50,8 +54,15 @@ type Bench = {
   // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. At a table
   // the GM's tablet, the player's phone or a script (attach-builds.ts) may save it, so it's the character's `builtAt`.
   start: DraftStart;
+  // What a new draft here records as the save it was opened on (`Draft.builtAt`): a table's `builtAt`, 0 before any;
+  // undefined in the library, whose drafts compare times.
+  stamp: number | undefined;
   overrides: Overrides | null; // the GM's overrides on the character; null where there are none to set (the library)
-  save: (draft: Draft, overrides: Overrides | null) => Promise<string | null>; // the error, or null once saved
+  sheet: CharacterStats | null; // the live sheet, for the overrides' derived values before a build resolves
+  save: (draft: Draft, overrides: OverrideEdit | null) => Promise<string | null>; // the error, or null once saved
+  // SAVE DETAILS ONLY (the GM, on a character that exists): name, detail and overrides, without a build, so a hand-made
+  // sheet is still the GM's to rename and rule on (issue #18). null where there's no such character or no GM.
+  saveDetails: ((draft: Draft, overrides: OverrideEdit | null) => Promise<string | null>) | null;
   sendDraft: ((draft: Draft) => Promise<string | null>) | null;
   autosave: ((draft: Draft) => void) | null; // the library saves as you go; a table waits for SEND TO GM
   cancelAutosave: (() => void) | null; // drops a debounced save that a finished build has overtaken
@@ -110,6 +121,8 @@ function TableBench({
 }: TableBenchProps) {
   const tier = state.campaign.tier;
   const xpEarned = character?.xp;
+  // A new character's id once its build saved, so a retry after a failed overrides save updates it, not a second one.
+  const created = useRef<string | null>(null);
   const bench = useMemo(
     (): Bench => ({
       tier,
@@ -134,27 +147,44 @@ function TableBench({
         draft: draftOf(character?.draft),
         savedAt: character?.builtAt ?? undefined,
       },
+      stamp: character?.builtAt ?? 0,
       overrides: character?.overrides ?? {},
+      sheet: character?.stats ?? null,
       // The build, then the GM's overrides when they changed: they're on the character, not in the build.
-      save: async (draft, overrides) => {
-        const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
+      save: async (draft, edit) => {
+        const { name, detail, archetypeId, savedAt: _, builtAt: __, ...rest } = draft;
         if (!archetypeId) return "Choose an archetype first";
         const r = await send({
           type: "character.build",
-          id: characterId ?? undefined,
+          id: characterId ?? created.current ?? undefined,
           name: name.trim() || undefined,
           detail,
           build: { ...rest, archetypeId },
         });
         if (!r.ok) return r.error;
+        if (r.id) created.current = r.id;
         const id = r.id ?? characterId;
-        const changed = (Object.keys(OVERRIDE_LABELS) as (keyof Overrides)[]).some(
-          (k) => overrides?.[k] !== character?.overrides[k],
-        );
-        if (role !== "gm" || !overrides || !id || !changed) return null;
+        const overrides = edit && mergeOverrides({ live: character?.overrides ?? {}, ...edit });
+        if (role !== "gm" || !id || !overrides) return null;
         const u = await send({ type: "character.update", id, overrides });
         return u.ok ? null : u.error;
       },
+      saveDetails:
+        role === "gm" && characterId
+          ? async (draft, edit) => {
+              const name = draft.name.trim();
+              if (!name) return "A character needs a name";
+              const overrides = edit && mergeOverrides({ live: character?.overrides ?? {}, ...edit });
+              const r = await send({
+                type: "character.update",
+                id: characterId,
+                name,
+                detail: draft.detail,
+                ...(overrides && { overrides }),
+              });
+              return r.ok ? null : r.error;
+            }
+          : null,
       // SEND TO GM: the draft waits on the character for the GM to tick and save.
       sendDraft: characterId
         ? async (draft) => {
@@ -245,12 +275,15 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
         draft: draftOf(entry.draft),
         savedAt: Date.parse(entry.updatedAt) || undefined,
       },
+      stamp: undefined,
       overrides: null, // no GM here
+      sheet: null,
       save: async (draft) => {
-        const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
+        const { name, detail, archetypeId, savedAt: _, builtAt: __, ...rest } = draft;
         if (!archetypeId) return "Choose an archetype first";
         return put({ name: name.trim(), detail, build: { ...rest, archetypeId }, draft: null });
       },
+      saveDetails: null, // the library saves the name and detail as you go
       sendDraft: null, // bring it into a campaign from that campaign's builder instead (issue #14 step 4)
       autosave,
       cancelAutosave: () => clearTimeout(timer.current),
@@ -271,8 +304,19 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
   );
 }
 
-// The draft this device kept, if any. Which one the builder opens on is `pickDraft` (utils.ts), where it's tested.
-function initialDraft({ key, start, tier }: { key: string; start: DraftStart; tier: number }): Draft {
+// The draft this device kept, if any. Which one the builder opens on is `pickDraft` (utils.ts), where it's tested; a
+// table's records the save it opened on (`stamp`), unless it already names one.
+function initialDraft({
+  key,
+  start,
+  tier,
+  stamp,
+}: {
+  key: string;
+  start: DraftStart;
+  tier: number;
+  stamp: number | undefined;
+}): Draft {
   let local: Draft | null = null;
   try {
     const stored = localStorage.getItem(key);
@@ -280,18 +324,21 @@ function initialDraft({ key, start, tier }: { key: string; start: DraftStart; ti
   } catch {
     // Storage blocked or a draft from an older builder: start from the saved draft or the saved build instead.
   }
-  return pickDraft({ local, start, tier });
+  const picked = pickDraft({ local, start, tier });
+  return stamp === undefined || picked.builtAt !== undefined ? picked : { ...picked, builtAt: stamp };
 }
 
 type WorkshopProps = { bench: Bench; payload: CreationPayload; onSaved: () => void };
 
 function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   const { key, start, made, play, role } = bench;
-  const [draft, setDraft] = useState<Draft>(() => initialDraft({ key, start, tier: bench.tier }));
+  const [draft, setDraft] = useState<Draft>(() => initialDraft({ key, start, tier: bench.tier, stamp: bench.stamp }));
   const locked = made && role !== "gm";
   const [step, setStep] = useState<BuilderStep>(locked ? "advance" : draft.archetypeId ? "customise" : "tier");
   const [error, setError] = useState<string | null>(null);
   const [overrides, setOverrides] = useState(bench.overrides);
+  const [openedOverrides] = useState(bench.overrides); // what `mergeOverrides` compares the edits with
+  const overrideEdit = overrides && openedOverrides ? { base: openedOverrides, edited: overrides } : null;
   // The Tier the build is made at. It stays the draft's own: a character keeps the Tier it was made at (Core p.20 sets
   // the budget from it), and the campaign's Tier now travels separately as `play.tier` (build.ts), so a group that
   // Ascends doesn't rewrite its characters' creation Tier. A blank draft starts at the bench's (`initialDraft`).
@@ -311,7 +358,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   // The live sheet: every change re-resolves the whole build, so a later choice that breaks an earlier one shows up.
   const resolved = useMemo((): ResolvedBuild | null => {
     if (!draft.archetypeId) return null;
-    const { name: _, detail: __, savedAt: ___, archetypeId, ...rest } = draft;
+    const { name: _, detail: __, savedAt: ___, builtAt: ____, archetypeId, ...rest } = draft;
     try {
       return resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
     } catch {
@@ -378,7 +425,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
     }
     bench.cancelAutosave?.();
     const kept = bench.autosave ? null : start.draft;
-    setDraft(initialDraft({ key, start: { ...start, draft: kept }, tier: bench.tier }));
+    setDraft(initialDraft({ key, start: { ...start, draft: kept }, tier: bench.tier, stamp: bench.stamp }));
     setStep("tier");
   };
 
@@ -386,7 +433,16 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   // autosave is dropped first, so a debounced draft can't land on the row just after the finished build did.
   const save = async () => {
     bench.cancelAutosave?.();
-    const failure = await bench.save(draft, overrides);
+    finish(await bench.save(draft, overrideEdit));
+  };
+  // SAVE DETAILS ONLY: the name, detail and overrides; the build's choices in this draft aren't saved.
+  const saveDetails = bench.saveDetails
+    ? async () => {
+        bench.cancelAutosave?.();
+        finish(await bench.saveDetails!(draft, overrideEdit));
+      }
+    : null;
+  const finish = (failure: string | null) => {
     if (failure) return setError(failure);
     try {
       localStorage.removeItem(key);
@@ -423,7 +479,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
             {step === "ascension" && <AscensionStep />}
             {step === "detail" && <DetailStep />}
             {step === "advance" && <CustomiseStep layer="advancement" />}
-            {step === "review" && <ReviewStep onSave={save} />}
+            {step === "review" && <ReviewStep onSave={save} onSaveDetails={saveDetails} sheet={bench.sheet} />}
           </main>
           <aside className="bld-side" aria-label="XP ledger and what is left">
             <XpLedger />

@@ -8,6 +8,7 @@ import {
   deriveStats,
   effectiveStrength,
   skillTotal,
+  type CharacterStats,
   type Overrides,
   type Skill,
 } from "@wg/shared";
@@ -20,7 +21,11 @@ import { toggle } from "../../utils";
 import { RecordList } from "@/components/ui/record-list/record-list";
 import { XpLedger } from "../xp-ledger/xp-ledger";
 
-type ReviewStepProps = { onSave: () => void };
+type ReviewStepProps = {
+  onSave: () => void;
+  onSaveDetails: (() => void) | null; // SAVE DETAILS ONLY: the GM, on a character that exists
+  sheet: CharacterStats | null; // the live sheet, for the overrides' derived values while no build resolves
+};
 
 const TRAITS = [
   ["maxWounds", "WND"],
@@ -34,8 +39,8 @@ const TRAITS = [
 ] as const;
 
 // Review and save: the sheet exactly as the play sheet will show it, the ledger, what is left, and the GM's part.
-export function ReviewStep({ onSave }: ReviewStepProps) {
-  const { draft, resolved: r, tier, role, go, sendDraft, sentDraft, gmLater, overrides } = useBuilder();
+export function ReviewStep({ onSave, onSaveDetails, sheet }: ReviewStepProps) {
+  const { draft, resolved: r, tier, role, go, sendDraft, sentDraft, gmLater, overrides, setOverrides } = useBuilder();
   const [sendMsg, setSendMsg] = useState<string | null>(null);
 
   // SEND TO GM: the draft goes on the table; the GM opens it here, ticks what only the GM judges, and saves.
@@ -43,6 +48,7 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
     const error = await sendDraft?.();
     setSendMsg(error ? `! ${error}` : "SENT. YOUR GM CAN OPEN IT FROM PARTY AND SAVE IT.");
   };
+  // No build yet (a hand-made sheet, or one just added by name): the GM can still save its name, detail and overrides.
   if (!r)
     return (
       <div className="stack">
@@ -52,6 +58,22 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
             GO TO ARCHETYPE
           </button>
         </div>
+        {onSaveDetails && (
+          <div className="plate stack">
+            <div className="rule">GM · THE SHEET AS IT STANDS</div>
+            {overrides && sheet && (
+              <TraitRow
+                id="bld-gm-overrides"
+                label="OVERRIDES · replace the Trait; blank keeps the derived value, shown greyed"
+                values={overrides}
+                placeholders={deriveStats({ stats: sheet, overrides: {}, tier })}
+                min={1}
+                onChange={setOverrides}
+              />
+            )}
+            <SaveDetails onSaveDetails={onSaveDetails} />
+          </div>
+        )}
       </div>
     );
   const s = r.sheet;
@@ -154,6 +176,7 @@ export function ReviewStep({ onSave }: ReviewStepProps) {
         <button className="btn primary" disabled={!ready} onClick={onSave}>
           SAVE CHARACTER
         </button>
+        {onSaveDetails && <SaveDetails onSaveDetails={onSaveDetails} />}
         {role !== "gm" && sendDraft && (
           <button className="btn" onClick={handleSendDraft}>
             {sentDraft ? "SEND AGAIN TO GM" : "SEND TO GM"}
@@ -375,6 +398,18 @@ function TraitRow({ id, label, values, placeholders, min, onChange }: TraitRowPr
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// SAVE DETAILS ONLY: the name, portrait, detail and overrides, leaving the build (and the sheet) as it is.
+function SaveDetails({ onSaveDetails }: { onSaveDetails: () => void }) {
+  return (
+    <div className="keys" style={{ alignItems: "center" }}>
+      <button className="btn" onClick={onSaveDetails}>
+        SAVE DETAILS ONLY
+      </button>
+      <span className="dim">Name, portrait, detail and overrides; the build choices here aren&apos;t saved.</span>
     </div>
   );
 }

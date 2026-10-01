@@ -946,6 +946,19 @@ test("character builder: the creation catalogue for seats, and character.build d
     await gm.until((s) => s.characters.find((c) => c.id === made.id)?.name === "Veyl II")
   ).characters.find((c) => c.id === made.id)!;
   assert.deepEqual(resaved.stats.weapons, printed.weapons);
+
+  // keepSheet (GM only): a first build over a hand-made sheet keeps its lines, in the same action (attach-builds.ts).
+  assert.deepEqual(await player.send({ type: "character.build", id: made.id, build: unchanged, keepSheet: true }), {
+    ok: false,
+    error: "GM only",
+  });
+  const sheet = await gm.send({ type: "character.create", name: "Hand-made", stats: printed });
+  assert.ok(sheet.ok && sheet.id);
+  assert.ok((await gm.send({ type: "character.build", id: sheet.id, build: disruptor, keepSheet: true })).ok);
+  const attached = (await gm.until((s) => !!s.characters.find((c) => c.id === sheet.id)?.build)).characters.find(
+    (c) => c.id === sheet.id,
+  )!;
+  assert.deepEqual(attached.stats.weapons, printed.weapons, "the hand-made lines stay");
 });
 
 test("book pages: a GM tablet serves one page, relayed back to the player who asked", async (t) => {

@@ -350,8 +350,8 @@ The Volkus characters and their sources are in [pregens.md](pregens.md) and [kil
    1. `campaign.update` (framework, patron, homebrew)
    2. `codex.save` for factions, then locations, NPCs and handouts
    3. each adventure, then its beats
-   4. `character.create` for each character, then, when it has a `build`, `character.build` and a `character.update`
-      that puts back the printed weapon, armour and gear lines and the Wealth (`scripts/attach-build.ts`, issue #18)
+   4. `character.create` for each character, then, when it has a `build`, `character.build` with `keepSheet`: the
+      server derives the sheet but keeps the printed weapon, armour and gear lines and the Wealth (issue #18)
 4. It prints counts and the table URL `/c/<campaignId>`, which the `--owner` user opens signed in.
 
 There is no SQL: every row goes through `authorize` → `applyAction`, the same validation and campaign scoping as

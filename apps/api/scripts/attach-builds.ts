@@ -1,8 +1,9 @@
 // Usage: bun scripts/attach-builds.ts <campaign id> [--dry-run]
 // One-off for campaigns seeded before the volkus pack carried builds (issue #18): gives each hand-made agent whose name
-// matches a pack character that character's build, through the normal socket actions (admin key), keeping the live
-// weapon, armour and gear lines, Wealth, Ammo and requisitions. Characters that already have a build are skipped, so
-// it's safe to run twice. --dry-run prints what each sheet would change and sends nothing.
+// matches a pack character that character's build, in one `character.build` with `keepSheet` each (admin key), keeping
+// the live weapon, armour and gear lines, Wealth, Ammo and requisitions. Each agent's swap is one transaction and those
+// that already have a build are skipped, so it's safe to run twice. --dry-run prints what each sheet would change and
+// sends nothing.
 // ponytail: one-off; delete once the live campaigns are fixed.
 import { io } from "socket.io-client";
 import {
@@ -14,7 +15,6 @@ import {
   type LiveState,
 } from "@wg/shared";
 import { creationCatalogue, loadPack, wargear } from "@wg/data";
-import { attachBuild } from "./attach-build.ts";
 
 const campaignId = process.argv[2];
 const dryRun = process.argv.includes("--dry-run");
@@ -52,7 +52,7 @@ const changes = (live: CharacterStats, derived: CharacterStats) => {
 
 console.log(`${state.campaign.name}${dryRun ? " (dry run)" : ""}`);
 if (!dryRun && pack.campaign.homebrew && !state.campaign.homebrew)
-  await send({ type: "campaign.update", homebrew: true }, "homebrew on (kill-team.md decision 14)");
+  await send({ type: "campaign.update", homebrew: true }, "homebrew on (pregens.md GM choice 14)");
 for (const c of state.characters) {
   const p = pack.characters.find((x) => x.name === c.name);
   if (c.build || !p?.build) {
@@ -61,7 +61,7 @@ for (const c of state.characters) {
   }
   const derived = resolveBuild({ catalogue: { creation: creationCatalogue(), wargear, homebrew }, build: p.build });
   console.log(`${c.name}:\n${changes(c.stats, derived.sheet).join("\n") || "    no sheet change"}`);
-  if (!dryRun) await attachBuild({ socket, send }, { id: c.id, name: c.name, build: p.build, printed: c.stats });
+  if (!dryRun) await send({ type: "character.build", id: c.id, build: p.build, keepSheet: true }, `build ${c.name}`);
 }
 
 socket.close();
