@@ -5,6 +5,7 @@ import {
   buildReady,
   deriveStats,
   keepPlay,
+  keepSheetWeapons,
   resolveBuild,
   applyUpgrades,
   sheetWeapon,
@@ -113,8 +114,9 @@ for (const { want, ...p } of PREGENS) {
     // `keepSheet` keeps the printed armour and gear lines, and a printed weapon the build has none of by name (the GM's
     // own Haywire Mine and deployed smoke, pregens.md GM choice 8). Printed prose ("ED includes +1 Explosive Fury") is
     // the effect's own name now, so it isn't compared.
-    const weapons = [...s.weapons, ...want.weapons.filter((w) => !s.weapons.some((d) => d.name === w.name))];
+    const weapons = keepSheetWeapons(want.weapons, s.weapons); // what `keepSheet` stores (character.actions.ts)
     const live = withWeaponEffects(withUpgrades({ ...s, weapons }, wargear), { rank: 1, catalogue: wargear });
+    assert.equal(live.weapons.length, want.weapons.length, "no weapon the pregen doesn't print");
     for (const p of want.weapons) {
       const w = live.weapons.find((x) => x.name === p.name);
       assert.ok(w, `${p.name} is on the sheet`);
@@ -777,4 +779,49 @@ test("a weapon not from the catalogue is left as written: it may already count t
   const written = { ...sheet, weapons: sheet.weapons.map(({ wargearId: _, ...w }) => w) };
   const out = withWeaponEffects(written, { rank: 1, catalogue: wargear });
   assert.deepEqual(out.weapons, written.weapons);
+});
+
+test("a printed line a rebuild tags with its catalogue entry isn't given its Talents again (rules-flow.md §11.68)", () => {
+  // A campaign seeded before #27 keeps the printed lines, which count Bolter Discipline already: Rapid Fire (3).
+  const p = PREGENS.find((x) => x.name === "Watch Sergeant Qaan Toghril")!;
+  const next = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
+  const rebuilt = keepPlay({ previous: p.want, next, before: next }); // a rebuild before derive-weapons ran
+  const boltgun = rebuilt.weapons.find((w) => w.name === "Boltgun")!;
+  assert.ok(boltgun.wargearId && boltgun.asPrinted, "tagged, and marked as printed");
+  const shown = withWeaponEffects(rebuilt, { rank: 1, catalogue: wargear });
+  assert.ok(shown.weapons.find((w) => w.name === "Boltgun")!.traits.includes("Rapid Fire (3)"), "not (4)");
+});
+
+test("keepSheetWeapons: the build's lines, with play's fitted upgrades and second copies, and the GM's own lines", () => {
+  const sheet = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: PREGENS[0]!.build }).sheet;
+  const boltgun = sheet.weapons.find((w) => w.name === "Boltgun")!;
+  const old = [
+    { ...boltgun, traits: ["Brutal", "Rapid Fire (3)"], wargearId: undefined, fitted: ["red-dot-sight"] }, // printed
+    { ...boltgun, wargearId: undefined }, // a second Boltgun, requisitioned
+    { name: "Haywire Mine", damage: 14, ed: 5, ap: -2, range: [1], traits: ["Placed"], addStrength: false },
+  ];
+  const kept = keepSheetWeapons(old, sheet.weapons);
+  const boltguns = kept.filter((w) => w.name === "Boltgun");
+  assert.equal(boltguns.length, 2, "the build's and the requisitioned copy");
+  assert.equal(boltguns[0]!.wargearId, "boltgun", "the build's line, not the printed one");
+  assert.deepEqual(boltguns[0]!.fitted, ["red-dot-sight"], "what was fitted at the table stays");
+  assert.ok(
+    kept.some((w) => w.name === "Haywire Mine"),
+    "a GM's own line stays",
+  );
+});
+
+test("a melee weapon printed Damage 0 deals Strength, so it takes a Talent's +Damage (rules-flow.md §11.68)", () => {
+  const caress = wargear.get("ioe-harlequins-caress")!; // S + 0
+  const stats = {
+    weapons: [{ ...sheetWeapon({ name: caress.name, weapon: caress.weapon! }, 5), wargearId: caress.id }],
+    weaponEffects: [
+      {
+        source: "Crushing Blow",
+        fits: { weapon: "melee" as const },
+        mods: [{ kind: "damage" as const, delta: { perRank: 2 } }],
+      },
+    ],
+  };
+  assert.equal(withWeaponEffects(stats, { rank: 1, catalogue: wargear }).weapons[0]!.damage, 2);
 });

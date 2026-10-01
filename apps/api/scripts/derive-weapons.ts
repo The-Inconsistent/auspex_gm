@@ -10,6 +10,9 @@
 // ponytail: one-off; delete once the live campaigns are fixed.
 import { io } from "socket.io-client";
 import {
+  CharacterBuild,
+  buildReady,
+  keepSheetWeapons,
   rankOf,
   resolveBuild,
   withUpgrades,
@@ -49,22 +52,39 @@ const line = (w: Weapon) => `${w.name} ${w.damage}/${w.ed}/${w.ap ?? 0}/S${w.sal
 const shown = (stats: CharacterStats, xp: number) =>
   withWeaponEffects(withUpgrades(stats, wargear), { rank: rankOf(xp), catalogue: wargear }).weapons.map(line);
 
+// The volkus builds take Apocrypha records (pregens.md GM choice 14), which the pack switches on.
+const homebrew = state.campaign.homebrew || pack.campaign.homebrew;
 console.log(`${state.campaign.name}${dryRun ? " (dry run)" : ""}`);
+if (!dryRun && homebrew && !state.campaign.homebrew)
+  await send({ type: "campaign.update", homebrew: true }, "homebrew on (pregens.md GM choice 14)");
 for (const c of state.characters) {
-  if (!c.build) continue;
+  if (!c.build) {
+    console.log(`${c.name}: skipped (a hand-made sheet, no build)`);
+    continue;
+  }
   const printed = pack.characters.some((p) => p.name === c.name);
   if (c.stats.weaponEffects && !printed) {
     console.log(`${c.name}: skipped (has its weapon effects)`);
     continue;
   }
+  // As `character.build` resolves it, so the effects are the ones the next save would write.
   const r = resolveBuild({
-    catalogue: { creation: creationCatalogue(), wargear, homebrew: state.campaign.homebrew },
-    build: c.build as never, // parsed by resolveBuild
-    play: { tier: state.campaign.tier, xpEarned: c.xp },
+    catalogue: { creation: creationCatalogue(), wargear, homebrew },
+    build: CharacterBuild.parse(c.build),
+    play: {
+      tier: state.campaign.tier,
+      xpEarned: c.xp,
+      xpAtAscension: c.xpAtAscension,
+      packageWaived: c.ascensionPackageWaived,
+    },
   });
-  // A line the build has no weapon of that name for stays as written, as `keepSheet` keeps it.
-  const kept = c.stats.weapons.filter((w) => !r.sheet.weapons.some((d) => d.name === w.name));
-  const weapons = printed ? [...r.sheet.weapons, ...kept].slice(0, 20) : c.stats.weapons;
+  if (!buildReady(r)) {
+    const why = [...r.pending.map((x) => x.what), ...r.problems.map((x) => x.what)].join("; ");
+    console.log(`${c.name}: skipped, its build doesn't resolve now (${why})`);
+    continue;
+  }
+  // As `keepSheet` keeps them: the build's lines, play's fitted upgrades and second copies, the GM's own lines.
+  const weapons = printed ? keepSheetWeapons(c.stats.weapons, r.sheet.weapons) : c.stats.weapons;
   const next = { ...c.stats, weapons, weaponEffects: r.sheet.weaponEffects };
   console.log(`${c.name}: ${r.sheet.weaponEffects?.map((e) => e.source).join(", ") || "no weapon effects"}`);
   if (printed) {

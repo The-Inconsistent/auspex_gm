@@ -126,12 +126,47 @@
           "wargearKeywords": [
             "BLADE",
             "POWER FIELD"
+          ],
+          "weaponTraits": [
+            "Parry"
           ]
         },
         "mods": [
           {
             "kind": "ed",
             "delta": 2
+          },
+          {
+            "kind": "gm",
+            "what": "Parry gives +2 Defence, not its usual bonus"
+          }
+        ]
+      },
+      {
+        "fits": {
+          "weapon": "melee",
+          "wargearKeywords": [
+            "BLADE",
+            "POWER FIELD"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "ed",
+            "delta": 2
+          }
+        ]
+      },
+      {
+        "fits": {
+          "weaponTraits": [
+            "Parry"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "Parry gives +2 Defence, not its usual bonus"
           }
         ]
       }

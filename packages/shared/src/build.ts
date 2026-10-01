@@ -1874,7 +1874,7 @@ export function withWeaponEffects<T extends { weapons: Weapon[]; weaponEffects?:
   return {
     ...stats,
     weapons: stats.weapons.map((w) => {
-      const entry = w.wargearId ? catalogue.get(w.wargearId) : undefined;
+      const entry = w.wargearId && !w.asPrinted ? catalogue.get(w.wargearId) : undefined;
       if (!entry?.weapon) return w;
       let weapon = w;
       const applied: string[] = [];
@@ -1887,8 +1887,10 @@ export function withWeaponEffects<T extends { weapons: Weapon[]; weaponEffects?:
         // Traits as the weapon has them now, upgrades and earlier effects included (as `fitUpgrade` checks a fit)
         const now = { ...entry, weapon: { ...entry.weapon, traits: weapon.traits } };
         if (!wargearMatches(now, fits, { tier: 0, newTier: 0 })) continue;
-        // A weapon printed with Damage 0 deals none (the Smoke Grenade), so a Talent's extra damage has nothing to add to.
-        const mods = e.mods.filter((m) => w.damage !== 0 || (m.kind !== "damage" && m.kind !== "ed"));
+        // A weapon that deals no damage (the Smoke Grenade: Damage 0, ED 0) has nothing to add a Talent's damage to. A melee
+        // weapon's Damage is S + X, so its 0 is Strength (Harlequin's Caress), and ED 10 on Damage 0 is damage (Rad Grenades).
+        const harmless = w.damage === 0 && w.ed === 0 && !("addStrength" in w && w.addStrength);
+        const mods = e.mods.filter((m) => !harmless || (m.kind !== "damage" && m.kind !== "ed"));
         if (!mods.length) continue;
         const r = applyMods(weapon, mods.map(atRank), { traitName });
         weapon = r.weapon;
@@ -2005,6 +2007,25 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
   return out;
 }
 
+// The weapons a hand-made sheet keeps when its build is attached (`keepSheet`, issue #27): the build's lines, whose
+// Talents are applied on read (rules-flow.md §11.68), plus a hand-written line the build has no weapon of that name for
+// (a GM's own profile, the volkus Haywire Mine). What play gave a same-name line carries over to the build's: the
+// upgrades fitted at the table, and a second copy of that name (a requisitioned Bolt Pistol), which is its own weapon.
+export function keepSheetWeapons(old: CharacterStats["weapons"], built: CharacterStats["weapons"]) {
+  const seen = new Set<string>();
+  const extra = old.filter((w) => {
+    if (!built.some((b) => b.name === w.name)) return true;
+    if (seen.has(w.name)) return true; // a second copy
+    seen.add(w.name);
+    return false;
+  });
+  const lines = built.map((b) => {
+    const fitted = old.find((w) => w.name === b.name)?.fitted?.filter((id) => !(b.upgrades ?? []).includes(id));
+    return fitted?.length ? { ...b, fitted } : b;
+  });
+  return [...lines, ...extra].slice(0, 20);
+}
+
 // Mk X Phobos: "+1 Movement" (VoA p.72), the armour trait "+1 M" (a printed pregen sheet spells it out); your Movement
 // is your Speed (Core p.180).
 const movement = (armour: { traits: string[] }) =>
@@ -2044,10 +2065,12 @@ export function keepPlay({
     const fitted = (w.fitted ?? []).filter((id) => !upgrades.includes(id));
     const { upgrades: _, fitted: __, ...line } = w;
     const wargearId = w.wargearId ?? from?.wargearId;
-    // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed.
+    // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed. One tagged here
+    // was written by hand, so it says so: its Talents may be in its numbers already (`asPrinted`, §11.68).
     return {
       ...line,
       ...(wargearId && { wargearId }),
+      ...(!w.wargearId && wargearId && { asPrinted: true as const }),
       ...(upgrades.length && { upgrades }),
       ...(fitted.length && { fitted }),
     };

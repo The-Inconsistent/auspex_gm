@@ -8,6 +8,7 @@ import {
   adjustAmmo,
   creationKey,
   keepPlay,
+  keepSheetWeapons,
   deriveStats,
   effectiveStrength,
   gearLine,
@@ -102,7 +103,10 @@ function storedProfiles(incoming: CharacterStats, stored: CharacterStats): Chara
     weapons: incoming.weapons.map((w) => {
       if (!w.upgradeNames && !w.effects) return w;
       const { upgradeNames: _names, effects: _effects, notes: _notes, ...rest } = w;
-      const was = stored.weapons.find((s) => (w.wargearId ? s.wargearId === w.wargearId : s.name === w.name));
+      // By name first, which is the line's own on a sheet: two lines can share an entry (a knife and its off-hand twin).
+      const was =
+        stored.weapons.find((s) => s.name === w.name) ??
+        (w.wargearId ? stored.weapons.find((s) => s.wargearId === w.wargearId) : undefined);
       return was ?? rest;
     }),
   };
@@ -235,10 +239,7 @@ export async function applyCharacterAction(
           : a.keepSheet
             ? {
                 ...keepPlay({ previous: old, next: r.sheet, before: r.sheet }),
-                weapons: [
-                  ...r.sheet.weapons,
-                  ...old.weapons.filter((w) => !r.sheet.weapons.some((d) => d.name === w.name)),
-                ].slice(0, 20),
+                weapons: keepSheetWeapons(old.weapons, r.sheet.weapons),
               }
             : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without

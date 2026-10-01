@@ -38,7 +38,7 @@ describe("pickDraft", () => {
 
   test("a table: a draft this device kept from before the build was attached is dropped, detail and all", () => {
     // Issue #18: the tablet opened BUILD on a hand-made pregen (a blank draft with the texts as they were), the GM then
-    // rewrote the Past, and attach-builds.ts saved the build (builtAt 200).
+    // rewrote the Past, and the #18 migration script saved the build (builtAt 200).
     const old: Draft = { tier: 4, name: "Grimsson", detail: { past: "as printed" } };
     const picked = pickDraft({
       local: old,

@@ -16,8 +16,9 @@ export const WargearFilter = z.object({
   // is any-of, so a printed "and" needs this one or the filter is wider than the book.
   allKeywords: z.array(z.string().min(1)).min(1).optional(),
   // A printed weapon Trait the item has, by name without its rating: "any LAS weapon with the Pistol trait"
-  // (Apocrypha p.389), "weapons with a Heavy (X) Trait" (IoE p.95). Any of them matches. With its bracket it must match
-  // as printed: "Inflict (On Fire)" (Core p.138).
+  // (Apocrypha p.389) is "Pistol", and "weapons with a Heavy (X) Trait" (IoE p.95) is "Heavy". Any of them matches. A
+  // value with a bracket must match the Trait exactly as printed, so only for a bracket that names a kind, not a
+  // rating: "Inflict (On Fire)" (Core p.138) isn't every Inflict.
   weaponTraits: z.array(z.string().min(1)).min(1).optional(),
   // A printed Trait the item must *not* have: "which does not have the Heavy trait" (Apocrypha p.388)
   notWeaponTraits: z.array(z.string().min(1)).min(1).optional(),

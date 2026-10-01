@@ -351,7 +351,8 @@ The Volkus characters and their sources are in [pregens.md](pregens.md) and [kil
    2. `codex.save` for factions, then locations, NPCs and handouts
    3. each adventure, then its beats
    4. `character.create` for each character, then, when it has a `build`, `character.build` with `keepSheet`: the
-      server derives the sheet but keeps the printed weapon, armour and gear lines and the Wealth (issue #18)
+      server derives the sheet but keeps the printed armour and gear lines and the Wealth (issue #18); the weapons are
+      the build's, plus a printed one the build has none of by name (`keepSheetWeapons`, rules-flow.md §11.68)
 4. It prints counts and the table URL `/c/<campaignId>`, which the `--owner` user opens signed in.
 
 There is no SQL: every row goes through `authorize` → `applyAction`, the same validation and campaign scoping as

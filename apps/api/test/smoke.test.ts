@@ -16,6 +16,7 @@ import {
   type BookAvailable,
   type BookPage,
   type BookReply,
+  type CampaignExport,
   type Character,
   type Codex,
   type CreationPayload,
@@ -982,6 +983,13 @@ test("character builder: the creation catalogue for seats, and character.build d
     c.stats.weapons.find((w) => w.name === "Occulus Bolt Carbine")!;
   assert.ok(carbine(veyl).traits.includes("Rapid Fire (2)"), JSON.stringify(carbine(veyl)));
   assert.deepEqual(carbine(veyl).effects, ["Bolter Discipline"]);
+  // The effects carry book prose (their notes and `gm` mods), so an invite holder without a seat sees the numbers only.
+  const veylInvite = await gm.send({ type: "invite.create", mode: "character", characterId: made.id! });
+  assert.ok(veylInvite.ok && veylInvite.token);
+  const previewed = ((await (await get(`/invites/${veylInvite.token}`)).json()) as { character: Character }).character;
+  assert.equal(previewed.stats.weaponEffects, undefined);
+  assert.ok(previewed.stats.weapons.every((w) => !w.effects && !w.notes));
+  assert.ok(carbine(previewed).traits.includes("Rapid Fire (2)"), "the profile stays");
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
   assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 
@@ -1127,7 +1135,13 @@ test("character builder: the creation catalogue for seats, and character.build d
     (c) => c.id === sheet.id,
   )!;
   const names = attached.stats.weapons.map((w) => w.name);
-  for (const w of printed.weapons) assert.ok(names.includes(w.name), `${w.name} stays`);
+  // The "(printed)" lines have no counterpart by name, so they stay exactly as written (keepSheetWeapons).
+  for (const w of printed.weapons)
+    assert.deepEqual(
+      attached.stats.weapons.find((a) => a.name === w.name),
+      w,
+      `${w.name} stays as written`,
+    );
   assert.ok(names.includes("Occulus Bolt Carbine"), "the build's weapons join them");
   assert.deepEqual(attached.stats.gear, printed.gear, "the hand-made gear lines stay");
 });
@@ -1353,6 +1367,19 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const kael = await gm.send({ type: "character.create", name: "Kael" });
   assert.ok(kael.ok && kael.id);
   assert.ok((await gm.send({ type: "character.adjust", id: kael.id, wounds: 2 })).ok);
+  // A catalogue Boltgun with Bolter Discipline: the table shows Rapid Fire (3), the sheet stores (2) (rules-flow.md
+  // §11.68). The file must hold what is stored, or an import would apply the Talent again.
+  const boltgun = { name: "Boltgun", wargearId: "boltgun", damage: 10, ed: 1, range: [12, 24, 36], salvo: 2 };
+  const discipline = {
+    source: "Bolter Discipline",
+    fits: { wargearKeywords: ["BOLT"] },
+    mods: [
+      { kind: "traitRating" as const, traitId: "rapid-fire", delta: { perRank: 1 } },
+      { kind: "trait" as const, traitId: "rapid-fire", rating: 2 },
+    ],
+  };
+  const armed = { weapons: [{ ...boltgun, traits: ["Brutal", "Rapid Fire (2)"] }], weaponEffects: [discipline] };
+  assert.ok((await gm.send({ type: "character.update", id: kael.id, stats: armed })).ok);
   const hive = await gm.send({ type: "codex.save", kind: "location", data: { name: "Hive", revealed: true } });
   assert.ok(hive.ok && hive.id);
   const spire = await gm.send({ type: "codex.save", kind: "location", data: { name: "Spire", parentId: hive.id } });
@@ -1389,6 +1416,8 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(res.status, 200);
   assert.match(res.headers.get("content-disposition") ?? "", /export\.auspex\.json/);
   const file = await res.json();
+  const exported = (file as CampaignExport).characters[0]!.stats.weapons[0]!;
+  assert.ok(exported.traits.includes("Rapid Fire (2)") && !exported.effects, "the file holds the stored line");
 
   assert.equal((await post("/campaigns/import", { file }, bearer(clerk("not-a-creator")))).status, 403);
   assert.equal((await post("/campaigns/import", { file: { format: "pack" } }, bearer(gm.gmClerk))).status, 400);
@@ -1420,6 +1449,7 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.notEqual(whole.campaignId, gm.campaignId);
   const [c] = whole.state.characters;
   assert.ok(c && c.id !== kael.id && c.wounds === 2, "a new id, the same Wounds");
+  assert.ok(c.stats.weapons[0]!.traits.includes("Rapid Fire (3)"), "the Talent applied once, on read");
   const [h] = whole.codex.handouts;
   assert.deepEqual(h?.audience, [c.id], "the audience follows the Agent to its new id");
   const locs = whole.codex.locations;

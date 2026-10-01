@@ -501,12 +501,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     - **Not numbers, notes:** a re-roll or bonus dice with a kind of weapon ("re-roll up to Double Rank dice", Hellblaster
       Focus, VoA p.35), an effect the player "may" use, and one the GM judges ("or similar", "weapons made for smaller
       users") show as a cited note on the weapon's line.
+    - **"When you're engaged with an enemy"** on a melee rule (Accept Any Challenge, No Matter the Odds, Apocrypha
+      p.230) is standing for its AP: a melee attack is made while engaged. Its bonus dice keep the condition, as a note.
     - **A Salvo printed "–"** has no Salvo track (Core p.207), so +Rank Salvo (More Dakka, Core p.137) leaves it "–" with
       a note.
     - Only a weapon that came from the Wargear catalogue (`wargearId`) is matched: a hand-written line may already
-      count the Talent, and it would count twice.
-    - **A weapon printed with Damage 0** (a Smoke Grenade) deals no damage, so a Talent's +Damage or +ED
-      doesn't reach it: Explosive Fury adds to "successful attacks", and smoke makes none.
+      count the Talent, and it would count twice. A hand-written line a rebuild matched to its catalogue entry (so an
+      upgrade can be fitted to it) is marked `asPrinted` and isn't matched either: the volkus pregens' printed lines,
+      until `derive-weapons.ts` swaps them for their builds' lines.
+    - **A weapon that deals no damage** (a Smoke Grenade: Damage 0, ED 0) takes no Talent +Damage or +ED: Explosive
+      Fury adds to "successful attacks", and smoke makes none. A melee weapon printed Damage 0 deals Strength (S + 0)
+      and a grenade with ED on Damage 0 still deals damage, so those take them.
 
 ---
 
