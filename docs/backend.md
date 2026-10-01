@@ -135,6 +135,7 @@ counters, sessions and reveal times. It writes every row directly, inside `creat
 - each row gets a fresh id
 - references are remapped through those new ids, and one pointing outside the file is dropped
 - threat ids go through the same `checkThreats` as `codex.save`
+- an exit keeps its target only if it's a beat of the same adventure in the file
 - a handout audience must name Agents in the file, like `codex.save`: an empty audience means every player, so a
   dropped reader would leak a private handout
 - each row's `createdAt` is its place in the file (one transaction shares one `now()`, and lists load in `createdAt`
@@ -299,8 +300,8 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `combatant.adjust` | GM | Threat combatants only. Deltas on `wounds`, `shock`, `personalRuin`, floored at 0. On a Mob, `wounds` removes members (clamped `[0, mobStart]`) instead, and one hit of `shock` above the members' max Shock removes one member (a smaller hit does nothing; a Mob keeps no Shock track). Refuses Shock for a threat whose Shock is "–" | S | p.324, p.325 |
 | `combatant.aware` | GM | Ambushed combatant pays 1 Glory or Ruin by side, then `ambushed = false` | S | p.177 |
 | `combatant.remove` | GM | Delete from the active encounter. `currentId` is nulled by the FK | S | |
-| `codex.save` | GM | Insert (no `id`) or full replace (`id`) of one codex row. `data` is validated per `kind` by `CodexInput`. Every referenced id must be in the campaign (`checkRefs()`, `"<What> not found"`): a beat's `adventureId`, `locationId`, `npcIds` and `handoutIds`, an NPC's `factionId`, a location's `parentId` (which can't be itself). A beat's encounter `threatId`s and a bestiary NPC's `statSource.threatId` must exist (`checkThreats()`, `'Unknown threat "x"'`). Handouts stamp `revealedAt` on first reveal and clear it on unreveal. A new beat gets `max(order) + 1` in its adventure, so it goes last; an update leaves `order` to `beat.reorder`. Returns `id` | C | |
-| `codex.delete` | GM | Delete one codex row by `kind` and `id` (FK effects in §7). Deleting an NPC or handout also `array_remove`s its id from every beat's `npcIds` / `handoutIds` | C | |
+| `codex.save` | GM | Insert (no `id`) or full replace (`id`) of one codex row. `data` is validated per `kind` by `CodexInput`. Every referenced id must be in the campaign (`checkRefs()`, `"<What> not found"`): a beat's `adventureId`, `locationId`, `npcIds` and `handoutIds`, an NPC's `factionId`, a location's `parentId` (which can't be itself). A beat's `exits[].beatId` must be a beat of the same adventure (`"Exit scene not found"`). A beat's encounter `threatId`s and a bestiary NPC's `statSource.threatId` must exist (`checkThreats()`, `'Unknown threat "x"'`). Handouts stamp `revealedAt` on first reveal and clear it on unreveal. A new beat gets `max(order) + 1` in its adventure, so it goes last; an update leaves `order` to `beat.reorder`. Returns `id` | C | |
+| `codex.delete` | GM | Delete one codex row by `kind` and `id` (FK effects in §7). Deleting an NPC or handout also `array_remove`s its id from every beat's `npcIds` / `handoutIds`. Deleting a beat sets `beatId: null` on every exit that led to it, keeping the label | C | |
 | `beat.reorder` | GM | `ids` must list every beat of the adventure exactly once. Sets `order` = index | C | |
 | `beat.startEncounter` | GM | Validate the beat's `encounter` entries, start a new encounter, add **every** campaign character, then each entry (`asMob && count > 1` → one Mob row, else `count` rows labelled `Name 1..n`). Beat status → `active`. Returns the encounter `id` | S C | |
 
@@ -352,8 +353,9 @@ with `.$type<>` from the shared `z.enum`s.
 | `combatant.stat_snapshot` | `Threat`, copied at add time so a data fix doesn't change a running fight | Parsed at startup by `@wg/data`, and cast on read |
 | `beat.encounter` | `EncounterEntry[]`, at most `MAX_ENCOUNTER_ROWS` rows once expanded | On write by `CodexInput.beat`. Re-parsed by `beat.startEncounter`, and cast in `loadCodex` |
 | `npc.stat_source` | `StatSource` | On write by `CodexInput.npc`, cast in `loadCodex` |
+| `beat.exits` | `BeatExit[]`, at most `MAX_EXITS` | On write by `CodexInput.beat`, cast in `loadCodex` |
 
-The id arrays have no FK, so `codex.delete` of an NPC or handout clears its id from `beat.npc_ids` / `beat.handout_ids` itself.
+The id arrays have no FK, so `codex.delete` of an NPC or handout clears its id from `beat.npc_ids` / `beat.handout_ids` itself, and `codex.delete` of a beat clears it from `beat.exits`.
 
 ## 8. Snapshots (`table/table.state.ts`)
 

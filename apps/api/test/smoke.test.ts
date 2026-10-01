@@ -813,6 +813,50 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
         .join() === `${b2.id}:0,${b1.id}:1,${b3.id}:2`,
     "new beat goes last",
   );
+  // Exits lead to a scene of the same adventure (issue #38). Deleting the target keeps the label, so the source scene's
+  // DONE and SET ACTIVE, which re-send the whole beat, still save.
+  const elsewhere = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Elsewhere" } });
+  assert.ok(elsewhere.ok && elsewhere.id);
+  const away = await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: elsewhere.id, title: "Away" } });
+  const theirAdv = await other.send({ type: "codex.save", kind: "adventure", data: { title: "Not yours" } });
+  assert.ok(away.ok && away.id && theirAdv.ok && theirAdv.id);
+  const theirs = await other.send({ type: "codex.save", kind: "beat", data: { adventureId: theirAdv.id, title: "X" } });
+  assert.ok(theirs.ok && theirs.id);
+  const meetVex = { adventureId: adv.id, title: "Meet Vex", npcIds: [vex.id] };
+  for (const beatId of [crypto.randomUUID(), theirs.id, away.id])
+    assert.deepEqual(
+      await gm.send({
+        type: "codex.save",
+        kind: "beat",
+        id: b1.id,
+        data: { ...meetVex, exits: [{ label: "x", beatId }] },
+      }),
+      { ok: false, error: "Exit scene not found" },
+    );
+  const exits = [{ label: "If they side with Vex", beatId: b3.id }, { label: "If they run" }];
+  const saved = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    id: b1.id,
+    data: { ...meetVex, goal: "Learn what Vex wants", exits },
+  });
+  assert.ok(saved.ok);
+  const exitsOf = () =>
+    gm
+      .codex()
+      ?.adventures[0]?.beats.find((x) => x.id === b1.id)
+      ?.exits.map((e) => `${e.label}>${e.beatId}`)
+      .join();
+  await eventually(() => exitsOf() === `If they side with Vex>${b3.id},If they run>null`, "exits saved");
+  assert.ok((await gm.send({ type: "codex.delete", kind: "beat", id: b3.id })).ok);
+  await eventually(
+    () => exitsOf() === "If they side with Vex>null,If they run>null",
+    "a deleted target keeps its label",
+  );
+  const { id: _id, order: _order, ...kept } = gm.codex()!.adventures[0]!.beats.find((x) => x.id === b1.id)!;
+  assert.equal(kept.goal, "Learn what Vex wants");
+  assert.ok((await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: { ...kept, status: "active" } })).ok);
+  assert.equal(player.codex()?.adventures.length, 0, "scenes never reach a phone");
   await eventually(() => player.codex()?.npcs[0]?.factionId === null, "players don't get hidden faction ids");
   assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: vex.id })).ok);
   await eventually(
@@ -1530,22 +1574,26 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   });
   const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Descent" } });
   assert.ok(spire.ok && orders.ok && orders.id && adv.ok && adv.id);
-  assert.ok(
-    (
-      await gm.send({
-        type: "codex.save",
-        kind: "beat",
-        data: {
-          adventureId: adv.id,
-          title: "Ambush",
-          status: "done",
-          locationId: spire.id,
-          handoutIds: [orders.id],
-          encounter: [{ threatId: "ork-boy", count: 3 }],
-        },
-      })
-    ).ok,
-  );
+  const ambush = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    data: {
+      adventureId: adv.id,
+      title: "Ambush",
+      status: "done",
+      locationId: spire.id,
+      handoutIds: [orders.id],
+      encounter: [{ threatId: "ork-boy", count: 3 }],
+    },
+  });
+  assert.ok(ambush.ok && ambush.id);
+  const regroup = {
+    adventureId: adv.id,
+    title: "Regroup",
+    goal: "Hold the lift",
+    exits: [{ label: "Again", beatId: ambush.id }],
+  };
+  assert.ok((await gm.send({ type: "codex.save", kind: "beat", data: regroup })).ok);
   assert.ok((await gm.send({ type: "session.start" })).ok);
 
   const player = await gm.send({ type: "token.issue", characterId: kael.id });
@@ -1604,6 +1652,12 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(b?.locationId, locs.find((l) => l.name === "Spire")?.id);
   assert.deepEqual(b?.handoutIds, [h?.id]);
   assert.equal(b?.status, "done");
+  // An exit follows its target to the new id (issue #38).
+  const exitTo = (codex: Codex) => {
+    const [first, second] = codex.adventures[0]!.beats;
+    return [second?.goal, second?.exits[0]?.beatId === first?.id && first?.id !== ambush.id];
+  };
+  assert.deepEqual(exitTo(whole.codex), ["Hold the lift", true]);
   assert.equal(whole.codex.sessions.length, 1);
   assert.equal((await get("/lobby", bearer(gm.gmClerk)).then((r) => r.json())).mine.length >= 2, true);
 
@@ -1611,6 +1665,7 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(fresh.state.characters[0]?.wounds, 0);
   assert.equal(fresh.codex.sessions.length, 0);
   assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
+  assert.deepEqual(exitTo(fresh.codex), ["Hold the lift", true]);
   assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
 });
 

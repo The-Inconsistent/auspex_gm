@@ -38,6 +38,7 @@ export const beat = pgTable("beat", {
     .references(() => adventure.id, { onDelete: "cascade" }),
   order: integer().notNull().default(0),
   title: text().notNull(),
+  goal: body(),
   type: text().$type<BeatType>().notNull().default("social"),
   status: text().$type<BeatStatus>().notNull().default("planned"),
   readAloud: body(),
@@ -47,6 +48,7 @@ export const beat = pgTable("beat", {
   npcIds: ids(),
   handoutIds: ids(),
   encounter: jsonb().$type<unknown[]>().notNull().default([]),
+  exits: jsonb().$type<unknown[]>().notNull().default([]), // BeatExit[]; codex.delete clears a deleted target
 });
 
 export const location = pgTable("location", {

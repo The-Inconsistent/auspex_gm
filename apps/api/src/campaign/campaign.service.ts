@@ -99,6 +99,8 @@ export async function importCampaign({
   const ref = (old: string | null) => (old && ids.get(old)) || null;
   const refs = (old: string[]) => old.flatMap((o) => ids.get(o) ?? []);
   const at = (iso: string | null) => (iso ? new Date(iso) : null);
+  // An exit keeps its target only inside its own adventure, as codex.save checks.
+  const adventureOf = new Map(beats.map((b) => [b.id, b.adventureId]));
 
   return createCampaign({
     ...file.campaign,
@@ -142,6 +144,10 @@ export async function importCampaign({
             locationId: ref(b.locationId),
             npcIds: refs(b.npcIds),
             handoutIds: refs(b.handoutIds),
+            exits: b.exits.map((e) => ({
+              ...e,
+              beatId: e.beatId && adventureOf.get(e.beatId) === b.adventureId ? ref(e.beatId) : null,
+            })),
           })),
         );
       if (c.sessions.length)

@@ -7,12 +7,12 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
 import type { Beat } from "./types";
-import { stripBeat } from "./utils";
+import { sceneNumber, stripBeat } from "./utils";
 
 // What PREP shows under each beat; GM notes sit on the plate like the codex's GM-only fields.
 const beatFields = [
   ["readAloud", "READ ALOUD", false],
-  ["gmNotes", "GM NOTES / SECRETS", true],
+  ["gmNotes", "GM NOTES · WHAT'S REALLY GOING ON", true],
   ["outcome", "OUTCOME", false],
 ] as const;
 
@@ -36,6 +36,13 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
         ["HANDOUTS", codex.handouts.filter((h) => b.handoutIds.includes(h.id)).map((h) => h.title)],
       ] as const
     ).flatMap(([label, names]) => (names.length ? [[label, names.join(", ")] as const] : []));
+
+  // Where an exit leads, as the card numbers it; null when it has no target, or one the codex no longer has.
+  const exitTarget = (beatId: string | null) => {
+    const i = adv?.beats.findIndex((x) => x.id === beatId) ?? -1;
+    const to = adv?.beats[i];
+    return to ? `${sceneNumber(i)} · ${to.title.toUpperCase()}` : null;
+  };
 
   const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
 
@@ -86,7 +93,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
     if (r.ok) setAdvDraft(null);
   };
 
-  // RUN BEAT: puts the beat's prepared encounter live and jumps to the tracker.
+  // RUN SCENE: puts the beat's prepared encounter live and jumps to the tracker.
   const runBeat = async (b: Beat) => {
     const r = await send({ type: "beat.startEncounter", id: b.id });
     report(r, "ENCOUNTER LIVE");
@@ -118,7 +125,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
 
       {!adv && (
         <p className="dim">
-          Create an adventure, then plan its beats: briefing, travel, investigation, social, combat, revelation, rest.
+          Create an adventure, then plan its scenes: briefing, travel, investigation, social, combat, revelation, rest.
         </p>
       )}
 
@@ -173,16 +180,21 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
               </div>
             </>
           )}
-          <div className="rule">{adv.title.toUpperCase()} · BEATS</div>
+          <div className="rule">{adv.title.toUpperCase()} · SCENES</div>
           <div className="list">
             {adv.beats.map((b, i) => (
               <div key={b.id} className="item">
                 <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-                  <span className="dim">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="dim">{sceneNumber(i)}</span>
                   <b style={{ flex: 1 }}>{b.title.toUpperCase()}</b>
                   <span className="chip">{b.type.toUpperCase()}</span>
                   <span className={`chip ${b.status === "active" ? "warn" : ""}`}>{b.status.toUpperCase()}</span>
                 </div>
+                {b.goal && (
+                  <div>
+                    <span className="label accent">GOAL</span> <b>{b.goal}</b>
+                  </div>
+                )}
                 {beatFields.map(([key, label, gmOnly]) =>
                   !b[key] ? null : gmOnly ? (
                     // Closed by default so a player glancing at the tablet doesn't read them.
@@ -196,6 +208,20 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
                       <pre className="text">{b[key]}</pre>
                     </div>
                   ),
+                )}
+                {b.exits.length > 0 && (
+                  <div className="field">
+                    <span className="label">EXITS</span>
+                    {b.exits.map((e, j) => {
+                      const to = exitTarget(e.beatId);
+                      return (
+                        <div key={j} style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                          <i style={{ flex: 1 }}>{e.label}</i>
+                          <b className={to ? "" : "dim"}>→ {to ?? "NO SCENE YET"}</b>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
                 {links(b).map(([label, names]) => (
                   <div key={label} className="dim">
@@ -232,7 +258,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
                   </button>
                   {b.encounter.length > 0 ? (
                     <button className="btn sm primary" onClick={() => runBeat(b)}>
-                      RUN BEAT
+                      RUN SCENE
                     </button>
                   ) : (
                     <button className="btn sm" onClick={() => setStatus(b, "active")}>
@@ -251,7 +277,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
           </div>
           <div>
             <button className="btn primary" onClick={() => setEditing("new")}>
-              + NEW BEAT
+              + NEW SCENE
             </button>
           </div>
         </>

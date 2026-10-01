@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput } from "./codex.ts";
+import { BeatExit, CodexInput, MAX_EXITS } from "./codex.ts";
 import { CharacterDetail, CharacterStats, Objectives, Tier } from "./state.ts";
 
 // A content pack: a whole campaign start (framework, codex, adventure, characters) as data, loaded by
@@ -30,8 +30,17 @@ export const Pack = z
           key,
           beats: z.array(
             CodexInput.beat
-              .omit({ adventureId: true, locationId: true, npcIds: true, handoutIds: true })
-              .extend({ location: key.optional(), npcs: keys, handouts: keys }),
+              .omit({ adventureId: true, locationId: true, npcIds: true, handoutIds: true, exits: true })
+              // A pack beat has no key to point at, so its exits are labels; the GM wires them in the app.
+              .extend({
+                location: key.optional(),
+                npcs: keys,
+                handouts: keys,
+                exits: z
+                  .array(BeatExit.pick({ label: true }))
+                  .max(MAX_EXITS)
+                  .default([]),
+              }),
           ),
         }),
       )

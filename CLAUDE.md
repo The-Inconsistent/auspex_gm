@@ -3,7 +3,7 @@
 A companion app for **in-person** games of *Warhammer 40,000: Wrath & Glory* (Cubicle 7). The group plays with
 real miniatures and terrain, so there are **no maps, dice or chat**. The app covers:
 
-- **GM (tablet):** live combat tracker, campaign prep (adventures → beats), codex (NPCs, locations, handouts,
+- **GM (tablet):** live combat tracker, campaign prep (adventures → scenes; the UI says SCENE, code keeps `beat`), codex (NPCs, locations, handouts,
   factions), party and session management.
 - **Players (phones):** live play sheet, the fight as the GM allows them to see it, handouts, known NPCs and
   locations, session recaps.

@@ -1,13 +1,14 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { BeatType, Marker, type BeatStatus, type Codex, type Threat } from "@wg/shared";
+import { BeatType, Marker, type BeatExit, type BeatStatus, type Codex, type Threat } from "@wg/shared";
 
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { Beat, EncounterEntry } from "../../types";
 import { stripBeat } from "../../utils";
+import { Exits } from "./components/exits/exits";
 import { BEAT_TEXT_FIELDS, type BeatTextField } from "./constants";
 
 type BeatEditorProps = {
@@ -30,6 +31,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
       : {
           adventureId,
           title: "",
+          goal: "",
           type: "social" as BeatType,
           status: "planned" as BeatStatus,
           readAloud: "",
@@ -39,6 +41,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
           npcIds: [] as string[],
           handoutIds: [] as string[],
           encounter: [] as EncounterEntry[],
+          exits: [] as BeatExit[],
         },
   );
   const [error, setError] = useState<string | null>(null);
@@ -46,10 +49,16 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
   const setEntry = (i: number, patch: Partial<EncounterEntry>) =>
     setB({ ...b, encounter: b.encounter.map((e, j) => (j === i ? { ...e, ...patch } : e)) });
   const troops = b.encounter.reduce((n, e) => n + e.count, 0);
+  const scenes = codex.adventures.find((a) => a.id === adventureId)?.beats ?? [];
 
-  // SAVE BEAT: creates or updates the beat, then closes the editor.
+  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows go, and a target deleted while the
+  // editor was open (its select shows —) is dropped rather than refused by the server.
   const save = async () => {
-    const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data: b });
+    const exits = b.exits
+      .map((e) => ({ ...e, beatId: scenes.some((s) => s.id === e.beatId) ? e.beatId : null }))
+      .filter((e) => e.label.trim() || e.beatId);
+    const data = { ...b, exits };
+    const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
     if (!r.ok) return setError(r.error);
     onDone();
   };
@@ -80,7 +89,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
     setEntry(i, { marker: Marker.safeParse(e.target.value).data });
 
   const textField = ({ key }: { key: BeatTextField }) => {
-    const { label, area } = BEAT_TEXT_FIELDS[key];
+    const { label, area, hint } = BEAT_TEXT_FIELDS[key];
     return (
       <div className="field">
         <label className="label" htmlFor={`b-${key}`}>
@@ -100,6 +109,11 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
             value={b[key]}
             onChange={(e) => setB({ ...b, [key]: e.target.value })}
           />
+        )}
+        {hint && (
+          <div className="dim" style={{ fontSize: 12 }}>
+            {hint}
+          </div>
         )}
       </div>
     );
@@ -125,8 +139,10 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
           ))}
         </select>
       </div>
+      {textField({ key: "goal" })}
       {textField({ key: "readAloud" })}
       {textField({ key: "gmNotes" })}
+      <Exits exits={b.exits} scenes={scenes} onChange={(exits) => setB({ ...b, exits })} />
       <div className="field">
         <label className="label" htmlFor="b-loc">
           LOCATION
@@ -250,7 +266,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
       {error && <div className="red">! {error}</div>}
       <div className="keys">
         <button className="btn primary" onClick={save}>
-          SAVE BEAT
+          SAVE SCENE
         </button>
         <button className="btn" onClick={onDone}>
           CANCEL

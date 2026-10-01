@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { CampaignExport, freshStart } from "./index.ts";
+import { BeatExit, CampaignExport, freshStart } from "./index.ts";
 
 const ID = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
 
@@ -49,6 +49,16 @@ const file = CampaignExport.parse({
 
 test("an export round-trips through its schema", () => {
   assert.deepEqual(CampaignExport.parse(JSON.parse(JSON.stringify(file))), file);
+});
+
+test("a file from before scene goals and exits still loads (issue #38)", () => {
+  const [b] = file.codex.adventures[0]!.beats;
+  assert.deepEqual([b!.goal, b!.exits], ["", []]);
+});
+
+test("an exit is a bounded label, with no target unless the GM picks one", () => {
+  assert.deepEqual(BeatExit.parse({ label: "If they run" }), { label: "If they run", beatId: null });
+  assert.equal(BeatExit.safeParse({ label: "x".repeat(201) }).success, false);
 });
 
 test("a file that isn't an export is refused", () => {

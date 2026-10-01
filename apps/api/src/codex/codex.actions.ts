@@ -53,6 +53,15 @@ export async function applyCodexAction(
         await refs(npc, b.npcIds, "NPC");
         await refs(handout, b.handoutIds, "Handout");
         checkThreats(b.encounter.map((e) => e.threatId));
+        // An exit leads to a scene of the same adventure; checkRefs alone would accept one from another adventure.
+        const targets = [...new Set(b.exits.flatMap((e) => (e.beatId ? [e.beatId] : [])))];
+        if (targets.length) {
+          const found = await tx
+            .select({ id: beat.id })
+            .from(beat)
+            .where(and(inArray(beat.id, targets), eq(beat.adventureId, b.adventureId), eq(beat.campaignId, cid)));
+          if (found.length !== targets.length) fail("Exit scene not found");
+        }
       }
       if (a.kind === "npc") {
         const n = a.data as z.output<typeof CodexInput.npc>;
@@ -111,6 +120,16 @@ export async function applyCodexAction(
           .update(beat)
           .set({ handoutIds: sql`array_remove(${beat.handoutIds}, ${a.id}::uuid)` })
           .where(eq(beat.campaignId, cid));
+      // Exits name their target inside jsonb: keep the label, drop the target. PREP's DONE and SKIP re-send the whole
+      // beat, so a dangling id would make the save check refuse them.
+      if (a.kind === "beat")
+        await tx
+          .update(beat)
+          .set({
+            exits: sql`(select jsonb_agg(case when e->>'beatId' = ${a.id} then jsonb_set(e, '{beatId}', 'null') else e end order by i)
+              from jsonb_array_elements(${beat.exits}) with ordinality as t(e, i))`,
+          })
+          .where(and(eq(beat.campaignId, cid), sql`${beat.exits} @> ${JSON.stringify([{ beatId: a.id }])}::jsonb`));
       return { ok: true };
     }
 
