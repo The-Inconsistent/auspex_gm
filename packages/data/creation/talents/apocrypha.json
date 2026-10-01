@@ -118,7 +118,24 @@
         "min": 3
       }
     ],
-    "effect": "Your mastery of the blade is incomparable, and few foes can overcome your defences or withstand your attacks. You increase the bonus to Defence from weapons with the Parry quality to +2, and you add +2ED to damage with all melee weapons with the BLADE or POWER FIELD keywords."
+    "effect": "Your mastery of the blade is incomparable, and few foes can overcome your defences or withstand your attacks. You increase the bonus to Defence from weapons with the Parry quality to +2, and you add +2ED to damage with all melee weapons with the BLADE or POWER FIELD keywords.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee",
+          "wargearKeywords": [
+            "BLADE",
+            "POWER FIELD"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "ed",
+            "delta": 2
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "bounding-leap",
@@ -205,7 +222,20 @@
         "min": 3
       }
     ],
-    "effect": "The precision and lethality of your shots is legendary. You may re-roll all rolls of 1 whenever you make a ranged attack or roll for damage with a ranged attack."
+    "effect": "The precision and lethality of your shots is legendary. You may re-roll all rolls of 1 whenever you make a ranged attack or roll for damage with a ranged attack.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "ranged"
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May re-roll all 1s on ranged attack rolls and ranged damage rolls (Apocrypha p.247)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "crushing-blow",
@@ -232,7 +262,22 @@
         "min": 3
       }
     ],
-    "effect": "Your physical might is bolstered by your will to overcome the foes arrayed before you, and little can withstand the impact of their blows. The base damage of your melee attacks is increased by +Double Rank."
+    "effect": "Your physical might is bolstered by your will to overcome the foes arrayed before you, and little can withstand the impact of their blows. The base damage of your melee attacks is increased by +Double Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee"
+        },
+        "mods": [
+          {
+            "kind": "damage",
+            "delta": {
+              "perRank": 2
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "deadly-touch",
@@ -259,7 +304,33 @@
         "min": 3
       }
     ],
-    "effect": "You know the myriad ways in which living creatures can be slain, and with precision you can deliver death with but a touch. Any melee weapon you wield, as well as your unarmed attacks, gain the Mortal (1) trait."
+    "effect": "You know the myriad ways in which living creatures can be slain, and with precision you can deliver death with but a touch. Any melee weapon you wield, as well as your unarmed attacks, gain the Mortal (1) trait.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee"
+        },
+        "mods": [
+          {
+            "kind": "trait",
+            "traitId": "mortal",
+            "rating": 1
+          }
+        ]
+      },
+      {
+        "fits": {
+          "unarmed": true
+        },
+        "mods": [
+          {
+            "kind": "trait",
+            "traitId": "mortal",
+            "rating": 1
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "decapitating-strikes",
@@ -410,7 +481,22 @@
         "min": 3
       }
     ],
-    "effect": "You and your squad are adept at bringing your weapons to bear even in the closest confines. You and your squad may treat your Fusion Guns or any other weapon with the MELTA keyword, as if they had the Pistol trait."
+    "effect": "You and your squad are adept at bringing your weapons to bear even in the closest confines. You and your squad may treat your Fusion Guns or any other weapon with the MELTA keyword, as if they had the Pistol trait.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "MELTA"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May be treated as if it had the Pistol trait, by you and your squad"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "evade-exarch",
@@ -509,7 +595,20 @@
         "min": 3
       }
     ],
-    "effect": "You are a master at making the most of your firepower, laying down lethally-accurate volleys of fire. When you make a ranged attack, you may count their weapon’s Salvo value as twice its normal value, as long as the weapon had a Salvo of at least 1. In addition, when making a ranged attack, you may spend 1 ammo to make a second attack with that weapon."
+    "effect": "You are a master at making the most of your firepower, laying down lethally-accurate volleys of fire. When you make a ranged attack, you may count their weapon’s Salvo value as twice its normal value, as long as the weapon had a Salvo of at least 1. In addition, when making a ranged attack, you may spend 1 ammo to make a second attack with that weapon.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "ranged"
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May count Salvo as twice its value if it is at least 1 (Apocrypha p.248)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "fighting-fury",
@@ -772,7 +871,20 @@
         "min": 3
       }
     ],
-    "effect": "Your eyes can pick out a target at a considerable distance, and you are an excellent judge of just how to fire to catch such far-flung foes. You, and any members of your squad, may ignore the DN penalty for firing at long range. In addition, you and your squad may fire ranged weapons at extreme range, which is any distance up to twice the Medium range of the weapon (so a weapon with a Medium range of 48 has an Extreme range of 96). Ranged attacks made at targets at extreme range suffer a +2 DN penalty."
+    "effect": "Your eyes can pick out a target at a considerable distance, and you are an excellent judge of just how to fire to catch such far-flung foes. You, and any members of your squad, may ignore the DN penalty for firing at long range. In addition, you and your squad may fire ranged weapons at extreme range, which is any distance up to twice the Medium range of the weapon (so a weapon with a Medium range of 48 has an Extreme range of 96). Ranged attacks made at targets at extreme range suffer a +2 DN penalty.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "ranged"
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "Ignore the long range DN penalty; may fire to Extreme range (up to twice Medium) at +2 DN (Apocrypha p.250)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "martial-adept",
@@ -964,7 +1076,22 @@
         "min": 3
       }
     ],
-    "effect": "You are a master at delivering precision barrages that few enemies can escape. When the you use a Tempest Launcher or other Indirect ranged weapon to make a ranged attack, they may increase the rating of the Blast trait of the weapon by Double Rank (this also increases the number of enemies in a Mob hit by +Rank). In addition, enemies hit by the blast must pass a Resolve test (DN = your Ballistic Skill rating) or become pinned."
+    "effect": "You are a master at delivering precision barrages that few enemies can escape. When the you use a Tempest Launcher or other Indirect ranged weapon to make a ranged attack, they may increase the rating of the Blast trait of the weapon by Double Rank (this also increases the number of enemies in a Mob hit by +Rank). In addition, enemies hit by the blast must pass a Resolve test (DN = your Ballistic Skill rating) or become pinned.",
+    "weapons": [
+      {
+        "fits": {
+          "weaponTraits": [
+            "Indirect"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May raise Blast by Double Rank (and Mob targets hit by +Rank); the blast also forces a Resolve test (Apocrypha p.250)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "rapid-assault-exarch",
@@ -1025,7 +1152,20 @@
         "min": 3
       }
     ],
-    "effect": "Your claw is especially deadly, tearing foes apart in a spectacular fashion. When you wield a Scorpion’s Claw or similar weapon, add the Mortal (1d3) trait to the weapon."
+    "effect": "Your claw is especially deadly, tearing foes apart in a spectacular fashion. When you wield a Scorpion’s Claw or similar weapon, add the Mortal (1d3) trait to the weapon.",
+    "weapons": [
+      {
+        "fits": {
+          "nameIncludes": "Scorpion’s Claw"
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "Mortal (1d3) on a Scorpion’s Claw or similar weapon; the GM judges what is similar (Apocrypha p.251)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "scorpions-sting",
@@ -1081,7 +1221,45 @@
         "min": 3
       }
     ],
-    "effect": "You understand your weapons instinctively, understanding the way to make the most from every shot. When you make a ranged attack with a SHURIKEN weapon, the weapon changes its AP to -3, but loses the Rending (3) trait."
+    "effect": "You understand your weapons instinctively, understanding the way to make the most from every shot. When you make a ranged attack with a SHURIKEN weapon, the weapon changes its AP to -3, but loses the Rending (3) trait.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "SHURIKEN"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "setAp",
+            "value": -3
+          },
+          {
+            "kind": "removeTrait",
+            "traitId": "rending"
+          }
+        ]
+      },
+      {
+        "fits": {
+          "weapon": "ranged",
+          "categories": [
+            "Shuriken Weapons"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "setAp",
+            "value": -3
+          },
+          {
+            "kind": "removeTrait",
+            "traitId": "rending"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "skilled-rider-exarch",
@@ -1147,7 +1325,20 @@
         "min": 3
       }
     ],
-    "effect": "Your blades thrust and stab like the mandibles and forelimbs of a spider, scything through foes with ruthless efficiency. When you make a melee attack using a pair of Power Blades or similar weapons, add the Brutal trait and increase the weapons’ damage by +Rank ED."
+    "effect": "Your blades thrust and stab like the mandibles and forelimbs of a spider, scything through foes with ruthless efficiency. When you make a melee attack using a pair of Power Blades or similar weapons, add the Brutal trait and increase the weapons’ damage by +Rank ED.",
+    "weapons": [
+      {
+        "fits": {
+          "nameIncludes": "Power Blade"
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "A pair of Power Blades or similar (GM judges): Brutal and +Rank ED on melee attacks, only when wielded as a pair (Apocrypha p.251)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "spiders-lair",
@@ -1434,7 +1625,20 @@
         "min": 3
       }
     ],
-    "effect": "You have an eye for the flaws in armoured targets and can fine-tune the use of your weapons to exploit these flaws easily. When you make an attack with a Firepike or similar weapon, the weapon gains the Sniper (2) trait. If the weapon had the Blast (X) and/or Spread traits, it loses them while it benefits from this ability."
+    "effect": "You have an eye for the flaws in armoured targets and can fine-tune the use of your weapons to exploit these flaws easily. When you make an attack with a Firepike or similar weapon, the weapon gains the Sniper (2) trait. If the weapon had the Blast (X) and/or Spread traits, it loses them while it benefits from this ability.",
+    "weapons": [
+      {
+        "fits": {
+          "nameIncludes": "Firepike"
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "Firepike or similar (GM judges): gains Sniper (2); loses Blast (X) and Spread while using this (Apocrypha p.252)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "tempest-of-blades",
@@ -2856,7 +3060,26 @@
         ]
       }
     ],
-    "effect": "You are an expert in the science of weaponry, and the most advanced munitions are all the deadlier in your worthy hands.\n\nWhen you use a weapon with the MELTA, PLASMA, ARC, POWER, or ADEPTUS MECHANICUS keywords, you may add +Rank ED to the weapon’s damage."
+    "effect": "You are an expert in the science of weaponry, and the most advanced munitions are all the deadlier in your worthy hands.\n\nWhen you use a weapon with the MELTA, PLASMA, ARC, POWER, or ADEPTUS MECHANICUS keywords, you may add +Rank ED to the weapon’s damage.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "MELTA",
+            "PLASMA",
+            "ARC",
+            "POWER",
+            "ADEPTUS MECHANICUS"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May add +Rank ED to damage (Apocrypha p.240)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "not-another-step-back",
@@ -2951,7 +3174,23 @@
         "min": 2
       }
     ],
-    "effect": "You are resolute and steadfast, able to maintain a punishing rate of fire even when the enemy is at your throat.\n\nAny LEAGUES OF VOTANN ranged weapon you wield may be fired when you are engaged in melee, as if it had the Pistol trait. If the weapon also has the Heavy trait, then the DN of attacks made when engaged are increased by +2."
+    "effect": "You are resolute and steadfast, able to maintain a punishing rate of fire even when the enemy is at your throat.\n\nAny LEAGUES OF VOTANN ranged weapon you wield may be fired when you are engaged in melee, as if it had the Pistol trait. If the weapon also has the Heavy trait, then the DN of attacks made when engaged are increased by +2.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "LEAGUES OF VOTANN"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May be fired when engaged in melee, as if it had the Pistol trait; if it also has Heavy, attacks made when engaged are +2 DN"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "power-through-pain",
@@ -3799,7 +4038,27 @@
         ]
       }
     ],
-    "effect": "You cannot rest while the enemy remains breathing.\n\nWhen you’re engaged with an enemy, add +Rank bonus dice to your melee attacks, and improve the AP of your melee weapons by 1.\n\nHowever, you may not Fall Back.\n\nYou may only have one Vow talent. During downtime, you may replace this talent with any other BLACK TEMPLARS talent marked as a Vow."
+    "effect": "You cannot rest while the enemy remains breathing.\n\nWhen you’re engaged with an enemy, add +Rank bonus dice to your melee attacks, and improve the AP of your melee weapons by 1.\n\nHowever, you may not Fall Back.\n\nYou may only have one Vow talent. During downtime, you may replace this talent with any other BLACK TEMPLARS talent marked as a Vow.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee"
+        },
+        "mods": [
+          {
+            "kind": "ap",
+            "delta": -1
+          },
+          {
+            "kind": "bonusDice",
+            "dice": {
+              "perRank": 1
+            },
+            "when": "while engaged with an enemy (Apocrypha p.230)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "acolyte-of-ynnead",
@@ -4202,7 +4461,26 @@
         "min": 2
       }
     ],
-    "effect": "Your body is as dangerous as your weapons.\n\nYour unarmed strike inflicts (S) + Double Rank +1ED damage. In addition, when you succeed at an Athletics Interaction Attack, you may shift one Exalted Icon to inflict your unarmed strike damage to the enemy."
+    "effect": "Your body is as dangerous as your weapons.\n\nYour unarmed strike inflicts (S) + Double Rank +1ED damage. In addition, when you succeed at an Athletics Interaction Attack, you may shift one Exalted Icon to inflict your unarmed strike damage to the enemy.",
+    "weapons": [
+      {
+        "fits": {
+          "unarmed": true
+        },
+        "mods": [
+          {
+            "kind": "damage",
+            "delta": {
+              "perRank": 2
+            }
+          },
+          {
+            "kind": "ed",
+            "delta": 1
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "brotherhood-of-psykers",
@@ -4301,7 +4579,24 @@
         ]
       }
     ],
-    "effect": "You have honed your connection to the Immaterium, allowing you to deliver punishing warp-fuelled strikes.\n\nWhen you attack with a melee weapon with the FORCE keyword, the weapon gains the Mortal (1) trait."
+    "effect": "You have honed your connection to the Immaterium, allowing you to deliver punishing warp-fuelled strikes.\n\nWhen you attack with a melee weapon with the FORCE keyword, the weapon gains the Mortal (1) trait.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee",
+          "wargearKeywords": [
+            "FORCE"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "trait",
+            "traitId": "mortal",
+            "rating": 1
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "codex-discipline",

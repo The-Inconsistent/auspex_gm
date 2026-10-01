@@ -82,7 +82,30 @@
         ]
       }
     ],
-    "effect": "Your Bolter spits forth a storm of iron that pulverises threats in an unyielding sequence of explosions. When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon'sRapid Fire rating."
+    "effect": "Your Bolter spits forth a storm of iron that pulverises threats in an unyielding sequence of explosions. When you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire Trait, add +Rank to the weapon'sRapid Fire rating.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "BOLT"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "traitRating",
+            "traitId": "rapid-fire",
+            "delta": {
+              "perRank": 1
+            }
+          },
+          {
+            "kind": "trait",
+            "traitId": "rapid-fire",
+            "rating": 2
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "codex-innovator",
@@ -253,7 +276,22 @@
         ]
       }
     ],
-    "effect": "Whatever the spinning teeth of your Chainblade doesn't catch on the first rotation is shredded on the next pass. When you use a weapon with the CHAIN Keyword, you may re-roll any ED dice you choose, but must accept the second result."
+    "effect": "Whatever the spinning teeth of your Chainblade doesn't catch on the first rotation is shredded on the next pass. When you use a weapon with the CHAIN Keyword, you may re-roll any ED dice you choose, but must accept the second result.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "CHAIN"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "May re-roll any ED dice you choose, but must accept the second result."
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "built-tough",

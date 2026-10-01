@@ -501,7 +501,28 @@
     "abilities": [
       {
         "name": "Assured Destruction",
-        "text": "With intense heat you boil your targets from the inside out. You may activate the Melta Trait of any weapons you wield at Medium and Long Range (not just Short Range), and gain +Double Rank ED when making attacks with those weapons."
+        "text": "With intense heat you boil your targets from the inside out. You may activate the Melta Trait of any weapons you wield at Medium and Long Range (not just Short Range), and gain +Double Rank ED when making attacks with those weapons.",
+        "weapons": [
+          {
+            "fits": {
+              "weaponTraits": [
+                "Melta"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "ed",
+                "delta": {
+                  "perRank": 2
+                }
+              },
+              {
+                "kind": "gm",
+                "what": "Melta works at Medium and Long Range, not just Short (p.26)"
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [
@@ -1165,6 +1186,22 @@
       {
         "name": "War Construct",
         "text": "Your new body weathers the strains of battle better than any living creature could. Any ranged weapons you wield without the Heavy Trait gain the Pistol Trait. When wielding two melee weapons, you reduce the DN penalty for making Multi-Attacks by 2. You gain +Rank Determination.",
+        "weapons": [
+          {
+            "fits": {
+              "weapon": "ranged",
+              "notWeaponTraits": [
+                "Heavy"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "trait",
+                "traitId": "pistol"
+              }
+            ]
+          }
+        ],
         "grants": [
           {
             "mods": {

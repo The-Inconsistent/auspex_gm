@@ -106,7 +106,20 @@
     "traits": [
       {
         "name": "Dark Deeds",
-        "text": "When the character makes a melee attack, improve the AP of that attack by 1."
+        "text": "When the character makes a melee attack, improve the AP of that attack by 1.",
+        "weapons": [
+          {
+            "fits": {
+              "weapon": "melee"
+            },
+            "mods": [
+              {
+                "kind": "ap",
+                "delta": -1
+              }
+            ]
+          }
+        ]
       }
     ],
     "note": "A Saedath, which replaces [SAEDATH]; SubFactionType has no saedath, so masque is the closest fit."
@@ -513,7 +526,20 @@
       },
       {
         "name": "Fire Caste",
-        "text": "Fire caste T’au from Bork’an add +2 to the short range of their ranged weapons, +4 to the medium range, and +6 to the long range."
+        "text": "Fire caste T’au from Bork’an add +2 to the short range of their ranged weapons, +4 to the medium range, and +6 to the long range.",
+        "weapons": [
+          {
+            "fits": {
+              "weapon": "ranged"
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Fire caste T'au only: +2 Short, +4 Medium and +6 Long range"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Water Caste",

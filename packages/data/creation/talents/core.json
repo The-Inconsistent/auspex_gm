@@ -27,7 +27,15 @@
         ]
       }
     ],
-    "effect": "You are a Space Marine — one of the most feared warriors in the galaxy. You are a highly trained superhuman veteran of hundreds of battles and have mastered the use of many deadly weapons.\n\nAdd +Rank to the total Damage Value of successful attacks with the following weapons:\n- Chainswords\n- Chainaxes\n- Power Swords\n- Power Fists\n- Unarmed strikes\n- Bolt weapons\n- Any weapon with the ADEPTUS ASTARTES Keyword.\n\nAt the GM's discretion, this Talent may also apply to weapons with the CHAOS Keyword for Chaos Space Marines."
+    "effect": "You are a Space Marine — one of the most feared warriors in the galaxy. You are a highly trained superhuman veteran of hundreds of battles and have mastered the use of many deadly weapons.\n\nAdd +Rank to the total Damage Value of successful attacks with the following weapons:\n- Chainswords\n- Chainaxes\n- Power Swords\n- Power Fists\n- Unarmed strikes\n- Bolt weapons\n- Any weapon with the ADEPTUS ASTARTES Keyword.\n\nAt the GM's discretion, this Talent may also apply to weapons with the CHAOS Keyword for Chaos Space Marines.",
+    "weapons": [
+      { "fits": { "wargearKeywords": ["BOLT", "ADEPTUS ASTARTES"] }, "mods": [{ "kind": "damage", "delta": { "perRank": 1 } }] },
+      { "fits": { "nameIncludes": "Chainaxe" }, "mods": [{ "kind": "damage", "delta": { "perRank": 1 } }] },
+      { "fits": { "nameIncludes": "Chainsword" }, "mods": [{ "kind": "damage", "delta": { "perRank": 1 } }] },
+      { "fits": { "nameIncludes": "Power Sword" }, "mods": [{ "kind": "damage", "delta": { "perRank": 1 } }] },
+      { "fits": { "nameIncludes": "Power Fist" }, "mods": [{ "kind": "damage", "delta": { "perRank": 1 } }] },
+      { "fits": { "unarmed": true }, "mods": [{ "kind": "damage", "delta": { "perRank": 1 } }] }
+    ]
   },
   {
     "id": "armourbane",
@@ -201,7 +209,12 @@
         "min": 3
       }
     ],
-    "effect": "Your strike brutal blows regardless of the weapon you wield.\n\nEvery melee weapon you wield has the Brutal Weapon Trait (p.209), including your unarmed strikes.\n\nIf you make a successful melee attack with a weapon that already has the Brutal Weapon Trait, you deal an additional +1 damage. This bonus damage is applied after calculating your total damage, not to the weapon's Damage value."
+    "effect": "Your strike brutal blows regardless of the weapon you wield.\n\nEvery melee weapon you wield has the Brutal Weapon Trait (p.209), including your unarmed strikes.\n\nIf you make a successful melee attack with a weapon that already has the Brutal Weapon Trait, you deal an additional +1 damage. This bonus damage is applied after calculating your total damage, not to the weapon's Damage value.",
+    "weapons": [
+      { "fits": { "weapon": "melee", "weaponTraits": ["Brutal"] }, "mods": [{ "kind": "gm", "what": "Already Brutal: a successful melee attack deals +1 damage, added after total damage is worked out, not to the Damage value" }] },
+      { "fits": { "weapon": "melee" }, "mods": [{ "kind": "trait", "traitId": "brutal" }] },
+      { "fits": { "unarmed": true }, "mods": [{ "kind": "trait", "traitId": "brutal" }] }
+    ]
   },
   {
     "id": "chaos-familiar",
@@ -972,7 +985,8 @@
         ]
       }
     ],
-    "effect": "You love the smell and sound of Dakka, and have a knack for expending exorbitant quantities of ammunition; this is somehow an effective tactic for you.\n\nThe Salvo value of any weapon you wield is increased by +Rank.\n\nYou may want to employ an Ammo Runt (p.241) to carry extra ammunition."
+    "effect": "You love the smell and sound of Dakka, and have a knack for expending exorbitant quantities of ammunition; this is somehow an effective tactic for you.\n\nThe Salvo value of any weapon you wield is increased by +Rank.\n\nYou may want to employ an Ammo Runt (p.241) to carry extra ammunition.",
+    "weapons": [{ "fits": { "kinds": ["weapon"] }, "mods": [{ "kind": "salvo", "delta": { "perRank": 1 } }] }]
   },
   {
     "id": "noble-peer",
@@ -1052,7 +1066,8 @@
         ]
       }
     ],
-    "effect": "You have been trained in the use of the Emperor's holy fire.\n\nWhen using weapons with the Inflict (On Fire) Trait, you gain +Rank ED to any damage rolls.\n\nOnce per Round, you may gain 1 Wrath when you kill an enemy of the Imperium using a weapon with the Inflict (On Fire) Trait."
+    "effect": "You have been trained in the use of the Emperor's holy fire.\n\nWhen using weapons with the Inflict (On Fire) Trait, you gain +Rank ED to any damage rolls.\n\nOnce per Round, you may gain 1 Wrath when you kill an enemy of the Imperium using a weapon with the Inflict (On Fire) Trait.",
+    "weapons": [{ "fits": { "weaponTraits": ["Inflict (On Fire)"] }, "mods": [{ "kind": "ed", "delta": { "perRank": 1 } }] }]
   },
   {
     "id": "rite-of-fear",
@@ -1419,7 +1434,8 @@
     "source": "core",
     "page": 141,
     "xp": 30,
-    "effect": "You have trained extensively with a single weapon that you keep on your person at all times. It has almost become an extension of your body.\n\nChoose one of your weapons to become a Trademark Weapon. This Talent only affects that weapon, and no others of its type (for example, a single modified Chainsword, not all Chainswords).\n\nWhenever you make a successful attack with your Trademark Weapon, you deal +Double Rank additional ED.\n\nIf you lose or destroy your Trademark Weapon, you can no longer receive any benefits from this Talent. Work with the GM to decide if an appropriate replacement can be found; this could be the focus of an entire adventure."
+    "effect": "You have trained extensively with a single weapon that you keep on your person at all times. It has almost become an extension of your body.\n\nChoose one of your weapons to become a Trademark Weapon. This Talent only affects that weapon, and no others of its type (for example, a single modified Chainsword, not all Chainswords).\n\nWhenever you make a successful attack with your Trademark Weapon, you deal +Double Rank additional ED.\n\nIf you lose or destroy your Trademark Weapon, you can no longer receive any benefits from this Talent. Work with the GM to decide if an appropriate replacement can be found; this could be the focus of an entire adventure.",
+    "weapons": [{ "fits": { "chosen": true }, "mods": [{ "kind": "ed", "delta": { "perRank": 2 } }] }]
   },
   {
     "id": "transhuman",

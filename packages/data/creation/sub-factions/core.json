@@ -302,7 +302,20 @@
     "traits": [
       {
         "name": "Savage Echoes",
-        "text": "Masters of assault combat, Blood Angels are driven by a furious desire to avenge their fallen Primarch.\n\nYou may reroll Double Rank dice once per melee attack Test."
+        "text": "Masters of assault combat, Blood Angels are driven by a furious desire to avenge their fallen Primarch.\n\nYou may reroll Double Rank dice once per melee attack Test.",
+        "weapons": [
+          {
+            "fits": {
+              "weapon": "melee"
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Blood Angels: may re-roll Double Rank dice once per melee attack Test"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "The Red Thirst (Gene-seed)",
@@ -415,7 +428,23 @@
     "traits": [
       {
         "name": "Promethean Cult",
-        "text": "Forged in fire, Salamanders are masters of purging flame and blazing weapons.\n\nYou may reroll Rank dice once per attack Test made using a weapon with the FIRE or MELTA Keywords.\n\nYou may reroll Double Rank dice once each time you roll Determination against a damage from a source with the FIRE or MELTA Keyword."
+        "text": "Forged in fire, Salamanders are masters of purging flame and blazing weapons.\n\nYou may reroll Rank dice once per attack Test made using a weapon with the FIRE or MELTA Keywords.\n\nYou may reroll Double Rank dice once each time you roll Determination against a damage from a source with the FIRE or MELTA Keyword.",
+        "weapons": [
+          {
+            "fits": {
+              "wargearKeywords": [
+                "FIRE",
+                "MELTA"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Salamanders: may re-roll Rank dice once per attack Test made with this weapon"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Infernal Inheritance (Gene-seed)",

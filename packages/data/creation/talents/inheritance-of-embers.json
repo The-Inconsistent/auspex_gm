@@ -129,7 +129,39 @@
         ]
       }
     ],
-    "effect": "When outnumbered, as the Aeldari often are, you can even the odds with a hail of monomolecular-edged discs, discharged with an extraordinary rate of fire.\n\nWhen you use a SHURIKEN weapon, increase the Salvo rating by +Rank."
+    "effect": "When outnumbered, as the Aeldari often are, you can even the odds with a hail of monomolecular-edged discs, discharged with an extraordinary rate of fire.\n\nWhen you use a SHURIKEN weapon, increase the Salvo rating by +Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "SHURIKEN"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "salvo",
+            "delta": {
+              "perRank": 1
+            }
+          }
+        ]
+      },
+      {
+        "fits": {
+          "categories": [
+            "Shuriken Weapons"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "salvo",
+            "delta": {
+              "perRank": 1
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "blade-artist",
@@ -157,7 +189,34 @@
         ]
       }
     ],
-    "effect": "Paranoia is rife in the Dark City, and many wear hidden blades or armour-implanted spikes so they are never entirely disarmed. You have trained in the use of melee weapons, either to savour your kills up close, or employ as a last resort.\n\nWhen you use an AELDARI or DRUKHARI melee weapon, it gains the Rending (Rank) Trait. If it already has the Rending Trait, increase its Rending rating by +Rank."
+    "effect": "Paranoia is rife in the Dark City, and many wear hidden blades or armour-implanted spikes so they are never entirely disarmed. You have trained in the use of melee weapons, either to savour your kills up close, or employ as a last resort.\n\nWhen you use an AELDARI or DRUKHARI melee weapon, it gains the Rending (Rank) Trait. If it already has the Rending Trait, increase its Rending rating by +Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee",
+          "wargearKeywords": [
+            "AELDARI",
+            "DRUKHARI"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "traitRating",
+            "traitId": "rending",
+            "delta": {
+              "perRank": 1
+            }
+          },
+          {
+            "kind": "trait",
+            "traitId": "rending",
+            "rating": {
+              "perRank": 1
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "burning-bright",

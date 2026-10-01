@@ -61,6 +61,30 @@
       {
         "name": "Weapons for Ogryns",
         "text": "The prodigious size of an Ogryn’s hands and digits means they are unable to wield most ranged weapons as they cannot pull the trigger. This does not preclude them from using any ranged weapon as a club, which deals the same damage as an Unarmed Strike (page 183 of the Wrath & Glory Rulebook) +2 ED.\n\nAn Ogryn can wield any melee weapon they can conceivably hold, though they treat any weapon designed for someone of a smaller size as having the Unwieldy (3) Weapon Trait.",
+        "weapons": [
+          {
+            "fits": {
+              "weapon": "melee"
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Ogryn: a melee weapon designed for someone smaller counts as Unwieldy (3)"
+              }
+            ]
+          },
+          {
+            "fits": {
+              "weapon": "ranged"
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Ogryn: most ranged weapons can't be fired (no trigger finger); as a club it deals Unarmed Strike damage +2 ED"
+              }
+            ]
+          }
+        ],
         "page": 91
       }
     ],
@@ -130,6 +154,21 @@
       {
         "name": "Weapons for Ratlings",
         "text": "The dextrous Ratlings can wield most Human-sized weapons without too much difficulty, though the size and weight of such bulky technology may cause them to have the Unwieldy (2) Weapon Trait at the GM’s discretion.",
+        "weapons": [
+          {
+            "fits": {
+              "kinds": [
+                "weapon"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Ratling: a Human-sized weapon may count as Unwieldy (2), at the GM's discretion"
+              }
+            ]
+          }
+        ],
         "page": 91
       }
     ],
@@ -187,6 +226,21 @@
       {
         "name": "Weapons for Kroot",
         "text": "For melee combat, the Kroot prefer their own brand of primitive firearms festooned with blades, but can adapt to almost any kind of weaponry given enough time.\n\nKroot can wield any weapon, but if the weapon does not have the PRIMITIVE Keyword or share a Keyword with the Kroot, the weapon is treated as having the Unwieldy (2) Weapon Trait.",
+        "weapons": [
+          {
+            "fits": {
+              "kinds": [
+                "weapon"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "Kroot: Unwieldy (2) unless the weapon has the PRIMITIVE Keyword or shares a Keyword with the Kroot (KROOT)"
+              }
+            ]
+          }
+        ],
         "page": 91
       }
     ],
