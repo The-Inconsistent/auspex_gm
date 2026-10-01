@@ -1,5 +1,15 @@
 import { readdirSync, readFileSync } from "node:fs";
-import { CREATION_TYPES, type Creation, type CreationType, Pack, RuleEntry, Threat, Wargear } from "@wg/shared";
+import {
+  CREATION_TYPES,
+  type Creation,
+  type CreationType,
+  Pack,
+  RuleEntry,
+  type ScenePresets,
+  SkillDn,
+  Threat,
+  Wargear,
+} from "@wg/shared";
 
 // Server-side loaders. Parse at startup/seed time, so a bad file fails fast.
 const json = (url: URL) => JSON.parse(readFileSync(url, "utf8"));
@@ -25,6 +35,12 @@ export const wargear: ReadonlyMap<string, Wargear> = new Map(wargearList().map((
 const rulesDir = new URL("./rules/", import.meta.url);
 export const rulesList = (): RuleEntry[] =>
   jsonFiles(rulesDir).flatMap((f) => RuleEntry.array().parse(json(new URL(f, rulesDir))));
+
+// scene-presets/: GM-only book data for building scenes (issue #39): the sample DNs per Skill (Core pp.122–126).
+const presetsDir = new URL("./scene-presets/", import.meta.url);
+export const scenePresets = (): ScenePresets => ({
+  skillDns: SkillDn.array().parse(json(new URL("skill-dns.json", presetsDir))),
+});
 
 // creation/<type>/<source>.json: the character-creation catalogue, book text served to seats only (docs/data.md).
 const creationDir = new URL("./creation/", import.meta.url);

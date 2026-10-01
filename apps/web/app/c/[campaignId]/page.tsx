@@ -1,4 +1,4 @@
-import { Me, Threat, Wargear } from "@wg/shared";
+import { Me, ScenePresets, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet, loadRules } from "@/app/server-api";
@@ -30,6 +30,17 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
   }
 }
 
+// GM-only book data for building scenes (issue #39). Empty on failure; the scene editor then shows no examples.
+async function loadScenePresets(campaignId: string): Promise<ScenePresets> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/scene-presets`);
+    const parsed = ScenePresets.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : { skillDns: [] };
+  } catch {
+    return { skillDns: [] };
+  }
+}
+
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
 export default async function Table({ params }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
@@ -45,12 +56,13 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear, rules] = await Promise.all([
+    const [bestiary, wargear, rules, presets] = await Promise.all([
       loadBestiary(me.campaignId),
       loadWargear(me.campaignId),
       loadRules(me.campaignId),
+      loadScenePresets(me.campaignId),
     ]);
-    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} rules={rules} />;
+    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} rules={rules} presets={presets} />;
   }
   if (!me.characterId) return <StatusScreen text="NO CHARACTER YET. ASK YOUR GM." />;
   return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} rules={await loadRules(me.campaignId)} />;

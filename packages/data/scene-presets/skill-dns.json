@@ -1,0 +1,597 @@
+[
+  {
+    "skill": "Athletics",
+    "dn": 1,
+    "source": "core",
+    "page": 122,
+    "example": "Jump off a stationary Rhino"
+  },
+  {
+    "skill": "Athletics",
+    "dn": 3,
+    "source": "core",
+    "page": 122,
+    "example": "Climb a cathedral without gear"
+  },
+  {
+    "skill": "Athletics",
+    "dn": 5,
+    "source": "core",
+    "page": 122,
+    "example": "Leap from one train carriage to another in a blizzard"
+  },
+  {
+    "skill": "Athletics",
+    "dn": 7,
+    "source": "core",
+    "page": 122,
+    "example": "Swim quickly through the raging current of a hive sewage system"
+  },
+  {
+    "skill": "Athletics",
+    "dn": 9,
+    "source": "core",
+    "page": 122,
+    "example": "Scale a steep, unstable ruin in a rainstorm at night"
+  },
+  {
+    "skill": "Awareness",
+    "dn": 1,
+    "source": "core",
+    "page": 122,
+    "example": "Notice a Colonel’s uniform was put on hastily"
+  },
+  {
+    "skill": "Awareness",
+    "dn": 3,
+    "source": "core",
+    "page": 122,
+    "example": "Spot a listening device concealed in a table centrepiece"
+  },
+  {
+    "skill": "Awareness",
+    "dn": 5,
+    "source": "core",
+    "page": 122,
+    "example": "Spot the most worn keys on a security keypad"
+  },
+  {
+    "skill": "Awareness",
+    "dn": 7,
+    "source": "core",
+    "page": 122,
+    "example": "Notice a tripwire while walking through a jungle at night"
+  },
+  {
+    "skill": "Awareness",
+    "dn": 9,
+    "source": "core",
+    "page": 122,
+    "example": "Eavesdrop on a conversation in a noisy manufactorum"
+  },
+  {
+    "skill": "Ballistic Skill",
+    "dn": 1,
+    "source": "core",
+    "page": 122,
+    "example": "Identify a custom Boltgun"
+  },
+  {
+    "skill": "Ballistic Skill",
+    "dn": 3,
+    "source": "core",
+    "page": 122,
+    "example": "Reload an archeotech weapon"
+  },
+  {
+    "skill": "Ballistic Skill",
+    "dn": 5,
+    "source": "core",
+    "page": 122,
+    "example": "Properly assemble a dismantled xenotech cannon"
+  },
+  {
+    "skill": "Ballistic Skill",
+    "dn": 7,
+    "source": "core",
+    "page": 122,
+    "example": "Identify the missing component needed to fire an archeotech doomsday cannon"
+  },
+  {
+    "skill": "Ballistic Skill",
+    "dn": 9,
+    "source": "core",
+    "page": 122,
+    "example": "Devise the solution to a hidden design flaw in a popular Lasgun pattern"
+  },
+  {
+    "skill": "Cunning",
+    "dn": 1,
+    "source": "core",
+    "page": 122,
+    "example": "Find a dealer for extra rations, ammunition, or a clean uniform"
+  },
+  {
+    "skill": "Cunning",
+    "dn": 3,
+    "source": "core",
+    "page": 122,
+    "example": "Discover the location of a noble who arrived in town late last night"
+  },
+  {
+    "skill": "Cunning",
+    "dn": 5,
+    "source": "core",
+    "page": 122,
+    "example": "Find a fence for contraband, such as drugs or alcohol"
+  },
+  {
+    "skill": "Cunning",
+    "dn": 7,
+    "source": "core",
+    "page": 122,
+    "example": "Learn the membership of a secretive cult that has aided the locals"
+  },
+  {
+    "skill": "Cunning",
+    "dn": 9,
+    "source": "core",
+    "page": 122,
+    "example": "Procure a specific piece of archeotech on a Shrine World"
+  },
+  {
+    "skill": "Deception",
+    "dn": 1,
+    "source": "core",
+    "page": 123,
+    "example": "Give a stranger a false name"
+  },
+  {
+    "skill": "Deception",
+    "dn": 3,
+    "source": "core",
+    "page": 123,
+    "example": "Claim that your rank gives you access to restricted Administratum files"
+  },
+  {
+    "skill": "Deception",
+    "dn": 5,
+    "source": "core",
+    "page": 123,
+    "example": "Infiltrate a cult hideout undetected in disguise"
+  },
+  {
+    "skill": "Deception",
+    "dn": 7,
+    "source": "core",
+    "page": 123,
+    "example": "Convince a Tech Priest that their scanner has malfunctioned when it detects contraband"
+  },
+  {
+    "skill": "Deception",
+    "dn": 9,
+    "source": "core",
+    "page": 123,
+    "example": "Declare yourself the rightful new sovereign Planetary Governor of a Hive World"
+  },
+  {
+    "skill": "Insight",
+    "dn": 1,
+    "source": "core",
+    "page": 123,
+    "example": "Identify an Ork is ready to fight"
+  },
+  {
+    "skill": "Insight",
+    "dn": 3,
+    "source": "core",
+    "page": 123,
+    "example": "Intuit your Commissar is sending you on a suicide mission"
+  },
+  {
+    "skill": "Insight",
+    "dn": 5,
+    "source": "core",
+    "page": 123,
+    "example": "Recognise an Aeldari Farseer is misinforming you"
+  },
+  {
+    "skill": "Insight",
+    "dn": 7,
+    "source": "core",
+    "page": 123,
+    "example": "Detect a malfunction in a Tech-Priest’s cortical cogitator through a slight movement in their finger"
+  },
+  {
+    "skill": "Insight",
+    "dn": 9,
+    "source": "core",
+    "page": 123,
+    "example": "Intuit a Space Marine Librarian has turned traitor and is sending you into a trap when communicating over vox"
+  },
+  {
+    "skill": "Intimidation",
+    "dn": 1,
+    "source": "core",
+    "page": 123,
+    "example": "Shout at a Snotling to make it obey"
+  },
+  {
+    "skill": "Intimidation",
+    "dn": 3,
+    "source": "core",
+    "page": 123,
+    "example": "Force an armed Arbites to allow you access to a crime scene"
+  },
+  {
+    "skill": "Intimidation",
+    "dn": 5,
+    "source": "core",
+    "page": 123,
+    "example": "Scare a Chaos Cultist into leaving cover and handing over their weapons"
+  },
+  {
+    "skill": "Intimidation",
+    "dn": 7,
+    "source": "core",
+    "page": 123,
+    "example": "Threaten an Ork Freebooter on the deck of their Kill Kroozer"
+  },
+  {
+    "skill": "Intimidation",
+    "dn": 9,
+    "source": "core",
+    "page": 123,
+    "example": "Scowl at an Inquisitor to stop them declaring Exterminatus"
+  },
+  {
+    "skill": "Investigation",
+    "dn": 1,
+    "source": "core",
+    "page": 123,
+    "example": "Notice a suspect’s alibi puts them at the crime scene during the crime."
+  },
+  {
+    "skill": "Investigation",
+    "dn": 3,
+    "source": "core",
+    "page": 123,
+    "example": "Decipher the accounting logs of a manufactorum to reveal a raw material discrepancy"
+  },
+  {
+    "skill": "Investigation",
+    "dn": 5,
+    "source": "core",
+    "page": 123,
+    "example": "Recognise two seemingly unassociated individuals could both be members of a fraternal organisation"
+  },
+  {
+    "skill": "Investigation",
+    "dn": 7,
+    "source": "core",
+    "page": 123,
+    "example": "Identify that the assassin must have been short, left-handed, and walked with a limp after examining the victim’s wound"
+  },
+  {
+    "skill": "Investigation",
+    "dn": 9,
+    "source": "core",
+    "page": 123,
+    "example": "Decode ancient xenos ruins relating to the dangers of a portal to the Immaterium"
+  },
+  {
+    "skill": "Leadership",
+    "dn": 1,
+    "source": "core",
+    "page": 125,
+    "example": "Order a neophyte to arm his Space Marine master"
+  },
+  {
+    "skill": "Leadership",
+    "dn": 3,
+    "source": "core",
+    "page": 125,
+    "example": "Rally a squadron of Astra Militarum troopers to make a bayonet charge"
+  },
+  {
+    "skill": "Leadership",
+    "dn": 5,
+    "source": "core",
+    "page": 125,
+    "example": "Lead the captain and crew of an Imperial Cruiser into a Warp-storm"
+  },
+  {
+    "skill": "Leadership",
+    "dn": 7,
+    "source": "core",
+    "page": 125,
+    "example": "Demand a coven of untrained Psykers use their powers against a Killa Kan"
+  },
+  {
+    "skill": "Leadership",
+    "dn": 9,
+    "source": "core",
+    "page": 125,
+    "example": "Command a loosely allied clan of injured Drukhari to charge a Keeper of Secrets"
+  },
+  {
+    "skill": "Medicae",
+    "dn": 1,
+    "source": "core",
+    "page": 125,
+    "example": "Diagnose an open fracture"
+  },
+  {
+    "skill": "Medicae",
+    "dn": 3,
+    "source": "core",
+    "page": 125,
+    "example": "Treat a Lasgun wound during a firefight"
+  },
+  {
+    "skill": "Medicae",
+    "dn": 5,
+    "source": "core",
+    "page": 125,
+    "example": "Diagnose a disease specific to exposure to xenos poisons"
+  },
+  {
+    "skill": "Medicae",
+    "dn": 7,
+    "source": "core",
+    "page": 125,
+    "example": "Stabilise a moments-from-death Aeldari in total darkness"
+  },
+  {
+    "skill": "Medicae",
+    "dn": 9,
+    "source": "core",
+    "page": 125,
+    "example": "Identify a latent Nurgle meme-virus infecting a superior officer after a single social interaction"
+  },
+  {
+    "skill": "Persuasion",
+    "dn": 1,
+    "source": "core",
+    "page": 125,
+    "example": "Ask an Adeptus Mechanicus Reclaimator to inspect a piece of archeotech"
+  },
+  {
+    "skill": "Persuasion",
+    "dn": 3,
+    "source": "core",
+    "page": 125,
+    "example": "Convince a Planetary Governor to lend troops to destroy a hidden cult"
+  },
+  {
+    "skill": "Persuasion",
+    "dn": 5,
+    "source": "core",
+    "page": 125,
+    "example": "Persuade a Rogue Trader to risk their ship and crew to help thwart a xenos plot"
+  },
+  {
+    "skill": "Persuasion",
+    "dn": 7,
+    "source": "core",
+    "page": 125,
+    "example": "Prove logically to an Inquisitor that you aren’t a witch"
+  },
+  {
+    "skill": "Persuasion",
+    "dn": 9,
+    "source": "core",
+    "page": 125,
+    "example": "Convince an Aeldari Farseer that their vision was a false trick of the enemy"
+  },
+  {
+    "skill": "Pilot",
+    "dn": 1,
+    "source": "core",
+    "page": 125,
+    "example": "Maintain a straight line on a paved road in a vehicle you’re familiar with"
+  },
+  {
+    "skill": "Pilot",
+    "dn": 3,
+    "source": "core",
+    "page": 125,
+    "example": "Successfully re-enter the atmosphere in a vessel with damaged hull plating"
+  },
+  {
+    "skill": "Pilot",
+    "dn": 5,
+    "source": "core",
+    "page": 125,
+    "example": "Land an Aquila Lander on a short, unlit runway at night"
+  },
+  {
+    "skill": "Pilot",
+    "dn": 7,
+    "source": "core",
+    "page": 125,
+    "example": "Use a ramp to jump over a river in a Leman Russ Battle Tank"
+  },
+  {
+    "skill": "Pilot",
+    "dn": 9,
+    "source": "core",
+    "page": 125,
+    "example": "Fly a damaged jetbike to a specific tree in a dense jungle during a hurricane"
+  },
+  {
+    "skill": "Scholar",
+    "dn": 1,
+    "source": "core",
+    "page": 126,
+    "example": "Remember the name of a local Imperial Bureau that could help with the problem at hand"
+  },
+  {
+    "skill": "Scholar",
+    "dn": 3,
+    "source": "core",
+    "page": 126,
+    "example": "Recognise the value, merits, and growth patterns of a local agricultural crop"
+  },
+  {
+    "skill": "Scholar",
+    "dn": 5,
+    "source": "core",
+    "page": 126,
+    "example": "Recognise the species of xenos represented on the inscriptions of an ancient ziggurat"
+  },
+  {
+    "skill": "Scholar",
+    "dn": 7,
+    "source": "core",
+    "page": 126,
+    "example": "Identify Goreclaw the Render from a description and a primitive illustration"
+  },
+  {
+    "skill": "Scholar",
+    "dn": 9,
+    "source": "core",
+    "page": 126,
+    "example": "Recall the names of all the Second Lieutenants who served in the Macharian Crusade"
+  },
+  {
+    "skill": "Stealth",
+    "dn": 1,
+    "source": "core",
+    "page": 126,
+    "example": "Pick a mechanical padlock at a junkyard entrance"
+  },
+  {
+    "skill": "Stealth",
+    "dn": 3,
+    "source": "core",
+    "page": 126,
+    "example": "Avoid detection while sneaking through a field full of security cameras"
+  },
+  {
+    "skill": "Stealth",
+    "dn": 5,
+    "source": "core",
+    "page": 126,
+    "example": "Bypass the locking mechanism on a reinforced bank vault"
+  },
+  {
+    "skill": "Stealth",
+    "dn": 7,
+    "source": "core",
+    "page": 126,
+    "example": "Identify and disable the xenotech trap in an ancient tomb"
+  },
+  {
+    "skill": "Stealth",
+    "dn": 9,
+    "source": "core",
+    "page": 126,
+    "example": "Sneak through a guarded minefield in daylight while wearing Terminator Armour"
+  },
+  {
+    "skill": "Survival",
+    "dn": 1,
+    "source": "core",
+    "page": 126,
+    "example": "Track a person wearing distinctive footgear through a forest"
+  },
+  {
+    "skill": "Survival",
+    "dn": 3,
+    "source": "core",
+    "page": 126,
+    "example": "Find potable water on a rocky world with few signs of plants"
+  },
+  {
+    "skill": "Survival",
+    "dn": 5,
+    "source": "core",
+    "page": 126,
+    "example": "Assemble safe(ish) shelter on a Death World"
+  },
+  {
+    "skill": "Survival",
+    "dn": 7,
+    "source": "core",
+    "page": 126,
+    "example": "Travel on foot without a navigational system across an ash waste littered with lava flows"
+  },
+  {
+    "skill": "Survival",
+    "dn": 9,
+    "source": "core",
+    "page": 126,
+    "example": "Jury-rig a filtration system to provide potable water from a toxic swamp"
+  },
+  {
+    "skill": "Tech",
+    "dn": 1,
+    "source": "core",
+    "page": 126,
+    "example": "Apply sacred unguents to properly lubricate a Chimera’s tracks"
+  },
+  {
+    "skill": "Tech",
+    "dn": 3,
+    "source": "core",
+    "page": 126,
+    "example": "Replace the damaged armour on a Leman Russ Demolisher"
+  },
+  {
+    "skill": "Tech",
+    "dn": 5,
+    "source": "core",
+    "page": 126,
+    "example": "Identify an issue with an Anti-Grav enginge by ear"
+  },
+  {
+    "skill": "Tech",
+    "dn": 7,
+    "source": "core",
+    "page": 126,
+    "example": "Rebuild the engine from a crashed Nephilim Jetfighter using raw and damaged materials"
+  },
+  {
+    "skill": "Tech",
+    "dn": 9,
+    "source": "core",
+    "page": 126,
+    "example": "Integrate a xenotech cogitator from a ruined vessel into the systems of an Imperial Frigate"
+  },
+  {
+    "skill": "Weapon Skill",
+    "dn": 1,
+    "source": "core",
+    "page": 126,
+    "example": "Remove an armour fragment from a Chainsword blade"
+  },
+  {
+    "skill": "Weapon Skill",
+    "dn": 3,
+    "source": "core",
+    "page": 126,
+    "example": "Recharge an archeotech Power Sword"
+  },
+  {
+    "skill": "Weapon Skill",
+    "dn": 5,
+    "source": "core",
+    "page": 126,
+    "example": "Invent a way to wield a xenotech weapon designed for a 3-armed warrior"
+  },
+  {
+    "skill": "Weapon Skill",
+    "dn": 7,
+    "source": "core",
+    "page": 126,
+    "example": "Determine how to properly replace the monofilament tendrils on an archeotech neuronic lash"
+  },
+  {
+    "skill": "Weapon Skill",
+    "dn": 9,
+    "source": "core",
+    "page": 126,
+    "example": "Reforge a master-crafted blade that shattered into a thousand pieces, without compromising its integrity"
+  }
+]

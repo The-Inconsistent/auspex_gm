@@ -1,7 +1,7 @@
 "use client";
 import { useState, type FormEvent } from "react";
 
-import type { ActionResult, BeatStatus, Codex, LiveState, Threat } from "@wg/shared";
+import type { ActionResult, BeatStatus, Codex, LiveState, SkillDn, Threat } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -17,9 +17,16 @@ const beatFields = [
   ["outcome", "OUTCOME", false],
 ] as const;
 
-type PrepProps = { state: LiveState; codex: Codex; send: Send; bestiary: Threat[]; onRun: () => void };
+type PrepProps = {
+  state: LiveState;
+  codex: Codex;
+  send: Send;
+  bestiary: Threat[];
+  skillDns: SkillDn[];
+  onRun: () => void;
+};
 
-export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
+export function Prep({ state, codex, send, bestiary, skillDns, onRun }: PrepProps) {
   const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
   const [editing, setEditing] = useState<Beat | "new" | null>(null);
   const [title, setTitle] = useState("");
@@ -294,6 +301,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
           players={players}
           send={send}
           bestiary={bestiary}
+          skillDns={skillDns}
           onDone={() => setEditing(null)}
         />
       )}

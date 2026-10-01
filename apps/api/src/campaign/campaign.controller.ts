@@ -30,6 +30,7 @@ import {
   importCampaign,
   isAdmin,
   listRules,
+  listScenePresets,
   listThreats,
   listWargear,
   lobby,
@@ -146,6 +147,15 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return listWargear();
+  }
+
+  // Book data for building scenes (issue #39): the sample DNs per Skill. Book text, so GM only like the bestiary.
+  @Get("campaigns/:id/scene-presets")
+  async scenePresets(@Param("id") id: string, @Req() req: Request) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    return listScenePresets();
   }
 
   // Rules reference (book text) for any seat at this table, GM or player.

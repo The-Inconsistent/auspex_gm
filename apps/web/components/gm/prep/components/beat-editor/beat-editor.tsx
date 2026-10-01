@@ -1,7 +1,16 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { BeatType, Marker, type BeatExit, type BeatStatus, type BeatTest, type Codex, type Threat } from "@wg/shared";
+import {
+  BeatType,
+  Marker,
+  type BeatExit,
+  type BeatStatus,
+  type BeatTest,
+  type Codex,
+  type SkillDn,
+  type Threat,
+} from "@wg/shared";
 
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -19,13 +28,14 @@ type BeatEditorProps = {
   players: number;
   send: Send;
   bestiary: Threat[];
+  skillDns: SkillDn[];
   onDone: () => void;
 };
 
 // Adds `id` to the list, or removes it if already there.
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
-export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, onDone }: BeatEditorProps) {
+export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, skillDns, onDone }: BeatEditorProps) {
   const [b, setB] = useState(() =>
     beat
       ? stripBeat(beat)
@@ -197,7 +207,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
         </div>
       </div>
 
-      <Tests tests={b.tests} onChange={(tests) => setB({ ...b, tests })} />
+      <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />
 
       <div className="field">
         <span className="label">PREPARED ENCOUNTER</span>

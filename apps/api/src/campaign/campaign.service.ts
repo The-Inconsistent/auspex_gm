@@ -1,9 +1,9 @@
 import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
-import { rulesList, threats, wargear } from "@wg/data";
+import { rulesList, scenePresets, threats, wargear } from "@wg/data";
 import { CharacterStats } from "@wg/shared";
-import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, Threat, Wargear } from "@wg/shared";
+import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { checkThreats } from "../codex/codex.actions.ts";
@@ -223,6 +223,8 @@ export async function campaignHomebrew(campaignId: string) {
 
 export const listThreats = (): Threat[] => [...threats.values()];
 export const listWargear = (): Wargear[] => [...wargear.values()];
+const presets = scenePresets(); // parsed at startup, so a bad file fails fast
+export const listScenePresets = (): ScenePresets => presets;
 const rules = rulesList(); // parsed at startup, so a bad file fails fast
 // Entries flagged `gm` come from the Gamemaster chapter, so a player seat (or the seatless builder) never gets them.
 export const listRules = ({ gm }: { gm: boolean }): RuleEntry[] => (gm ? rules : rules.filter((r) => !r.gm));

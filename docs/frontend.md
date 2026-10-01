@@ -91,7 +91,8 @@ The messages (`app/constants.ts`):
 
 For the GM, `loadBestiary` fetches `/api/campaigns/:id/threats` on the server, parses it with `Threat.array()` and sorts
 it by name. Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop;
-the client never fetches it. `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
+the client never fetches it. `loadScenePresets` does the same for `/api/campaigns/:id/scene-presets` (the scene editor's sample DNs; failure
+gives none). `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
 catalogue), fetched in parallel; failure gives `[]` and the form takes typed entries. `loadRules` fetches
 `/api/campaigns/:id/rules` for every seat (a player's lacks the `gm` entries) and passes it to both apps' RULES tab (`components/ui/rules-ref`: search over
 name, gist and text, a kind filter, one `<details>` per entry: the gist on the collapsed row, the verbatim text inside); failure gives `[]` and the tab says the archive is unreachable. Both apps also wrap their screens in
@@ -519,6 +520,7 @@ The tests are in `lib/command/command.test.ts`.
     - DN chips from `DN_TABLE` with their modifier inline, "5 CHALLENGING (+2)" (`CORRUPTION_DNS` for Corruption)
     - a DN field (`components/dn-input`): it keeps the text as typed while editing, counts a DN from 1 to 20 at once,
       and clamps on blur
+    - the book's example for that Skill at that DN (`skillDns` from `GmApp`'s `presets`, Core pp.122–126)
     - a DN under 3 hint (Core p.122)
     - the Shift ladder, up to `MAX_SHIFTS`. Chips add the uses on pp.165–166, with +1 Glory only once per Test
       (p.166), and the Attitude step (p.168) when the Test names a social Skill (`SOCIAL_SKILLS`, p.167)

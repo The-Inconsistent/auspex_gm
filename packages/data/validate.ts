@@ -12,6 +12,8 @@ import {
   SOURCES,
   Threat,
   Wargear,
+  SKILLS,
+  SkillDn,
 } from "@wg/shared";
 import { loadPackRaw, packNames } from "./index.ts";
 
@@ -177,6 +179,32 @@ for (const file of readdirSync(rulesDir)
     if (LINKED_RULE_KINDS.includes(e.kind)) traitKeys.add(ruleKey(e.name));
   }
   console.log(`rules/${file}: ${r.data.length} entries`);
+}
+
+// Scene presets (docs/data.md, "Scene presets"): the sample DNs per Skill, one row per Skill and printed DN (Core
+// pp.122–126 print DN 1, 3, 5, 7 and 9 for every Skill but Psychic Mastery).
+{
+  const r = SkillDn.array().safeParse(
+    JSON.parse(readFileSync(new URL("./scene-presets/skill-dns.json", import.meta.url), "utf8")),
+  );
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ scene-presets/skill-dns.json\n${z.prettifyError(r.error)}`);
+  } else {
+    const keys = r.data.map((d) => `${d.skill} ${d.dn}`);
+    const twice = keys.filter((k, i) => keys.indexOf(k) !== i);
+    if (twice.length) {
+      failed = true;
+      console.error(`✖ scene-presets/skill-dns.json: ${twice.join(", ")} twice`);
+    }
+    const skills = new Set(r.data.map((d) => d.skill));
+    const missing = Object.keys(SKILLS).filter((k) => k !== "Psychic Mastery" && !skills.has(k as keyof typeof SKILLS));
+    if (missing.length) {
+      failed = true;
+      console.error(`✖ scene-presets/skill-dns.json: no rows for ${missing.join(", ")}`);
+    }
+    console.log(`scene-presets/skill-dns.json: ${r.data.length} sample DNs (expected 85), ${skills.size} Skills`);
+  }
 }
 
 // Creation catalogue (docs/data.md, "Creation catalogue"): creation/<type>/<source>.json. Schema per file, the
