@@ -124,6 +124,13 @@ export const CharacterStats = z.object({
       invulnerable: z.boolean().default(false),
       powered: z.number().int().min(0).max(10).default(0),
       traits: z.array(z.string().max(60)).default([]),
+      // Upgrades, exactly as a weapon carries them (Core pp.227–228, §11.63–§11.65): what is stored is the suit as
+      // printed plus the ids, and `withUpgrades` derives the AR and Traits shown, so nothing is applied twice.
+      wargearId: z.string().optional(),
+      upgrades: z.array(z.string()).max(8).optional(), // from the build
+      fitted: z.array(z.string()).max(8).optional(), // fitted in play (character.fitUpgrade)
+      upgradeNames: z.array(z.string()).optional(), // derived by withUpgrades, never stored
+      notes: z.array(z.string()).optional(), // derived: what a profile can't hold, for the GM
     })
     .default({ name: "", ar: 0, invulnerable: false, powered: 0, traits: [] }),
   speed: z.number().int().min(0).max(20).default(6), // by Species (p.29)
@@ -242,9 +249,21 @@ export const Character = z.object({
   // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
   draft: z.record(z.string(), z.unknown()).nullable(),
   builtAt: z.number().int().nullable(), // when the build was last saved (ms), so the builder drops older device drafts
-  // Derived, not stored: the upgrades this character holds in gear and could fit to a weapon (Core p.227, §11.63), so
-  // a phone can offer the choice without the 2 MB catalogue. The server checks the fit again when one is sent.
-  ownedUpgrades: z.array(z.object({ id: z.string(), name: z.string(), slot: z.string() })).default([]),
+  // Derived, not stored: the upgrades this character holds in gear and could fit to a weapon or to the suit they wear
+  // (Core p.227, §11.63), so a phone can offer the choice without the 2 MB catalogue. `hosts` is what the entry fits, so
+  // a suit's system isn't offered on a rifle; `gmOnly` keeps Matched Pair off a player's picker (§11.64). The server
+  // checks the fit again when one is sent.
+  ownedUpgrades: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        slot: z.string(),
+        hosts: z.array(z.string()).default(["weapon"]),
+        gmOnly: z.boolean().optional(),
+      }),
+    )
+    .default([]),
 });
 export type Character = z.infer<typeof Character>;
 

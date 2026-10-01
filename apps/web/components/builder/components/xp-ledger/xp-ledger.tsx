@@ -29,6 +29,26 @@ function Rows({ rows }: { rows: LedgerRow[] }) {
   );
 }
 
+// What was bought in play, grouped by the session it was bought in (§11.68), the latest session first. Anything the
+// server hasn't stamped yet comes last: a purchase on this screen that hasn't been saved, or one made before the app
+// recorded when.
+function BySession({ rows }: { rows: LedgerRow[] }) {
+  const groups = new Map<number | null, LedgerRow[]>();
+  for (const l of rows) groups.set(l.session ?? null, [...(groups.get(l.session ?? null) ?? []), l]);
+  const order = [...groups.keys()].sort((a, b) => (a === null ? 1 : b === null ? -1 : b - a));
+  if (!rows.length) return <Rows rows={[]} />;
+  return (
+    <>
+      {order.map((k) => (
+        <div className="stack" key={k ?? "unstamped"}>
+          <div className="dim">{k === null ? "NOT RECORDED YET" : `SESSION ${k}`}</div>
+          <Rows rows={groups.get(k)!} />
+        </div>
+      ))}
+    </>
+  );
+}
+
 // The XP ledger (every purchase with its cost and page): the creation budget, then the XP earned in play once the
 // character is made, and everything still to do, each a link to its screen.
 export function XpLedger() {
@@ -64,7 +84,7 @@ export function XpLedger() {
             {adv.spent > adv.budget ? `${adv.spent - adv.budget} over` : `${adv.budget - adv.spent} left`} of the XP
             earned (Core p.146)
           </div>
-          <Rows rows={r?.ledger.filter((l) => l.pool) ?? []} />
+          <BySession rows={r?.ledger.filter((l) => l.pool) ?? []} />
         </>
       )}
       <div className="tbar iron">

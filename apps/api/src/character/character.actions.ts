@@ -1,4 +1,4 @@
-import { and, eq, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import {
   CharacterBuild,
   CharacterDetail,
@@ -25,6 +25,8 @@ import {
   type Action,
   type ActionResult,
   type Character,
+  type ResolvedBuild,
+  type UpgradeHost,
   type Wargear,
   type WargearWeapon,
 } from "@wg/shared";
@@ -54,7 +56,9 @@ export async function ownCharacter(tx: Tx, { campaignId, id }: { campaignId: str
 async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: typeof character.$inferSelect }) {
   const c: Character = {
     ...row,
-    stats: CharacterStats.parse(row.stats),
+    // The upgrades fitted are applied here too, because Resilience counts the AR as worn (deriveStats, Core p.231) and
+    // the phones read the derived sheet: deriving from the stored one would disagree with them about a Wound.
+    stats: withUpgrades(CharacterStats.parse(row.stats), wargear),
     overrides: Overrides.parse(row.overrides),
     detail: CharacterDetail.parse(row.detail),
     objectives: Objectives.parse(row.objectives),
@@ -71,6 +75,38 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
 function storedGm(build: Record<string, unknown> | null | undefined) {
   const r = CharacterBuild.shape.gm.safeParse(build?.gm);
   return r.success ? r.data : CharacterBuild.shape.gm.parse(undefined);
+}
+
+// The purchase history as the server last stamped it, or none (§11.68). It is never the client's: a build saved under an
+// older schema, or by a client that made one up, starts from what is stored.
+function storedBoughtIn(build: Record<string, unknown> | null | undefined): Record<string, number> {
+  const r = CharacterBuild.shape.advancement.safeParse(build?.advancement);
+  return r.success ? r.data.boughtIn : {};
+}
+
+// The purchase history after this save (§11.68): the stamps the resolved ledger still names, plus the session number for
+// everything new. The open session, else the last one played, because XP is awarded at a session's end (Core p.321) and a
+// purchase made between sessions belongs to the session that paid for it. A campaign with no session yet leaves them
+// undated, and a date is never read from the client.
+async function stampHistory(
+  tx: Tx,
+  campaignId: string,
+  r: ResolvedBuild,
+  build: CharacterBuild,
+): Promise<Record<string, number>> {
+  const keys = new Set(r.ledger.filter((l) => l.pool === "advancement" && l.key).map((l) => l.key!));
+  const boughtIn: Record<string, number> = {};
+  for (const [k, n] of Object.entries(build.advancement.boughtIn)) if (keys.has(k)) boughtIn[k] = n;
+  const fresh = [...keys].filter((k) => boughtIn[k] === undefined);
+  if (!fresh.length) return boughtIn; // a creation save, or a re-save that bought nothing new, costs no query
+  const [latest] = await tx
+    .select({ number: session.number })
+    .from(session)
+    .where(eq(session.campaignId, campaignId))
+    .orderBy(desc(session.number))
+    .limit(1);
+  if (latest) for (const k of fresh) boughtIn[k] = latest.number;
+  return boughtIn;
 }
 
 // Writes stats back after a counter change, refusing anything the sheet schema wouldn't load (too many ammo types, a
@@ -95,9 +131,13 @@ for (const w of wargear.values()) byName.set(w.name, [...(byName.get(w.name) ?? 
 // next read. `upgradeNames` is set only by `withUpgrades`, so it marks a derived profile: those weapons are replaced by
 // the stored ones, which is what the editor means anyway — it edits attributes, skills, talents and abilities.
 function storedProfiles(incoming: CharacterStats, stored: CharacterStats): CharacterStats {
-  if (!incoming.weapons.some((w) => w.upgradeNames)) return incoming;
+  const suit = incoming.armour.upgradeNames
+    ? { armour: stored.armour.name === incoming.armour.name ? stored.armour : plain(incoming.armour) }
+    : {};
+  if (!incoming.weapons.some((w) => w.upgradeNames)) return { ...incoming, ...suit };
   return {
     ...incoming,
+    ...suit,
     weapons: incoming.weapons.map((w) => {
       if (!w.upgradeNames) return w;
       const { upgradeNames: _names, notes: _notes, ...rest } = w;
@@ -107,36 +147,59 @@ function storedProfiles(incoming: CharacterStats, stored: CharacterStats): Chara
   };
 }
 
-// Fits one upgrade to one of the character's weapons, or refuses (Core pp.227–228, §11.63–§11.65). Shared by
-// `character.fitUpgrade` and a requisition that hands the item straight to a weapon, so both check the same things.
-// It writes the id into `fitted` and never the result: `withUpgrades` derives what the sheet shows.
+// A derived profile with the derived fields taken off, for a host the stored sheet no longer holds.
+const plain = <T extends { upgradeNames?: string[]; notes?: string[] }>(item: T): T => {
+  const { upgradeNames: _names, notes: _notes, ...rest } = item;
+  return rest as T;
+};
+
+// The upgrades already on a host, as catalogue entries: what the cap and one-per-slot rules count.
+const fittedTo = (host: { upgrades?: string[]; fitted?: string[] }) =>
+  [...(host.upgrades ?? []), ...(host.fitted ?? [])].map((u) => wargear.get(u)).filter((w) => w !== undefined);
+
+// Fits one upgrade to one of the character's weapons or to the armour they wear, or refuses (Core pp.227–228,
+// §11.63–§11.65). Shared by `character.fitUpgrade` and a requisition that hands the item straight to a weapon, so both
+// check the same things. It writes the id into `fitted` and never the result: `withUpgrades` derives what the sheet shows.
 function fitUpgrade(
   stats: CharacterStats,
-  { weapon: name, entry, tier }: { weapon: string; entry: Wargear; tier: number },
+  { host = "weapon", weapon: name, entry, tier }: { host?: UpgradeHost; weapon?: string; entry: Wargear; tier: number },
 ): CharacterStats {
-  const at = stats.weapons.findIndex((w) => w.name === name);
-  if (at < 0) fail(`No weapon called "${name}"`);
-  const weapon = stats.weapons[at]!;
   if (!entry.upgrade) fail(`${entry.name} isn't an upgrade`);
-  const base = baseOf(weapon);
   // An upgrade goes on a weapon unless its own `fits` names other kinds: "any ranged weapon" doesn't make a Frag
   // Grenade (kind `grenade`, and ranged when thrown) a candidate for a Red-Dot Sight.
   const kinds = entry.upgrade.fits.kinds ?? ["weapon"];
-  if (!kinds.includes(base.kind))
-    fail(`${entry.name} fits ${kinds.join(" or ")}; ${base.name} is ${base.kind} (rules-flow.md §11.64)`);
+  const check = (base: Wargear, item: Wargear, fitted: Wargear[]) => {
+    if (!kinds.includes(base.kind))
+      fail(`${entry.name} fits ${kinds.join(" or ")}; ${base.name} is ${base.kind} (rules-flow.md §11.64)`);
+    const refusal = upgradeRefusal({
+      upgrade: entry,
+      item,
+      fitted,
+      matches: (w, f) => wargearMatches(w, f, { tier, newTier: tier }),
+      host,
+    });
+    if (refusal) fail(refusal);
+  };
+  if (host === "armour") {
+    const armour = stats.armour;
+    if (!armour.name) fail(`${entry.name} fits armour, and this character wears none`);
+    const base = baseOf(armour, "armour");
+    // What `fits` is checked against is the suit as it is now, upgrades included, the way a weapon's is.
+    const shown = withUpgrades({ weapons: [], armour }, wargear).armour!;
+    check(base, { ...base, armour: { ...base.armour!, traits: shown.traits } }, fittedTo(armour));
+    return {
+      ...stats,
+      armour: { ...armour, wargearId: base.id, fitted: [...(armour.fitted ?? []), entry.id] },
+    };
+  }
+  const at = stats.weapons.findIndex((w) => w.name === name);
+  if (at < 0) fail(`No weapon called "${name}"`);
+  const weapon = stats.weapons[at]!;
+  const base = baseOf(weapon, "weapon");
   // What `fits` is checked against is the weapon as it is now, upgrades included, so a Trait an earlier upgrade added
   // or removed counts: the Anti-Grav Platform takes Heavy off, which is what a not-Heavy upgrade needs.
-  const fitted = [...(weapon.upgrades ?? []), ...(weapon.fitted ?? [])]
-    .map((u) => wargear.get(u))
-    .filter((w) => w !== undefined);
   const shown = withUpgrades({ weapons: [weapon] }, wargear).weapons[0]!;
-  const refusal = upgradeRefusal({
-    upgrade: entry,
-    item: { ...base, weapon: { ...base.weapon!, traits: shown.traits } },
-    fitted,
-    matches: (w, f) => wargearMatches(w, f, { tier, newTier: tier }),
-  });
-  if (refusal) fail(refusal);
+  check(base, { ...base, weapon: { ...base.weapon!, traits: shown.traits } }, fittedTo(weapon));
   return {
     ...stats,
     weapons: stats.weapons.with(at, {
@@ -147,18 +210,20 @@ function fitUpgrade(
   };
 }
 
-// The catalogue entry a sheet weapon came from, or a refusal. It must hold a weapon profile for a fit to be checked.
-function baseOf(weapon: { name: string; wargearId?: string }): Wargear {
-  const byId = weapon.wargearId ? wargear.get(weapon.wargearId) : undefined;
-  const named = byName.get(weapon.name) ?? [];
+// The catalogue entry a sheet weapon or suit came from, or a refusal. It must hold that host's profile for a fit to be
+// checked.
+function baseOf(item: { name: string; wargearId?: string }, host: UpgradeHost): Wargear {
+  const byId = item.wargearId ? wargear.get(item.wargearId) : undefined;
+  const named = byName.get(item.name) ?? [];
   const found = byId ?? (named.length === 1 ? named[0] : undefined);
   if (!found)
     fail(
       named.length > 1
-        ? `More than one catalogue item is called "${weapon.name}", so the fit can't be checked: rebuild the sheet`
-        : `The catalogue doesn't hold "${weapon.name}", so the fit can't be checked: rebuild the sheet`,
+        ? `More than one catalogue item is called "${item.name}", so the fit can't be checked: rebuild the sheet`
+        : `The catalogue doesn't hold "${item.name}", so the fit can't be checked: rebuild the sheet`,
     );
-  if (!found.weapon) fail(`"${found.name}" isn't a weapon in the catalogue`);
+  if (host === "armour" && !found.armour) fail(`"${found.name}" isn't armour in the catalogue`);
+  if (host === "weapon" && !found.weapon) fail(`"${found.name}" isn't a weapon in the catalogue`);
   return found;
 }
 
@@ -200,8 +265,12 @@ export async function applyCharacterAction(
     case "character.build": {
       const { tier, homebrew } = await campaignRules(tx, cid);
       const row = a.id ? await ownCharacter(tx, { campaignId: cid, id: a.id }) : undefined;
-      // A player's build keeps the GM's part (rulings and ticks) as the GM last saved it.
-      const build = ctx.role === "gm" ? a.build : { ...a.build, gm: storedGm(row?.build) };
+      // A player's build keeps the GM's part (rulings and ticks) as the GM last saved it, and both roles' builds keep the
+      // purchase history as the server stamped it: when something was bought is the table's fact, not the builder's.
+      const build = {
+        ...(ctx.role === "gm" ? a.build : { ...a.build, gm: storedGm(row?.build) }),
+        advancement: { ...a.build.advancement, boughtIn: storedBoughtIn(row?.build) },
+      };
       // Once made, a character keeps the Tier it was made at, and only the GM changes its creation choices; a player
       // spends the XP earned in play (issue #9 step 5).
       const made = row?.build ? CharacterBuild.safeParse(row.build) : undefined;
@@ -235,12 +304,18 @@ export async function applyCharacterAction(
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
       // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.
       const xpSpent = r.advancement?.spent ?? 0;
+      // The purchase history (§11.68): every purchase the resolved ledger names, dated with the session it first
+      // appeared in. A key the new build no longer holds is dropped, so a purchase taken back takes its date with it.
+      const stamped = {
+        ...build,
+        advancement: { ...build.advancement, boughtIn: await stampHistory(tx, cid, r, build) },
+      };
       if (row) {
         await tx
           .update(character)
           .set({
             stats,
-            build,
+            build: stamped,
             xpSpent,
             buildDraft: null,
             builtAt: new Date(),
@@ -256,7 +331,7 @@ export async function applyCharacterAction(
           campaignId: cid,
           name: a.name ?? "Unnamed",
           stats,
-          build,
+          build: stamped,
           xpSpent,
           detail: a.detail ?? {},
           builtAt: new Date(),
@@ -266,7 +341,8 @@ export async function applyCharacterAction(
     }
 
     // A draft waits on the character for the GM. A player's keeps the GM's part as it stands (the stored draft's, or the
-    // saved build's), so ticks and rulings stay the GM's.
+    // saved build's), so ticks and rulings stay the GM's. Nothing stamps a draft's purchase history: a draft is never
+    // authoritative, and `character.build` rewrites the history from the stored build on every save (§11.68).
     case "character.draft": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
       const gm = row.buildDraft?.gm ?? row.build?.gm;
@@ -383,30 +459,39 @@ export async function applyCharacterAction(
     case "character.removeUpgrade": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
       const stats = CharacterStats.parse(row.stats);
-      const at = stats.weapons.findIndex((w) => w.name === a.weapon);
-      if (at < 0) fail(`${row.name} has no weapon called "${a.weapon}"`);
-      const weapon = stats.weapons[at]!;
+      // The host: the suit the character wears, or the weapon of that name. One suit at a time (Core p.231), so the
+      // armour host needs no name.
+      const at = a.host === "armour" ? -1 : stats.weapons.findIndex((w) => w.name === a.weapon);
+      if (a.host === "armour" ? !stats.armour.name : at < 0)
+        fail(a.host === "armour" ? `${row.name} wears no armour` : `${row.name} has no weapon called "${a.weapon}"`);
+      const held = a.host === "armour" ? stats.armour : stats.weapons[at]!;
       const entry = wargear.get(a.upgradeId) ?? fail("Unknown upgrade");
       if (!entry.upgrade) fail(`${entry.name} isn't an upgrade`);
 
       if (a.type === "character.removeUpgrade") {
-        // Only what was fitted in play comes off here: an upgrade the build gives the weapon (§11.42) goes in the
+        // Only what was fitted in play comes off here: an upgrade the build gives the host (§11.42) goes in the
         // builder, or the next rebuild would put it back.
-        const which = (weapon.fitted ?? []).indexOf(a.upgradeId);
+        const which = (held.fitted ?? []).indexOf(a.upgradeId);
         if (which < 0)
           fail(
-            (weapon.upgrades ?? []).includes(a.upgradeId)
-              ? `${entry.name} is part of ${weapon.name} as it was built: change the build to take it off`
-              : `${weapon.name} has no ${entry.name} fitted`,
+            (held.upgrades ?? []).includes(a.upgradeId)
+              ? `${entry.name} is part of ${held.name} as it was built: change the build to take it off`
+              : `${held.name} has no ${entry.name} fitted`,
           );
         if (stats.gear.length >= MAX_GEAR) fail(`${row.name}'s gear list is full (${MAX_GEAR} lines)`);
-        const left = (weapon.fitted ?? []).filter((_, i) => i !== which);
-        stats.weapons = stats.weapons.with(at, { ...weapon, fitted: left.length ? left : undefined });
-        // It comes off the weapon and back into the character's gear, where a requisitioned upgrade starts.
+        const left = (held.fitted ?? []).filter((_, i) => i !== which);
+        const kept = left.length ? left : undefined;
+        if (a.host === "armour") stats.armour = { ...stats.armour, fitted: kept };
+        else stats.weapons = stats.weapons.with(at, { ...stats.weapons[at]!, fitted: kept });
+        // It comes off the host and back into the character's gear, where a requisitioned upgrade starts.
         stats.gear = [...stats.gear, gearLine(entry)];
         await saveStats(tx, { id: a.id, stats });
         return { ok: true };
       }
+      // Matched Pair is a property of two weapons, so the player's picker doesn't offer it and the GM fits it on both,
+      // policing the pairing themselves (Apocrypha p.388, §11.64).
+      if (entry.upgrade.gmOnly && ctx.role !== "gm")
+        fail(`${entry.name} is the GM's to fit: it reads on two weapons at once (rules-flow.md §11.64)`);
 
       const { tier } = await campaignRules(tx, cid);
       // The upgrade must be one the character owns: it arrives as a gear line from a requisition (p.205). The GM may
@@ -414,7 +499,7 @@ export async function applyCharacterAction(
       const owned = stats.gear.findIndex((g) => g === entry.name || g.startsWith(`${entry.name} (`));
       if (owned < 0 && ctx.role !== "gm") fail(`${row.name} doesn't have ${entry.name} to fit`);
       if (owned >= 0) stats.gear = stats.gear.filter((_, i) => i !== owned);
-      await saveStats(tx, { id: a.id, stats: fitUpgrade(stats, { weapon: a.weapon, entry, tier }) });
+      await saveStats(tx, { id: a.id, stats: fitUpgrade(stats, { host: a.host, weapon: a.weapon, entry, tier }) });
       return { ok: true };
     }
 

@@ -218,7 +218,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
         </details>
       )}
 
-      {s.weapons.length > 0 && (
+      {(s.weapons.length > 0 || s.armour.name) && (
         <div className="stack" style={{ gap: 6 }}>
           <div className="rule">ARMAMENT</div>
           {s.weapons.map((w) => (
@@ -227,7 +227,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
               <div className="dim" style={{ fontSize: 13 }}>
                 <WeaponLine weapon={w} strength={effectiveStrength(s)} />
               </div>
-              {table && <UpgradeRow me={me} weapon={w} send={table.send} onRefusal={setError} />}
+              {table && <UpgradeRow me={me} item={w} send={table.send} onRefusal={setError} />}
             </div>
           ))}
           {s.armour.name && (
@@ -238,6 +238,13 @@ export function Sheet({ me, tier, table }: SheetProps) {
                 {s.armour.invulnerable ? "*" : ""}
                 {s.armour.traits.length ? ` · ${s.armour.traits.join(", ")}` : ""}
               </span>
+              {/* What a fitted upgrade leaves to the GM, the way a weapon's notes read (Core p.227, §11.65). */}
+              {s.armour.notes?.map((n) => (
+                <div key={n} className="dim wpn-note" style={{ fontSize: 13 }}>
+                  {n}
+                </div>
+              ))}
+              {table && <UpgradeRow me={me} item={s.armour} host="armour" send={table.send} onRefusal={setError} />}
             </div>
           )}
         </div>

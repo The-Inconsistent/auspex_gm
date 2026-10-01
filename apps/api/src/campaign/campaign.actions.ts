@@ -23,6 +23,9 @@ async function charactersOf(tx: Tx, campaignId: string) {
   return rows.map(toCharacter);
 }
 
+// How many characters the unspent-XP nudge names before it counts the rest: the GM report is one line (§11.68).
+const NUDGE_NAMES = 3;
+
 const list = (names: string[]) =>
   names.length > 1 ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}` : (names[0] ?? "");
 
@@ -81,6 +84,8 @@ export async function applyCampaignAction(
     // Wrath 2 each, Glory 0, Ruin = players (p.162, p.164, p.320); the previous session is closed.
     case "session.start": {
       const players = await playerCount(tx, cid);
+      // Read before the resets, so the notice below counts the XP as the last session left it.
+      const before = await charactersOf(tx, cid);
       await tx.update(character).set({ wrath: 2 }).where(eq(character.campaignId, cid));
       await tx.update(campaign).set({ glory: 0, ruin: players }).where(eq(campaign.id, cid));
       await tx
@@ -92,7 +97,16 @@ export async function applyCampaignAction(
         .insert(session)
         .values({ campaignId: cid, number: n + 1 })
         .returning({ id: session.id });
-      return { ok: true, id: s!.id }; // the row was just inserted
+      // XP is spent between sessions (Core p.146; p.148 step 4 for a Milestone Ascension, which hands out XP nobody has
+      // to spend), and what's left is on the player's phone, not the GM's tablet. One line for the whole party, because
+      // the GM report joins notices into one — and a long table names only the first few, since eleven names and amounts
+      // ran off the line when this was tried against the volkus pack. PARTY prints each character's own XP anyway.
+      const unspent = before.filter((c) => c.build && c.xp - c.xpSpent > 0);
+      const shown = unspent.slice(0, NUDGE_NAMES).map((c) => `${c.name} ${c.xp - c.xpSpent}`);
+      const rest = unspent.length - shown.length;
+      const names = list(rest > 0 ? [...shown, `${rest} more`] : shown);
+      const notices = unspent.length ? [`Unspent XP: ${names} — ADVANCE spends it (Core p.146, p.148)`] : [];
+      return notices.length ? { ok: true, id: s!.id, notices } : { ok: true, id: s!.id }; // the row was just inserted
     }
 
     // XP to every character (p.321); pools don't carry over, session.start resets them.

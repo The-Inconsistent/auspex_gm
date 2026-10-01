@@ -1899,9 +1899,10 @@
           "kind": "gm",
           "what": "If either weapon has any other upgrade, both weapons must have that upgrade."
         }
-      ]
+      ],
+      "gmOnly": true
     },
-    "note": "The entry prints Keywords \"ANY\" without brackets; the p.386 table prints \"[ANY]\", used here."
+    "note": "The entry prints Keywords \"ANY\" without brackets; the p.386 table prints \"[ANY]\", used here. It reads on two weapons at once, which `fits` can't say, so it is the GM's to fit and to police (rules-flow.md §11.64)."
   },
   {
     "id": "apoc-overcharge-capacitor",

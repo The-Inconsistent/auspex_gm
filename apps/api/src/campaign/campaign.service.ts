@@ -106,14 +106,12 @@ export async function importCampaign({
       });
       // In reference order; one statement per table, so a location can name a parent from the same insert.
       if (file.characters.length)
-        await tx
-          .insert(character)
-          .values(
-            file.characters.map((ch, i) => ({
-              ...own(ch, i),
-              builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
-            })),
-          );
+        await tx.insert(character).values(
+          file.characters.map((ch, i) => ({
+            ...own(ch, i),
+            builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
+          })),
+        );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
       if (c.locations.length)
         await tx.insert(location).values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId) })));

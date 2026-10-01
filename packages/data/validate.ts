@@ -122,6 +122,12 @@ for (const file of readdirSync(wargearDir)
       );
     }
     if (w.upgrade) wargearUpgrades.push({ where: `wargear/${file} "${w.id}"`, upgrade: w.upgrade });
+    // A per-host slot can only name a host the entry fits, or it would describe something it can never go on (§11.64).
+    for (const host of Object.keys(w.upgrade?.slotOn ?? {}))
+      if (!(w.upgrade!.fits.kinds ?? ["weapon"]).some((k) => k === host)) {
+        failed = true;
+        console.error(`✖ wargear/${file} "${w.id}": slotOn names "${host}", which isn't in fits.kinds`);
+      }
     const err = followerError(w.kind === "follower", w.threatId, w.variant);
     if (err) {
       failed = true;

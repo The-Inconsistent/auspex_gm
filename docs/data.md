@@ -400,7 +400,7 @@ entries:
 | `armour` | `{ ar, invulnerable, powered, traits }` |
 | `effect` | Rules text only (the Effect line); no flavour |
 | `requires` | Who may buy or install it, a `Requirement[]` structured from a printed "Requirements:" line (the line stays in `effect`) |
-| `upgrade` | Every `kind: "upgrade"` entry has one, and no other kind may (`validate.ts`): `{ slot, fits, mods, exempt, copies }`, below |
+| `upgrade` | Every `kind: "upgrade"` entry has one, and no other kind may (`validate.ts`): `{ slot, fits, mods, exempt, copies, slotOn, gmOnly }`, below |
 | `threatId`, `variant` | A `follower`'s bestiary stat block (required), and which of its `variant` options it is when the book prints one profile with variants (the T'au Drones, Apocrypha p.479). Only followers have them |
 | `note` | Print errors copied as printed, and transcription calls |
 
@@ -414,12 +414,15 @@ entries:
 | `mods` | What the fitted profile shows, `UpgradeMod[]` by `kind`: `trait` (`traitId`, `rating?`), `removeTrait`, `traitRating` (`traitId`, `delta`: moves a rating the weapon already has, no-op without the Trait), `damage`, `ed`, `ap`, `salvo` (each `delta`), `range` (`multiply`, `delta`, or `bands: [short, medium, long]` added band by band), `ar` (armour only), `bonusDice` (`dice`, `when`: shown, not rolled), `gm` (`what`) |
 | `exempt` | `"max"`: doesn't count toward the three (Distinction, p.228). `"slot"`: shares its slot without taking it (Support System, §11.64) |
 | `copies` | The upgrade's own printed limit, e.g. "up to 3 times" (IoE p.96) |
+| `slotOn` | A slot per host, for the one entry that is a different type on each: the Suspensor Crystal is `mount` on a weapon and `system` in armour (IoE p.95, §11.64). `validate.ts` refuses a host that isn't in `fits.kinds` |
+| `gmOnly` | Off a player's fit picker, for an upgrade `fits` can't describe: Matched Pair reads on two weapons at once, so the GM fits it and polices the pairing (Apocrypha p.388, §11.64) |
 
 A `gm` mod is prose the GM applies at the table: whatever a profile can't hold (an Action, a Glory spend, a Test) stays
 in `effect` and takes one, so nothing is dropped. `validate.ts` also checks that every mod `traitId` resolves in the
-rules reference (weapon or armour traits). A stored weapon keeps its printed profile plus `upgrades` (ids fitted in the
-build) and `fitted` (ids fitted in play); `withUpgrades` derives the shown profile on read (`toCharacter` in
-`apps/api/src/table/table.state.ts`), so a data fix reaches existing characters.
+rules reference (weapon or armour traits). A stored weapon — and the sheet's armour, which carries the same three fields
+— keeps its printed profile plus `upgrades` (ids fitted in the build) and `fitted` (ids fitted in play);
+`withUpgrades` derives the shown profile on read (`toCharacter` in `apps/api/src/table/table.state.ts`), so a data fix
+reaches existing characters.
 
 Transcription calls, all in each entry's `note`:
 - **Launchers** (grenade launcher, missile launcher, Cyclone) print "Uses the profile of the Grenade/Missile fired", so
