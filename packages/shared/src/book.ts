@@ -6,6 +6,7 @@ import { THREAT_SOURCES, type ThreatSource } from "./threat.ts";
 // PDF page (docs/data.md §3); Legacy of the Necrontyr and the High Altar of Technology are cited by PDF page already.
 export const BOOKS: Record<ThreatSource, { name: string; offset: number }> = {
   core: { name: "Core Rulebook", offset: 1 },
+  "daemons-and-heretics": { name: "Threat Assessment: Daemons & Heretics", offset: 0 },
   "vow-of-absolution": { name: "Vow of Absolution", offset: 0 },
   "inheritance-of-embers": { name: "Aeldari: Inheritance of Embers", offset: 0 },
   "forsaken-system": { name: "Forsaken System Player's Guide", offset: 0 },

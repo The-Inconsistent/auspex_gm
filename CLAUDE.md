@@ -14,7 +14,7 @@ bands (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a
 ## Rules come from the books, never from memory
 
 This app encodes game rules. **Do not invent rules.** Every rule in code cites its printed page
-(`// p.177`, `Core p.324`, `VoA p.43`, `TA p.8`). Where a book is ambiguous, the house decision is written down
+(`// p.177`, `Core p.324`, `VoA p.43`, `TA p.8`, `D&H p.114`). Where a book is ambiguous, the house decision is written down
 in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not silently in code.
 
 - **Specs:** (index: `docs/README.md`; code-level docs: `architecture`, `backend`, `frontend`, `game-logic`, `data`,
@@ -26,7 +26,8 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
 - **Books** are the PDFs in `books/`, gitignored. Page offsets:
   - Core rulebook: PDF page = printed + 1.
   - Vow of Absolution, Threat Assessment, Gutshiva's Kommandos: PDF page = printed.
-  - Threat Assessment: Daemons: PDF page = printed. It's image-only (no text layer), so read it from page renders. It has no `source` id yet.
+  - Threat Assessment: Daemons & Heretics (`daemons-and-heretics`, cite D&H): PDF page = printed. It's image-only (no text layer), so read it
+    from page renders. Its creation content, relics and Sonic Weapon trait are in; its threats aren't yet.
   - Forsaken System Player's Guide, Aeldari: Inheritance of Embers: PDF page = printed. Apocrypha (homebrew): PDF = printed + 3.
     Legacy of the Necrontyr (homebrew): no printed pages, cite PDF pages. Full table: `docs/data.md` §3.
 - **Reading the PDFs:**

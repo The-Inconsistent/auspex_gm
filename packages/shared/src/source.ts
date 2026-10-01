@@ -4,6 +4,7 @@ import { z } from "zod";
 // books only the first listed is transcribed, and the others are cited in its `note` (docs/data.md). Official beats
 // homebrew, then newest printing wins.
 export const SOURCES = {
+  "daemons-and-heretics": { cite: "D&H", official: true, pages: "printed" }, // Threat Assessment, Jun 2024 update
   "vow-of-absolution": { cite: "VoA", official: true, pages: "printed" }, // Apr 2024 printing
   "inheritance-of-embers": { cite: "IoE", official: true, pages: "printed" }, // Jan 2024
   "forsaken-system": { cite: "FSPG", official: true, pages: "printed" }, // 2021

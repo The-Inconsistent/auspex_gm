@@ -1,0 +1,92 @@
+[
+  {
+    "id": "pandaemoniac",
+    "name": "Pandaemoniac Discipline",
+    "source": "daemons-and-heretics",
+    "page": 118,
+    "text": "Rogue psykers and sorcerers are especially lured to the service of Tzeentch, and his dark and unfathomable agenda. The Changer of the Ways whispers occult secrets in dreams and waking nightmares, promising to unveil the secrets of the cosmos to those who open their minds. Many of the powers wielded by Tzeentch’s faithful are simply more powerful versions of those taught by the Scholastica Psykana — a Pyromancer might conjure multi-coloured, soul-scorching flames, whilst a Diviner foresees future events in shockingly precise detail. Most realise too late that the price for such power is paid with the psyker’s soul. Corruption and mutation are ever present risks for mortals who wield spells from the Changer of the Ways, and many a sorcerer’s Path to Glory ends with degeneration into a Chaos Spawn.\n\nWhilst any Chaos Space Marine orcerer or renegade Librarian might be tempted by Tzeentch’s patronage, many Heretic Astartes psykers in his service belong to the Thousand Sons. The greater part of the XV Legion’s fighting strength was reduced to dust after the Rubric of Ahriman (see Rubric Marines, page 60), but those who endured the ritual found their psychic powers greatly increased. Such arcane might has only increased after millennia in the Great Conspirator’s service. A complex, ever-changing hierarchy determines the relative status of the surviving Thousand Sons, from mere thralls to the Exalted Sorcerers of the Silver Towers. True to Tzeentch’s nature, this pyramid of power is regularly inverted by external challengers, such as the Cabal of exiles that follow Ahriman, or defectors to and from the other Traitor Legions.\n\nCompared to the other Dark Gods, the influence of Tzeentch is more subtle in the Gilead System — the Architect of Fate is content to rule as the power behind the throne. His inexplicable agenda is tirelessly enacted by a network of psychic servants, who hide in plain sight, whilst telepathically coordinating their efforts. When forced to defend themselves, these sorcerers unleash a kaleidoscopic assault of mutating horror, a taste of atrocities still to come, if their dark conspiracy is not exposed and thwarted in time.\n\nA Psyker must have the CHAOS Keyword to use powers from the Pandaemoniac Discipline. A Psyker with the TZEENTCH Keyword can always purchase powers from the Pandaemoniac Discipline, without it counting as one of the limited number of Disciplines they can learn. Agents with the KHORNE, NURGLE, or SLAANESH Keyword cannot use powers from the Pandaemoniac Discipline.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "KHORNE",
+          "NURGLE",
+          "SLAANESH"
+        ]
+      }
+    ],
+    "note": "Access rule (p.118), quoted in text. Section rule (p.116): \"Only Agents with the CHAOS Keyword can use the powers in this section, though the GM may waive this requirement — temporarily — for those foolish enough to dabble with the tools of Chaos.\" A TZEENTCH Psyker’s free access, outside the one-Discipline limit (p.116), is the TZEENTCH keyword record’s grant (keywords/daemons-and-heretics.json). Print error kept: \"orcerer\" (sorcerer)."
+  },
+  {
+    "id": "soulstain",
+    "name": "Soulstain Discipline",
+    "source": "daemons-and-heretics",
+    "page": 120,
+    "text": "Once a psyker has beheld the impossible splendour of the Immaterium, the mundane pleasures of reality may lose their lustre. Such disaffected souls are the favoured prey of Slaanesh. The Dark Prince exploits the addictive personalities of his victims, portioning out psychic gifts a morsel at a time, tempting them to trade away parts of their soul for power. Only those who wholeheartedly commit to their repulsive appetites can endure, enamoured with Slaanesh’s favour. The rest are doomed to lose their minds within the warp’s fickle currents, where they are tortured by Daemons for eternity.\n\nMany mortal sorcerers of Slaanesh use their beguiling powers to infiltrate the upper echelons of Gilead society. They escape the black ships by making themselves useful to noble patrons, high lords and ladies who may not realise they are being duped by a rogue psyker. In some courts far from the Emperor’s gaze, daemonic heralds of the Dark Prince walk openly, Tranceweavers (page 94) and Tormentbringers (page 96) ensorcelling their victims with hexcraft. Perhaps the most formidable Slaaneshi psykers are Astartes sorcerers, such as those found in the Emperor’s Children Legion. These are seldom sighted in the Gilead System, but the fall of Craftworld Ul-Khari on Trollius has been a siren song to the Noise Marines, and more of Slaanesh’s faithful emerge from the Great Rift with increasing frequency.\n\nWhilst some hedonists consider themselves lucky to count a Slaaneshi sorcerer as an ally, such fortune rapidly disintegrates if they find themselves on the psyker’s bad side. The psychological impact of the Lord of Excess’ powers can bring great pleasure, but also agonising pain, sensory overload and nightmarish visions, all of which they can turn on those they despise, or use to escape Imperial investigation.\n\nA Psyker must have the CHAOS Keyword to use powers from the Soulstain Discipline. A Psyker with the SLAANESH Keyword can always purchase powers from the Soulstain Discipline, without it counting as one of the limited number of Disciplines they can learn. Agents with the KHORNE, NURGLE, or TZEENTCH Keyword cannot use powers from the Soulstain Discipline.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "KHORNE",
+          "NURGLE",
+          "TZEENTCH"
+        ]
+      }
+    ],
+    "note": "Access rule (p.121), quoted in text. Section rule (p.116): \"Only Agents with the CHAOS Keyword can use the powers in this section, though the GM may waive this requirement — temporarily — for those foolish enough to dabble with the tools of Chaos.\" A SLAANESH Psyker’s free access, outside the one-Discipline limit (p.116), is the SLAANESH keyword record’s grant (keywords/daemons-and-heretics.json)."
+  },
+  {
+    "id": "warprot",
+    "name": "Warprot Discipline",
+    "source": "daemons-and-heretics",
+    "page": 123,
+    "text": "Through the link of psychic power, the limitless bounty of Nurgle’s gardens spreads into the mortal world, infecting reality with its cancer. Wherever these pandimensional outbreaks occur, patient zero is always the psyker that summoned them. These desperate, deluded, or sadistic souls have condemned the lives of so many others to secure their own survival. Yet in time, they will inevitably join the ranks of the fallen — either as another plague victim, or becoming trapped as a servant to Nurgle .\n\nNurgle’s powers are generously bestowed, seldom hoarded by a single individual. He adopts rogue psykers at their lowest ebb, bestowing them with purpose to act as harbingers of doom. When his daemonic legions are abroad, Poxbringers (page 67) or more powerful sorcerers keep the cycle of decay turning. Most notorious of Nurgle’s psykers are the Malignant Plaguecasters of the Death Guard. Whilst the practice of warpcraft was once anathema to the Fourteenth Legion, under Nurgle’s patronage the Plague Marines have accepted their Grandfather’s gifts with malevolent glee.\n\nBy conquering the world of Vulkaris, the forces of Nurgle have secured a foothold in the Gilead System denied to any servants of the other Ruinous Powers. Here a chosen few are tutored in psychic power within the Temples of Holy Decay, mastering their capacity for infection. Whatever the Death Guard are planning next for their conquest of the Reach and Heartworlds, their sorcerous living weapons will surely be a vital part of it.\n\nA Psyker must have the CHAOS Keyword to use powers from the Warprot Discipline. A Psyker with the NURGLE Keyword can always purchase powers from the Warprot Discipline, without it counting as one of the limited number of Disciplines they can learn. Agents with the KHORNE, SLAANESH, or TZEENTCH Keyword cannot use powers from the Warprot Discipline.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "KHORNE",
+          "SLAANESH",
+          "TZEENTCH"
+        ]
+      }
+    ],
+    "note": "Access rule (p.123), quoted in text. Section rule (p.116): \"Only Agents with the CHAOS Keyword can use the powers in this section, though the GM may waive this requirement — temporarily — for those foolish enough to dabble with the tools of Chaos.\" A NURGLE Psyker’s free access, outside the one-Discipline limit (p.116), is the NURGLE keyword record’s grant (keywords/daemons-and-heretics.json). Print error kept: \"servant to Nurgle .\" (stray space)."
+  }
+]

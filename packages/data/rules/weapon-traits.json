@@ -484,5 +484,14 @@
     "page": 328,
     "gist": "On a Complication the wielder takes X Mortal Wounds (all within Blast if it has Blast, centred on them)",
     "text": "The weapon’s power is barely-contained, and it can be harmful to an unwary wielder.\n\nIf you suffer a Complication when wielding this weapon, you immediately suffer X Mortal Wounds. X may either be a static value, or it may be a die roll, such as d3 or d6. If a Volatile weapon has the Blast trait, then a Complication inflicts X Mortal Wounds to all creatures within the weapon’s Blast rating, centred on the wielder."
+  },
+  {
+    "id": "sonic-weapon",
+    "kind": "weapon-trait",
+    "name": "Sonic Weapon",
+    "source": "daemons-and-heretics",
+    "page": 103,
+    "gist": "+2 ED at Short range; Spread at Medium or Long range",
+    "text": "These weapons use focused soundwaves to shatter and pulverise. They lose power over distance but affect a wider area as the wave expands. A Sonic Weapon gains +2 ED at Short range, and Spread at Medium or Long range."
   }
 ]

@@ -492,6 +492,20 @@ test("a granted Talent whose requirements aren't met waits for the GM, and the t
   assert.ok(!ticked.problems.some((x) => x.what.startsWith("Built Tough")));
 });
 
+test("a Chaos god's Keyword gives a Psyker its Discipline outside the limit; the other gods are barred (D&H pp.116, 118)", () => {
+  const psyker = (god: string) =>
+    run({ tier: 2, archetypeId: "sanctioned-psyker", gm: { keywords: ["CHAOS", god] }, powers: ["bolt-of-change"] });
+  const barred = (r: ReturnType<typeof run>) =>
+    r.problems.some((p) => p.what.startsWith("Bolt of Change is from a Discipline you can't learn"));
+  const tzeentch = psyker("TZEENTCH");
+  assert.ok(!barred(tzeentch));
+  assert.ok(
+    tzeentch.pending.some((p) => p.pick?.kind === "discipline"),
+    "the species' one Discipline is still to choose",
+  );
+  assert.ok(barred(psyker("KHORNE")));
+});
+
 test("homebrew records are refused unless the campaign allows them", () => {
   const apoc = catalogue.creation.archetypes.find((a) => a.source === "apocrypha")!;
   assert.ok(run({ tier: apoc.tier, archetypeId: apoc.id }).problems.some((p) => p.what.includes("is homebrew")));

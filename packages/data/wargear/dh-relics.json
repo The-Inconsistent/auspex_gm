@@ -1,0 +1,793 @@
+[
+  {
+    "id": "dh-chaos-terminator-armour",
+    "name": "Chaos Terminator Armour",
+    "source": "daemons-and-heretics",
+    "page": 37,
+    "category": "Chaos Terminators",
+    "kind": "armour",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "POWERED",
+      "ADEPTUS ASTARTES",
+      "CHAOS",
+      "[LEGION]",
+      "[MARK OF CHAOS]"
+    ],
+    "armour": {
+      "ar": 8,
+      "invulnerable": false,
+      "powered": 5,
+      "traits": [
+        "Cumbersome"
+      ]
+    },
+    "effect": "Chosen, Champions, and Sorcerors may wear Terminator armour. Wearing this armour allows them to use the following weapons; a power fist, chainfist, or accursed weapons such as a power axe, power sword blades, power maul, or one or a pair of lightning claws. Where only one close combat weapon is selected, the user of the Terminator armour may carry a ranged weapon, such as a combi-bolter, combi-flamer, combi-melta, or combi-plasma gun. Alternatively, the ranged weapon can be a heavy weapon, such as a heavy flamer or a reaper autocannon.\n\nChaos Space Marines wearing Terminator armour gain the benefits of this sturdy relic, as described below. This replaces any existing armour.",
+    "note": "Chaos Terminators sidebar (p.37): \"Such is the rarity of Terminator armour that a Chaos Space Marine can only acquire a set after killing the former owner — Heretic or Loyalist.\" Keywords printed \"Powered, Adeptus Astartes, Chaos[Legion], Mark of Chaos\": the missing comma is split (CHAOS, [LEGION]) and Mark of Chaos is read as the [MARK OF CHAOS] placeholder. \"Sorcerors\" as printed.",
+    "requires": [
+      {
+        "kind": "gm",
+        "text": "Chosen, Champions, and Sorcerors only; a Chaos Space Marine can only acquire a set after killing the former owner"
+      }
+    ]
+  },
+  {
+    "id": "dh-the-endless-grimoire",
+    "name": "The Endless Grimoire",
+    "source": "daemons-and-heretics",
+    "page": 60,
+    "category": "Relics of Tzeentch",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH"
+    ],
+    "effect": "The wielder of this relic must be a Psyker. With an action, they can use it to make a Scholar (Int) Test, to look for information about a psychic power they do not possess. On success, they may immediately use that power as a Free Action, acting as though they possessed the power and associated psychic discipline. They must reattempt this Scholar Test each time they want to use a psychic power they do not possess.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-the-impossible-robe",
+    "name": "The Impossible Robe",
+    "source": "daemons-and-heretics",
+    "page": 60,
+    "category": "Relics of Tzeentch",
+    "kind": "armour",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH",
+      "FORCE FIELD"
+    ],
+    "armour": {
+      "ar": 5,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": [
+        "Power Field"
+      ]
+    },
+    "effect": "This relic may only be worn by someone with the Mark of Tzeentch. It is armour with AR 5 and the Power Field trait. If the wielder rolls a Complication in a combat where the wielder has been attacked, at the GM’s discretion the Impossible Robe may be the subject of the Complication. This can result in the wearer being transported into the immaterium or a rent in the immaterium opening.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-the-everstave",
+    "name": "The Everstave",
+    "source": "daemons-and-heretics",
+    "page": 61,
+    "category": "Relics of Tzeentch",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Force"
+      ]
+    },
+    "effect": "The wielder of this relic must be a Psyker with the Mark of Tzeentch. It can be used as a weapon with the following profile: (S)+4 +2 ED / AP –1 / Brutal, Force. In addition, when using a psychic power, the wielder may shift 2 Icons to make any Deny the Witch attempts automatically fail.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-warpfire-blade",
+    "name": "Warpfire Blade",
+    "source": "daemons-and-heretics",
+    "page": 61,
+    "category": "Relics of Tzeentch",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Parry"
+      ]
+    },
+    "effect": "The wielder of this relic must be a Psyker with the Mark of Tzeentch. It can be used as a weapon with the following profile: (S)+7 +4 ED / AP –3 / Force, Parry. In addition, any roll of a 6 on an ED inflicts a Mortal Wound in addition to increasing damage as an Exalted Icon.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-soulbane",
+    "name": "Soulbane",
+    "source": "daemons-and-heretics",
+    "page": 61,
+    "category": "Relics of Tzeentch",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Force",
+        "Brutal"
+      ]
+    },
+    "effect": "The wielder of this relic must be a Psyker with the Mark of Tzeentch. It can be used as a weapon with the following profiles: (S)+5 +4 ED / AP –3 / Force, Brutal OR 12 +2 ED / AP –1 / 6 – 12 – 18 / Brutal, Spread, Pistol.",
+    "note": "Melee profile; the ranged profile (OR) is dh-soulbane-ranged. One item: the wielder uses one or the other.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-soulbane-ranged",
+    "name": "Soulbane (ranged)",
+    "source": "daemons-and-heretics",
+    "page": 61,
+    "category": "Relics of Tzeentch",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 12,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "traits": [
+        "Brutal",
+        "Spread",
+        "Pistol"
+      ]
+    },
+    "effect": "The wielder of this relic must be a Psyker with the Mark of Tzeentch. It can be used as a weapon with the following profiles: (S)+5 +4 ED / AP –3 / Force, Brutal OR 12 +2 ED / AP –1 / 6 – 12 – 18 / Brutal, Spread, Pistol.",
+    "note": "Ranged profile of Soulbane (OR); the melee profile is dh-soulbane. Same item, take one profile.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-soul-eater-stave",
+    "name": "Soul-Eater Stave",
+    "source": "daemons-and-heretics",
+    "page": 61,
+    "category": "Relics of Tzeentch",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "TZEENTCH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Force"
+      ]
+    },
+    "effect": "The wielder of this relic must be a Psyker with the Mark of Tzeentch. It can be used as a weapon with the following profile: (S)+4 +2 ED / AP –1 / Brutal, Force. In addition, when the wielder inflicts one or more Wounds with a psychic power, they may spend 1 Glory (or Ruin as appropriate) to immediately recover Wounds equal to the number inflicted.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "TZEENTCH"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-horn-of-nurgles-rot",
+    "name": "Horn of Nurgle's Rot",
+    "source": "daemons-and-heretics",
+    "page": 74,
+    "category": "Relics of Nurgle",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 2,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Inflict (Poisoned 5)"
+      ]
+    },
+    "effect": "The wielder of this relic must have the Mark of Nurgle keyword. This relic may be used as a weapon with the following profile: (S)+2 +2 ED / Inflict (Poisoned 5). In addition, each turn when the victim checks to remove the Poisoned condition, they suffer another S+2 +2 ED damage. If the victim dies while under the effects of the Poisoned condition from the relic, they transform into a Plaguebearer of Nurgle. The transformation is permanent and may not be reversed.",
+    "note": "No Range printed in the profile; melee reach 1 assumed (no AP printed).",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-the-entropic-knell",
+    "name": "The Entropic Knell",
+    "source": "daemons-and-heretics",
+    "page": 74,
+    "category": "Relics of Nurgle",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "NURGLE"
+    ],
+    "effect": "The wielder of this relic must have the Mark of Nurgle keyword. As an action, the wielder of this relic may choose to ring the bell. All who hear it must make a DN 5 Fear Test.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-tome-of-a-thousand-poxes",
+    "name": "Tome of a Thousand Poxes",
+    "source": "daemons-and-heretics",
+    "page": 74,
+    "category": "Relics of Nurgle",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "NURGLE"
+    ],
+    "effect": "The wielder of this relic must be a Psyker with the Mark of Nurgle keyword. Any time the wielder uses a psychic power that deals damage, that power gains the Inflict (Poisoned 3) characteristic. If the power already Inflicts the Poisoned condition, the effect value of the condition is increased by +1.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "PSYKER"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-corruption",
+    "name": "Corruption",
+    "source": "daemons-and-heretics",
+    "page": 75,
+    "category": "Relics of Nurgle",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal",
+        "Parry",
+        "Inflict (Poisoned 4)",
+        "Inflict (Bleeding)"
+      ]
+    },
+    "effect": "The wielder of this relic must have the Mark of Nurgle. This relic may be used as a weapon with the following profile:  (S) +6 +5 ED / AP –2 / Brutal, Parry, Inflict (Poisoned 4), Inflict (Bleeding).",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-effluvior",
+    "name": "Effluvior",
+    "source": "daemons-and-heretics",
+    "page": 75,
+    "category": "Relics of Nurgle",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "NURGLE"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 2,
+      "ed": 3,
+      "ap": -2,
+      "range": [
+        3,
+        6,
+        9
+      ],
+      "traits": [
+        "Inflict (Poisoned 3)",
+        "Spread",
+        "Warp Weapon"
+      ]
+    },
+    "effect": "The wielder of this relic must have the Mark of Nurgle keyword. This relic may be used as a weapon with the following profile: (S) +2 +3 ED / AP –2 / Range 3 – 6 – 9 / Inflict (Poisoned 3) Spread, Warp Weapon",
+    "note": "Printed with no comma between \"Inflict (Poisoned 3)\" and \"Spread\"; read as separate traits.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-the-endless-gift",
+    "name": "The Endless Gift",
+    "source": "daemons-and-heretics",
+    "page": 75,
+    "category": "Relics of Nurgle",
+    "kind": "equipment",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "NURGLE"
+    ],
+    "effect": "The wielder of this relic must have the Mark of Nurgle keyword. At the start of their turn, the wielder heals 1 Wound. If they are at maximum Wounds, they heal up to their Corruption Level in Shock per round. Any time they heal in this way, a portion of their body undergoes a physical change, reflective of the transformative disease progression. Viewers must make a DN 4 Fear Test.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "NURGLE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-armour-of-scorn",
+    "name": "Armour of Scorn",
+    "source": "daemons-and-heretics",
+    "page": 88,
+    "category": "Relics of Khorne",
+    "kind": "armour",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "KHORNE"
+    ],
+    "armour": {
+      "ar": 7,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "Only Greater Daemons and Daemon Princes of Khorne may don the Armour of Scorn. It has an AR of 7, and counts as Invulnerable (Wrath & Glory, p. 232) against any weapon that deals less than 14 base Damage (i.e. the weapon’s Damage stat without ED, Shifted Icons etc.). In addition, whenever a psychic power would cause the wearer to suffer Wounds, roll 1d6; On a 5+, the number of Wounds taken is halved, rounding up.",
+    "note": "Invulnerable only against weapons with under 14 base Damage, so `invulnerable` is false (schema has no conditional); see effect.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "KHORNE"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "Greater Daemons and Daemon Princes of Khorne only"
+      }
+    ]
+  },
+  {
+    "id": "dh-the-crimson-crown",
+    "name": "The Crimson Crown",
+    "source": "daemons-and-heretics",
+    "page": 88,
+    "category": "Relics of Khorne",
+    "kind": "equipment",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "KHORNE"
+    ],
+    "effect": "A Threat wearing the Crimson Crown generates 1 extra Ruin each Turn. If the Threat cannot use Ruin Actions, it gains the Champion bonus, gaining 1 personal Ruin, allowing it to use Ruin Actions and generating 1 Ruin per Turn."
+  },
+  {
+    "id": "dh-rune-of-brass",
+    "name": "Rune of Brass",
+    "source": "daemons-and-heretics",
+    "page": 88,
+    "category": "Relics of Khorne",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "KHORNE"
+    ],
+    "effect": "Any Psyker attempting to use a psychic power within 15 metres of the Rune must add and additional +2 DN to their Psychic Mastery (Wil) Test. In addition, if a Psyker must roll on the Perils of the Warp Table while within 15 metres of the Rune, they roll twice and must pick the worse result.",
+    "note": "Print error kept: \"add and additional +2 DN\"."
+  },
+  {
+    "id": "dh-blood-drinker-talisman",
+    "name": "Blood-Drinker Talisman",
+    "source": "daemons-and-heretics",
+    "page": 88,
+    "category": "Relics of Khorne",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "KHORNE"
+    ],
+    "effect": "Every time a Threat with the Blood-Drinker Talisman kills one or more enemies (or indeed allies), roll 1d6; on a 5+, they regain d6 lost Wounds. The bearer cannot recover more than their Toughness in Wounds in a single Round."
+  },
+  {
+    "id": "dh-argath-the-king-of-blades",
+    "name": "A'rgath, the King of Blades",
+    "source": "daemons-and-heretics",
+    "page": 89,
+    "category": "Relics of Khorne",
+    "kind": "weapon",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "KHORNE"
+    ],
+    "effect": "A’rgath can take the form of any bladed melee weapon, to suit the proficiencies of any disciple or daemon of Khorne. It gains the statistics of that weapon, and a +4 bonus to its base Damage and ED. It ignores the Invulnerable armour Trait (Wrath & Glory, p. 232), causes Mortal Wounds, and always inflicts 1 Mortal Wound that cannot be averted by any means on a successful strike.",
+    "note": "No printed profile: it copies the chosen bladed melee weapon, +4 base Damage and +4 ED.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "KHORNE"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-skullreaver",
+    "name": "Skullreaver",
+    "source": "daemons-and-heretics",
+    "page": 89,
+    "category": "Relics of Khorne",
+    "kind": "weapon",
+    "value": 12,
+    "rarity": "Unique",
+    "keywords": [
+      "KHORNE"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 20,
+      "ed": 6,
+      "ap": -5,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "Only a Bloodthirster may wield Skullreaver. It replaces its Axe of Khorne with the following values: 20 +6 ED / AP -5 / Range 2 / Brutal",
+    "note": "Replaces the Bloodthirster's Axe of Khorne.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "Only a Bloodthirster may wield Skullreaver"
+      }
+    ]
+  },
+  {
+    "id": "dh-the-forbidden-gem",
+    "name": "The Forbidden Gem",
+    "source": "daemons-and-heretics",
+    "page": 103,
+    "category": "Relics of Slaanesh",
+    "kind": "equipment",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "SLAANESH"
+    ],
+    "effect": "Once per turn, the holder of the Forbidden Gem may target any Agent; That Agent becomes Hindered and may not use their Archetype Ability on their next turn."
+  },
+  {
+    "id": "dh-the-mark-of-excess",
+    "name": "The Mark of Excess",
+    "source": "daemons-and-heretics",
+    "page": 103,
+    "category": "Relics of Slaanesh",
+    "kind": "upgrade",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "SLAANESH"
+    ],
+    "effect": "Daemons carrying the Mark of Excess get +1 bonus die to all Weapon Skill (I) Tests. Each combat, whenever an attack of theirs downs an enemy, disables a vehicle, or causes a Critical Hit, they gain another cumulative +1 bonus die to Attack rolls.",
+    "note": "Kind `upgrade`: a Mark carried by a Daemon, not a held item.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dh-soulstealer",
+    "name": "Soulstealer",
+    "source": "daemons-and-heretics",
+    "page": 104,
+    "category": "Relics of Slaanesh",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "SLAANESH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Agonising",
+        "Parry"
+      ]
+    },
+    "effect": "Soulstealer may only be wielded by a Keeper of Secrets or a Daemon Prince. Whenever Soulstealer kills an enemy, it heals the wielder 2d6 Wounds. Soulstealer gains the Brutal Trait when attacking anyone with the AELDARI Keyword.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "Soulstealer may only be wielded by a Keeper of Secrets or a Daemon Prince"
+      }
+    ]
+  },
+  {
+    "id": "dh-slothful-claws",
+    "name": "Slothful Claws",
+    "source": "daemons-and-heretics",
+    "page": 104,
+    "category": "Relics of Slaanesh",
+    "kind": "upgrade",
+    "value": 9,
+    "rarity": "Unique",
+    "keywords": [
+      "SLAANESH"
+    ],
+    "effect": "A Daemonette with Ravaging Claws or Snapping Claws may upgrade to Slothful Claws. Their attacks gain +2 ED, and anyone who takes Wounds from Slothful Claws may not use or benefit from any Archetype Abilities until the Daemonette’s next Turn.",
+    "note": "Kind `upgrade`: it upgrades the Daemonette's Ravaging/Snapping Claws (+2 ED); no profile of its own printed.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "A Daemonette with Ravaging Claws or Snapping Claws may upgrade to Slothful Claws"
+      }
+    ]
+  },
+  {
+    "id": "dh-silverstrike",
+    "name": "Silverstrike",
+    "source": "daemons-and-heretics",
+    "page": 104,
+    "category": "Relics of Slaanesh",
+    "kind": "weapon",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "SLAANESH"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Agonising",
+        "Parry"
+      ]
+    },
+    "effect": "Silverstrike replaces a Keeper of Secrets’ Witstealer Sword. When Silverstrike wounds an enemy, that enemy suffers a -1 dice penalty to attack rolls, and -1 to melee weapon damage for the duration of the combat. This effect may be applied to an opponent a number of times equal to the wielder’s Conviction.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "Silverstrike replaces a Keeper of Secrets’ Witstealer Sword"
+      }
+    ]
+  },
+  {
+    "id": "dh-whip-of-agony",
+    "name": "Whip of Agony",
+    "source": "daemons-and-heretics",
+    "page": 104,
+    "category": "Relics of Slaanesh",
+    "kind": "upgrade",
+    "value": 10,
+    "rarity": "Unique",
+    "keywords": [
+      "SLAANESH"
+    ],
+    "effect": "A Herald or Keeper of Secrets may upgrade their Lashes of Torment/Living Whip to a Whip of Agony. Any attacks with a Whip of Agony that score a Wrath Critical allow the wielder to make another attack as a Free Action. In addition, an attack that hits but does not Wound still inflicts 1 Shock.",
+    "note": "Kind `upgrade`: replaces Lashes of Torment/Living Whip; no profile printed.",
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "DAEMON"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "A Herald or Keeper of Secrets may upgrade their Lashes of Torment/Living Whip to a Whip of Agony"
+      }
+    ]
+  }
+]

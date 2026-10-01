@@ -1,0 +1,169 @@
+[
+  {
+    "id": "benediction-of-darkness",
+    "name": "Benediction of Darkness",
+    "source": "daemons-and-heretics",
+    "page": 114,
+    "category": "prayer",
+    "note": "Section rules (p.114): \"Any Agent with the CHAOS Keyword can purchase a Prayer to the Dark Gods for the XP Cost listed.\" \"Prayers to the Dark Gods are activated using Ruin. When an Agent activates a Prayer, they increase Ruin by 1.\" \"An Agent choosing to use a Prayer’s Favoured Effect gains 1 Corruption.\" Betrayer (Core p.130) and Let the Galaxy Burn (Core p.135) can forsake their Wrath or Glory so the next Prayer this scene doesn’t increase Ruin (p.114). \"You gain +1 Corruption.\" in the Effect is gained on purchase, as Core’s Betrayer prints it. Also An Abundance of Apocrypha p.256 (homebrew, 20 XP, PRIEST and CHAOS), a different prayer; this official printing replaces it.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Nightmares lurk beyond the rays of sunlight; becoming one with the dark is the true path to glory.\nYou gain +1 Corruption.\n\nActivate this Prayer as a Simple Action to blanket you and all allies within 10m in darkness. Until the end of the Round, tests against those affected suffer vision penalties (Wrath & Glory page 191), increasing the level of darkness two steps (to a maximum of total darkness), or imposing the effects of very dim light in otherwise well-lit conditions.\n\nFavoured Effect: From the darkness you conjure shadowy doppelgangers of your allies. Any attack Tests against affected targets until the end of the Round automatically fail, unless the attacker scores at least one Icon on a Wrath Die.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
+  },
+  {
+    "id": "daemonic-summons",
+    "name": "Daemonic Summons",
+    "source": "daemons-and-heretics",
+    "page": 114,
+    "category": "prayer",
+    "note": "Section rules (p.114): \"Any Agent with the CHAOS Keyword can purchase a Prayer to the Dark Gods for the XP Cost listed.\" \"Prayers to the Dark Gods are activated using Ruin. When an Agent activates a Prayer, they increase Ruin by 1.\" \"An Agent choosing to use a Prayer’s Favoured Effect gains 1 Corruption.\" Betrayer (Core p.130) and Let the Galaxy Burn (Core p.135) can forsake their Wrath or Glory so the next Prayer this scene doesn’t increase Ruin (p.114). \"You gain +1 Corruption.\" in the Effect is gained on purchase, as Core’s Betrayer prints it.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "The legions of the warp will answer the call of those who facilitate their perversion of reality.\nYou gain +1 Corruption.\n\nActivate this Prayer with a Full-Round Action to summon a Threat with the DAEMON and CHAOS Keywords within 25m of you. The summoned Threat must be an Elite-level Threat at your Tier, or a Mob of Double Rank +2 Troops. The Daemons’ actions once it enters reality are left entirely to the GM’s discretion. They disappear after 3 Rounds, if not destroyed before then.\n\nFavoured Effect: Instead of summoning a Daemon, you may force it to possess a willing or unconscious host. The character gains access to the Threat’s Bonuses and Abilities (including Daemonic Determination). They cannot use effects that require them to spend Ruin, or use equipment they do not have, and use their own stats for any Tests required to activate the Daemon’s powers. After 3 Rounds, the host makes a Conviction Test, with a DN equal to the possessing Daemon’s Willpower. If they fail, the Daemon makes a permanent home in the host’s body, per the Dark Passenger Perils of the Warp effect. See Wrath & Glory page 264 for details.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
+  },
+  {
+    "id": "dark-zealotry",
+    "name": "Dark Zealotry",
+    "source": "daemons-and-heretics",
+    "page": 115,
+    "category": "prayer",
+    "note": "Section rules (p.114): \"Any Agent with the CHAOS Keyword can purchase a Prayer to the Dark Gods for the XP Cost listed.\" \"Prayers to the Dark Gods are activated using Ruin. When an Agent activates a Prayer, they increase Ruin by 1.\" \"An Agent choosing to use a Prayer’s Favoured Effect gains 1 Corruption.\" Betrayer (Core p.130) and Let the Galaxy Burn (Core p.135) can forsake their Wrath or Glory so the next Prayer this scene doesn’t increase Ruin (p.114). \"You gain +1 Corruption.\" in the Effect is gained on purchase, as Core’s Betrayer prints it. Also An Abundance of Apocrypha p.256 (homebrew, 20 XP, PRIEST and CHAOS), a different prayer; this official printing replaces it.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      }
+    ],
+    "effect": "There is purity in your hatred of unbelievers who blaspheme against the Ruinous Powers.\nYou gain +1 Corruption.\nActivate this Prayer as a Simple Action to give you and all allies within 10m +Double Rank bonus dice on all Weapon Skill (I) Tests made until the end of Round.\nFavoured Effect: The effects of this Prayer last until the end of the current combat.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
+  },
+  {
+    "id": "eye-of-the-gods",
+    "name": "Eye of the Gods",
+    "source": "daemons-and-heretics",
+    "page": 115,
+    "category": "prayer",
+    "note": "Section rules (p.114): \"Any Agent with the CHAOS Keyword can purchase a Prayer to the Dark Gods for the XP Cost listed.\" \"Prayers to the Dark Gods are activated using Ruin. When an Agent activates a Prayer, they increase Ruin by 1.\" \"An Agent choosing to use a Prayer’s Favoured Effect gains 1 Corruption.\" Betrayer (Core p.130) and Let the Galaxy Burn (Core p.135) can forsake their Wrath or Glory so the next Prayer this scene doesn’t increase Ruin (p.114). \"You gain +1 Corruption.\" in the Effect is gained on purchase, as Core’s Betrayer prints it.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "KHORNE",
+          "NURGLE",
+          "SLAANESH",
+          "TZEENTCH"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      }
+    ],
+    "effect": "All burdened with attentions from the infernal pantheon shall be recognised by their Mark.\nYou gain +1 Corruption.\nActivate this Prayer as a Simple Action to give you and all allies within 10m who share your [MARK OF CHAOS] Keyword the listed benefit until the end of the Round:\n- KHORNE: You gain +2 bonus dice when making an All-Out Attack.\n- NURGLE: You gain +1 Toughness (which therefore provides +1 Resilience, Wounds, and Determination as well).\n- SLAANESH: You gain +2 bonus dice on Awareness (Int) and Persuasion (Fel) Tests.\n- TZEENTCH: You gain the PSYKER Keyword and the Invoke Luck psychic power (Wrath & Glory page 269).\nFavoured Effect: The effects of this Prayer last until the end of the current scene or combat.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
+  },
+  {
+    "id": "forge-of-souls",
+    "name": "Forge of Souls",
+    "source": "daemons-and-heretics",
+    "page": 115,
+    "category": "prayer",
+    "note": "Section rules (p.114): \"Any Agent with the CHAOS Keyword can purchase a Prayer to the Dark Gods for the XP Cost listed.\" \"Prayers to the Dark Gods are activated using Ruin. When an Agent activates a Prayer, they increase Ruin by 1.\" \"An Agent choosing to use a Prayer’s Favoured Effect gains 1 Corruption.\" Betrayer (Core p.130) and Let the Galaxy Burn (Core p.135) can forsake their Wrath or Glory so the next Prayer this scene doesn’t increase Ruin (p.114). \"You gain +1 Corruption.\" in the Effect is gained on purchase, as Core’s Betrayer prints it.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 1
+      }
+    ],
+    "effect": "Those schooled in malevolent artifice shall wield the tools of the Arkifane as their own.\nYou gain +1 Corruption.\nActivate this Prayer with a 30 minute ritual to transform a weapon with the BLADE Keyword into a Daemon Weapon. The weapon gains the Warp Weapon Trait; depending on the allegiance of the Daemon it also gains the KHORNE - Inflict (Bleeding), NURGLE - Inflict (Poisoned 4), SLAANESH - Agonising, TZEENTCH - Force.\nIn addition, any attacks with the daemon weapon convert an extra die into a Wrath Die. The attack triggers a Wrath Critical if any Wrath Dice score an Exalted Icon. However, any Complications rolled trigger a Perils of the Warp effect, per Wrath & Glory page 262.\nYou may also activate this Prayer with a 30 minute ritual to bind a Daemon to a vehicle, transforming it into a Daemon Engine. Drivers of the vehicle convert an extra die into a Wrath Die when making Pilot (A) Tests to operate it (following the rules for extra Wrath Dice above), and all weapons aboard the vehicle gain the Warp Weapon Trait. If you are using the rules for vehicles in Church of Steel, all weapons aboard the vehicle also gain the Cognis Trait.\n\nAfter one day, or when the wielder/driver of the device is Dying, the Daemon breaks its bonds and escapes to the Warp, ending the effects of this Prayer.\nFavoured Effect: The Daemon’s bounds are permanent. If the wielder/driver uses the device whilst Dying, they only trigger Wrath Criticals if all Wrath Dice rolled score Exalted Icons, but suffer Traumatic Injuries and Perils of the Warp effects from Complications as normal.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
+  },
+  {
+    "id": "litany-of-despair",
+    "name": "Litany of Despair",
+    "source": "daemons-and-heretics",
+    "page": 115,
+    "category": "prayer",
+    "note": "Section rules (p.114): \"Any Agent with the CHAOS Keyword can purchase a Prayer to the Dark Gods for the XP Cost listed.\" \"Prayers to the Dark Gods are activated using Ruin. When an Agent activates a Prayer, they increase Ruin by 1.\" \"An Agent choosing to use a Prayer’s Favoured Effect gains 1 Corruption.\" Betrayer (Core p.130) and Let the Galaxy Burn (Core p.135) can forsake their Wrath or Glory so the next Prayer this scene doesn’t increase Ruin (p.114). \"You gain +1 Corruption.\" in the Effect is gained on purchase, as Core’s Betrayer prints it. Also An Abundance of Apocrypha p.256 (homebrew, 20 XP, PRIEST and CHAOS), a different prayer; this official printing replaces it.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      }
+    ],
+    "effect": "Even unbelievers cannot deny the truth of Chaos once it takes root in their soul.\nYou gain +1 Corruption.\nActivate this Prayer with a Combat Action to inflict the Hindered Condition on all enemies within 10m.\nFavoured Effect: All enemies within 10m must make a DN 5 Corruption Test.",
+    "grants": [
+      {
+        "corruption": 1
+      }
+    ]
+  }
+]
