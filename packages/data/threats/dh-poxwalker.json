@@ -1,0 +1,82 @@
+{
+  "id": "dh-poxwalker",
+  "name": "Poxwalker",
+  "source": "daemons-and-heretics",
+  "page": 72,
+  "faction": "daemon",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 2,
+    "I": 3,
+    "Wil": 2,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 4
+  },
+  "defence": 2,
+  "wounds": 5,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Mindless",
+      "text": "This Threat automatically passes Resolve Tests."
+    },
+    {
+      "name": "Walking Pox",
+      "text": "Any time a Poxwalker kills an opponent, the foe rises from the dead as a Poxwalker."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Infectious Assault",
+          "damage": 4,
+          "ed": 1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflicts (Poison 3)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 4,
+  "size": "Avg",
+  "note": "Reprint of poxwalker; differs in attributes, Defence 2, Shock '-', Skills, keywords (adds DAEMON), weapon (Infectious Assault 4 +1 ED, not Infectious Fists and Teeth 6 +1 ED) and Tier row (5 letters). Faction daemon by the DAEMON keyword. Block header reads 'Poxwalkers'."
+}

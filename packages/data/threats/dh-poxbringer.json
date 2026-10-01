@@ -1,0 +1,100 @@
+{
+  "id": "dh-poxbringer",
+  "name": "Poxbringer",
+  "source": "daemons-and-heretics",
+  "page": 67,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 9,
+    "A": 4,
+    "I": 5,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 5
+  },
+  "resilience": {
+    "value": 10
+  },
+  "defence": 4,
+  "wounds": 15,
+  "shock": null,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "The Poxbringer may use Ruin actions and has 2 personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 4 Fear Test"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Foul Balesword",
+          "damage": 13,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Inflict (Poisoned 3)",
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Maleficarum",
+      "text": "The Poxbringer attempts to activate a psychic power including Smite or a Maleficarum psychic power, treat Corruption as 5."
+    },
+    {
+      "type": "RUIN",
+      "name": "Cheerful Contagion",
+      "text": "Spend 1 Ruin. Another model in the conflict with the NURGLE or Mark of NURGLE keyword regains 2 Wounds."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 9d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Battlecry printed without a final full stop. Cheerful Contagion's RUIN label is printed in plain (not bold) type."
+}

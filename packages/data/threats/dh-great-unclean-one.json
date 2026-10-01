@@ -1,0 +1,132 @@
+{
+  "id": "dh-great-unclean-one",
+  "name": "Great Unclean One",
+  "source": "daemons-and-heretics",
+  "page": 64,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "PSKYER",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 12,
+    "T": 10,
+    "A": 6,
+    "I": 6,
+    "Wil": 10,
+    "Int": 8,
+    "Fel": 10
+  },
+  "resilience": {
+    "value": 20
+  },
+  "defence": 5,
+  "wounds": 40,
+  "shock": null,
+  "skills": {
+    "default": 10,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 13,
+        "passive": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "personalRuin": 5,
+  "bonuses": [
+    {
+      "name": "Neverending Plague",
+      "text": "The GM gains 2 Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Beloved of Nurgle",
+      "text": "This Threat may use Ruin Actions and has 5 personal Ruin."
+    },
+    {
+      "name": "Massive Bulk",
+      "text": "A Great Unclean One is huge and immensely difficult to kill. It has 40 Wounds."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Encroaching Pestilence",
+      "text": "Anyone who sees a Great Unclean One must make a DN 5 Terror Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bilesword",
+          "damage": 17,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry",
+            "Inflict (Poisoned 4)",
+            "Inflict (Bleeding)"
+          ]
+        },
+        {
+          "name": "Putrid Vomit",
+          "damage": 14,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "traits": [
+            "Assault",
+            "Inflict (Poisoned 4)",
+            "Spread"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Maleficarum",
+      "text": "The Great Unclean One attempts to activate any two psychic powers including Smite or a Maleficarum psychic power, treat Corruption as 7."
+    },
+    {
+      "type": "RUIN",
+      "name": "Nurglings!",
+      "text": "Spend 1 Ruin. A single band of Nurglings numbering the same as the Great Unclean Ones remaining Wounds disgorges from the daemon's guts and acts immediately."
+    },
+    {
+      "type": "RUIN",
+      "name": "Disease Progression",
+      "text": "Spend 1 Ruin. The Great Unclean One heals 5 Wounds."
+    },
+    {
+      "type": "REACTION",
+      "name": "Noxious Discharge",
+      "text": "Whenever this Threat takes a Wound, roll a d6. If you roll an Icon, a mix of virulent gases and toxic effluent spills from the Wound. The Noxious Discharge hits everytarget Engaged with the Great Unclean One. Noxious Discharge: 2 +4 ED / AP -4 / Blast (4), Inflict (Poison 4)."
+    }
+  ],
+  "determination": "You do not need to spend Ruin to roll 10d6 Determination. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock",
+  "conviction": 10,
+  "resolve": 9,
+  "speed": 6,
+  "size": "Gargantuan",
+  "note": "No namesake in (aa-botuthrax-clostidia is a named Great Unclean One with other stats). Printed 'everytarget' in Noxious Discharge. Noxious Discharge has no range, so it stays REACTION text."
+}
