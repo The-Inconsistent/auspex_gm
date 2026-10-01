@@ -9,7 +9,7 @@ export const ASCEND_KINDS = {
   experience: {
     label: "EXPERIENCE ASCENSION",
     cite: "Core pp.147–148",
-    gist: "Every character has earned 100 XP or more in this Tier, and the group decides together. One character past 100 does not Ascend alone (house rule §11.63).",
+    gist: "Every character has earned 100 XP or more in this Tier, and the group decides together. One character past 100 does not Ascend alone (house rule §11.66).",
   },
   milestone: {
     label: "MILESTONE ASCENSION",

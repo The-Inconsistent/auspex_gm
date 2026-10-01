@@ -29,7 +29,7 @@ export const Weapon = z.object({
   range: z.array(z.number().int().positive()).min(1).max(3), // [1] melee, [16] thrown, [S, M, L] ranged
   salvo: z.number().int().nonnegative().nullable().optional(), // null = "–"
   traits: z.array(z.string()).default([]),
-  // On a character's sheet only, and all four about upgrades (Core p.227, rules-flow.md §11.60–§11.62). What is stored
+  // On a character's sheet only, and all four about upgrades (Core p.227, rules-flow.md §11.63–§11.65). What is stored
   // is the profile **as printed** plus the ids of what is fitted, never the result: `withUpgrades` derives the shown
   // profile on the way out, so nothing double-applies and a data fix re-derives.
   wargearId: z.string().optional(), // the catalogue entry this profile came from

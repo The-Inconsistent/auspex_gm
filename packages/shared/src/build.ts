@@ -52,7 +52,7 @@ export type BuildChoice = z.infer<typeof BuildChoice>;
 // Advancement (Core pp.146–151, issue #9 step 5): what the character buys after creation with the XP earned in play,
 // priced from where creation left the ratings. `packages`: Advancement Packages (`notAtCreation` ones too), and **one**
 // Ascension Package for the Ascension the group has made since creation, however many Tiers it crossed (Core p.148,
-// rules-flow.md §11.55). `archetypeAscension` is the other way to spend that one slot (Core p.155, §11.64).
+// rules-flow.md §11.55). `archetypeAscension` is the other way to spend that one slot (Core p.155, §11.67).
 export const Advancement = z
   .object({
     attributes: z.partialRecord(attribute, z.number().int().min(1).max(12)).prefault({}),
@@ -955,7 +955,7 @@ export function resolveBuild({
       });
   }
 
-  // ── Archetype Ascension (Core p.155, rules-flow.md §11.64): at an Ascension, in place of an Ascension Package, the
+  // ── Archetype Ascension (Core p.155, rules-flow.md §11.67): at an Ascension, in place of an Ascension Package, the
   // character takes an Archetype of their own Faction at the Tier Ascended to. It grants that Archetype's abilities,
   // Keywords, Wargear and Influence — and none of its Attribute or Skill ratings, which XP has to buy (below).
   // Everything the old Archetype gave stays, so the old one is applied above and never replaced. ──
@@ -1008,7 +1008,7 @@ export function resolveBuild({
           what: `${to.name} is not open to ${species?.name ?? speciesId}`,
           cite: cite(to),
         });
-      // The book gives the new Archetype for "a story reason", with the GM's agreement (Core p.155, §11.64).
+      // The book gives the new Archetype for "a story reason", with the GM's agreement (Core p.155, §11.67).
       problem({
         step: "ascension",
         severity: "gm",
@@ -1929,11 +1929,14 @@ export function keepPlay({
     const from = next.weapons.find((n) => sameWeapon(w, n));
     // A weapon with no counterpart in the new build was gained in play, so anything on it was fitted at the table.
     const fitted = [...new Set([...(w.fitted ?? []), ...(from ? [] : (w.upgrades ?? []))])];
+    const { upgrades: _, fitted: __, ...line } = w;
+    const wargearId = w.wargearId ?? from?.wargearId;
+    // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed.
     return {
-      ...w,
-      wargearId: w.wargearId ?? from?.wargearId,
-      upgrades: from?.upgrades,
-      fitted: fitted.length ? fitted : undefined,
+      ...line,
+      ...(wargearId && { wargearId }),
+      ...(from?.upgrades?.length && { upgrades: from.upgrades }),
+      ...(fitted.length && { fitted }),
     };
   });
   const weapons = new Set([...previous.weapons, ...before.weapons].map((w) => w.name));

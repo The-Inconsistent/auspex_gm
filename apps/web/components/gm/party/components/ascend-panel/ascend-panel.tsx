@@ -16,7 +16,7 @@ type AscendPanelProps = {
   onResult: (r: ActionResult, ok: string) => void;
 };
 
-// ASCEND (Core pp.147–148): the group's Tier, raised for everyone at once (house rule §11.63). Experience Ascension is
+// ASCEND (Core pp.147–148): the group's Tier, raised for everyone at once (house rule §11.66). Experience Ascension is
 // offered only when every character has earned 100 XP in this Tier; Milestone Ascension is always offered, because it is
 // the GM's call, and gives every character 100 XP. The server re-checks all of it, so this screen only makes the choice
 // clear — and, because a Tier changes every character's XP budget, asks for a second tap before it sends.
@@ -25,7 +25,7 @@ export function AscendPanel({ characters, tier, send, onResult }: AscendPanelPro
   const [arming, setArming] = useState<AscendKind | null>(null);
   const inTier = (c: Character) => c.xp - c.xpAtAscension; // XP earned since the group last Ascended
   // A Dead character is no longer one of the group, so it neither has to reach 100 XP nor holds the party back
-  // (Core p.147, rules-flow.md §11.63). The server reads it the same way, so the button matches what it will allow.
+  // (Core p.147, rules-flow.md §11.66). The server reads it the same way, so the button matches what it will allow.
   const dead = (c: Character) =>
     pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead");
   const group = characters.filter((c) => !dead(c));
@@ -67,7 +67,7 @@ export function AscendPanel({ characters, tier, send, onResult }: AscendPanelPro
         <span className="dim">Core pp.147–148</span>
       </div>
       <div className="dim">
-        The party Ascends together: one Tier for the whole campaign (house rule §11.63). Tier {tier} now
+        The party Ascends together: one Tier for the whole campaign (house rule §11.66). Tier {tier} now
         {atMax ? " — the highest there is." : `, Tier ${tier + 1} after.`}{" "}
         {!atMax && "Each character then takes one Ascension Package, or an Archetype Ascension, in the builder."}
       </div>

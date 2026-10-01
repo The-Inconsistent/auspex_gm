@@ -137,7 +137,7 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   Ascended); the GM sees every screen. `?step=<screen>` opens the builder on one screen, which is how the sheet's
   LEVEL UP badge lands on ADVANCE.
 - **ASCENSION in play** (issue #15 step 6): after the group Ascends, the one Ascension Package for that Ascension
-  (Core p.148, §11.55) **or** Archetype Ascension (Core p.155, §11.64 — the archetypes of the same Faction at the Tier
+  (Core p.148, §11.55) **or** Archetype Ascension (Core p.155, §11.67 — the archetypes of the same Faction at the Tier
   Ascended to). The screen states the Rank 3, GM-agreement and equal-or-exceed conditions and disables nothing:
   `resolveBuild` decides and the screen shows its problems. A waived package says one may still be taken.
 - **The sheet's XP line** (issue #15 step 5): XP earned, XP to spend (`xp − xpSpent`) and Rank (`rankOf`), with a

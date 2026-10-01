@@ -57,7 +57,7 @@
         { "kind": "gm", "what": "replaces the chest piece of a standard suit of power armour" }
       ]
     },
-    "note": "No Value, Rarity or Keywords printed. Printed under \"Augmetics & Other Tools\", but it names a host item, a compatibility line and profile changes, so it is an armour upgrade (rules-flow.md §11.61, which uses it as the `plate` example). VoA prints \"Bulky\" where Core's Trait is Bulk, as on Mk V Heresy Armour." },
+    "note": "No Value, Rarity or Keywords printed. Printed under \"Augmetics & Other Tools\", but it names a host item, a compatibility line and profile changes, so it is an armour upgrade (rules-flow.md §11.64, which uses it as the `plate` example). VoA prints \"Bulky\" where Core's Trait is Bulk, as on Mk V Heresy Armour." },
   { "id": "voa-astartes-servo-arm", "name": "Astartes Servo-Arm", "source": "vow-of-absolution", "page": 73, "category": "Augmetics & Other Tools", "kind": "augmetic", "value": null, "rarity": null, "keywords": [],
     "effect": "You gain +5 Strength when using the Astartes Servo-Arm. The arm allows you to Brace (Wrath & Glory Core Rulebook, page 189) as a Free Action in combat. It adds +1 bonus dice to all Tech (Int) Tests to perform engineering tasks, and can be used as a melee weapon.",
     "note": "No Value, Rarity, Keywords or melee profile printed." }

@@ -107,7 +107,7 @@ function storedProfiles(incoming: CharacterStats, stored: CharacterStats): Chara
   };
 }
 
-// Fits one upgrade to one of the character's weapons, or refuses (Core pp.227–228, §11.60–§11.62). Shared by
+// Fits one upgrade to one of the character's weapons, or refuses (Core pp.227–228, §11.63–§11.65). Shared by
 // `character.fitUpgrade` and a requisition that hands the item straight to a weapon, so both check the same things.
 // It writes the id into `fitted` and never the result: `withUpgrades` derives what the sheet shows.
 function fitUpgrade(
@@ -354,7 +354,7 @@ export async function applyCharacterAction(
         if (item?.weapon && !stats.weapons.some((w) => w.name === item.name))
           stats.weapons = [
             ...stats.weapons,
-            // `wargearId` is what a later fitUpgrade checks the upgrade's `fits` against (§11.60).
+            // `wargearId` is what a later fitUpgrade checks the upgrade's `fits` against (§11.63).
             {
               ...sheetWeapon(item as { name: string; weapon: WargearWeapon }, effectiveStrength(stats)),
               wargearId: item.id,
@@ -372,7 +372,7 @@ export async function applyCharacterAction(
       return { ok: true };
     }
 
-    // Fitting is instant and takes no Test (§11.60), so this only checks what the book checks: the fit, the maximum of
+    // Fitting is instant and takes no Test (§11.63), so this only checks what the book checks: the fit, the maximum of
     // three and one per slot. What is written is the id, in `fitted`; the profile stays as printed and `withUpgrades`
     // derives what the sheet shows, so nothing is applied twice.
     case "character.fitUpgrade":

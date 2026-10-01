@@ -113,7 +113,7 @@ for (const file of readdirSync(wargearDir)
     }
     wargearIds.add(w.id);
     if (w.requires) wargearRequires.push({ where: `wargear/${file} "${w.id}"`, requires: w.requires });
-    // Every upgrade carries its slot, what it fits and its structured effect (rules-flow.md §11.61), and nothing else
+    // Every upgrade carries its slot, what it fits and its structured effect (rules-flow.md §11.64), and nothing else
     // does: an `upgrade` block on another kind would never be read.
     if ((w.kind === "upgrade") !== (w.upgrade !== undefined)) {
       failed = true;

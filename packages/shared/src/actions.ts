@@ -44,7 +44,7 @@ export const Action = z.union([
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
-    // The group Ascends: the campaign's Tier goes up by one, for everyone at once (Core pp.147–148, §11.63).
+    // The group Ascends: the campaign's Tier goes up by one, for everyone at once (Core pp.147–148, §11.66).
     // `experience`: every character must have earned 100 XP in the current Tier. `milestone`: the GM's call, which
     // first gives every character 100 XP (Core p.148 step 1) and may waive the Ascension Package (step 2).
     z.object({
@@ -103,10 +103,10 @@ export const Action = z.union([
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
       wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
       // An upgrade goes straight onto this weapon of the character's on a success, instead of waiting in gear
-      // (Core p.227, §11.60). The fit is checked before the Test is recorded, so a bad target costs no Test.
+      // (Core p.227, §11.63). The fit is checked before the Test is recorded, so a bad target costs no Test.
       fitTo: z.string().trim().min(1).max(100).optional(),
     }),
-    // Fit a catalogue upgrade to one of the character's weapons, or take it off again (Core p.227, §11.60–§11.62).
+    // Fit a catalogue upgrade to one of the character's weapons, or take it off again (Core p.227, §11.63–§11.65).
     // The server checks the fit, the maximum of three and the one-per-slot rule, and moves the upgrade off the gear
     // line it was requisitioned onto. `weapon` is the weapon's name on the sheet, which is unique there.
     z.object({
@@ -224,7 +224,7 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.build",
   "character.draft",
   "character.supply",
-  // Fitting an upgrade is instant and takes no Test (§11.60), and the upgrade is already the character's, so a player
+  // Fitting an upgrade is instant and takes no Test (§11.63), and the upgrade is already the character's, so a player
   // does it on their own weapons.
   "character.fitUpgrade",
   "character.removeUpgrade",

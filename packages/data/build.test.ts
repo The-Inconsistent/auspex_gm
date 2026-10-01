@@ -12,7 +12,6 @@ import {
   withUpgrades,
   type WargearWeapon,
   type CharacterBuildInput,
-  type CharacterStats,
 } from "@wg/shared";
 import { creationCatalogue, loadPack, wargear } from "./index.ts";
 
@@ -86,8 +85,12 @@ for (const { want, ...p } of PREGENS) {
 
     // The live sheet keeps the printed weapon, armour and gear lines, which work Talents and upgrades into the profiles
     // (Bolter Discipline's Rapid Fire); a rebuild with no changes adds no catalogue lines beside them (issue #18).
+    // The rebuild may tag a printed line with its catalogue entry (`wargearId`), so an upgrade can be fitted to it.
     const kept = keepPlay({ previous: want, next: s, before: s });
-    assert.deepEqual(kept.weapons, want.weapons);
+    assert.deepEqual(
+      kept.weapons.map(({ wargearId: _, ...w }) => w),
+      want.weapons,
+    );
     assert.deepEqual(kept.armour, want.armour);
     assert.deepEqual(kept.gear, want.gear);
   });
@@ -281,7 +284,7 @@ test("the GM may waive the Ascension Package on a Milestone Ascension (Core p.14
   assert.ok(!waived.pending.some((p) => p.what.startsWith("Buy one Ascension Package")));
 });
 
-// ── Archetype Ascension (Core p.155, rules-flow.md §11.64) ──
+// ── Archetype Ascension (Core p.155, rules-flow.md §11.67) ──
 
 // The book's own example: a Space Marine Scout (Tier 2) becomes a Tactical Space Marine (Tier 3), both ADEPTUS ASTARTES.
 const scout: CharacterBuildInput = {
@@ -289,13 +292,13 @@ const scout: CharacterBuildInput = {
   archetypeId: "space-marine-scout",
   fills: { "[CHAPTER]": { id: "ultramarines" } },
   background: {
-    tableId: ASTARTES_BG,
+    tableId: "adeptus-astartes",
     origin: "Courage",
     accomplishment: "Badge of Honour",
     goal: "Honour the Chapter",
     bonus: "origin",
   },
-  languages: HIGH_GOTHIC,
+  languages: { picks: ["high-gothic"] }, // free with ADEPTUS ASTARTES (Core p.31)
   choices: {
     "species/adeptus-astartes/0": [0], // IMPERIUM, not CHAOS (Core p.29)
     "archetype/space-marine-scout/wargear/4": [0], // the Boltgun
@@ -370,7 +373,7 @@ test("Archetype Ascension: Rank 3, the same Faction, the new Tier, and not both 
       { ...scout, advancement: { ...toTactical, archetypeAscension: { archetypeId: "ork-nob" } } },
       at,
     ).problems.some((p) => p.what.includes("is not an Archetype of Space Marine Scout's Faction")),
-    "the same factionId (§11.64)",
+    "the same factionId (§11.67)",
   );
   assert.ok(
     inPlay({ ...scout, advancement: toTactical }, { tier: 4, xpEarned: 200 }).problems.some((p) =>

@@ -19,7 +19,7 @@ import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
 
 // Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
-// is the api's, so this is where an id can be put next to a name for the phones (Core p.227, §11.60).
+// is the api's, so this is where an id can be put next to a name for the phones (Core p.227, §11.63).
 const upgradesByLine = new Map(
   [...wargear.values()]
     .filter((w) => w.upgrade)
@@ -55,7 +55,7 @@ export const toCharacter = ({
 }: typeof character.$inferSelect): Character => ({
   id,
   name,
-  // The sheet as shown, not as stored: the fitted upgrades are applied here (Core p.227, §11.60), so a phone doesn't
+  // The sheet as shown, not as stored: the fitted upgrades are applied here (Core p.227, §11.63), so a phone doesn't
   // need the 2 MB catalogue to read its own weapons and the stored profile stays the printed one.
   stats: withUpgrades(CharacterStats.parse(stats), wargear),
   ownedUpgrades: ownedUpgrades(CharacterStats.parse(stats).gear),

@@ -12,7 +12,7 @@ type UpgradeRowProps = {
   onRefusal: (error: string | null) => void;
 };
 
-// Fitting an upgrade to this weapon, and taking one off (Core p.227, rules-flow.md §11.60): instant, no Test, so it is
+// Fitting an upgrade to this weapon, and taking one off (Core p.227, rules-flow.md §11.63): instant, no Test, so it is
 // a tap. What can be fitted is what the character holds in gear, which the server lists as `ownedUpgrades` because a
 // phone doesn't carry the catalogue. The server checks the fit, the maximum of three and the slot again.
 export function UpgradeRow({ me, weapon, send, onRefusal }: UpgradeRowProps) {

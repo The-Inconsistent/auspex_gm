@@ -333,7 +333,7 @@ test("GM and player share a table", async (t) => {
       st.ammo["Frag Grenade"] === 4
     );
   });
-  // Fitting an upgrade (Core pp.227-228, rules-flow §11.60-§11.62): instant, no Test, but the fit, the maximum of
+  // Fitting an upgrade (Core pp.227-228, rules-flow §11.63-§11.65): instant, no Test, but the fit, the maximum of
   // three and one-per-slot are the server's to check. The Laspistol just requisitioned is the weapon.
   const fit = { type: "character.fitUpgrade" as const, id: hero.id!, weapon: "Laspistol" };
   // A player fits only what their character owns; the GM grants (§11.57).
@@ -1469,7 +1469,7 @@ test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp
 });
 
 // Core p.147 asks it of "every character in your group", and nothing removes a dead character's record, so a casualty
-// would otherwise hold the party at its Tier for ever (rules-flow.md §11.63).
+// would otherwise hold the party at its Tier for ever (rules-flow.md §11.66).
 test("Ascension: a Dead character neither has to earn 100 XP nor blocks the group", async (t) => {
   const gm = await newCampaign("Fallen", 2);
   t.after(() => gm.socket.close());

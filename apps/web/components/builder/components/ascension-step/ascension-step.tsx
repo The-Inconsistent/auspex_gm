@@ -10,7 +10,7 @@ import { StepChoices } from "../step-choices/step-choices";
 // Ascension, at creation and in play, on one screen because the book's step is the same one (Core p.148).
 // - Creation Ascension (rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension Package.
 // - In play (§11.55): once the group Ascends, the character takes one Ascension Package for that Ascension, however many
-//   Tiers it crossed, or goes through Archetype Ascension (Core p.155, §11.64).
+//   Tiers it crossed, or goes through Archetype Ascension (Core p.155, §11.67).
 // What is required, priced and allowed is `resolveBuild`'s: this screen offers the choices and shows what it says.
 export function AscensionStep() {
   const { draft, lookups, tier, go, ascending } = useBuilder();
@@ -50,7 +50,7 @@ function PlayAscension({ arch }: { arch: Archetype }) {
   const ascensions = [...lookups.packages.values()]
     .filter((p) => p.kind === "ascension")
     .sort((a, b) => a.name.localeCompare(b.name));
-  // "An Archetype of their Faction" is the same `factionId` (§11.64), at the Tier Ascended to (Core p.155).
+  // "An Archetype of their Faction" is the same `factionId` (§11.67), at the Tier Ascended to (Core p.155).
   const archetypes = [...lookups.archetypes.values()]
     .filter((a) => a.factionId === arch.factionId && a.tier === now && a.id !== arch.id)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -118,7 +118,7 @@ function PlayAscension({ arch }: { arch: Archetype }) {
         </div>
         <div className="dim">
           Instead of a package: an Archetype of the same Faction ({titleOf(arch.factionId)},{" "}
-          {citeLabel("rules-flow.md §11.64")}) at Tier {now}. It needs Rank 3 (this character is Rank {rank}) and the
+          {citeLabel("rules-flow.md §11.67")}) at Tier {now}. It needs Rank 3 (this character is Rank {rank}) and the
           GM&apos;s agreement, and XP is spent until the Attributes and Skills equal or exceed the new Archetype&apos;s;
           it grants that Archetype&apos;s abilities, Wargear and Influence, and none of its Attribute or Skill bonuses.
         </div>

@@ -27,11 +27,11 @@ export const WargearArmour = z.object({
 });
 export type WargearArmour = z.infer<typeof WargearArmour>;
 
-// ── upgrades (Core pp.227–228, rules-flow.md §11.60–§11.62) ──────────────────────────────────────────────────────────
+// ── upgrades (Core pp.227–228, rules-flow.md §11.63–§11.65) ──────────────────────────────────────────────────────────
 
 // An item takes at most three upgrades, "and only one of each type" (Core p.227). The book names only grips and
 // scopes, so every upgrade carries a slot from this closed vocabulary, proposed per entry and confirmed by the GM
-// (§11.61). The last three are armour's.
+// (§11.64). The last three are armour's.
 export const UPGRADE_SLOTS = [
   "sight",
   "grip",
@@ -86,7 +86,7 @@ export const Upgrade = z.object({
   fits: WargearFilter,
   mods: z.array(UpgradeMod).default([]),
   // "max": Distinction doesn't count toward the three (Core p.228). "slot": a SUPPORT SYSTEM shares `system` with the
-  // other nine but isn't one-per-slot (§11.61).
+  // other nine but isn't one-per-slot (§11.64).
   exempt: z.enum(["max", "slot"]).optional(),
   copies: z.number().int().min(2).optional(), // its own printed limit: "may be purchased up to 3 times" (IoE p.96)
 });
@@ -141,7 +141,7 @@ export function gearLine({ name, armour: a, source, page }: Pick<Wargear, "name"
 // Which requisition Test a catalogue item takes: Ammo and Grenades share the session's Ammo Test (p.205, p.229).
 export const requisitionKindOf = (kind: WargearKind): RequisitionKind =>
   kind === "ammo" || kind === "grenade" ? kind : "wargear";
-// ── fitting upgrades (Core pp.227–228, rules-flow.md §11.60–§11.62) ──────────────────────────────────────────────────
+// ── fitting upgrades (Core pp.227–228, rules-flow.md §11.63–§11.65) ──────────────────────────────────────────────────
 
 // An item takes at most three upgrades; Distinction doesn't count toward that (Core p.228, `exempt: "max"`).
 export const MAX_UPGRADES = 3;

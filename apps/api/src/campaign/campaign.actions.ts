@@ -1,10 +1,6 @@
 import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
 import {
   ASCENSION_XP,
-  CharacterDetail,
-  CharacterStats,
-  Objectives,
-  Overrides,
   TIERS,
   deriveStats,
   pcStatus,
@@ -12,13 +8,13 @@ import {
   rankOf,
   type Action,
   type ActionResult,
-  type Character,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
+import { toCharacter } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
 
 export type CampaignAction = Extract<
@@ -31,7 +27,7 @@ const MAX_TIER = Math.max(...TIERS);
 
 // Every character's XP for the Ascension rules, in table order, with whether it is still one of the group: Core p.147's
 // "every character in your group" is not a Dead one, and nothing removes a dead character's record, so a casualty would
-// otherwise hold the party at its Tier for ever (rules-flow.md §11.63).
+// otherwise hold the party at its Tier for ever (rules-flow.md §11.66).
 async function xpLedger(tx: Tx, campaignId: string) {
   const tier = await campaignTier(tx, campaignId);
   const rows = await tx
@@ -40,16 +36,7 @@ async function xpLedger(tx: Tx, campaignId: string) {
     .where(eq(character.campaignId, campaignId))
     .orderBy(asc(character.createdAt));
   return rows.map((row) => {
-    const c: Character = {
-      ...row,
-      stats: CharacterStats.parse(row.stats),
-      overrides: Overrides.parse(row.overrides),
-      detail: CharacterDetail.parse(row.detail),
-      objectives: Objectives.parse(row.objectives),
-      build: row.build ?? null,
-      draft: row.buildDraft ?? null,
-      ownedUpgrades: [],
-    };
+    const c = toCharacter(row);
     const dead = pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead");
     return { name: row.name, xp: row.xp, xpAtAscension: row.xpAtAscension, dead };
   });
@@ -137,7 +124,7 @@ export async function applyCampaignAction(
         .set({ xp: sql`${character.xp} + ${a.xp}` })
         .where(eq(character.campaignId, cid));
       // Rank follows the XP earned, +1 per 40 to a maximum of 3 (Core p.146), and is nobody's decision, so the GM is
-      // only told. Ascending is the group's (Core pp.147–148, §11.63), so it's an offer, never automatic.
+      // only told. Ascending is the group's (Core pp.147–148, §11.66), so it's an offer, never automatic.
       const tier = await campaignTier(tx, cid);
       const risen = before.filter((c) => rankOf(c.xp + a.xp) > rankOf(c.xp));
       const group = before.filter((c) => !c.dead); // a Dead character is no longer one of the group (Core p.147)
@@ -150,7 +137,7 @@ export async function applyCampaignAction(
       return notices.length ? { ok: true, notices } : { ok: true };
     }
 
-    // The group Ascends together (Core pp.147–148, §11.63): one Tier for the whole campaign, never one character.
+    // The group Ascends together (Core pp.147–148, §11.66): one Tier for the whole campaign, never one character.
     case "campaign.ascend": {
       const tier = await campaignTier(tx, cid);
       if (tier >= MAX_TIER) fail(`Tier ${MAX_TIER} is the highest Tier; there is nothing to Ascend to`);

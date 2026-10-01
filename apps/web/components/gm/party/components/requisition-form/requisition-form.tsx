@@ -159,7 +159,7 @@ export function RequisitionForm({
       {picked && (picked.value === null || picked.rarity === null) && (
         <div className="accent">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>
       )}
-      {/* An upgrade can go straight onto a weapon on a success (Core p.227, §11.60), or wait in gear. The fit is
+      {/* An upgrade can go straight onto a weapon on a success (Core p.227, §11.63), or wait in gear. The fit is
           checked before the Test is recorded, so picking a weapon that can't take it costs the session nothing. */}
       {picked?.upgrade && (
         <div className="field">
