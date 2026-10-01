@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
   buildReady,
+  deriveStats,
   keepPlay,
   resolveBuild,
   applyUpgrades,
@@ -455,6 +456,15 @@ test("the GM's bonuses add to the build's (gm.mods, rules-flow.md §11.22)", () 
   const more = run({ ...incursor, gm: { ...incursor.gm, mods: { resolve: 2, defence: 1 } } }).sheet.mods;
   assert.equal(more.resolve, (base.resolve ?? 0) + 2);
   assert.equal(more.defence, (base.defence ?? 0) + 1);
+});
+
+test("Ever Vigilant's Passive Awareness reaches the sheet's number, scaled by Rank (Core p.133)", () => {
+  const vigilant = { ...incursor, advancement: { talents: [{ id: "ever-vigilant" }] } };
+  const base = inPlay(incursor, { tier: 4, xpEarned: 80 }).sheet;
+  const sheet = inPlay(vigilant, { tier: 4, xpEarned: 80 }).sheet; // Rank 3
+  assert.equal(sheet.mods.passiveAwareness, 6);
+  const pa = (s: typeof sheet) => deriveStats({ stats: s, overrides: {}, tier: 4 }).passiveAwareness;
+  assert.equal(pa(sheet), pa(base) + 6);
 });
 
 test("a granted Talent with options asks for one; a bought one must be one of them (Acute Sense, Core p.129)", () => {

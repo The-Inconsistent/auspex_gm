@@ -98,6 +98,8 @@ export const Mods = z
     influence: z.number().int(),
     speed: z.number().int(),
     determination: z.number().int(),
+    passiveAwareness: z.number().int(), // Ever Vigilant (Core p.133), a Background row (Apocrypha p.43)
+    maxTraumatic: z.number().int(), // Traumatic Injuries taken before dying: Ded 'Ard! (Apocrypha p.235)
   })
   .partial();
 
@@ -145,8 +147,8 @@ export const CharacterStats = z.object({
 });
 export type CharacterStats = z.infer<typeof CharacterStats>;
 
-// GM overrides win over everything derived.
-export const Overrides = Mods.partial();
+// GM overrides win over everything derived. Passive Awareness and the Traumatic limit take a GM bonus, not an override.
+export const Overrides = Mods.omit({ passiveAwareness: true, maxTraumatic: true });
 export type Overrides = z.infer<typeof Overrides>;
 
 // −1 on an empty type removes it from the list; otherwise clamped at 0.
@@ -187,8 +189,8 @@ export function deriveStats({
   ) as typeof base;
   return {
     ...out,
-    passiveAwareness: Math.max(1, Math.ceil(skillTotal(s, "Awareness") / 2)),
-    maxTraumatic: tier + 1,
+    passiveAwareness: Math.max(1, Math.ceil(skillTotal(s, "Awareness") / 2) + (m.passiveAwareness ?? 0)),
+    maxTraumatic: tier + 1 + (m.maxTraumatic ?? 0),
   };
 }
 export type DerivedStats = ReturnType<typeof deriveStats>;

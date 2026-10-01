@@ -623,7 +623,7 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
   - character: `talent`, `keyword`, `keywords`, `loseKeyword`, `neverKeyword`, `power`, `disciplineAccess`,
     `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`; it limits the
     species' `chooseDisciplines` and the powers bought, rules-flow.md §11.62), `talentAccess` (+ `asKeyword`),
-    `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),
+    `optionAccess`, `mods` (scaled; any `Mods` key, `passiveAwareness` and `maxTraumatic` included, or `armourRating`),
     `attribute` (`add` / `to`; "any", "lowest"), `skills` + `add`, `chosenTrait`, `influenceAttribute`, `xpDiscount`
     (a Talent at a price, or a discipline at a multiplier), `noArmour`, `never` (Faith or Corruption), `languages`
     (scaled, or `{ skill }` for "equal to your Scholar rank"; `xenos` for "one alien language")

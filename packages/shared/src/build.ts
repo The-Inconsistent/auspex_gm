@@ -348,13 +348,7 @@ export function resolveBuild({
   };
   const addMods = (m: Partial<Record<string, Scaled>> | undefined, o: Origin) => {
     for (const [k, v] of Object.entries(m ?? {})) {
-      const n = scaled(v!, o);
-      if (k === "passiveAwareness" || k === "maxTraumatic")
-        effects.push({
-          what: `${k === "passiveAwareness" ? "Passive Awareness" : "Traumatic Injuries before death"} ${signed(n)}`,
-          cite: o.cite,
-        });
-      else s.mods[k] = (s.mods[k] ?? 0) + n;
+      s.mods[k] = (s.mods[k] ?? 0) + scaled(v!, o);
     }
   };
   const scaled = (v: Scaled, o: Origin): number => {
@@ -1098,11 +1092,7 @@ export function resolveBuild({
             deferred.push({ reqs: r.requires, what: `${capital(row)} ${r.name}`, origin: to, severity: "error" });
           if (bg.bonus === row) {
             if (r.bonus === "wealth") s.wealth += 1;
-            else if (r.bonus === "passiveAwareness" || r.bonus === "corruption")
-              effects.push({
-                what: `${r.bonus === "corruption" ? "Corruption" : "Passive Awareness"} +1`,
-                cite: to.cite,
-              });
+            else if (r.bonus === "corruption") effects.push({ what: "Corruption +1", cite: to.cite });
             else if (r.bonus) s.mods[r.bonus] = (s.mods[r.bonus] ?? 0) + 1;
             r.grants?.forEach((g, i) => grant(g, { ...to, path: `${to.path}/${row}/${i}` }));
           }
@@ -1599,18 +1589,7 @@ export function resolveBuild({
       return w ? `${gearLine(w)}${qty}` : `${g.name}${qty}`;
     });
   const mods: z.infer<typeof Mods> = {};
-  for (const k of [
-    "maxWounds",
-    "maxShock",
-    "defence",
-    "resilience",
-    "resolve",
-    "conviction",
-    "influence",
-    "speed",
-    "determination",
-  ] as const)
-    if (s.mods[k]) mods[k] = s.mods[k];
+  for (const k of Mods.keyof().options) if (s.mods[k]) mods[k] = s.mods[k];
   // An Ork's Influence uses Strength (Core p.29): the sheet derives it from Fellowship, so the difference is a mod.
   if (s.influenceAttribute) mods.influence = (mods.influence ?? 0) + attributes[s.influenceAttribute] - attributes.Fel;
   if (movement(armour)) mods.speed = (mods.speed ?? 0) + movement(armour);
@@ -1815,7 +1794,6 @@ const ATTRIBUTE_NAMES: Record<Attribute, string> = {
   Fel: "Fellowship",
 };
 const capital = (s: string) => s[0]!.toUpperCase() + s.slice(1);
-const signed = (n: number) => (n < 0 ? `${n}` : `+${n}`);
 const bonusName = (b: string) =>
   ({ maxWounds: "Max Wounds", maxShock: "Max Shock", passiveAwareness: "Passive Awareness" })[b] ?? capital(b);
 

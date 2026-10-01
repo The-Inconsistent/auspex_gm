@@ -212,6 +212,13 @@ test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {
   assert.equal(d.passiveAwareness, 3, "ceil((3 + Int 3) / 2)");
   assert.equal(d.maxTraumatic, 5);
   assert.equal(deriveStats({ stats: s, overrides: { maxWounds: 20 }, tier: 4 }).maxWounds, 20);
+  const bonus = deriveStats({
+    stats: { ...s, mods: { passiveAwareness: 2, maxTraumatic: 1 } },
+    overrides: {},
+    tier: 4,
+  });
+  assert.equal(bonus.passiveAwareness, 3 + 2, "Ever Vigilant, Core p.133");
+  assert.equal(bonus.maxTraumatic, 5 + 1, "Ded 'Ard!, Apocrypha p.235");
   assert.equal(CharacterStats.parse({}).speed, 6, "empty stats parse with defaults");
 });
 
