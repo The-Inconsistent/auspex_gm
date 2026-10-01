@@ -15,7 +15,7 @@ import {
 } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { z } from "zod";
-import { CreateGame } from "@wg/shared";
+import { CampaignExport, CreateGame, freshStart } from "@wg/shared";
 import { COOKIE, readCookie, resolveCtx, resolveGuest, signedInUser } from "../auth/auth.service.ts";
 import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
@@ -26,6 +26,8 @@ import { TableGateway } from "../table/table.gateway.ts";
 import {
   campaignHomebrew,
   createCampaign,
+  exportCampaign,
+  importCampaign,
   isAdmin,
   listRules,
   listThreats,
@@ -38,6 +40,7 @@ const Join = z.object({ token: z.string().min(1).max(200) });
 const AdminCreate = CreateGame.extend({ ownerUserId: z.string().min(1).max(100).optional() });
 const CampaignId = z.uuid();
 const InviteCode = z.string().min(1).max(200);
+const Import = z.object({ file: CampaignExport, fresh: z.boolean().default(false) });
 
 const parse = <T>(schema: z.ZodType<T>, body: unknown): T => {
   const r = schema.safeParse(body);
@@ -84,6 +87,32 @@ export class CampaignController {
     if (!user) throw new UnauthorizedException();
     if (!user.creator) throw new ForbiddenException("Only creators can start a game");
     return createCampaign({ ...parse(CreateGame, body), owner: user });
+  }
+
+  // IMPORT GAME: a campaign file as a new campaign, the importer as GM. `fresh` resets play for a new group.
+  @Post("campaigns/import")
+  async import(@Req() req: Request, @Body() body: unknown) {
+    const user = await signedInUser(headersOf(req));
+    if (!user) throw new UnauthorizedException();
+    if (!user.creator) throw new ForbiddenException("Only creators can start a game");
+    const { file, fresh } = parse(Import, body);
+    return refusing(() => importCampaign({ file: fresh ? freshStart(file) : file, owner: user }));
+  }
+
+  // EXPORT: the whole campaign as a file (GM notes, secrets and book text in the sheets, so GM only).
+  @Get("campaigns/:id/export")
+  async export(@Param("id") id: string, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    const file = await exportCampaign(ctx.campaignId);
+    const slug =
+      file.campaign.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") || "campaign";
+    res.setHeader("content-disposition", `attachment; filename="${slug}.auspex.json"`);
+    return file;
   }
 
   @Get("lobby")

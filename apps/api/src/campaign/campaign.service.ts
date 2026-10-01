@@ -1,12 +1,16 @@
-import { timingSafeEqual } from "node:crypto";
+import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, threats, wargear } from "@wg/data";
-import type { Lobby, LobbyGame, Role, RuleEntry, Threat, Wargear } from "@wg/shared";
+import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
-import { db } from "../core/db.ts";
+import { checkThreats } from "../codex/codex.actions.ts";
+import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
+import { db, type Tx } from "../core/db.ts";
+import { fail } from "../core/errors.ts";
 import { listLibrary } from "../library/library.service.ts";
+import { loadCodex, loadState } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
 
 // Constant-time compare against ADMIN_KEY (scripts only; people sign in with Clerk).
@@ -18,24 +22,114 @@ export function isAdmin(key: string | undefined) {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-// A new campaign with its creator seated as GM. `owner.name` is a placeholder until they next sign in.
+// A new campaign with its creator seated as GM. `owner.name` is a placeholder until they next sign in. `fill` writes
+// the rest of an imported campaign in the same transaction.
 export function createCampaign({
-  name,
-  tier,
   owner,
-}: {
-  name: string;
-  tier: number;
+  fill,
+  ...values
+}: Omit<typeof campaign.$inferInsert, "id" | "createdAt"> & {
   owner: { userId: string; name: string } | null;
+  fill?: (tx: Tx, campaignId: string) => Promise<void>;
 }) {
   return db.transaction(async (tx) => {
-    const [c] = await tx.insert(campaign).values({ name, tier }).returning({ id: campaign.id });
+    const [c] = await tx.insert(campaign).values(values).returning({ id: campaign.id });
     const campaignId = c!.id; // the row was just inserted
     if (owner) {
       await tx.insert(appUser).values({ id: owner.userId, name: owner.name }).onConflictDoNothing();
       await tx.insert(membership).values({ campaignId, userId: owner.userId, role: "gm" });
     }
+    await fill?.(tx, campaignId);
     return { campaignId };
+  });
+}
+
+// EXPORT: what the GM app holds, minus the seats, the running fight and the builder drafts (a device's, not the sheet).
+export async function exportCampaign(campaignId: string): Promise<CampaignExport> {
+  const [state, codex] = await Promise.all([loadState(campaignId), loadCodex(campaignId)]);
+  if (!state) fail("Campaign not found");
+  const { id: _, ...camp } = state.campaign;
+  return {
+    format: "auspex-campaign",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    campaign: camp,
+    // A saved build passed CharacterBuild on its way in; the state type only keeps it loose.
+    characters: state.characters.map(({ draft: _, build, ...c }) => ({
+      ...c,
+      build: build as CampaignExport["characters"][number]["build"],
+    })),
+    codex,
+  };
+}
+
+// IMPORT GAME: a campaign file (CampaignExport) as a new campaign. Every row gets a fresh id, and references are
+// remapped through those; one that points outside the file is dropped. Direct inserts in one transaction rather than
+// replayed actions, which would lose the counters, sessions and reveal times a backup has to keep.
+export async function importCampaign({
+  file,
+  owner,
+}: {
+  file: CampaignExport;
+  owner: { userId: string; name: string };
+}) {
+  const { codex: c } = file;
+  // Beats belong to the adventure they're filed under, whatever their own adventureId says.
+  const beats = c.adventures.flatMap((a) => a.beats.map((b) => ({ ...b, adventureId: a.id })));
+  // Same check as codex.save: a file from a server with other threat data would leave beats that can't start.
+  checkThreats([
+    ...beats.flatMap((b) => b.encounter.map((e) => e.threatId)),
+    ...c.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
+  ]);
+
+  const rows = [...file.characters, ...c.factions, ...c.adventures, ...beats, ...c.locations, ...c.npcs, ...c.handouts];
+  const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
+  if (ids.size !== rows.length) fail("That file repeats an id");
+  const ref = (old: string | null) => (old && ids.get(old)) || null;
+  const refs = (old: string[]) => old.flatMap((o) => ids.get(o) ?? []);
+  const at = (iso: string | null) => (iso ? new Date(iso) : null);
+
+  return createCampaign({
+    ...file.campaign,
+    owner,
+    fill: async (tx, campaignId) => {
+      const own = <T extends { id: string }>(r: T) => ({ ...r, id: ids.get(r.id)!, campaignId });
+      // In reference order; one statement per table, so a location can name a parent from the same insert.
+      if (file.characters.length)
+        await tx
+          .insert(character)
+          .values(
+            file.characters.map((ch) => ({ ...own(ch), builtAt: ch.builtAt === null ? null : new Date(ch.builtAt) })),
+          );
+      if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
+      if (c.locations.length)
+        await tx.insert(location).values(c.locations.map((l) => ({ ...own(l), parentId: ref(l.parentId) })));
+      if (c.npcs.length) await tx.insert(npc).values(c.npcs.map((n) => ({ ...own(n), factionId: ref(n.factionId) })));
+      if (c.handouts.length)
+        await tx
+          .insert(handout)
+          .values(c.handouts.map((h) => ({ ...own(h), revealedAt: at(h.revealedAt), audience: refs(h.audience) })));
+      if (c.adventures.length) await tx.insert(adventure).values(c.adventures.map(({ beats: _, ...a }) => own(a)));
+      if (beats.length)
+        await tx.insert(beat).values(
+          beats.map((b) => ({
+            ...own(b),
+            adventureId: ids.get(b.adventureId)!,
+            locationId: ref(b.locationId),
+            npcIds: refs(b.npcIds),
+            handoutIds: refs(b.handoutIds),
+          })),
+        );
+      if (c.sessions.length)
+        await tx.insert(session).values(
+          c.sessions.map(({ id: _, startedAt, endedAt, ...s }) => ({
+            ...s,
+            campaignId,
+            startedAt: new Date(startedAt),
+            endedAt: at(endedAt),
+          })),
+        );
+    },
   });
 }
 

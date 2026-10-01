@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { createHash } from "node:crypto";
 import { NestFactory } from "@nestjs/core";
+import type { NestExpressApplication } from "@nestjs/platform-express";
 import type { NextFunction, Request, Response } from "express";
 import { SESSION_COOKIE, bearerOf } from "@wg/auth/api";
 import { AppModule } from "./app.module.ts";
@@ -9,8 +10,10 @@ import { runMigrations } from "./core/db.ts";
 import { clientIp, limiter } from "./core/rate-limit.ts";
 
 await runMigrations();
-const app = await NestFactory.create(AppModule);
+const app = await NestFactory.create<NestExpressApplication>(AppModule);
 app.setGlobalPrefix("api");
+// IMPORT GAME posts a whole campaign file; Express's 100 kB default is smaller than the volkus pack.
+app.useBodyParser("json", { limit: "2mb" });
 app.enableShutdownHooks();
 
 // The unauthenticated door: guest QR joins, the guest lookup and invites. 60/min leaves room for a whole table of
@@ -33,9 +36,12 @@ const libraryKey = (req: Request) => {
     ? `s:${createHash("sha256").update(session).digest("base64url")}` // hashed: tokens don't belong in memory whole
     : `ip:${clientIp(req.headers, req.socket.remoteAddress)}`;
 };
-app.use(["/api/library", "/api/creation", "/api/rules"], (req: Request, res: Response, next: NextFunction) => {
-  if (allowLibrary(libraryKey(req))) return next();
-  res.status(429).json({ message: "Too many requests. Wait a minute." });
-});
+app.use(
+  ["/api/library", "/api/creation", "/api/rules", "/api/campaigns/import"],
+  (req: Request, res: Response, next: NextFunction) => {
+    if (allowLibrary(libraryKey(req))) return next();
+    res.status(429).json({ message: "Too many requests. Wait a minute." });
+  },
+);
 
 await app.listen(Number(process.env.PORT ?? 4000));

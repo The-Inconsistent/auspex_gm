@@ -28,7 +28,7 @@ async function checkRefs(
 }
 
 // Prepared-encounter and bestiary-NPC threats must exist, or the beat can't start later.
-function checkThreats(threatIds: string[]) {
+export function checkThreats(threatIds: string[]) {
   const unknown = threatIds.find((t) => !threats.has(t));
   if (unknown) fail(`Unknown threat "${unknown}"`);
 }

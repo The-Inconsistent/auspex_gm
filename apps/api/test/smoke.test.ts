@@ -1175,3 +1175,86 @@ test("a library character comes into a campaign as a copy (issue #14 step 4)", a
   });
   assert.ok(ticked.ok, JSON.stringify(ticked));
 });
+
+test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {
+  const gm = await newCampaign("Export", 3);
+  t.after(() => gm.socket.close());
+  const kael = await gm.send({ type: "character.create", name: "Kael" });
+  assert.ok(kael.ok && kael.id);
+  assert.ok((await gm.send({ type: "character.adjust", id: kael.id, wounds: 2 })).ok);
+  const hive = await gm.send({ type: "codex.save", kind: "location", data: { name: "Hive", revealed: true } });
+  assert.ok(hive.ok && hive.id);
+  const spire = await gm.send({ type: "codex.save", kind: "location", data: { name: "Spire", parentId: hive.id } });
+  const orders = await gm.send({
+    type: "codex.save",
+    kind: "handout",
+    data: { title: "Orders", revealed: true, audience: [kael.id] },
+  });
+  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Descent" } });
+  assert.ok(spire.ok && orders.ok && orders.id && adv.ok && adv.id);
+  assert.ok(
+    (
+      await gm.send({
+        type: "codex.save",
+        kind: "beat",
+        data: {
+          adventureId: adv.id,
+          title: "Ambush",
+          status: "done",
+          locationId: spire.id,
+          handoutIds: [orders.id],
+          encounter: [{ threatId: "ork-boy", count: 3 }],
+        },
+      })
+    ).ok,
+  );
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+
+  const player = await gm.send({ type: "token.issue", characterId: kael.id });
+  assert.ok(player.ok && player.token);
+  const exportPath = `/campaigns/${gm.campaignId}/export`;
+  assert.equal((await get(exportPath, { cookie: `wg_token=${player.token}` })).status, 403, "GM only");
+  const res = await get(exportPath, bearer(gm.gmClerk));
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get("content-disposition") ?? "", /export\.auspex\.json/);
+  const file = await res.json();
+
+  assert.equal((await post("/campaigns/import", { file }, bearer(clerk("not-a-creator")))).status, 403);
+  assert.equal((await post("/campaigns/import", { file: { format: "pack" } }, bearer(gm.gmClerk))).status, 400);
+  const forged = structuredClone(file);
+  forged.codex.adventures[0].beats[0].encounter[0].threatId = "nope";
+  assert.equal((await post("/campaigns/import", { file: forged }, bearer(gm.gmClerk))).status, 400, "unknown threat");
+
+  const open = async (fresh: boolean) => {
+    const r = await post("/campaigns/import", { file, fresh }, bearer(gm.gmClerk));
+    assert.equal(r.status, 201);
+    const { campaignId } = (await r.json()) as { campaignId: string };
+    const s = connect({ auth: { campaignId, clerkToken: gm.gmClerk } });
+    t.after(() => s.socket.close());
+    const state = await s.until((x) => x.campaign.name === "Export");
+    await eventually(() => !!s.codex(), "the imported codex");
+    return { campaignId, state, codex: s.codex()! };
+  };
+
+  const whole = await open(false);
+  assert.notEqual(whole.campaignId, gm.campaignId);
+  const [c] = whole.state.characters;
+  assert.ok(c && c.id !== kael.id && c.wounds === 2, "a new id, the same Wounds");
+  const [h] = whole.codex.handouts;
+  assert.deepEqual(h?.audience, [c.id], "the audience follows the Agent to its new id");
+  const locs = whole.codex.locations;
+  const newHive = locs.find((l) => l.name === "Hive")!;
+  assert.equal(locs.find((l) => l.name === "Spire")?.parentId, newHive.id);
+  const b = whole.codex.adventures[0]?.beats[0];
+  assert.equal(b?.locationId, locs.find((l) => l.name === "Spire")?.id);
+  assert.deepEqual(b?.handoutIds, [h?.id]);
+  assert.equal(b?.status, "done");
+  assert.equal(whole.codex.sessions.length, 1);
+  assert.equal((await get("/lobby", bearer(gm.gmClerk)).then((r) => r.json())).mine.length >= 2, true);
+
+  const fresh = await open(true);
+  assert.equal(fresh.state.characters[0]?.wounds, 0);
+  assert.equal(fresh.codex.sessions.length, 0);
+  assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
+  assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
+});
