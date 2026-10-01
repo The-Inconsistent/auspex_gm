@@ -1,0 +1,130 @@
+{
+  "id": "avatar-of-khaine",
+  "name": "Avatar of Khaine",
+  "source": "threat-assessment",
+  "page": 27,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "DAEMON MONSTER",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 11,
+    "T": 13,
+    "A": 5,
+    "I": 6,
+    "Wil": 8,
+    "Int": 4,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 18,
+    "note": "4 AR"
+  },
+  "defence": 5,
+  "wounds": 23,
+  "shock": null,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 14
+      },
+      {
+        "name": "Intimidation",
+        "dice": 12
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 16
+      }
+    ]
+  },
+  "personalRuin": 6,
+  "bonuses": [
+    {
+      "name": "Molten Form",
+      "text": "The Avatar is immune to the Bleeding, Exhausted, On Fire, and Poisoned Conditions, and cannot Suffocate."
+    },
+    {
+      "name": "Khaine Awakened",
+      "text": "Allied ASURYANI who can see the Avatar gain +3 bonus dice on Resolve tests, and can Sprint as part of Charges. The Avatar itself does not gain these bonuses."
+    },
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Atack penalty by 2 DN, as though it had the Dual Wield Talent (Wrath & Glory Rulebook page 133)."
+    },
+    {
+      "name": "Champion",
+      "text": "The Avatar may use Ruin Actions and has 6 personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Doom of Mortals",
+      "text": "Enemies who see the Avatar must make a DN 4 Terror test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "The Wailing Doom (melee)",
+          "damage": 19,
+          "ed": 6,
+          "ap": -5,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Inflict (On Fire)"
+          ]
+        },
+        {
+          "name": "The Wailing Doom (shooting)",
+          "damage": 23,
+          "ed": 3,
+          "ap": -4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Flamer",
+            "Melta"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Burning Demise",
+      "text": "If an attack which destroys the Avatar rolls a Complication, the Avatar explodes as though it were the epicentre of a Blast weapon's attack: 10 +5 ED / AP -2 / Blast (6), Inflict (On Fire)."
+    }
+  ],
+  "determination": "Divine Determination: Spend 1 Ruin to roll 13d6. The Avatar can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 10,
+  "size": "Huge",
+  "note": "Printed 'Multi-Atack' and 'Resolve tests' kept. Keyword 'DAEMON MONSTER' printed without a comma, kept as one. The Wailing Doom's shooting profile is written '+3 ED' (23 +3 ED)."
+}

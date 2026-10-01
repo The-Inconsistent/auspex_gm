@@ -1,0 +1,166 @@
+{
+  "id": "striking-scorpion",
+  "name": "Striking Scorpion",
+  "source": "threat-assessment",
+  "page": 36,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "4 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Intimidate",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Stalking Shadow",
+      "text": "Striking Scorpions in a concealed position may start an encounter with a Stealth Score of 5, and may Move at full Speed without reducing their Stealth Score. They gain +2 bonus dice and +2 ED when making a Surprise Attack (+4 bonus dice and +4 ED in total)."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Scorpion Chainsword",
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        },
+        {
+          "name": "Banshee Blade",
+          "damage": 8,
+          "ed": 5,
+          "ap": -4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Mandiblasters",
+      "text": "If a Striking Scorpion rolls a Wrath Critical on a melee attack Test against a creature Size Average or smaller, the target suffers 1d3 Mortal Wounds in addition to the Critical Hit's effects."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Striking Scorpion Exarch",
+      "text": "A Striking Scorpion Exarch has Weapon Skill 11 and 9 Wounds. They lose their Shuriken Pistol, and gain the equipment and bonuses below: Scorpion's Claw: 9 +5 ED / AP -3 / Brutal; Claw-Mounted Shuriken Catapult: 10 +1 ED / Range 6 - 12 - 18 / Salvo 3 / Assault, Rending (3); Champion: An Exarch may use Ruin Actions; Scorpion's Sting: Striking Scorpions within 10m of their Exarch inflict an extra 2 Mortal Wounds with their Mandiblasters (5 Mortal Wounds total).",
+      "weapons": [
+        {
+          "name": "Scorpion's Claw",
+          "damage": 9,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        },
+        {
+          "name": "Claw-Mounted Shuriken Catapult",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 3,
+          "traits": [
+            "Assault",
+            "Rending (3)"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ]
+}

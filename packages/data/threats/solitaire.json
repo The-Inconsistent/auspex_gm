@@ -1,0 +1,131 @@
+{
+  "id": "solitaire",
+  "name": "Solitaire",
+  "source": "threat-assessment",
+  "page": 54,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "AELDARI",
+    "HARLEQUIN",
+    "[MASQUE]"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 8,
+    "I": 8,
+    "Wil": 6,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "2 AR"
+  },
+  "defence": 8,
+  "wounds": 15,
+  "shock": 11,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 12
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 12
+      },
+      {
+        "name": "Stealth",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "A Solitaire may use Ruin Actions and has 3 personal Ruin."
+    },
+    {
+      "name": "Flip Belt",
+      "text": "This Threat ignores Difficult Terrain and can hurdle obstacles up to 2m high or leap over gaps up to 2m in length as part of their standard movement. When this Threat makes a Long or High Jump as a Simple Action with an Athletics (S) Test, their Long Jump distance is equal to their Agility in metres (8m) and their High Jump is equal to half their Agility in metres (4m)."
+    },
+    {
+      "name": "Rising Crescendo",
+      "text": "This Threat can Fall Back as a Simple Action."
+    },
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2DN as though it had the Dual Wield Talent (Wrath & Glory, page 133)."
+    },
+    {
+      "name": "Solitaire's Holo-suit",
+      "text": "In addition to providing *2 AR, a Holo-suit increases the wearer's Defence by +1 (included above). If this Threat moves, it gains additional Defence until the start of its next Turn, depending on the type of movement: Move: +1 additional Defence (total 9). Run: +2 additional Defence (total 10). Sprint: +3 additional Defence (total 11)."
+    },
+    {
+      "name": "Solitaire's Mask",
+      "text": "Whenever an opponent becomes Engaged with athis Threat, they must make a DN 3 Fear Test."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Solitaire's Kiss",
+          "damage": 13,
+          "ed": 6,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Solitaire's Caress",
+          "damage": 12,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Agonising",
+            "Rending (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Blitz",
+      "text": "Spend 1 Ruin to Charge or Run at Speed 24, jumping over any characters or environmental obstacles in the way."
+    }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 8d6. This Threat uses Agility instead of Toughness to roll Determination. Additionally, this Threat can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Printed 'athis Threat'. Solitaire's Caress '/Agonising, Rending (6)' has no space; the two melee weapons print no Range (stored [1])."
+}

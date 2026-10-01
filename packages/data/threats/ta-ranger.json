@@ -1,0 +1,140 @@
+{
+  "id": "ta-ranger",
+  "name": "Ranger",
+  "source": "threat-assessment",
+  "page": 33,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 6,
+    "I": 4,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "4 AR"
+  },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Pilot",
+        "dice": 7
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Ranger Cloak",
+      "text": "Rangers gain +1 bonus die to Stealth (A) Tests and +1 to Defence when in shadow or cover."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Ranger Long Rifle",
+          "damage": 10,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": null,
+          "traits": [
+            "Sniper (4)"
+          ]
+        },
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Knife",
+          "damage": 3,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Battle Focus",
+      "text": "Spend 1 Ruin immediately before or after making a ranged attack to Move up to the Ranger's Speed as a Free Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Gloom Field",
+      "text": "In a Mob of five or more Rangers, one Ranger may gain one of the following: Gloom Field: When targeted by an attack from 18m or more away, the wearer of the Gloom Field and all allies within 6m gain +2 Defence.",
+      "weapons": [],
+      "abilities": []
+    },
+    {
+      "kind": "mob",
+      "name": "Wireweave Net",
+      "text": "In a Mob of five or more Rangers, one Ranger may gain one of the following: Wireweave Net: As an Action, a Ranger can set up a Wireweave Net over a space of Blast (10). Whenever an opponent enters the Blast (10) of the Wireweave Net, they must make a DN 4 Toughness Test or suffer 1d1 Mortal Wound. The Wireweave Net is destroyed after it deals 3 or more Mortal Wounds.",
+      "weapons": [],
+      "abilities": []
+    }
+  ],
+  "note": "Reprint of ranger; differs in the Tier row, stats, Wounds, no Champion or Wrath ability, weapons (Sniper (4), Shuriken Pistol) and Mob options instead of Pathfinders. '1d1 Mortal Wound' printed."
+}

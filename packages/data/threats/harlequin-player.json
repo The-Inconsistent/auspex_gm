@@ -1,0 +1,220 @@
+{
+  "id": "harlequin-player",
+  "name": "Harlequin Player",
+  "source": "threat-assessment",
+  "page": 56,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "HARLEQUIN",
+    "[MASQUE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 6,
+    "I": 6,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 5,
+    "note": "1 AR"
+  },
+  "defence": 6,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Deception",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "False Face",
+      "text": "Whenever an opponent becomes Engaged with this Threat, they must make a DN 2 Fear Test."
+    },
+    {
+      "name": "Flip Belt",
+      "text": "This Threat ignores Difficult Terrain and can hurdle obstacles up to 2m high or leap over gaps up to 2m in length as part of their standard movement. When this Threat makes a Long or High Jump as a Simple Action with an Athletics (S) Test, their Long Jump distance is equal to their Agility in metres (6m) and their High Jump is equal to half their Agility in metres (3m)."
+    },
+    {
+      "name": "Holo-suit",
+      "text": "In addition to providing *1 AR, a Holo-suit increases the wearer's Defence by +1 (included above). If this Threat moves, it gains additional Defence until the start of its next Turn, depending on the type of movement: Move: +1 additional Defence (total 9). Run: +2 additional Defence (total 10). Sprint: +3 additional Defence (total 11)."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Rising Crescendo",
+      "text": "This Threat can Fall Back as a Simple Action."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Harlequin's Blade",
+          "damage": 7,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Haywire Grenade",
+          "damage": 10,
+          "ed": 10,
+          "ap": -4,
+          "range": [
+            12
+          ],
+          "traits": [
+            "Can only target vehicles"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 6d6. This Threat uses Agility instead of Toughness to roll Determination. Additionally, this Threat can roll Determination against Mortal Wounds.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Harlequin's Kiss",
+      "text": "Any number of individuals in a Mob of Harlequins may replace their Harlequin's Blade with a Harlequin's Kiss: 8 +6 ED / AP -2 / Rending (3).",
+      "weapons": [
+        {
+          "name": "Harlequin's Kiss",
+          "damage": 8,
+          "ed": 6,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (3)"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "mob",
+      "name": "Mob of 5 or more",
+      "text": "In a Mob of 5 or more Harlequins, they may make the following replacements to their wargear: Up to 2 Harlequins may replace their Shuriken Pistol with a Neuro Disruptor: 13 +2 ED / AP -3 / 6 - 12 - 18 / Salvo 1 / Agonising, Brutal, Pistol. Up to 2 Harlequins may replace their Shuriken Pistol with a Fusion Pistol: 16 +2 ED / AP -4 / Range 3 - 6 - 9 / Salvo 1 / Melta, Pistol. Up to 2 Harlequins may replace their Harlequin's Blade with a Harlequin's Caress: 7 +4 ED / AP -2 / Rending (6). Up to 2 Harlequins may replace their Harlequin's Blade with a Harlequin's Embrace: 8 +8 ED / AP -2 (the line ends there on the page).",
+      "weapons": [
+        {
+          "name": "Neuro Disruptor",
+          "damage": 13,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Agonising",
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Fusion Pistol",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Harlequin's Caress",
+          "damage": 7,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (6)"
+          ]
+        },
+        {
+          "name": "Harlequin's Embrace",
+          "damage": 8,
+          "ed": 8,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Harlequin's Embrace is cut off at the page end (no traits printed). Flip Belt prints '(6m)' and '(3m)'. Haywire Grenade's 'Can only target vehicles' is kept as a trait string."
+}

@@ -1,0 +1,255 @@
+{
+  "id": "autarch",
+  "name": "Autarch",
+  "source": "threat-assessment",
+  "page": 28,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "E"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 6,
+    "I": 6,
+    "Wil": 7,
+    "Int": 7,
+    "Fel": 5
+  },
+  "resilience": {
+    "value": 12,
+    "note": "8 AR"
+  },
+  "defence": 5,
+  "wounds": 14,
+  "shock": 12,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 12
+      },
+      {
+        "name": "Intimidation",
+        "dice": 10
+      },
+      {
+        "name": "Leadership",
+        "dice": 12
+      },
+      {
+        "name": "Pilot",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    {
+      "name": "Beyond the Warrior Paths",
+      "text": "Autarchs may be given weapons, bonuses, and abilities from any ASPECT WARRIOR profile (pages 34-41) at the GM's discretion. Autarchs do not use Exarch equipment or bonuses. Autarchs may be equipped with Swooping Hawk wings, increasing their Speed to 16 (Fly)."
+    },
+    {
+      "name": "Champion",
+      "text": "An Autarch may use Ruin Actions and has 4 personal Ruin. They may activate the Move Ruin Action during their own turn."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Path of Command",
+      "text": "Any ally within communication range of an Autarch may use Ruin Actions using the Autarch's personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Superlative Strategist",
+      "text": "Before combat begins, the Autarch may choose an ally within communication range to use a Ruin Action for free. If they make a Test, as part of this Ruin Action, they gain +3 bonus dice."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Star Glaive",
+          "damage": 10,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Plasma Grenade",
+          "count": 2,
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            16
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Force Shield: Spend 1 Ruin to roll 4d6. Autarchs can roll Determination against Mortal Wounds.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Autarch Options",
+      "text": "An Autarch can replace their Shuriken Pistol with any of the following: Death Spinner: 14 +1 ED / AP -2 / Range 6 - 12 - 18 / Salvo 1 / Assault, Blast (4 [sic, unclosed]; Dragon Fusion Gun: 186 +4 ED / AP -4 / Range 6 - 12 - 18 / Salvo 1 / Assault, Melta; Fusion Pistol: 16 +2 ED / AP -4 / Range 3 - 6 - 9 / Salvo 1 / Pistol, Melta; Reaper Launcher (Starshot): 16 +26 ED / AP -2 / Range 24 - 48 - 72 / Salvo - / Heavy (4); (Starswarm): 12 +2 ED / AP -2 / Range 24 - 48 - 72 / Salvo 2 / Heavy (4). An Autarch can replace their Star Glaive with either of the following: Banshee Blade: 9 +5 ED / AP -4 / Parry; Scorpion Chainsword: 10 +5 ED / AP -1 / Brutal, Parry. An Autarch may be equipped with either of the following: Autarch Jump Generator: This Threat can make a 12m Long Jump as a Simple Action. Swooping Hawk Wings: This Threat can Fly at Speed 16. An Autarch can also be equipped with either of the following: Howling Banshee Mask: This Threat may make an Intimidation Interaction Attack as a Free Action as part of a Charge. WRATH: Mandiblasters: If this Threat rolls a Wrath Critical on a melee attack Test against a creature Size Average or smaller, the target suffers 1d3 Mortal Wounds in addition to the Critical Hit's effects.",
+      "weapons": [
+        {
+          "name": "Death Spinner",
+          "damage": 14,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Blast (4)"
+          ]
+        },
+        {
+          "name": "Dragon Fusion Gun",
+          "damage": 186,
+          "ed": 4,
+          "ap": -4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Melta"
+          ]
+        },
+        {
+          "name": "Fusion Pistol",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Melta"
+          ]
+        },
+        {
+          "name": "Reaper Launcher (Starshot)",
+          "damage": 16,
+          "ed": 26,
+          "ap": -2,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": null,
+          "traits": [
+            "Heavy (4)"
+          ]
+        },
+        {
+          "name": "Reaper Launcher (Starswarm)",
+          "damage": 12,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": 2,
+          "traits": [
+            "Heavy (4)"
+          ]
+        },
+        {
+          "name": "Banshee Blade",
+          "damage": 9,
+          "ed": 5,
+          "ap": -4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Scorpion Chainsword",
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Print errors kept in the Autarch Options sidebar: Dragon Fusion Gun '186 +4 ED' (damage stored 186; Fire Dragon's prints 18), Reaper Launcher Starshot '16 +26 ED' (ED stored 26), Death Spinner 'Blast (4' unclosed (stored Blast (4))."
+}

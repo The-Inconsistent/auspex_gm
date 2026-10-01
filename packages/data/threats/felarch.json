@@ -1,0 +1,156 @@
+{
+  "id": "felarch",
+  "name": "Felarch",
+  "source": "threat-assessment",
+  "page": 47,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 6,
+    "I": 6,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 9,
+    "note": "5 AR"
+  },
+  "defence": 5,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Intimidation",
+        "dice": 8
+      },
+      {
+        "name": "Leadership",
+        "dice": 8
+      },
+      {
+        "name": "Pilot",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 11
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Combat Master",
+      "text": "When using a weapon in each hand, the DN penalty for Multi-Attack is reduced by 2."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Reavers of the Void",
+      "text": "This Threat's attacks gain +2 bonus dice during All-Out Attacks."
+    },
+    {
+      "name": "Uncanny Balance",
+      "text": "Corsairs gain +1 bonus die when they use Athletics (S) Interaction Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Aeldari Power Sword",
+          "damage": 8,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Plasma Grenade",
+          "count": 1,
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            8
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Reaver of the Void",
+      "text": "Spend 1 Ruin. The Felarch Seizes the Initiative and gains +3 bonus dice to all attack Tests."
+    },
+    {
+      "type": "WRATH",
+      "name": "Outcast Coordinator",
+      "text": "When a Felarch rolls a Wrath Critical, an ally that shares its [COTERIE] Keyword within 6m may immediately Move or take an Action."
+    }
+  ],
+  "determination": "Enduring Resolve: Spend 1 Ruin to roll 3d6. This Threat can roll Determination against Mortal Wounds. Include a Wrath Die in this Threat's Determination rolls. If the Wrath die rolls an Icon, the Threat does not suffer Shock damage for this Determination roll, the Wounds are simply ignored.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Core prints the Corsair Felarch only as a sidebar option of the Corsair (a variant on corsair), not a block, so this takes a plain id. The Plasma Grenade line is printed in bold."
+}

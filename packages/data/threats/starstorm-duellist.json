@@ -1,0 +1,125 @@
+{
+  "id": "starstorm-duellist",
+  "name": "Starstorm Duellist",
+  "source": "threat-assessment",
+  "page": 50,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 6,
+    "I": 5,
+    "Wil": 2,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 6,
+    "note": "3 AR"
+  },
+  "defence": 4,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 12
+      },
+      {
+        "name": "Intimidation",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Pistol Barrage",
+      "text": "This Threat reduces the Multi-Attack penalty by 2DN when it fires with both of its pistols."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +4 bonus dice during All-Out Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Fusion Pistol",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Reaver of the Void",
+      "text": "Spend 1 Ruin. The Voidreaver Seizes the Initiative and gains +2 bonus dice to all attack Tests."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Section heading 'Starstorm Duellists'. Resilience 6 (3 AR) printed (the other Corsairs print 7 (3 AR)). Reaver of the Void names the Voidreaver."
+}

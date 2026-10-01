@@ -1,0 +1,154 @@
+{
+  "id": "shadow-spectre",
+  "name": "Shadow Spectre",
+  "source": "threat-assessment",
+  "page": 41,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "5 AR"
+  },
+  "defence": 5,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 9
+      },
+      {
+        "name": "Intimidate",
+        "dice": 8
+      },
+      {
+        "name": "Pilot",
+        "dice": 8
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Shadow Spectre Jetpack",
+      "text": "A jetpack is built into the Shadow Spectre's Heavy Aspect Armour, and their sophisticated technology allows them to fly at their Speed +4, and do not need to make Pilot (A) Tests unless called for by the GM."
+    },
+    {
+      "name": "Spectre Holo-Field",
+      "text": "Shadow Spectres gain +1 Defence and +1 bonus die on Stealth (A) Tests (bonuses included above)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Prism Rifle (Diffuse)",
+          "damage": 12,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Blast (6)"
+          ]
+        },
+        {
+          "name": "Prism Rifle (Focused)",
+          "damage": 14,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Battle Focus",
+      "text": "Spend 1 Ruin immediately before or after making a ranged attack to Move up to the Warp Spider's Speed as a Free Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 12,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Shadow Spectre Exarch",
+      "text": "A Shadow Spectre Exarch has Weapon Skill 9 and 9 Wounds. They lose their Prism Rifle, and gain the equipment and bonuses below: Prism Blaster: 16 +3 ED / AP -3 / Range 12 - 24 - 36 / Salvo 2 / Assault; Champion: An Exarch may use Ruin Actions; Ghostlight: Shadow Spectres within 10m of their Exarch gain +8 bonus dice on Leadership (Wil) Tests during Combined Attacks (Wrath & Glory, page 188) involving multiple Shadow Spectres.",
+      "weapons": [
+        {
+          "name": "Prism Blaster",
+          "damage": 16,
+          "ed": 3,
+          "ap": -3,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Speed printed '12 (Fly)'; stored 12. Battle Focus names the Warp Spider (copied from the Warp Spider block, as printed)."
+}

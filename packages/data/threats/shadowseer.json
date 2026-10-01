@@ -1,0 +1,158 @@
+{
+  "id": "shadowseer",
+  "name": "Shadowseer",
+  "source": "threat-assessment",
+  "page": 57,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "AELDARI",
+    "HARLEQUIN",
+    "PSYKER",
+    "[MASQUE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 6,
+    "I": 6,
+    "Wil": 8,
+    "Int": 5,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 5,
+    "note": "1 AR"
+  },
+  "defence": 6,
+  "wounds": 13,
+  "shock": 13,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Deception",
+        "dice": 10
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 12
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "A Shadowseer may use Ruin Actions and has 4 personal Ruin. They may activate the Move Ruin Action during their own turn, jumping over any characters or environmental obstacles in the way."
+    },
+    {
+      "name": "Flip Belt",
+      "text": "This Threat ignores Difficult Terrain and can hurdle obstacles up to 2m high or leap over gaps up to 2m in length as part of their standard movement. When this Threat makes a Long or High Jump as a Simple Action with an Athletics (S) Test, their Long Jump distance is equal to their Agility in metres (7m) and their High Jump is equal to half their Agility in metres (4m)."
+    },
+    {
+      "name": "Holo-suit",
+      "text": "In addition to providing *1 AR, a Holo-suit increases the wearer's Defence by +1 (included above). If this Threat moves, it gains additional Defence until the start of its next Turn, depending on the type of movement: Move: +1 additional Defence (total 9). Run: +2 additional Defence (total 10). Sprint: +3 additional Defence (total 11)."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Mirror Mask",
+      "text": "The DN of any Test made that targets the Shadowseer is increased by +1."
+    },
+    {
+      "name": "Rising Crescendo",
+      "text": "This Threat can Fall Back as a Simple Action."
+    },
+    {
+      "name": "Shield from Harm",
+      "text": "All allies with the <HARLEQUIN> Keyword within 6m of this Threat gain +1 Defence."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Phantasmancer",
+      "text": "The Shadowseer may attempt to activate one of the following psychic powers: Smite (Wrath & Glory, page 272), Invoke Luck (page 269), Forewarning (page 274), Fog the Mind (page 279), Veil of Tears (below)."
+    },
+    {
+      "name": "Veil of Tears",
+      "text": "DN Target's Willpower, Action. A target within 20m cannot perceive or interact with anything more than 20m away, and gains the Hindered Condition, until the start of your next turn. Spend 2 Shifts per additional turn the Condition remains for."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Neuro Disruptor",
+          "damage": 13,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Agonising",
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Miststave",
+          "damage": 13,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Force"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hallucinogen Grenade Launcher",
+      "text": "Range 9 - 18 - 27 / Salvo 1 / Blast (6), Inflict (Fear 4), this weapon does not inflict Damage but applies the Fear Condition on any successful hit."
+    },
+    {
+      "type": "RUIN",
+      "name": "Spirit Guide",
+      "text": "Spend 1 Ruin to activate a Psychic Power or Deny the Witch (Wrath & Glory page 267)."
+    }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 6d6. This Threat uses Agility instead of Toughness to roll Determination. Additionally, this Threat can roll Determination against Mortal Wounds.",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Hallucinogen Grenade Launcher prints no damage line, so it stays ability text. Miststave prints no Range (stored [1]). Flip Belt prints '(7m)' and '(4m)'. Veil of Tears 'DN Target's Willpower' (no number) as printed."
+}

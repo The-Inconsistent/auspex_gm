@@ -1,0 +1,134 @@
+{
+  "id": "swooping-hawk",
+  "name": "Swooping Hawk",
+  "source": "threat-assessment",
+  "page": 39,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 9
+      },
+      {
+        "name": "Pilot",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Swooping Hawk Wings",
+      "text": "This Threat can Fly at Speed 16."
+    },
+    {
+      "name": "Skyleap",
+      "text": "Swooping Hawks do not provoke Reflexive Attacks when they move out of Engagement. Swooping Hawks also gain +2 bonus dice when they make a Pinning Attack (Wrath & Glory, page 189)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Sudden Assault",
+      "text": "If a Swooping Hawk attacks from above, all opponents must make a DN 3 Initiative Test. If they all fail, the Swooping Hawk may Seize the Initiative without spending Ruin."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Lasblaster",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 3,
+          "traits": [
+            "Assault",
+            "Rapid Fire (3)",
+            "Reliable",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Battle Focus",
+      "text": "Spend 1 Ruin immediately before or after making a ranged attack to Move up to the Swooping Hawk's Speed as a Free Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 16,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Swooping Hawk Exarch",
+      "text": "A Swooping Hawk Exarch has Weapon Skill 9 and 9 Wounds. They lose their Lasblaster, and gain the equipment and bonuses below: Hawk's Talon: 12 +1 ED / AP -1 / Range 12 - 24 - 36 / Salvo 4 / Assault, Rapid Fire (2); Champion: An Exarch may use Ruin Actions; Suppressing Fire: Swooping Hawks within 10m of their Exarch may spend Shifts on ranged attacks to inflict the Hindered Condition on their target.",
+      "weapons": [
+        {
+          "name": "Hawk's Talon",
+          "damage": 12,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 4,
+          "traits": [
+            "Assault",
+            "Rapid Fire (2)"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Speed printed '16 (Fly)'; stored 16 (the Swooping Hawk Wings bonus repeats Fly). No Intense Emotions bonus printed."
+}

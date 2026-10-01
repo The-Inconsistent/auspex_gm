@@ -1,0 +1,146 @@
+{
+  "id": "dire-avenger",
+  "name": "Dire Avenger",
+  "source": "threat-assessment",
+  "page": 34,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 5,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "4 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Defence Tactics",
+      "text": "Dire Avengers may make a ranged attack as a Free Action, but cannot do so in the same Turn they use their Action to make ranged, melee, or Interaction Attacks."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Avenger Shuriken Catapult",
+          "damage": 10,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 4,
+          "traits": [
+            "Assault",
+            "Rending (4)"
+          ]
+        },
+        {
+          "name": "Plasma Grenade",
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            12
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Battle Focus",
+      "text": "Spend 1 Ruin immediately before or after making a ranged attack to Move up to the Dire Avenger's Speed as a Free Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Dire Avenger Exarch",
+      "text": "A Dire Avenger Exarch has Weapon Skill 10 and 9 Wounds. They lose their Avenger Shuriken Catapult, and gain the equipment and bonuses below: Shuriken Pistol: 10 +1 ED / Range 6 - 12 - 18 / Salvo 2 / Pistol, Rending (3); Power Glaive: 9 +5 ED / AP -2 / Parry; Shimmershield: *2 AR (Invulnerable) / Power Field, Shield; Champion: An Exarch may use Ruin Actions; Shredding Fire: Dire Avengers within 10m of their Exarch may Reload after using a Salvo option as a Free Action. If you wish, a Dire Avenger Exarch may exchange their Shuriken Pistol and Power Glaive for a pair of Avenger Shuriken Catapults. Their peerless mastery of warfare reduces the penalty for making Multi-Attacks with these weapons by 2.",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Power Glaive",
+          "damage": 9,
+          "ed": 5,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ]
+}

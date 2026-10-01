@@ -1,0 +1,151 @@
+{
+  "id": "dark-reaper",
+  "name": "Dark Reaper",
+  "source": "threat-assessment",
+  "page": 38,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 9,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Intimidate",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Inescapable Accuracy",
+      "text": "Characters targeted by a Dark Reaper's ranged attacks do not gain bonus Defence for being in Cover. A Dark Reaper may also Aim as a Free Action when they Brace a Heavy Weapon."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Reaper Launcher (Starshot)",
+          "damage": 16,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": null,
+          "traits": [
+            "Heavy (4)"
+          ]
+        },
+        {
+          "name": "Reaper Launcher (Starswarm)",
+          "damage": 12,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": 2,
+          "traits": [
+            "Heavy (4)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Dark Reaper Exarch",
+      "text": "A Dark Reaper Exarch has Weapon Skill 9 and 9 Wounds. They lose their Reaper Launcher, and gain the equipment and bonuses below: Aeldari Missile Launcher (Starshot): 16 +8 ED / AP -5 / Range 24 - 48 - 72 / Salvo - / Heavy (4); Aeldari Missile Launcher (Sunburst): 12 +6 ED / AP -3 / Range 24 - 48 - 72 / Salvo - / Blast (10), Heavy (4); Champion: An Exarch may use Ruin Actions; Reaper's Reach: Dark Reapers within 10m of their Exarch ignore the Heavy trait of their ranged weapons.",
+      "weapons": [
+        {
+          "name": "Aeldari Missile Launcher (Starshot)",
+          "damage": 16,
+          "ed": 8,
+          "ap": -5,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": null,
+          "traits": [
+            "Heavy (4)"
+          ]
+        },
+        {
+          "name": "Aeldari Missile Launcher (Sunburst)",
+          "damage": 12,
+          "ed": 6,
+          "ap": -3,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": null,
+          "traits": [
+            "Blast (10)",
+            "Heavy (4)"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ]
+}

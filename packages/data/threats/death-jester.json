@@ -1,0 +1,138 @@
+{
+  "id": "death-jester",
+  "name": "Death Jester",
+  "source": "threat-assessment",
+  "page": 55,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "AELDARI",
+    "HARLEQUIN",
+    "[MASQUE]"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 3,
+    "A": 7,
+    "I": 7,
+    "Wil": 6,
+    "Int": 4,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 8,
+    "note": "1 AR"
+  },
+  "defence": 7,
+  "wounds": 11,
+  "shock": 10,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 11
+      },
+      {
+        "name": "Deception",
+        "dice": 8
+      },
+      {
+        "name": "Intimidation",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 11
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "A Death Jester may use Ruin Actions and has 2 personal Ruin. They may activate the Move Ruin Action during their own turn, jumping over any characters or environmental obstacles in the way."
+    },
+    {
+      "name": "Death is Not Enough",
+      "text": "When a Death Jester kills an opponent, all living opponents that saw the death must make a DN 3 Fear Test."
+    },
+    {
+      "name": "Flip Belt",
+      "text": "This Threat ignores Difficult Terrain and can hurdle obstacles up to 2m high or leap over gaps up to 2m in length as part of their standard movement. When this Threat makes a Long or High Jump as a Simple Action with an Athletics (S) Test, their Long Jump distance is equal to their Agility in metres (7m) and their High Jump is equal to half their Agility in metres (4m)."
+    },
+    {
+      "name": "Holo-suit",
+      "text": "In addition to providing *1 AR, a Holo-suit increases the wearer's Defence by +1 (included above). If this Threat moves, it gains additional Defence until the start of its next Turn, depending on the type of movement: Move: +1 additional Defence (total 8). Run: +2 additional Defence (total 9). Sprint: +3 additional Defence (total 10)."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Rictus Mask",
+      "text": "Whenever an opponent becomes Engaged with this Threat, they must make a DN 3 Fear Test."
+    },
+    {
+      "name": "Rising Crescendo",
+      "text": "This Threat can Fall Back as a Simple Action."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shrieker Cannon",
+          "damage": 14,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": 4,
+          "traits": [
+            "Agonising",
+            "Heavy (4)",
+            "Rending (4)"
+          ]
+        },
+        {
+          "name": "Jester's Blade",
+          "damage": 9,
+          "ed": 4,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 7d6. This Threat uses Agility instead of Toughness to roll Determination. Additionally, this Threat can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Flip Belt long jump printed '(7m)' and high jump '(4m)' as in the text (half of Agility 7 is 3.5). The Ynnari sidebar on p.55 is rules text, not a stat block."
+}

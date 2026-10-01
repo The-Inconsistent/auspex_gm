@@ -1,0 +1,128 @@
+{
+  "id": "wraithlord",
+  "name": "Wraithlord",
+  "source": "threat-assessment",
+  "page": 44,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "WRAITH CONSTRUCT",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 12,
+    "T": 13,
+    "A": 3,
+    "I": 4,
+    "Wil": 6,
+    "Int": 4,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 14,
+    "note": "4 AR"
+  },
+  "defence": 3,
+  "wounds": 17,
+  "shock": 9,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 9
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Wraithsight",
+      "text": "Wraithguard can communicate telepathically, and perceive the presence of psychic powers and Warp phenomena, as well as thoughts and feelings at the GM's discretion. However, unless there is a living Aeldari character within line of sight, Wraithguard gain the Hindered Condition."
+    },
+    {
+      "name": "War Construct",
+      "text": "Wraithguard are immune to the Blinded, Bleeding, and Poisoned Conditions, and cannot Suffocate. Any ranged weapons wielded by Wraithguard can be used whilst Engaged, as though they had the Pistol Trait."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Wraithcannon",
+          "damage": 20,
+          "ed": 3,
+          "ap": -4,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Heavy (8)",
+            "Warp Weapon"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 9d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 5,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "D-Scythe",
+      "text": "Wraithguard can instead be equipped with a D-Scythe: 20 +1 ED / AP -4 / Range 6 - 12 - 18 / Salvo 1 / Assault, Blast (6), Warp Weapon.",
+      "weapons": [
+        {
+          "name": "D-Scythe",
+          "damage": 20,
+          "ed": 1,
+          "ap": -4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Blast (6)",
+            "Warp Weapon"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Legends of War",
+      "text": "Wraithlords may replace their Bright Lance with weapons listed under the Guardian Defender's heavy weapon platform on page 31. A Wraithlord may have up to two of these weapons.",
+      "weapons": [],
+      "abilities": []
+    }
+  ],
+  "note": "The block's bonuses and weapons are the Wraithguard's text copied as printed ('Wraithguard can ...'); the printed Ghostglaive and Bright Lance (Legends of War) have no profile in the block."
+}

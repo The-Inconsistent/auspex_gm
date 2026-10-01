@@ -1,0 +1,119 @@
+{
+  "id": "kurnathi",
+  "name": "Kurnathi",
+  "source": "threat-assessment",
+  "page": 49,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 6,
+    "Wil": 2,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "3 AR"
+  },
+  "defence": 6,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 9
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 9
+      },
+      {
+        "name": "Intimidation",
+        "dice": 7
+      },
+      {
+        "name": "Pilot",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 11
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Bladed Stance",
+      "text": "When wielding two melee weapons, this Threat reduces the DN penalty for Multi-Attack by 2. Additionally, this Threat gains +1 Defence when wielding two melee weapons (already included above)."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +4 bonus dice during All-Out Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Dual Aeldari Power Swords",
+          "damage": 7,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Enduring Resolve: Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Avg"
+}
