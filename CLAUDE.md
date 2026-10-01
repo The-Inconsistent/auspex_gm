@@ -29,7 +29,9 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   - Threat Assessment: Daemons & Heretics (`daemons-and-heretics`, cite D&H): PDF page = printed. It's image-only (no text layer), so read it
     from page renders. Its creation content, relics and Sonic Weapon trait are in; its threats aren't yet.
   - Forsaken System Player's Guide, Aeldari: Inheritance of Embers: PDF page = printed. Apocrypha (homebrew): PDF = printed + 3.
-    Legacy of the Necrontyr (homebrew): no printed pages, cite PDF pages. Full table: `docs/data.md` §3.
+    Legacy of the Necrontyr (homebrew): no printed pages, cite PDF pages. Redacted Records (RR1), Redacted Records 2
+    (RR2), Darktide, Litanies of the Lost, Wretches of the Writ, Bloody Gates (BG), Affliction Ascendant (AA): PDF page =
+    printed. Full table: `docs/data.md` §3.
 - **Reading the PDFs:**
   - Text: use `pdftotext -f N -l N "<pdf>" -` and filter the watermark with `grep -v "Order #"`.
   - Stat blocks and tables garble in text, so verify them against a page image. The Read tool refuses PDFs over

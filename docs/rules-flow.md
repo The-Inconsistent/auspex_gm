@@ -539,6 +539,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
       the same XP with it and without it, and it is no part of `creationKey`, so gaining a date is not a creation change
       a player may not make.
     *(User ruling, 2026-10-01.)*
+70. **A stat block with no Tier row** (GitHub issue #44). Bloody Gates' seven blocks (BG pp.22–25) and Redacted
+    Records' three Slaughter Servitors print no Threat class, but a threat needs one per Tier (Core p.323). The
+    transcriber proposes one class from the block's role (a Champion with Personal Ruin, a 1-Wound grunt) and repeats it
+    for every Tier, and the block's `note` says "No Tier row printed; class proposed (…)". The GM can change it per
+    fight. *Proposed; awaiting the GM.*
+71. **Reprints and updated printings** (GitHub issue #44). A block whose name the bestiary already holds, in a newer
+    book (Threat Assessment's Guardian Defender, Redacted Records 2's Kastelan Robot), is transcribed again under its
+    own book's id prefix, as `ta-ork-boy` is, and its `note` names the other printing. The GM picks the printing they
+    prefer; neither replaces the other. *Proposed; awaiting the GM.*
+72. **Class letters where two books disagree** (GitHub issue #44). Each printing keeps its own book's Tier row, since
+    a class is set per book; none is corrected to match another. *Proposed; awaiting the GM.*
 
 ---
 

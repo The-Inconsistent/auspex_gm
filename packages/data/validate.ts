@@ -58,6 +58,12 @@ const EXPECTED = [
   "cult-magus",
 ];
 
+// Every other book's expected ids, from its contents pages and a scan for stat blocks (GitHub issue #44). It lives
+// outside threats/, which is read as all threats. A book is added when its transcription lands.
+const THREAT_MANIFEST: Record<string, string[]> = JSON.parse(
+  readFileSync(new URL("./threat-manifest.json", import.meta.url), "utf8"),
+);
+
 const dir = new URL("./threats/", import.meta.url);
 let failed = false;
 const found: string[] = [];
@@ -77,6 +83,8 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   }
   if (r.data.source === "core" && !EXPECTED.includes(r.data.id) && !HOUSE_VARIANTS.includes(r.data.id))
     console.warn(`? ${file}: core source but not in the core bestiary list`);
+  if (THREAT_MANIFEST[r.data.source] && !THREAT_MANIFEST[r.data.source]!.includes(r.data.id))
+    console.warn(`? ${file}: not in threat-manifest.json for ${r.data.source}`);
   found.push(r.data.id);
   variantsOf.set(r.data.id, new Set(r.data.options.filter((o) => o.kind === "variant").map((o) => o.name)));
 }
@@ -85,6 +93,12 @@ const missing = EXPECTED.filter((id) => !found.includes(id));
 const core = EXPECTED.length - missing.length;
 console.log(`core bestiary: ${core}/${EXPECTED.length}${missing.length ? ` (missing: ${missing.join(", ")})` : ""}`);
 console.log(`supplements: ${found.length - core} threats`);
+for (const [source, expected] of Object.entries(THREAT_MANIFEST)) {
+  const gone = expected.filter((id) => !found.includes(id));
+  console.log(
+    `threats ${source}: ${expected.length - gone.length}/${expected.length}${gone.length ? ` (missing: ${gone.join(", ")})` : ""}`,
+  );
+}
 // A follower names its stat block, and a variant only of that threat; nothing else names a stat block.
 function followerError(follower: boolean, threatId?: string, variant?: string) {
   if (follower !== (threatId !== undefined))

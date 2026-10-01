@@ -170,10 +170,16 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
-| Redacted Records | *none yet* (creation, GitHub issue #24) | `Wrath & Glory_ Redacted Records.pdf` | not checked yet |
-| Redacted Records 2 | *none yet* (creation, GitHub issue #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | not checked yet |
-| Bloody Gates | *none* (adventure) | `Wrath & Glory_ Bloody Gates.pdf` | printed |
-| Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
+| Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
+| Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
+| Darktide (Apr 2025 update) | `darktide` (threats, #44) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
+| Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
+| Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
+| Bloody Gates | `bloody-gates` (cite BG; threats, #44) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
+| Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
+
+The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
+scene, item, NPC or location data that other work types as `Source`.
 
 No creation content: Darktide, Litanies of the Lost, Bloody Gates and Affliction Ascendant (official adventures;
 Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only), Church of Steel (travel and vehicles),
@@ -512,6 +518,8 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | A `core` threat whose id isn't in the core bestiary list (`EXPECTED`, Core contents pp.326–371) | `? <file>: …` warning, not a failure |
 | Core bestiary progress | `core bestiary: N/36 (missing: …)` |
 | Everything else | `supplements: N threats` (all threats minus core list hits) |
+| Coverage per book against `threat-manifest.json` (`{ source: ids[] }`, from each book's contents pages and a scan for stat blocks; outside `threats/` so the loader skips it). A book goes in when its transcription lands | `threats <source>: N/M (missing: …)` |
+| A threat whose `source` is in the manifest but whose id isn't listed | `? <file>: not in threat-manifest.json …` warning, not a failure |
 | Every pack parses as `Pack`, including key references and `MAX_ENCOUNTER_ROWS` | `✖ pack <name>` + zod error |
 | Every beat `encounter[].threatId` and bestiary NPC `threatId` exists | `✖ pack <name>: unknown threat "…"` |
 | Every `wargear/*.json` parses as `Wargear[]`; ids unique across files | `✖ wargear/<file>` + zod error, or `duplicate id` |
