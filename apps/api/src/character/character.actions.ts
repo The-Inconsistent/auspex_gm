@@ -210,7 +210,11 @@ export async function applyCharacterAction(
         if (ctx.role !== "gm" && creationKey(build) !== creationKey(made.data))
           fail("Only your GM changes a character's creation choices once it's made");
       } else if (build.tier !== tier) fail(`This campaign is Tier ${tier}; build for Tier ${tier}`);
-      const play = row ? { tier, xpEarned: row.xp } : undefined;
+      // The GM may have waived this Ascension's package (Core p.148 step 2): the builder reads the same flag, so the
+      // server asks for what the screen asks for.
+      const play = row
+        ? { tier, xpEarned: row.xp, xpAtAscension: row.xpAtAscension, packageWaived: row.ascensionPackageWaived }
+        : undefined;
       const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build, play });
       const refusal = buildRefusal(r);
       if (refusal) fail(refusal);

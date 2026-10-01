@@ -49,10 +49,12 @@ async function openCharacters(conn: Db, campaignId: string) {
 // A sheet for someone who holds an invite but no seat yet: no objectives, no book prose (see InvitePreview).
 const previewSheet = (c: Character): Character => {
   const bare = (list: Character["stats"]["talents"]) => list.map((r) => ({ ...r, text: "" }));
+  // A fitted upgrade's notes are its rules text (withUpgrades, Core p.227), so they need a seat too.
+  const weapons = c.stats.weapons.map(({ notes: _, upgradeNames: __, ...w }) => w);
   return {
     ...c,
     objectives: [],
-    stats: { ...c.stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents) },
+    stats: { ...c.stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons },
   };
 };
 

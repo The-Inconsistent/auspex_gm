@@ -16,6 +16,7 @@ import {
   type BookAvailable,
   type BookPage,
   type BookReply,
+  type Character,
   type Codex,
   type CreationPayload,
   type LibraryCharacter,
@@ -357,6 +358,15 @@ test("GM and player share a table", async (t) => {
     laspistol.notes?.some((n) => n.includes("bonus dice")),
     "the prose the GM applies (Core p.228)",
   );
+  // That prose is rules text, so an invite holder without a seat sees the fitted profile but not the notes.
+  const heroInvite = await gm.send({ type: "invite.create", mode: "character", characterId: hero.id! });
+  assert.ok(heroInvite.ok && heroInvite.token);
+  const previewed = (
+    (await (await get(`/invites/${heroInvite.token}`)).json()) as { character: Character }
+  ).character.stats.weapons.find((w) => w.name === "Laspistol")!;
+  assert.ok(previewed.traits.includes("Reliable"));
+  assert.equal(previewed.notes, undefined);
+  assert.equal(previewed.upgradeNames, undefined);
   assert.ok(
     (await gm.send({ type: "character.removeUpgrade", id: hero.id!, weapon: "Laspistol", upgradeId: "mastercrafted" }))
       .ok,
@@ -387,6 +397,35 @@ test("GM and player share a table", async (t) => {
     ok: false,
     error: 'Hero has no weapon called "Nothing"',
   });
+  // removeUpgrade refuses what isn't fitted, someone else's character, what the build gives, and a full gear list.
+  const off = { type: "character.removeUpgrade" as const, id: hero.id!, weapon: "Laspistol" };
+  assert.deepEqual(await gm.send({ ...off, upgradeId: "mastercrafted" }), {
+    ok: false,
+    error: "Laspistol has no Mastercrafted fitted",
+  });
+  assert.deepEqual(await player.send({ ...off, id: other.id!, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Not your character",
+  });
+  const stored = (await gm.until((s) => s.characters.some((c) => c.id === hero.id))).characters.find(
+    (c) => c.id === hero.id,
+  )!.stats;
+  const crowded = {
+    ...stored,
+    weapons: stored.weapons.map((w) => (w.name === "Frag Grenade" ? { ...w, upgrades: ["mastercrafted"] } : w)),
+    gear: [...stored.gear, ...Array.from({ length: 60 - stored.gear.length }, (_, i) => `Trinket ${i}`)],
+  };
+  assert.ok((await gm.send({ type: "character.update", id: hero.id!, stats: crowded })).ok);
+  assert.deepEqual(await gm.send({ ...off, weapon: "Frag Grenade", upgradeId: "mastercrafted" }), {
+    ok: false,
+    error: "Mastercrafted is part of Frag Grenade as it was built: change the build to take it off",
+  });
+  assert.deepEqual(await gm.send({ ...off, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Hero's gear list is full (60 lines)",
+  });
+  assert.ok((await gm.send({ type: "character.update", id: hero.id!, stats: stored })).ok);
+
   // Taking it off puts it back in the character's gear, so their own player can fit it again.
   const { type: _fitType, ...onLaspistol } = fit;
   assert.ok((await gm.send({ type: "character.removeUpgrade", ...onLaspistol, upgradeId: "magnocular-scope" })).ok);
@@ -1466,6 +1505,26 @@ test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp
     ok: false,
     error: "Tier 5 is the highest Tier; there is nothing to Ascend to",
   });
+});
+
+// A Milestone Ascension may waive the package (Core p.148 step 2): the server's resolve has to read the waive too, or
+// the builder offers SAVE and the server refuses it.
+test("Ascension: a waived package isn't asked for when the build is saved", async (t) => {
+  const advanced = { ...disruptor, advancement: { skills: { Stealth: 6 } } };
+  for (const waivePackage of [false, true]) {
+    const gm = await newCampaign(`Waive ${waivePackage}`, 4);
+    t.after(() => gm.socket.close());
+    const made = await gm.send({ type: "character.build", name: "Veyl", build: disruptor });
+    assert.ok(made.ok && made.id);
+    assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone", waivePackage })).ok);
+    await gm.until((s) => s.campaign.tier === 5);
+    assert.deepEqual(
+      await gm.send({ type: "character.build", id: made.id, build: advanced }),
+      waivePackage
+        ? { ok: true, id: made.id }
+        : { ok: false, error: "Still to choose: Buy one Ascension Package (Tier 4 → 5)" },
+    );
+  }
 });
 
 // Core p.147 asks it of "every character in your group", and nothing removes a dead character's record, so a casualty

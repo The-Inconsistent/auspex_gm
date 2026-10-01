@@ -78,8 +78,13 @@ export async function applyCampaignAction(
       await tx.update(campaign).set(patch).where(eq(campaign.id, cid));
       // Raising the Tier by hand (a script, a fix-up) is still an Ascension as far as the rules are concerned, so the
       // "100 XP in the current Tier" window has to restart here too (Core p.147) — otherwise the XP that paid for this
-      // Tier would pay for the next one as well. `campaign.ascend` is the path that also awards and waives.
-      if (raised) await tx.update(character).set({ xpAtAscension: character.xp }).where(eq(character.campaignId, cid));
+      // Tier would pay for the next one as well. `campaign.ascend` is the path that also awards and waives, so a waive
+      // from an earlier Milestone doesn't carry over to this one.
+      if (raised)
+        await tx
+          .update(character)
+          .set({ xpAtAscension: character.xp, ascensionPackageWaived: false })
+          .where(eq(character.campaignId, cid));
       return { ok: true };
     }
 
