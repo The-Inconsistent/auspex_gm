@@ -267,7 +267,27 @@
     "name": "NURGLE",
     "source": "core",
     "page": 376,
-    "text": "One of the Ruinous Powers, the Plague God’s domains are disease, decay, and entropy."
+    "text": "One of the Ruinous Powers, the Plague God’s domains are disease, decay, and entropy.",
+    "note": "Grant from Threat Assessment: Daemons & Heretics p.123: \"A Psyker with the NURGLE Keyword can always purchase powers from the Warprot Discipline, without it counting as one of the limited number of Disciplines they can learn.\" p.116: \"Agents may only learn powers from a single Discipline, unless they are Aeldari or have the Warped Mind Talent (Wrath & Glory page 141). However, if the Agent purchasing those powers has the corresponding Chaos God’s Keyword — TZEENTCH for Pandaemoniac, SLAANESH for Soulstain, NURGLE for Warprot — they may ignore this requirement.\" The grant reaches a Psyker however the keyword came: the Nurgle Mark of Chaos (Core p.85), or an archetype that prints it (An Abundance of Apocrypha’s Plague Marine and Pestigor).",
+    "grants": [
+      {
+        "all": [
+          {
+            "disciplineAccess": [
+              "warprot"
+            ]
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "officio-assassinorum",
@@ -344,7 +364,27 @@
     "name": "SLAANESH",
     "source": "core",
     "page": 377,
-    "text": "One of the Ruinous Powers, the Lord of Excess — or to the Aeldari, She Who Thirsts — claims domain over decadence, hedonism, and the pursuit of perfection."
+    "text": "One of the Ruinous Powers, the Lord of Excess — or to the Aeldari, She Who Thirsts — claims domain over decadence, hedonism, and the pursuit of perfection.",
+    "note": "Grant from Threat Assessment: Daemons & Heretics p.121: \"A Psyker with the SLAANESH Keyword can always purchase powers from the Soulstain Discipline, without it counting as one of the limited number of Disciplines they can learn.\" p.116: \"Agents may only learn powers from a single Discipline, unless they are Aeldari or have the Warped Mind Talent (Wrath & Glory page 141). However, if the Agent purchasing those powers has the corresponding Chaos God’s Keyword — TZEENTCH for Pandaemoniac, SLAANESH for Soulstain, NURGLE for Warprot — they may ignore this requirement.\" The grant reaches a Psyker however the keyword came: the Slaanesh Mark of Chaos (Core p.85), or an archetype that prints it (An Abundance of Apocrypha’s Noise Marine and Slaangor).",
+    "grants": [
+      {
+        "all": [
+          {
+            "disciplineAccess": [
+              "soulstain"
+            ]
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "tau",
@@ -366,7 +406,27 @@
     "name": "TZEENTCH",
     "source": "core",
     "page": 377,
-    "text": "One of the Ruinous Powers, the Changer of Ways’ domains are fate, ambition, and sorcery."
+    "text": "One of the Ruinous Powers, the Changer of Ways’ domains are fate, ambition, and sorcery.",
+    "note": "Grant from Threat Assessment: Daemons & Heretics p.118: \"A Psyker with the TZEENTCH Keyword can always purchase powers from the Pandaemoniac Discipline, without it counting as one of the limited number of Disciplines they can learn.\" p.116: \"Agents may only learn powers from a single Discipline, unless they are Aeldari or have the Warped Mind Talent (Wrath & Glory page 141). However, if the Agent purchasing those powers has the corresponding Chaos God’s Keyword — TZEENTCH for Pandaemoniac, SLAANESH for Soulstain, NURGLE for Warprot — they may ignore this requirement.\" The grant reaches a Psyker however the keyword came: the Tzeentch Mark of Chaos (Core p.85), or an archetype that prints it (An Abundance of Apocrypha’s Tzaangor).",
+    "grants": [
+      {
+        "all": [
+          {
+            "disciplineAccess": [
+              "pandaemoniac"
+            ]
+          }
+        ],
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "wraith-construct",
