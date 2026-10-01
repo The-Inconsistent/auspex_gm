@@ -1,0 +1,101 @@
+{
+  "id": "firesight-marksman",
+  "name": "Firesight Marksman",
+  "source": "threat-assessment",
+  "page": 170,
+  "faction": "tau",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "T'AU"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 3,
+    "A": 3,
+    "I": 3,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "AR 3"
+  },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      },
+      {
+        "name": "Survival",
+        "dice": 4
+      },
+      {
+        "name": "Tech",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Firesight Targeting Platform",
+      "text": "The Firesight Marksman can link with up to three Sniper Drones at a range of up to 1km; a Sniper Drone cannot be linked to more than one Firesight Marksman. While linked, the Firesight Marksman can issue commands to the Sniper Drones as a Free Action."
+    },
+    {
+      "name": "Personal Stealth Field",
+      "text": "If this Threat does not move on its turn, attacks from more than 12m away suffer a +3 DN penalty."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Pulse Pistol",
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Reliable"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Fire Markerlight",
+      "text": "This Threat illuminates an individual within 36m with a Markerlight. Until the start of this Threat's next turn, any Threat with the T'AU Keyword gains +2 bonus dice to ranged attack Tests targeting the individual affected by the Markerlight. The effects of Markerlights do not stack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg"
+}

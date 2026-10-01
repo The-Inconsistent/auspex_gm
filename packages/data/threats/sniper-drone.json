@@ -1,0 +1,101 @@
+{
+  "id": "sniper-drone",
+  "name": "Sniper Drone",
+  "source": "threat-assessment",
+  "page": 170,
+  "faction": "tau",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "T'AU",
+    "DRONE"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 4,
+    "A": 4,
+    "I": 3,
+    "Wil": 1,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 8,
+    "note": "AR 3"
+  },
+  "defence": 3,
+  "wounds": 6,
+  "shock": null,
+  "skills": {
+    "default": 2,
+    "list": [
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Artificial Helper",
+      "text": "A Sniper Drone cannot perform any Actions except Attack, Multi-Attack, and Reload. It can only attack one additional time when performing a Multi-Attack. If disconnected from the Firelight Marksman Uplink, the Sniper Drone will do nothing on its turn, and only take movements and Actions to preserve itself."
+    },
+    {
+      "name": "Drone",
+      "text": "This Threat is immune to the Bleeding, Exhausted, Poisoned, and Prone Conditions, cannot Suffocate, and cannot roll Determination. It is unaffected by any abilities that target the mind and never needs to make a Resolve Test to continue fighting, provided it is still connected via a Firelight Marksman Uplink."
+    },
+    {
+      "name": "Firelight Marksman Uplink",
+      "text": "While linked to a Firesight Marksman, the Sniper Drone has Ballistic Skill 10."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Longshot Pulse Rifle",
+          "damage": 12,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (2)",
+            "Reliable",
+            "Sniper (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fire Markerlight",
+      "text": "This Threat illuminates an individual within 36m with a Markerlight. Until the start of this Threat's next turn, any Threat with the T'AU Keyword gains +2 bonus dice to ranged attack Tests targeting the individual affected by the"
+    },
+    {
+      "type": "WRATH",
+      "name": "Hit to Vitals",
+      "text": "When a Sniper Drone linked to a Firesight Marksman rolls a Wrath Critical as part of an Attack, the target suffers the Bleeding Condition."
+    }
+  ],
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Small",
+  "mobAbilities": [
+    {
+      "name": "Linked AIs",
+      "text": "A Mob of 3 or more Sniper Drones has Intelligence 3, Default Skill 3, and Ballistic Skill 8."
+    }
+  ],
+  "note": "Print errors copied: Fire Markerlight text is cut off after 'affected by the'; the uplink is called 'Firelight Marksman Uplink'. Fire Markerlight is untyped (no ACTION prefix printed). No DETERMINATION line (Drone cannot roll it)."
+}

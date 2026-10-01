@@ -1,0 +1,99 @@
+{
+  "id": "knarloc",
+  "name": "Knarloc",
+  "source": "threat-assessment",
+  "page": 184,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "KROOT"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 8,
+    "A": 3,
+    "I": 4,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 9,
+    "note": "AR 2"
+  },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Bonded Rider",
+      "text": "A Knarloc is typically ridden by a bonded rider, who uses the statistics of a Kroot Carnivore. The bonded rider may take actions as normal while mounted, and can be targeted separately to the Knarloc. If the bonded rider is killed or otherwise removed from the Knarloc during combat, COMPLICATION: Riderless immediately activates."
+    },
+    {
+      "name": "Loping Stride",
+      "text": "When this Threat runs or charges, they have Speed 20 instead of Speed 14."
+    },
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Atack penalty by 2 DN, as though it had the Dual Wield Talent (Wrath & Glory, page 133)."
+    },
+    {
+      "name": "Thunderous Pounce",
+      "text": "This Threat gains +2 Strength when it charges."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Knarloc Beak & Talons",
+          "damage": 10,
+          "ed": 5,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Riderless",
+      "text": "The Knarloc must make a DN 1 Willpower Test. If it fails, it throws off its rider if it has one, and immediately becomes Frenzied, attempting to violently destroy all enemies in sight. The Frenzied Condition ends if all the Knarloc's enemies are destroyed or no longer visible, or if an individual with the KROOT Keyword succeeds on a DN 4 Leadership Test, at which point the Kroot may mount the Knarloc using their movement."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 8d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Large",
+  "note": "No Default pool printed. Beak & Talons prints '10 +5 / AP -2' with no 'ED' (read as +5 ED). Loping Stride's 'Speed 14' does not match Speed 7."
+}

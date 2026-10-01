@@ -1,0 +1,221 @@
+{
+  "id": "xv95-ghostkeel-battlesuit-shasvre",
+  "name": "XV95 Ghostkeel Battlesuit Shas'vre",
+  "source": "threat-assessment",
+  "page": 166,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "T'AU"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 10,
+    "A": 9,
+    "I": 9,
+    "Wil": 7,
+    "Int": 5,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 11,
+    "note": "AR 5"
+  },
+  "defence": 6,
+  "wounds": 18,
+  "shock": 11,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 12
+      },
+      {
+        "name": "Leadership",
+        "dice": 10
+      },
+      {
+        "name": "Pilot",
+        "dice": 12
+      },
+      {
+        "name": "Stealth",
+        "dice": 12
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 9
+      }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 3 personal Ruin."
+    },
+    {
+      "name": "Drone Controller",
+      "text": ": The XV95 can control up to two Stealth Drones."
+    },
+    {
+      "name": "Twin-linked Weapons",
+      "text": "When the XV95 is equipped with two weapons of the same type, it can fire both weapons once on its turn without suffering Multi-Attack DN penalties."
+    },
+    {
+      "name": "Manoeuvring Jet Packs",
+      "text": ": The XV95 can make a controlled descent from any height and never takes damage from falling. The XV95 has a Long Jump and High Jump distance of 12m and can make these jumps as part of their movement without making Athletics (S) Tests."
+    },
+    {
+      "name": "XV95 Powered Battlesuit",
+      "text": "The XV95 Ghostkeel Battlesuit increases the wearers Strength, Agility, and Initiative Attribute Bonuses by +4, and the wearers Toughness Bonus by +5. These increases have been applied to this statblock."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Fusion Collider",
+          "damage": 18,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Heavy (8)",
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "T'au Flamer",
+          "count": 2,
+          "damage": 10,
+          "ed": 4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "traits": [
+            "Assault",
+            "Flamer"
+          ]
+        },
+        {
+          "name": "Ghostkeel Fists",
+          "damage": 10,
+          "ed": 4,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Jet Pack Jump",
+      "text": "Spend 1 Ruin. The XV95 gains a Speed of 20 (Fly) for its turn."
+    },
+    {
+      "name": "Early Warning Override",
+      "text": "Spend 1 Ruin. As a reflexive action, make a ranged attack."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explodes",
+      "text": "When a XV95 Ghostkeel Battlesuit is destroyed, roll 1d6. If you roll a Complication, the XV95 Ghostkeel Battlesuit explodes with the following profile: 16 +4 ED / Blast (12)."
+    }
+  ],
+  "determination": "Electrowarfare Suite: Spend 1 Ruin to roll 10d6. Any Wounds negated by an Exalted Icon are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 12,
+  "size": "Huge",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Cyclic Ion Raker",
+      "text": "The XV95 can exchange their Fusion Collider for a Cyclic Ion Raker: 16 +4 ED / AP -2 / Brutal, Heavy (8), Supercharge (no range or Salvo printed).",
+      "weapons": [],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Flare Launcher",
+      "text": "The XV95 can exchange their Early Warning Override for a Flare Launcher.",
+      "weapons": [],
+      "abilities": [
+        {
+          "type": "RUIN",
+          "name": "Flare Launcher",
+          "text": "As a reflexive action, spend 1 Ruin when a ranged attack with 4 or more ED targets the XV95 Ghostkeel Battlesuit Shas'vre. Roll 1d6. If the result is an Icon or an Exalted Icon, the ranged attack automatically misses."
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Flamer exchange",
+      "text": "The XV95 can exchange their 2 T'au Flamers for either 2 Burst Cannons or 2 Fusion Blasters.",
+      "weapons": [
+        {
+          "name": "Burst Cannon",
+          "damage": 11,
+          "ed": 3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Heavy (5)",
+            "Rapid Fire (2)",
+            "Reliable"
+          ],
+          "count": 2
+        },
+        {
+          "name": "Fusion Blaster",
+          "damage": 16,
+          "ed": 1,
+          "ap": -4,
+          "range": [
+            9,
+            18,
+            24
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Heavy (5)",
+            "Rapid Fire (2)"
+          ],
+          "count": 2
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Ghostkeel Fists print '10 +4 / AP -1.' with no 'ED' (read as +4 ED). Flamer range prints '6 12 - 18' (a dash missing). Drone Controller and Manoeuvring Jet Packs print a stray ':'."
+}

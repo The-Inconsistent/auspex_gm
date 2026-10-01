@@ -1,0 +1,144 @@
+{
+  "id": "xv25-stealth-battlesuit-shasui",
+  "name": "XV25 Stealth Battlesuit Shas'ui",
+  "source": "threat-assessment",
+  "page": 166,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "T'AU"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 6,
+    "I": 6,
+    "Wil": 3,
+    "Int": 4,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 10,
+    "note": "AR 4"
+  },
+  "defence": 5,
+  "wounds": 9,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Pilot",
+        "dice": 7
+      },
+      {
+        "name": "Stealth",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Camouflage Fields",
+      "text": "This Threat has +3 bonus Defence against ranged attacks."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 1 personal Ruin."
+    },
+    {
+      "name": "Drone Controller",
+      "text": "This Threat can control 1 Tactical Support Drone."
+    },
+    {
+      "name": "XV25 Powered Battlesuit",
+      "text": "The XV25 Stealth Battlesuit increases the wearers Strength, Toughness, Agility, and Initiative Attribute Bonuses by +2. These increases have been applied to this statblock."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Stealth Infiltrator",
+      "text": "A XV25 Stealth Battlesuit Shas'ui will typically attack from Stealth, using their Camouflage fields to remain hidden. When they emerge from hiding they Seize the Initiative without spending Ruin and all opponents of the XV25 Stealth Battlesuit Shas'ui must make a DN 4 Initiative Test or are Ambushed."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Burst Cannon",
+          "damage": 11,
+          "ed": 3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Heavy (5)",
+            "Rapid Fire (2)",
+            "Reliable"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Fade Away",
+      "text": "Spend 1 Ruin. The XV25 makes a Stealth (A) Test as a Free Action. It resets its Stealth Score with the result."
+    },
+    {
+      "name": "Jet Pack Jump",
+      "text": "Spend 1 Ruin. The XV25 gains a Speed of 12 (Fly) for its turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Four-Strong Team",
+      "text": "In a Mob of four or more XV25 Stealth Suits, one XV25 can exchange their Burst Cannon for a Fusion Blaster.",
+      "weapons": [
+        {
+          "name": "Fusion Blaster",
+          "damage": 16,
+          "ed": 1,
+          "ap": -4,
+          "range": [
+            9,
+            18,
+            24
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Heavy (5)",
+            "Rapid Fire (2)"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "kroot-carnivore",
+  "name": "Kroot Carnivore",
+  "source": "threat-assessment",
+  "page": 179,
+  "faction": "tau",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "KROOT"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 3,
+    "A": 4,
+    "I": 4,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 4,
+    "note": "AR 0"
+  },
+  "defence": 3,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 6
+      },
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 5
+      },
+      {
+        "name": "Stealth",
+        "dice": 6
+      },
+      {
+        "name": "Survival",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Feasting Fighters",
+      "text": "Whenever the Kroot Carnivore slays a creature that doesn't have the CHAOS, T'AU, or TYRANID Keywords and is made of biological matter, the Kroot Carnivore can spend an Action to feast and regain 1d3 Wounds and 1d6 Shock."
+    },
+    {
+      "name": "Stealthy Hunters",
+      "text": "While in cover this Threat has +2 bonus Defence."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Ambushing Predators",
+      "text": "This Threat has 10 Speed on its first turn."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Kroot Rifle",
+          "damage": 8,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (1)"
+          ]
+        },
+        {
+          "name": "Kroot Rifle (melee)",
+          "damage": 9,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "You Are Prey",
+      "text": "Mob option.",
+      "weapons": [],
+      "abilities": [
+        {
+          "type": "BATTLECRY",
+          "name": "You Are Prey",
+          "text": "All opponents that can see a Mob of 10 or more Kroot Carnivores must make a DN 2 Fear Test."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "krootox",
+  "name": "Krootox",
+  "source": "threat-assessment",
+  "page": 182,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "KROOT"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 2,
+    "I": 2,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 10,
+    "note": "AR 2"
+  },
+  "defence": 1,
+  "wounds": 11,
+  "shock": 5,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 10
+      },
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Handler",
+      "text": "The Krootox is ridden by a Kroot handler, who uses the statistics of a Kroot Carnivore. The riding Kroot Carnivore and the Krootox must both use their Action to fire the Kroot Gun. The Kroot Carnivore can be targeted separately to the Krootox. If a Kroot Carnivore is not riding the Krootox the Kroot Gun cannot be fired, and COMPLICATION: Riderless immediately activates."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Ambushing Predators",
+      "text": "This Threat has 10 Speed on its first turn."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Kroot Gun",
+          "damage": 14,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": 1,
+          "traits": [
+            "Heavy (8)"
+          ]
+        },
+        {
+          "name": "Krootox Fists",
+          "damage": 10,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Riderless",
+      "text": "The Krootox will stand over and fight to defend its rider however it must make a DN 2 Willpower Test. If it fails, it immediately becomes Frenzied, attempting to charge the nearest Threat. An individual with the KROOT Keyword can attempt a DN 3 Leadership Test to calm a Frenzied Krootox, and may then mount it using their movement."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Large",
+  "note": "No Default pool printed."
+}

@@ -1,0 +1,186 @@
+{
+  "id": "kroot-shaper",
+  "name": "Kroot Shaper",
+  "source": "threat-assessment",
+  "page": 180,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "KROOT"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 4,
+    "I": 4,
+    "Wil": 6,
+    "Int": 3,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 6,
+    "note": "AR 0"
+  },
+  "defence": 3,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Cunning",
+        "dice": 4
+      },
+      {
+        "name": "Stealth",
+        "dice": 6
+      },
+      {
+        "name": "Survival",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 3 personal Ruin."
+    },
+    {
+      "name": "Stealthy Hunters",
+      "text": "While in cover this Threat has +2 bonus Defence."
+    },
+    {
+      "name": "The Shaper Commands",
+      "text": "All Threats with the KROOT Keyword within 10m of the Kroot Shaper gain +2 bonus dice to all attack Tests."
+    },
+    {
+      "name": "Wisest of Their Kind",
+      "text": "Threats with the KROOT keyword within 10m of the Kroot Shaper use the Kroot Shaper's Conviction and Resolve in place of their own, if their own is lower."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Ambushing Predators",
+      "text": "This Threat has 10 Speed on its first turn."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shaper Kroot Rifle",
+          "damage": 8,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 3,
+          "traits": [
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "Ritual Blade",
+          "damage": 7,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Just a Taste",
+      "text": "Spend 1 Ruin immediately after hitting a creature with the Ritual Knife. The Kroot Shaper learns all physical characteristics of the target, gaining +2 bonus dice to all further Attacks against it."
+    }
+  ],
+  "determination": "Visions of the Ancestors: Spend 1 Ruin to roll 5d6. Any Wounds negated by an Exalted Icon are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Shaper's Armoury",
+      "text": "Sidebar (p.180): alternative weapons.",
+      "weapons": [
+        {
+          "name": "Grenade Belt",
+          "count": 1,
+          "damage": 14,
+          "ed": 4,
+          "range": [
+            6
+          ],
+          "traits": [
+            "Blast (10)"
+          ]
+        },
+        {
+          "name": "Pulse Rifle",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (1)",
+            "Reliable"
+          ]
+        },
+        {
+          "name": "Kroot Pistol",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": null,
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Ritual Blade prints '7 +3 ED / AP -1 /' with no range (stored [1] as melee). Just a Taste says 'Ritual Knife' (copied)."
+}
