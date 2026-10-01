@@ -212,9 +212,20 @@ for (const file of readdirSync(rulesDir)
 }
 
 // Event tables (scene-presets/<source>.json): the filename names the book, ids are unique across files, and
-// EventTable's own check holds every range to the dice, with print gaps and overlaps listed rather than missed.
+// EventTable's own check holds every range to the dice, with print gaps and overlaps listed rather than missed. Each
+// planned table (issue #39) must hold the events the book prints.
+const EXPECTED_EVENTS: Record<string, number> = {
+  "church-of-steel-battlefield-events": 12, // pp.36–39
+  "church-of-steel-urban-travel-events": 12, // pp.39–40
+  "church-of-steel-wasteland-events": 12, // pp.41–42
+  "redacted-records-internal-events": 11, // p.13
+  "redacted-records-external-events": 11, // p.14
+  "redacted-records-high-tier-events": 11, // p.15
+  "darktide-lattice-encounters": 6, // p.74
+  "litanies-of-the-lost-random-encounters": 11, // pp.117–120
+};
+const tableIds = new Set<string>();
 {
-  const tableIds = new Set<string>();
   for (const file of eventTableFiles()) {
     const r = EventTable.array().safeParse(
       JSON.parse(readFileSync(new URL(`./scene-presets/${file}`, import.meta.url), "utf8")),
@@ -234,10 +245,16 @@ for (const file of readdirSync(rulesDir)
         console.error(`✖ scene-presets/${file}: duplicate table id "${t.id}"`);
       }
       tableIds.add(t.id);
+      if (EXPECTED_EVENTS[t.id] !== t.rows.length) {
+        failed = true;
+        console.error(
+          `✖ scene-presets/${file} ${t.id}: ${t.rows.length} events, expected ${EXPECTED_EVENTS[t.id] ?? "none (not a planned table)"}`,
+        );
+      }
       const tests = t.rows.flatMap((e) => e.tests);
       const escapes = (t.gm ? 1 : 0) + tests.filter((x) => x.gm).length;
       console.log(
-        `scene-presets/${file} ${t.id}: ${t.rows.length} events, ${tests.length} Tests (${tests.filter((x) => x.dn !== null).length} with a printed DN), ${escapes} gm notes` +
+        `scene-presets/${file} ${t.id}: ${t.rows.length}/${EXPECTED_EVENTS[t.id]} events, ${tests.length} Tests (${tests.filter((x) => x.dn !== null).length} with a printed DN), ${escapes} gm notes` +
           (t.gaps.length || t.overlaps.length
             ? `, as printed: gaps ${t.gaps.join(",") || "none"}, overlaps ${t.overlaps.join(",") || "none"}`
             : ""),
@@ -245,6 +262,8 @@ for (const file of readdirSync(rulesDir)
     }
   }
 }
+const pendingTables = Object.keys(EXPECTED_EVENTS).filter((id) => !tableIds.has(id));
+if (pendingTables.length) console.log(`scene-presets: not transcribed yet: ${pendingTables.join(", ")}`);
 
 // Creation catalogue (docs/data.md, "Creation catalogue"): creation/<type>/<source>.json. Schema per file, the
 // filename names the book, ids unique per type, every id reference resolves, one record per thing across books.

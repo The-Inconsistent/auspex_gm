@@ -1,11 +1,12 @@
 "use client";
 import { useState, type FormEvent } from "react";
 
-import type { ActionResult, BeatStatus, Codex, LiveState, SkillDn, Threat } from "@wg/shared";
+import type { ActionResult, BeatStatus, Codex, LiveState, ScenePresets, Threat } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
+import { ScenePicker } from "./components/scene-picker/scene-picker";
 import { SceneTests } from "./components/scene-tests/scene-tests";
 import type { Beat } from "./types";
 import { sceneNumber, stripBeat } from "./utils";
@@ -22,13 +23,14 @@ type PrepProps = {
   codex: Codex;
   send: Send;
   bestiary: Threat[];
-  skillDns: SkillDn[];
+  presets: ScenePresets;
   onRun: () => void;
 };
 
-export function Prep({ state, codex, send, bestiary, skillDns, onRun }: PrepProps) {
+export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps) {
   const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
-  const [editing, setEditing] = useState<Beat | "new" | null>(null);
+  // The scene editor (a scene, or "new"), or the book-table picker ("table").
+  const [editing, setEditing] = useState<Beat | "new" | "table" | null>(null);
   const [title, setTitle] = useState("");
   const [advDraft, setAdvDraft] = useState<{ title: string; premise: string } | null>(null); // adventure being edited
   const [msg, setMsg] = useState<string | null>(null);
@@ -284,15 +286,32 @@ export function Prep({ state, codex, send, bestiary, skillDns, onRun }: PrepProp
               </div>
             ))}
           </div>
-          <div>
+          <div className="keys">
             <button className="btn primary" onClick={() => setEditing("new")}>
               + NEW SCENE
             </button>
+            {presets.tables.length > 0 && (
+              <button className="btn" onClick={() => setEditing("table")}>
+                + SCENE FROM A TABLE
+              </button>
+            )}
           </div>
         </>
       )}
 
-      {adv && editing && (
+      {adv && editing === "table" && (
+        <ScenePicker
+          adventureId={adv.id}
+          tables={presets.tables}
+          send={send}
+          onDone={(done) => {
+            setEditing(null);
+            if (done) setMsg(done);
+          }}
+        />
+      )}
+
+      {adv && editing && editing !== "table" && (
         <BeatEditor
           key={editing === "new" ? "new" : editing.id}
           adventureId={adv.id}
@@ -301,7 +320,7 @@ export function Prep({ state, codex, send, bestiary, skillDns, onRun }: PrepProp
           players={players}
           send={send}
           bestiary={bestiary}
-          skillDns={skillDns}
+          skillDns={presets.skillDns}
           onDone={() => setEditing(null)}
         />
       )}

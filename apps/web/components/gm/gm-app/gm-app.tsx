@@ -107,7 +107,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets }: GmAppPr
                 codex={codex}
                 send={send}
                 bestiary={bestiary}
-                skillDns={presets.skillDns}
+                presets={presets}
                 onRun={() => setTab("TRACK")}
               />
             )}

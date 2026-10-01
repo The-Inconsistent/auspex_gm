@@ -24,6 +24,7 @@ import {
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
+  presetScene,
   type ScenePresets,
   type ThreatCombatant,
 } from "@wg/shared";
@@ -603,9 +604,32 @@ test("GM and player share a table", async (t) => {
   const catalogue = await get(`/campaigns/${campaignId}/wargear`, bearer(gmClerk));
   assert.ok(catalogue.status === 200 && ((await catalogue.json()) as unknown[]).length > 100);
   assert.equal((await get(`/campaigns/${campaignId}/wargear`, { cookie: `wg_token=${issued.token}` })).status, 403);
-  // So are the scene presets (issue #39): the sample DNs per Skill, Core pp.122-126.
+  // So are the scene presets (issue #39): the sample DNs per Skill (Core pp.122-126) and the books' event tables.
   const presets = await get(`/campaigns/${campaignId}/scene-presets`, bearer(gmClerk));
-  assert.ok(presets.status === 200 && ((await presets.json()) as ScenePresets).skillDns.length === 85);
+  assert.equal(presets.status, 200);
+  const { skillDns, tables } = (await presets.json()) as ScenePresets;
+  assert.equal(skillDns.length, 85);
+  // NEW SCENE FROM A TABLE: a Church of Steel event becomes a scene, one Test per Skill it offers at the table's
+  // printed DN 5 (Church of Steel p.36).
+  const battlefield = tables.find((x) => x.id === "church-of-steel-battlefield-events")!;
+  const shelling = battlefield.rows.find((e) => e.from === 11)!;
+  const convoy = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Convoy" } });
+  assert.ok(convoy.ok && convoy.id);
+  const made = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    data: { ...presetScene({ table: battlefield, row: shelling }), adventureId: convoy.id },
+  });
+  assert.ok(made.ok, "a book event saves as a scene");
+  await eventually(
+    () =>
+      gm
+        .codex()
+        ?.adventures.find((a) => a.id === convoy.id)
+        ?.beats[0]?.tests.map((x) => `${x.skill} ${x.dn}`)
+        .join() === "Awareness 5,Leadership 5,Survival 5",
+    "one Test per Skill at the table's DN",
+  );
   assert.equal(
     (await get(`/campaigns/${campaignId}/scene-presets`, { cookie: `wg_token=${issued.token}` })).status,
     403,
