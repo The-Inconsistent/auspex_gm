@@ -603,8 +603,9 @@ prose; a flat, always-on Trait bonus is `mods`. A condition the builder truly ca
     minion): a fixed bestiary `threatId` (+ `variant`), or `threatOf` for the player's pick (`classes` at the
     character's Tier, `maxSize`, any of `keywords`), and `genericStats`, the printed "1 + Double Rank" stand-in
   - character: `talent`, `keyword`, `keywords`, `loseKeyword`, `neverKeyword`, `power`, `disciplineAccess`,
-    `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`), `talentAccess`
-    (+ `asKeyword`), `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),
+    `chooseDisciplines` (optionally `from`), `onlyDisciplines` (optionally `untilTier`; it limits the
+    species' `chooseDisciplines` and the powers bought, rules-flow.md §11.62), `talentAccess` (+ `asKeyword`),
+    `optionAccess`, `mods` (scaled; also `passiveAwareness`, `maxTraumatic`, `armourRating`),
     `attribute` (`add` / `to`; "any", "lowest"), `skills` + `add`, `chosenTrait`, `influenceAttribute`, `xpDiscount`
     (a Talent at a price, or a discipline at a multiplier), `noArmour`, `never` (Faith or Corruption), `languages`
     (scaled, or `{ skill }` for "equal to your Scholar rank"; `xenos` for "one alien language")
@@ -702,8 +703,6 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
 - The Primaris Chaplain's and Dark Apostle's "+Rank Resolve to you and allies" is read as an aura, not `mods`.
 - Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier
   to Max Shock" is `maxShock: { timesTier: -1 }`.
-- GitHub issue #8: Weirdboy (WAAAGH!), Grey Knight (Sanctic) and Grimnyr (Skeinwrought) grant a discipline and also
-  get the species' one discipline of choice (Core p.257): two in all. Is the archetype's discipline meant to be that one choice?
 - Navigator Hereditary Mutations (Apocrypha p.11): does −1 to Intellect-derived Traits touch Passive Awareness?
 - Chaos character creation (GitHub issue #3): Threat Assessment: Daemons & Heretics prints no archetypes and doesn't
   revisit Core p.87 "Creating a Traitor", so those recipes stay as rule text on the `chaos` faction. Apocrypha's Chaos

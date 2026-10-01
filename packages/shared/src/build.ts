@@ -260,6 +260,8 @@ type Sheet = {
   talents: Map<string, { id: string; name: string; text: string; page: string; choices: (string | undefined)[] }>;
   powers: Set<string>;
   disciplines: Set<string>;
+  // the only disciplines this character may learn from ("may only learn and use Navigator powers", Apocrypha p.119)
+  only: Set<string> | null;
   mods: Record<string, number>;
   wealth: number;
   gear: GearItem[];
@@ -323,6 +325,7 @@ export function resolveBuild({
     talents: new Map(),
     powers: new Set(),
     disciplines: new Set(),
+    only: null,
     mods: {},
     wealth: tier, // starting Wealth = Tier (Core p.38)
     gear: [],
@@ -650,11 +653,18 @@ export function resolveBuild({
       return;
     }
     if ("disciplineAccess" in g) return g.disciplineAccess.forEach((d) => s.disciplines.add(d));
+    // falls through: the limit is still listed in effects
+    if ("onlyDisciplines" in g && (!g.untilTier || nowTier < g.untilTier)) s.only = new Set(g.onlyDisciplines);
     if ("chooseDisciplines" in g) {
+      // Under `onlyDisciplines` the Species' choice is what's left of those; an archetype that grants its one discipline
+      // has filled it (rules-flow.md §11.62). Species grants are PSYKER-gated, so they come after the archetype's.
+      const only = s.only && [...s.only].filter((d) => !s.disciplines.has(d) && (!g.from || g.from.includes(d)));
+      if (only?.length === 0) return;
+      const from = only ?? g.from;
       const picked = (choiceFor(o.path) ?? []).filter(
         (x): x is string => typeof x === "string" && ix.disciplines.has(x),
       );
-      const ok = picked.filter((d) => !g.from || g.from.includes(d)).slice(0, g.chooseDisciplines);
+      const ok = picked.filter((d) => !from || from.includes(d)).slice(0, g.chooseDisciplines);
       ok.forEach((d) => s.disciplines.add(d));
       choose(
         {
@@ -663,9 +673,9 @@ export function resolveBuild({
           what: `Choose ${g.chooseDisciplines} Discipline${g.chooseDisciplines > 1 ? "s" : ""}`,
           choose: g.chooseDisciplines,
           options: [],
-          of: g.from?.join(", ") ?? "any Discipline you may learn",
+          of: from?.join(", ") ?? "any Discipline you may learn",
           cite: o.cite,
-          pick: { kind: "discipline", from: g.from ?? null },
+          pick: { kind: "discipline", from: from ?? null },
         },
         ok.length >= g.chooseDisciplines,
       );
@@ -1195,7 +1205,7 @@ export function resolveBuild({
         continue;
       }
       const discs = [p.disciplineId, ...p.alsoIn];
-      const known = discs.find((d) => s.disciplines.has(d));
+      const known = discs.find((d) => s.disciplines.has(d) && (!s.only || s.only.has(d)));
       if (!known)
         problem({
           step,
