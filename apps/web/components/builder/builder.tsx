@@ -54,7 +54,7 @@ type Bench = {
   play: { tier: number; xpEarned: number; xpAtAscension?: number; packageWaived?: boolean } | null;
   key: string; // where this device keeps the draft
   // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. At a table
-  // the GM's tablet, the player's phone or a script (derive-weapons.ts) may save it, so it's the character's `builtAt`.
+  // the GM's tablet, the player's phone or a script (an admin migration) may save it, so it's the character's `builtAt`.
   start: DraftStart;
   // What a new draft here records as the save it was opened on (`Draft.builtAt`): a table's `builtAt`, 0 before any;
   // undefined in the library, whose drafts compare times.
