@@ -22,7 +22,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   - `docs/rules-flow.md`: game flow (session, pools, combat state machine, damage, conditions, traits).
   - `docs/campaign-model.md`: the campaign and codex model.
   - `docs/kill-team.md`: the current campaign's Deathwatch Kill Team mapping and GM decisions.
-  - `docs/pregens.md`: its five Tier 4 characters.
+  - `docs/pregens.md`: its eleven Tier 4 agents (the players pick five), each with its build.
 - **Books** are the PDFs in `books/`, gitignored. Page offsets:
   - Core rulebook: PDF page = printed + 1.
   - Vow of Absolution, Threat Assessment, Gutshiva's Kommandos: PDF page = printed.

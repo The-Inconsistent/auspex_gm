@@ -118,8 +118,11 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   campaign's Tier), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
   ticks and this character's rulings: species, keywords, gear swaps). Grant choices render as `ChoiceCard`s.
 - **Ledger:** a side panel from 900px (`XpLedger`), a fixed bottom bar on a phone (`XpBar`).
-- **Save:** `character.build`; the server re-resolves and refuses anything not ready. Success clears the draft and goes
-  back to the table.
+- **Save:** `character.build`; the server re-resolves and refuses anything not ready. Then, for the GM, a
+  `character.update { overrides }` if REVIEW's overrides changed: they live on the character, not in the build or the
+  draft. Success clears the draft and goes back to the table.
+- **GM part** (REVIEW, GM only): ticks, species and keywords by ruling, gear swaps, BONUSES BY RULING (`gm.mods`, added
+  to a Trait) and OVERRIDES (pin a Trait, `character.overrides`). DETAIL has the portrait (`detail.portrait`).
 - Long catalogue lists (`RecordList`) show `LIST_LIMIT` matches and ask for a narrower search instead of virtualising.
 
 - **ADVANCE** (issue #9 step 5), once the character is made: the Customise screen for `advancement`, spending the XP
@@ -127,7 +130,8 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   character was made at, and languages. The ledger and the XP bar switch to that XP. A player's made character shows
   only ADVANCE and REVIEW; the GM sees every screen.
 
-Entry points: BUILD / REBUILD per character and NEW FROM BUILDER in PARTY; CHARACTER BUILDER (SPEND XP once made) on
+Entry points: EDIT (OPEN DRAFT when a player sent one) per character and NEW FROM BUILDER in PARTY, the one editor
+for a character (issue #18); CHARACTER BUILDER (SPEND XP once made) on
 the player SHEET.
 
 ### `/library/<characterId>`: the builder without a campaign

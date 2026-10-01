@@ -18,7 +18,6 @@ import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useBookServer } from "@/hooks/use-book-server/use-book-server";
 import { useTable } from "@/hooks/use-table/use-table";
-import type { SheetRules } from "@/lib/sheet-rules/sheet-rules";
 
 import { GM_TABS, TAB_NUMERALS, type GmTab } from "./constants";
 
@@ -27,10 +26,9 @@ type GmAppProps = {
   bestiary: Threat[];
   wargear: Wargear[];
   rules: RuleEntry[];
-  sheetRules: SheetRules;
 };
 
-export function GmApp({ campaignId, bestiary, wargear, rules, sheetRules }: GmAppProps) {
+export function GmApp({ campaignId, bestiary, wargear, rules }: GmAppProps) {
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>("TRACK");
@@ -106,9 +104,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules, sheetRules }: GmAp
               <Prep state={state} codex={codex} send={send} bestiary={bestiary} onRun={() => setTab("TRACK")} />
             )}
             {tab === "CODEX" && <CodexView codex={codex} characters={state.characters} send={send} />}
-            {tab === "PARTY" && (
-              <Party state={state} codex={codex} send={send} wargear={wargear} sheetRules={sheetRules} />
-            )}
+            {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
             {tab === "RULES" && <RulesRef rules={rules} />}
             {tab === "BOOKS" && <Books server={bookServer} />}
           </main>

@@ -10,6 +10,7 @@ import {
   type CreationPayload,
   type LibraryEntry,
   type LiveState,
+  type Overrides,
   type ResolvedBuild,
   type Role,
   type RuleEntry,
@@ -32,7 +33,7 @@ import { StepNav } from "./components/step-nav/step-nav";
 import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
-import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
+import { AUTOSAVE_MS, OVERRIDE_LABELS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
 import { draftOf, pickDraft, type DraftStart } from "./utils";
 
 // Where the builder works: a campaign's table, or the signed-in user's own library (issue #14). Everything the two
@@ -49,7 +50,8 @@ type Bench = {
   // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. A table has
   // one device per character, so it has none.
   start: DraftStart;
-  save: (draft: Draft) => Promise<string | null>; // the error, or null once saved
+  overrides: Overrides | null; // the GM's overrides on the character; null where there are none to set (the library)
+  save: (draft: Draft, overrides: Overrides | null) => Promise<string | null>; // the error, or null once saved
   sendDraft: ((draft: Draft) => Promise<string | null>) | null;
   autosave: ((draft: Draft) => void) | null; // the library saves as you go; a table waits for SEND TO GM
   cancelAutosave: (() => void) | null; // drops a debounced save that a finished build has overtaken
@@ -131,7 +133,9 @@ function TableBench({
         build: character?.build,
         draft: draftOf(character?.draft),
       },
-      save: async (draft) => {
+      overrides: character?.overrides ?? {},
+      // The build, then the GM's overrides when they changed: they're on the character, not in the build.
+      save: async (draft, overrides) => {
         const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
         if (!archetypeId) return "Choose an archetype first";
         const r = await send({
@@ -141,7 +145,14 @@ function TableBench({
           detail,
           build: { ...rest, archetypeId },
         });
-        return r.ok ? null : r.error;
+        if (!r.ok) return r.error;
+        const id = r.id ?? characterId;
+        const changed = (Object.keys(OVERRIDE_LABELS) as (keyof Overrides)[]).some(
+          (k) => overrides?.[k] !== character?.overrides[k],
+        );
+        if (role !== "gm" || !overrides || !id || !changed) return null;
+        const u = await send({ type: "character.update", id, overrides });
+        return u.ok ? null : u.error;
       },
       // SEND TO GM: the draft waits on the character for the GM to tick and save.
       sendDraft: characterId
@@ -233,6 +244,7 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
         draft: draftOf(entry.draft),
         savedAt: Date.parse(entry.updatedAt) || undefined,
       },
+      overrides: null, // no GM here
       save: async (draft) => {
         const { name, detail, archetypeId, savedAt: _, ...rest } = draft;
         if (!archetypeId) return "Choose an archetype first";
@@ -278,6 +290,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   const locked = made && role !== "gm";
   const [step, setStep] = useState<BuilderStep>(locked ? "advance" : draft.archetypeId ? "customise" : "tier");
   const [error, setError] = useState<string | null>(null);
+  const [overrides, setOverrides] = useState(bench.overrides);
   // The Tier the build is made at. It stays the draft's own: a character keeps the Tier it was made at (Core p.20 sets
   // the budget from it), and the campaign's Tier now travels separately as `play.tier` (build.ts), so a group that
   // Ascends doesn't rewrite its characters' creation Tier. A blank draft starts at the bench's (`initialDraft`).
@@ -348,8 +361,10 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
       sendDraft: bench.sendDraft ? () => bench.sendDraft!({ ...draft, savedAt: Date.now() }) : null,
       sentDraft: bench.sentDraft,
       gmLater: bench.gmLater,
+      overrides,
+      setOverrides,
     };
-  }, [draft, resolved, catalogue, lookups, tier, play, made, locked, role, bench]);
+  }, [draft, resolved, catalogue, lookups, tier, play, made, locked, role, bench, overrides]);
 
   // START OVER: drops the draft on this device and goes back to the saved build, or a blank one. At a table a draft
   // sent to the GM lives on the character, not here, so it survives and is picked up again; in the library the stored
@@ -370,7 +385,7 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
   // autosave is dropped first, so a debounced draft can't land on the row just after the finished build did.
   const save = async () => {
     bench.cancelAutosave?.();
-    const failure = await bench.save(draft);
+    const failure = await bench.save(draft, overrides);
     if (failure) return setError(failure);
     try {
       localStorage.removeItem(key);

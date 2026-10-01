@@ -1,4 +1,4 @@
-import type { Attribute, Bonus, BuildStep } from "@wg/shared";
+import type { Attribute, Bonus, BuildStep, Overrides } from "@wg/shared";
 
 // The builder route's id for a character not made yet: /c/<campaignId>/build/new (GM only).
 export const NEW_CHARACTER = "new";
@@ -71,3 +71,16 @@ export const BONUS_LABELS: Record<Bonus, string> = {
   passiveAwareness: "Passive Awareness",
   corruption: "Corruption",
 };
+
+// The Traits a GM override pins, or a GM bonus adds to (Core pp.36–37), in sheet order; a blank field leaves the Trait.
+export const OVERRIDE_LABELS = {
+  maxWounds: "MAX WOUNDS",
+  maxShock: "MAX SHOCK",
+  defence: "DEFENCE",
+  resilience: "RESILIENCE",
+  resolve: "RESOLVE",
+  conviction: "CONVICTION",
+  influence: "INFLUENCE",
+  speed: "SPEED",
+  determination: "DETERMINATION",
+} as const satisfies Record<keyof Overrides, string>;

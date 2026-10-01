@@ -1,4 +1,4 @@
-import type { Overrides, RequisitionKind } from "@wg/shared";
+import type { RequisitionKind } from "@wg/shared";
 
 // Session-end XP awards, Core p.321.
 export const XP_AWARDS = [8, 10, 12] as const;
@@ -17,16 +17,3 @@ export const REQUISITION_KINDS = {
   ammo: "AMMO",
   grenade: "GRENADES / MISSILES",
 } as const satisfies Record<RequisitionKind, string>;
-
-// The Traits a GM override can pin (Core pp.36–37), in sheet order; a blank field keeps the derived value.
-export const OVERRIDE_LABELS = {
-  maxWounds: "MAX WOUNDS",
-  maxShock: "MAX SHOCK",
-  defence: "DEFENCE",
-  resilience: "RESILIENCE",
-  resolve: "RESOLVE",
-  conviction: "CONVICTION",
-  influence: "INFLUENCE",
-  speed: "SPEED",
-  determination: "DETERMINATION",
-} as const satisfies Record<keyof Overrides, string>;
