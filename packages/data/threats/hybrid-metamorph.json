@@ -1,0 +1,74 @@
+{
+  "id": "hybrid-metamorph",
+  "name": "Hybrid Metamorph",
+  "source": "threat-assessment",
+  "page": 118,
+  "faction": "genestealer",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 5, "T": 5, "A": 3, "I": 4, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 8, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Stealth", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Broodmind",
+      "text": "This Threat gains a +3 bonus dice to Resolve Tests when within 20 metres of a Threat with the GENESTEALER CULT and PSYKER Keywords."
+    },
+    {
+      "name": "Extra Arm",
+      "text": "This Threat has 3 arms. If this Threat is wielding a one-handed weapon in each hand, or a one-handed weapon in one hand and a two-handed weapon in its other two hands, it can make one attack with each weapon without suffering a Multi-Attack DN penalty. If this Threat is wielding a weapon with all 3 hands, they can take the Brace Action (Wrath & Glory, page 189) as a free action."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "text": "See Metamorph Mutations.",
+      "weapons": [
+        { "name": "Blasting Charge (1 Ammo)", "damage": 10, "ed": 2, "ap": -4, "range": [20], "traits": ["Blast (4)"] },
+        { "name": "Frag Grenade (1 Ammo)", "damage": 10, "ed": 4, "range": [20], "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Savage Amalgam",
+      "text": "When the Hybrid Metamorph would die, it may make a melee attack, a charge, or a ranged attack. When the attack resolves, the Hybrid Metamorph dies."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5D6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Metamorph Mutations",
+      "text": "Each Hybrid Metamorph has a Rending Claw, a firearm (either an Autopistol or a Hand Flamer), a Metamorph Weapon Mutation (Scything Talon or Lash Whip), and a Metamorph Adaptation. Adaptations: Poisoned Sacs, the Hybrid Metamorph's weapon mutation gains the Inflict (Poisoned 4) trait. Acid Gland, the Hybrid Metamorph can spit acid with the Acid Gland profile. Extra Eyes, the Hybrid Metamorph gains +2 Awareness. Thickened Carapace, the Hybrid Metamorph gains +2 Armour.",
+      "weapons": [
+        { "name": "Rending Claw", "damage": 8, "ed": 3, "ap": -2, "range": [1], "traits": ["Rending (2)"] },
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Hand Flamer", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Flamer", "Pistol"] },
+        { "name": "Scything Talon", "damage": 9, "ed": 4, "ap": -1, "range": [1], "traits": ["Rending (3)"] },
+        { "name": "Lash Whip", "damage": 9, "ed": 4, "ap": -1, "range": [4], "traits": ["Agonising"] },
+        { "name": "Acid Gland", "damage": 8, "ed": 2, "ap": -3, "range": [3, 6, 9], "traits": ["Melta"] }
+      ]
+    }
+  ],
+  "note": "Printed block title 'Hybrid Metamorphs'. Blasting Charge and Frag Grenade print '(1 Ammo)'; kept in the name. Frag Grenade prints 'Range 20m'."
+}

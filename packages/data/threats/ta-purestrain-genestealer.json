@@ -1,0 +1,52 @@
+{
+  "id": "ta-purestrain-genestealer",
+  "name": "Purestrain Genestealer",
+  "source": "threat-assessment",
+  "page": 117,
+  "faction": "genestealer",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["GENESTEALER", "TYRANID"],
+  "attributes": { "S": 6, "T": 6, "A": 6, "I": 6, "Wil": 4, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7 },
+  "defence": 5,
+  "wounds": 12,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Athletics", "dice": 10 },
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Stealth", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2DN, as though is had the Dual Wield Talent (Wrath & Glory, page 133)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Swift and Deadly",
+      "text": "The Threat Seizes the Initiative without spending a point of Ruin and Charges. It gains an additional +1 bonus die to its attack Test as part of the Charge."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Rending Claw", "damage": 12, "ed": 4, "ap": -2, "range": [1], "traits": ["Rending (2)"] }]
+    }
+  ],
+  "determination": "Lighting Reflexes: Spend 1 Ruin to roll 6D6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "mobAbilities": [
+    {
+      "name": "Flurry of Claws",
+      "text": "As long as all individuals in the Mob of Genestealers target the same opponent, they gain +2 bonus dice to the attack Test"
+    }
+  ],
+  "note": "Reprint of genestealer; stats, claw and abilities match, differs in name, keywords (GENESTEALER, TYRANID; Core GENESTEALER CULT, TYRANID) and Tier row (adds Tier 5, T). Print typo 'Lighting Reflexes'."
+}

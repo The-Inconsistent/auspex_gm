@@ -1,0 +1,69 @@
+{
+  "id": "atalan-jackal",
+  "name": "Atalan Jackal",
+  "source": "threat-assessment",
+  "page": 128,
+  "faction": "genestealer",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 4, "A": 5, "I": 4, "Wil": 3, "Int": 2, "Fel": 3 },
+  "resilience": { "value": 6, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Cunning", "dice": 5 },
+      { "name": "Pilot", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Mounted", "text": "By default, an Atalan Jackal is mounted on a Dirtcycle (see Church of Steel)." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice an Atalan Jackal is not Human." },
+    { "name": "Raiders", "text": "When this Threat makes a ranged attack test against a target within 6m, that target is Vulnerable." },
+    {
+      "name": "Skilled Outriders",
+      "text": "If this Threat is Mounted and moves on its Turn it gains +1 Defence until the start of its next Turn."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 8, "ed": 2, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Blasting Charge", "damage": 10, "ed": 2, "ap": -4, "range": [12], "traits": ["Blast (4)"] },
+        { "name": "Power Pick", "damage": 8, "ed": 4, "ap": -2, "range": [1], "traits": ["Rending (3)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Jackal Manoeuvre",
+      "text": "If Mounted, this Threat can move and attack as a single Ruin Action."
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack. If this Threat is mounted, the range of this Reaction is half the Speed of the vehicle."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3D6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Jackal Options",
+      "text": "An Atalan Jackal may be equipped with either a Hand Cannon or a Shotgun from the Wrath & Glory Rulebook. In a mob of 4 or more Atalan Jackals, one may wield a Grenade Launcher, one may exchange their Blasting charge for a Demolition Charge (profile below) and one may ride a Wolfquad (Church of Steel) instead of a Dirtcycle.",
+      "weapons": [
+        { "name": "Demolition Charge", "damage": 15, "ed": 4, "ap": -4, "range": [6], "traits": ["Blast (10)"] }
+      ]
+    }
+  ],
+  "note": "Defence printed '3 (6 Mounted)' (stored 3) and Speed '6 / 38 (Mounted)' (stored 6). Blasting Charge prints 'Thrown Sx4' (stored [12], Strength 3 x 4) and 'Blast 4'. Mounted Dirtcycle and Wolfquad are Church of Steel vehicle-format, not transcribed."
+}

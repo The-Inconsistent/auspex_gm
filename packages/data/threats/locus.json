@@ -1,0 +1,60 @@
+{
+  "id": "locus",
+  "name": "Locus",
+  "source": "threat-assessment",
+  "page": 123,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 5, "T": 5, "A": 6, "I": 8, "Wil": 6, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 8, "note": "AR 2" },
+  "defence": 7,
+  "wounds": 13,
+  "shock": 10,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Athletics", "dice": 8 },
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Cunning", "dice": 8 },
+      { "name": "Stealth", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Locus is not Human." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Locus Blades",
+      "weapons": [
+        { "name": "Locus Blades", "damage": 10, "ed": 5, "ap": -3, "range": [1], "traits": ["Parry"] },
+        { "name": "Hypermorph Tail", "damage": 8, "ed": 3, "ap": -1, "range": [2] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Death of a Thousand Cuts",
+      "text": "If this Threat rolls a Wrath Critical as part of an attack, the target suffers the Bleeding Condition in addition to any other effects."
+    },
+    {
+      "type": "RUIN",
+      "name": "Quicksilver Strike",
+      "text": "Spend 1 Ruin. The Locus Takes the Initiative and can Charge up to 20m."
+    },
+    {
+      "type": "REACTION",
+      "name": "Bodyguard",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by an attack, this Threat may interpose themself as a reaction and become the new target for the attack.Takes the Initiative and can Charge up to 20m."
+    }
+  ],
+  "determination": "Preternatural Reflexes: Spend 1 Ruin to roll 5D6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Bodyguard's text ends with a stray 'Takes the Initiative and can Charge up to 20m.' (copied from the Ruin ability), kept as printed."
+}

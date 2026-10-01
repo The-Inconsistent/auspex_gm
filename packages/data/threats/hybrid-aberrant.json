@@ -1,0 +1,79 @@
+{
+  "id": "hybrid-aberrant",
+  "name": "Hybrid Aberrant",
+  "source": "threat-assessment",
+  "page": 120,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 9, "T": 8, "A": 3, "I": 4, "Wil": 4, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 10, "note": "AR 1" },
+  "defence": 2,
+  "wounds": 14,
+  "shock": 6,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Athletics", "dice": 10 },
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Intimidation", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Extra Arm",
+      "text": "This Threat has 3 arms. If this Threat is wielding a one-handed weapon in each hand, or a one-handed weapon in one hand and a two-handed weapon in its other two hands, it can make one attack with each weapon without suffering a Multi-Attack DN penalty. If this Threat is wielding a weapon with all 3 hands, they can take the Brace Action (Wrath & Glory, page 189) as a free action and ignore the Unwieldy weapon trait."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Thunderous Charge",
+      "text": "The Threat Seizes the Initiative without spending a point of Ruin and Charges. It gains an additional +1 Strength when it attacks."
+    },
+    {
+      "type": "ACTION",
+      "name": "Heavy Power Pick",
+      "weapons": [
+        {
+          "name": "Heavy Power Pick",
+          "damage": 16,
+          "ed": 5,
+          "ap": -2,
+          "range": [1],
+          "traits": ["Heavy (8)", "Rending (4)", "Unwieldy (4)"]
+        }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    }
+  ],
+  "determination": "Bestial Vigour: Spend 1 Ruin to roll 8D6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Aberrant Hypermorphs",
+      "text": "An Aberrant Hypermorph uses the same statblock as an Aberrant, with these changes: A Metamorph has an Initiative of 5, resulting in a Defence of 4. An Aberrant Metamorph has a Weapon Skill of 10. An Aberrant Metamorph replaces their Heavy Power Pick with a Heavy Power Hammer and Hypermorph Tail. The Hypermorph Aberrant can make an attack with its Hypermorph tail once per turn as a free action. (Printed on p.119.)",
+      "weapons": [
+        {
+          "name": "Heavy Power Hammer",
+          "damage": 17,
+          "ed": 6,
+          "ap": -1,
+          "range": [1],
+          "traits": ["Brutal", "Heavy (8)", "Unwieldy (4)"]
+        },
+        { "name": "Hypermorph Tail", "damage": 10, "ed": 2, "ap": -1, "range": [2] }
+      ]
+    }
+  ],
+  "note": "Block title 'Hybrid Aberrant', heading 'Aberrant' (p.119, where the Hypermorph sidebar is). Hypermorph sidebar calls the Aberrant 'a Metamorph' and 'Hpyermorph' (print errors kept); its Weapon Skill 10 and Initiative 5 are not in the stat line."
+}

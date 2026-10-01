@@ -1,0 +1,58 @@
+{
+  "id": "nexos",
+  "name": "Nexos",
+  "source": "threat-assessment",
+  "page": 123,
+  "faction": "genestealer",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 4, "A": 3, "I": 4, "Wil": 6, "Int": 8, "Fel": 5 },
+  "resilience": { "value": 7, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 9,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Cunning", "dice": 10 },
+      { "name": "Deception", "dice": 8 },
+      { "name": "Investigation", "dice": 10 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Nexos is not Human." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] }]
+    },
+    {
+      "type": "ACTION",
+      "name": "Battlefield Analysis",
+      "text": "Select an individual or Mob that the Nexos is aware of in 1km. All Threats with the GENESTEALER CULT Keyword gain +3 bonus dice to all tests targeting that individual or Mob until the start of the Nexos' next turn."
+    },
+    {
+      "type": "RUIN",
+      "name": "Strategic Coordination",
+      "text": "A Threat with the GENESTEALER CULT Keyword within 1km that has fewer Wounds than the Nexos immediately takes a turn."
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6.",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 6,
+  "size": "Avg"
+}

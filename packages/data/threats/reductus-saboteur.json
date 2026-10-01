@@ -1,0 +1,63 @@
+{
+  "id": "reductus-saboteur",
+  "name": "Reductus Saboteur",
+  "source": "threat-assessment",
+  "page": 126,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 4, "A": 4, "I": 5, "Wil": 5, "Int": 5, "Fel": 3 },
+  "resilience": { "value": 7, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 12 },
+      { "name": "Cunning", "dice": 8 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Tech", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Clandestine", "text": "This Threat gains doubled Defence and Stealth bonuses from cover and visual conditions." },
+    {
+      "name": "Extra Arm",
+      "text": "This Threat has 3 arms. If this Threat is wielding a one-handed weapon in each hand, or a one-handed weapon in one hand and a two-handed weapon in its other two hands, it can make one attack with each weapon without suffering a Multi-Attack DN penalty. If this Threat is wielding a weapon with all 3 hands, they can take the Brace Action (Wrath & Glory, page 189) as a free action."
+    },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Saboteur is not Human." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Grenade!",
+      "text": "During the first round of combat the Saboteur may Seize the Initiative to make an immediate ranged attack with a Blasting Charge, a Demolition Charge, or a Frag Grenade."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Blasting Charges", "count": 3, "damage": 11, "ed": 4, "ap": -4, "range": [12], "traits": ["Blast (2)"] },
+        { "name": "Demolition Charge", "count": 1, "damage": 15, "ed": 4, "ap": -4, "range": [6], "traits": ["Blast (10)"] },
+        { "name": "Frage Grenades", "count": 3, "damage": 10, "ed": 4, "range": [12], "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Remote Explosives",
+      "text": "Spend 1 Ruin. The Reductus Saboteur may make one Demolition Charge attack up to 60m away as if they had thrown the charge, representing a booby trap they have placed, or a servitor based improvised explosive that has moved into position."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Unquestioning Loyalty reaction printed. 'Frage Grenades' is a print typo kept."
+}

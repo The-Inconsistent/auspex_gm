@@ -1,0 +1,82 @@
+{
+  "id": "primus",
+  "name": "Primus",
+  "source": "threat-assessment",
+  "page": 109,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 6, "T": 6, "A": 5, "I": 6, "Wil": 8, "Int": 5, "Fel": 5 },
+  "resilience": { "value": 9, "note": "AR 2" },
+  "defence": 5,
+  "wounds": 16,
+  "shock": 13,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 18, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Cunning", "dice": 10 },
+      { "name": "Deception", "dice": 10 },
+      { "name": "Leadership", "dice": 12 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    {
+      "name": "Cult Demagogue",
+      "text": "Whenever a Threat with the GENESTEALER CULT Keyword within 10 metres of the Primus"
+    },
+    {
+      "name": "Extra Arm",
+      "text": "This Threat has 3 arms. If this Threat is wielding a one-handed weapon in each hand, or a one-handed weapon in one hand and a two-handed weapon in its other two hands, it can make one attack with each weapon without suffering a Multi-Attack DN penalty. If this Threat is wielding a weapon with all 3 hands, they can take the Brace Action (Wrath & Glory page 189) as a free action."
+    },
+    {
+      "name": "Scoped Needle Pistol",
+      "text": "All range penalties to ranged attacks this Threat makes with its Scoped Needle Pistol are reduced by -2."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "One With The Shadows",
+      "text": "When this Threat or another within 10m of the Primus is benefitting from Cover in combat, they gain a further +1 bonus to Defence."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Cult Bonesword", "damage": 11, "ed": 5, "ap": -1, "range": [1], "traits": ["Brutal", "Rending (2)"] },
+        {
+          "name": "Scoped Needle Pistol",
+          "damage": 8,
+          "ed": 2,
+          "range": [6, 12, 18],
+          "salvo": 1,
+          "traits": ["Agonising", "Inflict (Poisoned 4)", "Pistol", "Silent"]
+        },
+        {
+          "name": "Toxin Injector Claw",
+          "damage": 6,
+          "ed": 3,
+          "ap": -1,
+          "range": [1],
+          "traits": ["Agonising", "Inflict (Poisoned 4)"]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Meticulous Planner",
+      "text": "Spend 1 Ruin and select an individual or Mob within 10m of the Primus. That individual or Mob may use the Primus' Leadership dice pool when making any Test on their next turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6D6.",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Print errors kept: Awareness printed '18 (Passive 4)'; the Cult Demagogue bonus breaks off mid-sentence."
+}

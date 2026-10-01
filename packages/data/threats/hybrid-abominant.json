@@ -1,0 +1,67 @@
+{
+  "id": "hybrid-abominant",
+  "name": "Hybrid Abominant",
+  "source": "threat-assessment",
+  "page": 120,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 9, "T": 8, "A": 3, "I": 4, "Wil": 4, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 9 },
+  "defence": 3,
+  "wounds": 16,
+  "shock": 8,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Athletics", "dice": 12 },
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2DN, as though is had the Dual Wield Talent (Wrath & Glory, page 133)"
+    },
+    {
+      "name": "Extra Arm",
+      "text": "The Aberrant's extra arm confers the Second Strike bonus when each arm wields a different weapon, or a single weapon and a double handed weapon. Using all three arms allows the Abominant to ignore the Unwieldy weapon trait."
+    },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Thunderous Charge",
+      "text": "The Threat Seizes the Initiative without spending a point of Ruin and Charges. It gains an additional +1 Strength when it attacks."
+    },
+    {
+      "type": "ACTION",
+      "name": "Power Sledgehammer",
+      "weapons": [
+        {
+          "name": "Power Sledgehammer",
+          "damage": 16,
+          "ed": 4,
+          "ap": -3,
+          "range": [1],
+          "traits": ["Brutal", "Unwieldy", "Inflict (Hindered 1)"]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Pulverise",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round."
+    }
+  ],
+  "determination": "Unstoppable Bulk: Spend 1 Ruin to roll 8D6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Large",
+  "note": "Block title 'Hybrid Abominants', heading 'Abominant'. No Unquestioning Loyalty reaction printed."
+}

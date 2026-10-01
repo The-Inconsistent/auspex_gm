@@ -1,0 +1,65 @@
+{
+  "id": "ta-magus",
+  "name": "Magus",
+  "source": "threat-assessment",
+  "page": 110,
+  "faction": "genestealer",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["GENESTEALER CULT"],
+  "attributes": { "S": 4, "T": 4, "A": 3, "I": 4, "Wil": 8, "Int": 6, "Fel": 6 },
+  "resilience": { "value": 9, "note": "AR 0" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 11,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Deception", "dice": 8 },
+      { "name": "Insight", "dice": 8 },
+      { "name": "Leadership", "dice": 10 },
+      { "name": "Persuasion", "dice": 10 },
+      { "name": "Psychic Mastery", "dice": 10 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Magus is not Human." },
+    {
+      "name": "Spiritual Leader",
+      "text": "Allied GENESTEALER CULT Threats within 10m of the Magus gain +4 bonus to dice to resist psychic powers."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Cult Recruitment",
+      "text": "The Magus attempts to activate Possession (Wrath & Glory, page 281)"
+    },
+    {
+      "type": "ACTION",
+      "name": "Broodmind",
+      "text": "The Magus may attempt to activate any of the following psychic powers: Smite (Wrath & Glory page 272), Psyniscience (page 267), Deny the Witch (page 267), Compel (page 268), Fog the Mind (page 279), Psychic Shriek (page 279), Terrify (page 280)."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Force Stave", "damage": 8, "ed": 2, "ap": -1, "range": [2], "traits": ["Brutal", "Force"] },
+        { "name": "Bio-dagger", "damage": 6, "ed": 1, "range": [1], "traits": ["Inflict (Poisoned 3)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Broodmind",
+      "text": "Spend 1 Ruin. The Magus attempts to activate a Psychic Power or Deny the Witch."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6.",
+  "conviction": 8,
+  "resolve": 7,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Reprint of cult-magus; differs in name, keywords, Tier row (adds Tier 5), Resilience 9 (Core 5), Force Stave 8 (Core 12) and Bio-dagger, Autopistol Salvo 2."
+}

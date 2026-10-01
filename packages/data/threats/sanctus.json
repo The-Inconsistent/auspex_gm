@@ -1,0 +1,72 @@
+{
+  "id": "sanctus",
+  "name": "Sanctus",
+  "source": "threat-assessment",
+  "page": 125,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 4, "T": 4, "A": 6, "I": 6, "Wil": 5, "Int": 5, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 2" },
+  "defence": 6,
+  "wounds": 10,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Athletics", "dice": 7 },
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Cunning", "dice": 6 },
+      { "name": "Stealth", "dice": 12 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    {
+      "name": "Cloaked by Shadows",
+      "text": "If this Threat is in cover or hidden by shadows it gains +2 Defence. Additionally, attacks that target this Threat from 12m or more away suffer a +2 DN penalty."
+    },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Sanctusis not Human." },
+    { "name": "Soulsight", "text": "This Threat ignores all vision penalties when making attack Tests." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Cult Sniper Rifle",
+          "damage": 12,
+          "ed": 2,
+          "ap": -3,
+          "range": [18, 36, 54],
+          "traits": ["Agonising", "Inflict (Poisoned)", "Sniper (2)", "Silent"]
+        },
+        {
+          "name": "Sanctus Bio-Dagger",
+          "damage": 6,
+          "ed": 3,
+          "range": [1],
+          "traits": ["Agonising", "Inflict (Bleeding, Poisoned)", "Rending (10)"]
+        }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    },
+    {
+      "type": "RUIN",
+      "name": "Dead-Eye Sniper",
+      "text": "After this Threat makes a successful ranged attack, you can spend 1 Ruin to inflict the Vulnerable Condition and a Mortal Wound to the target."
+    }
+  ],
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No DETERMINATION line printed. Cult Sniper Rifle prints no Salvo; 'Inflict (Poisoned)' has no value; Bio-Dagger 'Inflict (Bleeding, Poisoned)' and 'Rending (10)' kept as printed. 'Sanctusis' in Passes For Human is a print error kept."
+}
