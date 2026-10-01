@@ -552,7 +552,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     homebrew printing never stands in for an official one (Redacted Records 2's Kastelan beside `hat-kastelan-robot`).
     *(User ruling, 2026-10-02.)*
 72. **Class letters where two books disagree** (GitHub issue #44). Each printing keeps its own book's Tier row, since
-    a class is set per book; none is corrected to match another. *Proposed; awaiting the GM.*
+    a class is set per book; none is corrected to match another. A reprint whose only difference is its Tier row still
+    counts as different (§11.71) and gets its own file, so the GM can field either. *(User ruling, 2026-10-02.)*
 ---
 
 ## 12. Gap analysis — current code vs this spec
