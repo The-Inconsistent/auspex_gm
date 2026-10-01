@@ -1,0 +1,46 @@
+{
+  "id": "dh-iconarch",
+  "name": "Iconarch",
+  "source": "daemons-and-heretics",
+  "page": 26,
+  "faction": "heretic",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC", "PSYKER"],
+  "attributes": { "S": 2, "T": 3, "A": 2, "I": 3, "Wil": 4, "Int": 2, "Fel": 3 },
+  "resilience": { "value": 5, "note": "1 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Leadership", "dice": 6 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 1 personal Ruin." },
+    { "name": "Icon of Hate", "text": "Any Threats with CHAOS CULTIST within 50 metres gain +1 Bonus to all Tests; within 10 metres gain +2 Bonus to all Tests." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Combat Knife", "damage": 4, "ed": 2, "range": [1] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Glory for the Dark Gods!",
+      "text": "Spend 1 Ruin. A Mob of CHAOS CULTIST within 10m of the Iconarch may use the Iconarch's Leadership dice pool when making any Test on their next turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3D6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "note": "PSYKER keyword printed although the block has no psychic power."
+}

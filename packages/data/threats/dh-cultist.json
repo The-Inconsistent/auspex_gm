@@ -1,0 +1,65 @@
+{
+  "id": "dh-cultist",
+  "name": "Cultist",
+  "source": "daemons-and-heretics",
+  "page": 23,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC"],
+  "attributes": { "S": 2, "T": 3, "A": 2, "I": 3, "Wil": 3, "Int": 2, "Fel": 2 },
+  "resilience": { "value": 5, "note": "1 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Deception", "dice": 5 },
+      { "name": "Stealth", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Devotion", "text": "Any time a Cultist is slain by a Critical Hit, the GM gains 1 Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Shoot and Stab",
+      "text": "A Cultist takes no Multi-Action penalty on a turn where the elect to shoot their Autopistol and stab with their Knife.",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Knife", "damage": 4, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3D6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Autogun",
+      "text": "Cultists can replace their Autopistol and Knife with an Autogun, and the Shoot and Stab ability is replaced by For The Dark Gods!",
+      "weapons": [
+        { "name": "Autogun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 3, "traits": ["Rapid Fire (1)"] }
+      ],
+      "abilities": [
+        { "type": "WRATH", "name": "For The Dark Gods!", "text": "Whenever a Cultist rolls a 6 on the Wrath Die, the GM gains 2 Ruin instead of 1." }
+      ]
+    },
+    {
+      "kind": "mob",
+      "name": "Mob heavy weapons",
+      "text": "For every ten Cultists in the Mob one may have one of the following options: Flamer or Heavy Stubber.",
+      "weapons": [
+        { "name": "Flamer", "damage": 10, "ed": 1, "range": [4, 8, 12], "salvo": 1, "traits": ["Assault", "Flamer"] },
+        { "name": "Heavy Stubber", "damage": 10, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Heavy (4)"] }
+      ]
+    }
+  ],
+  "note": "Reprint of cultist; differs in Fel 2 (Core 3), Resilience 5 (1 AR) (Core 4, 0 AR), Tier 5, Mob options. Print: 'where the elect to shoot' (sic)."
+}
