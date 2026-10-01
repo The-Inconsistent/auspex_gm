@@ -262,8 +262,9 @@ The book uses the 1st-edition stat layout, mapped as follows:
 
 ### Supplement and adventure book notes (GitHub issue #44)
 
-Every stat block in five books, 31 threats, each book's id prefix on its ids (`threat-manifest.json` lists them). PDF
-page = printed page in all five. Shared calls:
+Every stat block in five books, 30 threats, each book's id prefix on its ids (`threat-manifest.json` lists them). PDF
+page = printed page in all five. An identical reprint of a threat already in is skipped (rules-flow.md §11.71). Shared
+calls, user rulings of 2026-10-02:
 - **A melee weapon with no printed range** is `[1]`, as Core's Painboy 'Urty Syringe. An explosion or discharge with
   no range (Kastelan Explodes, the Duke's Noxious Discharge, the Oily Squig, Ara'vitu'urhal's Warp Explosion) stays
   ability text, as Core's Killa Kan. A single printed range (Botuthrax's Pestilent Tide, "Range 16") is `[16]`.
@@ -287,9 +288,10 @@ Per book:
   Iscarius's Veteran of the Long War printed twice, possessives without apostrophes, "Inflicts (On Fire)", the
   Changeling's DN-less "DN Targets Willpower". Ara'vitu'urhal and the Changeling are `daemon`, the rest `heretic`.
   The end-of-adventure forms (the Greater Daemon, Maloquence the Terrible) print no stat block.
-- **Bloody Gates** (`bg-`, 8): no Tier row anywhere. Proposed: Commissar Shrake A, Cravax the Claw E (a Champion, but
-  6 Wounds), the six rank-and-file T. The Traitor Militia Sniper sidebar is a `variant` (its Long Las "Reliable3" is
-  stored `Reliable`). `bg-poxwalker` matches Core's `poxwalker`; `bg-cultist` differs from `cultist` (SCUM, Cunning).
+- **Bloody Gates** (`bg-`, 7): no Tier row anywhere (rules-flow.md §11.70): Commissar Shrake A, Cravax the Claw E,
+  the five rank-and-file T. The Traitor Militia Sniper sidebar is a `variant` (its Long Las "Reliable3" is stored
+  `Reliable`). Its Poxwalker (p.25) is Core's `poxwalker` exactly, so it isn't transcribed; `bg-cultist` differs from
+  `cultist` (SCUM, Cunning) and is.
 - **Affliction Ascendant** (`aa-`, 2): Botuthrax Clostidia (`daemon`) and Putradyne Corporis (`heretic`). The
   asterisks on Putradyne's "5(9)*" and "Powered 4*" have no footnote. The door on p.10 ("Resilience of 12") is scenery.
 

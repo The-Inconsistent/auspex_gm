@@ -543,14 +543,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Records' three Slaughter Servitors print no Threat class, but a threat needs one per Tier (Core p.323). The
     transcriber proposes one class from the block's role (a Champion with Personal Ruin, a 1-Wound grunt) and repeats it
     for every Tier, and the block's `note` says "No Tier row printed; class proposed (…)". The GM can change it per
-    fight. *Proposed; awaiting the GM.*
-71. **Reprints and updated printings** (GitHub issue #44). A block whose name the bestiary already holds, in a newer
-    book (Threat Assessment's Guardian Defender, Redacted Records 2's Kastelan Robot), is transcribed again under its
-    own book's id prefix, as `ta-ork-boy` is, and its `note` names the other printing. The GM picks the printing they
-    prefer; neither replaces the other. *Proposed; awaiting the GM.*
+    fight. Bloody Gates: Commissar Shrake A, Cravax the Claw E (a Champion, but 6 Wounds and a paid Determination), the
+    rest T. *(User ruling, 2026-10-02.)*
+71. **Reprints** (GitHub issue #44). A block whose name the bestiary already holds is transcribed again, under its own
+    book's id prefix as `ta-ork-boy` is, **only if it differs** from the printing already in; its `note` names the
+    other printing and what differs. An identical reprint is skipped and only listed in the book's notes (docs/data.md
+    §4): Bloody Gates' Poxwalker is Core's `poxwalker`. A different Tier row counts as a difference (§11.72). A
+    homebrew printing never stands in for an official one (Redacted Records 2's Kastelan beside `hat-kastelan-robot`).
+    *(User ruling, 2026-10-02.)*
 72. **Class letters where two books disagree** (GitHub issue #44). Each printing keeps its own book's Tier row, since
     a class is set per book; none is corrected to match another. *Proposed; awaiting the GM.*
-
 ---
 
 ## 12. Gap analysis — current code vs this spec
