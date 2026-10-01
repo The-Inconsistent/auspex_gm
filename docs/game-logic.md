@@ -49,12 +49,13 @@ and `character.respite`, `isOut` in the turn actions).
 | `influence` | Fel − 1 + `mods.influence` | p.36–37 |
 | `speed` | `stats.speed` (entered per Species, default 6) + `mods.speed` | p.29 |
 | `determination` | T + `mods.determination` (dice) | p.72 for bonuses |
-| `passiveAwareness` | ceil(`skillTotal(Awareness)` / 2) | p.37, house §11.6 |
-| `maxTraumatic` | Tier + 1 | p.193–194 |
+| `passiveAwareness` | ceil(`skillTotal(Awareness)` / 2) + `mods.passiveAwareness` | p.37, house §11.6; Ever Vigilant p.133 |
+| `maxTraumatic` | Tier + 1 + `mods.maxTraumatic` | p.193–194; Ded 'Ard! Apocrypha p.235 |
 
-**Precedence.** For the nine keys in `Mods`: `override ?? (base + mod)`, then `Math.max(1, …)` (all Traits min 1,
-p.36). An override **replaces** base and mod; it does not add. `passiveAwareness` and `maxTraumatic` take no mods or
-overrides; `passiveAwareness` is still clamped to 1.
+**Precedence.** For the nine Trait keys in `Mods`: `override ?? (base + mod)`, then `Math.max(1, …)` (all Traits min 1,
+p.36). An override **replaces** base and mod; it does not add. `passiveAwareness` and `maxTraumatic` take mods (a
+Talent, a Background row, the GM's `gm.mods`) but no overrides (`Overrides` omits them); `passiveAwareness` is still
+clamped to 1.
 
 | Mechanism | Who sets it | Use for |
 |---|---|---|
@@ -135,7 +136,7 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
   is the builder's (`rankOf` in `resolveBuild`), for Rank requirements and "+Rank" grants when XP is spent.
 
 **Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the
-tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1).
+tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1, plus any mod).
 
 **One hit in `character.adjust`** (`pcHit` in `state.ts`, pp.193–199). `healthOf()` reads the row, `pcHit` returns the
 counters after the hit, and the api writes them (safe: one action per campaign at a time). In order:

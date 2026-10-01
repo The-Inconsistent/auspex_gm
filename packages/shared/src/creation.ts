@@ -61,7 +61,7 @@ const record = {
 
 // A background or table bonus: a Trait from `Mods`, Wealth (FSPG p.92), Passive Awareness (Apocrypha p.43) or
 // Corruption (Core p.86).
-export const Bonus = z.enum([...Mods.keyof().options, "wealth", "passiveAwareness", "corruption"]);
+export const Bonus = z.enum([...Mods.keyof().exclude(["maxTraumatic"]).options, "wealth", "corruption"]);
 export type Bonus = z.infer<typeof Bonus>;
 
 // A number that can scale: "per Tier Ascended" (Core p.151) or "1 + Rank" (Apocrypha p.99).
@@ -232,10 +232,7 @@ const grantOne = z.union([
   // "+1 Conviction", "Conviction + Tier"; also Passive Awareness (Ever Vigilant, Core p.133) and the Traumatic Injuries
   // taken before dying (Ded 'Ard, Apocrypha p.235)
   z.object({
-    mods: z.partialRecord(
-      z.enum([...Mods.keyof().options, "passiveAwareness", "maxTraumatic", "armourRating"]),
-      Scaled,
-    ),
+    mods: z.partialRecord(z.enum([...Mods.keyof().options, "armourRating"]), Scaled),
   }),
   // Attributes: `add` raises by N, `to` raises to at least N; `which` is the Attribute(s) or the player's pick
   z.object({
