@@ -1,0 +1,153 @@
+[
+  {
+    "id": "litanies-of-the-lost-random-encounters",
+    "name": "Random Encounters",
+    "source": "litanies-of-the-lost",
+    "page": 117,
+    "dice": "2d6",
+    "type": "investigation",
+    "gm": "Any time the Agents enter an unlabeled section of the Pakthertius Manufactorum, roll 1d6. On a result of 1, the Agents trigger a random encounter. If the Agents Regroup in any area of the manufactorum, roll this die again and trigger a random encounter on a result of 1-2. If the Agents take a Respite, automatically trigger a Random Encounter.\n\nYou can, of course, choose not to roll every time, or force a random encounter. For example, it might not make sense to roll again if the Agents turn back to a recently visited area, or you may want to shake things up if they have not had an encounter for some time.\n\nYou can either select a Random Encounter from the list on this page, or generate the result randomly by rolling 2d6 and picking the appropriate encounter.\n\nRemember that every Servitor encountered within the manufactorum was built for purpose. Each floor of the manufactorum has recommendations on the most common kinds of Servitors that can be encountered on it, along with matching equipment or statistics adjustments to reflect these. In addition, around half of the Servitors encountered have bulky vox units built into their bodies or replacing their mouths which constantly emit Ignis Avem’s Binary Chant.\n\nCOMBINING ENCOUNTERS\n\nEach encounter is designed to provide an interesting standalone interaction, but there’s nothing stopping you from using more than one at once. For instance, you could have an Adeptus Mechanicus Helot from the Incident Survivor encounter attempting to sneak through the facility, only to be confronted by a Servitor Procession. The Agents have the opportunity to help the beleaguered Helot before the sounds of the Servitor Procession attract the attention of Ruststalker Maerch.",
+    "rows": [
+      {
+        "from": 2,
+        "to": 2,
+        "name": "Ruststalker Marech",
+        "page": 117,
+        "readAloud": "‘A wailing cry of warning fills the air as a nightmarish creature emerges into view. Long skeletal limbs of gore-soaked metal give the assailant an inhuman gait. The crackling energy that ripples along its deadly transonic blades illuminates the contorted half-face of a Ruststalker Princeps. Their vox splutters to life and through waves of static they scream in abject horror as they charge towards you, “Flee! Please! I can’t stop!”’",
+        "text": "Ruststalker Marech Ambushes the party and attempts to injure or eliminate the weakest physical Agent.\n\nSee Marech X-01: Ruststalker Princeps on page 110 for more information on how to best utilize this terrifying Threat.",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 3,
+        "to": 3,
+        "name": "Damaged Servo-Skull",
+        "page": 118,
+        "readAloud": "‘A series of irregular clanking sounds from above your head alerts you to the presence of a Servo-Skull. It seems like its anti-grav is damaged, as it is unable to fly in a straight line and dips to the ground or soars to the ceiling unexpectedly.’",
+        "text": "The Servo-Skull is an old shift monitor from when the manufactorium was operational. Since it has no weapons and is heavily damaged, it has largely escaped notice by Ignis Avem. The Agents can attempt to sneak past the Servo-Skull. If they fail, or otherwise make their presence known, the skull bumbles towards them and asks in clipped robotic tones why they are not at their designated workstations.\n\nAgents can attempt to deceive the Servo-Skull, explaining that they are on their mandatory breaks or otherwise engaged in legitimate operations. If they are successful, the Servo-Skull registers them as authorised personnel. This reduces the number of times Ignis Avem can Manifest on this floor by one (see Ignis Avem Manifestations, page 114).\n\nIf the Agents attack or destroy the Servo-Skull, it sends out an ear-piercing Binary Chant alert about ‘unauthorised personnel’, alerting Ignis Avem to their location. This increases the number of times Ignis Avem can manifest on this floor by one.",
+        "tests": []
+      },
+      {
+        "from": 4,
+        "to": 4,
+        "name": "Decommissioned Servitor Huddle",
+        "page": 118,
+        "readAloud": "‘As you round a corner, you spot a group of Servitors huddled in a tight circle. Their heads are bowed and they twitch or writhe in unnatural ways as they mutter to each other.’",
+        "text": "The Servitors in this encounter are decommissioned or incomplete models that Ignis Avem has gathered up and set to standby until the lockdown is lifted. Many sport missing or broken augmetics. There are 15 Servitors per Tier of the game, which use the profile for the Decommissioned Servitor (page 134).\n\nListening closely to the Binary Chant and muttered words of the Servitors reveals that they are all obsessed with the number 237. They repeat constantly, swapping data packets which contain nothing but strings of errors highlighting this number.\n\nIf the Servitors detect the Agents, they spring into frenzied action. They attempt to single out the physically weakest member of the group, restrain them, and transport them to the Repurposing Facility (see page 123) while chanting ‘237!’ over and over.",
+        "tests": []
+      },
+      {
+        "from": 5,
+        "to": 5,
+        "name": "Patrolling Flock of Censer Cherubs",
+        "page": 118,
+        "readAloud": "‘An eerie choir of giggling voices heralds the arrival of a strange sight. A flock of six mechanical Cherubs drift towards you. Their vat-grown flesh slides off in wet chunks. They heft beneath them heavy censers in the shape of grinning skulls, which spew thick clouds of sickly grey smoke from their open eyes and mouths.’",
+        "text": "The six Censer Cherubs (see page 136) were once used to distribute anointed incense around the Manufactorum, to bless the machinery and those working it. But under Ignis Avem, they have adopted a far more sinister calling. Their censers spew out a potent airborne necrotoxin which melts flesh on contact. By flapping their vestigial wings, the Cherubs can project blasts of this necrotoxin towards any flesh-and-blood creature they encounter.",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 6,
+        "to": 6,
+        "name": "Janitorial Servitor",
+        "page": 118,
+        "readAloud": "‘The pungent smell of industrial-strength disinfectant assaults your noses. The walls and floor are damp with sticky, drying liquid. Moving through the space is a gangly Servitor bent beneath the weight of a massive tank of cleansing liquids. Tubes run through the back of its skull, and it spits a fine spray of disinfectant on any surfaces it sets its glassy eyes on, before buffing them with a pair of whirring, mechanical mops.’",
+        "text": "The Janitorial Servitor is a harmless Servitor which has been left to attend to its duties without interference from Ignis Avem. Its primary function is to isolate and eradicate any dirt or filth that it encounters. It cannot communicate or understand orders outside of this automated function.\n\nIf the Agents encounter the Janitorial Servitor while they are bloodied or otherwise dirty, the Janitorial Servitor attempts to clean them by spraying disinfectant on the dirty Agent and wiping them down. If an Agent resists, the Servitor leaves them be.\n\nUnfortunately, the Servitor continues to follow and clean up after the Agent relentlessly, no doubt detecting micro-contaminants from outside of the facility. This could lead to all manner of problems if the Agents allow the Servitor to trail them through the manufactorum. Cunning Agents could use the overly helpful Servitor to slow enemies or trigger traps with the right placement of dirt.",
+        "tests": []
+      },
+      {
+        "from": 7,
+        "to": 7,
+        "name": "Cyber-Mastiff",
+        "page": 119,
+        "readAloud": "‘A mechanical growl reaches your ears, followed by the scraping of metal claws on floor plating. You turn in time to see a Cyber-Mastiff charging towards you at full speed, its metallic jaws stained with clotted blood.’",
+        "text": "This Cyber-Mastiff is the ex-companion of Enforcer Annet. Once loyal to the Enforcer, Ignis Avem seized the Mastiff and reprogrammed it to seek and destroy any unauthorised personnel. Reprogramming the Cyber-Mastiff to make it loyal to the Agents is difficult, but possible. It must first be restrained and then an Agent must succeed on a DN 7 Tech (Int) Test. If the Agents have the Mastiff Control Unit, the DN of this Test is reduced by 2. See page 111 for more information on Annet and the Cyber-Mastiff.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Reprogram the Mastiff to be loyal to the Agents",
+            "gm": "Only once the Mastiff is restrained. −2 DN with the Mastiff Control Unit."
+          }
+        ],
+        "type": "combat"
+      },
+      {
+        "from": 8,
+        "to": 8,
+        "name": "Patrolling Squad of Combat Servitors",
+        "page": 119,
+        "readAloud": "‘The racking of weapons and clanking of armoured boots is all the warning you get as a squad of Combat Servitors open fire on your position!’",
+        "text": "These Combat Servitors are just one of many squads sent to patrol the corridors and halls of the manufactorium looking for intruders. See the Suggested Servitor Patrol Size table for how many Gun and Combat Servitors arrive. Gun Servitors lay down covering fire and attempt to synchronise their firing patterns to focus on one target at a time, while the Combat Servitors use their brute force to grapple Agents and provide protection for the Gun Servitors. The Servitors have been monitoring the party and execute an Ambush from cover unless the party has the Patrol Auspex (see: Magos Albus Bast, page 108).",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 9,
+        "to": 9,
+        "name": "Patrolling Mob of Servo-Skulls",
+        "page": 119,
+        "readAloud": "‘A series of secret panels in the ceiling scrape open with a well oiled shriek, as a swarm of grinning Gun-Skulls descend upon you.’",
+        "text": "Once the sole security measure for the facility, the Gun-Skulls are well used for swiftly harrying their targets with precision blasts from the Las weapons built into their eyes and mouths. The number of Gun-Skulls is equal to the Tier of the game multiplied by 4. The Gun-Skulls have been monitoring the party and execute an Ambush from above unless the party has the Patrol Auspex (see Magos Albus Bast, page 108).",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 10,
+        "to": 10,
+        "name": "Servitor Procession",
+        "page": 119,
+        "readAloud": "‘You hear the hissing static that permeates the manufactorum increase in volume, punctuated by a percussion of marching, armoured feet.’",
+        "text": "A procession of 4 Servitors per Tier of the game enter the scene. They use the standard Servitor profile (Wrath & Glory, page 335), with the adjustments noted for each floor. Half of the Servitors (rounding up) have been converted with bulky Auspex arrays which scan their surroundings and vox speakers which constantly play Ignis Avem’s Machine Chant.\n\nThe procession’s goal is to locate and indoctrinate any outstanding Servitors into Ignis Avem’s choir. Any Servitors or Servo-Skulls that hear this chant join the procession. This includes the Janitorial Servitor and the Damaged Servo-Skull, should they follow the Agents.\n\n• Tier 1: Gun Servitors 1, Combat Servitors 2\n• Tier 2: Gun Servitors 2, Combat Servitors 4\n• Tier 3: Gun Servitors 4, Combat Servitors 6\n• Tier 4: Gun Servitors 8, Combat Servitors 8\n\nAgents with a Passive Awareness of 2 or more hear the procession coming, and can instruct the party to make Opposed Stealth Tests against the Servitors’ Awareness to avoid detection. If the group are detected, the procession eagerly approaches and begins preaching about Ignis Avem by taking turns looping a corrupted audio file. This file is composed of chopped up clips from Magos Ferro’s numerous passionate speeches to the manufactorum workers:\n\n‘Weep not, my children. You have been blessed. You will be granted purpose and function by the Omnissiah. Ignis Avem will lead the way! You will become a cog in his divine mechanism. You will purge your sins through toil and sacrifice. The Servitor is pure. The Servitor is blessed.”\n\nThe procession will not attack the Agents unless they are physically provoked, but they continue to follow and pester the Agents until they leave the area, at which point they resume their patrol.",
+        "tests": [
+          {
+            "kind": "opposed",
+            "skills": [
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid detection by the Servitors (their Awareness)",
+            "gm": "Only if an Agent with Passive Awareness 2+ hears the procession coming and warns the party."
+          }
+        ]
+      },
+      {
+        "from": 11,
+        "to": 11,
+        "name": "Ogryn Loader Servitor",
+        "page": 120,
+        "readAloud": "‘A nearby doorway shrieks and slides open, revealing the hulking form of an Ogryn Loader Servitor. It ducks its head to get through the door, locks its glassy gaze upon you, and charges without a word.’",
+        "text": "The Ogryn Loader Servitor is programmed to target and engage the greatest physical threat in close combat as a priority, only changing to a smaller foe if they come within reach.",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 12,
+        "to": 12,
+        "name": "Incident Survivor",
+        "page": 120,
+        "readAloud": "‘A body lies unmoving on the cold floor ahead, a long trail of splattered blood indicating they have crawled some distance before collapsing. As you approach, the body stirs and lets out a low groan of pain.’",
+        "text": "The Agents have discovered a survivor from one of the factions present during the initial incident. They are badly wounded and in need of urgent medical attention. The Survivor has zero Wounds remaining and is Dying. The Agents have 2 Rounds to succeed on a DN 3 Medicae (Int) Test to Heal Wounds (Wrath & Glory, page 124) or they will die.\n\nRoll 1d6 on the Incident Survivor table to determine which survivor they find.\n\nEach survivor is a low-ranking member of their faction, and only has a partial understanding of the events that led to the manufactorum’s downfall. They can provide the Agents with a single undiscovered clue relating to their faction’s involvement. In addition, they can point to the location of their faction’s leader within the manufactorum, although in the case of the Adeptus Mechanicus survivor, they only know that Magos Ferro’s laboratory was moved to a secret location somewhere beneath the manufactorum.\n\n• 1–2: Adeptus Mechanicus Helot: The survivor is a heavily concussed, low-level Adeptus Mechanicus Helot. They seem confused and uncertain on account of disabling their Cortex Implant to prevent Ignis Avem interference. They were sleeping in the Worker Hab when the Incident occurred, and have managed to escape capture by exploiting blind spots and crawl spaces used by the workers to smuggle contraband. They use the Imperial Citizen profile (Wrath & Glory, page 327) but have a Tech (Int) score of 5.\n• 3–4: Administratum Clerk: The survivor is a bookish data-entry clerk from the manufactorum’s Administratum sanctum. They speak with an uncertain stutter and constantly bite their ink-stained nails. They were inspecting one of the assembly line Servitors when the Incident occurred. The Servitor activated on its own and removed three of the clerk’s fingers on their dominant hand. They cauterized their wounds and managed to hide in a storage locker for some time before hunger and blood loss forced them to escape. They use the Imperial Citizen profile (Wrath & Glory, page 327) but have a Scholar (Int) score of 5.\n• 5–6: Enforcer Rookie: The survivor is the newest recruit of Annet’s Enforcer squad (see page 111). They are twitchy and high strung, jumping at shadows and never taking their hands off their weapon. They were separated from their squad during an intense firefight. They are shell shocked, but heard through their failing vox that the plan was to regroup in the Quality Assurance area (see page 128) of the facility. They use the Enforcer profile (Wrath & Glory, page 331) but have lost their Combat Shotgun.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Medicae"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Heal Wounds on the dying survivor",
+            "gm": "Within 2 Rounds, or the survivor dies."
+          }
+        ]
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  }
+]
