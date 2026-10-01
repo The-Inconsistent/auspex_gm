@@ -835,8 +835,6 @@ export function resolveBuild({
       tiersAscended: p.kind === "ascension" ? tiersAscended : 0,
       granted: true,
     };
-    if (p.notAtCreation)
-      problem({ step, severity: "error", what: `${p.name} can't be taken at creation`, cite: cite(p) });
     ledger.push({
       what: `${p.name} (${p.kind} package)`,
       xp: price(p.xp, { path: po.path, step, what: p.name }),
@@ -848,6 +846,14 @@ export function resolveBuild({
       (s.mods.influence ?? 0) +
       (typeof p.influence === "number" ? p.influence : p.influence.perTier * po.tiersAscended);
     p.grants.forEach((g, i) => grant(g, { ...po, path: `${po.path}/${i}` }));
+    // Checked after the grants: `atCreationWith` turns on the kindred chosen (IoE p.20, rules-flow.md §11.61).
+    if (p.notAtCreation && !(p.atCreationWith && s.keywords.includes(p.atCreationWith)))
+      problem({
+        step,
+        severity: "error",
+        what: `${p.name} can't be taken at creation${p.atCreationWith ? `, except to gain ${p.atCreationWith}` : ""}`,
+        cite: cite(p),
+      });
     // An Ascension Package's requirements are met before Ascending, at the archetype's Tier (rules-flow.md §11.54).
     deferred.push({
       reqs: p.requires,

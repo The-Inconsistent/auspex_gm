@@ -39,7 +39,8 @@ export function AscensionStep() {
           meta: sourceCite(p),
           detail: rulesText(p),
           xp: typeof p.xp === "number" ? p.xp : "perTier" in p.xp ? p.xp.perTier * tier : undefined,
-          blocked: p.notAtCreation ? "not at creation" : undefined,
+          // atCreationWith turns on a choice made after the pick, so the build checks it (rules-flow.md §11.61)
+          blocked: p.notAtCreation && !p.atCreationWith ? "not at creation" : undefined,
         }))}
         selected={chosen}
         onPick={pick}
