@@ -35,8 +35,13 @@ export const Weapon = z.object({
   wargearId: z.string().optional(), // the catalogue entry this profile came from
   upgrades: z.array(z.string()).max(8).optional(), // from the build: starting wargear's own upgrades (§11.42)
   fitted: z.array(z.string()).max(8).optional(), // fitted in play (character.fitUpgrade), so a rebuild keeps them
+  // A hand-written profile a rebuild matched to its catalogue entry (keepPlay), so an upgrade can be fitted to it. Its
+  // numbers may already count a Talent (a volkus pregen's printed Rapid Fire), so no weapon effect is applied to it
+  // (rules-flow.md §11.68) until the build's own line replaces it.
+  asPrinted: z.literal(true).optional(),
   // Derived, never stored: set by `withUpgrades` for display.
   upgradeNames: z.array(z.string()).optional(),
+  effects: z.array(z.string()).optional(), // the Talents and abilities `withWeaponEffects` applied, by name
   notes: z.array(z.string()).optional(), // what a profile can't hold, for the GM to apply (the `gm` mods)
 });
 export type Weapon = z.infer<typeof Weapon>;

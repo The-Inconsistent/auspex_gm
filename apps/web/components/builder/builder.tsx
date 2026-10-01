@@ -6,6 +6,7 @@ import {
   catalogueOf,
   resolveBuild,
   withUpgrades,
+  withWeaponEffects,
   type BuildChoice,
   type Character,
   type CharacterStats,
@@ -53,7 +54,7 @@ type Bench = {
   play: { tier: number; xpEarned: number; xpAtAscension?: number; packageWaived?: boolean } | null;
   key: string; // where this device keeps the draft
   // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. At a table
-  // the GM's tablet, the player's phone or a script (attach-builds.ts) may save it, so it's the character's `builtAt`.
+  // the GM's tablet, the player's phone or a script (derive-weapons.ts) may save it, so it's the character's `builtAt`.
   start: DraftStart;
   // What a new draft here records as the save it was opened on (`Draft.builtAt`): a table's `builtAt`, 0 before any;
   // undefined in the library, whose drafts compare times.
@@ -390,7 +391,12 @@ function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
       const r = resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
       // The sheet is stored with the printed profile and the upgrade ids; the preview shows them applied, as the table
       // will (Core p.227). Only the build is sent to the server, which re-resolves it, so this is display alone.
-      return { ...r, sheet: withUpgrades(r.sheet, catalogue.wargear) };
+      // Then the standing weapon effects, at the Rank this build reaches (rules-flow.md §11.68).
+      const rank = r.advancement?.rank ?? 1;
+      return {
+        ...r,
+        sheet: withWeaponEffects(withUpgrades(r.sheet, catalogue.wargear), { rank, catalogue: catalogue.wargear }),
+      };
     } catch {
       return null; // a malformed draft (an older builder's): START OVER clears it
     }

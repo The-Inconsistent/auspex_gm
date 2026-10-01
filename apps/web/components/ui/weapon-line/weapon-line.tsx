@@ -8,10 +8,12 @@ type WeaponLineProps = Parameters<typeof weaponProfile>[0];
 
 // `10 +1 ED · AP -1 · R 12/24/36 · S 2 · Brutal`, with each trait a tap away from its rule. A weapon with upgrades
 // fitted (Core p.227) names them after its traits, and prints what they leave to the GM under the line: an upgrade is
-// not a Trait, so neither goes through RuleLink.
+// not a Trait, so neither goes through RuleLink. The Talents and abilities worked into the profile (rules-flow.md §11.68)
+// follow, the same way, so a player can see why the line differs from the book's.
 export function WeaponLine({ weapon, strength }: WeaponLineProps) {
   const upgrades = "upgradeNames" in weapon ? (weapon.upgradeNames ?? []) : [];
   const notes = "notes" in weapon ? (weapon.notes ?? []) : [];
+  const effects = "effects" in weapon ? (weapon.effects ?? []) : [];
   return (
     <>
       {weaponProfile({ weapon, strength })}
@@ -22,6 +24,7 @@ export function WeaponLine({ weapon, strength }: WeaponLineProps) {
         </Fragment>
       ))}
       {upgrades.length > 0 && <span className="dim"> · {upgrades.join(", ")}</span>}
+      {effects.length > 0 && <span className="dim"> · with {effects.join(", ")}</span>}
       {notes.map((n, i) => (
         <span className="wpn-note" key={i}>
           {n}

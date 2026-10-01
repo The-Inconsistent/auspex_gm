@@ -281,7 +281,20 @@
           {
             "name": "Omni-Scrambler",
             "wargearId": "voa-omni-scrambler"
+          },
+          {
+            "name": "Occulus Bolt Carbine",
+            "wargearId": "bolt-rifle"
+          },
+          {
+            "name": "Paired Astartes Combat Knives",
+            "wargearId": "voa-astartes-combat-knife"
           }
+        ],
+        "remove": [
+          "Occulus Bolt Carbine",
+          "Astartes Combat Knife",
+          "Smoke Grenade"
         ]
       },
       "mods": {

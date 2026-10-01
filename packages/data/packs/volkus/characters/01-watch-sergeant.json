@@ -237,7 +237,8 @@
         "remove": [
           "Aquila Mk VII Power Armour",
           "Bolt Pistol",
-          "Astartes Combat Knife"
+          "Astartes Combat Knife",
+          "Duelling Grip"
         ],
         "add": [
           {
@@ -250,7 +251,10 @@
           },
           {
             "name": "Power Sword",
-            "wargearId": "voa-power-sword"
+            "wargearId": "voa-power-sword",
+            "upgrades": [
+              "duelling-grip"
+            ]
           }
         ]
       },

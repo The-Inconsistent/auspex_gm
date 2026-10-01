@@ -3593,7 +3593,22 @@
     "abilities": [
       {
         "name": "Hellblaster Focus",
-        "text": "When you make an attack with a PLASMA weapon, you may re-roll up to Double Rank dice."
+        "text": "When you make an attack with a PLASMA weapon, you may re-roll up to Double Rank dice.",
+        "weapons": [
+          {
+            "fits": {
+              "wargearKeywords": [
+                "PLASMA"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "gm",
+                "what": "May re-roll up to Double Rank dice on attacks with this weapon (Apocrypha p.183)."
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [
@@ -7510,7 +7525,22 @@
     "abilities": [
       {
         "name": "Lethal Swiftness",
-        "text": "While riding a Reaver Jetbike, you may attempt to roll Determination against damage inflicted to your vehicle: roll dice equal to your Pilot dice pool, or the Jetbike’s Handling score, whichever is higher. Each icon converts Wounds to Shock as normal.\n\nIn addition, you may add +Rank ED to the damage of your Reaver Jetbike’s Bladevanes."
+        "text": "While riding a Reaver Jetbike, you may attempt to roll Determination against damage inflicted to your vehicle: roll dice equal to your Pilot dice pool, or the Jetbike’s Handling score, whichever is higher. Each icon converts Wounds to Shock as normal.\n\nIn addition, you may add +Rank ED to the damage of your Reaver Jetbike’s Bladevanes.",
+        "weapons": [
+          {
+            "fits": {
+              "nameIncludes": "Bladevane"
+            },
+            "mods": [
+              {
+                "kind": "ed",
+                "delta": {
+                  "perRank": 1
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [

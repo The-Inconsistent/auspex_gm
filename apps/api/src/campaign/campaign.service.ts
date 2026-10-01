@@ -2,6 +2,7 @@ import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, threats, wargear } from "@wg/data";
+import { CharacterStats } from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -46,8 +47,15 @@ export function createCampaign({
 
 // EXPORT: what the GM app holds, minus the seats, the running fight and the builder drafts (a device's, not the sheet).
 export async function exportCampaign(campaignId: string): Promise<CampaignExport> {
-  const [state, codex] = await Promise.all([loadState(campaignId), loadCodex(campaignId)]);
+  const [state, codex, stored] = await Promise.all([
+    loadState(campaignId),
+    loadCodex(campaignId),
+    db.select({ id: character.id, stats: character.stats }).from(character).where(eq(character.campaignId, campaignId)),
+  ]);
   if (!state) fail("Campaign not found");
+  // The sheets as stored, not as the table shows them: the state's have the upgrades and weapon effects applied
+  // (withUpgrades, withWeaponEffects), and an import would store those and apply them again on read.
+  const statsOf = new Map(stored.map((r) => [r.id, CharacterStats.parse(r.stats)]));
   const { id: _, ...camp } = state.campaign;
   return {
     format: "auspex-campaign",
@@ -57,6 +65,7 @@ export async function exportCampaign(campaignId: string): Promise<CampaignExport
     // A saved build passed CharacterBuild on its way in; the state type only keeps it loose.
     characters: state.characters.map(({ draft: _, build, ...c }) => ({
       ...c,
+      stats: statsOf.get(c.id) ?? c.stats,
       build: build as CampaignExport["characters"][number]["build"],
     })),
     codex,
@@ -106,14 +115,12 @@ export async function importCampaign({
       });
       // In reference order; one statement per table, so a location can name a parent from the same insert.
       if (file.characters.length)
-        await tx
-          .insert(character)
-          .values(
-            file.characters.map((ch, i) => ({
-              ...own(ch, i),
-              builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
-            })),
-          );
+        await tx.insert(character).values(
+          file.characters.map((ch, i) => ({
+            ...own(ch, i),
+            builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
+          })),
+        );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
       if (c.locations.length)
         await tx.insert(location).values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId) })));

@@ -2386,7 +2386,26 @@
     "abilities": [
       {
         "name": "Intercessor Focus",
-        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a ranged weapon with the PRIMARIS Keyword."
+        "text": "You gain +Double Rank bonus dice to any Ballistic Skill (A) Tests to fire a ranged weapon with the PRIMARIS Keyword.",
+        "weapons": [
+          {
+            "fits": {
+              "weapon": "ranged",
+              "wargearKeywords": [
+                "PRIMARIS"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "bonusDice",
+                "dice": {
+                  "perRank": 2
+                },
+                "when": "Ballistic Skill (A) Tests to fire it"
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [

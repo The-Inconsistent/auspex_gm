@@ -1334,7 +1334,25 @@
     "abilities": [
       {
         "name": "Shoot Sharp and Scarper",
-        "text": "When using a weapon with the Sniper Weapon Trait, increase the weapon’s Sniper rating by +Rank. In addition, when you make a successful ranged Attack Test, you may immediately move up to your Speed as a Reflexive Action."
+        "text": "When using a weapon with the Sniper Weapon Trait, increase the weapon’s Sniper rating by +Rank. In addition, when you make a successful ranged Attack Test, you may immediately move up to your Speed as a Reflexive Action.",
+        "weapons": [
+          {
+            "fits": {
+              "weaponTraits": [
+                "Sniper"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "traitRating",
+                "traitId": "sniper",
+                "delta": {
+                  "perRank": 1
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [

@@ -86,7 +86,8 @@ for (const c of pack.characters) {
     { type: "character.create", name: c.name, stats: c.stats, detail: c.detail, objectives: c.objectives },
     `character ${c.name}`,
   ))!;
-  // The build, keeping the printed weapon, armour and gear lines, which work Talents into the profiles (issue #18).
+  // The build, keeping the printed armour and gear lines (issue #18); its weapons are the build's, with their Talents
+  // applied on read, plus the GM's own lines the build has none of (keepSheetWeapons, rules-flow.md §11.68).
   if (c.build) await send({ type: "character.build", id, build: c.build, keepSheet: true }, `build ${c.name}`);
 }
 

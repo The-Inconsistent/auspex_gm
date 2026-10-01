@@ -1610,6 +1610,19 @@ waits, at the price of the Red Thirst.
     grants them the other two by ruling, as `gm.mods` in each build (user ruling 2026-10-01).
 24. **Marksman: the RED SCORPIONS write-in is approved by the GM** (`gm.approved`, rules-flow.md §11.25), since the
     catalogue has no Red Scorpions record (kill-team.md ruling 13).
+25. **The weapon lines are derived** (GitHub issue #27, user ruling 2026-10-01): each agent's weapons come from the
+    Wargear catalogue through the build, and their Talents are applied on read (rules-flow.md §11.68). The pack's
+    printed lines are the check (`packages/data/build.test.ts`), and every number and Trait matches. To make them:
+    - GM choice 11's Duelling Grip is fitted to its weapon in the build (`gm.gear`, `upgrades: ["duelling-grip"]`),
+      so it shows as an upgrade and its +1 bonus die as a note, instead of a hand-written Trait.
+    - GM choice 8's Occulus Bolt Carbine is the Core p.217 Bolt Rifle under that name, and the Disruptor's knives keep
+      the sheet's name ("Paired Astartes Combat Knives").
+    - The Haywire Mine and the deployed smoke (GM choice 8) and the Breacher's Grenade Launcher lines are the GM's own
+      profiles, not catalogue items, so they stay as printed: a printed weapon the build has none of by name is kept
+      (`keepSheet`). Explosive Fury doesn't reach them, as a placed mine isn't an attack with a grenade.
+    - Printed notes ("ED includes +1 Explosive Fury") are now the effect's name on the line ("with Explosive Fury").
+      The Frag Cannon Shell's "AP −3 at Short range" (GM choice 16) is the weapon's own Special and situational, so it
+      is in its catalogue text, not on the line.
 
 ## Book ambiguities and errata found
 

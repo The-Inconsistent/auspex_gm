@@ -245,7 +245,8 @@
       "gear": {
         "remove": [
           "Aquila Mk VII Power Armour",
-          "Astartes Combat Knife"
+          "Astartes Combat Knife",
+          "Duelling Grip"
         ],
         "add": [
           {
@@ -254,7 +255,10 @@
           },
           {
             "name": "Power Maul",
-            "wargearId": "fspg-power-maul"
+            "wargearId": "fspg-power-maul",
+            "upgrades": [
+              "duelling-grip"
+            ]
           },
           {
             "name": "Storm Shield",

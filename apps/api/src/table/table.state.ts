@@ -4,7 +4,9 @@ import {
   CharacterStats,
   Objectives,
   Overrides,
+  rankOf,
   withUpgrades,
+  withWeaponEffects,
   type Character,
   type Codex,
   type Combatant,
@@ -57,7 +59,11 @@ export const toCharacter = ({
   name,
   // The sheet as shown, not as stored: the fitted upgrades are applied here (Core p.227, §11.63), so a phone doesn't
   // need the 2 MB catalogue to read its own weapons and the stored profile stays the printed one.
-  stats: withUpgrades(CharacterStats.parse(stats), wargear),
+  // Then the standing weapon effects, at the Rank the XP earned gives now (rules-flow.md §11.68).
+  stats: withWeaponEffects(withUpgrades(CharacterStats.parse(stats), wargear), {
+    rank: rankOf(xp),
+    catalogue: wargear,
+  }),
   ownedUpgrades: ownedUpgrades(CharacterStats.parse(stats).gear),
   overrides: Overrides.parse(overrides),
   wounds,
