@@ -490,6 +490,9 @@ export const Package = z.object({
   xp: XpCost,
   requires: z.array(Requirement).default([]),
   notAtCreation: z.boolean().default(false),
+  // Lifts `notAtCreation` when the package's grants leave the character with this Keyword: Change of Kinship to join
+  // the Ynnari (IoE p.20, rules-flow.md §11.61).
+  atCreationWith: keyword.optional(),
   effect: z.string().min(1),
   // "+2 per Tier Ascended" (Dauntless Reputation, Core p.151) is { perTier: 2 }
   influence: z.union([z.number().int(), z.object({ perTier: z.number().int() })]).default(0),

@@ -698,8 +698,6 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
   "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
 - Apocrypha suggests talents from "RR1" and "RR2" (Redacted Records and Redacted Records 2); they are listed in notes only
   until those books are transcribed (GitHub issue #24).
-- GitHub issue #7: Change of Kinship (IoE p.58) is "not at creation", but the Ynnari rule (p.20) speaks of buying it
-  at creation.
 - Magisterial House "+Rank to Wealth" (Apocrypha p.53) is read as a one-off grant at creation.
 - The Primaris Chaplain's and Dark Apostle's "+Rank Resolve to you and allies" is read as an aura, not `mods`.
 - Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier

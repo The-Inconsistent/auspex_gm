@@ -36,10 +36,15 @@ export function AscensionStep() {
         items={ascensions.map((p) => ({
           id: p.id,
           label: p.name,
-          meta: sourceCite(p),
+          // atCreationWith turns on a choice made after the pick, so the build checks it; the meta says so up front
+          // (rules-flow.md §11.61)
+          meta:
+            p.notAtCreation && p.atCreationWith
+              ? `${sourceCite(p)} · at creation: ${p.atCreationWith} only`
+              : sourceCite(p),
           detail: rulesText(p),
           xp: typeof p.xp === "number" ? p.xp : "perTier" in p.xp ? p.xp.perTier * tier : undefined,
-          blocked: p.notAtCreation ? "not at creation" : undefined,
+          blocked: p.notAtCreation && !p.atCreationWith ? "not at creation" : undefined,
         }))}
         selected={chosen}
         onPick={pick}

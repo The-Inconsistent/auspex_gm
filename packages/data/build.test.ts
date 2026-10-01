@@ -130,6 +130,24 @@ test("Creation Ascension: a lower-Tier archetype needs one Ascension Package (Co
   assert.ok(r.pending.some((p) => p.step === "ascension"));
 });
 
+test("Change of Kinship at Creation Ascension only joins the Ynnari (IoE pp.20, 58, rules-flow.md §11.61)", () => {
+  // Guardian (Tier 2) in a Tier 3 campaign; the first grant is the kindred joined (4: YNNARI, 2: DRUKHARI), the
+  // second the kindred left (0: ASURYANI).
+  const kinship = (join: number) =>
+    run({
+      tier: 3,
+      archetypeId: "guardian",
+      packages: ["change-of-kinship"],
+      choices: { "package/change-of-kinship/0": [join], "package/change-of-kinship/1": [0] },
+    });
+  const barred = (r: ReturnType<typeof run>) =>
+    r.problems.some((p) => p.what.startsWith("Change of Kinship can't be taken at creation"));
+  const ynnari = kinship(4);
+  assert.ok(!barred(ynnari));
+  assert.ok(ynnari.sheet.keywords.includes("YNNARI") && !ynnari.sheet.keywords.includes("ASURYANI"));
+  assert.ok(barred(kinship(2)));
+});
+
 test("a granted Talent whose requirements aren't met waits for the GM, and the tick clears it", () => {
   const { Survival: _, ...skills } = PREGENS[0]!.build.skills!;
   const sergeant = { ...PREGENS[0]!.build, skills }; // Survival stays 1; Built Tough needs 2 (VoA p.46)
