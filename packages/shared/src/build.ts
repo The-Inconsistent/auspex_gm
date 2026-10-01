@@ -430,8 +430,33 @@ export function resolveBuild({
       have.choices.push(choice);
       return;
     }
-    if (t.repeatable === "perChoice" && !choice && !o.granted)
+    // A granted Talent that picks one of its options (Acute Sense's sense, Core p.129) asks for it; the grant names none.
+    if (t.options && o.granted && !choice) {
+      const path = `${o.path}/choice`;
+      const i = choiceFor(path)?.[0];
+      choice = typeof i === "number" ? t.options[i] : undefined;
+      choose(
+        {
+          path,
+          step: o.step,
+          what: `${t.name}: choose one`,
+          choose: 1,
+          options: t.options,
+          cite: cite(t),
+          pick: { kind: "option" },
+        },
+        !!choice,
+      );
+    }
+    if ((t.repeatable === "perChoice" || t.options) && !choice && !o.granted)
       problem({ step: o.step, severity: "error", what: `${t.name}: choose what it applies to`, cite: cite(t) });
+    if (t.options && choice && !t.options.some((x) => x.toLowerCase() === choice!.toLowerCase()))
+      problem({
+        step: o.step,
+        severity: "error",
+        what: `${t.name}: choose one of ${t.options.join(", ")}`,
+        cite: cite(t),
+      });
     s.talents.set(t.id, { id: t.id, name: t.name, text: t.effect, page: cite(t), choices: [choice] });
     const to: Origin = { ...o, path: `talent/${t.id}`, cite: cite(t) };
     // A granted Talent whose requirements aren't met is the GM's to tick, not a refusal (rules-flow.md §11.53).

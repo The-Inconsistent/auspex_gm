@@ -477,6 +477,8 @@ export const Talent = z.object({
   effect: z.string().min(1),
   // "perChoice": once for each choice of its bracket or option (Hatred [Any], Signature Saedath; rules-flow.md §11.29).
   repeatable: z.union([z.boolean(), z.literal("perChoice")]).default(false),
+  // What its choice is one of, where the book lists them (Acute Sense's five senses, Core p.129); a grant asks for it.
+  options: z.array(z.string().min(1).max(60)).min(2).optional(),
   mods: Mods.optional(),
   grants: z.array(Grant).optional(),
 });

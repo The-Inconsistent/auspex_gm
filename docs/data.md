@@ -667,6 +667,9 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
 - **Where an index and an entry disagree, the entry is the rule.** Note the difference.
 - **Bracketed names drop the placeholder from the id** and repeat once per choice (`repeatable: "perChoice"`): "Hatred [Any]" is `hatred`, "Loremaster [Keyword]" is
   `loremaster`, as Core's contents page lists them.
+- **A Talent whose text lists what its choice is one of** carries them as `options` (Acute Sense's five senses, Core
+  p.129). A bought one must name one; a granted one (the Space Wolves' Hunters Unleashed) asks for it in
+  `choices["<grant path>/choice"]`, as an option index.
 - **Archetypes printed in several books share one id** so the merge sees them as one: FSPG's "Astartes Apothecary"
   and VoA's "Apothecary" are both `apothecary`; Apocrypha's "Harlequin Player" is IoE's `troupe-player`. Apocrypha's
   dual stat blocks are two records (`apothecary`, `primaris-apothecary`).

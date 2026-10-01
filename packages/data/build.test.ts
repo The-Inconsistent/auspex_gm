@@ -60,7 +60,9 @@ for (const { want, ...p } of PREGENS) {
     assert.equal(s.wealth, want.wealth);
     assert.equal(s.armour.ar, want.armour.ar);
     assert.equal(s.armour.powered, want.armour.powered);
-    assert.deepEqual(s.talents.map((t) => norm(t.name)).sort(), want.talents.map((t) => norm(t.name)).sort());
+    // With their picks: Trademark Weapon (Bolt Sniper Rifle), Acute Sense (smell).
+    const named = (ts: { name: string }[]) => ts.map((t) => t.name.toLowerCase()).sort();
+    assert.deepEqual(named(s.talents), named(want.talents));
     const abilities = s.abilities.map((a) => norm(a.name));
     // A package's prose effect (Heavy Intercessor Doctrine's +Rank AP) sits on the pregen as an ability; the build has
     // it as the package.
@@ -232,4 +234,23 @@ test("the GM's bonuses add to the build's (gm.mods, rules-flow.md §11.22)", () 
   const more = run({ ...incursor, gm: { ...incursor.gm, mods: { resolve: 2, defence: 1 } } }).sheet.mods;
   assert.equal(more.resolve, (base.resolve ?? 0) + 2);
   assert.equal(more.defence, (base.defence ?? 0) + 1);
+});
+
+test("a granted Talent with options asks for one; a bought one must be one of them (Acute Sense, Core p.129)", () => {
+  const wolf = PREGENS.find((p) => p.name === "Brother Hjalmar Grimsson")!.build;
+  const path = "subfaction/space-wolves/huntersunleashed/0/choice";
+  const { [path]: _, ...unpicked } = wolf.choices;
+  const asked = run({ ...wolf, choices: unpicked }, true);
+  assert.deepEqual(
+    asked.pending.map((p) => p.what),
+    ["Acute Sense: choose one"],
+  );
+  assert.ok(run(wolf, true).sheet.talents.some((t) => t.name === "Acute Sense (smell)"));
+  const bought = (choice?: string) =>
+    run({ ...incursor, talents: [...(incursor.talents ?? []), { id: "acute-sense", choice }] }).problems.map(
+      (p) => p.what,
+    );
+  assert.ok(bought("smell").every((w) => !w.startsWith("Acute Sense")));
+  assert.ok(bought("smel").includes("Acute Sense: choose one of sight, hearing, smell, taste, touch"));
+  assert.ok(bought().includes("Acute Sense: choose what it applies to"));
 });

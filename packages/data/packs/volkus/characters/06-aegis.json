@@ -232,6 +232,9 @@
     "choices": {
       "package/rubicon-primaris/3": [
         "duelling-grip"
+      ],
+      "subfaction/space-wolves/huntersunleashed/0/choice": [
+        2
       ]
     },
     "gm": {
