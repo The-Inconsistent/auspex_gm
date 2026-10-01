@@ -99,7 +99,7 @@ Kraken. [GM] each marine starts with one type.
     - Brother Aurelian Tarsus (Marksman): **Red Scorpions**, of unknown origin. [GM] The Chapter has **no Chapter Traits**:
       Core p.71 says a Chapter of unknown succession "may take the Chapter Traits of any of the First Founding Chapters",
       and this one takes none. The catalogue has no Red Scorpions record (it is book data), so his build writes RED
-      SCORPIONS into [CHAPTER], which the builder flags (rules-flow.md §11.25); the tests pin that one problem.
+      SCORPIONS into [CHAPTER], which the builder flags for the GM (rules-flow.md §11.25); his build carries the GM's tick.
     - Brother Sariel Voss (Blademaster): Dark Angels (was Blood Angels).
     - Brother Hjalmar Grimsson (Aegis): Space Wolves (was Black Templars, so no longer homebrew).
     - Brother Idrian Kostas (Bombard): Flesh Tearers (Apoc p.28, a Blood Angels Successor; was Crimson Fists).

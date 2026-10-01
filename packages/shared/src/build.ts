@@ -23,7 +23,7 @@ import {
 } from "./creation.ts";
 import { RARITY_DN } from "./requisition.ts";
 import { SOURCES, sourceCite, type Source } from "./source.ts";
-import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, type Mods, type Skill } from "./state.ts";
+import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, Mods, type Skill } from "./state.ts";
 import { Wargear, gearLine, sheetWeapon, type WargearWeapon } from "./wargear.ts";
 
 // The character builder (issue #9, docs/data.md §9): a character is the choices made at creation, and its sheet is
@@ -108,6 +108,9 @@ export const CharacterBuild = z.object({
         .object({ remove: z.array(z.string().min(1)).prefault([]), add: z.array(WargearItem).prefault([]) })
         .prefault({}),
       approved: z.array(z.string().min(1).max(200)).prefault([]), // paths of `gm` requirements and `story` grants
+      // Trait bonuses granted by ruling, added to the build's: the volkus pregens keep all three Background bonuses
+      // (docs/pregens.md, GM choice 23; rules-flow.md §11.22).
+      mods: Mods.prefault({}),
     })
     .prefault({}),
 });
@@ -1046,10 +1049,12 @@ export function resolveBuild({
         cite: fo.cite,
       });
     } else if ("writeIn" in fill) {
+      // The GM may allow one anyway (rules-flow.md §11.25: the Red Scorpions, kill-team.md ruling 13).
       if (!kw?.writeIn)
         problem({
           step: "faction",
-          severity: "error",
+          severity: "gm",
+          path: fo.path,
           what: `${k} can't be written in; choose one the books print`,
           cite: "rules-flow.md §11.25",
         });
@@ -1433,6 +1438,11 @@ export function resolveBuild({
     if (s.mods[k]) mods[k] = s.mods[k];
   // An Ork's Influence uses Strength (Core p.29): the sheet derives it from Fellowship, so the difference is a mod.
   if (s.influenceAttribute) mods.influence = (mods.influence ?? 0) + attributes[s.influenceAttribute] - attributes.Fel;
+  // Mk X Phobos: "+1 Movement" (VoA p.72), the armour trait "+1 M"; your Movement is your Speed (Core p.180).
+  const movement = armour.traits.map((t) => /^\+(\d+) M$/.exec(t)?.[1]).find(Boolean);
+  if (movement) mods.speed = (mods.speed ?? 0) + Number(movement);
+  for (const [k, v] of Object.entries(build.gm.mods) as [keyof typeof mods, number][])
+    if (v) mods[k] = (mods[k] ?? 0) + v;
   for (const p of s.powers) {
     const pw = ix.powers.get(p);
     if (pw) s.abilities.push({ name: pw.name, text: pw.effect, page: cite(pw) });

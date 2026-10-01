@@ -256,14 +256,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 21. **Asuryani Ghost Warriors count as Aeldari Species** for requirements (their "Aeldari" ability, Apocrypha p.6).
     **Drukhari never walk Asuryani Paths**, even with the ASURYANI keyword (IoE p.10).
 22. **One Background bonus** (Core p.43): of the three Background rows a character takes, only one +1 bonus applies.
-    The builder enforces it. The volkus pregens, which apply all three, are left as they are.
+    The builder enforces it. A GM may grant more by ruling (`gm.mods` in the build): the volkus pregens keep all three
+    (docs/pregens.md, GM choice 23).
 23. **Absolvers are a Blood Angels Successor** (VoA pp.30, 78), not of unknown succession (Core p.71): they take the
     Blood Angels Chapter Traits, and the Red Thirst (Gene-seed) flaw applies, to Primaris Absolvers too: this
     overrides Core p.71's "Primaris ignore (Gene-seed) traits" for the Absolvers. `successorOf` on the sub-faction.
 24. **[ORDER] is a named Order** (Order of Our Martyred Lady, Order of the Sanctified Shield…). The Order categories
     (Orders Militant, Dialogus, Famulous, Hospitaller, Sabine, Pronatus, Core p.51) are groupings, not choices.
 25. **Write-in sub-factions:** players may name their own Forge World, Craftworld or Coterie (`writeIn` on the
-    placeholder keyword). Ordos are only the printed three, so Core p.64's "Other Ordos" isn't a choice.
+    placeholder keyword). Ordos are only the printed three, so Core p.64's "Other Ordos" isn't a choice. A write-in on
+    any other placeholder needs the GM's tick (a `gm` problem), as for the Red Scorpions (kill-team.md ruling 13).
 26. **Navis Nobilite Origins** (Apocrypha p.54) match the character's House: a Magisterial, Nomadic or Shrouded House
     Origin needs that House type. A Renegade House has no Origin row.
 27. **Species gaps:** Ogryn and Ratling have the ABHUMAN Species Keyword, Kroot has KROOT (FSPG prints none), and

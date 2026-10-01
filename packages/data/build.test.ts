@@ -426,9 +426,6 @@ for (const p of PREGENS) {
     const mods = { ...s.mods };
     for (const [k, v] of Object.entries(p.extraBonuses))
       mods[k as keyof typeof mods] = (mods[k as keyof typeof mods] ?? 0) + v;
-    // The pregens put Mk X Phobos's "+1 Movement" (VoA p.72) in mods; the Wargear catalogue has it only as the armour
-    // trait "+1 M", which the sheet shows but no rule reads yet.
-    if (s.armour.traits.includes("+1 M")) mods.speed = (mods.speed ?? 0) + 1;
     assert.deepEqual(mods, want.mods);
   });
 }
@@ -570,4 +567,20 @@ test("keepPlay: a rebuild in play keeps Wealth, Ammo and what play added; the ne
   assert.deepEqual(kept.ammo, { Bolt: 2 });
   assert.ok(kept.weapons.some((w) => w.name === "Looted Choppa"));
   assert.equal(kept.weapons.length, played.weapons.length, "nothing doubled");
+});
+
+test("a write-in where the keyword allows none waits for the GM's tick (rules-flow.md §11.25)", () => {
+  const b = { ...incursor, fills: { "[CHAPTER]": { writeIn: "RED SCORPIONS" } } };
+  const asked = run(b).problems.find((p) => p.path === "fill/chapter");
+  assert.equal(asked?.severity, "gm");
+  const ticked = run({ ...b, gm: { ...b.gm, approved: ["fill/chapter"] } });
+  assert.ok(!ticked.problems.some((p) => p.path === "fill/chapter"));
+  assert.ok(ticked.sheet.keywords.includes("RED SCORPIONS"));
+});
+
+test("the GM's bonuses add to the build's (gm.mods, rules-flow.md §11.22)", () => {
+  const base = run(incursor).sheet.mods;
+  const more = run({ ...incursor, gm: { ...incursor.gm, mods: { resolve: 2, defence: 1 } } }).sheet.mods;
+  assert.equal(more.resolve, (base.resolve ?? 0) + 2);
+  assert.equal(more.defence, (base.defence ?? 0) + 1);
 });

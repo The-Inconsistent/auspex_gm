@@ -1606,6 +1606,10 @@ waits, at the price of the Red Thirst.
     ruling 13).
 22. **Bombard and Breacher: the Heavy Intercessor Doctrine's +Rank AP is lost.** VoA p.35 gives it to "this weapon", the
     Heavy Bolter they chose, which the Deathwatch armoury swaps out.
+23. **All three Background bonuses kept.** The pregens were made before rules-flow.md §11.22 (one bonus only); the GM
+    grants them the other two by ruling, as `gm.mods` in each build (user ruling 2026-10-01).
+24. **Marksman: the RED SCORPIONS write-in is approved by the GM** (`gm.approved`, rules-flow.md §11.25), since the
+    catalogue has no Red Scorpions record (kill-team.md ruling 13).
 
 ## Book ambiguities and errata found
 
