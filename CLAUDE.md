@@ -154,14 +154,17 @@ apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campai
                     server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
 apps/web/components/lobby/   lobby-view (your games, your characters, running now, new game)
 apps/web/components/invite/  invite-accept
-apps/web/components/gm/      gm-app, tracker, prep, codex, party (kebab-case folders, children under components/)
+apps/web/components/gm/      gm-app, tracker, prep, codex, party (with ascend-panel; kebab-case folders, children under
+                             components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
-                             to read its rule), weapon-line, bar, stat-block, status-chips, status-screen, refusal
+                             to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
+                             status-screen, refusal
 apps/web/hooks/use-table/    socket + wake lock
-apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values)
+apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
+                             share-origin (QR and invite links carry an address a phone can reach)
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
