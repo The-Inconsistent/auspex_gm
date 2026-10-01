@@ -1,0 +1,78 @@
+<!-- w=1194 h=834 title="#46 · CODEX · faction editor with Keyword picker" -->
+<div class="pg" style="position: relative; width: 1194px; height: 834px; display: flex; overflow: hidden">
+<div style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0">
+<header style="position: relative; background: var(--iron); color: var(--bone); height: 64px; display: flex; align-items: center; gap: 18px; padding: 0 22px; flex-shrink: 0; z-index: 1">
+<div style="display: flex; flex-direction: column; line-height: 1">
+<span class="cz" style="font-size: 10px; font-weight: 700; letter-spacing: 0.24em; color: #C9B78F">VOLKUS DIG SITE · TIER 4</span>
+<span class="cz" style="font-size: 24px; font-weight: 700; letter-spacing: 0.06em; margin-top: 4px">CODEX</span>
+</div>
+<span style="flex-grow: 1"></span>
+<div style="display: flex; align-items: center; gap: 6px">
+<svg width="40" height="40" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="21" fill="#8C6A2F" stroke="#8C6A2F" stroke-width="6" stroke-dasharray="3 2.2"></circle><circle cx="26" cy="26" r="16" fill="none" stroke="#EFE7D5" stroke-opacity=".55" stroke-width="1"></circle><text x="26" y="33" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="20" fill="#FFF8E8">0</text></svg>
+<span class="cz" style="font-size: 10px; font-weight: 700; letter-spacing: 0.12em">GLORY</span>
+</div>
+<div style="display: flex; align-items: center; gap: 6px">
+<svg width="40" height="40" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="21" fill="#A32626" stroke="#A32626" stroke-width="6" stroke-dasharray="3 2.2"></circle><circle cx="26" cy="26" r="16" fill="none" stroke="#EFE7D5" stroke-opacity=".45" stroke-width="1"></circle><text x="26" y="33" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="20" fill="#FFF8E8">5</text></svg>
+<span class="cz" style="font-size: 10px; font-weight: 700; letter-spacing: 0.12em">RUIN</span>
+</div>
+<svg style="position: absolute; left: 0; bottom: -11px; width: 100%; height: 12px; display: block; color: var(--iron)" viewBox="0 0 400 14" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 0H400V6L388 11L372 5L356 12L338 6L320 10L300 4L284 11L262 6L244 13L226 5L206 10L188 4L170 12L150 6L132 11L112 4L94 12L76 6L56 10L38 4L20 11L0 6Z"></path></svg>
+</header>
+<main style="flex-grow: 1; min-height: 0; overflow: hidden; padding: 20px 26px 14px; display: flex; flex-direction: column; gap: 10px">
+<nav class="tabs" aria-label="Codex kinds"><a href="#">NPCS</a><a href="#">LOCATIONS</a><a href="#">HANDOUTS</a><a href="#" aria-current="page">FACTIONS</a></nav>
+<div class="rule" style="margin-top: 2px">EDIT FACTION · GUTSHIVA’S KOMMANDOS</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 14px">
+<div class="field"><label class="lbl" for="f-name">NAME</label><input id="f-name" class="input" value="Gutshiva’s Kommandos"></div>
+<div class="field"><span class="lbl">STANCE</span><button type="button" class="input select" aria-label="Stance" style=""><span>ALLY</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 316px; gap: 14px; align-items: start">
+<div class="field" style="min-width: 0">
+<span class="lbl" id="kw-l">KEYWORDS · PICK FROM THE BOOKS, OR TYPE YOUR OWN</span>
+<div class="keys" role="group" aria-labelledby="kw-l"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-flex; align-items: stretch"><button type="button" class="btn sm btn-i" aria-pressed="true">ORK</button><button type="button" class="btn sm" aria-label="Remove ORK" style="margin-left: -1px">×</button></span></span><span style="display: inline-flex; align-items: center; gap: 6px"><span style="display: inline-flex; align-items: stretch"><button type="button" class="btn sm" aria-pressed="false">KOMMANDO</button><button type="button" class="btn sm" aria-label="Remove KOMMANDO" style="margin-left: -1px">×</button></span><span class="chip">WRITE-IN</span></span></div>
+<input class="input" aria-label="Search Keywords" value="blo">
+<div class="zebra" role="group" aria-label="Keyword suggestions" style="border: 1px solid var(--line); background: var(--vellum)">
+<button type="button" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 36px; padding: 4px 12px; border: 0; background: transparent; font: inherit; color: inherit; text-align: left"><span class="cz" style="font-weight: 700; font-size: 13px; letter-spacing: 0.06em">BLOOD AXES</span><span class="chip">ORK CLAN</span><span class="leader"></span><span class="dim" style="font-size: 14px">Core Rulebook p.82</span></button>
+<button type="button" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 36px; padding: 4px 12px; border: 0; background: transparent; font: inherit; color: inherit; text-align: left"><span class="cz" style="font-weight: 700; font-size: 13px; letter-spacing: 0.06em">THE BLOODIED CLAW</span><span class="chip">KABAL</span><span class="leader"></span><span class="dim" style="font-size: 14px">Aeldari: Inheritance of Embers p.16</span></button>
+<button type="button" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 36px; padding: 4px 12px; border: 0; background: transparent; font: inherit; color: inherit; text-align: left"><span class="cz" style="font-weight: 700; font-size: 13px; letter-spacing: 0.06em">ORDER OF THE BLOODY ROSE</span><span class="chip">ORDER</span><span class="chip">HOMEBREW</span><span class="leader"></span><span class="dim" style="font-size: 14px">An Abundance of Apocrypha p.34</span></button>
+<button type="button" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 38px; padding: 4px 12px; border: 0; background: var(--iron); color: var(--bone); font: inherit; text-align: left"><span class="cz" style="font-weight: 700; font-size: 13px; letter-spacing: 0.06em">ADD “BLO” AS TYPED</span><span class="leader" style="border-color: var(--bone2)"></span><span class="chip" style="color: var(--bone); border-color: var(--bone2)">ENTER</span></button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="item" style="padding: 10px 12px; gap: 4px"><span class="lbl">GLOSSARY · ORK · CORE RULEBOOK P.376</span><span style="font-size: 15.5px; line-height: 1.3">A brutal xenos Species that lives for war.</span><span class="hint">Tap a Keyword to read it. GM only.</span></div>
+<div class="item" style="padding: 10px 12px; gap: 4px"><span class="lbl">KOMMANDO · WRITE-IN</span><span style="font-size: 15.5px; line-height: 1.3">Not in the books’ list, kept exactly as typed. Gutshiva’s Kommandos in the bestiary carry it too.</span></div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 14px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+<div style="display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; border: 1px solid var(--ink3); background: var(--field); font-size: 15px; line-height: 1.3"><span style="color: var(--ink2); padding-top: 1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle><path d="M12 11v6M12 7.2v.1"></path></svg></span><span><b>ORK ALLY.</b> Almost no Imperials would work alongside an Ork: give the Agents a reason (Core Rulebook p.317). A hint only.</span></div>
+<div class="field"><span class="lbl">NPCS IN THIS FACTION · 4</span>
+<div class="zebra" style="border: 1px solid var(--line); background: var(--vellum)"><div style="display: flex; align-items: center; gap: 10px; min-height: 30px; padding: 2px 10px"><span class="cz" style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; white-space: nowrap">BOSS GUTSHIVA</span><span class="dim" style="font-size: 14px; font-style: italic; flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Nob leader of the Kommandos</span><span class="chip">REVEALED</span></div><div style="display: flex; align-items: center; gap: 10px; min-height: 30px; padding: 2px 10px"><span class="cz" style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; white-space: nowrap">DUDD THE BOMB SQUIG</span><span class="dim" style="font-size: 14px; font-style: italic; flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">A “lucky” unexploded bomb squig</span><span class="chip chip-warn">HIDDEN</span></div><div style="display: flex; align-items: center; gap: 10px; min-height: 30px; padding: 2px 10px"><span class="cz" style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; white-space: nowrap">GRUZBAG</span><span class="dim" style="font-size: 14px; font-style: italic; flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Kommando with a bionik arm</span><span class="chip">REVEALED</span></div><div style="display: flex; align-items: center; gap: 10px; min-height: 30px; padding: 2px 10px"><span class="cz" style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; white-space: nowrap">MUNTZ ’NERZ</span><span class="dim" style="font-size: 14px; font-style: italic; flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Rogue Mekboy who built the tellyporta</span><span class="chip chip-warn">HIDDEN</span></div></div></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+<div class="field"><label class="lbl" for="f-notes">NOTES</label><textarea id="f-notes" class="input" style="min-height: 64px">A mob of Ork Kommandos under the Nob Gutshiva. A truce for the length of The Deal (scene 04); both sides expect to be betrayed.</textarea></div>
+<div class="riv" style="padding: 10px 16px 12px; display: flex; flex-direction: column; gap: 4px"><label class="lbl" for="f-sec" style="color: var(--ink)">SECRETS</label><textarea id="f-sec" class="input" style="min-height: 56px">Gutshiva breaks the truce the moment the Kill Team shows weakness.</textarea></div>
+</div>
+</div>
+
+<div class="keys" style="margin-top: auto">
+<button type="button" class="btn btn-p">SAVE</button>
+<button type="button" class="btn">CANCEL</button>
+<button type="button" class="btn btn-d">DELETE</button>
+<span class="hint">Factions never reach a phone.</span>
+</div>
+</main>
+</div>
+<nav class="rail" aria-label="GM sections">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0 14px; color: var(--ink2)">
+<svg width="30" height="30" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8 1C4.1 1 1.5 3.7 1.5 7.1c0 2 .9 3.4 2.3 4.2V14h2v-1.4h1.1V14h2.2v-1.4h1.1V14h2v-2.7c1.4-.8 2.3-2.2 2.3-4.2C14.5 3.7 11.9 1 8 1zM5.4 5.6a1.7 1.7 0 1 1 0 3.4a1.7 1.7 0 1 1 0-3.4zM10.6 5.6a1.7 1.7 0 1 1 0 3.4a1.7 1.7 0 1 1 0-3.4zM8 9.4l1 1.8H7z"></path></svg>
+<span class="cz" style="font-size: 10px; font-weight: 800; letter-spacing: 0.22em">AUSPEX</span>
+</div>
+<a href="#"><span class="n">I</span><span class="t">TRACK</span></a>
+<a href="#"><span class="n">II</span><span class="t">PREP</span></a>
+<a href="#" aria-current="page"><svg style="position: absolute; left: 4px; top: 10px; width: 100px; height: 42px; color: var(--redfill)" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M3 8L14 3L40 6L70 2L104 5L117 3L114 16L119 30L110 37L78 34L44 38L16 35L2 38L6 24Z"></path></svg><span class="t">CODEX</span></a>
+<a href="#"><span class="n">IV</span><span class="t">PARTY</span></a>
+<a href="#"><span class="n">V</span><span class="t">RULES</span></a>
+</nav>
+</div>
