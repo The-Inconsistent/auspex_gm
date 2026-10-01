@@ -1663,7 +1663,7 @@
     "name": "Weirdboy",
     "source": "apocrypha",
     "page": 165,
-    "note": "The stat block is headed \"FLASH GIT\" (print error; the page heading is Weirdboy). No Influence printed. The suggested talents are WAAAGH! psychic powers.",
+    "note": "The stat block is headed \"FLASH GIT\" (print error; the page heading is Weirdboy). No Influence printed. The suggested talents are WAAAGH! psychic powers. The WAAAGH! discipline is the Species' one Discipline of choice (Disciplines Known, Core p.257), so `onlyDisciplines` keeps it to that, Minor powers and Smite (docs/rules-flow.md §11.62, GitHub issue #8).",
     "factionId": "orks",
     "tier": 3,
     "speciesIds": [
@@ -1700,6 +1700,13 @@
           {
             "disciplineAccess": [
               "waaagh"
+            ]
+          },
+          {
+            "onlyDisciplines": [
+              "waaagh",
+              "minor",
+              "universal"
             ]
           }
         ]
@@ -2289,7 +2296,7 @@
     "name": "Grey Knight Space Marine",
     "source": "apocrypha",
     "page": 170,
-    "note": "No suggested attributes or skills printed. Astral Aim and Hammerhand, under SUGGESTED TALENTS, are Sanctic psychic powers. The page says Grey Knights must select the GREY KNIGHTS chapter option (p.27) and benefit from the ORDO MALLEUS keyword (Core p.64).",
+    "note": "No suggested attributes or skills printed. Astral Aim and Hammerhand, under SUGGESTED TALENTS, are Sanctic psychic powers. The page says Grey Knights must select the GREY KNIGHTS chapter option (p.27) and benefit from the ORDO MALLEUS keyword (Core p.64). The Sanctic discipline is the Species' one Discipline of choice (Disciplines Known, Core p.257), so `onlyDisciplines` keeps it to that, Minor powers and Smite (docs/rules-flow.md §11.62, GitHub issue #8).",
     "factionId": "adeptus-astartes",
     "tier": 4,
     "speciesIds": [
@@ -2332,6 +2339,13 @@
           {
             "disciplineAccess": [
               "sanctic"
+            ]
+          },
+          {
+            "onlyDisciplines": [
+              "sanctic",
+              "minor",
+              "universal"
             ]
           }
         ]
@@ -2386,7 +2400,7 @@
     "name": "Grimnyr",
     "source": "apocrypha",
     "page": 171,
-    "note": "SPECIES printed Kin only (not \"Kin or Ironkin\"). The suggested talents are Skeinwrought psychic powers.",
+    "note": "SPECIES printed Kin only (not \"Kin or Ironkin\"). The suggested talents are Skeinwrought psychic powers. The Skeinwrought discipline is the Species' one Discipline of choice (Disciplines Known, Core p.257), so `onlyDisciplines` keeps it to that, Minor powers and Smite (docs/rules-flow.md §11.62, GitHub issue #8).",
     "factionId": "leagues-of-votann",
     "tier": 4,
     "speciesIds": [
@@ -2432,6 +2446,13 @@
           {
             "disciplineAccess": [
               "skeinwrought"
+            ]
+          },
+          {
+            "onlyDisciplines": [
+              "skeinwrought",
+              "minor",
+              "universal"
             ]
           }
         ]

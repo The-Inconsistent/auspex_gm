@@ -172,6 +172,18 @@ test("a Chaos god's Keyword gives a Psyker its Discipline outside the limit; the
   assert.ok(barred(psyker("KHORNE")));
 });
 
+test("an archetype's own discipline is the Species' one choice under onlyDisciplines (rules-flow.md §11.62)", () => {
+  const disciplinePicks = (r: ReturnType<typeof run>) => r.pending.filter((p) => p.pick?.kind === "discipline");
+  assert.deepEqual(disciplinePicks(run({ tier: 3, archetypeId: "weirdboy" }, true)), []);
+  const astropath = disciplinePicks(run({ tier: 2, archetypeId: "astropath" }, true));
+  assert.deepEqual(
+    astropath.map((p) => p.pick),
+    [{ kind: "discipline", from: ["divination", "theosophamy"] }],
+  );
+  const navigator = run({ tier: 2, archetypeId: "navigator", powers: ["smite"] }, true);
+  assert.ok(navigator.problems.some((p) => p.what.startsWith("Smite is from a Discipline you can't learn")));
+});
+
 test("homebrew records are refused unless the campaign allows them", () => {
   const apoc = catalogue.creation.archetypes.find((a) => a.source === "apocrypha")!;
   assert.ok(run({ tier: apoc.tier, archetypeId: apoc.id }).problems.some((p) => p.what.includes("is homebrew")));

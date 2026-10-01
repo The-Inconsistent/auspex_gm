@@ -400,6 +400,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     play. The package carries `atCreationWith: "YNNARI"`, and the build checks the kindred chosen. As p.20 says, such an
     Agent keeps the Background of the original sub-faction (faction Background tables follow the archetype's faction)
     and takes no Asuryani Paths (every Path option is `notKeyword: YNNARI`).
+62. **An archetype's own discipline is the species' one choice** (GitHub issue #8; user ruling, 2026-10-01). The
+    Weirdboy (WAAAGH!, Apocrypha p.165), Grey Knight (Sanctic, p.170) and Grimnyr (Skeinwrought, p.171) get no second
+    discipline from Disciplines Known (Core p.257), as with the Astropath. Each carries `onlyDisciplines`: its discipline
+    plus Minor powers and Smite, which "All Psykers can learn" (p.257). The build enforces every `onlyDisciplines`
+    (these three, Navigator, Navis Scion, Wyrd, Astropath): the species' `chooseDisciplines` offers only what's left of
+    the list (none for these three, Divination or Theosophamy for the Astropath), and a power bought from outside it is
+    an error. Archetypes that print "one other discipline of your choice" (Chaos Sorcerer, Rogue Psyker, the
+    Librarians, Bonesinger) take that one as the species' choice, unchanged.
 
 ---
 
