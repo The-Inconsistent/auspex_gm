@@ -14,8 +14,9 @@ import {
   Wargear,
   SKILLS,
   SkillDn,
+  EventTable,
 } from "@wg/shared";
-import { loadPackRaw, packNames } from "./index.ts";
+import { eventTableFiles, loadPackRaw, packNames } from "./index.ts";
 
 // Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
 const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
@@ -207,6 +208,41 @@ for (const file of readdirSync(rulesDir)
     }
     const skills = new Set(r.data.map((d) => d.skill));
     console.log(`scene-presets/skill-dns.json: ${r.data.length} sample DNs, ${skills.size} Skills`);
+  }
+}
+
+// Event tables (scene-presets/<source>.json): the filename names the book, ids are unique across files, and
+// EventTable's own check holds every range to the dice, with print gaps and overlaps listed rather than missed.
+{
+  const tableIds = new Set<string>();
+  for (const file of eventTableFiles()) {
+    const r = EventTable.array().safeParse(
+      JSON.parse(readFileSync(new URL(`./scene-presets/${file}`, import.meta.url), "utf8")),
+    );
+    if (!r.success) {
+      failed = true;
+      console.error(`✖ scene-presets/${file}\n${z.prettifyError(r.error)}`);
+      continue;
+    }
+    for (const t of r.data) {
+      if (`${t.source}.json` !== file) {
+        failed = true;
+        console.error(`✖ scene-presets/${file}: table "${t.id}" is from ${t.source}`);
+      }
+      if (tableIds.has(t.id)) {
+        failed = true;
+        console.error(`✖ scene-presets/${file}: duplicate table id "${t.id}"`);
+      }
+      tableIds.add(t.id);
+      const tests = t.rows.flatMap((e) => e.tests);
+      const escapes = (t.gm ? 1 : 0) + tests.filter((x) => x.gm).length;
+      console.log(
+        `scene-presets/${file} ${t.id}: ${t.rows.length} events, ${tests.length} Tests (${tests.filter((x) => x.dn !== null).length} with a printed DN), ${escapes} gm notes` +
+          (t.gaps.length || t.overlaps.length
+            ? `, as printed: gaps ${t.gaps.join(",") || "none"}, overlaps ${t.overlaps.join(",") || "none"}`
+            : ""),
+      );
+    }
   }
 }
 

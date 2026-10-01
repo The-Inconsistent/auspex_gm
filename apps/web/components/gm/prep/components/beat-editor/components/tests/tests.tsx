@@ -80,7 +80,7 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
               <b>TEST {i + 1}</b>
               <span className="dim" style={{ flex: 1 }}>
-                {testTitle(t)} · {dnLabel(t.dn)}
+                {testTitle(t)} · {dnLabel(t)}
                 {t.who === "each" ? " · EACH AGENT" : ""}
               </span>
               <button className="btn sm" aria-label={`Move test ${i + 1} up`} onClick={() => move(i, -1)}>
@@ -205,6 +205,11 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
                       {example.skill}, DN {example.dn}
                     </span>{" "}
                     <i>{example.example}</i> ({sourceCite(example)})
+                  </div>
+                )}
+                {t.dn === null && (
+                  <div className="dim" style={{ fontSize: 12 }}>
+                    No DN yet: you set it at the table (Core Rulebook p.160).
                   </div>
                 )}
                 {t.dn !== null && t.dn < 3 && (

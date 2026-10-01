@@ -3,6 +3,7 @@ import {
   CREATION_TYPES,
   type Creation,
   type CreationType,
+  EventTable,
   Pack,
   RuleEntry,
   type ScenePresets,
@@ -36,10 +37,14 @@ const rulesDir = new URL("./rules/", import.meta.url);
 export const rulesList = (): RuleEntry[] =>
   jsonFiles(rulesDir).flatMap((f) => RuleEntry.array().parse(json(new URL(f, rulesDir))));
 
-// scene-presets/: GM-only book data for building scenes (issue #39): the sample DNs per Skill (Core pp.122–126).
+// scene-presets/: GM-only book data for building scenes (issue #39): the sample DNs per Skill (Core pp.122–126), and
+// each book's rolled event tables in <source>.json.
 const presetsDir = new URL("./scene-presets/", import.meta.url);
+export const SKILL_DNS_FILE = "skill-dns.json";
+export const eventTableFiles = () => jsonFiles(presetsDir).filter((f) => f !== SKILL_DNS_FILE);
 export const scenePresets = (): ScenePresets => ({
-  skillDns: SkillDn.array().parse(json(new URL("skill-dns.json", presetsDir))),
+  skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
+  tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
 });
 
 // creation/<type>/<source>.json: the character-creation catalogue, book text served to seats only (docs/data.md).

@@ -494,7 +494,7 @@ The tests are in `lib/command/command.test.ts`.
   - its GOAL, read-aloud text and GM notes (closed on a plate)
   - its EXITS: each label, then `→ 04 · THE DEAL` for a target in this adventure, or `→ NO SCENE YET`
   - its TESTS (`components/scene-tests/scene-tests.tsx`): the DN TABLE, SHIFTING and FAIL FORWARD rule links, then one
-    `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`), EACH, the Shift count and, on a
+    `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`: NO DN on an Opposed Test, DN · GM SETS on one without a DN yet, §11.75), EACH, the Shift count and, on a
     Fear or Corruption Test, the Ruin reminder (`ruinOnFailure`, Core p.320); inside are the purpose, SHIFT 1, 2… and
     both outcomes
   - a summary of its prepared encounter

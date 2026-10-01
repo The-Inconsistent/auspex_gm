@@ -646,6 +646,31 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
   DNs, so a dropped, doubled or stray row can't slip through. Kept as printed: "enginge" (Tech DN 5, p.126) and the full stop
   ending the Investigation DN 1 example (p.123). The scene editor shows the row for a Test's Skill and DN under its DN
   chips.
+- `<source>.json` (`EventTable[]`, one file per book, named by its `source`): the book's rolled event tables, for
+  NEW SCENE FROM A TABLE. Planned: Church of Steel (Battlefield, Urban and Wasteland Travel, d66, pp.36–42),
+  Redacted Records (Space Hulk Internal, External and High-Tier Events, 2d6, pp.13–15), Darktide (Lattice Encounters,
+  d6, p.74) and Litanies of the Lost (Random Encounters, 2d6, pp.117–120). Left out by the GM's choice (2026-10-02):
+  the Forsaken System Player's Guide's downtime Events, which modify Endeavours rather than make scenes, and Darktide's
+  Sump Events, which are the scenes of its adventure rather than a table.
+  - A table is `{ id, name, source, page, dice, type, defaultDn?, gm?, rows, gaps, overlaps }`. `dice` is one of
+    `Dice` (`roll-table.ts`: d3, d6, 2d6, 4d6, d66). `type` is the scene type its events make. `defaultDn` is a
+    printed default ("Skill Tests are DN 5 unless you determine otherwise", Church of Steel). `gm` holds the book's
+    notes on using the table, verbatim (when to roll, the Wrath Die).
+  - An event is `{ from, to, name, page, type?, readAloud, text, tests }`. Ranges are inclusive printed results, so a
+    d66 row 16–24 covers 16 and 21–24. `readAloud` and `text` are verbatim; a nested table inside an event is plain
+    lines in `text`. Threats, effects (damage, Glory, Ruin) and links to other tables stay in the text: the scene
+    leaves the encounter to the GM.
+  - An event's Test (`PresetTest`) is `{ kind, skills, attribute, dn, purpose, gm? }`. `skills` lists every Skill the
+    book offers for one DN ("Awareness (Int), Leadership (Wil), or Survival (Wil)"), and the scene gets one Test per
+    Skill. `dn` is null where none is printed: the table's `defaultDn`, else the GM, fills it (rules-flow.md §11.75).
+    The printed Attribute of a Skill isn't kept (it comes from `SKILLS`), so a misprinted one stays in the text.
+    `purpose` is our words; `gm` holds what a Test can't (a condition, repeats, bonus dice, a Skill that isn't in
+    Core, such as Navigation).
+  - `validate` checks every range against the dice. Each result has exactly one event, unless it's listed in `gaps`
+    (the book prints no row) or `overlaps` (it prints two). It also checks that ids are unique across files and that
+    a file holds only its own book's tables, and it prints each table's events, Tests, printed DNs and `gm` notes.
+  - `presetScene({ table, row })` turns an event into a scene's `codex.save` data: title, type, read-aloud, the text as
+    GM notes with its cite, and the Tests. Nothing else.
 
 ---
 

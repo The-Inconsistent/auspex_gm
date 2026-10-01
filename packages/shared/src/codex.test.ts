@@ -25,7 +25,8 @@ test("a scene Test names the pool its kind rolls (issue #39, Core pp.169-170)", 
   assert.equal(ok({ kind: "opposed", skill: "Persuasion", attribute: "S" }), false, "one pool per side");
   assert.equal(ok({ kind: "opposed" }), false, "an Opposed Test without a pool");
   assert.equal(ok({ kind: "corruption", skill: "Scholar", dn: 3 }), false, "Conviction is a trait, not a Skill");
-  assert.equal(ok({ kind: "influence" }), false, "an Influence Test needs a DN");
+  assert.ok(ok({ kind: "influence" }), "a DN the GM sets at the table (§11.75)");
+  assert.ok(ok({ kind: "skill", skill: "Survival" }), "likewise for a Skill Test");
 });
 
 test("a scene Test's DN and Shift ladder are bounded", () => {

@@ -570,6 +570,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     `/api/campaigns/:id/rules` serves it to the GM's seat only, and the seatless `/api/rules` never does. Difficulty
     Numbers and Shifting are in the player chapters (pp.160–161, 165–166) and stay open to every seat.
     *(Proposed; awaiting the GM.)*
+75. **A scene Test may have no DN yet** (Core p.160; GitHub issue #39). "The Gamemaster is responsible for setting the
+    Difficulty Number for each Test", and many book events print a Skill with no DN. So a prepared Test other than an
+    Opposed one may leave `dn` null: PREP shows "DN · GM SETS" and the GM sets it in the editor or at the table. An
+    Opposed Test still has none, because most Icons wins (p.170). A scene made from a book event takes the printed DN,
+    else the table's printed default, else none.
+    *(User ruling, 2026-10-02.)*
 
 ---
 
