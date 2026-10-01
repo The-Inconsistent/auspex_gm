@@ -14,9 +14,9 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
  │           patron, party keywords
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
  ├─ Adventure    title, premise, status (planned | running | done)
- │   └─ Beat     order, type, title, status (planned | active | done | skipped),
+ │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
- │               clueIds[], encounter (prepared roster), outcome
+ │               clueIds[], encounter (prepared roster), exits[], outcome
  ├─ Location     name, parentId (planet → site → chamber), description, gmNotes,
  │               hazards (Battlezone tables, Threat Assessment p.9–21), revealed
  ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
@@ -28,8 +28,15 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
                  objectives rolled (core p.43), xpAwarded (8/10/12, core p.321), notes
 ```
 
+- **The UI says SCENE.** The GM reads SCENE everywhere; code, actions (`beat.reorder`, `beat.startEncounter`), the
+  `beat` table, packs and export files keep `beat`.
 - **Beat types**: briefing, travel, investigation, social, combat, revelation, rest. The type only picks an icon and
   a checklist. There is no workflow engine: beats are an ordered list the GM can reorder, skip or add to mid-session.
+- **Goal and exits** (issue #38): `goal` is what the Agents are after. Each exit is `{label, beatId}`: "if they side with
+  the Magos" and, once the GM has written it, the scene of the same adventure it leads to (`beatId` null for a note).
+  Exits are planning notes: DONE never follows one, because Core p.318 (step 5) warns against forcing one path.
+  `codex.save` refuses a target outside the beat's adventure, deleting a beat clears it from exits (the label stays),
+  import remaps it, and a pack's exits are labels only, since pack beats have no key to point at.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats, docs/data.md §4).

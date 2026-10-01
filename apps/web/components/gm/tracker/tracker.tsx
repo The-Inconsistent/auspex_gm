@@ -184,7 +184,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
     return (
       <div className="pad stack">
         <div className="rule">NO ACTIVE ENCOUNTER</div>
-        <p className="dim">Start one here, or run a beat with a prepared encounter from PREP.</p>
+        <p className="dim">Start one here, or run a scene with a prepared encounter from PREP.</p>
         <div>
           <button className="btn primary" onClick={() => run({ type: "encounter.start" }, "ENCOUNTER STARTED")}>
             START ENCOUNTER

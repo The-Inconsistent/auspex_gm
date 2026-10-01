@@ -481,20 +481,22 @@ A command with neither a verb nor a Condition returns
 
 The tests are in `lib/command/command.test.ts`.
 
-### 3.3 PREP: adventures and beats
+### 3.3 PREP: adventures and scenes (beats)
 
-`Prep`. The data model is in [campaign-model.md](campaign-model.md).
+`Prep`. The data model is in [campaign-model.md](campaign-model.md). Every visible string says SCENE; the code keeps
+`beat`.
 
 - **Adventures** show as a row of buttons. Picking one closes any open editor. The inline NEW ADVENTURE form sends
   `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`.
 - **Each beat in the list** shows:
-  - its number, title, type chip and status chip (amber when active)
-  - its read-aloud text
+  - its number (`sceneNumber`), title, type chip and status chip (amber when active)
+  - its GOAL, read-aloud text and GM notes (closed on a plate)
+  - its EXITS: each label, then `→ 04 · THE DEAL` for a target in this adventure, or `→ NO SCENE YET`
   - a summary of its prepared encounter
 - **Beat controls:**
   - ↑ / ↓ swap a beat with its neighbour and send the full `ids` order as `beat.reorder`.
   - EDIT opens the beat editor.
-  - RUN BEAT, shown when the beat has a prepared encounter, sends `beat.startEncounter` and jumps to TRACK through
+  - RUN SCENE, shown when the beat has a prepared encounter, sends `beat.startEncounter` and jumps to TRACK through
     `onRun`.
   - SET ACTIVE, shown when there is no prepared encounter, sets the status to active.
   - DONE and SKIP set the status to done or skipped.
@@ -503,13 +505,15 @@ The tests are in `lib/command/command.test.ts`.
 - **`BeatEditor`** has these fields:
   - title
   - type (`BeatType.options`)
-  - read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`)
+  - goal, read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`, each with its hint and page)
+  - exits (`components/exits/exits.tsx`): a label and a scene select per row (this adventure's scenes, or —), up
+    to `MAX_EXITS`; SAVE drops rows with neither
   - location
   - NPC and handout toggle chips (`aria-pressed`)
   - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
 
   It also shows the Threat Assessment sizing guideline for the current party size and the current enemy count.
-  SAVE BEAT creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
+  SAVE SCENE creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
   error shown inline.
 
 ### 3.4 CODEX: NPCs, locations, handouts, factions

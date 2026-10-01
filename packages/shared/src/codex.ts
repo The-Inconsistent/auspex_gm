@@ -35,6 +35,11 @@ export const BeatType = z.enum(["briefing", "travel", "investigation", "social",
 export type BeatType = z.infer<typeof BeatType>;
 export const BeatStatus = z.enum(["planned", "active", "done", "skipped"]);
 export type BeatStatus = z.infer<typeof BeatStatus>;
+// Where a scene can go next (issue #38): a note, with the next scene of the same adventure when the GM has written it.
+// Planning only: DONE never follows one, since Core p.318 (step 5) warns against forcing the players down one path.
+export const BeatExit = z.object({ label: text(200), beatId: id.nullable().default(null) });
+export type BeatExit = z.infer<typeof BeatExit>;
+export const MAX_EXITS = 10; // ponytail: app limit, not a rule; raise it if a scene needs more
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 
@@ -55,6 +60,7 @@ export const CodexInput = {
   beat: z.object({
     adventureId: id,
     title: text(200),
+    goal: text(500).default(""), // what the Agents are after in this scene
     type: BeatType.default("social"),
     status: BeatStatus.default("planned"),
     readAloud: text().default(""),
@@ -71,6 +77,7 @@ export const CodexInput = {
         `At most ${MAX_ENCOUNTER_ROWS} combatants; group large counts as a Mob`,
       )
       .default([]),
+    exits: z.array(BeatExit).max(MAX_EXITS).default([]),
   }),
   location: z.object({
     name: text(200),
