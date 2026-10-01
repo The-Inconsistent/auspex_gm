@@ -362,6 +362,22 @@ export function pcStatus(c: Character, d: DerivedStats): string[] {
   return out;
 }
 
+// The campaign's Tier can't go past the last one (Core p.20).
+export const MAX_TIER = TIERS[TIERS.length - 1]!;
+// Experience Ascension: 100 XP earned in the current Tier (Core pp.147–148). Milestone Ascension grants the same 100.
+export const ASCENSION_XP = 100;
+
+// Who the Ascension rules count (Core p.147, rules-flow.md §11.66): "every character in your group", which a Dead one
+// has left (nothing removes its record, so it would hold the party back for ever). `short` is who of them hasn't
+// earned ASCENSION_XP in this Tier, `award` XP from now (session.end asks before its award lands). The api refuses
+// and PARTY offers from the same answer.
+export function ascensionGroup(characters: Character[], tier: number, award = 0) {
+  const group = characters.filter(
+    (c) => !pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead"),
+  );
+  return { group, short: group.filter((c) => c.xp + award - c.xpAtAscension < ASCENSION_XP) };
+}
+
 // Exhausted: over Max Shock, or the Condition from another source (p.199).
 export const isExhausted = ({
   shock,

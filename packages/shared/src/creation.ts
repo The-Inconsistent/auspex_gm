@@ -27,8 +27,6 @@ export const archetypeXp = (a: Parameters<typeof ratingsXp>[0] & { tier: number 
 export const startingXp = (tier: number) => tier * 100;
 // Rank from the XP earned in play: +1 per 40, never above 3 (Core pp.146–147). It stays the same after Ascending.
 export const rankOf = (xpEarned: number) => Math.min(3, 1 + Math.floor(xpEarned / 40));
-// Experience Ascension: 100 XP earned in the current Tier (Core pp.147–148). Milestone Ascension grants the same 100.
-export const ASCENSION_XP = 100;
 // The Tree of Learning (Core p.26): raising a Skill to R with XP needs R Skills with points, that one included.
 // Ratings an archetype or species grants are exempt (rules-flow.md §11.52).
 export const treeOfLearning = (skills: Partial<Record<Skill, number>>, skill: Skill, to: number) =>

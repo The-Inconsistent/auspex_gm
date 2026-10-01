@@ -1,13 +1,11 @@
 "use client";
 import { useState } from "react";
 
-import { ASCENSION_XP, TIERS, deriveStats, pcStatus, rankOf, type ActionResult, type Character } from "@wg/shared";
+import { ASCENSION_XP, MAX_TIER, ascensionGroup, rankOf, type ActionResult, type Character } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { ASCEND_KINDS, type AscendKind } from "../../constants";
-
-const MAX_TIER = TIERS[TIERS.length - 1]!; // the campaign Tier can't go past the last one (Core p.20)
 
 type AscendPanelProps = {
   characters: Character[];
@@ -24,13 +22,10 @@ export function AscendPanel({ characters, tier, send, onResult }: AscendPanelPro
   const [waivePackage, setWaivePackage] = useState(false);
   const [arming, setArming] = useState<AscendKind | null>(null);
   const inTier = (c: Character) => c.xp - c.xpAtAscension; // XP earned since the group last Ascended
-  // A Dead character is no longer one of the group, so it neither has to reach 100 XP nor holds the party back
-  // (Core p.147, rules-flow.md §11.66). The server reads it the same way, so the button matches what it will allow.
-  const dead = (c: Character) =>
-    pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead");
-  const group = characters.filter((c) => !dead(c));
-  const ready = group.filter((c) => inTier(c) >= ASCENSION_XP);
-  const everyone = group.length > 0 && ready.length === group.length;
+  // The living group and who of it is short, as the server reads them (ascensionGroup, Core p.147, §11.66).
+  const { group, short } = ascensionGroup(characters, tier);
+  const ready = group.filter((c) => !short.includes(c));
+  const everyone = group.length > 0 && !short.length;
   const atMax = tier >= MAX_TIER;
 
   // ASCEND: raises the campaign's Tier for the whole party. A refusal names the rule and shows on the report line.

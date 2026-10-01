@@ -25,6 +25,10 @@ const codexSave = (Object.keys(CodexInput) as (keyof typeof CodexInput)[]).map((
 );
 
 // Every mutation goes through one socket event: "action". Counters use deltas, so two taps never overwrite each other.
+// The two ways a group Ascends (Core pp.147–148): the XP every character has earned, or the GM's Milestone.
+export const AscensionKind = z.enum(["experience", "milestone"]);
+export type AscensionKind = z.infer<typeof AscensionKind>;
+
 export const Action = z.union([
   z.discriminatedUnion("type", [
     z.object({
@@ -49,7 +53,7 @@ export const Action = z.union([
     // first gives every character 100 XP (Core p.148 step 1) and may waive the Ascension Package (step 2).
     z.object({
       type: z.literal("campaign.ascend"),
-      kind: z.enum(["experience", "milestone"]),
+      kind: AscensionKind,
       waivePackage: z.boolean().default(false),
     }),
 

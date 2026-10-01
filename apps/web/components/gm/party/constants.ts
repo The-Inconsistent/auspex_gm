@@ -1,10 +1,10 @@
-import type { RequisitionKind } from "@wg/shared";
+import type { AscensionKind, RequisitionKind } from "@wg/shared";
 
 // Session-end XP awards, Core p.321.
 export const XP_AWARDS = [8, 10, 12] as const;
 export const DEFAULT_XP = 10;
 
-// The two Ascensions (Core pp.147–148), as PARTY offers them. The keys are the `campaign.ascend` action's `kind`.
+// The two Ascensions (Core pp.147–148), as PARTY offers them, one per `AscensionKind`.
 export const ASCEND_KINDS = {
   experience: {
     label: "EXPERIENCE ASCENSION",
@@ -16,8 +16,8 @@ export const ASCEND_KINDS = {
     cite: "Core p.148",
     gist: "Your call, at a turn in the story: every character gains 100 XP, takes an Ascension Package (or you waive it), and the Tier goes up.",
   },
-} as const;
-export type AscendKind = keyof typeof ASCEND_KINDS;
+} as const satisfies Record<AscensionKind, { label: string; cite: string; gist: string }>;
+export type AscendKind = AscensionKind;
 
 // Join QR code edge, in CSS px.
 export const QR_SIZE = 320;

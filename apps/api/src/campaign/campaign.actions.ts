@@ -1,14 +1,5 @@
 import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
-import {
-  ASCENSION_XP,
-  TIERS,
-  deriveStats,
-  pcStatus,
-  poolMax,
-  rankOf,
-  type Action,
-  type ActionResult,
-} from "@wg/shared";
+import { ASCENSION_XP, MAX_TIER, ascensionGroup, poolMax, rankOf, type Action, type ActionResult } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
@@ -22,24 +13,14 @@ export type CampaignAction = Extract<
   { type: "campaign.update" | "campaign.ascend" | "pool.adjust" | "session.start" | "session.end" }
 >;
 
-// The top of the app's Tier range (TIERS, state.ts): the books print no Tier above 5, so there is nothing to Ascend to.
-const MAX_TIER = Math.max(...TIERS);
-
-// Every character's XP for the Ascension rules, in table order, with whether it is still one of the group: Core p.147's
-// "every character in your group" is not a Dead one, and nothing removes a dead character's record, so a casualty would
-// otherwise hold the party at its Tier for ever (rules-flow.md §11.66).
-async function xpLedger(tx: Tx, campaignId: string) {
-  const tier = await campaignTier(tx, campaignId);
+// Every character in table order, for the Ascension rules (ascensionGroup).
+async function charactersOf(tx: Tx, campaignId: string) {
   const rows = await tx
     .select()
     .from(character)
     .where(eq(character.campaignId, campaignId))
     .orderBy(asc(character.createdAt));
-  return rows.map((row) => {
-    const c = toCharacter(row);
-    const dead = pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead");
-    return { name: row.name, xp: row.xp, xpAtAscension: row.xpAtAscension, dead };
-  });
+  return rows.map(toCharacter);
 }
 
 const list = (names: string[]) =>
@@ -122,7 +103,7 @@ export async function applyCampaignAction(
         .where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
       if (!s) fail("No session in progress");
       // Read before the award, because what the GM wants to know is what this session's XP crossed.
-      const before = await xpLedger(tx, cid);
+      const before = await charactersOf(tx, cid);
       await tx.update(session).set({ endedAt: new Date(), recap: a.recap, xp: a.xp }).where(eq(session.id, s.id));
       await tx
         .update(character)
@@ -132,9 +113,8 @@ export async function applyCampaignAction(
       // only told. Ascending is the group's (Core pp.147–148, §11.66), so it's an offer, never automatic.
       const tier = await campaignTier(tx, cid);
       const risen = before.filter((c) => rankOf(c.xp + a.xp) > rankOf(c.xp));
-      const group = before.filter((c) => !c.dead); // a Dead character is no longer one of the group (Core p.147)
-      const ready =
-        group.length > 0 && tier < MAX_TIER && group.every((c) => c.xp + a.xp - c.xpAtAscension >= ASCENSION_XP);
+      const { group, short } = ascensionGroup(before, tier, a.xp);
+      const ready = group.length > 0 && tier < MAX_TIER && !short.length;
       const notices = [
         ...risen.map((c) => `${c.name} reached Rank ${rankOf(c.xp + a.xp)} (Core p.146)`),
         ...(ready ? [`Everyone has earned ${ASCENSION_XP} XP in Tier ${tier}: the group may Ascend (Core p.147)`] : []),
@@ -146,13 +126,11 @@ export async function applyCampaignAction(
     case "campaign.ascend": {
       const tier = await campaignTier(tx, cid);
       if (tier >= MAX_TIER) fail(`Tier ${MAX_TIER} is the highest Tier; there is nothing to Ascend to`);
-      const chars = await xpLedger(tx, cid);
-      const group = chars.filter((c) => !c.dead); // Core p.147 asks it of the group, and the Dead have left it
+      const { group, short } = ascensionGroup(await charactersOf(tx, cid), tier);
       if (!group.length) fail("This campaign has no living characters to Ascend");
       // Experience Ascension (Core p.147): "every character in your group has earned 100 or more total XP in the
       // current Tier". Milestone Ascension (Core p.148) is the GM's call, and gives that 100 XP instead (step 1).
       if (a.kind === "experience") {
-        const short = group.filter((c) => c.xp - c.xpAtAscension < ASCENSION_XP);
         if (short.length)
           fail(
             `${list(short.map((c) => c.name))} ${short.length > 1 ? "have" : "has"} not earned ${ASCENSION_XP} XP in Tier ${tier} yet (Core p.147)`,
