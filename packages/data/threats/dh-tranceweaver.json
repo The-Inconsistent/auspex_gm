@@ -1,0 +1,112 @@
+{
+  "id": "dh-tranceweaver",
+  "name": "Tranceweaver",
+  "source": "daemons-and-heretics",
+  "page": 94,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 6,
+    "A": 8,
+    "I": 8,
+    "Wil": 5,
+    "Int": 4,
+    "Fel": 8
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 7,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 6
+      },
+      {
+        "name": "Deception",
+        "dice": 11
+      },
+      {
+        "name": "Persuasion",
+        "dice": 11
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Allure of Slaanesh",
+      "text": "Attack Tests made against a Tranceweaver use Willpower as their Attribute - ranged attacks use Ballistic Skill (Wil), melee attacks use Weapon Skill (Wil)."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Herald of Slaanesh",
+      "text": "If any Daemonette is within Short Range of this Threat, they may re-roll any 1s on their attack rolls."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature & Quicksilver Swiftness",
+      "text": "Anyone that can see or hear a Tranceweaver must pass a DN 3 Fear Test. The Tranceweaver then acts first in the Initiative order as though they had Seized the Initiative"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Ravaging Claws",
+          "damage": 12,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Exquisite Agonies",
+      "text": "When this Threat rolls a Wrath Critical, its attacks gain the Agonising Trait."
+    },
+    {
+      "type": "RUIN",
+      "name": "Tranceweaver",
+      "text": "Spend 1 Ruin and nominate a Mob of Daemonettes within 20 metres; Until Tranceweaver's next turn, that Mob's attacks gain a -1 bonus to their AP rating."
+    }
+  ],
+  "note": "Allure of Slaanesh prints 'uses' (sic, after 'Attack Tests'). Battlecry has no closing full stop.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg"
+}

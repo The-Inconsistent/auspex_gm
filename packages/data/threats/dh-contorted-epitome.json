@@ -1,0 +1,99 @@
+{
+  "id": "dh-contorted-epitome",
+  "name": "Contorted Epitome",
+  "source": "daemons-and-heretics",
+  "page": 94,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "PSYKER",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 7,
+    "T": 6,
+    "A": 7,
+    "I": 6,
+    "Wil": 6,
+    "Int": 3,
+    "Fel": 7
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 5,
+  "wounds": 12,
+  "shock": null,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Psychic Mastery",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat and its riders may use Ruin Actions. They have 3 personal Ruin between them."
+    },
+    {
+      "name": "Heralds of Slaanesh",
+      "text": "If any Daemonette is within Short Range of the Contorted Epitome, they may re-roll any 1s on their attack rolls."
+    },
+    {
+      "name": "Mount",
+      "text": "A Contorted Epitome may be ridden by 2 Tormentbringers. They take their Turns together, using the Contorted Epitome's movement, and each have their own Action. Riders and mount may be targeted separately."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature & Quicksilver Swiftness",
+      "text": "Anyone that can see or hear a Contorted Epitome or its riders must make a DN 4 Fear Test. The Tormentbringers then act first in the Initiative order as though they had Seized the Initiative."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Coiled Tentacles",
+          "damage": 14,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Agonising",
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Soulstain",
+      "text": "Spend 1 Ruin. The Contorted Epitome attempts to activate a psychic power from the Soulstain Discipline or Deny the Witch (Wrath & Glory, p. 267)."
+    }
+  ],
+  "note": "Personal Ruin 3 is shared between the mount and its two Tormentbringer riders (printed 'between them'). Printed beside Tranceweaver; the text introducing it is the Contorted Epitome's.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 5d6 (Daemonettes) or 6d6 (Contorted Epitome). Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 9,
+  "size": "Large"
+}

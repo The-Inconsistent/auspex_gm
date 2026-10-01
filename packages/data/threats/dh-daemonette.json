@@ -1,0 +1,98 @@
+{
+  "id": "dh-daemonette",
+  "name": "Daemonette",
+  "source": "daemons-and-heretics",
+  "page": 98,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 4,
+    "A": 7,
+    "I": 7,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 6
+  },
+  "resilience": {
+    "value": 5
+  },
+  "defence": 6,
+  "wounds": 6,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Deception",
+        "dice": 9
+      },
+      {
+        "name": "Persuasion",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 9
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Allure of Slaanesh",
+      "text": "Attack Tests made against Daemonettes use Willpower as their Attribute - ranged attacks use Ballistic Skill (Wil), melee attacks use Weapon Skill (Wil)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature & Quicksilver Swiftness",
+      "text": "Anyone that can see or hear a Daemonette must pass a DN 3 Fear Test. The Daemonette then acts first in the Initiative order as though they had Seized the Initiative."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Piercing Claws",
+          "damage": 11,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Exquisite Agonies",
+      "text": "When this Threat rolls a Wrath Critical, its attacks gain the Agonising Trait."
+    }
+  ],
+  "note": "Reprint of daemonette; differs in Tier row (A A E E T, Core A A E E), Resolve (3, Core 6), Piercing Claws trait (Rending (3), Core Penetrating (3)), and the Exquisite Agonies Wrath ability; no Alluress option printed.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 4d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 7,
+  "size": "Avg"
+}

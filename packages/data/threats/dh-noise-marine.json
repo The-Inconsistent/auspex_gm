@@ -1,0 +1,183 @@
+{
+  "id": "dh-noise-marine",
+  "name": "Noise Marine",
+  "source": "daemons-and-heretics",
+  "page": 102,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ASTARTES",
+    "MARK OF SLAANESH"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 6,
+    "A": 6,
+    "I": 6,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 12,
+    "note": "5AR"
+  },
+  "defence": 5,
+  "wounds": 10,
+  "shock": 6,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 12,
+        "passive": 7
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Persuasion",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the starter of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has the Mark of Chaos (Slaanesh) (Wrath & Glory, p. 136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and optional actions from Space Marine Implants (Wrath & Glory, p. 75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Pandemonic Ecstasies",
+      "text": "Anyone who can hear a Noise Marine must fail an Awareness (Int) Test or gain Hindered (2) until the Noise Marine is defeated."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Boltgun",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Brutal",
+            "Rapid Fire (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Actions",
+      "text": "For every 6 Noise Marines in a Mob, one may be armed with one of the following. Apart from the Doomsiren, these options replace the Boltgun. Blastmaster: choose setting before firing (Single frequency or Variable frequency). The Doomsiren's Salvo is printed 1d6.",
+      "weapons": [
+        {
+          "name": "Sonic Blaster",
+          "damage": 10,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 3,
+          "traits": [
+            "Sonic Weapon"
+          ]
+        },
+        {
+          "name": "Blastmaster (Single frequency)",
+          "damage": 15,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": 3,
+          "traits": [
+            "Brutal",
+            "Heavy (7)",
+            "Sonic Weapon"
+          ]
+        },
+        {
+          "name": "Blastmaster (Variable frequency)",
+          "damage": 11,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 6,
+          "traits": [
+            "Heavy (7)",
+            "Sonic Weapon"
+          ]
+        },
+        {
+          "name": "Doomsiren",
+          "damage": 11,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            4,
+            8,
+            12
+          ],
+          "traits": [
+            "Assault",
+            "Sonic Weapon"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Resilience printed '12(5AR)'. Keyword 'MARK OF SLAANESH' is one keyword as printed. Print: 'starter of each' (sic). Doomsiren Salvo 1d6 can't be held (salvo is an int), so it's omitted and kept in the Mob option text. Determination has no 'Daemonic' text (not a daemon).",
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg"
+}

@@ -1,0 +1,153 @@
+{
+  "id": "dh-infernal-enrapturess",
+  "name": "Infernal Enrapturess",
+  "source": "daemons-and-heretics",
+  "page": 99,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 8,
+    "I": 8,
+    "Wil": 5,
+    "Int": 4,
+    "Fel": 8
+  },
+  "resilience": {
+    "value": 5
+  },
+  "defence": 7,
+  "wounds": 8,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Deception",
+        "dice": 9
+      },
+      {
+        "name": "Persuasion",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Allure of Slaanesh",
+      "text": "Attack Tests made against the Infernal Enrapturess use Willpower as their Attribute - ranged attacks use Ballistic Skill (Wil), melee attacks use Weapon Skill (Wil)."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Herald of Slaanesh",
+      "text": "If any Daemonette is within Short Range of this Threat, they may re-roll any 1s on their attack rolls."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature & Quicksilver Swiftness",
+      "text": "Anyone that can see or hear a Infernal Enrapturess must pass a DN 3 Fear Test. The Infernal Enrapturess then acts first in the Initiative order as though they had Siezed the Initiative."
+    },
+    {
+      "name": "Discordant Disruption",
+      "text": "All enemy Psykers within 25 metres must roll on the Perils of the Warp Table (W & G, p. 263) on a result of 1-3 on any Wrath Dice in their Psychic Mastery (Wil) Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Ravaging Claws",
+          "damage": 11,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Heartstring Lyre",
+      "text": "Choose which to use before selecting targets.",
+      "weapons": [
+        {
+          "name": "Cacophonous Melody",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 6,
+          "traits": [
+            "Agonising"
+          ]
+        },
+        {
+          "name": "Euphonic Blast",
+          "damage": 15,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "traits": [
+            "Brutal",
+            "Heavy (5)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Harmonic Alignment",
+      "text": "Spend 1 Ruin and nominate a Mob of Daemonettes within 50 metres that has taken losses in the current Combat. That Mob gains 1d6 Daemonettes. Mobs cannot be reinforced beyond their original size."
+    },
+    {
+      "type": "WRATH",
+      "name": "Exquisite Agonies",
+      "text": "When this Threat rolls a Wrath Critical, its attacks gain the Agonising Trait."
+    }
+  ],
+  "note": "Print: 'a Infernal Enrapturess' (sic), 'Siezed' (sic). Euphonic Blast prints no Salvo, so it is omitted. Discordant Disruption has no ability prefix.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 5d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg"
+}
