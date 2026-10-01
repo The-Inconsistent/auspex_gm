@@ -92,15 +92,16 @@ for (const w of wargear.values()) byName.set(w.name, [...(byName.get(w.name) ?? 
 
 // What the table sees is the derived sheet (`withUpgrades` in table.state), and the GM's character editor sends a patch
 // built from it, so an incoming weapon may carry upgrades already applied. Storing that would apply them twice on the
-// next read. `upgradeNames` is set only by `withUpgrades`, so it marks a derived profile: those weapons are replaced by
+// next read. `upgradeNames` is set only by `withUpgrades`, and `effects` only by `withWeaponEffects` (rules-flow.md
+// §11.68), so either marks a derived profile: those weapons are replaced by
 // the stored ones, which is what the editor means anyway — it edits attributes, skills, talents and abilities.
 function storedProfiles(incoming: CharacterStats, stored: CharacterStats): CharacterStats {
-  if (!incoming.weapons.some((w) => w.upgradeNames)) return incoming;
+  if (!incoming.weapons.some((w) => w.upgradeNames || w.effects)) return incoming;
   return {
     ...incoming,
     weapons: incoming.weapons.map((w) => {
-      if (!w.upgradeNames) return w;
-      const { upgradeNames: _names, notes: _notes, ...rest } = w;
+      if (!w.upgradeNames && !w.effects) return w;
+      const { upgradeNames: _names, effects: _effects, notes: _notes, ...rest } = w;
       const was = stored.weapons.find((s) => (w.wargearId ? s.wargearId === w.wargearId : s.name === w.name));
       return was ?? rest;
     }),
@@ -219,7 +220,9 @@ export async function applyCharacterAction(
       const refusal = buildRefusal(r);
       if (refusal) fail(refusal);
       // A character already made keeps what play changed (keepPlay), and gains only what the new build adds over the
-      // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's lines too.
+      // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's armour and
+      // gear lines and Wealth too. Its weapons are the build's, whose Talents are applied on read (rules-flow.md §11.68),
+      // plus any hand-written line the build has no weapon of that name for: a GM's own profile (the volkus Haywire Mine).
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old
         ? r.sheet
@@ -230,7 +233,13 @@ export async function applyCharacterAction(
               before: resolveBuild({ catalogue: buildCatalogue(homebrew), build: made.data, play }).sheet,
             })
           : a.keepSheet
-            ? keepPlay({ previous: old, next: r.sheet, before: r.sheet })
+            ? {
+                ...keepPlay({ previous: old, next: r.sheet, before: r.sheet }),
+                weapons: [
+                  ...r.sheet.weapons,
+                  ...old.weapons.filter((w) => !r.sheet.weapons.some((d) => d.name === w.name)),
+                ].slice(0, 20),
+              }
             : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
       // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.

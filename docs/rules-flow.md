@@ -489,6 +489,24 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     ruling overrides it), and an Ascension takes **either** an Ascension Package or an Archetype Ascension, never both
     — Core p.148 offers the two as alternatives for the one slot. The Archetype's own creation XP is not paid: p.155's
     cost is the ratings needed to match it. *Proposed; awaiting the GM.*
+68. **Weapon effects on the profile** (GitHub issue #27; user rulings, 2026-10-01). A Talent, ability, package or trait
+    changes a weapon's **printed profile** only when its condition is a property of the weapon: a keyword, a Trait,
+    melee or ranged, the weapon its Talent names, or the weapon its record grants. Bolter Discipline is the model: "When
+    you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire
+    Trait, add +Rank to the weapon's Rapid Fire rating" (VoA p.45). What depends on the moment stays in the Talent's
+    text: charging, aiming, a target type, a spend of Glory, Wrath or Ruin, an attack option.
+    - **Rank** is the character's Rank now (Core pp.146–147), from the XP earned. It rises at session end without a
+      rebuild, so the effects are applied when the sheet is read, after the weapon's upgrades, never stored.
+    - **Explosive Fury's "+Rank bonus extra damage"** (VoA p.33) is +Rank ED on grenades (docs/pregens.md, GM choice 9).
+    - **Not numbers, notes:** a re-roll or bonus dice with a kind of weapon ("re-roll up to Double Rank dice", Hellblaster
+      Focus, VoA p.35), an effect the player "may" use, and one the GM judges ("or similar", "weapons made for smaller
+      users") show as a cited note on the weapon's line.
+    - **A Salvo printed "–"** has no Salvo track (Core p.207), so +Rank Salvo (More Dakka, Core p.137) leaves it "–" with
+      a note.
+    - Only a weapon that came from the Wargear catalogue (`wargearId`) is matched: a hand-written line may already
+      count the Talent, and it would count twice.
+    - **A weapon printed with Damage 0** (a Smoke Grenade) deals no damage, so a Talent's +Damage or +ED
+      doesn't reach it: Explosive Fury adds to "successful attacks", and smoke makes none.
 
 ---
 
@@ -519,5 +537,6 @@ Implementation details: [game-logic.md](game-logic.md).
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
 | Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
 | Wargear upgrades on a weapon | done | All 62 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
+| Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | not built | 12 of the 62 are armour's (the Teleport Crest, the ten T'au support systems, the Adamantine Cuirass) and the sheet's `armour` has no upgrades field, so fitting one is refused (§11.65) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |

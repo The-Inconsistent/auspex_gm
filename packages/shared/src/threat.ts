@@ -37,6 +37,7 @@ export const Weapon = z.object({
   fitted: z.array(z.string()).max(8).optional(), // fitted in play (character.fitUpgrade), so a rebuild keeps them
   // Derived, never stored: set by `withUpgrades` for display.
   upgradeNames: z.array(z.string()).optional(),
+  effects: z.array(z.string()).optional(), // the Talents and abilities `withWeaponEffects` applied, by name
   notes: z.array(z.string()).optional(), // what a profile can't hold, for the GM to apply (the `gm` mods)
 });
 export type Weapon = z.infer<typeof Weapon>;

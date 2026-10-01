@@ -343,6 +343,30 @@ for (const [type, rows] of creation) {
     seen.set(key, row);
   }
 }
+// A weapon effect's `chosen` is a Talent's choice, and `granted` the record's own weapon grant (rules-flow.md §11.68):
+// on any other record they would reach nothing, silently.
+const weaponGrant = (v: unknown): boolean =>
+  Array.isArray(v)
+    ? v.some(weaponGrant)
+    : !!v && typeof v === "object" && ("wargear" in v || "wargearOf" in v || Object.values(v).some(weaponGrant));
+const checkEffects = (r: Record<string, unknown>, where: string, talent: boolean) => {
+  const bad = (why: string) => {
+    failed = true;
+    console.error(`✖ ${where}: ${why}`);
+  };
+  for (const e of (r.weapons as { fits: { chosen?: true; granted?: true } }[] | undefined) ?? []) {
+    if (e.fits.chosen && !talent) bad("`chosen` is for a Talent's choice");
+    if (e.fits.granted && !weaponGrant(r.grants)) bad("`granted` but its grants give no wargear");
+  }
+};
+for (const [type, rows] of creation)
+  for (const { file, r } of rows) {
+    const where = `${file} "${r.id}"`;
+    checkEffects(r, where, type === "talents");
+    for (const key of ["abilities", "traits", "rules"])
+      for (const rule of (r[key] as Record<string, unknown>[] | undefined) ?? [])
+        checkEffects(rule, `${where} › ${String(rule.name)}`, false);
+  }
 for (const [type, bySource] of Object.entries(manifest.expected ?? {}))
   for (const [source, expected] of Object.entries(bySource)) {
     const have = creationIds(type as CreationType);
