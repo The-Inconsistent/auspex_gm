@@ -72,7 +72,7 @@ text.
 | `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
-| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 2 MB | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id |
+| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 2 MB | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a handout audience naming an Agent not in the file |
 | `GET /api/campaigns/:id/export` | Seat, GM only | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`) | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
@@ -135,6 +135,11 @@ counters, sessions and reveal times. It writes every row directly, inside `creat
 - each row gets a fresh id
 - references are remapped through those new ids, and one pointing outside the file is dropped
 - threat ids go through the same `checkThreats` as `codex.save`
+- a handout audience must name Agents in the file, like `codex.save`: an empty audience means every player, so a
+  dropped reader would leak a private handout
+- each row's `createdAt` is its place in the file (one transaction shares one `now()`, and lists load in `createdAt`
+  order)
+- the 2 MB JSON parser is mounted on this route only, after its rate limit; every other route keeps Express's 100 kB
 - builds are stored as exported, since a GM can already set any sheet with `character.update`
 
 `fresh` (`freshStart`) keeps the sheets, builds and XP, because a build's XP ledger is spent against `xp`. It resets

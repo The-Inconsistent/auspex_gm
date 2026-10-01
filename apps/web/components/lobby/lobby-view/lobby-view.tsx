@@ -123,11 +123,12 @@ export function LobbyView({ lobby }: LobbyViewProps) {
     setImportError(null);
     const picked = new FormData(e.currentTarget).get("file");
     if (!(picked instanceof File) || !picked.size) return setImportError("Pick an exported .json file.");
-    const file: unknown = await picked
-      .text()
-      .then(JSON.parse)
-      .catch(() => null);
-    if (!file) return setImportError("That file isn't a campaign export.");
+    let file: unknown;
+    try {
+      file = JSON.parse(await picked.text());
+    } catch {
+      return setImportError("That file isn't a campaign export.");
+    }
     const res = await fetch("/api/campaigns/import", {
       method: "POST",
       headers: { "content-type": "application/json" },

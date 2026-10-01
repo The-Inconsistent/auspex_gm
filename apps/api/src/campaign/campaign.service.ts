@@ -85,6 +85,8 @@ export async function importCampaign({
   const rows = [...file.characters, ...c.factions, ...c.adventures, ...beats, ...c.locations, ...c.npcs, ...c.handouts];
   const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
   if (ids.size !== rows.length) fail("That file repeats an id");
+  // Like codex.save: an empty audience means every player, so an Agent missing from the file can't just be dropped.
+  if (c.handouts.some((h) => h.audience.some((a) => !ids.has(a)))) fail("A handout's audience isn't in that file");
   const ref = (old: string | null) => (old && ids.get(old)) || null;
   const refs = (old: string[]) => old.flatMap((o) => ids.get(o) ?? []);
   const at = (iso: string | null) => (iso ? new Date(iso) : null);
@@ -93,28 +95,43 @@ export async function importCampaign({
     ...file.campaign,
     owner,
     fill: async (tx, campaignId) => {
-      const own = <T extends { id: string }>(r: T) => ({ ...r, id: ids.get(r.id)!, campaignId });
+      // Lists load in createdAt order, and now() is the same for the whole transaction, so each row gets its place in
+      // the file as its own millisecond. The id is in the map because every row went into it above.
+      const t0 = Date.now();
+      const own = <T extends { id: string }>(r: T, i: number) => ({
+        ...r,
+        id: ids.get(r.id)!,
+        campaignId,
+        createdAt: new Date(t0 + i),
+      });
       // In reference order; one statement per table, so a location can name a parent from the same insert.
       if (file.characters.length)
         await tx
           .insert(character)
           .values(
-            file.characters.map((ch) => ({ ...own(ch), builtAt: ch.builtAt === null ? null : new Date(ch.builtAt) })),
+            file.characters.map((ch, i) => ({
+              ...own(ch, i),
+              builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
+            })),
           );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
       if (c.locations.length)
-        await tx.insert(location).values(c.locations.map((l) => ({ ...own(l), parentId: ref(l.parentId) })));
-      if (c.npcs.length) await tx.insert(npc).values(c.npcs.map((n) => ({ ...own(n), factionId: ref(n.factionId) })));
+        await tx.insert(location).values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId) })));
+      if (c.npcs.length)
+        await tx.insert(npc).values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId) })));
       if (c.handouts.length)
         await tx
           .insert(handout)
-          .values(c.handouts.map((h) => ({ ...own(h), revealedAt: at(h.revealedAt), audience: refs(h.audience) })));
-      if (c.adventures.length) await tx.insert(adventure).values(c.adventures.map(({ beats: _, ...a }) => own(a)));
+          .values(
+            c.handouts.map((h, i) => ({ ...own(h, i), revealedAt: at(h.revealedAt), audience: refs(h.audience) })),
+          );
+      if (c.adventures.length)
+        await tx.insert(adventure).values(c.adventures.map(({ beats: _, ...a }, i) => own(a, i)));
       if (beats.length)
         await tx.insert(beat).values(
-          beats.map((b) => ({
-            ...own(b),
-            adventureId: ids.get(b.adventureId)!,
+          beats.map((b, i) => ({
+            ...own(b, i),
+            adventureId: ids.get(b.adventureId)!, // its adventure's id, from the same map
             locationId: ref(b.locationId),
             npcIds: refs(b.npcIds),
             handoutIds: refs(b.handoutIds),

@@ -1224,6 +1224,15 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const forged = structuredClone(file);
   forged.codex.adventures[0].beats[0].encounter[0].threatId = "nope";
   assert.equal((await post("/campaigns/import", { file: forged }, bearer(gm.gmClerk))).status, 400, "unknown threat");
+  const orphan = structuredClone(file);
+  orphan.codex.handouts[0].audience = [crypto.randomUUID()];
+  assert.equal(
+    (await post("/campaigns/import", { file: orphan }, bearer(gm.gmClerk))).status,
+    400,
+    "a private handout's reader must come along, or it would reach every player",
+  );
+  // Only the import route takes a big body; the guest door keeps Express's 100 kB.
+  assert.equal((await post("/join", { token: "x".repeat(200_000) })).status, 413);
 
   const open = async (fresh: boolean) => {
     const r = await post("/campaigns/import", { file, fresh }, bearer(gm.gmClerk));
@@ -1243,6 +1252,11 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const [h] = whole.codex.handouts;
   assert.deepEqual(h?.audience, [c.id], "the audience follows the Agent to its new id");
   const locs = whole.codex.locations;
+  assert.deepEqual(
+    locs.map((l) => l.name),
+    ["Hive", "Spire"],
+    "rows keep the file's order",
+  );
   const newHive = locs.find((l) => l.name === "Hive")!;
   assert.equal(locs.find((l) => l.name === "Spire")?.parentId, newHive.id);
   const b = whole.codex.adventures[0]?.beats[0];
