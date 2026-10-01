@@ -1,0 +1,97 @@
+[
+  {
+    "id": "darktide-lattice-encounters",
+    "name": "Lattice Encounter",
+    "source": "darktide",
+    "page": 74,
+    "dice": "d6",
+    "type": "travel",
+    "gm": "The Agents will have to roll once for Encounters at each of four stages along the way, representing their path through the Lattice. After they have dealt with two Lattice Encounters, they will receive a signal which may cause them to detour (see Mysterious Vox Transmission below).",
+    "rows": [
+      {
+        "from": 1,
+        "to": 1,
+        "name": "Ambush",
+        "page": 74,
+        "text": "A Mob of 10 Corrupted Moebian Troopers attempts to Ambush the Agents. They begin in hiding and the Agents must succeed on a DN 2 Awareness (Int) Test to act in the first Round of combat.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": 2,
+            "purpose": "Act in the first Round despite the ambush",
+            "gm": "must succeed to act in the first Round of combat"
+          }
+        ],
+        "type": "combat"
+      },
+      {
+        "from": 2,
+        "to": 2,
+        "name": "Broadside",
+        "page": 74,
+        "text": "A Mob of 10 Corrupted PDF Troopers is on a pathway 2d10 metres away, running roughly parallel. They attempt to fight the Agents while they can, but the paths diverge in 50 + 5d10 metres.",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 3,
+        "to": 3,
+        "name": "Lookouts",
+        "page": 74,
+        "text": "Several Corrupted PDF Troopers equal to the number of Agents are dotted around a vantage point. The Agents can either try and sneak past them (DN 2 Stealth (A) Test) or kill them quickly. If a Trooper survives to the end of the first Round, then they alert their commanders and the Agents will face a Pursuit (see below) as well.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": 2,
+            "purpose": "Sneak past the lookouts"
+          }
+        ]
+      },
+      {
+        "from": 4,
+        "to": 4,
+        "name": "Pursuit",
+        "page": 74,
+        "text": "A Mob of 10 Corrupted PDF Troopers begins chasing the Agents. They start 50m away and pursue the Agents relentlessly.",
+        "tests": [],
+        "type": "combat"
+      },
+      {
+        "from": 5,
+        "to": 5,
+        "name": "Vibrations",
+        "page": 74,
+        "text": "The pathway passes close to an active working Great Turbine, which produces enormous amounts of noise, vibration and sharp differences in air pressure. Each Round for 3 Rounds, the Agents must make a DN 3 Toughness Test or suffer 1d6 Shock. Completely sealed armour gives a +2d6 bonus on this Test.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 3,
+            "purpose": "Withstand the turbine's noise and pressure",
+            "gm": "each Round for 3 Rounds; failure: 1d6 Shock; completely sealed armour gives +2d6"
+          }
+        ]
+      },
+      {
+        "from": 6,
+        "to": 6,
+        "name": "Lattice Springer",
+        "page": 74,
+        "text": "A Lattice Springer is lurking in a dark recess nearby (probably underneath the Agents’ feet). The creature is completely hidden from sight and will attempt to drag the lightest Agent in the group into its nest.",
+        "tests": [],
+        "type": "combat"
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  }
+]
