@@ -1,0 +1,111 @@
+{
+  "id": "voa-brother-rogziel",
+  "name": "Brother Rogziel",
+  "source": "vow-of-absolution",
+  "page": 118,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "ADEPTUS ASTARTES",
+    "IMPERIUM",
+    "ABSOLVERS CHAPTER"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 6,
+    "A": 5,
+    "I": 5,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "Power Armour: 6 AR"
+  },
+  "defence": 4,
+  "wounds": 12,
+  "shock": 7,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 4
+      },
+      {
+        "name": "Awareness",
+        "dice": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Cunning",
+        "dice": 3
+      },
+      {
+        "name": "Intimidation",
+        "dice": 1
+      },
+      {
+        "name": "Stealth",
+        "dice": 4
+      },
+      {
+        "name": "Survival",
+        "dice": 2
+      },
+      {
+        "name": "Tech",
+        "dice": 4
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 4
+      }
+    ]
+  },
+  "bonuses": [],
+  "abilities": [
+    {
+      "name": "Talents",
+      "text": "Gilead Combat Veteran (pg 47), Trademark Weapon - Missile Launcher (W&G pg 141)"
+    },
+    {
+      "name": "Equipment",
+      "text": "Astartes Combat Knife, Bolt Pistol, 3 Frag Grenades, 3 Krak Grenades, Missile Launcher with Frag and Krak missiles, Mk 8 Power Armour"
+    },
+    {
+      "name": "Savage Echoes",
+      "text": "You may reroll Double Rank dice once per melee attack Test."
+    },
+    {
+      "name": "Defender of Humanity",
+      "text": "+ Rank Icons to any successful attack against a Mob."
+    },
+    {
+      "name": "Honour the Chapter",
+      "text": "You are subject to the orders of your Chapter Master, and must honour the beliefs and traditions of your chapter increase final Resolve by +1."
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "You are immune to the Bleeding Condition. You gain +1 bonus die to any Test related to one of the 19 implants if deemed appropriate by the GM."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "No weapon profiles printed; talents and equipment kept as ability text. Keywords printed 'ADEPTUS ASTARTES, IMPERIUM, ABSOLVERS CHAPTER'; 'ABSOLVERS CHAPTER' kept as one keyword."
+}

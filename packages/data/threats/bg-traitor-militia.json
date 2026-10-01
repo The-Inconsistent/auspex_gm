@@ -1,0 +1,47 @@
+{
+  "id": "bg-traitor-militia",
+  "name": "Traitor Militia",
+  "source": "bloody-gates",
+  "page": 23,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ASTRA MILITARUM", "CHAOS", "HERETIC"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 1, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 3, "note": "Partial Flak Armour: AR 2" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 2,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 3, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 4 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Lasgun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (1)", "Reliable"] },
+        { "name": "Knife or Bayonet", "damage": 5, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Traitor Militia Sniper",
+      "text": "Some Traitor Militia members have acquired Long Las rifles and have set up in advantageous positions that afford them Half Cover (+2 Defence). Printed Long Las traits end \"Sniper (1), Reliable3\" (stray 3), stored as Reliable.",
+      "weapons": [
+        { "name": "Long Las", "damage": 10, "ed": 1, "range": [18, 36, 54], "salvo": 0, "traits": ["Sniper (1)", "Reliable"] }
+      ]
+    }
+  ],
+  "note": "No Tier row printed; class proposed (5 Wounds, 1 Conviction, 1-Ruin Determination: a rank-and-file Troop, same stats as the Core Astra Militarum Trooper)."
+}

@@ -1,0 +1,58 @@
+{
+  "id": "rr2-kastelan-robot",
+  "name": "Kastelan Robot",
+  "source": "redacted-records-2",
+  "page": 53,
+  "faction": "mechanicus",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "LEGIO CYBERNETICA", "ROBOT", "[FORGE WORLD]"],
+  "attributes": { "S": 8, "T": 10, "A": 2, "I": 2, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 16 },
+  "defence": 1,
+  "wounds": 16,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Battle Protocols",
+      "text": "By default, the Kastelan Robot's Aegis Protocol is active. As an Action, an individual with the Tech Skill can make a DN 10 Tech Test to change the Kastelan Robot's Battle Protocol. An individual with the Reprogrammer ability can make this Test as a Simple Action at DN 5. Aegis Protocol: The Kastelan Robot's Resilience increases to 20. Conqueror Protocol: The Kastelan Robot's Weapon Skill increases to 10 and it gains +2 bonus dice when it Charges. Protector Protocol: The Kastelan Robot's Speed is reduced to 0, its Ballistic Skill is increased by 2, and its Resilience is increased to 18."
+    },
+    {
+      "name": "Robot",
+      "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting. Additionally, this Threat is immune to the Bleeding, Blinded, Exhausted, Fear, Pinned, Poisoned, and Terror Conditions."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Heavy Phosphor Blaster", "damage": 13, "ed": 2, "ap": -2, "range": [18, 36, 54], "salvo": 1, "traits": ["Melta", "Heavy (8)"] },
+        { "name": "Incendine Combustor", "damage": 12, "ed": 2, "ap": -2, "range": [6, 12, 18], "salvo": 2, "traits": ["Flamer", "Heavy (8)"] },
+        { "name": "Kastelan Fist", "damage": 15, "ed": 4, "ap": -3, "range": [1], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Dataslot Disruption",
+      "text": "If the Kastelan Robot rolls a Complication or a Complication is rolled on a Tech Test targeting the Kastelan, roll 1d6. If the result is another Complication, the Kastelan Robot uses its next Action to move its Speed in a random direction as dictated by the Scattering rules (Wrath & Glory Rulebook, page 186) and attacks the nearest individual. If the result is not a Complication, the Kastelan Robot's Battle Protocol changes as determined by the GM. When a Complication is triggered, any character with the ADEPTUS MECHANICUS Keyword within 10m can attempt a DN 10 Tech Test to prevent this effect. This Tech Test is DN 5 for individuals with the Reprogrammer ability."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explodes",
+      "text": "When this Threat is destroyed, roll 1d6. If you roll a Complication, the Threat explodes with the following profile: 12 +6 ED / Blast (6)."
+    }
+  ],
+  "determination": "Repulsor Grid: Spend 1 Ruin to roll 10d6. Whenever this Threat rolls Determination against a ranged attack they may Shift Exalted Icons to deal 1 Mortal Wound to the attacker for every Exalted Icon Shifted.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Large",
+  "note": "Different printing from hat-kastelan-robot (not a reprint: that source is homebrew). Printed Resilience 16 has no bracketed note. Explosion has no printed range, kept as ability text."
+}

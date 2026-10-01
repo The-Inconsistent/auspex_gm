@@ -1,0 +1,57 @@
+{
+  "id": "wretches-verit-maaazitor",
+  "name": "Verit Maaazitor",
+  "source": "wretches-of-the-writ",
+  "page": 12,
+  "faction": "heretic",
+  "threat": ["A", "E", "E", "T"],
+  "keywords": ["CHAOS", "HERETIC", "MARK OF CHAOS UNDIVIDED"],
+  "attributes": { "S": 3, "T": 4, "A": 3, "I": 4, "Wil": 5, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 6, "note": "Armoured Robe: 1 AR" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 7, "passive": 4 },
+      { "name": "Deception", "dice": 7 },
+      { "name": "Intimidation", "dice": 7 },
+      { "name": "Persuasion", "dice": 8 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "Verit Maalazitor may use Ruin actions and has 2 personal Ruin." },
+    { "name": "Herald of Ruin", "text": "At the start of each round Verit Maalazitor is alive, the GM gains a point of ruin for every 6 Cultists alive in the Scene." },
+    { "name": "Mark of Chaos", "text": "Verit Maalazitor has a Mark of Chaos (Undivided)" },
+    { "name": "Priest of the Dark Gods", "text": "Verit Maalazitor gains +2 bonus dice to all Interaction Attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Kneel Before the Dark Gods!",
+      "text": "As an action Verit Maalazitor makes an Interaction Attack against all targets within 15m who do not possess the <CHAOS> Keyword. Any target affected by the Interaction Attack is Prone in addition to the normal effects."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Commune Stave", "damage": 8, "ed": 4, "ap": -1, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Faithful Flock",
+      "text": "Spend 1 Ruin. All allies with the <CHAOS> Keyword within 10 metres gain +2 bonus dice to Weapon Skill (I) Tests until the start of this Threat's next turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Heading prints 'MAAAZITOR'; the text and the contents tab print 'Maalazitor'."
+}

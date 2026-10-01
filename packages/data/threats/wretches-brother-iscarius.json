@@ -1,0 +1,56 @@
+{
+  "id": "wretches-brother-iscarius",
+  "name": "Brother Iscarius",
+  "source": "wretches-of-the-writ",
+  "page": 27,
+  "faction": "heretic",
+  "threat": ["A", "A", "A", "E"],
+  "keywords": ["CHAOS", "HERETIC", "ASTARTES", "[WORD BEARERS]", "MARK OF CHAOS UNDIVIDED"],
+  "attributes": { "S": 8, "T": 8, "A": 5, "I": 5, "Wil": 4, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 12, "note": "Mark V Power Armour: 5 AR" },
+  "defence": 4,
+  "wounds": 14,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Psychic Mastery", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "At the start of each of Brother Iscarius turns, the GM gains a point 1 Ruin" },
+    { "name": "Champion", "text": "Brother Iscarius may use Ruin actions and has 4 personal Ruin." },
+    { "name": "Chosen of the Writ", "text": "Brother Iscarius gains +2 bonus dice to all Interaction Attacks." },
+    { "name": "Mark of Chaos", "text": "Brother Iscarius has a Mark of Chaos (Undivided)" },
+    { "name": "Space Marine Implants", "text": "Brother Iscarius gains bonus dice and options for actions from Space Marine Implants (W&G Core Rulebook p.75)" }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Bolt Pistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Brutal", "Pistol"] },
+        { "name": "Power Axe", "damage": 13, "ed": 5, "ap": -2, "range": [1], "traits": ["Rending (1)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin. Add the game's Tier as ED to all attacks Brother Iscarius makes this Round."
+    },
+    { "type": "RUIN", "name": "Death to the False Emperor!", "text": "Spend 1 Ruin to charge, gaining +2 bonus dice to the attack Test." },
+    {
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks Brother Iscarius makes this round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 8d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 7,
+  "size": "Avg",
+  "note": "Veteran of the Long War prints twice (once as RUIN, once untyped); both kept."
+}

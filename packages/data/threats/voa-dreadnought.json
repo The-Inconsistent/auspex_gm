@@ -1,0 +1,125 @@
+{
+  "id": "voa-dreadnought",
+  "name": "Dreadnought",
+  "source": "vow-of-absolution",
+  "page": 76,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ADEPTUS ASTARTES"
+  ],
+  "attributes": {
+    "S": 9,
+    "T": 9,
+    "A": 3,
+    "I": 6,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 5,
+  "wounds": 13,
+  "shock": 8,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2DN, as though it had the Dual Wield Talent (W&G, page.133)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "REACTION",
+      "name": "Furisio",
+      "text": "Whenever this Threat fails a resolve Test roll 1d6. If you roll an icon, the Dreadnought becomes Frenzied, ignoring any penalties and taking an additional Action.."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Dreadnought Claw",
+          "damage": 12,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (2)"
+          ]
+        },
+        {
+          "name": "Plasma Cannon",
+          "damage": 15,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 3,
+          "traits": [
+            "Heavy (8)",
+            "Supercharge"
+          ]
+        },
+        {
+          "name": "Heavy Bolter",
+          "damage": 12,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 3,
+          "traits": [
+            "Brutal",
+            "Heavy (4)",
+            "Rapid Fire (4)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Lightning Reflexes: Spend 1 Ruin to roll 6d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Normal threat block, not vehicle format. Printed 'Heavy Bolter ... Ap -1', 'resolve Test' and a double full stop in Furisio (Dreadnought only); Plasma Cannon and Heavy Bolter sit outside the ACTION line in print but are stored with the Claw. Printed Size 'Avg'."
+}

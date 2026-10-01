@@ -1,0 +1,38 @@
+{
+  "id": "bg-poxwalker",
+  "name": "Poxwalker",
+  "source": "bloody-gates",
+  "page": 25,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["CHAOS", "NURGLE"],
+  "attributes": { "S": 4, "T": 3, "A": 2, "I": 2, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 4 },
+  "defence": 1,
+  "wounds": 5,
+  "shock": 2,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 3, "passive": 2 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Mindless", "text": "This Threat automatically passes Resolve Tests." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Infectious Fists and Teeth", "damage": 6, "ed": 1, "range": [1], "traits": ["Inflicts (Poison 3)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 4,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (5 Wounds, 1-Ruin Determination, Mindless: a Troop, as the Core Poxwalker). Reprint of poxwalker; same profile."
+}

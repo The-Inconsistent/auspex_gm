@@ -1,0 +1,115 @@
+{
+  "id": "voa-brother-briathos",
+  "name": "Brother Briathos",
+  "source": "vow-of-absolution",
+  "page": 116,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "ADEPTUS ASTARTES",
+    "IMPERIUM",
+    "ABSOLVERS CHAPTER"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 5,
+    "A": 5,
+    "I": 5,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 12,
+    "note": "Power Armour: 6 AR"
+  },
+  "defence": 4,
+  "wounds": 11,
+  "shock": 7,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 5
+      },
+      {
+        "name": "Awareness",
+        "dice": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Insight",
+        "dice": 2
+      },
+      {
+        "name": "Intimidation",
+        "dice": 3
+      },
+      {
+        "name": "Medicae",
+        "dice": 2
+      },
+      {
+        "name": "Stealth",
+        "dice": 3
+      },
+      {
+        "name": "Survival",
+        "dice": 1
+      },
+      {
+        "name": "Tech",
+        "dice": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 4
+      }
+    ]
+  },
+  "bonuses": [],
+  "abilities": [
+    {
+      "name": "Talents",
+      "text": "Deadshot (W&G, page 131), Trademark Weapon (W&G, page 141)"
+    },
+    {
+      "name": "Equipment",
+      "text": "Astartes Combat Knife, Boltgun, 3 Frag Grenades, Hellfire Rounds, 3 Krak Grenades, Mk 8 Power Armour"
+    },
+    {
+      "name": "Savage Echoes",
+      "text": "You may reroll Double Rank dice once per melee attack Test."
+    },
+    {
+      "name": "Defender of Humanity",
+      "text": "+ Rank Icons to any successful attack against a Mob."
+    },
+    {
+      "name": "Honour the Chapter",
+      "text": "You are subject to the orders of your Chapter Master, and must honour the beliefs and traditions of your chapter increase final Resolve by +1."
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "You are immune to the Bleeding Condition. You gain +1 bonus die to any Test related to one of the 19 implants if deemed appropriate by the GM."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Strength printed '5 (8)'; stored 8 (Powered included, as Core prints a single armoured value). No weapon profiles printed; talents and equipment kept as ability text. Keywords printed 'ADEPTUS ASTARTES, IMPERIUM, ABSOLVERS CHAPTER'; 'ABSOLVERS CHAPTER' kept as one keyword."
+}

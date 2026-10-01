@@ -1,0 +1,49 @@
+{
+  "id": "wretches-brother-ephilates",
+  "name": "Brother Ephilates",
+  "source": "wretches-of-the-writ",
+  "page": 23,
+  "faction": "heretic",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["CHAOS", "HERETIC", "ASTARTES", "[WORD BEARERS]"],
+  "attributes": { "S": 8, "T": 6, "A": 5, "I": 5, "Wil": 5, "Int": 4, "Fel": 2 },
+  "resilience": { "value": 12, "note": "Mark V Power Armour: 5 AR" },
+  "defence": 4,
+  "wounds": 12,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of Brother Ephilates turns." },
+    { "name": "Champion", "text": "Brother Ephilates may use Ruin actions and has 2 personal Ruin." },
+    { "name": "Space Marine Implants", "text": "Brother Ephilates gains bonus dice and options for actions from Space Marine Implants (W&G Core Rulebook p.75)" }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Boltpistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Brutal", "Pistol"] },
+        { "name": "Staff of Possession", "damage": 10, "ed": 4, "ap": -1, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Staff of Possession",
+      "text": "Spend 1 Ruin. Brother Ephilates may choose a target within 20m with the <PSYKER> Keyword. The Target must pass a DN2 Psychic Mastery(Wil) Test, if failed the target must immediately roll on the Perils of the Warp table (W&G Core Rulebook p. 263)."
+    },
+    { "name": "Veteran of the Long War", "text": "Spend 1 Ruin. Add the game's Tier as ED to all attacks Brother Ephilates makes this Round." }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg",
+  "note": "The Determination line prints before the Reaction in the book."
+}

@@ -1,4 +1,45 @@
 {
+  "vow-of-absolution": [
+    "voa-brother-briathos",
+    "voa-brother-marmaroth",
+    "voa-brother-puriel",
+    "voa-brother-rogziel",
+    "voa-brother-sgt-hofniel",
+    "voa-dreadnought",
+    "voa-redemptor-dreadnought"
+  ],
+  "redacted-records-2": [
+    "rr2-duke-of-putrescence",
+    "rr2-kastelan-robot",
+    "rr2-magos-luxus",
+    "rr2-oily-squig",
+    "rr2-oracular-attendant",
+    "rr2-raider-cybercanid",
+    "rr2-sulphurhound-cybercanid"
+  ],
+  "wretches-of-the-writ": [
+    "wretches-aravituurhal",
+    "wretches-brother-ephilates",
+    "wretches-brother-iscarius",
+    "wretches-changeling",
+    "wretches-lord-maloquence",
+    "wretches-massintos-wielder-of-fates",
+    "wretches-verit-maaazitor"
+  ],
+  "bloody-gates": [
+    "bg-commissar-shrake",
+    "bg-cravax-the-claw",
+    "bg-cultist",
+    "bg-doomed-youth",
+    "bg-penal-brigade-trooper",
+    "bg-poxwalker",
+    "bg-traitor-guardsman",
+    "bg-traitor-militia"
+  ],
+  "affliction-ascendant": [
+    "aa-botuthrax-clostidia",
+    "aa-putradyne-corporis"
+  ],
   "gutshivas-kommandos": [
     "dok-bitzbak",
     "dudd-the-bomb-squig",

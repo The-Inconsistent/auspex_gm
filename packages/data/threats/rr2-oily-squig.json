@@ -1,0 +1,59 @@
+{
+  "id": "rr2-oily-squig",
+  "name": "Oily Squig",
+  "source": "redacted-records-2",
+  "page": 88,
+  "faction": "ork",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ORK", "SQUIG"],
+  "attributes": { "S": 2, "T": 1, "A": 1, "I": 1, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 2 },
+  "defence": 3,
+  "wounds": 3,
+  "shock": 2,
+  "skills": {
+    "default": 1,
+    "list": [
+      { "name": "Athletics", "dice": 2 },
+      { "name": "Ballistic Skill", "dice": 2 },
+      { "name": "Weapon Skill", "dice": 3 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Filled with Oil",
+      "text": "If an Oily Squig is damaged by a weapon with the FLAME or EXPLOSIVE Keywords it explodes with the following profile: 7 +4 ED / Blast (4), Inflict (On Fire). This explosion causes any other Oily Squigs caught in the radius to explode in the same manner."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Oily Squig Bite", "damage": 5, "ed": 2, "ap": -1, "range": [1], "traits": ["Brutal"] }]
+    },
+    {
+      "type": "ACTION",
+      "name": "Spew Oil",
+      "text": "Make a Ballistic Skill Test against a target within 10m. If successful, the squig spew oil, covering the target and the area in a line to the target with flammable oil. The target must succeed on a DN 3 Agility Test or fall Prone as they slip on the oil."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 1d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 4,
+  "size": "Tiny",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "A Swarm of Teeth and Claws",
+      "text": "A Mob of Squigs gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Squigs."
+    }
+  ],
+  "mobAbilities": [
+    {
+      "type": "COMPLICATION",
+      "name": "Vicious by Nature",
+      "text": "Whenever the Mob rolls a Complication, the squigs inflict 1d3 Shock on themself. Add 1d3 Shock to this damage for every ten Squigs in the Mob."
+    }
+  ],
+  "note": "Not on the contents page's stat block list (found by scan). Explosion has no printed range, kept as text. Mob rule 'A Swarm of Teeth and Claws' is printed under the Size row; stored as a mob option. Spew Oil text copied as printed ('the squig spew oil')."
+}

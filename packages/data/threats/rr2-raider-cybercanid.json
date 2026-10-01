@@ -1,0 +1,41 @@
+{
+  "id": "rr2-raider-cybercanid",
+  "name": "Raider Cybercanid",
+  "source": "redacted-records-2",
+  "page": 54,
+  "faction": "mechanicus",
+  "threat": ["E", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "SERBERYS", "[FORGE WORLD]"],
+  "attributes": { "S": 4, "T": 6, "A": 3, "I": 4, "Wil": 3, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 11, "note": "Serberys Auto-cuirass" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 4,
+  "skills": {
+    "default": null,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 5 },
+      { "name": "Intimidation", "dice": 5 },
+      { "name": "Stealth", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Cybercanid", "text": "This Threat ignores Difficult Terrain." },
+    { "name": "Gyro-stabilised Saddle", "text": "Whenever the Cybercanid is being ridden by its bonded Serberys rider, the bonded Serberys rider may reroll any Wrath Die that rolls a Complication, and must take the second result." },
+    { "name": "Noospheric Link", "text": "Whenever the Raider Cybercanid is being ridden by its bonded Serberys rider, the bonded Serberys rider may use its movement to command the Raider Cybercanid to move and take an Action." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Clawed Limbs", "damage": 8, "ed": 3, "range": [1], "traits": ["Brutal"] }]
+    }
+  ],
+  "determination": "Enhanced Bionics: Spend 1 Ruin (or Wrath, if the cyber-beast is your mount) to roll 6d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 12,
+  "size": "Large",
+  "note": "No Default skill printed (skills.default null)."
+}

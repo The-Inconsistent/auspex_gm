@@ -1,0 +1,47 @@
+{
+  "id": "bg-commissar-shrake",
+  "name": "Commissar Shrake",
+  "source": "bloody-gates",
+  "page": 22,
+  "faction": "imperial",
+  "threat": ["A", "A", "A", "A"],
+  "keywords": ["IMPERIUM", "ASTRA MILITARUM", "OFFICIO PREFECTUS"],
+  "attributes": { "S": 3, "T": 3, "A": 2, "I": 3, "Wil": 5, "Int": 2, "Fel": 4 },
+  "resilience": { "value": 7, "note": "Flak Coat: AR 3" },
+  "defence": 2,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Insight", "dice": 7 },
+      { "name": "Intimidation", "dice": 10 },
+      { "name": "Leadership", "dice": 10 },
+      { "name": "Persuasion", "dice": 7 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 1 personal Ruin. ." },
+    { "name": "Fearsome Respect", "text": "Any of this Threat's allies within 15m gain +2 bonus dice to Resolve Tests." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Intimidating Presence",
+      "text": "This Threat makes an Intimidation (Wil) Interaction Attack and then a standard attack with one of its weapons.",
+      "weapons": [
+        { "name": "Bolt Pistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Brutal", "Pistol"] },
+        { "name": "Power Sword", "damage": 8, "ed": 4, "ap": -3, "range": [1], "traits": ["Parry"] }
+      ]
+    }
+  ],
+  "determination": "Tenacious: Spend 1 Ruin to roll 3d6. This Threat recovers 1 Shock for every Exalted Icon it rolls when it rolls Determination.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (named Champion, 1 personal Ruin, 9 Wounds, 7 Shock). Champion text prints a stray \" .\" after the full stop."
+}

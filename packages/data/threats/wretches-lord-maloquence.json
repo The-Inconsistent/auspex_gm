@@ -1,0 +1,144 @@
+{
+  "id": "wretches-lord-maloquence",
+  "name": "Lord Maloquence",
+  "source": "wretches-of-the-writ",
+  "page": 6,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ASTARTES",
+    "[WORD BEARERS]",
+    "MARK OF CHAOS UNDIVIDED"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 8,
+    "A": 5,
+    "I": 5,
+    "Wil": 7,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 14,
+    "note": "Mark V power Armour: 5 AR"
+  },
+  "defence": 4,
+  "wounds": 16,
+  "shock": 11,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 9
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Leadership",
+        "dice": 10
+      },
+      {
+        "name": "Survival",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "Lord Maloquence may use Ruin actions and has 4 personal Ruin."
+    },
+    {
+      "name": "Herald of Ruin",
+      "text": "At the start of each of Lord Maloquences turn the GM gains a point of ruin."
+    },
+    {
+      "name": "Master of the Writ",
+      "text": "Lord Maloquence gains +4 bonus dice to all Interaction Attacks."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "Lord Maloquence has a Mark of Chaos (Undivided)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Lord Maloquence gains bonus dice and options for actions from Space Marine Implants (W&G Core Rulebook p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Chaos made Flesh.",
+      "text": "Anyone who encounters Lord Maloquence must make a DN3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Boltpistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Accursed Crozius",
+          "damage": 12,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Death to the False Emperor!",
+      "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test."
+    },
+    {
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin. Add the game's Tier as ED to all attacks this Threat makes this Round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 8d6",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 7,
+  "size": "Avg",
+  "note": "Accursed Crozius prints no range: a melee weapon, stored [1] as Core's Painboy 'Urty Syringe. Keyword printed 'MARK OF CHAOS UNDIVIDED', kept as one."
+}

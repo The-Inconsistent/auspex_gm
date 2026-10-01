@@ -1,0 +1,52 @@
+{
+  "id": "wretches-massintos-wielder-of-fates",
+  "name": "Massintos, Wielder of Fates",
+  "source": "wretches-of-the-writ",
+  "page": 15,
+  "faction": "heretic",
+  "threat": ["A", "A", "A", "E"],
+  "keywords": ["CHAOS", "HERETIC", "ASTARTES", "[WORD BEARERS]"],
+  "attributes": { "S": 8, "T": 6, "A": 5, "I": 6, "Wil": 6, "Int": 5, "Fel": 4 },
+  "resilience": { "value": 12, "note": "Mark V Power Armour: 5 AR" },
+  "defence": 5,
+  "wounds": 14,
+  "shock": 10,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Psychic Mastery", "dice": 12 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of Massintos turns." },
+    { "name": "Champion", "text": "Massintos may use Ruin actions and has 2 personal Ruin." },
+    { "name": "Mark of Chaos", "text": "Massintos has a Mark of Chaos (Undivided)" },
+    { "name": "Space Marine Implants", "text": "Massintos gains bonus dice and options for actions from Space Marine Implants (W&G Core Rulebook p.75)" }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Gifts of the Dark Gods",
+      "text": "Massintos may attempt to activate one of the following psychic powers: Smite (Wrath & Glory, page 272), any Maleficarum Discipline power (page 281)."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Boltpistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Brutal", "Pistol"] },
+        { "name": "Force Stave", "damage": 15, "ed": 2, "ap": -1, "range": [2], "traits": ["Brutal", "Force"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Let the Galaxy Burn!", "text": "Spend 1 Ruin to activate a Psychic Power or Deny the Witch (p.267)." },
+    { "name": "Veteran of the Long War", "text": "Spend 1 Ruin. Add the game's Tier as ED to all attacks this Threat makes this Round" }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 7,
+  "size": "Avg",
+  "note": "Mark of Chaos is a printed Bonus but not in the keyword line. Force Stave prints Range 2."
+}

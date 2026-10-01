@@ -1,0 +1,40 @@
+{
+  "id": "bg-traitor-guardsman",
+  "name": "Traitor Guardsman",
+  "source": "bloody-gates",
+  "page": 24,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ASTRA MILITARUM", "GILEAD GRAVEDIGGERS", "CHAOS", "HERETIC"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 2, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 7, "note": "Flak Armour: AR 3" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Gilead Gravediggers Regiment Bonus", "text": "This Threat gains an additional +1 Defence whenever in cover." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Lasgun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (1)", "Reliable"] },
+        { "name": "Laspistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Chainsword", "damage": 8, "ed": 2, "range": [1], "traits": ["Brutal", "Unwieldy"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (5 Wounds, 1-Ruin Determination: a Troop, same stats and Wounds as the Core Astra Militarum Trooper)."
+}

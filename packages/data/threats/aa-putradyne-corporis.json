@@ -1,0 +1,121 @@
+{
+  "id": "aa-putradyne-corporis",
+  "name": "Putradyne Corporis, Chaos Lord",
+  "source": "affliction-ascendant",
+  "page": 22,
+  "faction": "heretic",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ADEPTUS ASTARTES",
+    "CHAOS",
+    "DEATH GUARD",
+    "MARK OF NURGLE"
+  ],
+  "attributes": {
+    "S": 9,
+    "T": 7,
+    "A": 5,
+    "I": 5,
+    "Wil": 6,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 14,
+    "note": "Cataphractii Terminator Armour; Powered 4*"
+  },
+  "defence": 4,
+  "wounds": 12,
+  "shock": 10,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns"
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 1 personal Ruin."
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for Actions from Space Marine Implants."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "text": "Plague-touched Combi-Flamer: on a successful hit, reduce the AR of the target's armour by 1.",
+      "weapons": [
+        {
+          "name": "Plague-touched Combi-Flamer",
+          "damage": 8,
+          "ed": 2,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "traits": [
+            "Bolt",
+            "Inflict (On Fire)",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Power Maul",
+          "damage": 14,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            2
+          ],
+          "traits": [
+            "Brutal",
+            "Power Field"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this round."
+    },
+    {
+      "type": "RUIN",
+      "name": "Death to the False Emperor!",
+      "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test."
+    }
+  ],
+  "determination": "Disgustingly Resilient: You do not need to spend Ruin to roll Determination for this Threat. Roll 7d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 5,
+  "resolve": 5,
+  "speed": 7,
+  "size": "Large",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Printed Strength is 5(9)*, stored 9 (Powered included, as Core prints a single armoured value); the asterisk (also on Powered 4*) has no footnote on the page. Story text: suffers Withered and Enduring Life; if slain before he ascends, his corpse revives as a Chaos Spawn, then is truly dead. A named Chaos Space Marine Champion, cf. chaos-space-marine."
+}

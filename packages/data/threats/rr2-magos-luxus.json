@@ -1,0 +1,48 @@
+{
+  "id": "rr2-magos-luxus",
+  "name": "Magos Luxus",
+  "source": "redacted-records-2",
+  "page": 94,
+  "faction": "mechanicus",
+  "threat": ["E", "E", "T", "T"],
+  "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "NECRON"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 2, "Wil": 4, "Int": 6, "Fel": 2 },
+  "resilience": { "value": 6, "note": "Implants: 2 AR" },
+  "defence": 1,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Tech", "dice": 9 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Autonomous Targeting", "text": "Each round, this Threat can make a standard ranged attack Action as a Free Action." },
+    { "name": "Diffractor Field", "text": "The Magos Luxus is protected by an arcane energy field. This grants him +5 Defence against LAS weapon attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Luminous Beamer", "damage": 13, "ed": 3, "ap": -2, "range": [12, 24, 36], "salvo": 2, "traits": ["Reliable", "Rending (2)"] },
+        { "name": "Lashing Mechadendrite", "damage": 5, "ed": 2, "range": [1], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Point Defence Lasers",
+      "text": "As a Reaction to any PROJECTILE attack, the Magos can make an opposed Ballistic Skill (AGI) Test. If he succeeds the projectile is vapourised harmlessly."
+    }
+  ],
+  "determination": "Extensive Augmetics: Spend 1 Ruin to roll 5d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Keywords printed with NECRON (no SERVITOR or FORGE WORLD); kept as printed."
+}

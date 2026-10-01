@@ -260,6 +260,39 @@ The book uses the 1st-edition stat layout, mapped as follows:
 - **Not transcribed:** the vehicle-format walkers (Ballistarii, Sydonian Dragoon, Onager Dunecrawler, pp.20–21), the
   wargear, Forge Worlds and archetypes.
 
+### Supplement and adventure book notes (GitHub issue #44)
+
+Every stat block in five books, 31 threats, each book's id prefix on its ids (`threat-manifest.json` lists them). PDF
+page = printed page in all five. Shared calls:
+- **A melee weapon with no printed range** is `[1]`, as Core's Painboy 'Urty Syringe. An explosion or discharge with
+  no range (Kastelan Explodes, the Duke's Noxious Discharge, the Oily Squig, Ara'vitu'urhal's Warp Explosion) stays
+  ability text, as Core's Killa Kan. A single printed range (Botuthrax's Pestilent Tide, "Range 16") is `[16]`.
+- **Strength printed with Powered in brackets** ("5 (8)", "5(9)*") stores the armoured value, since Core prints one
+  armoured Strength (the Chaos Space Marine's 8). The printed pair is in `note`.
+- **A Champion bonus under another name** (Botuthrax's Beloved of Nurgle, "has 5 personal Ruin") sets `personalRuin`.
+- **Inflict spelling** is the catalogue's `Inflict (Poisoned 5)`, whatever the print's order ("Inflict Poisoned (5)").
+- **No Tier row** (Bloody Gates, all eight): the class is proposed and the note says so (rules-flow.md §11.70).
+
+Per book:
+- **Vow of Absolution** (`voa-`, 7): the Dreadnought and Redemptor Dreadnought (p.76) use the normal threat block, not
+  the vehicle format. Kill Team Righteous Will (pp.114–118) prints Talents and Equipment but no weapon profiles and no
+  Default pool: each list is an untyped ability, `skills.default` is `null`. Hofniel's Tier row (A E T T T) differs
+  from his squad's (A A E E T). Kept as printed: Marmaroth's 6 Wounds (his squad has 11–12), the garbled Honour the
+  Chapter text, the Heavy Bolter's "Ap -1". "ABSOLVERS CHAPTER" is one keyword. All `imperial`.
+- **Redacted Records 2** (`rr2-`, 7): the six expected plus an Oily Squig Mob (p.88). The Kastelan (p.53) is its own
+  official printing beside the homebrew `hat-kastelan-robot`. Neither Cybercanid prints a Default pool (`null`). Magos
+  Luxus prints NECRON among its keywords and stays `mechanicus`; the Duke of Putrescence is `heretic`.
+- **Wretches of the Writ** (`wretches-`, 7): Lord Maloquence prints 5 Tiers, the rest 4. Kept as printed: the heading
+  "VERIT MAAAZITOR" (the text says Maalazitor; id from the heading), "ARA'VITU'URHAL" (text: Aru'vitu'urhal), Brother
+  Iscarius's Veteran of the Long War printed twice, possessives without apostrophes, "Inflicts (On Fire)", the
+  Changeling's DN-less "DN Targets Willpower". Ara'vitu'urhal and the Changeling are `daemon`, the rest `heretic`.
+  The end-of-adventure forms (the Greater Daemon, Maloquence the Terrible) print no stat block.
+- **Bloody Gates** (`bg-`, 8): no Tier row anywhere. Proposed: Commissar Shrake A, Cravax the Claw E (a Champion, but
+  6 Wounds), the six rank-and-file T. The Traitor Militia Sniper sidebar is a `variant` (its Long Las "Reliable3" is
+  stored `Reliable`). `bg-poxwalker` matches Core's `poxwalker`; `bg-cultist` differs from `cultist` (SCUM, Cunning).
+- **Affliction Ascendant** (`aa-`, 2): Botuthrax Clostidia (`daemon`) and Putradyne Corporis (`heretic`). The
+  asterisks on Putradyne's "5(9)*" and "Powered 4*" have no footnote. The door on p.10 ("Resilience of 12") is scenery.
+
 ---
 
 ## 5. Content packs

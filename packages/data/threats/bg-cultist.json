@@ -1,0 +1,44 @@
+{
+  "id": "bg-cultist",
+  "name": "Cultist",
+  "source": "bloody-gates",
+  "page": 25,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC", "SCUM"],
+  "attributes": { "S": 2, "T": 3, "A": 2, "I": 3, "Wil": 3, "Int": 2, "Fel": 3 },
+  "resilience": { "value": 4, "note": "Ragged Clothes: 0 AR" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Cunning", "dice": 5 },
+      { "name": "Deception", "dice": 5 },
+      { "name": "Stealth", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Devotion", "text": "If this Threat is slain by a Critical Hit the GM gains 1 Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Shoot and Stab",
+      "text": "This Threat may attack with both its Autopistol and Knife without taking a Multi-Attack penalty.",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Knife", "damage": 4, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to Roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (5 Wounds, 1-Ruin Determination: a Troop). Reprint of cultist; differs in SCUM keyword, added Cunning 5, reworded Devotion and Shoot and Stab, no Ranged Attackers variant."
+}
