@@ -163,7 +163,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Threat Assessment | `threat-assessment` | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` | `Wrath & Glory_ Vow of Absolution.pdf` | printed |
-| Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules; threats not yet) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
+| Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
 | Forsaken System Player's Guide | `forsaken-system` (creation only) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
@@ -191,8 +191,8 @@ Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only
   the PDF page. Even and full-art pages have no folio.
 - This PDF has **no text layer**. `pdftotext` returns nothing and `pdffonts` lists no fonts, so work from page images
   only (§4).
-- Its threats (about 60 stat blocks, pp.17–111) aren't transcribed yet; the id is ready for them (`THREAT_SOURCES` spreads
-  `SOURCES`). The vehicles (pp.107–111) use Church of Steel's format and wait with it.
+- Its 59 threats are in (`dh-*`, §4). The vehicles (the Seeker Chariots and Hellflayer pp.96–97, the Engines of Chaos
+  pp.107–111) use Church of Steel's format and wait with it.
 
 ---
 
@@ -361,6 +361,31 @@ prints five Tier letters (p.5). The Devilfish (p.187) is a vehicle and waits for
   Options sidebars are `variant`s; Mob swaps are `mob` options. Psychic powers (Farseer, Warlock, Weirdboy, Magus,
   Patriarch) are ability text, and p.111's Broodmind Discipline holds powers only. All Kroot and Vespid are `tau`,
   Harlequins and Corsairs `aeldari`, every Drukhari beast `drukhari`.
+
+### Threat Assessment: Daemons & Heretics transcription notes (GitHub issue #44)
+
+Every stat block in the book, 59 threats with the `dh-` prefix, read from page images (no text layer): Mortal Pawns 9
+(pp.20–30; Onoros the Siren is the p.20 sidebar's block), Heretic Astartes 11 (pp.35–46), Tzeentch 9 (pp.51–59),
+Nurgle 10 (pp.64–73), Khorne 10 (pp.78–87), Slaanesh 10 (pp.92–102). Every block prints five Tier letters. The Seeker
+Chariot, Exalted Seeker Chariot, Hellflayer (pp.96–97) and the Engines of Chaos (pp.107–111) are vehicles; the relic
+pages (pp.60–61, 74–75, 88–89, 103–104) and p.37's Chaos Terminator Armour table aren't threats.
+- **Reprints, all different from the printing already in:** `dh-cultist` (Core and Bloody Gates), `dh-mutant`,
+  `dh-chaos-spawn` (a wholly different profile), `dh-plaguebearer`, `dh-poxwalker`, `dh-plague-marine` (Core's is an
+  option on `chaos-space-marine`), `dh-pink-horror`, `dh-daemonette`, `dh-bloodletter` (only its Tier row differs,
+  rules-flow.md §11.72), `dh-nurgling` and `dh-rot-fly` (Darktide), `dh-the-changeling` (Wretches of the Writ).
+  `dh-rubric-marine` sits beside homebrew `apoc-rubric-marine`.
+- **Options, not files:** the Blue and Brimstone Horrors on `dh-pink-horror` (as Core), the Exalted Flamer, the
+  Aspiring Champion and the Havocs sidebar on `dh-legionary`, the Chosen and Raptor Champions, the Blood Legions on the
+  Bloodthirster, the Lord of Skulls Options, the Legions of Excess on the Keeper of Secrets.
+- **Faction by keyword:** a block printing DAEMON is `daemon`, including the Warp Talon, Obliterator, Possessed and
+  Poxwalker; Heretic Astartes, Plague, Rubric and Noise Marines, Berzerkers and mortals are `heretic`.
+- **Kept as printed:** the keyword "PSKYER" (the Tzeentch daemons, the Great Unclean One); the traits "Superchange",
+  "Unweildy (2)", "Rend (1)", "Rend (2)" and "Warp"; "Intimitation"; "Weapons Skill" (Plaguebearer); the Bilepiper's
+  Weapon Skill printed twice; "Mark of Chaos(KHORNE)"; the Poxwalker's "Inflicts (Poison 3)", as Core's.
+- **Calls:** the Contorted Epitome's 3 personal Ruin is shared with its riders (note). The Doomsiren's Salvo "1d6"
+  can't be an int, so it's in the Mob option text. The Steed of Slaanesh takes its block title (the heading says
+  "Seeker"). A "(Fly)" or "(Flying)" speed keeps the number. Greater Daemons' "Daemon Lord" and "Entrusted by" bonuses
+  set `personalRuin` (5).
 
 ---
 
