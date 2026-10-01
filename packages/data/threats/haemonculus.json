@@ -1,0 +1,49 @@
+{
+  "id": "haemonculus",
+  "name": "Haemonculus",
+  "source": "threat-assessment",
+  "page": 67,
+  "faction": "drukhari",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["DRUKHARI", "[COVEN]"],
+  "attributes": { "S": 3, "T": 5, "A": 5, "I": 5, "Wil": 7, "Int": 8, "Fel": 3 },
+  "resilience": { "value": 9, "note": "AR 3" },
+  "defence": 4,
+  "wounds": 13,
+  "shock": 11,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Medicae", "dice": 12 },
+      { "name": "Scholar", "dice": 10 },
+      { "name": "Tech", "dice": 12 },
+      { "name": "Weapon Skill", "dice": 12 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "Fleshcraft", "text": "A Haemonculus twists their own flesh into a horrific and deadly warform, giving them 4 arms, each with a specific purpose on the battlefield. On its Turn, a Haemonculus may attack once with each of its 4 weapons without suffering a DN penalty. The Haemonculus can sacrifice its attack with its Haemonculus Tools to make a Medicae Test on a target it shares the [COVEN] Keyword with within 2m." },
+    { "name": "Master of Pain", "text": "A Haemonculus has inflicted such violations upon their own flesh that enemy attacks are barely a cause for concern. The Haemonculus gains +2 Resilience (already included above). Additionally, whenever a Hameonculus heals another creature's Wounds, the Haemonculus may choose to heal up to 4 additional Wounds by inflicting an equal amount of Shock damage." },
+    { "name": "Torture Artist", "text": "this Threat gains +2 bonus dice to any Test made to torture an individual." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Stinger Pistol", "damage": 6, "ed": 2, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol", "Inflict (Poisoned 2)", "Rending (4)"] },
+        { "name": "Haemonculus Tools", "damage": 7, "ed": 3, "range": [3], "traits": ["Inflict (Poisoned 2)", "Rending (4)"] },
+        { "name": "Scissorhand", "damage": 6, "ed": 2, "ap": -2, "range": [1], "traits": ["Inflict (Poisoned 14)"] },
+        { "name": "Ichor Injector", "damage": 4, "ed": 4, "range": [1], "traits": ["Inflict (Poisoned 4)", "Rending (4)"] }
+      ]
+    }
+  ],
+  "determination": "Insensible to Pain: Spend 1 Ruin to roll 5d6. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Print: Stinger Pistol damage is printed \"- 6\" (stored 6); its Inflict is printed \"Poison 2\"; Scissorhand's Inflict is printed \"Poisoned 14\"."
+}

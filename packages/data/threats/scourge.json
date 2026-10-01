@@ -1,0 +1,44 @@
+{
+  "id": "scourge",
+  "name": "Scourge",
+  "source": "threat-assessment",
+  "page": 76,
+  "faction": "drukhari",
+  "threat": ["E", "E", "T", "T", "T"],
+  "keywords": ["DRUKHARI"],
+  "attributes": { "S": 3, "T": 3, "A": 6, "I": 5, "Wil": 4, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 8, "note": "AR 4*" },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Pilot", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 48 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Power of Pain: Eager To Flay", "text": "If this Threat deals a Wound it gains +2 Speed until the end of its next Turn." },
+    { "name": "Winged", "text": "Scourges have wings, allowing them to Fly at Speed 14 using their movement." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Shardcarbine",
+      "weapons": [
+        { "name": "Shardcarbine", "damage": 7, "ed": 2, "range": [9, 18, 27], "salvo": 2, "traits": ["Assault", "Inflict (Poisoned 3)"] },
+        { "name": "Plasma Grenade", "count": 2, "damage": 12, "ed": 5, "ap": -1, "range": [8], "traits": ["Blast (8)", "Inflict (Blinded)"] }
+      ]
+    },
+    { "type": "BATTLECRY", "name": "Winged Strike", "text": "The Hellion descends from high in the sky. All opponents of the Hellion must make a DN 3 Initiative Test or are Ambushed." }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 14,
+  "size": "Avg",
+  "note": "Print: Weapon Skill is printed \"48\", stored as printed (likely 4 or 8); the bonus is \"Power of Pain\" and the battlecry says \"Hellion\"; \"AR 4*\" has no footnote. Speed is printed \"14 (Fly)\"."
+}

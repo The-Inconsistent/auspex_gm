@@ -1,0 +1,41 @@
+{
+  "id": "kabalite-warrior",
+  "name": "Kabalite Warrior",
+  "source": "threat-assessment",
+  "page": 69,
+  "faction": "drukhari",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["DRUKHARI", "[KABAL]"],
+  "attributes": { "S": 3, "T": 3, "A": 4, "I": 4, "Wil": 3, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 6, "note": "AR 3" },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Power from Pain: Eager to Flay", "text": "If this Threat deals a Wound it gains +3 Speed until the end of its next Turn." },
+    { "name": "Prey on the Weak", "text": "This Threat gains +2 bonus dice to any Test targeting a Wounded individual." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Splinter Rifle", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Inflict (Poisoned 3)", "Rapid Fire (2)"] },
+        { "name": "Sword", "damage": 6, "ed": 2, "range": [1], "traits": ["Parry"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Another printing exists: litanies-kabalite-warrior (Litanies of the Lost)."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "wych",
+  "name": "Wych",
+  "source": "threat-assessment",
+  "page": 65,
+  "faction": "drukhari",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["DRUKHARI", "[WYCH CULT]"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 5, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 4, "note": "AR 1" },
+  "defence": 4,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 8 },
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 11 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Power from Pain: Flensing Fury", "text": "If this Threat deals a Wound it gains +3 bonus dice to Weapon Skill (I) Tests until the end of its next Turn." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Torturous Acrobatics", "text": "The Wych moves to their target then uses a Multi-Action to make an Athletics (S) Interaction Attack attempting to make them Vulnerable, followed by a melee attack with their Hekatarii Blade" },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Splinter Pistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Inflict (Poisoned 3)", "Pistol"] },
+        { "name": "Hekatarii Blade", "damage": 7, "ed": 4, "ap": -1, "range": [1], "traits": ["Parry"] },
+        { "name": "Plasma Grenade", "count": 1, "damage": 12, "ed": 5, "ap": -1, "range": [8], "traits": ["Blast (8)", "Inflict (Blinded)"] }
+      ]
+    },
+    { "type": "REACTION", "name": "No Escape", "text": "When this Threat makes a Reaction Attack with a melee weapon they do so with +2 bonus dice" }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 3d6. This Threat uses Agility instead of Toughness to roll Determination.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Another printing exists: litanies-wych (Litanies of the Lost)."
+}

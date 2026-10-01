@@ -1,0 +1,35 @@
+{
+  "id": "razorwing-flock",
+  "name": "Razorwing Flock",
+  "source": "threat-assessment",
+  "page": 74,
+  "faction": "drukhari",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["DRUKHARI", "BEAST"],
+  "attributes": { "S": 1, "T": 1, "A": 3, "I": 3, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 3 },
+  "defence": 3,
+  "wounds": 3,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Weapon Skill", "dice": 3 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Razorfeathers", "damage": 3, "ed": 2, "ap": -1, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 ruin to roll 13d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 12,
+  "size": "Small",
+  "note": "Speed is printed \"12 (Flight)\". Determination prints \"13d6\". Gutshiva's Kommandos has a differently named \"Razorwings\" (razorwings) and Apocrypha an apoc-razorwing."
+}

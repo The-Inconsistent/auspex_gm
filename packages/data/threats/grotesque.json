@@ -1,0 +1,42 @@
+{
+  "id": "grotesque",
+  "name": "Grotesque",
+  "source": "threat-assessment",
+  "page": 71,
+  "faction": "drukhari",
+  "threat": ["E", "E", "E", "T", "T"],
+  "keywords": ["DRUKHARI"],
+  "attributes": { "S": 6, "T": 7, "A": 2, "I": 4, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 9, "note": "AR 4" },
+  "defence": 2,
+  "wounds": 11,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Power From Pain: Inured To Suffering", "text": "If this Threat deals a Wound it gains +1 bonus dice to Determination Tests until the end of its next Turn." },
+    { "name": "Lobotomized", "text": "This Threat is barely sentient and acts out the will of its dark master relentlessly. It ignores abilities that target the mind and never needs to make a Resolve Test to continue fighting." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Frightful Form", "text": "Anyone that can see this Threat must make a DN 2 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Flesh Gauntlet", "damage": 11, "ed": 3, "range": [1], "traits": ["Agonising"] },
+        { "name": "Liquifier Gun", "damage": 10, "ed": 1, "ap": -2, "range": [6, 12, 18], "salvo": 2, "traits": ["Assault", "Flamer", "Melta"] },
+        { "name": "Monstrous Cleaver", "damage": 11, "ed": 6, "range": [1], "traits": ["Brutal"] }
+      ]
+    }
+  ],
+  "determination": "Insensible to Pain: Spend 1 Ruin to roll 7d6. Any Wounds negated by Determination are ignored instead of being converted to Shock",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 7,
+  "size": "Large"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "sslyth",
+  "name": "Sslyth",
+  "source": "threat-assessment",
+  "page": 68,
+  "faction": "drukhari",
+  "threat": ["A", "A", "E", "T", "T"],
+  "keywords": ["DRUKHARI", "COURT OF THE ARCHON", "[KABAL]"],
+  "attributes": { "S": 6, "T": 4, "A": 3, "I": 4, "Wil": 3, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 6, "note": "AR 3" },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Athletics", "dice": 8 },
+      { "name": "Awareness", "dice": 86, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 84 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Sslyth Limbs", "text": "A Slyth has 2 sets of limbs, reducing the Multi-Attack and Multi-Action penalty by 2 DN." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Frightful Form", "text": "Anyone that can see this Threat must make a DN 1 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Splinter Pistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Inflict (Poisoned 3)", "Pistol"] },
+        { "name": "Shardcarbine", "damage": 7, "ed": 1, "range": [9, 18, 27], "salvo": 2, "traits": ["Inflict (Poisoned 6)", "Rapid Fire (2)"] },
+        { "name": "Sslyth battle-blade", "damage": 9, "ed": 3, "range": [1], "traits": ["Parry"] }
+      ]
+    },
+    { "type": "REACTION", "name": "Cold Blooded Bodyguard", "text": "When an Archon the Sslyth is the bodyguard of within 8m is targeted by an attack, this Threat may interpose themself as a reaction and become the new target for the attack." }
+  ],
+  "determination": "Resilient Species: Spend 1 Ruin to roll 4d6. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Large",
+  "note": "Print: skills are printed \"Awareness 86 (Passive 3)\" and \"Ballistic Skill 84\". Both stored as printed (likely Awareness 6, as Passive 3 fits it, and Ballistic Skill 8); the bonus spells the name \"Slyth\"."
+}
