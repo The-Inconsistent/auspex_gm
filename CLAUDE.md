@@ -205,6 +205,17 @@ cd apps/api && bun run db:generate                           # after editing any
   `db:generate`, then `docker compose down -v`. **Once there is real campaign data, add migrations instead.**
   `0001` (accounts) is additive; old GM tokens still sit in `access_token` but open nothing.
 
+## Branches and PRs
+
+Use **Graphite** (`gt`), not raw `git`, for branches, commits and PRs (README §Branches and PRs). The trunk is `main`.
+
+- `gt create <branch> -a -m "<msg>"` for a new branch (on top of the current one, so a multi-step feature stacks),
+  `gt modify -a` to amend, `gt submit --stack` to push and open the PRs, `gt sync` after a merge.
+- A branch made with plain `git` joins a stack with `gt track <branch> --parent <parent>`.
+- Never `git rebase` a stacked branch, or push one with `git push`; `gt restack` and `gt submit` keep the parents and
+  each PR's base in step.
+- Read-only `git` (`status`, `diff`, `log`, `show`, `blame`) and `gh` for reading PRs and posting reviews are fine.
+
 ## Standards
 
 These are binding; follow them when writing code and use them when reviewing:

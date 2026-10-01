@@ -90,6 +90,23 @@ People sign in with Clerk accounts. Players who don't want an account can join a
 | `bun run test:smoke` | End-to-end GM and player session (needs `dev:db` and `dev:api` running) |
 | `cd apps/api && bun run db:generate` | Generate a migration after editing a `*.schema.ts` |
 
+## Branches and PRs
+
+Work goes through [Graphite](https://graphite.dev) (`gt`), not raw `git` branch commands, so a feature split into
+steps lands as a stack of small PRs, each based on the one below. The trunk is `main`.
+
+| Command | What it does |
+| --- | --- |
+| `gt create <branch> -a -m "<message>"` | Stage everything and commit it as a new branch on top of the current one |
+| `gt modify -a` | Amend the current branch, then restack the branches above it |
+| `gt submit --stack` | Push the stack and open or update a PR for each branch |
+| `gt sync` | Pull `main`, delete merged branches, restack the rest |
+| `gt log short` | Show the stack |
+| `gt track <branch> --parent <parent>` | Adopt a branch made with plain `git` into a stack |
+
+Plain `git` is still fine for reading (`status`, `diff`, `log`). Don't rebase a stacked branch with `git rebase`;
+`gt restack` keeps its parents straight.
+
 ## Layout
 
 ```bash
