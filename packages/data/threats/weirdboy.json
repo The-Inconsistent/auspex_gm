@@ -1,0 +1,44 @@
+{
+  "id": "weirdboy",
+  "name": "Weirdboy",
+  "source": "threat-assessment",
+  "page": 87,
+  "faction": "ork",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 6, "T": 6, "A": 2, "I": 3, "Wil": 5, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 7,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 3 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Power of the Waaagh!",
+      "text": "The weirdboy attempts to activate Smite or a Power of the Waaagh! psychic power below.\nDa 'Eadbanger: DN Targets Defence. Activation Action. Duration Instant. Range 35m. Multi Target No. The Weirdboy fixes their intended target with an intense stare, focusing the energy pulsing through them with a concentrated effort to make their head explode. Target one enemy within range and make a Psychic Mastery (Wil) Test against their Defence if successful the target suffer 1d3 Mortal Wounds.\nWarpath: DN 5. Activation Action. Duration Sustained. Range 20m. Multi Target Yes. Those within a 25m radius of the Weirdboy are suddenly blessed with visions of the upcoming battle and erupt into a frenzied bloodlust. Pushing forward eager to spill blood all ORKS within the spells radius gain +1 bonus dice to melee tests.\nDa Krunch: DN 10. Activation Action. Duration Instant. Range 35m. Multi Target Yes. The Clouds part as the monstrous Green Foot of the Ork deity Mork (or Gork) descends, crushing those caught beneath it. Targets hit stomped by the enormous boot take 12+2ED damage and must make a successful DN4 Agility test to avoid being Pinned",
+      "weapons": [
+        { "name": "Weirdboy Staff", "damage": 9, "ed": 1, "ap": -1, "range": [2], "traits": ["Force", "Waaagh!"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Waaagh! Energy", "text": "While there are 20 or more Orks within 12 meters of the Weirdboy, if they successfully activate a psychic power, they may immediately attempt to active another." }
+  ],
+  "note": "Psychic powers (Ork Psychic Powers box, p.87) kept in the Power of the Waaagh! ability text. Resilience prints \"7 (AR 0)\"."
+}

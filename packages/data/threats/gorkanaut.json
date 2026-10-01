@@ -1,0 +1,59 @@
+{
+  "id": "gorkanaut",
+  "name": "Gorkanaut",
+  "source": "threat-assessment",
+  "page": 103,
+  "faction": "ork",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 14, "T": 12, "A": 2, "I": 4, "Wil": 5, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 17, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 22,
+  "shock": 10,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Intimidation", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Big 'n' Stompy", "text": "When the Gorkanaut Charges it can move through any Huge or smaller individuals, forcing them to make a DN 2 Agility Test or suffer 1d6 Mortal Wounds." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Transport", "text": "If you are using the rules for vehicles from Church of Steel, a Gorkanaut has 1 Nob Pilot, 1 Nob Crew, and space for 6 Passengers." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Deffstorm Mega-Shoota", "damage": 14, "ed": 2, "ap": -1, "range": [18, 36, 54], "salvo": 4, "traits": ["Mounted (Large)", "Rapid Fire (2)", "Waaagh!"] },
+        { "name": "Rokkit Launcha", "count": 6, "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Assault", "Blast (4)"] },
+        { "name": "Skorcha", "damage": 12, "ed": 1, "ap": -1, "range": [6, 12, 18], "salvo": 2, "traits": ["Flamer", "Mounted (Huge)"] },
+        { "name": "Twin Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 6, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Klaw of Gork (or possibly Mork): Crush", "damage": 22, "ed": 6, "ap": -4, "range": [4], "traits": ["Unwieldy (3)", "Waaagh!"] },
+        { "name": "Klaw of Gork (or possibly Mork): Smash", "damage": 13, "ed": 1, "ap": -2, "range": [4], "traits": ["Waaagh!"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Klaw of Gork (or possibly Mork)",
+      "text": "Each time an attack is made with this weapon the Gorkanaut can Crush once, or Smash 3 times without suffering a Multi-attack penalty to DN."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explosive",
+      "text": "When a Gorkanaut dies, roll a d6. If you roll a Complication, the Gorkanaut explodes. Gorkanaut Explosion: 18 +6 ED / Blast (15)"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 124d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 8,
+  "size": "Gargantuan",
+  "note": "Print errors, copied as printed: Determination \"roll 124d6\"; Skorcha prints \"Salvo 2 – /\" (stray dash, stored as salvo 2). Resilience prints \"17(AR 4)\"; Rokkit Launcha prints \"(6)\", stored as count 6."
+}

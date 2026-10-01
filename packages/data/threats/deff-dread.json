@@ -1,0 +1,43 @@
+{
+  "id": "deff-dread",
+  "name": "Deff Dread",
+  "source": "threat-assessment",
+  "page": 101,
+  "faction": "ork",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 7, "T": 9, "A": 2, "I": 4, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 16, "note": "AR 6" },
+  "defence": 3,
+  "wounds": 17,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Intimidation", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Dread Klaw", "damage": 15, "ed": 5, "ap": -3, "range": [21], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explosive",
+      "text": "When a Deff Dread dies, roll a d6. If you roll a Complication, the Deff Dread explodes. Deff Dread Explosion: 15 +5 ED / Blast (8)"
+    }
+  ],
+  "determination": "Ramshackle: Spend 1 Ruin or sacrifice 1 AR to roll 9d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Huge",
+  "note": "Print oddities, copied as printed: Dread Klaw prints \"Range 21\" with a melee profile; the Deff Dread Explosion line has a blank gap between \"+5 ED\" and \"/ Blast (8)\". Resilience prints \"16 (AR 6)\"."
+}

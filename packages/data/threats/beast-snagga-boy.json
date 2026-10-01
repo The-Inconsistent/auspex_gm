@@ -1,0 +1,56 @@
+{
+  "id": "beast-snagga-boy",
+  "name": "Beast Snagga Boy",
+  "source": "threat-assessment",
+  "page": 93,
+  "faction": "ork",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 5, "T": 5, "A": 2, "I": 2, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 1" },
+  "defence": 1,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 2,
+    "list": [
+      { "name": "Awareness", "dice": 3, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 3 },
+      { "name": "Intimidation", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Beast Snagga", "text": "This Threat gains +2 bonus dice to attacks on targets with the BEAST or SQUIG Keywords." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 8, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Snagga Mob",
+      "text": "A mob of 10 or more Beast Snagga Boyz can be led by a Beast Snagga Nob, who has +1 Toughness, Wounds, and Resilience, and replaces their Choppa with a Power Snappa. Additionally, one Beast Snagga Boy in the Mob may be equipped with the Thump Gun.",
+      "weapons": [
+        { "name": "Power Snappa", "damage": 10, "ed": 5, "ap": -2, "range": [1], "traits": ["Waaagh!"] },
+        { "name": "Thump Gun", "damage": 13, "ed": 2, "ap": -1, "range": [9, 18, 27], "salvo": 1, "traits": ["Spread", "Waaagh!"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Beast SNagga Boyz gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Boyz." }
+  ],
+  "note": "Printed as \"MOB ACTIONS\": Snagga Mob, kept as a mob option. Resilience prints \"7 (AR 1)\"; the Mob Rule text prints \"SNagga\"."
+}

@@ -1,0 +1,49 @@
+{
+  "id": "tankbusta",
+  "name": "Tankbusta",
+  "source": "threat-assessment",
+  "page": 91,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 5, "T": 6, "A": 2, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 3,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Tank Hunters", "text": "This Threat gains +2 bonus dice to any Test related to the destruction of vehicles." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Rokkit Launcher", "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Blast (4)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "weapons": [
+        { "name": "Tankhammer", "damage": 14, "ed": 5, "ap": -2, "range": [1], "traits": ["Blast (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Tankbustas gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Tankbustas." }
+  ],
+  "note": "The Tankhammer is printed as \"RUIN: Tankhammer\" (a weapon profile under a RUIN prefix), kept in a RUIN ability. Resilience prints \"7 (AR 0)\"."
+}

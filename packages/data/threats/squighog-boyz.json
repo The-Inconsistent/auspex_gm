@@ -1,0 +1,42 @@
+{
+  "id": "squighog-boyz",
+  "name": "Squighog Boyz",
+  "source": "threat-assessment",
+  "page": 96,
+  "faction": "ork",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 6, "T": 6, "A": 2, "I": 3, "Wil": 2, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 8, "note": "AR 1" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Pilot", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "text": "Stikka is printed as one profile: \"Melee Range 2, Thrown 6 - 12 - 18\". Listed here as a melee and a thrown entry.",
+      "weapons": [
+        { "name": "Stikka (melee)", "count": 2, "damage": 9, "ed": 3, "ap": -2, "range": [2], "traits": ["Waaagh!"] },
+        { "name": "Stikka (thrown)", "count": 2, "damage": 9, "ed": 3, "ap": -2, "range": [6, 12, 18], "traits": ["Waaagh!"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Resilience prints \"8 (AR 1)\". Printed beside the Squighog block (squighog)."
+}

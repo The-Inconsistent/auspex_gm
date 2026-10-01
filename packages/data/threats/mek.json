@@ -1,0 +1,52 @@
+{
+  "id": "mek",
+  "name": "Mek",
+  "source": "threat-assessment",
+  "page": 99,
+  "faction": "ork",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 5, "T": 6, "A": 3, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Tech", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Grot Oiler", "text": "The Grot Oiler can be sacrificed to add +3 bonus dice to any Tech Test." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Mekanik",
+      "text": "A Mek can attempt to repair any damaged piece of equipment with the ORK Keyword within 1 metre as a Simple Action. They can also Reload a weapon as a Free Action."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Kustom Mega-Slugga", "damage": 10, "ed": "1d3", "ap": -3, "range": [6, 12, 18], "salvo": 1, "traits": ["Blast (4)", "Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 87, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Orky Upgradez",
+      "text": "As a Free Action, the Mek may spend 1 Ruin to tinker with a ranged weapon within 1 metre. The weapon gains +1d3 ED and +1d3 AP for its next attack. The next time the weapon is fired, a Complication triggers if the Wrath Die lands on a 1, 2, or 3."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Print error, copied as printed: Choppa damage prints \"87 +3 ED\" (other Choppas print 7 to 10). Resilience prints \"7 (AR 0)\"."
+}

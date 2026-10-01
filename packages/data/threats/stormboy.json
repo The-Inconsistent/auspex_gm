@@ -1,0 +1,57 @@
+{
+  "id": "stormboy",
+  "name": "Stormboy",
+  "source": "threat-assessment",
+  "page": 90,
+  "faction": "ork",
+  "threat": ["E", "E", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 4, "T": 6, "A": 3, "I": 3, "Wil": 2, "Int": 1, "Fel": 3 },
+  "resilience": { "value": 6, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 3,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Pilot", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Full Throttle", "text": "When the Stormboy uses a Rokkit Pack to move, they can choose to activate Full Throttle to fly at triple their Speed for the rest of their Turn. They also gain +Rank bonus dice to Intimidation, Leadership, and Weapon Skill Tests whilst Full Throttle is active. If the Stormboy crashes whilst Full Throttle is Active they suffer a minimum of 1d6 Shock and 1 Mortal Wound, plus falling damage (Wrath & Glory, page 201)." },
+    { "name": "Speed", "text": "Speed is printed as \"6 (Fly)\"." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Choppa", "damage": 7, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [16], "traits": ["Blast (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to add 6d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "MORE DAKKA!",
+      "text": "A Mob of 10 or more Stormboyz can be led by a Boss Nob with a Power Claw instead of a Choppa",
+      "weapons": [
+        { "name": "Power Klaw", "damage": 10, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Stormboyz gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Stormboyz." }
+  ],
+  "note": "Printed as \"MOB ACTIONS\": MORE DAKKA! with its Power Klaw, kept as a mob option. Resilience prints \"6 (AR 0)\"; the option text says \"Power Claw\", the weapon \"Power Klaw\"."
+}

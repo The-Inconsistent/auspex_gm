@@ -1,0 +1,55 @@
+{
+  "id": "ta-painboy",
+  "name": "Painboy",
+  "source": "threat-assessment",
+  "page": 86,
+  "faction": "ork",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 6, "T": 6, "A": 3, "I": 4, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 8, "note": "AR 1" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Medicae", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Bionik Boyz", "text": "A number of ORK Threats equal to the Tier of the game that accompany the Painboy may have Bioniks (Wrath & Glory page 246)." },
+    { "name": "Champion", "text": "The Painboy may use Ruin actions and has 1 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Wetwork",
+      "text": "The Painboy uses their Dok's Tools on an ally and makes an attack using one of its weapons, ignoring the Multi-Action DN penalty."
+    },
+    {
+      "type": "ACTION",
+      "name": "Dok's Tools",
+      "text": "The Painboy makes a DN3 Medicae (Int) Test on an ally as a Simple Action. Every shifted Exalted Icon causes the target to recover 1 additional Wound. If The Painboy rolls a Complication, the Test fails, and the target suffers an additional Wound"
+    },
+    {
+      "type": "ACTION",
+      "text": "'Urty Syringe is printed without a Range: \"8 +2 ED / Rending (6)\".",
+      "weapons": [
+        { "name": "Power Klaw", "damage": 11, "ed": 5, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (3)", "Waaagh!"] },
+        { "name": "'Urty Syringe", "damage": 8, "ed": 2, "range": [1], "traits": ["Rending (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Reprint of painboy; differs in Strength 6 (Core 5), Toughness 6 (4), Wounds 10 (6), Shock 5 (4), Resilience 8 (AR 1) (Core 6), Ballistic Skill 5 added, Defence/Awareness, Champion Ruin 1 (Core 3), no Kwik Fix Ruin, Determination 6d6, and the Tier row (5 Tiers)."
+}

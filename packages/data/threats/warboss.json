@@ -1,0 +1,57 @@
+{
+  "id": "warboss",
+  "name": "Warboss",
+  "source": "threat-assessment",
+  "page": 82,
+  "faction": "ork",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 12, "T": 8, "A": 3, "I": 5, "Wil": 6, "Int": 2, "Fel": 3 },
+  "resilience": { "value": 17, "note": "AR 8" },
+  "defence": 3,
+  "wounds": 16,
+  "shock": 10,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Intimidation", "dice": 10 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Brutal Presence", "text": "All Orks that share a CLAN Keyword with the Warboss within 10m gain +2 bonus dice and ED to melee attack Tests." },
+    { "name": "Champion", "text": "This Threat may use Ruin actions and has 4 personal Ruin." },
+    { "name": "Dead Tough", "text": "This Threat has +1* AR" },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Grot Gunner", "text": "A subservient Grot rides the Warboss' Mega Armour and wields a mounted Big Shoota. The Grot Gunner fires the Big Shoota using its own action, but uses the Warboss' Ballistic Skill.\nThe Grot can be targeted separately to the Warboss. If a Grot is not riding the Mega Armour, the Big Shoota cannot be fired." },
+    { "name": "Speed", "text": "Speed is printed as \"5 (May not Run or Sprint)\"." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "'Uge Choppa", "damage": 19, "ed": 6, "ap": -3, "range": [2], "traits": [] },
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "I'm Da WarBoss!",
+      "text": "Spend 1 Ruin. The Warboss and all allies with the ORK Keyword within 10 metres gain an additional +2 bonus dice to Weapon Skill (I) Tests until the end of the Warboss' next Turn."
+    },
+    {
+      "type": "REACTION",
+      "name": "Orks Is Never Defeated",
+      "text": "Whenever a Threat with the ORK Keyword dies within 10 metres of the Warboss, the Warboss may sacrifice 1 Shock. If it does, the Ork Threat may make an immediate attack before it dies."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 8d6",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 5,
+  "size": "Large",
+  "note": "Skills line prints \"Ballistic Skill,\" with no dice number (print error); omitted. Resilience prints \"17 (AR 8)\"; Dead Tough prints \"+1* AR\"."
+}

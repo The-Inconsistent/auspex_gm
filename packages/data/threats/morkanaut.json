@@ -1,0 +1,64 @@
+{
+  "id": "morkanaut",
+  "name": "Morkanaut",
+  "source": "threat-assessment",
+  "page": 103,
+  "faction": "ork",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 13, "T": 13, "A": 2, "I": 4, "Wil": 5, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 18, "note": "AR 4" },
+  "defence": 3,
+  "wounds": 23,
+  "shock": 10,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Intimidation", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Big 'n' Stompy", "text": "When the Gorkanaut Charges it can move through any Huge or smaller individuals, forcing them to make a DN 2 Agility Test or suffer 1d6 Mortal Wounds." },
+    { "name": "Transport", "text": "If you are using the rules for vehicles from Church of Steel, a Morkanaut has 1 Nob Pilot, 1 Nob Crew, and space for 6 Passengers." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." },
+    { "name": "Wall of Dakka", "text": "The Morkanaut can fire each of its ranged weapons once as a Multi-attack without suffering a DN penalty." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Kustom Mega-Blasta", "damage": 16, "ed": "1d6", "ap": -3, "range": [12, 24, 36], "salvo": 1, "traits": ["Blast (4)", "Heavy (5)", "Waaagh!"] },
+        { "name": "Kustom Mega-Zappa", "damage": 17, "ed": "2d3", "ap": -3, "range": [18, 36, 54], "salvo": 1, "traits": ["Blast (4)", "Heavy (5)", "Waaagh!"] },
+        { "name": "Rokkit Launcha", "count": 6, "damage": 16, "ed": "1d3", "ap": -2, "range": [12, 24, 36], "salvo": null, "traits": ["Assault", "Blast (4)"] },
+        { "name": "Twin Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 6, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Klaw of Gork (or possibly Mork): Crush", "damage": 21, "ed": 6, "ap": -4, "range": [4], "traits": ["Unwieldy (3)", "Waaagh!"] },
+        { "name": "Klaw of Gork (or possibly Mork): Smash", "damage": 12, "ed": 1, "ap": -2, "range": [4], "traits": ["Waaagh!"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Klaw of Gork (or possibly Mork)",
+      "text": "Each time an attack is made with this weapon the Morkanaut can Crush once, or Smash 3 times without suffering a Multi-attack penalty to DN.choose one of the following actions: Crush or Smash (profiles above)."
+    },
+    {
+      "type": "COMPLICATION",
+      "text": "If the Morkanaut rolls a Complication on a ranged attack Test using either its Kustom Mega-Blasta or Kustom Mega-Zappa, it suffers 1d3 Mortal Wounds."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explosive",
+      "text": "When a Morkanaut dies, roll a d6. If you roll a Complication, the Morkanaut explodes. Morkanaut Explosion: 18 +6 ED / Blast (150)"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 1d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 8,
+  "size": "Gargantuan",
+  "note": "Print errors, copied as printed: Big 'n' Stompy says \"Gorkanaut\" (copied from that block); Blast (150) on the explosion; Determination 1d6. Mega-Zappa ED prints \"17+2d   3 ED\" with a gap; read as 2d3. Resilience prints \"18 (AR 4)\"; Rokkit Launcha prints \"(6)\", stored as count 6."
+}
