@@ -54,7 +54,7 @@ export const TEST_POOL = {
   resolve: "trait",
   corruption: "trait",
 } as const satisfies Record<TestKind, string>;
-// One Agent rolls, or each Agent rolls their own (rules-flow.md §11.70).
+// One Agent rolls, or each Agent rolls their own (rules-flow.md §11.73).
 export const TestWho = z.enum(["one", "each"]);
 export const MAX_TESTS = 12; // ponytail: app limits, not rules; raise them if a scene needs more
 export const MAX_SHIFTS = 5;
@@ -86,12 +86,14 @@ export const BeatTest = z
   });
 export type BeatTest = z.infer<typeof BeatTest>;
 
-// The same Test as another kind, keeping what still fits it: the Skill or Attribute it names, and its DN.
+// The same Test as another kind, keeping what still fits it: the Skill or Attribute it names, its DN and its Shifts.
+// An Opposed Test keeps no Shifts: Shifting is defined against a DN (Core p.165), and an Opposed Test has none.
 export function retypeTest(t: BeatTest, kind: TestKind): BeatTest {
   const pool = TEST_POOL[kind];
   const skill = pool === "skill" || (pool === "either" && !t.attribute) ? (t.skill ?? "Awareness") : null;
   const attribute = pool === "attribute" || (pool === "either" && !skill) ? (t.attribute ?? "S") : null;
-  return { ...t, kind, skill, attribute, dn: pool === "either" ? null : (t.dn ?? 3) };
+  const opposed = pool === "either";
+  return { ...t, kind, skill, attribute, dn: opposed ? null : (t.dn ?? 3), shifts: opposed ? [] : t.shifts };
 }
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);

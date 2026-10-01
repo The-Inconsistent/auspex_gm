@@ -1,5 +1,5 @@
 // Determining Difficulty (Core p.161): each DN, the modifier it is from Standard, and its name. The printed examples
-// are book text, so they stay out of the client bundle (the rules entry and the GM-only presets carry them).
+// are book text, so they stay out of the client bundle; the seat-gated rules entry carries them.
 export const DN_TABLE = [
   { dn: 1, modifier: -2, name: "Easy" },
   { dn: 3, modifier: 0, name: "Standard" },

@@ -603,7 +603,7 @@ test("GM and player share a table", async (t) => {
   assert.ok(catalogue.status === 200 && ((await catalogue.json()) as unknown[]).length > 100);
   assert.equal((await get(`/campaigns/${campaignId}/wargear`, { cookie: `wg_token=${issued.token}` })).status, 403);
   // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
-  // Gamemaster chapter reaches only the GM (§11.71).
+  // Gamemaster chapter reaches only the GM (§11.74).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });
   assert.equal(rules.status, 200);
   const playerRules = ((await rules.json()) as RuleEntry[]).map((r) => r.id);

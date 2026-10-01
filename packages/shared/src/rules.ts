@@ -19,7 +19,7 @@ export const RuleEntry = z.object({
   page: z.number().int().positive(), // printed page
   gist: z.string().min(1).max(120), // one terse line, paraphrased from `text`, for the collapsed row
   text: z.string().min(1), // paragraphs separated by a blank line
-  gm: z.boolean().optional(), // from the Gamemaster chapter: only the GM's seat gets it (rules-flow.md §11.71)
+  gm: z.boolean().optional(), // from the Gamemaster chapter: only the GM's seat gets it (rules-flow.md §11.74)
 });
 export type RuleEntry = z.infer<typeof RuleEntry>;
 

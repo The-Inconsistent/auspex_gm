@@ -92,6 +92,15 @@ export const SKILLS = {
   "Weapon Skill": "I",
 } as const satisfies Record<string, Attribute>;
 export type Skill = keyof typeof SKILLS;
+// The Skills "most commonly used to supplement roleplaying" in a social encounter (Core p.167).
+export const SOCIAL_SKILLS: readonly Skill[] = [
+  "Cunning",
+  "Deception",
+  "Insight",
+  "Intimidation",
+  "Leadership",
+  "Persuasion",
+];
 
 const attr = z.number().int().min(1).max(12);
 const rule = z.object({ name: z.string().max(100), text: z.string().max(2000), page: z.string().max(40).optional() });

@@ -70,4 +70,7 @@ test("a Test moved to another kind stays valid and keeps what fits", () => {
     [retypeTest(start, "opposed").skill, retypeTest(start, "opposed").dn, retypeTest(start, "resolve").dn],
     ["Awareness", null, 3],
   );
+  const laddered = BeatTest.parse({ ...awareness, shifts: ["Gain Information"] });
+  assert.deepEqual(retypeTest(laddered, "opposed").shifts, [], "no DN to Shift against (Core p.165)");
+  assert.deepEqual(retypeTest(laddered, "resolve").shifts, ["Gain Information"]);
 });

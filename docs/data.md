@@ -630,7 +630,7 @@ files), `kind`, `name` as printed with its rating (`Blast (X)`), `abbr` (stats o
 `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
 the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
 paragraphs split by a blank line, and `gm: true` on an entry from the Gamemaster chapter (only Fail Forward so far),
-which only the GM's seat is served (rules-flow.md §11.71). Print errors are kept as printed; tables are plain lines. A section intro is its own
+which only the GM's seat is served (rules-flow.md §11.74). Print errors are kept as printed; tables are plain lines. A section intro is its own
 entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`, minus `gm` entries for a player. The player
 FIGHT tab hands the `stat` entries to the stat block's (?) legend. To add a
 kind (psychic powers, talents), extend `RuleKind` and add a file.

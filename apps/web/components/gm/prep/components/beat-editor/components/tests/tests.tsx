@@ -9,6 +9,7 @@ import {
   MAX_SHIFTS,
   MAX_TESTS,
   SKILLS,
+  SOCIAL_SKILLS,
   TEST_POOL,
   TestKind,
   TestWho,
@@ -21,12 +22,13 @@ import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 
 import { TEST_KIND_LABELS } from "../../../../constants";
 import { dnLabel, testTitle } from "../../../../utils";
-import { ATTITUDE_SHIFT, FAIL_FORWARD, NEW_TEST, SHIFT_USES, skillPenalty } from "./constants";
+import { DnInput } from "./components/dn-input/dn-input";
+import { ATTITUDE_SHIFT, FAIL_FORWARD, GLORY_SHIFT, NEW_TEST, SHIFT_USES, skillPenalty } from "./constants";
 
 type TestsProps = { tests: BeatTest[]; onChange: (tests: BeatTest[]) => void };
 
 const SKILL_NAMES = Object.keys(SKILLS) as Skill[];
-const signed = (n: number) => (n === 0 ? "NONE" : n > 0 ? `+${n}` : `−${-n}`);
+const signed = (n: number) => (n > 0 ? `+${n}` : `−${-n}`);
 
 // What the scene asks the Agents to roll (issue #39): per Test, its kind and pool, the DN, who rolls, what it's for,
 // the Shifts the GM has ready and both outcomes. The app never rolls a Test.
@@ -54,10 +56,6 @@ export function Tests({ tests, onChange }: TestsProps) {
     const attribute = ATTRIBUTES.find((a) => a === name) ?? null;
     setTest(i, of === "skill" ? { skill, attribute: null } : { skill: null, attribute });
   };
-
-  // DN field: digits only, kept inside the schema's 1 to 20.
-  const handleDnChange = (i: number, e: ChangeEvent<HTMLInputElement>) =>
-    setTest(i, { dn: Math.min(20, Math.max(1, Number(e.target.value.replace(/\D/g, "")) || 1)) });
 
   const setShift = ({ i, j, text }: { i: number; j: number; text: string }) =>
     setTest(i, { shifts: tests[i]!.shifts.map((s, k) => (k === j ? text : s)) });
@@ -173,7 +171,7 @@ export function Tests({ tests, onChange }: TestsProps) {
             {pool === "either" ? (
               <div className="dim" style={{ fontSize: 12 }}>
                 <span className="chip">NO DN</span> Each side rolls its own pool. The most Icons wins, and a tie goes to
-                the side that started it (Core Rulebook p.170).
+                the side that started it (Core Rulebook p.170). With no DN there is nothing to Shift against (p.165).
               </div>
             ) : (
               <div className="field">
@@ -191,17 +189,11 @@ export function Tests({ tests, onChange }: TestsProps) {
                       aria-pressed={t.dn === r.dn}
                       onClick={() => setTest(i, { dn: r.dn })}
                     >
-                      {r.dn} {r.name.toUpperCase()} <small>{signed(r.modifier)}</small>
+                      {r.dn} {r.name.toUpperCase()}
+                      {r.modifier ? ` (${signed(r.modifier)})` : ""}
                     </button>
                   ))}
-                  <input
-                    className="input"
-                    style={{ width: 70 }}
-                    aria-label={`DN of test ${i + 1}`}
-                    inputMode="numeric"
-                    value={t.dn ?? ""}
-                    onChange={(e) => handleDnChange(i, e)}
-                  />
+                  <DnInput value={t.dn} label={`DN of test ${i + 1}`} onChange={(dn) => setTest(i, { dn })} />
                 </div>
                 {t.dn !== null && t.dn < 3 && (
                   <div className="dim" style={{ fontSize: 12 }}>
@@ -211,46 +203,52 @@ export function Tests({ tests, onChange }: TestsProps) {
               </div>
             )}
 
-            <div className="field">
-              <span className="label">
-                SHIFT LADDER · {t.shifts.length} OF {MAX_SHIFTS} ·{" "}
-                <RuleIdLink id="test-shifting">
-                  <span className="chip">SHIFTING</span>
-                </RuleIdLink>
-              </span>
-              {t.shifts.map((s, j) => (
-                <div key={j} className="keys" style={{ alignItems: "center" }}>
-                  <span className="dim">{j + 1}</span>
-                  <input
-                    className="input"
-                    style={{ flex: 1, width: "auto" }}
-                    aria-label={`Test ${i + 1}, Shift ${j + 1}`}
-                    maxLength={200}
-                    value={s}
-                    onChange={(e) => setShift({ i, j, text: e.target.value })}
-                  />
-                  <button
-                    className="btn sm danger"
-                    aria-label={`Remove Shift ${j + 1} of test ${i + 1}`}
-                    onClick={() => setTest(i, { shifts: t.shifts.filter((_, k) => k !== j) })}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-              <div className="keys">
-                {["", ...SHIFT_USES, ...(t.skill ? [ATTITUDE_SHIFT] : [])].map((use) => (
-                  <button
-                    key={use}
-                    className="btn sm"
-                    disabled={t.shifts.length >= MAX_SHIFTS}
-                    onClick={() => setTest(i, { shifts: [...t.shifts, use] })}
-                  >
-                    + {use ? use.toUpperCase() : "SHIFT"}
-                  </button>
+            {pool !== "either" && (
+              <div className="field">
+                <span className="label">
+                  SHIFT LADDER · {t.shifts.length} OF {MAX_SHIFTS} ·{" "}
+                  <RuleIdLink id="test-shifting">
+                    <span className="chip">SHIFTING</span>
+                  </RuleIdLink>
+                </span>
+                {t.shifts.map((s, j) => (
+                  <div key={j} className="keys" style={{ alignItems: "center" }}>
+                    <span className="dim">{j + 1}</span>
+                    <input
+                      className="input"
+                      style={{ flex: 1, width: "auto" }}
+                      aria-label={`Test ${i + 1}, Shift ${j + 1}`}
+                      maxLength={200}
+                      value={s}
+                      onChange={(e) => setShift({ i, j, text: e.target.value })}
+                    />
+                    <button
+                      className="btn sm danger"
+                      aria-label={`Remove Shift ${j + 1} of test ${i + 1}`}
+                      onClick={() => setTest(i, { shifts: t.shifts.filter((_, k) => k !== j) })}
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))}
+                <div className="keys">
+                  {["", ...SHIFT_USES, ...(t.skill && SOCIAL_SKILLS.includes(t.skill) ? [ATTITUDE_SHIFT] : [])].map(
+                    (use) => (
+                      <button
+                        key={use}
+                        className="btn sm"
+                        disabled={
+                          t.shifts.length >= MAX_SHIFTS || (use === GLORY_SHIFT && t.shifts.includes(GLORY_SHIFT))
+                        }
+                        onClick={() => setTest(i, { shifts: [...t.shifts, use] })}
+                      >
+                        + {use ? use.toUpperCase() : "SHIFT"}
+                      </button>
+                    ),
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="field">
               <label className="label" htmlFor={`${id}-success`}>

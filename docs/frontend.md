@@ -512,12 +512,21 @@ The tests are in `lib/command/command.test.ts`.
   - goal, read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`, each with its hint and page)
   - exits (`components/exits/exits.tsx`): a label and a scene select per row (this adventure's scenes, or —), up
     to `MAX_EXITS`; SAVE drops rows with neither
-  - tests (`components/tests/tests.tsx`), between handouts and the prepared encounter: per Test a KIND select
-    (`retypeTest` keeps the pool and DN that still fit), a Skill and/or Attribute select by `TEST_POOL`, ONE / EACH,
-    PURPOSE, DN chips from `DN_TABLE` (`CORRUPTION_DNS` for Corruption) plus a 1–20 field, or the NO DN note on an
-    Opposed Test, a DN under 3 hint (Core p.122), the Shift ladder (up to `MAX_SHIFTS`; chips for the uses on
-    pp.165–166, and the Attitude step on p.168 when it names a Skill), ON SUCCESS, and ON FAILURE with the p.319
-    chips; ↑ / ↓ / × per Test, up to `MAX_TESTS`. SAVE drops blank Shift rungs
+  - tests (`components/tests/tests.tsx`), between handouts and the prepared encounter. Per Test:
+    - a KIND select (`retypeTest` keeps the pool, DN and Shifts that still fit)
+    - a Skill and/or Attribute select by `TEST_POOL`
+    - ONE / EACH, and PURPOSE
+    - DN chips from `DN_TABLE` with their modifier inline, "5 CHALLENGING (+2)" (`CORRUPTION_DNS` for Corruption)
+    - a DN field (`components/dn-input`): it keeps the text as typed while editing, counts a DN from 1 to 20 at once,
+      and clamps on blur
+    - a DN under 3 hint (Core p.122)
+    - the Shift ladder, up to `MAX_SHIFTS`. Chips add the uses on pp.165–166, with +1 Glory only once per Test
+      (p.166), and the Attitude step (p.168) when the Test names a social Skill (`SOCIAL_SKILLS`, p.167)
+    - ON SUCCESS, and ON FAILURE with the p.319 chips
+    - ↑ / ↓ / ×
+
+    An Opposed Test shows a NO DN note and no Shift ladder: Shifting is defined against a DN (p.165). Up to
+    `MAX_TESTS` Tests; SAVE drops blank Shift rungs
   - location
   - NPC and handout toggle chips (`aria-pressed`)
   - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
