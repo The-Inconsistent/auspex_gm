@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import type { Character, Weapon } from "@wg/shared";
+import type { ActionInput, Character, Weapon } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -27,7 +27,11 @@ export function UpgradeRow({ me, weapon, send, onRefusal }: UpgradeRowProps) {
   }));
   if (owned.length === 0 && fitted.length === 0) return null;
 
-  const act = async (action: "character.fitUpgrade" | "character.removeUpgrade", upgradeId: string) => {
+  // Fits or removes one upgrade on this weapon, then shows the server's refusal if there is one.
+  const act = async (
+    action: Extract<ActionInput["type"], "character.fitUpgrade" | "character.removeUpgrade">,
+    upgradeId: string,
+  ) => {
     setBusy(true);
     const r = await send({ type: action, id: me.id, weapon: weapon.name, upgradeId });
     setBusy(false);
@@ -42,6 +46,7 @@ export function UpgradeRow({ me, weapon, send, onRefusal }: UpgradeRowProps) {
           key={u.id}
           className="btn sm"
           disabled={busy}
+          aria-label={`Remove ${u.name} from ${weapon.name}`}
           title={`Take ${u.name} off ${weapon.name}`}
           onClick={() => void act("character.removeUpgrade", u.id)}
         >
@@ -56,6 +61,7 @@ export function UpgradeRow({ me, weapon, send, onRefusal }: UpgradeRowProps) {
           <select
             id={`fit-${me.id}-${weapon.name}`}
             className="input sm"
+            aria-label={`Upgrade to fit to ${weapon.name}`}
             value={pick}
             disabled={busy}
             onChange={(e) => setPick(e.target.value)}
@@ -67,7 +73,12 @@ export function UpgradeRow({ me, weapon, send, onRefusal }: UpgradeRowProps) {
               </option>
             ))}
           </select>
-          <button className="btn sm" disabled={busy || !pick} onClick={() => void act("character.fitUpgrade", pick)}>
+          <button
+            className="btn sm"
+            aria-label={`Fit upgrade to ${weapon.name}`}
+            disabled={busy || !pick}
+            onClick={() => void act("character.fitUpgrade", pick)}
+          >
             FIT
           </button>
         </>

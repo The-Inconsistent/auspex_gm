@@ -164,7 +164,7 @@ a {
 .wpn-note {
   display: block;
   color: var(--ink-3);
-  font-size: 0.85em;
+  font-size: max(12px, 0.85em);
   font-style: italic;
 }
 .wpn-note::before {
@@ -341,7 +341,7 @@ button[data-sent="no"] {
 }
 /* A select or field that sits inline in a row of small buttons (the sheet's FIT control), like .btn.sm. */
 .input.sm {
-  min-height: 32px;
+  min-height: 44px;
   padding: 0 8px;
   font-size: 12px;
   width: auto;
@@ -560,7 +560,7 @@ textarea.input {
 .badge-up {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
+  min-height: 44px;
   padding: 0 10px;
   background: var(--red-fill);
   border: 1px solid var(--red-2);

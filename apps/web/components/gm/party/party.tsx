@@ -361,7 +361,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     <span className="dim">
                       XP {c.xp} · RANK {rankOf(c.xp)}
                     </span>
-                    {c.xp > c.xpSpent && <span className="accent">{c.xp - c.xpSpent} XP TO SPEND</span>}
+                    {c.build && c.xp > c.xpSpent && <span className="accent">{c.xp - c.xpSpent} XP TO SPEND</span>}
                   </div>
                   <div className="dim">
                     {seatOf(c.id)

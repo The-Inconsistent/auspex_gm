@@ -112,7 +112,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
           <span>
             <span className="label">RANK</span> <b>{rank}</b>
           </span>
-          {toSpend > 0 && buildHref && (
+          {toSpend > 0 && buildHref && me.build && (
             <a className="badge-up" href={buildHref}>
               LEVEL UP · SPEND {toSpend} XP
             </a>
