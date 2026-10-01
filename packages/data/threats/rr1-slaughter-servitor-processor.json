@@ -1,0 +1,45 @@
+{
+  "id": "rr1-slaughter-servitor-processor",
+  "name": "Slaughter Servitor (Processor)",
+  "source": "redacted-records",
+  "page": 55,
+  "faction": "mechanicus",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM", "SERVITOR"],
+  "attributes": { "S": 4, "T": 3, "A": 2, "I": 2, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 8, "note": "Grafted Plates: AR 4" },
+  "defence": 1,
+  "wounds": 5,
+  "shock": null,
+  "skills": { "default": 5, "list": [{ "name": "Weapon Skill", "dice": 6 }] },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by Abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    },
+    {
+      "name": "Coordinated Slaughter",
+      "text": "When this Threat hits a target with its electro-prod, it can then make a single move towards the target and make an attack with its spiker. When performing this attack, this Threat does not suffer any penalties for making a Multi-Attack."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Spiker", "damage": 10, "ed": 1, "ap": -3, "range": [1], "traits": ["Agonising", "Brutal", "Unwieldy (2)"] },
+        { "name": "Electro-Prod", "damage": 10, "ed": 1, "ap": -1, "range": [18], "traits": ["Inflict (Vulnerable)"] }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Gristle in the Gears",
+      "text": "The Slaughter Servitor is Exhausted for 1 Round. This can be negated by the Slaughter Servitor spending an action and succeeding at a DN 3 Athletics (Str) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (5 Wounds, no Champion bonus, a rank-and-file servitor above a Troop). Printed with the Corral and Excoriator under the heading 'Slaughter Servitor'. Weapons print 'Range 1' and 'Range 18'; no Salvo printed."
+}

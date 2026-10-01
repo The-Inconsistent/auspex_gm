@@ -1,0 +1,119 @@
+{
+  "id": "litanies-lin-and-roco",
+  "name": "Lin and Roco",
+  "source": "litanies-of-the-lost",
+  "page": 91,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "SCUM",
+    "ABHUMAN"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 5,
+    "A": 5,
+    "I": 4,
+    "Wil": 3,
+    "Int": 4,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 8,
+    "note": "Flak Coats: AR 3"
+  },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 6,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 7,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Deception",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "Lin and Roco may use Ruin Actions, and have 2 personal Ruin."
+    },
+    {
+      "name": "Partners in Crime",
+      "text": "Lin and Roco are so inseparable they share the same profile. Whenever Lin makes a melee attack, Roco can make a ranged attack without a Multi-Action penalty, and vice versa. Roco may make a ranged attack even whilst Engaged, and does not need to target the character he is Engaged with."
+    },
+    {
+      "name": "Avalanche of Muscle",
+      "text": "Lin gains +2d to melee attacks when Charging."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Roco's Sniper Rifle",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 0,
+          "traits": [
+            "Sniper (2)"
+          ]
+        },
+        {
+          "name": "Lin's Power Fist",
+          "damage": 11,
+          "ed": 5,
+          "range": [
+            1
+          ],
+          "ap": -3,
+          "traits": [
+            "Brutal",
+            "Unwieldy (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Unstable Mounting",
+      "text": "When Lin and Roco roll a Complication, Roco's precarious position atop Lin has been compromised. They cannot make a ranged attack next turn, as Roco scrambles back to safety and recovers his wits. Agents may also trigger this Complication if they successfully make a Called Shot against a Small target."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion pair with 2 personal Ruin, 8 Wounds). One profile for two characters (Ogryn Lin, Ratling Roco). Faction imperial is a placeholder: no IMPERIUM keyword printed (SCUM, ABHUMAN)."
+}

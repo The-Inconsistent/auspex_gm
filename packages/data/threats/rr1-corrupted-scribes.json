@@ -1,0 +1,33 @@
+{
+  "id": "rr1-corrupted-scribes",
+  "name": "Corrupted Scribes",
+  "source": "redacted-records",
+  "page": 27,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["CHAOS", "TZEENTCH"],
+  "attributes": { "S": 1, "T": 1, "A": 1, "I": 2, "Wil": 1, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 4, "note": "Tattered Robes: AR 0" },
+  "defence": 1,
+  "wounds": 3,
+  "shock": 2,
+  "skills": { "default": 2, "list": [{ "name": "Awareness", "dice": 3, "passive": 2 }] },
+  "bonuses": [{ "name": "Mindless", "text": "This Threat automatically passes Resolve Tests." }],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Feeble Hands", "damage": 1, "ed": 1, "range": [1], "traits": [] }]
+    },
+    {
+      "type": "RUIN",
+      "name": "Convergence of the Damned",
+      "text": "Spend 1 Ruin to draw an additional 10 corrupted scribes into combat."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 1d6",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Feeble Hands prints 'melee range' and no number of dice; stored [1]."
+}

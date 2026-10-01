@@ -1,0 +1,35 @@
+{
+  "id": "rr1-eternity-watch",
+  "name": "Eternity Watch",
+  "source": "redacted-records",
+  "page": 70,
+  "faction": "mechanicus",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ADEPTUS MECHANICUS", "AVACHRUS FORGE WORLD", "IMPERIAL"],
+  "attributes": { "S": 2, "T": 2, "A": 2, "I": 2, "Wil": 1, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 5, "note": "Implants and void-suits: 2 AR" },
+  "defence": 1,
+  "wounds": 5,
+  "shock": 3,
+  "skills": { "default": 3, "list": [{ "name": "Scholar", "dice": 6 }, { "name": "Tech", "dice": 6 }, { "name": "Awareness", "dice": 6 }] },
+  "bonuses": [
+    {
+      "name": "In Defence of Science",
+      "text": "When fighting to protect the great work, members of the Eternity Watch are immune to Fear and have +2 dice on all Actions."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Mastercrafted Las Pistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Reliable"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Skills print 'Tech 6 Awareness 6' with no comma; Awareness has no Passive printed."
+}

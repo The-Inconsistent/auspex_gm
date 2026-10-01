@@ -1,0 +1,125 @@
+{
+  "id": "litanies-entombed-champion",
+  "name": "The Entombed Champion",
+  "source": "litanies-of-the-lost",
+  "page": 95,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC ASTARTES",
+    "WORD BEARERS LEGION"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 5,
+    "I": 4,
+    "Wil": 6,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "Mark III Power Armour: 5 AR"
+  },
+  "defence": 3,
+  "wounds": 13,
+  "shock": 9,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 7,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Intimidation",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "The Entombed Champion may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Industrial Bludgeon",
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (1)"
+          ]
+        },
+        {
+          "name": "Spit Warpfire",
+          "damage": 9,
+          "ed": 1,
+          "range": [
+            2,
+            4,
+            6
+          ],
+          "salvo": 0,
+          "traits": [
+            "Inflict (On Fire)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Mindrage",
+      "text": "Spend 1 Ruin to unleash a furious mental scream. Make an Intimidation Test. Anyone in the scene without the DAEMON Keyword becomes Vulnerable, unless their Resolve is higher than the number of Icons this Threat rolled."
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Defective Catalepsean Node",
+      "text": "If this Threat rolls a Complication, they become Exhausted until the end of their next turn. If this Threat is already Exhausted, it also becomes Hindered (2)."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Return to Slumber",
+      "text": "When you die, you instead enter suspended animation, unless an enemy expends another Combat Action to permanently destroy you."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 7,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin, 13 Wounds). Spit Warpfire's Inflict printed \"Inflicts (On Fire)\"."
+}

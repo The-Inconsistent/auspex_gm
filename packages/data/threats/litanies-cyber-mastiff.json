@@ -1,0 +1,75 @@
+{
+  "id": "litanies-cyber-mastiff",
+  "name": "Cyber Mastiff",
+  "source": "litanies-of-the-lost",
+  "page": 136,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 3,
+    "I": 4,
+    "Wil": 2,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "Armour Plating: 3 AR"
+  },
+  "defence": 3,
+  "wounds": 5,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Stealth",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Go For the Throat!",
+      "text": "The Cyber Mastiff Charges at the nearest target and uses it's Plasteel Bite. If it deals one or more Wounds, the target suffers the Bleeding and Prone Conditions."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Plasteel Bite",
+          "damage": 6,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (3)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (5 Wounds, between Troop and Adversary). Beside homebrew apoc-cyber-mastiff (named Cyber-Mastiff there). Plasteel Bite prints no range; stored [1]."
+}

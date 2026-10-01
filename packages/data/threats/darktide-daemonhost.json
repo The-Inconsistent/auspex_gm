@@ -1,0 +1,108 @@
+{
+  "id": "darktide-daemonhost",
+  "name": "Daemonhost",
+  "source": "darktide",
+  "page": 61,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "DAEMON",
+    "HERETIC"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 5,
+    "A": 5,
+    "I": 7,
+    "Wil": 10,
+    "Int": 3,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 6,
+    "note": "0 AR"
+  },
+  "defence": 6,
+  "wounds": 13,
+  "shock": 13,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 9
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 1 personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Maddening Whispers",
+      "text": "The Daemonhosts found within Hive Tertium are shattered things, the result of foul experiments in binding daemonic fury within frail mortal flesh. Most are heard before they are seen, and their whispers take a toll on all those who hear them. Anyone who hears this Threat must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "text": "Warp Grasp: the Daemonhost may only Restrain one target at a time in this way.",
+      "weapons": [
+        {
+          "name": "Unholy Gaze",
+          "damage": 12,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            12
+          ],
+          "traits": []
+        },
+        {
+          "name": "Warp Grasp",
+          "damage": 13,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Restrained)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Daemonic Form",
+      "text": "Spend 1 Ruin. Enraged, the Daemon bound within the frail human form erupts forth, causing hideous mutations to appear, and eldritch energies to weep from cracks in crumbling, mortal flesh. The Daemonhost immediately appears next to its target, usually whoever drew its attention, and attacks. Its Resilience increases by 4, and it may now fly at Speed 10."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Deadly Demise",
+      "text": "The Daemon bound within the crumbling mortal flesh is released as its host perishes, unleashing a torrent of warp energy before it is sent screaming back to the Immaterium. Warp Explosion: 6+6 ED / Angonising, Blast (6)"
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 7d6. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 10,
+  "resolve": 9,
+  "speed": 7,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Beside homebrew apoc-daemonhost, a different block. Warp Explosion has no range, kept as text; 'Angonising' as printed. Unholy Gaze prints one range (12) and no salvo."
+}

@@ -1,0 +1,45 @@
+{
+  "id": "rr1-jacobin-grizari",
+  "name": "Jacobin Grizari",
+  "source": "redacted-records",
+  "page": 30,
+  "faction": "genestealer",
+  "threat": ["E", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "IMPERIUM", "SCUM"],
+  "attributes": { "S": 2, "T": 2, "A": 3, "I": 4, "Wil": 5, "Int": 3, "Fel": 6 },
+  "resilience": { "value": 6, "note": "Flak Coat: AR 3" },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Cunning", "dice": 10 },
+      { "name": "Deception", "dice": 10 },
+      { "name": "Insight", "dice": 10 },
+      { "name": "Persuasion", "dice": 10 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [{ "name": "Talents", "text": "Has the Talents Jargon [Scholar] and Scum Savvy." }],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Lasgun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (1)", "Reliable"] },
+        { "name": "Frag Grenade", "damage": 10, "ed": 4, "range": [12], "salvo": null, "traits": ["Blast (Medium)"] },
+        { "name": "Knife", "damage": 5, "ed": 2, "range": [1], "traits": [] }
+      ]
+    },
+    { "type": "REACTION", "text": "Sidestep Talent" }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Cunning prints '1-0' (a print error), stored as 10. Frag Grenade prints '(1 Ammo)' before its profile, so no count is stored."
+}

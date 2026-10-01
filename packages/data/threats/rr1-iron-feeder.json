@@ -1,0 +1,52 @@
+{
+  "id": "rr1-iron-feeder",
+  "name": "Iron Feeder",
+  "source": "redacted-records",
+  "page": 79,
+  "faction": "heretic",
+  "threat": ["E", "E", "T", "T"],
+  "keywords": ["MUTANT", "HERETIC"],
+  "attributes": { "S": 4, "T": 4, "A": 4, "I": 4, "Wil": 3, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 7, "note": "Mutated skin & scrap armour plating: AR 2" },
+  "defence": 1,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Survival", "dice": 6 },
+      { "name": "Tech", "dice": 3 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Favoured Prey",
+      "text": "If the target of this Threat's attack has any Augmetics, add +1 ED to any melee attack."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Scrapmetal Shard", "damage": 6, "ed": 1, "ap": -2, "range": [1], "traits": [] }]
+    },
+    {
+      "type": "REACTION",
+      "name": "Scatter",
+      "text": "Once per Round, when another Iron Feeder within 10 m of this Threat is killed, this Threat can take an immediate Movement Action."
+    },
+    {
+      "type": "RUIN",
+      "name": "Shadow Strike",
+      "text": "When an Iron Feeder succeeds in a melee attack as part of an ambush, the GM can add +1 ED per point of Ruin they choose to spend."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "note": "Scrapmetal Shard prints 'Range 1'."
+}

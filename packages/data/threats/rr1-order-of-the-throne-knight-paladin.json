@@ -1,0 +1,58 @@
+{
+  "id": "rr1-order-of-the-throne-knight-paladin",
+  "name": "Order of the Throne Knight Paladin",
+  "source": "redacted-records",
+  "page": 84,
+  "faction": "imperial",
+  "threat": ["M", "M", "M", "A"],
+  "keywords": ["IMPERIUM", "QUESTOR MECHANICUS"],
+  "attributes": { "S": 16, "T": 11, "A": 3, "I": 4, "Wil": 7, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 22, "note": "Adamantium Armour: 7 AR, Ion Shield: 3* AR" },
+  "defence": 3,
+  "wounds": 30,
+  "shock": 20,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Pilot",
+      "text": "When crewed by an expert Order of the Throne pilot, the Knight gains +2 dice on all Actions pertinent to combat. Every time the Knight takes damage, the pilot takes 1d3 Shock."
+    },
+    { "name": "Juggernaut", "text": "Can make a Stomp attack as a Free Action once per round if all they do is Move." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Reaper Chainsword", "damage": 22, "ed": 6, "ap": -3, "range": [5], "traits": ["Heavy (10)"] },
+        {
+          "name": "Battle Cannon",
+          "damage": 18,
+          "ed": 2,
+          "ap": -3,
+          "range": [30, 60, 90],
+          "salvo": 3,
+          "traits": ["Heavy (12)", "Rapid Fire (2)"]
+        },
+        { "name": "Stomp", "damage": 18, "ed": 6, "range": [3], "traits": ["Blast (6)"] }
+      ]
+    },
+    {
+      "type": "BATTLECRY",
+      "name": "War Horns",
+      "text": "A great echoing roar issues from the machine, forcing everyone who can hear it to make a DN 4 Terror Test."
+    }
+  ],
+  "determination": "Roll 11d6 (Monstrous Creature)",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 12,
+  "size": "Gargantuan",
+  "note": "Ion Shield 'AR 3*' has no footnote. Reaper Chainsword prints 'range 5m', Stomp 'Range 3m' and 'Blast 6'; Battle Cannon 'Rapid Fire 2'. Printed in the normal threat format, not the vehicle format. Size prints 'Ggn'."
+}

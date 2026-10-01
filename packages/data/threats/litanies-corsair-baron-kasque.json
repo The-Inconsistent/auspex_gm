@@ -1,0 +1,127 @@
+{
+  "id": "litanies-corsair-baron-kasque",
+  "name": "Corsair Baron Kasque",
+  "source": "litanies-of-the-lost",
+  "page": 89,
+  "faction": "drukhari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "AELDARI",
+    "DRUKHARI",
+    "GREENSTEEL CORSAIRS",
+    "CULT OF ENDLESS TRAUMA"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 3,
+    "A": 4,
+    "I": 5,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 6,
+    "note": "Customised Wytchsuit: AR 2"
+  },
+  "defence": 4,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 9
+      },
+      {
+        "name": "Awareness",
+        "dice": 7,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Pilot",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "Kasque may use Ruin Actions, and has 2 personal Ruin."
+    },
+    {
+      "name": "Flensing Fury",
+      "text": "If Kasque deals a Wound, he gains +2 bonus dice to any Weapon Skill Tests until the end of his next Turn."
+    },
+    {
+      "name": "Grave Lotus",
+      "text": "Kasque is currently under the effects of the Grave Lotus Combat Drug, giving him +2 bonus Strength. The bonus Strength has been added to the Strength Attribute above."
+    },
+    {
+      "name": "Skyboard",
+      "text": "Whilst mounted on his Skyboard Kasque can Fly at Speed 12 and fire its Splinter Pods as though he were wielding them as a Ranged Weapon. If the Skyboard is damaged, Kasque rolls a Complication, or attempts any kind of difficult aerial manoeuvre, he must succeed a DN 4 Pilot (A) Test or the Skyboard crashes in a random direction according to the Scattering rules. Crashing deals a minimum of d3 Shock and may trigger falling damage."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Hellion Assault",
+      "text": "Whilst mounted on a Skyboard, a Hellion may charge as a Combat Action and Fall Back as a Simple Action."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Hellglaive",
+          "damage": 9,
+          "ed": 6,
+          "range": [
+            2
+          ]
+        },
+        {
+          "name": "Splinter Pods",
+          "damage": 8,
+          "ed": 2,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 3,
+          "traits": [
+            "Agonising",
+            "Assault",
+            "Inflict (Poisoned 4)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Adrenalight Burst",
+      "text": "Spend 1 Ruin and suffer 3 Shock to immediately make two All Out Attacks, one after another."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin). Strength 4 already includes the Grave Lotus +2."
+}

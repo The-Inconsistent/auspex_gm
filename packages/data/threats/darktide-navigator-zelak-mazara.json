@@ -1,0 +1,107 @@
+{
+  "id": "darktide-navigator-zelak-mazara",
+  "name": "Navigator Zelak Mazara",
+  "source": "darktide",
+  "page": 76,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "ABHUMAN",
+    "IMPERIUM",
+    "INQUISITION",
+    "NAVIS NOBILITE"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 2,
+    "A": 3,
+    "I": 3,
+    "Wil": 6,
+    "Int": 5,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 7,
+    "note": "4 AR"
+  },
+  "defence": 2,
+  "wounds": 4,
+  "shock": 12,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Warp Resistant",
+      "text": "Mazara adds +3 to the DN of all psychic or magical powers used against her."
+    },
+    {
+      "name": "Warp Sensitive",
+      "text": "Mazara can use Awareness to detect psychic, magical or daemonic entities and powers."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "REACTION",
+      "name": "Evil Eye",
+      "text": "When an enemy declares an attack, Mazara may force them to make a DN 7 Terror Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Warp Eye (costs 1d6 Shock)",
+          "damage": 12,
+          "ed": 3,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "traits": [
+            "Blast (10)",
+            "Inflict (Terror)"
+          ]
+        },
+        {
+          "name": "Master-Crafted Laspistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Reliable"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Strength printed '2 (3)': stored 3 (bracketed value, GM ruling), printed pair kept here. Warp Eye prints no AP and no Salvo. Print 'Dam 12  +3 ED'."
+}

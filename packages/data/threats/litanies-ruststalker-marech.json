@@ -1,0 +1,108 @@
+{
+  "id": "litanies-ruststalker-marech",
+  "name": "Ruststalker Marech",
+  "source": "litanies-of-the-lost",
+  "page": 137,
+  "faction": "mechanicus",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 5,
+    "I": 6,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 9,
+    "note": "Sicarian Battle Armour: 4 AR"
+  },
+  "defence": 5,
+  "wounds": 9,
+  "shock": 5,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Stealth",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Limb Rig",
+      "text": "This Threat reduces the Multi-Attack penalty by 1 DN."
+    },
+    {
+      "name": "Sicarian",
+      "text": "This Threat is immune to Bleeding. This Threat can High Jump 3 metres and Long Jump 5 metres."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Programmed to Petrify",
+      "text": "Ruststalker Marech will attempt to Ambush the Agents from Stealth, using Multi-Attacks to Wound as many targets as possible."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Transonic Blade",
+          "damage": 8,
+          "ed": 5,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Chordclaw",
+          "damage": 6,
+          "ed": 3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Agonising",
+            "Rending (4)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Sacrificial Gambit",
+      "text": "Whenever Marech suffers Wounds, he can choose to ignore those Wounds by sacrificing his Chordclaw. Ignis Avem then directs him to flee, which he does by scampering into crawl spaces in the walls, floor or ceiling, scaling elevator shafts, or fleeing through blast doors or windows, which Ignis Avem seals behind them. The exception to this rule is if the Agents manage to reach the sub-facility level of the manufactorum at which point Marech executes hit-and-run-attacks relentlessly until disabled or destroyed. In between encounters, Marech will seek repairs in the Assembly Lines area before engaging in another ambush. This takes approximately 30 minutes and restores any lost Wounds. They cannot repair if the Assembly Lines are destroyed or otherwise disabled."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin). Transonic Blade and Chordclaw print no range; stored [1]."
+}

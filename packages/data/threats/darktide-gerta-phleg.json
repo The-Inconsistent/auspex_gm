@@ -1,0 +1,87 @@
+{
+  "id": "darktide-gerta-phleg",
+  "name": "Gerta Phleg",
+  "source": "darktide",
+  "page": 31,
+  "faction": "imperial",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "SCUM"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 4,
+    "A": 1,
+    "I": 3,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 6,
+    "note": "1 AR"
+  },
+  "defence": 2,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Cunning",
+        "dice": 6
+      },
+      {
+        "name": "Intimidation",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Expert Climber",
+      "text": "+2 bonus Icons to any Test made to climb."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Meltagun",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Melta"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "No Tier row printed; class proposed (named NPC, 6 Wounds, no Champion bonus). Faction imperial: loyal to nobody."
+}

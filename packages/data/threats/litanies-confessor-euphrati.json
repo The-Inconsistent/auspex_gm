@@ -1,0 +1,39 @@
+{
+  "id": "litanies-confessor-euphrati",
+  "name": "Confessor Euphrati",
+  "source": "litanies-of-the-lost",
+  "page": 34,
+  "faction": "imperial",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["IMPERIUM", "ADEPTUS MINISTORUM"],
+  "attributes": { "S": 2, "T": 2, "A": 2, "I": 2, "Wil": 4, "Int": 3, "Fel": 3 },
+  "resilience": { "value": 7, "note": "Rosarius AR: *4" },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 5,
+  "skills": { "default": 4, "list": [
+    { "name": "Awareness", "dice": 4, "passive": 2 },
+    { "name": "Ballistic Skill", "dice": 2 },
+    { "name": "Insight", "dice": 7 },
+    { "name": "Intimidation", "dice": 6 },
+    { "name": "Medicae", "dice": 6 },
+    { "name": "Scholar", "dice": 7 },
+    { "name": "Weapon Skill", "dice": 4 }
+  ] },
+  "bonuses": [
+    { "name": "Spiritual Administration", "text": "Whenever the Confessor makes a Test to discover another character's sins, they gain +2 bonus dice." }
+  ],
+  "abilities": [
+    { "type": "ACTION", "weapons": [
+      { "name": "Laspistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Reliable"] },
+      { "name": "Ceremonial Maul", "damage": 5, "ed": 3, "range": [1], "traits": [] }
+    ] },
+    { "type": "RUIN", "name": "Invigorating Invocation", "text": "A character of the Confessor's choice that can hear them recovers all Shock damage." }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (named NPC with a Ruin ability, 4 Wounds). Ceremonial Maul prints no Range; stored [1]."
+}

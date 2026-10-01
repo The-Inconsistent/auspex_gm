@@ -1,0 +1,35 @@
+{
+  "id": "litanies-ministorum-priest",
+  "name": "Ministorum Priest",
+  "source": "litanies-of-the-lost",
+  "page": 35,
+  "faction": "imperial",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["IMPERIUM", "ADEPTUS MINISTORUM"],
+  "attributes": { "S": 1, "T": 2, "A": 2, "I": 2, "Wil": 3, "Int": 2, "Fel": 3 },
+  "resilience": { "value": 3 },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 4,
+  "skills": { "default": null, "list": [
+    { "name": "Athletics", "dice": 3 },
+    { "name": "Ballistic Skill", "dice": 4 },
+    { "name": "Insight", "dice": 4 },
+    { "name": "Intimidation", "dice": 4 },
+    { "name": "Leadership", "dice": 5 },
+    { "name": "Scholar", "dice": 4 },
+    { "name": "Weapon Skill", "dice": 4 }
+  ] },
+  "bonuses": [],
+  "abilities": [
+    { "type": "ACTION", "name": "Fiery Invective", "text": "A Ministorum Priest can preach the word of the Imperial Creed as a Free Action once per combat. The Priest and all of their allies with the IMPERIUM Keyword recover 3 Shock.", "weapons": [
+      { "name": "Knife", "damage": 3, "ed": 2, "range": [1], "traits": [] }
+    ] }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (support caster with a Shock-recovery action, 4 Wounds). The Knife prints under the Fiery Invective ACTIONS entry with no Range; stored [1]. No Default pool printed."
+}

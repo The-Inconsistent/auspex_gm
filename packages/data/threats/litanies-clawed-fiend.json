@@ -1,0 +1,41 @@
+{
+  "id": "litanies-clawed-fiend",
+  "name": "Clawed Fiend",
+  "source": "litanies-of-the-lost",
+  "page": 37,
+  "faction": "drukhari",
+  "threat": ["A", "A", "A", "A"],
+  "keywords": ["BEAST", "DRUKHARI"],
+  "attributes": { "S": 6, "T": 6, "A": 5, "I": 5, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7 },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 4,
+  "skills": { "default": 4, "list": [
+    { "name": "Athletics", "dice": 8 },
+    { "name": "Awareness", "dice": 6, "passive": 3 },
+    { "name": "Intimidation", "dice": 6 },
+    { "name": "Stealth", "dice": 4 },
+    { "name": "Survival", "dice": 5 },
+    { "name": "Weapon Skill", "dice": 6 }
+  ] },
+  "bonuses": [
+    { "name": "Hunting Senses", "text": "This Threat suffers no penalty to Tests due to darkness." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Fearsome Beast", "text": "Anyone that can see this Threat must make a DN 3 Fear Test." },
+    { "type": "ACTION", "weapons": [
+      { "name": "Clawed Fists", "damage": 6, "ed": 3, "ap": -1, "range": [2], "traits": ["Brutal"] }
+    ] },
+    { "type": "WRATH", "name": "Tail Spike", "text": "The Clawed Fiend makes an immediate attack with its Tail Spike at any target in range.", "weapons": [
+      { "name": "Tail Spike", "damage": 5, "ed": 2, "ap": -1, "range": [4], "traits": ["Rending (1)"] }
+    ] },
+    { "type": "REACTION", "name": "Berserk Rage", "text": "Whenever this Threat suffers a Wound, roll 1d6. If you roll an Icon, this Threat gains 1 personal Ruin. If you roll an Exalted Icon, this Threat gains 2 personal Ruin." }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Large",
+  "note": "No Tier row printed; class proposed (10 Wounds, Wrath attack, gains personal Ruin; Large, not a Monstrous Creature). Tail Spike sits in the WRATH ability."
+}

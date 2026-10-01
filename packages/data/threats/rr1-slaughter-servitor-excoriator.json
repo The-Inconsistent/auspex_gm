@@ -1,0 +1,45 @@
+{
+  "id": "rr1-slaughter-servitor-excoriator",
+  "name": "Slaughter Servitor (Excoriator)",
+  "source": "redacted-records",
+  "page": 56,
+  "faction": "mechanicus",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM", "SERVITOR"],
+  "attributes": { "S": 4, "T": 3, "A": 3, "I": 3, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 7, "note": "Grafted Plates: AR 4" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": null,
+  "skills": { "default": 5, "list": [{ "name": "Weapon Skill", "dice": 7 }] },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by Abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Blade Arms", "damage": 9, "ed": 3, "ap": -2, "range": [1], "traits": ["Agonising", "Inflict (Bleeding 1)"] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Horrifying Flaying",
+      "text": "If this Threat rolls a Wrath Critical as part of an attack with its blade arms, the target increases the Bleeding Condition to 2."
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Dulled Blades",
+      "text": "The Slaughter Servitor reduces its blade arms attack damage to 9 + 1 ED for 1 Round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (5 Wounds, no Champion bonus, a rank-and-file servitor above a Troop). Blade Arms trait prints 'Inflict (Bleeding [1])'; stored in the catalogue's spelling. Printed as the third block of the Slaughter Servitor entry that starts on p.55."
+}

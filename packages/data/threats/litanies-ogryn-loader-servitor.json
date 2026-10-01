@@ -1,0 +1,88 @@
+{
+  "id": "litanies-ogryn-loader-servitor",
+  "name": "Ogryn Loader Servitor",
+  "source": "litanies-of-the-lost",
+  "page": 135,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 1,
+    "I": 1,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 9,
+    "note": "Grafted Flak Plates: 3 AR"
+  },
+  "defence": 1,
+  "wounds": 9,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Loading Prey",
+      "text": "On its first Turn, an Ogryn Loader Servitor can Sprint towards its nearest enemy and attempts to Grapple them."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Loader Array",
+          "damage": 9,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Error",
+      "text": "The Servitor is Exhausted for 1 Round, This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    },
+    {
+      "type": "ANNIHILATION",
+      "text": "Upon death, Ignis Avem remotely overloads the Ogryn Loader's on-board power supply. Agents with a Passive Awareness of 4 or higher can detect the high-pitched whirring and glow of the capacitors overloading inside the Ogryn a Round before detonation. Ten seconds after the Loader Servitor has been defeated, it detonates with the following profile centered on its corpse: 10 +5 / Blast (6)"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Large",
+  "note": "No Tier row printed; class proposed (9 Wounds, Large). The death explosion prints no range, kept as ability text, as Core's Killa Kan."
+}
