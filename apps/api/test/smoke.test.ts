@@ -802,6 +802,17 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   assert.ok(b1.ok && b1.id && b2.ok && b2.id);
   assert.ok((await gm.send({ type: "beat.reorder", adventureId: adv.id, ids: [b2.id, b1.id] })).ok);
   await eventually(() => gm.codex()?.adventures[0]?.beats[0]?.id === b2.id, "beats reordered");
+  // A beat added after a reorder goes last, not into a tie with the first beat at order 0.
+  const b3 = await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: adv.id, title: "Aftermath" } });
+  assert.ok(b3.ok && b3.id);
+  await eventually(
+    () =>
+      gm
+        .codex()
+        ?.adventures[0]?.beats.map((x) => `${x.id}:${x.order}`)
+        .join() === `${b2.id}:0,${b1.id}:1,${b3.id}:2`,
+    "new beat goes last",
+  );
   await eventually(() => player.codex()?.npcs[0]?.factionId === null, "players don't get hidden faction ids");
   assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: vex.id })).ok);
   await eventually(

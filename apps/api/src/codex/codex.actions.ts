@@ -1,4 +1,4 @@
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, eq, inArray, max, sql } from "drizzle-orm";
 import { threats } from "@wg/data";
 import type { z } from "zod";
 import type { Action, ActionResult, CodexInput } from "@wg/shared";
@@ -76,6 +76,15 @@ export async function applyCodexAction(
           .where(and(eq(table.id, a.id), eq(table.campaignId, cid)))
           .returning({ id: table.id });
         return r.length ? { ok: true, id: a.id } : fail("Not found");
+      }
+      // A new beat goes last. The column default 0 would tie with the first beat once beat.reorder has numbered them.
+      if (a.kind === "beat") {
+        const adventureId = (a.data as z.output<typeof CodexInput.beat>).adventureId;
+        const [{ m } = { m: null }] = await tx
+          .select({ m: max(beat.order) })
+          .from(beat)
+          .where(and(eq(beat.adventureId, adventureId), eq(beat.campaignId, cid)));
+        data.order = (m ?? -1) + 1;
       }
       const [row] = await tx
         .insert(table)
