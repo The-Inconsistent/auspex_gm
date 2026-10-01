@@ -5,8 +5,10 @@ import assert from "node:assert/strict";
 import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
+  ASCENSION_XP,
   LIBRARY_CAP,
   Lobby,
+  SKILL_XP,
   deriveStats,
   poolMax,
   type ActionInput,
@@ -14,6 +16,7 @@ import {
   type BookAvailable,
   type BookPage,
   type BookReply,
+  type Character,
   type Codex,
   type CreationPayload,
   type LibraryCharacter,
@@ -331,8 +334,153 @@ test("GM and player share a table", async (t) => {
       st.ammo["Frag Grenade"] === 4
     );
   });
+  // Fitting an upgrade (Core pp.227-228, rules-flow §11.63-§11.65): instant, no Test, but the fit, the maximum of
+  // three and one-per-slot are the server's to check. The Laspistol just requisitioned is the weapon.
+  const fit = { type: "character.fitUpgrade" as const, id: hero.id!, weapon: "Laspistol" };
+  // A player fits only what their character owns; the GM grants (§11.57).
+  assert.deepEqual(await player.send({ ...fit, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Hero doesn't have Magnocular Scope to fit",
+  });
+  assert.deepEqual(await player.send({ ...fit, id: other.id!, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Not your character",
+  });
+  // What the table receives is the derived sheet, so the fit has to show on the weapon itself, not only as an id.
+  assert.ok((await gm.send({ ...fit, upgradeId: "mastercrafted" })).ok);
+  const shown = await gm.until((s) => {
+    const w = s.characters.find((c) => c.id === hero.id)?.stats.weapons.find((x) => x.name === "Laspistol");
+    return Boolean(w?.fitted?.includes("mastercrafted") && w.traits.includes("Reliable"));
+  });
+  const laspistol = shown.characters.find((c) => c.id === hero.id)!.stats.weapons.find((w) => w.name === "Laspistol")!;
+  assert.deepEqual(laspistol.upgradeNames, ["Mastercrafted"]);
+  assert.ok(
+    laspistol.notes?.some((n) => n.includes("bonus dice")),
+    "the prose the GM applies (Core p.228)",
+  );
+  // That prose is rules text, so an invite holder without a seat sees the fitted profile but not the notes.
+  const heroInvite = await gm.send({ type: "invite.create", mode: "character", characterId: hero.id! });
+  assert.ok(heroInvite.ok && heroInvite.token);
+  const previewed = (
+    (await (await get(`/invites/${heroInvite.token}`)).json()) as { character: Character }
+  ).character.stats.weapons.find((w) => w.name === "Laspistol")!;
+  assert.ok(previewed.traits.includes("Reliable"));
+  assert.equal(previewed.notes, undefined);
+  assert.equal(previewed.upgradeNames, undefined);
+  assert.ok(
+    (await gm.send({ type: "character.removeUpgrade", id: hero.id!, weapon: "Laspistol", upgradeId: "mastercrafted" }))
+      .ok,
+  );
+
+  assert.ok((await gm.send({ ...fit, upgradeId: "magnocular-scope" })).ok);
+  await gm.until((s) =>
+    Boolean(
+      s.characters
+        .find((c) => c.id === hero.id)
+        ?.stats.weapons.find((w) => w.name === "Laspistol")
+        ?.fitted?.includes("magnocular-scope"),
+    ),
+  );
+  assert.deepEqual(await gm.send({ ...fit, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Laspistol already has Magnocular Scope",
+  });
+  assert.deepEqual(await gm.send({ ...fit, upgradeId: "red-dot-sight" }), {
+    ok: false,
+    error: "Laspistol already has a sight: Magnocular Scope (Core p.227)",
+  });
+  // An armour upgrade doesn't go on a weapon, and nothing outside the catalogue goes on anything.
+  const armourFit = await gm.send({ ...fit, upgradeId: "voa-adamantine-cuirass" });
+  assert.match(armourFit.ok ? "fitted" : armourFit.error, /fits armour/);
+  assert.deepEqual(await gm.send({ ...fit, upgradeId: "no-such-upgrade" }), { ok: false, error: "Unknown upgrade" });
+  assert.deepEqual(await gm.send({ ...fit, weapon: "Nothing", upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: 'Hero has no weapon called "Nothing"',
+  });
+  // removeUpgrade refuses what isn't fitted, someone else's character, what the build gives, and a full gear list.
+  const off = { type: "character.removeUpgrade" as const, id: hero.id!, weapon: "Laspistol" };
+  assert.deepEqual(await gm.send({ ...off, upgradeId: "mastercrafted" }), {
+    ok: false,
+    error: "Laspistol has no Mastercrafted fitted",
+  });
+  assert.deepEqual(await player.send({ ...off, id: other.id!, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Not your character",
+  });
+  const stored = (await gm.until((s) => s.characters.some((c) => c.id === hero.id))).characters.find(
+    (c) => c.id === hero.id,
+  )!.stats;
+  const crowded = {
+    ...stored,
+    weapons: stored.weapons.map((w) => (w.name === "Frag Grenade" ? { ...w, upgrades: ["mastercrafted"] } : w)),
+    gear: [...stored.gear, ...Array.from({ length: 60 - stored.gear.length }, (_, i) => `Trinket ${i}`)],
+  };
+  assert.ok((await gm.send({ type: "character.update", id: hero.id!, stats: crowded })).ok);
+  assert.deepEqual(await gm.send({ ...off, weapon: "Frag Grenade", upgradeId: "mastercrafted" }), {
+    ok: false,
+    error: "Mastercrafted is part of Frag Grenade as it was built: change the build to take it off",
+  });
+  assert.deepEqual(await gm.send({ ...off, upgradeId: "magnocular-scope" }), {
+    ok: false,
+    error: "Hero's gear list is full (60 lines)",
+  });
+  assert.ok((await gm.send({ type: "character.update", id: hero.id!, stats: stored })).ok);
+
+  // Taking it off puts it back in the character's gear, so their own player can fit it again.
+  const { type: _fitType, ...onLaspistol } = fit;
+  assert.ok((await gm.send({ type: "character.removeUpgrade", ...onLaspistol, upgradeId: "magnocular-scope" })).ok);
+  await gm.until((s) =>
+    Boolean(s.characters.find((c) => c.id === hero.id)?.stats.gear.some((g) => g.startsWith("Magnocular Scope"))),
+  );
+  assert.ok((await player.send({ ...fit, upgradeId: "magnocular-scope" })).ok);
+  await gm.until((s) => {
+    const st = s.characters.find((c) => c.id === hero.id)?.stats;
+    return (
+      st?.weapons.find((w) => w.name === "Laspistol")?.fitted?.length === 1 &&
+      !st.gear.some((g) => g.startsWith("Magnocular Scope"))
+    );
+  });
+
+  // The upgrades the character holds in gear reach the phones as ids, so a sheet can offer the fit without the
+  // catalogue (#15 step 4).
+  await gm.until((s) => {
+    const owned = s.characters.find((c) => c.id === hero.id)?.ownedUpgrades ?? [];
+    // The Mastercrafted taken off earlier is back in gear, named and with its slot, ready to be fitted again.
+    return owned.some((u) => u.id === "mastercrafted" && u.name === "Mastercrafted" && u.slot === "craft");
+  });
+
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumped." })).ok);
   await gm.until((s) => s.characters.every((c) => c.xp === 10));
+
+  // Requisitioning an upgrade onto a weapon (#15 step 4): the fit is checked before the Test is recorded, so a target
+  // that can't take it costs the session nothing and the GM can record the roll again.
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  await gm.until((s) => s.campaign.glory === 0);
+  const rqUp = {
+    type: "character.requisition" as const,
+    id: hero.id!,
+    kind: "wargear" as const,
+    item: "Red-Dot Sight",
+    wargearId: "red-dot-sight",
+    value: 5,
+    rarity: "Uncommon" as const,
+    keywords: ["[ANY]"],
+    icons: 6,
+  };
+  assert.deepEqual(await gm.send({ ...rqUp, fitTo: "Frag Grenade" }), {
+    ok: false,
+    error: "Red-Dot Sight fits weapon; Frag Grenade is grenade (rules-flow.md §11.64)",
+  });
+  // A sight is already on the Laspistol, so the slot refuses this one too — again before the Test is spent.
+  assert.deepEqual(await gm.send({ ...rqUp, fitTo: "Laspistol" }), {
+    ok: false,
+    error: "Laspistol already has a sight: Magnocular Scope (Core p.227)",
+  });
+  // Neither refusal used up the session's Wargear Test: the same item requisitioned into gear still works.
+  assert.ok((await gm.send(rqUp)).ok);
+  await gm.until((s) =>
+    Boolean(s.characters.find((c) => c.id === hero.id)?.ownedUpgrades.some((u) => u.id === "red-dot-sight")),
+  );
 
   // Codex: players only see revealed entries, without GM notes.
   const secret = await gm.send({
@@ -829,6 +977,7 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.deepEqual(veyl.stats.attributes, { S: 5, T: 5, A: 5, I: 5, Wil: 4, Int: 5, Fel: 1 });
   assert.equal(veyl.build?.archetypeId, "primaris-incursor");
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
+  assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 
   // Refused: a build with choices left, one over budget, one for another Tier.
   const { languages: _, ...noLanguage } = disruptor;
@@ -932,6 +1081,8 @@ test("character builder: the creation catalogue for seats, and character.build d
     await gm.until((s) => s.characters.find((c) => c.id === made.id)?.stats.skills.Stealth === 6)
   ).characters.find((c) => c.id === made.id)!;
   assert.equal(advanced.stats.wealth, before.stats.wealth, "play's Wealth is kept");
+  // What advancement spent is stored, so a sheet shows the XP left without resolving the build (#15 step 5).
+  assert.equal(advanced.xpSpent, SKILL_XP[6]! - SKILL_XP[5]!, "Stealth 5 → 6, priced from where creation left it");
 
   // A sheet written in another hand (a pregen's printed lines, issue #18) survives a save with no build changes: the
   // rebuild adds only what the build adds over the stored one. The new name marks the save's broadcast.
@@ -1271,4 +1422,156 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(fresh.codex.sessions.length, 0);
   assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
   assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
+});
+
+test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp.147-148)", async (t) => {
+  const gm = await newCampaign("Ascend", 2);
+  t.after(() => gm.socket.close());
+  const kell = await gm.send({ type: "character.create", name: "Kell" });
+  const vyn = await gm.send({ type: "character.create", name: "Vyn" });
+  assert.ok(kell.ok && kell.id && vyn.ok && vyn.id);
+  await gm.until((s) => s.characters.length === 2);
+
+  // Ascending is the group's decision and the GM's action (§11.66); a player can't raise the table's Tier.
+  const issued = await gm.send({ type: "token.issue", characterId: kell.id! });
+  assert.ok(issued.ok && issued.token);
+  const player = connect({ auth: { token: issued.token } });
+  t.after(() => player.socket.close());
+  await player.until((s) => s.characters.length === 2);
+  assert.deepEqual(await player.send({ type: "campaign.ascend", kind: "milestone" }), {
+    ok: false,
+    error: "GM only",
+  });
+
+  // Experience Ascension: every character needs 100 XP earned in the current Tier (Core p.147).
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Kell and Vyn have not earned 100 XP in Tier 2 yet (Core p.147)",
+  });
+
+  // Session end awards the XP and tells the GM what it crossed: Rank (Core p.146) and the group's eligibility (p.147).
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.deepEqual(await gm.send({ type: "session.end", xp: 45, recap: "" }), {
+    ok: true,
+    notices: ["Kell reached Rank 2 (Core p.146)", "Vyn reached Rank 2 (Core p.146)"],
+  });
+  await gm.until((s) => s.characters.every((c) => c.xp === 45));
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.deepEqual(await gm.send({ type: "session.end", xp: 55, recap: "" }), {
+    ok: true,
+    notices: [
+      "Kell reached Rank 3 (Core p.146)",
+      "Vyn reached Rank 3 (Core p.146)",
+      `Everyone has earned ${ASCENSION_XP} XP in Tier 2: the group may Ascend (Core p.147)`,
+    ],
+  });
+  await gm.until((s) => s.characters.every((c) => c.xp === ASCENSION_XP));
+
+  // A character who joined after the XP was awarded holds the group back, and is named on their own.
+  const late = await gm.send({ type: "character.create", name: "Latecomer" });
+  assert.ok(late.ok && late.id);
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Latecomer has not earned 100 XP in Tier 2 yet (Core p.147)",
+  });
+  assert.ok((await gm.send({ type: "character.delete", id: late.id! })).ok);
+  await gm.until((s) => s.characters.length === 2);
+
+  // Experience Ascension: the Tier goes up, XP is untouched, and the 100-XP window restarts from here.
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "experience" })).ok);
+  const ascended = await gm.until((s) => s.campaign.tier === 3);
+  assert.ok(
+    ascended.characters.every((c) => c.xp === 100 && c.xpAtAscension === 100 && !c.ascensionPackageWaived),
+    JSON.stringify(ascended.characters.map((c) => [c.xp, c.xpAtAscension])),
+  );
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Kell and Vyn have not earned 100 XP in Tier 3 yet (Core p.147)",
+  });
+
+  // Milestone Ascension is the GM's call: 100 XP each first (Core p.148 step 1), and the package may be waived (step 2).
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone", waivePackage: true })).ok);
+  const milestone = await gm.until((s) => s.campaign.tier === 4);
+  assert.ok(
+    milestone.characters.every((c) => c.xp === 200 && c.xpAtAscension === 200 && c.ascensionPackageWaived),
+    JSON.stringify(milestone.characters.map((c) => [c.xp, c.xpAtAscension, c.ascensionPackageWaived])),
+  );
+
+  // Tier 5 is the last one, and the next Ascension clears the waive.
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone" })).ok);
+  const top = await gm.until((s) => s.campaign.tier === 5);
+  assert.ok(top.characters.every((c) => c.xp === 300 && !c.ascensionPackageWaived));
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "milestone" }), {
+    ok: false,
+    error: "Tier 5 is the highest Tier; there is nothing to Ascend to",
+  });
+});
+
+// A Milestone Ascension may waive the package (Core p.148 step 2): the server's resolve has to read the waive too, or
+// the builder offers SAVE and the server refuses it.
+test("Ascension: a waived package isn't asked for when the build is saved", async (t) => {
+  const advanced = { ...disruptor, advancement: { skills: { Stealth: 6 } } };
+  for (const waivePackage of [false, true]) {
+    const gm = await newCampaign(`Waive ${waivePackage}`, 4);
+    t.after(() => gm.socket.close());
+    const made = await gm.send({ type: "character.build", name: "Veyl", build: disruptor });
+    assert.ok(made.ok && made.id);
+    assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone", waivePackage })).ok);
+    await gm.until((s) => s.campaign.tier === 5);
+    assert.deepEqual(
+      await gm.send({ type: "character.build", id: made.id, build: advanced }),
+      waivePackage
+        ? { ok: true, id: made.id }
+        : { ok: false, error: "Still to choose: Buy one Ascension Package (Tier 4 → 5)" },
+    );
+  }
+});
+
+// Core p.147 asks it of "every character in your group", and nothing removes a dead character's record, so a casualty
+// would otherwise hold the party at its Tier for ever (rules-flow.md §11.66).
+test("Ascension: a Dead character neither has to earn 100 XP nor blocks the group", async (t) => {
+  const gm = await newCampaign("Fallen", 2);
+  t.after(() => gm.socket.close());
+  const live = await gm.send({ type: "character.create", name: "Survivor" });
+  const lost = await gm.send({ type: "character.create", name: "Fallen" });
+  assert.ok(live.ok && live.id && lost.ok && lost.id);
+  await gm.until((s) => s.characters.length === 2);
+
+  // Only the survivor earns the XP; the other is killed outright (p.194).
+  assert.ok((await gm.send({ type: "character.adjust", id: live.id!, wrath: 0 })).ok);
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "session.end", xp: ASCENSION_XP, recap: "" })).ok);
+  await gm.until((s) => s.characters.every((c) => c.xp === ASCENSION_XP));
+  // Both are at 100 now, so take the XP back off the one that dies: it is short, and Dead.
+  assert.ok((await gm.send({ type: "character.update", id: lost.id!, annihilated: true })).ok);
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "campaign.ascend", kind: "experience" })).ok);
+  await gm.until((s) => s.campaign.tier === 3);
+
+  // With nobody left alive there is nothing to Ascend, rather than a Tier that rises over a table of corpses.
+  assert.ok((await gm.send({ type: "character.update", id: live.id!, annihilated: true })).ok);
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "milestone" }), {
+    ok: false,
+    error: "This campaign has no living characters to Ascend",
+  });
+});
+
+// Raising the Tier by hand is still an Ascension as far as the rules are concerned: the 100-XP window has to restart,
+// or the XP that paid for this Tier would pay for the next one too (Core p.147).
+test("Ascension: campaign.update's Tier restarts the 100-XP window", async (t) => {
+  const gm = await newCampaign("ByHand", 2);
+  t.after(() => gm.socket.close());
+  const c = await gm.send({ type: "character.create", name: "Hand" });
+  assert.ok(c.ok && c.id);
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "session.end", xp: ASCENSION_XP, recap: "" })).ok);
+  await gm.until((s) => s.characters.every((x) => x.xp === ASCENSION_XP));
+
+  assert.ok((await gm.send({ type: "campaign.update", tier: 3 })).ok);
+  await gm.until((s) => s.campaign.tier === 3 && s.characters.every((x) => x.xpAtAscension === ASCENSION_XP));
+  // Without the reset this would succeed on the XP that already paid for Tier 3.
+  assert.deepEqual(await gm.send({ type: "campaign.ascend", kind: "experience" }), {
+    ok: false,
+    error: "Hand has not earned 100 XP in Tier 3 yet (Core p.147)",
+  });
 });

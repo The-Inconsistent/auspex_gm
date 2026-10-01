@@ -226,6 +226,11 @@ export const Character = z.object({
   traumatic: z.number().int(), // Traumatic Injuries while Dying (p.193)
   annihilated: z.boolean(), // one hit over 2 × Max Wounds (p.194)
   xp: z.number().int(),
+  // Advancement in play (§11.55): what the saved build spends of the XP earned, so `xp - xpSpent` is what's left.
+  xpSpent: z.number().int(),
+  // `xp` at the group's last Ascension, so 100 XP "in the current Tier" (Core p.147) is `xp - xpAtAscension`.
+  xpAtAscension: z.number().int(),
+  ascensionPackageWaived: z.boolean(), // the GM waived this Ascension's package (Core p.148 step 2)
   conditions: z.array(z.string()),
   detail: CharacterDetail,
   objectives: z.array(Objective), // blanked for every other player (toPlayerView)
@@ -235,6 +240,9 @@ export const Character = z.object({
   // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
   draft: z.record(z.string(), z.unknown()).nullable(),
   builtAt: z.number().int().nullable(), // when the build was last saved (ms), so the builder drops older device drafts
+  // Derived, not stored: the upgrades this character holds in gear and could fit to a weapon (Core p.227, §11.63), so
+  // a phone can offer the choice without the 2 MB catalogue. The server checks the fit again when one is sent.
+  ownedUpgrades: z.array(z.object({ id: z.string(), name: z.string(), slot: z.string() })).default([]),
 });
 export type Character = z.infer<typeof Character>;
 
@@ -352,6 +360,22 @@ export function pcStatus(c: Character, d: DerivedStats): string[] {
   else if (c.wounds > 0) out.push("Wounded");
   if (c.shock > d.maxShock) out.push("Exhausted");
   return out;
+}
+
+// The campaign's Tier can't go past the last one (Core p.20).
+export const MAX_TIER = TIERS[TIERS.length - 1]!;
+// Experience Ascension: 100 XP earned in the current Tier (Core pp.147–148). Milestone Ascension grants the same 100.
+export const ASCENSION_XP = 100;
+
+// Who the Ascension rules count (Core p.147, rules-flow.md §11.66): "every character in your group", which a Dead one
+// has left (nothing removes its record, so it would hold the party back for ever). `short` is who of them hasn't
+// earned ASCENSION_XP in this Tier, `award` XP from now (session.end asks before its award lands). The api refuses
+// and PARTY offers from the same answer.
+export function ascensionGroup(characters: Character[], tier: number, award = 0) {
+  const group = characters.filter(
+    (c) => !pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead"),
+  );
+  return { group, short: group.filter((c) => c.xp + award - c.xpAtAscension < ASCENSION_XP) };
 }
 
 // Exhausted: over Max Shock, or the Condition from another source (p.199).

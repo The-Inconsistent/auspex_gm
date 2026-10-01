@@ -1,35 +1,123 @@
 [
   { "id": "ammo-drum", "name": "Ammo Drum", "source": "core", "page": 227, "category": "Weapon Upgrades", "kind": "upgrade", "value": 3, "rarity": "Common", "keywords": ["IMPERIUM", "SCUM"],
-    "effect": "You can carry one additional Ammo." },
+    "effect": "You can carry one additional Ammo.",
+    "upgrade": {
+      "slot": "magazine",
+      "fits": { "weapon": "ranged" },
+      "mods": [{ "kind": "gm", "what": "the wielder can carry one additional Ammo" }]
+    } },
   { "id": "autoloader", "name": "Autoloader", "source": "core", "page": 227, "category": "Weapon Upgrades", "kind": "upgrade", "value": 5, "rarity": "Rare", "keywords": ["IMPERIUM"],
-    "effect": "You can Reload your weapon as a Free Action." },
+    "effect": "You can Reload your weapon as a Free Action.",
+    "upgrade": {
+      "slot": "magazine",
+      "fits": { "weapon": "ranged" },
+      "mods": [{ "kind": "gm", "what": "Reload this weapon as a Free Action" }]
+    } },
   { "id": "bayonet-lug", "name": "Bayonet Lug", "source": "core", "page": 227, "category": "Weapon Upgrades", "kind": "upgrade", "value": 1, "rarity": "Common", "keywords": ["[ANY]"],
-    "effect": "You can use this weapon as a Knife (p.210). Mounts a blade on a firearm." },
+    "effect": "You can use this weapon as a Knife (p.210). Mounts a blade on a firearm.",
+    "upgrade": {
+      "slot": "bayonet",
+      "fits": { "weapon": "ranged", "condition": "a firearm a blade can be mounted on" },
+      "mods": [{ "kind": "gm", "what": "this weapon can also be used as a Knife (Core p.210)" }]
+    } },
   { "id": "chain-bayonet-upgrade", "name": "Chain Bayonet", "source": "core", "page": 227, "category": "Weapon Upgrades", "kind": "upgrade", "value": 4, "rarity": "Rare", "keywords": ["IMPERIUM", "CHAOS"],
     "effect": "You can use this weapon as a Chain Bayonet (p.211). Mechanically attached to a firearm.",
+    "upgrade": {
+      "slot": "bayonet",
+      "fits": { "weapon": "ranged", "condition": "a firearm a bayonet can be mechanically attached to" },
+      "mods": [{ "kind": "gm", "what": "this weapon can also be used as a Chain Bayonet (Core p.211)" }]
+    },
     "note": "id suffixed -upgrade to avoid clashing with the Chain Bayonet melee weapon (p.211)." },
   { "id": "combi-weapon", "name": "Combi Weapon", "source": "core", "page": 227, "category": "Weapon Upgrades", "kind": "upgrade", "value": 6, "rarity": "Rare", "keywords": ["IMPERIUM", "CHAOS", "ORK", "SCUM"],
-    "effect": "A combi-weapon may be fired as either or both of its component weapons each round. Firing both component weapons is treated as a Multi-Attack. You must own the two ranged weapons you want to combine when you purchase this upgrade. Pistols can only be combined with other Pistols, and weapons with the Heavy Trait cannot take this upgrade." },
+    "effect": "A combi-weapon may be fired as either or both of its component weapons each round. Firing both component weapons is treated as a Multi-Attack. You must own the two ranged weapons you want to combine when you purchase this upgrade. Pistols can only be combined with other Pistols, and weapons with the Heavy Trait cannot take this upgrade.",
+    "upgrade": {
+      "slot": "attachment",
+      "fits": { "weapon": "ranged", "notWeaponTraits": ["Heavy"], "condition": "a Pistol only combines with another Pistol" },
+      "mods": [
+        { "kind": "gm", "what": "fire either component weapon each round, or both as a Multi-Attack" },
+        { "kind": "gm", "what": "you must already own both ranged weapons when you buy this upgrade" }
+      ]
+    } },
   { "id": "distinction", "name": "Distinction", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 5, "rarity": "Uncommon", "keywords": ["[ANY]"],
-    "effect": "+1 bonus die to Intimidation (Wil) Tests when you brandish this weapon. Distinction does not count toward a weapon's maximum number of upgrades." },
+    "effect": "+1 bonus die to Intimidation (Wil) Tests when you brandish this weapon. Distinction does not count toward a weapon's maximum number of upgrades.",
+    "upgrade": {
+      "slot": "craft",
+      "fits": { "kinds": ["weapon"] },
+      "mods": [{ "kind": "bonusDice", "dice": 1, "when": "Intimidation (Wil) Tests while brandishing this weapon" }],
+      "exempt": "max"
+    } },
   { "id": "duelling-grip", "name": "Duelling Grip", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 3, "rarity": "Uncommon", "keywords": ["[ANY]"],
-    "effect": "+1 bonus die on Attack Tests using this weapon. This upgrade can only be applied to Pistols or one-handed melee weapons." },
+    "effect": "+1 bonus die on Attack Tests using this weapon. This upgrade can only be applied to Pistols or one-handed melee weapons.",
+    "upgrade": {
+      "slot": "grip",
+      "fits": { "kinds": ["weapon"], "condition": "a Pistol or a one-handed melee weapon" },
+      "mods": [{ "kind": "bonusDice", "dice": 1, "when": "Attack Tests with this weapon" }]
+    } },
   { "id": "gene-grip-bio-verator", "name": "Gene-Grip Bio-Verator", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 5, "rarity": "Rare", "keywords": ["IMPERIUM"],
-    "effect": "Any mechanisms your weapon has (triggers, chain engines, etc.) will not activate for anyone but you." },
+    "effect": "Any mechanisms your weapon has (triggers, chain engines, etc.) will not activate for anyone but you.",
+    "upgrade": {
+      "slot": "grip",
+      "fits": { "kinds": ["weapon"], "condition": "a weapon with mechanisms: a trigger, a chain engine or the like" },
+      "mods": [{ "kind": "gm", "what": "the weapon's mechanisms will not activate for anyone but its owner" }]
+    } },
   { "id": "mastercrafted", "name": "Mastercrafted", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 7, "rarity": "Very Rare", "keywords": ["[ANY]"],
-    "effect": "The weapon gains the Reliable Trait. You gain +2 bonus dice to any Attack Test made with this weapon." },
+    "effect": "The weapon gains the Reliable Trait. You gain +2 bonus dice to any Attack Test made with this weapon.",
+    "upgrade": {
+      "slot": "craft",
+      "fits": { "kinds": ["weapon"] },
+      "mods": [
+        { "kind": "trait", "traitId": "reliable" },
+        { "kind": "bonusDice", "dice": 2, "when": "any Attack Test made with this weapon" }
+      ]
+    } },
   { "id": "megathoule-accelerator-lucius-pattern", "name": "Megathoule Accelerator (Lucius Pattern)", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 6, "rarity": "Very Rare", "keywords": ["IMPERIUM", "ASTRA MILITARUM"],
-    "effect": "The weapon gains +2 Damage. The weapon loses the Reliable Trait. This upgrade can only be applied to a Las weapon." },
+    "effect": "The weapon gains +2 Damage. The weapon loses the Reliable Trait. This upgrade can only be applied to a Las weapon.",
+    "upgrade": {
+      "slot": "core",
+      "fits": { "weapon": "ranged", "wargearKeywords": ["LAS"] },
+      "mods": [
+        { "kind": "damage", "delta": 2 },
+        { "kind": "removeTrait", "traitId": "reliable" }
+      ]
+    } },
   { "id": "magnocular-scope", "name": "Magnocular Scope", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 2, "rarity": "Uncommon", "keywords": ["[ANY]"],
-    "effect": "Awareness (Int) Tests made with a Magnocular Scope suffer no penalties due to distance. When a Magnocular Scope is attached to a weapon, all Range penalties are reduced by –2. Attaches to most firearms." },
+    "effect": "Awareness (Int) Tests made with a Magnocular Scope suffer no penalties due to distance. When a Magnocular Scope is attached to a weapon, all Range penalties are reduced by –2. Attaches to most firearms.",
+    "upgrade": {
+      "slot": "sight",
+      "fits": { "weapon": "ranged", "condition": "most firearms" },
+      "mods": [
+        { "kind": "gm", "what": "Range penalties with this weapon are reduced by 2" },
+        { "kind": "gm", "what": "Awareness (Int) Tests made through the scope suffer no penalties for distance" }
+      ]
+    } },
   { "id": "percussive-muzzle-brake", "name": "Percussive Muzzle Brake", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 3, "rarity": "Uncommon", "keywords": ["[ANY]"],
-    "effect": "The weapon gains +1 Salvo. This upgrade can only be applied to a weapon that does not have the Heavy Trait." },
+    "effect": "The weapon gains +1 Salvo. This upgrade can only be applied to a weapon that does not have the Heavy Trait.",
+    "upgrade": {
+      "slot": "muzzle",
+      "fits": { "weapon": "ranged", "notWeaponTraits": ["Heavy"] },
+      "mods": [{ "kind": "salvo", "delta": 1 }]
+    } },
   { "id": "preysense-sight", "name": "Preysense Sight", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 6, "rarity": "Rare", "keywords": ["IMPERIUM", "SCUM", "[ANY]"],
-    "effect": "This weapon upgrade allows the wielder to detect targets via ambient heat, even in total darkness." },
+    "effect": "This weapon upgrade allows the wielder to detect targets via ambient heat, even in total darkness.",
+    "upgrade": {
+      "slot": "sight",
+      "fits": { "weapon": "ranged" },
+      "mods": [{ "kind": "gm", "what": "the wielder detects targets by ambient heat, even in total darkness" }]
+    } },
   { "id": "red-dot-sight", "name": "Red-Dot Sight", "source": "core", "page": 228, "category": "Weapon Upgrades", "kind": "upgrade", "value": 5, "rarity": "Uncommon", "keywords": ["IMPERIUM", "SCUM"],
-    "effect": "+1 bonus die to ranged attacks made with this weapon." },
+    "effect": "+1 bonus die to ranged attacks made with this weapon.",
+    "upgrade": {
+      "slot": "sight",
+      "fits": { "weapon": "ranged" },
+      "mods": [{ "kind": "bonusDice", "dice": 1, "when": "ranged attacks made with this weapon" }]
+    } },
   { "id": "silencer", "name": "Silencer", "source": "core", "page": 229, "category": "Weapon Upgrades", "kind": "upgrade", "value": 3, "rarity": "Uncommon", "keywords": ["IMPERIUM", "SCUM", "[ANY]"],
-    "effect": "The weapon gains the Silent Trait. This upgrade can only be applied to a weapon with the BOLT or PROJECTILE Keywords." },
+    "effect": "The weapon gains the Silent Trait. This upgrade can only be applied to a weapon with the BOLT or PROJECTILE Keywords.",
+    "upgrade": {
+      "slot": "muzzle",
+      "fits": { "weapon": "ranged", "wargearKeywords": ["BOLT", "PROJECTILE"] },
+      "mods": [{ "kind": "trait", "traitId": "silent" }]
+    } },
 
   { "id": "projectile-ammo", "name": "Projectile", "source": "core", "page": 229, "category": "Ammo", "kind": "ammo", "value": 1, "rarity": "Common", "keywords": [], "effect": "" },
   { "id": "las-ammo", "name": "Las", "source": "core", "page": 229, "category": "Ammo", "kind": "ammo", "value": 2, "rarity": "Common", "keywords": [], "effect": "" },

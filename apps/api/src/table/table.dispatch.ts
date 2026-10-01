@@ -34,7 +34,9 @@ function authorize(ctx: Ctx, a: Action) {
     (a.type === "character.update" ||
       a.type === "character.build" ||
       a.type === "character.draft" ||
-      a.type === "character.supply") &&
+      a.type === "character.supply" ||
+      a.type === "character.fitUpgrade" ||
+      a.type === "character.removeUpgrade") &&
     a.id !== ctx.characterId
   )
     fail("Not your character");
@@ -53,6 +55,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
   authorize(ctx, action);
   switch (action.type) {
     case "campaign.update":
+    case "campaign.ascend":
     case "pool.adjust":
     case "session.start":
     case "session.end":
@@ -65,6 +68,8 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "character.adjust":
     case "character.supply":
     case "character.requisition":
+    case "character.fitUpgrade":
+    case "character.removeUpgrade":
     case "character.objectives":
     case "character.respite":
     case "character.delete":

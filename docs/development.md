@@ -124,13 +124,21 @@ needed, one per app:
 
 - `WEB_ORIGIN` in `apps/api/.env`, next to localhost (`http://localhost:3000,http://192.168.x.y:3000`), then restart
   the api. Otherwise the api rejects the Clerk session (wrong `azp`) and the socket's CORS check.
+- `NEXT_PUBLIC_DEV_HOST` in `apps/web/.env.local` (`192.168.x.y`, one host, no scheme or port) if the GM works at
+  localhost: the QR codes and invite links on PARTY are built for the *phone*, and `http://localhost:3000/...` is
+  unscannable because the phone resolves localhost to itself. `shareOrigin` (`apps/web/lib/share-origin`) swaps the
+  host in for loopback origins only, keeping the port, so the LAN and production are untouched. Unset it in production.
+  A value that can't go in a URL (a scheme, a port, a path, an unbracketed IPv6 address) stops `next dev` and
+  `next build` with the reason: the value is only ever seen inside a QR code, so the mistake would otherwise surface as
+  a player's phone refusing to open it.
 - `DEV_ORIGINS` in `apps/web/.env.local` (`192.168.x.y`, no scheme or port), which feeds `allowedDevOrigins` in
   `next.config.ts`. **In dev only, and easy to miss:** without it the page still renders, so it looks like it works,
   but Turbopack's HMR websocket is refused with a 403 and React never hydrates. Nothing runs on the device — the table
   sits on `SYNCING…` and a sign-in page comes up blank. Script tags themselves are fine, because they send no `Origin`
   header, which makes this look like anything but a CORS problem.
 
-QR codes use the address the GM's browser is on, so open the table at the LAN address before showing them.
+QR codes and invite links use the address the GM's browser is on, so open the table at the LAN address before showing
+them — or set `NEXT_PUBLIC_DEV_HOST` and they carry that address even from localhost.
 
 ## Commands
 
@@ -206,6 +214,7 @@ the local diff when there's no PR.
 | Upgrading TypeScript breaks everything | Stay on 5.9 |
 | A lost invite or guest QR | Codes are stored as hashes only, so they can't be shown again. Make a new one on PARTY (and REVOKE the old one if it may have leaked). A GM's access is their Clerk account, so there's no GM link to lose |
 | The printed `/c/<id>` link opens on this machine but not on the tablet | It uses the first `WEB_ORIGIN` entry, `localhost`. Swap the host for the LAN address, or put the LAN address first |
+| A QR code or invite link on PARTY won't open on a phone | The GM's browser is at localhost, so the code carries it and the phone resolves it to itself. Open the table at the LAN address, or set `NEXT_PUBLIC_DEV_HOST` (`apps/web/.env.local`) to this machine's LAN address |
 | Read tool refuses a book PDF | Over 100 MB. Render the page with `pdftoppm` ([data.md](data.md)) |
 | A phone opens the app over the LAN, but nothing works: the table sits on `SYNCING…`, sign-in is blank, no errors anywhere | `DEV_ORIGINS` isn't set, so the dev server 403s the HMR websocket and React never hydrates. The page renders server-side and then does nothing. Localhost is unaffected, so it only shows up on devices |
 | `bun: command not found: next` | Bun linked no `node_modules/.bin`, and a plain `bun install` reports "no changes". `bun install --force` relinks. Workspace binaries land in the member dir (`apps/web/node_modules/.bin`), not the root |

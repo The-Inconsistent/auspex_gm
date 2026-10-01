@@ -8,6 +8,7 @@ import {
   effectiveStrength,
   pcStatus,
   poolMax,
+  rankOf,
   skillTotal,
   type ActionInput,
   type Character,
@@ -16,7 +17,7 @@ import {
   type Skill,
 } from "@wg/shared";
 
-import { ATTRIBUTE_NAMES } from "@/components/builder/constants";
+import { ATTRIBUTE_NAMES, BUILD_STEP_PARAM } from "@/components/builder/constants";
 import { DetailFields, DetailHelp, DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { Legend } from "@/components/ui/legend/legend";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
@@ -28,6 +29,7 @@ import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { SupplyRow } from "./components/supply-row/supply-row";
+import { UpgradeRow } from "./components/upgrade-row/upgrade-row";
 import { Vital } from "./components/vital/vital";
 import { SHEET_COUNTERS, SHEET_LEGEND } from "./constants";
 
@@ -44,6 +46,15 @@ export function Sheet({ me, tier, table }: SheetProps) {
   const [error, setError] = useState<string | null>(null);
   const [detail, setDetail] = useState<Partial<CharacterDetail> | null>(null); // the text being edited, or null
   const { get } = useRules();
+  // What the XP looks like from here: earned in play, what advancement hasn't spent yet, and Rank (Core p.146, +1 per
+  // 40 XP earned, at most 3). The server keeps `xpSpent` from the last saved build, so no catalogue is needed to show it.
+  const toSpend = Math.max(0, me.xp - me.xpSpent);
+  const rank = rankOf(me.xp);
+  // Where XP is spent: the builder's ADVANCE screen for a character already made (Core pp.146–151), the builder from the
+  // top for one that isn't. LEVEL UP and the button at the foot of the sheet are the same trip, so they share this.
+  const buildHref = table
+    ? `/c/${table.state.campaign.id}/build/${me.id}${me.build ? `?${BUILD_STEP_PARAM}=advance` : ""}`
+    : null;
   // Each rule under the sheet's own label (RSLV, not Resolve), so a player finds what they're looking at.
   const legend = SHEET_LEGEND.flatMap(([abbr, id]) => {
     const r = get(id);
@@ -91,6 +102,22 @@ export function Sheet({ me, tier, table }: SheetProps) {
         </div>
         <i className="dim">{[s.archetype, s.species, `Tier ${tier}`].filter(Boolean).join(" · ")}</i>
         {s.keywords.length > 0 && <div className="kw">{s.keywords.join(" · ")}</div>}
+        <div className="sheet-xp">
+          <span>
+            <span className="label">XP EARNED</span> <b>{me.xp}</b>
+          </span>
+          <span>
+            <span className="label">TO SPEND</span> <b>{toSpend}</b>
+          </span>
+          <span>
+            <span className="label">RANK</span> <b>{rank}</b>
+          </span>
+          {toSpend > 0 && buildHref && me.build && (
+            <a className="badge-up" href={buildHref}>
+              LEVEL UP · SPEND {toSpend} XP
+            </a>
+          )}
+        </div>
       </div>
       <div className="stack" style={{ gap: 6 }}>
         <div className="rule">
@@ -200,6 +227,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
               <div className="dim" style={{ fontSize: 13 }}>
                 <WeaponLine weapon={w} strength={effectiveStrength(s)} />
               </div>
+              {table && <UpgradeRow me={me} weapon={w} send={table.send} onRefusal={setError} />}
             </div>
           ))}
           {s.armour.name && (
@@ -296,9 +324,9 @@ export function Sheet({ me, tier, table }: SheetProps) {
           GEAR: {s.gear.join(" · ")}
         </div>
       )}
-      {table && (
+      {buildHref && (
         <div>
-          <a className="btn" href={`/c/${table.state.campaign.id}/build/${me.id}`}>
+          <a className="btn" href={buildHref}>
             {me.build ? "SPEND XP (BUILDER)" : "CHARACTER BUILDER"}
           </a>
         </div>

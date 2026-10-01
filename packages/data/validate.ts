@@ -96,6 +96,7 @@ function followerError(follower: boolean, threatId?: string, variant?: string) {
 const wargearDir = new URL("./wargear/", import.meta.url);
 const wargearIds = new Set<string>();
 const wargearRequires: { where: string; requires: unknown }[] = []; // resolved once the creation ids are known
+const wargearUpgrades: { where: string; upgrade: unknown }[] = []; // its trait ids resolve against the rules reference
 for (const file of readdirSync(wargearDir)
   .filter((f) => f.endsWith(".json"))
   .sort()) {
@@ -112,6 +113,15 @@ for (const file of readdirSync(wargearDir)
     }
     wargearIds.add(w.id);
     if (w.requires) wargearRequires.push({ where: `wargear/${file} "${w.id}"`, requires: w.requires });
+    // Every upgrade carries its slot, what it fits and its structured effect (rules-flow.md §11.64), and nothing else
+    // does: an `upgrade` block on another kind would never be read.
+    if ((w.kind === "upgrade") !== (w.upgrade !== undefined)) {
+      failed = true;
+      console.error(
+        `✖ wargear/${file} "${w.id}": ${w.kind === "upgrade" ? "an upgrade needs an `upgrade` block (slot, fits, mods)" : `kind "${w.kind}" can't carry an \`upgrade\` block`}`,
+      );
+    }
+    if (w.upgrade) wargearUpgrades.push({ where: `wargear/${file} "${w.id}"`, upgrade: w.upgrade });
     const err = followerError(w.kind === "follower", w.threatId, w.variant);
     if (err) {
       failed = true;
@@ -125,6 +135,7 @@ for (const file of readdirSync(wargearDir)
 const rulesDir = new URL("./rules/", import.meta.url);
 const ruleIds = new Set<string>();
 const weaponTraitIds = new Set<string>();
+const itemTraitIds = new Set<string>(); // weapon and armour Traits together: an upgrade mod names either
 const traitKeys = new Set<string>(); // ruleKey of every Condition and trait, for the trait-name check at the end
 for (const file of readdirSync(rulesDir)
   .filter((f) => f.endsWith(".json"))
@@ -142,6 +153,7 @@ for (const file of readdirSync(rulesDir)
     }
     ruleIds.add(e.id);
     if (e.kind === "weapon-trait") weaponTraitIds.add(e.id);
+    if (e.kind === "weapon-trait" || e.kind === "armour-trait") itemTraitIds.add(e.id);
     if (LINKED_RULE_KINDS.includes(e.kind)) traitKeys.add(ruleKey(e.name));
   }
   console.log(`rules/${file}: ${r.data.length} entries`);
@@ -192,7 +204,7 @@ let manifest: { done?: string[]; expected?: Record<string, Record<string, string
 try {
   manifest = JSON.parse(readFileSync(new URL("manifest.json", creationDir), "utf8"));
 } catch {}
-const done = new Set(["wargear", "weapon-traits", ...(manifest.done ?? [])]);
+const done = new Set(["wargear", "weapon-traits", "item-traits", ...(manifest.done ?? [])]);
 const pending = new Map<string, number>();
 const creationIds = (type: CreationType) => new Set(creation.get(type)!.map((x) => x.r.id as string));
 // A sub-faction defines the keyword it fills in ("SPACE WOLVES"), so only glossary keywords need a keyword record.
@@ -211,6 +223,7 @@ const known: Record<string, Set<string>> = {
   keywords: keywordNames,
   wargear: wargearIds,
   "weapon-traits": weaponTraitIds,
+  "item-traits": itemTraitIds,
   threats: new Set(found),
 };
 // Which catalogue an id-holding key points into. The schema keeps these key names unambiguous.
@@ -243,6 +256,7 @@ const REF_KEYS: Record<string, string> = {
   wargearId: "wargear",
   upgrades: "wargear",
   traitIds: "weapon-traits",
+  traitId: "item-traits", // an upgrade mod's Trait (wargear.ts, UpgradeMod)
 };
 const REQUIREMENT_REFS: Record<string, string> = {
   keyword: "keywords",
@@ -353,6 +367,7 @@ for (const { file, r } of creation.get("archetypes")!) {
     );
 }
 for (const { where, requires } of wargearRequires) checkRefs(requires, where);
+for (const { where, upgrade } of wargearUpgrades) checkRefs(upgrade, where);
 for (const [type, rows] of creation) if (rows.length) console.log(`creation/${type}: ${rows.length} records`);
 console.log(
   `creation: ${storyConditions} GM-judged story conditions, ${mundaneWargear} mundane possessions, ${unresolvedWargear} wargear items not in the catalogue`,

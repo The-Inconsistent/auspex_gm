@@ -8,3 +8,6 @@ dist/
 *.tsbuildinfo
 .turbo/
 .aspire/
+
+# Subagent git worktrees: a second checkout of this repo, never committed from it.
+.claude/worktrees/

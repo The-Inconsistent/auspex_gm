@@ -10,6 +10,7 @@ import {
   CharacterStats,
   deriveStats,
   pcStatus,
+  rankOf,
   type ActionResult,
   type Character,
   type Codex,
@@ -23,8 +24,10 @@ import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
+import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { TOKENS } from "@/lib/tokens/tokens";
 
+import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
@@ -54,7 +57,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   ] as const;
   const nameOf = (characterId: string | null) => state.characters.find((c) => c.id === characterId)?.name ?? "?";
 
-  const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
+  // A refusal, or what the action did. An ack may also carry `notices`: lines only the server can know, because they
+  // compare before with after — who crossed a Rank on `session.end`, whether the group may Ascend (Core pp.146–147).
+  const report = (r: ActionResult, ok: string) =>
+    setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`);
 
   // Renders a join URL as a full-screen QR code.
   const showCode = async ({ title, url }: { title: string; url: string }) => {
@@ -74,7 +80,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const showGuestQr = async (c: Character) => {
     const r = await send({ type: "token.issue", characterId: c.id });
     if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: c.name, url: `${window.location.origin}/join/${r.token}` });
+    await showCode({ title: c.name, url: `${shareOrigin(window.location)}/join/${r.token}` });
   };
 
   // INVITE: a single-use link for one character; the player signs in (or joins as a guest) and takes that seat.
@@ -86,14 +92,14 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       hours: CHARACTER_INVITE_HOURS,
     });
     if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: `${c.name} invite`, url: `${window.location.origin}/invite/${r.token}` });
+    await showCode({ title: `${c.name} invite`, url: `${shareOrigin(window.location)}/invite/${r.token}` });
   };
 
   // ROOM QR: one code for the whole table tonight; each player claims an open agent or starts a new one.
   const inviteRoom = async () => {
     const r = await send({ type: "invite.create", mode: "room", hours: ROOM_INVITE_HOURS });
     if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: "Room", url: `${window.location.origin}/invite/${r.token}` });
+    await showCode({ title: "Room", url: `${shareOrigin(window.location)}/invite/${r.token}` });
   };
 
   // REVOKE (invite): the link stops working; anyone already seated keeps their seat.
@@ -291,6 +297,8 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
         </div>
       </section>
 
+      <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
+
       <section className="panel pad stack">
         <div className="rule">TABLE ACCESS</div>
         <div className="keys" style={{ paddingTop: 0 }}>
@@ -348,7 +356,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     <b style={{ flex: 1 }}>{c.name.toUpperCase()}</b>
                     <span className="dim">{c.stats.archetype || "NO STATS YET"}</span>
                     <StatusChips items={pcStatus(c, d)} />
-                    <span className="dim">XP {c.xp}</span>
+                    {/* Rank follows this character's own XP (Core p.146); what is left to spend is what advancement
+                        hasn't bought yet, so the GM can nudge people between sessions. */}
+                    <span className="dim">
+                      XP {c.xp} · RANK {rankOf(c.xp)}
+                    </span>
+                    {c.build && c.xp > c.xpSpent && <span className="accent">{c.xp - c.xpSpent} XP TO SPEND</span>}
                   </div>
                   <div className="dim">
                     {seatOf(c.id)

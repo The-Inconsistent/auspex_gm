@@ -10,29 +10,41 @@ import {
 } from "@wg/shared";
 
 import type { Draft, Lookups } from "./builder-context";
-import { ATTRIBUTE_NAMES, BUILDER_STEPS, type BuilderStep } from "./constants";
+import { ATTRIBUTE_NAMES, BUILD_STEP_PARAM, BUILDER_STEPS, type BuilderStep } from "./constants";
 
 // The screens this build needs: Creation Ascension only when the archetype's Tier is below the campaign's (Core p.148),
-// ADVANCE once the character is made. A player's made character shows only ADVANCE and REVIEW: its creation choices
-// are the GM's to change.
+// ADVANCE once the character is made, and ASCENSION again in play once the group has Ascended past the Tier this
+// character was made at (Core p.148, rules-flow.md §11.55): that Ascension takes one package or an Archetype Ascension.
+// A player's made character shows only those: its creation choices are the GM's to change.
 export function stepsFor({
   draft,
   lookups,
   tier,
   made,
   locked,
+  ascending,
 }: {
   draft: Draft;
   lookups: Lookups;
   tier: number;
   made: boolean;
   locked: boolean;
+  ascending: boolean;
 }): BuilderStep[] {
-  if (locked) return ["advance", "review"];
+  if (locked) return ascending ? ["ascension", "advance", "review"] : ["advance", "review"];
   const a = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
   return BUILDER_STEPS.filter(
-    (s) => (s !== "ascension" || (a !== undefined && a.tier < tier)) && (s !== "advance" || made),
+    (s) => (s !== "ascension" || ascending || (a !== undefined && a.tier < tier)) && (s !== "advance" || made),
   );
+}
+
+// The screen a link asked for. Anything that doesn't name one is ignored, so a stale or hand-typed link just opens the
+// builder where it would have opened anyway. The page reads it on the server (`searchParams`) and passes it in, so the
+// first render is the same on both sides; `stepFromQuery` is the same thing from a query string, for tests and links.
+export const asBuilderStep = (asked: unknown): BuilderStep | null => BUILDER_STEPS.find((s) => s === asked) ?? null;
+
+export function stepFromQuery(search: string): BuilderStep | null {
+  return asBuilderStep(new URLSearchParams(search).get(BUILD_STEP_PARAM));
 }
 
 // What still blocks a step: choices left and problems that aren't the GM's tick.

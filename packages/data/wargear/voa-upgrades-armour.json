@@ -1,6 +1,17 @@
 [
   { "id": "voa-m40-targeting-system", "name": "M40 Targeting System", "source": "vow-of-absolution", "page": 68, "category": "Weapon Upgrades", "kind": "upgrade", "value": 7, "rarity": "Very Rare", "keywords": ["IMPERIUM", "ADEPTUS ASTARTES"],
-    "effect": "Can be fitted to any weapon with the BOLT and ADEPTUS ASTARTES Keywords, instead of a normal scope. Weapon gains Sniper (2), +1 bonus dice to ranged attacks, and reduces Range penalties by -2. Weapon reduces any Salvo and Rapid Fire ratings it has by -1." },
+    "effect": "Can be fitted to any weapon with the BOLT and ADEPTUS ASTARTES Keywords, instead of a normal scope. Weapon gains Sniper (2), +1 bonus dice to ranged attacks, and reduces Range penalties by -2. Weapon reduces any Salvo and Rapid Fire ratings it has by -1.",
+    "upgrade": {
+      "slot": "sight",
+      "fits": { "weapon": "ranged", "allKeywords": ["BOLT", "ADEPTUS ASTARTES"] },
+      "mods": [
+        { "kind": "trait", "traitId": "sniper", "rating": 2 },
+        { "kind": "bonusDice", "dice": 1, "when": "ranged attacks with this weapon" },
+        { "kind": "gm", "what": "reduces Range penalties by 2" },
+        { "kind": "salvo", "delta": -1 },
+        { "kind": "traitRating", "traitId": "rapid-fire", "delta": -1 }
+      ]
+    } },
   { "id": "voa-vortex-bolts", "name": "Vortex Bolts", "source": "vow-of-absolution", "page": 68, "category": "Weapon Upgrades", "kind": "ammo", "value": 10, "rarity": "Unique", "keywords": ["IMPERIUM", "ADEPTUS ASTARTES"],
     "effect": "Blast (1), Targets with the PSYKER Keywords take double damage and treat the attack as Agonising, A DN 9 Corruption Test is required by anyone caught in the blast. Single round only - no Salvo or Rapid Fire possible.",
     "note": "Printed under Weapon Upgrades as special munitions. Missing spaces in \"asAgonising,A\" restored; punctuation otherwise as printed." },
@@ -34,9 +45,19 @@
     "armour": { "ar": 8, "invulnerable": false, "powered": 5, "traits": ["Bulky (1)", "Size: Large"] },
     "effect": "Size: Large. Not sized for Primaris Marines (p.72).",
     "note": "No weapon profiles are printed for the warsuit's Siege Drills or paired heavy weapons (p.72 flavour only)." },
-  { "id": "voa-adamantine-cuirass", "name": "Adamantine Cuirass", "source": "vow-of-absolution", "page": 73, "category": "Augmetics & Other Tools", "kind": "equipment", "value": null, "rarity": null, "keywords": [],
+  { "id": "voa-adamantine-cuirass", "name": "Adamantine Cuirass", "source": "vow-of-absolution", "page": 73, "category": "Augmetics & Other Tools", "kind": "upgrade", "value": null, "rarity": null, "keywords": [],
     "effect": "+1 AR and Bulky (1) to any armour with both the POWERED and ADEPTUS ASTARTES Keywords. Reduce any Flight Speed by -2. Replaces the chest piece of a standard suit of power armour.",
-    "note": "No Value, Rarity or Keywords printed." },
+    "upgrade": {
+      "slot": "plate",
+      "fits": { "kinds": ["armour"], "allKeywords": ["POWERED", "ADEPTUS ASTARTES"] },
+      "mods": [
+        { "kind": "ar", "delta": 1 },
+        { "kind": "trait", "traitId": "bulk", "rating": 1 },
+        { "kind": "gm", "what": "reduce any Flight Speed by 2" },
+        { "kind": "gm", "what": "replaces the chest piece of a standard suit of power armour" }
+      ]
+    },
+    "note": "No Value, Rarity or Keywords printed. Printed under \"Augmetics & Other Tools\", but it names a host item, a compatibility line and profile changes, so it is an armour upgrade (rules-flow.md §11.64, which uses it as the `plate` example). VoA prints \"Bulky\" where Core's Trait is Bulk, as on Mk V Heresy Armour." },
   { "id": "voa-astartes-servo-arm", "name": "Astartes Servo-Arm", "source": "vow-of-absolution", "page": 73, "category": "Augmetics & Other Tools", "kind": "augmetic", "value": null, "rarity": null, "keywords": [],
     "effect": "You gain +5 Strength when using the Astartes Servo-Arm. The arm allows you to Brace (Wrath & Glory Core Rulebook, page 189) as a Free Action in combat. It adds +1 bonus dice to all Tech (Int) Tests to perform engineering tasks, and can be used as a melee weapon.",
     "note": "No Value, Rarity, Keywords or melee profile printed." }

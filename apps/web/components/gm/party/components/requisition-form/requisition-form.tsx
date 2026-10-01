@@ -53,6 +53,7 @@ export function RequisitionForm({
   const [icons, setIcons] = useState(0);
   const [spend, setSpend] = useState(0);
   const [complication, setComplication] = useState(false);
+  const [fitTo, setFitTo] = useState(""); // a weapon of the character's, for an upgrade (Core p.227)
 
   // A name printed in more than one book is listed with its cite ("Bolt Rifle (VoA p.67)").
   const seen = new Map<string, number>();
@@ -99,6 +100,7 @@ export function RequisitionForm({
       complication,
       loadedWith: kind === "wargear" && loadedWith.trim() ? loadedWith.trim() : undefined,
       wargearId: picked?.id,
+      fitTo: picked?.upgrade && fitTo ? fitTo : undefined,
     });
     onResult(
       r,
@@ -156,6 +158,23 @@ export function RequisitionForm({
       )}
       {picked && (picked.value === null || picked.rarity === null) && (
         <div className="accent">NO VALUE OR RARITY PRINTED: SET THEM FOR THIS TEST.</div>
+      )}
+      {/* An upgrade can go straight onto a weapon on a success (Core p.227, §11.63), or wait in gear. The fit is
+          checked before the Test is recorded, so picking a weapon that can't take it costs the session nothing. */}
+      {picked?.upgrade && (
+        <div className="field">
+          <label className="label" htmlFor={`rq-fit-${c.id}`}>
+            FIT TO
+          </label>
+          <select id={`rq-fit-${c.id}`} className="input" value={fitTo} onChange={(e) => setFitTo(e.target.value)}>
+            <option value="">Leave it in gear</option>
+            {c.stats.weapons.map((w) => (
+              <option key={w.name} value={w.name}>
+                {w.name}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         <div className="field">

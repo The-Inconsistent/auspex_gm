@@ -641,14 +641,14 @@
     "source": "daemons-and-heretics",
     "page": 103,
     "category": "Relics of Slaanesh",
-    "kind": "upgrade",
+    "kind": "equipment",
     "value": 9,
     "rarity": "Unique",
     "keywords": [
       "SLAANESH"
     ],
     "effect": "Daemons carrying the Mark of Excess get +1 bonus die to all Weapon Skill (I) Tests. Each combat, whenever an attack of theirs downs an enemy, disables a vehicle, or causes a Critical Hit, they gain another cumulative +1 bonus die to Attack rolls.",
-    "note": "Kind `upgrade`: a Mark carried by a Daemon, not a held item.",
+    "note": "Kind `equipment`, like the other relics a Threat carries (the Crimson Crown): a Mark on a Daemon fits no item, so it is no upgrade.",
     "requires": [
       {
         "kind": "keyword",
@@ -710,7 +710,7 @@
       "SLAANESH"
     ],
     "effect": "A Daemonette with Ravaging Claws or Snapping Claws may upgrade to Slothful Claws. Their attacks gain +2 ED, and anyone who takes Wounds from Slothful Claws may not use or benefit from any Archetype Abilities until the Daemonette’s next Turn.",
-    "note": "Kind `upgrade`: it upgrades the Daemonette's Ravaging/Snapping Claws (+2 ED); no profile of its own printed.",
+    "note": "Kind `upgrade`: it upgrades the Daemonette's Ravaging/Snapping Claws (+2 ED); no profile of its own printed. Slot `core` proposed (it turns the claws into another weapon, like Powered Blade), awaiting the GM (rules-flow.md §11.64).",
     "requires": [
       {
         "kind": "keyword",
@@ -722,7 +722,27 @@
         "kind": "gm",
         "text": "A Daemonette with Ravaging Claws or Snapping Claws may upgrade to Slothful Claws"
       }
-    ]
+    ],
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "kinds": [
+          "weapon"
+        ],
+        "weapon": "melee",
+        "nameIncludes": "Claws"
+      },
+      "mods": [
+        {
+          "kind": "ed",
+          "delta": 2
+        },
+        {
+          "kind": "gm",
+          "what": "Anyone who takes Wounds from it may not use or benefit from any Archetype Abilities until the Daemonette's next Turn"
+        }
+      ]
+    }
   },
   {
     "id": "dh-silverstrike",
@@ -776,7 +796,7 @@
       "SLAANESH"
     ],
     "effect": "A Herald or Keeper of Secrets may upgrade their Lashes of Torment/Living Whip to a Whip of Agony. Any attacks with a Whip of Agony that score a Wrath Critical allow the wielder to make another attack as a Free Action. In addition, an attack that hits but does not Wound still inflicts 1 Shock.",
-    "note": "Kind `upgrade`: replaces Lashes of Torment/Living Whip; no profile printed.",
+    "note": "Kind `upgrade`: replaces Lashes of Torment/Living Whip; no profile printed. Slot `core` proposed (it replaces the whip), awaiting the GM (rules-flow.md §11.64); which whips it fits stays the GM's requirement.",
     "requires": [
       {
         "kind": "keyword",
@@ -788,6 +808,25 @@
         "kind": "gm",
         "text": "A Herald or Keeper of Secrets may upgrade their Lashes of Torment/Living Whip to a Whip of Agony"
       }
-    ]
+    ],
+    "upgrade": {
+      "slot": "core",
+      "fits": {
+        "kinds": [
+          "weapon"
+        ],
+        "weapon": "melee"
+      },
+      "mods": [
+        {
+          "kind": "gm",
+          "what": "A Wrath Critical lets the wielder make another attack as a Free Action"
+        },
+        {
+          "kind": "gm",
+          "what": "An attack that hits but does not Wound still inflicts 1 Shock"
+        }
+      ]
+    }
   }
 ]

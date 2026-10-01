@@ -25,6 +25,10 @@ const codexSave = (Object.keys(CodexInput) as (keyof typeof CodexInput)[]).map((
 );
 
 // Every mutation goes through one socket event: "action". Counters use deltas, so two taps never overwrite each other.
+// The two ways a group Ascends (Core pp.147–148): the XP every character has earned, or the GM's Milestone.
+export const AscensionKind = z.enum(["experience", "milestone"]);
+export type AscensionKind = z.infer<typeof AscensionKind>;
+
 export const Action = z.union([
   z.discriminatedUnion("type", [
     z.object({
@@ -43,6 +47,14 @@ export const Action = z.union([
       type: z.literal("session.end"),
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
+    }),
+    // The group Ascends: the campaign's Tier goes up by one, for everyone at once (Core pp.147–148, §11.66).
+    // `experience`: every character must have earned 100 XP in the current Tier. `milestone`: the GM's call, which
+    // first gives every character 100 XP (Core p.148 step 1) and may waive the Ascension Package (step 2).
+    z.object({
+      type: z.literal("campaign.ascend"),
+      kind: AscensionKind,
+      waivePackage: z.boolean().default(false),
     }),
 
     z.object({
@@ -94,6 +106,24 @@ export const Action = z.union([
       complication: z.boolean().default(false),
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
       wargearId: z.string().max(100).optional(), // a catalogue entry: its weapon profile joins the sheet
+      // An upgrade goes straight onto this weapon of the character's on a success, instead of waiting in gear
+      // (Core p.227, §11.63). The fit is checked before the Test is recorded, so a bad target costs no Test.
+      fitTo: z.string().trim().min(1).max(100).optional(),
+    }),
+    // Fit a catalogue upgrade to one of the character's weapons, or take it off again (Core p.227, §11.63–§11.65).
+    // The server checks the fit, the maximum of three and the one-per-slot rule, and moves the upgrade off the gear
+    // line it was requisitioned onto. `weapon` is the weapon's name on the sheet, which is unique there.
+    z.object({
+      type: z.literal("character.fitUpgrade"),
+      id,
+      weapon: z.string().trim().min(1).max(100),
+      upgradeId: z.string().min(1).max(100),
+    }),
+    z.object({
+      type: z.literal("character.removeUpgrade"),
+      id,
+      weapon: z.string().trim().min(1).max(100),
+      upgradeId: z.string().min(1).max(100),
     }),
     // GM only: replaces the Agent's private objectives (only its player sees them).
     z.object({ type: z.literal("character.objectives"), characterId: id, objectives: Objectives }),
@@ -198,7 +228,14 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.build",
   "character.draft",
   "character.supply",
+  // Fitting an upgrade is instant and takes no Test (§11.63), and the upgrade is already the character's, so a player
+  // does it on their own weapons.
+  "character.fitUpgrade",
+  "character.removeUpgrade",
   "seat.leave",
 ]);
 
-export type ActionResult = { ok: true; id?: string; token?: string } | { ok: false; error: string };
+// `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry
+// them — they compare before with after (who crossed a Rank boundary on session.end, Core p.146) — and they are
+// one-off, like the vox log at the table, not state to render later.
+export type ActionResult = { ok: true; id?: string; token?: string; notices?: string[] } | { ok: false; error: string };

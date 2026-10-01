@@ -27,8 +27,6 @@ export const archetypeXp = (a: Parameters<typeof ratingsXp>[0] & { tier: number 
 export const startingXp = (tier: number) => tier * 100;
 // Rank from the XP earned in play: +1 per 40, never above 3 (Core pp.146–147). It stays the same after Ascending.
 export const rankOf = (xpEarned: number) => Math.min(3, 1 + Math.floor(xpEarned / 40));
-// Experience Ascension: 100 XP earned in the current Tier (Core pp.147–148). Milestone Ascension grants the same 100.
-export const ASCENSION_XP = 100;
 // The Tree of Learning (Core p.26): raising a Skill to R with XP needs R Skills with points, that one included.
 // Ratings an archetype or species grants are exempt (rules-flow.md §11.52).
 export const treeOfLearning = (skills: Partial<Record<Skill, number>>, skill: Skill, to: number) =>
@@ -99,6 +97,14 @@ export const WargearFilter = z.object({
   categories: z.array(z.string().min(1)).min(1).optional(), // `Wargear.category`: "Augmetic Enhancements"
   nameIncludes: z.string().min(1).optional(), // "Mechadendrite", "Drone"
   wargearKeywords: z.array(z.string().min(1)).min(1).optional(), // the item has any of these (BOLT, IMPERIUM, PROJECTILE)
+  // The item has *all* of these: "any weapon with the BOLT and ADEPTUS ASTARTES Keywords" (VoA p.68). `wargearKeywords`
+  // is any-of, so a printed "and" needs this one or the filter is wider than the book.
+  allKeywords: z.array(z.string().min(1)).min(1).optional(),
+  // A printed weapon Trait the item has, by name without its rating: "any LAS weapon with the Pistol trait"
+  // (Apocrypha p.389), "weapons with a Heavy (X) Trait" (IoE p.95). Any of them matches.
+  weaponTraits: z.array(z.string().min(1)).min(1).optional(),
+  // A printed Trait the item must *not* have: "which does not have the Heavy trait" (Apocrypha p.388)
+  notWeaponTraits: z.array(z.string().min(1)).min(1).optional(),
   maxValue: z
     .union([
       z.number().int().min(0),

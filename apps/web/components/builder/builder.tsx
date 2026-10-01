@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   catalogueOf,
   resolveBuild,
+  withUpgrades,
   type BuildChoice,
   type Character,
   type CharacterStats,
@@ -49,7 +50,7 @@ type Bench = {
   setHomebrew: ((next: boolean) => Promise<string | null>) | null; // null: not this caller's to change
   role: Role;
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
-  play: { tier: number; xpEarned: number } | null;
+  play: { tier: number; xpEarned: number; xpAtAscension?: number; packageWaived?: boolean } | null;
   key: string; // where this device keeps the draft
   // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. At a table
   // the GM's tablet, the player's phone or a script (attach-builds.ts) may save it, so it's the character's `builtAt`.
@@ -80,10 +81,11 @@ type BuilderProps = {
   role: Role;
   payload: CreationPayload;
   rules: RuleEntry[];
+  initialStep?: BuilderStep; // the screen "?step=" asked for, read by the page on the server
 };
 
 // The character builder at a table (issue #9 step 4): waits for the table, then works on a draft of the build.
-export function Builder({ campaignId, characterId, role, payload, rules }: BuilderProps) {
+export function Builder({ campaignId, characterId, role, payload, rules, initialStep }: BuilderProps) {
   const router = useRouter();
   const { state, online, send } = useTable(campaignId);
   if (!state) return <StatusScreen text="SYNCING COGITATOR…" />;
@@ -92,6 +94,7 @@ export function Builder({ campaignId, characterId, role, payload, rules }: Build
   return (
     <RulesProvider rules={rules}>
       <TableBench
+        initialStep={initialStep}
         key={characterId ?? "new"}
         {...{ campaignId, characterId, role, payload, state, online, send, character, router }}
       />
@@ -118,6 +121,7 @@ function TableBench({
   send,
   character,
   router,
+  initialStep,
 }: TableBenchProps) {
   const tier = state.campaign.tier;
   const xpEarned = character?.xp;
@@ -138,7 +142,17 @@ function TableBench({
           : null,
       role,
       made: !!character?.build,
-      play: xpEarned === undefined ? null : { tier, xpEarned },
+      // In play the Ascension fields ride along: `xpAtAscension` is what the XP stood at when the group last Ascended
+      // (PARTY's ASCEND panel uses the same), and a waived package is the GM's (Core p.148 step 2).
+      play:
+        xpEarned === undefined
+          ? null
+          : {
+              tier,
+              xpEarned,
+              xpAtAscension: character?.xpAtAscension,
+              packageWaived: character?.ascensionPackageWaived,
+            },
       key: draftKey({ campaignId, characterId }),
       start: {
         name: character?.name ?? "",
@@ -207,7 +221,14 @@ function TableBench({
     }),
     [tier, state.campaign.homebrew, role, character, xpEarned, campaignId, characterId, send, online],
   );
-  return <Workshop bench={bench} payload={payload} onSaved={() => router.push(`/c/${campaignId}`)} />;
+  return (
+    <Workshop
+      bench={bench}
+      payload={payload}
+      initialStep={initialStep}
+      onSaved={() => router.push(`/c/${campaignId}`)}
+    />
+  );
 }
 
 type LibraryBuilderProps = { entry: LibraryEntry; payload: CreationPayload; rules: RuleEntry[] };
@@ -328,13 +349,19 @@ function initialDraft({
   return stamp === undefined || picked.builtAt !== undefined ? picked : { ...picked, builtAt: stamp };
 }
 
-type WorkshopProps = { bench: Bench; payload: CreationPayload; onSaved: () => void };
+type WorkshopProps = { bench: Bench; payload: CreationPayload; onSaved: () => void; initialStep?: BuilderStep };
 
-function Workshop({ bench, payload, onSaved }: WorkshopProps) {
+function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
   const { key, start, made, play, role } = bench;
   const [draft, setDraft] = useState<Draft>(() => initialDraft({ key, start, tier: bench.tier, stamp: bench.stamp }));
   const locked = made && role !== "gm";
-  const [step, setStep] = useState<BuilderStep>(locked ? "advance" : draft.archetypeId ? "customise" : "tier");
+  // Which screen this opens on. A link may ask for one ("?step=advance", the sheet's LEVEL UP badge), and the page
+  // reads that on the server and passes it in: deciding it here from `window` would render one screen in the prerender
+  // and another after hydration, and `useSearchParams` would push the whole builder out of the prerender.
+  const [step, setStep] = useState<BuilderStep>(
+    (made && initialStep) || (locked ? "advance" : draft.archetypeId ? "customise" : "tier"),
+  );
+
   const [error, setError] = useState<string | null>(null);
   const [overrides, setOverrides] = useState(bench.overrides);
   const [openedOverrides] = useState(bench.overrides); // what `mergeOverrides` compares the edits with
@@ -360,7 +387,10 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
     if (!draft.archetypeId) return null;
     const { name: _, detail: __, savedAt: ___, builtAt: ____, archetypeId, ...rest } = draft;
     try {
-      return resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
+      const r = resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
+      // The sheet is stored with the printed profile and the upgrade ids; the preview shows them applied, as the table
+      // will (Core p.227). Only the build is sent to the server, which re-resolves it, so this is display alone.
+      return { ...r, sheet: withUpgrades(r.sheet, catalogue.wargear) };
     } catch {
       return null; // a malformed draft (an older builder's): START OVER clears it
     }
@@ -402,6 +432,9 @@ function Workshop({ bench, payload, onSaved }: WorkshopProps) {
       homebrew: bench.homebrew,
       setHomebrew: bench.setHomebrew,
       play,
+      // The group's Tier has passed the one this character was made at, so it owes this Ascension's package or an
+      // Archetype Ascension (Core p.148, rules-flow.md §11.55).
+      ascending: !!play && play.tier > tier,
       made,
       importable: bench.canImport && !locked,
       role,

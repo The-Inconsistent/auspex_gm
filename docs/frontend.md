@@ -132,9 +132,19 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
 - Long catalogue lists (`RecordList`) show `LIST_LIMIT` matches and ask for a narrower search instead of virtualising.
 
 - **ADVANCE** (issue #9 step 5), once the character is made: the Customise screen for `advancement`, spending the XP
-  earned in play (`character.xp`) with Rank from it, Ascension Packages when the group's Tier is above the one the
-  character was made at, and languages. The ledger and the XP bar switch to that XP. A player's made character shows
-  only ADVANCE and REVIEW; the GM sees every screen.
+  earned in play (`character.xp`) with Rank from it, Advancement Packages and languages. The ledger and the XP bar
+  switch to that XP. A player's made character shows only ADVANCE and REVIEW (plus ASCENSION while the group has
+  Ascended); the GM sees every screen. `?step=<screen>` opens the builder on one screen, which is how the sheet's
+  LEVEL UP badge lands on ADVANCE.
+- **ASCENSION in play** (issue #15 step 6): after the group Ascends, the one Ascension Package for that Ascension
+  (Core p.148, §11.55) **or** Archetype Ascension (Core p.155, §11.67 — the archetypes of the same Faction at the Tier
+  Ascended to). The screen states the Rank 3, GM-agreement and equal-or-exceed conditions and disables nothing:
+  `resolveBuild` decides and the screen shows its problems. A waived package says one may still be taken.
+- **The sheet's XP line** (issue #15 step 5): XP earned, XP to spend (`xp − xpSpent`) and Rank (`rankOf`), with a
+  LEVEL UP badge onto ADVANCE while there is XP to spend. PARTY prints the same per character.
+- **ASCEND on PARTY** (issue #15 step 6): who has 100+ XP in the current Tier, then Experience Ascension (enabled only
+  when every character does) or Milestone Ascension (always the GM's, with the waive-the-package tick). Two taps, since
+  it changes every character's Tier.
 
 Entry points: EDIT (OPEN DRAFT when a player sent one) per character and NEW FROM BUILDER in PARTY, the one editor
 for a character (issue #18); CHARACTER BUILDER (SPEND XP once made) on

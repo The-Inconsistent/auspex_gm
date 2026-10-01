@@ -42,7 +42,12 @@ export type BuilderValue = {
   homebrew: boolean; // whether the catalogue includes the homebrew books
   // Changes that: the GM at a table, the owner in their library. null when it isn't this caller's to change.
   setHomebrew: ((next: boolean) => Promise<string | null>) | null;
-  play: { tier: number; xpEarned: number } | null; // a character in play: the group's Tier now and the XP earned
+  // A character in play: the group's Tier now, the XP earned, the XP it stood at when the group last Ascended, and
+  // whether the GM waived this Ascension's package (Core p.148 step 2). `resolveBuild` reads the same shape.
+  play: { tier: number; xpEarned: number; xpAtAscension?: number; packageWaived?: boolean } | null;
+  // The group has Ascended since this character was made, so one Ascension is owed: one package, or Archetype
+  // Ascension (Core p.148, p.155; rules-flow.md §11.55). Derived once here so every screen agrees.
+  ascending: boolean;
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
   importable: boolean; // a campaign's builder can take a copy of a character from the caller's library (issue #14)
   role: Role;

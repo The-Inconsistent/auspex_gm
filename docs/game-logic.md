@@ -382,5 +382,6 @@ Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / 
 Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
-Known gaps against the spec: none open; Pinned doesn't expire because the attacker isn't tracked. The live list is
+Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked; upgrades can be fitted to a
+weapon but not to armour; and no purchase history records *when* an advancement was bought. The live list is
 [rules-flow.md](rules-flow.md) §12.

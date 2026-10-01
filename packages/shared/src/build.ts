@@ -15,6 +15,7 @@ import {
   type Requirement,
   type Rule,
   type Amount as AmountSchema,
+  type Archetype,
   type BackgroundTable,
   type Scaled,
   type SubFaction,
@@ -50,7 +51,8 @@ export type BuildChoice = z.infer<typeof BuildChoice>;
 
 // Advancement (Core pp.146–151, issue #9 step 5): what the character buys after creation with the XP earned in play,
 // priced from where creation left the ratings. `packages`: Advancement Packages (`notAtCreation` ones too), and one
-// Ascension Package for each Tier the group has Ascended since creation, in order (rules-flow.md §11.55).
+// Ascension Package each time the group has Ascended since creation, in order (Core p.148, rules-flow.md §11.55).
+// `archetypeAscension` takes one Ascension's slot instead, the one to its own Tier (Core p.155, §11.67).
 export const Advancement = z
   .object({
     attributes: z.partialRecord(attribute, z.number().int().min(1).max(12)).prefault({}),
@@ -59,6 +61,9 @@ export const Advancement = z
     powers: z.array(id).prefault([]),
     packages: z.array(id).prefault([]),
     languages: z.array(z.string().min(1).max(60)).prefault([]), // bought at 1 XP each (Core p.31)
+    // Archetype Ascension (Core p.155): an Archetype of the same Faction at the Tier Ascended to, in place of an
+    // Ascension Package. It gives that Archetype's abilities, Keywords, Wargear and Influence, not its ratings.
+    archetypeAscension: z.object({ archetypeId: id }).optional(),
   })
   .prefault({});
 
@@ -156,7 +161,7 @@ export type ResolvedBuild = {
   choices: BuildChoicePrompt[];
   problems: BuildProblem[];
   effects: BuildEffect[];
-  // In play: the XP earned (the advancement budget), what advancement spends of it, Rank, and the Tier now.
+  // In play: the XP earned (the advancement budget), what advancement spends of it, what is left, Rank, the Tier now.
   advancement: { budget: number; spent: number; rank: number; tier: number } | null;
 };
 
@@ -275,7 +280,9 @@ type Sheet = {
 };
 
 // `play`: a character already in play: the campaign's Tier now and the XP it has earned (character.xp). Without it,
-// the build is priced as at creation.
+// the build is priced as at creation. `xpAtAscension` is the character's XP when the group last Ascended, which the
+// server's eligibility check reads (Core pp.147–148); the build itself only prices what is bought.
+// `packageWaived`: a Milestone Ascension may excuse the Ascension Package (Core p.148 step 2), so don't ask for one.
 export function resolveBuild({
   catalogue,
   build: input,
@@ -283,7 +290,7 @@ export function resolveBuild({
 }: {
   catalogue: BuildCatalogue;
   build: CharacterBuildInput;
-  play?: { tier: number; xpEarned: number };
+  play?: { tier: number; xpEarned: number; xpAtAscension?: number; packageWaived?: boolean };
 }): ResolvedBuild {
   const build = CharacterBuild.parse(input);
   const ix = index(catalogue.creation);
@@ -879,41 +886,62 @@ export function resolveBuild({
       });
   }
 
-  // ── packages bought in play: Advancement Packages, and one Ascension Package for each Tier the group has Ascended
-  // since creation, in order (Core pp.147–148, rules-flow.md §11.55) ──
-  let ascended = 0;
+  // ── packages bought in play: Advancement Packages, and "a single Ascension Package each time you Ascend" (Core p.148,
+  // rules-flow.md §11.55). `campaign.ascend` raises the Tier by one, so each Tier since creation is one Ascension, and
+  // the packages fill them in the order they were bought, each priced and checked at its own step. An Archetype
+  // Ascension takes the step to its own Tier (Core p.155), so the packages skip that one. ──
+  // ponytail: one Ascension per Tier, not a record of each; a Tier raised by more than one at once (campaign.update) reads
+  // as one Ascension per Tier. Record each Ascension if a table does that.
+  const ascendedTiers = nowTier - tier; // the Ascensions since creation; 0 when the group hasn't Ascended
+  const archTo = build.advancement.archetypeAscension
+    ? ix.archetypes.get(build.advancement.archetypeAscension.archetypeId)
+    : undefined;
+  const archStep = archTo && archTo.tier > tier && archTo.tier <= nowTier ? archTo.tier - tier : 0;
+  // The Ascensions a package can take, oldest first: step n goes from Tier `tier + n - 1` to `tier + n`.
+  const packageSteps = Array.from({ length: ascendedTiers }, (_, i) => i + 1).filter((n) => n !== archStep);
+  let ascensionsTaken = 0; // Ascension Packages bought in play, one per Ascension
   for (const pid of build.advancement.packages) {
     const p = ix.packages.get(pid);
     if (!p) {
       problem({ step: "advance", severity: "error", what: `Unknown package ${pid}` });
       continue;
     }
-    if (!allowed(p, "advance")) continue;
-    const from = tier + ascended; // the Tier this package is bought at
+    if (!allowed(p, p.kind === "ascension" ? "ascension" : "advance")) continue;
+    // The Tier this package's Ascension reached; an Advancement Package's "new Tier" is the Tier now (Core p.149).
+    let reached = nowTier;
     if (p.kind === "ascension") {
-      ascended += 1;
-      if (from + 1 > nowTier)
+      const step = packageSteps[ascensionsTaken];
+      ascensionsTaken += 1;
+      if (ascendedTiers === 0)
         problem({
-          step: "advance",
+          step: "ascension",
           severity: "error",
-          what: `${p.name}: the group is Tier ${nowTier}, so there is no Ascension to Tier ${from + 1} yet`,
-          cite: "Core pp.147–148",
+          what: `${p.name}: the group is still Tier ${nowTier}, so there has been no Ascension`,
+          cite: "Core p.148",
         });
+      else if (step === undefined)
+        problem({
+          step: "ascension",
+          severity: "error",
+          what: `${p.name}: each Ascension takes one Ascension Package or an Archetype Ascension, and the group has Ascended ${ascendedTiers} time${ascendedTiers === 1 ? "" : "s"} since Tier ${tier}`,
+          cite: "Core pp.148, 155",
+        });
+      else reached = tier + step;
     }
     const po: Origin = {
       path: `advance/package/${p.id}`,
-      step: "advance",
+      step: p.kind === "ascension" ? "ascension" : "advance",
       cite: cite(p),
+      // "per Tier Ascended" on the package itself (Dauntless Reputation's Influence, Core p.151): its one Ascension.
       tiersAscended: p.kind === "ascension" ? 1 : 0,
       granted: true,
     };
-    // "× the new Tier" is the Tier Ascended to; an Advancement Package is priced at the Tier now.
-    const at = p.kind === "ascension" ? from + 1 : nowTier;
+    // "× the new Tier" is the Tier its Ascension reached, so a package bought earlier keeps its price (Core p.149).
     ledger.push({
       what: `${p.name} (${p.kind} package)`,
       xp:
         typeof p.xp === "object" && "perTier" in p.xp
-          ? p.xp.perTier * at
+          ? p.xp.perTier * reached
           : price(p.xp, { path: po.path, step: "advance", what: p.name }),
       cite: cite(p),
       step: "advance",
@@ -928,8 +956,9 @@ export function resolveBuild({
       reqs: p.requires,
       what: p.name,
       origin: po,
+      // An Ascension Package's requirements are met before Ascending, at the Tier the character leaves (§11.54).
       severity: "error",
-      tier: p.kind === "ascension" ? from : nowTier,
+      tier: p.kind === "ascension" ? reached - 1 : nowTier,
     });
     if (p.becomesArchetypeId)
       effects.push({
@@ -937,6 +966,87 @@ export function resolveBuild({
         cite: cite(p),
       });
   }
+
+  // ── Archetype Ascension (Core p.155, rules-flow.md §11.67): at an Ascension, in place of an Ascension Package, the
+  // character takes an Archetype of their own Faction at the Tier Ascended to. It grants that Archetype's abilities,
+  // Keywords, Wargear and Influence — and none of its Attribute or Skill ratings, which XP has to buy (below).
+  // Everything the old Archetype gave stays, so the old one is applied above and never replaced. ──
+  let ascendedTo: Archetype | undefined;
+  const archAscension = build.advancement.archetypeAscension;
+  if (archAscension) {
+    const to = ix.archetypes.get(archAscension.archetypeId);
+    if (!to) problem({ step: "ascension", severity: "error", what: `Unknown archetype ${archAscension.archetypeId}` });
+    else if (allowed(to, "ascension")) {
+      const path = `advance/archetype/${to.id}`;
+      if (ascendedTiers === 0)
+        problem({
+          step: "ascension",
+          severity: "error",
+          what: `${to.name}: the group is still Tier ${nowTier}, so there has been no Ascension`,
+          cite: "Core p.148",
+        });
+      if (rank < 3)
+        problem({
+          step: "ascension",
+          severity: "error",
+          what: `Archetype Ascension needs Rank 3; ${play?.xpEarned ?? 0} XP earned is Rank ${rank}`,
+          cite: "Core pp.146, 155",
+        });
+      if (to.factionId !== arch.factionId)
+        problem({
+          step: "ascension",
+          severity: "error",
+          what: `${to.name} is not an Archetype of ${arch.name}'s Faction`,
+          cite: "Core p.155",
+        });
+      // The Tier of one of the group's Ascensions since creation, which is the one this takes (Core p.155).
+      if (ascendedTiers > 0 && !archStep)
+        problem({
+          step: "ascension",
+          severity: "error",
+          what: `${to.name} is Tier ${to.tier}, not a Tier the group Ascended to (${tier + 1}–${nowTier})`,
+          cite: "Core p.155",
+        });
+      if (speciesId && !build.gm.species && !to.speciesIds.includes(speciesId))
+        problem({
+          step: "ascension",
+          severity: "error",
+          what: `${to.name} is not open to ${species?.name ?? speciesId}`,
+          cite: cite(to),
+        });
+      // The book gives the new Archetype for "a story reason", with the GM's agreement (Core p.155, §11.67).
+      problem({
+        step: "ascension",
+        severity: "gm",
+        path,
+        what: `Archetype Ascension to ${to.name}: the GM agrees`,
+        cite: "Core p.155",
+      });
+      const ao: Origin = { path, step: "ascension", cite: cite(to), tiersAscended: 1, granted: true };
+      to.keywords.forEach(addKeyword);
+      ownRules(to.abilities).forEach((r) => addRule(r, ao));
+      to.grants.forEach((g, i) => grant(g, { ...ao, path: `${ao.path}/${i}` }));
+      to.wargear.forEach((g, i) => grant(g, { ...ao, path: `${ao.path}/wargear/${i}` }));
+      if (to.influence) s.mods.influence = (s.mods.influence ?? 0) + to.influence;
+      deferred.push({ reqs: to.requires, what: to.name, origin: ao, severity: "error", tier: to.tier });
+      packageNames.push(to.name); // the sheet names both: the character keeps what the old Archetype gave
+      ascendedTo = to;
+    }
+  }
+
+  // Each Ascension's second step: an Ascension Package or an Archetype Ascension, unless the GM waived it on a
+  // Milestone Ascension (Core p.148 step 2), which is always the latest one.
+  const open = packageSteps[ascensionsTaken];
+  if (open !== undefined && !(play?.packageWaived && open === ascendedTiers))
+    ask({
+      path: "advance/ascension",
+      step: "ascension",
+      what: `Buy one Ascension Package (Tier ${tier + open - 1} → ${tier + open})`,
+      choose: 1,
+      options: [],
+      of: "Ascension Packages",
+      cite: "Core p.148",
+    });
 
   // ── background: three rows, one bonus (rules-flow.md §11.22) ──
   const bg = build.background;
@@ -1312,6 +1422,27 @@ export function resolveBuild({
         cite: "Core p.26",
       });
 
+  // Archetype Ascension: "you must spend XP … until your Attributes and Skills equal or exceed" the new Archetype's
+  // (Core p.155). The new Archetype grants none of them, so the difference is bought above.
+  if (ascendedTo) {
+    const want = ascendedTo;
+    const short = [
+      ...ATTRIBUTES.filter((a) => attributes[a] < (want.attributes[a] ?? 0)).map(
+        (a) => `${ATTRIBUTE_NAMES[a]} ${attributes[a]} of ${want.attributes[a]}`,
+      ),
+      ...(Object.entries(want.skills) as [Skill, number][])
+        .filter(([k, v]) => (skills[k] ?? 0) < v)
+        .map(([k, v]) => `${k} ${skills[k] ?? 0} of ${v}`),
+    ];
+    if (short.length)
+      problem({
+        step: "ascension",
+        severity: "error",
+        what: `${want.name} needs ${short.join(", ")}`,
+        cite: "Core p.155",
+      });
+  }
+
   // ── languages (Core p.31, rules-flow.md §11.48–50) ──
   const qualifying = catalogue.creation.languages.filter((l) => l.keywords.some((k) => s.keywords.includes(k)));
   const allowance =
@@ -1386,7 +1517,7 @@ export function resolveBuild({
       ...ratings(),
       keywords: new Set([...s.keywords, ...filled]),
       species: species ? [species.id, ...species.countsAs] : [],
-      archetypeId: arch!.id,
+      archetypeId: (ascendedTo ?? arch!).id, // after an Archetype Ascension, the Archetype the character is now
       subFactionIds: new Set(s.subFactionIds),
       talents: new Set(s.talents.keys()),
       talentCategories: [...s.talents.keys()].map((t) => ix.talents.get(t)?.category ?? "talent"),
@@ -1449,12 +1580,15 @@ export function resolveBuild({
     ...armourItems
       .filter((x) => x.w?.weapon)
       .map(({ g, w }) => {
-        const out = sheetWeapon({ name: g.name, weapon: w!.weapon! }, strength);
-        const extra = (g.upgrades ?? []).map((u) => catalogue.wargear.get(u)?.name ?? u).concat(g.traitIds ?? []);
+        const base = sheetWeapon({ name: g.name, weapon: w!.weapon! }, strength);
+        // The profile is stored as printed, with the upgrade ids beside it; `withUpgrades` applies them on the way out.
+        // Storing the result instead would double-apply the moment anything derived from the ids as well.
         return {
-          ...out,
-          count: typeof g.qty === "number" && g.qty > 1 ? g.qty : out.count,
-          traits: [...out.traits, ...extra],
+          ...base,
+          count: typeof g.qty === "number" && g.qty > 1 ? g.qty : base.count,
+          traits: [...base.traits, ...(g.traitIds ?? [])],
+          wargearId: w!.id,
+          upgrades: g.upgrades?.length ? [...g.upgrades] : undefined,
         };
       }),
   ];
@@ -1644,6 +1778,13 @@ export function wargearMatches(w: Wargear, f: WargearFilter, { tier, newTier }: 
   if (f.categories && !f.categories.includes(w.category)) return false;
   if (f.nameIncludes && !norm(w.name).includes(norm(f.nameIncludes))) return false;
   if (f.wargearKeywords && !w.keywords.some((k) => f.wargearKeywords!.includes(k))) return false;
+  if (f.allKeywords && !f.allKeywords.every((k) => w.keywords.includes(k))) return false;
+  if (f.weaponTraits || f.notWeaponTraits) {
+    // Traits are printed with their rating ("Heavy (3)"); the filter names the Trait alone.
+    const traits = [...(w.weapon?.traits ?? []), ...(w.armour?.traits ?? [])].map((t) => norm(t.split("(")[0]!));
+    if (f.weaponTraits && !f.weaponTraits.some((t) => traits.includes(norm(t)))) return false;
+    if (f.notWeaponTraits?.some((t) => traits.includes(norm(t)))) return false;
+  }
   if (f.maxValue !== undefined) {
     const max =
       typeof f.maxValue === "number"
@@ -1703,6 +1844,9 @@ function describeFilter(f: WargearFilter): string {
     f.categories?.join(" or "),
     f.nameIncludes && `"${f.nameIncludes}"`,
     f.wargearKeywords && `with ${f.wargearKeywords.join(" or ")}`,
+    f.allKeywords && `with ${f.allKeywords.join(" and ")}`,
+    f.weaponTraits && `with the ${f.weaponTraits.join(" or ")} Trait`,
+    f.notWeaponTraits && `without the ${f.notWeaponTraits.join(" or ")} Trait`,
     f.maxValue !== undefined &&
       `Value ≤ ${typeof f.maxValue === "number" ? f.maxValue : "tierPlus" in f.maxValue ? `Tier + ${f.maxValue.tierPlus}` : `new Tier + ${f.maxValue.newTierPlus}`}`,
   ].filter(Boolean);
@@ -1782,6 +1926,34 @@ export function keepPlay({
   next: CharacterStats;
   before?: CharacterStats;
 }): CharacterStats {
+  // Upgrades come from two places and only one of them is the build's, so the two are kept apart: `upgrades` is what
+  // the new build says the starting wargear carries (a build edit that drops one drops it here), and `fitted` is what
+  // was fitted in play, which no rebuild may touch. Merging them into one list would make a removal indistinguishable
+  // from something fitted at the table.
+  // Each build weapon answers for one weapon held, by name first (a requisitioned copy of a build weapon is its own),
+  // then by catalogue entry for a sheet made before upgrades were modelled.
+  const unmatched = [...next.weapons];
+  const counterpart = (w: CharacterStats["weapons"][number]) => {
+    let i = unmatched.findIndex((n) => n.name === w.name);
+    if (i < 0 && w.wargearId) i = unmatched.findIndex((n) => n.wargearId === w.wargearId);
+    return i < 0 ? undefined : unmatched.splice(i, 1)[0];
+  };
+  const played = previous.weapons.map((w) => {
+    const from = counterpart(w);
+    // A weapon the new build no longer gives keeps what its build gave, still as the build's: moving it to `fitted`
+    // would let removeUpgrade turn it into a gear line, and a rebuild that gives the weapon back would add it twice.
+    const upgrades = from ? (from.upgrades ?? []) : (w.upgrades ?? []);
+    const fitted = (w.fitted ?? []).filter((id) => !upgrades.includes(id));
+    const { upgrades: _, fitted: __, ...line } = w;
+    const wargearId = w.wargearId ?? from?.wargearId;
+    // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed.
+    return {
+      ...line,
+      ...(wargearId && { wargearId }),
+      ...(upgrades.length && { upgrades }),
+      ...(fitted.length && { fitted }),
+    };
+  });
   const weapons = new Set([...previous.weapons, ...before.weapons].map((w) => w.name));
   const gear = new Set([...previous.gear, ...before.gear]);
   const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
@@ -1793,7 +1965,7 @@ export function keepPlay({
     ...next,
     mods: speed ? { ...mods, speed } : mods,
     armour,
-    weapons: [...previous.weapons, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
+    weapons: [...played, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
     gear: [
       ...previous.gear,
       ...shedArmour,

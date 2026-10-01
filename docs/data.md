@@ -400,8 +400,26 @@ entries:
 | `armour` | `{ ar, invulnerable, powered, traits }` |
 | `effect` | Rules text only (the Effect line); no flavour |
 | `requires` | Who may buy or install it, a `Requirement[]` structured from a printed "Requirements:" line (the line stays in `effect`) |
+| `upgrade` | Every `kind: "upgrade"` entry has one, and no other kind may (`validate.ts`): `{ slot, fits, mods, exempt, copies }`, below |
 | `threatId`, `variant` | A `follower`'s bestiary stat block (required), and which of its `variant` options it is when the book prints one profile with variants (the T'au Drones, Apocrypha p.479). Only followers have them |
 | `note` | Print errors copied as printed, and transcription calls |
+
+**Upgrades** (Core pp.227–228; rulings rules-flow.md §11.63–§11.65). An item takes at most three, one per type
+(`MAX_UPGRADES`, p.227):
+
+| `upgrade` field | Notes |
+|---|---|
+| `slot` | One of `UPGRADE_SLOTS`: `sight`, `grip`, `muzzle`, `magazine`, `bayonet`, `attachment`, `mount`, `core`, `craft`, `coating`, and armour's `crest`, `plate`, `system`. The book names only grips and scopes, so the vocabulary is the house call in §11.64; one upgrade per slot per item |
+| `fits` | The printed compatibility line as a `WargearFilter` (`upgradeRefusal` refuses a bad fit). Filter fields added for it: `allKeywords` (has all of these; `wargearKeywords` is any-of), `weaponTraits` (has any of these Traits, by name without rating), `notWeaponTraits` (has none of these) |
+| `mods` | What the fitted profile shows, `UpgradeMod[]` by `kind`: `trait` (`traitId`, `rating?`), `removeTrait`, `traitRating` (`traitId`, `delta`: moves a rating the weapon already has, no-op without the Trait), `damage`, `ed`, `ap`, `salvo` (each `delta`), `range` (`multiply`, `delta`, or `bands: [short, medium, long]` added band by band), `ar` (armour only), `bonusDice` (`dice`, `when`: shown, not rolled), `gm` (`what`) |
+| `exempt` | `"max"`: doesn't count toward the three (Distinction, p.228). `"slot"`: shares its slot without taking it (Support System, §11.64) |
+| `copies` | The upgrade's own printed limit, e.g. "up to 3 times" (IoE p.96) |
+
+A `gm` mod is prose the GM applies at the table: whatever a profile can't hold (an Action, a Glory spend, a Test) stays
+in `effect` and takes one, so nothing is dropped. `validate.ts` also checks that every mod `traitId` resolves in the
+rules reference (weapon or armour traits). A stored weapon keeps its printed profile plus `upgrades` (ids fitted in the
+build) and `fitted` (ids fitted in play); `withUpgrades` derives the shown profile on read (`toCharacter` in
+`apps/api/src/table/table.state.ts`), so a data fix reaches existing characters.
 
 Transcription calls, all in each entry's `note`:
 - **Launchers** (grenade launcher, missile launcher, Cyclone) print "Uses the profile of the Grenade/Missile fired", so

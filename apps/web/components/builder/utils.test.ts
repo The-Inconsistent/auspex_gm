@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-import type { Draft } from "./builder-context.tsx";
-import { mergeOverrides, pickDraft } from "./utils.ts";
+import type { Draft, Lookups } from "./builder-context.tsx";
+import { asBuilderStep, mergeOverrides, pickDraft, stepFromQuery, stepsFor } from "./utils.ts";
 
 // The volkus Disruptor's choices, cut down to what CharacterBuild needs (packages/data/build.test.ts has the whole one).
 const build = { tier: 1, archetypeId: "primaris-incursor" };
@@ -93,5 +93,56 @@ describe("mergeOverrides", () => {
     });
     assert.deepEqual(mergeOverrides({ live, base: { maxWounds: 20 }, edited: {} }), { speed: 9 }, "cleared");
     assert.equal(mergeOverrides({ live, base: { maxWounds: 20 }, edited: { maxWounds: 20 } }), null, "unchanged");
+  });
+});
+
+// Only the archetype's Tier matters to `stepsFor`.
+const lookups = { archetypes: new Map([["primaris-incursor", { tier: 1 }]]) } as unknown as Lookups;
+const steps = (o: { tier?: number; made?: boolean; locked?: boolean; ascending?: boolean }) =>
+  stepsFor({
+    draft: { tier: 1, name: "X", archetypeId: "primaris-incursor" },
+    lookups,
+    tier: o.tier ?? 1,
+    made: o.made ?? false,
+    locked: o.locked ?? false,
+    ascending: o.ascending ?? false,
+  });
+
+describe("stepsFor", () => {
+  test("ASCENSION appears at creation only when the archetype is below the campaign's Tier (Core p.148)", () => {
+    assert.ok(!steps({}).includes("ascension"));
+    assert.ok(steps({ tier: 3 }).includes("ascension"));
+  });
+
+  test("ADVANCE appears once the character is made, ASCENSION again when the group has Ascended (§11.55)", () => {
+    assert.ok(!steps({}).includes("advance"));
+    assert.deepEqual(steps({ made: true, ascending: true }).slice(-4), ["ascension", "detail", "advance", "review"]);
+  });
+
+  test("a player's made character sees only what is theirs to change", () => {
+    assert.deepEqual(steps({ made: true, locked: true }), ["advance", "review"]);
+    assert.deepEqual(steps({ made: true, locked: true, ascending: true }), ["ascension", "advance", "review"]);
+  });
+});
+
+describe("stepFromQuery", () => {
+  test("a link may ask for one screen (the sheet's LEVEL UP badge)", () => {
+    assert.equal(stepFromQuery("?step=advance"), "advance");
+    assert.equal(stepFromQuery("?other=1&step=ascension"), "ascension");
+  });
+
+  test("anything that doesn't name a screen is ignored", () => {
+    assert.equal(stepFromQuery(""), null);
+    assert.equal(stepFromQuery("?step=toString"), null);
+    assert.equal(stepFromQuery("?step=nowhere"), null);
+  });
+
+  // The page reads the query on the server and hands the step in, so the value arrives as searchParams gives it: a
+  // string, absent, or (a repeated parameter) an array.
+  test("asBuilderStep takes what searchParams hands the page", () => {
+    assert.equal(asBuilderStep("advance"), "advance");
+    assert.equal(asBuilderStep(undefined), null);
+    assert.equal(asBuilderStep(["advance", "review"]), null);
+    assert.equal(asBuilderStep("nowhere"), null);
   });
 });
