@@ -125,7 +125,7 @@ export async function saveLibraryCharacter({
     if (body.build === null) build = null;
     else {
       // The GM's part is the GM's, made at their table: a library character never carries one. Nor a purchase history:
-      // outside a campaign there are no sessions, so there is nothing to date (§11.68) — it starts at a table.
+      // outside a campaign there are no sessions, so there is nothing to date (§11.69) — it starts at a table.
       const parsed = CharacterBuild.parse({ ...body.build, gm: undefined });
       const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build: parsed });
       const refusal = buildRefusal(r, { gmLater: true });

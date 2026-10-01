@@ -10,18 +10,22 @@ import {
   creationKey,
   deriveStats,
   keepPlay,
+  keepSheetWeapons,
   resolveBuild,
   applyUpgrades,
   sheetWeapon,
   upgradeRefusal,
   wargearMatches,
   withUpgrades,
+  withWeaponEffects,
+  ruleKey,
   type SheetArmourLike,
   type Wargear,
+  type Weapon,
   type WargearWeapon,
   type CharacterBuildInput,
 } from "@wg/shared";
-import { creationCatalogue, loadPack, wargear } from "./index.ts";
+import { creationCatalogue, loadPack, rulesList, wargear } from "./index.ts";
 
 // Issue #9 step 1 and #18 acceptance: every volkus pregen (docs/pregens.md), rebuilt from the build its pack file
 // carries, comes out at the XP of its ledger and with the sheet the pack prints. The GM's part of each build holds
@@ -43,6 +47,27 @@ const ledgerOf = (n: number) => {
     ...section.matchAll(/^\| (?:Archetype|Ascension|Package|Attribute|Skill|Talent) \|.*?\| (\d+) \| \**\d+\** \|$/gm),
   ].map((m) => Number(m[1]));
 };
+
+// A weapon line as the table compares it: the numbers, the Traits the rules reference knows (with their ratings), and
+// the upgrades fitted, whether printed as a Trait ("Duelling Grip (+1 bonus die)") or fitted (`upgradeNames`).
+const TRAITS = new Set(
+  rulesList()
+    .filter((r) => r.kind === "weapon-trait")
+    .map((r) => ruleKey(r.name)),
+);
+const UPGRADES = new Set([...wargear.values()].filter((w) => w.kind === "upgrade").map((w) => ruleKey(w.name)));
+const profile = (w: Weapon) => ({
+  damage: w.damage,
+  ed: w.ed,
+  ap: w.ap ?? 0,
+  range: w.range,
+  salvo: w.salvo ?? null,
+  traits: w.traits.filter((t) => TRAITS.has(ruleKey(t))).sort(),
+  upgrades: [...w.traits, ...(w.upgradeNames ?? [])]
+    .map(ruleKey)
+    .filter((k) => UPGRADES.has(k))
+    .sort(),
+});
 
 test("every volkus pregen carries a build", () => {
   assert.equal(PREGENS.length, 11);
@@ -91,14 +116,21 @@ for (const { want, ...p } of PREGENS) {
 
     assert.deepEqual(s.mods, want.mods); // the extra Background bonuses are the GM's (pregens.md GM choice 23)
 
-    // The live sheet keeps the printed weapon, armour and gear lines, which work Talents and upgrades into the profiles
-    // (Bolter Discipline's Rapid Fire); a rebuild with no changes adds no catalogue lines beside them (issue #18).
-    // The rebuild may tag a printed line with its catalogue entry (`wargearId`), so an upgrade can be fitted to it.
+    // Since #27 the weapons are the build's, with their Talents applied on read (rules-flow.md §11.68), and they must
+    // come out as the pregen prints them: the numbers, every real Trait with its rating, and the fitted upgrades.
+    // `keepSheet` keeps the printed armour and gear lines, and a printed weapon the build has none of by name (the GM's
+    // own Haywire Mine and deployed smoke, pregens.md GM choice 8). Printed prose ("ED includes +1 Explosive Fury") is
+    // the effect's own name now, so it isn't compared.
+    const weapons = keepSheetWeapons(want.weapons, s.weapons); // what `keepSheet` stores (character.actions.ts)
+    const live = withWeaponEffects(withUpgrades({ ...s, weapons }, wargear), { rank: 1, catalogue: wargear });
+    assert.equal(live.weapons.length, want.weapons.length, "no weapon the pregen doesn't print");
+    for (const p of want.weapons) {
+      const w = live.weapons.find((x) => x.name === p.name);
+      assert.ok(w, `${p.name} is on the sheet`);
+      assert.deepEqual(profile(w), profile(p), p.name);
+    }
     const kept = keepPlay({ previous: want, next: s, before: s });
-    assert.deepEqual(
-      kept.weapons.map(({ wargearId: _, ...w }) => w),
-      want.weapons,
-    );
+    // The rebuild may tag the printed suit with its catalogue entry, so an upgrade can be fitted to it (§11.65).
     const { wargearId: _suit, ...keptArmour } = kept.armour;
     assert.deepEqual(keptArmour, want.armour);
     assert.deepEqual(kept.gear, want.gear);
@@ -235,9 +267,9 @@ test("in play, purchases spend the XP earned, priced from where creation left th
   assert.equal(r.sheet.skills.Stealth, 6);
 });
 
-// ── the purchase history (issue #32, §11.68) ──
+// ── the purchase history (issue #32, §11.69) ──
 
-test("the history dates the ledger and prices nothing (§11.68)", () => {
+test("the history dates the ledger and prices nothing (§11.69)", () => {
   const advancement = { skills: { Stealth: 6 }, talents: [{ id: "furious-charge" }], languages: ["glossia"] };
   const play = { tier: 4, xpEarned: 60 };
   const plain = inPlay({ ...incursor, advancement }, play);
@@ -263,7 +295,7 @@ test("the history dates the ledger and prices nothing (§11.68)", () => {
   );
 });
 
-test("a rating is one purchase per rating point, so a later raise keeps the earlier dates (§11.68)", () => {
+test("a rating is one purchase per rating point, so a later raise keeps the earlier dates (§11.69)", () => {
   const six = inPlay({ ...incursor, advancement: { attributes: { S: 6 } } }, { tier: 4, xpEarned: 200 });
   const rows = six.ledger.filter((l) => l.pool);
   assert.deepEqual(
@@ -293,7 +325,7 @@ test("a rating is one purchase per rating point, so a later raise keeps the earl
   );
 });
 
-test("a Talent's bracket pick is part of its key, and an Archetype Ascension has a row to date (§11.68)", () => {
+test("a Talent's bracket pick is part of its key, and an Archetype Ascension has a row to date (§11.69)", () => {
   const hatred = inPlay(
     { ...incursor, advancement: { talents: [{ id: "hatred", choice: "Orks" }] } },
     { tier: 4, xpEarned: 40 },
@@ -877,4 +909,109 @@ test("applyUpgrades: a change a profile can't hold is printed, never silently dr
   const up = { ...brake, upgrade: { ...brake.upgrade!, mods: [{ kind: "ap" as const, delta: 2 }] } };
   assert.equal(applyUpgrades({ ...noSalvo, ap: -1 }, [up]).weapon.ap, 0);
   assert.equal(applyUpgrades(noSalvo, [up]).weapon.ap, undefined, "no AP printed, none gained");
+});
+
+// ── standing weapon effects (rules-flow.md §11.68) ──
+
+const shown = (name: string, rank = 1) => {
+  const p = PREGENS.find((x) => x.name === name)!;
+  const sheet = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
+  return withWeaponEffects(withUpgrades(sheet, wargear), { rank, catalogue: wargear });
+};
+const line = (sheet: ReturnType<typeof shown>, name: string) => sheet.weapons.find((w) => w.name === name)!;
+
+test("Bolter Discipline: BOLT weapons gain Rapid Fire (2), or +Rank on the one they have (VoA p.45)", () => {
+  const sergeant = shown("Watch Sergeant Qaan Toghril");
+  assert.ok(line(sergeant, "Boltgun").traits.includes("Rapid Fire (3)"), "Rapid Fire (2) + Rank 1");
+  assert.deepEqual(line(sergeant, "Boltgun").effects, ["Bolter Discipline"]);
+  assert.ok(!line(sergeant, "Power Sword").effects, "a Power Sword isn't BOLT");
+  const disruptor = shown("Brother Octavius Serren");
+  assert.ok(line(disruptor, "Bolt Pistol").traits.includes("Rapid Fire (2)"), "gained, at 2");
+  // At Rank 3 the same build's Boltgun shows Rapid Fire (5): the Rank is read, not stored.
+  assert.ok(line(shown("Watch Sergeant Qaan Toghril", 3), "Boltgun").traits.includes("Rapid Fire (5)"));
+});
+
+test("Trademark Weapon reaches only the weapon its choice names (Core p.141)", () => {
+  const marksman = shown("Brother Aurelian Tarsus");
+  assert.equal(line(marksman, "Bolt Sniper Rifle").ed, 3, "1 + Double Rank");
+  assert.ok(!line(marksman, "Bolt Pistol").effects);
+});
+
+test("a Doctrine's +Rank AP reaches the weapon it granted, and nothing once the GM swaps it out (VoA p.35)", () => {
+  const hordeSlayer = shown("Brother Hesh Tu'var");
+  assert.equal(line(hordeSlayer, "Heavy Bolter").ap, -2, "−1 and Rank 1 more");
+  assert.equal(line(hordeSlayer, "Bolt Rifle").ap, -1, "not the Doctrine's weapon");
+  const bombard = shown("Brother Idrian Kostas"); // the Heavy Bolter became the Frag Cannon (pregens.md GM choice 22)
+  assert.ok(bombard.weapons.every((w) => !w.effects?.includes("Heavy Intercessor Doctrine")));
+});
+
+test("Explosive Fury: +Rank ED on grenades, none on smoke, which deals no damage (VoA p.33)", () => {
+  const disruptor = shown("Brother Octavius Serren");
+  assert.equal(line(disruptor, "Frag Grenade").ed, 5);
+  assert.equal(line(disruptor, "Krak Grenade").ed, 6);
+  // The pack keeps the GM's deployed smoke as written (GM choice 8), so the catalogue's is added here to be sure.
+  const entry = wargear.get("apoc-smoke-grenades")!;
+  const p = PREGENS.find((x) => x.name === "Brother Octavius Serren")!;
+  const sheet = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
+  const withSmoke = {
+    ...sheet,
+    weapons: [
+      ...sheet.weapons,
+      { ...sheetWeapon({ name: entry.name, weapon: entry.weapon! }, 5), wargearId: entry.id },
+    ],
+  };
+  const smoke = withWeaponEffects(withSmoke, { rank: 1, catalogue: wargear }).weapons.find((w) => w.damage === 0);
+  assert.ok(smoke && !smoke.effects, "a Damage 0 grenade is left alone");
+});
+
+test("a weapon not from the catalogue is left as written: it may already count the Talent", () => {
+  const sheet = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: PREGENS[0]!.build }).sheet;
+  const written = { ...sheet, weapons: sheet.weapons.map(({ wargearId: _, ...w }) => w) };
+  const out = withWeaponEffects(written, { rank: 1, catalogue: wargear });
+  assert.deepEqual(out.weapons, written.weapons);
+});
+
+test("a printed line a rebuild tags with its catalogue entry isn't given its Talents again (rules-flow.md §11.68)", () => {
+  // A campaign seeded before #27 keeps the printed lines, which count Bolter Discipline already: Rapid Fire (3).
+  const p = PREGENS.find((x) => x.name === "Watch Sergeant Qaan Toghril")!;
+  const next = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
+  const rebuilt = keepPlay({ previous: p.want, next, before: next }); // a rebuild before the #27 migration ran
+  const boltgun = rebuilt.weapons.find((w) => w.name === "Boltgun")!;
+  assert.ok(boltgun.wargearId && boltgun.asPrinted, "tagged, and marked as printed");
+  const shown = withWeaponEffects(rebuilt, { rank: 1, catalogue: wargear });
+  assert.ok(shown.weapons.find((w) => w.name === "Boltgun")!.traits.includes("Rapid Fire (3)"), "not (4)");
+});
+
+test("keepSheetWeapons: the build's lines, with play's fitted upgrades and second copies, and the GM's own lines", () => {
+  const sheet = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: PREGENS[0]!.build }).sheet;
+  const boltgun = sheet.weapons.find((w) => w.name === "Boltgun")!;
+  const old = [
+    { ...boltgun, traits: ["Brutal", "Rapid Fire (3)"], wargearId: undefined, fitted: ["red-dot-sight"] }, // printed
+    { ...boltgun, wargearId: undefined }, // a second Boltgun, requisitioned
+    { name: "Haywire Mine", damage: 14, ed: 5, ap: -2, range: [1], traits: ["Placed"], addStrength: false },
+  ];
+  const kept = keepSheetWeapons(old, sheet.weapons);
+  const boltguns = kept.filter((w) => w.name === "Boltgun");
+  assert.equal(boltguns.length, 2, "the build's and the requisitioned copy");
+  assert.equal(boltguns[0]!.wargearId, "boltgun", "the build's line, not the printed one");
+  assert.deepEqual(boltguns[0]!.fitted, ["red-dot-sight"], "what was fitted at the table stays");
+  assert.ok(
+    kept.some((w) => w.name === "Haywire Mine"),
+    "a GM's own line stays",
+  );
+});
+
+test("a melee weapon printed Damage 0 deals Strength, so it takes a Talent's +Damage (rules-flow.md §11.68)", () => {
+  const caress = wargear.get("ioe-harlequins-caress")!; // S + 0
+  const stats = {
+    weapons: [{ ...sheetWeapon({ name: caress.name, weapon: caress.weapon! }, 5), wargearId: caress.id }],
+    weaponEffects: [
+      {
+        source: "Crushing Blow",
+        fits: { weapon: "melee" as const },
+        mods: [{ kind: "damage" as const, delta: { perRank: 2 } }],
+      },
+    ],
+  };
+  assert.equal(withWeaponEffects(stats, { rank: 1, catalogue: wargear }).weapons[0]!.damage, 2);
 });

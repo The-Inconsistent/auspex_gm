@@ -107,7 +107,7 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   `savedAt`), kept in `localStorage` per table and character (`draftKey`). It starts from the newer of that and the
   draft sent to the table (`character.draft`, `Character.draft`), else the saved `character.build`, else blank. A
   table's draft records the save it was opened on (`Draft.builtAt`, from `Character.builtAt`); once the character has
-  been built again since, from another device or by a script (`attach-builds.ts`, issue #18), the draft is stale and
+  been built again since, from another device or by a script (the issue #18 and #27 migrations), the draft is stale and
   dropped, detail and all, with no clocks compared. START OVER drops the local one.
 - **SEND TO GM** (players, on REVIEW): puts the draft on the table. PARTY then shows OPEN DRAFT for that character; the
   GM ticks what only the GM judges and saves, which clears the draft.
@@ -120,11 +120,15 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   campaign's Tier), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
   ticks and this character's rulings: species, keywords, gear swaps). Grant choices render as `ChoiceCard`s.
 - **Ledger:** a side panel from 900px (`XpLedger`), a fixed bottom bar on a phone (`XpBar`). Its IN PLAY section groups
-  the purchases by the session they were bought in, latest first (`LedgerRow.session`, §11.68); anything the server has
+  the purchases by the session they were bought in, latest first (`LedgerRow.session`, §11.69); anything the server has
   not dated — not saved yet, or bought before the app recorded it — sits last under NOT RECORDED YET.
 - **Save:** `character.build`; the server re-resolves and refuses anything not ready. Then, for the GM, a
   `character.update { overrides }` with the Traits REVIEW changed merged over the live ones (`mergeOverrides`): they
   live on the character, not in the build or the draft. A new character's id is kept, so a retry doesn't add another. Success clears the draft and goes back to the table.
+- **Weapon lines** show the profile as the table plays it: the fitted upgrades (`withUpgrades`), then the standing
+  weapon effects at the Rank the XP earned gives (`withWeaponEffects`, rules-flow.md §11.68), with "with Bolter
+  Discipline" naming what changed it and the notes (re-rolls, bonus dice, GM calls) under it, each cited. The api
+  applies both for the live sheet (`toCharacter`), the builder for its REVIEW preview.
 - **GM part** (REVIEW, GM only): ticks, species and keywords by ruling, gear swaps, BONUSES BY RULING (`gm.mods`, added
   to a Trait) and OVERRIDES (pin a Trait, `character.overrides`). DETAIL has the portrait (`detail.portrait`).
 - **SAVE DETAILS ONLY** (the GM, on a character that exists): `character.update` with the name, detail and the

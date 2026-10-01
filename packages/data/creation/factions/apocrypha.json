@@ -60,7 +60,33 @@
       {
         "name": "Assassinorum Conditioning",
         "page": 56,
-        "text": "You add +Rank ED to all damage rolls, and you add +Double Rank to the damage value of your Unarmed Strikes. In addition, so long as you are not immobilised or Restrained, you may use Agility instead of Toughness when you roll Determination, and you may roll Determination against Mortal Wounds."
+        "text": "You add +Rank ED to all damage rolls, and you add +Double Rank to the damage value of your Unarmed Strikes. In addition, so long as you are not immobilised or Restrained, you may use Agility instead of Toughness when you roll Determination, and you may roll Determination against Mortal Wounds.",
+        "weapons": [
+          {
+            "fits": {},
+            "mods": [
+              {
+                "kind": "ed",
+                "delta": {
+                  "perRank": 1
+                }
+              }
+            ]
+          },
+          {
+            "fits": {
+              "unarmed": true
+            },
+            "mods": [
+              {
+                "kind": "damage",
+                "delta": {
+                  "perRank": 2
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "id": "officio-assassinorum",

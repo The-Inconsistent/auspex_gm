@@ -29,7 +29,7 @@ function Rows({ rows }: { rows: LedgerRow[] }) {
   );
 }
 
-// What was bought in play, grouped by the session it was bought in (§11.68), the latest session first. Anything the
+// What was bought in play, grouped by the session it was bought in (§11.69), the latest session first. Anything the
 // server hasn't stamped yet comes last: a purchase on this screen that hasn't been saved, or one made before the app
 // recorded when.
 function BySession({ rows }: { rows: LedgerRow[] }) {

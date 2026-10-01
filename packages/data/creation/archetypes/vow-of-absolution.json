@@ -645,7 +645,24 @@
     "abilities": [
       {
         "name": "Explosive Fury",
-        "text": "When making attacks with grenades, you gain +Rank bonus extra damage to successful attacks.\n\nWhen placing explosives, you may make a DN 3 Tech Test, and add +Rank bonus to both Damage and AP to the attack."
+        "text": "When making attacks with grenades, you gain +Rank bonus extra damage to successful attacks.\n\nWhen placing explosives, you may make a DN 3 Tech Test, and add +Rank bonus to both Damage and AP to the attack.",
+        "weapons": [
+          {
+            "fits": {
+              "kinds": [
+                "grenade"
+              ]
+            },
+            "mods": [
+              {
+                "kind": "ed",
+                "delta": {
+                  "perRank": 1
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "wargear": [

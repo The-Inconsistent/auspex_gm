@@ -496,7 +496,30 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     ruling overrides it), and an Ascension takes **either** an Ascension Package or an Archetype Ascension, never both
     — Core p.148 offers the two as alternatives for the one slot. The Archetype's own creation XP is not paid: p.155's
     cost is the ratings needed to match it. *Proposed; awaiting the GM.*
-68. **When a purchase was bought** (Core p.146, p.148 step 4; GitHub issue #32). The book spends XP between sessions and
+68. **Weapon effects on the profile** (GitHub issue #27; user rulings, 2026-10-01). A Talent, ability, package or trait
+    changes a weapon's **printed profile** only when its condition is a property of the weapon: a keyword, a Trait,
+    melee or ranged, the weapon its Talent names, or the weapon its record grants. Bolter Discipline is the model: "When
+    you use a weapon with the BOLT Keyword, it gains the Rapid Fire (2) Trait. If the weapon already has the Rapid Fire
+    Trait, add +Rank to the weapon's Rapid Fire rating" (VoA p.45). What depends on the moment stays in the Talent's
+    text: charging, aiming, a target type, a spend of Glory, Wrath or Ruin, an attack option.
+    - **Rank** is the character's Rank now (Core pp.146–147), from the XP earned. It rises at session end without a
+      rebuild, so the effects are applied when the sheet is read, after the weapon's upgrades, never stored.
+    - **Explosive Fury's "+Rank bonus extra damage"** (VoA p.33) is +Rank ED on grenades (docs/pregens.md, GM choice 9).
+    - **Not numbers, notes:** a re-roll or bonus dice with a kind of weapon ("re-roll up to Double Rank dice", Hellblaster
+      Focus, VoA p.35), an effect the player "may" use, and one the GM judges ("or similar", "weapons made for smaller
+      users") show as a cited note on the weapon's line.
+    - **"When you're engaged with an enemy"** on a melee rule (Accept Any Challenge, No Matter the Odds, Apocrypha
+      p.230) is standing for its AP: a melee attack is made while engaged. Its bonus dice keep the condition, as a note.
+    - **A Salvo printed "–"** has no Salvo track (Core p.207), so +Rank Salvo (More Dakka, Core p.137) leaves it "–" with
+      a note.
+    - Only a weapon that came from the Wargear catalogue (`wargearId`) is matched: a hand-written line may already
+      count the Talent, and it would count twice. A hand-written line a rebuild matched to its catalogue entry (so an
+      upgrade can be fitted to it) is marked `asPrinted` and isn't matched either, as on a sheet written by hand before
+      #27. The live volkus agents' printed lines were swapped for their builds' lines by a one-off script (issue #27).
+    - **A weapon that deals no damage** (a Smoke Grenade: Damage 0, ED 0) takes no Talent +Damage or +ED: Explosive
+      Fury adds to "successful attacks", and smoke makes none. A melee weapon printed Damage 0 deals Strength (S + 0)
+      and a grenade with ED on Damage 0 still deals damage, so those take them.
+69. **When a purchase was bought** (Core p.146, p.148 step 4; GitHub issue #32). The book spends XP between sessions and
     keeps no record of when; ADVANCE is more useful if it does, so the app records one. Each advancement purchase carries
     the number of the session it first appeared in, in `Advancement.boughtIn`, keyed by `purchaseKey`. House decisions
     about that key and that date:
@@ -533,7 +556,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Threat outcomes | done | `threatStatus` per class (A → Dying or dead, T/E/M → Slain; Exhausted for E/A/M) |
 | Traumatic Injuries | done | `character.traumatic` (GM-only adjust); `pcStatus` Dead at > Tier + 1; `pcHit` (via `character.adjust`) turns a Wound while Dying into 1 Traumatic Injury (§11.11), adds Prone on becoming Dying, and ends Dying on any healing |
 | Traits minimum 1 | done | `deriveStats` clamps all Traits to ≥ 1; Influence added |
-| Session start | done | `session.start` (Wrath 2, Glory 0, Ruin = characters), plus a one-line notice naming whoever still has XP to spend, three at a time and then "N more" (Core p.146, p.148; §11.68); `session.end` awards XP |
+| Session start | done | `session.start` (Wrath 2, Glory 0, Ruin = characters), plus a one-line notice naming whoever still has XP to spend, three at a time and then "N more" (Core p.146, p.148; §11.69); `session.end` awards XP |
 | Respite | done | `character.respite` (refused while Dying or Dead) |
 | Personal Ruin | done | `combatant.personalRuin`, seeded from the stat block; tracker SPEND / +1 |
 | Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's vox log only |
@@ -541,10 +564,11 @@ Implementation details: [game-logic.md](game-logic.md).
 | Annihilation | done | `pcHit`: one hit over 2 × Max Wounds sets `character.annihilated` → Dead (p.194, §11.7); GM RESTORE / undo clears it. Agents only: an Adversary over max Wounds is already the GM's call (§11.10) |
 | Exhausted → Mortal Wounds | done | `exhaustedShock` in `pcHit` and `combatant.adjust` (p.199, §11.12); single Threats too, Mobs keep no Shock track |
 | Timed Conditions | done | Hindered, Staggered, Vulnerable (`isTimed`): `turn.start` / `turn.seize` arm the ones held (`combatant.expiring`), `turn.end` removes them (§11.8). Pinned doesn't expire (the attacker isn't tracked) |
-| Advancement in play | done | ADVANCE spends XP on ratings, Talents, powers, languages and Advancement Packages (`resolveBuild`); the sheet shows XP earned, XP to spend (`xp − xpSpent`) and Rank with a LEVEL UP badge onto ADVANCE, and PARTY shows both per character. Each purchase carries the session it was bought in (`boughtIn`, stamped server-side), and ADVANCE groups the in-play ledger by session (§11.68) |
+| Advancement in play | done | ADVANCE spends XP on ratings, Talents, powers, languages and Advancement Packages (`resolveBuild`); the sheet shows XP earned, XP to spend (`xp − xpSpent`) and Rank with a LEVEL UP badge onto ADVANCE, and PARTY shows both per character. Each purchase carries the session it was bought in (`boughtIn`, stamped server-side), and ADVANCE groups the in-play ledger by session (§11.69) |
 | Ascension Package count | done | One Ascension Package per Ascension (Core p.148, §11.55), one Ascension per Tier since creation: `build.ts` fills them in the order bought, prices "× the new Tier" at each one's own Tier, and refuses a package past the last |
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
 | Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
 | Wargear upgrades on a weapon | done | All 64 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
+| Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |

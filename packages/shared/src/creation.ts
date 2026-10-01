@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { Rarity, WargearKind } from "./requisition.ts";
 import { ATTRIBUTES, Mods, SKILLS, type Attribute, type Skill } from "./state.ts";
 import { ThreatClass, ThreatSize, Weapon } from "./threat.ts";
 import { Source } from "./source.ts";
+import { WargearFilter, WeaponEffect } from "./weapon-effect.ts";
+export * from "./weapon-effect.ts";
 
 // The character-creation catalogue: every species, archetype, talent, package, power and table a character is built
 // from, transcribed from the books (docs/data.md, "Creation catalogue"). Records cross-reference each other by id and
@@ -88,35 +89,6 @@ export const ThreatFilter = z.object({
   keywords: z.array(keyword).min(1).optional(),
 });
 export type ThreatFilter = z.infer<typeof ThreatFilter>;
-
-// Which catalogue items qualify: "any two augmetics", "one ranged weapon of Uncommon or lower rarity", "Rare Wargear
-// with a Value up to 3 + the new Tier" (Core p.151). Every field narrows; an empty filter is any item.
-export const WargearFilter = z.object({
-  kinds: z.array(WargearKind).min(1).optional(),
-  weapon: z.enum(["melee", "ranged"]).optional(),
-  categories: z.array(z.string().min(1)).min(1).optional(), // `Wargear.category`: "Augmetic Enhancements"
-  nameIncludes: z.string().min(1).optional(), // "Mechadendrite", "Drone"
-  wargearKeywords: z.array(z.string().min(1)).min(1).optional(), // the item has any of these (BOLT, IMPERIUM, PROJECTILE)
-  // The item has *all* of these: "any weapon with the BOLT and ADEPTUS ASTARTES Keywords" (VoA p.68). `wargearKeywords`
-  // is any-of, so a printed "and" needs this one or the filter is wider than the book.
-  allKeywords: z.array(z.string().min(1)).min(1).optional(),
-  // A printed weapon Trait the item has, by name without its rating: "any LAS weapon with the Pistol trait"
-  // (Apocrypha p.389), "weapons with a Heavy (X) Trait" (IoE p.95). Any of them matches.
-  weaponTraits: z.array(z.string().min(1)).min(1).optional(),
-  // A printed Trait the item must *not* have: "which does not have the Heavy trait" (Apocrypha p.388)
-  notWeaponTraits: z.array(z.string().min(1)).min(1).optional(),
-  maxValue: z
-    .union([
-      z.number().int().min(0),
-      z.object({ tierPlus: z.number().int() }), // "a Value of your Tier +3 or lower" (Apocrypha p.128)
-      z.object({ newTierPlus: z.number().int() }), // "a value of 3 + new Tier" (Core p.151)
-    ])
-    .optional(),
-  rarity: z.object({ atMost: Rarity.optional(), atLeast: Rarity.optional() }).optional(), // "Rare" alone is both
-  upgrade: z.string().min(1).optional(), // "with the Sanctified upgrade" (Apocrypha p.103)
-  condition: z.string().min(1).optional(), // a GM-judged condition: "worn openly and visibly" (FSPG p.73)
-});
-export type WargearFilter = z.infer<typeof WargearFilter>;
 
 const requirements = [
   z.object({ kind: z.literal("attribute"), attribute, min: rating }),
@@ -315,6 +287,7 @@ export const Rule = z.object({
   source: Source.optional(),
   mods: Mods.optional(),
   grants: z.array(Grant).optional(),
+  weapons: z.array(WeaponEffect).optional(), // standing changes to weapon profiles (rules-flow.md §11.68)
 });
 export type Rule = z.infer<typeof Rule>;
 
@@ -484,6 +457,7 @@ export const Talent = z.object({
   options: z.array(z.string().min(1).max(60)).min(2).optional(),
   mods: Mods.optional(),
   grants: z.array(Grant).optional(),
+  weapons: z.array(WeaponEffect).optional(), // standing changes to weapon profiles (rules-flow.md §11.68)
 });
 export type Talent = z.infer<typeof Talent>;
 
@@ -500,6 +474,7 @@ export const Package = z.object({
   // "+2 per Tier Ascended" (Dauntless Reputation, Core p.151) is { perTier: 2 }
   influence: z.union([z.number().int(), z.object({ perTier: z.number().int() })]).default(0),
   grants: z.array(Grant).default([]),
+  weapons: z.array(WeaponEffect).optional(), // standing changes to weapon profiles (rules-flow.md §11.68)
   becomesArchetypeId: id.optional(), // an Advancement Package that turns one Archetype into another (VoA p.27)
 });
 export type Package = z.infer<typeof Package>;

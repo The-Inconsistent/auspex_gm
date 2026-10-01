@@ -23,7 +23,7 @@ async function charactersOf(tx: Tx, campaignId: string) {
   return rows.map(toCharacter);
 }
 
-// How many characters the unspent-XP nudge names before it counts the rest: the GM report is one line (§11.68).
+// How many characters the unspent-XP nudge names before it counts the rest: the GM report is one line (§11.69).
 const NUDGE_NAMES = 3;
 
 const list = (names: string[]) =>

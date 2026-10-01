@@ -50,13 +50,15 @@ async function openCharacters(conn: Db, campaignId: string) {
 const previewSheet = (c: Character): Character => {
   const bare = (list: Character["stats"]["talents"]) => list.map((r) => ({ ...r, text: "" }));
   // A fitted upgrade's notes are its rules text (withUpgrades, Core p.227), so they need a seat too — on the suit as
-  // much as on a weapon. The AR and Traits it changed stay: they are the profile, not the book's prose.
-  const weapons = c.stats.weapons.map(({ notes: _, upgradeNames: __, ...w }) => w);
+  // much as on a weapon — and so do the standing weapon effects: their notes and `gm` mods are book prose
+  // (rules-flow.md §11.68). The profile numbers stay, the AR and Traits an upgrade changed with them.
+  const weapons = c.stats.weapons.map(({ notes: _, upgradeNames: __, effects: ___, ...w }) => w);
+  const { weaponEffects: _effects, ...stats } = c.stats;
   const { notes: _n, upgradeNames: _u, ...armour } = c.stats.armour;
   return {
     ...c,
     objectives: [],
-    stats: { ...c.stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons, armour },
+    stats: { ...stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons, armour },
   };
 };
 

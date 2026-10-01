@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { RequisitionSlot } from "./requisition.ts";
 import { Threat, ThreatClass, Weapon } from "./threat.ts";
+import { WargearFilter, WeaponMod } from "./weapon-effect.ts";
 
 // Page refs: docs/rules-flow.md (Core rulebook, printed pages).
 
@@ -107,6 +108,19 @@ export const Mods = z
 export const AMMO_TYPES = ["Projectile", "Las", "Flame", "Bolt", "Plasma", "Melta", "Shuriken"] as const;
 export const MAX_AMMO_TYPES = 12;
 
+// A weapon effect as the build resolved it: the record it comes from, and which weapons it reaches. The build turns a
+// Talent's chosen weapon (Trademark Weapon) and a record's granted one (the Doctrines) into catalogue ids or names.
+export const SheetWeaponEffect = z.object({
+  source: z.string().min(1).max(100), // "Bolter Discipline"
+  cite: z.string().max(40).optional(), // "VoA p.45"
+  fits: WargearFilter.extend({
+    wargearIds: z.array(z.string().min(1)).max(10).optional(), // only these catalogue entries
+    names: z.array(z.string().min(1).max(100)).max(10).optional(), // only weapons with these names on the sheet
+  }),
+  mods: z.array(WeaponMod).min(1).max(10),
+});
+export type SheetWeaponEffect = z.infer<typeof SheetWeaponEffect>;
+
 export const CharacterStats = z.object({
   species: z.string().max(60).default(""),
   archetype: z.string().max(100).default(""),
@@ -142,6 +156,9 @@ export const CharacterStats = z.object({
     .max(20)
     .default([]), // melee "S+X"
   gear: z.array(z.string().max(200)).max(60).default([]),
+  // The standing weapon effects the build gives (rules-flow.md §11.68), applied when the sheet is read
+  // (`withWeaponEffects`), because their Rank amounts follow the XP earned. Absent on a hand-made sheet.
+  weaponEffects: z.array(SheetWeaponEffect).max(60).optional(),
   // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
   // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),

@@ -8,6 +8,7 @@ import {
   adjustAmmo,
   creationKey,
   keepPlay,
+  keepSheetWeapons,
   deriveStats,
   effectiveStrength,
   gearLine,
@@ -77,14 +78,14 @@ function storedGm(build: Record<string, unknown> | null | undefined) {
   return r.success ? r.data : CharacterBuild.shape.gm.parse(undefined);
 }
 
-// The purchase history as the server last stamped it, or none (§11.68). It is never the client's: a build saved under an
+// The purchase history as the server last stamped it, or none (§11.69). It is never the client's: a build saved under an
 // older schema, or by a client that made one up, starts from what is stored.
 function storedBoughtIn(build: Record<string, unknown> | null | undefined): Record<string, number> {
   const r = CharacterBuild.shape.advancement.safeParse(build?.advancement);
   return r.success ? r.data.boughtIn : {};
 }
 
-// The purchase history after this save (§11.68): the stamps the resolved ledger still names, plus the session number for
+// The purchase history after this save (§11.69): the stamps the resolved ledger still names, plus the session number for
 // everything new. The open session, else the last one played, because XP is awarded at a session's end (Core p.321) and a
 // purchase made between sessions belongs to the session that paid for it. A campaign with no session yet leaves them
 // undated, and a date is never read from the client.
@@ -128,20 +129,25 @@ for (const w of wargear.values()) byName.set(w.name, [...(byName.get(w.name) ?? 
 
 // What the table sees is the derived sheet (`withUpgrades` in table.state), and the GM's character editor sends a patch
 // built from it, so an incoming weapon may carry upgrades already applied. Storing that would apply them twice on the
-// next read. `upgradeNames` is set only by `withUpgrades`, so it marks a derived profile: those weapons are replaced by
+// next read. `upgradeNames` is set only by `withUpgrades`, and `effects` only by `withWeaponEffects` (rules-flow.md
+// §11.68), so either marks a derived profile: those weapons are replaced by
 // the stored ones, which is what the editor means anyway — it edits attributes, skills, talents and abilities.
 function storedProfiles(incoming: CharacterStats, stored: CharacterStats): CharacterStats {
+  // The suit the same way: it carries upgrades now too (§11.65), and its `ar` arrives already upgraded.
   const suit = incoming.armour.upgradeNames
     ? { armour: stored.armour.name === incoming.armour.name ? stored.armour : plain(incoming.armour) }
     : {};
-  if (!incoming.weapons.some((w) => w.upgradeNames)) return { ...incoming, ...suit };
+  if (!incoming.weapons.some((w) => w.upgradeNames || w.effects)) return { ...incoming, ...suit };
   return {
     ...incoming,
     ...suit,
     weapons: incoming.weapons.map((w) => {
-      if (!w.upgradeNames) return w;
-      const { upgradeNames: _names, notes: _notes, ...rest } = w;
-      const was = stored.weapons.find((s) => (w.wargearId ? s.wargearId === w.wargearId : s.name === w.name));
+      if (!w.upgradeNames && !w.effects) return w;
+      const { upgradeNames: _names, effects: _effects, notes: _notes, ...rest } = w;
+      // By name first, which is the line's own on a sheet: two lines can share an entry (a knife and its off-hand twin).
+      const was =
+        stored.weapons.find((s) => s.name === w.name) ??
+        (w.wargearId ? stored.weapons.find((s) => s.wargearId === w.wargearId) : undefined);
       return was ?? rest;
     }),
   };
@@ -288,7 +294,9 @@ export async function applyCharacterAction(
       const refusal = buildRefusal(r);
       if (refusal) fail(refusal);
       // A character already made keeps what play changed (keepPlay), and gains only what the new build adds over the
-      // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's lines too.
+      // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's armour and
+      // gear lines and Wealth too. Its weapons are the build's, whose Talents are applied on read (rules-flow.md §11.68),
+      // plus any hand-written line the build has no weapon of that name for: a GM's own profile (the volkus Haywire Mine).
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old
         ? r.sheet
@@ -299,12 +307,15 @@ export async function applyCharacterAction(
               before: resolveBuild({ catalogue: buildCatalogue(homebrew), build: made.data, play }).sheet,
             })
           : a.keepSheet
-            ? keepPlay({ previous: old, next: r.sheet, before: r.sheet })
+            ? {
+                ...keepPlay({ previous: old, next: r.sheet, before: r.sheet }),
+                weapons: keepSheetWeapons(old.weapons, r.sheet.weapons),
+              }
             : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
       // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.
       const xpSpent = r.advancement?.spent ?? 0;
-      // The purchase history (§11.68): every purchase the resolved ledger names, dated with the session it first
+      // The purchase history (§11.69): every purchase the resolved ledger names, dated with the session it first
       // appeared in. A key the new build no longer holds is dropped, so a purchase taken back takes its date with it.
       const stamped = {
         ...build,
@@ -342,7 +353,7 @@ export async function applyCharacterAction(
 
     // A draft waits on the character for the GM. A player's keeps the GM's part as it stands (the stored draft's, or the
     // saved build's), so ticks and rulings stay the GM's. Nothing stamps a draft's purchase history: a draft is never
-    // authoritative, and `character.build` rewrites the history from the stored build on every save (§11.68).
+    // authoritative, and `character.build` rewrites the history from the stored build on every save (§11.69).
     case "character.draft": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
       const gm = row.buildDraft?.gm ?? row.build?.gm;

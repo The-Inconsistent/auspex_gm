@@ -20,12 +20,25 @@ import {
   type Scaled,
   type SubFaction,
   type WargearFilter,
+  type RankAmount,
+  type WeaponEffect,
+  type WeaponMod,
   type XpCost,
 } from "./creation.ts";
 import { RARITY_DN } from "./requisition.ts";
 import { SOURCES, sourceCite, type Source } from "./source.ts";
-import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, Mods, type Skill } from "./state.ts";
-import { Wargear, gearLine, sheetWeapon, type WargearWeapon } from "./wargear.ts";
+import {
+  ATTRIBUTES,
+  CharacterStats,
+  SKILLS,
+  Tier,
+  type Attribute,
+  Mods,
+  type SheetWeaponEffect,
+  type Skill,
+} from "./state.ts";
+import type { Weapon } from "./threat.ts";
+import { Wargear, applyMods, gearLine, sheetWeapon, type UpgradeMod, type WargearWeapon } from "./wargear.ts";
 
 // The character builder (issue #9, docs/data.md §9): a character is the choices made at creation, and its sheet is
 // derived from them by `resolveBuild`, which the web runs for a live preview and the api re-runs before it saves.
@@ -64,7 +77,7 @@ export const Advancement = z
     // Archetype Ascension (Core p.155): an Archetype of the same Faction at the Tier Ascended to, in place of an
     // Ascension Package. It gives that Archetype's abilities, Keywords, Wargear and Influence, not its ratings.
     archetypeAscension: z.object({ archetypeId: id }).optional(),
-    // When each purchase was bought: the session number it first appeared in, keyed by `purchaseKey` (§11.68). The
+    // When each purchase was bought: the session number it first appeared in, keyed by `purchaseKey` (§11.69). The
     // server stamps it and throws a client's copy away, because "when" is the table's fact, not the builder's. Nothing
     // is priced from it — `resolveBuild` only reads it to label the ledger — so a build resolves to the same XP with it
     // and without it, and a build saved before it existed simply has none.
@@ -72,7 +85,7 @@ export const Advancement = z
   })
   .prefault({});
 
-// A purchase made in play, as a stable key for the history (`Advancement.boughtIn`, §11.68). A rating is one key per
+// A purchase made in play, as a stable key for the history (`Advancement.boughtIn`, §11.69). A rating is one key per
 // rating point reached, so buying the same Attribute again later leaves the earlier point's session alone; a Talent's
 // bracket pick is part of it (Hatred [Orks] is not Hatred [Tyranids]); `~n` separates the second and later copies of an
 // otherwise identical purchase (a repeatable Talent taken twice with the same pick).
@@ -160,7 +173,7 @@ export type CharacterBuild = z.infer<typeof CharacterBuild>;
 export type CharacterBuildInput = z.input<typeof CharacterBuild>;
 
 // `pool`: "advancement" for XP earned in play; absent for the creation budget. `key` and `session` are the purchase
-// history (§11.68), only ever on an advancement row: `key` is what `Advancement.boughtIn` is keyed by, `session` the
+// history (§11.69), only ever on an advancement row: `key` is what `Advancement.boughtIn` is keyed by, `session` the
 // session number stamped for it, absent until a save stamps one.
 export type LedgerRow = {
   what: string;
@@ -318,6 +331,8 @@ type Sheet = {
   wealth: number;
   gear: GearItem[];
   weapons: { name: string; weapon: WargearWeapon }[];
+  // Standing weapon effects held (rules-flow.md §11.68), with the record's path, so a `granted` one finds its weapon
+  weaponEffects: { effect: WeaponEffect; source: string; cite?: string; path: string; choice?: string }[];
   languageGrants: (number | { skill: Skill })[];
   influenceAttribute?: Attribute;
   xpDiscounts: { talents: Map<string, number>; disciplines: { id: string | undefined; multiplier: number }[] };
@@ -360,7 +375,7 @@ export function resolveBuild({
     problems.push(p);
   };
   // The purchase history is a label on an advancement row and nothing else: no price, no problem and no sheet field
-  // reads it, so a build resolves identically with and without it (§11.68). `~n` keeps two identical purchases apart.
+  // reads it, so a build resolves identically with and without it (§11.69). `~n` keeps two identical purchases apart.
   const copies = new Map<string, number>();
   const dated = (p: Purchase) => {
     const base = purchaseKey(p);
@@ -394,6 +409,7 @@ export function resolveBuild({
     wealth: tier, // starting Wealth = Tier (Core p.38)
     gear: [],
     weapons: [],
+    weaponEffects: [],
     languageGrants: [],
     xpDiscounts: { talents: new Map(), disciplines: [] },
     neverKeywords: new Set(),
@@ -403,6 +419,10 @@ export function resolveBuild({
   const addKeyword = (k: string) => {
     if (!s.keywords.includes(k)) s.keywords.push(k);
   };
+  const addWeaponEffects = (
+    list: WeaponEffect[] | undefined,
+    at: { source: string; cite?: string; path: string; choice?: string },
+  ) => list?.forEach((effect) => s.weaponEffects.push({ effect, ...at }));
   const addMods = (m: Partial<Record<string, Scaled>> | undefined, o: Origin) => {
     for (const [k, v] of Object.entries(m ?? {})) {
       s.mods[k] = (s.mods[k] ?? 0) + scaled(v!, o);
@@ -423,6 +443,7 @@ export function resolveBuild({
       : o.cite;
     s.abilities.push({ name: r.name, text: r.text, page });
     addMods(r.mods, o);
+    addWeaponEffects(r.weapons, { source: r.name, cite: page, path: `${o.path}/${norm(r.name)}` });
     r.grants?.forEach((g, i) => grant(g, { ...o, path: `${o.path}/${norm(r.name)}/${i}` }));
   };
 
@@ -523,6 +544,12 @@ export function resolveBuild({
     // A granted Talent whose requirements aren't met is the GM's to tick, not a refusal (rules-flow.md §11.53).
     deferred.push({ reqs: t.requires, what: t.name, origin: o, severity: o.granted ? "gm" : "error", choice });
     addMods(t.mods, to);
+    addWeaponEffects(t.weapons, {
+      source: choice ? `${t.name} (${choice})` : t.name,
+      cite: cite(t),
+      path: to.path,
+      choice,
+    });
     t.grants?.forEach((g, i) => grant(g, { ...to, path: `${to.path}/${i}` }));
   };
 
@@ -914,6 +941,7 @@ export function resolveBuild({
       (s.mods.influence ?? 0) +
       (typeof p.influence === "number" ? p.influence : p.influence.perTier * po.tiersAscended);
     p.grants.forEach((g, i) => grant(g, { ...po, path: `${po.path}/${i}` }));
+    addWeaponEffects(p.weapons, { source: p.name, cite: cite(p), path: po.path });
     // Checked after the grants: `atCreationWith` turns on the kindred chosen (IoE p.20, rules-flow.md §11.61).
     if (p.notAtCreation && !(p.atCreationWith && s.keywords.includes(p.atCreationWith)))
       problem({
@@ -1004,6 +1032,7 @@ export function resolveBuild({
       (s.mods.influence ?? 0) +
       (typeof p.influence === "number" ? p.influence : p.influence.perTier * po.tiersAscended);
     p.grants.forEach((g, i) => grant(g, { ...po, path: `${po.path}/${i}` }));
+    addWeaponEffects(p.weapons, { source: p.name, cite: cite(p), path: po.path });
     deferred.push({
       reqs: p.requires,
       what: p.name,
@@ -1075,7 +1104,7 @@ export function resolveBuild({
         cite: "Core p.155",
       });
       // 0 XP of its own: what it costs is the Ascension slot it takes and the ratings bought to match (Core p.155). It
-      // is on the ledger so the history can date it and ADVANCE says what the Ascension went on (§11.68).
+      // is on the ledger so the history can date it and ADVANCE says what the Ascension went on (§11.69).
       ledger.push({
         what: `${to.name} (Archetype Ascension)`,
         xp: 0,
@@ -1428,7 +1457,7 @@ export function resolveBuild({
     });
   }
   // In play: ratings raised from where creation left them, one row per rating point, which is how they are bought
-  // (Core p.24) and what the history is keyed by (§11.68). The XP is unchanged: the tables are cumulative.
+  // (Core p.24) and what the history is keyed by (§11.69). The XP is unchanged: the tables are cumulative.
   for (const [a, to] of Object.entries(build.advancement.attributes) as [Attribute, number][]) {
     const from = attributes[a];
     if (to <= from) continue;
@@ -1666,6 +1695,29 @@ export function resolveBuild({
         };
       }),
   ];
+  // The weapon effects as the sheet keeps them: a Talent's chosen weapon becomes its name, a record's granted weapon its
+  // catalogue ids. One whose weapon isn't there (the GM swapped the Doctrine's Heavy Bolter out, pregens.md GM choice
+  // 22) reaches nothing, so it isn't kept.
+  const weaponEffects = s.weaponEffects.flatMap(({ effect, source, cite, path, choice }) => {
+    const { chosen, granted, unarmed, ...fits } = effect.fits;
+    // ponytail: no sheet line for unarmed strikes, so an unarmed effect stays in its Talent's text; a line if one appears
+    if (unarmed) return [];
+    if (chosen && !choice) return [];
+    const wargearIds = granted
+      ? armourItems
+          .filter((x) => x.w?.weapon && (x.g.from === path || x.g.from.startsWith(`${path}/`)))
+          .map((x) => x.w!.id)
+      : undefined;
+    if (wargearIds && !wargearIds.length) return [];
+    return [
+      {
+        source: source.slice(0, 100),
+        cite: cite?.slice(0, 40),
+        fits: { ...fits, ...(chosen && { names: [choice!] }), ...(wargearIds && { wargearIds }) },
+        mods: effect.mods,
+      },
+    ];
+  });
   const gear = armourItems
     .filter((x) => !x.w?.weapon && x !== worn)
     .map(({ g, w }) => {
@@ -1705,6 +1757,7 @@ export function resolveBuild({
       .map(clip),
     weapons: weapons.slice(0, 20),
     gear: gear.slice(0, 60).map((g) => g.slice(0, 200)),
+    weaponEffects: weaponEffects.length ? weaponEffects.slice(0, 60) : undefined,
     wealth: s.wealth,
   });
   const advancement = play ? { budget: earned, spent: advanceSpent, rank, tier: nowTier } : null;
@@ -1843,10 +1896,15 @@ export function wargearMatches(w: Wargear, f: WargearFilter, { tier, newTier }: 
   if (f.wargearKeywords && !w.keywords.some((k) => f.wargearKeywords!.includes(k))) return false;
   if (f.allKeywords && !f.allKeywords.every((k) => w.keywords.includes(k))) return false;
   if (f.weaponTraits || f.notWeaponTraits) {
-    // Traits are printed with their rating ("Heavy (3)"); the filter names the Trait alone.
-    const traits = [...(w.weapon?.traits ?? []), ...(w.armour?.traits ?? [])].map((t) => norm(t.split("(")[0]!));
-    if (f.weaponTraits && !f.weaponTraits.some((t) => traits.includes(norm(t)))) return false;
-    if (f.notWeaponTraits?.some((t) => traits.includes(norm(t)))) return false;
+    // Traits are printed with their rating ("Heavy (3)"); the filter names the Trait alone, or the whole printed Trait
+    // when the bracket is the point: "Inflict (On Fire)" (Promethium Proficiency, Core p.138) isn't every Inflict.
+    const printed = [...(w.weapon?.traits ?? []), ...(w.armour?.traits ?? [])];
+    const has = (t: string) =>
+      t.includes("(")
+        ? printed.some((p) => norm(p) === norm(t))
+        : printed.some((p) => norm(p.split("(")[0]!) === norm(t));
+    if (f.weaponTraits && !f.weaponTraits.some(has)) return false;
+    if (f.notWeaponTraits?.some(has)) return false;
   }
   if (f.maxValue !== undefined) {
     const max =
@@ -1864,6 +1922,70 @@ export function wargearMatches(w: Wargear, f: WargearFilter, { tier, newTier }: 
     if (f.rarity.atLeast && r < RARITIES.indexOf(f.rarity.atLeast)) return false;
   }
   return true;
+}
+
+// The sheet as shown: each catalogue weapon with the standing effects that reach it applied, after its upgrades
+// (rules-flow.md §11.68). Rank amounts are resolved here, at the Rank the XP earned gives now (Core pp.146–147), so a
+// session's XP shows without a rebuild; nothing is stored. A weapon not from the catalogue is left as written: a
+// hand-written line may already count the Talent. `effects` names what was applied, which marks the line as derived.
+export function withWeaponEffects<T extends { weapons: Weapon[]; weaponEffects?: SheetWeaponEffect[] }>(
+  stats: T,
+  {
+    rank,
+    catalogue,
+    traitName,
+  }: { rank: number; catalogue: ReadonlyMap<string, Wargear>; traitName?: (id: string) => string },
+): T {
+  const list = stats.weaponEffects ?? [];
+  if (!list.length) return stats;
+  const amount = (a: RankAmount) => (typeof a === "number" ? a : a.perRank * rank + (a.plus ?? 0));
+  const atRank = (m: WeaponMod): UpgradeMod => {
+    switch (m.kind) {
+      case "trait":
+        return { ...m, rating: m.rating === undefined ? undefined : amount(m.rating) };
+      case "traitRating":
+      case "damage":
+      case "ed":
+      case "ap":
+      case "salvo":
+        return { ...m, delta: amount(m.delta) };
+      case "bonusDice":
+        return { ...m, dice: amount(m.dice) };
+      default:
+        return m;
+    }
+  };
+  return {
+    ...stats,
+    weapons: stats.weapons.map((w) => {
+      const entry = w.wargearId && !w.asPrinted ? catalogue.get(w.wargearId) : undefined;
+      if (!entry?.weapon) return w;
+      let weapon = w;
+      const applied: string[] = [];
+      const notes = [...(w.notes ?? [])];
+      for (const e of list) {
+        if (applied.includes(e.source)) continue; // its other entries were alternatives (WeaponEffect)
+        const { wargearIds, names, ...fits } = e.fits;
+        if (wargearIds && !wargearIds.includes(entry.id)) continue;
+        if (names && !names.some((n) => norm(n) === norm(w.name))) continue;
+        // Traits as the weapon has them now, upgrades and earlier effects included (as `fitUpgrade` checks a fit)
+        const now = { ...entry, weapon: { ...entry.weapon, traits: weapon.traits } };
+        if (!wargearMatches(now, fits, { tier: 0, newTier: 0 })) continue;
+        // A weapon that deals no damage (the Smoke Grenade: Damage 0, ED 0) has nothing to add a Talent's damage to. A melee
+        // weapon's Damage is S + X, so its 0 is Strength (Harlequin's Caress), and ED 10 on Damage 0 is damage (Rad Grenades).
+        const harmless = w.damage === 0 && w.ed === 0 && !("addStrength" in w && w.addStrength);
+        const mods = e.mods.filter((m) => !harmless || (m.kind !== "damage" && m.kind !== "ed"));
+        if (!mods.length) continue;
+        const r = applyMods(weapon, mods.map(atRank), { traitName });
+        weapon = r.weapon;
+        applied.push(e.source);
+        const from = e.cite ? `${e.source}, ${e.cite}` : e.source;
+        notes.push(...r.notes.map((n) => `${n} (${from})`));
+      }
+      if (!applied.length) return w;
+      return { ...weapon, effects: applied, notes: notes.length ? notes : undefined };
+    }),
+  };
 }
 
 // ── labels ───────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -1969,6 +2091,25 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
   return out;
 }
 
+// The weapons a hand-made sheet keeps when its build is attached (`keepSheet`, issue #27): the build's lines, whose
+// Talents are applied on read (rules-flow.md §11.68), plus a hand-written line the build has no weapon of that name for
+// (a GM's own profile, the volkus Haywire Mine). What play gave a same-name line carries over to the build's: the
+// upgrades fitted at the table, and a second copy of that name (a requisitioned Bolt Pistol), which is its own weapon.
+export function keepSheetWeapons(old: CharacterStats["weapons"], built: CharacterStats["weapons"]) {
+  const seen = new Set<string>();
+  const extra = old.filter((w) => {
+    if (!built.some((b) => b.name === w.name)) return true;
+    if (seen.has(w.name)) return true; // a second copy
+    seen.add(w.name);
+    return false;
+  });
+  const lines = built.map((b) => {
+    const fitted = old.find((w) => w.name === b.name)?.fitted?.filter((id) => !(b.upgrades ?? []).includes(id));
+    return fitted?.length ? { ...b, fitted } : b;
+  });
+  return [...lines, ...extra].slice(0, 20);
+}
+
 // Mk X Phobos: "+1 Movement" (VoA p.72), the armour trait "+1 M" (a printed pregen sheet spells it out); your Movement
 // is your Speed (Core p.180).
 const movement = (armour: { traits: string[] }) =>
@@ -2008,10 +2149,12 @@ export function keepPlay({
     const fitted = (w.fitted ?? []).filter((id) => !upgrades.includes(id));
     const { upgrades: _, fitted: __, ...line } = w;
     const wargearId = w.wargearId ?? from?.wargearId;
-    // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed.
+    // Only the keys that hold something, so a printed line (a pregen's, issue #18) stays as printed. One tagged here
+    // was written by hand, so it says so: its Talents may be in its numbers already (`asPrinted`, §11.68).
     return {
       ...line,
       ...(wargearId && { wargearId }),
+      ...(!w.wargearId && wargearId && { asPrinted: true as const }),
       ...(upgrades.length && { upgrades }),
       ...(fitted.length && { fitted }),
     };

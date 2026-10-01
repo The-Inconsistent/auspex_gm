@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Requirement, WargearFilter } from "./creation.ts";
+import { Requirement, WargearFilter, weaponMods } from "./creation.ts";
 import { Rarity, WargearKind, type RequisitionKind } from "./requisition.ts";
 import { Source, sourceCite } from "./source.ts";
 import { Weapon } from "./threat.ts";
@@ -56,33 +56,9 @@ export const UPGRADE_HOSTS = ["weapon", "armour"] as const;
 export const UpgradeHost = z.enum(UPGRADE_HOSTS);
 export type UpgradeHost = z.infer<typeof UpgradeHost>;
 
-// The structured part of an upgrade's printed effect: what the fitted profile shows. Anything a profile can't hold
-// (an Action the wielder takes, a Glory spend, a Test) stays prose in `effect` and takes a `gm` mod, the way a Talent
-// does, so nothing is silently dropped.
-export const UpgradeMod = z.union([
-  // A Trait the item gains, by rules id: "gains Sniper (2)" is { traitId: "sniper", rating: 2 }
-  z.object({ kind: z.literal("trait"), traitId: z.string().min(1), rating: z.number().int().optional() }),
-  z.object({ kind: z.literal("removeTrait"), traitId: z.string().min(1) }), // "removes the Heavy Trait" (IoE p.95)
-  // A rating the item already has, moved: "reduces any Rapid Fire rating by -1" (VoA p.68). Removing the Trait would
-  // say something else, so this is its own mod; it does nothing to a weapon without that Trait.
-  z.object({ kind: z.literal("traitRating"), traitId: z.string().min(1), delta: z.number().int() }),
-  z.object({ kind: z.literal("damage"), delta: z.number().int() }),
-  z.object({ kind: z.literal("ed"), delta: z.number().int() }),
-  z.object({ kind: z.literal("ap"), delta: z.number().int() }),
-  z.object({ kind: z.literal("salvo"), delta: z.number().int() }),
-  // "The weapon's ranges are halved" (Apocrypha p.389) is { multiply: 0.5 }; a flat change is { delta }; a band-by-band
-  // change ("+3 Short, +6 Medium, +9 Long", Apocrypha p.388) is { bands: [3, 6, 9] }, shortest first, as `range` prints
-  z.object({
-    kind: z.literal("range"),
-    multiply: z.number().positive().optional(),
-    delta: z.number().int().optional(),
-    bands: z.array(z.number().int()).min(1).max(3).optional(),
-  }),
-  z.object({ kind: z.literal("ar"), delta: z.number().int() }), // armour only
-  // "+2 bonus dice to any Attack Test made with this weapon" (Core p.228): dice the sheet shows, with when to add them
-  z.object({ kind: z.literal("bonusDice"), dice: z.number().int(), when: z.string().min(1).max(200) }),
-  z.object({ kind: z.literal("gm"), what: z.string().min(1).max(200) }), // the GM applies it at the table
-]);
+// The structured part of an upgrade's printed effect: what the fitted profile shows, in fixed amounts (`weaponMods`,
+// creation.ts, which a Talent's weapon effect shares with Rank amounts).
+export const UpgradeMod = weaponMods(z.number().int());
 export type UpgradeMod = z.infer<typeof UpgradeMod>;
 
 // What an upgrade fits and what it does. `fits` is the printed compatibility line ("any melee weapon with the BLADE
@@ -242,56 +218,71 @@ export function upgradeRefusal({
 export function applyUpgrades(
   weapon: Weapon,
   upgrades: Wargear[],
+  opts: { traitName?: (id: string) => string } = {},
+): { weapon: Weapon; notes: string[] } {
+  return applyMods(
+    weapon,
+    upgrades.flatMap((u) => u.upgrade?.mods ?? []),
+    opts,
+  );
+}
+
+// The profile changes themselves, in order, shared by upgrades and a Talent's weapon effects (`withWeaponEffects`,
+// build.ts, once their Rank amounts are numbers).
+export function applyMods(
+  weapon: Weapon,
+  mods: UpgradeMod[],
   { traitName = titleCase }: { traitName?: (id: string) => string } = {},
 ): { weapon: Weapon; notes: string[] } {
   let traits = [...weapon.traits];
   let { damage, ed, ap, salvo, range } = weapon;
   const notes: string[] = [];
 
-  for (const entry of upgrades) {
-    for (const m of entry.upgrade?.mods ?? []) {
-      switch (m.kind) {
-        case "trait":
-        case "removeTrait":
-        case "traitRating":
-          traits = traitMods(traits, m, traitName);
-          break;
-        case "damage":
-          damage += m.delta;
-          break;
-        case "ed":
-          // A rolled ED ("1d3") can't take a delta, so it stays and the change is printed.
-          if (typeof ed === "number") ed += m.delta;
-          else notes.push(`ED ${m.delta >= 0 ? "+" : ""}${m.delta}, on a rolled ${String(ed)}`);
-          break;
-        case "ap": {
-          // AP is a penalty, so it never goes above 0 (Weapon.ap); a weapon with no AP that gains none keeps none.
-          const now = Math.min(0, (ap ?? 0) + m.delta);
-          ap = ap === undefined && now === 0 ? undefined : now;
-          break;
-        }
-        case "salvo":
-          // A weapon printed "–" has no Salvo track (p.207), so a change to it is the GM's call, not a silent 0 + X.
-          if (typeof salvo === "number") salvo = Math.max(0, salvo + m.delta);
-          else notes.push(`Salvo ${m.delta >= 0 ? "+" : ""}${m.delta}, on a weapon printed "–"`);
-          break;
-        case "range":
-          range = range.map((r, i) =>
-            Math.max(1, Math.round(r * (m.multiply ?? 1) + (m.delta ?? 0) + (m.bands?.[i] ?? 0))),
-          );
-          break;
-        case "ar": // armour's, and never a weapon's, so on a weapon it is prose: see applyArmourUpgrades
-          notes.push(`AR ${m.delta >= 0 ? "+" : ""}${m.delta}`);
-          break;
-        case "bonusDice":
-          notes.push(
-            `${m.dice >= 0 ? "+" : ""}${m.dice} bonus ${Math.abs(m.dice) === 1 ? "die" : "dice"} to ${m.when}`,
-          );
-          break;
-        case "gm":
-          notes.push(m.what);
-          break;
+  for (const m of mods) {
+    switch (m.kind) {
+      // The three Trait mods read the same on a weapon's profile and on a suit's, so both paths share them and
+      // can't drift (§11.65).
+      case "trait":
+      case "removeTrait":
+      case "traitRating":
+        traits = traitMods(traits, m, traitName);
+        break;
+      case "damage":
+        damage += m.delta;
+        break;
+      case "ed":
+        // A rolled ED ("1d3") can't take a delta, so it stays and the change is printed.
+        if (typeof ed === "number") ed += m.delta;
+        else notes.push(`ED ${m.delta >= 0 ? "+" : ""}${m.delta}, on a rolled ${String(ed)}`);
+        break;
+      case "setAp":
+        ap = m.value === 0 ? undefined : m.value;
+        break;
+      case "ap": {
+        // AP is a penalty, so it never goes above 0 (Weapon.ap); a weapon with no AP that gains none keeps none.
+        const now = Math.min(0, (ap ?? 0) + m.delta);
+        ap = ap === undefined && now === 0 ? undefined : now;
+        break;
       }
+      case "salvo":
+        // A weapon printed "–" has no Salvo track (p.207), so a change to it is the GM's call, not a silent 0 + X.
+        if (typeof salvo === "number") salvo = Math.max(0, salvo + m.delta);
+        else notes.push(`Salvo ${m.delta >= 0 ? "+" : ""}${m.delta}, on a weapon printed "–"`);
+        break;
+      case "range":
+        range = range.map((r, i) =>
+          Math.max(1, Math.round(r * (m.multiply ?? 1) + (m.delta ?? 0) + (m.bands?.[i] ?? 0))),
+        );
+        break;
+      case "ar": // armour's, and never a weapon's, so on a weapon it is prose: see applyArmourUpgrades
+        notes.push(`AR ${m.delta >= 0 ? "+" : ""}${m.delta}`);
+        break;
+      case "bonusDice":
+        notes.push(`${m.dice >= 0 ? "+" : ""}${m.dice} bonus ${Math.abs(m.dice) === 1 ? "die" : "dice"} to ${m.when}`);
+        break;
+      case "gm":
+        notes.push(m.what);
+        break;
     }
   }
   return {
@@ -339,9 +330,10 @@ export function applyArmourUpgrades<A extends { ar: number; traits: string[] }>(
         case "damage":
         case "ed":
         case "ap":
+        case "setAp":
         case "salvo":
         case "range":
-          notes.push(`${m.kind} ${m.kind === "range" ? "change" : "delta"} reads on a weapon, not on armour`);
+          notes.push(`${m.kind} reads on a weapon's profile, not on armour`);
           break;
         case "bonusDice":
           notes.push(

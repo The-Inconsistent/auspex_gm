@@ -351,7 +351,8 @@ The Volkus characters and their sources are in [pregens.md](pregens.md) and [kil
    2. `codex.save` for factions, then locations, NPCs and handouts
    3. each adventure, then its beats
    4. `character.create` for each character, then, when it has a `build`, `character.build` with `keepSheet`: the
-      server derives the sheet but keeps the printed weapon, armour and gear lines and the Wealth (issue #18)
+      server derives the sheet but keeps the printed armour and gear lines and the Wealth (issue #18); the weapons are
+      the build's, plus a printed one the build has none of by name (`keepSheetWeapons`, rules-flow.md §11.68)
 4. It prints counts and the table URL `/c/<campaignId>`, which the `--owner` user opens signed in.
 
 There is no SQL: every row goes through `authorize` → `applyAction`, the same validation and campaign scoping as
@@ -419,10 +420,10 @@ entries:
 
 A `gm` mod is prose the GM applies at the table: whatever a profile can't hold (an Action, a Glory spend, a Test) stays
 in `effect` and takes one, so nothing is dropped. `validate.ts` also checks that every mod `traitId` resolves in the
-rules reference (weapon or armour traits). A stored weapon — and the sheet's armour, which carries the same three fields
-— keeps its printed profile plus `upgrades` (ids fitted in the build) and `fitted` (ids fitted in play);
-`withUpgrades` derives the shown profile on read (`toCharacter` in `apps/api/src/table/table.state.ts`), so a data fix
-reaches existing characters.
+rules reference (weapon or armour traits). A stored weapon — and the sheet's armour, which carries the same three fields — keeps its printed profile plus `upgrades` (ids fitted in the
+build) and `fitted` (ids fitted in play); `withUpgrades` derives the shown profile on read (`toCharacter` in
+`apps/api/src/table/table.state.ts`), so a data fix reaches existing characters. `withWeaponEffects` then applies the
+build's standing weapon effects (`stats.weaponEffects`, rules-flow.md §11.68) with the same mods, at the Rank now.
 
 Transcription calls, all in each entry's `note`:
 - **Launchers** (grenade launcher, missile launcher, Cyclone) print "Uses the profile of the Grenade/Missile fired", so
@@ -689,6 +690,24 @@ species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), tale
 - **Where an index and an entry disagree, the entry is the rule.** Note the difference.
 - **Bracketed names drop the placeholder from the id** and repeat once per choice (`repeatable: "perChoice"`): "Hatred [Any]" is `hatred`, "Loremaster [Keyword]" is
   `loremaster`, as Core's contents page lists them.
+- **Standing weapon effects** (rules-flow.md §11.68, `WeaponEffect` in `packages/shared/src/weapon-effect.ts`): a
+  Talent, a package, or a `Rule` (an archetype's or species' ability, a sub-faction trait, a faction rule) carries
+  `weapons: [{ fits, mods }]`. `fits` is the Wargear filter, matched against the weapon's catalogue entry, plus
+  `chosen` (the Talent's choice names the weapon, Trademark Weapon), `granted` (the weapon the record's own grant
+  gave, the Doctrines) and `unarmed`. `mods` are the upgrades' (`weaponMods`), with amounts that may be Rank:
+  `{ "perRank": 1 }`, Double Rank `{ "perRank": 2 }`. A record's entries are alternatives: the first that fits a weapon
+  applies, so "SHURIKEN weapons" can be the keyword and Inheritance of Embers' "Shuriken Weapons" category without
+  counting twice. Re-rolls, bonus dice, "may" and GM-judged effects are `gm` or `bonusDice` notes, never numbers.
+  `validate.ts` holds `chosen` to Talents and `granted` to records that grant wargear. Known gaps, each a note or
+  nothing until the data or schema grows:
+  - unarmed strikes have no sheet line, so an `unarmed` effect stays in its text (Brawler, Assassinorum Conditioning);
+  - faction `rules` don't reach the sheet yet, so Assassinorum Conditioning (Apocrypha p.55) does nothing;
+  - a weapon outside the catalogue can't be matched: the Reaver's Bladevanes (Church of Steel) and the Eradicator
+    Doctrine's Heavy Melta Rifle;
+  - no "set" for a Trait's rating with dice ("Mortal (1d3)", Scorpion's Grasp) or a multiplied Salvo (Fast Shot);
+  - a condition on the character, not the weapon (Bork'an "Fire caste T'au" range) is a note;
+  - a Package that takes a weapon by choice (A Test of Faith, Lost on the Warrior Path's Mastercrafted Aspect weapon)
+    has no `choice` to name it.
 - **A Talent whose text lists what its choice is one of** carries them as `options` (Acute Sense's five senses, Core
   p.129). A bought one must name one; a granted one (the Space Wolves' Hunters Unleashed) asks for it in
   `choices["<grant path>/choice"]`, as an option index.
