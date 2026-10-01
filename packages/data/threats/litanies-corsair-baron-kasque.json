@@ -5,10 +5,10 @@
   "page": 89,
   "faction": "drukhari",
   "threat": [
-    "A",
-    "A",
-    "A",
-    "A"
+    "E",
+    "E",
+    "E",
+    "E"
   ],
   "keywords": [
     "AELDARI",
@@ -123,5 +123,5 @@
   "resolve": 2,
   "speed": 7,
   "size": "Avg",
-  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin). Strength 4 already includes the Grave Lotus +2."
+  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin; a Champion under 7 Wounds is E, as Bloody Gates' Cravax). Strength 4 already includes the Grave Lotus +2."
 }

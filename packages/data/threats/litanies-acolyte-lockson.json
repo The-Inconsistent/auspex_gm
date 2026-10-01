@@ -5,10 +5,10 @@
   "page": 83,
   "faction": "imperial",
   "threat": [
-    "A",
-    "A",
-    "A",
-    "A"
+    "E",
+    "E",
+    "E",
+    "E"
   ],
   "keywords": [
     "IMPERIUM",
@@ -101,5 +101,5 @@
   "resolve": 3,
   "speed": 6,
   "size": "Avg",
-  "note": "No Tier row printed; class proposed (Champion with 1 personal Ruin, 5 Wounds, an NPC)."
+  "note": "No Tier row printed; class proposed (Champion with 1 personal Ruin, 5 Wounds, an NPC; a Champion under 7 Wounds is E, as Bloody Gates' Cravax)."
 }

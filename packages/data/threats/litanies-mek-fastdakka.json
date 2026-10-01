@@ -5,10 +5,10 @@
   "page": 67,
   "faction": "ork",
   "threat": [
-    "A",
-    "A",
-    "A",
-    "A"
+    "E",
+    "E",
+    "E",
+    "E"
   ],
   "keywords": [
     "ORK",
@@ -121,5 +121,5 @@
   "resolve": 2,
   "speed": 6,
   "size": "Avg",
-  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin). No salvo printed on the Shoota or Big Shoota (field omitted)."
+  "note": "No Tier row printed; class proposed (Champion with 2 personal Ruin; a Champion under 7 Wounds is E, as Bloody Gates' Cravax). No salvo printed on the Shoota or Big Shoota (field omitted)."
 }

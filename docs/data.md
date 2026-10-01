@@ -273,7 +273,8 @@ calls, user rulings of 2026-10-02:
 - **A Champion bonus under another name** (Botuthrax's Beloved of Nurgle, "has 5 personal Ruin") sets `personalRuin`.
 - **Inflict spelling** is the catalogue's `Inflict (Poisoned 5)`, whatever the print's order ("Inflict Poisoned (5)").
 - **No Tier row** (Bloody Gates, and 31 blocks in the three adventure books below): the class is proposed and the
-  note says so (rules-flow.md §11.70).
+  note says so (rules-flow.md §11.70). A Champion is A only from 7 Wounds up, otherwise E (Bloody Gates' Cravax). The
+  GM confirmed every class listed here.
 - **Faction by keyword:** a beast takes the faction of whoever it lives among (Darktide's hive fauna are `imperial`,
   as Apocrypha's Fenrisian Wolf); a SCUM ganger with no ADEPTUS MECHANICUS keyword is `imperial`; a block printing
   ADEPTUS MECHANICUS beside CHAOS or HERETIC is `heretic`.
@@ -315,8 +316,11 @@ Per book:
   Valgaren's "page 109" for the Nurglings and Rot Flies (they're on p.101), the Lattice Springer's "Inflict (Poisoned)"
   with no value, the Meltagun's "Melta" trait. Core has no Nurglings block, so `darktide-nurglings` is the only one.
 - **Litanies of the Lost** (`litanies-`, 25: Grim Harvest's stat blocks pp.34–38, then p.67, pp.77–95 and the Stat
-  Blocks section pp.134–137): only the Skitarii Ranger (p.77) and the Tech-Ganger (p.79) print a Tier row; the other 23
-  are proposed (Champions with personal Ruin A, rank-and-file T, the rest E). Beside homebrew namesakes:
+  Blocks section pp.134–137): only the Skitarii Ranger (p.77) and the Tech-Ganger (p.79) print a Tier row. Of the
+  other 23, A: Kaptin Slystabba, the Fulgurite Electro-Priest, Lin and Roco, Ruststalker Marech, the Entombed Champion
+  and the Clawed Fiend (10 Wounds, Large); T: the Zealot, Tech-Adept, Wych, Kabalite Warrior, Pakthertius Servitor and
+  Censer Cherub; E: the rest, including the five Champions under 7 Wounds (Acolyte Lockson, Corsair Baron Kasque, Mek
+  Fastdakka, the Succubus, the Aeldari Ranger). Beside homebrew namesakes:
   `litanies-skitarii-ranger`, `-fulgurite-electro-priest`, `-kataphron-battle-servitor` (`hat-*`) and
   `-cyber-mastiff` (`apoc-cyber-mastiff`). The Medicae, Warden, Fabrication and Decommissioned Servitors (p.134) print no
   Attributes, so they're `variant` options on the Pakthertius Servitor, with the Tough and Strong Servitors sidebar. Lin

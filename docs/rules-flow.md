@@ -544,7 +544,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     transcriber proposes one class from the block's role (a Champion with Personal Ruin, a 1-Wound grunt) and repeats it
     for every Tier, and the block's `note` says "No Tier row printed; class proposed (…)". The GM can change it per
     fight. Bloody Gates: Commissar Shrake A, Cravax the Claw E (a Champion, but 6 Wounds and a paid Determination), the
-    rest T. *(User ruling, 2026-10-02.)*
+    rest T. A Champion is A only from 7 Wounds up; under that it is E, as Cravax. Redacted Records, Darktide and Litanies
+    of the Lost (31 blocks) are confirmed as listed in `docs/data.md` §4. *(User rulings, 2026-10-02.)*
 71. **Reprints** (GitHub issue #44). A block whose name the bestiary already holds is transcribed again, under its own
     book's id prefix as `ta-ork-boy` is, **only if it differs** from the printing already in; its `note` names the
     other printing and what differs. An identical reprint is skipped and only listed in the book's notes (docs/data.md
