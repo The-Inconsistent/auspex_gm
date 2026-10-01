@@ -5,6 +5,7 @@
 import { io } from "socket.io-client";
 import type { ActionInput, ActionResult } from "@wg/shared";
 import { loadPack } from "@wg/data";
+import { attachBuild } from "./attach-build.ts";
 
 const args = process.argv.slice(2);
 const name = args.find((a) => !a.startsWith("--") && args[args.indexOf(a) - 1] !== "--owner");
@@ -37,7 +38,15 @@ async function send(a: ActionInput, what: string): Promise<string | undefined> {
 const ids = new Map<string, string>();
 const ref = (k: string | undefined) => (k ? (ids.get(k) ?? null) : null);
 
-await send({ type: "campaign.update", framework: pack.campaign.framework, patron: pack.campaign.patron }, "framework");
+await send(
+  {
+    type: "campaign.update",
+    framework: pack.campaign.framework,
+    patron: pack.campaign.patron,
+    homebrew: pack.campaign.homebrew,
+  },
+  "framework",
+);
 for (const { key, ...data } of pack.factions)
   ids.set(key, (await send({ type: "codex.save", kind: "faction", data }, `faction ${key}`))!);
 for (const { key, parent, ...data } of pack.locations)
@@ -73,11 +82,13 @@ for (const { key, beats, ...data } of pack.adventures) {
       `beat "${b.title}"`,
     );
 }
-for (const c of pack.characters)
-  await send(
+for (const c of pack.characters) {
+  const id = (await send(
     { type: "character.create", name: c.name, stats: c.stats, detail: c.detail, objectives: c.objectives },
     `character ${c.name}`,
-  );
+  ))!;
+  if (c.build) await attachBuild({ socket, send }, { id, name: c.name, build: c.build, printed: c.stats });
+}
 
 socket.close();
 console.log(

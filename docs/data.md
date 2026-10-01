@@ -265,14 +265,14 @@ The entry shapes reuse `CodexInput` from `packages/shared/src/codex.ts`. The ser
 
 | Field | Shape | Notes |
 |---|---|---|
-| `campaign` | `{ name (1–100), tier (1–5), framework? (≤ 5000), patron? (≤ 200) }` | |
+| `campaign` | `{ name (1–100), tier (1–5), framework? (≤ 5000), patron? (≤ 200), homebrew? (false) }` | `homebrew`: the builds may use the homebrew books |
 | `factions[]` | `CodexInput.faction` + `key` | `name`, `keywords[]` (≤ 20), `stance` (`ally`/`neutral`/`rival`/`enemy`), `notes`, `secrets` |
 | `locations[]` | `CodexInput.location`, with `parent?: key` in place of `parentId` | `name`, `description`, `gmNotes`, `hazards`, `revealed` |
 | `npcs[]` | `CodexInput.npc`, with `faction?: key` in place of `factionId` | `name`, `role`, `description`, `gmNotes`, `secrets`, `attitude` (`hostile` … `helpful`, Core p.168), `statSource`, `revealed` |
 | `handouts[]` | `CodexInput.handout` + `key` | `title`, `body` (≤ 20000), `revealed` |
 | `adventures[]` | `CodexInput.adventure` + `key` + `beats[]` | `title`, `premise`, `status` (`planned`/`running`/`done`) |
 | `adventures[].beats[]` | `CodexInput.beat` with `location?: key`, `npcs: key[]`, `handouts: key[]` in place of the id fields | `title`, `type`, `status`, `readAloud`, `gmNotes`, `outcome`, `encounter[]`. Beats have no key; their order is their array order |
-| `characters[]` | `{ name (1–100), stats: CharacterStats }` | Filled from `characters/*.json` by the loader; don't put it in `pack.json` |
+| `characters[]` | `{ name (1–100), stats: CharacterStats, detail?, objectives?, build?: CharacterBuild }` | Filled from `characters/*.json` by the loader; don't put it in `pack.json`. `stats` is the sheet as printed; `build` is how it was made, so the builder opens it filled in (`packages/data/build.test.ts` checks one against the other) |
 
 Beat `type` is one of `briefing`, `travel`, `investigation`, `social`, `combat`, `revelation` or `rest`. Beat `status`
 is one of `planned`, `active`, `done` or `skipped`. Almost every field has a default; only the names and titles are
@@ -347,10 +347,11 @@ The Volkus characters and their sources are in [pregens.md](pregens.md) and [kil
 2. `POST /api/campaigns` with `x-admin-key` creates the campaign (name and tier) and returns a GM token.
 3. It opens a socket as the GM and sends the same `action` events the GM app sends, in order, mapping each `key` to
    the uuid the server returns:
-   1. `campaign.update` (framework, patron)
+   1. `campaign.update` (framework, patron, homebrew)
    2. `codex.save` for factions, then locations, NPCs and handouts
    3. each adventure, then its beats
-   4. `character.create` for each character
+   4. `character.create` for each character, then, when it has a `build`, `character.build` and a `character.update`
+      that puts back the printed weapon, armour and gear lines and the Wealth (`scripts/attach-build.ts`, issue #18)
 4. It prints counts and the table URL `/c/<campaignId>`, which the `--owner` user opens signed in.
 
 There is no SQL: every row goes through `authorize` → `applyAction`, the same validation and campaign scoping as
