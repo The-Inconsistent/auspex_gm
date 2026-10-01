@@ -1,0 +1,104 @@
+{
+  "id": "dh-flesh-hound",
+  "name": "Flesh Hound",
+  "source": "daemons-and-heretics",
+  "page": 84,
+  "faction": "daemon",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 7,
+    "T": 6,
+    "A": 7,
+    "I": 5,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 4,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 9
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Collar of Khorne",
+      "text": "This Threat may attempt to Deny the Witch once each Turn as if it had the PSYKER Keyword (Wrath & Glory, p. 267), with a roll of 10 dice."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this Threat must make a DN 3 Fear Test"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Gore-drenched Fangs",
+          "damage": 10,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (2)"
+          ]
+        },
+        {
+          "name": "Burning Roar",
+          "damage": 10,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            4,
+            8,
+            12
+          ],
+          "traits": [
+            "Assault",
+            "Flamer"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Chilling Howl",
+      "text": "Spend 1 Ruin. All enemies in earshot must make a DN 3 Terror Test."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 12,
+  "size": "Avg",
+  "mobAbilities": [
+    {
+      "name": "Fury of the Pack",
+      "text": "A Mob of 10 or more Flesh Hounds gains +1 Defence and +2 bonus dice to attack rolls as long as each member is attacking the same target."
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "dh-bloodmaster",
+  "name": "Bloodmaster",
+  "source": "daemons-and-heretics",
+  "page": 80,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 9,
+    "T": 8,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 9
+  },
+  "defence": 4,
+  "wounds": 12,
+  "shock": null,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Locus of Fury",
+      "text": "Anyone who makes a melee attack within 2 metres of this Threat (including itself) may reroll any 1s on their Weapon Skill Tests, apart from Complications."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this Threat must make a DN 3 Fear Test"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Blade of Blood",
+          "damage": 15,
+          "ed": 3,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Blood for the Blood God!",
+      "text": "If this Threat rolls a Wrath Critical as part of an attack, the target suffers the Bleeding Condition in addition to any other effects."
+    },
+    {
+      "type": "RUIN",
+      "name": "Unbound Fury",
+      "text": "Spend 1 Ruin to enhance Locus of Fury for 1 Round; melee attacks within 2 metres can reroll 1s twice (excluding Complications)."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 8d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg"
+}

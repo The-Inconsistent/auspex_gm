@@ -1,0 +1,165 @@
+{
+  "id": "dh-bloodthirster",
+  "name": "Bloodthirster",
+  "source": "daemons-and-heretics",
+  "page": 78,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 14,
+    "T": 10,
+    "A": 8,
+    "I": 8,
+    "Wil": 10,
+    "Int": 8,
+    "Fel": 10
+  },
+  "resilience": {
+    "value": 18
+  },
+  "defence": 7,
+  "wounds": 50,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 12,
+        "passive": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 15
+      }
+    ]
+  },
+  "personalRuin": 5,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Colossal Size",
+      "text": "This Threat is a mighty giant, immensely difficult to kill. It has 50 Wounds."
+    },
+    {
+      "name": "Daemon Lord of Khorne",
+      "text": "This Threat may use Ruin Actions and has 5 personal Ruin."
+    },
+    {
+      "name": "Locus of Unbound Fury",
+      "text": "Anyone who makes a melee attack within 10 metres of this Threat (including itself) may reroll any 1s on their Weapon Skill Tests, apart from Complications."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Rage Incarnate",
+      "text": "Anyone witnessing a Bloodthirster must make a DN 3 Terror Test. Additionally, anyone who fails must attack the nearest enemy (excluding the Bloodthirster) or ally as if Frenzied."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Axe of Khorne",
+          "damage": 26,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            3
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        },
+        {
+          "name": "Hellfire Breath",
+          "damage": 15,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            4,
+            8,
+            12
+          ],
+          "traits": [
+            "Assault",
+            "Flamer"
+          ]
+        },
+        {
+          "name": "Lash of Khorne",
+          "damage": 24,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            12
+          ],
+          "traits": [
+            "Agonising",
+            "Inflict (Bleeding 1)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Blood for the Blood God!",
+      "text": "If this Threat rolls a Wrath Critical as part of an attack, the target suffers the Bleeding Condition in addition to any other effects."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 10d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 10,
+  "resolve": 9,
+  "speed": 12,
+  "size": "Gargantuan",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "The Blood Legions",
+      "text": "A Bloodthirster may exchange its Lash for a Bloodflail, or both weapons for a Great Axe.",
+      "weapons": [
+        {
+          "name": "Bloodflail",
+          "damage": 28,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            12
+          ],
+          "traits": [
+            "Inflict (Bleeding 2)",
+            "Unwieldy (3)"
+          ]
+        },
+        {
+          "name": "Great Axe of Khorne",
+          "damage": 30,
+          "ed": 6,
+          "ap": -4,
+          "range": [
+            3
+          ],
+          "traits": [
+            "Brutal",
+            "Rending (3)"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Speed printed 12 (Fly). The sidebar 'The Blood Legions' is kept as a variant option."
+}

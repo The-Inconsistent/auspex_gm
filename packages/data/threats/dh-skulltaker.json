@@ -1,0 +1,94 @@
+{
+  "id": "dh-skulltaker",
+  "name": "Skulltaker",
+  "source": "daemons-and-heretics",
+  "page": 83,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 10,
+    "T": 9,
+    "A": 6,
+    "I": 7,
+    "Wil": 5,
+    "Int": 4,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 10
+  },
+  "defence": 6,
+  "wounds": 15,
+  "shock": null,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Locus of Fury",
+      "text": "Anyone who makes a melee attack within 2 metres of this Threat (including itself) may reroll any 1s on their Weapon Skill Tests, apart from Complications."
+    },
+    {
+      "name": "Lord of Decapitations",
+      "text": "This Threat does not suffer the usual +2 DN penalty for Called Shots to the head and gains +3 ED instead of + 2 if it hits."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this Threat must make a DN 4 Fear Test"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Slayer Sword",
+          "damage": 16,
+          "ed": 5,
+          "ap": -4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Inflict (Bleeding)",
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Blood for the Blood God!",
+      "text": "If this Threat rolls a Wrath Critical as part of an attack, the target suffers the Bleeding Condition in addition to any other effects."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 9d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg"
+}

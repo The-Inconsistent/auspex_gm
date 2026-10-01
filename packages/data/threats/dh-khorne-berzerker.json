@@ -1,0 +1,179 @@
+{
+  "id": "dh-khorne-berzerker",
+  "name": "Khorne Berzerker",
+  "source": "daemons-and-heretics",
+  "page": 86,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ASTARTES",
+    "MARK OF KHORNE"
+  ],
+  "attributes": {
+    "S": 10,
+    "T": 7,
+    "A": 6,
+    "I": 6,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "5AR"
+  },
+  "defence": 5,
+  "wounds": 15,
+  "shock": 14,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of this Threat's Turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 1 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos KHORNE (Wrath & Glory, p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (Wrath & Glory, p. 75)"
+    },
+    {
+      "name": "Eternal Bloodlust",
+      "text": "This Threat's maximum Shock is doubled (included in profile)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Kill! Maim! Burn!",
+      "text": "This Threat may make 2 attacks each Turn without penalty. If dual wielding, it makes 1 attack with each weapon."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Brutal",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Chainaxe",
+          "damage": 15,
+          "ed": 5,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Rending (1)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier in ED to all attacks this Threat makes this Round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Actions",
+      "text": "For every 8 Berzerkers in a Mob, one member may replace their weapons with the following options. Two-handed weapons replace both pistol and chainaxe.",
+      "weapons": [
+        {
+          "name": "Plasma Pistol",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Supercharge"
+          ]
+        },
+        {
+          "name": "Eviscerator",
+          "damage": 16,
+          "ed": 6,
+          "ap": -4,
+          "range": [
+            2
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (2)"
+          ]
+        },
+        {
+          "name": "2-handed chainaxe",
+          "damage": 16,
+          "ed": 7,
+          "ap": -4,
+          "range": [
+            2
+          ],
+          "traits": [
+            "Brutal",
+            "Rending (2)",
+            "Unwieldy (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Resilience printed 13(5AR). Bolt Pistol and Chainaxe print no AP."
+}

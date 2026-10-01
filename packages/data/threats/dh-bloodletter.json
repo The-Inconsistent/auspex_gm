@@ -1,0 +1,90 @@
+{
+  "id": "dh-bloodletter",
+  "name": "Bloodletter",
+  "source": "daemons-and-heretics",
+  "page": 81,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 7,
+    "T": 6,
+    "A": 3,
+    "I": 4,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 3,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Locus of Fury",
+      "text": "Anyone who makes a melee attack within 2 metres of this Threat (including itself) may reroll any 1s on their Weapon Skill Tests, apart from Complications."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this Threat must make a DN 3 Fear Test"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Hellblade",
+          "damage": 13,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Blood for the Blood God!",
+      "text": "If this Threat rolls a Wrath Critical as part of an attack, the target suffers the Bleeding Condition in addition to any other effects."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Reprint of bloodletter; differs in Tier row (printed AAEET, Core AAEE). Core's Bloodreaper variant is not reprinted here."
+}
