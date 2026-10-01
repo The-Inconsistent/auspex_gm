@@ -126,8 +126,8 @@ export const powerText = (p: PsychicPower) =>
     .join("\n\n");
 
 // Where a builder starts from: the character's name and detail, the build it last saved, and the draft kept away from
-// this device (a player's on the table, the library row's). `savedAt` (ms) is when that build was last saved elsewhere;
-// a table has one device per character, so it has none.
+// this device (a player's on the table, the library row's). `savedAt` (ms) is when that build was last saved (a
+// table's `builtAt`, the library row's `updatedAt`).
 export type DraftStart = {
   name: string;
   detail?: Partial<CharacterDetail>;

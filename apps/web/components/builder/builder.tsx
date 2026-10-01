@@ -47,8 +47,8 @@ type Bench = {
   made: boolean; // saved from the builder before: creation is done, ADVANCE spends the XP earned
   play: { tier: number; xpEarned: number } | null;
   key: string; // where this device keeps the draft
-  // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. A table has
-  // one device per character, so it has none.
+  // `savedAt` (ms) is when the build was last saved away from this device; it decides a stale local draft. At a table
+  // the GM's tablet, the player's phone or a script (attach-builds.ts) may save it, so it's the character's `builtAt`.
   start: DraftStart;
   overrides: Overrides | null; // the GM's overrides on the character; null where there are none to set (the library)
   save: (draft: Draft, overrides: Overrides | null) => Promise<string | null>; // the error, or null once saved
@@ -132,6 +132,7 @@ function TableBench({
         detail: character?.detail,
         build: character?.build,
         draft: draftOf(character?.draft),
+        savedAt: character?.builtAt ?? undefined,
       },
       overrides: character?.overrides ?? {},
       // The build, then the GM's overrides when they changed: they're on the character, not in the build.

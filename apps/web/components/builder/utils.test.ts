@@ -36,7 +36,20 @@ describe("pickDraft", () => {
     assert.equal(picked.name, "Newer");
   });
 
-  test("with no savedAt (a table: one device per character) a local draft always wins", () => {
+  test("a table: a draft this device kept from before the build was attached is dropped, detail and all", () => {
+    // Issue #18: the tablet opened BUILD on a hand-made pregen (a blank draft with the texts as they were), the GM then
+    // rewrote the Past, and attach-builds.ts saved the build (builtAt 200).
+    const old: Draft = { tier: 4, name: "Grimsson", detail: { past: "as printed" } };
+    const picked = pickDraft({
+      local: old,
+      start: { name: "Grimsson", detail: { past: "rewritten" }, build, draft: null, savedAt: 200 },
+      tier: 4,
+    });
+    assert.equal(picked.archetypeId, "primaris-incursor");
+    assert.equal(picked.detail?.past, "rewritten");
+  });
+
+  test("with no savedAt (a character built before builtAt) a local draft always wins", () => {
     const picked = pickDraft({ local: draft(1, "Local"), start: { name: "Kaeso", build }, tier: 1 });
     assert.equal(picked.name, "Local");
   });

@@ -55,6 +55,7 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
     detail: CharacterDetail.parse(row.detail),
     objectives: Objectives.parse(row.objectives),
     draft: row.buildDraft,
+    builtAt: row.builtAt?.getTime() ?? null,
   };
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
   const status = pcStatus(c, derived);
@@ -141,6 +142,7 @@ export async function applyCharacterAction(
             stats,
             build,
             buildDraft: null,
+            builtAt: new Date(),
             ...(a.name ? { name: a.name } : {}),
             ...(a.detail ? { detail: a.detail } : {}),
           })
@@ -149,7 +151,14 @@ export async function applyCharacterAction(
       }
       const [c] = await tx
         .insert(character)
-        .values({ campaignId: cid, name: a.name ?? "Unnamed", stats, build, detail: a.detail ?? {} })
+        .values({
+          campaignId: cid,
+          name: a.name ?? "Unnamed",
+          stats,
+          build,
+          detail: a.detail ?? {},
+          builtAt: new Date(),
+        })
         .returning({ id: character.id });
       return { ok: true, id: c!.id }; // the row was just inserted
     }

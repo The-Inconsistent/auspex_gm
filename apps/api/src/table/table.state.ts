@@ -24,6 +24,7 @@ export const toCharacter = ({
   overrides,
   build,
   buildDraft,
+  builtAt,
   wounds,
   shock,
   wrath,
@@ -49,6 +50,7 @@ export const toCharacter = ({
   objectives: Objectives.parse(objectives),
   build: build ?? null,
   draft: buildDraft ?? null,
+  builtAt: builtAt?.getTime() ?? null,
 });
 
 // `conn` lets an action read the live state inside its own transaction (the turn rules in encounter.actions).

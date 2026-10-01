@@ -105,8 +105,9 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
 `CreationPayload`) and renders `Builder` (`components/builder/`):
 - **Draft:** the choices so far (`Draft`: a `CharacterBuildInput` with the archetype optional, plus the name and
   `savedAt`), kept in `localStorage` per table and character (`draftKey`). It starts from the newer of that and the
-  draft sent to the table (`character.draft`, `Character.draft`), else the saved `character.build`, else blank. START
-  OVER drops the local one.
+  draft sent to the table (`character.draft`, `Character.draft`), else the saved `character.build`, else blank. A
+  local draft older than the last saved build (`Character.builtAt`) is stale and dropped, detail and all: the build was
+  saved from another device or by a script (`attach-builds.ts`, issue #18). START OVER drops the local one.
 - **SEND TO GM** (players, on REVIEW): puts the draft on the table. PARTY then shows OPEN DRAFT for that character; the
   GM ticks what only the GM judges and saves, which clears the draft.
 - **Live preview:** every change runs `resolveBuild` from `@wg/shared` (`useMemo`); the screens read its sheet,

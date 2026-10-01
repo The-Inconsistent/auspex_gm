@@ -828,6 +828,7 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.equal(veyl.stats.archetype, "Primaris Incursor");
   assert.deepEqual(veyl.stats.attributes, { S: 5, T: 5, A: 5, I: 5, Wil: 4, Int: 5, Fel: 1 });
   assert.equal(veyl.build?.archetypeId, "primaris-incursor");
+  assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
 
   // Refused: a build with choices left, one over budget, one for another Tier.
   const { languages: _, ...noLanguage } = disruptor;
