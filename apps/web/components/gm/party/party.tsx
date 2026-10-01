@@ -23,23 +23,20 @@ import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
-import type { SheetRules } from "@/lib/sheet-rules/sheet-rules";
 import { TOKENS } from "@/lib/tokens/tokens";
 
-import { CharacterEditor } from "./components/character-editor/character-editor";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
-type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[]; sheetRules: SheetRules };
+type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[] };
 
-export function Party({ state, codex, send, wargear, sheetRules }: PartyProps) {
+export function Party({ state, codex, send, wargear }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
   const [reqFor, setReqFor] = useState<string | null>(null);
-  const [editFor, setEditFor] = useState<string | null>(null);
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [xp, setXp] = useState<number>(DEFAULT_XP);
@@ -117,9 +114,6 @@ export function Party({ state, codex, send, wargear, sheetRules }: PartyProps) {
       setMsg(`! Invalid stats JSON: ${e instanceof Error ? e.message.slice(0, 200) : "parse error"}`);
     }
   };
-
-  // EDIT: opens the name, detail and overrides form for this character, or closes it.
-  const toggleEdit = (id: string) => setEditFor(editFor === id ? null : id);
 
   // REQUISITION: opens the requisition form for this character, or closes it.
   const toggleReq = (id: string) => setReqFor(reqFor === id ? null : id);
@@ -371,14 +365,12 @@ export function Party({ state, codex, send, wargear, sheetRules }: PartyProps) {
                     {d.resilience}
                   </div>
                   <div className="keys">
-                    {/* A draft a player sent: the GM ticks what only the GM judges, and saves it. */}
+                    {/* The one editor (issue #18): name, portrait, detail, build and the GM's overrides. A draft a player
+                        sent opens there too: the GM ticks what only the GM judges, and saves it. */}
                     <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
-                      {c.draft ? "OPEN DRAFT" : c.build ? "REBUILD" : "BUILD"}
+                      {c.draft ? "OPEN DRAFT" : "EDIT"}
                     </a>
                     <SheetDialog me={c} tier={state.campaign.tier} table={{ state, send }} />
-                    <button className="btn sm" aria-expanded={editFor === c.id} onClick={() => toggleEdit(c.id)}>
-                      EDIT
-                    </button>
                     <button className="btn sm" onClick={() => inviteCharacter(c)}>
                       INVITE
                     </button>
@@ -432,16 +424,6 @@ export function Party({ state, codex, send, wargear, sheetRules }: PartyProps) {
                       ))}
                     </select>
                   </form>
-                  {editFor === c.id && (
-                    <CharacterEditor
-                      character={c}
-                      tier={state.campaign.tier}
-                      sheetRules={sheetRules}
-                      send={send}
-                      onResult={report}
-                      onClose={() => setEditFor(null)}
-                    />
-                  )}
                   <ObjectivesEditor character={c} send={send} onResult={report} />
                   {reqFor === c.id && (
                     <RequisitionForm

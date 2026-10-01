@@ -23,7 +23,7 @@ import {
 } from "./creation.ts";
 import { RARITY_DN } from "./requisition.ts";
 import { SOURCES, sourceCite, type Source } from "./source.ts";
-import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, type Mods, type Skill } from "./state.ts";
+import { ATTRIBUTES, CharacterStats, SKILLS, Tier, type Attribute, Mods, type Skill } from "./state.ts";
 import { Wargear, gearLine, sheetWeapon, type WargearWeapon } from "./wargear.ts";
 
 // The character builder (issue #9, docs/data.md §9): a character is the choices made at creation, and its sheet is
@@ -108,6 +108,9 @@ export const CharacterBuild = z.object({
         .object({ remove: z.array(z.string().min(1)).prefault([]), add: z.array(WargearItem).prefault([]) })
         .prefault({}),
       approved: z.array(z.string().min(1).max(200)).prefault([]), // paths of `gm` requirements and `story` grants
+      // Trait bonuses granted by ruling, added to the build's: the volkus pregens keep all three Background bonuses
+      // (docs/pregens.md, GM choice 23; rules-flow.md §11.22).
+      mods: Mods.prefault({}),
     })
     .prefault({}),
 });
@@ -427,8 +430,33 @@ export function resolveBuild({
       have.choices.push(choice);
       return;
     }
-    if (t.repeatable === "perChoice" && !choice && !o.granted)
+    // A granted Talent that picks one of its options (Acute Sense's sense, Core p.129) asks for it; the grant names none.
+    if (t.options && o.granted && !choice) {
+      const path = `${o.path}/choice`;
+      const i = choiceFor(path)?.[0];
+      choice = typeof i === "number" ? t.options[i] : undefined;
+      choose(
+        {
+          path,
+          step: o.step,
+          what: `${t.name}: choose one`,
+          choose: 1,
+          options: t.options,
+          cite: cite(t),
+          pick: { kind: "option" },
+        },
+        !!choice,
+      );
+    }
+    if ((t.repeatable === "perChoice" || t.options) && !choice && !o.granted)
       problem({ step: o.step, severity: "error", what: `${t.name}: choose what it applies to`, cite: cite(t) });
+    if (t.options && choice && !t.options.some((x) => x.toLowerCase() === choice!.toLowerCase()))
+      problem({
+        step: o.step,
+        severity: "error",
+        what: `${t.name}: choose one of ${t.options.join(", ")}`,
+        cite: cite(t),
+      });
     s.talents.set(t.id, { id: t.id, name: t.name, text: t.effect, page: cite(t), choices: [choice] });
     const to: Origin = { ...o, path: `talent/${t.id}`, cite: cite(t) };
     // A granted Talent whose requirements aren't met is the GM's to tick, not a refusal (rules-flow.md §11.53).
@@ -1046,10 +1074,12 @@ export function resolveBuild({
         cite: fo.cite,
       });
     } else if ("writeIn" in fill) {
+      // The GM may allow one anyway (rules-flow.md §11.25: the Red Scorpions, kill-team.md ruling 13).
       if (!kw?.writeIn)
         problem({
           step: "faction",
-          severity: "error",
+          severity: "gm",
+          path: fo.path,
           what: `${k} can't be written in; choose one the books print`,
           cite: "rules-flow.md §11.25",
         });
@@ -1433,6 +1463,9 @@ export function resolveBuild({
     if (s.mods[k]) mods[k] = s.mods[k];
   // An Ork's Influence uses Strength (Core p.29): the sheet derives it from Fellowship, so the difference is a mod.
   if (s.influenceAttribute) mods.influence = (mods.influence ?? 0) + attributes[s.influenceAttribute] - attributes.Fel;
+  if (movement(armour)) mods.speed = (mods.speed ?? 0) + movement(armour);
+  for (const [k, v] of Object.entries(build.gm.mods) as [keyof typeof mods, number][])
+    if (v) mods[k] = (mods[k] ?? 0) + v;
   for (const p of s.powers) {
     const pw = ix.powers.get(p);
     if (pw) s.abilities.push({ name: pw.name, text: pw.effect, page: cite(pw) });
@@ -1714,16 +1747,35 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
   return out;
 }
 
+// Mk X Phobos: "+1 Movement" (VoA p.72), the armour trait "+1 M" (a printed pregen sheet spells it out); your Movement
+// is your Speed (Core p.180).
+const movement = (armour: { traits: string[] }) =>
+  Number(armour.traits.map((t) => /^\+(\d+) M(?:ovement)?$/.exec(t)?.[1]).find(Boolean) ?? 0);
+
 // A rebuild of a character already in play keeps what play changed: Wealth, Ammo and requisitions, and the armament
 // and gear gained since (a requisitioned weapon, loot). What the new build adds joins them; nothing is dropped, and the
-// better armour is worn (only one suit counts, Core p.231).
-export function keepPlay({ previous, next }: { previous: CharacterStats; next: CharacterStats }): CharacterStats {
-  const weapons = new Set(previous.weapons.map((w) => w.name));
-  const gear = new Set(previous.gear);
+// better armour is worn (only one suit counts, Core p.231). `before`, the sheet the stored build derives, says what the
+// new build adds: what both builds give is already on the sheet, maybe written in another hand (a pregen's printed
+// lines, issue #18), so a rebuild with no changes changes nothing.
+export function keepPlay({
+  previous,
+  next,
+  before = previous,
+}: {
+  previous: CharacterStats;
+  next: CharacterStats;
+  before?: CharacterStats;
+}): CharacterStats {
+  const weapons = new Set([...previous.weapons, ...before.weapons].map((w) => w.name));
+  const gear = new Set([...previous.gear, ...before.gear]);
   const armour = next.armour.ar > previous.armour.ar || !previous.armour.name ? next.armour : previous.armour;
   const shedArmour = previous.armour.name && previous.armour.name !== armour.name ? [previous.armour.name] : [];
+  // The Speed a suit gives (Mk X Phobos) follows the suit worn, not the one the new build would wear.
+  const speed = (next.mods.speed ?? 0) - movement(next.armour) + movement(armour);
+  const { speed: _, ...mods } = next.mods;
   return {
     ...next,
+    mods: speed ? { ...mods, speed } : mods,
     armour,
     weapons: [...previous.weapons, ...next.weapons.filter((w) => !weapons.has(w.name))].slice(0, 20),
     gear: [

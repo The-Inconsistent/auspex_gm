@@ -207,5 +207,55 @@
       "text": "Secret: keep your brothers from killing any human guardsmen.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-intercessor",
+    "packages": [
+      "heavy-intercessor-doctrine"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "salamanders"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Cunning",
+      "accomplishment": "Badge of Honour",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "Wil": 4
+    },
+    "skills": {
+      "Awareness": 4,
+      "Tech": 2
+    },
+    "talents": [
+      {
+        "id": "master-artisan"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/heavy-intercessor-doctrine/1": [
+        1
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "mods": {
+        "influence": 1,
+        "conviction": 1
+      }
+    }
+  }
 }

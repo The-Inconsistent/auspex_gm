@@ -7,6 +7,7 @@ import type {
   CharacterBuildInput,
   CharacterDetail,
   Creation,
+  Overrides,
   ResolvedBuild,
   Role,
 } from "@wg/shared";
@@ -20,6 +21,7 @@ export type Draft = Omit<CharacterBuildInput, "archetypeId"> & {
   name: string;
   detail?: Partial<CharacterDetail>;
   savedAt?: number;
+  builtAt?: number; // a table's: the character's `builtAt` when this draft was opened (0: no build yet), see pickDraft
 };
 
 // Catalogue lookups by id, built once per payload.
@@ -49,6 +51,10 @@ export type BuilderValue = {
   sendDraft: (() => Promise<string | null>) | null;
   sentDraft: boolean; // a draft is waiting on the table
   gmLater: boolean; // the library: SAVE may leave what only a GM judges for the campaign's GM
+  // The GM's overrides on this character (null in the library). They stay on the character, not the build, and are
+  // never part of the draft, so a stale draft can't bring old ones back (issue #18).
+  overrides: Overrides | null;
+  setOverrides: (next: Overrides) => void;
 };
 
 export const BuilderContext = createContext<BuilderValue | null>(null);

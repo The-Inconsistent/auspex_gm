@@ -22,7 +22,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   - `docs/rules-flow.md`: game flow (session, pools, combat state machine, damage, conditions, traits).
   - `docs/campaign-model.md`: the campaign and codex model.
   - `docs/kill-team.md`: the current campaign's Deathwatch Kill Team mapping and GM decisions.
-  - `docs/pregens.md`: its five Tier 4 characters.
+  - `docs/pregens.md`: its eleven Tier 4 agents (the players pick five), each with its build.
 - **Books** are the PDFs in `books/`, gitignored. Page offsets:
   - Core rulebook: PDF page = printed + 1.
   - Vow of Absolution, Threat Assessment, Gutshiva's Kommandos: PDF page = printed.
@@ -144,7 +144,8 @@ apps/api/src/
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
 apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
-apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM), drop-placeholders.ts (one-off pack fix)
+apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM), drop-placeholders.ts (one-off pack fix),
+                    attach-builds.ts (one-off: pack builds onto agents seeded before #18, --dry-run first)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
                     c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),

@@ -55,6 +55,7 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
     detail: CharacterDetail.parse(row.detail),
     objectives: Objectives.parse(row.objectives),
     draft: row.buildDraft,
+    builtAt: row.builtAt?.getTime() ?? null,
   };
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
   const status = pcStatus(c, derived);
@@ -118,20 +119,24 @@ export async function applyCharacterAction(
         if (ctx.role !== "gm" && creationKey(build) !== creationKey(made.data))
           fail("Only your GM changes a character's creation choices once it's made");
       } else if (build.tier !== tier) fail(`This campaign is Tier ${tier}; build for Tier ${tier}`);
-      const r = resolveBuild({
-        catalogue: buildCatalogue(homebrew),
-        build,
-        play: row ? { tier, xpEarned: row.xp } : undefined,
-      });
+      const play = row ? { tier, xpEarned: row.xp } : undefined;
+      const r = resolveBuild({ catalogue: buildCatalogue(homebrew), build, play });
       const refusal = buildRefusal(r);
       if (refusal) fail(refusal);
-      // A character already made keeps what play changed (keepPlay); a first build keeps only Ammo and requisitions.
+      // A character already made keeps what play changed (keepPlay), and gains only what the new build adds over the
+      // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's lines too.
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old
         ? r.sheet
         : made?.success
-          ? keepPlay({ previous: old, next: r.sheet })
-          : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
+          ? keepPlay({
+              previous: old,
+              next: r.sheet,
+              before: resolveBuild({ catalogue: buildCatalogue(homebrew), build: made.data, play }).sheet,
+            })
+          : a.keepSheet
+            ? keepPlay({ previous: old, next: r.sheet, before: r.sheet })
+            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
       if (row) {
         await tx
           .update(character)
@@ -139,6 +144,7 @@ export async function applyCharacterAction(
             stats,
             build,
             buildDraft: null,
+            builtAt: new Date(),
             ...(a.name ? { name: a.name } : {}),
             ...(a.detail ? { detail: a.detail } : {}),
           })
@@ -147,7 +153,14 @@ export async function applyCharacterAction(
       }
       const [c] = await tx
         .insert(character)
-        .values({ campaignId: cid, name: a.name ?? "Unnamed", stats, build, detail: a.detail ?? {} })
+        .values({
+          campaignId: cid,
+          name: a.name ?? "Unnamed",
+          stats,
+          build,
+          detail: a.detail ?? {},
+          builtAt: new Date(),
+        })
         .returning({ id: character.id });
       return { ok: true, id: c!.id }; // the row was just inserted
     }

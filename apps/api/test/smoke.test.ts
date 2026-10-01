@@ -193,6 +193,15 @@ test("GM and player share a table", async (t) => {
     ok: false,
     error: "Stats are GM only",
   });
+  // Overrides pin a Trait: the GM's ruling, set from the builder's REVIEW (issue #18).
+  assert.deepEqual(await player.send({ type: "character.update", id: hero.id, overrides: { maxWounds: 30 } }), {
+    ok: false,
+    error: "Overrides are GM only",
+  });
+  assert.ok((await gm.send({ type: "character.update", id: hero.id, overrides: { maxWounds: 30 } })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.overrides.maxWounds === 30);
+  assert.ok((await gm.send({ type: "character.update", id: hero.id, overrides: {} })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.overrides.maxWounds === undefined);
   // Adding Detail (Core pp.32–36): a player writes their own character's; the parts left out are empty.
   assert.ok((await player.send({ type: "character.update", id: hero.id, detail: { past: "Hive Tertius" } })).ok);
   await player.until((s) => {
@@ -819,6 +828,7 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.equal(veyl.stats.archetype, "Primaris Incursor");
   assert.deepEqual(veyl.stats.attributes, { S: 5, T: 5, A: 5, I: 5, Wil: 4, Int: 5, Fel: 1 });
   assert.equal(veyl.build?.archetypeId, "primaris-incursor");
+  assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
 
   // Refused: a build with choices left, one over budget, one for another Tier.
   const { languages: _, ...noLanguage } = disruptor;
@@ -855,6 +865,21 @@ test("character builder: the creation catalogue for seats, and character.build d
     s.characters.some((c) => c.id === made.id && (c.build?.gm as { keywords: string[] }).keywords.length === 0),
   );
   assert.ok(!after.characters.find((c) => c.id === made.id)!.stats.keywords.includes("DEATHWATCH"));
+
+  // The GM's overrides are on the character, not the build: a rebuild keeps them. A player can't grant bonuses either.
+  assert.ok((await gm.send({ type: "character.update", id: made.id, overrides: { maxWounds: 20 } })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === made.id)?.overrides.maxWounds === 20);
+  assert.ok(
+    (await player.send({ type: "character.build", id: made.id, build: { ...disruptor, gm: { mods: { resolve: 5 } } } }))
+      .ok,
+  );
+  const ruled = (
+    await gm.until(
+      (s) => (s.characters.find((c) => c.id === made.id)?.build?.gm as { mods?: object })?.mods !== undefined,
+    )
+  ).characters.find((c) => c.id === made.id)!;
+  assert.deepEqual((ruled.build?.gm as { mods: object }).mods, {}, "the player's gm.mods is dropped");
+  assert.equal(ruled.overrides.maxWounds, 20, "a rebuild keeps the overrides");
 
   // A draft sent to the table waits for the GM: a player's keeps the GM's part, only their own, and a save clears it.
   const other = await gm.send({ type: "character.create", name: "Other" });
@@ -907,6 +932,33 @@ test("character builder: the creation catalogue for seats, and character.build d
     await gm.until((s) => s.characters.find((c) => c.id === made.id)?.stats.skills.Stealth === 6)
   ).characters.find((c) => c.id === made.id)!;
   assert.equal(advanced.stats.wealth, before.stats.wealth, "play's Wealth is kept");
+
+  // A sheet written in another hand (a pregen's printed lines, issue #18) survives a save with no build changes: the
+  // rebuild adds only what the build adds over the stored one. The new name marks the save's broadcast.
+  const printed = {
+    ...advanced.stats,
+    weapons: advanced.stats.weapons.map((w) => ({ ...w, name: `${w.name} (printed)` })),
+  };
+  assert.ok((await gm.send({ type: "character.update", id: made.id, stats: printed })).ok);
+  const unchanged = { ...disruptor, advancement: { skills: { Stealth: 6 } } };
+  assert.ok((await gm.send({ type: "character.build", id: made.id, name: "Veyl II", build: unchanged })).ok);
+  const resaved = (
+    await gm.until((s) => s.characters.find((c) => c.id === made.id)?.name === "Veyl II")
+  ).characters.find((c) => c.id === made.id)!;
+  assert.deepEqual(resaved.stats.weapons, printed.weapons);
+
+  // keepSheet (GM only): a first build over a hand-made sheet keeps its lines, in the same action (attach-builds.ts).
+  assert.deepEqual(await player.send({ type: "character.build", id: made.id, build: unchanged, keepSheet: true }), {
+    ok: false,
+    error: "GM only",
+  });
+  const sheet = await gm.send({ type: "character.create", name: "Hand-made", stats: printed });
+  assert.ok(sheet.ok && sheet.id);
+  assert.ok((await gm.send({ type: "character.build", id: sheet.id, build: disruptor, keepSheet: true })).ok);
+  const attached = (await gm.until((s) => !!s.characters.find((c) => c.id === sheet.id)?.build)).characters.find(
+    (c) => c.id === sheet.id,
+  )!;
+  assert.deepEqual(attached.stats.weapons, printed.weapons, "the hand-made lines stay");
 });
 
 test("book pages: a GM tablet serves one page, relayed back to the player who asked", async (t) => {

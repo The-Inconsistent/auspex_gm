@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { CharacterDetail, CharacterStats, Objectives, Tier } from "./state.ts";
 
@@ -15,6 +16,7 @@ export const Pack = z
       tier: Tier,
       framework: z.string().max(5000).default(""),
       patron: z.string().max(200).default(""),
+      homebrew: z.boolean().default(false), // the builds may use the homebrew books (issue #9 decision 1)
     }),
     factions: z.array(CodexInput.faction.extend({ key })).default([]),
     locations: z
@@ -41,6 +43,9 @@ export const Pack = z
           stats: CharacterStats,
           detail: CharacterDetail.optional(),
           objectives: Objectives.optional(),
+          // How the sheet was made, so the builder opens it filled in (issue #18). `stats` stays the sheet as printed;
+          // the seeder saves the build through `character.build`, and the server derives the live sheet from it.
+          build: CharacterBuild.optional(),
         }),
       )
       .default([]),

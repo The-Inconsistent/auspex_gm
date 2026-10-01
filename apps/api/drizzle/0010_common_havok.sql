@@ -1,0 +1,1 @@
+ALTER TABLE "character" ADD COLUMN "built_at" timestamp with time zone;

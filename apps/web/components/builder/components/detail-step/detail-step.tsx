@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LANGUAGE_XP, MAX_BOUGHT_WEALTH, WEALTH_XP } from "@wg/shared";
 
 import { DetailFields, DetailHelp } from "@/components/ui/character-detail/character-detail";
+import { PORTRAITS } from "@/lib/portraits/portraits";
 
 import { useBuilder } from "../../builder-context";
 import { toggle } from "../../utils";
@@ -50,6 +51,24 @@ export function DetailStep() {
           maxLength={100}
           onChange={(e) => update((d) => ({ ...d, name: e.target.value }))}
         />
+      </div>
+      <div className="field">
+        <label className="label" htmlFor="bld-portrait">
+          PORTRAIT
+        </label>
+        <select
+          id="bld-portrait"
+          className="input"
+          value={draft.detail?.portrait ?? ""}
+          onChange={(e) => update((d) => ({ ...d, detail: { ...d.detail, portrait: e.target.value } }))}
+        >
+          <option value="">NONE</option>
+          {Object.keys(PORTRAITS).map((slug) => (
+            <option key={slug} value={slug}>
+              {slug.replaceAll("-", " ").toUpperCase()}
+            </option>
+          ))}
+        </select>
       </div>
 
       <section className="stack">

@@ -89,6 +89,7 @@ const char = (o: Partial<Character>): Character => ({
   objectives: [],
   build: null,
   draft: null,
+  builtAt: null,
   ...o,
 });
 // A Tier 1 table around an encounter; the turn rules need the characters to know who's Dead.

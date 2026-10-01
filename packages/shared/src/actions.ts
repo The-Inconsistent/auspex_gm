@@ -107,6 +107,9 @@ export const Action = z.union([
       name: z.string().min(1).max(100).optional(),
       detail: CharacterDetail.optional(),
       build: CharacterBuild,
+      // GM only: a first build over a hand-made sheet keeps its weapon, armour and gear lines and its Wealth, which the
+      // volkus pregens print with Talents worked in (issue #18). One action, so the swap can't half-happen.
+      keepSheet: z.boolean().optional(),
     }),
     // A builder draft kept on the server, so the GM can open a player's half-made character, tick what only the GM
     // judges and save it. Any shape the builder writes (it may lack an archetype yet); null clears it.

@@ -231,5 +231,63 @@
       "text": "Secret: find out who else has been transmitting from Volkus.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-incursor",
+    "fills": {
+      "[CHAPTER]": {
+        "id": "ultramarines"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Cunning",
+      "accomplishment": "Cleanse and Purge",
+      "goal": "Vengeance",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "A": 5,
+      "Int": 5
+    },
+    "skills": {
+      "Tech": 5,
+      "Stealth": 5,
+      "Awareness": 4
+    },
+    "talents": [
+      {
+        "id": "codex-innovator"
+      },
+      {
+        "id": "bolter-discipline"
+      },
+      {
+        "id": "silent"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "add": [
+          {
+            "name": "Omni-Scrambler",
+            "wargearId": "voa-omni-scrambler"
+          }
+        ]
+      },
+      "mods": {
+        "maxShock": 1,
+        "determination": 1
+      }
+    }
+  }
 }

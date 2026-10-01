@@ -1,5 +1,5 @@
 import type { CharacterDetail, Objective } from "@wg/shared";
-import { boolean, integer, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
 
@@ -14,6 +14,8 @@ export const character = pgTable("character", {
   overrides: jsonb().$type<Record<string, unknown>>().notNull().default({}),
   build: jsonb().$type<Record<string, unknown>>(), // the CharacterBuild `stats` came from; null for a hand-made sheet
   buildDraft: jsonb().$type<Record<string, unknown>>(), // a builder draft waiting for the GM (`character.draft`)
+  // When `build` was last saved: a builder draft a device kept from before it is stale (issue #18). Null before #18.
+  builtAt: timestamp({ withTimezone: true }),
   wounds: integer().notNull().default(0), // Wounds taken, not remaining
   shock: integer().notNull().default(0),
   wrath: integer().notNull().default(2),

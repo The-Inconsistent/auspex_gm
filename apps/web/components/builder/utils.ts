@@ -3,6 +3,7 @@ import {
   StoredDraft,
   type BuildStep,
   type CharacterDetail,
+  type Overrides,
   type PsychicPower,
   type Requirement,
   type ResolvedBuild,
@@ -126,8 +127,8 @@ export const powerText = (p: PsychicPower) =>
     .join("\n\n");
 
 // Where a builder starts from: the character's name and detail, the build it last saved, and the draft kept away from
-// this device (a player's on the table, the library row's). `savedAt` (ms) is when that build was last saved elsewhere;
-// a table has one device per character, so it has none.
+// this device (a player's on the table, the library row's). `savedAt` (ms) is when that build was last saved (a
+// table's `builtAt`, the library row's `updatedAt`).
 export type DraftStart = {
   name: string;
   detail?: Partial<CharacterDetail>;
@@ -138,9 +139,14 @@ export type DraftStart = {
 
 // Which draft the builder opens on: the newer of this device's and the one saved away from it, else the saved build,
 // else a blank one at `tier`. A build finished elsewhere after this device wrote its draft wins, because that draft is
-// a stale half-build and the server dropped its own copy when it saved.
+// a stale half-build and the server dropped its own copy when it saved. A table's draft names the save it was opened
+// on (`builtAt`), so that needs no clocks; the library's, and older ones, compare this device's time with the server's.
 export function pickDraft({ local, start, tier }: { local: Draft | null; start: DraftStart; tier: number }): Draft {
-  const stale = !!local && !!start.build && start.savedAt !== undefined && (local.savedAt ?? 0) < start.savedAt;
+  const stale =
+    !!local &&
+    !!start.build &&
+    start.savedAt !== undefined &&
+    (local.builtAt !== undefined ? local.builtAt !== start.savedAt : (local.savedAt ?? 0) < start.savedAt);
   const newest = [stale ? null : local, start.draft ?? null]
     .filter((d): d is Draft => d !== null)
     .sort((a, b) => (b.savedAt ?? 0) - (a.savedAt ?? 0))[0];
@@ -158,4 +164,17 @@ export function draftOf(value: unknown): Draft | null {
   const parsed = StoredDraft.safeParse(value);
   // The name and Tier are checked above; the choices ride along for `resolveBuild` to parse.
   return parsed.success ? (parsed.data as Draft) : null;
+}
+
+// The GM's overrides to save: the live ones with only the Traits this builder changed since it opened, so a change made
+// meanwhile on another device stays. Null when nothing changed.
+export function mergeOverrides({ live, base, edited }: { live: Overrides; base: Overrides; edited: Overrides }) {
+  const changed = (Object.keys({ ...base, ...edited }) as (keyof Overrides)[]).filter((k) => base[k] !== edited[k]);
+  if (!changed.length) return null;
+  const next = { ...live };
+  for (const k of changed) {
+    if (edited[k] === undefined) delete next[k];
+    else next[k] = edited[k];
+  }
+  return next;
 }

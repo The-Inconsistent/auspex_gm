@@ -224,5 +224,65 @@
       "text": "Secret: kill Gutshiva yourself.",
       "done": false
     }
-  ]
+  ],
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-intercessor",
+    "packages": [
+      "heavy-intercessor-doctrine"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "flesh-tearers"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Courage",
+      "accomplishment": "Crusader",
+      "goal": "Vengeance",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "Wil": 4
+    },
+    "talents": [
+      {
+        "id": "fearless"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/heavy-intercessor-doctrine/1": [
+        1
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "remove": [
+          "Heavy Bolter"
+        ],
+        "add": [
+          {
+            "name": "Deathwatch Frag Cannon (Shrapnel)",
+            "wargearId": "apoc-deathwatch-frag-cannon-shrapnel"
+          },
+          {
+            "name": "Deathwatch Frag Cannon (Shell)",
+            "wargearId": "apoc-deathwatch-frag-cannon-shell"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 2
+      }
+    }
+  }
 }

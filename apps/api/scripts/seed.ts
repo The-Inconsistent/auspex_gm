@@ -37,7 +37,15 @@ async function send(a: ActionInput, what: string): Promise<string | undefined> {
 const ids = new Map<string, string>();
 const ref = (k: string | undefined) => (k ? (ids.get(k) ?? null) : null);
 
-await send({ type: "campaign.update", framework: pack.campaign.framework, patron: pack.campaign.patron }, "framework");
+await send(
+  {
+    type: "campaign.update",
+    framework: pack.campaign.framework,
+    patron: pack.campaign.patron,
+    homebrew: pack.campaign.homebrew,
+  },
+  "framework",
+);
 for (const { key, ...data } of pack.factions)
   ids.set(key, (await send({ type: "codex.save", kind: "faction", data }, `faction ${key}`))!);
 for (const { key, parent, ...data } of pack.locations)
@@ -73,11 +81,14 @@ for (const { key, beats, ...data } of pack.adventures) {
       `beat "${b.title}"`,
     );
 }
-for (const c of pack.characters)
-  await send(
+for (const c of pack.characters) {
+  const id = (await send(
     { type: "character.create", name: c.name, stats: c.stats, detail: c.detail, objectives: c.objectives },
     `character ${c.name}`,
-  );
+  ))!;
+  // The build, keeping the printed weapon, armour and gear lines, which work Talents into the profiles (issue #18).
+  if (c.build) await send({ type: "character.build", id, build: c.build, keepSheet: true }, `build ${c.name}`);
+}
 
 socket.close();
 console.log(

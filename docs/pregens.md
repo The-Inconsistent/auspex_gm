@@ -1588,7 +1588,7 @@ waits, at the price of the Red Thirst.
     Deathwatch Frag Cannon (p.356), the Assault Space Marine (p.137) for the Demolisher, Master Artisan (p.239) for the
     Horde-Slayer, and the Hellblaster (p.183) and Heavy Plasma Incinerator (p.351) for the Gunner.
 15. **The Storm Shield's Bulk (1)** slows the Aegis while he carries it (Speed 6): Core p.232 speaks of "the wearer", and
-    a shield is "carried instead of worn".
+    a shield is "carried instead of worn". The builder doesn't apply Bulk, so his build has it as `gm.mods` speed −1.
 16. **Bombard: Frag Cannon Shell mode** uses the printed Shell row (Damage 16, ED 2, AP −2), plus the Special's AP −3 at
     Short range. The Special's "+2ED" is read as describing the row's +2 over Shrapnel, not added again.
 17. **Bombard and Headtaker: the Red Thirst is narrative only.** It is a (Gene-seed) trait, which a Primaris ignores (Core
@@ -1606,6 +1606,10 @@ waits, at the price of the Red Thirst.
     ruling 13).
 22. **Bombard and Breacher: the Heavy Intercessor Doctrine's +Rank AP is lost.** VoA p.35 gives it to "this weapon", the
     Heavy Bolter they chose, which the Deathwatch armoury swaps out.
+23. **All three Background bonuses kept.** The pregens were made before rules-flow.md §11.22 (one bonus only); the GM
+    grants them the other two by ruling, as `gm.mods` in each build (user ruling 2026-10-01).
+24. **Marksman: the RED SCORPIONS write-in is approved by the GM** (`gm.approved`, rules-flow.md §11.25), since the
+    catalogue has no Red Scorpions record (kill-team.md ruling 13).
 
 ## Book ambiguities and errata found
 

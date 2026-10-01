@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
 import type { Draft } from "./builder-context.tsx";
-import { pickDraft } from "./utils.ts";
+import { mergeOverrides, pickDraft } from "./utils.ts";
 
 // The volkus Disruptor's choices, cut down to what CharacterBuild needs (packages/data/build.test.ts has the whole one).
 const build = { tier: 1, archetypeId: "primaris-incursor" };
@@ -36,7 +36,20 @@ describe("pickDraft", () => {
     assert.equal(picked.name, "Newer");
   });
 
-  test("with no savedAt (a table: one device per character) a local draft always wins", () => {
+  test("a table: a draft this device kept from before the build was attached is dropped, detail and all", () => {
+    // Issue #18: the tablet opened BUILD on a hand-made pregen (a blank draft with the texts as they were), the GM then
+    // rewrote the Past, and attach-builds.ts saved the build (builtAt 200).
+    const old: Draft = { tier: 4, name: "Grimsson", detail: { past: "as printed" } };
+    const picked = pickDraft({
+      local: old,
+      start: { name: "Grimsson", detail: { past: "rewritten" }, build, draft: null, savedAt: 200 },
+      tier: 4,
+    });
+    assert.equal(picked.archetypeId, "primaris-incursor");
+    assert.equal(picked.detail?.past, "rewritten");
+  });
+
+  test("with no savedAt (a character built before builtAt) a local draft always wins", () => {
     const picked = pickDraft({ local: draft(1, "Local"), start: { name: "Kaeso", build }, tier: 1 });
     assert.equal(picked.name, "Local");
   });
@@ -54,5 +67,31 @@ describe("pickDraft", () => {
       tier: 1,
     });
     assert.deepEqual(picked.detail, { past: "Raised in the hive sumps" });
+  });
+});
+
+describe("pickDraft without clocks (a table)", () => {
+  test("a draft opened on an earlier save is stale, whatever this device's clock says", () => {
+    const local: Draft = { ...draft(9_999_999, "Half"), builtAt: 100 };
+    const picked = pickDraft({ local, start: { name: "Sila", build, draft: null, savedAt: 200 }, tier: 1 });
+    assert.equal(picked.name, "Sila");
+  });
+
+  test("a draft opened on the current save stays, whatever this device's clock says", () => {
+    const local: Draft = { ...draft(1, "Mine"), builtAt: 200 };
+    const picked = pickDraft({ local, start: { name: "Sila", build, draft: null, savedAt: 200 }, tier: 1 });
+    assert.equal(picked.name, "Mine");
+  });
+});
+
+describe("mergeOverrides", () => {
+  test("only the Traits changed here land on the live overrides", () => {
+    const live = { maxWounds: 20, speed: 9 }; // speed set on another device since this builder opened
+    assert.deepEqual(mergeOverrides({ live, base: { maxWounds: 20 }, edited: { maxWounds: 22 } }), {
+      maxWounds: 22,
+      speed: 9,
+    });
+    assert.deepEqual(mergeOverrides({ live, base: { maxWounds: 20 }, edited: {} }), { speed: 9 }, "cleared");
+    assert.equal(mergeOverrides({ live, base: { maxWounds: 20 }, edited: { maxWounds: 20 } }), null, "unchanged");
   });
 });

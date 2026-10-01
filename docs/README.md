@@ -26,7 +26,7 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 | Doc | Contents |
 | --- | --- |
 | [kill-team.md](kill-team.md) | Deathwatch Kill Team at Tier 4: how the books map onto it, and GM decisions |
-| [pregens.md](pregens.md) | The five Tier 4 Primaris pregens, with XP ledgers |
+| [pregens.md](pregens.md) | The eleven Tier 4 Primaris pregens (the players pick five), with XP ledgers |
 
 ## Rules for these docs
 

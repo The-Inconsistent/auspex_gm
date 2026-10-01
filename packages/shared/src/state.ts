@@ -234,6 +234,7 @@ export const Character = z.object({
   build: z.record(z.string(), z.unknown()).nullable(),
   // A builder draft sent to the table (`character.draft`), waiting for the GM; cleared when a build is saved.
   draft: z.record(z.string(), z.unknown()).nullable(),
+  builtAt: z.number().int().nullable(), // when the build was last saved (ms), so the builder drops older device drafts
 });
 export type Character = z.infer<typeof Character>;
 
