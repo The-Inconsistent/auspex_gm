@@ -4,13 +4,18 @@
 // the live weapon, armour and gear lines, Wealth, Ammo and requisitions. Each agent's swap is one transaction and those
 // that already have a build are skipped, so it's safe to run twice. --dry-run prints what each sheet would change and
 // sends nothing.
+// Ratings the GM raised on a live sheet by hand (the old PARTY EDIT) are XP the GM allowed: the build buys them, and a GM
+// custom budget (Core p.20) covers what they cost beyond the starting XP. A rating lower than the build gives is listed,
+// since a build can't take back what its archetype grants.
 // ponytail: one-off; delete once the live campaigns are fixed.
 import { io } from "socket.io-client";
 import {
+  buildReady,
   keepPlay,
   resolveBuild,
   type ActionInput,
   type ActionResult,
+  type CharacterBuild,
   type CharacterStats,
   type LiveState,
 } from "@wg/shared";
@@ -43,6 +48,27 @@ const sorted = (v: unknown): unknown =>
   v && typeof v === "object" && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort()) : v;
 // The sheet each part of a build changes, as the server will derive it (the catalogue here is this checkout's).
 const homebrew = state.campaign.homebrew || pack.campaign.homebrew;
+const resolve = (build: CharacterBuild) =>
+  resolveBuild({ catalogue: { creation: creationCatalogue(), wargear, homebrew }, build });
+
+// The pack build, buying the live sheet's ratings (a rating at or below what the build grants buys nothing), with the
+// budget raised to what that costs if it has to be. What still doesn't match is below a grant: listed, not taken back.
+function adopt(build: CharacterBuild, live: CharacterStats) {
+  const skills = Object.fromEntries(
+    [...new Set([...Object.keys(build.skills), ...Object.keys(live.skills)])].map((k) => [
+      k,
+      live.skills[k as keyof typeof live.skills] ?? 0,
+    ]),
+  );
+  const bought = { ...build, attributes: { ...live.attributes }, skills };
+  const r = resolve(bought);
+  const lower = [
+    ...Object.entries(live.attributes).filter(([k, v]) => r.sheet.attributes[k as keyof typeof live.attributes] !== v),
+    ...Object.entries(skills).filter(([k, v]) => (r.sheet.skills[k as keyof typeof live.skills] ?? 0) !== v),
+  ].map(([k]) => k);
+  const budget = r.spent > r.budget ? r.spent : undefined;
+  return { build: budget ? { ...bought, budget } : bought, from: r.budget, spent: r.spent, lower };
+}
 const changes = (live: CharacterStats, derived: CharacterStats) => {
   const next = keepPlay({ previous: live, next: derived, before: derived });
   return (Object.keys(next) as (keyof CharacterStats)[])
@@ -59,9 +85,14 @@ for (const c of state.characters) {
     console.log(`${c.name}: skipped (${c.build ? "has a build" : "not in the pack"})`);
     continue;
   }
-  const derived = resolveBuild({ catalogue: { creation: creationCatalogue(), wargear, homebrew }, build: p.build });
-  console.log(`${c.name}:\n${changes(c.stats, derived.sheet).join("\n") || "    no sheet change"}`);
-  if (!dryRun) await send({ type: "character.build", id: c.id, build: p.build, keepSheet: true }, `build ${c.name}`);
+  const a = adopt(p.build, c.stats);
+  const r = resolve(a.build);
+  console.log(`${c.name}:\n${changes(c.stats, r.sheet).join("\n") || "    no sheet change"}`);
+  console.log(`    XP: ${a.spent} of ${a.from}${a.build.budget ? ` → GM budget ${a.build.budget} (Core p.20)` : ""}`);
+  if (a.lower.length) console.log(`    ! lower on the live sheet than the build gives: ${a.lower.join(", ")}`);
+  if (!buildReady(r))
+    console.log(`    ! refused: ${[...r.pending.map((x) => x.what), ...r.problems.map((x) => x.what)].join("; ")}`);
+  if (!dryRun) await send({ type: "character.build", id: c.id, build: a.build, keepSheet: true }, `build ${c.name}`);
 }
 
 socket.close();
