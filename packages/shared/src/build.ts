@@ -50,9 +50,9 @@ export const BuildChoice = z.array(z.union([z.number().int().min(0), z.string().
 export type BuildChoice = z.infer<typeof BuildChoice>;
 
 // Advancement (Core pp.146–151, issue #9 step 5): what the character buys after creation with the XP earned in play,
-// priced from where creation left the ratings. `packages`: Advancement Packages (`notAtCreation` ones too), and **one**
-// Ascension Package for the Ascension the group has made since creation, however many Tiers it crossed (Core p.148,
-// rules-flow.md §11.55). `archetypeAscension` is the other way to spend that one slot (Core p.155, §11.67).
+// priced from where creation left the ratings. `packages`: Advancement Packages (`notAtCreation` ones too), and one
+// Ascension Package each time the group has Ascended since creation, in order (Core p.148, rules-flow.md §11.55).
+// `archetypeAscension` takes one Ascension's slot instead, the one to its own Tier (Core p.155, §11.67).
 export const Advancement = z
   .object({
     attributes: z.partialRecord(attribute, z.number().int().min(1).max(12)).prefault({}),
@@ -886,11 +886,20 @@ export function resolveBuild({
       });
   }
 
-  // ── packages bought in play: Advancement Packages, and **one** Ascension Package for the Ascension the group has
-  // made since creation — "a single Ascension Package each time you Ascend, regardless of the amount of Tiers you are
-  // ascending" (Core p.148, rules-flow.md §11.55) ──
-  let ascensionsTaken = 0; // Ascension Packages bought in play: one is legal, a second is not
-  const ascendedTiers = nowTier - tier; // the Tiers this one Ascension crossed; 0 when the group hasn't Ascended
+  // ── packages bought in play: Advancement Packages, and "a single Ascension Package each time you Ascend" (Core p.148,
+  // rules-flow.md §11.55). `campaign.ascend` raises the Tier by one, so each Tier since creation is one Ascension, and
+  // the packages fill them in the order they were bought, each priced and checked at its own step. An Archetype
+  // Ascension takes the step to its own Tier (Core p.155), so the packages skip that one. ──
+  // ponytail: one Ascension per Tier, not a record of each; a Tier raised by more than one at once (campaign.update) reads
+  // as one Ascension per Tier. Record each Ascension if a table does that.
+  const ascendedTiers = nowTier - tier; // the Ascensions since creation; 0 when the group hasn't Ascended
+  const archTo = build.advancement.archetypeAscension
+    ? ix.archetypes.get(build.advancement.archetypeAscension.archetypeId)
+    : undefined;
+  const archStep = archTo && archTo.tier > tier && archTo.tier <= nowTier ? archTo.tier - tier : 0;
+  // The Ascensions a package can take, oldest first: step n goes from Tier `tier + n - 1` to `tier + n`.
+  const packageSteps = Array.from({ length: ascendedTiers }, (_, i) => i + 1).filter((n) => n !== archStep);
+  let ascensionsTaken = 0; // Ascension Packages bought in play, one per Ascension
   for (const pid of build.advancement.packages) {
     const p = ix.packages.get(pid);
     if (!p) {
@@ -898,7 +907,10 @@ export function resolveBuild({
       continue;
     }
     if (!allowed(p, p.kind === "ascension" ? "ascension" : "advance")) continue;
+    // The Tier this package's Ascension reached; an Advancement Package's "new Tier" is the Tier now (Core p.149).
+    let reached = nowTier;
     if (p.kind === "ascension") {
+      const step = packageSteps[ascensionsTaken];
       ascensionsTaken += 1;
       if (ascendedTiers === 0)
         problem({
@@ -907,29 +919,29 @@ export function resolveBuild({
           what: `${p.name}: the group is still Tier ${nowTier}, so there has been no Ascension`,
           cite: "Core p.148",
         });
-      else if (ascensionsTaken > 1)
+      else if (step === undefined)
         problem({
           step: "ascension",
           severity: "error",
-          what: `${p.name}: one Ascension Package for the Ascension, however many Tiers it crossed`,
-          cite: "Core p.148",
+          what: `${p.name}: each Ascension takes one Ascension Package or an Archetype Ascension, and the group has Ascended ${ascendedTiers} time${ascendedTiers === 1 ? "" : "s"} since Tier ${tier}`,
+          cite: "Core pp.148, 155",
         });
+      else reached = tier + step;
     }
     const po: Origin = {
       path: `advance/package/${p.id}`,
       step: p.kind === "ascension" ? "ascension" : "advance",
       cite: cite(p),
-      // "per Tier Ascended" on the package itself (Dauntless Reputation's Influence, Core p.151) counts every Tier
-      // the one Ascension crossed.
-      tiersAscended: p.kind === "ascension" ? ascendedTiers : 0,
+      // "per Tier Ascended" on the package itself (Dauntless Reputation's Influence, Core p.151): its one Ascension.
+      tiersAscended: p.kind === "ascension" ? 1 : 0,
       granted: true,
     };
-    // "× the new Tier" is the Tier reached, which is the Tier now for an Advancement Package too (Core p.149).
+    // "× the new Tier" is the Tier its Ascension reached, so a package bought earlier keeps its price (Core p.149).
     ledger.push({
       what: `${p.name} (${p.kind} package)`,
       xp:
         typeof p.xp === "object" && "perTier" in p.xp
-          ? p.xp.perTier * nowTier
+          ? p.xp.perTier * reached
           : price(p.xp, { path: po.path, step: "advance", what: p.name }),
       cite: cite(p),
       step: "advance",
@@ -946,7 +958,7 @@ export function resolveBuild({
       origin: po,
       // An Ascension Package's requirements are met before Ascending, at the Tier the character leaves (§11.54).
       severity: "error",
-      tier: p.kind === "ascension" ? tier : nowTier,
+      tier: p.kind === "ascension" ? reached - 1 : nowTier,
     });
     if (p.becomesArchetypeId)
       effects.push({
@@ -973,13 +985,6 @@ export function resolveBuild({
           what: `${to.name}: the group is still Tier ${nowTier}, so there has been no Ascension`,
           cite: "Core p.148",
         });
-      if (ascensionsTaken > 0)
-        problem({
-          step: "ascension",
-          severity: "error",
-          what: "An Ascension takes an Ascension Package or an Archetype Ascension, not both",
-          cite: "Core p.148",
-        });
       if (rank < 3)
         problem({
           step: "ascension",
@@ -994,11 +999,12 @@ export function resolveBuild({
           what: `${to.name} is not an Archetype of ${arch.name}'s Faction`,
           cite: "Core p.155",
         });
-      if (to.tier !== nowTier)
+      // The Tier of one of the group's Ascensions since creation, which is the one this takes (Core p.155).
+      if (ascendedTiers > 0 && !archStep)
         problem({
           step: "ascension",
           severity: "error",
-          what: `${to.name} is Tier ${to.tier}, not the Tier ${nowTier} the group Ascended to`,
+          what: `${to.name} is Tier ${to.tier}, not a Tier the group Ascended to (${tier + 1}–${nowTier})`,
           cite: "Core p.155",
         });
       if (speciesId && !build.gm.species && !to.speciesIds.includes(speciesId))
@@ -1016,25 +1022,26 @@ export function resolveBuild({
         what: `Archetype Ascension to ${to.name}: the GM agrees`,
         cite: "Core p.155",
       });
-      const ao: Origin = { path, step: "ascension", cite: cite(to), tiersAscended: ascendedTiers, granted: true };
+      const ao: Origin = { path, step: "ascension", cite: cite(to), tiersAscended: 1, granted: true };
       to.keywords.forEach(addKeyword);
       ownRules(to.abilities).forEach((r) => addRule(r, ao));
       to.grants.forEach((g, i) => grant(g, { ...ao, path: `${ao.path}/${i}` }));
       to.wargear.forEach((g, i) => grant(g, { ...ao, path: `${ao.path}/wargear/${i}` }));
       if (to.influence) s.mods.influence = (s.mods.influence ?? 0) + to.influence;
-      deferred.push({ reqs: to.requires, what: to.name, origin: ao, severity: "error", tier: nowTier });
+      deferred.push({ reqs: to.requires, what: to.name, origin: ao, severity: "error", tier: to.tier });
       packageNames.push(to.name); // the sheet names both: the character keeps what the old Archetype gave
       ascendedTo = to;
     }
   }
 
-  // The Ascension's second step: an Ascension Package or an Archetype Ascension, unless the GM waived it on a Milestone
-  // Ascension (Core p.148 step 2).
-  if (ascendedTiers > 0 && ascensionsTaken === 0 && !archAscension && !play?.packageWaived)
+  // Each Ascension's second step: an Ascension Package or an Archetype Ascension, unless the GM waived it on a
+  // Milestone Ascension (Core p.148 step 2), which is always the latest one.
+  const open = packageSteps[ascensionsTaken];
+  if (open !== undefined && !(play?.packageWaived && open === ascendedTiers))
     ask({
       path: "advance/ascension",
       step: "ascension",
-      what: `Buy one Ascension Package (Tier ${tier} → ${nowTier})`,
+      what: `Buy one Ascension Package (Tier ${tier + open - 1} → ${tier + open})`,
       choose: 1,
       options: [],
       of: "Ascension Packages",

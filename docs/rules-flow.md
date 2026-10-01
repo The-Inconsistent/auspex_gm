@@ -345,15 +345,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     uses the campaign's Tier. *Proposed; awaiting the GM.*
 55. **Advancement in play** (Core pp.146–151): the XP a character has earned (session XP, p.321) buys the same ratings,
     Talents, powers and languages as at creation, priced from where creation left them, and Advancement Packages
-    (`notAtCreation` ones too). When the group Ascends (the GM raises the campaign's Tier), each character takes **one**
-    Ascension Package for that Ascension, "regardless of the amount of Tiers you are ascending" (Core p.148) — this
-    corrects an earlier reading of one package per Tier Ascended. Its requirements are met at the Tier the character
-    leaves, "× the new Tier" is priced at the Tier reached, and "per Tier Ascended" on the package itself (Dauntless
-    Reputation's Influence, Core p.151) still counts every Tier the one Ascension crossed. The campaign records no
-    history of its Ascensions, only the Tier it is at now, so the builder reads the whole distance from the character's
-    creation Tier to the campaign's Tier as a single Ascension and allows one Ascension Package bought in play; a group
-    that Ascends twice in one campaign needs that record first (issue #15). A power's "at creation" price (Smite) gives
-    way to its later one. Rank is from the XP earned. The creation budget stays as it was.
+    (`notAtCreation` ones too). Each time the group Ascends (the GM raises the campaign's Tier), each character takes
+    **one** Ascension Package for that Ascension, "regardless of the amount of Tiers you are ascending" (Core p.148) —
+    this corrects an earlier reading of one package per Tier Ascended. Its requirements are met at the Tier the
+    character leaves, "× the new Tier" is priced at the Tier that Ascension reached, and "per Tier Ascended" on the
+    package itself (Dauntless Reputation's Influence, Core p.151) counts that Ascension. The campaign records no history
+    of its Ascensions, only the Tier it is at now; `campaign.ascend` raises it one Tier at a time, so the builder reads
+    each Tier since the character's creation Tier as one Ascension, and the packages bought in play fill them in the
+    order bought, so a later Ascension never reprices an earlier package. An Archetype Ascension (§11.67) takes the
+    Ascension to its own Tier instead. A Tier raised by more than one at once (`campaign.update`) reads as one Ascension
+    per Tier until each Ascension is recorded. A power's "at creation" price (Smite) gives way to its later one. Rank
+    is from the XP earned. The creation budget stays as it was.
     *Proposed; awaiting the GM.*
 56. **What players know of the enemy** is not a rule: Set the Scene (Core p.176) describes the ground, not the foes, and
     an enemy is found through the fiction (Stealth Score vs Awareness, Core pp.181–182; Ambush, p.177). The phones show
@@ -508,9 +510,9 @@ Implementation details: [game-logic.md](game-logic.md).
 | Exhausted → Mortal Wounds | done | `exhaustedShock` in `pcHit` and `combatant.adjust` (p.199, §11.12); single Threats too, Mobs keep no Shock track |
 | Timed Conditions | done | Hindered, Staggered, Vulnerable (`isTimed`): `turn.start` / `turn.seize` arm the ones held (`combatant.expiring`), `turn.end` removes them (§11.8). Pinned doesn't expire (the attacker isn't tracked) |
 | Advancement in play | done | ADVANCE spends XP on ratings, Talents, powers, languages and Advancement Packages (`resolveBuild`); the sheet shows XP earned, XP to spend (`xp − xpSpent`) and Rank with a LEVEL UP badge onto ADVANCE, and PARTY shows both per character. No purchase history: what was bought is in the build, when it was bought is not recorded |
-| Ascension Package count | done | One Ascension Package per Ascension, however many Tiers it crossed (Core p.148, §11.55): `build.ts` refuses a second, prices "× the new Tier" at the Tier reached and pays "per Tier Ascended" for the whole distance |
+| Ascension Package count | done | One Ascension Package per Ascension (Core p.148, §11.55), one Ascension per Tier since creation: `build.ts` fills them in the order bought, prices "× the new Tier" at each one's own Tier, and refuses a package past the last |
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
-| Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, the Tier Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
+| Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
 | Wargear upgrades on a weapon | done | All 62 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
 | Wargear upgrades on armour | not built | 12 of the 62 are armour's (the Teleport Crest, the ten T'au support systems, the Adamantine Cuirass) and the sheet's `armour` has no upgrades field, so fitting one is refused (§11.65) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |

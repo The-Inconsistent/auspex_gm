@@ -9,8 +9,8 @@ import { StepChoices } from "../step-choices/step-choices";
 
 // Ascension, at creation and in play, on one screen because the book's step is the same one (Core p.148).
 // - Creation Ascension (rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension Package.
-// - In play (§11.55): once the group Ascends, the character takes one Ascension Package for that Ascension, however many
-//   Tiers it crossed, or goes through Archetype Ascension (Core p.155, §11.67).
+// - In play (§11.55): each time the group Ascends, the character takes one Ascension Package, or goes through
+//   Archetype Ascension (Core p.155, §11.67) once.
 // What is required, priced and allowed is `resolveBuild`'s: this screen offers the choices and shows what it says.
 export function AscensionStep() {
   const { draft, lookups, tier, go, ascending } = useBuilder();
@@ -50,17 +50,24 @@ function PlayAscension({ arch }: { arch: Archetype }) {
   const ascensions = [...lookups.packages.values()]
     .filter((p) => p.kind === "ascension")
     .sort((a, b) => a.name.localeCompare(b.name));
-  // "An Archetype of their Faction" is the same `factionId` (§11.67), at the Tier Ascended to (Core p.155).
+  // "An Archetype of their Faction" is the same `factionId` (§11.67), at a Tier Ascended to (Core p.155).
   const archetypes = [...lookups.archetypes.values()]
-    .filter((a) => a.factionId === arch.factionId && a.tier === now && a.id !== arch.id)
+    .filter((a) => a.factionId === arch.factionId && a.tier > tier && a.tier <= now && a.id !== arch.id)
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  // One Ascension Package for this Ascension (Core p.148): picking another replaces it, and the Advancement Packages
-  // bought on ADVANCE stay where they are.
+  // One Ascension Package each time the group Ascended (Core p.148), less the one an Archetype Ascension takes: a pick
+  // past that replaces the latest, so the packages of earlier Ascensions stay. Advancement Packages are ADVANCE's.
+  const slots = now - tier - (ascended ? 1 : 0);
   const pickPackage = (id: string) =>
     update((d) => {
-      const others = (d.advancement?.packages ?? []).filter((p) => lookups.packages.get(p)?.kind !== "ascension");
-      return { ...d, advancement: { ...d.advancement, packages: chosen.includes(id) ? others : [...others, id] } };
+      const packages = d.advancement?.packages ?? [];
+      if (chosen.includes(id))
+        return { ...d, advancement: { ...d.advancement, packages: packages.filter((p) => p !== id) } };
+      const full = chosen.length >= slots ? chosen.at(-1) : undefined;
+      return {
+        ...d,
+        advancement: { ...d.advancement, packages: [...packages.filter((p) => p !== full), id] },
+      };
     });
 
   // Archetype Ascension (Core p.155): the new Archetype, or none — tapping the chosen one again takes it back.
@@ -80,9 +87,8 @@ function PlayAscension({ arch }: { arch: Archetype }) {
           The group has Ascended to Tier {now}; {arch.name} was made at Tier {tier}.
         </b>
         <span>
-          Take <b>one</b> Ascension Package for this Ascension, however many Tiers it crossed (Core p.148,{" "}
-          {citeLabel("rules-flow.md §11.55")}), <b>or</b> go through Archetype Ascension (Core p.155). The rest of the
-          XP earned is spent on ADVANCE.
+          Take <b>one</b> Ascension Package each time the group Ascends (Core p.148, {citeLabel("rules-flow.md §11.55")}
+          ), <b>or</b> go through Archetype Ascension (Core p.155). The rest of the XP earned is spent on ADVANCE.
         </span>
         {waived && (
           <span className="accent">
@@ -118,14 +124,15 @@ function PlayAscension({ arch }: { arch: Archetype }) {
         </div>
         <div className="dim">
           Instead of a package: an Archetype of the same Faction ({titleOf(arch.factionId)},{" "}
-          {citeLabel("rules-flow.md §11.67")}) at Tier {now}. It needs Rank 3 (this character is Rank {rank}) and the
-          GM&apos;s agreement, and XP is spent until the Attributes and Skills equal or exceed the new Archetype&apos;s;
-          it grants that Archetype&apos;s abilities, Wargear and Influence, and none of its Attribute or Skill bonuses.
+          {citeLabel("rules-flow.md §11.67")}) at a Tier the group Ascended to. It needs Rank 3 (this character is Rank{" "}
+          {rank}) and the GM&apos;s agreement, and XP is spent until the Attributes and Skills equal or exceed the new
+          Archetype&apos;s; it grants that Archetype&apos;s abilities, Wargear and Influence, and none of its Attribute
+          or Skill bonuses.
         </div>
         {archetypes.length === 0 ? (
           <div className="dim">
-            No Tier {now} Archetype in the catalogue names {titleOf(arch.factionId)}, so there is no Archetype Ascension
-            to take.
+            No Archetype at Tier {tier + 1}–{now} in the catalogue names {titleOf(arch.factionId)}, so there is no
+            Archetype Ascension to take.
           </div>
         ) : (
           <RecordList

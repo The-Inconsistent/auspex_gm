@@ -245,43 +245,55 @@ test("an Ascension Package in play needs the group to have Ascended (rules-flow.
   assert.equal(up.ledger.find((l) => l.pool && l.what.startsWith("Back From The Brink"))?.xp, 50, "10 × the new Tier");
 });
 
-test("an Ascension is asked for one package, however many Tiers it crosses (Core p.148, §11.55)", () => {
-  // A Tier-3 Tactical Space Marine whose group has Ascended to Tier 5: one Ascension, two Tiers.
+test("each Ascension is asked for its own package, oldest first (Core p.148, §11.55)", () => {
+  // A Tier-3 Tactical Space Marine whose group has Ascended twice, to Tier 5: `campaign.ascend` is one Tier a time.
   const marine: CharacterBuildInput = { ...PREGENS[0]!.build, tier: 3, packages: [] };
-  const play = { tier: 5, xpEarned: 100 };
+  const play = { tier: 5, xpEarned: 200 };
   const none = inPlay(marine, play);
-  assert.ok(
-    none.pending.some((p) => p.what === "Buy one Ascension Package (Tier 3 → 5)"),
-    "the Ascension's second step is asked for (Core p.148)",
-  );
+  const asked = none.pending.find((p) => p.what.startsWith("Buy one Ascension Package"));
+  assert.equal(asked?.what, "Buy one Ascension Package (Tier 3 → 4)", "the first Ascension's second step (Core p.148)");
   // It belongs to the ASCENSION screen, which is where the builder offers the choice; the path stays under `advance/`
   // because what a character buys in play is still theirs to change (creationKey).
-  assert.deepEqual(
-    none.pending.find((p) => p.what.startsWith("Buy one Ascension Package")),
-    {
-      ...none.pending.find((p) => p.what.startsWith("Buy one Ascension Package"))!,
-      step: "ascension",
-      path: "advance/ascension",
-    },
-  );
+  assert.deepEqual([asked?.step, asked?.path], ["ascension", "advance/ascension"]);
+
+  const price = (r: ReturnType<typeof inPlay>, name: string) =>
+    r.ledger.find((l) => l.pool && l.what.startsWith(name))?.xp;
   const one = inPlay({ ...marine, advancement: { packages: ["back-from-the-brink"] } }, play);
-  assert.ok(!one.problems.some((p) => p.what.includes("Ascension")), "one package, two Tiers, is legal");
-  assert.equal(
-    one.ledger.find((l) => l.pool && l.what.startsWith("Back From The Brink"))?.xp,
-    50,
-    "10 × the new Tier, not the first Tier crossed",
-  );
-  const two = inPlay({ ...marine, advancement: { packages: ["back-from-the-brink", "stay-the-course"] } }, play);
+  assert.equal(price(one, "Back From The Brink"), 40, "10 × the Tier its Ascension reached, not the Tier now");
   assert.ok(
-    two.problems.some((p) => p.what.includes("one Ascension Package for the Ascension")),
-    "a second package is refused",
+    one.pending.some((p) => p.what === "Buy one Ascension Package (Tier 4 → 5)"),
+    "then the second",
+  );
+
+  const both = ["back-from-the-brink", "stay-the-course"];
+  const two = inPlay({ ...marine, advancement: { packages: both } }, play);
+  assert.equal(price(two, "Back From The Brink"), 40, "a later Ascension doesn't reprice an earlier package");
+  assert.ok(!two.pending.some((p) => p.what.startsWith("Buy one Ascension Package")));
+  assert.ok(!two.problems.some((p) => p.what.includes("each Ascension takes one")));
+
+  const three = inPlay({ ...marine, advancement: { packages: [...both, "dauntless-reputation"] } }, play);
+  assert.ok(
+    three.problems.some((p) => p.what.includes("the group has Ascended 2 times since Tier 3")),
+    "a third package for two Ascensions is refused",
   );
 });
 
 test("the GM may waive the Ascension Package on a Milestone Ascension (Core p.148 step 2)", () => {
   const marine: CharacterBuildInput = { ...PREGENS[0]!.build, tier: 3, packages: [] };
-  const waived = inPlay(marine, { tier: 5, xpEarned: 100, packageWaived: true });
+  const waived = inPlay(marine, { tier: 4, xpEarned: 100, packageWaived: true });
   assert.ok(!waived.pending.some((p) => p.what.startsWith("Buy one Ascension Package")));
+  // The waive is the latest Ascension's: an earlier one still wants its package.
+  const twice = inPlay(marine, { tier: 5, xpEarned: 200, packageWaived: true });
+  assert.ok(twice.pending.some((p) => p.what === "Buy one Ascension Package (Tier 3 → 4)"));
+  const paid = inPlay(
+    { ...marine, advancement: { packages: ["back-from-the-brink"] } },
+    {
+      tier: 5,
+      xpEarned: 200,
+      packageWaived: true,
+    },
+  );
+  assert.ok(!paid.pending.some((p) => p.what.startsWith("Buy one Ascension Package")));
 });
 
 // ── Archetype Ascension (Core p.155, rules-flow.md §11.67) ──
@@ -375,14 +387,17 @@ test("Archetype Ascension: Rank 3, the same Faction, the new Tier, and not both 
     ).problems.some((p) => p.what.includes("is not an Archetype of Space Marine Scout's Faction")),
     "the same factionId (§11.67)",
   );
+  // The Archetype is a Tier the group Ascended to, not past it.
   assert.ok(
-    inPlay({ ...scout, advancement: toTactical }, { tier: 4, xpEarned: 200 }).problems.some((p) =>
-      p.what.includes("is Tier 3, not the Tier 4 the group Ascended to"),
-    ),
+    inPlay(
+      { ...scout, advancement: { ...toTactical, archetypeAscension: { archetypeId: "primaris-intercessor" } } },
+      at,
+    ).problems.some((p) => p.what.includes("is Tier 4, not a Tier the group Ascended to (3–3)")),
   );
+  // One Ascension takes a package or an Archetype Ascension, not both.
   assert.ok(
-    inPlay({ ...scout, advancement: { ...toTactical, packages: ["back-from-the-brink"] } }, at).problems.some(
-      (p) => p.what === "An Ascension takes an Ascension Package or an Archetype Ascension, not both",
+    inPlay({ ...scout, advancement: { ...toTactical, packages: ["back-from-the-brink"] } }, at).problems.some((p) =>
+      p.what.includes("each Ascension takes one Ascension Package or an Archetype Ascension"),
     ),
   );
   assert.ok(
@@ -391,6 +406,19 @@ test("Archetype Ascension: Rank 3, the same Faction, the new Tier, and not both 
     ),
     "an Archetype Ascension is the Ascension's second step (Core p.148)",
   );
+});
+
+test("Archetype Ascension: the next group Ascension keeps it, and asks for that Ascension's package", () => {
+  // Taken at Tier 3; the group then Ascends to Tier 4 (Core pp.148, 155).
+  const later = inPlay({ ...scout, advancement: toTactical }, { tier: 4, xpEarned: 300 });
+  assert.ok(!later.problems.some((p) => p.severity === "error" && p.what.includes("Tactical Space Marine is Tier")));
+  assert.ok(later.pending.some((p) => p.what === "Buy one Ascension Package (Tier 3 → 4)"));
+  const paid = inPlay(
+    { ...scout, advancement: { ...toTactical, packages: ["back-from-the-brink"] } },
+    { tier: 4, xpEarned: 300 },
+  );
+  assert.ok(!paid.problems.some((p) => p.what.includes("each Ascension takes one")));
+  assert.ok(!paid.pending.some((p) => p.what.startsWith("Buy one Ascension Package")));
 });
 
 test("keepPlay: a rebuild in play keeps Wealth, Ammo and what play added; the new build's items join", () => {
