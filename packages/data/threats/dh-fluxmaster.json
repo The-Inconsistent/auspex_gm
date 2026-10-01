@@ -1,0 +1,57 @@
+{
+  "id": "dh-fluxmaster",
+  "name": "Fluxmaster",
+  "source": "daemons-and-heretics",
+  "page": 54,
+  "faction": "daemon",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["CHAOS", "DAEMON", "PSKYER", "TZEENTCH"],
+  "attributes": { "S": 3, "T": 3, "A": 4, "I": 4, "Wil": 4, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 4 },
+  "defence": 3,
+  "wounds": 11,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Leadership", "dice": 10 },
+      { "name": "Psychic Mastery", "dice": 10 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Disc of Tzeentch",
+      "text": "In melee, the Fluxmaster can make one Ritual Knife attack and one Blades attack each turn."
+    },
+    {
+      "name": "Ritual Dagger",
+      "text": "Any time the Ritual Knife wounds an opponent, the Fluxmaster gains the same number of wounds."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Coruscating Flames", "damage": 7, "ed": 1, "range": [12, 24, 36], "traits": ["Assault"] },
+        { "name": "Ritual Knife", "damage": 6, "ed": 2, "ap": -2, "range": [1] },
+        { "name": "Blades", "damage": 7, "ed": 2, "range": [1] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Magic Made Manifest",
+      "text": "Spend 1 ruin to activate the Smite Psychic Power. This power is always activated at the Transcendent Power Level."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 3d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 12,
+  "size": "Large",
+  "note": "Speed printed '12(Flying)'. Keyword PSKYER printed as such (likely PSYKER). No salvo printed for Coruscating Flames."
+}

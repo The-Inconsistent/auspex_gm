@@ -1,0 +1,67 @@
+{
+  "id": "dh-the-changeling",
+  "name": "The Changeling",
+  "source": "daemons-and-heretics",
+  "page": 52,
+  "faction": "daemon",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["CHAOS", "DAEMON", "PSKYER", "TZEENTCH"],
+  "attributes": { "S": 4, "T": 5, "A": 5, "I": 6, "Wil": 6, "Int": 8, "Fel": 2 },
+  "resilience": { "value": 10, "note": "4AR" },
+  "defence": 5,
+  "wounds": 16,
+  "shock": null,
+  "skills": {
+    "default": 10,
+    "list": [
+      { "name": "Deception", "dice": 12 },
+      { "name": "Psychic Mastery", "dice": 12 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    {
+      "name": "Formless Horror",
+      "text": "The Changeling begins each scene in the form of another being active within the scene. While in this form, it gains the ability to use that being's skills, talents, bonuses, and abilities, including psychic powers. Piercing this deception requires a DN 9 Awareness (Int) Test."
+    },
+    { "name": "Champion", "text": "The Changeling may use Ruin actions and has 4 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 4 Fear Test. Note that this battlecry activates when opponents identify the Changeling."
+    },
+    {
+      "type": "ACTION",
+      "name": "Trickster's Staff",
+      "text": "This weapon duplicates the profile of any weapon the GM chooses that has appeared in the current scene."
+    },
+    {
+      "type": "ACTION",
+      "name": "Psychic Manipulator",
+      "text": "The Changeling attempts to activate a psychic power including Smite or a Telepathy Discipline psychic power."
+    },
+    {
+      "type": "RUIN",
+      "name": "Ultimate Doppelganger",
+      "text": "Spend 1 Ruin, the Changeling transforms into the shape of a new being or reverts to its native shape."
+    },
+    {
+      "type": "WRATH",
+      "name": "Lose Track",
+      "text": "The Changeling immediately transforms into the shape of another being involved in the current conflict. Only those who pass a DN 9 Awareness (Int) Test can identify which of the two beings is the Changeling."
+    },
+    {
+      "type": "REACTION",
+      "name": "Psychic Trickster",
+      "text": "Any time another psyker attempts to manipulate the warp, the Changeling attempts to Deny the Witch."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 5d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Reprint of wretches-changeling; differs in stats, skills (no Awareness or Weapon Skill), Tier row (5), bonuses, and abilities (no printed staff profile). Keyword PSKYER printed as such (likely PSYKER). Trickster's Staff has no weapon profile, kept as ability text."
+}

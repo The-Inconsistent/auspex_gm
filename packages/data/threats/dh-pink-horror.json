@@ -1,0 +1,96 @@
+{
+  "id": "dh-pink-horror",
+  "name": "Pink Horror",
+  "source": "daemons-and-heretics",
+  "page": 56,
+  "faction": "daemon",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["CHAOS", "DAEMON", "PSKYER", "TZEENTCH"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 4, "Wil": 4, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 4 },
+  "defence": 3,
+  "wounds": 11,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [{ "name": "Psychic Mastery", "dice": 10 }]
+  },
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Coruscating Flames", "damage": 7, "ed": 1, "range": [12, 24, 36], "traits": ["Assault"] },
+        { "name": "Scrabbling Claws", "damage": 6, "ed": 2, "range": [1], "traits": ["Brutal"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Magic Made Manifest",
+      "text": "Spend 1 ruin to activate the Smite Psychic Power. This power is always activated at the Transcendent Power Level."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Split",
+      "text": "The Pink Horror splits into two Blue Horrors."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 3d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Blue Horror",
+      "text": "p.57. Own block without a Tier row or attributes row; attributes as the Pink Horror. DEFENCE 3, WOUNDS 11, SHOCK -, RESILIENCE 4. SKILLS: Default 8, Weapon Skill 10. Blue Horrors split into two Brimstone Horrors on death.",
+      "abilities": [
+        {
+          "type": "ACTION",
+          "weapons": [
+            { "name": "Coruscating Flames", "damage": 6, "ed": 1, "range": [12, 24, 36], "traits": ["Assault"] },
+            { "name": "Scrabbling Claws", "damage": 5, "ed": 2, "range": [1], "traits": ["Brutal"] }
+          ]
+        },
+        {
+          "type": "RUIN",
+          "name": "Magic Made Manifest",
+          "text": "Spend 2 ruin to activate the Smite Psychic Power. This power is always activated at the Transcendent Power Level."
+        },
+        {
+          "type": "ANNIHILATION",
+          "name": "Split",
+          "text": "The Blue Horror splits into two Brimstone Horrors"
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Brimstone Horror",
+      "text": "p.57. Own block without a Tier row. S 1, T 3, A 1, I 1, Wil 3, Int 3, Fel 3. DEFENCE 3, WOUNDS 1, SHOCK -, RESILIENCE 4. SKILLS: Default 6. Conviction, Resolve, Speed and Size not printed; as the Pink Horror.",
+      "abilities": [
+        {
+          "type": "ACTION",
+          "weapons": [{ "name": "Scrabbling Claws", "damage": 3, "ed": 2, "range": [1], "traits": ["Brutal"] }]
+        },
+        {
+          "type": "RUIN",
+          "name": "Magic Made Manifest",
+          "text": "Spend 4 ruin to activate the Smite Psychic Power. This power is always activated at the Transcendent Power Level."
+        }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Mob of Blue Horrors",
+      "text": "A Mob of Blue Horrors gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten additional Blue Horrors."
+    }
+  ],
+  "note": "Reprint of pink-horror; differs in Tier row (5), Wounds 11 (Core 5), skills, weapons, Resolve and Fear DN. Keyword PSKYER printed as such. Blue and Brimstone Horror blocks (p.57) kept as options. Mob ability printed under 'Mob Abilites' on the Blue Horror."
+}

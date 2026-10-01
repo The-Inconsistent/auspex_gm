@@ -1,0 +1,56 @@
+{
+  "id": "dh-blue-scribes",
+  "name": "Blue Scribes",
+  "source": "daemons-and-heretics",
+  "page": 55,
+  "faction": "daemon",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["CHAOS", "DAEMON", "PSKYER", "TZEENTCH"],
+  "attributes": { "S": 3, "T": 5, "A": 4, "I": 4, "Wil": 4, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 6 },
+  "defence": 3,
+  "wounds": 16,
+  "shock": null,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Psychic Mastery", "dice": 9 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Disc Riders",
+      "text": "The Blue Scribes can make one Sharp quills attack, one Blades attack, and one Sorcerous Barrage each turn."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Sharp Quills", "damage": 6, "ed": 1, "range": [1] },
+        { "name": "Blades", "damage": 7, "ed": 2, "range": [1] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Sorcerous Barrage",
+      "text": "The Blue Scribes attempt to activate a psychic power including Smite or a Maleficarum psychic power, treat Corruption as 5."
+    },
+    {
+      "type": "COMPLICATION",
+      "text": "The Blue Scribes turn on one another, and return to the Warp, squabbling amongst themselves."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 5d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 12,
+  "size": "Large",
+  "note": "Speed printed '12(Flying)'. Keyword PSKYER printed as such (likely PSYKER)."
+}

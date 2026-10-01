@@ -1,0 +1,64 @@
+{
+  "id": "dh-lord-of-change",
+  "name": "Lord of Change",
+  "source": "daemons-and-heretics",
+  "page": 51,
+  "faction": "daemon",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["CHAOS", "DAEMON", "PSKYER", "TZEENTCH"],
+  "attributes": { "S": 6, "T": 7, "A": 6, "I": 6, "Wil": 12, "Int": 12, "Fel": 10 },
+  "resilience": { "value": 15 },
+  "defence": 10,
+  "wounds": 17,
+  "shock": null,
+  "skills": {
+    "default": 10,
+    "list": [{ "name": "Psychic Mastery", "dice": 20 }]
+  },
+  "personalRuin": 5,
+  "bonuses": [
+    { "name": "Foresee the Ending", "text": "The GM gains 2 Ruin at the start of each of this Threat's turns." },
+    { "name": "Entrusted by Tzeentch", "text": "This Threat may use Ruin Actions and has 5 personal Ruin." },
+    { "name": "One with the Warp", "text": "This threat never encounters Perils of the Warp when using Psychic Powers." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Everchanging Presence",
+      "text": "Anyone who sees a Lord of Change must make a DN 5 Terror Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Staff of Tzeentch", "damage": 16, "ed": 4, "ap": -2, "range": [1], "traits": ["Brutal", "Warp"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Maleficarum",
+      "text": "The Lord of Change attempts to activate any two psychic powers including Smite or a Maleficarum psychic power, treat Corruption as 7."
+    },
+    {
+      "type": "RUIN",
+      "name": "Pluck from the Warp",
+      "text": "Spend 1 Ruin, the Lord of Change cuts a portal to the Immaterium and a mob of 7 Pink Horrors emerges. They may act immediately."
+    },
+    { "type": "RUIN", "name": "Healing Flames", "text": "Spend 2 Ruin, the Lord of Change recovers 3 Wounds." },
+    {
+      "type": "RUIN",
+      "name": "Bolt of Change",
+      "text": "Spend 2 Ruin, the Lord of Change unleashes a bolt of energy at a target who must make a successful DN 4 Willpower Test or transform into a Chaos Spawn."
+    },
+    {
+      "type": "REACTION",
+      "name": "Psychic Entity",
+      "text": "Any time another psyker attempts to manipulate the warp, the Lord of Change attempts to Deny the Witch."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 12,
+  "resolve": 11,
+  "speed": 12,
+  "size": "Gargantuan",
+  "note": "Keyword PSKYER printed as such (likely PSYKER). Determination line has no 'Daemonic Determination' name."
+}
