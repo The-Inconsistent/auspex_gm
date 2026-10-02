@@ -1,0 +1,124 @@
+[
+  {
+    "id": "rr2-seraphim-yarona",
+    "name": "Seraphim Yarona",
+    "role": "Seraphim, the 'Saint-In-Waiting'",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 39
+      }
+    ],
+    "gmNotes": "The seraphim Yarona is believed by some to be a living manifestation of the Emperor’s holy will. Armed with the Banner of Saint Oran, she soars into battle on wings of crimson ceramite, trailing plumes of promethium smoke and sacred incense in her wake.\n\nWitnesses claim that when she is engaged in combat, her eyes glow with a blazing golden light, and a shower of petals falls perpetually from the blade of her power sword. In rare moments of peace she wears an otherworldly look of abstraction, as though listening to a melody no one can hear.\n\nYarona has personally slain two greater daemons since the war on Balthazar began. Rumours crop up in her wake — that she is one of the blessed Matriarchs reborn, come to lead the Sororitas to victory, that the Emperor has made another Celestine, that she is the Saint of the Imperium Nihilus, come to protect its people in her hour of darkest need. She offers no comment on such suggestions, saying only that she is called to do the Emperor’s holy work.\n\nBut not all believe in her piety. There is growing disquiet amongst senior members of the Ecclesiarchy as to the origin of her powers.\n\nThere are those that whisper rumours that her power comes not from the Emperor, but a more bloodthirsty source who grants her such strength and fury, perhaps tainted by the vile stain of the warp. She has refused all requests to attend for holy scrutiny, claiming that the Emperor’s gifts are not to be tested.\n\nCardinal Fylamon (page 82) is particularly uneasy about her growing power — though his concerns are more secular than spiritual. Supposedly, Yarona has on several occasions privately decried him as an unfit servant of the Emperor, citing his inept handling of the influx of pilgrim-refugees and the resulting starvation on the shrine-world. Were these rumours to be true, or worse, a public statement made, the consequences could prove deadly for Fylamon or Yarona, with one of them certainly meeting their end in a cell or atop a pyre. Some amongst Fylamon’s advisors have secretly recommended that he ensure the Seraphim meets a martyr’s end — but it would take a particularly ruthless band of Agents to carry out such an assassination."
+  },
+  {
+    "id": "rr2-hadrianus-the-firebrand",
+    "name": "Hadrianus the Firebrand",
+    "role": "Flak-armoured zealot",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 40
+      }
+    ],
+    "gmNotes": "Hadrianus is a pale man of indeterminate age, cadaverously thin and bald-headed, his eyebrows and eyelashes burned away to frizzled remains. He wears ragged black robes beneath a suit of flak-armour painted with devotional litanies, and carries a Vindictor chainblade adorned with the word ‘exterminatus’ in gothic script along its length. It isn’t known whether he is native to Balthazar, but his appearance amongst the soldiers there has done much to whip the locals into a frenzied rage against their daemonic attackers.\n\nFor all his evident piety, Hadrianus is a man who unknowingly does the work of the Ruinous Powers. In exhorting his followers to commit acts of mindless rage, he renders them vulnerable to the corrupting influence of the Chaos God Khorne, and so his own soul slides further towards damnation. In recent months he has undertaken a pilgrimage of sorts between the loyalist cities of Balthazar’s equatorial regions, drumming up support for the crusade and whipping the populace into a paroxysm of bloodthirst and fury. Wherever he goes, assault and murder become common, and it is only a matter of time before his name comes to the attention of the Adepta Sororitas.\n\nIf confronted with the nature of whom he truly serves, Hadrianus would be horrified, but the path to damnation is often taken one seemingly virtuous step at a time."
+  },
+  {
+    "id": "rr2-sister-eklavira",
+    "name": "Sister Eklavira",
+    "role": "Junior Sister, Sanctified Shield",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 40
+      }
+    ],
+    "faction": "Order of the Sanctified Shield",
+    "gmNotes": "For such a junior member of the order of the Sanctified Shield, Sister Eklavira has been granted a remarkable degree of autonomy. Before the war for Balthazar, she was often found exploring sites of possible religious interest, surveying ancient battlefields or attending high society auctions, constantly on the lookout for religious relics. Now that the battle lines are drawn, she has thrown herself into the fray with tremendous vigour, scouring the burning hive-cities of the continental south in the search for lost artefacts.\n\nOne such artefact is the Spear of Saint Miranda, held in Perihelion’s Cathedrum prior to its fall. The heretic governor has been seen wielding a weapon matching the description of the Spear — albeit desecrated with symbols of Khorne and severed heads. Sister Eklavira has sworn a holy oath to recover and cleanse the spear, or else destroy it forever.\n\nSister Eklavira is a short, dark-haired woman, usually wearing a simple black cassock belted around her waist, where her Autopistol almost always rests,When actively involved in field work she exchanges these simple clothes for a suit of flak armour. She has been given the use of one of the order’s few gun-cutters, the Vox Dei, and is often looking to employ useful Agents to assist her in tracking down and recovering the treasures of the Cult Imperialis."
+  },
+  {
+    "id": "rr2-sister-hospitaller-avris-thena",
+    "name": "Sister Hospitaller Avris Thena",
+    "role": "Sister Hospitaller",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 39
+      }
+    ],
+    "gmNotes": "Sister Avris takes personal pride in the fact that she has served on so many battlefields that more of her skin is scarred than pristine. Both of her legs from the knee down and her right hand have been replaced with elaborate augmetics and these, along with the chirugeon’s mechadendrite extending from her right shoulder, mean that she bears significant resemblance to the Tech-Priests of Mars. But after a few moments in her company, no one could truly mistake her for anything other than a Sister Hospitaller. She is as firm a devotee of the Imperial Creed as can be found.\n\nSister Avris has helped to swing the tide of many wars, and the battle for Balthazar is no exception. Her surgical talents are regularly put to use transforming repentant heretics into arco-flagellants, ensuring that the augmetic electro-whips and intrathecal autoinjectors integrate seamlessly into their bearer’s physiology. Her infirmarium has a near-insatiable demand for heretics, and she regularly sends Agents on missions into enemy territory to capture as much ‘raw material’ for her work as possible. It is said that she ensures that every heretic who enters her infirmarium repents before they are granted the blessing of a death — though whether she achieves this through discourse or other means is a secret she keeps close to her chest."
+  },
+  {
+    "id": "palatine-zoraya-matriana",
+    "name": "Palatine Zoraya Matriana",
+    "role": "Palatine, Order of the Sanctified Shield",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 41
+      }
+    ],
+    "faction": "Order of the Sanctified Shield"
+  },
+  {
+    "id": "magos-statox-pavarnus",
+    "name": "Magos Statox Pavarnus",
+    "role": "Cybernetica Datasmith",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 59
+      }
+    ],
+    "faction": "Adeptus Mechanicus"
+  },
+  {
+    "id": "rr2-wing-leader-bazalt",
+    "name": "Wing-Leader Bazalt",
+    "role": "Pteraxii Skitarii wing-leader",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 58
+      }
+    ],
+    "faction": "Adeptus Mechanicus",
+    "gmNotes": "‘Skree! Skree! Skreeeeee!’\n\nGiven the large radius that the Adeptus Mechanicus forces have to cover, Pteraxii have served as the eyes and ears of the Arch-Domina’s forces in the Breach region. With little atmosphere, the Pteraxii rely more on their thrusters, reducing their manoeuvrability and making their task more hazardous.\n\nBazalt and his kin cluster within the antennae combs of Outpost Nemo, hanging upside down, plugged into power and fuel lines. This wily old Skitarii has very little vocal capacity left as most of his brain has been rewired for combat, but he is gifted with a preternatural instinct for aerial warfare. He often launches his flocks without any word from up the chain of command, but despite this obvious breach of doctrine, the Tech-Priests have learned to trust his judgement through repeated analysis of his improbably successful endeavours, and he is given a great deal of leeway."
+  },
+  {
+    "id": "rr2-8-x-huss",
+    "name": "8-X Huss",
+    "role": "Serberys leader, Outpost Nemo",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 58
+      }
+    ],
+    "gmNotes": "‘++They’ll fake a left flank attack, but they’ll actually try and hit us from that ridge. We’ll let them come — it will give your Sulphurhounds time to circle around and strike at their support units from behind++’\n\nLeader of the Serberys units stationed at Outpost Nemo, 8-X Huss is an ancient veteran that has defended the foundries of Avachrus for centuries. A bizarre amalgam of battle-honours and cybernetics, 8-X Huss has been permanently fused with their Cybercanid, Kherberos. Known for their daring plans and tactical initiative, it has been a long time since this valiant Skitarii lost a battle, but they are quick to withdraw their forces when outmatched. To their mind, the only victory that truly matters is the final one — and that won’t be achieved if they lose their forces piecemeal.\n\nAs well as directing patrols and raids, 8-X Huss drills her Serberys units in preparation to seize the fortress of Kaurdar. The attack plan calls for a mobile strike force, and the Serberys will function as the tip of the spear until slower units can arrive to provide backup."
+  },
+  {
+    "id": "rr2-the-iron-keeper",
+    "name": "The Iron Keeper",
+    "role": "Lone Kastelan robot",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 58
+      }
+    ],
+    "gmNotes": "‘Our calculations cannot presently determine if the subject is an affront to the Omnissiah, or a blessing we do not fully understand. Further research from a suitably safe distance is mandated.’\n\nThis Kastelan unit wasn’t assigned to Outpost Nemo, but has been sighted multiple times intervening to engage Necron forces in the area. Whatever bizarre imperatives are locked in its doctrina-wafer port, they are either corrupted, or a truly baroque piece of coding. When not fighting, the Keeper seems to tend the surrounding crystals as a garden, carefully repairing battle damage and flattening disturbed soil. Quite how, or why, such a construct came to be roaming the dead surface is unknown, but many of the Adeptus Mechanicus now consider its presence a sign of the Omnissiah’s favour. Magos Pavarnus takes a keen interest in sightings of the Keeper; some even say he interprets them as omens for directing policy."
+  },
+  {
+    "id": "rr2-the-instrumentality",
+    "name": "The Instrumentality",
+    "role": "Sicarian-like Kaurthos assassin",
+    "cites": [
+      {
+        "source": "redacted-records-2",
+        "page": 58
+      }
+    ],
+    "gmNotes": "‘++Your systems have been intercepted. Surrender will earn no mercy, but will make this process more efficient.++’\n\nWearing the colours of the long-departed Legio Kaurthos, this sinister, spindly figure appears during battles, slaughtering both Necron and Adeptus Mechanicus intruders alike. Clearly some form of Sicarian Ruststalker, it has proven nigh impossible to track through sensory systems, and moves with incredible agility and grace. The only warning of an impending attack is the collapse of vox and auspex systems due to a blinding haywire pulse, swiftly followed by dissection and decapitation via transonic blades. The Instrumentality does not linger, merely slaughters an important target or two, and then disappears back into the crystals from whence it struck. This creature is fast becoming a figure of religious terror amongst the Adeptus Mechanicus troops, who say that its attacks are a holy judgement against those trying to seize the fortress. The being clearly has not communicated their presence to the defenders of Kaurdar, so its true motives remain obscure."
+  }
+]
