@@ -10,7 +10,7 @@ text, notes and handouts. Build order: combat tracker plus this campaign core fi
 ## Entities
 
 ```
-Campaign ── name, tier, framework + framework bonus (core p.18, party sheet p.374),
+Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sheet p.374),
  │           patron, party keywords
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
  ├─ Adventure    title, premise, status (planned | running | done)
@@ -45,6 +45,11 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   line and an amount, 1 to 10), and the spends the GM plans from either pool (`PoolSpend`: the pool, a name, a cost and
   its effect). PREP turns each into a tap that moves the pool. Nothing records which lines were used. See
   [rules-flow.md](rules-flow.md) §2 and §11.77.
+- **Framework, Framework Bonus and patron** (issue #45): three player-visible text fields, typed by the GM. The
+  Framework is "a sentence or two" (core p.18); the Bonus is its own field because the party sheet has one (p.374,
+  rules-flow.md §11.80). The printed Frameworks are a creation type (`creation/frameworks/*.json`, patron-less) and
+  the options of `creation/patrons/*.json`; PARTY's picker reads them through the GM-only
+  `/api/campaigns/:id/frameworks` and fills in only the patron's and Framework's names (§11.80).
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and
@@ -57,6 +62,26 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
 - **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those
   Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
   (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.
+
+## Building a campaign
+
+The Core Rulebook has no adventure-writing procedure; it sends the GM to the GM's guide on Cubicle 7's website
+(core pp.315, 317). This is what it does say, in the order a GM meets it. PARTY's SETUP checklist (issue #45) walks
+these steps and ticks each one from what the campaign already holds; nothing is stored.
+
+| # | Step | Book | In the app | Ticks when |
+|---|---|---|---|---|
+| 1 | Kind of game and content limits | core p.316 | a reminder in SETUP (§11.79) | never |
+| 2 | Framework (who, what, the shared goal) and Framework Bonus | core pp.18–20, 316–317, 374 | PARTY › FRAMEWORK | `framework` not empty |
+| 3 | Tier (100–400 XP; custom 50, 75 or 500) | core pp.19–20, 160 | lobby NEW GAME, PARTY › ASCEND | always |
+| 4 | Setting, kept to a limited area | core pp.296–309, 320 | CODEX › LOCATIONS | a location |
+| 5 | Patron (two Frameworks each), optional | core pp.310–313; Forsaken System Player's Guide pp.64–89 | PARTY › PATRON | `patron` not empty |
+| 6 | Factions and Keywords; who can work together | core pp.42–87, 167, 317, 375–378 | CODEX › FACTIONS | a faction |
+| 7 | Characters | core p.17 | PARTY › the builder | an Agent |
+| 8 | NPCs and locations, a few vivid features each | core pp.315, 317, 168, 326 | CODEX › NPCS, LOCATIONS | an NPC |
+| 9 | Scenes: set the scene, ask, listen, describe consequences, keep the plot moving; fail forward | core pp.317–319, 160–161, 165–166 | PREP | an adventure with a scene |
+| 10 | Combat. Budget: two Troops per Agent, half in a Mob, plus one Elite or Adversary | core p.176; Threat Assessment p.8 | PREP's prepared encounter, TRACK | a scene with a prepared encounter |
+| 11 | Session: Wrath 2, Glory 0, Ruin = players; Objective d6; recap; cliffhanger; XP 8, 10 or 12; Wealth every three or four sessions | core pp.30, 43, 162, 317, 320–321 | PARTY › START / END SESSION | a session started |
 
 ## Screens
 

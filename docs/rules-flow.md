@@ -594,6 +594,18 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Additional Ruin Actions). The preset keeps the cost null, a scene's copy has none, and SAVE waits until the GM sets
     it for that scene. There is no default: the app never invents a cost.
     *(User ruling, 2026-10-02.)*
+79. **Content limits stay a reminder** (Core p.316; GitHub issue #45). The GM decides the kind of game and "identify any
+    inappropriate content to avoid", and nobody should have to explain what they want left out. SETUP's first step is
+    a prompt that never ticks; nothing is stored, so nothing travels in an export. *(User ruling, 2026-10-02.)*
+80. **The Framework Bonus is its own field** (Core p.19, party sheet p.374; GitHub issue #45). The party sheet has a
+    FRAMEWORK and a FRAMEWORK BONUS box, so the campaign has `framework` and `frameworkBonus`, and players see both under
+    MISSION. The Framework picker shows the printed Bonus to the GM only and fills in names only (the patron's and the
+    Framework's): the GM types the Bonus wording the players should see, so the MISSION never carries printed prose.
+    *(User ruling, 2026-10-02.)*
+81. **A Framework's Limitations are shown, never checked** (Core p.19; GitHub issue #45). "Your Framework is a tool to
+    help you have fun, not get in the way." The picker shows the printed Limitations (such as "at least half the
+    Agents must have the ADEPTA SORORITAS Keyword"), and neither the picker nor the builder tests the party against
+    them. A group quota is stored as a `gm` Requirement with the printed sentence. *(User ruling, 2026-10-02.)*
 
 ---
 
