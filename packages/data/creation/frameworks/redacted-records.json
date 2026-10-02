@@ -1,0 +1,1051 @@
+[
+  {
+    "id": "sanctum-sentinels",
+    "name": "Sanctum Sentinels",
+    "source": "redacted-records",
+    "page": 35,
+    "note": "Wargear is “1 Vox Caster and 2 ranged weapons with the Heavy Trait and Rarity 1 or 2”: the Vox Caster is for the group, the two weapons a pick of 2 (a pick has no `scope`). The fixed-installation sentence is kept as `story`.",
+    "factionId": "adepta-sororitas",
+    "text": "You are tasked with the protection of a sacred place: a statue, holy ruin, Schola Progenium academy, or Ministorum church. There are more sanctums on Enoch than Sisters to defend them, so you are the first and last line of defence. As the cardinal world plunges into anarchy, these sites are more threatened than ever, and you find yourselves playing politics with other factions to get the resources and requisitions you need. Though your duty is essentially reactive, pilgrims regularly seek you out to petition for aid. Whether their causes are worthy is left to your discretion.\n\nExample Missions:\n- Twice annually, a delegation of servitors is received to perform technical maintenance within your battle sanctum. The delegation is uncharacteristically late, and Order Command cannot explain why. Discover whether this is a matter of bureaucratic failing, Gilead’s ever more strained resources, or something more sinister.\n- A neighbouring basilica has fallen to profane forces, and tactical assessments forecast your sanctum will be next. Reconsecrate the earth, emplace new fortifications, rally the faithful to take up arms, and prepare for ground assault.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTA SORORITAS"
+            ]
+          },
+          {
+            "kind": "all",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "IMPERIUM"
+                ]
+              },
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "SCUM"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ADEPTA SORORITAS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Vox Caster",
+          "qty": 1,
+          "wargearId": "vox-caster",
+          "scope": "group"
+        }
+      },
+      {
+        "pick": 2,
+        "wargearOf": {
+          "weapon": "ranged",
+          "weaponTraits": [
+            "Heavy"
+          ],
+          "rarity": {
+            "atMost": "Uncommon"
+          }
+        }
+      },
+      {
+        "story": "These are fixed, permanent installations rather than portable Wargear, and can be positioned wherever you choose on the battle sanctum’s grounds."
+      }
+    ],
+    "bonus": "+1 bonus die to Resolve Tests, Conviction Tests and Determination rolls within your battle sanctum.",
+    "grants": []
+  },
+  {
+    "id": "instruments-of-ascension",
+    "name": "Instruments of Ascension",
+    "source": "redacted-records",
+    "page": 36,
+    "note": "The Chaplet’s extra +1 to Leadership and Intimidation Tests as a Symbol of Authority, and “if they don’t already have one”, are kept as `story`.",
+    "factionId": "adepta-sororitas",
+    "text": "With the blessing of the Inquisition, whose resources are also stretched thin in the Gilead System, you investigate claims of divine intervention, focusing on alleged vessels of the Emperor’s will, to determine candidacy for Sainthood. More often than not, these ‘holy figures’ transpire to be frauds, Psykers, or daemonically-possessed, requiring you to develop both a nose for heresy and an appetite for cleansing flame.\n\nThough you will surely go your whole career without ever witnessing a true miracle, your work remains vitally important, as a single bona fide manifestation of the Emperor of Mankind could be the spark that relights the faith of the whole Gilead System.\n\nExample Missions:\n- The Church of Saint Lorentis on Enoch is besieged by sorcery: worshippers are found dead, bodies arranged into profane sigils, or burned by unnatural fire. The Archdeacon would, if possible, prefer not to raze the centre of this profitable diocese and has dispatched you to investigate, purge the corruption for good, and determine by whose apostasy it entered the sacred place.\n- A young forge worker named Emilia Gladiolus has returned unharmed from a walk upon the radioactive surface of Avachrus. The Tech-Priests believe she achieved this feat through use of archeotech, which Gladiolus staunchly denies. Keep the girl out of the Martian Priesthood’s hands until you’ve had a chance to determine the truth.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTA SORORITAS"
+            ]
+          },
+          {
+            "kind": "all",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "IMPERIUM"
+                ]
+              },
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "SCUM"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ADEPTA SORORITAS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Chaplet Ecclesiasticus",
+          "qty": 1,
+          "wargearId": "chaplet-ecclesiasticus"
+        }
+      },
+      {
+        "story": "All Agents receive a Chaplet Ecclesiasticus if they don’t already have one. Its adamantine beads commemorate the bearer’s deeds, granting an additional +1 to Leadership and Intimidation (Wil) Tests when used as a Symbol of Authority (Wrath & Glory, page 240)."
+      }
+    ],
+    "bonus": "+1 bonus die to Awareness (Int) and Insight (Fel) Tests to tell if someone has the PSYKER or CHAOS Keyword.",
+    "grants": []
+  },
+  {
+    "id": "penitent-patrol",
+    "name": "Penitent Patrol",
+    "source": "redacted-records",
+    "page": 37,
+    "note": "The page 37 boxes sit under the Adeptus Astra Telepathica intro, left of this Framework’s heading. “Other Agents receive remote detonators” is two grants, as `requires` cannot say “not (PSYKER without ADEPTUS ASTRA TELEPATHICA)” in one.",
+    "factionId": "adeptus-astra-telepathica",
+    "text": "The situation in the Gilead System — isolated, under-resourced, and desperate — is such that even unsanctioned Psykers occasionally have their uses. Even here, Penitent Patrols are rare, brought together only in the most dire circumstances. You are a team of unsanctioned Psykers, captured by the Adeptus Astra Telepathica and confronted with a simple choice: use your powers to hunt down others of your kind or die. Whole cell-blocks at Ironwatch are filled with vengeful witches who pray for the day you’re locked inside with them. You are always accompanied by at least one ‘supervisor’, whose job is to make sure you never cross the line that separates you from the quarry you pursue.\n\nExample Missions:\n- The Emperor’s Tarot forecasts a hidden witch within the noble house of Meritus, but politics and bureaucratic obstinance have kept the authorities from entering the Meritus fortress-estate for a full inspection. Use your telepathic powers to torment the witch from afar. When the witch's nerve breaks and they flee the estate's safety you can apprehend them at your leisure.\n- A daemonic rift on Ostia has been attributed to a Tzeentchian sorcerer and her acolytes. The cultists wear masks and robes that render them indistinguishable, and military forces available to engage the cult in all-out battle are few and far between. Infiltrate the cult, identify the sorcerer, and destroy the cult from within.",
+    "limitations": [
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the PSYKER Keyword."
+      },
+      {
+        "kind": "gm",
+        "text": "At least one character must have the ADEPTUS ASTRA TELEPATHICA or ORDO HERETICUS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Locked collar with a Frag Grenade Weapon Implant",
+          "qty": 1
+        },
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          },
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "ADEPTUS ASTRA TELEPATHICA"
+            ]
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Remote detonator for the collars",
+          "qty": 1
+        },
+        "requires": [
+          {
+            "kind": "notKeyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          }
+        ]
+      },
+      {
+        "wargear": {
+          "name": "Remote detonator for the collars",
+          "qty": 1
+        },
+        "requires": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS ASTRA TELEPATHICA"
+            ]
+          }
+        ]
+      }
+    ],
+    "bonus": "Agents with the PSYKER Keyword gain +Rank bonus dice to use Psyniscience (Wrath & Glory, page 267). Agents without the PSYKER Keyword gain the Psyniscience ability.",
+    "grants": []
+  },
+  {
+    "id": "scholastia-faculty",
+    "name": "Scholastia Faculty",
+    "source": "redacted-records",
+    "page": 38,
+    "factionId": "adeptus-astra-telepathica",
+    "text": "The needs of the Gilead System are too great for Sanctioned Psykers to die out with the coming of the Great Rift. You are the teaching staff of a secret Scholastia Psykana facility that trains 'gifted individuals' in the use of their powers. While you lack the resources and influence of a standard Scholastia Psykana, your founders were instructors from such an institution and you follow their teachings as accurately as you can. Between classes, you respond to reports of suspected Psyker activity elsewhere in the system, participating in rituals of divination to identify psychic activity, and passing real threats up to your superiors for action. The most promising students might even accompany these missions.\n\nExample Missions:\n- A young, remarkably powerful Psyker has emerged on Gilead Primus, terrified, confused and persecuted, like you were at that age. Get to him before the mob or the daemons do and return him to the safety of the Schola for testing.\n- Meddling, puritanical fools in the Ordo Hereticus have targeted the Schola for destruction. Get the students to safety, scatter, and regroup in a new, safer refuge. Your work is too important to be impeded by the short-sighted.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS ASTRA TELEPATHICA"
+            ]
+          },
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ADEPTUS ASTRA TELEPATHICA Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Psychic Focus",
+          "qty": 1,
+          "wargearId": "psychic-focus"
+        }
+      }
+    ],
+    "bonus": "+1 bonus die to Deny The Witch tests.",
+    "grants": []
+  },
+  {
+    "id": "explorator-maniple",
+    "name": "Explorator Maniple",
+    "source": "redacted-records",
+    "page": 39,
+    "note": "Printed “Exploration Mechandendrite”; the catalogue item is the Exploration Mechadendrite (Core p.244). Copied as printed. The 10 XP purchase is kept as `story`.",
+    "factionId": "adeptus-mechanicus",
+    "text": "Explorators are the adventurer-pioneers of the Machine Cult, plunging into uncharted space to discover new worlds, celestial phenomena, and forgotten knowledge. In the Gilead System, you scour the most inhospitable regions of the system — the surface of Avachrus, the depths of the Voidmire, the lost ruins of Membrane Worlds, and haunted corridors of space hulks — unearthing archeotech and other treasures of the Mechanicus. Discovery is its own reward, but less enlightened relic hunters have more selfish motives. You always travel heavily armed to deter those rogues from impeding the Quest for Knowledge.\n\nExample Missions:\n- The ruins of two failed Eternal Engines, the colossal archeotech machines that make underground living on Avachrus possible, have been unveiled on the surface. Perform your examinations as fast as you can, before the Suspire Priesthood lockdown the site as being under their purview.\n- A shipwrecked Aeldari Craftworld is a once-in-a-millennium discovery. Plunder what you can from the remains on Trollius whilst eluding the attention of the Asuryani. Studying how the xenos behave when they believe themselves unobserved may yield even more fascinating revelations.",
+    "limitations": [
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ADEPTUS MECHANICUS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Dataslate",
+          "qty": 1
+        }
+      },
+      {
+        "wargear": {
+          "name": "Monoscope",
+          "qty": 1,
+          "wargearId": "monoscope"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Survival Kit",
+          "qty": 1,
+          "wargearId": "survival-kit"
+        }
+      },
+      {
+        "story": "Agents with the ADEPTUS MECHANICUS Keyword can purchase an Exploration Mechandendrite for 10 XP."
+      }
+    ],
+    "bonus": "+1 bonus die to Tech (Int) Tests to identify, repair and operate archeotech.",
+    "grants": []
+  },
+  {
+    "id": "logister-command",
+    "name": "Logister Command",
+    "source": "redacted-records",
+    "page": 40,
+    "note": "“up to 3 Common items of their choice” is a pick of 3 (the “up to” is not expressible). The Cortex Implant purchase is kept as `story`.",
+    "factionId": "adeptus-mechanicus",
+    "text": "The Mechanicus cooperates with the Adeptus Administratum to furnish all the weapons, armour, mechanical tools, building blocks, servitors, and raw materials the Gilead System needs. This Sisyphean task has become all but impossible since the Great Rift, which has escalated demand for resources and severed supply. The Mechanicus’s response has been to dispatch Agents like you to crack down on waste wherever possible, making enemies of noble families and other factions who would rather stockpile as a precautionary measure. But your unpopular work is not without its perks — the tools of an entire system are at your disposal, and ordering in bulk is no problem.\n\nExample Missions:\n- A new sect of Corpuscarii Electro-Priests is determined to undertake a crusade into the Voidmire, marshalling vast amounts of energy to unleash against the Machine God’s enemies. Sabotage their preparations and recover what energy sources you can, lest precious resources be wasted in another futile expression of faith.\n- Mining operations on the outskirts of Belaxia have been disrupted, as the local workers organise in worship of ‘The Crown of the Depths’. Trace this insurrection to its source, taking care to avoid expensive collateral damage.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS MECHANICUS"
+            ]
+          },
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ADEPTUS MECHANICUS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Periculum Kit",
+          "qty": 1,
+          "wargearId": "periculum-kit"
+        }
+      },
+      {
+        "pick": 3,
+        "wargearOf": {
+          "rarity": {
+            "atMost": "Common"
+          }
+        }
+      },
+      {
+        "story": "Any member of the group can purchase a Cortex Implant for 10 XP."
+      }
+    ],
+    "bonus": "When you requisition a Common or Uncommon item, you can spend Shifts to acquire additional copies of it.",
+    "grants": []
+  },
+  {
+    "id": "holy-mission",
+    "name": "Holy Mission",
+    "source": "redacted-records",
+    "page": 41,
+    "note": "Printed without a closing full stop in the BONUS box; copied as printed.",
+    "factionId": "adeptus-ministorum",
+    "text": "The Missionarius Galaxia spearheads the Imperium’s voyages of discovery, seeking new human cultures and indoctrinating them to accept the Emperor’s light. Even trapped within the confines of the Gilead system, Missionaries work tirelessly, shoring up faith where it has faltered since the Great Rift’s emergence. Consorting with heathens is dangerous work, and the most irredeemable heresies can only be answered with scourging fire. But every lost soul returned to the Imperial Creed is a miracle worth celebrating.\n\nExample Missions:\n- Converting just one of the pirate captains blighting the Voidmire could be the first step restoring that godless abyss to true compliance. Work the local scum dens, identify the most viable candidate, and work your way into their trust. Expect to encounter violent resistance along the way.\n- A series of bizarre accidents and disappearances have blighted a local manufactorum, and the Enforcers are stumped. Their evidence-based investigation obscures the true cause of these disasters: the faithlessness of the forge’s labourers! Restore their faith or burn the manufactorum to the ground. In the fires of its destruction, the righteous shall see the truth.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ADEPTUS MINISTORUM"
+            ]
+          },
+          {
+            "kind": "all",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "IMPERIUM"
+                ]
+              },
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "SCUM"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half of the Agents must have the ADEPTUS MINISTORUM Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Missionary Kit",
+          "qty": 1,
+          "wargearId": "missionary-kit"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Hand Flamer",
+              "qty": 1,
+              "wargearId": "hand-flamer"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Medikit",
+              "qty": 1,
+              "wargearId": "medikit"
+            }
+          }
+        ]
+      }
+    ],
+    "bonus": "+1 bonus die to Insight (Fel) and Leadership (Wil) Tests against humans without the IMPERIUM Keyword",
+    "grants": []
+  },
+  {
+    "id": "breakaway-cult",
+    "name": "Breakaway Cult",
+    "source": "redacted-records",
+    "page": 42,
+    "note": "Printed with no LIMITATIONS, WARGEAR or BONUS boxes (none on pages 42–43); limitations and wargear are left empty and there is no bonus.",
+    "factionId": "adeptus-ministorum",
+    "text": "You belong to an offshoot of the Ministorum, determined to enlighten Imperial citizens who have been laid astray by false prophets. Redemptionists, Death Cultists, Resurrectionists, Haemovores, and more — many theoretically acceptable interpretations of the Imperial Creed nonetheless have a way of antagonising Ecclesiarchy officials. Your calling compels you to seek new disciples for your sect and to demonstrate the tenets of faith by waging war on heretics and non-believers. Some of the cults in Chapter 9 might be appropriate for this Framework, especially before the Agents learn the cult’s secrets. Afterwards, they might need to bring their fellow cultists back to the Emperor’s holy light or escape the cult’s grip.\n\nExample Missions:\n- A relic sacred to your cult has been confiscated by the authorities and is now displayed as a curiosity by the Deacon of Brassyl. Lead a raid of the faithful against his basilica complex and recover the artefact. If an example can be made of the Deacon, so much the better.\n- Demonstrate your faith and your value to the planetary authorities by rousing your followers and mobilising them against true heretics. If there are none to be found, look harder: no community is entirely free of enemies within.",
+    "limitations": [],
+    "wargear": [],
+    "grants": []
+  },
+  {
+    "id": "infantry-squad",
+    "name": "Infantry Squad",
+    "source": "redacted-records",
+    "page": 42,
+    "note": "“1 Agent receives …” is `scope: group`. The Mob’s size (10 minus the number of Agents) has no Grant form, so `grants` is empty.",
+    "factionId": "astra-militarum",
+    "text": "You are the basic building block of the Imperium’s military forces: ten soldiers armed and armoured for battle. Whilst most Militarum Infantry Squads are expended as cannon fodder, your team might have what it takes to survive the meat grinder and emerge as hardened veterans. To endure, you’ll need to refine your combat reflexes and develop aptitude for navigating the bureaucracy and officer politics of the Imperial Guard, where lives are cheap and victory is all that matters.\n\nExample Missions:\n- To replace casualties, your squad has been assigned the greenest, newest recruits imaginable, and instructed to sort them out. Train the rookies up to meet the Commissar’s standards or you’ll all be disciplined for it. Of course, nothing straightens a soldier out quite like the fires of battle.\n- At first light your company goes over the top, advancing into No Man’s Land and the bombardment of enemy heavy weapons. Ostensibly your mission is to clear out the opposing trench. Privately, your agenda is to use the time you have left to maximise your chances of survival: get hold of enough ammo, additional armour, and a rumoured map of the enemy’s mine field.",
+    "limitations": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ASTRA MILITARUM"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "Any Agents with the [REGIMENT] Keyword must choose the same Regiment."
+      },
+      {
+        "kind": "tier",
+        "min": 1,
+        "max": 2
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 1,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Vox Caster",
+          "qty": 1,
+          "wargearId": "vox-caster",
+          "scope": "group"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Chainsword",
+              "qty": 1,
+              "wargearId": "chainsword",
+              "scope": "group"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Power Sword",
+              "qty": 1,
+              "wargearId": "power-sword",
+              "scope": "group"
+            }
+          }
+        ]
+      }
+    ],
+    "bonus": "You are accompanied by a Mob of Astra Militarum Troopers (Wrath & Glory, page 328) who follow your lead in battle. The number of Troops is 10 minus the number of Agents.",
+    "grants": []
+  },
+  {
+    "id": "command-squad",
+    "name": "Command Squad",
+    "source": "redacted-records",
+    "page": 43,
+    "note": "The Regimental Standard says “see below”; the BONUS box is its only mention, so it has no catalogue entry. The Devotee purchase for 10 XP stays in the bonus prose. “( Wrath & Glory, page 328)” copied with the printed space.",
+    "factionId": "astra-militarum",
+    "text": "You hold a position of leadership, overseeing the deployment of a platoon, company, or regiment of Militarum troopers. Whilst hundreds of soldiers may follow your lead, you are fully enmeshed in the hierarchy of the Imperial Guard, bound by regulations and responsibilities that impede strategic momentum. As none of the grunts under your command can be trusted, you surround yourself with bodyguards and specialist advisors, often loaned from other Imperial factions. When a sensitive problem needs fixing, you invariably have to solve it yourself.\n\nExample Missions:\n- The regiment’s progress against heretics occupying a hive spire has stalled, and someone must return to the Lord-Militant Fylamon and make the case for reinforcements. Strategic necessity is a powerful argument, but offering to advance Fylamon’s personal agenda could be more persuasive.\n- Your return to the front has been ambushed by Ork Kommandos, and you are trapped behind enemy lines. Make your way across a war zone back to command HQ or hold the line here whilst you wait for rescue.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "ASTRA MILITARUM"
+            ]
+          },
+          {
+            "kind": "all",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "IMPERIUM"
+                ]
+              },
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "SCUM"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ASTRA MILITARUM Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 1,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Officer stripes (counts as a Symbol of Authority)",
+          "qty": 1,
+          "wargearId": "symbol-of-authority",
+          "scope": "group"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Regimental Standard",
+          "qty": 1,
+          "scope": "group"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Vox Caster",
+          "qty": 1,
+          "wargearId": "vox-caster",
+          "scope": "group"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Medikit",
+          "qty": 1,
+          "wargearId": "medikit",
+          "scope": "group"
+        }
+      }
+    ],
+    "bonus": "+Rank bonus die to Leadership (Wil) Tests against targets with the ASTRA MILITARUM Keyword who can see the Regimental Standard. Any Agent may purchase the Devotee Talent (Wrath & Glory, page 132) to gain a Mob of Astra Militarum Troopers ( Wrath & Glory, page 328) for 10 XP.",
+    "grants": []
+  },
+  {
+    "id": "sleeper-agents",
+    "name": "Sleeper Agents",
+    "source": "redacted-records",
+    "page": 44,
+    "factionId": "inquisition",
+    "text": "You were recruited by an Inquisitor, embedded within the Gilead System, and advised to await further instructions. Since the Great Rift has separated you from your master, those instructions will never come. All you have left is your wits, your fellow Agents, and cryptic orders from before contact with the Inquisitor was severed. Whatever disaster you were assembled to prevent is now imminent. You must take the initiative and rescue the system from calamity.\n\nExample Missions:\n- The team roster provided by the Inquisitor identifies another member of your cell: Condon #59, a Sacristan Tech-Priest operating on Nethreus. Condon has been incommunicado for several weeks, leading the Inquisitor to believe he’s been compromised. His mission related to the increase of super-predator attacks on Nethrean dominions. Extract Condon, discover what he has learned, and see how it relates to your mysterious assignment. Do not expect Condon’s false personality to cooperate with extraction.\n- A cache of Ordo-sanctioned equipment has been accidentally unearthed by miners outside the lost foundry-forge of Illiarch. You don’t know what it contains, but it wouldn’t be the first time the Inquisitor left buried directives, and it’s another clue linking to the mystery of the Eternal Engines. Recover the cache without blowing your cover.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "INQUISITION"
+            ]
+          },
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "IMPERIUM"
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the INQUISITION Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Encrypted Vox Bead",
+          "qty": 1,
+          "wargearId": "vox-bead"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Clothing suitable for their cover identities",
+          "qty": 1,
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Suicide capsule",
+          "qty": 1
+        }
+      }
+    ],
+    "bonus": "+1 bonus die to Deceive (Fel) Tests to maintain your ‘civilian’ identity.",
+    "grants": []
+  },
+  {
+    "id": "inquisitorial-warband",
+    "name": "Inquisitorial Warband",
+    "source": "redacted-records",
+    "page": 44,
+    "note": "“1 item of Wargear, Rarity 1-3 (Rare or lower)” is a pick of 1 at most Rare.",
+    "factionId": "inquisition",
+    "text": "You are the personal retinue of an Inquisitor, their most trusted assets and bodyguards. You accompany your master to secret conclaves and apocalyptic battlefields, and you each offer unique skills to improve the performance of the warband as a whole. Unlike lesser acolytes, the Inquisitor trusts you with the secrets of their personal agenda, which implicates you in any so-called heresies the Inquisitor’s enemies dare to allege. Consequently, whilst you are a sworn enemy of daemons, witches and xenos, as often as not you find yourself clashing with other Inquisitorial warbands.\n\nExample Missions:\n- Agents of the pyromaniacal heretic Austus have begun assembling a collection of heretical artefacts, intending to open a Warp rift that would destabilise the entire Gilead System. Intercept these minions before the ritual can commence and track them back to their master.\n- Someone on Brassyl is selling xenos technology to the nobility of Gilead Primus, endangering their souls and inviting retribution from the xenos from whom it was taken. Find the dealer, stop their operations, and close the trade route before lives and souls are lost.",
+    "limitations": [
+      {
+        "kind": "gm",
+        "text": "At least one of the Agents must have the INQUISITION Keyword."
+      },
+      {
+        "kind": "gm",
+        "text": "At least one Agent, preferably all, must be Tier 2 or above."
+      }
+    ],
+    "wargear": [
+      {
+        "pick": 1,
+        "wargearOf": {
+          "rarity": {
+            "atMost": "Rare"
+          }
+        }
+      },
+      {
+        "story": "An Agent need not possess the IMPERIUM Keyword to acquire a piece of IMPERIUM wargear."
+      }
+    ],
+    "bonus": "+1 bonus die to Resolve tests whilst within 10m of another Agent.",
+    "grants": []
+  },
+  {
+    "id": "colonial-pioneers",
+    "name": "Colonial Pioneers",
+    "source": "redacted-records",
+    "page": 45,
+    "note": "The printed LIMITATIONS say “No Agents may have the CHAOS Keyword”. The Rogue Trader [DYNASTY] rule on p.45 is not part of this Framework. The Augmetic Eye purchase is kept as `story`.",
+    "factionId": "rogue-trader",
+    "text": "Your birthright is to sail beyond the borders of the Imperium, not remain trapped in a single system like a common peasant! You must repeat the accomplishment of Jakel Varonius and ford the Straits of Andraste. All your attention is focused on escape, but this is not something undertaken lightly, and you have no intention of rushing to join the fleet of shipwrecks spat out along the Great Rift. For now, you seek archeotech, xenotech, and psychic revelations that provide a clue to surviving the upcoming voyage.\n\nThe condemnation of local authorities will count for nothing once you leave this forsaken system behind.\n\nExample Missions:\n- The guidance of his Navigator, Indira Omincara, was the key ingredient for Varonius’s successful voyage. The Novator eschews the limelight, but even a short audience with her could yield dividends. Outmanoeuvre the inferiors she employs to keep out unwanted guests and make your case in person.\n- The Aeldari have a knack of appearing as if from nowhere; a power that would greatly benefit the Imperium. Brave the frost of Trollius and treat with their representatives. Whatever cost they demand in return for their technology has to be worth it.",
+    "limitations": [
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least 1 Agent must have the ROGUE TRADER Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Auspex",
+          "qty": 1,
+          "wargearId": "auspex"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Preysense Goggles",
+          "qty": 1,
+          "wargearId": "preysense-goggles"
+        }
+      },
+      {
+        "story": "Any Agents may purchase an Augmetic Eye for 10 XP."
+      }
+    ],
+    "bonus": "+1 bonus die to Tests when you study or navigate celestial phenomena.",
+    "grants": []
+  },
+  {
+    "id": "rift-profiteers",
+    "name": "Rift Profiteers",
+    "source": "redacted-records",
+    "page": 45,
+    "note": "Printed “Departmento Munitorum”; copied as printed.",
+    "factionId": "rogue-trader",
+    "text": "Catastrophe is good for business. If you cannot leave the Gilead System, you can at least turn the situation here to your advantage. The formula is simple: identify a critical but vulnerable resource, acquire a monopoly over its supply, and sell it back at an extortionate rate. You’ll be hated, you’ll be embattled, you’ll be denounced as traitors. And when all this is over, you’ll be richer than the God-Emperor Himself.\n\nExample Missions:\n- An adamantium mine on Avachrus run by the Dynasty you serve has turned unprofitable after years of skimping on new equipment. Visit the site and convince the Administratum overseers to dig deeper into the planet. Investigate or assuage their fears of something dangerous beneath them.\n- The Departmento Munitorum can’t meet demand for weaponry on one of the many battlefronts in the Voidmire. You’re going to have to step in: ‘negotiate’ with a fleet of Voidmire pirates (almost certainly down the barrel of a gun) and save the day. Make sure the Munitorum and the Astra Militarum show you the appropriate level of financial gratitude.",
+    "limitations": [
+      {
+        "kind": "gm",
+        "text": "At least 1 Agent must have the ROGUE TRADER Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wealth": 3
+      }
+    ],
+    "bonus": "+1 bonus die to Tests that evaluate the price of an item, or assess a trading partner’s bargaining position.",
+    "grants": []
+  },
+  {
+    "id": "hardened-survivors",
+    "name": "Hardened Survivors",
+    "source": "redacted-records",
+    "page": 46,
+    "note": "“Turf” is the home territory of the Scum section’s intro (p.46); the Devotee purchase stays in the bonus prose.",
+    "factionId": "scum",
+    "text": "Nethrean peasant dominions, Enochian pilgrim slums, Ironwatch prison — wherever the Scum of the Imperium settle, there are desperate people hungry for security and profit. Either you work for the toughest, most competent of their leaders or (at higher Tiers) you are their leaders. You fight to keep your bellies full, your weapons loaded, and to live longer and maybe a little better than the circumstances of your birth dictate.\n\nExample Missions:\n- Underworld rumour has it that neighbourhood toughman Iron Vresk and his cronies have been slandering your name around town. Teach them manners and demonstrate your status with a succinct, unforgettable act of retribution.\n- A new cult has started poaching local youths — your usual recruitment base. Send the zealots packing, rescue the juves, and find a way to deprogram the cult’s indoctrination.",
+    "limitations": [
+      {
+        "kind": "tier",
+        "min": 1,
+        "max": 2
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the SCUM Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "pick": 1,
+            "wargearOf": {
+              "rarity": {
+                "atMost": "Common"
+              }
+            }
+          },
+          {
+            "pick": 1,
+            "wargearOf": {
+              "rarity": {
+                "atLeast": "Uncommon",
+                "atMost": "Uncommon"
+              },
+              "condition": "breaks the first time a Complication is rolled whilst using it"
+            }
+          }
+        ]
+      }
+    ],
+    "bonus": "+Rank bonus die to Resolve Tests within your Turf. Any Agent may purchase the Devotee Talent (Wrath & Glory, page 132) to gain a Mob of Scum (Wrath & Glory, page 334) for 10 XP.",
+    "grants": []
+  },
+  {
+    "id": "predators-of-the-voidmire",
+    "name": "Predators of the Voidmire",
+    "source": "redacted-records",
+    "page": 47,
+    "factionId": "scum",
+    "text": "You’re a small cog in the machine of a smuggler fleet. From a base somewhere in the Voidmire, you prey on shipments of weapons and ammo, selling it to other scum and outlaw gangs or charging a high price to worlds desperate for resources. When you’re not hiding from Imperial authorities you’re fighting off xenos and heretic bands after the same scarce prey as you.\n\nExample Missions:\n- A wrecked Imperial naval vessel provides a rich salvage opportunity. Get there before anyone else does, or kill off the competition; either way, that ship is your prize.\n- House Varonius Agent Idris Yun has been gathering intelligence about your operations. It’s not clear whether he’s planning to wipe you out or offer to do business with you (what better way to fence smuggled goods?). Find out, and if it looks like Yun’s going to be trouble, either get rid of him, or find a way to disappear.",
+    "limitations": [
+      {
+        "kind": "tier",
+        "min": 2
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the SCUM Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Stimm",
+          "qty": 3,
+          "wargearId": "stimm"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Recreational narcotics (a decent supply)",
+          "qty": 1
+        }
+      }
+    ],
+    "bonus": "+Rank bonus die to Intimidation (Wil) Tests within your home ground.",
+    "grants": []
+  },
+  {
+    "id": "unnumbered-sons",
+    "name": "Unnumbered Sons",
+    "source": "redacted-records",
+    "page": 48,
+    "note": "The Adeptus Astartes section intro (p.48) gives every Astartes Framework no Wealth and an extra piece of Wargear (Rarity Very Rare or lower, Value Agent’s Tier +4); it is a section rule, not a box, and is not transcribed here.",
+    "factionId": "adeptus-astartes",
+    "text": "During the Indomitus Crusade, the Primarch Roboute Guilliman ordered new Primaris Marines into squads consisting of warriors from separate gene-lineages. These 'Grey Shields' seized the opportunity to learn from their battle-brothers, knowledge they could share when eventually delivered to their new Chapter. Many of the Primaris Marines accompanying Varonius’s voyage have yet to reach their Chapter and still fight in these formations. Their effectiveness is so evident that many Firstborn Marines, stranded from the rest of their Chapter, have deferred to Lord Guilliman’s wisdom and organised themselves along similar lines.\n\nExample Missions:\n- A squad of Absolver Devastators is stranded on Vulkaris, entrenched against an endless wave of Poxwalkers and Plague Marines. Bring the rapid-response expertise of the Khan and Corax to bear by reinforcing your beleaguered battle-brothers and leading them to victory.\n- The Grey Shields’ efforts to assist an Absolvers operation left bad blood between the two groups when orders clashed and chains of command got complicated. Your squad is attached to an Absolvers detail to assist them on another mission.",
+    "limitations": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS ASTARTES"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Storm Bolter with the Distinction upgrade",
+              "qty": 1,
+              "wargearId": "storm-bolter",
+              "upgrades": [
+                "distinction"
+              ]
+            }
+          },
+          {
+            "wargear": {
+              "name": "Bolt Rifle with the Distinction upgrade",
+              "qty": 1,
+              "wargearId": "bolt-rifle",
+              "upgrades": [
+                "distinction"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "bonus": "Spend 1 Glory to gain the benefit of a [CHAPTER] Keyword for the duration of a Test. You must choose a [CHAPTER] Keyword belonging to another Agent in the Framework.",
+    "grants": []
+  },
+  {
+    "id": "absolver-honourpact",
+    "name": "Absolver Honourpact",
+    "source": "redacted-records",
+    "page": 48,
+    "note": "Printed profile: Dam (S)+6/ED 5/AP -1/Range -/Brutal, Parry/Value 6/Very Rare/CHAIN, IMPERIUM, ADEPTUS ASTARTES. It differs from the Apocrypha’s Astartes Chainsword (apoc-astartes-chainsword: Dam S+5, ED 4, Uncommon, Value 5), so it is not linked.",
+    "factionId": "adeptus-astartes",
+    "text": "There are too many deadly enemies in the Gilead System, and too few Battle-Brothers. When a whole squad can't be spared to face down a threat, initiates inundated with fervour may submit themselves to the Chaplains, for induction into an Honourpact. This is no small commitment, for once an Absolver joins an Honourpact he pledges to neither rest nor seek companionship with his battle-brothers until the foe is utterly destroyed. Honourpacts may even accept petitions from Imperial servants outside the Chapter, if their reasons to undertake the quest are judged worthy. It is a testament to these brotherhoods’ camaraderie that many Honourpacts do not dismantle after the destruction of their nemesis, and instead simply nominate a new target.\n\nExample Missions:\n- Minions of the Dark Mechanicum have stolen a reference sample of Absolvers gene-seed from the Magi Biologis on Avachrus. Preserve the future of the Chapter by recovering the gene-seed, and purge the monstrosities these fallen Tech-Priests have manufactured from our sacred lineage.\n- The Daemon Prince Zarakaz Almactara, ancient enemy of the Absolvers, has arisen on Trollius and spouts shocking allegations regarding the fate of our Chapter Command. The lies of the daemon are not to be contemplated! Restore our Chapter’s honour by banishing the creature for good.",
+    "limitations": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "subFaction",
+            "anyOf": [
+              "absolvers"
+            ]
+          },
+          {
+            "kind": "all",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "IMPERIUM"
+                ]
+              },
+              {
+                "kind": "notKeyword",
+                "anyOf": [
+                  "SCUM"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the ABSOLVERS Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Astartes Chainsword",
+          "qty": 1
+        }
+      }
+    ],
+    "bonus": "Choose a Faction Keyword and gain +1 bonus die to attack Tests targeting enemies with that Keyword. When you declare a new quest, you may change this Keyword at the GM’s discretion.",
+    "grants": []
+  },
+  {
+    "id": "local-government",
+    "name": "Local Government",
+    "source": "redacted-records",
+    "page": 50,
+    "text": "You are the appointed feudal overseers of a hive dome, hab block, agri-complex, or small town, responsible for preserving law, order, and devotion to His Imperium. Your lords care little for the day-to-day execution of your duties, only that rebellion is quashed and tithes are paid on time — if they aren’t, your head will be first on the chopping block. The enforcers supposed to assist you are corrupt, incompetent, or recently conscripted by the Astra Militarum. Every crisis is your personal responsibility to solve, not that you’d trust anyone else to do it.\n\nExample Missions:\n- An administrative coup in the neighbouring parish of ‘Fourth Hand’ has allowed a self-important Adept by the name of Marijke Weaver to seize power, invoking arcane bureaucratic procedures to justify her actions and exile her political rivals. Resolve these petty squabbles, lest other Adepts in your district get the same idea.\n- A trusted foreman has perished of natural causes, and you are responsible for appointing a successor. Assess the eligible candidates to determine the best choice whilst enduring the surprising viciousness of local politics.",
+    "limitations": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "SCUM"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 1,
+        "max": 1
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Symbol of Authority",
+          "qty": 1,
+          "wargearId": "symbol-of-authority"
+        }
+      }
+    ],
+    "bonus": "+1 bonus die to Influence when requisitioning Common or Uncommon Wargear.",
+    "grants": []
+  },
+  {
+    "id": "the-retaliators",
+    "name": "The Retaliators",
+    "source": "redacted-records",
+    "page": 50,
+    "note": "The free weapon upgrade has no Grant form (upgrades are not Wargear picks), so it is kept as `story`.",
+    "text": "Your promising careers came to abrupt ends when you were each framed for heresies you didn’t commit and forced to become fugitives from Imperial justice. You survive now as soldiers of fortune, alternating between mercenary contracts and following leads to the man who ruined your lives. All you have is his alias — ‘Nord Vasquon’ — and your ceaseless thirst for vengeance. It’s a slim hope that you might clear your names and return to Imperial society, but one way or another you will enact retaliation.\n\nExample Missions:\n- One of your company was accused of stealing a piece of archeotech that has now re-materialised in the slums of Charybdion. Clearly it plays an important part in Nord Vasquon’s schemes, and if it has now reappeared, it could mean the next stage of his plan is in motion. Disrupt those plans by stealing the archeotech, for real this time.\n- The military commander who instructed you to attack a ‘cell of heretics’ hung you out to dry when they were revealed to be innocent civilians. Now he’s undertaking a rare journey out of his command bunker, perhaps to a rendezvous with Nord Vasquon himself. Trail the commander, then repay his treachery with interest.",
+    "limitations": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 2,
+        "max": 2
+      }
+    ],
+    "wargear": [
+      {
+        "story": "All Agents receive a free Common or Uncommon weapon upgrade for all weapons provided by their Archetype."
+      }
+    ],
+    "bonus": "+1 bonus die to Cunning (Fel) Tests to acquire Wargear through underworld contacts.",
+    "grants": []
+  },
+  {
+    "id": "lords-of-the-frontier",
+    "name": "Lords of the Frontier",
+    "source": "redacted-records",
+    "page": 51,
+    "text": "You have been dispatched to the most lawless corners of the Gilead System — the Voidmire or a space hulk — and deputised to restore Imperial rule there. Distance from your commanders means you lack both support and oversight, and you are now obliged to determine your own strategy. Find ways to demonstrate your authority and wisdom to the locals, coax the locals to compliance, dominate them as a tyrant, or succumb to the frontier lifestyle and leave your old life behind. For the first time ever, it’s up to you.\n\nExample Missions:\n- A rich vein of mineral resources has been discovered nearby, enough to build something of substance that could grow into true Imperial settlement. The Varonius Dynasty are only interested in plundering the site and moving on. Persuade them otherwise, through charm, coercion, or a clever conspiracy theory; you decide.\n- A band of raiders is intimidating local merchants, promising to raze their enterprises to the ground if the new, extortionate protection rates are not paid. Not in your town. Train the merchants to defend themselves and guard the ramparts in person.",
+    "limitations": [
+      {
+        "kind": "tier",
+        "min": 3,
+        "max": 3
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Periculum Kit",
+          "qty": 1,
+          "wargearId": "periculum-kit"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Symbol of Authority",
+          "qty": 1,
+          "wargearId": "symbol-of-authority"
+        }
+      }
+    ],
+    "bonus": "+Rank bonus dice to attack Tests against an enemy you engage in single combat.",
+    "grants": []
+  },
+  {
+    "id": "gilead-secundus",
+    "name": "Gilead Secundus",
+    "source": "redacted-records",
+    "page": 51,
+    "note": "The Agents’ base of operations is for the group, kept as `story` (a base is not Wargear).",
+    "text": "This is the Imperium’s darkest hour. Contact with the wider Imperium is lost, and the Gilead System’s position is precarious beyond measure.\n\nThe Heartworld Sovereigns care only for preserving the status quo, with no stomach for bold leadership. Your secret society has sworn to seize power in the Gilead System from these feckless rulers, to form a new, loyal Imperial government without the corruption and weakness that doomed its predecessor. To do that, you must build a network of strong allies, infiltrate the command headquarters of the system, and wait for the perfect time to strike. Only when the lords of the system bow to you as their patrons will your great work be complete.\n\nExample Missions:\n- Rumours suggest Brevet Captain Akahir is dissatisfied with the current system-wide leadership. He may be open to joining your conspiracy. Without revealing your true allegiances, work your way into the Absolvers officer’s trust and assess if there is a place for him in the new order — but remember that however he feels about local leadership, his loyalty to the Emperor is absolute and unwavering.\n- The Varonius Dynasty’s lies do not serve the interests of your new Imperium. They will never willingly relinquish power. The time has come to do what must be done. Neutralise Jakel Varonius, activate your operatives aboard his warships, and seize control of the Varonius Flotilla.",
+    "limitations": [
+      {
+        "kind": "tier",
+        "min": 4,
+        "max": 4
+      },
+      {
+        "kind": "gm",
+        "text": "At least half the Agents must have the IMPERIUM Keyword."
+      }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          {
+            "story": "a fortress-estate in a Heartworld’s capital"
+          },
+          {
+            "story": "a secret lair concealed within the Reach"
+          },
+          {
+            "story": "a fully-operational battle station in lunar orbit"
+          },
+          {
+            "story": "an Imperial Frigate"
+          }
+        ]
+      }
+    ],
+    "bonus": "+Rank bonus dice to Leadership (Wil) Tests against targets you share 2 or more Keywords with.",
+    "grants": []
+  }
+]
