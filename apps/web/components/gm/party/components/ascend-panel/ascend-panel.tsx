@@ -56,7 +56,7 @@ export function AscendPanel({ characters, tier, send, onResult }: AscendPanelPro
     );
 
   return (
-    <section className="panel pad stack">
+    <section id="ascend" className="panel pad stack">
       <div className="rule">
         <span>ASCENSION</span>
         <span className="dim">Core pp.147–148</span>

@@ -8,6 +8,7 @@ export const campaign = pgTable("campaign", {
   glory: integer().notNull().default(0),
   ruin: integer().notNull().default(0),
   framework: text().notNull().default(""),
+  frameworkBonus: text().notNull().default(""), // the party sheet's FRAMEWORK BONUS box (Core p.374, rules-flow §11.80)
   patron: text().notNull().default(""),
   homebrew: boolean().notNull().default(false), // the character builder may use the homebrew books (issue #9)
   createdAt: createdAt(),

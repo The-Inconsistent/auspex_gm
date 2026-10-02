@@ -20,6 +20,7 @@ export const CampaignExport = z.object({
     glory: count,
     ruin: count,
     framework: z.string().max(5000),
+    frameworkBonus: z.string().max(1000).default(""), // files from before issue #45 have none
     patron: z.string().max(200),
     homebrew: z.boolean(),
   }),

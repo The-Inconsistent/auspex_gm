@@ -37,6 +37,7 @@ export const Action = z.union([
       name: z.string().min(1).max(100).optional(),
       tier: Tier.optional(),
       framework: z.string().max(5000).optional(),
+      frameworkBonus: z.string().max(1000).optional(),
       patron: z.string().max(200).optional(),
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),

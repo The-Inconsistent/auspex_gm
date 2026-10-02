@@ -15,6 +15,7 @@ export const Pack = z
       name: z.string().min(1).max(100),
       tier: Tier,
       framework: z.string().max(5000).default(""),
+      frameworkBonus: z.string().max(1000).default(""),
       patron: z.string().max(200).default(""),
       homebrew: z.boolean().default(false), // the builds may use the homebrew books (issue #9 decision 1)
     }),

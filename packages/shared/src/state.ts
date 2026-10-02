@@ -345,6 +345,7 @@ export const LiveState = z.object({
     glory: z.number().int(),
     ruin: z.number().int(),
     framework: z.string(),
+    frameworkBonus: z.string(),
     patron: z.string(),
     homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
   }),

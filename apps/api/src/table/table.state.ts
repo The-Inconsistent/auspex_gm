@@ -150,6 +150,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       glory: c.glory,
       ruin: c.ruin,
       framework: c.framework,
+      frameworkBonus: c.frameworkBonus,
       patron: c.patron,
       homebrew: c.homebrew,
     },

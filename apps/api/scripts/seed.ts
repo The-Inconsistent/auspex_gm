@@ -41,6 +41,7 @@ await send(
   {
     type: "campaign.update",
     framework: pack.campaign.framework,
+    frameworkBonus: pack.campaign.frameworkBonus,
     patron: pack.campaign.patron,
     homebrew: pack.campaign.homebrew,
   },

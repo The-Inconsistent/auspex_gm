@@ -11,7 +11,7 @@ import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
-type CodexViewProps = { codex: Codex; characters: Character[]; send: Send };
+type CodexViewProps = { codex: Codex; characters: Character[]; send: Send; initialKind?: CodexKind };
 
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
@@ -22,8 +22,8 @@ const only = (fn: () => void) => (e: MouseEvent) => {
   fn();
 };
 
-export function CodexView({ codex, characters, send }: CodexViewProps) {
-  const [kind, setKind] = useState<CodexKind>("npc");
+export function CodexView({ codex, characters, send, initialKind = "npc" }: CodexViewProps) {
+  const [kind, setKind] = useState<CodexKind>(initialKind);
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const rows = rowsFor(kind, codex);
