@@ -113,6 +113,7 @@ export const canSpend = (pools: Record<Pool, number>, { pool, cost }: Pick<PoolS
 
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
+export type FactionStance = z.infer<typeof FactionStance>;
 export const MAX_FACTION_KEYWORDS = 20;
 export const MAX_KEYWORD_LENGTH = 60;
 

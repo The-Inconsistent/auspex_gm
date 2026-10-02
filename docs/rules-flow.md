@@ -622,6 +622,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     - **A Mob target of one still needs two Troops.** With 1 Agent the guideline gives 2 Troops, and half of them is
       one model, which cannot be a Mob (Core p.324: two or more Troops sharing a profile), so the line reads "needs 2".
     *(User ruling, 2026-10-02.)*
+83. **The mixing hint covers any non-Imperial ally** (Core pp.19, 317; GitHub issue #46). p.317 says "there are very
+    few circumstances in which any Imperial would consider working alongside an Aeldari, and almost none with an Ork",
+    and "you might need a reason why Archetypes of different Factions are working together". The faction card shows
+    that as a hint, never a block, and only when the faction's stance is `ally`: ORK gets the Ork line, an Aeldari
+    Keyword (AELDARI, ASURYANI, ANHRATHE, DRUKHARI, HARLEQUIN, YNNARI) the Aeldari line, and any other non-Imperial
+    Keyword (NECRON, T'AU, KROOT, TYRANID, GENESTEALER CULT, CHAOS, HERETIC, HERETIC ASTARTES, DAEMON, DARK MECHANICUM,
+    XENOS) the "need a reason" line. The book names only the Aeldari and the Ork; the wider list is the GM's call
+    (`mixingHint`, `apps/web/lib/keywords/keywords.ts`). *(User ruling, 2026-10-02.)*
 
 ---
 

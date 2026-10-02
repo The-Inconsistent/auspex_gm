@@ -1,4 +1,4 @@
-import type { FactionKeyword } from "@wg/shared";
+import type { FactionKeyword, FactionStance } from "@wg/shared";
 
 import { fold } from "@/lib/threat-filter/threat-filter";
 
@@ -29,4 +29,43 @@ export function matchKeywords({
   const writeIn =
     exact || taken.has(q) || suggestions.some((k) => fold(k.name) === q) ? null : query.trim().toUpperCase();
   return { matches, writeIn, enter: exact ?? writeIn };
+}
+
+// Core p.317: "there are very few circumstances in which any Imperial would consider working alongside an Aeldari, and
+// almost none with an Ork", and "you might need a reason why Archetypes of different Factions are working together".
+// The book names only those two; the GM widened the hint to any non-Imperial Keyword (rules-flow.md §11.83).
+const AELDARI = new Set(["AELDARI", "ASURYANI", "ANHRATHE", "DRUKHARI", "HARLEQUIN", "YNNARI"]);
+const NON_IMPERIAL = new Set([
+  ...AELDARI,
+  "ORK",
+  "NECRON",
+  "T'AU",
+  "KROOT",
+  "TYRANID",
+  "GENESTEALER CULT",
+  "CHAOS",
+  "HERETIC",
+  "HERETIC ASTARTES",
+  "DAEMON",
+  "DARK MECHANICUM",
+  "XENOS",
+]);
+export const MIXING_HINTS = {
+  ork: "Almost no Imperial would work alongside an Ork. Give the Agents a reason.",
+  aeldari: "Very few Imperials would consider working alongside an Aeldari. Give the Agents a reason.",
+  other: "Agents of different Factions need a reason to work together: ordered, hired, or the only ones left?",
+} as const;
+
+// The faction card's hint, for an ally only: a hint, never a block.
+export function mixingHint({ stance, keywords }: { stance: FactionStance; keywords: readonly string[] }) {
+  if (stance !== "ally") return null;
+  const upper = keywords.map((k) => k.toUpperCase());
+  const text = upper.includes("ORK")
+    ? MIXING_HINTS.ork
+    : upper.some((k) => AELDARI.has(k))
+      ? MIXING_HINTS.aeldari
+      : upper.some((k) => NON_IMPERIAL.has(k))
+        ? MIXING_HINTS.other
+        : null;
+  return text && { text, cite: "Core p.317" };
 }

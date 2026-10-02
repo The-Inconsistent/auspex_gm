@@ -3,7 +3,7 @@ import { test } from "node:test";
 
 import type { FactionKeyword } from "@wg/shared";
 
-import { matchKeywords } from "./keywords.ts";
+import { MIXING_HINTS, matchKeywords, mixingHint } from "./keywords.ts";
 
 const kw = (name: string): FactionKeyword => ({ name, text: "", source: "core", page: 375 });
 const suggestions = [
@@ -51,4 +51,14 @@ test("Enter adds exactly what was typed: the books' spelling, else the write-in"
   assert.equal(enter("[KABAL]"), "[KABAL]", "not KABALITE, though brackets fold away");
   assert.equal(enter("ast"), "AST", "a partial query is a write-in; the rows add the books' Keywords");
   assert.equal(enter("ork", ["ORK"]), null, "already chosen");
+});
+
+test("mixingHint warns on an ally with a non-Imperial Keyword only", () => {
+  assert.equal(mixingHint({ stance: "ally", keywords: ["ORK", "KOMMANDO"] })?.text, MIXING_HINTS.ork);
+  assert.equal(mixingHint({ stance: "ally", keywords: ["drukhari"] })?.text, MIXING_HINTS.aeldari);
+  assert.equal(mixingHint({ stance: "ally", keywords: ["T'AU"] })?.text, MIXING_HINTS.other);
+  assert.equal(mixingHint({ stance: "ally", keywords: ["ADEPTUS MECHANICUS", "IMPERIUM"] }), null);
+  assert.equal(mixingHint({ stance: "ally", keywords: [] }), null);
+  assert.equal(mixingHint({ stance: "rival", keywords: ["ORK"] }), null);
+  assert.equal(mixingHint({ stance: "enemy", keywords: ["AELDARI"] }), null);
 });
