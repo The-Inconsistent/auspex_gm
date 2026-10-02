@@ -5,7 +5,8 @@
     "rules": [],
     "id": "adeptus-arbites",
     "name": "Adeptus Arbites",
-    "page": 39
+    "page": 39,
+    "keywords": ["ADEPTUS ARBITES"]
   },
   {
     "source": "apocrypha",
@@ -13,7 +14,8 @@
     "rules": [],
     "id": "adeptus-custodes",
     "name": "Adeptus Custodes",
-    "page": 41
+    "page": 41,
+    "keywords": ["ADEPTUS CUSTODES"]
   },
   {
     "source": "apocrypha",
@@ -21,7 +23,8 @@
     "rules": [],
     "id": "anathema-psykana",
     "name": "Anathema Psykana",
-    "page": 44
+    "page": 44,
+    "keywords": ["ANATHEMA PSYKANA"]
   },
   {
     "source": "apocrypha",
@@ -29,7 +32,8 @@
     "rules": [],
     "id": "imperial-navy",
     "name": "Imperial Navy",
-    "page": 48
+    "page": 48,
+    "keywords": ["NAVIS IMPERIALIS"]
   },
   {
     "source": "apocrypha",
@@ -37,7 +41,8 @@
     "rules": [],
     "id": "logos-historica-verita",
     "name": "Logos Historica Verita",
-    "page": 50
+    "page": 50,
+    "keywords": ["LOGOS HISTORICA VERITA"]
   },
   {
     "source": "apocrypha",
@@ -51,7 +56,8 @@
     ],
     "id": "navis-nobilite",
     "name": "Navis Nobilite",
-    "page": 52
+    "page": 52,
+    "keywords": ["NAVIS NOBILITE"]
   },
   {
     "source": "apocrypha",
@@ -91,7 +97,8 @@
     ],
     "id": "officio-assassinorum",
     "name": "Officio Assassinorum",
-    "page": 55
+    "page": 55,
+    "keywords": ["OFFICIO ASSASSINORUM"]
   },
   {
     "source": "apocrypha",
@@ -100,6 +107,7 @@
     "id": "leagues-of-votann",
     "name": "Leagues of Votann",
     "page": 61,
+    "keywords": ["LEAGUES OF VOTANN"],
     "note": "Printed as \"The Leagues of Votann\"."
   }
 ]
