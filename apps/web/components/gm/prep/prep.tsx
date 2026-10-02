@@ -2,7 +2,8 @@
 import { useMemo, useState, type FormEvent } from "react";
 
 import {
-  activeCharacterIds,
+  agentsInFight,
+  threatProfile,
   type ActionResult,
   type BeatStatus,
   type Codex,
@@ -46,11 +47,20 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
   const [msg, setMsg] = useState<string | null>(null);
   const adv = codex.adventures.find((a) => a.id === advId) ?? null;
   const players = state.characters.length; // the pool maxima count every Agent (`poolMax`, Core pp.164, 320)
-  // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for;
-  // before anyone holds a seat the roster is all there is to size against.
-  const agents = activeCharacterIds(state.access).size || state.characters.length;
+  // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for
+  // and whose number scales a Threat (Core p.326, §11.106).
+  const agents = agentsInFight(state);
   // Names for the ENCOUNTER line, so a scene card reads "Ork Boy" and not "ork-boy".
   const threatNames = useMemo(() => new Map(bestiary.map((t) => [t.id, t.name])), [bestiary]);
+
+  // One entry on the scene card, with what the GM ticked on it: the profiles by name and "scaled" (VoA p.126,
+  // Core p.326), so the card says why this fight's numbers won't match the book.
+  const encounterLine = (e: Beat["encounter"][number]) => {
+    const extras = [...e.profiles.map((p) => threatProfile(p).name.toLowerCase()), ...(e.scale ? ["scaled"] : [])];
+    return `${e.label ?? threatNames.get(e.threatId) ?? e.threatId}${
+      e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""
+    }${extras.length ? ` · ${extras.join(", ")}` : ""}`;
+  };
 
   // Names for a beat's location, NPCs and handouts; ids the codex no longer has are skipped.
   const links = (b: Beat) =>
@@ -272,17 +282,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                   <ScenePools beat={b} pools={state.campaign} players={players} send={send} onReport={report} />
                 )}
                 {b.encounter.length > 0 && (
-                  <div className="dim">
-                    ENCOUNTER:{" "}
-                    {b.encounter
-                      .map(
-                        (e) =>
-                          `${e.label ?? threatNames.get(e.threatId) ?? e.threatId}${
-                            e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""
-                          }`,
-                      )
-                      .join(", ")}
-                  </div>
+                  <div className="dim">ENCOUNTER: {b.encounter.map(encounterLine).join(", ")}</div>
                 )}
                 <div className="keys">
                   <button

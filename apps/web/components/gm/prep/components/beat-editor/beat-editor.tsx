@@ -15,6 +15,7 @@ import {
 } from "@wg/shared";
 
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
+import { ThreatScale } from "@/components/ui/threat-scale/threat-scale";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
 import { hazardView } from "@/lib/hazards/hazards";
@@ -319,6 +320,19 @@ export function BeatEditor({
             >
               ×
             </button>
+            {/* Profiles and scaling fold under the row: four more controls beside the picker would shrink the 44px
+                tap targets this tablet needs. */}
+            <div style={{ flexBasis: "100%" }}>
+              <ThreatScale
+                threat={bestiary.find((t) => t.id === e.threatId)}
+                tier={tier}
+                agents={agents}
+                asMob={e.asMob && e.count > 1}
+                profiles={e.profiles}
+                scale={e.scale}
+                onChange={(next) => setEntry(i, next)}
+              />
+            </div>
           </div>
         ))}
         <div className="keys" style={{ alignItems: "center" }}>

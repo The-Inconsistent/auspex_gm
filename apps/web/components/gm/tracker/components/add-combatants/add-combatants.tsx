@@ -3,17 +3,20 @@ import { useState, type ChangeEvent } from "react";
 
 import {
   activeCharacterIds,
+  agentsInFight,
   encounterBudget,
   isOut,
   Marker,
   tallyByClass,
   type LiveState,
+  type ProfileId,
   type Threat,
   type Visibility,
 } from "@wg/shared";
 
 import { BudgetLines } from "@/components/ui/budget-lines/budget-lines";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
+import { ThreatScale } from "@/components/ui/threat-scale/threat-scale";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 
 import type { Run } from "../../types";
@@ -26,6 +29,9 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   const [marker, setMarker] = useState<Marker | null>(null);
   // Kept between adds, like the marker: a GM placing reinforcements adds several hidden in a row.
   const [visibility, setVisibility] = useState<Visibility>("bars");
+  // Profiles (VoA p.126) and scaling (Core p.326) reset with the picker, so the next threat starts from its stat block.
+  const [profiles, setProfiles] = useState<ProfileId[]>([]);
+  const [scale, setScale] = useState(false);
   const inFight = new Set(state.encounter?.combatants.flatMap((c) => (c.kind === "pc" ? [c.characterId] : [])));
   const active = activeCharacterIds(state.access); // reserve Agents stay out of the fight
   const missing = state.characters.filter((c) => active.has(c.id) && !inFight.has(c.id));
@@ -43,8 +49,11 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   );
   // Sized for the Agents in the fight, falling back to the seated ones before + PARTY, as PREP does: a budget of 0
   // Troops would read OVER against the first threat the GM places.
-  const agents = standing.filter((c) => c.kind === "pc").length || active.size || state.characters.length;
+  const agents = standing.filter((c) => c.kind === "pc").length || agentsInFight(state);
   const budget = encounterBudget({ agents });
+  // The scaling preview counts the seated Agents, which is what the server scales by (claimedCharacterIds, §11.106),
+  // not the rows already placed.
+  const seated = agentsInFight(state);
 
   // Mob size: digits only.
   const handleMobChange = (e: ChangeEvent<HTMLInputElement>) => setMob(e.target.value.replace(/\D/g, ""));
@@ -64,11 +73,15 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
         ...(isMob ? { mobCount } : {}),
         ...(marker ? { marker } : {}),
         visibility,
+        profiles,
+        scale,
       },
       `+ ${threat.name.toUpperCase()}${isMob ? ` ×${mob}` : ""}`,
     );
     setMob("");
     setThreatId("");
+    setProfiles([]);
+    setScale(false);
   };
 
   // + PARTY: adds every character not yet in the fight, in order.
@@ -113,6 +126,18 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
           </button>
         )}
       </div>
+      <ThreatScale
+        threat={threat}
+        tier={state.campaign.tier}
+        agents={seated}
+        asMob={mobCount >= 2}
+        profiles={profiles}
+        scale={scale}
+        onChange={(next) => {
+          setProfiles(next.profiles);
+          setScale(next.scale);
+        }}
+      />
       {tally.models > 0 && <BudgetLines tally={tally} budget={budget} />}
     </div>
   );

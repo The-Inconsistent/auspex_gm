@@ -371,6 +371,12 @@ export type LiveState = z.infer<typeof LiveState>;
 // active Agents join a fight.
 export const activeCharacterIds = (a: LiveState["access"]): Set<string> =>
   new Set([...a.members.flatMap((m) => (m.role === "player" && m.characterId ? [m.characterId] : [])), ...a.guests]);
+
+// How many Agents a fight is sized for and scaled against: the active ones, which is what `beat.startEncounter` adds
+// (`claimedCharacterIds` server-side), falling back to the whole roster before anyone holds a seat, so a budget of 0
+// doesn't read OVER against the first threat placed (rules-flow §11.82, §11.106).
+export const agentsInFight = (s: Pick<LiveState, "access" | "characters">): number =>
+  activeCharacterIds(s.access).size || s.characters.length;
 export type Encounter = NonNullable<LiveState["encounter"]>;
 
 // Slain threats and Dead characters are out of the fight: they take no Turns and don't hold up the Round
