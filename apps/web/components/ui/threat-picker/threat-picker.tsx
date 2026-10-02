@@ -21,12 +21,20 @@ type ThreatPickerProps = {
   onPick: (t: Threat) => void;
   value?: string; // the threat already picked, named on the button
   label?: string; // the button's text while nothing is picked
+  className?: string; // the trigger's classes, for a row that wants a small button
 };
 
 // The GM's way into the bestiary: a search over names and keywords, chips for the faction and for the class printed at
 // this campaign's Tier (Core p.323), and a book. A native modal <dialog> brings Escape, the focus trap, focus return
 // and the backdrop for free (as Legend does). Book content is GM-only, so this renders in the GM app only.
-export function ThreatPicker({ bestiary, tier, onPick, value, label = "+ THREAT…" }: ThreatPickerProps) {
+export function ThreatPicker({
+  bestiary,
+  tier,
+  onPick,
+  value,
+  label = "+ THREAT…",
+  className = "btn",
+}: ThreatPickerProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [query, setQuery] = useState("");
   const [faction, setFaction] = useState<Threat["faction"] | null>(null);
@@ -57,7 +65,7 @@ export function ThreatPicker({ bestiary, tier, onPick, value, label = "+ THREAT�
     <>
       <button
         type="button"
-        className="btn"
+        className={className}
         style={{ maxWidth: "100%" }}
         // Nothing to pick from means the bestiary fetch failed (`loadBestiary` returns []), and an empty picker would
         // read as a search that is merely too narrow.

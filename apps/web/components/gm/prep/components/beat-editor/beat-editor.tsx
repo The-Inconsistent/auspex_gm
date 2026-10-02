@@ -13,11 +13,13 @@ import {
   type Threat,
 } from "@wg/shared";
 
+import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { Beat, EncounterEntry, PoolDrafts } from "../../types";
 import { savedPools, stripBeat } from "../../utils";
+import { BudgetPanel } from "./components/budget-panel/budget-panel";
 import { Exits } from "./components/exits/exits";
 import { RuinGlory } from "./components/ruin-glory/ruin-glory";
 import { Tests } from "./components/tests/tests";
@@ -27,7 +29,8 @@ type BeatEditorProps = {
   adventureId: string;
   beat: Beat | null;
   codex: Codex;
-  players: number;
+  agents: number; // the Agents a fight would add, which is who the budget is sized for
+  tier: number;
   send: Send;
   bestiary: Threat[];
   skillDns: SkillDn[];
@@ -45,7 +48,8 @@ export function BeatEditor({
   adventureId,
   beat,
   codex,
-  players,
+  agents,
+  tier,
   send,
   bestiary,
   skillDns,
@@ -79,7 +83,6 @@ export function BeatEditor({
 
   const setEntry = (i: number, patch: Partial<EncounterEntry>) =>
     setB({ ...b, encounter: b.encounter.map((e, j) => (j === i ? { ...e, ...patch } : e)) });
-  const troops = b.encounter.reduce((n, e) => n + e.count, 0);
   const scenes = codex.adventures.find((a) => a.id === adventureId)?.beats ?? [];
 
   // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows, Shift rungs and Ruin and Glory
@@ -106,11 +109,9 @@ export function BeatEditor({
     onDone();
   };
 
-  // + THREAT: adds a one-model entry for the first bestiary threat; the GM picks the real one in its select.
-  const addEntry = () => {
-    const first = bestiary[0];
-    if (first) setB({ ...b, encounter: [...b.encounter, { threatId: first.id, count: 1, asMob: false }] });
-  };
+  // + THREAT: the picker names the threat, so the new entry is one model of it.
+  const addEntry = (t: Threat) =>
+    setB({ ...b, encounter: [...b.encounter, { threatId: t.id, count: 1, asMob: false }] });
 
   // ×: removes encounter entry i.
   const removeEntry = (i: number) => setB({ ...b, encounter: b.encounter.filter((_, j) => j !== i) });
@@ -234,26 +235,15 @@ export function BeatEditor({
 
       <div className="field">
         <span className="label">PREPARED ENCOUNTER</span>
-        <div className="dim" style={{ fontSize: 12 }}>
-          Guideline (Threat Assessment p.8): 2 Troops per Agent, half in a Mob, plus 1 Elite or Adversary → for{" "}
-          {players} Agents: {players * 2} Troops + 1. Over 10 enemies: use Mobs.
-          {troops > 0 && ` Current: ${troops} enemies.`}
-        </div>
+        <BudgetPanel entries={b.encounter} agents={agents} bestiary={bestiary} tier={tier} />
         {b.encounter.map((e, i) => (
           <div key={i} className="keys" style={{ alignItems: "center" }}>
-            <select
-              className="input"
-              style={{ maxWidth: 280 }}
-              aria-label="Threat"
+            <ThreatPicker
+              bestiary={bestiary}
+              tier={tier}
               value={e.threatId}
-              onChange={(ev) => setEntry(i, { threatId: ev.target.value })}
-            >
-              {bestiary.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name} ({t.source === "core" ? "core" : t.source} p.{t.page})
-                </option>
-              ))}
-            </select>
+              onPick={(t) => setEntry(i, { threatId: t.id })}
+            />
             <input
               className="input"
               style={{ width: 70 }}
@@ -294,10 +284,10 @@ export function BeatEditor({
             </button>
           </div>
         ))}
-        <div>
-          <button className="btn sm" disabled={!bestiary.length} onClick={addEntry}>
-            + THREAT
-          </button>
+        <div className="keys" style={{ alignItems: "center" }}>
+          <ThreatPicker bestiary={bestiary} tier={tier} onPick={addEntry} label="+ THREAT" className="btn sm" />
+          {/* The picker disables itself with nothing to show; say why, because a failed load looks like an empty book. */}
+          {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
         </div>
       </div>
       {textField({ key: "outcome" })}

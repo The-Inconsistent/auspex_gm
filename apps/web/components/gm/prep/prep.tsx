@@ -1,7 +1,15 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 
-import type { ActionResult, BeatStatus, Codex, LiveState, ScenePresets, Threat } from "@wg/shared";
+import {
+  activeCharacterIds,
+  type ActionResult,
+  type BeatStatus,
+  type Codex,
+  type LiveState,
+  type ScenePresets,
+  type Threat,
+} from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -36,7 +44,12 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
   const [advDraft, setAdvDraft] = useState<{ title: string; premise: string } | null>(null); // adventure being edited
   const [msg, setMsg] = useState<string | null>(null);
   const adv = codex.adventures.find((a) => a.id === advId) ?? null;
-  const players = state.characters.length;
+  const players = state.characters.length; // the pool maxima count every Agent (`poolMax`, Core pp.164, 320)
+  // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for;
+  // before anyone holds a seat the roster is all there is to size against.
+  const agents = activeCharacterIds(state.access).size || state.characters.length;
+  // Names for the ENCOUNTER line, so a scene card reads "Ork Boy" and not "ork-boy".
+  const threatNames = useMemo(() => new Map(bestiary.map((t) => [t.id, t.name])), [bestiary]);
 
   // Names for a beat's location, NPCs and handouts; ids the codex no longer has are skipped.
   const links = (b: Beat) =>
@@ -248,7 +261,10 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                     ENCOUNTER:{" "}
                     {b.encounter
                       .map(
-                        (e) => `${e.label ?? e.threatId}${e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""}`,
+                        (e) =>
+                          `${e.label ?? threatNames.get(e.threatId) ?? e.threatId}${
+                            e.count > 1 ? ` ×${e.count}${e.asMob ? " (mob)" : ""}` : ""
+                          }`,
                       )
                       .join(", ")}
                   </div>
@@ -321,7 +337,8 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
           adventureId={adv.id}
           beat={editing === "new" ? null : editing}
           codex={codex}
-          players={players}
+          agents={agents}
+          tier={state.campaign.tier}
           send={send}
           bestiary={bestiary}
           skillDns={presets.skillDns}
