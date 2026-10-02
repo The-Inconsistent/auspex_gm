@@ -28,7 +28,7 @@ export function SceneTests({ tests }: SceneTestsProps) {
         return (
           <details key={i}>
             <summary style={{ cursor: "pointer" }}>
-              <b>{testTitle(t)}</b> <span className="chip">{dnLabel(t.dn)}</span>{" "}
+              <b>{testTitle(t)}</b> <span className="chip">{dnLabel(t)}</span>{" "}
               {t.who === "each" && <span className="chip">EACH</span>}{" "}
               {t.shifts.length > 0 && (
                 <span className="dim">

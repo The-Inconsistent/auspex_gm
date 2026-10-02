@@ -13,7 +13,16 @@ describe("scene Test labels", () => {
   });
 
   test("a DN the table prints carries its name (Core p.161)", () => {
-    assert.deepEqual([dnLabel(5), dnLabel(4), dnLabel(null)], ["DN 5 · CHALLENGING", "DN 4", "NO DN"]);
+    const skill = { kind: "skill", dn: 5 } as const;
+    assert.deepEqual(
+      [
+        dnLabel(skill),
+        dnLabel({ ...skill, dn: 4 }),
+        dnLabel({ kind: "opposed", dn: null }),
+        dnLabel({ ...skill, dn: null }),
+      ],
+      ["DN 5 · CHALLENGING", "DN 4", "NO DN", "DN · GM SETS"],
+    );
   });
 
   test("only Fear and Corruption remind the GM of Ruin (Core p.320)", () => {

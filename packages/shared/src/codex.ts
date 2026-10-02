@@ -43,6 +43,7 @@ export const MAX_EXITS = 10; // ponytail: app limit, not a rule; raise it if a s
 // What a scene asks the Agents to roll (issue #39). The kind sets the pool: a Skill (its linked Attribute comes from
 // SKILLS, Core pp.158-161), an Attribute alone (p.170), or a trait: Influence (p.169), Resolve for Fear and Terror
 // (p.170, pp.199-200), Conviction for Corruption (pp.170, 285). An Opposed Test has no DN: most Icons wins (p.170).
+// Any other Test may have no DN yet: the GM sets it at the table (p.160, rules-flow.md §11.75).
 export const TestKind = z.enum(["skill", "attribute", "opposed", "influence", "resolve", "corruption"]);
 export type TestKind = z.infer<typeof TestKind>;
 // What each kind rolls: a Skill, an Attribute, either one (Opposed), or a trait the app doesn't name.
@@ -81,8 +82,7 @@ export const BeatTest = z
     if (pool === "attribute" && (!t.attribute || t.skill)) fail("An Attribute Test names an Attribute and no Skill");
     if (pool === "either" && !t.skill === !t.attribute) fail("An Opposed Test names a Skill or an Attribute, not both");
     if (pool === "trait" && (t.skill || t.attribute)) fail(`A ${t.kind} Test rolls a trait, not a Skill or Attribute`);
-    if (pool === "either" ? t.dn !== null : t.dn === null)
-      fail(pool === "either" ? "An Opposed Test has no DN" : "This Test needs a DN");
+    if (pool === "either" && t.dn !== null) fail("An Opposed Test has no DN");
   });
 export type BeatTest = z.infer<typeof BeatTest>;
 

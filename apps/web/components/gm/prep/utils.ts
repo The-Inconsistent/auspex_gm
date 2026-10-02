@@ -18,9 +18,10 @@ export const testTitle = (t: BeatTest) => {
   return t.kind === "opposed" ? `OPPOSED · ${pool}` : (pool ?? t.kind.toUpperCase());
 };
 
-// "DN 5 · CHALLENGING" for a DN the table prints (Core p.161), "DN 4" between them, "NO DN" for an Opposed Test.
-export const dnLabel = (dn: number | null) => {
-  if (dn === null) return "NO DN";
+// "DN 5 · CHALLENGING" for a DN the table prints (Core p.161), "DN 4" between them, "NO DN" for an Opposed Test,
+// "DN · GM SETS" for one the GM sets at the table (§11.75).
+export const dnLabel = ({ kind, dn }: Pick<BeatTest, "kind" | "dn">) => {
+  if (dn === null) return kind === "opposed" ? "NO DN" : "DN · GM SETS";
   const row = DN_TABLE.find((r) => r.dn === dn);
   return row ? `DN ${dn} · ${row.name.toUpperCase()}` : `DN ${dn}`;
 };

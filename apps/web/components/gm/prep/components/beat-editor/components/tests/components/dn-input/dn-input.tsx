@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 
-type DnInputProps = { value: number | null; label: string; onChange: (dn: number) => void };
+type DnInputProps = { value: number | null; label: string; onChange: (dn: number | null) => void };
 
 // The DN as typed. While editing, the field holds the digits as typed, so clearing it to type "5" gives 5, not 15. A
-// DN from 1 to 20 counts at once; on leaving the field, a bigger one becomes 20 and an empty one keeps the last DN.
+// DN from 1 to 20 counts at once; on leaving the field, a bigger one becomes 20, and an empty one leaves the DN for the
+// GM to set at the table (rules-flow.md §11.75).
 export function DnInput({ value, label, onChange }: DnInputProps) {
   const [text, setText] = useState<string | null>(null); // null: not editing, so the field shows `value`
 
@@ -15,9 +16,10 @@ export function DnInput({ value, label, onChange }: DnInputProps) {
     if (n >= 1 && n <= 20) onChange(n);
   };
 
-  // Leaving the field: clamp anything over 20, then show the DN the Test holds.
+  // Leaving the field: clamp anything over 20, clear an emptied DN, then show the DN the Test holds.
   const handleBlur = () => {
     if (Number(text) > 20) onChange(20);
+    if (text === "") onChange(null);
     setText(null);
   };
 

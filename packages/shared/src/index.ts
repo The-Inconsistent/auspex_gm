@@ -3,6 +3,7 @@ export * from "./threat.ts";
 export * from "./state.ts";
 export * from "./codex.ts";
 export * from "./dn.ts";
+export * from "./roll-table.ts";
 export * from "./scene-presets.ts";
 export * from "./actions.ts";
 export * from "./pack.ts";
