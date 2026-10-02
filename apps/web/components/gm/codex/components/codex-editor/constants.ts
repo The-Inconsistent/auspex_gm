@@ -6,6 +6,7 @@ export const FIELD_TYPES = {
   keywords: { empty: [] }, // a faction's Keywords: chips plus a search over the books' (issue #46)
   select: { empty: "" },
   picks: { empty: [] }, // toggle chips over `options`, stored as the chosen values
+  statSource: { empty: { kind: "none" } }, // an NPC's stats: a bestiary threat, a Quick NPC Tier, or none (issue #47)
 } as const;
 export type FieldType = keyof typeof FIELD_TYPES;
 

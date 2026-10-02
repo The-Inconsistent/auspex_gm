@@ -1,13 +1,25 @@
 "use client";
 import { useState } from "react";
 
-import { Attitude, FactionStance, type ActionInput, type Character, type Codex, type FactionKeyword } from "@wg/shared";
+import {
+  Attitude,
+  CodexInput,
+  FactionStance,
+  type ActionInput,
+  type Character,
+  type Codex,
+  type FactionKeyword,
+  type StatSource,
+  type Threat,
+} from "@wg/shared";
 
+import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
 import { KeywordPicker } from "../keyword-picker/keyword-picker";
+import { StatSourceField } from "../stat-source-field/stat-source-field";
 import { FIELD_TYPES, GM_ONLY_FIELDS, type FieldType } from "./constants";
 
 type Option = [value: string, label: string];
@@ -19,6 +31,8 @@ type CodexEditorProps = {
   send: Send;
   row: Row | null;
   keywords: readonly FactionKeyword[]; // the books' Keywords the faction picker suggests
+  bestiary: Threat[];
+  tier: number;
   onDone: () => void;
 };
 
@@ -38,7 +52,13 @@ function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex;
           type: "select",
           options: [NONE, ...codex.factions.map((f): Option => [f.id, f.name])],
         },
-        { key: "attitude", label: "ATTITUDE (p.168)", type: "select", options: upperOptions(Attitude.options) },
+        {
+          key: "attitude",
+          label: "ATTITUDE (Core p.168, optional rule)",
+          type: "select",
+          options: Attitude.options.map((a): Option => [a, attitudeLabel(a)]),
+        },
+        { key: "statSource", label: "STAT SOURCE", type: "statSource" },
         { key: "description", label: "DESCRIPTION (players see)", type: "area" },
         { key: "gmNotes", label: "GM NOTES", type: "area" },
         { key: "secrets", label: "SECRETS", type: "area" },
@@ -81,13 +101,32 @@ function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex;
   }
 }
 
-export function CodexEditor({ kind, codex, characters, send, row, keywords, onDone }: CodexEditorProps) {
+// A new entry's select starts at the schema's default (a Neutral Attitude, a neutral stance), else its first option:
+// players see an NPC's Attitude (rules-flow §11.89), so it mustn't start Hostile just by coming first.
+function selectStart(kind: CodexKind, f: Field) {
+  const shape: Record<string, { safeParse: (v: unknown) => { success: boolean; data?: unknown } }> =
+    CodexInput[kind].shape;
+  const d = shape[f.key]?.safeParse(undefined);
+  return d?.success && typeof d.data === "string" ? d.data : (f.options?.[0]?.[0] ?? "");
+}
+
+export function CodexEditor({
+  kind,
+  codex,
+  characters,
+  send,
+  row,
+  keywords,
+  bestiary,
+  tier,
+  onDone,
+}: CodexEditorProps) {
   const fields = fieldsFor({ kind, codex, characters });
   const [draft, setDraft] = useState<Record<string, unknown>>(() => {
-    // Start from the whole row, so fields with no input here (an NPC's statSource) survive a save; zod strips the rest.
+    // Start from the whole row, so fields with no input here survive a save; zod strips the rest.
     const init: Record<string, unknown> = { ...row };
     for (const f of fields)
-      init[f.key] = row?.[f.key] ?? (f.type === "select" ? (f.options?.[0]?.[0] ?? "") : FIELD_TYPES[f.type].empty);
+      init[f.key] = row?.[f.key] ?? (f.type === "select" ? selectStart(kind, f) : FIELD_TYPES[f.type].empty);
     return init;
   });
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +159,10 @@ export function CodexEditor({ kind, codex, characters, send, row, keywords, onDo
             <span className="label" id={`f-${f.key}`}>
               {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
             </span>
+          ) : f.type === "statSource" ? (
+            <span className="label" id={`f-${f.key}`}>
+              {f.label}
+            </span>
           ) : (
             <label className="label" htmlFor={`f-${f.key}`}>
               {f.label}
@@ -146,6 +189,15 @@ export function CodexEditor({ kind, codex, characters, send, row, keywords, onDo
               id={`f-${f.key}`}
               value={draft[f.key] as string[]}
               suggestions={keywords}
+              onChange={(v) => setField(f.key, v)}
+            />
+          )}
+          {f.type === "statSource" && (
+            <StatSourceField
+              id={`f-${f.key}`}
+              value={draft[f.key] as StatSource}
+              bestiary={bestiary}
+              tier={tier}
               onChange={(v) => setField(f.key, v)}
             />
           )}

@@ -1,5 +1,7 @@
 import type { Codex, LiveState } from "@wg/shared";
 
+import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+
 type IntelProps = { codex: Codex; state: LiveState };
 
 export function Intel({ codex, state }: IntelProps) {
@@ -36,7 +38,7 @@ export function Intel({ codex, state }: IntelProps) {
       <div className="rule">KNOWN PERSONS</div>
       {codex.npcs.map((n) => (
         <div key={n.id} className="item">
-          <b>{n.name.toUpperCase()}</b>
+          <b>{n.name.toUpperCase()}</b> <AttitudeChip attitude={n.attitude} />
           {n.role && <span className="dim">{n.role}</span>}
           {n.description && <pre className="text">{n.description}</pre>}
         </div>

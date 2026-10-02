@@ -138,6 +138,9 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets, framework
                 send={send}
                 initialKind={codexKind}
                 factionPresets={factionPresets}
+                bestiary={bestiary}
+                tier={state.campaign.tier}
+                players={players}
               />
             )}
             {tab === "PARTY" && (
