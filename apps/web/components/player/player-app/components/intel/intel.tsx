@@ -11,6 +11,7 @@ export function Intel({ codex, state }: IntelProps) {
         <div className="stack" style={{ gap: 4 }}>
           <div className="rule">MISSION</div>
           <pre className="text">{state.campaign.framework}</pre>
+          {state.campaign.frameworkBonus && <div className="dim">BONUS: {state.campaign.frameworkBonus}</div>}
           {state.campaign.patron && <div className="dim">PATRON: {state.campaign.patron}</div>}
         </div>
       )}

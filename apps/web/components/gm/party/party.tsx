@@ -24,6 +24,7 @@ import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
+import { setupSteps } from "@/lib/setup/setup";
 import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { TOKENS } from "@/lib/tokens/tokens";
 
@@ -31,11 +32,13 @@ import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
+import type { TabTarget } from "./components/setup-panel/constants";
+import { SetupPanel } from "./components/setup-panel/setup-panel";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
-type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[] };
+type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[]; onTab: (to: TabTarget) => void };
 
-export function Party({ state, codex, send, wargear }: PartyProps) {
+export function Party({ state, codex, send, wargear, onTab }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
@@ -45,6 +48,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
   const [framework, setFramework] = useState(state.campaign.framework);
+  const [frameworkBonus, setFrameworkBonus] = useState(state.campaign.frameworkBonus);
   const [patron, setPatron] = useState(state.campaign.patron);
   const open = codex.sessions.find((s) => !s.endedAt);
   const { members, invites } = state.access;
@@ -151,7 +155,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
 
   // Framework SAVE.
   const saveFramework = async () =>
-    report(await send({ type: "campaign.update", framework, patron }), "FRAMEWORK SAVED");
+    report(await send({ type: "campaign.update", framework, frameworkBonus, patron }), "FRAMEWORK SAVED");
 
   // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
   const respite = async (c: Character) =>
@@ -207,8 +211,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
     <div className="pad stack">
       {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
 
+      <SetupPanel steps={setupSteps({ campaign: state.campaign, codex, characters: state.characters })} onTab={onTab} />
+
       <section className="cols">
-        <div className="panel pad stack">
+        <div id="session" className="panel pad stack">
           <div className="rule">SESSION</div>
           {open ? (
             <>
@@ -285,6 +291,18 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
             </label>
             <textarea id="fw" className="input" value={framework} onChange={(e) => setFramework(e.target.value)} />
           </div>
+          {/* Its own box, as on the party sheet (Core p.374, rules-flow §11.80). Players see it under MISSION. */}
+          <div className="field">
+            <label className="label" htmlFor="fw-bonus">
+              FRAMEWORK BONUS (p.19)
+            </label>
+            <textarea
+              id="fw-bonus"
+              className="input"
+              value={frameworkBonus}
+              onChange={(e) => setFrameworkBonus(e.target.value)}
+            />
+          </div>
           <div>
             <button className="btn" onClick={saveFramework}>
               SAVE
@@ -340,7 +358,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           </div>
         ))}
       </section>
-      <div className="list">
+      <div id="agents" className="list">
         {groups.map(([title, list]) => (
           <Fragment key={title}>
             <div className="rule">

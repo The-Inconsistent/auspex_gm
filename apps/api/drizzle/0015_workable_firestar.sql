@@ -1,0 +1,1 @@
+ALTER TABLE "campaign" ADD COLUMN "framework_bonus" text DEFAULT '' NOT NULL;

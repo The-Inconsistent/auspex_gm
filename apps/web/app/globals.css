@@ -441,6 +441,86 @@ textarea.input {
   height: 18px;
   flex: none;
 }
+/* SETUP on PARTY (issue #45): the book's set-up order as a table, each step ticked from the campaign. */
+.setup-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.setup-head .rule {
+  flex: 1 1 260px;
+}
+.setup-bar {
+  display: inline-flex;
+  gap: 2px;
+}
+.setup-bar i {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--ink-2);
+}
+.setup-bar i.on {
+  background: var(--ink);
+}
+.setup {
+  width: 100%;
+  border-collapse: collapse;
+}
+.setup th {
+  padding: 6px 10px;
+  background: var(--iron);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-align: left;
+}
+.setup td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.setup tr:nth-child(even) td {
+  background: var(--vellum-2);
+}
+.setup tr.next td {
+  border-top: 2px solid var(--red);
+  border-bottom: 2px solid var(--red);
+}
+.setup-step {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--display);
+}
+.setup-cite {
+  font-style: italic;
+  color: var(--ink-2);
+  min-width: 0;
+}
+.setup-tick {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--ink-2);
+}
+.setup-tick.on {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.setup-tick.on::after {
+  content: "✓";
+  display: block;
+  color: var(--vellum);
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+}
+.setup-tick.prompt {
+  border-style: dashed;
+}
 
 /* Party pools as wax seals (components/ui/seal): brass Glory, crimson Ruin. */
 .seal {

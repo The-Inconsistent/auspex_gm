@@ -8,7 +8,16 @@ const file = CampaignExport.parse({
   format: "auspex-campaign",
   version: 1,
   exportedAt: "2026-10-01T00:00:00.000Z",
-  campaign: { name: "Volkus", tier: 4, glory: 3, ruin: 5, framework: "", patron: "", homebrew: false },
+  campaign: {
+    name: "Volkus",
+    tier: 4,
+    glory: 3,
+    ruin: 5,
+    framework: "",
+    frameworkBonus: "",
+    patron: "",
+    homebrew: false,
+  },
   characters: [
     {
       id: ID(1),

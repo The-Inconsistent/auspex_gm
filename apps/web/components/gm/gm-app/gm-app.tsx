@@ -6,6 +6,8 @@ import { Pool, poolMax, type RuleEntry, type ScenePresets, type Threat, type War
 
 import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
+import type { CodexKind } from "@/components/gm/codex/constants";
+import type { TabTarget } from "@/components/gm/party/components/setup-panel/constants";
 import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
@@ -33,8 +35,15 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets }: GmAppPr
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>("TRACK");
+  const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when PARTY's SETUP sends it there
   const [poolError, setPoolError] = useState<string | null>(null);
   if (!state || !codex) return <StatusScreen text="SYNCING COGITATOR…" />;
+
+  // SETUP's GO TO: opens a tab, and CODEX on the step's kind.
+  const openTab = ({ tab: t, kind }: TabTarget) => {
+    setCodexKind(kind);
+    setTab(t);
+  };
 
   const players = state.characters.length;
 
@@ -93,7 +102,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets }: GmAppPr
                 className="tab"
                 data-n={TAB_NUMERALS[i]}
                 aria-selected={tab === t}
-                onClick={() => setTab(t)}
+                onClick={() => openTab({ tab: t })}
               >
                 {t}
               </button>
@@ -111,8 +120,10 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets }: GmAppPr
                 onRun={() => setTab("TRACK")}
               />
             )}
-            {tab === "CODEX" && <CodexView codex={codex} characters={state.characters} send={send} />}
-            {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
+            {tab === "CODEX" && (
+              <CodexView codex={codex} characters={state.characters} send={send} initialKind={codexKind} />
+            )}
+            {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} onTab={openTab} />}
             {tab === "RULES" && <RulesRef rules={rules} />}
             {tab === "BOOKS" && <Books server={bookServer} />}
           </main>
