@@ -1,0 +1,304 @@
+[
+  {
+    "id": "redacted-records-internal-events",
+    "name": "Internal Events",
+    "source": "redacted-records",
+    "page": 13,
+    "dice": "2d6",
+    "type": "investigation",
+    "rows": [
+      {
+        "from": 2,
+        "to": 2,
+        "name": "Eternal Ruler",
+        "page": 13,
+        "text": "The ancient mummified remains of the vessel’s Lord Captain still sit in the rotting command throne — and turn to regard the intruders with an expression of undying hatred. Throughout the ship, the sounds of shuffling footsteps stir.",
+        "tests": []
+      },
+      {
+        "from": 3,
+        "to": 3,
+        "name": "Lone Scavenger",
+        "page": 13,
+        "text": "A curious polygonal vessel is fused with the hulk’s exterior, and its crew of a lone Jokaero is desperately searching the passageways within for the components they need to fix their ship. The orange-furred simian xenos is exhausted, paranoid, and in no mood to share the salvage.",
+        "tests": []
+      },
+      {
+        "from": 4,
+        "to": 4,
+        "name": "Warp-Hungry",
+        "page": 13,
+        "text": "The hulk vibrates gently as a long-inert Warp Engine comes back to life. If no one can get to the bridge and shut it down, it’s only a matter of time before it makes an unscheduled jump to Warp space — and since the hulk has no protection from the Immaterium, that way lies ruin.",
+        "tests": []
+      },
+      {
+        "from": 5,
+        "to": 5,
+        "name": "Pure Poison",
+        "page": 13,
+        "text": "Severed conduits dangling from overhead release a viscid green coolant liquid. Anything it touches starts to fizz and disintegrate, including the deck-plating below, releasing a plume of highly toxic gas which burns the lungs of anyone who inhales it.",
+        "tests": []
+      },
+      {
+        "from": 6,
+        "to": 6,
+        "name": "Survivors?",
+        "page": 13,
+        "text": "Hammering can be heard from inside a sealed compartment, along with voices begging for release, promising a share of the untold riches inside. But nothing Human could have survived on a hulk like this for so long, could they? The only way to tell is to open the door...",
+        "tests": []
+      },
+      {
+        "from": 7,
+        "to": 7,
+        "name": "Undying Grudges",
+        "page": 13,
+        "text": "The explorers are caught in the middle of a bitter resource war between the descendents of the ship’s crew and the grandchildren of the Astra Militarum regiment they were transporting when the vessel was lost. Brokering peace seems impossible — but it might be the only way to escape...",
+        "tests": []
+      },
+      {
+        "from": 8,
+        "to": 8,
+        "name": "Infected",
+        "page": 13,
+        "text": "The air in this section of the hulk is thick with spores which lie in clotted lumps on the floor and dribble loathsomely down the walls. Soon the explorers are coated in a thick layer of green goop — and the Nurgle cult responsible aren’t far away.",
+        "tests": []
+      },
+      {
+        "from": 9,
+        "to": 9,
+        "name": "Open the Seals",
+        "page": 13,
+        "text": "A malfunctioning cogitator incorrectly decides that an uncontrolled blaze is spreading through the hulk. Airlocks creak as one after another they open to the void, and everything aboard must be secured or risk being propelled out into space.",
+        "tests": []
+      },
+      {
+        "from": 10,
+        "to": 10,
+        "name": "Inverted and Unhealthy",
+        "page": 13,
+        "text": "This section of the hulk’s dying gravity generators fluctuate wildly. For the next hour gravity varies at random between nothing at all and three times Terran standard, before they fail completely.",
+        "tests": []
+      },
+      {
+        "from": 11,
+        "to": 11,
+        "name": "The Hornet’s Nest",
+        "page": 13,
+        "text": "Breaching a former cargo hold disturbs a hibernating hive of psychneuein (see page 16). Angry, 2-metre-long psychic wasps fill the air, ready to implant their eggs in the brain of any luckless Psyker nearby, and kill anything that gets in their way.",
+        "tests": []
+      },
+      {
+        "from": 12,
+        "to": 12,
+        "name": "What Does Eternal Lie",
+        "page": 13,
+        "text": "A Space Marine hangs suspended in a stasis field, his expression suggesting he is caught in a moment of religious ecstasy. As the stasis field flickers and fails, his ghastly transformation into a massive beast of Chaos begins. Hail to Thee, Changer of Ways...",
+        "tests": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "redacted-records-external-events",
+    "name": "External Events",
+    "source": "redacted-records",
+    "page": 14,
+    "dice": "2d6",
+    "type": "investigation",
+    "gm": "For best results, pair an internal crisis with an external one, both demanding the characters’ immediate attention.",
+    "rows": [
+      {
+        "from": 2,
+        "to": 2,
+        "name": "Dissolution",
+        "page": 14,
+        "text": "With an ear-rending shriek of metal, part of the hulk’s superstructure tears free, opening a huge hole to the void and destabilising the whole structure. Anyone aboard will have to act quickly to escape before the hulk disintegrates completely.",
+        "tests": []
+      },
+      {
+        "from": 3,
+        "to": 3,
+        "name": "Collision Course",
+        "page": 14,
+        "text": "Solar winds, residual momentum and a brief burst from one of the decaying engines sets the vessel on a trajectory towards the nearest solar system. If its course can’t be corrected the devastation will be appalling.",
+        "tests": []
+      },
+      {
+        "from": 4,
+        "to": 4,
+        "name": "Exploratory Surgery",
+        "page": 14,
+        "text": "An Adeptus Mechanicus ship docks on the hulk and unleashes a small army of servitors bent on carving the vessel into manageable chunks, while their parent vessel begins towing a prize portion of the hulk away for study.",
+        "tests": []
+      },
+      {
+        "from": 5,
+        "to": 5,
+        "name": "His Holy Inquisition",
+        "page": 14,
+        "text": "The massive bulk of an Inquisitorial Strike Cruiser approaches the hulk and makes immediate contact through the Agents’ secure channel. A short time later a squad of Battle Sisters appear and escort them to the Inquisitor herself, who issues orders the team are in no position to refuse.",
+        "tests": []
+      },
+      {
+        "from": 6,
+        "to": 6,
+        "name": "Heavy Fire",
+        "page": 14,
+        "text": "Without warning, a Battle-Barge of Astartes appears and opens fire on the hulk with its macro-cannons. It’s hard to say what’s more terrifying — the threat of being obliterated entirely, or whatever’s on board the hulk that merits this firepower...",
+        "tests": []
+      },
+      {
+        "from": 7,
+        "to": 7,
+        "name": "Prior Claim",
+        "page": 14,
+        "text": "A vessel belonging to the Rogue Trader Gerda Vandermeer, of the Varonius Flotilla, arrives, and demands that the team surrender all items of value retrieved from the hulk, citing her prior claim. Lady Captain Vandermeer’s soldiers board the hulk, seize the explorers’ own vessel, and hold it hostage for the ‘return’ of ‘her’ salvage.",
+        "tests": []
+      },
+      {
+        "from": 8,
+        "to": 8,
+        "name": "Impending Impact",
+        "page": 14,
+        "text": "Approaching at an unsafe speed, an Ork Rok is heading straight for the hulk, clearly intent on embedding itself in the hull. The impact may well be enough to kill anything in the compartment at the time, and the Orks will clear up whatever’s left...",
+        "tests": []
+      },
+      {
+        "from": 9,
+        "to": 9,
+        "name": "Strange Meeting",
+        "page": 14,
+        "text": "Several small Aeldari craft appear and surround the hulk, but make no immediate attempt to come aboard. If the Agents find the artefact the xenos are looking for and attempt to take it off the hulk, the Aeldari’s peaceful demeanour could change rapidly.",
+        "tests": []
+      },
+      {
+        "from": 10,
+        "to": 10,
+        "name": "Spacewalk",
+        "page": 14,
+        "text": "The vessel’s observatorium was said to contain untold treasures but it lies down a corridor that is now crushed and impassable. The only way to reach it is via a perilous spacewalk across the razor-sharp, twisted metal of the hull — and if something was to go wrong, help would be far away.",
+        "tests": []
+      },
+      {
+        "from": 11,
+        "to": 11,
+        "name": "Memories of Forgotten War",
+        "page": 14,
+        "text": "The ship’s macrocannon battery roars into life as the decayed cogitators of the ship’s machine spirit perceive a phantom enemy and open fire on any vessel nearby — probably whatever transport the explorers used to get there.",
+        "tests": []
+      },
+      {
+        "from": 12,
+        "to": 12,
+        "name": "External Infestation",
+        "page": 14,
+        "text": "The inside of the hulk seems clear of xenos — but that’s not so true of the hull. A group of Genestealers have been lying dormant outside the vessel, and now they’ve noticed movement indoors they’ll stop at nothing to get inside and obey their biological imperatives.",
+        "tests": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "redacted-records-high-tier-events",
+    "name": "High-Tier Events",
+    "source": "redacted-records",
+    "page": 15,
+    "dice": "2d6",
+    "type": "investigation",
+    "gm": "Parties of Tier 4 characters may consider themselves nigh-on-invulnerable, but the following table provides threats capable of striking terror into the most stalwart heart.",
+    "rows": [
+      {
+        "from": 2,
+        "to": 2,
+        "name": "Servants of the Abyss",
+        "page": 15,
+        "text": "A chapter of Chaos Space Marines have made this vessel their base of operations from which to plan their assault against this sector — and they don’t take kindly to interference.",
+        "tests": []
+      },
+      {
+        "from": 3,
+        "to": 3,
+        "name": "Too Long Alone",
+        "page": 15,
+        "text": "One of the hulk’s larger vessels retains its machine spirit, but so long alone and untended has made it unstable and erratic. Those who explore a certain section of the hulk find it a shifting maze of crushing bulkheads, sparking cables and fluctuating gravity.",
+        "tests": []
+      },
+      {
+        "from": 4,
+        "to": 4,
+        "name": "Teeming With Life",
+        "page": 15,
+        "text": "It’s not unusual to find Genestealers on space hulks, but this one is infested to a truly phenomenal degree. Genestealer cultists and their leaders creep, crawl and skitter through the vessel, a powerful Patriarch co-ordinating their every movement.",
+        "tests": []
+      },
+      {
+        "from": 5,
+        "to": 5,
+        "name": "Gateway To Nightmare",
+        "page": 15,
+        "text": "An archway in the depths of the hulk glimmers with Eldritch green light. On the other side, massed ranks of metallic, skeletal warriors stand in perfect rank and file. One by one, their eyes glow a sickly green, and they step forward in menacing unison.",
+        "tests": []
+      },
+      {
+        "from": 6,
+        "to": 6,
+        "name": "Nox Tenebris",
+        "page": 15,
+        "text": "A fluctuating Gellar field has kept the hull’s Tenebro-Maze permanently open to the Warp, through which abominable horrors continually boil into realspace. Only by entering the compartment and slaying the Daemon Lord within can the rift be sealed.",
+        "tests": []
+      },
+      {
+        "from": 7,
+        "to": 7,
+        "name": "Ship of Fools",
+        "page": 15,
+        "text": "The ship’s entire crew has been irrecoverably corrupted by the Ruinous Powers, rendered into a screaming gestalt of rotting flesh and shattered bone that fills the entire hulk like a hermit crab in its shell.",
+        "tests": []
+      },
+      {
+        "from": 8,
+        "to": 8,
+        "name": "Titanicus",
+        "page": 15,
+        "text": "The vast bulk of an Imperial Titan fills a hold on the hulk, its crew long dead. The Titan's reactor is still functioning - barely - and something is causing it to overheat. If it blows, it could tear the hulk apart, surely destroying any living organisms onboard.",
+        "tests": []
+      },
+      {
+        "from": 9,
+        "to": 9,
+        "name": "The Wild Hunt",
+        "page": 15,
+        "text": "The hulk is the site of a ritual hunt led by an Archon of the Drukhari. Swift, clever and ruthless, their first action is to close off all avenues of escape, before unleashing an army of Ur-ghuls, Succubi, Incubi and Homonculi in a deadly game of cat-and-mouse.",
+        "tests": []
+      },
+      {
+        "from": 10,
+        "to": 10,
+        "name": "The Heart of the House",
+        "page": 15,
+        "text": "The walls of this hulk drip with mucus, and the deeper any explorers go within, the warmer and more humid the atmosphere becomes, until the walls themselves seem to be breathing. The hulk is alive, animated by a daemonic spirit… and waking up.",
+        "tests": []
+      },
+      {
+        "from": 11,
+        "to": 11,
+        "name": "Khrave Slavers",
+        "page": 15,
+        "text": "The foul xenos known as the Khrave infest this ship — massive, hulking warriors bent on enslaving anyone they meet, each one as large as a Primaris Astartes and wielding warp-glamoured weapons capable of carving through ceramite like a monoknife through butter. Use the Chaos Space Marine stat block (Wrath & Glory, page 342), without the Mark of Chaos and Space Marine Implants Bonuses.",
+        "tests": []
+      },
+      {
+        "from": 12,
+        "to": 12,
+        "name": "The Hellbound Heart",
+        "page": 15,
+        "text": "With a deafening scream, the hulk slides into the Warp, and all Hell is unleashed.",
+        "tests": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  }
+]

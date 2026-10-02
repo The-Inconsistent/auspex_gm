@@ -170,7 +170,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | `church-of-steel` (cite CoS; scene presets, issue #39; vehicles not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
-| Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
+| Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
@@ -684,6 +684,14 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
     - No Test entry for an event that names none (Forward Operating Base, Dangerous Weather, Light in the Darkness,
       Forgotten Church) or that says "almost any sort of Test" (Xenos Influence). Rampant Flora's extra Medicae dice
       stay in its text.
+  - **Redacted Records** (`redacted-records.json`):
+    - Space Hulk Internal, External and High-Tier Events: 3 tables, 2d6, 33 events, transcribed from page renders.
+    - The book prints no Tests in them.
+    - External's advice to pair an internal crisis with an external one, and High-Tier's line about Tier 4 parties,
+      are each table's `gm`.
+    - The p.16 stat block (Psychneuein) isn't transcribed. The row that points to it keeps "see page 16".
+    - Kept as printed: "descendents" (Undying Grudges, p.13), "Gellar field" (Nox Tenebris, p.15), "Homonculi" (The
+      Wild Hunt, p.15), and a straight apostrophe and spaced hyphens in Titanicus (p.15).
 
 ---
 
