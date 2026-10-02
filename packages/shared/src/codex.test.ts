@@ -6,6 +6,7 @@ import {
   BeatTest,
   CodexInput,
   DN_TABLE,
+  EncounterEntry,
   LocationHazard,
   MAX_POOL_LINES,
   Pack,
@@ -222,4 +223,16 @@ test("placeTree nests places in order and keeps a leftover loop as a root (issue
     flatTree(loop).map(({ row, depth }) => `${depth}:${row.id}`),
     ["0:a", "1:b"],
   );
+});
+
+// Issue #42: a scene saved before `profiles` and `scale` existed must parse, since `loadCodex` parses every roster on
+// the way to the GM's app (table.state.ts) and the readers there count on the defaults.
+test("an encounter entry without the profile fields parses with them (#42)", () => {
+  const e = EncounterEntry.parse({ threatId: "ork-boy", count: 2, asMob: false });
+  assert.deepEqual(e.profiles, []);
+  assert.equal(e.scale, false);
+  // And a repeat is dropped rather than raising a stat twice.
+  assert.deepEqual(EncounterEntry.parse({ threatId: "x", profiles: ["xenos-cunning", "xenos-cunning"] }).profiles, [
+    "xenos-cunning",
+  ]);
 });

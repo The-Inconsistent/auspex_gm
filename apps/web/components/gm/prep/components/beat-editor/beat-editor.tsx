@@ -127,7 +127,7 @@ export function BeatEditor({
 
   // + THREAT: the picker names the threat, so the new entry is one model of it.
   const addEntry = (t: Threat) =>
-    setB({ ...b, encounter: [...b.encounter, { threatId: t.id, count: 1, asMob: false }] });
+    setB({ ...b, encounter: [...b.encounter, { threatId: t.id, count: 1, asMob: false, profiles: [], scale: false }] });
 
   // ×: removes encounter entry i.
   const removeEntry = (i: number) => setB({ ...b, encounter: b.encounter.filter((_, j) => j !== i) });

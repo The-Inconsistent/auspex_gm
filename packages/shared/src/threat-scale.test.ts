@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   applyProfile,
   prepareThreat,
+  Profiles,
   scaleBy,
   scaleThreat,
   THREAT_PROFILES,
@@ -193,4 +194,16 @@ test("prepareThreat scales the printed class, not a profiled one", () => {
   const r = prepareThreat(threatOf(), { tier: 2, agents: 5, profiles: ["heretical-strength"], scale: true });
   assert.equal(r.wounds, 8);
   assert.deepEqual(bonusNames(r), ["Heretical Strength (VoA p.126)", "Scaled (Core p.326)"]);
+});
+
+test("the same profile twice is applied once (§11.84)", () => {
+  const t = threatOf();
+  const once = prepareThreat(t, { tier: 3, agents: 4, profiles: ["heretical-strength"] });
+  // A client can send a repeat; `Profiles` drops it, and prepareThreat holds the same line for any caller.
+  assert.deepEqual(
+    prepareThreat(t, { tier: 3, agents: 4, profiles: ["heretical-strength", "heretical-strength"] }),
+    once,
+  );
+  assert.deepEqual(Profiles.parse(["xenos-cunning", "xenos-cunning"]), ["xenos-cunning"]);
+  assert.deepEqual(Profiles.parse(undefined), []);
 });

@@ -1,4 +1,4 @@
-import { and, eq, max, sql } from "drizzle-orm";
+import { and, count, eq, max, sql } from "drizzle-orm";
 import { threats } from "@wg/data";
 import {
   EncounterEntry,
@@ -9,6 +9,7 @@ import {
   isExhausted,
   isOut,
   isTimed,
+  prepareThreat,
   sideOf,
   sideOfKind,
   sideUpNext,
@@ -18,6 +19,7 @@ import {
   type Combatant,
   type LiveState,
   type Marker,
+  type ProfileId,
   type Side,
   type Threat,
   type Visibility,
@@ -84,11 +86,14 @@ async function addThreat(
   {
     encounterId,
     tier,
-    threat: t,
+    threat: printed,
     label,
     mobCount,
     marker,
     visibility,
+    profiles,
+    scale,
+    agents,
   }: {
     encounterId: string;
     tier: number;
@@ -97,8 +102,14 @@ async function addThreat(
     mobCount?: number;
     marker?: Marker;
     visibility?: Visibility;
+    profiles?: readonly ProfileId[];
+    scale?: boolean;
+    agents: number;
   },
 ) {
+  // What the GM ticked, applied before the snapshot: profiles (VoA p.126) and scaling (Core p.326). The class still
+  // comes from the printed Tier row, which neither changes (Core p.323), and the label stays the threat's own.
+  const t = prepareThreat(printed, { tier, agents, asMob: mobCount !== undefined, profiles, scale });
   const [c] = await tx
     .insert(combatant)
     .values({
@@ -117,6 +128,15 @@ async function addThreat(
     })
     .returning({ id: combatant.id });
   return c!.id; // the row was just inserted
+}
+
+// "The number of players" in Scaling Threats (Core p.326, rules-flow §11.106): the seated Agents, or the whole roster
+// while nobody holds a seat, as `agentsInFight` counts on the GM's screen, so the SCALE preview is what the server adds.
+async function agentCount(tx: Tx, { campaignId, seated }: { campaignId: string; seated?: Set<string> }) {
+  const n = (seated ?? (await claimedCharacterIds(tx, campaignId))).size;
+  if (n) return n;
+  const [row] = await tx.select({ n: count() }).from(character).where(eq(character.campaignId, campaignId));
+  return row?.n ?? 0;
 }
 
 async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string; characterId: string }) {
@@ -243,6 +263,9 @@ export async function applyEncounterAction(
           mobCount: a.mobCount,
           marker: a.marker,
           visibility: a.visibility,
+          profiles: a.profiles,
+          scale: a.scale,
+          agents: await agentCount(tx, { campaignId: cid }),
         }),
       };
     }
@@ -369,7 +392,9 @@ export async function applyEncounterAction(
       if (missing) fail(`Unknown threat "${missing.threatId}"`);
       const tier = await campaignTier(tx, cid);
       const encounterId = await startEncounter(tx, cid);
-      for (const characterId of await claimedCharacterIds(tx, cid)) await addPc(tx, { encounterId, characterId });
+      const agentIds = await claimedCharacterIds(tx, cid);
+      for (const characterId of agentIds) await addPc(tx, { encounterId, characterId });
+      const agents = await agentCount(tx, { campaignId: cid, seated: agentIds });
       for (const e of entries) {
         const t = threats.get(e.threatId)!; // every entry was checked against `threats` above
         if (e.asMob && e.count > 1)
@@ -381,6 +406,9 @@ export async function applyEncounterAction(
             mobCount: e.count,
             marker: e.marker,
             visibility: e.visibility,
+            profiles: e.profiles,
+            scale: e.scale,
+            agents,
           });
         else
           for (let i = 0; i < e.count; i++)
@@ -391,6 +419,9 @@ export async function applyEncounterAction(
               label: e.count > 1 ? `${e.label ?? t.name} ${i + 1}` : e.label,
               marker: e.marker,
               visibility: e.visibility,
+              profiles: e.profiles,
+              scale: e.scale,
+              agents,
             });
       }
       await tx.update(beat).set({ status: "active" }).where(eq(beat.id, b.id));
