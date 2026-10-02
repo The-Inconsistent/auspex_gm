@@ -1,0 +1,335 @@
+[
+  {
+    "id": "darktide-npc-gerta-phleg",
+    "name": "Gerta Phleg",
+    "role": "Barkeep of the Snake Hole",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 31
+      }
+    ],
+    "faction": "Scum",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-gerta-phleg"
+    },
+    "gmNotes": "The Snake Hole is a tavern with a mixed reputation — which, in the Slung, is saying something. It is run by Gerta Phleg, a matronly woman in her late sixties, beloved and feared by all in equal measure, and with a commanding voice any Astra Militarum captain would relish in. She can be a barkeep, fixer, or shoulder to cry on — so long as her customers keep the money flowing into her pockets. The Snake Hole is the only true neutral ground in the Slung, where no gang or sect has control. Gerta guarantees this state of affairs with a Meltagun behind the bar that none of the gangers know how she acquired, but she assures them that it still functions perfectly."
+  },
+  {
+    "id": "darktide-npc-craftol-glot",
+    "name": "Craftol Glot",
+    "role": "Proprietor of the Pile Up",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 31
+      }
+    ],
+    "gmNotes": "The Pile Up is run by Craftol Glot, a massive bear of a man with Augmetic Legs. His mood swings between jovial and belligerent, depending on whether he’s buying or selling, attempting to get the best price for goods by being friendly and welcoming or bullying people into paying more when he’s selling them something. You can requisition wargear from him in the usual way (Wrath & Glory page 205) on any IMPERIUM items up to Value 4."
+  },
+  {
+    "id": "darktide-npc-maggots-x14",
+    "name": "Maggots X14",
+    "role": "Leader of Clan Mechanicus",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 33
+      },
+      {
+        "source": "darktide",
+        "page": 48
+      }
+    ],
+    "faction": "Scum",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-maggots-x14"
+    },
+    "gmNotes": "Maggots X14 is the smug but sly leader of Clan Mechanicus, bent down with myriad augments grafted to his skin — a few of which, miraculously, do actually work. He lashes out with petulant vengeance against any who mock or question his position. His name is a corruption of the Mechanicus title ‘Magos’, misunderstood by the gangers on a crackling vox centuries ago. Nobody ever called its use into question, due to the gang’s refusal to ever change — one point in which the gang imitates the Adeptus Mechanicus flawlessly. Every leader since the clan took over the Mechanicus outpost has been a ‘Maggots’, and each has been numbered, X1 to X14.\n\nMaggots is only interested in anything that can lift his status, and that’s usually in the form of technology. The better he can emulate the Mechanicus (according to his limited understanding of it) the happier he is. This may well be an in with him if any of the rejects are affiliated with the real Cult Mechanicus, or if they can offer to steal some of the sacred technology from the Forgefather for him in Chapter 5: Backup."
+  },
+  {
+    "id": "darktide-npc-wrench-t07",
+    "name": "Wrench T07",
+    "role": "Clan Mechanicus tech savant",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 34
+      }
+    ],
+    "gmNotes": "Wrench T07, is a wiry young woman who is something of a tech savant, and dreams of one day becoming a real Mechanicus Adept. She resents Maggots X14 for his ignorance of genuine technology, having joined the gang under the belief they were the real deal.\n\nWrench hangs around the Snake Hole, and is the only one of the Clan Mechanicus that Primilla van Grellick is on good terms with. Her desire to be out from under Maggots X14’s thumb makes her a potential ally in removing him if the players choose to act on the plan in A Betrayal Most Foul (page 46). Anything that gets her closer to her goal of becoming a real adept can act as a motivator to get her onside — the Agents may wish to mention Hadron Omega 7-7, the technoarcheologist aboard the Mourningstar, and the opportunity to train under her in Grendyl’s warband."
+  },
+  {
+    "id": "darktide-npc-nahi-f12",
+    "name": "Nahi F12",
+    "role": "Clan Mechanicus member",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 34
+      }
+    ],
+    "gmNotes": "Nahi F12 is a brawny fellow who keeps scratching at his implants, and is even more ignorant of the true Mechanicus than Maggots is. He’s armed with an antique radium carbine, which he can barely fit his fat fingers in the trigger guard off — nevertheless it’s a valuable piece, and the Agents may well want to acquire it for themselves.\n\nHe’s one of Maggots X14’s yes-men, always eager to go along with the bosses plans, and immediately setting about any task asked of him. He harbours a secret desire to be leader of the Clan Mechanicus, his subservience a not so subtle attempt at climbing the ladder. He may well be swayed to go along with the plan in A Betrayal Most Foul."
+  },
+  {
+    "id": "darktide-npc-tri-t33",
+    "name": "Tri T33",
+    "role": "Clan Mechanicus member",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 34
+      }
+    ],
+    "gmNotes": "Tri T33 is a long-suffering septuagenarian with a terrible all-body rash from decades of allergic reactions to her implants. The pain is constant and as a result she is bad tempered, foul mouthed, and unlikely to offer any help to anyone, regardless of their allegiance.\n\nThe only thing that offers her any relief is Pipe Juice (page 32) but such is her addiction to it that she rarely has the money to afford enough. The players may get her onside with a great enough gift of it in order to enact A Betrayal Most Foul, or they can loosen her tongue to find out about the override that can lock out anyone but true Mechanicus adepts, handing control of the power back over to Nexum, ideally paired with Covert Insertion."
+  },
+  {
+    "id": "darktide-npc-nexum-laevo-prima",
+    "name": "Nexum Laevo Prima",
+    "role": "Mechanicus Remnant Tech-Priest",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 34
+      },
+      {
+        "source": "darktide",
+        "page": 44
+      }
+    ],
+    "faction": "Adeptus Mechanicus",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-nexum-laevo-prima"
+    },
+    "gmNotes": "There is one real Tech-Priest remaining on the Slung, who survived the Clan Mechanicus assault. Nexum Laevo Prima was the original controller of the elevator and has survived because she, herself, is an integral part of the elevator and its power supply — without her, there would be no electricity to syphon off.\n\nNexum has been isolated for decades — wired into systems of the elevator, stuck in the wreckage of her home. There are only two reasons Nexum keeps fulfilling her function: devotion to the blessed machine that is elevator E07, and a burning desire for revenge. Nexum is lonely, distrustful of anyone who is not Adeptus Mechanicus, and exceedingly protective of what remains of her domain.\n\nNexum Laevo Prima is an integral part of the control room. Clan Mechanicus left her alive, for without her continued presence, the entire elevator would be cut off from its power supply, but they severed any of her control connections unnecessary for that task. Few in the Slung know of Nexum’s existence, and even Maggots X14 mostly regards her as a myth.\n\nNexum has optic-arrays and vox-emitters throughout the control room, and begins to track the Agents the moment they enter. The control room itself consists of an observation deck connected by a maze of corridors and small machine rooms to the control nexus deeper within, where Nexum rests. Every metre or so, one of the many loose cables is actually a Mechadendrite (see Wrath & Glory Rulebook, pages 244–245) under Nexum’s control. She uses them to hinder their progress if she can.\n\nFurthermore, the containment systems of the highly radioactive materials used as an emergency power source in the control room — and Nexum’s very body — were damaged in the original clash over Elevator E07 and never repaired. Any creature leaving the control room after spending at least one hour there must make a DN 4 Toughness Test (modified by Corruption Level) and gain a Subtle Mutation (see Wrath & Glory Rulebook, page 287) on a failure."
+  },
+  {
+    "id": "darktide-npc-cjarl-nefft",
+    "name": "Cjarl Nefft",
+    "role": "Leader of the Sludge Scrapers",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 35
+      }
+    ],
+    "faction": "Scum",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-cjarl-nefft"
+    },
+    "gmNotes": "Cjarl Nefft is a broad-shouldered man whose best years are behind him, but can still scramble up a ventilation shaft with ease. He excels in organising people, and takes great pride in his Sludge Scrapers. Nothing ever seems to please him, and a noncommittal grunt is the greatest compliment he has ever volunteered.\n\nHis Sludge Scrapers know that criticism is his love language, as he does not waste his time with anyone who isn’t worth it."
+  },
+  {
+    "id": "darktide-npc-ulla",
+    "name": "Ulla",
+    "role": "Sludge Scraper",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 35
+      }
+    ],
+    "gmNotes": "Ulla is the Sludge Scrapers’ best climber, a hothead who loves showing off how tough she is. She is Cjarl’s second in command and is his constant shadow, looking up to the older man as a climbing legend. She is however deeply superstitious, and will have nothing to do with the Control Room — having heard Nexum’s grating voice she firmly believes it is haunted, and her personal animosity towards the Clan Mechanicus only serves to solidify her refusal to help.\n\nIf the Agents can raise their reputation with the Sludge Scrapers, either by helping Cjarl in Part Two: Welcome to the Slung! or can convince her that Nexum is merely truly what the Clan pretends to be, then she might help the Agents in climbing up to the Control Room — her presence provides +1 Bonus Dice to the Test to climb up the side of the elevator, as she points out the best handholds and ways around tricky sections of traversal."
+  },
+  {
+    "id": "darktide-npc-castor",
+    "name": "Castor",
+    "role": "Sludge Scraper",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 35
+      }
+    ],
+    "gmNotes": "Castor is a grey-faced Sludge Scraper with few friends and a surplus of debts from indulging in hard liquor at the Snake Hole. The other climbers deem him to be competent enough, but he’s loath to stick his neck out for anybody, and his selfishness has won him little respect. His penchant for drink and mounting debt has led him to secretly form an alliance with Maggots X14 and the Clan Mechanicus. He’s on the payroll and they keep him in his cups in exchange for information on the various comings and goings of Primilla, and a cut of the sludge which eases the Clan’s reliance on Primilla’s monopoly with the Pile Up.\n\nCastor is slow to trust the Agents, and will do Maggots X14’s bidding to help dislodge them if they ally with Primilla. However, he is careful not to reveal himself, as the betrayal would amount to a death sentence."
+  },
+  {
+    "id": "darktide-npc-yarrim",
+    "name": "Yarrim",
+    "role": "Sludge Scraper in training",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 35
+      }
+    ],
+    "gmNotes": "Yarrim, a young orphan and Sludge Scraper in training. She discovered Nexum a few months ago, on one of her unauthorised solo climbs, and was fortunately not killed immediately. Nexum treats Yarrim as a curiosity for study, and Yarrim thinks of Nexum as a secret friend — she is only dimly aware of what the genuine Mechanicus is like, having only ever been exposed to the Clan. The Agents can encounter Yarrim climbing up the side of the Pile Up, and if they can get in her good books, she’ll accompany them when Carl leads them to Nexum in Part Three: Her Control Room. Her presence and prior relationship with Nexum grants +1 Bonus dice to any social Tests to interact with the cantankerous Tech-Priest."
+  },
+  {
+    "id": "darktide-npc-primilla-van-grellick",
+    "name": "Primilla van Grellick",
+    "role": "Leader of the Commune of Miscreants",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 36
+      }
+    ],
+    "faction": "Scum",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-primilla-van-grellick"
+    },
+    "gmNotes": "Primilla van Grellick is the scion of a noble house in Tertium Hive, but she was brought to the Slung as a child to thwart an assassination attempt. Her mother accompanied her, planning to prepare her for a triumphant return. Her mother died soon after however, along with all possibility of returning to the glittering spires — but Primilla’s dreams stayed alive.\n\nPrimilla is a tough negotiator, and she does not suffer fools gladly. Her ultimate ambition is to take over complete control of the Slung, and return Elevator E07 to its glory days as one of the mighty transporters of goods around Tertium. Her plan has been decades in the making, and she believes that if she can assert enough control over a system as vital to the health of Tertium as the Snakestack, then she can bargain for her return to the shining smog free regions of the High Hive, and reclaim her family holdings.\n\nAs operatives of an Inquisitor, Primilla is keen to assist the Agents in their mission in any way she can (though never without asking for something in return). The favour of an Inquisitor is one of the rarest commodities in the galaxy and would give her an incredible amount of leverage with the noble houses of Hive Tertium — even the treacherous assassins of the rival house who she was forced to flee to the Slung from wouldn’t be able to touch her."
+  },
+  {
+    "id": "darktide-npc-komar",
+    "name": "Komar",
+    "role": "Primilla’s confidant and fixer",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 36
+      }
+    ],
+    "gmNotes": "Komar is Primilla’s sullen confidant and fixer. While the Pile Up is good for basic illicit items, for the truly illegal, rare, or dangerous, Komar is the go-to contact. She can usually be found in a smoky back booth in the Snake Hole and will often reach out to free operators like the Agents to delve into the hive to retrieve items for her. You can pair Hazards and Bounties from Chapter 2: Hive Encounters to form small missions that Komar can present to the Agents if they need some extra cash, or a bit of kit to help them in their mission."
+  },
+  {
+    "id": "darktide-npc-jamesh",
+    "name": "Jamesh",
+    "role": "Former Mags",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 36
+      }
+    ],
+    "gmNotes": "Jamesh is a skittish young man, often found loitering around the Snake Hole, looking to pick up any work Primilla may have for him. He’s a former Mags, one of the Hive’s enforcers, and he’s desperate to keep his original identity a secret."
+  },
+  {
+    "id": "darktide-npc-karmella-haith",
+    "name": "Karmella Haith",
+    "role": "Inquisition operative, traitor",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 54
+      }
+    ],
+    "faction": "Chaos",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "rogue-psyker"
+    },
+    "gmNotes": "Traitor\n\nKarmella escaped the last Black Ship that visited the Moebian Domain by mere chance. She was always an anomaly, her psychic powers oddly unreliable — waxing and waning like the phases of the moon. Trained by a shadowy master, she is now eerily calm and in full control of her abilities even under the greatest duress. Use the Rogue Psyker stat block (Wrath & Glory Rulebook, pages 339–340).\n\nGM’s should play Karmella as distant and cool, speaking a breathy whisper whenever she deigns to engage with the Agents."
+  },
+  {
+    "id": "darktide-npc-hadrol-nosterra",
+    "name": "Hadrol Nosterra",
+    "role": "Inquisition bounty hunter",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 54
+      }
+    ],
+    "faction": "Inquisition",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "scum"
+    },
+    "gmNotes": "Loyal\n\nHadrol was once a ganger from downhive Tertium, before being recruited into Grendyl’s service in lieu of execution. Brash and overconfident, Hadrol has since proven himself to be adept in his role as a bounty hunter, chasing down those who flee the Inquisition’s wrath. Use the Scum stat block (Wrath & Glory Rulebook, page 334).\n\nHadrol is competent despite his overbearing nature. GMs should play him as overblown yet practical, yet with a tangible sense of relief when he encounters the uncorrupted Agents."
+  },
+  {
+    "id": "darktide-npc-kau-hasperell",
+    "name": "Magos Biologis Kau Hasperell",
+    "role": "Magos Biologis, traitor",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 54
+      }
+    ],
+    "faction": "Chaos",
+    "gmNotes": "Traitor\n\nAs Magos Biologis, Kau Hasperell was always fascinated by the infestations, infections, and inflammations that plague the weak and vulnerable Human body. Kau Hasperell’s fascination veered into obsession, and ultimately led him to the worship of dark powers, seeking ever new ways to twist and improve the human form. Use the Tech-Priest stat block (Wrath & Glory Rulebook, page 109)\n\nKau Hesperall speaks like a pompous professor through his vox unit, portentous yet excited at the unusual maladies to be found within Tertium. Venturing into Tertium is quite the adventure for him, and nothing can dampen his enthusiasm, not even the whisperings of Nurgle in his mind."
+  },
+  {
+    "id": "darktide-npc-preacher-sorbella",
+    "name": "Preacher Sorbella",
+    "role": "Ministorum preacher, traitor",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 55
+      }
+    ],
+    "faction": "Chaos",
+    "gmNotes": "Traitor\n\nA particularly firebrand preacher of the Ministorum, Preacher Sorbella’s self-flagellation has twisted her love of the Emperor into a dangerous madness, seeing the Carrion Lord of the Imperium as bursting with fecund life — and with each unctuous remedy lovingly applied to her abraded flesh, she slowly falls deeper into worshipping Nurgle while barely knowing it. She ultimately is seeking martyrdom, to be elevated to sit at the side of her beloved Emperor and all his festering, pox-ridden servants. Use the Ministorum Priest stat block (Wrath & Glory Rulebook, page 92).\n\nSorbella speaks with righteous indignation, yet will soften and coo over anyone who claims true faith in the Emperor, seeing them as a potential convert to her twisted vision of the Imperial creed."
+  },
+  {
+    "id": "darktide-npc-quex-jain",
+    "name": "Quex Jain",
+    "role": "Astra Militarum trooper, traitor",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 55
+      }
+    ],
+    "faction": "Chaos",
+    "gmNotes": "Traitor\n\nQuex was an elite trooper of the Astra Militarum, but was under the constant watch of her stern Commissar for being too independent minded, and too contrarian. When facing a heretic force, her Commissar ordered a retreat that left Quex’s squad behind. When she returned days later, her Commissar — the only survivor — claimed she must be tainted by the enemy and remanded her to the Inquisition, for interrogation and knowledge of the foe. As it turned out, her Commissar was not wrong, merely early. All that she has seen in Grendyl’s service of the Ruinous Powers has led her to a simple conclusion — the forces of Chaos are powerful beyond reason, and cannot be defied. Better to find a place among their ranks than die uselessly in pointless resistance. Use the Tempestus Scion stat block (Wrath & Glory Rulebook, page 103).\n\nLike Hadrol, Quex has a brutal practicality about her, tempered with a fatalism that borders on suicidal. She is sanguine to whatever Tertium throws at her, knowing it is only a matter of time before she dies. Unlike the others, she won’t proselytise or try to convert the Agents — when the betrayal is revealed she’ll simply shrug and then shoulder her Lasgun to take them out."
+  },
+  {
+    "id": "darktide-npc-magos-momentine",
+    "name": "Magos Momentine",
+    "role": "Leader of the Momentine Order",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 67
+      },
+      {
+        "source": "darktide",
+        "page": 69
+      }
+    ],
+    "faction": "Adeptus Mechanicus",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-magos-momentine"
+    },
+    "gmNotes": "The leader of the Order is generally known as the Magos Momentine, and dispenses their judgement from the great brass throne in the cab of the Forgefather, surrounded by sacred cogitator stacks and power couplings. It is only them that can authorise changes to the Sacred Timetable, decide the proper dispersal of the bounty of the Omnissiah, or authorise the Forgefather to enter the Calamity Zone.\n\nFinally, the Agents arrive at the Forgefather’s bridge, where the Magos Momentine is ensconced in a polished brass throne, fastened in place by tubing and cables. The Magos is sorely disappointed at the lack of fresh supplies. Her job is a difficult one, for she must constantly balance dwindling stockpiles against increasing demands on the Forgefather’s time. She is acutely aware of her sacred duty to the locomotive so that it can maintain the Iron Collar, but she is also aware that her Order is slowly losing this battle — in a generation or two (less time than you might think for a group that relies on cloning) the chances are high that the Great Turbines of the Lattice will fall silent and the settlements of the Iron Collar will fall into darkness and infighting."
+  },
+  {
+    "id": "darktide-npc-navigator-zelak-mazara",
+    "name": "Navigator Zelak Mazara",
+    "role": "Navigator, seconded to the Inquisition",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 76
+      },
+      {
+        "source": "darktide",
+        "page": 55
+      }
+    ],
+    "faction": "Inquisition",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-navigator-zelak-mazara"
+    },
+    "gmNotes": "Zelak Mazara is a member of Navigator House Mazara but seconded to the Inquisition. She was part of Inquisitor Grendyl’s retinue during the investigation into Hive Tertium. Once her suspicions were raised as to the nature of the technology they were searching for, she volunteered to go in with the first team of Agents. In this case, her ultimate loyalty is to the Navis Nobilite; a Void Abacus is an intolerable affront to their dignity and a threat to their power. She has every intention of destroying the device — and will regretfully sacrifice even other loyal servants of the Inquisition to ensure this comes to pass.\n\nShe was part of the ill-fated team aboard the Valkyrie in Chapter 4, but she escaped the wreckage the moment it impacted, thrown clear by the crash. Heavily injured, she crawled down to the Lattice before passing out. She was rescued by the Bladewalkers, who recognised her symbols of authority. She had not long regained consciousness when the traitors started attacking the Lattice. She fought back as best she could, but was too exhausted to utilise her Warp Eye.\n\nShe’s not at full strength, and conscious of her limited resources. Ultimately Mazara wants to let the Agents do as much of the heavy lifting as possible, but then steal ahead of them and destroy the device itself.\n\nA slender, bald woman in late middle age, Mazara holds herself with pride, and won’t stand to be scorned. Apart from the third eye in her forehead, she bears several subtle marks of mutation: a shallow nose and overly long fingers. In battle, she can unleash devastating effects with her third eye, but this is draining for her.\n\nA proud member of the Navis Nobilite, Mazara has been working with Grendyl to track down the Void Abacus — an artefact that she secretly wishes to destroy — as it is an abomination in the eyes of the great Navigator houses. Mazara was wise enough to flee the wreck of the crashed Valkyrie and into the warrens of the hive after hearing the gurgling psychic call of the cultists approaching. She can be found, badly injured, in Chapter 5: Backup (page 63)."
+  },
+  {
+    "id": "darktide-npc-worm-king",
+    "name": "Worm King",
+    "role": "Nurgle-blessed Ogryn",
+    "cites": [
+      {
+        "source": "darktide",
+        "page": 92
+      }
+    ],
+    "faction": "Chaos",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "darktide-worm-king"
+    },
+    "gmNotes": "The Worm King is an Ogryn of unusual influence, on the verge of becoming either a Chaos Champion or Spawn. He bears many blessings of Nurgle: preternatural resilience, corrupted weaponry, and the remains of his digestive tract is inhabited by countless daemonic, parasitic worms that have burst through his belly in a mass of whipping lashes. The worms often drag the unwary screaming into their midst, where they are consumed, invigorating the worms’ host. So obviously blessed by Nurgle, many of the cultists and corrupted guardsmen have chosen to follow him."
+  }
+]
