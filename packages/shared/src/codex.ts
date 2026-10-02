@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Marker, Visibility } from "./state.ts";
+import { ATTRIBUTES, Marker, SKILLS, Visibility, type Skill } from "./state.ts";
 
 // Campaign content beyond combat (docs/campaign-model.md). Broadcast separately from the live state,
 // so a Wounds tap doesn't resend every NPC and beat.
@@ -40,6 +40,61 @@ export type BeatStatus = z.infer<typeof BeatStatus>;
 export const BeatExit = z.object({ label: text(200), beatId: id.nullable().default(null) });
 export type BeatExit = z.infer<typeof BeatExit>;
 export const MAX_EXITS = 10; // ponytail: app limit, not a rule; raise it if a scene needs more
+// What a scene asks the Agents to roll (issue #39). The kind sets the pool: a Skill (its linked Attribute comes from
+// SKILLS, Core pp.158-161), an Attribute alone (p.170), or a trait: Influence (p.169), Resolve for Fear and Terror
+// (p.170, pp.199-200), Conviction for Corruption (pp.170, 285). An Opposed Test has no DN: most Icons wins (p.170).
+export const TestKind = z.enum(["skill", "attribute", "opposed", "influence", "resolve", "corruption"]);
+export type TestKind = z.infer<typeof TestKind>;
+// What each kind rolls: a Skill, an Attribute, either one (Opposed), or a trait the app doesn't name.
+export const TEST_POOL = {
+  skill: "skill",
+  attribute: "attribute",
+  opposed: "either",
+  influence: "trait",
+  resolve: "trait",
+  corruption: "trait",
+} as const satisfies Record<TestKind, string>;
+// One Agent rolls, or each Agent rolls their own (rules-flow.md §11.73).
+export const TestWho = z.enum(["one", "each"]);
+export const MAX_TESTS = 12; // ponytail: app limits, not rules; raise them if a scene needs more
+export const MAX_SHIFTS = 5;
+export const BeatTest = z
+  .object({
+    kind: TestKind,
+    skill: z
+      .enum(Object.keys(SKILLS) as [Skill, ...Skill[]])
+      .nullable()
+      .default(null),
+    attribute: z.enum(ATTRIBUTES).nullable().default(null),
+    // ponytail: app limit. The table on p.161 stops at 12, but penalties stack; raise it if a GM needs more.
+    dn: z.number().int().min(1).max(20).nullable().default(null),
+    who: TestWho.default("one"),
+    purpose: text(300).default(""),
+    shifts: z.array(text(200)).max(MAX_SHIFTS).default([]), // what Shift 1, 2, 3… buys: the GM's plan, not a rule (p.165)
+    onSuccess: text(500).default(""),
+    onFailure: text(500).default(""), // the fail-forward consequence (p.319)
+  })
+  .superRefine((t, ctx) => {
+    const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+    const pool = TEST_POOL[t.kind];
+    if (pool === "skill" && (!t.skill || t.attribute)) fail("A Skill Test names a Skill and no Attribute");
+    if (pool === "attribute" && (!t.attribute || t.skill)) fail("An Attribute Test names an Attribute and no Skill");
+    if (pool === "either" && !t.skill === !t.attribute) fail("An Opposed Test names a Skill or an Attribute, not both");
+    if (pool === "trait" && (t.skill || t.attribute)) fail(`A ${t.kind} Test rolls a trait, not a Skill or Attribute`);
+    if (pool === "either" ? t.dn !== null : t.dn === null)
+      fail(pool === "either" ? "An Opposed Test has no DN" : "This Test needs a DN");
+  });
+export type BeatTest = z.infer<typeof BeatTest>;
+
+// The same Test as another kind, keeping what still fits it: the Skill or Attribute it names, its DN and its Shifts.
+// An Opposed Test keeps no Shifts: Shifting is defined against a DN (Core p.165), and an Opposed Test has none.
+export function retypeTest(t: BeatTest, kind: TestKind): BeatTest {
+  const pool = TEST_POOL[kind];
+  const skill = pool === "skill" || (pool === "either" && !t.attribute) ? (t.skill ?? "Awareness") : null;
+  const attribute = pool === "attribute" || (pool === "either" && !skill) ? (t.attribute ?? "S") : null;
+  const opposed = pool === "either";
+  return { ...t, kind, skill, attribute, dn: opposed ? null : (t.dn ?? 3), shifts: opposed ? [] : t.shifts };
+}
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 
@@ -78,6 +133,7 @@ export const CodexInput = {
       )
       .default([]),
     exits: z.array(BeatExit).max(MAX_EXITS).default([]),
+    tests: z.array(BeatTest).max(MAX_TESTS).default([]),
   }),
   location: z.object({
     name: text(200),

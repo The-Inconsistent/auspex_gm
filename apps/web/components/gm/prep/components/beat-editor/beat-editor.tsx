@@ -1,7 +1,7 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { BeatType, Marker, type BeatExit, type BeatStatus, type Codex, type Threat } from "@wg/shared";
+import { BeatType, Marker, type BeatExit, type BeatStatus, type BeatTest, type Codex, type Threat } from "@wg/shared";
 
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -9,6 +9,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import type { Beat, EncounterEntry } from "../../types";
 import { stripBeat } from "../../utils";
 import { Exits } from "./components/exits/exits";
+import { Tests } from "./components/tests/tests";
 import { BEAT_TEXT_FIELDS, type BeatTextField } from "./constants";
 
 type BeatEditorProps = {
@@ -42,6 +43,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
           handoutIds: [] as string[],
           encounter: [] as EncounterEntry[],
           exits: [] as BeatExit[],
+          tests: [] as BeatTest[],
         },
   );
   const [error, setError] = useState<string | null>(null);
@@ -51,13 +53,14 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
   const troops = b.encounter.reduce((n, e) => n + e.count, 0);
   const scenes = codex.adventures.find((a) => a.id === adventureId)?.beats ?? [];
 
-  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows go, and a target deleted while the
-  // editor was open (its select shows —) is dropped rather than refused by the server.
+  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows and Shift rungs go, and an exit
+  // target deleted while the editor was open (its select shows —) is dropped rather than refused by the server.
   const save = async () => {
     const exits = b.exits
       .map((e) => ({ ...e, beatId: scenes.some((s) => s.id === e.beatId) ? e.beatId : null }))
       .filter((e) => e.label.trim() || e.beatId);
-    const data = { ...b, exits };
+    const tests = b.tests.map((t) => ({ ...t, shifts: t.shifts.filter((s) => s.trim()) }));
+    const data = { ...b, exits, tests };
     const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
     if (!r.ok) return setError(r.error);
     onDone();
@@ -193,6 +196,8 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
           {codex.handouts.length === 0 && <span className="dim">Add handouts in CODEX.</span>}
         </div>
       </div>
+
+      <Tests tests={b.tests} onChange={(tests) => setB({ ...b, tests })} />
 
       <div className="field">
         <span className="label">PREPARED ENCOUNTER</span>

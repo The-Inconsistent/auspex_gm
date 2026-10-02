@@ -623,12 +623,15 @@ builder; the Ten Questions keep their headings only, and question 10, "Why Are Y
 out because it belongs to the Core book's setting, not to every campaign; plus the character Traits, Core pp.37–38,
 that `stat-block.json` doesn't already hold as threat terms (Resolve, Passive Awareness, Influence, Wealth), Skills
 (p.121), Wrath Points (p.164) and Glory (pp.164–165, `page` 164), all for the sheet's TRAITS (?); worked examples and
-optional rules left out). Each entry is `id` (unique across
+optional rules left out), `tests.json` (kind `test`, for scene Tests, GitHub issue #39: Difficulty Numbers, Core
+pp.160–161, with the Determining Difficulty table and the How Hard Could It Be? sidebar; Shifting, pp.165–166, with
+Using Shifts and its five uses; Fail Forward, p.319; worked examples left out). Each entry is `id` (unique across
 files), `kind`, `name` as printed with its rating (`Blast (X)`), `abbr` (stats only: the stat block's label, `SHK`),
 `type` (actions only), `source`, printed `page`, `gist` (one terse line paraphrased from the entry's own text, in
 the style of a quick-reference sheet, shown on the collapsed row) and `text`: the entry's body, verbatim,
-paragraphs split by a blank line. Print errors are kept as printed; tables are plain lines. A section intro is its own
-entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`. The player
+paragraphs split by a blank line, and `gm: true` on an entry from the Gamemaster chapter (only Fail Forward so far),
+which only the GM's seat is served (rules-flow.md §11.74). Print errors are kept as printed; tables are plain lines. A section intro is its own
+entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/api/campaigns/:id/rules`, minus `gm` entries for a player. The player
 FIGHT tab hands the `stat` entries to the stat block's (?) legend. To add a
 kind (psychic powers, talents), extend `RuleKind` and add a file.
 

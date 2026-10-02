@@ -93,7 +93,7 @@ For the GM, `loadBestiary` fetches `/api/campaigns/:id/threats` on the server, p
 it by name. Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop;
 the client never fetches it. `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
 catalogue), fetched in parallel; failure gives `[]` and the form takes typed entries. `loadRules` fetches
-`/api/campaigns/:id/rules` for every seat and passes it to both apps' RULES tab (`components/ui/rules-ref`: search over
+`/api/campaigns/:id/rules` for every seat (a player's lacks the `gm` entries) and passes it to both apps' RULES tab (`components/ui/rules-ref`: search over
 name, gist and text, a kind filter, one `<details>` per entry: the gist on the collapsed row, the verbatim text inside); failure gives `[]` and the tab says the archive is unreachable. Both apps also wrap their screens in
 `RulesProvider` with the same rules, so a weapon trait or Condition shown anywhere opens its entry in place (§5,
 `RuleLink`). Nothing new is fetched and the book text stays behind the seat check.
@@ -492,6 +492,10 @@ The tests are in `lib/command/command.test.ts`.
   - its number (`sceneNumber`), title, type chip and status chip (amber when active)
   - its GOAL, read-aloud text and GM notes (closed on a plate)
   - its EXITS: each label, then `→ 04 · THE DEAL` for a target in this adventure, or `→ NO SCENE YET`
+  - its TESTS (`components/scene-tests/scene-tests.tsx`): the DN TABLE, SHIFTING and FAIL FORWARD rule links, then one
+    `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`), EACH, the Shift count and, on a
+    Fear or Corruption Test, the Ruin reminder (`ruinOnFailure`, Core p.320); inside are the purpose, SHIFT 1, 2… and
+    both outcomes
   - a summary of its prepared encounter
 - **Beat controls:**
   - ↑ / ↓ swap a beat with its neighbour and send the full `ids` order as `beat.reorder`.
@@ -508,6 +512,21 @@ The tests are in `lib/command/command.test.ts`.
   - goal, read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`, each with its hint and page)
   - exits (`components/exits/exits.tsx`): a label and a scene select per row (this adventure's scenes, or —), up
     to `MAX_EXITS`; SAVE drops rows with neither
+  - tests (`components/tests/tests.tsx`), between handouts and the prepared encounter. Per Test:
+    - a KIND select (`retypeTest` keeps the pool, DN and Shifts that still fit)
+    - a Skill and/or Attribute select by `TEST_POOL`
+    - ONE / EACH, and PURPOSE
+    - DN chips from `DN_TABLE` with their modifier inline, "5 CHALLENGING (+2)" (`CORRUPTION_DNS` for Corruption)
+    - a DN field (`components/dn-input`): it keeps the text as typed while editing, counts a DN from 1 to 20 at once,
+      and clamps on blur
+    - a DN under 3 hint (Core p.122)
+    - the Shift ladder, up to `MAX_SHIFTS`. Chips add the uses on pp.165–166, with +1 Glory only once per Test
+      (p.166), and the Attitude step (p.168) when the Test names a social Skill (`SOCIAL_SKILLS`, p.167)
+    - ON SUCCESS, and ON FAILURE with the p.319 chips
+    - ↑ / ↓ / ×
+
+    An Opposed Test shows a NO DN note and no Shift ladder: Shifting is defined against a DN (p.165). Up to
+    `MAX_TESTS` Tests; SAVE drops blank Shift rungs
   - location
   - NPC and handout toggle chips (`aria-pressed`)
   - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
@@ -628,7 +647,7 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite` from `@wg/shared`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
 | `rule-item/rule-item.tsx` `RuleItem` | `r: RuleEntry`, `open?` | One rules entry as a `<details>`: name (a stat's `abbr` first), kind · cite, gist, and the book text inside. Used by the RULES tab, the stat legend and the rule dialog; `open` starts it expanded |
 | `rules-provider/rules-provider.tsx` `RulesProvider`, `useRules()` | `rules: RuleEntry[]`, `children` | Wraps `GmApp` and `PlayerApp`. Builds a `ruleKey` → entries map once, over `LINKED_RULE_KINDS` only (Conditions, weapon and armour traits; not actions or stat block terms). It owns one native modal `<dialog>` that shows the entries as `RuleItem open` with CLOSE. Esc or a backdrop tap closes it, and focus returns to the tapped word. `useRules()` returns `{ find(name), open(entries) }` and throws outside the provider |
-| `rule-link/rule-link.tsx` `RuleLink` | `name`, `children?` (defaults to `name`) | A trait or Condition as the data spells it (`Blast (6)`, `Inflicts (On Fire)`). If `find` resolves it, it's a `button.rule-link` (dotted underline, 32px hit area, `aria-label="Rule: <name>"`) that opens the dialog; otherwise it renders as plain text. Needs a `RulesProvider` above it |
+| `rule-link/rule-link.tsx` `RuleLink` | `name`, `children?` (defaults to `name`) | A trait or Condition as the data spells it (`Blast (6)`, `Inflicts (On Fire)`). If `find` resolves it, it's a `button.rule-link` (dotted underline, 32px hit area, `aria-label="Rule: <name>"`) that opens the dialog; otherwise it renders as plain text. `RuleIdLink` (`id`, `children`) does the same for an entry that isn't a trait, by id (the scene Tests' DN TABLE, SHIFTING, FAIL FORWARD). Needs a `RulesProvider` above it |
 | `weapon-line/weapon-line.tsx` `WeaponLine` | `weapon`, `strength?` | `weaponProfile` (§`lib/`), then each trait as a `RuleLink`. Used by the sheet's ARMAMENT, the tracker's selected character and `StatBlock` (ability and option weapons) |
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |

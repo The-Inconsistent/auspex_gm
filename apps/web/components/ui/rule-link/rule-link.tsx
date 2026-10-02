@@ -16,3 +16,18 @@ export function RuleLink({ name, children = name }: RuleLinkProps) {
     </button>
   );
 }
+
+type RuleIdLinkProps = { id: string; children: ReactNode };
+
+// A rule that isn't a trait (a scene Test's DN table, Shifting, Fail Forward), opened by its id. Stays text when the
+// seat isn't served that entry.
+export function RuleIdLink({ id, children }: RuleIdLinkProps) {
+  const { get, open } = useRules();
+  const rule = get(id);
+  if (!rule) return <>{children}</>;
+  return (
+    <button type="button" className="rule-link" aria-label={`Rule: ${rule.name}`} onClick={() => open([rule])}>
+      {children}
+    </button>
+  );
+}

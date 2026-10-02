@@ -178,6 +178,11 @@ Pool = Attribute + Skill; the **Wrath Die** replaces one die. 4–5 = Icon, 6 = 
 (6 = Glory +1 / crit on a hit; 1 = Complication) → Shift surplus Exalted Icons (p.159–166). Opposed: most Icons wins,
 ties to the initiator (p.170). Round up always (p.159).
 
+A scene can list the Tests it expects (`BeatTest`, GitHub issue #39): the kind (Skill, Attribute, Opposed, Influence,
+Resolve, Corruption, pp.169–170), its Skill or Attribute, the DN (`DN_TABLE`, p.161; `CORRUPTION_DNS`, p.285), who
+rolls (§11.73), the Shifts the GM has ready (pp.165–166) and both outcomes (Fail Forward, p.319). It is the GM's plan
+for the scene: the app never rolls a Test.
+
 ## 8. Psychic powers (pp.257–267)
 
 One activation per Round. Pool = Psychic Mastery (Wil). Bound +0 / Unbound +1 / Transcendent +max(Rank,Tier)+1
@@ -555,6 +560,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 72. **Class letters where two books disagree** (GitHub issue #44). Each printing keeps its own book's Tier row, since
     a class is set per book; none is corrected to match another. A reprint whose only difference is its Tier row still
     counts as different (§11.71) and gets its own file, so the GM can field either. *(User ruling, 2026-10-02.)*
+73. **A scene Test every Agent rolls** (GitHub issue #39). A scene Test can say `who: "each"`: every Agent rolls their
+    own. The Core Rulebook has no group Test rule; the nearest is Help (p.169), where one Agent gives an ally bonus dice
+    equal to the Attribute or Skill they help with. The app only records who rolls. Whether one success carries the
+    group, or each Agent stands alone, is the GM's call for that scene, written in the Test's outcomes.
+    *(Proposed; awaiting the GM.)*
+74. **Fail Forward is the GM's to read** (Core p.319; GitHub issue #39). It is in the Gamemaster chapter, and one of its
+    options is "The GM gains 1 Ruin", while the Ruin pool is GM-only (§11.58). Its rules entry carries `gm: true`, so
+    `/api/campaigns/:id/rules` serves it to the GM's seat only, and the seatless `/api/rules` never does. Difficulty
+    Numbers and Shifting are in the player chapters (pp.160–161, 165–166) and stay open to every seat.
+    *(Proposed; awaiting the GM.)*
+
 ---
 
 ## 12. Gap analysis — current code vs this spec

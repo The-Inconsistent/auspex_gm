@@ -2,10 +2,11 @@ import { z } from "zod";
 import { Source } from "./source.ts";
 
 // The rules reference: Conditions (Core pp.197–200), weapon traits (pp.208–210), armour traits (p.232), combat
-// actions (pp.177–190), the stat block terms (Bestiary Format, p.323) and Bringing Your Character to Life (p.34), transcribed from the books. It holds book
+// actions (pp.177–190), the stat block terms (Bestiary Format, p.323), Bringing Your Character to Life (p.34) and the
+// scene Tests' Difficulty, Shifting and Fail Forward (pp.160, 165, 319), transcribed from the books. It holds book
 // text, so it is served to seats only (GM or player), never bundled into the client.
 
-export const RuleKind = z.enum(["condition", "weapon-trait", "armour-trait", "action", "stat", "character"]);
+export const RuleKind = z.enum(["condition", "weapon-trait", "armour-trait", "action", "stat", "character", "test"]);
 export type RuleKind = z.infer<typeof RuleKind>;
 
 export const RuleEntry = z.object({
@@ -18,6 +19,7 @@ export const RuleEntry = z.object({
   page: z.number().int().positive(), // printed page
   gist: z.string().min(1).max(120), // one terse line, paraphrased from `text`, for the collapsed row
   text: z.string().min(1), // paragraphs separated by a blank line
+  gm: z.boolean().optional(), // from the Gamemaster chapter: only the GM's seat gets it (rules-flow.md §11.74)
 });
 export type RuleEntry = z.infer<typeof RuleEntry>;
 

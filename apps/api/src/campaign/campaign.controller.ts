@@ -153,7 +153,7 @@ export class CampaignController {
   async rules(@Param("id") id: string, @Req() req: Request) {
     const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
-    return listRules();
+    return listRules({ gm: ctx.role === "gm" });
   }
 
   // The character-creation catalogue (book text) for any seat, filtered to the books the campaign allows (issue #9).

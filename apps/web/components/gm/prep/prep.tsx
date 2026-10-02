@@ -6,6 +6,7 @@ import type { ActionResult, BeatStatus, Codex, LiveState, Threat } from "@wg/sha
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
+import { SceneTests } from "./components/scene-tests/scene-tests";
 import type { Beat } from "./types";
 import { sceneNumber, stripBeat } from "./utils";
 
@@ -228,6 +229,7 @@ export function Prep({ state, codex, send, bestiary, onRun }: PrepProps) {
                     {label}: {names}
                   </div>
                 ))}
+                {b.tests.length > 0 && <SceneTests tests={b.tests} />}
                 {b.encounter.length > 0 && (
                   <div className="dim">
                     ENCOUNTER:{" "}

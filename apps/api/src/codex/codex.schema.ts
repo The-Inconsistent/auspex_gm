@@ -49,6 +49,7 @@ export const beat = pgTable("beat", {
   handoutIds: ids(),
   encounter: jsonb().$type<unknown[]>().notNull().default([]),
   exits: jsonb().$type<unknown[]>().notNull().default([]), // BeatExit[]; codex.delete clears a deleted target
+  tests: jsonb().$type<unknown[]>().notNull().default([]), // BeatTest[]
 });
 
 export const location = pgTable("location", {
