@@ -576,6 +576,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Opposed Test still has none, because most Icons wins (p.170). A scene made from a book event takes the printed DN,
     else the table's printed default, else none.
     *(User ruling, 2026-10-02.)*
+76. **The Ruin rules entry is the GM's to read** (Core p.320; GitHub issue #40). Core p.320 says the pool "should be
+    visible to the players", and Threat Assessment p.7 says to explain Ruin to them before the game. But the entry is in
+    the Gamemaster chapter and the pool is GM-only (§11.58), so it carries `gm: true`, as Fail Forward does (§11.74):
+    the GM explains it at the table. Wrath Complications (p.163, with its optional "award the GM a point of Ruin") and
+    Combat Complications (p.191) are in the player chapters and stay open to every seat.
+    *(User ruling, 2026-10-02.)*
 
 ---
 

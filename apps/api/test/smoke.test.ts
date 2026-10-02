@@ -641,8 +641,10 @@ test("GM and player share a table", async (t) => {
   const playerRules = ((await rules.json()) as RuleEntry[]).map((r) => r.id);
   assert.ok(playerRules.length > 50 && playerRules.includes("test-shifting"));
   assert.ok(!playerRules.includes("test-fail-forward"), "Fail Forward is the GM's");
+  assert.ok(!playerRules.includes("character-ruin"), "so is Ruin (§11.76)");
+  assert.ok(playerRules.includes("character-complications"), "Complications are in the Rules chapter");
   const gmRules = (await (await get(`/campaigns/${campaignId}/rules`, bearer(gmClerk))).json()) as RuleEntry[];
-  assert.ok(gmRules.some((r) => r.id === "test-fail-forward"));
+  assert.ok(gmRules.some((r) => r.id === "test-fail-forward") && gmRules.some((r) => r.id === "character-ruin"));
   assert.equal((await get(`/campaigns/${campaignId}/rules`, bearer(clerk("stranger")))).status, 401);
 
   // Scripts (seed) open a table with the admin key.
