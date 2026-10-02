@@ -1,0 +1,33 @@
+{
+  "id": "bg-penal-brigade-trooper",
+  "name": "Penal Brigade Trooper",
+  "source": "bloody-gates",
+  "page": 23,
+  "faction": "imperial",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ASTRA MILITARUM", "GILEAD GRAVEDIGGERS"],
+  "attributes": { "S": 2, "T": 2, "A": 2, "I": 2, "Wil": 2, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 3, "note": "Partial Flak Armour: AR 2" },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [{ "name": "Awareness", "dice": 3, "passive": 2 }]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Lasgun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Rapid Fire (1)", "Reliable"] },
+        { "name": "Knife", "damage": 4, "ed": 2, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (4 Wounds and a 1-Ruin Determination: a rank-and-file grunt)."
+}

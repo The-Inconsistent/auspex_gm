@@ -170,10 +170,16 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
-| Redacted Records | *none yet* (creation, GitHub issue #24) | `Wrath & Glory_ Redacted Records.pdf` | not checked yet |
-| Redacted Records 2 | *none yet* (creation, GitHub issue #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | not checked yet |
-| Bloody Gates | *none* (adventure) | `Wrath & Glory_ Bloody Gates.pdf` | printed |
-| Affliction Ascendant | *none* (adventure) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed |
+| Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
+| Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
+| Darktide (Apr 2025 update) | `darktide` (threats, #44) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
+| Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
+| Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
+| Bloody Gates | `bloody-gates` (cite BG; threats, #44) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
+| Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
+
+The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
+scene, item, NPC or location data that other work types as `Source`.
 
 No creation content: Darktide, Litanies of the Lost, Bloody Gates and Affliction Ascendant (official adventures;
 Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only), Church of Steel (travel and vehicles),
@@ -253,6 +259,41 @@ The book uses the 1st-edition stat layout, mapped as follows:
   Soul "Conviction tests". Named with no printed profile: Arc Rifle, Plasma Caliver, Transuranic Arquebus.
 - **Not transcribed:** the vehicle-format walkers (Ballistarii, Sydonian Dragoon, Onager Dunecrawler, pp.20–21), the
   wargear, Forge Worlds and archetypes.
+
+### Supplement and adventure book notes (GitHub issue #44)
+
+Every stat block in five books, 30 threats, each book's id prefix on its ids (`threat-manifest.json` lists them). PDF
+page = printed page in all five. An identical reprint of a threat already in is skipped (rules-flow.md §11.71). Shared
+calls, user rulings of 2026-10-02:
+- **A melee weapon with no printed range** is `[1]`, as Core's Painboy 'Urty Syringe. An explosion or discharge with
+  no range (Kastelan Explodes, the Duke's Noxious Discharge, the Oily Squig, Ara'vitu'urhal's Warp Explosion) stays
+  ability text, as Core's Killa Kan. A single printed range (Botuthrax's Pestilent Tide, "Range 16") is `[16]`.
+- **Strength printed with Powered in brackets** ("5 (8)", "5(9)*") stores the armoured value, since Core prints one
+  armoured Strength (the Chaos Space Marine's 8). The printed pair is in `note`.
+- **A Champion bonus under another name** (Botuthrax's Beloved of Nurgle, "has 5 personal Ruin") sets `personalRuin`.
+- **Inflict spelling** is the catalogue's `Inflict (Poisoned 5)`, whatever the print's order ("Inflict Poisoned (5)").
+- **No Tier row** (Bloody Gates, all eight): the class is proposed and the note says so (rules-flow.md §11.70).
+
+Per book:
+- **Vow of Absolution** (`voa-`, 7): the Dreadnought and Redemptor Dreadnought (p.76) use the normal threat block, not
+  the vehicle format. Kill Team Righteous Will (pp.114–118) prints Talents and Equipment but no weapon profiles and no
+  Default pool: each list is an untyped ability, `skills.default` is `null`. Hofniel's Tier row (A E T T T) differs
+  from his squad's (A A E E T). Kept as printed: Marmaroth's 6 Wounds (his squad has 11–12), the garbled Honour the
+  Chapter text, the Heavy Bolter's "Ap -1". "ABSOLVERS CHAPTER" is one keyword. All `imperial`.
+- **Redacted Records 2** (`rr2-`, 7): the six expected plus an Oily Squig Mob (p.88). The Kastelan (p.53) is its own
+  official printing beside the homebrew `hat-kastelan-robot`. Neither Cybercanid prints a Default pool (`null`). Magos
+  Luxus prints NECRON among its keywords and stays `mechanicus`; the Duke of Putrescence is `heretic`.
+- **Wretches of the Writ** (`wretches-`, 7): Lord Maloquence prints 5 Tiers, the rest 4. Kept as printed: the heading
+  "VERIT MAAAZITOR" (the text says Maalazitor; id from the heading), "ARA'VITU'URHAL" (text: Aru'vitu'urhal), Brother
+  Iscarius's Veteran of the Long War printed twice, possessives without apostrophes, "Inflicts (On Fire)", the
+  Changeling's DN-less "DN Targets Willpower". Ara'vitu'urhal and the Changeling are `daemon`, the rest `heretic`.
+  The end-of-adventure forms (the Greater Daemon, Maloquence the Terrible) print no stat block.
+- **Bloody Gates** (`bg-`, 7): no Tier row anywhere (rules-flow.md §11.70): Commissar Shrake A, Cravax the Claw E,
+  the five rank-and-file T. The Traitor Militia Sniper sidebar is a `variant` (its Long Las "Reliable3" is stored
+  `Reliable`). Its Poxwalker (p.25) is Core's `poxwalker` exactly, so it isn't transcribed; `bg-cultist` differs from
+  `cultist` (SCUM, Cunning) and is.
+- **Affliction Ascendant** (`aa-`, 2): Botuthrax Clostidia (`daemon`) and Putradyne Corporis (`heretic`). The
+  asterisks on Putradyne's "5(9)*" and "Powered 4*" have no footnote. The door on p.10 ("Resilience of 12") is scenery.
 
 ---
 
@@ -512,6 +553,8 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | A `core` threat whose id isn't in the core bestiary list (`EXPECTED`, Core contents pp.326–371) | `? <file>: …` warning, not a failure |
 | Core bestiary progress | `core bestiary: N/36 (missing: …)` |
 | Everything else | `supplements: N threats` (all threats minus core list hits) |
+| Coverage per book against `threat-manifest.json` (`{ source: ids[] }`, from each book's contents pages and a scan for stat blocks; outside `threats/` so the loader skips it). A book goes in when its transcription lands | `threats <source>: N/M (missing: …)` |
+| A threat whose `source` is in the manifest but whose id isn't listed | `? <file>: not in threat-manifest.json …` warning, not a failure |
 | Every pack parses as `Pack`, including key references and `MAX_ENCOUNTER_ROWS` | `✖ pack <name>` + zod error |
 | Every beat `encounter[].threatId` and bestiary NPC `threatId` exists | `✖ pack <name>: unknown threat "…"` |
 | Every `wargear/*.json` parses as `Wargear[]`; ids unique across files | `✖ wargear/<file>` + zod error, or `duplicate id` |

@@ -1,0 +1,50 @@
+{
+  "id": "bg-doomed-youth",
+  "name": "Doomed Youth",
+  "source": "bloody-gates",
+  "page": 23,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "SCUM", "CHAOS", "HERETIC"],
+  "attributes": { "S": 2, "T": 2, "A": 3, "I": 4, "Wil": 1, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 3, "note": "Ragged Clothes: AR 0" },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 3, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Cunning", "dice": 4 },
+      { "name": "Deception", "dice": 4 },
+      { "name": "Stealth", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Without Honour",
+      "text": "Doomed Youth cheat in any fight. On the first Round of combat, this Threat may use their Stealth dice pool to make Ballistic Skill (A) Tests."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Industrial Bludgeon", "damage": 8, "ed": 2, "range": [1], "traits": ["Brutal", "Unwieldy"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Doomed",
+      "text": "When this Threat would die, roll 1d6. If you roll a Complication or an Exalted Icon, this Threat makes a melee attack if able, and then dies immediately after the attack is resolved"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (4 Wounds, 1 Conviction, 1-Ruin Determination: a grunt Troop)."
+}

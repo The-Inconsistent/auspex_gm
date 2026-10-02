@@ -39,7 +39,8 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   import remaps it, and a pack's exits are labels only, since pack beats have no key to point at.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
-  book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats, docs/data.md §4).
+  book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats) and Redacted Records 2
+  (`rr2-*`, docs/data.md §4).
 - **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
   loads it into the tracker. The builder shows the Threat Assessment p.8 guideline: *two Troops per Agent, half in a
   Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.

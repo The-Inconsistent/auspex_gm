@@ -1,0 +1,51 @@
+{
+  "id": "rr2-oracular-attendant",
+  "name": "The Oracular Attendant",
+  "source": "redacted-records-2",
+  "page": 90,
+  "faction": "mechanicus",
+  "threat": ["A", "A", "E", "E"],
+  "keywords": ["ADEPTUS MECHANICUS", "SERVITOR"],
+  "attributes": { "S": 6, "T": 6, "A": 2, "I": 2, "Wil": 4, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 11, "note": "Grafted Metal Plates, 2 AR" },
+  "defence": 1,
+  "wounds": 9,
+  "shock": 6,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Tech", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Iron Soul", "text": "This Threat is unaffected by abilities that target the mind, and never needs to make Resolve tests to continue fighting." },
+    { "name": "Hatches & Tunnels", "text": "Within the Orrery complex, the Attendant has numerous secret tunnels for moving around. It gains +5 Dice to Stealth checks to Surprise intruders." },
+    { "name": "Guardian", "text": "The Attendant is tied to the noosphere of the Orrery complex, and receives +2 Dice to Awareness (Int) Tests and +4 Dice to Tech (Int) Tests to repair the Orrery while within its walls." }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Hidden Defences",
+      "text": "Within the Orrery complex, the Attendant can activate a variety of hidden defences. On the first round of combat it activates a hidden gun platform (effectively an immobile Combat Servitor, Wrath & Glory Rulebook, page 334)."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Arc Maul", "damage": 12, "ed": 3, "ap": -2, "range": [1], "traits": ["Arc (3)", "Brutal"] },
+        { "name": "Flechette Blaster", "damage": 8, "ed": 2, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol", "Rapid Fire (4)"] }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Repair Protocol Gamma 19",
+      "text": "Should the Attendant be destroyed while Orrery still functions, automated systems will attempt to trap a Human subject and create a new Attendant from spare parts. This takes 1d6 hours."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 5,
+  "size": "Avg"
+}

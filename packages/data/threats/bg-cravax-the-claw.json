@@ -1,0 +1,54 @@
+{
+  "id": "bg-cravax-the-claw",
+  "name": "Cravax the Claw",
+  "source": "bloody-gates",
+  "page": 24,
+  "faction": "heretic",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "CHAOS", "HERETIC", "SCUM", "KHORNE"],
+  "attributes": { "S": 4, "T": 4, "A": 2, "I": 4, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 6, "note": "Grafted Flak Plates: 1 AR" },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat can take Ruin actions and has 1 personal Ruin" }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Servo Arm", "damage": 9, "ed": 2, "ap": -3, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Borrowed Time",
+      "text": "Make an attack as a Free Action against any target in range."
+    },
+    {
+      "type": "RUIN",
+      "name": "Malcontent Barrage",
+      "text": "Activate the Barrage option from Battlefield Ruin."
+    },
+    {
+      "type": "REACTION",
+      "name": "Combat Stimms",
+      "text": "Once per Round, this Threat can suffer 1 Shock to immediately take a Combat Action. Roll an Opposed Initiative Test if this interrupts an Agent's Turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (named Champion with 1 personal Ruin, but only 6 Wounds, so Elite rather than Adversary; GM may prefer A). Battlefield Ruin is a rule in the adventure's missions, not in this book's rules pages."
+}

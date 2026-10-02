@@ -1,0 +1,56 @@
+{
+  "id": "rr2-duke-of-putrescence",
+  "name": "Khargast the Bloated, Duke of Putrescence (Blightlord Champion)",
+  "source": "redacted-records-2",
+  "page": 31,
+  "faction": "heretic",
+  "threat": ["A", "A", "A", "A"],
+  "keywords": ["CHAOS", "ADEPTUS ASTARTES", "NURGLE", "MARK OF NURGLE"],
+  "attributes": { "S": 9, "T": 9, "A": 5, "I": 5, "Wil": 6, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 17, "note": "Diseased Terminator Armour: 3 AR + 4* AR" },
+  "defence": 4,
+  "wounds": 19,
+  "shock": 11,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Awareness", "dice": 9, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Cunning", "dice": 8 },
+      { "name": "Intimidation", "dice": 8 },
+      { "name": "Leadership", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 10 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Cumbersome Armour", "text": "This Threat may not Run or Sprint." },
+    { "name": "Mark of Chaos", "text": "This Threat has a Mark of Chaos [Nurgle]. Toughness bonus is included above." },
+    { "name": "Space Marine Implants", "text": "Gain bonus dice and options for actions from Space Marine Implants (Wrath & Glory Rulebook, page 75)." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Frightful Form", "text": "Anyone who can see this Threat must make a DN 3 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Blight Launcher", "damage": 13, "ed": 1, "ap": -2, "range": [12, 24, 36], "salvo": 0, "traits": ["Inflict (Poison 4)"] },
+        { "name": "Axe Legartis", "damage": 14, "ed": 6, "ap": -3, "range": [1], "traits": ["Brutal", "Rending (2)", "Inflict (Poison 2)"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Veteran of the Long War", "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round" },
+    { "type": "RUIN", "name": "Death to the False Emperor!", "text": "Spend 1 Ruin to Charge, gaining +2 bonus dice to the attack Test." },
+    {
+      "type": "REACTION",
+      "name": "Noxious Discharge",
+      "text": "Whenever this Threat takes a Wound, roll a d6. If you roll an Icon, a mix of virulent gases and toxic effluent spills from the Wound. The Noxious Discharge hits every target Engaged with the Death Guard. Noxious Discharge: 2 +4 ED / AP -4 / Blast (4), Inflict (Poison 4)"
+    }
+  ],
+  "determination": "Disgustingly Resilient: You do not need to spend Ruin to roll Determination for this Threat. Roll 8d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 7,
+  "size": "Large",
+  "note": "Noxious Discharge has no printed range, kept as ability text (printed 'AP -4' with an en dash). Resilience note copied as printed: '4* AR', the asterisk has no footnote."
+}

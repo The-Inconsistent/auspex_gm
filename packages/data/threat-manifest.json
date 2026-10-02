@@ -1,0 +1,98 @@
+{
+  "vow-of-absolution": [
+    "voa-brother-briathos",
+    "voa-brother-marmaroth",
+    "voa-brother-puriel",
+    "voa-brother-rogziel",
+    "voa-brother-sgt-hofniel",
+    "voa-dreadnought",
+    "voa-redemptor-dreadnought"
+  ],
+  "redacted-records-2": [
+    "rr2-duke-of-putrescence",
+    "rr2-kastelan-robot",
+    "rr2-magos-luxus",
+    "rr2-oily-squig",
+    "rr2-oracular-attendant",
+    "rr2-raider-cybercanid",
+    "rr2-sulphurhound-cybercanid"
+  ],
+  "wretches-of-the-writ": [
+    "wretches-aravituurhal",
+    "wretches-brother-ephilates",
+    "wretches-brother-iscarius",
+    "wretches-changeling",
+    "wretches-lord-maloquence",
+    "wretches-massintos-wielder-of-fates",
+    "wretches-verit-maaazitor"
+  ],
+  "bloody-gates": [
+    "bg-commissar-shrake",
+    "bg-cravax-the-claw",
+    "bg-cultist",
+    "bg-doomed-youth",
+    "bg-penal-brigade-trooper",
+    "bg-traitor-guardsman",
+    "bg-traitor-militia"
+  ],
+  "affliction-ascendant": [
+    "aa-botuthrax-clostidia",
+    "aa-putradyne-corporis"
+  ],
+  "gutshivas-kommandos": [
+    "dok-bitzbak",
+    "dudd-the-bomb-squig",
+    "groof-da-yoof",
+    "gruzbag",
+    "gutshiva",
+    "mek-tiknek",
+    "mek-wrencha",
+    "razorwings"
+  ],
+  "high-altar-of-technology": [
+    "hat-corpuscarii-electro-priest",
+    "hat-cybernetica-datasmith",
+    "hat-fulgurite-electro-priest",
+    "hat-kastelan-robot",
+    "hat-kataphron-battle-servitor",
+    "hat-monotask-servitor",
+    "hat-sicaran-infiltrator",
+    "hat-sicaran-ruststalker",
+    "hat-skitarii-ranger",
+    "hat-skitarii-vanguard",
+    "hat-tech-priest-dominus",
+    "hat-tech-priest-enginseer"
+  ],
+  "apocrypha": [
+    "apoc-arco-flagellant",
+    "apoc-attack-squig",
+    "apoc-black-templars-neophyte",
+    "apoc-calligraphus-servitor",
+    "apoc-cat-unit",
+    "apoc-chapter-serf",
+    "apoc-cherub",
+    "apoc-combat-servitor",
+    "apoc-corv",
+    "apoc-cyber-mastiff",
+    "apoc-daemonhost",
+    "apoc-dark-disciple",
+    "apoc-e-cog",
+    "apoc-faolchu",
+    "apoc-fenrisian-wolf",
+    "apoc-grapplehawk",
+    "apoc-gretchin",
+    "apoc-gun-servitor",
+    "apoc-gyrinx",
+    "apoc-khymera",
+    "apoc-medicae-servitor",
+    "apoc-ministorum-choir-drone",
+    "apoc-monotask-servitor",
+    "apoc-murder-servitor",
+    "apoc-psyber-eagle",
+    "apoc-razorwing",
+    "apoc-rubric-marine",
+    "apoc-servo-skull",
+    "apoc-tau-drone",
+    "apoc-thrall-wizard"
+  ]
+}

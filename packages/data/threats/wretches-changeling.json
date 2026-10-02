@@ -1,0 +1,60 @@
+{
+  "id": "wretches-changeling",
+  "name": "Changeling",
+  "source": "wretches-of-the-writ",
+  "page": 20,
+  "faction": "daemon",
+  "threat": ["A", "A", "A", "A"],
+  "keywords": ["CHAOS", "DAEMON", "PSYKER", "TZEENTCH"],
+  "attributes": { "S": 4, "T": 6, "A": 5, "I": 6, "Wil": 6, "Int": 8, "Fel": 2 },
+  "resilience": { "value": 8, "note": "Changelings Robes AR: 4" },
+  "defence": 5,
+  "wounds": 16,
+  "shock": null,
+  "skills": {
+    "default": 10,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Deception", "dice": 12 },
+      { "name": "Psychic Mastery", "dice": 14 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Champion", "text": "The Changeling may use Ruin actions and has 4 personal Ruin." },
+    { "name": "Favoured by Tzeentch", "text": "The Changeling gains +2 bonus dice to all Interaction Attacks." },
+    { "name": "Master of Ruinous Deceptions", "text": "The GM gains 2 points of Ruin at the start of each of The Changelings' turns." },
+    { "name": "Veiled by the Warp", "text": "The Changeling is immune to the Bleeding, Exhausted, On Fire, and Poisoned Conditions, and cannot Suffocate." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Shifting Form", "text": "Anyone that can see this Threat must make a DN 4 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Tricksters Staff", "damage": 10, "ed": 3, "ap": -1, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Boon of Tzeentch",
+      "text": "The Changeling may attempt to activate one of the following psychic powers: Smite (Wrath & Glory page 272), Darkflame (page 281), Touch of Corruption (page 281), Treason of Tzeentch."
+    },
+    {
+      "type": "ACTION",
+      "name": "Treason of Tzeentch",
+      "text": "DN Targets Willpower, Action: A target within 20m gains the Vulnerable condition, in addition the target can gain no bonus dice until the start of your next turn."
+    },
+    {
+      "type": "RUIN",
+      "name": "Formless Horror",
+      "text": "Spend 1 Ruin. The Changeling shifts form into that of another Threat. The Changeling may use any Action that Threat can use, may use that Threat's Skills in place of its own, and has that Threat's Speed and Size whilst in this form, but otherwise retains all of the information in this statblock, including Wounds and Shock. The Changeling may revert back to its original form as a Simple Action."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 6,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Treason of Tzeentch is printed as 'DN Targets Willpower' with no DN number. The Tricksters Staff prints without an apostrophe."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "rr2-sulphurhound-cybercanid",
+  "name": "Sulphurhound Cybercanid",
+  "source": "redacted-records-2",
+  "page": 54,
+  "faction": "mechanicus",
+  "threat": ["E", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "SERBERYS", "[FORGE WORLD]"],
+  "attributes": { "S": 4, "T": 6, "A": 3, "I": 3, "Wil": 3, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 11, "note": "Serberys Auto-cuirass" },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 4,
+  "skills": {
+    "default": null,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Intimidation", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Cybercanid", "text": "This Threat ignores Difficult Terrain." },
+    { "name": "Gyro-stabilised Saddle", "text": "Whenever the Cybercanid is being ridden by its bonded Serberys rider, the bonded Serberys rider may reroll any Wrath Die that rolls a Complication." },
+    { "name": "Noospheric Link", "text": "Whenever the Cybercanid is being ridden by its bonded Serberys rider, the bonded Serberys rider may use its movement to command the Cybercanid to move and take an Action." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Clawed Limbs", "damage": 8, "ed": 3, "range": [1], "traits": ["Brutal"] },
+        { "name": "Sulphur Breath", "damage": 10, "ed": 2, "ap": -2, "range": [6, 12, 18], "salvo": 0, "traits": ["Assault", "Flamer"] }
+      ]
+    }
+  ],
+  "determination": "Enhanced Bionics: Spend 1 Ruin (or Wrath, if the cyber-beast is your mount) to roll 6d6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 12,
+  "size": "Large",
+  "note": "No Default skill printed (skills.default null). Gyro-stabilised Saddle lacks the Raider's 'must take the second result' clause, as printed."
+}

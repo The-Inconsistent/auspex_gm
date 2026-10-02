@@ -1,0 +1,146 @@
+{
+  "id": "aa-botuthrax-clostidia",
+  "name": "Botuthrax Clostidia, Great Unclean One",
+  "source": "affliction-ascendant",
+  "page": 21,
+  "faction": "daemon",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "MARK OF NURGLE"
+  ],
+  "attributes": {
+    "S": 16,
+    "T": 10,
+    "A": 4,
+    "I": 6,
+    "Wil": 10,
+    "Int": 8,
+    "Fel": 10
+  },
+  "resilience": {
+    "value": 13,
+    "note": "10 + Skin Folds (3), 13"
+  },
+  "defence": 5,
+  "wounds": 40,
+  "shock": 14,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Beloved of Nurgle",
+      "text": "This Threat may use Ruin Actions and has 5 personal Ruin."
+    },
+    {
+      "name": "Massive Bulk",
+      "text": "Botuthrax Clostidia is huge and immensely difficult to kill. It has 40 Wounds."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Pestilential presence",
+      "text": "Anyone who sees Botuthrax must make a DN 5 Fear Test. Anyone not wearing a sealed suit must make a DN 7 Resolve Test or gain Poisoned (7) as their nerves burn."
+    },
+    {
+      "type": "ACTION",
+      "text": "Avalanche of Flesh: Botuthrax falls on its opponent.",
+      "weapons": [
+        {
+          "name": "Bileblade",
+          "damage": 16,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 5)"
+          ]
+        },
+        {
+          "name": "Lashing Tongue",
+          "damage": 12,
+          "ed": 4,
+          "ap": -4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 5)",
+            "Inflict (Staggered 4)"
+          ]
+        },
+        {
+          "name": "Avalanche of Flesh",
+          "damage": 10,
+          "ed": 8,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Prone 4)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hideous Growth",
+      "text": "Spend 2 Ruin. Botuthrax Clostidia regains 5 Wounds."
+    },
+    {
+      "name": "Pestilent Tide",
+      "text": "Spend one Ruin. A wave of diseased flesh and acidic rotting matter spews from Botuthrax's guts. This is a ranged attack with the following profile: 12 +2 ED / AP -2 / Range 16 / Blast (4)",
+      "weapons": [
+        {
+          "name": "Pestilent Tide",
+          "damage": 12,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            16
+          ],
+          "traits": [
+            "Blast (4)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Crushing Bulk",
+      "text": "Spend 2 Ruin. Botuthrax charges forward like a pestilential cannonball. Its target and any allies within 5m are crushed under its mass. Roll to hit once; compare the result against each Agent's Defence separately."
+    },
+    {
+      "type": "RUIN",
+      "name": "Nurglings!",
+      "text": "Spend 1 Ruin. A single band of 20 Nurglings disgorge themselves from Botuthrax's guts and act immediately."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 10d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 5,
+  "speed": 5,
+  "size": "Gargantuan",
+  "options": [],
+  "mobAbilities": [],
+  "note": "A named Great Unclean One (not in the Core bestiary). Melee weapons print no range, as in Core: stored [1]. Hideous Growth, Pestilent Tide and Crushing Bulk are printed untyped under ACTION. Beloved of Nurgle is its Champion bonus (5 personal Ruin).",
+  "personalRuin": 5
+}

@@ -4,9 +4,16 @@ import { z } from "zod";
 // books only the first listed is transcribed, and the others are cited in its `note` (docs/data.md). Official beats
 // homebrew, then newest printing wins.
 export const SOURCES = {
+  darktide: { cite: "Darktide", official: true, pages: "printed" }, // Apr 2025 update
   "daemons-and-heretics": { cite: "D&H", official: true, pages: "printed" }, // Threat Assessment, Jun 2024 update
   "vow-of-absolution": { cite: "VoA", official: true, pages: "printed" }, // Apr 2024 printing
   "inheritance-of-embers": { cite: "IoE", official: true, pages: "printed" }, // Jan 2024
+  "redacted-records-2": { cite: "RR2", official: true, pages: "printed" }, // 2023
+  "wretches-of-the-writ": { cite: "Wretches", official: true, pages: "printed" }, // Dec 2022
+  "affliction-ascendant": { cite: "AA", official: true, pages: "printed" }, // Nov 2021
+  "redacted-records": { cite: "RR1", official: true, pages: "printed" }, // Aug 2021
+  "bloody-gates": { cite: "BG", official: true, pages: "printed" }, // Jun 2021
+  "litanies-of-the-lost": { cite: "Litanies", official: true, pages: "printed" }, // Apr 2021
   "forsaken-system": { cite: "FSPG", official: true, pages: "printed" }, // 2021
   core: { cite: "Core", official: true, pages: "printed" }, // 2020
   apocrypha: { cite: "Apocrypha", official: false, pages: "printed" }, // homebrew, v9 2023

@@ -1,0 +1,115 @@
+{
+  "id": "voa-brother-sgt-hofniel",
+  "name": "Brother Sgt Hofniel",
+  "source": "vow-of-absolution",
+  "page": 114,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "ADEPTUS ASTARTES",
+    "IMPERIUM",
+    "ABSOLVERS CHAPTER"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 6,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 13,
+    "note": "Power Armour: 6 AR"
+  },
+  "defence": 4,
+  "wounds": 12,
+  "shock": 7,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 4
+      },
+      {
+        "name": "Awareness",
+        "dice": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Intimidation",
+        "dice": 2
+      },
+      {
+        "name": "Investigation",
+        "dice": 1
+      },
+      {
+        "name": "Leadership",
+        "dice": 3
+      },
+      {
+        "name": "Scholar",
+        "dice": 1
+      },
+      {
+        "name": "Stealth",
+        "dice": 4
+      },
+      {
+        "name": "Survival",
+        "dice": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [],
+  "abilities": [
+    {
+      "name": "Talents",
+      "text": "Duty Until Death (W&G, page 133), Angel of Death (W&G, page 129), Gilead Combat Veteran (pg 47)"
+    },
+    {
+      "name": "Equipment",
+      "text": "Astartes Combat Knife, Auspex, Boltgun, Chainsword, 3 Frag Grenades, 3 Krak Grenades, Mk 8 Power Armour"
+    },
+    {
+      "name": "Savage Echoes",
+      "text": "You may reroll Double Rank dice once per melee attack Test."
+    },
+    {
+      "name": "Defender of Humanity",
+      "text": "+ Rank Icons to any successful attack against a Mob."
+    },
+    {
+      "name": "Honour the Chapter",
+      "text": "You are subject to the orders of your Chapter Master, and must honour the beliefs and traditions of your chapter increase final Resolve by +1."
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "You are immune to the Bleeding Condition. You gain +1 bonus die to any Test related to one of the 19 implants if deemed appropriate by the GM."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 7,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Strength printed '5 (8)'; stored 8 (Powered included, as Core prints a single armoured value). No weapon profiles printed; talents and equipment kept as ability text. Keywords printed 'ADEPTUS ASTARTES, IMPERIUM, ABSOLVERS CHAPTER'; 'ABSOLVERS CHAPTER' kept as one keyword."
+}
