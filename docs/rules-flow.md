@@ -630,6 +630,27 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Keyword (NECRON, T'AU, KROOT, TYRANID, GENESTEALER CULT, CHAOS, HERETIC, HERETIC ASTARTES, DAEMON, DARK MECHANICUM,
     XENOS) the "need a reason" line. The book names only the Aeldari and the Ork; the wider list is the GM's call
     (`mixingHint`, `apps/web/lib/keywords/keywords.ts`). *(User ruling, 2026-10-02.)*
+84. **Forsaken System Player's Guide factions take the Core Faction their page names** (FSPG pp.39–63; GitHub issue
+    #46). No faction page prints a Keyword. Each preset (`faction-presets/forsaken-system.json`) takes the glossary
+    Keyword of the organisation its own page names:
+
+    | Faction | Keywords | Where the page names it |
+    |---|---|---|
+    | Order of the Sanctified Shield (p.40) | ADEPTA SORORITAS | p.39: "a single Order Minoris of the Adepta Sororitas" |
+    | Machine Cults of Avachrus (p.42) | ADEPTUS MECHANICUS | p.42: "The Adeptus Mechanicus oversees all aspects of technology" |
+    | Ecclesiarchy of Enoch (p.44) | ADEPTUS MINISTORUM | p.44: "The Adeptus Ministorum is the one true church" |
+    | Guard Regiments of Gilead (p.46) | ASTRA MILITARUM | p.46: "The Astra Militarum, commonly known as the Imperial Guard" |
+    | Remnants of the Inquisition (p.48) | INQUISITION | p.48: "The unending mission of the Inquisition" |
+    | The Varonius Dynasty (p.50) | ROGUE TRADER | p.50: "Rogue Traders, empowered by Imperial Warrants" |
+    | The Absolvers (p.52) | ADEPTUS ASTARTES, ABSOLVERS | p.52: "The Space Marines are the Emperor's Angels of Death", the Absolvers a Chapter (ABSOLVERS: VoA's sub-faction) |
+    | The Administratum (p.54) | ADEPTUS ADMINISTRATUM | p.54: "The Adeptus Administratum is, in many ways, the Imperium" |
+    | Craftworlders of Ul Khari (p.56) | ASURYANI | p.56: "The isolationist Asuryani of Ul-Khari" |
+    | Greensteel Corsairs (p.58) | ANHRATHE | p.58: "Emerald Princess of the Anhrathe" |
+    | Da Blood Axes! (p.60) | ORK | p.60: "The brutal Ork species" |
+    | Traitors of the Rift (p.62) | CHAOS | p.62: "rife with the taint of Chaos" |
+
+    Only the Faction is mapped, not a sub-faction the page could also suggest (UL-KHARI): the GM adds that in the
+    picker. *(User ruling, 2026-10-02.)*
 
 ---
 

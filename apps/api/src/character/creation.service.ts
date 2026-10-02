@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
-import { creationCatalogue, wargear } from "@wg/data";
+import { creationCatalogue, factionPresetList, wargear } from "@wg/data";
 import {
   SOURCES,
   officialOnly,
@@ -15,6 +15,7 @@ import type { CachedPayload } from "../core/http.ts";
 
 // The character-creation catalogue (packages/data/creation, docs/data.md §9), parsed at startup so a bad file fails fast.
 const creation = creationCatalogue();
+const printedFactions = factionPresetList(); // faction-presets/<source>.json (issue #46)
 
 // What `character.build` resolves against. The whole catalogue: resolveBuild itself refuses homebrew records and rules
 // when the campaign doesn't allow them.
@@ -49,10 +50,14 @@ export function factionPresets(homebrew: boolean): FactionPresets {
       .filter(keep)
       .map(({ keyword, source, page }) => ({ name: keyword, text: "", source, page })),
   ].filter((k) => !seen.has(k.name) && seen.add(k.name));
-  // ADD FROM BOOK: the creation catalogue's factions, with the Keyword each stands for (docs/data.md §9).
-  const presets = creation.factions
-    .filter(keep)
-    .map(({ id, name, source, page, keywords }) => ({ id, name, source, page, keywords, notes: "", secrets: "" }));
+  // ADD FROM BOOK: the creation catalogue's factions, with the Keyword each stands for (docs/data.md §9), then the
+  // transcribed ones.
+  const presets = [
+    ...creation.factions
+      .filter(keep)
+      .map(({ id, name, source, page, keywords }) => ({ id, name, source, page, keywords, notes: "", secrets: "" })),
+    ...printedFactions, // every book with faction presets is official
+  ];
   return { keywords, presets };
 }
 

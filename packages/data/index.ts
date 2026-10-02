@@ -4,6 +4,7 @@ import {
   type Creation,
   type CreationType,
   EventTable,
+  FactionPreset,
   Pack,
   PoolPresetTable,
   RuleEntry,
@@ -50,6 +51,13 @@ export const scenePresets = (): ScenePresets => ({
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
   pools: poolPresetFiles().flatMap((f) => PoolPresetTable.array().parse(json(new URL(f, poolsDir)))),
 });
+
+// faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the
+// creation catalogue's own factions.
+const factionPresetsDir = new URL("./faction-presets/", import.meta.url);
+export const factionPresetFiles = () => jsonFiles(factionPresetsDir);
+export const factionPresetList = (): FactionPreset[] =>
+  factionPresetFiles().flatMap((f) => FactionPreset.array().parse(json(new URL(f, factionPresetsDir))));
 
 // creation/<type>/<source>.json: the character-creation catalogue, book text served to seats only (docs/data.md).
 const creationDir = new URL("./creation/", import.meta.url);

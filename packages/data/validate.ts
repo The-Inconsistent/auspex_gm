@@ -10,17 +10,19 @@ import {
   ratingsXp,
   ruleKey,
   SOURCES,
+  THREAT_SOURCES,
   Threat,
   Wargear,
   SKILLS,
   SkillDn,
   EventTable,
+  FactionPreset,
   PoolEntry,
   PoolPresetTable,
   PoolSpend,
   presetLine,
 } from "@wg/shared";
-import { eventTableFiles, loadPackRaw, packNames, poolPresetFiles } from "./index.ts";
+import { eventTableFiles, factionPresetFiles, loadPackRaw, packNames, poolPresetFiles } from "./index.ts";
 
 // Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
 const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
@@ -75,6 +77,7 @@ const dir = new URL("./threats/", import.meta.url);
 let failed = false;
 const found: string[] = [];
 const variantsOf = new Map<string, Set<string>>(); // a threat's `variant` options, for followers
+const threatKeywords = new Set<string>(); // Keywords printed on stat blocks, which the glossary doesn't list them all of
 
 for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   const r = Threat.safeParse(JSON.parse(readFileSync(new URL(file, dir), "utf8")));
@@ -93,6 +96,7 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   if (THREAT_MANIFEST[r.data.source] && !THREAT_MANIFEST[r.data.source]!.includes(r.data.id))
     console.warn(`? ${file}: not in threat-manifest.json for ${r.data.source}`);
   found.push(r.data.id);
+  for (const k of r.data.keywords) threatKeywords.add(k.toUpperCase());
   variantsOf.set(r.data.id, new Set(r.data.options.filter((o) => o.kind === "variant").map((o) => o.name)));
 }
 
@@ -578,6 +582,36 @@ for (const name of packNames()) {
   }
   console.log(
     `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`,
+  );
+}
+
+// Faction presets (faction-presets/<source>.json, issue #46): the filename names the book, ids are unique across files
+// and the creation factions (the endpoint serves both), and every Keyword is in the glossary or printed on a stat block.
+const factionPresetIds = new Set(creationIds("factions"));
+for (const file of factionPresetFiles()) {
+  const r = FactionPreset.array().safeParse(
+    JSON.parse(readFileSync(new URL(`./faction-presets/${file}`, import.meta.url), "utf8")),
+  );
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ faction-presets/${file}\n${z.prettifyError(r.error)}`);
+    continue;
+  }
+  const problem = (message: string) => {
+    failed = true;
+    console.error(`✖ faction-presets/${file}: ${message}`);
+  };
+  for (const p of r.data) {
+    if (`${p.source}.json` !== file) problem(`"${p.id}" is from ${p.source}`);
+    if (!THREAT_SOURCES[p.source].official)
+      problem(`"${p.id}": homebrew, but /faction-presets serves these files to every campaign`);
+    if (factionPresetIds.has(p.id)) problem(`duplicate id "${p.id}"`);
+    factionPresetIds.add(p.id);
+    for (const k of p.keywords)
+      if (!keywordNames.has(k) && !threatKeywords.has(k)) problem(`"${p.id}": unknown Keyword "${k}"`);
+  }
+  console.log(
+    `faction-presets/${file}: ${r.data.length} factions (${r.data.filter((p) => p.keywords.length).length} with Keywords, ${r.data.filter((p) => p.secrets).length} with secrets)`,
   );
 }
 
