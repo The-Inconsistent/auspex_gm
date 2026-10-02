@@ -176,7 +176,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
 | Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
-| Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
+| Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
 
 The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
 scene, item, NPC or location data that other work types as `Source`. Church of Steel joins them for its scene presets (issue #39).
@@ -741,6 +741,13 @@ GM-only book data for building scenes (GitHub issues #39 and #40), served by `GE
     effect takes a Turn as an extra NPC). Each `text` keeps the italic quote that opens it. Artillery Support's profile
     is one plain line. Kept as printed: its "Traits (8)", which names no trait, "AP —1" with a dash, and the lowercase
     word after the quote in Barrage and Spotlit.
+  - **Affliction Ascendant** (`affliction-ascendant.json`): The Deadly Battlefield, pp.23–24, checked against page
+    renders. Rites of Battle (p.23): 9 Glory spends, three per rite at 1, 2 and 3, each named "<Rite>: <benefit>" as
+    the table prints them; its `gm` is p.23's conditions (an ASTARTES Agent picks one rite before battle and pays at
+    the start of their turn; Tier 4 only, for Astartes who trained together or share a [CHAPTER] Keyword). Battlefield
+    Ruin (p.24): 6 Ruin spends (1, 1, 2, 2, 3, 3); its `gm` is p.24's intro. Nurgle's Miasma's four choices are "• "
+    lines in its text, standing in for the printed skull bullets. Kept as printed: "-2 AP" with a hyphen in Staggering
+    Blow beside "−1 AP" elsewhere, and "(see Wrath & Glory, page 194)".
 
 ---
 
