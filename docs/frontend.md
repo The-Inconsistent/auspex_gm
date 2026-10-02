@@ -390,13 +390,18 @@ handlers (`runCommand`), so they fire the same reminders. What the reminders say
 [game-logic.md](game-logic.md).
 
 **Add combatants** (`AddCombatants`, under the command line):
-- The `+ THREAT…` select lists the bestiary as `name (source p.N)`.
+- `+ THREAT…` opens the shared `ThreatPicker` (§5) over the bestiary, classed at the campaign's Tier.
 - `MOB #` accepts digits only. A value of 2 or more adds the threat as a mob of that size.
 - An optional MARKER select.
 - A `VisibilitySelect` (PLAYERS: BAR ONLY by default, kept between adds) so a held-back threat goes in hidden.
 - ADD sends `combatant.addThreat`.
 - `+ PARTY (n)` sends one `combatant.addCharacter` for each character not yet in the fight, in order.
 - All of these go through `run`, so they are logged and their errors show on the tracker error line.
+- Under the add row, once the fight holds anything, `BudgetLines` (§5) checks it against the same guideline PREP uses
+  (Threat Assessment p.8). The classes are the ones snapshotted when each threat joined (`threatClass`), a Mob counts as
+  one tracked combatant with its surviving `mobCount` as models, and anything `isOut` (a slain threat, a dead Agent)
+  leaves the tally even while its row waits to be removed. The budget is sized for the Agents in the fight, falling back
+  to the seated ones before + PARTY.
 
 ### 3.2 The command line: `lib/command/command.ts`
 
@@ -501,7 +506,7 @@ The tests are in `lib/command/command.test.ts`.
     COMPLICATIONS rule links, then each Ruin and Glory line with a +N button and each spend with SPEND N. A tap sends
     `pool.adjust` and reports in the message line, with what was lost at the pool's maximum (`poolMax`, Core pp.164,
     320). A spend the pool can't pay is disabled (`canSpend`): the server floors at 0 and would undercharge
-  - a summary of its prepared encounter
+  - a summary of its prepared encounter: an entry's label, or the threat's name from the bestiary, never the id
 - **Beat controls:**
   - ↑ / ↓ swap a beat with its neighbour and send the full `ids` order as `beat.reorder`.
   - EDIT opens the beat editor.
@@ -541,9 +546,13 @@ The tests are in `lib/command/command.test.ts`.
     row with `presetLine` into the right list (a cost the book doesn't print stays empty)
   - location
   - NPC and handout toggle chips (`aria-pressed`)
-  - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
+  - the prepared encounter entries: the threat through a `ThreatPicker` (§5), count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements). + THREAT adds a row through the same picker
 
-  It also shows the Threat Assessment sizing guideline for the current party size and the current enemy count.
+  Above the entries, `BudgetPanel` (`components/budget-panel/`) draws `BudgetLines` (§5) for the prepared roster
+  (`rosterTally`). It is sized for the Agents a fight would actually add — the active ones, which `Prep` passes as
+  `agents` (`activeCharacterIds(state.access).size || state.characters.length`) with the campaign's Tier — and a
+  FORTIFIED toggle doubles every target (Threat Assessment p.8, rules-flow §11.82). FORTIFIED is editor state, not
+  stored on the beat.
 - **`ScenePicker`** (`components/scene-picker/scene-picker.tsx`, + SCENE FROM A TABLE beside + NEW SCENE, shown when
   `presets.tables` has any), issue #39:
   - The GM picks a book (`BOOKS[source].name`) and one of its tables. The cite, the dice and any printed default DN
@@ -668,6 +677,8 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `seal/seal.tsx` `Seal` | `value`, `pool: Pool`, `size?` | A party pool as a wax seal (brass Glory, crimson Ruin), `role="img"` labelled `<value> <pool>` |
 | `theme-toggle/theme-toggle.tsx` `ThemeToggle` | `className?` | The day/night switch (§7): flips `data-theme` on `<html>` and stores it; `constants.ts` holds `THEME_KEY` and the pre-paint `THEME_SCRIPT` |
 | `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite` from `@wg/shared`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
+| `threat-picker/threat-picker.tsx` `ThreatPicker` | `bestiary: Threat[]`, `tier`, `onPick`, `value?`, `label?` (`+ THREAT…`), `className?` | The way into the bestiary, GM only: the trigger names the picked threat with its `threatCite` (several books print a Cultist, rules-flow §11.71), and opens a native modal `dialog.picker` with a search over the name and keywords, faction chips, T/E/A/M chips for the class printed at this campaign's Tier (Core p.323) and a book select (`BOOKS`). Only facets the loaded bestiary holds get a chip. Each row shows the name, a class chip, the faction (`FACTION_LABEL`) and `threatCite`; a tap picks and closes. At most `PICK_LIMIT` (50, `constants.ts`) rows, then "N more, narrow the search", and "Nothing matches." when none do. Used by TRACK's add row and by every beat-editor encounter row |
+| `budget-lines/budget-lines.tsx` `BudgetLines` | `tally: RosterTally`, `budget: EncounterBudget` | A roster against Building Encounters (Threat Assessment p.8): TROOPS, OF THOSE IN MOBS (a target of one reads as needing 2, Core p.324), ELITE OR ADVERSARY, MONSTROUS (no target in the book) and ENEMIES ("N tracked · M models"), each with UNDER / ON TARGET / OVER in words as well as colour, plus a note for entries the loaded bestiary can't class |
 | `rule-item/rule-item.tsx` `RuleItem` | `r: RuleEntry`, `open?` | One rules entry as a `<details>`: name (a stat's `abbr` first), kind · cite, gist, and the book text inside. Used by the RULES tab, the stat legend and the rule dialog; `open` starts it expanded |
 | `rules-provider/rules-provider.tsx` `RulesProvider`, `useRules()` | `rules: RuleEntry[]`, `children` | Wraps `GmApp` and `PlayerApp`. Builds a `ruleKey` → entries map once, over `LINKED_RULE_KINDS` only (Conditions, weapon and armour traits; not actions or stat block terms). It owns one native modal `<dialog>` that shows the entries as `RuleItem open` with CLOSE. Esc or a backdrop tap closes it, and focus returns to the tapped word. `useRules()` returns `{ find(name), open(entries) }` and throws outside the provider |
 | `rule-link/rule-link.tsx` `RuleLink` | `name`, `children?` (defaults to `name`) | A trait or Condition as the data spells it (`Blast (6)`, `Inflicts (On Fire)`). If `find` resolves it, it's a `button.rule-link` (dotted underline, 32px hit area, `aria-label="Rule: <name>"`) that opens the dialog; otherwise it renders as plain text. `RuleIdLink` (`id`, `children`) does the same for an entry that isn't a trait, by id (the scene Tests' DN TABLE, SHIFTING, FAIL FORWARD). Needs a `RulesProvider` above it |
@@ -686,6 +697,7 @@ with `bun test lib`.
 | `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | `{ filled, cells }` for a track scaled to at most 10 cells (drawn by `components/ui/track`). Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
 | `weapon-line/weapon-line.ts` | `weaponProfile({ weapon, strength? })`, `weaponLine(…)` | `weaponProfile` is the one-line profile without traits: `dmg +ED ED · AP · R short/med/long · S salvo`. `addStrength` melee prints `S+X`, or a number when `strength` is given. A `salvo: null` prints `–`, and an absent salvo is omitted. `weaponLine` appends `· traits` as plain text, for places with no `RulesProvider`; inside one, use the `WeaponLine` component |
 | `tokens/tokens.ts` | `TOKENS` (`bg`, `fg`) | Raw colours for places CSS variables can't reach: the QR canvas, the viewport `themeColor` and the manifest. It mirrors `:root`, so change both together |
+| `threat-filter/threat-filter.ts` | `filterThreats(bestiary, facets, tier)`, `ThreatFacets` | The bestiary narrowed for the `ThreatPicker`: the query folds away case and punctuation on both sides (so "tau" finds "T'au") and matches the name or any keyword, and the class facet is the one printed at that Tier (`threatClassAt`, Core p.323) |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
 
 ---
@@ -773,7 +785,8 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
   `components/ui/seal`).
 - Layout: `.panel`, `.item` (`.now` for the acting card on FIGHT), `.item-head` (a card's full-width header row, 44px
   tall), `.list` (`.table` for a bordered, gap-less table), `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`,
-  `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono).
+  `dialog.picker` (a wide modal, framed like `dialog.legend` and `dialog.sheet`, with `.tp-facets` and `.tp-row` for
+  the threat picker's facets and rows), `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono).
 - Shells: `.gm*` for the GM, `.tracker*`, `.turn-strip` and `.row*` for the tracker, `.cmd` for the command bar,
   `.pl*`, `.vitals`, `.vital` and `.traits` for the player app.
 

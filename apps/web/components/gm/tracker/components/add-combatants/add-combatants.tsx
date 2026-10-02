@@ -1,8 +1,18 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { activeCharacterIds, Marker, type LiveState, type Threat, type Visibility } from "@wg/shared";
+import {
+  activeCharacterIds,
+  encounterBudget,
+  isOut,
+  Marker,
+  tallyByClass,
+  type LiveState,
+  type Threat,
+  type Visibility,
+} from "@wg/shared";
 
+import { BudgetLines } from "@/components/ui/budget-lines/budget-lines";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 
@@ -21,6 +31,20 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   const missing = state.characters.filter((c) => active.has(c.id) && !inFight.has(c.id));
   const threat = bestiary.find((x) => x.id === threatId);
   const mobCount = Number(mob);
+  // The fight as it stands, against the same guideline PREP uses (Threat Assessment p.8). The class was resolved when
+  // each threat joined, and a Mob's models are the members still standing. Anything out of the fight (`isOut`: a slain
+  // threat, a dead Agent) has stopped being something to keep track of, so it leaves the tally even while its row waits
+  // for the GM to remove it.
+  const standing = (state.encounter?.combatants ?? []).filter((c) => !isOut(state, c));
+  const tally = tallyByClass(
+    standing.flatMap((c) =>
+      c.kind === "threat" ? [{ cls: c.threatClass, count: c.mobCount ?? 1, asMob: c.mobCount !== null }] : [],
+    ),
+  );
+  // Sized for the Agents in the fight, falling back to the seated ones before + PARTY, as PREP does: a budget of 0
+  // Troops would read OVER against the first threat the GM places.
+  const agents = standing.filter((c) => c.kind === "pc").length || active.size || state.characters.length;
+  const budget = encounterBudget({ agents });
 
   // Mob size: digits only.
   const handleMobChange = (e: ChangeEvent<HTMLInputElement>) => setMob(e.target.value.replace(/\D/g, ""));
@@ -54,34 +78,42 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   };
 
   return (
-    <div className="keys" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}>
-      <ThreatPicker bestiary={bestiary} tier={state.campaign.tier} value={threatId} onPick={(t) => setThreatId(t.id)} />
-      <input
-        className="input"
-        style={{ width: 90 }}
-        inputMode="numeric"
-        aria-label="Mob size"
-        placeholder="MOB #"
-        value={mob}
-        onChange={handleMobChange}
-      />
-      <select className="btn" aria-label="Marker colour" value={marker ?? ""} onChange={handleMarkerChange}>
-        <option value="">MARKER</option>
-        {Marker.options.map((m) => (
-          <option key={m} value={m}>
-            {m.toUpperCase()}
-          </option>
-        ))}
-      </select>
-      <VisibilitySelect value={visibility} onChange={setVisibility} />
-      <button className="btn" disabled={!threat} onClick={handleAdd}>
-        ADD
-      </button>
-      {missing.length > 0 && (
-        <button className="btn" onClick={handleAddParty}>
-          + PARTY ({missing.length})
+    <div className="stack" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}>
+      <div className="keys">
+        <ThreatPicker
+          bestiary={bestiary}
+          tier={state.campaign.tier}
+          value={threatId}
+          onPick={(t) => setThreatId(t.id)}
+        />
+        <input
+          className="input"
+          style={{ width: 90 }}
+          inputMode="numeric"
+          aria-label="Mob size"
+          placeholder="MOB #"
+          value={mob}
+          onChange={handleMobChange}
+        />
+        <select className="btn" aria-label="Marker colour" value={marker ?? ""} onChange={handleMarkerChange}>
+          <option value="">MARKER</option>
+          {Marker.options.map((m) => (
+            <option key={m} value={m}>
+              {m.toUpperCase()}
+            </option>
+          ))}
+        </select>
+        <VisibilitySelect value={visibility} onChange={setVisibility} />
+        <button className="btn" disabled={!threat} onClick={handleAdd}>
+          ADD
         </button>
-      )}
+        {missing.length > 0 && (
+          <button className="btn" onClick={handleAddParty}>
+            + PARTY ({missing.length})
+          </button>
+        )}
+      </div>
+      {tally.models > 0 && <BudgetLines tally={tally} budget={budget} />}
     </div>
   );
 }
