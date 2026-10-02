@@ -302,7 +302,7 @@ const { state, codex, online, send } = useTable(campaignId);
 |---|---|---|
 | TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
 | PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}` |
-| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint) |
+| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint), `codex/components/faction-picker` (ADD FROM BOOK: `presetFaction` per printed faction) |
 | PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx` |
 
 ### 3.1 TRACK: live combat tracker
