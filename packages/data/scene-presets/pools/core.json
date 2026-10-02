@@ -1,0 +1,98 @@
+[
+  {
+    "id": "core-ruin-triggers",
+    "name": "Acquiring Ruin",
+    "source": "core",
+    "page": 320,
+    "gm": "You start every session with a number of Ruin equal to the number of players. You can have a maximum Ruin of twice the number of players. Ruin doesn’t carry across sessions, and you discard any Ruin gained when the pool is at its maximum — just like Glory, Ruin is use-or-lose!",
+    "rows": [
+      {
+        "kind": "earn",
+        "pool": "ruin",
+        "n": 1,
+        "name": "A player fails a Corruption Test."
+      },
+      {
+        "kind": "earn",
+        "pool": "ruin",
+        "n": 1,
+        "name": "A player fails a Fear Test."
+      },
+      {
+        "kind": "earn",
+        "pool": "ruin",
+        "n": 1,
+        "name": "You roll a 6 on the Wrath Die."
+      },
+      {
+        "kind": "earn",
+        "pool": "ruin",
+        "n": 1,
+        "name": "A Complication, taken as Ruin",
+        "page": 163,
+        "text": "If you don’t want to interrupt the flow of the game, simply award the GM a point of Ruin"
+      },
+      {
+        "kind": "earn",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Fail Forward: a player takes Ruin for the GM instead of failing",
+        "page": 319,
+        "text": "Alternatively, a GM can offer a player a choice of failing or taking one of the options below.\n• The GM gains 1 Ruin."
+      }
+    ]
+  },
+  {
+    "id": "core-ruin-spends",
+    "name": "Spending Ruin",
+    "source": "core",
+    "page": 320,
+    "gm": "Ruin should not be spent to punish anyone — we’re all at the table to have fun.",
+    "rows": [
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Reroll Failures",
+        "text": "You can spend 1 Ruin to reroll failures (but not Complications) on any Test for an NPC."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Seize The Initiative",
+        "text": "You can spend 1 Ruin to Seize the Initiative (p.177). You can’t Seize the Initiative more than once per turn."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Restore Shock",
+        "text": "The GM can spend 1 Ruin to restore 1d3+3 of an NPC’s Shock. Doing so counts as an Action for that NPC."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Roll Determination",
+        "text": "The GM can spend 1 Ruin to make a Determination roll (p.196)."
+      }
+    ]
+  },
+  {
+    "id": "core-glory-awards",
+    "name": "Glory Points",
+    "source": "core",
+    "page": 316,
+    "gm": "As a group resource, it helps to discuss rules for using Glory with your players. Glory can speed up play and dramatically swing combat the group’s way.",
+    "rows": [
+      {
+        "kind": "earn",
+        "pool": "glory",
+        "n": null,
+        "name": "A particularly impressive feat",
+        "text": "You might want to award players Glory for particularly impressive feats."
+      }
+    ]
+  }
+]

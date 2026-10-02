@@ -1,16 +1,17 @@
 "use client";
-import { MAX_POOL_LINES, MAX_POOL_STEP, type Pool } from "@wg/shared";
+import { MAX_POOL_LINES, MAX_POOL_STEP, type Pool, type PoolPresetTable } from "@wg/shared";
 
 import { NumberInput } from "@/components/ui/number-input/number-input";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 
 import type { PoolDrafts } from "../../../../types";
+import { PoolPicker } from "./components/pool-picker/pool-picker";
 import { SPEND_POOLS } from "./constants";
 
-type RuinGloryProps = { lines: PoolDrafts; onChange: (lines: PoolDrafts) => void };
+type RuinGloryProps = { lines: PoolDrafts; tables: PoolPresetTable[]; onChange: (lines: PoolDrafts) => void };
 
 // What earns Ruin and Glory in this scene, and the spends the GM plans (issue #40). PREP turns each line into a tap.
-export function RuinGlory({ lines, onChange }: RuinGloryProps) {
+export function RuinGlory({ lines, tables, onChange }: RuinGloryProps) {
   const setLine = (list: Pool, i: number, patch: Partial<PoolDrafts[Pool][number]>) =>
     onChange({ ...lines, [list]: lines[list].map((l, j) => (j === i ? { ...l, ...patch } : l)) });
   const setSpend = (i: number, patch: Partial<PoolDrafts["spends"][number]>) =>
@@ -142,6 +143,7 @@ export function RuinGlory({ lines, onChange }: RuinGloryProps) {
           </span>
         </div>
       </div>
+      {tables.length > 0 && <PoolPicker tables={tables} lines={lines} onChange={onChange} />}
     </>
   );
 }

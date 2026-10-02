@@ -15,8 +15,12 @@ import {
   SKILLS,
   SkillDn,
   EventTable,
+  PoolEntry,
+  PoolPresetTable,
+  PoolSpend,
+  presetLine,
 } from "@wg/shared";
-import { eventTableFiles, loadPackRaw, packNames } from "./index.ts";
+import { eventTableFiles, loadPackRaw, packNames, poolPresetFiles } from "./index.ts";
 
 // Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
 const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
@@ -264,6 +268,56 @@ const tableIds = new Set<string>();
 }
 const pendingTables = Object.keys(EXPECTED_EVENTS).filter((id) => !tableIds.has(id));
 if (pendingTables.length) console.log(`scene-presets: not transcribed yet: ${pendingTables.join(", ")}`);
+
+// Ruin and Glory lists (scene-presets/pools/<source>.json, issue #40): the filename names the book, ids are unique,
+// each planned list holds the rows the book prints, and every row, copied into a scene, fits the scene's line. A
+// cost the book doesn't print stays null (rules-flow.md §11.78), and the gm conditions are counted.
+const EXPECTED_POOL_ROWS: Record<string, number> = {
+  "core-ruin-triggers": 5, // pp.163, 319, 320
+  "core-ruin-spends": 4, // p.320
+  "core-glory-awards": 1, // p.316
+  "threat-assessment-ruin-actions": 5, // p.7
+  "bloody-gates-calling-for-support": 6, // pp.25–26
+  "bloody-gates-battlefield-ruin": 6, // p.26
+  "affliction-ascendant-rites-of-battle": 9, // p.23
+  "affliction-ascendant-battlefield-ruin": 6, // p.24
+};
+const poolIds = new Set<string>();
+for (const file of poolPresetFiles()) {
+  const r = PoolPresetTable.array().safeParse(
+    JSON.parse(readFileSync(new URL(`./scene-presets/pools/${file}`, import.meta.url), "utf8")),
+  );
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ scene-presets/pools/${file}\n${z.prettifyError(r.error)}`);
+    continue;
+  }
+  const problem = (message: string) => {
+    failed = true;
+    console.error(`✖ scene-presets/pools/${file}: ${message}`);
+  };
+  for (const table of r.data) {
+    if (`${table.source}.json` !== file) problem(`list "${table.id}" is from ${table.source}`);
+    if (poolIds.has(table.id)) problem(`duplicate list id "${table.id}"`);
+    poolIds.add(table.id);
+    if (EXPECTED_POOL_ROWS[table.id] !== table.rows.length)
+      problem(
+        `${table.id}: ${table.rows.length} rows, expected ${EXPECTED_POOL_ROWS[table.id] ?? "none (not a planned list)"}`,
+      );
+    for (const row of table.rows) {
+      const { list, line } = presetLine({ table, row });
+      const fits =
+        list === "spends" ? PoolSpend.safeParse({ ...line, cost: line.cost ?? 1 }) : PoolEntry.safeParse(line);
+      if (!fits.success) problem(`${table.id} "${row.name}" doesn't fit a scene line: ${z.prettifyError(fits.error)}`);
+    }
+  }
+  const rows = r.data.flatMap((t) => t.rows);
+  console.log(
+    `scene-presets/pools/${file}: ${rows.length} presets in ${r.data.length} lists (${rows.filter((x) => x.gm).length} gm conditions, ${rows.filter((x) => x.n === null).length} with no printed amount)`,
+  );
+}
+const pendingPools = Object.keys(EXPECTED_POOL_ROWS).filter((id) => !poolIds.has(id));
+if (pendingPools.length) console.log(`scene-presets/pools: not transcribed yet: ${pendingPools.join(", ")}`);
 
 // Creation catalogue (docs/data.md, "Creation catalogue"): creation/<type>/<source>.json. Schema per file, the
 // filename names the book, ids unique per type, every id reference resolves, one record per thing across books.

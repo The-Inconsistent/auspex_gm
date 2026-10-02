@@ -1,8 +1,17 @@
 import { z } from "zod";
-import { BeatType, TEST_POOL, TestKind, type BeatTest, type CodexInput } from "./codex.ts";
+import {
+  BeatType,
+  MAX_POOL_STEP,
+  TEST_POOL,
+  TestKind,
+  type BeatTest,
+  type CodexInput,
+  type PoolEntry,
+  type PoolSpend,
+} from "./codex.ts";
 import { Dice, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
-import { ATTRIBUTES, SKILLS, type Skill } from "./state.ts";
+import { ATTRIBUTES, Pool, SKILLS, type Skill } from "./state.ts";
 import { THREAT_SOURCES, threatCite, type ThreatSource } from "./threat.ts";
 
 // GM-only book data for building scenes (GitHub issue #39), served by /api/campaigns/:id/scene-presets. Book text, so
@@ -79,7 +88,50 @@ export const EventTable = z
   });
 export type EventTable = z.infer<typeof EventTable>;
 
-export const ScenePresets = z.object({ skillDns: z.array(SkillDn), tables: z.array(EventTable) });
+// A book's ready-made Ruin and Glory lines for a scene (issue #40): what earns either pool, or what it buys. `n` is the
+// amount or cost as printed, null where the book prints none: the GM sets it (rules-flow.md §11.78).
+export const PoolPreset = z.object({
+  kind: z.enum(["earn", "spend"]),
+  pool: Pool,
+  n: z.number().int().min(1).max(MAX_POOL_STEP).nullable(),
+  name: z.string().min(1).max(100), // as printed; in our words only where the book names none
+  page: z.number().int().positive().optional(), // printed page, where it isn't the table's
+  text: z.string().max(450).default(""), // the printed effect, verbatim
+  gm: z.string().min(1).max(200).optional(), // a condition the app can't check ("Tier 4 only")
+});
+export type PoolPreset = z.infer<typeof PoolPreset>;
+export const PoolPresetTable = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/), // unique across scene-presets/pools/*.json
+  name: z.string().min(1).max(200), // as printed
+  source: z.enum(Object.keys(THREAT_SOURCES) as [ThreatSource, ...ThreatSource[]]),
+  page: z.number().int().positive(), // printed page the list starts on
+  gm: z.string().min(1).max(2000).optional(), // the book's notes on using the list, verbatim
+  rows: z.array(PoolPreset).min(1),
+});
+export type PoolPresetTable = z.infer<typeof PoolPresetTable>;
+
+// A preset copied into a scene, with where it came from: an earned line goes to its pool's list, a spend to the
+// spends. An award the book gives no amount starts at 1 (§11.77); a spend it gives no cost waits for the GM's (§11.78).
+export function presetLine({ table, row }: { table: PoolPresetTable; row: PoolPreset }) {
+  const cite = `(${threatCite({ source: table.source, page: row.page ?? table.page })})`;
+  if (row.kind === "earn") {
+    const line: PoolEntry = { text: [row.name, row.gm, cite].filter(Boolean).join(" "), amount: row.n ?? 1 };
+    return { list: row.pool, line } as const;
+  }
+  const line: Omit<PoolSpend, "cost"> & { cost: number | null } = {
+    pool: row.pool,
+    name: row.name,
+    cost: row.n,
+    text: [row.text, row.gm, cite].filter(Boolean).join(" "),
+  };
+  return { list: "spends", line } as const;
+}
+
+export const ScenePresets = z.object({
+  skillDns: z.array(SkillDn),
+  tables: z.array(EventTable),
+  pools: z.array(PoolPresetTable),
+});
 export type ScenePresets = z.infer<typeof ScenePresets>;
 
 // A scene made from one event (issue #39): its name, its scene type, the read-aloud, the printed text as GM notes with

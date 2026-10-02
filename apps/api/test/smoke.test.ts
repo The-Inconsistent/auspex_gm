@@ -24,6 +24,7 @@ import {
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
+  presetLine,
   presetScene,
   type ScenePresets,
   type ThreatCombatant,
@@ -613,8 +614,22 @@ test("GM and player share a table", async (t) => {
   // So are the scene presets (issue #39): the sample DNs per Skill (Core pp.122-126) and the books' event tables.
   const presets = await get(`/campaigns/${campaignId}/scene-presets`, bearer(gmClerk));
   assert.equal(presets.status, 200);
-  const { skillDns, tables } = (await presets.json()) as ScenePresets;
+  const { skillDns, tables, pools } = (await presets.json()) as ScenePresets;
   assert.equal(skillDns.length, 85);
+  // ADD FROM BOOK (issue #40): a Core Ruin spend copies into a scene with its cite; Core p.316's Glory award prints no
+  // amount and starts at 1 (§11.77).
+  const spends = pools.find((x) => x.id === "core-ruin-spends")!;
+  assert.deepEqual(presetLine({ table: spends, row: spends.rows[0]! }).line, {
+    pool: "ruin",
+    name: "Reroll Failures",
+    cost: 1,
+    text: "You can spend 1 Ruin to reroll failures (but not Complications) on any Test for an NPC. (Core p.320)",
+  });
+  const awards = pools.find((x) => x.id === "core-glory-awards")!;
+  assert.deepEqual(presetLine({ table: awards, row: awards.rows[0]! }), {
+    list: "glory",
+    line: { text: "A particularly impressive feat (Core p.316)", amount: 1 },
+  });
   // NEW SCENE FROM A TABLE: a Church of Steel event becomes a scene, one Test per Skill it offers at the table's
   // printed DN 5 (Church of Steel p.36).
   const battlefield = tables.find((x) => x.id === "church-of-steel-battlefield-events")!;
