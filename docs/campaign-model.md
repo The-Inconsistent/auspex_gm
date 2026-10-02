@@ -55,8 +55,14 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and
   Redacted Records 2 (`rr1-*`, `rr2-*`), Darktide and Litanies of the Lost (docs/data.md §4).
 - **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
-  loads it into the tracker. The builder shows the Threat Assessment p.8 guideline: *two Troops per Agent, half in a
-  Mob, plus one Elite or Adversary; more than 10 enemies is hard to track, so use Mobs*.
+  loads it into the tracker. Each entry's threat comes from the `ThreatPicker` (search, plus faction, class-at-Tier and
+  book chips), and a scene card prints the threat's name, not its id. A budget panel checks the roster against Building
+  Encounters line by line, each reading UNDER / ON TARGET / OVER: Troops (2 per Agent), of those in Mobs (half, but a
+  Mob needs 2, Core p.324), Elite or Adversary (1), and enemies (at most 10), counted as the combatants the GM tracks —
+  a Mob is one — beside the models on the table (TA pp.6, 8). Monstrous Creatures tally on their own line, with no
+  target. FORTIFIED doubles every target; it is the GM's read of the ground, so it is a toggle and nothing is stored.
+  The budget is for the *active* Agents, the ones `beat.startEncounter` adds, not every character in PARTY. The gaps the
+  book leaves are [rules-flow.md](rules-flow.md) §11.82.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
   by the same server-side view as hidden threat stats.
 - **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those

@@ -606,6 +606,22 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     help you have fun, not get in the way." The picker shows the printed Limitations (such as "at least half the
     Agents must have the ADEPTA SORORITAS Keyword"), and neither the picker nor the builder tests the party against
     them. A group quota is stored as a `gm` Requirement with the printed sentence. *(User ruling, 2026-10-02.)*
+82. **Sizing a prepared encounter** (TA pp.6, 8; Core pp.323–324; GitHub issue #41). Building Encounters gives two
+    Troops per Agent, half of those forming a Mob, plus one Elite or Adversary, and warns that more than 10 enemies is
+    hard to keep track of. `encounterBudget` and `rosterTally` (`packages/shared/src/threat.ts`) turn that into
+    targets; `BudgetLines` prints them and `BudgetPanel` sits under the beat editor. Where the guideline leaves a gap:
+    - **A Mob counts as one tracked combatant and as its models.** p.8's warning is about keeping track, and p.6 says
+      a Mob cuts the number of Turns per Round, so the ENEMIES line prints both numbers — "N tracked · M models" — and
+      goes over only when tracked combatants pass 10.
+    - **Monstrous Creatures tally on their own line, with no target.** p.8 names only Elites and Adversaries, so the
+      app sets them no number rather than inventing one. Core p.323 calling them similar to Adversaries is not a count.
+    - **The active Agents set the budget,** not every character in PARTY, because they are who `beat.startEncounter`
+      adds (`claimedCharacterIds` server-side, `activeCharacterIds` in the web).
+    - **Fortified ground doubles every target, and is a toggle, not a stored flag.** p.8 frames it as a judgement about
+      the ground — cover, clear lines of sight, distance or surprise — not a property of the scene.
+    - **A Mob target of one still needs two Troops.** With 1 Agent the guideline gives 2 Troops, and half of them is
+      one model, which cannot be a Mob (Core p.324: two or more Troops sharing a profile), so the line reads "needs 2".
+    *(User ruling, 2026-10-02.)*
 
 ---
 
@@ -639,3 +655,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |
+| Encounter budget | done | `encounterBudget`, `tallyByClass`, `rosterTally` (`threat.ts`) against Building Encounters (TA p.8); `BudgetLines` prints Troops, Mob, Elite/Adversary, Monstrous and enemies ("N tracked · M models"), with a FORTIFIED toggle that doubles every target; `BudgetPanel` under the beat editor, sized by the active Agents (§11.82) |
