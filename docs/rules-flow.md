@@ -564,12 +564,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     own. The Core Rulebook has no group Test rule; the nearest is Help (p.169), where one Agent gives an ally bonus dice
     equal to the Attribute or Skill they help with. The app only records who rolls. Whether one success carries the
     group, or each Agent stands alone, is the GM's call for that scene, written in the Test's outcomes.
-    *(Proposed; awaiting the GM.)*
+    *(User ruling, 2026-10-02.)*
 74. **Fail Forward is the GM's to read** (Core p.319; GitHub issue #39). It is in the Gamemaster chapter, and one of its
     options is "The GM gains 1 Ruin", while the Ruin pool is GM-only (§11.58). Its rules entry carries `gm: true`, so
     `/api/campaigns/:id/rules` serves it to the GM's seat only, and the seatless `/api/rules` never does. Difficulty
     Numbers and Shifting are in the player chapters (pp.160–161, 165–166) and stay open to every seat.
-    *(Proposed; awaiting the GM.)*
+    *(User ruling, 2026-10-02.)*
 75. **A scene Test may have no DN yet** (Core p.160; GitHub issue #39). "The Gamemaster is responsible for setting the
     Difficulty Number for each Test", and many book events print a Skill with no DN. So a prepared Test other than an
     Opposed one may leave `dn` null: PREP shows "DN · GM SETS" and the GM sets it in the editor or at the table. An
