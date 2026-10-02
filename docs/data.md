@@ -14,6 +14,7 @@ Commands and setup: [development.md](development.md).
 | `packages/data/threats/*.json` | One stat block per file, flat (no per-book folders). Schema `Threat` in `packages/shared/src/threat.ts` |
 | `packages/data/packs/<name>/pack.json` | A campaign start: campaign, factions, locations, NPCs, handouts, adventures and beats. Schema `Pack` in `packages/shared/src/pack.ts` |
 | `packages/data/packs/<name>/characters/*.json` | One character per file, `{ name, stats }`. `stats` is `CharacterStats` in `packages/shared/src/state.ts` |
+| `packages/data/faction-presets/<source>.json` | Printed factions for CODEX › FACTIONS' ADD FROM BOOK (GitHub issue #46), one file per book. Schema `FactionPreset` in `packages/shared/src/faction-presets.ts`: the codex faction (name, `keywords`, `notes`, `secrets`) plus `id`, `source` and printed `page`. GM-only, served by `/api/campaigns/:id/faction-presets` beside the creation catalogue's own factions. Keywords only where the page prints them, or a §11 ruling maps them (rules-flow.md §11.84); notes and secrets verbatim |
 | `packages/data/index.ts` | Server-side loaders (below) |
 | `packages/data/validate.ts` | `bun run validate` (§6) |
 
@@ -27,6 +28,7 @@ Commands and setup: [development.md](development.md).
 | `loadPack(name)` | `Pack.parse(loadPackRaw(name))`; throws on a bad pack |
 | `wargear`, `wargearList()` | The Wargear catalogue (`wargear/*.json`), parsed at import |
 | `rulesList()` | The rules reference (`rules/*.json`) |
+| `factionPresetList()` | The printed factions (`faction-presets/*.json`), parsed |
 | `creationCatalogue()` | The creation catalogue (§9): every `creation/<type>/<source>.json`, parsed, one array per type |
 
 **Who loads it.** The api imports `threats` in `apps/api/src/encounter/encounter.actions.ts` and
@@ -164,7 +166,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` (Frameworks, #45) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
-| Forsaken System Player's Guide | `forsaken-system` (creation only) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
+| Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
@@ -781,6 +783,8 @@ GM-only book data for building scenes (GitHub issues #39 and #40), served by `GE
 | Creation coverage against `creation/manifest.json` | `creation <type> <source>: N/M (missing: …)` |
 | Creation summary | `creation/<type>: N records`, and counts of GM-judged story conditions, `mundane` possessions and wargear not yet in the catalogue |
 | A `follower` Wargear entry has a known `threatId`, and any `variant` (there or on a `followers` grant) is one of that threat's variants; nothing else has a `threatId` | `✖ wargear/<file> "<id>": …` or `✖ creation/… "<id>": "…" has no variant "…"` |
+| Every `faction-presets/<source>.json` parses as `FactionPreset[]`; the filename matches each `source`, which is an official book; ids are unique across the files and the creation factions; every Keyword is a glossary or sub-faction Keyword, or printed on a threat | `✖ faction-presets/<file>` + zod error, `is from`, `homebrew`, `duplicate id`, or `unknown Keyword` |
+| Faction preset summary | `faction-presets/<file>: N factions (N with Keywords, N with secrets)` |
 | A `mundane` item links nothing in the catalogue | `✖ creation/… "<id>": "…" is mundane but links the catalogue` |
 
 ---

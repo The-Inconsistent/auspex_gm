@@ -6,9 +6,9 @@ import { SOURCES } from "./source.ts";
 // Threat books that aren't creation/wargear sources, so they have no SOURCES entry. The threat `source` enum is built
 // from these keys, so a new threat-only book can't be added without its cite.
 export const THREAT_ONLY_SOURCES = {
-  "threat-assessment": { cite: "TA" },
-  "gutshivas-kommandos": { cite: "GK" },
-  "high-altar-of-technology": { cite: "HAT" }, // homebrew Mechanicus supplement, no printed pages: PDF pages
+  "threat-assessment": { cite: "TA", official: true },
+  "gutshivas-kommandos": { cite: "GK", official: true },
+  "high-altar-of-technology": { cite: "HAT", official: false }, // homebrew Mechanicus supplement, no printed pages: PDF pages
 } as const;
 export const THREAT_SOURCES = { ...SOURCES, ...THREAT_ONLY_SOURCES };
 export type ThreatSource = keyof typeof THREAT_SOURCES;
