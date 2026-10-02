@@ -437,12 +437,19 @@ required. Entity semantics: [campaign-model.md](campaign-model.md).
 | `asMob` | bool, default false | With `count > 1`: one Mob combatant of `count` members. Otherwise: `count` separate combatants, labelled `<label> 1..n` |
 | `marker` | `red` \| `amber` \| `green` \| `blue` \| `purple` \| `white`, optional | Colour of the physical mini's tag or base |
 | `label` | string ≤ 100, optional | Tracker label; default is the threat name (Mob: `Name ×N`) |
+| `profiles` | `ProfileId[]` (at most 3), default `[]` | Tier 5 Threat Profiles applied to the stat block before the snapshot: `heretical-strength`, `xenos-cunning`, `enemy-within` (VoA p.126). They stack (rules-flow §11.104) |
+| `scale` | bool, default false | Scaling Threats (Core p.326): + Tier on an Elite's Wounds and Shock, + Agents + Tier on an Adversary's or Monstrous Creature's. Nothing on a Troop or a Mob (§11.107) |
 
 A beat allows at most 30 entries and **`MAX_ENCOUNTER_ROWS` = 60 combatant rows**. A Mob counts as 1 row; any other
 entry counts as `count` rows. This is an app limit, not a rule: it bounds the inserts one `beat.startEncounter` runs
 in a transaction. Group large counts as Mobs. The API doesn't check whether a threat prints a Mob option when you
-set `asMob`. `beat.startEncounter` adds every party character, then the entries in order, and sets the beat to
-`active`.
+set `asMob`. `beat.startEncounter` adds every active Agent (`claimedCharacterIds`), then the entries in order, and
+sets the beat to `active`.
+
+`profiles` and `scale` are the GM's two levers on a prepared fight, applied by `prepareThreat`
+(`packages/shared/src/threat-scale.ts`) as the stat block is snapshotted, each appending a BONUSES line that says
+what moved. They change no data file: the bestiary is one shared in-process `Map`. Neither changes the class, which
+is always `threatClassAt` on the printed block (Core p.323).
 
 ### NPC `statSource` (`StatSource`, `codex.ts`)
 

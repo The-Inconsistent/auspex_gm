@@ -13,7 +13,8 @@ table (`roll-table.ts`, `flavour.ts`).
 | Layer | File | Holds |
 |---|---|---|
 | Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `skillTotal`, `effectiveStrength`, `poolMax`, `isOut`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
-| | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite) |
+| | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite), `encounterBudget` / `tallyByClass` / `rosterTally` |
+| | `packages/shared/src/threat-scale.ts` | `THREAT_PROFILES`, `applyProfile`, `scaleBy`, `scaleThreat`, `prepareThreat` (VoA p.126, Core p.326) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/flavour.ts` | `rollOn` (one roll on a name or appearance table, by its shape), `rollLook` and `LOOK` (Core p.32's species rules, §11.90), `isNameTable`: prep flavour only (issue #48) |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
@@ -240,6 +241,24 @@ Alternative at step 6: `combatant.aware` T1 (Ruin −1) makes T1 able to act in 
 block into `statSnapshot`, and `personalRuin` from the block (0 if none). `loadState` reads `maxWounds` / `maxShock`
 from the snapshot. A later data fix or Tier change doesn't alter a fight in progress.
 
+**Profiles and scaling** (`threat-scale.ts`, VoA p.126, Core p.326, §11.103–§11.108): what the GM ticks on a prepared
+entry or on `+ THREAT` is applied by `prepareThreat` on the way into that snapshot, so the bars, the Mob logic and
+the stat block all follow one number.
+
+| Ticked | Effect |
+|---|---|
+| `heretical-strength` | Strength +2, Weapon Skill +2, Resilience +2 |
+| `xenos-cunning` | Intellect +2, Willpower +2, Resolve +1 |
+| `enemy-within` | Intellect +1, Ballistic Skill +1, Resolve +2 |
+| `scale`, class E | Wounds and Shock + Tier |
+| `scale`, class A / M | Wounds and Shock + Agents + Tier |
+| `scale`, class T or a Mob entry | nothing (Core pp.325–326) |
+
+Each returns a copy and appends a cited BONUSES line. A printed "–" has no score to raise, so a null Attribute,
+Resolve or Shock keeps it; an unlisted Weapon or Ballistic Skill lands on `skills.default` + the bonus (Core p.323),
+and with no Default the SKILLS line is untouched and the bonus says so. Nothing is re-derived from a raised
+Attribute: "the increase does not affect related statistics or abilities" (VoA p.126).
+
 **`threatStatus`** (p.324), checked in this order:
 
 | Case | Status |
@@ -345,13 +364,15 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 
 ## 9. Prepared encounters (`beat.startEncounter`)
 
-A beat's `encounter` is a list of `EncounterEntry { threatId, count, asMob, marker?, label?, visibility? }`.
+A beat's `encounter` is a list of
+`EncounterEntry { threatId, count, asMob, marker?, label?, visibility?, profiles, scale }`.
 
 1. Every `threatId` is checked against the loaded bestiary before anything is written.
 2. A new encounter starts (any active one is deactivated).
-3. Every character in the campaign is added as a PC combatant.
+3. Every active Agent (`claimedCharacterIds`: a member's or a live guest token's character) is added as a PC
+   combatant; reserve Agents stay out. Their number is also "the number of players" that scaling reads (§11.106).
 4. Each entry: `asMob && count > 1` → one Mob row with `mobCount = count`. Otherwise `count` separate rows, labelled
-   `Name 1…N` when `count > 1`.
+   `Name 1…N` when `count > 1`. `profiles` and `scale` are applied to the stat block as each row is snapshotted.
 5. The beat is set to `active`.
 
 **`MAX_ENCOUNTER_ROWS` = 60** (`codex.ts`) is an **app limit, not a rule**: it bounds the inserts one transaction runs.
