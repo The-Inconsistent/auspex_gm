@@ -1,0 +1,24 @@
+[
+  {
+    "id": "survive-and-protect",
+    "name": "Survive & Protect",
+    "source": "core",
+    "page": 20,
+    "text": "You are all survivors from daemonic incursions, your former allies killed. You have banded together after retreating, forming a diverse group to investigate local wrongdoing.",
+    "tier": 1,
+    "characters": "Any Imperial character.",
+    "enemies": "Threats to the local area: Mutants, a villainous Scum gang, a small Chaos cult.",
+    "note": "Example Frameworks table. Its Tier 2 and 3 rows are the patron Frameworks Varonius Vanguard and Fylamon’s Finest (creation/patrons/core.json)."
+  },
+  {
+    "id": "radical-inquisitor-conclave",
+    "name": "Radical Inquisitor Conclave",
+    "source": "core",
+    "page": 20,
+    "text": "Dispatched by a radical Inquisitor, your strike force is the spear tip in a counter-attack against Chaos. Bouncing from one Warp-torn frontline to another, you battle daemons on a daily basis, attempting to find a way back through the Great Rift to the safety of Imperium Sanctus.",
+    "tier": 4,
+    "characters": "Radical Inquisitors will employ anyone to get the job done; especially when isolated and unobserved by the wider Imperium.",
+    "enemies": "Threats to the Gilead System: Daemon princes and their forces, champions of Chaos, undocumented xenos, an Ork WAAAGH!",
+    "note": "Example Frameworks table."
+  }
+]

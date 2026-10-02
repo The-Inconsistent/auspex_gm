@@ -504,24 +504,37 @@ export const PsychicPower = z.object({
 });
 export type PsychicPower = z.infer<typeof PsychicPower>;
 
-// A Patron's Framework options (FSPG pp.64–89).
+// A Framework as printed (Core pp.18–20): a patron's option, or one of its own. Limitations are shown, never checked
+// (rules-flow §11.81); a Tier limit is a `tier` Requirement. `tier`, `characters` and `enemies` are Core p.20's
+// Example Frameworks columns, where a Tier is a suggestion rather than a limit.
+export const FrameworkBody = z.object({
+  name: z.string().min(1).max(100),
+  text: z.string().default(""), // the Framework's description and Example Missions
+  limitations: z.array(Requirement).default([]),
+  wargear: z.array(Grant).default([]),
+  bonus: z.string().min(1).optional(), // Core p.20's examples print none
+  grants: z.array(Grant).default([]), // what the Bonus gives outright: "gain the NAVIS NOBILITE Keyword"
+  tier: z.number().int().min(1).max(5).optional(),
+  characters: z.string().min(1).optional(), // "Any Imperial character." (Core p.20)
+  enemies: z.string().min(1).optional(), // "Threats to the local area: Mutants, …" (Core p.20)
+});
+export type FrameworkBody = z.infer<typeof FrameworkBody>;
+
+// A Patron's Framework options (Core pp.310–313, FSPG pp.64–89).
 export const Patron = z.object({
   ...record,
   text: z.string().default(""),
-  options: z
-    .array(
-      z.object({
-        name: z.string().min(1),
-        text: z.string().default(""), // the Framework's description and Example Missions
-        limitations: z.array(Requirement).default([]),
-        wargear: z.array(Grant).default([]),
-        bonus: z.string().min(1),
-        grants: z.array(Grant).default([]), // what the Bonus gives outright: "gain the NAVIS NOBILITE Keyword"
-      }),
-    )
-    .min(1),
+  options: z.array(FrameworkBody).min(1),
 });
 export type Patron = z.infer<typeof Patron>;
+
+// A Framework with no patron (Core p.20, Redacted Records pp.35–52). `factionId`: the Faction section it is printed in.
+export const Framework = z.object({
+  ...record,
+  ...FrameworkBody.omit({ name: true }).shape,
+  factionId: id.optional(),
+});
+export type Framework = z.infer<typeof Framework>;
 
 // A language (Core p.31). Low Gothic, which everyone knows, has no record. `keywords`: having any of them allows the
 // one free pick at creation (rules-flow.md §11.48–49); `xenos`: an alien tongue, for "one alien language" grants.
@@ -557,6 +570,7 @@ export const CREATION_TYPES = {
   disciplines: Discipline,
   powers: PsychicPower,
   patrons: Patron,
+  frameworks: Framework,
   languages: Language,
   flavour: FlavourTable,
 } as const;

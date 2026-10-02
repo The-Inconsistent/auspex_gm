@@ -268,6 +268,7 @@ export function officialOnly(c: Creation): Creation {
     disciplines: keep(c.disciplines),
     powers: keep(c.powers),
     patrons: keep(c.patrons),
+    frameworks: keep(c.frameworks),
     languages: keep(c.languages),
     flavour: keep(c.flavour),
   };
