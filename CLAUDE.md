@@ -38,8 +38,8 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
     100 MB; render with `pdftoppm -f N -l N -r 110 -png "<pdf>" <scratch>/p` and Read the PNG.
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
-  repo private and never serve book content to anyone without an account (`/api/campaigns/:id/threats` and `/wargear` are
-  GM-only; `/rules` and `/creation` need any seat, and a rules entry flagged `gm` goes to the GM's seat only; their seatless twins `/api/rules` and `/api/creation`, for the
+  repo private and never serve book content to anyone without an account (`/api/campaigns/:id/threats`, `/wargear` and
+  `/scene-presets` are GM-only; `/rules` and `/creation` need any seat, and a rules entry flagged `gm` goes to the GM's seat only; their seatless twins `/api/rules` and `/api/creation`, for the
   character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
   **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
@@ -57,7 +57,7 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |
-| `packages/data` | threat stat blocks (`threats/*.json`), the Wargear catalogue (`wargear/*.json`, Core pp.211–247, VoA pp.59–75), the rules reference (`rules/*.json`: Conditions, weapon and armour traits, combat actions, stat block terms), the creation catalogue (`creation/<type>/<source>.json`: species, archetypes, talents, packages, powers…, docs/data.md §9), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
+| `packages/data` | threat stat blocks (`threats/*.json`), the Wargear catalogue (`wargear/*.json`, Core pp.211–247, VoA pp.59–75), the rules reference (`rules/*.json`: Conditions, weapon and armour traits, combat actions, stat block terms), the creation catalogue (`creation/<type>/<source>.json`: species, archetypes, talents, packages, powers…, docs/data.md §9), GM-only scene presets (`scene-presets/*.json`: the sample DNs per Skill, Core pp.122–126), content packs (`packs/<name>/pack.json` + `characters/*.json`), `validate.ts`, server-side loaders (`index.ts`) |
 
 TypeScript is pinned to **5.9**. TS 7 breaks the Next and Nest toolchains, so don't upgrade it.
 

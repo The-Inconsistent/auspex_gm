@@ -14,8 +14,10 @@ import {
   TestKind,
   TestWho,
   retypeTest,
+  sourceCite,
   type BeatTest,
   type Skill,
+  type SkillDn,
 } from "@wg/shared";
 
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
@@ -25,14 +27,14 @@ import { dnLabel, testTitle } from "../../../../utils";
 import { DnInput } from "./components/dn-input/dn-input";
 import { ATTITUDE_SHIFT, FAIL_FORWARD, GLORY_SHIFT, NEW_TEST, SHIFT_USES, skillPenalty } from "./constants";
 
-type TestsProps = { tests: BeatTest[]; onChange: (tests: BeatTest[]) => void };
+type TestsProps = { tests: BeatTest[]; skillDns: SkillDn[]; onChange: (tests: BeatTest[]) => void };
 
 const SKILL_NAMES = Object.keys(SKILLS) as Skill[];
 const signed = (n: number) => (n > 0 ? `+${n}` : `−${-n}`);
 
 // What the scene asks the Agents to roll (issue #39): per Test, its kind and pool, the DN, who rolls, what it's for,
 // the Shifts the GM has ready and both outcomes. The app never rolls a Test.
-export function Tests({ tests, onChange }: TestsProps) {
+export function Tests({ tests, skillDns, onChange }: TestsProps) {
   const setTest = (i: number, patch: Partial<BeatTest>) =>
     onChange(tests.map((t, j) => (j === i ? { ...t, ...patch } : t)));
 
@@ -71,6 +73,8 @@ export function Tests({ tests, onChange }: TestsProps) {
         const pool = TEST_POOL[t.kind];
         const dns = t.kind === "corruption" ? DN_TABLE.filter((r) => CORRUPTION_DNS.some((d) => d === r.dn)) : DN_TABLE;
         const id = `test-${i}`;
+        // The book's own example of this Skill at this DN (Core pp.122–126), when it prints one.
+        const example = t.skill ? skillDns.find((d) => d.skill === t.skill && d.dn === t.dn) : undefined;
         return (
           <div key={i} className="item stack" style={{ gap: 10 }}>
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
@@ -195,6 +199,14 @@ export function Tests({ tests, onChange }: TestsProps) {
                   ))}
                   <DnInput value={t.dn} label={`DN of test ${i + 1}`} onChange={(dn) => setTest(i, { dn })} />
                 </div>
+                {example && (
+                  <div className="dim" style={{ fontSize: 12 }}>
+                    <span className="label">
+                      {example.skill}, DN {example.dn}
+                    </span>{" "}
+                    <i>{example.example}</i> ({sourceCite(example)})
+                  </div>
+                )}
                 {t.dn !== null && t.dn < 3 && (
                   <div className="dim" style={{ fontSize: 12 }}>
                     Under most circumstances, don’t roll for a DN lower than 3 (Core Rulebook p.122).

@@ -635,6 +635,18 @@ entry (`conditions`, `weapon-traits`, `armour-traits`). Served to any seat by `/
 FIGHT tab hands the `stat` entries to the stat block's (?) legend. To add a
 kind (psychic powers, talents), extend `RuleKind` and add a file.
 
+### Scene presets (`packages/data/scene-presets/*.json`, `ScenePresets` in `packages/shared/src/scene-presets.ts`)
+
+GM-only book data for building scenes (GitHub issue #39), served by `GET /api/campaigns/:id/scene-presets` as
+`{ skillDns }`. Loaded once at api startup by `scenePresets()` (`index.ts`).
+
+- `skill-dns.json` (`SkillDn[]`): Skills and DN, the table at the foot of Core pp.122, 123, 125 and 126. There is one
+  row per Skill and printed DN, `{ skill, dn, source, page, example }`, with the example verbatim: 17 Skills × DN 1,
+  3, 5, 7, 9 = 85 rows. Psychic Mastery prints none. `validate` fails unless every other Skill has exactly those five
+  DNs, so a dropped, doubled or stray row can't slip through. Kept as printed: "enginge" (Tech DN 5, p.126) and the full stop
+  ending the Investigation DN 1 example (p.123). The scene editor shows the row for a Test's Skill and DN under its DN
+  chips.
+
 ---
 
 ## 6. `validate.ts`
@@ -691,10 +703,10 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 | Copyrighted | Where |
 |---|---|
 | The book PDFs | `books/`, gitignored (`*.pdf`); never commit them |
-| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, and any rule text in packs and characters |
+| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
-- Never serve book content without an access token. `GET /api/campaigns/:id/threats` and `/wargear` return 401 unless
+- Never serve book content without an access token. `GET /api/campaigns/:id/threats`, `/wargear` and `/scene-presets` return 401 unless
   the caller has a seat at that table and 403 for a player.
 - Players get a threat's `stats` only after the GM reveals that combatant (`toPlayerView`). They never get NPC
   `statSource`.

@@ -24,6 +24,7 @@ import {
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
+  type ScenePresets,
   type ThreatCombatant,
 } from "@wg/shared";
 
@@ -602,6 +603,13 @@ test("GM and player share a table", async (t) => {
   const catalogue = await get(`/campaigns/${campaignId}/wargear`, bearer(gmClerk));
   assert.ok(catalogue.status === 200 && ((await catalogue.json()) as unknown[]).length > 100);
   assert.equal((await get(`/campaigns/${campaignId}/wargear`, { cookie: `wg_token=${issued.token}` })).status, 403);
+  // So are the scene presets (issue #39): the sample DNs per Skill, Core pp.122-126.
+  const presets = await get(`/campaigns/${campaignId}/scene-presets`, bearer(gmClerk));
+  assert.ok(presets.status === 200 && ((await presets.json()) as ScenePresets).skillDns.length === 85);
+  assert.equal(
+    (await get(`/campaigns/${campaignId}/scene-presets`, { cookie: `wg_token=${issued.token}` })).status,
+    403,
+  );
   // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
   // Gamemaster chapter reaches only the GM (§11.74).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });
