@@ -1,0 +1,141 @@
+[
+  {
+    "id": "gk-gutshiva",
+    "name": "Boss Gutshiva",
+    "role": "Ork Nob",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 8
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "gutshiva"
+    },
+    "gmNotes": "The Nob in charge of this mess, Boss Gutshiva grew sick of waiting for the Rok to be finished, certain that ‘any day now, lads,’ might as well be never. He heard about ‘nerz tellyporta, and decided to risk paying the teef to zapp to Gilead Primus. Gutshiva was certain that by the time the Rok arrived anywhere near Gilead, he and his lads would already have krumped a hive of their own. When the tellyporta malfunctioned and most of his Orks vanished, Gutshiva made two promises to himself. The first was that he would indeed find a way to conquer the ‘umie hive, whatever it took. The second was that he would, some day, personally stick ‘nerz into his own tellyporta and zap him somewhere really nasty.\n\nPursuing two distinct goals at the same time is almost unheard of for an Ork, but Boss Gutshiva is particularly kunnin’. He rose to the position of Nob in the usual Ork way — by challenging the previous leader to a fight and winning — but he has held on to that position by good old fashioned backstabbin’. There have been challenges to his leadership, but Gutshiva made sure that each and every Ork that stood against him met with an unfortunate accident. Most he has fought and krumped in a head on fight, though some were dealt with by more nefarious means, either because they were beneath his notice, or perhaps because they posed too much of a threat to him.\n\nEvery Ork fighting for Gutshiva knows full well what is going on, but the Kommandos believe that anyone capable of replacing the Nob had better be able to deal with a few Squig Mines.\n\nMoreover, Gutshiva has been a competent leader as Orks go. He has been sure to get the Boyz into the best fighting around, culminating in one memorable skirmish that saw them infiltrating an Imperial mining settlement and sabotaging the power systems ahead of a full Ork assault. The Kommandos got their fill of both sneakin’ and fightin’ during the operation, and even managed to escape before the ‘umies decided to be sore gitz about it and detonated the settlement’s reactor."
+  },
+  {
+    "id": "gk-dok-bitzbak",
+    "name": "Dok Bitzbak",
+    "role": "Painboy",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 10
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "dok-bitzbak"
+    },
+    "gmNotes": "The Dok is a Painboy, in charge of sewing injured Orks back together. Bitzbak is very fond of this work — about as much as an Ork can be fond of anything other than fighting — and takes every excuse to try out new techniques. If he wants to figure out, say, how to fix a Choppa wound to the head, he has been known to inflict such a wound on a passing Ork himself, just for the chance to do a bit of stitchin’ and tinkerin’. Most of the lads try to avoid going to the Dok unless they already have a sufficiently ‘interesting’ injury.\n\nBefore leaving the Reach, Bitzbak had established a fairly dubious reputation, and often had to resort to having his Grots drag injured Orks away from other Painboyz to ensure he had flesh to work on. Eventually the other Painboyz realised what was happening, and the Dok’s Grots found it impossible to find patients without getting shot in the process. The Dok isn’t quite certain why other Orks don’t seem to appreciate his ministrations, and chalks it up to squeamishness on their part.\n\nIt was due to this lack of patients that Bitzbak joined up with Gutshiva’s Kommandos on their jaunt through the tellyporta. Luckily for him, he’s the only Painboy in the area —maybe on the whole planet, meaning he now has more patients than he can handle. Grateful for the opportunity to practise some of his more experimental procedures, Bitzbak is always cheerful, and isn’t a bit put out by the pleading of his patients to ‘make sure I gotz at least as many limbs when yer dun, alright Dok?’ The Painboy just smiles broadly before hitting his patient with a good dose of ‘anaesthetic,’ which is what the Dok has named a beloved chunk of metal that suspiciously resembles the remains of a trukk...\n\nFor all his love of experimental procedures and his fearsome reputation, the Dok is, at least by Ork standards, an excellent medic. When not preoccupied with some interesting injury, he can remove bullets and reattach limbs with aplomb, and most lucky enough to receive such treatment are usually back in the fight within the day. This is the only thing that has saved him from being labelled a Bad Dok and thrown out of the Korps. However, when distracted, his bedside manner leaves a lot to be desired. An Ork complaining of a live shell lodged in its sternum might find both legs replaced with bioniks and the unexploded ordnance still exactly where it landed. Bitzbak will simply suggest the patient use their new limbs to leg it if the shell goes off.\n\nAfter the tellyporta accident, Bitzbak found a bunch of Orks and Squigs melted together by the misfiring of the device, and he has been obsessed with the technology ever since. This has left him with some truly horrifying ideas for future experiments, and has spent a fair amount of time trying to convince Tiknek to build him a microtellyporta of his own. Quite what Bitzbak might use this for is anyone’s guess, though he has been collecting more ‘samples’ than usual over the last few days."
+  },
+  {
+    "id": "gk-mek-tiknek",
+    "name": "Mek Tiknek",
+    "role": "Mekboy",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 12
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "mek-tiknek"
+    },
+    "gmNotes": "Since the disaster with the tellyporta, a lot of the Boyz have had it in for Tiknek. This despite the fact that he had absolutely nothing to do with the thing, and firmly believes them to be against Gork’s will in the first place — tellyportas’ being far more Kunnin’ than Brutal, after all. Still, he keeps the ladz gear in order, and is willing to do whatever it takes to come up with more dakka when it is needed — which is, essentially, always.\n\nTiknek has a particular fondness for what he likes to call ‘Da Basics.’ This means Shootas, Stikkbombs, Burnas, and Choppaz. While he is perfectly capable of creating more esoteric Ork weaponry, he ‘loves da simple fings in life’, and feels that any problem a Shoota can’t fix, simply calls for more Shootas. This point of view is shared by most of Gutshiva’s Kommandos, who would extend ‘Da Basics’ to include a nice bit of camouflage and maybe a scope.\n\nTiknek’s other passion is Trukks. He has a desperate desire to build things that go very, very, fast, and perhaps also explode — intentionally or otherwise. Though his previous circumstances working on Da Big Rok didn’t leave much room for going fast, with his boots back on solid ground he hears the call of the engines once more. The opportunity has yet to present itself, but this doesn’t stop him from banging on about the finer points of Trukk design to any Ork who stops by his workshop, even if the details are completely lost on them.\n\nThe Kommandos just nod along before asking if the Mek could possibly add some more dakka to their Shoota. When the Mek has a need of raw materials or an unusual part he can’t knock up himself, he is quick to rope any passing Boyz into helping out — providing most of their gear, they tend to owe him a favour. These favours vary wildly in scope, and the ladz have learned to be at least a bit wary of any of Tiknek’s requests. He may simply want some scrap too heavy for Grots to drag up to his workshop, a dull but harmless task, or he may want the big gun stolen from a ‘umie tank that is currently shooting at some other Orks, which is naturally more challenging. All the same, whatever Tiknek turns the resulting loot into usually goes bang, so the Orks are happy to help out."
+  },
+  {
+    "id": "gk-gruzbag",
+    "name": "Gruzbag",
+    "role": "Ork Kommando",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 14
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "gruzbag"
+    },
+    "gmNotes": "Every Nob has an underling who is watching from over their shoulder, ready to step in and krump them should their leader ever let his guard down: to Boss Gutshiva, Gruzbag is that Ork. Gruzbag is convinced that the boss is responsible for the whole tellyporta debacle, and should step aside (with a Choppa in his neck to help him along.) Naturally, Gruzbag himself is an ideal candidate to lead the mob, and he has already made quite detailed plans to krump anyone who says otherwise. For his part, Gutshiva thinks fondly of Gruzbag, crediting the scheming underling with keeping him ded kunnin’.\n\nKunnin’ is not a word many would use to describe Gruzbag, however. As a yoof he was constantly the butt of Orkish humour, whose ‘pranks’ range from being merely exceedingly violent to incredibly deadly. Gruzbag lacked the brains to see any of these obvious ambushes coming, but survived them by becoming bigger, tougher, and substantially more violent than the pranksters.\n\nThese are fine qualities in an Ork, far more desirable than smarts in any case. Gruzbag leaves the thinking to the Meks, and focuses on smashing his way to exactly what he wants. Currently that’s the position of Nob over the rest of the Kommandos, a position he reckons he deserves, as he’s bigger than most of them. To Orks, this is a highly persuasive argument.\n\nGruzbag is not entirely without kunnin, however. He keeps his Choppa sharp, his Shoota loaded, and is always on the lookout for friendly gitz to help him take over — at which point any surviving accomplices will be swiftly kicked back to being an underling. So far he has had little luck in this regard, as Gutshiva has neatly sidestepped most of his attempts to properly challenge him for leadership. On the one occasion the two did get into a scrap, Gutshiva did something fancy with his Choppa and Gruzbag’s arm fell off. Gruzbag often thinks about that scrap, and has come to the conclusion that Gutshiva cheated somehow. He is still getting used to his new Bionik — a hulking great chunk of metal that spews fire and bullets in equal measure. As soon as he’s wrangled it into obeying him, Gruzbag intends to use it to unseat Gutshiva and install himself as the Big Boss.\n\nThe injury has given Gruzbag some time to ponder — if the boss was willing to cheat by cutting off his arm, then perhaps Gruzbag should do some cheating of his own. Though the mechanisms of his mind work slowly, the beginnings of a plan have begun to form. The next time they fight, Gruzbag intends to have the upper hand from the start."
+  },
+  {
+    "id": "gk-groof-da-yoof",
+    "name": "Groof da Yoof",
+    "role": "Ork Stormboy",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 16
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "groof-da-yoof"
+    },
+    "gmNotes": "Groof shouldn’t be here. He was quite happy to wait for the Rok to be finished, intent on spending most of his days drilling endlessly with the rest of the Stormboyz. Unfortunately for Groof, his Rokkit Pack malfunctioned at the worst possible moment, sending him careening onto the tellyporta platform just in time to be zapped to Gilead Primus with Gutshivva and the rest of his Boyz. He has been dragged along with the mob for days now, disgusted by their lack of discipline and enraged by the fact that most of the other Orks look at him with a mixture of pity and mirth. Soon, Groof thinks, the opportunity will arise to show the mob what proper taktics and a pair of shiny boots can do. Until then he is content to continue his search for some alternative fuel for his Rokkit Pack.\n\nGroof is a Stormboy, Orkish youth who rebel against the chaotic behaviour of their seniors by engaging in practices most mature orks find either hilarious or vaguely embarrassing. Most shine their boots, practice marching in formation, and otherwise behave as an organised military force.\n\nThe Stormboyz have only two redeeming qualities in the eyes of most Orks. The first is that they will eventually grow out of it, and the second, far more admirable quality, is their use of Rokkit Packs. These unimaginably dangerous devices are little more than canisters of fuel that the Stormboyz strap to their backs to propel them into the midst of battle. The Stormboyz sometimes describe this as a ‘taktical insertion amidst the enemy,’ while most Orks just think it’s a great way to get into a scrap without all the slogging.\n\nA Rokkit Pack functions identically to a Jump Pack (Wrath & Glory rulebook, page 237), but all Pilot Tests involving a Rokkit Pack include an additional Wrath Die. Unfortunately for Groof he is denied even this redeeming quality, as his Rokkit Pack ran out of fuel almost as soon as he arrived in Hive Gulgatha. The yoof is on the lookout for some allies to help him get back on his well polished feet."
+  },
+  {
+    "id": "gk-dudd-the-bomb-squig",
+    "name": "Dudd the Bomb Squig",
+    "role": "Bomb Squig",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 18
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "dudd-the-bomb-squig"
+    },
+    "gmNotes": "Dudd is a Bomb Squig that one of the Boyz pulled the pin on several days ago, but which has yet to go off. Most of the Orks view this as a sign that the Squig is exceptionally lucky, and naturally assume this luck will eventually rub off on them too, so they’ve decided to keep him around. A few Orks have even taken to feeding the Squig the occasional Stikkbomb, certain that any offerings to Dudd can only help their own fortunes."
+  },
+  {
+    "id": "gk-razorwings",
+    "name": "Razorwings",
+    "role": "Murder Bird flock",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 17
+      }
+    ],
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "razorwings"
+    },
+    "gmNotes": ""
+  },
+  {
+    "id": "gk-mek-wrencha",
+    "name": "Mek Wrencha",
+    "role": "Mekboy",
+    "cites": [
+      {
+        "source": "gutshivas-kommandos",
+        "page": 20
+      },
+      {
+        "source": "gutshivas-kommandos",
+        "page": 19
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "mek-wrencha"
+    },
+    "gmNotes": "In fact, Da Runtz are anything but loyal — even by the already low standards expected of a Grot. They serve another Ork Mek Wrencha, who arrived with the Grots in an earlier use of the teleporta. Left seriously injured in the even more disastrous teleporta incident, Wrencha has been slowly rebuilding his body with a bevy of bioniks, and using Da Runtz to gather the supplies to do so from Gurshiva’s Kommandos. Driven half mad and his injuries (and only having the Grots around,) Wrencha intends to use Da Runtz to seize leadership of the Kommandos for himself."
+  }
+]

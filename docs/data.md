@@ -165,7 +165,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 |---|---|---|---|
 | Core rulebook | `core` | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
 | Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40; faction presets, #46) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
-| Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
+| Gutshiva's Kommandos | `gutshivas-kommandos` (NPC presets, #47) | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` (Frameworks, #45) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
 | Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
