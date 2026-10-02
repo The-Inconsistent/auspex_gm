@@ -20,6 +20,7 @@ import {
   type Character,
   type Codex,
   type CreationPayload,
+  type FrameworkCatalogue,
   type LibraryCharacter,
   type LibraryEntry,
   type LiveState,
@@ -655,6 +656,13 @@ test("GM and player share a table", async (t) => {
     (await get(`/campaigns/${campaignId}/scene-presets`, { cookie: `wg_token=${issued.token}` })).status,
     403,
   );
+  // And the printed patrons and Frameworks for PARTY's picker (issue #45).
+  const frameworks = await get(`/campaigns/${campaignId}/frameworks`, bearer(gmClerk));
+  assert.equal(frameworks.status, 200);
+  const { patrons } = (await frameworks.json()) as FrameworkCatalogue;
+  assert.ok(patrons.some((p) => p.options.some((o) => o.name === "Varonius Vanguard")));
+  assert.equal((await get(`/campaigns/${campaignId}/frameworks`, { cookie: `wg_token=${issued.token}` })).status, 403);
+  assert.equal((await get(`/campaigns/${campaignId}/frameworks`, bearer(clerk("stranger")))).status, 401);
   // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
   // Gamemaster chapter reaches only the GM (§11.74).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });
@@ -738,8 +746,22 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   t.after(() => (gm.socket.close(), other.socket.close()));
   const charOf = (s: LiveState, id: string) => s.characters.find((c) => c.id === id)!;
 
-  assert.ok((await gm.send({ type: "campaign.update", framework: "Deathwatch", patron: "Ordo Xenos" })).ok);
-  await gm.until((s) => s.campaign.framework === "Deathwatch" && s.campaign.patron === "Ordo Xenos");
+  assert.ok(
+    (
+      await gm.send({
+        type: "campaign.update",
+        framework: "Deathwatch",
+        frameworkBonus: "+1 die",
+        patron: "Ordo Xenos",
+      })
+    ).ok,
+  );
+  await gm.until(
+    (s) =>
+      s.campaign.framework === "Deathwatch" &&
+      s.campaign.frameworkBonus === "+1 die" &&
+      s.campaign.patron === "Ordo Xenos",
+  );
 
   const hero = await gm.send({ type: "character.create", name: "Hero" });
   const b = await gm.send({ type: "character.create", name: "B" });

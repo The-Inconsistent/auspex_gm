@@ -521,6 +521,73 @@ textarea.input {
 .setup-tick.prompt {
   border-style: dashed;
 }
+/* START FROM A FRAMEWORK on PARTY (issue #45): the list by book and patron, the GM-only preview beside it. */
+.fw-picker {
+  border: 2px solid var(--iron);
+  background: var(--vellum);
+}
+.fw-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 10px;
+}
+.fw-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 16px;
+  align-items: start;
+}
+.fw-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+}
+.fw-patron {
+  padding: 6px 10px;
+  background: var(--vellum-2);
+  border-bottom: 1px solid var(--line);
+}
+.fw-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 4px 10px 4px 22px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+}
+.fw-row.on {
+  background: var(--iron);
+  color: var(--bone);
+  font-weight: 700;
+}
+.fw-row.on .chip {
+  color: var(--bone);
+  border-color: var(--bone-2);
+}
+.fw-line {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 10px;
+}
+.fw-phone {
+  padding: 8px 12px;
+  border: 1px dashed var(--ink-3);
+}
+@media (max-width: 900px) {
+  .fw-body,
+  .fw-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 
 /* Party pools as wax seals (components/ui/seal): brass Glory, crimson Ruin. */
 .seal {

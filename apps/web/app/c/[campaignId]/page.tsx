@@ -1,4 +1,4 @@
-import { Me, ScenePresets, Threat, Wargear } from "@wg/shared";
+import { FrameworkCatalogue, Me, ScenePresets, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet, loadRules } from "@/app/server-api";
@@ -41,6 +41,17 @@ async function loadScenePresets(campaignId: string): Promise<ScenePresets> {
   }
 }
 
+// GM-only printed patrons and Frameworks for PARTY's picker (issue #45). Empty on failure; the picker then lists none.
+async function loadFrameworks(campaignId: string): Promise<FrameworkCatalogue> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/frameworks`);
+    const parsed = FrameworkCatalogue.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : { patrons: [], frameworks: [] };
+  } catch {
+    return { patrons: [], frameworks: [] };
+  }
+}
+
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
 export default async function Table({ params }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
@@ -56,13 +67,23 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear, rules, presets] = await Promise.all([
+    const [bestiary, wargear, rules, presets, frameworks] = await Promise.all([
       loadBestiary(me.campaignId),
       loadWargear(me.campaignId),
       loadRules(me.campaignId),
       loadScenePresets(me.campaignId),
+      loadFrameworks(me.campaignId),
     ]);
-    return <GmApp campaignId={me.campaignId} bestiary={bestiary} wargear={wargear} rules={rules} presets={presets} />;
+    return (
+      <GmApp
+        campaignId={me.campaignId}
+        bestiary={bestiary}
+        wargear={wargear}
+        rules={rules}
+        presets={presets}
+        frameworks={frameworks}
+      />
+    );
   }
   if (!me.characterId) return <StatusScreen text="NO CHARACTER YET. ASK YOUR GM." />;
   return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} rules={await loadRules(me.campaignId)} />;

@@ -2,7 +2,15 @@
 import { useState } from "react";
 
 import { UserButton } from "@wg/auth/react";
-import { Pool, poolMax, type RuleEntry, type ScenePresets, type Threat, type Wargear } from "@wg/shared";
+import {
+  Pool,
+  poolMax,
+  type FrameworkCatalogue,
+  type RuleEntry,
+  type ScenePresets,
+  type Threat,
+  type Wargear,
+} from "@wg/shared";
 
 import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
@@ -29,9 +37,10 @@ type GmAppProps = {
   wargear: Wargear[];
   rules: RuleEntry[];
   presets: ScenePresets;
+  frameworks: FrameworkCatalogue;
 };
 
-export function GmApp({ campaignId, bestiary, wargear, rules, presets }: GmAppProps) {
+export function GmApp({ campaignId, bestiary, wargear, rules, presets, frameworks }: GmAppProps) {
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>("TRACK");
@@ -123,7 +132,16 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets }: GmAppPr
             {tab === "CODEX" && (
               <CodexView codex={codex} characters={state.characters} send={send} initialKind={codexKind} />
             )}
-            {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} onTab={openTab} />}
+            {tab === "PARTY" && (
+              <Party
+                state={state}
+                codex={codex}
+                send={send}
+                wargear={wargear}
+                frameworks={frameworks}
+                onTab={openTab}
+              />
+            )}
             {tab === "RULES" && <RulesRef rules={rules} />}
             {tab === "BOOKS" && <Books server={bookServer} />}
           </main>
