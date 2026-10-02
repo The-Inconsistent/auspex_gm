@@ -21,7 +21,7 @@ import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
 import { sendCached } from "../core/http.ts";
-import { creationPayload } from "../character/creation.service.ts";
+import { creationPayload, frameworkCatalogue } from "../character/creation.service.ts";
 import { TableGateway } from "../table/table.gateway.ts";
 import {
   campaignHomebrew,
@@ -156,6 +156,17 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return listScenePresets();
+  }
+
+  // The printed patrons and Frameworks for PARTY's picker (issue #45). Book text, so GM only like the bestiary; the
+  // picker fills in names only, so the MISSION players see carries no printed prose (rules-flow §11.80).
+  @Get("campaigns/:id/frameworks")
+  async frameworks(@Param("id") id: string, @Req() req: Request) {
+    const campaignId = parse(CampaignId, id);
+    const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    return frameworkCatalogue(await campaignHomebrew(campaignId));
   }
 
   // Rules reference (book text) for any seat at this table, GM or player.

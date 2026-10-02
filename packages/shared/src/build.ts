@@ -2008,7 +2008,7 @@ function amount(a: unknown): string {
   return "?";
 }
 
-function describeFilter(f: WargearFilter): string {
+export function describeFilter(f: WargearFilter): string {
   const bits = [
     f.rarity &&
       (f.rarity.atMost === f.rarity.atLeast

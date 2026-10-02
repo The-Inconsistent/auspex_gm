@@ -1,7 +1,15 @@
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { creationCatalogue, wargear } from "@wg/data";
-import { SOURCES, officialOnly, type BuildCatalogue, type CreationPayload, type ResolvedBuild } from "@wg/shared";
+import {
+  SOURCES,
+  officialOnly,
+  type BuildCatalogue,
+  type CreationPayload,
+  type FrameworkCatalogue,
+  type ResolvedBuild,
+  type Source,
+} from "@wg/shared";
 import type { CachedPayload } from "../core/http.ts";
 
 // The character-creation catalogue (packages/data/creation, docs/data.md §9), parsed at startup so a bad file fails fast.
@@ -19,6 +27,13 @@ export function buildRefusal(r: ResolvedBuild, { gmLater = false }: { gmLater?: 
   if (next) return `Still to choose: ${next.what}`;
   const problem = r.problems.find((p) => !gmLater || p.severity !== "gm");
   return problem ? `${problem.what}${problem.cite ? ` (${problem.cite})` : ""}` : null;
+}
+
+// PARTY's Framework picker (issue #45): the printed patrons and Frameworks, without the homebrew books unless the
+// campaign allows them, as /creation filters them.
+export function frameworkCatalogue(homebrew: boolean): FrameworkCatalogue {
+  const keep = (r: { source: Source }) => homebrew || SOURCES[r.source].official;
+  return { patrons: creation.patrons.filter(keep), frameworks: creation.frameworks.filter(keep) };
 }
 
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.

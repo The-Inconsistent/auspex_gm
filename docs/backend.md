@@ -73,6 +73,7 @@ text.
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/scene-presets` | Seat, GM only | none | `200 ScenePresets`: `{ skillDns, tables, pools }`, the sample DNs per Skill (Core pp.122–126), the books' event tables (#39) and Ruin and Glory lists (#40) | `400` bad id. `401` no seat. `403` player |
+| `GET /api/campaigns/:id/frameworks` | Seat, GM only | none | `200 FrameworkCatalogue`: `{ patrons, frameworks }`, the printed patrons and Frameworks for PARTY's picker (#45), without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
 | `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 2 MB | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a handout audience naming an Agent not in the file |
 | `GET /api/campaigns/:id/export` | Seat, GM only | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`) | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |

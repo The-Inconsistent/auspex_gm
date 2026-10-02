@@ -536,6 +536,10 @@ export const Framework = z.object({
 });
 export type Framework = z.infer<typeof Framework>;
 
+// GET /api/campaigns/:id/frameworks: PARTY's Framework picker (issue #45). Book text, so GM only.
+export const FrameworkCatalogue = z.object({ patrons: z.array(Patron), frameworks: z.array(Framework) });
+export type FrameworkCatalogue = z.infer<typeof FrameworkCatalogue>;
+
 // A language (Core p.31). Low Gothic, which everyone knows, has no record. `keywords`: having any of them allows the
 // one free pick at creation (rules-flow.md §11.48–49); `xenos`: an alien tongue, for "one alien language" grants.
 // Unlisted languages are GM-approved write-ins (§11.50).

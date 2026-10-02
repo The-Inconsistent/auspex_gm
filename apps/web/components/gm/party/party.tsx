@@ -14,6 +14,7 @@ import {
   type ActionResult,
   type Character,
   type Codex,
+  type FrameworkCatalogue,
   type LiveState,
   type Member,
   type Wargear,
@@ -29,6 +30,7 @@ import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
+import { FrameworkPicker } from "./components/framework-picker/framework-picker";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
@@ -36,9 +38,17 @@ import type { TabTarget } from "./components/setup-panel/constants";
 import { SetupPanel } from "./components/setup-panel/setup-panel";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
 
-type PartyProps = { state: LiveState; codex: Codex; send: Send; wargear: Wargear[]; onTab: (to: TabTarget) => void };
+type PartyProps = {
+  state: LiveState;
+  codex: Codex;
+  send: Send;
+  wargear: Wargear[];
+  frameworks: FrameworkCatalogue;
+  onTab: (to: TabTarget) => void;
+};
 
-export function Party({ state, codex, send, wargear, onTab }: PartyProps) {
+export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyProps) {
+  const [picking, setPicking] = useState(false);
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
@@ -156,6 +166,14 @@ export function Party({ state, codex, send, wargear, onTab }: PartyProps) {
   // Framework SAVE.
   const saveFramework = async () =>
     report(await send({ type: "campaign.update", framework, frameworkBonus, patron }), "FRAMEWORK SAVED");
+
+  // START FROM A FRAMEWORK › USE: the picked names go into the form, saved only by SAVE.
+  const fillFramework = (picked: { patron: string; framework: string }) => {
+    setPatron(picked.patron);
+    setFramework(picked.framework);
+    setPicking(false);
+    setMsg("FRAMEWORK FILLED IN · SAVE TO KEEP IT");
+  };
 
   // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
   const respite = async (c: Character) =>
@@ -303,17 +321,35 @@ export function Party({ state, codex, send, wargear, onTab }: PartyProps) {
               onChange={(e) => setFrameworkBonus(e.target.value)}
             />
           </div>
-          <div>
+          <div className="keys">
+            <button
+              className={`btn ${picking ? "primary" : ""}`}
+              aria-expanded={picking}
+              onClick={() => setPicking(!picking)}
+            >
+              START FROM A FRAMEWORK
+            </button>
             <button className="btn" onClick={saveFramework}>
               SAVE
-            </button>{" "}
+            </button>
             {/* The whole campaign as a file, for a backup or the lobby's IMPORT GAME. */}
             <a className="btn" href={`/api/campaigns/${state.campaign.id}/export`} download>
               EXPORT
             </a>
           </div>
+          <i className="dim">Typing your own still works.</i>
         </div>
       </section>
+
+      {picking && (
+        <FrameworkPicker
+          catalogue={frameworks}
+          tier={state.campaign.tier}
+          patron={patron}
+          onUse={fillFramework}
+          onClose={() => setPicking(false)}
+        />
+      )}
 
       <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
 
