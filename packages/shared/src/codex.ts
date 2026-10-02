@@ -113,12 +113,14 @@ export const canSpend = (pools: Record<Pool, number>, { pool, cost }: Pick<PoolS
 
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
+export const MAX_FACTION_KEYWORDS = 20;
+export const MAX_KEYWORD_LENGTH = 60;
 
 // Editable fields per kind (what the GM sends). `id`/`campaignId` are server-owned.
 export const CodexInput = {
   faction: z.object({
     name: text(100),
-    keywords: z.array(text(60)).max(20).default([]),
+    keywords: z.array(text(MAX_KEYWORD_LENGTH)).max(MAX_FACTION_KEYWORDS).default([]),
     stance: FactionStance.default("neutral"),
     notes: text().default(""),
     secrets: text().default(""),

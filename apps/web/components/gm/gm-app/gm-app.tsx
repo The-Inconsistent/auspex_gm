@@ -5,6 +5,7 @@ import { UserButton } from "@wg/auth/react";
 import {
   Pool,
   poolMax,
+  type FactionPresets,
   type FrameworkCatalogue,
   type RuleEntry,
   type ScenePresets,
@@ -38,9 +39,10 @@ type GmAppProps = {
   rules: RuleEntry[];
   presets: ScenePresets;
   frameworks: FrameworkCatalogue;
+  factionPresets: FactionPresets;
 };
 
-export function GmApp({ campaignId, bestiary, wargear, rules, presets, frameworks }: GmAppProps) {
+export function GmApp({ campaignId, bestiary, wargear, rules, presets, frameworks, factionPresets }: GmAppProps) {
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>("TRACK");
@@ -130,7 +132,13 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets, framework
               />
             )}
             {tab === "CODEX" && (
-              <CodexView codex={codex} characters={state.characters} send={send} initialKind={codexKind} />
+              <CodexView
+                codex={codex}
+                characters={state.characters}
+                send={send}
+                initialKind={codexKind}
+                factionPresets={factionPresets}
+              />
             )}
             {tab === "PARTY" && (
               <Party

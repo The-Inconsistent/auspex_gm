@@ -3,7 +3,7 @@ export const FIELD_TYPES = {
   text: { empty: "" },
   area: { empty: "" },
   bool: { empty: false },
-  list: { empty: [] },
+  keywords: { empty: [] }, // a faction's Keywords: chips plus a search over the books' (issue #46)
   select: { empty: "" },
   picks: { empty: [] }, // toggle chips over `options`, stored as the chosen values
 } as const;

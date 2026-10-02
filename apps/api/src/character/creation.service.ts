@@ -6,6 +6,7 @@ import {
   officialOnly,
   type BuildCatalogue,
   type CreationPayload,
+  type FactionPresets,
   type FrameworkCatalogue,
   type ResolvedBuild,
   type Source,
@@ -34,6 +35,20 @@ export function buildRefusal(r: ResolvedBuild, { gmLater = false }: { gmLater?: 
 export function frameworkCatalogue(homebrew: boolean): FrameworkCatalogue {
   const keep = (r: { source: Source }) => homebrew || SOURCES[r.source].official;
   return { patrons: creation.patrons.filter(keep), frameworks: creation.frameworks.filter(keep) };
+}
+
+// CODEX › FACTIONS (issue #46): the Keywords the picker suggests, keyword records first and then the ones sub-factions
+// fill in ("SPACE WOLVES"), each name once, without the homebrew books unless the campaign allows them.
+export function factionPresets(homebrew: boolean): FactionPresets {
+  const keep = (r: { source: Source }) => homebrew || SOURCES[r.source].official;
+  const seen = new Set<string>();
+  const keywords = [
+    ...creation.keywords.filter(keep).map(({ name, text, source, page }) => ({ name, text, source, page })),
+    ...creation["sub-factions"]
+      .filter(keep)
+      .map(({ keyword, source, page }) => ({ name: keyword, text: "", source, page })),
+  ].filter((k) => !seen.has(k.name) && seen.add(k.name));
+  return { keywords, presets: [] };
 }
 
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.
