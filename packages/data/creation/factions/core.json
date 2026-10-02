@@ -4,6 +4,7 @@
     "name": "Adepta Sororitas",
     "source": "core",
     "page": 50,
+    "keywords": ["ADEPTA SORORITAS"],
     "text": "",
     "rules": [
       {
@@ -23,6 +24,7 @@
     "name": "Adeptus Astra Telepathica",
     "source": "core",
     "page": 53,
+    "keywords": ["ADEPTUS ASTRA TELEPATHICA"],
     "text": "",
     "rules": []
   },
@@ -31,6 +33,7 @@
     "name": "Adeptus Mechanicus",
     "source": "core",
     "page": 55,
+    "keywords": ["ADEPTUS MECHANICUS"],
     "text": "",
     "rules": [
       {
@@ -45,6 +48,7 @@
     "name": "Adeptus Ministorum",
     "source": "core",
     "page": 58,
+    "keywords": ["ADEPTUS MINISTORUM"],
     "text": "",
     "rules": [
       {
@@ -58,6 +62,7 @@
     "name": "Astra Militarum",
     "source": "core",
     "page": 60,
+    "keywords": ["ASTRA MILITARUM"],
     "text": "",
     "rules": [
       {
@@ -72,6 +77,7 @@
     "name": "Inquisition",
     "source": "core",
     "page": 63,
+    "keywords": ["INQUISITION"],
     "text": "",
     "rules": [
       {
@@ -86,6 +92,7 @@
     "name": "Rogue Trader Dynasties",
     "source": "core",
     "page": 66,
+    "keywords": ["ROGUE TRADER"],
     "text": "",
     "rules": []
   },
@@ -94,6 +101,7 @@
     "name": "Scum",
     "source": "core",
     "page": 68,
+    "keywords": ["SCUM"],
     "text": "",
     "rules": []
   },
@@ -102,6 +110,7 @@
     "name": "Adeptus Astartes",
     "source": "core",
     "page": 70,
+    "keywords": ["ADEPTUS ASTARTES"],
     "text": "",
     "rules": [
       {
@@ -126,6 +135,7 @@
     "name": "Aeldari",
     "source": "core",
     "page": 76,
+    "keywords": ["AELDARI"],
     "text": "",
     "note": "The Asuryani Paths (p.78) are a creation choice for this faction and belong in option-groups; they are not transcribed here.",
     "rules": [
@@ -146,6 +156,7 @@
     "name": "Orks",
     "source": "core",
     "page": 80,
+    "keywords": ["ORK"],
     "text": "",
     "rules": [
       {
@@ -160,6 +171,7 @@
     "name": "Chaos",
     "source": "core",
     "page": 84,
+    "keywords": ["CHAOS"],
     "text": "",
     "rules": [
       {

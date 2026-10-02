@@ -330,6 +330,7 @@ export type Keyword = z.infer<typeof Keyword>;
 // `rules`: rules every member gets (Assassinorum Conditioning, Apocrypha p.55; Coterie Wrath, IoE p.14).
 export const Faction = z.object({
   ...record,
+  keywords: z.array(keyword).default([]), // the Faction Keyword(s) it stands for (Core pp.375–378), for the codex's ADD FROM BOOK
   text: z.string().default(""),
   rules: z.array(Rule).default([]),
   backgroundsFrom: z.array(id).default([]), // whose Background its Agents take: Corsairs take their former faction's (IoE p.14)

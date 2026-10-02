@@ -4,6 +4,7 @@
     "name": "Asuryani",
     "source": "inheritance-of-embers",
     "page": 10,
+    "keywords": ["ASURYANI"],
     "text": "",
     "note": "Wraith Constructs (p.13) sit in this section's run of pages but are a Species, not a faction: their archetypes carry AELDARI, ASURYANI and they may take [CRAFTWORLD]. They have no Paths, Backgrounds or Objectives (p.13).",
     "rules": [
@@ -20,6 +21,7 @@
     "name": "Anhrathe",
     "source": "inheritance-of-embers",
     "page": 14,
+    "keywords": ["ANHRATHE"],
     "text": "",
     "note": "Headed \"CORSAIRS\"; Anhrathe is the Keyword (ANHRATHE). Rule names are editorial: the book prints these rules unnamed. Corsairs take the Background of their former faction (rules-flow.md §11.60). p.14 says Corsairs may use \"the Anhrathe Goal table\", but only ANHRATHE OBJECTIVES is printed (GitHub issue #2).",
     "backgroundsFrom": ["asuryani", "drukhari", "harlequins"],
@@ -39,6 +41,7 @@
     "name": "Drukhari",
     "source": "inheritance-of-embers",
     "page": 15,
+    "keywords": ["DRUKHARI"],
     "text": "",
     "note": "Rule name is editorial: the book prints it unnamed. Also Apocrypha p.58.",
     "rules": [
@@ -53,6 +56,7 @@
     "name": "Harlequins",
     "source": "inheritance-of-embers",
     "page": 18,
+    "keywords": ["HARLEQUIN"],
     "text": "",
     "note": "The Keyword is HARLEQUIN. Rule name is editorial; the text is the last sentence of The [MASQUE] Keyword box (p.19). Also Apocrypha p.46.",
     "rules": [
@@ -83,6 +87,7 @@
     "name": "Ynnari",
     "source": "inheritance-of-embers",
     "page": 20,
+    "keywords": ["YNNARI"],
     "text": "",
     "note": "The book calls the Ynnari a sub-faction; no archetype is native to it, and it is joined through the Change of Kinship Ascension Package (p.58). \"Joining the Ynnari\" is an editorial name.",
     "rules": [

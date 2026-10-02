@@ -4,6 +4,7 @@
     "name": "T'au Empire",
     "source": "forsaken-system",
     "page": 119,
+    "keywords": ["T'AU"],
     "text": "",
     "note": "FSPG has no T'au Empire faction section; the name is the faction tab on the Kroot Mercenary archetype (p.119), which grants [ANY] rather than a T'AU EMPIRE keyword. Also Apocrypha p.67.",
     "rules": [

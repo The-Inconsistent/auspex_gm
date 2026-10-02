@@ -833,7 +833,7 @@ rulings, and vehicles (see the Wargear catalogue).
 | Type | Record | Holds |
 |---|---|---|
 | `keywords` | `Keyword` | Faction Keywords by printed name (`"ADEPTUS ASTARTES"`, `"[CHAPTER]"`); a bracketed one names the `placeholder` sub-faction type that fills it |
-| `factions` | `Faction` | Adeptus Astartes, Asuryani…; `backgroundsFrom` lists the factions whose Background tables its Agents take (Anhrathe → Asuryani, Drukhari, Harlequins, rules-flow.md §11.60) |
+| `factions` | `Faction` | Adeptus Astartes, Asuryani…; `keywords` is the Faction Keyword it stands for, which is its name for 22 of the 27. Five are mapped by hand: Imperial Navy → NAVIS IMPERIALIS (Apocrypha p.48, Core p.376), Harlequins → HARLEQUIN, Rogue Trader Dynasties → ROGUE TRADER, Orks → ORK, Necrons → NECRON. T'au Empire takes T'AU, Core p.377's official Keyword, not Apocrypha p.68's T'AU EMPIRE (GitHub issue #46); `backgroundsFrom` lists the factions whose Background tables its Agents take (Anhrathe → Asuryani, Drukhari, Harlequins, rules-flow.md §11.60) |
 | `sub-factions` | `SubFaction` | Chapters, Orders, Forge Worlds, Craftworlds…: `type`, `factionId`, the `keyword` it fills in, `traits` (with `geneSeed`) |
 | `species` | `Species` | XP, Speed, Size, granted Attributes and Skills, maximums, Species Keywords, abilities, and `countsAs`: the species it also counts as for requirements (Primaris → Adeptus Astartes) |
 | `backgrounds` | `BackgroundTable` | Origin / Accomplishment / Goal rows with their `bonus`, and Objectives; owned by a faction, species or sub-faction |
