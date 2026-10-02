@@ -16,6 +16,7 @@ import {
   type PlaceSummary,
   type PlaceNode,
   type Threat,
+  type Wargear,
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
@@ -31,6 +32,7 @@ import { NpcCard } from "./components/npc-card/npc-card";
 import { NpcPicker } from "./components/npc-picker/npc-picker";
 import { HulkGenerator } from "./components/hulk-generator/hulk-generator";
 import { PlacePicker } from "./components/place-picker/place-picker";
+import { ThreatEditor } from "./components/threat-editor/threat-editor";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
@@ -50,7 +52,11 @@ type CodexViewProps = {
   bestiary: Threat[];
   tier: number;
   players: number; // Scaling Threats adds the number of players for an Adversary (Core p.326)
+  wargear: Wargear[]; // where a custom threat's weapons come from (issue #43)
 };
+
+// THREATS isn't a codex kind - it has its own action and no revealed flag - so the sub-tabs are the kinds plus it.
+type SubTab = CodexKind | "threats";
 
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
@@ -80,17 +86,19 @@ export function CodexView({
   bestiary,
   tier,
   players,
+  wargear,
 }: CodexViewProps) {
-  const [kind, setKind] = useState<CodexKind>(initialKind);
+  const [sub, setSub] = useState<SubTab>(initialKind);
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const kind: CodexKind = sub === "threats" ? "npc" : sub;
   const rows = rowsFor(kind, codex);
   const factionById = useMemo(() => new Map(codex.factions.map((f) => [f.id, f])), [codex.factions]);
   const npcById = useMemo(() => new Map(codex.npcs.map((n) => [n.id, n])), [codex.npcs]);
 
-  // Kind tab: switch lists and close any open editor.
-  const pickKind = (k: CodexKind) => {
-    setKind(k);
+  // Sub-tab: switch lists and close any open editor.
+  const pickKind = (k: SubTab) => {
+    setSub(k);
     setEditing(null);
   };
 
@@ -197,13 +205,24 @@ export function CodexView({
     <div className="stack">
       <nav className="tabs sub" role="tablist" style={{ padding: "0 16px" }}>
         {CODEX_KIND_KEYS.map((k) => (
-          <button key={k} role="tab" className="tab" aria-selected={kind === k} onClick={() => pickKind(k)}>
+          <button key={k} role="tab" className="tab" aria-selected={sub === k} onClick={() => pickKind(k)}>
             {k.toUpperCase()}S
           </button>
         ))}
+        <button role="tab" className="tab" aria-selected={sub === "threats"} onClick={() => pickKind("threats")}>
+          THREATS
+        </button>
       </nav>
       <div className="pad stack">
-        {editing ? (
+        {sub === "threats" ? (
+          <ThreatEditor
+            customThreats={codex.customThreats}
+            bestiary={bestiary}
+            wargear={wargear}
+            tier={tier}
+            send={send}
+          />
+        ) : editing ? (
           <CodexEditor
             key={editing === "new" ? "new" : editing.id}
             kind={kind}

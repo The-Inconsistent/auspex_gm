@@ -22,6 +22,7 @@ type ThreatPickerProps = {
   value?: string; // the threat already picked, named on the button
   label?: string; // the button's text while nothing is picked
   className?: string; // the trigger's classes, for a row that wants a small button
+  disabled?: boolean; // the caller has nothing to do with a pick (the custom-threat cap, issue #43)
 };
 
 // The GM's way into the bestiary: a search over names and keywords, chips for the faction and for the class printed at
@@ -34,6 +35,7 @@ export function ThreatPicker({
   value,
   label = "+ THREAT…",
   className = "btn",
+  disabled = false,
 }: ThreatPickerProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [query, setQuery] = useState("");
@@ -68,8 +70,8 @@ export function ThreatPicker({
         className={className}
         style={{ maxWidth: "100%" }}
         // Nothing to pick from means the bestiary fetch failed (`loadBestiary` returns []), and an empty picker would
-        // read as a search that is merely too narrow.
-        disabled={!bestiary.length}
+        // read as a search that is merely too narrow. A caller that can't act on a pick says so too.
+        disabled={disabled || !bestiary.length}
         aria-label={picked ? `Threat: ${picked.name}, ${threatCite(picked)}. Pick another` : "Pick a threat"}
         onClick={() => ref.current?.showModal()}
       >
