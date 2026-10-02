@@ -11,6 +11,7 @@ import {
   ruleKey,
   SOURCES,
   THREAT_SOURCES,
+  isCustomThreatId,
   Threat,
   Wargear,
   SKILLS,
@@ -108,6 +109,13 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   if (`${r.data.id}.json` !== file) {
     failed = true;
     console.error(`✖ ${file}: id "${r.data.id}" doesn't match filename`);
+    continue;
+  }
+  // `custom` and the `custom-` prefix belong to a campaign's own stat blocks (issue #43). A file claiming either could
+  // shadow one a GM wrote, and `loadThreats` resolves a `custom-` id against the database, never against this folder.
+  if (r.data.source === "custom" || isCustomThreatId(r.data.id)) {
+    failed = true;
+    console.error(`✖ ${file}: "custom" is for a GM's own threats; a bestiary file can't use that source or id prefix`);
     continue;
   }
   if (r.data.source === "core" && !EXPECTED.includes(r.data.id) && !HOUSE_VARIANTS.includes(r.data.id))

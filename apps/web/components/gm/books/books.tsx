@@ -1,20 +1,21 @@
 "use client";
 import type { ChangeEvent } from "react";
 
-import { BOOKS, type ThreatSource } from "@wg/shared";
+import { BOOKS, type BookThreatSource } from "@wg/shared";
 
 import type { useBookServer } from "@/hooks/use-book-server/use-book-server";
 
 type BooksProps = { server: ReturnType<typeof useBookServer> };
 
-const SOURCES = Object.keys(BOOKS) as ThreatSource[];
+// Every book the app knows; `custom` is a GM-written stat block, not a PDF, so BOOKS never holds it (issue #43).
+const SOURCES = Object.keys(BOOKS) as BookThreatSource[];
 
 // The GM's own book PDFs, picked from this tablet. While SERVING, a player who taps a cite in a loaded book ("Core
 // p.113") sees that one page, rendered here; nothing is uploaded, and it stops when this tab closes.
 export function Books({ server }: BooksProps) {
   const { files, pick, serving, setServing, served } = server;
   const loaded = SOURCES.filter((s) => files[s]).length;
-  const onPick = (source: ThreatSource) => (e: ChangeEvent<HTMLInputElement>) => pick(source, e.target.files?.[0] ?? null);
+  const onPick = (source: BookThreatSource) => (e: ChangeEvent<HTMLInputElement>) => pick(source, e.target.files?.[0] ?? null);
 
   return (
     <div className="pad stack">

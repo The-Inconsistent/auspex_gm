@@ -2,7 +2,7 @@
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
 
 import {
-  BOOKS,
+  sourceName,
   THREAT_CLASS_LABEL,
   ThreatClass,
   threatCite,
@@ -44,7 +44,7 @@ export function ThreatPicker({
   // Only the facets the loaded bestiary actually holds: a chip that can't match anything is noise.
   const factions = useMemo(() => [...new Set(bestiary.map((t) => t.faction))].sort(), [bestiary]);
   const sources = useMemo(
-    () => [...new Set(bestiary.map((t) => t.source))].sort((a, b) => BOOKS[a].name.localeCompare(BOOKS[b].name)),
+    () => [...new Set(bestiary.map((t) => t.source))].sort((a, b) => sourceName(a).localeCompare(sourceName(b))),
     [bestiary],
   );
   const picked = bestiary.find((t) => t.id === value);
@@ -120,7 +120,7 @@ export function ThreatPicker({
               <option value="">EVERY BOOK</option>
               {sources.map((s) => (
                 <option key={s} value={s}>
-                  {BOOKS[s].name}
+                  {sourceName(s)}
                 </option>
               ))}
             </select>

@@ -1,7 +1,7 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { BOOKS, BeatTest, presetScene, rowsFor, threatCite, type EventTable, type ThreatSource } from "@wg/shared";
+import { sourceName, BeatTest, presetScene, rowsFor, threatCite, type EventTable, type ThreatSource } from "@wg/shared";
 
 import { TableRoll } from "@/components/ui/table-roll/table-roll";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -73,7 +73,7 @@ export function ScenePicker({ adventureId, tables, send, onDone }: ScenePickerPr
         >
           {sources.map((s) => (
             <option key={s} value={s}>
-              {BOOKS[s].name}
+              {sourceName(s)}
             </option>
           ))}
         </select>
