@@ -28,6 +28,32 @@ export const CUSTOM_PREFIX = "custom-";
 export const customThreatId = (slug: string) => `${CUSTOM_PREFIX}${slug}`;
 export const isCustomThreatId = (id: string) => id.startsWith(CUSTOM_PREFIX);
 
+export const MAX_SLUG = 60;
+// ponytail: 999 same-named threats in one campaign is already absurd; a fuller scheme if a table ever gets there
+const MAX_SLUG_TRIES = 999;
+
+// A custom threat's slug, made once from its name and never changed again, so a prepared encounter or an NPC pointing at
+// `custom-<slug>` survives a rename (issue #43). `taken` is this campaign's slugs; a clash takes -2, -3…
+export function threatSlug(name: string, taken: Iterable<string> = []): string {
+  const base =
+    name
+      .normalize("NFKD")
+      .toLowerCase()
+      .replace(/\p{M}+/gu, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, MAX_SLUG)
+      .replace(/-+$/, "") || "threat"; // a name with nothing a slug can keep ("???") still needs one
+  const used = new Set(taken);
+  if (!used.has(base)) return base;
+  for (let n = 2; n <= MAX_SLUG_TRIES; n++) {
+    const suffix = `-${n}`;
+    const next = `${base.slice(0, MAX_SLUG - suffix.length).replace(/-+$/, "")}${suffix}`;
+    if (!used.has(next)) return next;
+  }
+  return `${base.slice(0, MAX_SLUG - 14)}-${Date.now().toString(36)}`; // last resort, still unique per campaign
+}
+
 // A threat on a picker row, a select or a scene card: the name with where it came from.
 export const threatLabel = (t: { name: string; source: ThreatSource; page: number }) => `${t.name} · ${threatCite(t)}`;
 

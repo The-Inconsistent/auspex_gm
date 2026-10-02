@@ -120,6 +120,15 @@ export function sheetWeapon(
   return { name, ...w, range, traits: throwM === undefined ? w.traits : [...w.traits, `Thrown (${throwM} m)`] };
 }
 
+// A catalogue weapon as a **Threat's** weapon (GitHub issue #43). A stat block prints final numbers, and `Weapon` has
+// no `addStrength`, so melee "(S) + X" (Core pp.211–213) is resolved here against this threat's Strength: zod would
+// drop the flag silently and the line would read as X damage on its own. Thrown ranges come out as `sheetWeapon`
+// already makes them (Core p.208). Every number stays editable afterwards.
+export function threatWeapon(entry: { name: string; weapon: WargearWeapon }, strength: number): Weapon {
+  const { addStrength, ...w } = sheetWeapon(entry, strength);
+  return Weapon.parse({ ...w, damage: addStrength ? strength + w.damage : w.damage });
+}
+
 // A catalogue item as a gear line on the sheet (≤ 200 characters): the name, armour's AR, and where to read it.
 export function gearLine({ name, armour: a, source, page }: Pick<Wargear, "name" | "armour" | "source" | "page">) {
   const ar = a

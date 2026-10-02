@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  MAX_SLUG,
   MOB_MIN,
   Threat,
   encounterBudget,
@@ -9,6 +10,9 @@ import {
   threatCite,
   threatClassAt,
   threatLabel,
+  threatSlug,
+  customThreatId,
+  isCustomThreatId,
   type ThreatClass,
 } from "./index.ts";
 
@@ -129,4 +133,49 @@ test("a custom threat cites no page: its page is a placeholder (issue #43)", () 
   assert.equal(threatCite({ source: "core", page: 339 }), "Core p.339");
   assert.equal(threatCite({ source: "custom", page: 1 }), "Custom");
   assert.equal(threatLabel({ name: "Warped Ogryn", source: "custom", page: 1 }), "Warped Ogryn · Custom");
+});
+
+// ── custom threats (issue #43) ───────────────────────────────────────────────────────────────────────────────────────
+
+test("threatSlug makes a slug once, and a clash takes a suffix", () => {
+  assert.equal(threatSlug("Warped Ogryn"), "warped-ogryn");
+  assert.equal(threatSlug("Khârn the Betrayer!"), "kharn-the-betrayer");
+  assert.equal(threatSlug("???"), "threat", "a name with nothing a slug can keep still gets one");
+  assert.equal(threatSlug("Warped Ogryn", ["warped-ogryn"]), "warped-ogryn-2");
+  assert.equal(threatSlug("Warped Ogryn", ["warped-ogryn", "warped-ogryn-2"]), "warped-ogryn-3");
+  // At most MAX_SLUG characters, and never left ending in the separator.
+  const long = threatSlug("x".repeat(80));
+  assert.equal(long.length, MAX_SLUG);
+  assert.equal(threatSlug("x".repeat(80), [long]), `${"x".repeat(MAX_SLUG - 2)}-2`);
+});
+
+test("a slug is the id, so a rename keeps every pointer at it", () => {
+  const slug = threatSlug("Warped Ogryn");
+  assert.equal(customThreatId(slug), "custom-warped-ogryn");
+  assert.ok(isCustomThreatId("custom-warped-ogryn"));
+  assert.ok(!isCustomThreatId("ork-boy"));
+  // The GM renames the threat; the slug it was saved under doesn't move.
+  assert.equal(customThreatId(slug), "custom-warped-ogryn");
+});
+
+test("a custom threat's label carries no page, a book threat's does", () => {
+  assert.equal(threatLabel({ name: "Warped Ogryn", source: "custom", page: 1 }), "Warped Ogryn · Custom");
+  assert.equal(threatLabel({ name: "Ork Boy", source: "core", page: 354 }), "Ork Boy · Core p.354");
+});
+
+test("a class row must print a class at the last Tier (Core p.323, §11.109)", () => {
+  // "-" before the last Tier is a printed thing (a follower not yet available); on the last it never is.
+  assert.ok(Threat.safeParse({ ...threatOf("ok", ["T", "T", "T", "T"]), threat: [null, "E", "E", "A"] }).success);
+  assert.ok(!Threat.safeParse({ ...threatOf("bad", ["T", "T", "T", "T"]), threat: ["T", "T", "T", null] }).success);
+  assert.ok(!Threat.safeParse({ ...threatOf("short", ["T", "T", "T", "T"]), threat: ["T", "T", "T"] }).success);
+});
+
+test("a class row the editor writes is refused unless it is 4 or 5 classes with the last Tier printed (Core p.323)", () => {
+  const row = (threat: unknown[]) => Threat.safeParse({ ...troop, threat }).success;
+  assert.ok(row(["T", "T", "E", "E"]));
+  assert.ok(row([null, "E", "E", "A", "A"]), "a '–' before the last Tier is how the books print it");
+  assert.ok(!row(["T", "T", "E", null]), "the last Tier is printed");
+  assert.ok(!row(["T", "T", "E"]), "too short");
+  assert.ok(!row(["T", "T", "E", "E", "A", "A"]), "too long");
+  assert.ok(!row(["T", "T", "X", "E"]), "not a class");
 });
