@@ -5,6 +5,7 @@ import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import {
   CONDITIONS,
   Side,
+  THREAT_CLASS_LABEL,
   THREAT_CLASS_RULES,
   TURN_END_REMINDERS,
   TURN_START_REMINDERS,
@@ -42,7 +43,7 @@ import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterF
 import { combatantPortrait } from "@/lib/portraits/portraits";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
-import { AMOUNTS, LOG_LIMIT, THREAT_CLASS_LABEL } from "./constants";
+import { AMOUNTS, LOG_LIMIT } from "./constants";
 import type { LogEntry, Run } from "./types";
 
 type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };

@@ -139,3 +139,78 @@ export const THREAT_CLASS_RULES: Record<ThreatClass, string[]> = {
 
 // Monstrous Creatures are immune to these Conditions (p.323).
 export const MONSTROUS_IMMUNE = ["Fear", "Pinned", "Staggered"] as const;
+
+// The class as the GM reads it on a chip or a tracker row (pp.323-324).
+export const THREAT_CLASS_LABEL: Record<ThreatClass, string> = {
+  T: "TROOP",
+  E: "ELITE",
+  A: "ADVERSARY",
+  M: "MONSTROUS",
+};
+
+// Two or more Troops that share a profile form one Mob (p.324).
+export const MOB_MIN = 2;
+
+export type EncounterBudget = { troops: number; inMobs: number; elites: number; enemies: number };
+
+// Building Encounters (Threat Assessment p.8): two Troops per Agent, half of those forming a Mob, plus one Elite or
+// Adversary; more than 10 enemies is hard to keep track of. Fortified ground - cover, clear lines of sight, distance
+// or surprise - lets the Agents take on twice as many, so it doubles every target (rules-flow §11.82).
+export const encounterBudget = ({
+  agents,
+  fortified = false,
+}: {
+  agents: number;
+  fortified?: boolean;
+}): EncounterBudget => {
+  const ground = fortified ? 2 : 1;
+  const troops = Math.max(0, agents) * 2 * ground;
+  return { troops, inMobs: Math.floor(troops / 2), elites: ground, enemies: 10 * ground };
+};
+
+export type RosterTally = {
+  troops: number;
+  inMobs: number;
+  elites: number;
+  monstrous: number;
+  models: number;
+  tracked: number;
+  unclassed: number;
+};
+
+type ClassedEntry = { cls: ThreatClass | null; count: number; asMob?: boolean };
+
+// A roster counted line by line. `models` is bodies on the table; `tracked` is combatants the GM moves, where a Mob is
+// one (the same rule as `encounterRows`, codex.ts). Both answer "more than 10 enemies" (TA p.8, rules-flow §11.82).
+export const tallyByClass = (entries: readonly ClassedEntry[]): RosterTally =>
+  entries.reduce<RosterTally>(
+    (t, e) => {
+      const count = Math.max(0, e.count);
+      const mob = e.asMob === true && count >= MOB_MIN;
+      return {
+        troops: t.troops + (e.cls === "T" ? count : 0),
+        inMobs: t.inMobs + (e.cls === "T" && mob ? count : 0),
+        elites: t.elites + (e.cls === "E" || e.cls === "A" ? count : 0),
+        monstrous: t.monstrous + (e.cls === "M" ? count : 0),
+        models: t.models + count,
+        tracked: t.tracked + (mob ? 1 : count),
+        unclassed: t.unclassed + (e.cls === null ? count : 0),
+      };
+    },
+    { troops: 0, inMobs: 0, elites: 0, monstrous: 0, models: 0, tracked: 0, unclassed: 0 },
+  );
+
+// A prepared encounter's roster, classed at the campaign's Tier (p.323: the class is printed per Tier). The entries are
+// structural because `EncounterEntry` lives in codex.ts, which imports this file. An id the bestiary lost is unclassed.
+export const rosterTally = (
+  entries: readonly { threatId: string; count: number; asMob?: boolean }[],
+  { bestiary, tier }: { bestiary: readonly Threat[]; tier: number },
+): RosterTally => {
+  const byId = new Map(bestiary.map((t) => [t.id, t]));
+  return tallyByClass(
+    entries.map((e) => {
+      const t = byId.get(e.threatId);
+      return { cls: t ? threatClassAt(t, tier) : null, count: e.count, asMob: e.asMob };
+    }),
+  );
+};
