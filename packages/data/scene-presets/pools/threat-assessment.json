@@ -1,0 +1,46 @@
+[
+  {
+    "id": "threat-assessment-ruin-actions",
+    "name": "Additional Ruin Actions",
+    "source": "threat-assessment",
+    "page": 7,
+    "gm": "The Additional Ruin Actions Table below expands the options available to GMs in Wrath & Glory. These Actions are available to any enemy capable of using Ruin Actions.",
+    "rows": [
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "“Cower Before Me!”",
+        "text": "Force a single target to make a DN 3 Fear Test. For a second Ruin point, the GM may add the game’s Tier to the DN."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": null,
+        "name": "Blasphemous Resilience",
+        "text": "Roll Toughness: add half the resulting Icons to Resilience for a number of Rounds equal to the game’s Tier."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": null,
+        "name": "Gleeful Mockery",
+        "text": "The enemy uses a simple action to gloat at the Agents, revel in their dark powers, screech in alien fury, or otherwise taunt or mock them. They gain a number of bonus dice equal to the Tier of the game to their next Resolve or Determination roll."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": null,
+        "name": "“Enough!”",
+        "text": "When in melee with multiple Agents, the enemy roars and stomps, wildly sweeps their weapon, or performs some other impressive feat in an attempt to knock their attackers out of Engagement. Engaged Agents must pass a Toughness Test (DN equal to the enemy’s Strength) or be knocked back, out of Engagement."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Counterattack",
+        "text": "Can only be used after an Agent has spent Glory to Seize the Initiative. Once that Agent has acted, the GM may spend a point of Ruin; the Champion orders another enemy to immediately Charge that Agent and counterattack."
+      }
+    ]
+  }
+]

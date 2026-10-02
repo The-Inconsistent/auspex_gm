@@ -313,7 +313,7 @@ for (const file of poolPresetFiles()) {
   }
   const rows = r.data.flatMap((t) => t.rows);
   console.log(
-    `scene-presets/pools/${file}: ${rows.length} presets in ${r.data.length} lists (${rows.filter((x) => x.gm).length} gm conditions, ${rows.filter((x) => x.n === null).length} with no printed amount)`,
+    `scene-presets/pools/${file}: ${rows.length} presets in ${r.data.length} list${r.data.length === 1 ? "" : "s"} (${rows.filter((x) => x.gm).length} gm conditions, ${rows.filter((x) => x.n === null).length} with no printed amount)`,
   );
 }
 const pendingPools = Object.keys(EXPECTED_POOL_ROWS).filter((id) => !poolIds.has(id));

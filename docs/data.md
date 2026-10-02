@@ -160,7 +160,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Book | `source` id | File in `books/` | PDF page = |
 |---|---|---|---|
 | Core rulebook | `core` | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
-| Threat Assessment | `threat-assessment` | `Wrath & Glory_ Threat Assessment.pdf` | printed |
+| Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` | `Wrath & Glory_ Vow of Absolution.pdf` | printed |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
@@ -728,6 +728,12 @@ GM-only book data for building scenes (GitHub issues #39 and #40), served by `GE
     Complication taken as Ruin (p.163) and Fail Forward's "The GM gains 1 Ruin" (p.319), both named in our words.
     Spending Ruin (p.320): the four priced spends; Activate Ruin Actions isn't one, since each Threat prices its own.
     Glory Points (p.316): an award for a particularly impressive feat, with no printed amount.
+  - **Threat Assessment** (`threat-assessment.json`): Additional Ruin Actions (p.7), 5 spends, checked against a page
+    render. Two are priced: “Cower Before Me!” at 1 (the book prices a "second Ruin point", which adds the Tier to the
+    DN; that stays in its text) and Counterattack at 1. Blasphemous Resilience, Gleeful Mockery and “Enough!” print
+    no cost, so `n` is null and the GM sets it per scene (rules-flow.md §11.78). The list's `gm` is p.7's note that
+    any enemy capable of Ruin Actions may use them. Kept as printed: Counterattack's "the Champion orders another
+    enemy", though the table never says which enemy is the Champion.
 
 ---
 
