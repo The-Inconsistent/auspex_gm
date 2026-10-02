@@ -162,7 +162,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Core rulebook | `core` | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
 | Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
-| Vow of Absolution | `vow-of-absolution` | `Wrath & Glory_ Vow of Absolution.pdf` | printed |
+| Vow of Absolution | `vow-of-absolution` (Frameworks, #45) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
 | Forsaken System Player's Guide | `forsaken-system` (creation only) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
