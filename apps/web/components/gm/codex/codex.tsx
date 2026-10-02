@@ -1,5 +1,5 @@
 "use client";
-import { useState, type MouseEvent } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 
 import type { ActionInput, Character, Codex, FactionPresets } from "@wg/shared";
 
@@ -8,6 +8,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
 import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
+import { FactionCard } from "./components/faction-card/faction-card";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
@@ -33,6 +34,7 @@ export function CodexView({ codex, characters, send, initialKind = "npc", factio
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const rows = rowsFor(kind, codex);
+  const factionById = useMemo(() => new Map(codex.factions.map((f) => [f.id, f])), [codex.factions]);
 
   // Kind tab: switch lists and close any open editor.
   const pickKind = (k: CodexKind) => {
@@ -98,6 +100,9 @@ export function CodexView({ codex, characters, send, initialKind = "npc", factio
                       EDIT
                     </button>
                   </summary>
+                  {kind === "faction" && factionById.get(r.id) && (
+                    <FactionCard faction={factionById.get(r.id)!} npcs={codex.npcs} />
+                  )}
                   {CODEX_KINDS[kind].read.map(([key, label]) =>
                     r[key] ? (
                       <div key={key} className={GM_ONLY_FIELDS.has(key) ? "field plate" : "field"}>

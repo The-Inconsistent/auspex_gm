@@ -53,7 +53,9 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
 - **Faction Keywords** (issue #46): `keywords` stays a plain list of names. The editor's picker suggests the books'
   Keywords (core pp.375–378: the keyword records, then the ones sub-factions fill in, each with its glossary text) from
   the GM-only `/api/campaigns/:id/faction-presets`, and Enter also takes a write-in, because the books don't list them
-  all (KOMMANDO, GROT). Nothing in the rules reads a faction's Keywords; factions never reach a phone.
+  all (KOMMANDO, GROT). Nothing in the rules reads a faction's Keywords; factions never reach a phone. An opened
+  faction lists its Keywords, stance and NPCs (hidden ones marked), and an allied non-Imperial faction gets core p.317's
+  reminder that mixed Factions need a reason to work together (rules-flow.md §11.83).
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and
