@@ -47,6 +47,8 @@ await send(
   },
   "framework",
 );
+// A pack's own stat blocks go first: a beat or an NPC below may name one as custom-<slug> (issue #43).
+for (const data of pack.threats) await send({ type: "threat.save", data }, `threat ${data.name}`);
 for (const { key, ...data } of pack.factions)
   ids.set(key, (await send({ type: "codex.save", kind: "faction", data }, `faction ${key}`))!);
 for (const { key, parent, ...data } of pack.locations)

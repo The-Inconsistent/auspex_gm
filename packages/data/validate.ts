@@ -11,7 +11,9 @@ import {
   ruleKey,
   SOURCES,
   THREAT_SOURCES,
+  customThreatId,
   isCustomThreatId,
+  threatSlug,
   Threat,
   Wargear,
   SKILLS,
@@ -705,12 +707,18 @@ for (const name of packNames()) {
     console.error(`✖ pack ${name}\n${z.prettifyError(r.error)}`);
     continue;
   }
+  // The bestiary plus the pack's own threats, which the seeder saves before the beats and NPCs that name them. Their
+  // ids are custom-<slug>, derived the way the server derives them (issue #43): one at a time, each seeing the slugs
+  // already taken, so two threats with one name here get custom-x and custom-x-2 exactly as seeding will.
+  const packSlugs: string[] = [];
+  for (const t of r.data.threats) packSlugs.push(threatSlug(t.name, packSlugs));
+  const packIds = [...found, ...packSlugs.map(customThreatId)];
   const unknown = r.data.adventures
     .flatMap((a) => a.beats.flatMap((b) => b.encounter.map((e) => e.threatId)))
-    .filter((id) => !found.includes(id));
+    .filter((id) => !packIds.includes(id));
   const bestiaryNpcs = r.data.npcs
     .flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : []))
-    .filter((id) => !found.includes(id));
+    .filter((id) => !packIds.includes(id));
   for (const id of [...unknown, ...bestiaryNpcs]) {
     failed = true;
     console.error(`✖ pack ${name}: unknown threat "${id}"`);
@@ -722,7 +730,7 @@ for (const name of packNames()) {
       console.error(`✖ pack ${name}: unknown hazard "${h.hazardId}"`);
     }
   console.log(
-    `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`,
+    `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats${r.data.threats.length ? `, ${r.data.threats.length} own threats` : ""}`,
   );
 }
 
