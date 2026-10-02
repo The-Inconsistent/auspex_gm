@@ -1,0 +1,41 @@
+[
+  {
+    "id": "vakuuls-venators",
+    "name": "Vakuul’s Venators",
+    "source": "litanies-of-the-lost",
+    "page": 73,
+    "text": "You work for an Adeptus Mechanicus kill-team, answering directly or indirectly to the Archdomina Vakuul of Belaxia. You specialise in hunting down enemies of the Priesthood and retrieving rare technology, including locating and returning stolen relics.",
+    "limitations": [
+      { "kind": "keyword", "anyOf": ["IMPERIUM"] },
+      { "kind": "gm", "text": "including at least one character with the ADEPTUS MECHANICUS Keyword" }
+    ],
+    "wargear": [
+      {
+        "choose": 1,
+        "from": [
+          { "wargear": { "name": "Augmetic Eye", "qty": 1, "wargearId": "augmetic-eye" } },
+          { "wargear": { "name": "Augmetic Legs", "qty": 1, "wargearId": "augmetic-legs" } },
+          { "wargear": { "name": "Augur Array", "qty": 1 } },
+          { "wargear": { "name": "Mind Impulse Unit", "qty": 1, "wargearId": "mind-impulse-unit" } }
+        ]
+      }
+    ],
+    "bonus": "+1 bonus die to Awareness (Int) and Survival (Wil) Tests to locate enemies of the Machine Cult.",
+    "grants": [],
+    "note": "Printed in the Dark Bidding adventure’s New Frameworks box (no Faction section); the book names no patron."
+  },
+  {
+    "id": "archeotech-scavengers",
+    "name": "Archeotech Scavengers",
+    "source": "litanies-of-the-lost",
+    "page": 73,
+    "text": "Ranging from dirt-scrabbling hive gangers to raiders of forbidden xeno-tech, you are a mercenary unit making ends meet by acquiring and fencing valuable technology. Though your work may skirt the borders of tech-heresy, as often as not more radical Tech-Priests are your highest paying clients.",
+    "limitations": [],
+    "wargear": [
+      { "wargear": { "name": "Multikey", "qty": 1 } }
+    ],
+    "bonus": "On a world you’ve visited before, you always know a contact who will buy at least one unusual piece of technology you have to sell, offering 1 Wealth for a Rare item, 2 Wealth for a Very Rare item, and 3 Wealth for a Unique item.",
+    "grants": [],
+    "note": "Printed Limitations: “None — anyone can make a living in this line of work if they’re sharp enough!” The Multikey is printed with its own stats: +2 bonus dice to Stealth (A) Tests to open locks and disable traps (Value 4, Rarity Rare, [ANY], SCUM). Printed in the Dark Bidding adventure’s New Frameworks box; the book names no patron."
+  }
+]
