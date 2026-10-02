@@ -1,4 +1,4 @@
-import { FrameworkCatalogue, Me, ScenePresets, Threat, Wargear } from "@wg/shared";
+import { FactionPresets, FrameworkCatalogue, Me, ScenePresets, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet, loadRules } from "@/app/server-api";
@@ -52,6 +52,18 @@ async function loadFrameworks(campaignId: string): Promise<FrameworkCatalogue> {
   }
 }
 
+// GM-only Keywords (and printed factions) for CODEX › FACTIONS (issue #46). Empty on failure; the picker then takes
+// write-ins only.
+async function loadFactionPresets(campaignId: string): Promise<FactionPresets> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/faction-presets`);
+    const parsed = FactionPresets.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : { keywords: [], presets: [] };
+  } catch {
+    return { keywords: [], presets: [] };
+  }
+}
+
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
 export default async function Table({ params }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
@@ -67,12 +79,13 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear, rules, presets, frameworks] = await Promise.all([
+    const [bestiary, wargear, rules, presets, frameworks, factionPresets] = await Promise.all([
       loadBestiary(me.campaignId),
       loadWargear(me.campaignId),
       loadRules(me.campaignId),
       loadScenePresets(me.campaignId),
       loadFrameworks(me.campaignId),
+      loadFactionPresets(me.campaignId),
     ]);
     return (
       <GmApp
@@ -82,6 +95,7 @@ export default async function Table({ params }: TableProps) {
         rules={rules}
         presets={presets}
         frameworks={frameworks}
+        factionPresets={factionPresets}
       />
     );
   }

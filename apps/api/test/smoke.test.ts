@@ -20,6 +20,7 @@ import {
   type Character,
   type Codex,
   type CreationPayload,
+  type FactionPresets,
   type FrameworkCatalogue,
   type LibraryCharacter,
   type LibraryEntry,
@@ -663,6 +664,40 @@ test("GM and player share a table", async (t) => {
   assert.ok(patrons.some((p) => p.options.some((o) => o.name === "Varonius Vanguard")));
   assert.equal((await get(`/campaigns/${campaignId}/frameworks`, { cookie: `wg_token=${issued.token}` })).status, 403);
   assert.equal((await get(`/campaigns/${campaignId}/frameworks`, bearer(clerk("stranger")))).status, 401);
+  // CODEX › FACTIONS' Keywords (issue #46): keyword records and the ones sub-factions fill in, GM only.
+  const factionPresets = await get(`/campaigns/${campaignId}/faction-presets`, bearer(gmClerk));
+  assert.equal(factionPresets.status, 200);
+  const { keywords } = (await factionPresets.json()) as FactionPresets;
+  assert.ok(
+    keywords.some((k) => k.name === "ORK" && k.text),
+    "ORK, with its glossary text (Core p.377)",
+  );
+  assert.ok(
+    keywords.some((k) => k.name === "SPACE WOLVES"),
+    "a sub-faction's Keyword",
+  );
+  assert.equal(new Set(keywords.map((k) => k.name)).size, keywords.length, "each Keyword once");
+  assert.equal(
+    (await get(`/campaigns/${campaignId}/faction-presets`, { cookie: `wg_token=${issued.token}` })).status,
+    403,
+  );
+  assert.equal((await get(`/campaigns/${campaignId}/faction-presets`, bearer(clerk("stranger")))).status, 401);
+  // A Keyword the books don't list saves as typed, and a faction never reaches a phone.
+  const kommandos = await gm.send({
+    type: "codex.save",
+    kind: "faction",
+    data: { name: "Gutshiva's Kommandos", keywords: ["ORK", "KOMMANDO"], stance: "enemy" },
+  });
+  assert.ok(kommandos.ok);
+  await eventually(
+    () =>
+      gm
+        .codex()
+        ?.factions.find((f) => f.id === kommandos.id)
+        ?.keywords.join() === "ORK,KOMMANDO",
+    "a write-in Keyword survives the save",
+  );
+  assert.equal(player.codex()?.factions.length, 0, "factions never reach a phone");
   // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
   // Gamemaster chapter reaches only the GM (§11.74).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });

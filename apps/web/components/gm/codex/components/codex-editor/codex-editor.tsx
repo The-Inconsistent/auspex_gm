@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
 
-import { Attitude, FactionStance, type ActionInput, type Character, type Codex } from "@wg/shared";
+import { Attitude, FactionStance, type ActionInput, type Character, type Codex, type FactionKeyword } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
+import { KeywordPicker } from "../keyword-picker/keyword-picker";
 import { FIELD_TYPES, GM_ONLY_FIELDS, type FieldType } from "./constants";
 
 type Option = [value: string, label: string];
@@ -17,6 +18,7 @@ type CodexEditorProps = {
   characters: Character[];
   send: Send;
   row: Row | null;
+  keywords: readonly FactionKeyword[]; // the books' Keywords the faction picker suggests
   onDone: () => void;
 };
 
@@ -71,7 +73,7 @@ function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex;
     case "faction":
       return [
         { key: "name", label: "NAME", type: "text" },
-        { key: "keywords", label: "KEYWORDS (comma separated)", type: "list" },
+        { key: "keywords", label: "KEYWORDS (Core pp.375–378)", type: "keywords" },
         { key: "stance", label: "STANCE", type: "select", options: upperOptions(FactionStance.options) },
         { key: "notes", label: "NOTES", type: "area" },
         { key: "secrets", label: "SECRETS", type: "area" },
@@ -79,7 +81,7 @@ function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex;
   }
 }
 
-export function CodexEditor({ kind, codex, characters, send, row, onDone }: CodexEditorProps) {
+export function CodexEditor({ kind, codex, characters, send, row, keywords, onDone }: CodexEditorProps) {
   const fields = fieldsFor({ kind, codex, characters });
   const [draft, setDraft] = useState<Record<string, unknown>>(() => {
     // Start from the whole row, so fields with no input here (an NPC's statSource) survive a save; zod strips the rest.
@@ -91,16 +93,6 @@ export function CodexEditor({ kind, codex, characters, send, row, onDone }: Code
   const [error, setError] = useState<string | null>(null);
 
   const setField = (key: string, value: unknown) => setDraft({ ...draft, [key]: value });
-
-  // Comma-separated list input: stored as trimmed, non-empty entries.
-  const setListField = ({ key, text }: { key: string; text: string }) =>
-    setField(
-      key,
-      text
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
-    );
 
   // SAVE: empty id selects become null (no faction / no parent), then create or update.
   const save = async () => {
@@ -149,12 +141,12 @@ export function CodexEditor({ kind, codex, characters, send, row, onDone }: Code
               onChange={(e) => setField(f.key, e.target.value)}
             />
           )}
-          {f.type === "list" && (
-            <input
+          {f.type === "keywords" && (
+            <KeywordPicker
               id={`f-${f.key}`}
-              className="input"
-              value={(draft[f.key] as string[]).join(", ")}
-              onChange={(e) => setListField({ key: f.key, text: e.target.value })}
+              value={draft[f.key] as string[]}
+              suggestions={keywords}
+              onChange={(v) => setField(f.key, v)}
             />
           )}
           {f.type === "bool" && (

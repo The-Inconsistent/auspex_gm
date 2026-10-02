@@ -302,7 +302,7 @@ const { state, codex, online, send } = useTable(campaignId);
 |---|---|---|
 | TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
 | PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}` |
-| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}` |
+| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`) |
 | PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx` |
 
 ### 3.1 TRACK: live combat tracker
@@ -582,7 +582,7 @@ The tests are in `lib/command/command.test.ts`.
 | npc | name, role, faction (select), attitude, description (players see it), GM notes, secrets, revealed |
 | location | name, inside (parent location), description (players see it), hazards, GM notes, revealed |
 | handout | title, text, sent to players |
-| faction | name, keywords (comma-separated list), stance, notes, secrets |
+| faction | name, keywords (`KeywordPicker`: chips, a search over the books' Keywords, Enter for exactly what was typed), stance, notes, secrets |
 
   - The draft starts from the whole row, so fields that have no input in the editor (an NPC's `statSource`)
     survive a save.

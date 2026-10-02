@@ -4,7 +4,7 @@ import { threatClassAt, type Threat, type ThreatClass, type ThreatSource } from 
 // "Kommandoz"-style apostrophes. Curly quotes fold with the rest (as rules-ref does). Letters keep their identity: an
 // accent is decomposed and dropped, but the letter it sat on survives, so a typed "é" narrows instead of folding away
 // to an empty query that would match the whole bestiary.
-const fold = (s: string) =>
+export const fold = (s: string) =>
   s
     .normalize("NFKD")
     .toLowerCase()

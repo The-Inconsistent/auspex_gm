@@ -1,7 +1,7 @@
 "use client";
 import { useState, type MouseEvent } from "react";
 
-import type { ActionInput, Character, Codex } from "@wg/shared";
+import type { ActionInput, Character, Codex, FactionPresets } from "@wg/shared";
 
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -11,7 +11,13 @@ import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
-type CodexViewProps = { codex: Codex; characters: Character[]; send: Send; initialKind?: CodexKind };
+type CodexViewProps = {
+  codex: Codex;
+  characters: Character[];
+  send: Send;
+  initialKind?: CodexKind;
+  factionPresets: FactionPresets;
+};
 
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
@@ -22,7 +28,7 @@ const only = (fn: () => void) => (e: MouseEvent) => {
   fn();
 };
 
-export function CodexView({ codex, characters, send, initialKind = "npc" }: CodexViewProps) {
+export function CodexView({ codex, characters, send, initialKind = "npc", factionPresets }: CodexViewProps) {
   const [kind, setKind] = useState<CodexKind>(initialKind);
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -63,6 +69,7 @@ export function CodexView({ codex, characters, send, initialKind = "npc" }: Code
             characters={characters}
             send={send}
             row={editing === "new" ? null : editing}
+            keywords={factionPresets.keywords}
             onDone={() => setEditing(null)}
           />
         ) : (
