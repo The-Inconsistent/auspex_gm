@@ -7,6 +7,14 @@ export const TEST_RULES = [
   ["test-fail-forward", "FAIL FORWARD"],
 ] as const;
 
+// The rules entries a scene's Ruin and Glory point to (packages/data/rules/character.json; Ruin is the GM's, §11.76).
+export const POOL_RULES = [
+  ["character-ruin", "RUIN"],
+  ["character-glory", "GLORY"],
+  ["character-complications", "COMPLICATIONS"],
+  ["character-combat-complications", "COMBAT COMPLICATIONS"],
+] as const;
+
 export const TEST_KIND_LABELS: Record<TestKind, string> = {
   skill: "SKILL",
   attribute: "ATTRIBUTE",

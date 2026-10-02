@@ -1,6 +1,17 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { BeatTest, CodexInput, DN_TABLE, Pack, TestKind, retypeTest } from "./index.ts";
+import {
+  BeatTest,
+  CodexInput,
+  DN_TABLE,
+  MAX_POOL_LINES,
+  Pack,
+  PoolEntry,
+  PoolSpend,
+  TestKind,
+  canSpend,
+  retypeTest,
+} from "./index.ts";
 
 const ok = (t: object) => BeatTest.safeParse(t).success;
 const awareness = { kind: "skill", skill: "Awareness", dn: 3 };
@@ -74,4 +85,32 @@ test("a Test moved to another kind stays valid and keeps what fits", () => {
   const laddered = BeatTest.parse({ ...awareness, shifts: ["Gain Information"] });
   assert.deepEqual(retypeTest(laddered, "opposed").shifts, [], "no DN to Shift against (Core p.165)");
   assert.deepEqual(retypeTest(laddered, "resolve").shifts, ["Gain Information"]);
+});
+
+test("a scene's Ruin and Glory lines are bounded, and a Glory award starts at 1 (issue #40, §11.77)", () => {
+  const entry = (e: object) => PoolEntry.safeParse(e).success;
+  assert.equal(PoolEntry.parse({ text: "[impressive feat]" }).amount, 1, "Core p.316 prints no amount");
+  assert.ok(entry({ text: "[trigger]", amount: 10 }));
+  assert.equal(entry({ text: "[trigger]", amount: 0 }), false);
+  assert.equal(entry({ text: "[trigger]", amount: 11 }), false, "an app limit, not a rule");
+  assert.equal(entry({ text: "x".repeat(201) }), false);
+  const spend = (s: object) => PoolSpend.safeParse({ name: "[spend]", ...s }).success;
+  assert.ok(spend({ pool: "ruin", cost: 2 }));
+  assert.ok(spend({ pool: "glory", cost: 3 }), "the books plan Glory spends too");
+  assert.equal(spend({ cost: 2 }), false, "a spend names its pool");
+  assert.equal(spend({ pool: "ruin" }), false, "and its cost: the app never invents one");
+  assert.equal(spend({ pool: "wrath", cost: 1 }), false, "Wrath is per character, not a scene's");
+
+  const beat = { adventureId: "00000000-0000-4000-8000-000000000001", title: "Arrival" };
+  const b = CodexInput.beat.parse(beat);
+  assert.deepEqual([b.ruin, b.glory, b.spends], [[], [], []], "a scene from before issue #40 has none");
+  const many = Array.from({ length: MAX_POOL_LINES + 1 }, () => ({ text: "[trigger]" }));
+  assert.equal(CodexInput.beat.safeParse({ ...beat, ruin: many }).success, false);
+});
+
+test("a spend the pool can't pay is refused before it's sent", () => {
+  const pools = { glory: 2, ruin: 1 };
+  assert.ok(canSpend(pools, { pool: "glory", cost: 2 }));
+  assert.equal(canSpend(pools, { pool: "ruin", cost: 2 }), false, "pool.adjust would floor at 0 and undercharge");
+  assert.ok(canSpend(pools, { pool: "ruin", cost: 1 }));
 });

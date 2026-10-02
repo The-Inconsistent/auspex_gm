@@ -7,6 +7,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
 import { ScenePicker } from "./components/scene-picker/scene-picker";
+import { ScenePools } from "./components/scene-pools/scene-pools";
 import { SceneTests } from "./components/scene-tests/scene-tests";
 import type { Beat } from "./types";
 import { sceneNumber, stripBeat } from "./utils";
@@ -239,6 +240,9 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                   </div>
                 ))}
                 {b.tests.length > 0 && <SceneTests tests={b.tests} />}
+                {b.ruin.length + b.glory.length + b.spends.length > 0 && (
+                  <ScenePools beat={b} pools={state.campaign} players={players} send={send} onReport={report} />
+                )}
                 {b.encounter.length > 0 && (
                   <div className="dim">
                     ENCOUNTER:{" "}

@@ -16,7 +16,7 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
  ├─ Adventure    title, premise, status (planned | running | done)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
- │               clueIds[], encounter (prepared roster), exits[], tests[], outcome
+ │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[], outcome
  ├─ Location     name, parentId (planet → site → chamber), description, gmNotes,
  │               hazards (Battlezone tables, Threat Assessment p.9–21), revealed
  ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
@@ -41,6 +41,10 @@ Campaign ── name, tier, framework + framework bonus (core p.18, party sheet 
   influence, resolve, corruption), the Skill or Attribute its kind needs (a Skill's Attribute comes from `SKILLS`), a
   DN (none for an Opposed Test), who rolls (one Agent or each), its purpose, up to five planned Shifts and what success
   and failure bring. See [rules-flow.md](rules-flow.md) §7.
+- **Ruin and Glory** (issue #40): what earns the GM Ruin in this scene and what earns the Agents Glory (`PoolEntry`: a
+  line and an amount, 1 to 10), and the spends the GM plans from either pool (`PoolSpend`: the pool, a name, a cost and
+  its effect). PREP turns each into a tap that moves the pool. Nothing records which lines were used. See
+  [rules-flow.md](rules-flow.md) §2 and §11.77.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and

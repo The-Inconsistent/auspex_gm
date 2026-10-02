@@ -591,6 +591,12 @@ test("GM and player share a table", async (t) => {
   await gm.send({ type: "pool.adjust", pool: "glory", delta: 100 });
   await gm.send({ type: "pool.adjust", pool: "ruin", delta: 100 });
   await gm.until((s) => s.campaign.glory === poolMax("glory", 2) && s.campaign.ruin === poolMax("ruin", 2));
+  // A scene's Ruin line tapped at the maximum is lost (Core p.320), and a spend never takes the pool below 0 (issue #40).
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "ruin", delta: 1 })).ok);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "ruin", delta: -1 })).ok);
+  await gm.until((s) => s.campaign.ruin === poolMax("ruin", 2) - 1);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "ruin", delta: -(poolMax("ruin", 2) + 3) })).ok);
+  await gm.until((s) => s.campaign.ruin === 0);
 
   // The bestiary endpoint is GM-only.
   assert.equal((await get(`/campaigns/${campaignId}/threats`, bearer(gmClerk))).status, 200);
@@ -927,6 +933,25 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
     data: { ...kept, tests: [{ kind: "opposed", skill: "Persuasion", dn: 3 }] },
   });
   assert.ok(!bad.ok && bad.error.includes("An Opposed Test has no DN"), "an Opposed Test with a DN is refused");
+  // Scene Ruin and Glory (issue #40): earned lines and planned spends, a spend with its pool and cost.
+  const pooled = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    id: b1.id,
+    data: {
+      ...kept,
+      ruin: [{ text: "Each failed Survival Test" }],
+      glory: [{ text: "They spare the courier", amount: 2 }],
+      spends: [{ pool: "glory", name: "Covering Fire", cost: 1 }],
+    },
+  });
+  assert.ok(pooled.ok);
+  await eventually(() => {
+    const x = gm.codex()?.adventures[0]?.beats.find((y) => y.id === b1.id);
+    return x?.ruin[0]?.amount === 1 && x.glory[0]?.amount === 2 && x.spends[0]?.text === "";
+  }, "scene Ruin and Glory saved");
+  const costless = { ...kept, spends: [{ pool: "ruin", name: "Sniper" }] };
+  assert.equal((await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: costless })).ok, false, "no cost");
   await eventually(() => player.codex()?.npcs[0]?.factionId === null, "players don't get hidden faction ids");
   assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: vex.id })).ok);
   await eventually(
@@ -1664,6 +1689,8 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
     goal: "Hold the lift",
     exits: [{ label: "Again", beatId: ambush.id }],
     tests: [{ kind: "resolve", dn: 5, who: "each" }],
+    ruin: [{ text: "Each failed Survival Test" }],
+    spends: [{ pool: "ruin", name: "Barrage", cost: 1, text: "[effect]" }],
   };
   assert.ok((await gm.send({ type: "codex.save", kind: "beat", data: regroup })).ok);
   assert.ok((await gm.send({ type: "session.start" })).ok);
@@ -1728,9 +1755,16 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const exitTo = (codex: Codex) => {
     const [first, second] = codex.adventures[0]!.beats;
     const t = second?.tests[0];
-    return [second?.goal, second?.exits[0]?.beatId === first?.id && first?.id !== ambush.id, `${t?.kind} ${t?.dn}`];
+    const pools = `${second?.ruin[0]?.text} ${second?.spends[0]?.name} ${second?.spends[0]?.cost}`;
+    return [
+      second?.goal,
+      second?.exits[0]?.beatId === first?.id && first?.id !== ambush.id,
+      `${t?.kind} ${t?.dn}`,
+      pools,
+    ];
   };
-  assert.deepEqual(exitTo(whole.codex), ["Hold the lift", true, "resolve 5"]);
+  const scene2 = ["Hold the lift", true, "resolve 5", "Each failed Survival Test Barrage 1"];
+  assert.deepEqual(exitTo(whole.codex), scene2, "and the Ruin and Glory lines (issue #40)");
   assert.equal(whole.codex.sessions.length, 1);
   assert.equal((await get("/lobby", bearer(gm.gmClerk)).then((r) => r.json())).mine.length >= 2, true);
 
@@ -1738,7 +1772,7 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(fresh.state.characters[0]?.wounds, 0);
   assert.equal(fresh.codex.sessions.length, 0);
   assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
-  assert.deepEqual(exitTo(fresh.codex), ["Hold the lift", true, "resolve 5"]);
+  assert.deepEqual(exitTo(fresh.codex), scene2);
   assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
 });
 

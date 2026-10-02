@@ -20,11 +20,11 @@ import {
   type SkillDn,
 } from "@wg/shared";
 
+import { NumberInput } from "@/components/ui/number-input/number-input";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 
 import { TEST_KIND_LABELS } from "../../../../constants";
 import { dnLabel, testTitle } from "../../../../utils";
-import { DnInput } from "./components/dn-input/dn-input";
 import { ATTITUDE_SHIFT, FAIL_FORWARD, GLORY_SHIFT, NEW_TEST, SHIFT_USES, skillPenalty } from "./constants";
 
 type TestsProps = { tests: BeatTest[]; skillDns: SkillDn[]; onChange: (tests: BeatTest[]) => void };
@@ -197,7 +197,12 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
                       {r.modifier ? ` (${signed(r.modifier)})` : ""}
                     </button>
                   ))}
-                  <DnInput value={t.dn} label={`DN of test ${i + 1}`} onChange={(dn) => setTest(i, { dn })} />
+                  <NumberInput
+                    value={t.dn}
+                    label={`DN of test ${i + 1}`}
+                    max={20}
+                    onChange={(dn) => setTest(i, { dn })}
+                  />
                 </div>
                 {example && (
                   <div className="dim" style={{ fontSize: 12 }}>
