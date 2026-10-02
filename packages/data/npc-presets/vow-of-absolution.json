@@ -1,0 +1,138 @@
+[
+  {
+    "id": "chapter-master-aureus-erinyes",
+    "name": "Chapter Master Aureus Erinyes",
+    "role": "Chapter Master of the Absolvers",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 91
+      }
+    ],
+    "faction": "The Absolvers"
+  },
+  {
+    "id": "brevet-captain-akahir",
+    "name": "Brevet Captain Akahir",
+    "role": "Brevet Captain of the Absolvers",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 98
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "Brevet Captain Akahir represents the present and potential future of the Absolvers Chapter. His scars of battle and augmetic eye serve as reminders of the challenges that the Absolvers have overcome in their efforts to secure the Gilead System since the Noctis Aeterna. In spite of this, he stands strong and proud, his transhuman stature offering an imposing reminder of the Imperium’s military might.\n\nSince Chaplain Heractis appointed him to the position of Brevet Captain, Akahir has served as the acting commander of the Absolvers within the Gilead System. This represents an extraordinary level of responsibility for an Astartes with only three decades of service. In spite of his is lack of his experience, he has managed to hold the line and adapt to challenging situations of leading the Chapter and navigating the political interactions of the Circlet Council. While he is never outspoken, his silence often speaks volumes, particularly when his stony expression demonstrates his disdain for poor strategic choices.\n\nAkahir recognises that the Chapter is in a dire situation with little hope of additional reinforcements or resupply beyond the arrival of the Varonius Flotilla. While he hopes to see the situation improve, he consistently makes plans that responsibly assume conditions may not get better. This has forced him to alter training stratagems to focus on the resources available and make necessary compromises with other Imperial institutions to obtain what supplies he can."
+  },
+  {
+    "id": "voa-brother-loastin",
+    "name": "Brother Loastin",
+    "role": "Master of Recruits",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 106
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "For nearly a millennium, Brother Loastin has served the Absolvers as Master of Recruits. Prior to accepting this responsibility, he served proudly among the first company. On a mission to cleanse a Space Hulk, Loastin saw his entire squad wiped out by foul xenos. Upon his return to the Vow of Absolution, he requested and was granted transfer to the Tenth Company, so that he could focus on training new recruits, hoping to use the lessons learned from his brothers’ deaths to save future Absolvers lives.\n\nOver his centuries of service, Loastin has watched tens of thousands of aspirants die during training exercises, and thousands more fail and go on to become serfs. He grimly accepts their failures as a necessary part of building the strongest possible Chapter. He would vastly prefer to see those who are not worthy of wearing the Absolvers' iconography fail at this point of the process than endanger his battle-brothers in the field of battle. He also knows the precious value of gene-seed and does not wish to implant it in any not worthy of the honour.\n\nMost recruits see Loastin as a merciless and uncaring force of nature. This is a wildly inaccurate misconception, as is proven by the many Absolvers veterans who trade stories of their training exercises completed under his direction. Brother Loastin cares so deeply about the Chapter and all its members that he demands that only the very finest can earn admission to the brotherhood."
+  },
+  {
+    "id": "voa-chaplain-heractis",
+    "name": "Chaplain Heractis",
+    "role": "Chaplain, head of the Vault of Absolution",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 112
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "Chaplain Heractis is the only member of the Absolvers Chapter Command who remains within the Gilead System. When Chapter Master Erinyes dispatched the Absolvers to nearby systems, he left Heractis in command of those who remained behind, since his role at the head of the Vault of Absolution was too critical for Chapter stability to enable him to depart. However, even the venerable Chaplain was hard pressed to manage the secure facility and all other Absolvers activities within the system alone.\n\nWhen the Primaris Astartes assigned to the Chapter arrived, Chaplain Heractis recognised that his continued interactions might raise questions about the Vault. To better distance himself, and to allow him time to focus on the prophecies, the Chaplain promoted then-Sergeant Akahir to the position of Brevet Captain. Since that time, he has largely remained at the Vault of Absolution, focusing on previously confusing prophecies that have begun to make more sense during the Gilead System’s isolation. The Chaplain has issued an unprecedented number of Kill Team missions from the Vault in response to these new interpretations.\n\nIn recent months, Heractis has alluded to his own Sanguine Visions during meetings with Brevet Captain Akahir. Akahir understands the implications that this could suggest Heractis’ death approaches. The two have discussed possible successors as head of the Vault, but there are no Absolvers within Gilead who are fully qualified to assume the role."
+  },
+  {
+    "id": "voa-brother-sgt-hofniel",
+    "name": "Brother Sergeant Hofniel",
+    "role": "Sergeant, Kill Team Righteous Will",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 114
+      }
+    ],
+    "faction": "The Absolvers",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "voa-brother-sgt-hofniel"
+    },
+    "gmNotes": "Brother Sergeant Hofniel went through his initiation at the same time as Brevet Captain Akahir. The two often worked together during their training and formed a strong bond of trust and respect. Hofniel was not surprised that Akahir earned the rank of Brevet Captain, though he remains impressed at how quickly the appointment was granted.\n\nIn the brief years since his initiation, Hofniel has served in dozens of conflicts. He earned the rank of Sergeant after only a handful of engagements, when he demonstrated his calm leadership in the heat of combat. During a mission to Persephone’s Regret, his Sergeant and several squad members were incapacitated by enemy fire. Hofniel not only completed the mission but even carried the injured to safety, extracting them to ensure they survived for later treatment.\n\nThe Sergeant holds the members of Righteous Will to the highest standards. They drill constantly to maintain and expand a series of predefined fire combat drills, which can be adapted to most tactical situations. Hofniel is fluent in rapidly identifying the most appropriate of those for any engagement and issuing commands necessary to execute them. Hofniel trusts his squad to immediately comply, reacting to their actions with transhuman swiftness to account for, issues arising from communications break down or deadly environmental conditions. When it comes to their fields of expertise, he expects his battle-brothers to have a knowledge base that goes beyond his own, and does not hesitate to ask for input."
+  },
+  {
+    "id": "voa-brother-puriel",
+    "name": "Brother Puriel",
+    "role": "Melee specialist, Kill Team Righteous Will",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 115
+      }
+    ],
+    "faction": "The Absolvers",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "voa-brother-puriel"
+    },
+    "gmNotes": "As the only member of Righteous Will who is not native to the Gilead System, Brother Puriel recognises that his life experience is decidedly different from his battle-brothers. Puriel was born on the death world Newmann’s Folly, where survival depended upon skill at arms and very limited technology. An Absolvers Chaplain recruited him to the Chapter after seeing him battle a massive felinoid in defence of a group of younger children. The Chaplain interceded to save the group from the enormous predator, almost certainly saving their lives. Seeing the child’s grit, he brought him back to Castle Grigori to become an aspirant.\n\nDuring Puriel’s training, he demonstrated such an affinity for close combat that several trainers expressed concern for his susceptibility to the Red Thirst.\n\nPuriel has served the Absolvers for nearly a century, a significant portion of which was spent as a dedicated member of an Assault Squad. Within Righteous Will, he serves as the primary melee combat specialist. He revels in the visceral feel of hand-to-hand combat, preferring to use his chainsword over any ranged weapons. In tactical discussions, Puriel advocates strongly for melee approaches and routinely advocates for plans that focus upon a stealthier approach that includes close combat. He feels that this is the purest way too dispense the Emperor’s judgement. While he also advocates that focusing on close combat preserves necessary resources, even he would have to admit that this is not his primary motive."
+  },
+  {
+    "id": "voa-brother-briathos",
+    "name": "Brother Briathos",
+    "role": "Kill Team Righteous Will",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 116
+      }
+    ],
+    "faction": "The Absolvers",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "voa-brother-briathos"
+    },
+    "gmNotes": "With nearly a decade of service as a member of Righteous Will, Brother Briathos is the longest standing member of the Kill Team. During those years, he has seen all the other members lost — some to reassignment and others to the vagaries of war. Throughout his time, his primary focus has remained the study and execution of the Codex Astartes. Briathos has exceptionally strong feelings, even by Adeptus Astartes standards, about internalising Guilliman’s writings and applying them to all things. This application goes far beyond military matters, extending to all phases of life, including routine discussions with the fellow members of his Kill Team and those outside of it. He often quotes the Codex in conversation, using it as a key point in driving home his — or rather, the Primarch’s — perspective on the discussion. Of course, his battle-brothers do not always agree with his interpretation or application.\n\nBriathos is most accomplished with his bolter, embracing the idea that it is the weapon most applicable in the broadest range of circumstances. Because of this, he spends additional time drilling with the weapon, and encourages the Kill Team’s other members to join him in extra practice sessions. Briathos also enjoys performing routine maintenance on his bolter, as well as his other gear. He often assists his peers with the basic upkeep on their wargear, though this is probably at least partially to make certain that they are keeping all their equipment up to Codex requirements."
+  },
+  {
+    "id": "voa-brother-marmaroth",
+    "name": "Brother Marmaroth",
+    "role": "Kill Team Righteous Will",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 117
+      }
+    ],
+    "faction": "The Absolvers",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "voa-brother-marmaroth"
+    },
+    "gmNotes": "After completing his initiation, Brother Marmaroth was immediately assigned to replace a fallen member of Kill Team Righteous Will. In the months since, he has acquitted himself admirably. Marmaroth was particularly adept at infiltration and demolition missions during his service as a Scout, prior to completing his initiation. Those aptitudes have led him to build closer connections with both Brothers Puriel and Rogziel. During missions, he often works closely with one or both, providing backup for melee engagements or assisting when missions call for the deployment of ordnance.\n\nMarmaroth joined the Righteous Will as a direct replacement; his role within the team was to assume that of the fallen battle-brother ensuring any risk of performance loss was kept to a minimum. As a result, Brother Marmaroth must carry and use a flamer as his primary weapon. While he is competent with this weapon, he far prefers to wield his combat knife or bolt pistol. His greatest challenge has been learning to adapt to the flamer’s utility, and while he still prefers the greater precision of his Astartes Combat Knife he has come to appreciate the devastation a gout of blazing promethium can provide. Despite his preferences, he has increased the amount of focus time drilling with the flamer and has enhanced his proficiency with the weapon. He longs to also experiment in using promethium in conjunction with his demolitions training, but has not yet had an opportunity."
+  },
+  {
+    "id": "voa-brother-rogziel",
+    "name": "Brother Rogziel",
+    "role": "Demolitions expert, Kill Team Righteous Will",
+    "cites": [
+      {
+        "source": "vow-of-absolution",
+        "page": 118
+      }
+    ],
+    "faction": "The Absolvers",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "voa-brother-rogziel"
+    },
+    "gmNotes": "Brother Rogziel has served Kill Team Righteous Will as the demolitions and heavy weapons expert for several years. He is loath to adhere to the Absolvers' recent directives regarding supply conservation. instead preferring to be absolutely certain that threats are unequivocally eradicated. Where a single round might be enough to kill an opponent, he prefers to use two, to leave no question about their fate. He often makes light of this, insisting that he is not an Apothecary, so wishes to remain confident that his foes are properly dispatched.\n\nSince his assignment to the squad, this belief has led to an increase in collateral damages. This is particularly true on missions where the assignments explicitly call for demolitions work. Brother Rogziel seems to have an unusual knack for getting exceptional performance out of the ordnance he uses. His squadmates suspect that this might have to do with a tendency to exploit any other combustible materials that might be available, invariably finding a way to utilise any volatile substances nearby to augment the overall effectiveness of his equipment. In more candid moments, Brother Rogziel readily admits to the fellow members of the Righteous Will that his Sanguine Vision includes him dying amid an explosion. He has chosen not to share further details of his fate with his battle-brothers, lest he leave them unreasonably concerned."
+  }
+]
