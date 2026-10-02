@@ -796,7 +796,8 @@ textarea.input {
   align-self: center;
 }
 dialog.legend,
-dialog.sheet {
+dialog.sheet,
+dialog.picker {
   width: min(560px, calc(100vw - 32px));
   max-height: 85dvh;
   padding: 0;
@@ -811,24 +812,46 @@ dialog.sheet {
   letter-spacing: normal;
 }
 dialog.legend::backdrop,
-dialog.sheet::backdrop {
+dialog.sheet::backdrop,
+dialog.picker::backdrop {
   background: var(--overlay);
 }
 dialog.legend .sb-title,
-dialog.sheet .sb-title {
+dialog.sheet .sb-title,
+dialog.picker .sb-title {
   position: sticky;
   top: 0;
   z-index: 1;
   align-items: center;
 }
 dialog.legend .sb-title .btn,
-dialog.sheet .sb-title .btn {
+dialog.sheet .sb-title .btn,
+dialog.picker .sb-title .btn {
   border-color: var(--bone-2);
   box-shadow: none;
   color: var(--bone);
 }
-dialog.legend .list {
+dialog.legend .list,
+dialog.picker .list {
   padding: 10px;
+}
+/* The threat picker (components/ui/threat-picker): wider than the legend, because every row carries a cite. */
+dialog.picker {
+  width: min(680px, calc(100vw - 32px));
+}
+.tp-facets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+/* A result row: name, class chip and the cite, wrapping on a phone instead of truncating the cite. */
+.tp-row {
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  text-align: left;
 }
 .sb-grid {
   display: grid;

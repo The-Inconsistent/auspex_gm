@@ -3,6 +3,7 @@ import { useState, type ChangeEvent } from "react";
 
 import { activeCharacterIds, Marker, type LiveState, type Threat, type Visibility } from "@wg/shared";
 
+import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 
 import type { Run } from "../../types";
@@ -54,20 +55,7 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
 
   return (
     <div className="keys" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}>
-      <select
-        className="btn"
-        style={{ maxWidth: "100%" }}
-        aria-label="Threat"
-        value={threatId}
-        onChange={(e) => setThreatId(e.target.value)}
-      >
-        <option value="">+ THREAT…</option>
-        {bestiary.map((b) => (
-          <option key={b.id} value={b.id}>
-            {b.name} ({b.source === "core" ? "core" : b.source} p.{b.page})
-          </option>
-        ))}
-      </select>
+      <ThreatPicker bestiary={bestiary} tier={state.campaign.tier} value={threatId} onPick={(t) => setThreatId(t.id)} />
       <input
         className="input"
         style={{ width: 90 }}
