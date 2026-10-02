@@ -171,7 +171,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | `church-of-steel` (cite CoS; scene presets, issue #39; vehicles not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
 | Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24; Frameworks, #45) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 35, 70, 71, 75, 83, 90) |
-| Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
+| Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24; Frameworks, #45) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41, 42, 60) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
