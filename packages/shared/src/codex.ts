@@ -9,13 +9,53 @@ const id = z.uuid();
 
 // Attitude (optional rule, p.168): DN modifier for social Tests with this NPC.
 export const Attitude = z.enum(["hostile", "uncooperative", "neutral", "friendly", "helpful"]);
+export type Attitude = z.infer<typeof Attitude>;
+// Added to the DN of a social Skill Test against the NPC (Core p.168).
+export const ATTITUDE_DN: Record<Attitude, number> = {
+  hostile: 4,
+  uncooperative: 2,
+  neutral: 0,
+  friendly: -2,
+  helpful: -4,
+};
+
+// Quick NPC Stats (Core p.326): one row per Tier, no Attributes, weapons or Keywords. The GM tweaks them to taste.
+export const QUICK_NPC = {
+  1: { skills: 4, defence: 1, resilience: 4, wounds: 3, shock: 2, conviction: 2, resolve: 2, speed: 6 },
+  2: { skills: 6, defence: 2, resilience: 8, wounds: 5, shock: 4, conviction: 4, resolve: 4, speed: 7 },
+  3: { skills: 8, defence: 3, resilience: 10, wounds: 7, shock: 6, conviction: 6, resolve: 6, speed: 8 },
+  4: { skills: 10, defence: 4, resilience: 12, wounds: 10, shock: 8, conviction: 8, resolve: 8, speed: 9 },
+} as const;
+export type QuickTier = keyof typeof QUICK_NPC;
+export type QuickRow = (typeof QUICK_NPC)[QuickTier];
+// The table stops at Tier 4, so a Tier 5 game reads the Tier 4 row (rules-flow §11.86).
+export function quickRow(tier: number): { row: QuickRow; tier: QuickTier; capped: boolean } {
+  const t = Math.min(Math.max(Math.trunc(tier), 1), 4) as QuickTier;
+  return { row: QUICK_NPC[t], tier: t, capped: tier > 4 };
+}
+// Scaling Threats (Core p.326): Troops usually have 1 Wound and 3 Shock; an Elite may add the Tier to both; an
+// Adversary or Monstrous Creature may add the number of players plus the Tier. Shown, not fielded (§11.88).
+export const quickScaling = ({ row, tier, players }: { row: QuickRow; tier: number; players: number }) => ({
+  troop: { wounds: 1, shock: 3 },
+  elite: { wounds: row.wounds + tier, shock: row.shock + tier },
+  adversary: { wounds: row.wounds + players + tier, shock: row.shock + players + tier },
+});
 
 // Where an NPC's or encounter entry's stats come from.
 export const StatSource = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("bestiary"), threatId: z.string() }),
-  z.object({ kind: z.literal("quick"), tier: z.number().int().min(1).max(4) }), // Quick NPC table, p.326
+  z.object({
+    kind: z.literal("quick"), // Quick NPC table, p.326
+    tier: z.number().int().min(1).max(4),
+    // The one Skill the GM tweaks up, e.g. "a known gun for hire might have a Ballistic Skill of 6 at Tier 1, instead
+    // of 4" (p.326). A house field: the table prints no such column (§11.87).
+    specialty: z
+      .object({ skill: z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]), dice: z.number().int().min(1).max(20) })
+      .optional(),
+  }),
   z.object({ kind: z.literal("none") }),
 ]);
+export type StatSource = z.infer<typeof StatSource>;
 
 export const EncounterEntry = z.object({
   threatId: z.string(),
@@ -214,6 +254,7 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
       })),
     npcs: c.npcs
       .filter((n) => n.revealed)
+      // Attitude stays: the table may see how an NPC regards them (rules-flow §11.89).
       .map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))

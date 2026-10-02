@@ -333,7 +333,7 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 | threat combatant, `visibility: "stats"` | all of the above plus `stats` | — |
 | `Codex.factions`, `Codex.adventures` (with beats) | nothing (empty arrays) | all |
 | `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked; `parentId` → null unless the parent is revealed |
-| `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none`; `factionId` → null |
+| `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none`; `factionId` → null; `attitude` kept (rules-flow §11.89) |
 | `Codex.handouts` | revealed ones only | — |
 | `Codex.sessions` | all, with recaps | — |
 

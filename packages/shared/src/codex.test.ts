@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  ATTITUDE_DN,
   BeatTest,
   CodexInput,
   DN_TABLE,
@@ -8,8 +9,12 @@ import {
   Pack,
   PoolEntry,
   PoolSpend,
+  QUICK_NPC,
+  StatSource,
   TestKind,
   canSpend,
+  quickRow,
+  quickScaling,
   retypeTest,
 } from "./index.ts";
 
@@ -113,4 +118,34 @@ test("a spend the pool can't pay is refused before it's sent", () => {
   assert.ok(canSpend(pools, { pool: "glory", cost: 2 }));
   assert.equal(canSpend(pools, { pool: "ruin", cost: 2 }), false, "pool.adjust would floor at 0 and undercharge");
   assert.ok(canSpend(pools, { pool: "ruin", cost: 1 }));
+});
+
+test("Quick NPC Stats are the four rows on Core p.326 (checked on a page render)", () => {
+  const cols = ["skills", "defence", "resilience", "wounds", "shock", "conviction", "resolve", "speed"] as const;
+  assert.deepEqual(
+    ([1, 2, 3, 4] as const).map((t) => cols.map((c) => QUICK_NPC[t][c]).join(" ")),
+    ["4 1 4 3 2 2 2 6", "6 2 8 5 4 4 4 7", "8 3 10 7 6 6 6 8", "10 4 12 10 8 8 8 9"],
+  );
+  assert.deepEqual(quickRow(5), { row: QUICK_NPC[4], tier: 4, capped: true }, "Tier 5 reads Tier 4 (§11.86)");
+  assert.equal(quickRow(3).capped, false);
+});
+
+test("Scaling Threats on Core p.326: an Elite adds the Tier, an Adversary the players plus the Tier", () => {
+  assert.deepEqual(quickScaling({ row: QUICK_NPC[4], tier: 4, players: 5 }), {
+    troop: { wounds: 1, shock: 3 },
+    elite: { wounds: 14, shock: 12 },
+    adversary: { wounds: 19, shock: 17 },
+  });
+});
+
+test("Attitudes add to a social Test's DN (Core p.168)", () => {
+  assert.deepEqual(ATTITUDE_DN, { hostile: 4, uncooperative: 2, neutral: 0, friendly: -2, helpful: -4 });
+});
+
+test("a Quick stat source may name one specialty Skill (§11.87)", () => {
+  const ok = (s: object) => StatSource.safeParse(s).success;
+  assert.ok(ok({ kind: "quick", tier: 1, specialty: { skill: "Ballistic Skill", dice: 6 } }));
+  assert.ok(ok({ kind: "quick", tier: 1 }));
+  assert.ok(!ok({ kind: "quick", tier: 1, specialty: { skill: "Gunnery", dice: 6 } }));
+  assert.ok(!ok({ kind: "quick", tier: 5 }));
 });
