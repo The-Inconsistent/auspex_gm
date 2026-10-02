@@ -659,6 +659,22 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     species a section fields beside its faction don't count: the Purestrain Genestealer (p.117, GENESTEALER, TYRANID),
     and the Kroot and Vespid of the T'au section (pp.179–186). Notes stay empty: the sections are lore and stat blocks,
     and the stat blocks are already in the bestiary. *(User ruling, 2026-10-02.)*
+86. **A Quick NPC at Tier 5 reads the Tier 4 row** (Core p.326; GitHub issue #47). Quick NPC Stats prints Tiers 1–4
+    only. The stat-source chips are 1–4, a new Quick NPC defaults to `min(campaign Tier, 4)`, and the card says when it
+    reads the Tier 4 row for a Tier 5 game (`quickRow`, the way `threatClassAt` falls back to the last printed Tier).
+    *(User ruling, 2026-10-02.)*
+87. **A Quick NPC may name one specialty Skill** (Core p.326; GitHub issue #47). The table has a single Default Skills
+    pool, and the text says to "tweak the numbers up or down… a known gun for hire might have a Ballistic Skill of 6 at
+    Tier 1, instead of 4". `StatSource` quick takes an optional `specialty: { skill, dice }` the GM sets. It's a house
+    field: the book prints no Focus Skill column. *(User ruling, 2026-10-02.)*
+88. **Quick NPCs aren't fielded** (Core p.326; GitHub issue #47). The row gives Defence, Resilience, Wounds and Shock,
+    but no Attributes or weapons, and a combatant snapshots a full Threat. The card shows Scaling Threats instead
+    (`quickScaling`): Troops usually have 1 Wound and 3 Shock, an Elite may add the Tier to Wounds and Shock, and an
+    Adversary or Monstrous Creature may add the number of players plus the Tier. ADD TO SCENE takes bestiary NPCs only;
+    a Quick NPC fights once custom threats exist (issue #43). *(User ruling, 2026-10-02.)*
+89. **An NPC's Attitude reaches the players** (Core p.168; GitHub issue #47). `toPlayerCodex` blanks a revealed NPC's
+    stat source, GM notes, secrets and faction, but keeps its Attitude, and KNOWN PERSONS shows it with its DN modifier
+    (`ATTITUDE_DN`). *(User ruling, 2026-10-02.)*
 
 ---
 
@@ -693,3 +709,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |
 | Encounter budget | done | `encounterBudget`, `tallyByClass`, `rosterTally` (`threat.ts`) against Building Encounters (TA p.8); `BudgetLines` prints Troops, Mob, Elite/Adversary, Monstrous and enemies ("N tracked · M models"), with a FORTIFIED toggle that doubles every target; `BudgetPanel` under the beat editor, sized by the active Agents (§11.82) |
+| Quick NPCs and Attitude | done | `QUICK_NPC`, `quickRow` (Tier 5 → Tier 4, §11.86), `quickScaling` (p.326, §11.88) and `ATTITUDE_DN` (p.168) in `codex.ts`; `StatSource` quick takes a `specialty` (§11.87); Attitude reaches phones (§11.89) |

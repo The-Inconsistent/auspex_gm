@@ -425,7 +425,7 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         description: "",
         gmNotes: "lies",
         secrets: "x",
-        attitude: "neutral",
+        attitude: "uncooperative",
         statSource: { kind: "quick", tier: 4 },
         revealed: true,
       },
@@ -451,6 +451,9 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
     ["Magos"],
   );
   assert.equal(p.npcs[0]!.gmNotes, "");
+  assert.equal(p.npcs[0]!.secrets, "");
+  assert.deepEqual(p.npcs[0]!.statSource, { kind: "none" });
+  assert.equal(p.npcs[0]!.attitude, "uncooperative", "attitude reaches phones (rules-flow §11.89)");
   assert.equal(p.factions.length, 0);
 });
 

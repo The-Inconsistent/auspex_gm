@@ -60,7 +60,7 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   Keywords the page prints, a cite line opening the notes, and stance neutral. The first presets are the creation
   catalogue's 27 factions, with their `keywords` (docs/data.md §9).
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
-  core p.326), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
+  core p.326, with an optional specialty Skill, rules-flow §11.87), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and
   Redacted Records 2 (`rr1-*`, `rr2-*`), Darktide and Litanies of the Lost (docs/data.md §4).
 - **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
