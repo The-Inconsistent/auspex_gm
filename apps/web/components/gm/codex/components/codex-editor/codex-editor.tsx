@@ -9,6 +9,7 @@ import {
   type Character,
   type Codex,
   type FactionKeyword,
+  type FlavourTable,
   type StatSource,
   type Threat,
 } from "@wg/shared";
@@ -19,6 +20,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
 import { KeywordPicker } from "../keyword-picker/keyword-picker";
+import { NpcRoller } from "../npc-roller/npc-roller";
 import { StatSourceField } from "../stat-source-field/stat-source-field";
 import { FIELD_TYPES, GM_ONLY_FIELDS, type FieldType } from "./constants";
 
@@ -33,6 +35,7 @@ type CodexEditorProps = {
   keywords: readonly FactionKeyword[]; // the books' Keywords the faction picker suggests
   bestiary: Threat[];
   tier: number;
+  flavour: FlavourTable[]; // the books' name and appearance tables, for an NPC's ROLL NAME and ROLL LOOK (issue #48)
   onDone: () => void;
 };
 
@@ -119,6 +122,7 @@ export function CodexEditor({
   keywords,
   bestiary,
   tier,
+  flavour,
   onDone,
 }: CodexEditorProps) {
   const fields = fieldsFor({ kind, codex, characters });
@@ -132,6 +136,12 @@ export function CodexEditor({
   const [error, setError] = useState<string | null>(null);
 
   const setField = (key: string, value: unknown) => setDraft({ ...draft, [key]: value });
+
+  // ROLL LOOK: the rolled line goes under what DESCRIPTION already says (rules-flow §11.91).
+  const appendLook = (line: string) => {
+    const d = String(draft.description ?? "").trimEnd();
+    setField("description", d ? `${d}\n${line}` : line);
+  };
 
   // SAVE: empty id selects become null (no faction / no parent), then create or update.
   const save = async () => {
@@ -152,6 +162,14 @@ export function CodexEditor({
 
   return (
     <div className="panel pad stack">
+      {kind === "npc" && flavour.length > 0 && (
+        <div className="field">
+          <span className="label" id="f-roll">
+            ROLL A NAME OR A LOOK (Core pp.27–33)
+          </span>
+          <NpcRoller id="f-roll" tables={flavour} onName={(name) => setField("name", name)} onLook={appendLook} />
+        </div>
+      )}
       {fields.map((f) => (
         <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
           {f.type === "picks" ? (

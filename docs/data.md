@@ -853,7 +853,7 @@ rulings, and vehicles (see the Wargear catalogue).
 | `patrons` | `Patron` | Patrons (Core pp.310–313, FSPG) and their Framework options, each a `FrameworkBody`: description, Limitations (Requirements, shown and never checked, rules-flow.md §11.81), Wargear and Bonus (Grants). Not read by the builder; PARTY's Framework picker shows them to the GM (issue #45) |
 | `frameworks` | `Framework` | Frameworks with no patron: Core p.20's examples (with the printed `tier`, `characters`, `enemies`), Redacted Records' by Faction (`factionId`) and by Tier. A Framework printed both on its own and under a patron is kept once, under the patron |
 | `languages` | `Language` | The Core p.31 languages: `keywords` that allow the one free pick, `xenos` for an alien tongue. Low Gothic (everyone) has no record; unlisted languages are GM-approved write-ins (rules-flow.md §11.48–50) |
-| `flavour` | `FlavourTable` | Names, appearance |
+| `flavour` | `FlavourTable` | Names, appearance. The name lists and the Eye Colour, Hair Colour and Features tables also go to the GM's `/flavour` for CODEX › NPCS' ROLL NAME and ROLL LOOK (`rollOn`, issue #48) |
 
 **Nothing is free text.** Everything a record requires or gives, at creation or on purchase, is structured, and the
 schema has no free-text form for either. Prose (`effect`, ability and trait `text`, `bonus`) is the printed rule text,

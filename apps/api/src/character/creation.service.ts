@@ -4,12 +4,15 @@ import { creationCatalogue, factionPresetList, npcPresetList, wargear } from "@w
 import {
   NpcPreset,
   SOURCES,
+  LOOK_TABLE_IDS,
   THREAT_SOURCES,
+  isNameTable,
   mergeCites,
   officialOnly,
   type BuildCatalogue,
   type CreationPayload,
   type FactionPresets,
+  type FlavourTable,
   type FrameworkCatalogue,
   type ResolvedBuild,
   type Source,
@@ -78,6 +81,16 @@ export function npcPresets(homebrew: boolean): NpcPreset[] {
   );
   for (const p of printedNpcs) byId.set(p.id, byId.has(p.id) ? mergeCites(byId.get(p.id)!, p) : p);
   return [...byId.values()].filter(keep);
+}
+
+// CODEX › NPCS' ROLL NAME and ROLL LOOK (issue #48): the name lists and the Eye Colour, Hair Colour and Features tables
+// (Core pp.27–33), without the homebrew books unless the campaign allows them.
+export function flavourTables(homebrew: boolean): FlavourTable[] {
+  return creation.flavour.filter(
+    (t) =>
+      (homebrew || SOURCES[t.source].official) &&
+      (isNameTable(t) || (LOOK_TABLE_IDS as readonly string[]).includes(t.id)),
+  );
 }
 
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.
