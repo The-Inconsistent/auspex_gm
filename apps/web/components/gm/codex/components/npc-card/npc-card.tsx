@@ -2,8 +2,19 @@ import { ATTITUDE_DN, quickRow, quickScaling, type Codex, type QuickRow, type Th
 
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
+import type { Send } from "@/hooks/use-table/use-table";
 
-type NpcCardProps = { npc: Codex["npcs"][number]; bestiary: Threat[]; tier: number; players: number };
+import { AddToScene } from "./components/add-to-scene/add-to-scene";
+
+type NpcCardProps = {
+  npc: Codex["npcs"][number];
+  adventures: Codex["adventures"];
+  bestiary: Threat[];
+  tier: number;
+  players: number;
+  send: Send;
+  onError: (e: string | null) => void;
+};
 
 const QUICK_COLUMNS: [keyof QuickRow, string][] = [
   ["skills", "DEFAULT SKILLS"],
@@ -18,7 +29,7 @@ const QUICK_COLUMNS: [keyof QuickRow, string][] = [
 
 // An opened NPC's stats (issue #47): its Attitude's DN modifier (Core p.168), then the bestiary stat block, or Core
 // p.326's Quick NPC row with the Scaling Threats lines beside it, since a Quick NPC isn't fielded (rules-flow §11.88).
-export function NpcCard({ npc, bestiary, tier, players }: NpcCardProps) {
+export function NpcCard({ npc, adventures, bestiary, tier, players, send, onError }: NpcCardProps) {
   const s = npc.statSource;
   const dn = ATTITUDE_DN[npc.attitude];
   return (
@@ -34,6 +45,7 @@ export function NpcCard({ npc, bestiary, tier, players }: NpcCardProps) {
       )}
       {s.kind === "bestiary" && <BestiaryStats threat={bestiary.find((t) => t.id === s.threatId)} tier={tier} />}
       {s.kind === "quick" && <QuickStats source={s} tier={tier} players={players} />}
+      <AddToScene npc={npc} adventures={adventures} send={send} onError={onError} />
     </>
   );
 }
@@ -88,10 +100,6 @@ function QuickStats({ source, tier, players }: QuickStatsProps) {
         <span className="label">SCALING (P.326) </span>
         Troop {scaled.troop.wounds} Wound, {scaled.troop.shock} Shock · Elite {scaled.elite.wounds} Wounds,{" "}
         {scaled.elite.shock} Shock · Adversary {scaled.adversary.wounds} Wounds, {scaled.adversary.shock} Shock
-      </div>
-      <div className="sb-body dim">
-        A Quick NPC can&apos;t fight: it has no Attributes or weapons for a combatant. Pick a bestiary threat as its
-        stat source to field it.
       </div>
     </div>
   );

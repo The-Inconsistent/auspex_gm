@@ -140,7 +140,17 @@ export function CodexView({
                         </div>
                       ) : null,
                     )}
-                    {npc && <NpcCard npc={npc} bestiary={bestiary} tier={tier} players={players} />}
+                    {npc && (
+                      <NpcCard
+                        npc={npc}
+                        adventures={codex.adventures}
+                        bestiary={bestiary}
+                        tier={tier}
+                        players={players}
+                        send={send}
+                        onError={setError}
+                      />
+                    )}
                   </details>
                 );
               })}
