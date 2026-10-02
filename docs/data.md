@@ -842,7 +842,8 @@ rulings, and vehicles (see the Wargear catalogue).
 | `talents` | `Talent` | `category` talent, faith, exarch, prayer or vow; XP, requirements, effect |
 | `packages` | `Package` | Ascension and Advancement Packages |
 | `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. A discipline's `requires` is who may learn it (checked for every power in it); a power's `requires` is only its own prerequisite. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords; `alsoIn` lists other disciplines that print it. Minor powers and the free Universal Psyker Abilities are the pseudo-disciplines `minor` and `universal-psyker-abilities` |
-| `patrons` | `Patron` | FSPG Patrons and their Framework options |
+| `patrons` | `Patron` | Patrons (Core pp.310–313, FSPG) and their Framework options, each a `FrameworkBody`: description, Limitations (Requirements, shown and never checked, rules-flow.md §11.81), Wargear and Bonus (Grants). Not read by the builder; PARTY's Framework picker shows them to the GM (issue #45) |
+| `frameworks` | `Framework` | Frameworks with no patron: Core p.20's examples (with the printed `tier`, `characters`, `enemies`), Redacted Records' by Faction (`factionId`) and by Tier. A Framework printed both on its own and under a patron is kept once, under the patron |
 | `languages` | `Language` | The Core p.31 languages: `keywords` that allow the one free pick, `xenos` for an alien tongue. Low Gothic (everyone) has no record; unlisted languages are GM-approved write-ins (rules-flow.md §11.48–50) |
 | `flavour` | `FlavourTable` | Names, appearance |
 

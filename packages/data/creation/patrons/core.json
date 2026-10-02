@@ -1,0 +1,101 @@
+[
+  {
+    "id": "rogue-trader-jakel-varonius",
+    "name": "Rogue Trader Jakel Varonius",
+    "source": "core",
+    "page": 310,
+    "text": "The wily patriarch of the Varonius line was void-born aboard his present flagship — the grand cruiser Ducal Circlet — around a hundred and forty years ago, give or take a decade due to Warp travel. The Ducal Circlet is by far the most powerful vessel in the Gilead System, the heart of the Varonius Flotilla, and the centre of all its myriad operations.\n\nDespite his age, rejuvenat treatments ensure Varonius appears to be in his early thirties, though his eyes hold an earned wisdom. He dresses well, but not (overly) ostentatiously; a naval coat, breeches, and boots of the sable grey and blue colours of the Varonius Dynasty are his usual attire. A custom Hot-Shot Laspistol and prized ornate Power Sabre hang from his belt at all times.\n\nSince first passing through the Straits of Andraste, the Rogue Trader has swiftly amassed an unlikely coalition of disparate and desperate allies. At first united by their desire to survive the constant horrors surging through the Great Rift, they are now held together by Jakel’s charismatic leadership, and the hopeful message he brings of a surviving Imperium beyond Cicatrix Maledictum.\n\nVaronius was hailed as a saviour by the Imperial powers and rulers of the Heartworlds when his well-armed fleet first arrived in the Gilead System. While a few have since come to somewhat regret their early enthusiasm, closely questioning what his true motives are and why he came to Gilead, all are aware that both politically and militarily he is the most powerful individual in the system. The ruling bodies he consorts with are aware that he closely guards the contents of the distress signal sent by the Chapter Command of the Absolvers, and wonder what other secrets he keeps.\n\nAgents Of The Flotilla\n\nVaronius’s willingness to make use of any asset is frequently a distinct advantage in the Warp storm encircled Gilead System. However, though some of the more devout members of the Imperial factions have serious problems with his willingness to work with the Aeldari — and would execute him without hesitation if they discovered he employed Ork mercenaries of the Blood Axe tribe in his weakest hour of direst need.\n\nVaronius’s agents are frequently called on to investigate unusual occurrences and disappearances, especially when xenos elements or followers of the Archenemy may be present, as well as to retrieve vital information and resources. Agents act under the bounds of Varonius’s tenuous authority depending on where they are and what they’ve been asked to do.\n\nWhile nominally all of the Imperial elements and Heartworlds of the system have agreed to support the Flotilla and its agents in exchange for protection, in practice, some resist or resent their presence. Correspondingly, Varonius likes to ensure that every warband he sends forth has at least one agent that demands authority — Imperial Commissars, Sisters of Battle, Absolvers, and the like. Varonius is wary of upsetting the Inquisition and frequently informs Inquisitor Dikaisune of the Order Hereticus if Flotilla agents uncover anything he thinks she would be even slightly interested in.\n\nVaronius’s agents are expected to act with discretion and avoid actions that would bring the flotilla into disrepute. Then again, he also expects them to succeed and doesn’t mind if they break a few heads to do so, just not important ones, unless his agents have truly excellent reasons or proof of treachery.\n\nThose working for Varonius find him to be exceedingly generous with successful agents. He likes to gift rare and unusual equipment from his vast stores to those who please him. To those who fail, so long as the reasons are sound, he offers words of encouragement. However, he quietly assigns those that consistently disappoint him to either irrelevant busy work or missions with a high probability of fatalities.",
+    "options": [
+      {
+        "name": "Varonius Vanguard",
+        "text": "Volunteers, mercenaries, or conscripts to the Varonius Flotilla, you are a discreet problem-solving force. Though usually sent to the fringes of the Gilead System to find allies or resources, you may be called to the Heartworlds when a problem confounds local authorities, or the Flotilla has special interest in proceedings on a certain world.",
+        "limitations": [
+          {
+            "kind": "either",
+            "of": [
+              { "kind": "keyword", "anyOf": ["IMPERIUM"] },
+              {
+                "kind": "all",
+                "of": [
+                  { "kind": "keyword", "anyOf": ["AELDARI"] },
+                  { "kind": "gm", "text": "possibly an Aeldari mercenary — provided they are discreet" }
+                ]
+              }
+            ]
+          }
+        ],
+        "wargear": [
+          { "wargear": { "name": "Periculum Kit", "qty": 1, "wargearId": "periculum-kit" } },
+          {
+            "wargear": {
+              "name": "Symbol of Authority marking them as an agent of the Varonius Flotilla",
+              "qty": 1,
+              "wargearId": "symbol-of-authority"
+            }
+          }
+        ],
+        "bonus": "+1 bonus die to Influence Tests made when requesting Wargear from the Varonius Flotilla.",
+        "grants": [],
+        "tier": 2,
+        "characters": "Any Imperial character, and possibly a xenos mercenary as long as they are discreet.",
+        "enemies": "Threats to the continent: Aeldari raiders, Ork warbands, lesser daemons."
+      },
+      {
+        "name": "The Deniables",
+        "text": "Desperate souls fighting for a desperate cause, the Flotilla employ you to do their dirty work; battling underhive gangs, eliminating political rivals, protecting secret interests, or ferrying clandestine messages. Varonius’s authority affords many methods to ensure he has plausible deniability of your group, not least the remote-controlled Frag Grenades he may have implanted into your limbs.",
+        "limitations": [],
+        "wargear": [
+          {
+            "wargear": {
+              "name": "Frag Grenade Weapon Implant with a remote detonator controlled by a Scion of the Varonius Dynasty",
+              "qty": 1,
+              "wargearId": "augmetic-arm-weapon-implant"
+            }
+          }
+        ],
+        "bonus": "+1 bonus dice to Deception (Fel) Tests against characters with the IMPERIUM Keyword",
+        "grants": []
+      }
+    ],
+    "note": "Intro pp.310–311. Varonius Vanguard is also Core p.20's Tier 2 example Framework: its tier, characters and enemies come from that table. The Deniables' Limitations are printed \"None — if you can convince the pragmatic Varonius Dynasty you could be useful, you’re in.\"; its Weapon Implant cites p.246, the catalogue's Augmetic Arm Weapon Implant. Printed as is: the \"However, though …\" sentence of Agents Of The Flotilla has no main clause, and The Deniables' Bonus has no full stop."
+  },
+  {
+    "id": "lord-militant-taleria-fylamon",
+    "name": "Lord-Militant Taleria Fylamon",
+    "source": "core",
+    "page": 312,
+    "text": "A born soldier, Taleria Fylamon rose quickly through the ranks of the Imperial Guard unaided by wealth or noble heritage. Proving her worth by following even the most insensate orders and prevailing through obstinate faith, she is a stern warrior clinging to the belief that brutal, decisive offense is the only defence.\n\nIn the immediate aftermath of the Great Rift’s emergence, Fylamon seized rulership of the Heartworlds, forcing conscription and entrenching what forces she could muster to resist the horrors spewing from the Warp. Through three tumultuous years of desperate defence, her influence spread, forging close ties with the Adeptus Astartes of the Absolvers and assuming de facto control of the Gilead System. Though many frown at her iron-fisted approach to governance, few deny its necessity when daemonic forces struck.\n\nWhile Fylamon originally greeted the Rogue Trader with open arms, thinking his arrival heralded an opportunity to finally take the fight to Gilead’s enemies, she has become increasingly disillusioned with his ‘haughty airs, fancy words, and limited results’. Privately, she resents the shift of her powers to the Rogue Trader, and has opened her ears to malefic whispers that his claims, on which he stakes Imperial lives, are lies.\n\nEverything about the Gilead System’s present situation chafes her martial spirit. Fylamon is continually frustrated with the other leaders of the Heartworlds who are, she deems, far too content to rely on the Varonius Flotilla to defend their holdings, while refusing to join forces and fight back against the many threats that plague them. Having been thwarted in her plans to institute mass-conscription from every Heartworld, she has recently turned to a new stratagem by calling for a crusade to sail into the Reach and eliminate the Voidmire renegades that continuously raid the inner system.\n\nLord-Militant Fylamon is nominally the head of all Astra Militarum troops within the Gilead System. She directly commands the Gilead Gravediggers, who remain a potent fighting force in no small part due to her constant efforts to see them well-supplied and trained to the highest calibre — something she easily accomplishes, as she is also the Planetary Governor of Gilead Primus.\n\nMeeting The Lord-Militant\n\nWhile the Lord-Militant maintains a spiretop castle in Impensus, largest of Gilead Primus’s 19 hives, if she must meet her agents in person she generally does so in her palace on Imperia. She is far more likely to disseminate orders through other trusted agents or over secure vox channels.\n\nEvery action Fylamon takes is in service of her ultimate goal: the annihilation of her enemies. To this end, she values anything that can further her control of the Gilead System, secure order, improve military might, or convince others that an all-out-assault on the enemies of the Imperium is the correct course of action.\n\nFylamon’s agents frequently have a military background or come from solid Imperial stock. She refuses to work with xenos, and employs Psykers with great distaste. Her missions generally require the judicious application of firepower, cunning, resolve, and more firepower. She frequently sends warbands to either investigate or annihilate groups of recidivists, pirates, and cultists.\n\nHer chosen agents have near absolute authority on Gilead Primus, but less on the Heartworlds where her control is limited; Avachrus, where the Adeptus Mechanicus must be bargained with, Nethreus, which is ruled by its Nobles not subject to her authority, and Enoch, controlled by the fickle Ecclesiarchy.\n\nFylamon does not tolerate failure lightly. Penal conscription awaits those who displease the Lord-Militant too often. Those who consistently perform earn lionised praise and given access to the best military equipment and resources a powerful hive-world can muster, free from the ammo-rationing of even her own Astra Militarum forces.\n\nFylamon could pass for a woman of a hale fifty, though after numerous rejuvenat surgeries, she is closer to three hundred. Both her eyes are exceedingly advanced augmetics, the originals lost long ago in the vicious uprising of the Children of the True Kingdom. She habitually wears a unique uniform of her own devising, which roughly resembles an ornate version of a Gilead Gravedigger General’s dress uniform.",
+    "options": [
+      {
+        "name": "Fylamon’s Finest",
+        "text": "Hand selected to form a hammer of Imperial justice, you are dispatched to destroy Taleria Fylamon’s enemies and pacify rebellion. As representatives of what little Imperial authority remains, you fight frontline battles and solve high-priority investigations in the Gilead System as representatives of the Astra Militarum.",
+        "limitations": [
+          { "kind": "notKeyword", "anyOf": ["AELDARI", "SCUM", "ORK"] },
+          { "kind": "tier", "min": 2 }
+        ],
+        "wargear": [
+          { "wargear": { "name": "Survival Kit", "qty": 1, "wargearId": "survival-kit" } },
+          { "wargear": { "name": "9-70 Entrenching Tool", "qty": 1, "wargearId": "9-70-entrenching-tool" } },
+          { "wargear": { "name": "Vox Caster", "qty": 1, "wargearId": "vox-caster", "scope": "group" } },
+          {
+            "wargear": { "name": "Martyr’s Gift Medikit", "qty": 1, "wargearId": "martyrs-gift-medikit", "scope": "group" }
+          }
+        ],
+        "bonus": "+2 bonus dice to any Leadership (Wil) or Influence Test whilst on Gilead Primus.",
+        "grants": [],
+        "tier": 3,
+        "characters": "The Governor-Militant will only assign trusted members of the Imperial armed forces; no Scum, no xenos.",
+        "enemies": "Threats to the planet: Chaos Space Marine squads, greater daemons, Aeldari Psyker conclaves, Genestealer Cults."
+      },
+      {
+        "name": "Cannon Fodder",
+        "text": "Fylamon’s propagandist calls-to-arms are heard throughout the Gilead; she will take (almost) all comers, usually assigning them to guard duty on the transports that move between the Heartworlds or to protect sites of military importance. Usually the first boots on the ground when anything goes awry, Fylamon prefers to send expendable, barely-trained groups of nobodies rather than her trained soldiers, hoping their own drive to heroism will inform her on who to promote.",
+        "limitations": [{ "kind": "notKeyword", "anyOf": ["AELDARI", "ORK"] }],
+        "wargear": [{ "wargear": { "name": "9-70 Entrenching Tool", "qty": 1, "wargearId": "9-70-entrenching-tool" } }],
+        "bonus": "+1 bonus die whenever you Aim (p.189).",
+        "grants": []
+      }
+    ],
+    "note": "Intro pp.312–313; both Frameworks on p.313. Fylamon’s Finest is also Core p.20's Tier 3 example Framework: its tier, characters and enemies come from that table, which prints \"Governor-Militant\" (copied as printed). Its Survival Kit and Entrenching Tool are \"for every individual\"; the Vox Caster and Medikit are \"one\", so one for the group."
+  }
+]
