@@ -1,0 +1,81 @@
+[
+  {
+    "id": "ta-aeldari",
+    "name": "Aeldari",
+    "source": "threat-assessment",
+    "page": 22,
+    "keywords": [
+      "AELDARI"
+    ],
+    "notes": "",
+    "secrets": ""
+  },
+  {
+    "id": "ta-harlequins",
+    "name": "Harlequins",
+    "source": "threat-assessment",
+    "page": 52,
+    "keywords": [
+      "AELDARI",
+      "HARLEQUIN",
+      "[MASQUE]"
+    ],
+    "notes": "",
+    "secrets": ""
+  },
+  {
+    "id": "ta-drukhari",
+    "name": "Drukhari",
+    "source": "threat-assessment",
+    "page": 58,
+    "keywords": [
+      "DRUKHARI"
+    ],
+    "notes": "",
+    "secrets": ""
+  },
+  {
+    "id": "ta-ork-kultur",
+    "name": "Ork Kultur",
+    "source": "threat-assessment",
+    "page": 79,
+    "keywords": [
+      "ORK"
+    ],
+    "notes": "",
+    "secrets": ""
+  },
+  {
+    "id": "ta-genestealer-cults",
+    "name": "Genestealer Cults",
+    "source": "threat-assessment",
+    "page": 104,
+    "keywords": [
+      "GENESTEALER CULT"
+    ],
+    "notes": "",
+    "secrets": ""
+  },
+  {
+    "id": "ta-necrons",
+    "name": "Necrons",
+    "source": "threat-assessment",
+    "page": 131,
+    "keywords": [
+      "NECRON"
+    ],
+    "notes": "",
+    "secrets": ""
+  },
+  {
+    "id": "ta-tau-empire",
+    "name": "The T'au Empire",
+    "source": "threat-assessment",
+    "page": 158,
+    "keywords": [
+      "T'AU"
+    ],
+    "notes": "",
+    "secrets": ""
+  }
+]
