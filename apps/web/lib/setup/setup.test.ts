@@ -1,9 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { Pack } from "@wg/shared";
-
-import volkus from "../../../../packages/data/packs/volkus/pack.json";
 import { setupSteps } from "./setup.ts";
 
 const empty = {
@@ -26,13 +23,22 @@ test("a Framework ticks its step and nothing else", () => {
   assert.deepEqual(ticked(steps), ["framework", "tier"]);
 });
 
+// Shaped like the volkus pack, inline: the web image's `turbo prune @wg/web` leaves packages/data out, so a test here
+// can't read packages/data/packs (the Next build type-checks tests too).
+const volkus = {
+  campaign: { tier: 4, framework: "Deathwatch Kill Team.", patron: "Inquisitor Marie Von Xardt, Ordo Xenos" },
+  codex: {
+    locations: [{}],
+    factions: [{}],
+    npcs: [{}],
+    sessions: [{ number: 1 }],
+    adventures: [{ beats: [{ encounter: [{}] }, { encounter: [] }] }],
+  },
+  characters: [{}],
+};
+
 test("the volkus pack with one session started ticks every tickable step", () => {
-  const pack = Pack.parse(volkus);
-  const steps = setupSteps({
-    campaign: pack.campaign,
-    codex: { ...pack, sessions: [{ number: 1 }] },
-    characters: [{}],
-  });
+  const steps = setupSteps(volkus);
   assert.deepEqual(
     steps.filter((s) => s.done === false).map((s) => s.key),
     [],
