@@ -3,6 +3,7 @@ import { CharacterBuild } from "./build.ts";
 import { CodexInput, MAX_HAZARDS } from "./codex.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
+import { CustomThreatData, MAX_SLUG } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
 import {
@@ -19,6 +20,12 @@ import {
 
 const id = z.uuid();
 const rowId = z.string().regex(/^[a-z0-9-]+$/); // a row of the server's book data
+// A custom threat's slug (issue #43): made server-side by `threatSlug`, and the client only ever echoes one back.
+const slug = z
+  .string()
+  .min(1)
+  .max(MAX_SLUG)
+  .regex(/^[a-z0-9-]+$/);
 const delta = z.number().int().min(-100).max(100);
 const conditions = z.array(z.string().max(60)).max(30);
 // A builder draft is a few KB; this is room for every choice twice over, and a cap on what a socket can store.
@@ -182,6 +189,16 @@ export const Action = z.union([
     // A player gives up their seat: the Agent goes back to reserve and the room QR offers it again.
     z.object({ type: z.literal("seat.leave") }),
 
+    // Custom threats (issue #43): a stat block the GM wrote or cloned, kept with this campaign. `id`, `source` and
+    // `page` are the server's to set, so they aren't sent; a `slug` edits that row, and without one the server makes a
+    // slug from the name.
+    z.object({
+      type: z.literal("threat.save"),
+      slug: slug.optional(),
+      data: CustomThreatData,
+    }),
+    z.object({ type: z.literal("threat.delete"), slug }),
+
     z.object({ type: z.literal("encounter.start") }),
     z.object({ type: z.literal("encounter.end") }),
     z.object({ type: z.literal("encounter.newRound") }),
@@ -277,4 +294,6 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
 // `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry
 // them — they compare before with after (who crossed a Rank boundary on session.end, Core p.146) — and they are
 // one-off, like the vox log at the table, not state to render later.
-export type ActionResult = { ok: true; id?: string; token?: string; notices?: string[] } | { ok: false; error: string };
+// `slug`: the slug `threat.save` created or kept, so the editor knows which custom threat it is now editing (issue #43).
+export type ActionResult =
+  { ok: true; id?: string; token?: string; slug?: string; notices?: string[] } | { ok: false; error: string };

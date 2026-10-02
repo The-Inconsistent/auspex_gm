@@ -8,8 +8,10 @@ import { testSessionToken } from "@wg/auth/api";
 import {
   ASCENSION_XP,
   BeatTest,
+  CUSTOM_THREAT_CAP,
   LIBRARY_CAP,
   Lobby,
+  MAX_CUSTOM_THREAT_CHARS,
   SKILL_XP,
   deriveStats,
   poolMax,
@@ -1986,6 +1988,48 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   });
   const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Descent" } });
   assert.ok(spire.ok && orders.ok && orders.id && adv.ok && adv.id);
+  // A custom threat (issue #43) and a scene that uses it, so the file has to carry both.
+  const own = await gm.send({
+    type: "threat.save",
+    data: {
+      name: "Pit Beast",
+      faction: "heretic",
+      threat: ["M", "M", "M", "M"],
+      keywords: ["CHAOS"],
+      attributes: { S: 8, T: 8, A: 2, I: 2, Wil: 3, Int: 1, Fel: 1 },
+      resilience: { value: 10 },
+      defence: 1,
+      wounds: 20,
+      shock: null,
+      skills: { default: 4, list: [] },
+      conviction: 5,
+      resolve: 3,
+      speed: 8,
+      size: "Huge",
+    },
+  });
+  assert.ok(own.ok && own.slug === "pit-beast");
+  // A second one, so the file's order is something the import has to keep.
+  const own2 = await gm.send({
+    type: "threat.save",
+    data: {
+      name: "Sump Crawler",
+      faction: "heretic",
+      threat: ["T", "T", "T", "T"],
+      keywords: ["CHAOS"],
+      attributes: { S: 3, T: 3, A: 4, I: 3, Wil: 1, Int: 1, Fel: 1 },
+      resilience: { value: 4 },
+      defence: 2,
+      wounds: 1,
+      shock: 3,
+      skills: { default: 2, list: [] },
+      conviction: 2,
+      resolve: 1,
+      speed: 6,
+      size: "Small",
+    },
+  });
+  assert.ok(own2.ok && own2.slug === "sump-crawler");
   const ambush = await gm.send({
     type: "codex.save",
     kind: "beat",
@@ -1995,8 +2039,12 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
       status: "done",
       locationId: spire.id,
       handoutIds: [orders.id],
-      // One entry carries a profile and scaling (issue #42), so the export and import keep both.
-      encounter: [{ threatId: "ork-boy", count: 3, profiles: ["heretical-strength"], scale: true }],
+      // One entry carries a profile and scaling (issue #42), so the export and import keep both, and one names the
+      // campaign's own threat (issue #43).
+      encounter: [
+        { threatId: "ork-boy", count: 3, profiles: ["heretical-strength"], scale: true },
+        { threatId: "custom-pit-beast" },
+      ],
       // The scene picks its place's hazards (§11.95); a pick its place doesn't list is dropped.
       hazards: [
         { id: shock.id, spotted: true },
@@ -2044,6 +2092,48 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
 
   assert.equal((await post("/campaigns/import", { file }, bearer(clerk("not-a-creator")))).status, 403);
   assert.equal((await post("/campaigns/import", { file: { format: "pack" } }, bearer(gm.gmClerk))).status, 400);
+  assert.equal((file as CampaignExport).codex.customThreats[0]?.id, "custom-pit-beast", "the file holds it");
+  const notCustom = structuredClone(file);
+  notCustom.codex.customThreats[0].source = "core";
+  assert.equal(
+    (await post("/campaigns/import", { file: notCustom }, bearer(gm.gmClerk))).status,
+    400,
+    "a custom threat claiming a book is refused",
+  );
+  const twice = structuredClone(file);
+  twice.codex.customThreats.push(structuredClone(twice.codex.customThreats[0]));
+  assert.equal(
+    (await post("/campaigns/import", { file: twice }, bearer(gm.gmClerk))).status,
+    400,
+    "two customs with one id are refused, not left to the unique constraint",
+  );
+  const longSlug = structuredClone(file);
+  longSlug.codex.customThreats.push({ ...longSlug.codex.customThreats[0], id: `custom-${"a".repeat(61)}` });
+  assert.equal(
+    (await post("/campaigns/import", { file: longSlug }, bearer(gm.gmClerk))).status,
+    400,
+    "a slug threat.save and threat.delete would refuse is refused here too",
+  );
+  // The 101st custom threat is refused (issue #43). 100 come in through one import; saving them one by one would run
+  // into the 120 actions a minute a socket may send.
+  const full = structuredClone(file);
+  const pit = full.codex.customThreats[0];
+  full.codex.customThreats = Array.from({ length: CUSTOM_THREAT_CAP }, (_, i) => ({
+    ...pit,
+    id: i ? `${pit.id}-${i + 1}` : pit.id,
+  }));
+  const fullRes = await post("/campaigns/import", { file: full }, bearer(gm.gmClerk));
+  assert.equal(fullRes.status, 201);
+  const fullGm = connect({
+    auth: { campaignId: ((await fullRes.json()) as { campaignId: string }).campaignId, clerkToken: gm.gmClerk },
+  });
+  t.after(() => fullGm.socket.close());
+  await eventually(() => fullGm.codex()?.customThreats.length === CUSTOM_THREAT_CAP, "a campaign at the cap");
+  const { id: _id, source: _source, page: _page, ...pitData } = pit;
+  assert.deepEqual(await fullGm.send({ type: "threat.save", data: pitData }), {
+    ok: false,
+    error: `At most ${CUSTOM_THREAT_CAP} custom threats per campaign`,
+  });
   const forged = structuredClone(file);
   forged.codex.adventures[0].beats[0].encounter[0].threatId = "nope";
   assert.equal((await post("/campaigns/import", { file: forged }, bearer(gm.gmClerk))).status, 400, "unknown threat");
@@ -2100,6 +2190,12 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const spireList = locs.find((l) => l.name === "Spire")?.hazardList;
   assert.deepEqual(spireList, [shock, { ...climb, effect: "", tests: [BeatTest.parse(climb.tests[0])] }]);
   assert.deepEqual(b?.hazards, [{ id: shock.id, spotted: true }], "the scene's pick comes along");
+  assert.deepEqual(
+    whole.codex.customThreats.map((t) => t.name),
+    ["Pit Beast", "Sump Crawler"],
+    "both custom threats are restored, in the file's order",
+  );
+  assert.equal(b?.encounter[1]?.threatId, "custom-pit-beast", "and the entry still names it by slug");
   assert.deepEqual(
     b?.encounter[0]?.profiles,
     ["heretical-strength"],
@@ -2393,4 +2489,139 @@ test("scaling counts the whole roster while nobody holds a seat (Core p.326, §1
   const s = await gm.until((x) => !!x.encounter?.combatants.some((c) => c.id === archon.id));
   const a = s.encounter!.combatants.find((c): c is ThreatCombatant => c.id === archon.id)!;
   assert.equal(a.maxWounds, 19, "14 + 2 Agents on the roster + Tier 3, as the SCALE preview shows");
+});
+
+// Issue #43: a stat block the GM writes or clones, kept with the campaign and usable wherever a bestiary threat goes.
+test("custom threats: saved, used, refused and never sent to a player", async (t) => {
+  const gm = await newCampaign("Customs", 3);
+  t.after(() => gm.socket.close());
+  const kael = await gm.send({ type: "character.create", name: "Kael" });
+  assert.ok(kael.ok && kael.id);
+  const issued = await gm.send({ type: "token.issue", characterId: kael.id });
+  assert.ok(issued.ok && issued.token);
+  const player = connect({ auth: { token: issued.token } });
+  t.after(() => player.socket.close());
+  await player.until((s) => s.characters.length === 1);
+
+  // A placeholder block, not a printed one: the editor sends everything but id, source and page.
+  const data: Extract<ActionInput, { type: "threat.save" }>["data"] = {
+    name: "Warped Ogryn",
+    faction: "heretic",
+    threat: ["E", "E", "A", "A"],
+    keywords: ["CHAOS", "OGRYN"],
+    attributes: { S: 7, T: 7, A: 3, I: 3, Wil: 2, Int: 1, Fel: 1 },
+    resilience: { value: 9, note: "Scrap Plate (2)" },
+    defence: 2,
+    wounds: 10,
+    shock: 4,
+    skills: { default: 3, list: [{ name: "Weapon Skill", dice: 8 }] },
+    conviction: 4,
+    resolve: 2,
+    speed: 6,
+    size: "Large",
+    abilities: [{ type: "ACTION", name: "Slab Fist", weapons: [{ name: "Slab Fist", damage: 12, ed: 2, range: [1] }] }],
+  };
+  const huge = await gm.send({
+    type: "threat.save",
+    data: { ...data, bonuses: [{ name: "Filler", text: "x".repeat(MAX_CUSTOM_THREAT_CHARS) }] },
+  });
+  assert.ok(!huge.ok && /at most 16,000 characters/.test(huge.error), "a custom threat has a size cap");
+  const saved = await gm.send({ type: "threat.save", data });
+  assert.ok(saved.ok && saved.slug === "warped-ogryn");
+  await eventually(() => gm.codex()?.customThreats[0]?.id === "custom-warped-ogryn", "the GM's codex carries it");
+  assert.equal(gm.codex()?.customThreats[0]?.source, "custom", "the server sets the source");
+  await eventually(() => player.codex()?.customThreats.length === 0, "a player's codex carries none");
+
+  // A player can't write one, and a guest can't either.
+  assert.deepEqual(await player.send({ type: "threat.save", data }), { ok: false, error: "GM only" });
+  assert.deepEqual(await player.send({ type: "threat.delete", slug: "warped-ogryn" }), { ok: false, error: "GM only" });
+
+  // A rename keeps the slug, so everything pointing at custom-warped-ogryn still resolves.
+  const renamed = await gm.send({ type: "threat.save", slug: "warped-ogryn", data: { ...data, name: "Ogryn Brute" } });
+  assert.ok(renamed.ok && renamed.slug === "warped-ogryn");
+  await eventually(() => gm.codex()?.customThreats[0]?.name === "Ogryn Brute", "the rename lands");
+  assert.equal(gm.codex()?.customThreats[0]?.id, "custom-warped-ogryn");
+  // A second one of the same name takes a suffix.
+  const twin = await gm.send({ type: "threat.save", data });
+  assert.ok(twin.ok && twin.slug === "warped-ogryn-2");
+
+  // It goes in a fight like any other threat, with its class at this Tier and its own snapshot.
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  const added = await gm.send({ type: "combatant.addThreat", threatId: "custom-warped-ogryn", scale: true });
+  assert.ok(added.ok && added.id);
+  const c = (await gm.until((s) => !!threatOf(s)))!;
+  const row = c.encounter!.combatants.find((x): x is ThreatCombatant => x.kind === "threat")!;
+  assert.equal(row.threatClass, "A", "an Adversary at Tier 3");
+  assert.equal(row.maxWounds, 14, "10 + 1 Agent + Tier 3 (Core p.326)");
+  assert.equal(row.stats?.name, "Ogryn Brute");
+  assert.deepEqual(await gm.send({ type: "combatant.addThreat", threatId: "custom-nope" }), {
+    ok: false,
+    error: 'Unknown threat "custom-nope"',
+  });
+  assert.ok((await gm.send({ type: "encounter.end" })).ok);
+
+  // A prepared scene accepts it, and starting that scene adds it.
+  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Pit" } });
+  assert.ok(adv.ok && adv.id);
+  const beat = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    data: { adventureId: adv.id, title: "The Pit", encounter: [{ threatId: "custom-warped-ogryn" }] },
+  });
+  assert.ok(beat.ok && beat.id);
+  assert.deepEqual(
+    await gm.send({
+      type: "codex.save",
+      kind: "beat",
+      data: { adventureId: adv.id, title: "Bad", encounter: [{ threatId: "custom-nope" }] },
+    }),
+    { ok: false, error: 'Unknown threat "custom-nope"' },
+  );
+  assert.ok((await gm.send({ type: "beat.startEncounter", id: beat.id })).ok);
+  await gm.until(
+    (s) => !!s.encounter?.combatants.some((x) => x.kind === "threat" && x.threatId === "custom-warped-ogryn"),
+  );
+
+  // DELETE is refused while a scene or an NPC names it, and allowed once they don't - even with a fight holding it,
+  // because that combatant carries its own snapshot.
+  const refused = await gm.send({ type: "threat.delete", slug: "warped-ogryn" });
+  assert.ok(
+    !refused.ok && refused.error === 'Still used by the scene "The Pit"',
+    refused.ok ? "allowed" : refused.error,
+  );
+  assert.ok(
+    (
+      await gm.send({
+        type: "codex.save",
+        kind: "beat",
+        id: beat.id,
+        data: { adventureId: adv.id, title: "The Pit", encounter: [] },
+      })
+    ).ok,
+  );
+  const vex = await gm.send({
+    type: "codex.save",
+    kind: "npc",
+    data: { name: "Vex", statSource: { kind: "bestiary", threatId: "custom-warped-ogryn" } },
+  });
+  assert.ok(vex.ok && vex.id);
+  const byNpc = await gm.send({ type: "threat.delete", slug: "warped-ogryn" });
+  assert.ok(!byNpc.ok && byNpc.error === "Still used by the NPC Vex", byNpc.ok ? "allowed" : byNpc.error);
+  assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: vex.id })).ok);
+  assert.ok((await gm.send({ type: "threat.delete", slug: "warped-ogryn" })).ok, "a fight holding it doesn't block it");
+  await eventually(() => gm.codex()?.customThreats.length === 1, "only the twin is left");
+  assert.deepEqual(await gm.send({ type: "threat.delete", slug: "warped-ogryn" }), {
+    ok: false,
+    error: "Threat not found",
+  });
+
+  // Another campaign can't see or use it.
+  const other = await newCampaign("Elsewhere", 3);
+  t.after(() => other.socket.close());
+  await eventually(() => other.codex()?.customThreats.length === 0, "a second table sees none");
+  assert.ok((await other.send({ type: "encounter.start" })).ok);
+  assert.deepEqual(await other.send({ type: "combatant.addThreat", threatId: "custom-warped-ogryn-2" }), {
+    ok: false,
+    error: 'Unknown threat "custom-warped-ogryn-2"',
+  });
 });

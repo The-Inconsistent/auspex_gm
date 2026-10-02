@@ -7,15 +7,19 @@ import { applyCodexAction } from "../codex/codex.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { applyEncounterAction } from "../encounter/encounter.actions.ts";
+import { applyThreatAction } from "../threat/threat.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
 export function touches(a: Action): { state: boolean; codex: boolean } {
+  // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
   if (
     a.type === "codex.save" ||
     a.type === "codex.delete" ||
     a.type === "beat.reorder" ||
     a.type === "codex.addPlaces" ||
-    a.type === "codex.addHulk"
+    a.type === "codex.addHulk" ||
+    a.type === "threat.save" ||
+    a.type === "threat.delete"
   )
     return { state: false, codex: true };
   // character.delete drops the Agent from handout audiences (character.actions).
@@ -104,6 +108,10 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "codex.addPlaces":
     case "codex.addHulk":
       return applyCodexAction(tx, { ctx, action });
+
+    case "threat.save":
+    case "threat.delete":
+      return applyThreatAction(tx, { ctx, action });
 
     case "invite.create":
     case "invite.revoke":

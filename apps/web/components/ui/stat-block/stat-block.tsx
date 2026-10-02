@@ -16,9 +16,8 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
     <div className="sb">
       <div className="sb-title">
         <span>{t.name.toUpperCase()}</span>
-        <i>
-          <PageCite cite={threatCite(t)} />
-        </i>
+        {/* A threat the GM wrote has no printed page, so it says CUSTOM instead of a cite that opens a book (issue #43). */}
+        <i>{t.source === "custom" ? "CUSTOM" : <PageCite cite={threatCite(t)} />}</i>
         {legend && legend.length > 0 && <Legend title="Reading a stat block" entries={legend} />}
       </div>
       <div className="sb-grid" style={{ gridTemplateColumns: `64px repeat(${tiers}, minmax(0, 1fr))` }}>

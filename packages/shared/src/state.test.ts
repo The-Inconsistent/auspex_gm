@@ -189,6 +189,7 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
     ...o,
   });
   const codex: Codex = {
+    customThreats: [],
     factions: [],
     adventures: [],
     locations: [],
@@ -414,6 +415,7 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
   assert.equal(beat([{ threatId: "ork-boy", count: 61 }]), false, "too many individual combatants");
   assert.equal(beat([{ threatId: "ork-boy", count: 500, asMob: true }]), true, "a Mob is one row");
   const codex: Codex = {
+    customThreats: [],
     factions: [{ id: "f", name: "Mechanicus", keywords: [], stance: "rival", notes: "", secrets: "wants the tomb" }],
     adventures: [],
     locations: [],
@@ -465,7 +467,7 @@ test("a revealed place reaches phones without its hazards, notes or list (issue 
     ...CodexInput.location.parse({ name: "Shaft", revealed: true, hazards: "[notes]", hazardList: [hazard] }),
   };
   const [p] = toPlayerCodex(
-    { factions: [], adventures: [], locations: [place], npcs: [], handouts: [], sessions: [] },
+    { factions: [], adventures: [], locations: [place], npcs: [], handouts: [], sessions: [], customThreats: [] },
     null,
   ).locations;
   assert.deepEqual([p!.name, p!.hazards, p!.hazardList], ["Shaft", "", []]);

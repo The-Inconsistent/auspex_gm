@@ -2,11 +2,13 @@ import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, scenePresets, threats, wargear } from "@wg/data";
-import { CharacterStats, wouldCycle } from "@wg/shared";
+import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, wouldCycle } from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
-import { checkHazards, checkThreats } from "../codex/codex.actions.ts";
+import { checkHazards } from "../codex/codex.actions.ts";
+import { customThreat } from "../threat/threat.schema.ts";
+import { CUSTOM_THREAT_CAP } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
 import { db, type Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
@@ -85,11 +87,30 @@ export async function importCampaign({
   const { codex: c } = file;
   // Beats belong to the adventure they're filed under, whatever their own adventureId says.
   const beats = c.adventures.flatMap((a) => a.beats.map((b) => ({ ...b, adventureId: a.id })));
-  // Same check as codex.save: a file from a server with other threat data would leave beats that can't start.
-  checkThreats([
+  // Same check as codex.save, but the campaign doesn't exist yet, so it runs against the bestiary plus the file's own
+  // custom threats (issue #43) rather than through `loadThreats`.
+  const customs = c.customThreats;
+  // A slug is a row's identity here (`custom_threat` is unique per campaign and slug), and the id carries it, so a
+  // file naming one twice has to be refused with a reason: the insert below would otherwise raise a constraint error,
+  // which is not an ActionError and would answer 500 instead of 400. An id of `custom-` alone passes `Threat`'s regex
+  // and would leave a row with an empty slug, so it is refused with the rest.
+  // A slug longer than `threat.save` and `threat.delete` accept would import a threat the GM could never edit or delete.
+  const slugOf = (id: string) => id.slice(CUSTOM_PREFIX.length);
+  if (
+    customs.some(
+      (t) => !isCustomThreatId(t.id) || t.source !== "custom" || !slugOf(t.id) || slugOf(t.id).length > MAX_SLUG,
+    )
+  )
+    fail("A custom threat in that file isn't a custom threat");
+  if (customs.length > CUSTOM_THREAT_CAP) fail(`At most ${CUSTOM_THREAT_CAP} custom threats per campaign`);
+  const customIds = new Set(customs.map((t) => t.id));
+  if (customIds.size !== customs.length) fail("That file repeats a custom threat");
+  const known = new Set([...threats.keys(), ...customIds]);
+  const unknown = [
     ...beats.flatMap((b) => b.encounter.map((e) => e.threatId)),
     ...c.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
-  ]);
+  ].find((t) => !known.has(t));
+  if (unknown) fail(`Unknown threat "${unknown}"`);
   checkHazards(c.locations.flatMap((l) => l.hazardList));
   // Packs can't nest a place inside itself (parents come first), but a hand-edited file can (issue #50).
   const parentOf = new Map(c.locations.map((l) => [l.id, l.parentId]));
@@ -128,6 +149,18 @@ export async function importCampaign({
           file.characters.map((ch, i) => ({
             ...own(ch, i),
             builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
+          })),
+        );
+      // Before the beats and NPCs that name them, though nothing in the database points at one: the id is the slug.
+      // These keep their own `createdAt` millisecond like every other list, since `loadCustomThreats` loads them in
+      // that order; they can't use `own()`, which renames a row by its id, because theirs is the slug the file brought.
+      if (customs.length)
+        await tx.insert(customThreat).values(
+          customs.map((t, i) => ({
+            campaignId,
+            slug: t.id.slice(CUSTOM_PREFIX.length),
+            data: t,
+            createdAt: new Date(t0 + i),
           })),
         );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));

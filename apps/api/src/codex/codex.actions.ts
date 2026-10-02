@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { hazards, hulkHazardIds, places, spaceHulk, threats } from "@wg/data";
+import { hazards, hulkHazardIds, places, spaceHulk } from "@wg/data";
 import type { z } from "zod";
 import {
   LocationHazard,
@@ -18,6 +18,7 @@ import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
+import { checkThreats } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, location, npc } from "./codex.schema.ts";
 
 export type CodexAction = Extract<
@@ -40,12 +41,6 @@ async function checkRefs(
     .from(table as typeof location)
     .where(and(inArray(table.id, want), eq(table.campaignId, campaignId)));
   if (rows.length !== want.length) fail(`${what} not found`);
-}
-
-// Prepared-encounter and bestiary-NPC threats must exist, or the beat can't start later.
-export function checkThreats(threatIds: string[]) {
-  const unknown = threatIds.find((t) => !threats.has(t));
-  if (unknown) fail(`Unknown threat "${unknown}"`);
 }
 
 // A place's book hazards must name a row of the catalogue, at an intensity that row prints (rules-flow.md §11.94).
@@ -79,7 +74,11 @@ export async function applyCodexAction(
         await refs(location, [b.locationId], "Location");
         await refs(npc, b.npcIds, "NPC");
         await refs(handout, b.handoutIds, "Handout");
-        checkThreats(b.encounter.map((e) => e.threatId));
+        await checkThreats(
+          tx,
+          cid,
+          b.encounter.map((e) => e.threatId),
+        );
         // A scene picks among its place's hazards (§11.95). A pick its place no longer lists is dropped, not refused,
         // so a scene whose place lost a hazard still saves.
         const [place] = b.locationId
@@ -107,7 +106,7 @@ export async function applyCodexAction(
       if (a.kind === "npc") {
         const n = a.data as z.output<typeof CodexInput.npc>;
         await refs(faction, [n.factionId], "Faction");
-        if (n.statSource.kind === "bestiary") checkThreats([n.statSource.threatId]);
+        if (n.statSource.kind === "bestiary") await checkThreats(tx, cid, [n.statSource.threatId]);
       }
       if (a.kind === "location") {
         const parentId = (a.data as z.output<typeof CodexInput.location>).parentId;

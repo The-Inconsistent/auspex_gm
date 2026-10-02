@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
+import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
 import { CharacterDetail, CharacterStats, Objectives, Overrides, Tier } from "./state.ts";
 
 // A campaign as a file: the GM's EXPORT, loaded back by the lobby's IMPORT GAME as a new campaign. Rows keep their old
@@ -71,6 +72,9 @@ export const CampaignExport = z.object({
         }),
       )
       .max(1000),
+    // Custom threats (issue #43). Keyed by `custom-<slug>`, not by a row id, so the importer doesn't remap them.
+    // Defaulted, so a file written before they existed still imports.
+    customThreats: z.array(CustomThreat).max(CUSTOM_THREAT_CAP).default([]),
   }),
 });
 export type CampaignExport = z.infer<typeof CampaignExport>;

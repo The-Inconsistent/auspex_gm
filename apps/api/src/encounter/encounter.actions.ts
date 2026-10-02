@@ -1,5 +1,4 @@
 import { and, count, eq, max, sql } from "drizzle-orm";
-import { threats } from "@wg/data";
 import {
   EncounterEntry,
   MONSTROUS_IMMUNE,
@@ -35,6 +34,7 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
 import { loadState } from "../table/table.state.ts";
+import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
 
 export type EncounterAction = Extract<
@@ -250,7 +250,10 @@ export async function applyEncounterAction(
     }
 
     case "combatant.addThreat": {
-      const t = threats.get(a.threatId) ?? fail(`Unknown threat "${a.threatId}"`);
+      // The bestiary plus this campaign's own stat blocks (issue #43).
+      const t =
+        (await loadThreats(tx, { campaignId: cid, ids: [a.threatId] })).get(a.threatId) ??
+        fail(`Unknown threat "${a.threatId}"`);
       const enc = await activeEncounter(tx, cid);
       const tier = await campaignTier(tx, cid);
       return {
@@ -388,7 +391,8 @@ export async function applyEncounterAction(
         .where(and(eq(beat.id, a.id), eq(beat.campaignId, cid)));
       if (!b) fail("Beat not found");
       const entries = EncounterEntry.array().parse(b.encounter);
-      const missing = entries.find((e) => !threats.has(e.threatId));
+      const known = await loadThreats(tx, { campaignId: cid, ids: entries.map((e) => e.threatId) });
+      const missing = entries.find((e) => !known.has(e.threatId));
       if (missing) fail(`Unknown threat "${missing.threatId}"`);
       const tier = await campaignTier(tx, cid);
       const encounterId = await startEncounter(tx, cid);
@@ -396,7 +400,7 @@ export async function applyEncounterAction(
       for (const characterId of agentIds) await addPc(tx, { encounterId, characterId });
       const agents = await agentCount(tx, { campaignId: cid, seated: agentIds });
       for (const e of entries) {
-        const t = threats.get(e.threatId)!; // every entry was checked against `threats` above
+        const t = known.get(e.threatId)!; // every entry was resolved above
         if (e.asMob && e.count > 1)
           await addThreat(tx, {
             encounterId,

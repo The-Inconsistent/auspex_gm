@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ATTRIBUTES, Marker, Pool, SKILLS, Visibility, type Skill } from "./state.ts";
+import type { Threat } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 
 // Campaign content beyond combat (docs/campaign-model.md). Broadcast separately from the live state,
@@ -268,6 +269,9 @@ export type Codex = {
   npcs: Row<"npc">[];
   handouts: (Row<"handout"> & { revealedAt: string | null })[];
   sessions: { id: string; number: number; startedAt: string; endedAt: string | null; recap: string; xp: number }[];
+  // Stat blocks the GM wrote or cloned for this table (issue #43). Book text, so GM sockets only: `toPlayerCodex`
+  // sends none, and the GM's app merges them into the bestiary every picker already reads.
+  customThreats: Threat[];
 };
 
 // What one player's phone gets (null: a player without a character): revealed NPCs, locations and handouts, without GM
@@ -295,6 +299,7 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
       .map((h) => ({ ...h, audience: h.audience.length && characterId ? [characterId] : [] })),
     sessions: c.sessions,
+    customThreats: [], // a custom threat is a stat block: players never receive one
   };
 }
 
