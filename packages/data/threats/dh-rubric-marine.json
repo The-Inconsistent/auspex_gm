@@ -1,0 +1,66 @@
+{
+  "id": "dh-rubric-marine",
+  "name": "Rubric Marine",
+  "source": "daemons-and-heretics",
+  "page": 59,
+  "faction": "heretic",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["ADEPTUS ASTARTES", "CHAOS", "THOUSAND SONS", "MARK OF TZEENTCH"],
+  "attributes": { "S": 8, "T": 6, "A": 5, "I": 5, "Wil": 4, "Int": 4, "Fel": 1 },
+  "resilience": { "value": 12, "note": "5AR" },
+  "defence": 4,
+  "wounds": 12,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 8 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "The Rubric Marine may use Ruin actions and has 2 personal Ruin." },
+    {
+      "name": "Only Dust Remains",
+      "text": "The Rubric Marine's physical form is gone and only dust within its armour remains. It is immune to Critical Hits and ignores Wounds from weapons without an AP value."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Inferno Boltgun",
+          "damage": 10,
+          "ed": 1,
+          "ap": -2,
+          "range": [12, 24, 36],
+          "salvo": 1,
+          "traits": ["Brutal", "Rapid Fire (2)"]
+        },
+        {
+          "name": "Inferno Bolt Pistol",
+          "damage": 10,
+          "ed": 1,
+          "ap": -2,
+          "range": [6, 12, 18],
+          "salvo": 2,
+          "traits": ["Brutal", "Pistol"]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Strength printed 8 with no bracketed pair. Resilience printed '12(5AR)'. Inferno bolt pistol and its 'pistol' trait printed lower case; stored as Inferno Bolt Pistol, Pistol. Determination line is not named and has no Daemons text."
+}

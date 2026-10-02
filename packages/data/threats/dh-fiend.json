@@ -1,0 +1,92 @@
+{
+  "id": "dh-fiend",
+  "name": "Fiend",
+  "source": "daemons-and-heretics",
+  "page": 100,
+  "faction": "daemon",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 7,
+    "A": 8,
+    "I": 6,
+    "Wil": 6,
+    "Int": 5,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 8
+  },
+  "defence": 5,
+  "wounds": 12,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Soporific Musk",
+      "text": "Enemy units Engaged with a Fiend suffer a +2 DN penalty to all Tests. Environmentally sealed armour or vehicles do not negate the effect."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature",
+      "text": "Anyone that can see or hear a Fiend must pass a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Barbed Tail",
+          "damage": 14,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            2
+          ],
+          "traits": [
+            "Inflict (Poisoned 6)",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Dissecting Claws",
+          "damage": 13,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Barbed Tail prints 'Inflict (Poison 6)', stored Inflict (Poisoned 6) per catalogue spelling.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 7d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 12,
+  "size": "Large"
+}

@@ -1,0 +1,109 @@
+{
+  "id": "dh-spoilpox-scrivener",
+  "name": "Spoilpox Scrivener",
+  "source": "daemons-and-heretics",
+  "page": 68,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 9,
+    "A": 4,
+    "I": 5,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 6
+  },
+  "resilience": {
+    "value": 10
+  },
+  "defence": 4,
+  "wounds": 15,
+  "shock": null,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Leadership",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "The Spoilpox Scrivener may use Ruin actions and has 2 personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Plaguesword",
+          "damage": 11,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 3)",
+            "Parry"
+          ]
+        },
+        {
+          "name": "Disgusting Sneeze",
+          "damage": 9,
+          "ed": 3,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "traits": [
+            "Assault",
+            "Inflict (Poisoned 4)",
+            "Spread"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Check Your Count",
+      "text": "Spend 1 Ruin. All Plaguebearers in the scene receive +1 Speed until the scene ends or the Spoilpox Scrivener is defeated."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 9d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg"
+}

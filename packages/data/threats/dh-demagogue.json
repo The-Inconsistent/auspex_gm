@@ -1,0 +1,55 @@
+{
+  "id": "dh-demagogue",
+  "name": "Demagogue",
+  "source": "daemons-and-heretics",
+  "page": 24,
+  "faction": "heretic",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC"],
+  "attributes": { "S": 3, "T": 4, "A": 3, "I": 4, "Wil": 5, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 6, "note": "1 AR" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 7,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Deception", "dice": 5 },
+      { "name": "Leadership", "dice": 6 },
+      { "name": "Stealth", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    { "name": "Herald of Ruin", "text": "At the start of each Round this Threat is alive, the GM gains 1 Ruin for every 6 Cultists alive in the Scene." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 1 personal Ruin." },
+    { "name": "Priest of the Dark Gods", "text": "This Threat gains +2 bonus dice to all Interaction Attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Commune Stave", "damage": 5, "ed": 3, "range": [1] }
+      ]
+    },
+    {
+      "type": "BATTLECRY",
+      "name": "Kneel Before the Dark Gods!",
+      "text": "As an Action the Demagogue makes an Interaction Attack against all targets within 15m who do not possess the CHAOS Keyword. Any target affected by the Interaction Attack is Prone in addition to normal effects."
+    },
+    {
+      "type": "RUIN",
+      "name": "Kill Them ALL!",
+      "text": "Spend 1 Ruin. As a Free Action, the Demagogue commands a Mob of Cultists within 3m to make one Combat Action immediately. The GM may spend 1 Ruin to have the Demagogue use Kneel Before the Dark Gods! as a Ruin Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Not the same name as the existing Cult Demagogue (another book); no comparison needed."
+}

@@ -1,0 +1,124 @@
+{
+  "id": "dh-tormentbringer",
+  "name": "Tormentbringer",
+  "source": "daemons-and-heretics",
+  "page": 96,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 6,
+    "A": 8,
+    "I": 8,
+    "Wil": 5,
+    "Int": 5,
+    "Fel": 7
+  },
+  "resilience": {
+    "value": 5
+  },
+  "defence": 7,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 8,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 6
+      },
+      {
+        "name": "Deception",
+        "dice": 10
+      },
+      {
+        "name": "Persuasion",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    {
+      "name": "Allure of Slaanesh",
+      "text": "Attack Tests made against the Tormentbringer use Willpower as their Attribute - ranged attacks use Ballistic Skill (Wil), melee attacks use Weapon Skill (Wil)."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 3 personal Ruin."
+    },
+    {
+      "name": "Herald of Slaanesh",
+      "text": "If any Daemonette is within Short Range of this Threat, they may re-roll any 1s on their attack rolls."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature & Quicksilver Swiftness",
+      "text": "Anyone that can see or hear the Tormentbringer must pass a DN 3 Fear Test. The Tormentbringer then acts first in the Initiative order as though they had Seized the Initiative."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Lashes of Torment",
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            4
+          ],
+          "traits": [
+            "Agonising",
+            "Rending (2)"
+          ]
+        },
+        {
+          "name": "Ravaging Claws",
+          "damage": 12,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry",
+            "Rending (3)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Soulstain",
+      "text": "Spend 1 Ruin. The Tormentbringer attempts to activate a psychic power from the Soulstain Discipline or Deny the Witch (Wrath & Glory, p. 267)."
+    },
+    {
+      "type": "WRATH",
+      "name": "Exquisite Agonies",
+      "text": "When this Threat rolls a Wrath Critical, its attacks gain the Agonising Trait. If they already have this Trait, the attack inflicts 1 additional Shock."
+    }
+  ],
+  "note": "The Seeker Chariot, Exalted Seeker Chariot (pp.96-97) and Hellflayer (p.97) are vehicle-format blocks, not transcribed.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Avg"
+}

@@ -1,0 +1,48 @@
+{
+  "id": "dh-mindwitch",
+  "name": "Mindwitch",
+  "source": "daemons-and-heretics",
+  "page": 25,
+  "faction": "heretic",
+  "threat": ["A", "E", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC", "PSYKER"],
+  "attributes": { "S": 2, "T": 4, "A": 2, "I": 5, "Wil": 6, "Int": 4, "Fel": 2 },
+  "resilience": { "value": 6, "note": "1 AR" },
+  "defence": 4,
+  "wounds": 6,
+  "shock": 7,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Intimidation", "dice": 8 },
+      { "name": "Psychic Mastery", "dice": 9 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Warp Touched", "text": "Whenever a Mindwitch rolls a Psychic Mastery (Wil) Test, they gain bonus Wrath dice equal to the Tier of the game." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Maleficarum",
+      "text": "The Mindwitch attempts to activate Smite or a Maleficarum psychic power (W&G p.280)."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Combat Knife", "damage": 4, "ed": 2, "range": [1] }]
+    },
+    {
+      "type": "RUIN",
+      "name": "Psychic Storm",
+      "text": "Spend 1 Ruin. The Mindwitch attempts to activate a psychic power or Deny the Witch (W&G p.267)."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg"
+}

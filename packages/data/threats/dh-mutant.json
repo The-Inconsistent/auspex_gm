@@ -1,0 +1,48 @@
+{
+  "id": "dh-mutant",
+  "name": "Mutant",
+  "source": "daemons-and-heretics",
+  "page": 28,
+  "faction": "heretic",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC", "MUTANT"],
+  "attributes": { "S": 4, "T": 3, "A": 3, "I": 4, "Wil": 3, "Int": 2, "Fel": 2 },
+  "resilience": { "value": 5, "note": "1 AR" },
+  "defence": 3,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Stealth", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Mutative", "text": "Any time a Mutant deals a Wound, the GM gains 1 Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Blasphemous Appendages", "damage": 8, "ed": 2, "ap": -1, "range": [1] }]
+    },
+    {
+      "type": "WRATH",
+      "name": "Unnatural Regeneration",
+      "text": "Whenever a Mutant rolls a 6 on the Wrath Die, the Mutant regains 1D3 Wounds."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3D6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "mobAbilities": [
+    {
+      "name": "Mutant Rabble",
+      "text": "A Mob of Mutants gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Mutants."
+    }
+  ],
+  "note": "Reprint of mutant; differs in keywords (CHAOS HERETIC MUTANT, no SCUM), Default 3 (Core 5), Weapon Skill 5 (6), Awareness and Stealth, weapon, Wrath ability, Tier 5, Mob rule."
+}

@@ -1,0 +1,85 @@
+{
+  "id": "dh-plaguebearer",
+  "name": "Plaguebearer",
+  "source": "daemons-and-heretics",
+  "page": 66,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 8,
+    "A": 3,
+    "I": 4,
+    "Wil": 4,
+    "Int": 4,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 9
+  },
+  "defence": 3,
+  "wounds": 12,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Weapons Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Fly Infestation",
+      "text": "Swarms of small flies surround Plaguebearers. Melee attacks through the swarm suffer +1 DN, as attackers must contend with the insects. Anyone with the NURGLE keyword is unaffected."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Plaguesword",
+          "damage": 9,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 3)",
+            "Parry"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 8d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Reprint of plaguebearer; differs in attributes (Wil/Int/Fel), Defence, skills, Resilience note, Tier row (A A E T T, Core A A E E), bonus (Fly Infestation for Cloud of Flies), Plaguesword and Determination. Skill printed 'Weapons Skill 8'."
+}

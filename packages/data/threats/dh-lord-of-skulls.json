@@ -1,0 +1,172 @@
+{
+  "id": "dh-lord-of-skulls",
+  "name": "Lord of Skulls",
+  "source": "daemons-and-heretics",
+  "page": 85,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 13,
+    "T": 13,
+    "A": 8,
+    "I": 8,
+    "Wil": 5,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 23
+  },
+  "defence": 7,
+  "wounds": 50,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Towering Monstrosity",
+      "text": "This Threat is huge and heavily armoured. It has 50 Wounds."
+    },
+    {
+      "name": "Daemon Engine",
+      "text": "At the start of each of this Threat's Turns, it heals 2d3 Wounds."
+    },
+    {
+      "name": "Reckless Fury",
+      "text": "This Threat may fire its ranged weapons in close combat. If there are fewer enemies than half the Blast rating, or on a Complication, the Lord of Skulls is also hit."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Rage Incarnate",
+      "text": "Anyone who sees a Lord of Skulls must make a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Great Cleaver of Khorne",
+          "damage": 20,
+          "ed": 8,
+          "ap": -3,
+          "range": [
+            3
+          ],
+          "traits": [
+            "Brutal",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Hades Gatling Cannon",
+          "damage": 13,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            18,
+            36,
+            48
+          ],
+          "traits": [
+            "Rapid Fire (6)"
+          ]
+        },
+        {
+          "name": "Ichor Cannon",
+          "damage": 14,
+          "ed": 3,
+          "ap": -2,
+          "range": [
+            18,
+            36,
+            48
+          ],
+          "traits": [
+            "Blast (12)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 9d6. Daemons can roll Determinationagainst Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 10,
+  "size": "Huge",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Lord of Skulls Options",
+      "text": "A Lord of Skulls can field multiple weapon configurations. The arm cannon may be replaced with a Skullhurler, and the torso mounted cannon may be replaced with either a Gorestorm Cannon or Daemongore Cannon.",
+      "weapons": [
+        {
+          "name": "Skullhurler",
+          "damage": 20,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            20,
+            40,
+            60
+          ],
+          "traits": [
+            "Blast (20)",
+            "Brutal"
+          ]
+        },
+        {
+          "name": "Gorestorm Cannon",
+          "damage": 16,
+          "ed": 6,
+          "ap": -2,
+          "range": [
+            8,
+            16,
+            24
+          ],
+          "traits": [
+            "Blast (15)"
+          ]
+        },
+        {
+          "name": "Daemongore Cannon",
+          "damage": 20,
+          "ed": 3,
+          "ap": -4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "traits": [
+            "Blast (20)"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Daemon Engine printed in the normal threat format. Print error copied: Determination reads 'Determinationagainst' (missing space). Ranged weapons print no Salvo."
+}

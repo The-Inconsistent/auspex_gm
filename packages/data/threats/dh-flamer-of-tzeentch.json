@@ -1,0 +1,83 @@
+{
+  "id": "dh-flamer-of-tzeentch",
+  "name": "Flamer of Tzeentch",
+  "source": "daemons-and-heretics",
+  "page": 58,
+  "faction": "daemon",
+  "threat": ["A", "A", "E", "T", "T"],
+  "keywords": ["CHAOS", "DAEMON", "TZEENTCH"],
+  "attributes": { "S": 4, "T": 4, "A": 5, "I": 4, "Wil": 5, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 5 },
+  "defence": 3,
+  "wounds": 8,
+  "shock": null,
+  "skills": {
+    "default": 7,
+    "list": [{ "name": "Ballistic Skill", "dice": 8 }]
+  },
+  "bonuses": [
+    {
+      "name": "Bounding",
+      "text": "This threat moves by jumping. Its standard movement distance for Long and High Jumps is 12 metres. It's maximum Long and High Jump distance with an Athletics (S) Test is 36 metres."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 3 Fear Test"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Warpflame",
+          "damage": 10,
+          "ed": 1,
+          "range": [4, 8, 12],
+          "traits": ["Assault", "Pistol", "Flamer", "Warp"]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Fires of Change",
+      "text": "Those struck by a Flamer's attack undergo a warp fueled physical transformation that leaves them Hindered (1) until the end of the scene, when the transformation reverts."
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 4d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 12,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Exalted Flamer",
+      "text": "p.58 sidebar. Identical to Flamers, except they add +2 Resilience (7) and have the following Actions: Blast of Blue Flame, Gout of Pink Flame, Tongue of Flame.",
+      "abilities": [
+        {
+          "type": "ACTION",
+          "weapons": [
+            {
+              "name": "Blast of Blue Flame",
+              "damage": 12,
+              "ed": 2,
+              "range": [6, 12, 18],
+              "traits": ["Assault", "Flamer", "Warp"]
+            },
+            {
+              "name": "Gout of Pink Flame",
+              "damage": 10,
+              "ed": 1,
+              "range": [4, 8, 12],
+              "traits": ["Flamer", "Heavy (6)", "Warp"]
+            },
+            { "name": "Tongue of Flame", "damage": 10, "ed": 1, "ap": -1, "range": [1], "traits": ["Warp"] }
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Printed name 'Flamer of Tzeentch' (heading 'Flamer'). Warpflame prints no salvo; Gout of Pink Flame range printed '4 - 8 - 12 /Flamer'."
+}

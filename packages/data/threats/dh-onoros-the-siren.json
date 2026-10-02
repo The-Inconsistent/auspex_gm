@@ -1,0 +1,54 @@
+{
+  "id": "dh-onoros-the-siren",
+  "name": "Onoros the Siren",
+  "source": "daemons-and-heretics",
+  "page": 20,
+  "faction": "heretic",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["CHAOS", "HERETIC", "ASTARTES", "SLAANESH"],
+  "attributes": { "S": 8, "T": 7, "A": 6, "I": 6, "Wil": 4, "Int": 3, "Fel": 4 },
+  "resilience": { "value": 13, "note": "5 AR" },
+  "defence": 5,
+  "wounds": 10,
+  "shock": 6,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 12, "passive": 7 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Persuasion", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Architect of Ruin", "text": "The GM gains 1 point of Ruin at the starter of each of this Threat's turns." },
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Mark of Chaos", "text": "This Threat has the Mark of Chaos (Slaanesh) (Wrath & Glory, p. 136). The Skills above already include the effects of this Mark." },
+    { "name": "Space Marine Implants", "text": "Gain bonus dice and optional actions from Space Marine Implants (Wrath & Glory, p. 75)" }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Pandemonic Ecstasies",
+      "text": "Anyone who can hear a Noise Marine must fail an Awareness (Int) Test or gain Hindered (2) until the Noise Marine is defeated."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Boltgun", "damage": 10, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Brutal", "Rapid Fire (2)"] }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Cacaphonies of Pain!",
+      "text": "Spend 1 Ruin. Once per Combat, As a Free Action, Onoros broadcasts a soul shuddering explosion of noise. Agents within 30m of Onoros must pass a DN4 Will Test or gain the Hindered Condition."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7D6 on Onoros",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Print: 'starter of each' (sic), 'Cacaphonies' (sic). Printed in The Sybarite's Grasp sidebar, p.20."
+}

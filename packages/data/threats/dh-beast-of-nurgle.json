@@ -1,0 +1,83 @@
+{
+  "id": "dh-beast-of-nurgle",
+  "name": "Beast of Nurgle",
+  "source": "daemons-and-heretics",
+  "page": 71,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 5,
+    "A": 5,
+    "I": 3,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 5
+  },
+  "resilience": {
+    "value": 6
+  },
+  "defence": 2,
+  "wounds": 7,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Deadly Slime Trail",
+      "text": "Anyone engaged with this threat becomes Restrained until they disengage or the threat is eliminated."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Putrid Appendage",
+          "damage": 6,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 3)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 5d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Huge",
+  "note": "Putrid Appendage prints no range, so it is stored with range [1]. Block header reads 'Beasts of Nurgle'."
+}

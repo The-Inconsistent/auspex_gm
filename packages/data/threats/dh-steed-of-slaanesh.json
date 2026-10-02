@@ -1,0 +1,83 @@
+{
+  "id": "dh-steed-of-slaanesh",
+  "name": "Steed of Slaanesh",
+  "source": "daemons-and-heretics",
+  "page": 101,
+  "faction": "daemon",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "SLAANESH"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 6,
+    "A": 7,
+    "I": 3,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7
+  },
+  "defence": 2,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Mount",
+      "text": "A Steed may be ridden by a Daemonette or mortal champion of Slaanesh. Both take their Turn together, using the Steed's movement, and each have their own Action. Rider and Steed may be targeted separately."
+    },
+    {
+      "name": "Unholy Speed",
+      "text": "Steeds may move up to triple their Speed when charging, and both Steed and rider gain +2 bonus dice instead of +1 to their subsequent attack rolls."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Disquieting Creature",
+      "text": "Anyone that can see or hear a Steed must pass a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Lashing Tongue",
+          "damage": 12,
+          "ed": 1,
+          "range": [
+            2
+          ],
+          "traits": [
+            "Agonising",
+            "Inflict (Poisoned 6)"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Entry heading is 'Seeker' (a Daemonette riding a Steed, p.101); the stat block printed is the Steed of Slaanesh. Lashing Tongue prints 'Inflict (Poison 6)', stored Inflict (Poisoned 6) per catalogue spelling.",
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 6d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 12,
+  "size": "Avg"
+}

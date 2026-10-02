@@ -1,0 +1,111 @@
+{
+  "id": "dh-possessed",
+  "name": "Possessed",
+  "source": "daemons-and-heretics",
+  "page": 45,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC",
+    "ADEPTUS ASTARTES",
+    "<LEGION>",
+    "<MARK OF CHAOS>",
+    "DAEMON"
+  ],
+  "attributes": {
+    "S": 9,
+    "T": 8,
+    "A": 6,
+    "I": 7,
+    "Wil": 5,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 14,
+    "note": "5AR"
+  },
+  "defence": 6,
+  "wounds": 16,
+  "shock": 9,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Architect of Ruin",
+      "text": "The GM gains 1 point of Ruin at the start of each of this Threat's turns."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Mark of Chaos",
+      "text": "This Threat has a Mark of Chaos (W&G p.136)"
+    },
+    {
+      "name": "Space Marine Implants",
+      "text": "Gain bonus dice and options for actions from Space Marine Implants (W&G p.75)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Turn the Galaxy Red With Blood!",
+      "text": "Anyone who encounters this Threat must make a DN 3 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Hideous Mutations",
+          "damage": 13,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rend (1)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Wanton Slaughter",
+      "text": "When a Possessed successfully hits with a Wrath Critical in melee they deal +2 Mortal Wounds."
+    },
+    {
+      "type": "RUIN",
+      "name": "Veteran of the Long War",
+      "text": "Spend 1 Ruin to add the game's Tier as ED to all attacks this Threat makes this Round"
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 8d6. Possessed can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Different name from Core's Possessed Chaos Space Marine (possessed-chaos-space-marine) and Possessed Mortal; closest is possessed-chaos-space-marine. Trait 'Rend (1)' printed (Core catalogue says Rending)."
+}

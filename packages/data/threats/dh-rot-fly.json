@@ -1,0 +1,84 @@
+{
+  "id": "dh-rot-fly",
+  "name": "Rot Fly",
+  "source": "daemons-and-heretics",
+  "page": 72,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 7,
+    "A": 4,
+    "I": 3,
+    "Wil": 2,
+    "Int": 2,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 8
+  },
+  "defence": 2,
+  "wounds": 9,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 5,
+        "passive": 3
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Buzzing Flight",
+      "text": "Rot Flies usually move by Flying. If knocked prone, they may choose to hover above the ground instead of landing."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Foul Mouthparts",
+          "damage": 8,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 7d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Huge",
+  "note": "Reprint of darktide-rot-flies; differs in Shock (printed '-', Darktide 3), keywords (NURGLE, not MARK OF NURGLE) and Tier row (same letters, A E T T T). Speed printed '10(Flying)'. Foul Mouthparts prints no range, so it is stored with range [1]."
+}

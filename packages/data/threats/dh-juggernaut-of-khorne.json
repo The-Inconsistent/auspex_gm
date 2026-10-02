@@ -1,0 +1,88 @@
+{
+  "id": "dh-juggernaut-of-khorne",
+  "name": "Juggernaut of Khorne",
+  "source": "daemons-and-heretics",
+  "page": 87,
+  "faction": "daemon",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "KHORNE"
+  ],
+  "attributes": {
+    "S": 10,
+    "T": 7,
+    "A": 4,
+    "I": 3,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 12,
+    "note": "4AR"
+  },
+  "defence": 2,
+  "wounds": 16,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Mount",
+      "text": "A Juggernaut may be ridden by a Bloodletter or mortal champion of Khorne. Both take their Turn together, using the Juggernaut's movement, and each have their own Action. Rider and Mount may be targeted separately."
+    },
+    {
+      "name": "Furious Charge",
+      "text": "When this Threat makes a Charge action, it and its rider gain +3 bonus dice to their first melee attack, and +1 to all subsequent attacks until the enemy is defeated or moves out of Engagement."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone who sees a Juggernaut must make a DN 3 Fear Test. This becomes DN 5 if they are Charged by the Juggernaut."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Bladed Horn",
+          "damage": 14,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 7d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 12,
+  "size": "Large",
+  "note": "Resilience printed 12(4AR)."
+}

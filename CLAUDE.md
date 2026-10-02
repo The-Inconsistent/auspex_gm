@@ -27,7 +27,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   - Core rulebook: PDF page = printed + 1.
   - Vow of Absolution, Threat Assessment, Gutshiva's Kommandos: PDF page = printed.
   - Threat Assessment: Daemons & Heretics (`daemons-and-heretics`, cite D&H): PDF page = printed. It's image-only (no text layer), so read it
-    from page renders. Its creation content, relics and Sonic Weapon trait are in; its threats aren't yet.
+    from page renders. Its creation content, relics, Sonic Weapon trait and threats (`dh-*`) are in.
   - Forsaken System Player's Guide, Aeldari: Inheritance of Embers: PDF page = printed. Apocrypha (homebrew): PDF = printed + 3.
     Legacy of the Necrontyr (homebrew): no printed pages, cite PDF pages. Redacted Records (RR1), Redacted Records 2
     (RR2), Darktide, Litanies of the Lost, Wretches of the Writ, Bloody Gates (BG), Affliction Ascendant (AA): PDF page =
