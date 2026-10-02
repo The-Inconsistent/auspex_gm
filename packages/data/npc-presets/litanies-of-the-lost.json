@@ -1,0 +1,149 @@
+[
+  {
+    "id": "litanies-thaddeus",
+    "name": "Thaddeus",
+    "role": "Fugitive posing as a novitiate monk",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 46
+      }
+    ],
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "cultist"
+    },
+    "gmNotes": "Thaddeus puts on a false show of piety as he masquerades as a novitiate monk. Both Thaddeus and his sister were exposed to a heretical icon and forced to flee Theocropolis Vehementer. He experienced a slight mutation, and his sister showed evidence of becoming a psyker. The Transposed Hope have promised Thaddeus that they will care for his younger sister in exchange for smuggling decks of the Emperor’s Tarot from the island.\n\nComing from the hard life of an Imperial citizen in the twisted tunnels of Theocropolis Vehementer’s maintenance undercrofts, Thaddeus quickly mastered the dark passageways of the monastery’s secretive Night Stairs. He now uses the Night Stairs to pilfer decks of the Emperor’s Tarot, which he keeps hidden in the Storeroom for eventual pickup.\n\nThaddeus has the statistics of a Cultist (Wrath & Glory Rulebook, page 338), but doesn't have an Autopistol. Thaddeus has the Living Shadow mutation (Wrath & Glory Rulebook, page 288) making him impossible to ambush, which can be noticed by any Agent that makes a successful DN 5 Awareness (Int) Test."
+  },
+  {
+    "id": "litanies-kaptin-slystabba",
+    "name": "Kaptin Slystabba",
+    "role": "Ork Kommando Kaptin",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 46
+      },
+      {
+        "source": "litanies-of-the-lost",
+        "page": 67
+      }
+    ],
+    "faction": "Orks",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "litanies-kaptin-slystabba"
+    },
+    "gmNotes": "Kaptin Slystabba, formerly just a particularly sneaky Ork Kommando, is now adjusting to the rigors of Orky command. He took the role of Kaptin after brutally executing the Nob who managed to get this ship crashed on some stinking ‘umie world that didn’t even have a proper fight waiting for ’em. When he and his ladz crashed near Hephesteum’s Rest, they thought they’d go down without a proper fight, but instead found the island and a possible scrum to save them.\n\nAlways a bit more on the kunnin’ side of things, Slystabba managed to keep his crew of Kommandos in line and prevent them executing the monks of the Monastery. Slystabba has ordered his ladz to torment the monks in hopes of getting one of them to talk and reveal their situation. This petty violence hasn’t slated the Orkish need for battle, and Slystabba knows time is running out before he has a mutiny on his hands. He only hopes he can find a way off the island before that happens."
+  },
+  {
+    "id": "litanies-biran-amiga",
+    "name": "Biran Amiga",
+    "role": "Tech-adept tending the stasis-coffin",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 88
+      }
+    ],
+    "gmNotes": "If the Agents accessed the surveillance footage in Long Day at the Office (see page 81), they recognise this man as Biran Amiga. Tired, bloodshot eyes centre a mostly metal face, never resting for long. The tech-adept is intensely agitated, fussing around the stasis-coffin and making small adjustments with his combi-tool. He doesn’t have time for the Agents either, but if they offer to help and pass a DN 5 Tech (Int) Test to indicate expertise, he will ask for technical advice and talk whilst he works.\n\n• The stasis-field is shutting down. The coffin has been disconnected from a stationary power source for too long. Amiga is trying his hardest to keep it running (if the Agents passed their Tech Test, it buys some time), but he’s fighting a losing battle. Still, he’ll die before he abandons his duty.\n\n• He’s not really paid attention to the Hardwares or their heretical guests. All that matters is keeping the stasis-coffin shut.\n\n• If the Agents reveal Vakuul sent them to retrieve the stasis-coffin, Amiga is delighted, and offers to collaborate. A DN 3 Insight (Fel) Test confirms he is a trustworthy ally, but not especially discreet. The best help he can provide is to keep doing what he’s doing for as long as it works.\n\n• The stasis-coffin contains a monster. If it opens, everyone in the room, and millions across the Gilead System, will die. He cannot advise how to confront it, only how to prevent it escaping.\n\n• If the Agents offer to take over his duty, he is grateful, but advises the other buyers in the room will shoot them if they touch the stasis-coffin."
+  },
+  {
+    "id": "litanies-corsair-baron-kasque",
+    "name": "Corsair Baron Kasque",
+    "role": "Outcast Drukhari, Greensteel employer",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 88
+      },
+      {
+        "source": "litanies-of-the-lost",
+        "page": 89
+      }
+    ],
+    "faction": "Drukhari",
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "litanies-corsair-baron-kasque"
+    },
+    "gmNotes": "Closest to the desert-entrance are a band of swaggering Aeldari Corsairs, wearing the chequered jade mesh of Greensteel Warriors. The xenos do not hide their condescension, daring one another to try the Hardwares’ victuals as a joke. Their employer, Kasque, stands apart in garb and temperament. He is an outcast Drukhari whose unrelenting cruelty has served the Greensteel Coterie well. He is bare-chested and unarmoured, with drug-infused sweat dripping across his alien, shamanic tattoos.\n\nKasque looks down upon the Agents from behind a bone-coloured mask, alternately dominating and toying with them. He teases that:\n\n• He believes the Agents to be Inquisitorial agents, but doesn’t much care. It amuses him to watch the Mon-Keigh squabble amongst themselves.\n\n• His unit did not travel on a voidship. They don’t appear to have crossed the silver desert. He provides no explanation of how he arrived.\n\n• Kasque is an outcast from the Drukhari, forced to leave the Dark City after an unfortunate incident he refers to as ‘The Throneblooding’.\n\n• He has learned the stasis-coffin contains a rare and dangerous animal, a novelty in the Wych Cult arenas. If he brings it back alive, it will purchase his return to Drukhari society.\n\nWhilst Kasque talks, the Corsairs pass around a stolen collection of exquisitely rare Imperial artworks, mocking the crude brush strokes. A DN 5 Scholar (Int) Test values the collection at 8 Wealth."
+  },
+  {
+    "id": "litanies-tetritta",
+    "name": "Tetritta",
+    "role": "Chaos cult spokeswoman and demagogue",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 90
+      }
+    ],
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "cult-leader"
+    },
+    "gmNotes": "Near the stasis-coffin, clustered around a half-broken table, is a gang dressed in thick, rough gorx-leathers. All are openly wearing primitive weapons, but perceptive Agents that succeed on a DN 3 Awareness (Int) Test notice their clothing has been altered recently: heavy cloth obscures parts of their anatomy. A particularly impressive roll or a Shift for more information allows an Agent to notice the signs of ritual scarring and the telltale bulges of grotesque mutations beneath this cloth.\n\nThough the cultists are the most overtly hostile to the Agents (especially as they approach the stasis-coffin), their spokeswoman and demagogue, Tetritta, is surprisingly talkative. She is white, bald, and fixes the Agents with an unblinking gleam — use the profile of a Cult Leader (page 338 of the Wrath & Glory Rulebook). She declares:\n\n• Her cult is devoted to the Chaos Gods, the only true powers in this universe.\n\n• She led their cult’s voidcraft to Odo after receiving dark visions of a stasis-coffin containing the corpse of their Dark Messiah. Today, He shall be resurrected, and reward their loyal service.\n\n• All who defy the majesty of the Ruinous Powers shall perish! The False Emperor’s failing rule over the Gilead System is at an end!\n\n• She recommends the pungent ‘Grox’ rolls.\n\nAgents who listen to Tetritta’s blasphemy must take a DN 3 Corruption Test. However, they will also learn that her followers are carrying cases of silver coinage worth 9 Wealth, and are not very subtle about it."
+  },
+  {
+    "id": "litanies-unification",
+    "name": "Unification",
+    "role": "Grey-hooded Ministorum adepts (a group)",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 90
+      }
+    ],
+    "gmNotes": "Tetritta’s cult are glaring daggers across the room at a crowd of grey-hooded adepts from an obscure Ministorum denomination. Entwined blue-green snakehead tattoos descend down their necks, whilst their eyes, when visible, are glazed and lifeless. If the Agents speak to the cultists, they respond as one. A different cultist answers each question in the same disturbing monotone, collectively answering to the name ‘Unification’. Agents with the Psyniscience power can detect a Rogue Psyker amongst the group, exerting telepathic control with no resistance.\n\nUnification is curious to learn about the Agents, but reveals little in return:\n\n• Where they come from, whom they serve. and why they are here are not questions to answer in a public forum. Perhaps the Agents would discuss it with them aboard their ship, after the auction?\n\n• They are certain the stasis-coffin contains ‘a worthy sacrifice’.\n\n• They will neither identify as, nor deny being, Chaos Cultists.\n\nBeneath their robes the cultists struggle to conceal the telltale glow of advanced archeotech. Agents interacting with Unification can make a DN 5 Tech (Int) Test to price the technology as worth 7 Wealth."
+  },
+  {
+    "id": "litanies-lin-and-roco",
+    "name": "Lin and Roco",
+    "role": "Pirate Scum crew: Ratling and Ogryn partners",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 91
+      }
+    ],
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "litanies-lin-and-roco"
+    },
+    "gmNotes": "A crew of pirate Scum congregates near the recreation room’s hangar-entrance. Their captain, a brown-skinned Ratling con artist named Roco, rides on the back of his Ogryn partner Lin. Amongst their adopted Human children, the abhumans quarrel quietly, but when the Agents approach, Lin’s social anxiety gets the better of him. Roco takes over talking for them:\n\n• Their crew is an unrepentant mob of brutes, cut-throats, wastrels, and thieves, and proud of it.\n\n• Roco offers the Agents a drink. The other guests seem too uptight to enjoy a good party, and it’s a shame for the amsec he brought to go to waste.\n\n• They flew here on behalf of a buyer who paid a good price to retrieve the stasis-coffin. If asked to name their employer, Roco claims it’s Jakel Varonius, an outrageous lie.\n\n• Their employer didn’t mention what was in the coffin, but Roco reckons it’s the lost Chapter Master of the Absolvers. (Another joke, though ironically, the closest to the truth.)\n\n• They definitely aren’t willing to die for this job.\n\nSizing up Roco in conversation, and passing a DN 5 Cunning (Fel) Test, suggests his crew are carrying no more than 6 Wealth in various currencies. It’s not enough to win the auction, but the Agents might consider pooling their resources with Roco’s crew. If the Agents can promise a cut of their second payment from Vakuul, Roco cheerfully abandons his former employer and switches sides."
+  },
+  {
+    "id": "litanies-acolyte-lockson",
+    "name": "Acolyte Lockson",
+    "role": "Inquisitorial acolyte",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 83
+      }
+    ],
+    "statSource": {
+      "kind": "bestiary",
+      "threatId": "litanies-acolyte-lockson"
+    },
+    "gmNotes": "Lockson is calm, amicable, even rambling, but with a dogged persistence that should make the Agents uncomfortable. He never willingly identifies himself as an Inquisitorial acolyte, but makes vague allusions to ‘superiors’ if he thinks it will apply pressure.\n\n• Lockson has a good ear for accents, and easily identifies Agents who aren’t from Belaxia. Where are they from? What brings them to Belaxia?\n\n• Lockson is working a case relating to an attack and theft on an Adeptus Mechanicus facility. ‘Is that something your team knows anything about?’\n\n• He thinks that Archdomina Vakuul might have lost something valuable, and he’s eager to help. Gaining an audience with the Archdomina is very difficult for a humble Acolyte though! Perhaps the Agents could assist? He heard they’d spoken to the Archdomina recently.\n\n• If the Agents hear anything that might be relevant to Lockson’s case, he’d greatly appreciate the tip. He’s starting to think he might be in over his head, but that’s nothing cooperation between friends can’t take care of.\n\n• He leaves the Agents with his personal vox-frequency in case they think of or remember anything that might help him."
+  },
+  {
+    "id": "litanies-magos-ermintrude-ferro",
+    "name": "Magos Ermintrude Ferro",
+    "role": "Head of the Pakthertius Manufactorum",
+    "cites": [
+      {
+        "source": "litanies-of-the-lost",
+        "page": 105
+      },
+      {
+        "source": "litanies-of-the-lost",
+        "page": 106
+      }
+    ],
+    "faction": "The Adeptus Mechanicus",
+    "gmNotes": "Destroyers! Murderers! You cannot judge me. You who have never rebirthed a lost soul and given them divine purpose. Everything I have done, I have done with the blessing of the Omnissiah. Only he can judge the actions of me and my children.\n\nMagos Ferro is the current head of the Adeptus Mechanicus at the Pakthertius Manufactorum. She ascended to this position approximately 18 months prior to the Ignis Avem incident, when much of the senior staff were lost to an accident. She is a tall, heavily-augmented member of the Mechanicus. She speaks with a very formal, polished accent and uses lots of sweeping hand gestures to accentuate her fiery speeches.\n\nShe firmly believes that Servitors are the most pure servants of the Omnissiah. They lack any desires of their own and are completely dedicated to fulfilling their designated role — the perfect cogs in the machine that is the Imperium.\n\nShe views herself as a mother to the Servitors produced by Pakthertius. As such, she speaks to them with fondness in her voice and care in her touch. She also reacts negatively and sometimes violently to those who harm Servitors in her presence.\n\nHer desire to protect the manufactorum and the Servitors it produces became her downfall. Desperate, she turned to questionable technology she did not fully understand. Now she has become an unwilling servant to a malignant machine entity that fulfills her darkest desires in the cruelest manner, a twisted reflection of the Servitors she loves so much.\n\nMagos Ferro is no fool. She knows better than anyone that Ignis Avem is out of control. She believes that if it manages to spread its influence outside of the manufactorum, the whole planet or even the entire system could be at risk. Unfortunately, there is little she can do now but wait for agents strong enough to reach the secret heart of the manufactorum and put an end to her suffering.\n\nPrimary Goal: Find someone to contain the spread of Ignis Avem and destroy the Pakthertius Manufactorum in its entirety by causing a controlled meltdown in the power plant.\n\nResources: On occasion, she can execute simple commands through Ignis Avem to aid the Agents on their journey. This may be opening a blast door at just the right moment, or flickering a light in a binary pattern to send a simple message. See The Ghost in the Servitors."
+  }
+]
