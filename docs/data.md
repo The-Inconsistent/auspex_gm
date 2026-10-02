@@ -175,7 +175,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
-| Bloody Gates | `bloody-gates` (cite BG; threats, #44) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
+| Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
 
 The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
@@ -734,6 +734,13 @@ GM-only book data for building scenes (GitHub issues #39 and #40), served by `GE
     no cost, so `n` is null and the GM sets it per scene (rules-flow.md §11.78). The list's `gm` is p.7's note that
     any enemy capable of Ruin Actions may use them. Kept as printed: Counterattack's "the Champion orders another
     enemy", though the table never says which enemy is the Champion.
+  - **Bloody Gates** (`bloody-gates.json`): The Deadly Battlefield, pp.25–26, checked against a page render. Calling
+    for Support: 6 Glory spends (2, 2, 1, 1, 3, 1); its `gm` is p.25's two paragraphs (a Full Round Action, rolls that
+    generate no Wrath, Glory or Ruin, support listed per mission, the Astra Militarum Trooper from Core p.328).
+    Battlefield Ruin: 6 Ruin spends (1, 3, 2, 2, 3, 2); its `gm` is p.26's intro (options per mission, a combat-time
+    effect takes a Turn as an extra NPC). Each `text` keeps the italic quote that opens it. Artillery Support's profile
+    is one plain line. Kept as printed: its "Traits (8)", which names no trait, "AP —1" with a dash, and the lowercase
+    word after the quote in Barrage and Spotlit.
 
 ---
 

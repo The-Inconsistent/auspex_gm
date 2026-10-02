@@ -1,0 +1,110 @@
+[
+  {
+    "id": "bloody-gates-calling-for-support",
+    "name": "Calling for Support",
+    "source": "bloody-gates",
+    "page": 25,
+    "gm": "During the battle the Fireteam can spend Glory to call for support from friendly forces on the battlefield. The support available varies per mission, and is listed in the Equipment section for the mission.\n\nCalling for support is a Full Round Action. Once called support may take some time to arrive. Players should be the ones to roll the dice for support actions, but these rolls do not generate Wrath, Glory or Ruin. Use the Astra Militarum Trooper statistics from page 328 of Wrath & Glory for any supporting troops who arrive.",
+    "rows": [
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 2,
+        "name": "Artillery Support",
+        "page": 26,
+        "text": "‘Coordinates zero, two two three. Confirmed. Bringing the rain.’ The Fireteam choose any point they can see. The area is hit by the following profile: Damage 10, ED 4, AP —1, Traits (8)"
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 2,
+        "name": "Battlefield Medic",
+        "page": 26,
+        "text": "‘Trooper down! Medic!’ Company medic Brisham and his two orderlies are supporting the assault. If the wounded can reach a safe space they provide first aid, restoring up to six wounds, which may be divided between the Fireteam as desired."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 1,
+        "name": "Covering Fire",
+        "page": 26,
+        "text": "‘Keep your heads down, we’re going in!’ Nearby squads lay down a hail of covering las-fire. All enemies are Pinned for three Rounds."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 1,
+        "name": "Resupply",
+        "page": 26,
+        "text": "‘Ammo, I need more ammo!’ Imperial forces are establishing supply points around the battlefield. Take either 4 power packs, 2 frag grenades, or 1 krak grenade."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 3,
+        "name": "Special Weapons Team",
+        "page": 26,
+        "text": "‘Get that meltagun up here. I’ve got a hard target!’ Two Astra Militarum Troopers arrive. One carries either a Flamer, Meltagun, or Grenade Launcher and attacks using a Ballistic Skill (A) dice pool of 3, or any Agent can temporarily borrow the weapon. They will support the Fireteam in combat against a single target before being called elsewhere."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 1,
+        "name": "Spotlit",
+        "page": 26,
+        "text": "‘I can’t see them, get a light over here!’ supporting vehicles illuminate your target. For one round you may ignore any darkness-related penalties attacking targets within 10m of a nominated point."
+      }
+    ]
+  },
+  {
+    "id": "bloody-gates-battlefield-ruin",
+    "name": "Battlefield Ruin",
+    "source": "bloody-gates",
+    "page": 26,
+    "gm": "During the battle the GM can spend Ruin to trigger different effects on the battlefield. The options available vary per mission, and are listed in the mission descriptions. The GM can trigger effects in narrative time or combat time. If triggered in combat time, the Battlefield Ruin effect takes a Turn, as if there was an additional NPC involved in the combat.",
+    "rows": [
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Barrage",
+        "text": "‘Incoming!’ makeshift explosive fire rains down in the area of the Fireteam. Treat this as a member of the traitor militia throwing a pipe bomb, and allow the Fireteam to make Agility Tests to dodge the explosion."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 3,
+        "name": "Mine!",
+        "text": "‘Whatever you do Jenkins, don’t move your foot.’ One of the Fireteam has trodden on a mine, but it hasn’t exploded. Disarming it is a DN 3 Tech (Int) Test. On a failure it explodes as a pipe bomb."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 2,
+        "name": "Sniper",
+        "text": "‘Where’s that coming from? Get down!’ A distant sniper team takes an interest in the Fireteam. The sniper has a Ballistic Skill (A) of 7, and is firing a Long Las from long range. After 1D6 shots the snipers lose interest in the Fireteam. Spotting the sniper requires a DN 6 Awareness (Int) Test, and the sniper has a Defence of 2. If the sniper is hit by a shot, they die."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 2,
+        "name": "Equipment Failure",
+        "text": "‘By all the saints. It’s a dud!’ A random piece of the Fireteam’s Wargear breaks. It can be fixed with a DN 3 Tech (Int) Test as a Combat Action."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 3,
+        "name": "Enemy Patrol",
+        "text": "‘Contact! They’re in the rubble.’ A patrol comprising a mob of six traitor militia led by a cultist appears and attacks the Fireteam. The GM and Agents both have the option to Seize the Initiative by spending Ruin or Glory, respectively."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 2,
+        "name": "Cursed Icon",
+        "text": "‘Bring a flamer.’ The rebellious defenders of the hive reveal a cursed Icon used in the worship of the Ruinous Powers. In the presence of an Icon the hive’s defenders fight with additional fury. Increase their Resilience by +1. Any Agents that come within 10m of the Cursed Icon must make a DN 2 Corruption Test at the end of the scene."
+      }
+    ]
+  }
+]
