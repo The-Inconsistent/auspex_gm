@@ -5,6 +5,7 @@ import {
   type CreationType,
   EventTable,
   FactionPreset,
+  NpcPreset,
   Pack,
   PoolPresetTable,
   RuleEntry,
@@ -58,6 +59,13 @@ const factionPresetsDir = new URL("./faction-presets/", import.meta.url);
 export const factionPresetFiles = () => jsonFiles(factionPresetsDir);
 export const factionPresetList = (): FactionPreset[] =>
   factionPresetFiles().flatMap((f) => FactionPreset.array().parse(json(new URL(f, factionPresetsDir))));
+
+// npc-presets/<source>.json: GM-only printed NPCs for CODEX › NPCS' ADD FROM BOOK (issue #47), besides the creation
+// catalogue's patrons. A file holds the NPCs whose first cite is that book.
+const npcPresetsDir = new URL("./npc-presets/", import.meta.url);
+export const npcPresetFiles = () => jsonFiles(npcPresetsDir);
+export const npcPresetList = (): NpcPreset[] =>
+  npcPresetFiles().flatMap((f) => NpcPreset.array().parse(json(new URL(f, npcPresetsDir))));
 
 // creation/<type>/<source>.json: the character-creation catalogue, book text served to seats only (docs/data.md).
 const creationDir = new URL("./creation/", import.meta.url);

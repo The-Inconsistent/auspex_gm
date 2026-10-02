@@ -6,6 +6,7 @@ export * from "./dn.ts";
 export * from "./roll-table.ts";
 export * from "./scene-presets.ts";
 export * from "./faction-presets.ts";
+export * from "./npc-presets.ts";
 export * from "./actions.ts";
 export * from "./pack.ts";
 export * from "./access.ts";

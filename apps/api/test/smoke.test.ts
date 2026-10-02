@@ -2,6 +2,7 @@
 // CLERK_TEST_SECRET set (apps/api/.env, dev only), so these tests can act as signed-in Clerk users.
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { isDeepStrictEqual } from "node:util";
 import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
@@ -21,12 +22,14 @@ import {
   type Codex,
   type CreationPayload,
   type FactionPresets,
+  type NpcPreset,
   type FrameworkCatalogue,
   type LibraryCharacter,
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
   presetFaction,
+  presetNpc,
   presetLine,
   presetScene,
   type ScenePresets,
@@ -711,6 +714,59 @@ test("GM and player share a table", async (t) => {
     return f?.keywords.join() === "ORK" && f.notes.startsWith("Core p.80") && f.stance === "neutral";
   }, "a printed faction saves with its Keyword and cite");
   assert.ok(!printed.some((p) => p.source === "apocrypha"), "no homebrew factions unless the campaign allows them");
+  // CODEX › NPCS (issue #47): printed NPCs, GM only. The catalogue's patrons come in with their cite.
+  const npcPresets = await get(`/campaigns/${campaignId}/npc-presets`, bearer(gmClerk));
+  assert.equal(npcPresets.status, 200);
+  const printedNpcs = (await npcPresets.json()) as NpcPreset[];
+  assert.equal((await get(`/campaigns/${campaignId}/npc-presets`, { cookie: `wg_token=${issued.token}` })).status, 403);
+  assert.equal((await get(`/campaigns/${campaignId}/npc-presets`, bearer(clerk("stranger")))).status, 401);
+  const fylamon = await gm.send({
+    type: "codex.save",
+    kind: "npc",
+    data: presetNpc(
+      printedNpcs.find((p) => p.id === "lord-militant-taleria-fylamon")!,
+      [],
+    ),
+  });
+  assert.ok(fylamon.ok);
+  await eventually(() => {
+    const n = gm.codex()?.npcs.find((x) => x.id === fylamon.id);
+    return n?.gmNotes === "Core p.312" && n.role === "Patron" && !n.revealed && !n.description;
+  }, "a patron saves hidden, with its cite and no printed text");
+  // Both stat sources round-trip: a Quick NPC with a specialty (rules-flow §11.87) and a bestiary threat.
+  for (const statSource of [
+    { kind: "quick", tier: 3, specialty: { skill: "Ballistic Skill", dice: 10 } },
+    { kind: "bestiary", threatId: "gutshiva" },
+  ] as const) {
+    const r = await gm.send({
+      type: "codex.save",
+      kind: "npc",
+      data: { name: `Stats ${statSource.kind}`, statSource },
+    });
+    assert.ok(r.ok);
+    await eventually(
+      () => isDeepStrictEqual(gm.codex()?.npcs.find((x) => x.id === r.id)?.statSource, statSource),
+      `a ${statSource.kind} stat source comes back unchanged`,
+    );
+  }
+  // A revealed NPC reaches a phone with its Attitude (§11.89), and without stats, GM notes or secrets.
+  const sentry = await gm.send({
+    type: "codex.save",
+    kind: "npc",
+    data: {
+      name: "Sentry",
+      attitude: "hostile",
+      gmNotes: "x",
+      secrets: "y",
+      statSource: { kind: "bestiary", threatId: "gutshiva" },
+      revealed: true,
+    },
+  });
+  assert.ok(sentry.ok);
+  await eventually(() => {
+    const n = player.codex()?.npcs.find((x) => x.id === sentry.id);
+    return n?.attitude === "hostile" && n.statSource.kind === "none" && !n.gmNotes && !n.secrets;
+  }, "a phone gets the Attitude, not the stats or notes");
   // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
   // Gamemaster chapter reaches only the GM (§11.74).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });

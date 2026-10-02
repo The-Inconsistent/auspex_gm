@@ -1,8 +1,11 @@
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
-import { creationCatalogue, factionPresetList, wargear } from "@wg/data";
+import { creationCatalogue, factionPresetList, npcPresetList, wargear } from "@wg/data";
 import {
+  NpcPreset,
   SOURCES,
+  THREAT_SOURCES,
+  mergeCites,
   officialOnly,
   type BuildCatalogue,
   type CreationPayload,
@@ -16,6 +19,7 @@ import type { CachedPayload } from "../core/http.ts";
 // The character-creation catalogue (packages/data/creation, docs/data.md §9), parsed at startup so a bad file fails fast.
 const creation = creationCatalogue();
 const printedFactions = factionPresetList(); // faction-presets/<source>.json (issue #46)
+const printedNpcs = npcPresetList(); // npc-presets/<source>.json (issue #47)
 
 // What `character.build` resolves against. The whole catalogue: resolveBuild itself refuses homebrew records and rules
 // when the campaign doesn't allow them.
@@ -59,6 +63,21 @@ export function factionPresets(homebrew: boolean): FactionPresets {
     ...printedFactions, // every book with faction presets is official
   ];
   return { keywords, presets };
+}
+
+// CODEX › NPCS' ADD FROM BOOK (issue #47): the catalogue's patrons, then the transcribed NPCs, without the homebrew
+// books unless the campaign allows them. A patron's printed text runs past GM NOTES' 5,000 characters, so its preset
+// carries the cite only; the text stays in PARTY's Framework picker. A transcribed NPC with a patron's id replaces it.
+export function npcPresets(homebrew: boolean): NpcPreset[] {
+  const keep = (p: NpcPreset) => homebrew || p.cites.every((c) => THREAT_SOURCES[c.source].official);
+  const byId = new Map(
+    creation.patrons.map(({ id, name, source, page }) => [
+      id,
+      NpcPreset.parse({ id, name, role: "Patron", cites: [{ source, page }] }),
+    ]),
+  );
+  for (const p of printedNpcs) byId.set(p.id, byId.has(p.id) ? mergeCites(byId.get(p.id)!, p) : p);
+  return [...byId.values()].filter(keep);
 }
 
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.

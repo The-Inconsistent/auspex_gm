@@ -40,7 +40,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
   repo private and never serve book content to anyone without an account (`/api/campaigns/:id/threats`, `/wargear`,
-  `/scene-presets`, `/frameworks` and `/faction-presets` are GM-only; `/rules` and `/creation` need any seat, and a rules entry flagged `gm` goes to the GM's seat only; their seatless twins `/api/rules` and `/api/creation`, for the
+  `/scene-presets`, `/frameworks`, `/faction-presets` and `/npc-presets` are GM-only; `/rules` and `/creation` need any seat, and a rules entry flagged `gm` goes to the GM's seat only; their seatless twins `/api/rules` and `/api/creation`, for the
   character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
   **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
