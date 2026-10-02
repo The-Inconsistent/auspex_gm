@@ -1,0 +1,16 @@
+[
+  {
+    "id": "penal-brigade",
+    "name": "Penal Brigade",
+    "source": "bloody-gates",
+    "page": 5,
+    "text": "You have all been sentenced to service in a Penal Brigade of the Gilead Gravediggers. After the Great Rift occurred the number of crimes which could lead to penal service was dramatically increased.\n\nAt the GM’s discretion any member of the party may receive a bonus dice when attempting an act of extreme bravery — provided an officer is present to witness them.",
+    "limitations": [],
+    "wargear": [],
+    "grants": [],
+    "tier": 1,
+    "characters": "Any Human character with the IMPERIAL Keyword.",
+    "enemies": "Enemies your commanders believe can be overwhelmed with quantity, not quality.",
+    "note": "Printed in the TIER 1 ARCHETYPES table (Core p.20 style). The Tier 1 Archetype box says the Imperial Guardsman Archetype is most suitable but players are free to choose any Tier 1 Archetype. Typical characters printed \"IMPERIAL Keyword\" (for IMPERIUM); copied as printed."
+  }
+]

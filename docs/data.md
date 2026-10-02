@@ -175,7 +175,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
-| Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
+| Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40; Frameworks, #45) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.5, 24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
 
 The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
@@ -826,7 +826,7 @@ file, loaded by `creationCatalogue()` in `index.ts`.
 
 **Status (2026-10-01).** All seven books are transcribed and verified against the page images: 113 keywords, 27
 factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 336 talents, 32
-packages, 41 disciplines, 291 powers, 11 Patrons, 5 languages and 27 flavour tables, with every reference resolving.
+packages, 41 disciplines, 291 powers, 16 Patrons, 27 Frameworks (58 in all with the Patrons' options, issue #45), 5 languages and 27 flavour tables, with every reference resolving.
 What is left is outside the catalogue: 55 starting-wargear items the Wargear catalogue doesn't link yet, waiting on
 rulings, and vehicles (see the Wargear catalogue).
 
