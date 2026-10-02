@@ -168,7 +168,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Gutshiva's Kommandos | `gutshivas-kommandos` (NPC presets, #47) | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` (Frameworks, #45; NPC presets, #47) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
-| Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
+| Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46; NPC presets, #47) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |

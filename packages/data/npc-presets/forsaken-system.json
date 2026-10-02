@@ -1,0 +1,587 @@
+[
+  {
+    "id": "fspg-wilhelmina-lorol",
+    "name": "Veteran Battle Sister Wilhelmina Lorol",
+    "role": "Cleanser of Hive Kappan",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 40
+      }
+    ],
+    "faction": "Order of the Sanctified Shield",
+    "gmNotes": "Veteran Battle Sister Wilhelmina Lorol, Cleanser of Hive Kappan"
+  },
+  {
+    "id": "fspg-sister-odelle",
+    "name": "Sister Odelle",
+    "role": "Hospitaller",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 40
+      }
+    ],
+    "faction": "Order of the Sanctified Shield",
+    "gmNotes": "Sister Odelle, the mysterious Hospitaller who seems to appear at every battle"
+  },
+  {
+    "id": "fspg-valerinne-tancin",
+    "name": "Celestian-Imagifier Sister Valerinne Tancin",
+    "role": "Celestian-Imagifier",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 40
+      }
+    ],
+    "faction": "Order of the Sanctified Shield",
+    "gmNotes": "Celestian-Imagifier Sister Valerinne Tancin, entrusted with the Bones of Defiance"
+  },
+  {
+    "id": "fspg-sister-febronia",
+    "name": "Sister Febronia of the Order Famulous",
+    "role": "Diplomat and food taster",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 40
+      }
+    ],
+    "faction": "Order of the Sanctified Shield",
+    "gmNotes": "Sister Febronia of the Order Famulous, employed as a diplomat and trusted food tester on Ostia, who martyred herself by ingesting a poisoned meal in order to kill a heretical ruler"
+  },
+  {
+    "id": "fspg-alytinne-cho",
+    "name": "Drill Abbess Alytinne Cho",
+    "role": "Drill Abbess",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 40
+      }
+    ],
+    "faction": "Order of the Sanctified Shield",
+    "gmNotes": "Drill Abbess Alytinne Cho, who oversees the order’s training programmes"
+  },
+  {
+    "id": "fspg-kappo-lev",
+    "name": "Explorator Kappo Lev",
+    "role": "Explorator",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 42
+      }
+    ],
+    "faction": "Machine Cults of Avachrus",
+    "gmNotes": "Explorator Kappo Lev, known for their unending search for remnants of the pre-Imperial archaeotech"
+  },
+  {
+    "id": "fspg-jynn-rho",
+    "name": "Magos Jynn Rho",
+    "role": "Magos, Heretek hunter",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 42
+      }
+    ],
+    "faction": "Machine Cults of Avachrus",
+    "gmNotes": "Magos Jynn Rho, tireless hunter of Hereteks and their horrid creations"
+  },
+  {
+    "id": "fspg-tech-priest-obsolom",
+    "name": "Tech-Priest Obsolom",
+    "role": "Revered Tech-Priest",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 42
+      }
+    ],
+    "faction": "Machine Cults of Avachrus",
+    "gmNotes": "revered Tech-Priest Obsolom, who has assisted in training the Techmarines of the Absolvers Chapter for over 400 years"
+  },
+  {
+    "id": "fspg-metril",
+    "name": "Skitarii Vanguard Commander Metril",
+    "role": "Skitarii Vanguard Commander",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 42
+      }
+    ],
+    "faction": "Machine Cults of Avachrus",
+    "gmNotes": "Skitarii Vanguard Commander Metril of the 87th Gilead Cohort"
+  },
+  {
+    "id": "fspg-missionary-janos",
+    "name": "Missionary Janos",
+    "role": "Missionary",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 44
+      }
+    ],
+    "faction": "Ecclesiarchy of Enoch",
+    "gmNotes": "Missionary Janos, thought to have converted countless refugees stranded on Enoch"
+  },
+  {
+    "id": "fspg-darius-uhn",
+    "name": "Confessor Darius Uhn",
+    "role": "Confessor",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 44
+      }
+    ],
+    "faction": "Ecclesiarchy of Enoch",
+    "gmNotes": "Confessor Darius Uhn, known for their ‘burn first, ask questions later’ approach to unbelievers"
+  },
+  {
+    "id": "fspg-gregor-imrak",
+    "name": "Shrinemeister Gregor Imrak",
+    "role": "Shrinemeister",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 44
+      }
+    ],
+    "faction": "Ecclesiarchy of Enoch",
+    "gmNotes": "beloved Shrinemeister Gregor Imrak, overseer of ultimate rest and arbiter of ossuary assignments"
+  },
+  {
+    "id": "fspg-preacher-karam",
+    "name": "Preacher Karam",
+    "role": "Preacher",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 44
+      }
+    ],
+    "faction": "Ecclesiarchy of Enoch",
+    "gmNotes": "Preacher Karam, seemingly eternal exhorter of the faith to centuries of Gravedigger regiments"
+  },
+  {
+    "id": "fspg-paterson-devries-iv",
+    "name": "Colonel Paterson Devries IV",
+    "role": "Colonel of the Gravediggers",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 46
+      }
+    ],
+    "faction": "Guard Regiments of Gilead",
+    "gmNotes": "Famous (and dashing) Colonel Paterson Devries IV of the Gravediggers"
+  },
+  {
+    "id": "fspg-kolos-thom",
+    "name": "Sergeant Kolos 'Ork Killer' Thom",
+    "role": "Hero of Dawn’s Blood",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 46
+      }
+    ],
+    "faction": "Guard Regiments of Gilead",
+    "gmNotes": "Sergeant Kolos ‘Ork Killer’ Thom, Hero of Dawn’s Blood and seen on many recruitment posters"
+  },
+  {
+    "id": "fspg-peppersmack-brandle",
+    "name": "Trooper Peppersmack Brandle",
+    "role": "Ratling sniper and chef",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 46
+      }
+    ],
+    "faction": "Guard Regiments of Gilead",
+    "gmNotes": "Trooper Peppersmack Brandle, fabled (amongst abhumans) Ratling sniper and chef"
+  },
+  {
+    "id": "ordo-malleus-inquisitor-tytrona-dikaisune",
+    "name": "Inquisitor Tytrona Dikaisune",
+    "role": "Ordo Malleus Inquisitor",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 48
+      }
+    ],
+    "faction": "Remnants of the Inquisition",
+    "gmNotes": "Inquisitors Tytrona Dikaisune and Stephan Argyle, Interrogator Inge Xenia"
+  },
+  {
+    "id": "fspg-stephan-argyle",
+    "name": "Inquisitor Stephan Argyle",
+    "role": "Inquisitor",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 48
+      }
+    ],
+    "faction": "Remnants of the Inquisition",
+    "gmNotes": "Inquisitors Tytrona Dikaisune and Stephan Argyle, Interrogator Inge Xenia"
+  },
+  {
+    "id": "fspg-inge-xenia",
+    "name": "Interrogator Inge Xenia",
+    "role": "Interrogator",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 48
+      }
+    ],
+    "faction": "Remnants of the Inquisition",
+    "gmNotes": "Inquisitors Tytrona Dikaisune and Stephan Argyle, Interrogator Inge Xenia"
+  },
+  {
+    "id": "rogue-trader-jakel-varonius",
+    "name": "Jakel Varonius",
+    "role": "Rogue Trader",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 50
+      }
+    ],
+    "faction": "The Varonius Dynasty",
+    "gmNotes": "Jakel Varonius"
+  },
+  {
+    "id": "fspg-gillan-lej",
+    "name": "Captain Gillan Lej",
+    "role": "Captain of the attack boat Hard Bargain",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 50
+      }
+    ],
+    "faction": "The Varonius Dynasty",
+    "gmNotes": "Captain Gillan Lej of the attack boat Hard Bargain"
+  },
+  {
+    "id": "fspg-felice-varonius",
+    "name": "Commander Felice Varonius",
+    "role": "Lead negotiator for Imperial matters",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 50
+      }
+    ],
+    "faction": "The Varonius Dynasty",
+    "gmNotes": "Commander Felice Varonius, the family’s lead negotiator for Imperial matters and high in line of succession"
+  },
+  {
+    "id": "fspg-tygranus-dalir",
+    "name": "Founding Chapter Master Tygranus Dalir",
+    "role": "Founding Chapter Master",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 52
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "Founding Chapter Master Tygranus Dalir"
+  },
+  {
+    "id": "fspg-titus-mikel",
+    "name": "Battle Brother Titus Mikel",
+    "role": "Battle Brother",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 52
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "Battle Brother Titus Mikel"
+  },
+  {
+    "id": "fspg-tarik-kamril",
+    "name": "First Company Sergeant Tarik Kamril",
+    "role": "First Company Sergeant",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 52
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "First Company Sergeant Tarik Kamril"
+  },
+  {
+    "id": "fspg-diallo-mirl",
+    "name": "Veteran Scout Diallo Mirl",
+    "role": "Veteran Scout",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 52
+      }
+    ],
+    "faction": "The Absolvers",
+    "gmNotes": "Veteran Scout Diallo Mirl"
+  },
+  {
+    "id": "fspg-quintos-galleen",
+    "name": "Prefector Scriptus Quintos Galleen",
+    "role": "Prefector Scriptus",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 54
+      }
+    ],
+    "faction": "The Administratum",
+    "gmNotes": "Prefector Scriptus Quintos Galleen"
+  },
+  {
+    "id": "fspg-finnea-caveros",
+    "name": "Master of the Scrolls Finnea Caveros",
+    "role": "Master of the Scrolls",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 54
+      }
+    ],
+    "faction": "The Administratum",
+    "gmNotes": "Master of the Scrolls Finnea Caveros"
+  },
+  {
+    "id": "fspg-radeer-umlo",
+    "name": "Datavault Rampartus Radeer U'mlo",
+    "role": "Datavault Rampartus",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 54
+      }
+    ],
+    "faction": "The Administratum",
+    "gmNotes": "Datavault Rampartus Radeer U’mlo"
+  },
+  {
+    "id": "fspg-farseer-tamalys",
+    "name": "Farseer Tamalys",
+    "role": "Farseer",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 56
+      }
+    ],
+    "faction": "Craftworlders of Ul Khari",
+    "gmNotes": "Farseer Tamalys"
+  },
+  {
+    "id": "fspg-kaelitha-nagith",
+    "name": "Ranger Kaelitha Nagith",
+    "role": "Ranger",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 56
+      }
+    ],
+    "faction": "Craftworlders of Ul Khari",
+    "gmNotes": "Ranger Kaelitha Nagith"
+  },
+  {
+    "id": "fspg-hyrne-olivaste",
+    "name": "Storm Guardian Hyrne Olivaste",
+    "role": "Storm Guardian",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 56
+      }
+    ],
+    "faction": "Craftworlders of Ul Khari",
+    "gmNotes": "Storm Guardian Hyrne Olivaste"
+  },
+  {
+    "id": "ferianwyr-the-emerald-princess",
+    "name": "Princess Ferianwyr",
+    "role": "Emerald Princess",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 58
+      }
+    ],
+    "faction": "Greensteel Corsairs",
+    "gmNotes": "Princess Ferianwyr"
+  },
+  {
+    "id": "fspg-felarch-yellil",
+    "name": "Felarch Yellil",
+    "role": "Felarch",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 58
+      }
+    ],
+    "faction": "Greensteel Corsairs",
+    "gmNotes": "Felarch Yellil"
+  },
+  {
+    "id": "fspg-reslithe-the-skykiller",
+    "name": "Reslithe the Skykiller",
+    "role": "Ace Nightwing pilot",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 58
+      }
+    ],
+    "faction": "Greensteel Corsairs",
+    "gmNotes": "ace Nightwing pilot Reslithe the Skykiller"
+  },
+  {
+    "id": "fspg-evalyla-agynille",
+    "name": "Evalyla Agynille",
+    "role": "Drukhari wych, First Boarding Company",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 58
+      }
+    ],
+    "faction": "Greensteel Corsairs",
+    "gmNotes": "Drukhari Evalyla Agynille, wych and leader of the First Boarding Company"
+  },
+  {
+    "id": "fspg-kommando-badgrog",
+    "name": "Kommando Badgrog",
+    "role": "Kommando",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 60
+      }
+    ],
+    "faction": "Da Blood Axes!",
+    "gmNotes": "Kommando Badgrog"
+  },
+  {
+    "id": "fspg-drillboss-rokkitfist",
+    "name": "Stormboyz Drillboss Rokkitfist",
+    "role": "Stormboyz Drillboss",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 60
+      }
+    ],
+    "faction": "Da Blood Axes!",
+    "gmNotes": "Stormboyz Drillboss Rokkitfist"
+  },
+  {
+    "id": "fspg-axegrinda-goldteef",
+    "name": "Kaptin Axegrinda Goldteef",
+    "role": "Kaptin of the Kill Kroozer Gobsmasha",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 60
+      }
+    ],
+    "faction": "Da Blood Axes!",
+    "gmNotes": "Kaptin Axegrinda Goldteef of the Kill Kroozer Gobsmasha"
+  },
+  {
+    "id": "fspg-runtherd-murdz",
+    "name": "Runtherd Murdz and his Deadly Deffgrotz",
+    "role": "Runtherd",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 60
+      }
+    ],
+    "faction": "Da Blood Axes!",
+    "gmNotes": "Runtherd Murdz and his Deadly Deffgrotz"
+  },
+  {
+    "id": "fspg-szarn-the-red",
+    "name": "Szarn the Red",
+    "role": "Gladiator of the Ravening Trials",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 62
+      }
+    ],
+    "faction": "Traitors of the Rift",
+    "gmNotes": "Szarn the Red, famed gladiator of the Ravening Trials"
+  },
+  {
+    "id": "fspg-watto-hasturk",
+    "name": "Watto Hasturk",
+    "role": "Gilead Prime insurrectionist leader",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 62
+      }
+    ],
+    "faction": "Traitors of the Rift",
+    "gmNotes": "Watto Hasturk, Gilead Prime insurrectionist leader"
+  },
+  {
+    "id": "fspg-shvarre-esquisina",
+    "name": "Shvarre Esquisina",
+    "role": "Scentrix of the Perfumed Orchids",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 62
+      }
+    ],
+    "faction": "Traitors of the Rift",
+    "gmNotes": "Shvarre Esquisina, Scentrix of the Perfumed Orchids"
+  },
+  {
+    "id": "fspg-arch-magos-ghelvin",
+    "name": "Serrated Cogmaster Arch-Magos Ghelvin",
+    "role": "Serrated Cogmaster, Arch-Magos",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 62
+      }
+    ],
+    "faction": "Traitors of the Rift",
+    "gmNotes": "Serrated Cogmaster Arch-Magos Ghelvin"
+  },
+  {
+    "id": "fspg-dark-apostle-maoquence",
+    "name": "Dark Apostle Maoquence",
+    "role": "Dark Apostle",
+    "cites": [
+      {
+        "source": "forsaken-system",
+        "page": 62
+      }
+    ],
+    "faction": "Traitors of the Rift",
+    "gmNotes": "Dark Apostle Maoquence"
+  }
+]
