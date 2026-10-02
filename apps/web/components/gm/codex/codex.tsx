@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState, type MouseEvent } from "react";
 
-import type { ActionInput, Character, Codex, FactionPresets, Threat } from "@wg/shared";
+import type { ActionInput, Character, Codex, FactionPresets, NpcPreset, Threat } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { Refusal } from "@/components/ui/refusal/refusal";
@@ -12,6 +12,7 @@ import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
 import { FactionCard } from "./components/faction-card/faction-card";
 import { FactionPicker } from "./components/faction-picker/faction-picker";
 import { NpcCard } from "./components/npc-card/npc-card";
+import { NpcPicker } from "./components/npc-picker/npc-picker";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
@@ -21,6 +22,7 @@ type CodexViewProps = {
   send: Send;
   initialKind?: CodexKind;
   factionPresets: FactionPresets;
+  npcPresets: NpcPreset[];
   bestiary: Threat[];
   tier: number;
   players: number; // Scaling Threats adds the number of players for an Adversary (Core p.326)
@@ -41,6 +43,7 @@ export function CodexView({
   send,
   initialKind = "npc",
   factionPresets,
+  npcPresets,
   bestiary,
   tier,
   players,
@@ -99,6 +102,9 @@ export function CodexView({
                 + NEW {kind.toUpperCase()}
               </button>
             </div>
+            {kind === "npc" && npcPresets.length > 0 && (
+              <NpcPicker presets={npcPresets} codex={codex} send={send} onError={setError} />
+            )}
             {kind === "faction" && factionPresets.presets.length > 0 && (
               <FactionPicker
                 presets={factionPresets.presets}

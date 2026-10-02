@@ -59,6 +59,13 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   ADD FROM BOOK copies a printed faction (`FactionPreset`, the same endpoint) through `presetFaction`: its name, the
   Keywords the page prints, a cite line opening the notes, and stance neutral. The first presets are the creation
   catalogue's 27 factions, with their `keywords` (docs/data.md §9).
+- **NPC stats and ADD FROM BOOK** (issue #47): the NPC editor picks the stat source (a bestiary threat through the
+  threat picker, a Quick NPC Tier with an optional specialty Skill, or none), and the opened NPC shows the stat block or
+  the Quick row with core p.326's scaling lines. ADD TO SCENE appends a bestiary NPC to a scene's prepared encounter
+  and lists them present; a Quick NPC isn't fielded (rules-flow.md §11.88). ADD FROM BOOK copies a printed NPC
+  (`NpcPreset`, GM-only `/api/campaigns/:id/npc-presets`) through `presetNpc`: hidden, a name and a role label, the cite
+  line and printed text in GM NOTES, the faction linked by name when the codex has it. The first presets are the
+  creation catalogue's 16 patrons.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
   core p.326, with an optional specialty Skill, rules-flow §11.87), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and

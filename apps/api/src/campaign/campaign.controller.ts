@@ -21,7 +21,7 @@ import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
 import { sendCached } from "../core/http.ts";
-import { creationPayload, factionPresets, frameworkCatalogue } from "../character/creation.service.ts";
+import { creationPayload, factionPresets, frameworkCatalogue, npcPresets } from "../character/creation.service.ts";
 import { TableGateway } from "../table/table.gateway.ts";
 import {
   campaignHomebrew,
@@ -178,6 +178,17 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return factionPresets(await campaignHomebrew(campaignId));
+  }
+
+  // Book data for CODEX › NPCS (issue #47): printed NPCs to start one from. Book text, so GM only like the bestiary;
+  // ADD FROM BOOK fills only a name and a role label into what players see.
+  @Get("campaigns/:id/npc-presets")
+  async npcPresets(@Param("id") id: string, @Req() req: Request) {
+    const campaignId = parse(CampaignId, id);
+    const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    return npcPresets(await campaignHomebrew(campaignId));
   }
 
   // Rules reference (book text) for any seat at this table, GM or player.

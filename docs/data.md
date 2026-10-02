@@ -15,6 +15,7 @@ Commands and setup: [development.md](development.md).
 | `packages/data/packs/<name>/pack.json` | A campaign start: campaign, factions, locations, NPCs, handouts, adventures and beats. Schema `Pack` in `packages/shared/src/pack.ts` |
 | `packages/data/packs/<name>/characters/*.json` | One character per file, `{ name, stats }`. `stats` is `CharacterStats` in `packages/shared/src/state.ts` |
 | `packages/data/faction-presets/<source>.json` | Printed factions for CODEX › FACTIONS' ADD FROM BOOK (GitHub issue #46), one file per book. Schema `FactionPreset` in `packages/shared/src/faction-presets.ts`: the codex faction (name, `keywords`, `notes`, `secrets`) plus `id`, `source` and printed `page`. GM-only, served by `/api/campaigns/:id/faction-presets` beside the creation catalogue's own factions. Keywords only where the page prints them, or a §11 ruling maps them (rules-flow.md §11.84, §11.85); notes and secrets verbatim |
+| `packages/data/npc-presets/<source>.json` | Printed NPCs for CODEX › NPCS' ADD FROM BOOK (GitHub issue #47), in the file of each NPC's first cite. Schema `NpcPreset` in `packages/shared/src/npc-presets.ts`: the codex NPC (name, `role`, `gmNotes`, `secrets`, `attitude`, `statSource`) plus `id`, `cites` (one or more `{ source, page }`) and an optional `faction` name to link. GM-only, served by `/api/campaigns/:id/npc-presets` after the creation catalogue's patrons (cite only: their text runs past GM NOTES' 5,000 characters); a file NPC with a patron's id replaces it and keeps both cites. Players see a revealed NPC's name, role and description, so DESCRIPTION stays empty and printed text goes in GM NOTES; a stat source only where the book names one |
 | `packages/data/index.ts` | Server-side loaders (below) |
 | `packages/data/validate.ts` | `bun run validate` (§6) |
 
@@ -29,6 +30,7 @@ Commands and setup: [development.md](development.md).
 | `wargear`, `wargearList()` | The Wargear catalogue (`wargear/*.json`), parsed at import |
 | `rulesList()` | The rules reference (`rules/*.json`) |
 | `factionPresetList()` | The printed factions (`faction-presets/*.json`), parsed |
+| `npcPresetList()` | The printed NPCs (`npc-presets/*.json`), parsed |
 | `creationCatalogue()` | The creation catalogue (§9): every `creation/<type>/<source>.json`, parsed, one array per type |
 
 **Who loads it.** The api imports `threats` in `apps/api/src/encounter/encounter.actions.ts` and
@@ -785,6 +787,8 @@ GM-only book data for building scenes (GitHub issues #39 and #40), served by `GE
 | A `follower` Wargear entry has a known `threatId`, and any `variant` (there or on a `followers` grant) is one of that threat's variants; nothing else has a `threatId` | `✖ wargear/<file> "<id>": …` or `✖ creation/… "<id>": "…" has no variant "…"` |
 | Every `faction-presets/<source>.json` parses as `FactionPreset[]`; the filename matches each `source`, which is an official book; ids are unique across the files and the creation factions; every Keyword is a glossary or sub-faction Keyword, or printed on a threat | `✖ faction-presets/<file>` + zod error, `is from`, `homebrew`, `duplicate id`, or `unknown Keyword` |
 | Faction preset summary | `faction-presets/<file>: N factions (N with Keywords, N with secrets)` |
+| Every `npc-presets/<source>.json` parses as `NpcPreset[]`; the filename matches the first cite's book; every cite is an official book; ids are unique across the files (a patron's id is allowed, to replace it); `description` is empty; a bestiary stat source names a threat | `✖ npc-presets/<file>` + zod error, `is first cited from`, `homebrew`, `duplicate id`, `DESCRIPTION reaches players`, or `unknown threat` |
+| NPC preset summary | `npc-presets/<file>: N NPCs (N with stats, N replacing a patron)` |
 | A `mundane` item links nothing in the catalogue | `✖ creation/… "<id>": "…" is mundane but links the catalogue` |
 
 ---

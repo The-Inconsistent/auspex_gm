@@ -17,12 +17,20 @@ import {
   SkillDn,
   EventTable,
   FactionPreset,
+  NpcPreset,
   PoolEntry,
   PoolPresetTable,
   PoolSpend,
   presetLine,
 } from "@wg/shared";
-import { eventTableFiles, factionPresetFiles, loadPackRaw, packNames, poolPresetFiles } from "./index.ts";
+import {
+  eventTableFiles,
+  factionPresetFiles,
+  loadPackRaw,
+  npcPresetFiles,
+  packNames,
+  poolPresetFiles,
+} from "./index.ts";
 
 // Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
 const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
@@ -612,6 +620,40 @@ for (const file of factionPresetFiles()) {
   }
   console.log(
     `faction-presets/${file}: ${r.data.length} factions (${r.data.filter((p) => p.keywords.length).length} with Keywords, ${r.data.filter((p) => p.secrets).length} with secrets)`,
+  );
+}
+
+// NPC presets (npc-presets/<source>.json, issue #47): the filename names the first cite's book, ids are unique across
+// files (one may reuse a patron's id, to replace that patron), every bestiary stat source resolves, and DESCRIPTION
+// stays empty, because players read it once the NPC is revealed and printed text stays GM-side.
+const patronIds = creationIds("patrons");
+const npcPresetIds = new Set<string>();
+for (const file of npcPresetFiles()) {
+  const r = NpcPreset.array().safeParse(
+    JSON.parse(readFileSync(new URL(`./npc-presets/${file}`, import.meta.url), "utf8")),
+  );
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ npc-presets/${file}\n${z.prettifyError(r.error)}`);
+    continue;
+  }
+  const problem = (message: string) => {
+    failed = true;
+    console.error(`✖ npc-presets/${file}: ${message}`);
+  };
+  for (const p of r.data) {
+    if (`${p.cites[0]!.source}.json` !== file) problem(`"${p.id}" is first cited from ${p.cites[0]!.source}`);
+    for (const c of p.cites)
+      if (!THREAT_SOURCES[c.source].official)
+        problem(`"${p.id}": homebrew, but /npc-presets serves these files to every campaign`);
+    if (npcPresetIds.has(p.id)) problem(`duplicate id "${p.id}"`);
+    npcPresetIds.add(p.id);
+    if (p.description) problem(`"${p.id}": DESCRIPTION reaches players; printed text goes in gmNotes`);
+    if (p.statSource.kind === "bestiary" && !found.includes(p.statSource.threatId))
+      problem(`"${p.id}": unknown threat "${p.statSource.threatId}"`);
+  }
+  console.log(
+    `npc-presets/${file}: ${r.data.length} NPCs (${r.data.filter((p) => p.statSource.kind !== "none").length} with stats, ${r.data.filter((p) => patronIds.has(p.id)).length} replacing a patron)`,
   );
 }
 

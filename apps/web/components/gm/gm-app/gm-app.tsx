@@ -6,6 +6,7 @@ import {
   Pool,
   poolMax,
   type FactionPresets,
+  type NpcPreset,
   type FrameworkCatalogue,
   type RuleEntry,
   type ScenePresets,
@@ -40,9 +41,19 @@ type GmAppProps = {
   presets: ScenePresets;
   frameworks: FrameworkCatalogue;
   factionPresets: FactionPresets;
+  npcPresets: NpcPreset[];
 };
 
-export function GmApp({ campaignId, bestiary, wargear, rules, presets, frameworks, factionPresets }: GmAppProps) {
+export function GmApp({
+  campaignId,
+  bestiary,
+  wargear,
+  rules,
+  presets,
+  frameworks,
+  factionPresets,
+  npcPresets,
+}: GmAppProps) {
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>("TRACK");
@@ -138,6 +149,7 @@ export function GmApp({ campaignId, bestiary, wargear, rules, presets, framework
                 send={send}
                 initialKind={codexKind}
                 factionPresets={factionPresets}
+                npcPresets={npcPresets}
                 bestiary={bestiary}
                 tier={state.campaign.tier}
                 players={players}
