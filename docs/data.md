@@ -172,7 +172,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Church of Steel | `church-of-steel` (cite CoS; scene presets, issue #39; vehicles not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
 | Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
-| Darktide (Apr 2025 update) | `darktide` (threats, #44) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
+| Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
 | Bloody Gates | `bloody-gates` (cite BG; threats, #44) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
@@ -692,6 +692,13 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
     - The p.16 stat block (Psychneuein) isn't transcribed. The row that points to it keeps "see page 16".
     - Kept as printed: "descendents" (Undying Grudges, p.13), "Gellar field" (Nox Tenebris, p.15), "Homonculi" (The
       Wild Hunt, p.15), and a straight apostrophe and spaced hyphens in Titanicus (p.15).
+  - **Darktide** (`darktide.json`):
+    - Lattice Encounters only: d6, 6 events, 3 Tests, each with a printed DN.
+    - The table's `gm` holds p.73's instructions: roll once at each of the four stages, and the signal after two
+      encounters.
+    - Ambush, Broadside, Pursuit and Lattice Springer make combat scenes.
+    - Vibrations' Toughness Test notes its repeats and Shock in `gm`.
+    - Out of scope: the Sump Events (the scenes of the book's adventure) and the Chapter 2 hazard tables.
 
 ---
 
