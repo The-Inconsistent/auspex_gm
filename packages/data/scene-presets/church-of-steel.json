@@ -1,0 +1,813 @@
+[
+  {
+    "id": "church-of-steel-battlefield-events",
+    "name": "Battlefield Events",
+    "source": "church-of-steel",
+    "page": 36,
+    "dice": "d66",
+    "type": "travel",
+    "defaultDn": 5,
+    "gm": "Roll d66 to determine a random battlefield event. Use 1 Wrath Die and 1 normal die. If the Wrath die rolls a Complication, the Travel Event also involves a potential combat encounter with appropriate enemies. Associated Skill Tests are DN 5, unless you determine otherwise.",
+    "rows": [
+      {
+        "from": 11,
+        "to": 13,
+        "name": "Shelling",
+        "page": 36,
+        "text": "Artillery rains down on this part of the battlefield. It could be the shells of Astra Militarum tanks, a blighted plague fusillade from the forces of the Death Guard, or any number of attacks originating from extreme range. Unless the Agents succeed at an Awareness (Int), Leadership (Wil), or Survival (Wil) Test to find cover or endure the halo of fire, they take 10–20 damage from the incoming attack. However, a bombardment can reveal enemy positions or unearth equipment lost in the battlefield, giving Agents who survive an unexpected edge.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness",
+              "Leadership",
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Find cover from the bombardment"
+          }
+        ]
+      },
+      {
+        "from": 14,
+        "to": 16,
+        "name": "Landmine",
+        "page": 36,
+        "text": "The Agents run afoul of an undetonated landmine, either from this battle or one years past. Unless the Agents succeed on a DN 7 Awareness (Int) Test to spot the mine, it detonates, targeting their vehicle (and the Agents, unless their vehicle has the Sealed Trait). The landmine deals damage as a Frag Grenade (Wrath & Glory Rulebook, page 220). See pages 52–55 for more on damaging vehicles.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Spot the buried mine"
+          }
+        ]
+      },
+      {
+        "from": 21,
+        "to": 23,
+        "name": "Hidden Cache",
+        "page": 37,
+        "text": "Through planning or good fortune, the Agents uncover a unique piece of equipment or information. This could be a wrecked command vehicle containing some important set of coordinates or a wounded survivor trapped by debris from prior shelling. Athletics (S), Awareness (Int), Investigation (Int), Medicae (Int), and Survival (Wil) could all help the Agents uncover the Wargear or information.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics",
+              "Awareness",
+              "Investigation",
+              "Medicae",
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Uncover the hidden Wargear or information"
+          }
+        ]
+      },
+      {
+        "from": 24,
+        "to": 26,
+        "name": "Survivors",
+        "page": 37,
+        "text": "Miraculously, a group of combatants have survived the rigours of the battlefield and have taken shelter in a location the Agents pass through. These could be civilian survivors who got caught up in the conflict or soldiers from either side in the engagement. Getting through this could require a Cunning (Fel) or Deception (Fel) Test to interact with wary survivors, while an Intimidation (Wil), Leadership (Wil), or Persuasion (Fel) Test could coerce a group of allied soldiers to assist. Earning the trust of the survivors could provide the Agents with shelter, information on how to better traverse the battlefield, or a few Reloads for common Wargear.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Cunning",
+              "Deception"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Deal with the wary survivors"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Intimidation",
+              "Leadership",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Coerce allied soldiers into helping"
+          }
+        ]
+      },
+      {
+        "from": 31,
+        "to": 33,
+        "name": "Tank Graveyard",
+        "page": 37,
+        "text": "From a slew of Leman Russ tanks overwhelmed and torn open, to a scattering of Aeldari Falcons taken down by heavy weapons, to the husks of long-dead Daemon engines, the wrecks of vehicles litter countless battlefields. The Agents have to traverse these ruins, impeding their travel and requiring quick thinking. A Ballistic Skill (A) Test could help clean one of the downed vehicle’s weapons for use in a single-shot attack, while a Pilot (A) or Tech (Int) Test might be necessary to safely clear the wreckage. Delays could impede future encounters and leave the Agents open to ambush.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Ballistic Skill"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Clean a wrecked weapon for one shot"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Pilot",
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Clear the wreckage safely"
+          }
+        ]
+      },
+      {
+        "from": 34,
+        "to": 36,
+        "name": "Crash Site",
+        "page": 37,
+        "text": "As the Agents make their way through a battlefield, they come across the wreckage of a downed aircraft. Alternatively, the aeronautica craft could spiral out of control and crash as the Agents travel through an area. An Initiative Test could be required to avoid flaming wreckage from a crashing vehicle, while a Toughness Test might be required to endure hazardous fumes wafting around the wreck. The craft could be carrying important contents, or it simply could be a hazard the Agents need to overcome.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "I",
+            "dn": null,
+            "purpose": "Dodge the flaming wreckage"
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Endure the hazardous fumes"
+          }
+        ]
+      },
+      {
+        "from": 41,
+        "to": 43,
+        "name": "Trench Line",
+        "page": 38,
+        "text": "A series of trenches fill the immediate area of the battlefield. These could be allied or enemy-held fortifications or simply remnants from some prior conflict. The site provides the Agents with potential respite, allowing them a Regroup. Conversely, the trenches could be trapped and require a Tech (Int) or Weapon Skill (I) Test to disable.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech",
+              "Weapon Skill"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Disable the trench traps"
+          }
+        ]
+      },
+      {
+        "from": 44,
+        "to": 46,
+        "name": "Vox Transmission",
+        "page": 38,
+        "text": "Whether from their own equipment, the wrecked hull of a vehicle, or an abandoned vox unit, the Agents hear an incoming signal. A Scholar (Int) or Tech (Int) Test can either decipher the code used or help clarify the broadcast. Exactly what the message is depends on the Agents’ mission. The signal could be an enemy transmission providing details on an expected rendezvous point, or it could be an update from the Agents’ patron with new orders.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Scholar",
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Decipher or clarify the vox signal"
+          }
+        ]
+      },
+      {
+        "from": 51,
+        "to": 53,
+        "name": "Forward Operating Base",
+        "page": 38,
+        "text": "Forward operating bases act as mobile command centres in semifortified positions. The exact Tests employed here vary based on the outpost’s allegiance. The rewards could include a plethora of information useful to the Agents’ Journey, new Wargear, recovered treasures that result in increased Wealth, or bonus Influence from impressing allied leaders or defeating important foes.",
+        "tests": []
+      },
+      {
+        "from": 54,
+        "to": 56,
+        "name": "Radiation Zone",
+        "page": 38,
+        "text": "Countless sources of radiation can litter a battlefield: the aftermath of a horrific attack, the remnants of a wounded vehicle, or the wreck of an Orkish invention gone wrong. Without equipment, a DN 9 Survival (Wil) Test is required to detect the presence of radiation. Otherwise, the Agents walk through the area and must succeed on a Toughness Test or take 1d3 Mortal Wounds, 1d6 Shock, and be Staggered for 1 Round.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": 9,
+            "purpose": "Detect the radiation",
+            "gm": "Only for Agents without detection equipment."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Endure the radiation"
+          }
+        ]
+      },
+      {
+        "from": 61,
+        "to": 63,
+        "name": "Dangerous Weather",
+        "page": 38,
+        "text": "Oftentimes the weather is as deadly a foe as the opposing force in battle. Agents caught in hazardous weather could be at the mercy of lighting, extreme heat or cold, or fire from a raging inferno (see Wrath & Glory Rulebook, pages 201–202). These events should be challenging, and they work best when presented as an obstacle the Agents need to overcome quickly.",
+        "tests": []
+      },
+      {
+        "from": 64,
+        "to": 66,
+        "name": "Light in the Darkness",
+        "page": 39,
+        "text": "Hope springs eternal. The Agents come across a momentary lull in the fighting, perhaps cleansed by some unknown force. Either way, the Agents manage to find a place to compose themselves and regain their strength. The Agents each gain 1 Glory for the remainder of the session.",
+        "tests": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "church-of-steel-urban-travel-events",
+    "name": "Urban Travel Events",
+    "source": "church-of-steel",
+    "page": 39,
+    "dice": "d66",
+    "type": "travel",
+    "defaultDn": 5,
+    "gm": "Roll d66 to determine a random urban travel event. Associated Skill Tests are DN 5, unless you determine otherwise based on the conditions. Customise travel events to the Agents’ mode of transport; for example, by having cult recruiters block a road if the Agents are on foot, or surround a vehicle if they are on Jetbikes.",
+    "rows": [
+      {
+        "from": 11,
+        "to": 13,
+        "name": "Psychic Disturbance",
+        "page": 39,
+        "text": "Someone (or something) has reached out using the powers of the Immaterium. Generate a result on the Perils of the Warp table (Wrath & Glory, page 263). If the Agents are in a particularly psychically active area or pursued by a powerful enemy Psyker, add +10 to +30 to the roll. The peril occurs when the Agents travel through the area. In addition, the Agents can attempt a Psychic Mastery (Wil) Test to learn an important clue about the origin of this disturbance.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Psychic Mastery"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Learn the origin of the disturbance"
+          }
+        ]
+      },
+      {
+        "from": 14,
+        "to": 16,
+        "name": "Enforcement Sweep",
+        "page": 39,
+        "text": "A group of Enforcers move through the area. They’re either cracking down on suspects or have targeted the Agents in a random sweep. A successful Deception (Fel) or Persuasion (Fel) Test convinces the Enforcers to leave the Agents in peace. Otherwise, the Agents may suffer a consequence from local law enforcement that could further complicate their travel plans.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Deception",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Talk the Enforcers into leaving"
+          }
+        ]
+      },
+      {
+        "from": 21,
+        "to": 23,
+        "name": "Cult Conscription",
+        "page": 39,
+        "text": "Whether it’s a group devoted to the Dark Gods or a group believing it is acting for the good of the Imperium, the Agents come across members of an active cult. The Cultists seek to recruit the Agents for their own agenda. Unless the Agents succeed at a Cunning (Fel), Deception (Fel), or Intimidation (Wil) Test, they find themselves caught up with the cult. A consequence here could involve authorities misidentifying the Agents as affiliates of the cult. A benefit could be establishing a contact within the cult.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Cunning",
+              "Deception",
+              "Intimidation"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid being drawn into the cult"
+          }
+        ]
+      },
+      {
+        "from": 24,
+        "to": 26,
+        "name": "Shift Change",
+        "page": 39,
+        "text": "Most settlements have a host of labourers, whether manufactorum drudges or agricultural workers. The Agents find themselves delayed by a large shift change. Navigating the sudden press of people or upsurge in vehicles requires an Athletics (S), Leadership (Wil), Pilot (A), or Stealth (A) Test depending on the situation. Failure could mean the Agents miss an opportunity for a Secondary Travel Stage or their enemies have time to set up an ambush ahead.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics",
+              "Leadership",
+              "Pilot",
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Get through the shift change crowd"
+          }
+        ]
+      },
+      {
+        "from": 31,
+        "to": 33,
+        "name": "Workplace Accident",
+        "page": 39,
+        "text": "A generatorium explodes, a hab block collapses, or a scriptorium is set ablaze. The Agents are involved in such a mishap, either due to being in the area or as witnesses to the event. Depending on their mission, the Agents may choose to make a Medicae (Int) or Tech (Int) Test to assist those nearby. Less scrupulous Agents could make a Stealth (A) Test to leave the scene unnoticed. Benefits from this event could include making allies among the labourers, while consequences could have the Agents identified by enemies.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Medicae",
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Help those caught in the accident"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Slip away from the scene unnoticed"
+          }
+        ]
+      },
+      {
+        "from": 34,
+        "to": 36,
+        "name": "A Lost Soul",
+        "page": 39,
+        "text": "Countless millions disappear in the Imperium every day, and while most of them are nothing more than statistics, rare and important individuals will be missed. Nobles, manufactorum overseers, and other skilled or influential people have contacts who notice their absence. One such concerned citizen approaches the Agents in their travels, wondering if the Agents have leads on their missing family or friend. The Agents might be able to assist with a Cunning (Fel) or Investigation (Int) Test. Conversely, Agents attempting an Insight (Fel) Test may learn they’re being swindled by someone seeking to make some sympathy Throne Gelt. The Emperor may shine His light on those who help the downtrodden or may punish those who leech on the sympathies of others, granting the Agents a point of Glory.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Cunning",
+              "Investigation"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Help find the missing person"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Insight"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Tell if the appeal is a swindle"
+          }
+        ]
+      },
+      {
+        "from": 41,
+        "to": 43,
+        "name": "New Proclamation",
+        "page": 40,
+        "text": "A new edict has come down that has the local populace in an uproar. Whether it is an adjustment to ongoing taxation or some vanity law passed thanks to the corrupting influence of a noble, the everyday citizen suffers. The Agents find that their travels are impeded by difficulty in the region. They can attempt to find a loophole in the laws with a Cunning (Fel) or Scholar (Int) Test. Consequences of not getting involved could include the Value of all equipment purchases in the region increasing by 2, and the DN of all Fellowship-based Tests increasing by 2. Benefits for getting involved could be the reverse, with locals willing to provide goods at a reduced rate or becoming more easily influenced.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Cunning",
+              "Scholar"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Find a loophole in the new edict"
+          }
+        ]
+      },
+      {
+        "from": 44,
+        "to": 46,
+        "name": "Ongoing Rivalry",
+        "page": 40,
+        "text": "The Agents pass through an area where a notable rivalry is reaching a boiling point. This could include Gangers fighting in the streets or embittered noble house guards locked in a standstill. One side of the rivalry incorrectly identifies the Agents as affiliated with the other side. The Agents might find themselves accosted or tailed by one side. To escape, the Agents likely rely on Awareness (Int), Insight (Fel), or Intimidation (Wil) Tests. Benefits could involve settling the dispute and earning two unique allies, while consequences could force the Agents into choosing a side and earning a powerful enemy.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness",
+              "Insight",
+              "Intimidation"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Escape the rivals' attention"
+          }
+        ]
+      },
+      {
+        "from": 51,
+        "to": 53,
+        "name": "Noble Rot",
+        "page": 40,
+        "text": "A prominent noble is travelling through the same area. This noble could be someone opposed to the Agents’ agenda or patron, or an incidental character unrelated to the Agents’ activities. The noble takes an interest in the Agents and approaches them, possibly with an entourage, and engages in idle chatter. The Agents can get their way through the conversation with a Deception (Fel), Insight (Fel), or Persuasion (Fel) Test. Consequences for offending the noble could be far-reaching depending on the noble’s influence, while benefits could be equally as rewarding.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Deception",
+              "Insight",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Win the conversation with the noble"
+          }
+        ]
+      },
+      {
+        "from": 54,
+        "to": 56,
+        "name": "Faith Parade",
+        "page": 40,
+        "text": "A congregation of the faithful travel through the settlement, blocking the Agents’ movement. This could be a parade dedicated to the Emperor, or something venerating one of the dark pantheon in cities fallen to Chaos. A Cunning (Fel), Intimidation (Wil), or Leadership (Wil) Test lets the Agents pass through the rapturous masses. Succeeding could put the Agents in contact with a notable member of the Ecclesiarchy, while failing might have the Agents offend a similar NPC, resulting in either a bonus or lost Influence.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Cunning",
+              "Intimidation",
+              "Leadership"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Push through the procession"
+          }
+        ]
+      },
+      {
+        "from": 61,
+        "to": 63,
+        "name": "Preacher",
+        "page": 40,
+        "text": "A wandering preacher approaches the Agents during their travels. This cleric professes to speak the word of the Emperor (or a similarly divine power) but requires a show of faith to bestow their blessings upon the Agents. The Agents can attempt a Deception (Fel), Insight (Fel), Intimidation (Wil), or Persuasion (Fel) Test to convince the preacher to pass on their divinely inspired thoughts. Along with whatever information the preacher imparts, any Agents with 1 or more Faith points gain an additional Faith point. This additional Faith point increases the Agent’s maximum Faith points until the end of the session.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Deception",
+              "Insight",
+              "Intimidation",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Coax the preacher into sharing thoughts"
+          }
+        ]
+      },
+      {
+        "from": 64,
+        "to": 66,
+        "name": "Xenos Influence",
+        "page": 40,
+        "text": "The taint of some xenos Species has made its way into the city. This could be an arcane device left over from the ancient Necrons or some illicit drug provided by Drukhari to corrupt the citizens of a major city. Either way, the Agents stumble across it and have a chance to disrupt the influence. This could be almost any sort of Test, as the ways of the xenos are varied. However, the rewards for the Agents could include unique technology or the notice of the Emperor in the form of 1 additional Glory.",
+        "tests": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "church-of-steel-wasteland-events",
+    "name": "Wasteland Events",
+    "source": "church-of-steel",
+    "page": 41,
+    "dice": "d66",
+    "type": "travel",
+    "defaultDn": 5,
+    "gm": "Roll d66 to determine a random wasteland event. Associated Skill Tests are DN 5, unless you determine otherwise determined based on the conditions.",
+    "rows": [
+      {
+        "from": 11,
+        "to": 13,
+        "name": "Ravaged Landscape",
+        "page": 41,
+        "text": "Whether by an attack or from some millennia-past event, the landscape has been completely ruined. The unsettling quietude of the area should haunt the Agents as they travel the landscape, requiring a DN 3 Fear Test. If at least one Agent fails the Test, the GM gains 1 Ruin. Though the effects of failure persist only during this event, the Agents may also come across a secondary discovery, such as combat or another randomly generated event.",
+        "tests": [
+          {
+            "kind": "resolve",
+            "skills": [],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Stand the eerie silence",
+            "gm": "The GM gains 1 Ruin if at least one Agent fails."
+          }
+        ]
+      },
+      {
+        "from": 14,
+        "to": 16,
+        "name": "Vicious Fauna",
+        "page": 41,
+        "text": "A single massive predator or a full herd of local wildlife interferes with the Agents’ travel plans. Agents seeking to avoid such beasts likely have to succeed at an Athletics (S), Pilot (A), Stealth (A), or Survival (Wil) Test. Failing a Test might result in the fauna taking an interest in the Agents, trailing them or damaging their vehicles.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics",
+              "Pilot",
+              "Stealth",
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid the dangerous fauna"
+          }
+        ]
+      },
+      {
+        "from": 21,
+        "to": 23,
+        "name": "Strange Weather",
+        "page": 41,
+        "text": "Every world has its own unique weather patterns, from the relative normalcy of storms to utterly alien events like tornadoes of flame or flesh-melting rain. As the Agents progress on their journey, they find themselves in the path of an abnormal weather event. An Awareness (Int) or Tech (Int) Test can help detect the anomaly, while a Survival (Wil) Test can help Agents find or construct quick shelter to weather the storm. Canny Agents can use weather to their advantage, intentionally entering hazardous areas to lose pursuers or to approach foes from unexpected angles.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness",
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Detect the weather anomaly"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Find or build shelter from the storm"
+          }
+        ]
+      },
+      {
+        "from": 24,
+        "to": 26,
+        "name": "Twisting Paths",
+        "page": 41,
+        "text": "As the Agents progress onwards, the terrain breaks up into a series of intersecting passages. For ground vehicles, this could be a tightly packed crystalline forest, while aeronautica assets might need to perform a low-fly through tight canyons. A Pilot (A) Test gets the Agents through. Simply getting through the pathways is important, but the hidden nooks and side passages can contain caches of goods or stealthy groups who could offer the Agents shelter or supplies.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Pilot"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Get through the twisting passages"
+          }
+        ]
+      },
+      {
+        "from": 31,
+        "to": 33,
+        "name": "Difficult Terrain",
+        "page": 41,
+        "text": "The next leg of the Agents’ Journey takes them through a particularly rough patch of terrain. This could be an area littered with ancient debris, a bubbling swamp that threatens to consume vehicles, or a region of floating landmasses that require precise timing to move between. Athletics (S), Pilot (A), and Survival (Wil) Tests could all be appropriate for a variety of terrain types, as could Strength, Toughness, Initiative, and Willpower Tests to endure and overcome harsh environments. These regions rarely provide the Agents with benefits and instead exist simply to slow down travel.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics",
+              "Pilot",
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Cross the rough terrain"
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "S",
+            "dn": null,
+            "purpose": "Overcome the harsh terrain",
+            "gm": "One of four Attribute options printed (S, T, I, Wil); the GM picks."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Endure the harsh terrain",
+            "gm": "One of four Attribute options printed (S, T, I, Wil); the GM picks."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "I",
+            "dn": null,
+            "purpose": "Get over the harsh terrain",
+            "gm": "One of four Attribute options printed (S, T, I, Wil); the GM picks."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "Wil",
+            "dn": null,
+            "purpose": "Push through the harsh terrain",
+            "gm": "One of four Attribute options printed (S, T, I, Wil); the GM picks."
+          }
+        ]
+      },
+      {
+        "from": 34,
+        "to": 36,
+        "name": "Stranded Travellers",
+        "page": 42,
+        "text": "A group of stranded travellers or an Astra Militarum scouting party flags down the Agents for assistance. Their vehicle is damaged and in need of repair, is out of fuel, or has fallen prey to an attack by raiders or local beasts. The passengers offer to trade ammo or supplies for repairs — requiring a Tech (Int) Test — or fuel. Alternatively, this might be a trap, which the Agents can determine with an Insight (Fel) Test. The travellers might also be able to lend information about an upcoming Travel Stage.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Repair the travellers' vehicle"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Insight"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Spot a trap in the travellers' plea"
+          }
+        ]
+      },
+      {
+        "from": 41,
+        "to": 43,
+        "name": "Subterranean Paths",
+        "page": 42,
+        "text": "The Agents discover a series of underground passageways they can use to more efficiently reach their destination. These caverns are treacherous, often requiring a Survival (Wil) Test to properly navigate, as well as routine uses of Athletics (S) and Awareness (Int) Tests to avoid or overcome natural dangers. Lost Agents could become Exhausted, while those who quickly make it through could reach their destination in an expert fashion, earning an additional Glory at the start of the next encounter.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Navigate the underground passages"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics",
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid or overcome natural dangers",
+            "gm": "Used routinely along the route."
+          }
+        ]
+      },
+      {
+        "from": 44,
+        "to": 46,
+        "name": "Peaceful Fauna",
+        "page": 42,
+        "text": "For every hundred aggressive Species that exist throughout the Imperium, there’s one that is far more docile. As the Agents pass through an area filled with grazing beasts, they have the chance to catch their breath and possibly trade with local animal tenders. A Deception (Fel), Insight (Fel), or Persuasion (Fel) Test puts the Agents in contact with local farmers or shepherds who can provide information, as well as animal mounts if the Agents have lost their primary mode of transportation.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Deception",
+              "Insight",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Make contact with local animal tenders"
+          }
+        ]
+      },
+      {
+        "from": 51,
+        "to": 53,
+        "name": "Abandoned Outpost",
+        "page": 42,
+        "text": "Far from battlefields and cities, explorers can still discover the reach of the Imperium in the form of long-abandoned outposts. Such sites could vary from an old Astra Militarum Bastion to a Fortress Monastery lost to the annals of time. Investigation (Int), Scholar (Int), or Tech (Int) Tests could be necessary to identify the structure and learn its history. Ballistic Skill (A) and Weapon Skill (I) Tests could disable any remaining traps. Inside, the Agents might uncover a trove of artefacts or preserved treasures that grant bonus Wealth.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Investigation",
+              "Scholar",
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Identify the outpost and its history"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Ballistic Skill",
+              "Weapon Skill"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Disable any remaining traps"
+          }
+        ]
+      },
+      {
+        "from": 54,
+        "to": 56,
+        "name": "Xenos Activity",
+        "page": 42,
+        "text": "Despite the Imperium’s best efforts, xenos menaces are nearly everywhere. Forced to travel through such areas, the Agents can attempt Investigation (Int) Tests to identify xenos activity, while Skills like Cunning (Fel) or Stealth (A) could be useful in avoiding any Threats. The rewards for interacting — or destroying — xenos enemies can vary, though they often take the form of recovered alien Wargear, important information, or occasionally an increase in Influence.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Investigation"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Identify the xenos activity"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Cunning",
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid the xenos Threats",
+            "gm": "Printed as Skills that could help, not as a named Test."
+          }
+        ]
+      },
+      {
+        "from": 61,
+        "to": 63,
+        "name": "Rampant Flora",
+        "page": 42,
+        "text": "Plant life comes in countless forms throughout the galaxy, and in the wastelands, it often grows without end. From curling vines the width of Titans to fungal infestations that consume entire rainforests in their hunger, there are countless Threats Agents can face. Along with creating hazards that might require Tech (Int) or Survival (Wil) to overcome, the flora can also be used to add 1–3 extra dice to Medicae (Int) Tests, granting one-time bonuses in the form of collected medicinals.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech",
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Overcome the hazardous flora"
+          }
+        ]
+      },
+      {
+        "from": 64,
+        "to": 66,
+        "name": "Forgotten Church",
+        "page": 42,
+        "text": "A lost holy site to the Emperor lies hidden in the wastelands in the shadow of His light. Such sites provide respite to the Agents, but they may also grant the momentary light of the Emperor Himself. Agents in faithful service to the Imperium who rest in this area gain Glory equal to the number of Agents.",
+        "tests": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  }
+]

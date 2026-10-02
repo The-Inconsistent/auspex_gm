@@ -534,6 +534,17 @@ The tests are in `lib/command/command.test.ts`.
   - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
 
   It also shows the Threat Assessment sizing guideline for the current party size and the current enemy count.
+- **`ScenePicker`** (`components/scene-picker/scene-picker.tsx`, + SCENE FROM A TABLE beside + NEW SCENE, shown when
+  `presets.tables` has any), issue #39:
+  - The GM picks a book (`BOOKS[source].name`) and one of its tables. The cite, the dice and any printed default DN
+    show, plus the table's `gm` notes behind HOW TO USE THIS TABLE.
+  - ROLL rolls the table's dice (`roll`, prep only), and I ROLLED takes a number the dice can show (`results`). Either
+    one highlights the event(s) it lands on (`rowsFor`): one, none in a printed gap, or two in a printed overlap. A d66
+    roll also shows its tens and units, so the GM can read a printed Wrath Die rule.
+  - Tapping an event previews it: its read-aloud, its GM notes with the cite, and its Tests as the scene will get
+    them.
+  - MAKE THIS SCENE sends `codex.save { kind: "beat" }` with `presetScene({ table, row })` and this adventure's id. The
+    scene goes last, and PREP shows SCENE CREATED.
   SAVE SCENE creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
   error shown inline.
 

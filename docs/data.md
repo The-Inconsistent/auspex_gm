@@ -169,7 +169,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
-| Church of Steel | *none yet* (vehicles, not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
+| Church of Steel | `church-of-steel` (cite CoS; scene presets, issue #39; vehicles not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
 | Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
@@ -179,7 +179,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
 
 The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
-scene, item, NPC or location data that other work types as `Source`.
+scene, item, NPC or location data that other work types as `Source`. Church of Steel joins them for its scene presets (issue #39).
 
 No creation content: Darktide, Litanies of the Lost, Bloody Gates and Affliction Ascendant (official adventures;
 Affliction Ascendant's psyker rule p.5 and Rites of Battle p.23 are mission-only), Church of Steel (travel and vehicles),
@@ -671,6 +671,19 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
     a file holds only its own book's tables, and it prints each table's events, Tests, printed DNs and `gm` notes.
   - `presetScene({ table, row })` turns an event into a scene's `codex.save` data: title, type, read-aloud, the text as
     GM notes with its cite, and the Tests. Nothing else.
+  - **Church of Steel** (`church-of-steel.json`):
+    - 3 tables, 36 events, 46 Tests, transcribed from page renders.
+    - Only 3 Tests print a DN (Landmine 7, Radiation Zone 9, the Ravaged Landscape Fear Test 3). The rest take the
+      printed default, 5.
+    - Each table's `gm` keeps its printed note: the Battlefield Wrath Die rule, and Urban's line about the mode of
+      transport.
+    - Kept as printed: "one years past" (Landmine, p.36), "lighting" (Dangerous Weather, p.38), and "unless you
+      determine otherwise determined" (Wasteland note, p.41).
+    - Difficult Terrain offers four Attributes as alternatives, so they are four Attribute Tests, each with a `gm`
+      note.
+    - No Test entry for an event that names none (Forward Operating Base, Dangerous Weather, Light in the Darkness,
+      Forgotten Church) or that says "almost any sort of Test" (Xenos Influence). Rampant Flora's extra Medicae dice
+      stay in its text.
 
 ---
 
