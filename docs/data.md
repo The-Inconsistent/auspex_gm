@@ -173,7 +173,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 70, 71, 75, 83, 90) |
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
-| Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
+| Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
 | Bloody Gates | `bloody-gates` (cite BG; threats, #44) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
@@ -699,6 +699,16 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
     - Ambush, Broadside, Pursuit and Lattice Springer make combat scenes.
     - Vibrations' Toughness Test notes its repeats and Shock in `gm`.
     - Out of scope: the Sump Events (the scenes of the book's adventure) and the Chapter 2 hazard tables.
+  - **Litanies of the Lost** (`litanies-of-the-lost.json`):
+    - Random Encounters: 2d6, 11 events, each with its read-aloud, and 3 Tests: Tech DN 7, Medicae DN 3, and an
+      Opposed Stealth Test.
+    - `name` is the table's row name. Three entries print a shorter heading (rows 5, 8 and 9).
+    - The table's `gm` holds p.117's instructions: the d6 trigger roll before the table, that the GM may skip, force
+      or pick instead, and the Combining Encounters sidebar.
+    - Nested tables are plain lines in their entry: the Suggested Servitor Patrol Size (row 10, p.119) and the
+      Incident Survivor d6 (row 12, p.120).
+    - Row 3's "sneak past" and "deceive" name no Skill, so they stay in its text.
+    - Kept as printed: "Maerch" (sidebar, p.117), "manufactorium" (pp.118–119), and a mismatched ‘…” quote (p.119).
 
 ---
 
