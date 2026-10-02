@@ -1,0 +1,125 @@
+[
+  {
+    "id": "affliction-ascendant-rites-of-battle",
+    "name": "Rites of Battle",
+    "source": "affliction-ascendant",
+    "page": 23,
+    "gm": "Each member of the squad with the ASTARTES Keyword may choose to undertake one of the following rites before entering battle. These benefits can be activated during play by spending Glory at the start of the Agent’s turn. Note that these rites are only available to Tier 4 and can only benefit groups of Astartes who have had time to train together or who share a [CHAPTER] Keyword.",
+    "rows": [
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 1,
+        "name": "Emperor’s Blade: Wall of Steel",
+        "text": "You fight to defend your battle-brothers. Allies with the ASTARTES Keyword within 2m of you add 1 to their Defence against melee attacks."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 2,
+        "name": "Emperor’s Blade: Staggering Blow",
+        "text": "Make a melee attack. If you hit, the next successful attack against the target by an ally with the ASTARTES Keyword gains +2 damage and -2 AP."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 3,
+        "name": "Emperor’s Blade: Fury of the Astartes",
+        "text": "Yelling battle cries, you lead your battle-brothers into the fray. For one round, any allies with the ASTARTES Keyword gain the Counter Attack Talent."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 1,
+        "name": "Furious Fire: Fire Discipline",
+        "text": "Through sharing targeting data and coordinating fire, you deny your target Cover. Pick one enemy you can see. Until your next turn, any ally with the ASTARTES Keyword who targets them ignores Cover."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 2,
+        "name": "Furious Fire: Storm of Death",
+        "text": "In carefully rehearsed patterns, the squad lay down a blanket of fire. Until your next turn, allies with the ASTARTES Keyword reduce the Multi-Action penalty by 2 if shooting."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 3,
+        "name": "Furious Fire: Designate Target",
+        "text": "Your suit cogitators analyse a priority target, sharing information on its weak points with your allies. Until your next turn, any ally with the ASTARTES Keyword who targets them gains +2 ED and −1 AP."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 1,
+        "name": "Strength Unyielding: Tactical Positioning",
+        "text": "Your targeting systems highlight and share the locations of enemies, allowing your brothers to find Cover. Until the end of your next turn, all allies with the ASTARTES Keyword gain +1 Cover against shooting attacks."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 2,
+        "name": "Strength Unyielding: Danger Denied",
+        "text": "Until the end of your next turn, all allies with the ASTARTES Keyword roll 2 extra dice on Determination Tests."
+      },
+      {
+        "kind": "spend",
+        "pool": "glory",
+        "n": 3,
+        "name": "Strength Unyielding: We Shall Not Yield",
+        "text": "Any Agents with the ASTARTES Keyword who are Dying may make a Last Stand (see Wrath & Glory, page 194) without suffering d3 Traumatic Injuries at its conclusion. They must still spend all their remaining Wrath (minimum 1)."
+      }
+    ]
+  },
+  {
+    "id": "affliction-ascendant-battlefield-ruin",
+    "name": "Battlefield Ruin",
+    "source": "affliction-ascendant",
+    "page": 24,
+    "gm": "During the battle, you can spend Ruin to trigger different effects on the battlefield. The options available are listed in the mission descriptions. You can trigger effects in narrative time or combat time. Effects triggered in combat time take a turn, as if an additional NPC were involved.",
+    "rows": [
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "The Corpsetide",
+        "text": "A Mob of 30 Poxwalkers have made their way down from the crypts and engage the Agents."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 1,
+        "name": "Visions",
+        "text": "Visions of Tora Armis consumed by decay disturb an Agent, clouding their vision and breaking their concentration. They must make a DN 5 Conviction Test or become Vulnerable till the end of the current encounter."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 2,
+        "name": "Rocks Fall",
+        "text": "A massive chunk of rock falls from the roof of the cavern. Make a DN 6 Athletics (S) Test to dodge the Blast (4) attack. Damage is 12 +4 ED AP −2."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 2,
+        "name": "Pitfall",
+        "text": "The massive weight of a suit of Power Armour sends the wearer crashing through the floor. One Agent must make a DN 8 Athletics (S) Test or become Hindered (3). They may attempt a new DN 6 Test each round to get out of the hole they have fallen into. Assistance from another Agent reduces the DN to 4."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 3,
+        "name": "Warp Tendrils",
+        "text": "Black ribbons of nothingness whip toward the Agent. Make an attack with a pool of 8 dice and the FIRE Keyword. Damage is 6 +3 ED and ignores armour."
+      },
+      {
+        "kind": "spend",
+        "pool": "ruin",
+        "n": 3,
+        "name": "Nurgle’s Miasma",
+        "text": "Armour rots; equipment malfunctions. Each Agent must choose one of the following:\n• They lose a point of ammunition.\n• They receive −1 to Armour.\n• An augmetic ceases to function.\n• Fatigue and sickness cause −1 Willpower."
+      }
+    ]
+  }
+]
