@@ -4,6 +4,7 @@ export * from "./state.ts";
 export * from "./codex.ts";
 export * from "./dn.ts";
 export * from "./roll-table.ts";
+export * from "./flavour.ts";
 export * from "./scene-presets.ts";
 export * from "./faction-presets.ts";
 export * from "./npc-presets.ts";

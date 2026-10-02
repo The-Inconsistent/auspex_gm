@@ -5,7 +5,8 @@ can find or change a rule with confidence. Page cites are Core rulebook printed 
 (socket, transactions, broadcast) see [architecture.md](architecture.md) and [backend.md](backend.md); for the
 screens see [frontend.md](frontend.md); for threat JSON and packs see [data.md](data.md).
 
-The app never rolls dice. It tracks state, enforces limits, and shows reminders.
+The app never rolls a Test. It tracks state, enforces limits, and shows reminders. In prep, it may roll on a book
+table (`roll-table.ts`, `flavour.ts`).
 
 **Where rules live**
 
@@ -14,6 +15,7 @@ The app never rolls dice. It tracks state, enforces limits, and shows reminders.
 | Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `skillTotal`, `effectiveStrength`, `poolMax`, `isOut`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
 | | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
+| | `packages/shared/src/flavour.ts` | `rollOn` (one roll on a name or appearance table, by its shape), `rollLook` and `LOOK` (Core p.32's species rules, §11.90), `isNameTable`: prep flavour only (issue #48) |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
 | | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `purchaseKey` (the key an advancement purchase is dated by, §11.69), `meets` (every `Requirement` kind), `wargearMatches` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
