@@ -651,6 +651,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 
     Only the Faction is mapped, not a sub-faction the page could also suggest (UL-KHARI): the GM adds that in the
     picker. *(User ruling, 2026-10-02.)*
+85. **A Threat Assessment faction takes the Keywords its own stat blocks share** (TA pp.22–186; GitHub issue #46).
+    The faction sections print no faction Keyword of their own, so each preset (`faction-presets/threat-assessment.json`)
+    takes the Keywords printed on every stat block of that section's faction, read from the transcribed threats:
+    Aeldari (p.22) AELDARI; Harlequins (p.52) AELDARI, HARLEQUIN, [MASQUE]; Drukhari (p.58) DRUKHARI; Ork Kultur (p.79)
+    ORK; Genestealer Cults (p.104) GENESTEALER CULT; Necrons (p.131) NECRON; The T'au Empire (p.158) T'AU. The other
+    species a section fields beside its faction don't count: the Purestrain Genestealer (p.117, GENESTEALER, TYRANID),
+    and the Kroot and Vespid of the T'au section (pp.179–186). Notes stay empty: the sections are lore and stat blocks,
+    and the stat blocks are already in the bestiary. *(User ruling, 2026-10-02.)*
 
 ---
 

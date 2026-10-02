@@ -14,7 +14,7 @@ Commands and setup: [development.md](development.md).
 | `packages/data/threats/*.json` | One stat block per file, flat (no per-book folders). Schema `Threat` in `packages/shared/src/threat.ts` |
 | `packages/data/packs/<name>/pack.json` | A campaign start: campaign, factions, locations, NPCs, handouts, adventures and beats. Schema `Pack` in `packages/shared/src/pack.ts` |
 | `packages/data/packs/<name>/characters/*.json` | One character per file, `{ name, stats }`. `stats` is `CharacterStats` in `packages/shared/src/state.ts` |
-| `packages/data/faction-presets/<source>.json` | Printed factions for CODEX › FACTIONS' ADD FROM BOOK (GitHub issue #46), one file per book. Schema `FactionPreset` in `packages/shared/src/faction-presets.ts`: the codex faction (name, `keywords`, `notes`, `secrets`) plus `id`, `source` and printed `page`. GM-only, served by `/api/campaigns/:id/faction-presets` beside the creation catalogue's own factions. Keywords only where the page prints them, or a §11 ruling maps them (rules-flow.md §11.84); notes and secrets verbatim |
+| `packages/data/faction-presets/<source>.json` | Printed factions for CODEX › FACTIONS' ADD FROM BOOK (GitHub issue #46), one file per book. Schema `FactionPreset` in `packages/shared/src/faction-presets.ts`: the codex faction (name, `keywords`, `notes`, `secrets`) plus `id`, `source` and printed `page`. GM-only, served by `/api/campaigns/:id/faction-presets` beside the creation catalogue's own factions. Keywords only where the page prints them, or a §11 ruling maps them (rules-flow.md §11.84, §11.85); notes and secrets verbatim |
 | `packages/data/index.ts` | Server-side loaders (below) |
 | `packages/data/validate.ts` | `bun run validate` (§6) |
 
@@ -162,7 +162,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Book | `source` id | File in `books/` | PDF page = |
 |---|---|---|---|
 | Core rulebook | `core` | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
-| Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
+| Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40; faction presets, #46) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` (Frameworks, #45) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
