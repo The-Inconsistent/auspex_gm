@@ -589,6 +589,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     particularly impressive feats", and the book prints no amount. A scene's Glory line carries its own amount, which
     the GM sets; a new line starts at 1. The pool maximum (p.164) still bounds it, and an award at the maximum is lost.
     *(User ruling, 2026-10-02.)*
+78. **A Ruin or Glory spend the book doesn't price** (GitHub issue #40). Core p.320 says Ruin Actions "cost a certain
+    number of Ruin", and some printed lists name a spend without a cost (Threat Assessment p.7 prices two of its five
+    Additional Ruin Actions). The preset keeps the cost null, a scene's copy has none, and SAVE waits until the GM sets
+    it for that scene. There is no default: the app never invents a cost.
+    *(User ruling, 2026-10-02.)*
 
 ---
 

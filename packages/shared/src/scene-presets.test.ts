@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { BeatTest, EventTable, PresetTest, presetScene } from "./index.ts";
+import { BeatTest, EventTable, PoolPresetTable, PresetTest, presetLine, presetScene } from "./index.ts";
 
 // Placeholders only: book text never goes in tests (docs/data.md, Copyright).
 const event = (from: number, to: number, extra: object = {}) => ({
@@ -79,4 +79,42 @@ test("a scene from an event: its name and text, one Test per Skill, the table's 
 
   const noDefault = EventTable.parse({ ...t, defaultDn: undefined });
   assert.equal(presetScene({ table: noDefault, row: noDefault.rows[1]! }).tests[0]!.dn, null, "the GM sets it");
+});
+
+// Placeholders only, as above.
+const poolTable = (rows: object[]) => ({
+  id: "placeholder-pools",
+  name: "[List]",
+  source: "bloody-gates",
+  page: 26,
+  rows,
+});
+
+test("a book's Ruin and Glory list names each row's pool, and its number only where the book prints one", () => {
+  const ok = (row: object) => PoolPresetTable.safeParse(poolTable([{ name: "[row]", ...row }])).success;
+  assert.ok(ok({ kind: "spend", pool: "ruin", n: 2 }));
+  assert.ok(ok({ kind: "spend", pool: "ruin", n: null }), "no printed cost (§11.78)");
+  assert.equal(ok({ kind: "spend", n: 2 }), false, "a spend with no pool");
+  assert.equal(ok({ kind: "spend", pool: "ruin" }), false, "n is printed or null, never left out");
+  assert.equal(ok({ kind: "spend", pool: "ruin", n: 11 }), false);
+  assert.equal(PoolPresetTable.safeParse(poolTable([])).success, false, "a list has rows");
+});
+
+test("a preset copies into its scene list with its cite, never inventing a cost", () => {
+  const t = PoolPresetTable.parse(
+    poolTable([
+      { kind: "spend", pool: "ruin", n: 2, name: "[spend]", text: "[effect]", gm: "[condition]" },
+      { kind: "spend", pool: "ruin", n: null, name: "[unpriced]", page: 27 },
+      { kind: "earn", pool: "glory", n: null, name: "[feat]" },
+      { kind: "earn", pool: "ruin", n: 1, name: "[trigger]" },
+    ]),
+  );
+  const [spend, unpriced, feat, trigger] = t.rows.map((row) => presetLine({ table: t, row }));
+  assert.deepEqual(spend, {
+    list: "spends",
+    line: { pool: "ruin", name: "[spend]", cost: 2, text: "[effect] [condition] (BG p.26)" },
+  });
+  assert.deepEqual(unpriced!.line, { pool: "ruin", name: "[unpriced]", cost: null, text: "(BG p.27)" });
+  assert.deepEqual(feat, { list: "glory", line: { text: "[feat] (BG p.26)", amount: 1 } }, "an award starts at 1");
+  assert.equal(trigger!.list, "ruin");
 });

@@ -8,6 +8,7 @@ import {
   type BeatStatus,
   type BeatTest,
   type Codex,
+  type PoolPresetTable,
   type SkillDn,
   type Threat,
 } from "@wg/shared";
@@ -30,6 +31,7 @@ type BeatEditorProps = {
   send: Send;
   bestiary: Threat[];
   skillDns: SkillDn[];
+  poolTables: PoolPresetTable[];
   onDone: () => void;
 };
 
@@ -39,7 +41,17 @@ type Draft = Omit<ReturnType<typeof stripBeat>, keyof PoolDrafts> & PoolDrafts;
 // Adds `id` to the list, or removes it if already there.
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
-export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, skillDns, onDone }: BeatEditorProps) {
+export function BeatEditor({
+  adventureId,
+  beat,
+  codex,
+  players,
+  send,
+  bestiary,
+  skillDns,
+  poolTables,
+  onDone,
+}: BeatEditorProps) {
   const [b, setB] = useState<Draft>(() =>
     beat
       ? stripBeat(beat)
@@ -218,7 +230,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
       </div>
 
       <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />
-      <RuinGlory lines={b} onChange={(lines) => setB({ ...b, ...lines })} />
+      <RuinGlory lines={b} tables={poolTables} onChange={(lines) => setB({ ...b, ...lines })} />
 
       <div className="field">
         <span className="label">PREPARED ENCOUNTER</span>

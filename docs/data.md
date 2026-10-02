@@ -639,8 +639,8 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 
 ### Scene presets (`packages/data/scene-presets/*.json`, `ScenePresets` in `packages/shared/src/scene-presets.ts`)
 
-GM-only book data for building scenes (GitHub issue #39), served by `GET /api/campaigns/:id/scene-presets` as
-`{ skillDns }`. Loaded once at api startup by `scenePresets()` (`index.ts`).
+GM-only book data for building scenes (GitHub issues #39 and #40), served by `GET /api/campaigns/:id/scene-presets` as
+`{ skillDns, tables, pools }`. Loaded once at api startup by `scenePresets()` (`index.ts`).
 
 - `skill-dns.json` (`SkillDn[]`): Skills and DN, the table at the foot of Core pp.122, 123, 125 and 126. There is one
   row per Skill and printed DN, `{ skill, dn, source, page, example }`, with the example verbatim: 17 Skills × DN 1,
@@ -711,6 +711,23 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
       Incident Survivor d6 (row 12, p.120).
     - Row 3's "sneak past" and "deceive" name no Skill, so they stay in its text.
     - Kept as printed: "Maerch" (sidebar, p.117), "manufactorium" (pp.118–119), and a mismatched ‘…” quote (p.119).
+- `pools/<source>.json` (`PoolPresetTable[]`, one file per book, GitHub issue #40): the books' ready-made Ruin and
+  Glory lines, for the scene editor's ADD FROM BOOK.
+  - A list is `{ id, name, source, page, gm?, rows }`, `gm` holding the book's notes on using it, verbatim. A row is
+    `{ kind, pool, n, name, page?, text, gm? }`: `kind` is `earn` (a trigger or award) or `spend`, `pool` is Ruin or
+    Glory, and `n` is the printed amount or cost, null where the book prints none (rules-flow.md §11.78). `name` is
+    as printed (our words only where the book names none), `text` the printed effect verbatim, and `gm` a condition
+    the app can't check.
+  - `presetLine({ table, row })` copies a row into the scene, with its cite: an `earn` row becomes a Ruin or Glory
+    line (`name`, `gm` and the cite; an award with no printed amount starts at 1, §11.77), a `spend` a planned spend
+    (`text`, `gm` and the cite; no printed cost stays empty and SAVE waits for the GM's).
+  - `validate` checks that ids are unique, that a file holds only its book's lists, that each planned list holds the
+    rows the book prints, and that every row fits a scene line once copied; it prints each file's presets, `gm`
+    conditions and rows with no printed number.
+  - **Core Rulebook** (`core.json`): 3 lists, 10 rows. Acquiring Ruin (p.320): the three +1 triggers, plus a
+    Complication taken as Ruin (p.163) and Fail Forward's "The GM gains 1 Ruin" (p.319), both named in our words.
+    Spending Ruin (p.320): the four priced spends; Activate Ruin Actions isn't one, since each Threat prices its own.
+    Glory Points (p.316): an award for a particularly impressive feat, with no printed amount.
 
 ---
 
@@ -768,7 +785,7 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
 | Copyrighted | Where |
 |---|---|
 | The book PDFs | `books/`, gitignored (`*.pdf`); never commit them |
-| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/*.json`, and any rule text in packs and characters |
+| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/**/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
 - Never serve book content without an access token. `GET /api/campaigns/:id/threats`, `/wargear` and `/scene-presets` return 401 unless

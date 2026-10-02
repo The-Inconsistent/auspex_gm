@@ -325,6 +325,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
           send={send}
           bestiary={bestiary}
           skillDns={presets.skillDns}
+          poolTables={presets.pools}
           onDone={() => setEditing(null)}
         />
       )}

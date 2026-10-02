@@ -91,8 +91,8 @@ The messages (`app/constants.ts`):
 
 For the GM, `loadBestiary` fetches `/api/campaigns/:id/threats` on the server, parses it with `Threat.array()` and sorts
 it by name. Any failure gives `[]`, so the add-threat pickers are simply empty. The bestiary is passed down as a prop;
-the client never fetches it. `loadScenePresets` does the same for `/api/campaigns/:id/scene-presets` (the scene editor's sample DNs; failure
-gives none). `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
+the client never fetches it. `loadScenePresets` does the same for `/api/campaigns/:id/scene-presets` (the scene editor's sample DNs, event tables
+and Ruin and Glory lists; failure gives none). `loadWargear` does the same for `/api/campaigns/:id/wargear` (the requisition form's
 catalogue), fetched in parallel; failure gives `[]` and the form takes typed entries. `loadRules` fetches
 `/api/campaigns/:id/rules` for every seat (a player's lacks the `gm` entries) and passes it to both apps' RULES tab (`components/ui/rules-ref`: search over
 name, gist and text, a kind filter, one `<details>` per entry: the gist on the collapsed row, the verbatim text inside); failure gives `[]` and the tab says the archive is unreachable. Both apps also wrap their screens in
@@ -536,7 +536,9 @@ The tests are in `lib/command/command.test.ts`.
   - Ruin and Glory (`components/ruin-glory/ruin-glory.tsx`, issue #40): RUIN · WHAT EARNS IT HERE and GLORY · AWARDS,
     an amount (a `NumberInput` up to `MAX_POOL_STEP`) and a line each; SPENDS · PLANNED, a RUIN / GLORY toggle, a
     cost, a name and its effect. Up to `MAX_POOL_LINES` each. SAVE drops blank lines (`savedPools`), and holds the
-    save while a line has no amount or a spend no cost
+    save while a line has no amount or a spend no cost. ADD FROM BOOK (`components/pool-picker`, shown when
+    `presets.pools` has any) picks a book and one of its lists, shows its HOW TO USE THIS LIST notes, and ADD copies a
+    row with `presetLine` into the right list (a cost the book doesn't print stays empty)
   - location
   - NPC and handout toggle chips (`aria-pressed`)
   - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)
