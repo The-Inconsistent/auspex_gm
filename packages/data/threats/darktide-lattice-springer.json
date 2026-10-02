@@ -1,0 +1,93 @@
+{
+  "id": "darktide-lattice-springer",
+  "name": "Lattice Springer",
+  "source": "darktide",
+  "page": 75,
+  "faction": "imperial",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 3,
+    "A": 4,
+    "I": 4,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 5,
+    "note": "1 AR"
+  },
+  "defence": 3,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Stealth",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Lattice Ambusher",
+      "text": "In the Lattice, a Springer begins its turn completely hidden from sight underneath the cable. When enemies enter its range, it makes a Stealth (A) Test with a +4d6 bonus."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "text": "The Springer initiates a Grapple with a target. If it succeeds, then it automatically drags any creature of Large size or smaller underneath the Lattice cable, into its sticky den."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Poisonous Bite",
+          "damage": 7,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned)",
+            "Rending (2)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Coil / Uncoil",
+      "text": "The Springer uses its tail to move it (and up to one Grappled target) above or below the plasteel cabling which forms the Lattice."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Poisonous Bite prints 'Inflict (Poisoned)' with no value and 'Rending 2' (stored Rending (2)). Faction imperial: native hive fauna."
+}

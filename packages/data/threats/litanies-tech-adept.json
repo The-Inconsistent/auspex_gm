@@ -1,0 +1,36 @@
+{
+  "id": "litanies-tech-adept",
+  "name": "Tech-Adept",
+  "source": "litanies-of-the-lost",
+  "page": 35,
+  "faction": "mechanicus",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ADEPTUS MECHANICUS", "AVACHRUS"],
+  "attributes": { "S": 1, "T": 2, "A": 1, "I": 1, "Wil": 1, "Int": 4, "Fel": 1 },
+  "resilience": { "value": 3 },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 2,
+  "skills": { "default": null, "list": [
+    { "name": "Awareness", "dice": 6 },
+    { "name": "Ballistic Skill", "dice": 2 },
+    { "name": "Investigation", "dice": 6 },
+    { "name": "Medicae", "dice": 5 },
+    { "name": "Pilot", "dice": 2 },
+    { "name": "Scholar", "dice": 6 },
+    { "name": "Tech", "dice": 8 },
+    { "name": "Weapon Skill", "dice": 2 }
+  ] },
+  "bonuses": [],
+  "abilities": [
+    { "type": "ACTION", "name": "Admin Access", "text": "When a Tech-Adept communes with a Machine Spirit as part of a Test, they gain +2 bonus dice.", "weapons": [
+      { "name": "Laspistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Reliable"] }
+    ] }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Shock 2, no combat ability beyond a laspistol). No Default pool printed."
+}

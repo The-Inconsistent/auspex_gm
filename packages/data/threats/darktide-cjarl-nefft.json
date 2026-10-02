@@ -1,0 +1,87 @@
+{
+  "id": "darktide-cjarl-nefft",
+  "name": "Cjarl Nefft",
+  "source": "darktide",
+  "page": 35,
+  "faction": "imperial",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "SCUM"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 2,
+    "I": 2,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 6,
+    "note": "1 AR"
+  },
+  "defence": 1,
+  "wounds": 6,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 6
+      },
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Leadership",
+        "dice": 6
+      },
+      {
+        "name": "Survival",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Expert Climber",
+      "text": "+2 bonus Icons to any Test made to climb."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Industrial Bludgeon",
+          "damage": 8,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (1)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "No Tier row printed; class proposed (named NPC, 6 Wounds, no Champion bonus). Faction imperial: loyal to nobody."
+}

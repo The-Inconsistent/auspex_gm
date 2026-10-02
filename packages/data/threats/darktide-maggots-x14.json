@@ -1,0 +1,115 @@
+{
+  "id": "darktide-maggots-x14",
+  "name": "Maggots X14",
+  "source": "darktide",
+  "page": 48,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T"
+  ],
+  "keywords": [
+    "SCUM"
+  ],
+  "attributes": {
+    "S": 7,
+    "T": 7,
+    "A": 5,
+    "I": 4,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 11,
+    "note": "3 AR"
+  },
+  "defence": 3,
+  "wounds": 11,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 5,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Tech",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Auspex",
+      "text": "As a Combat Action, Maggots can detect energy emissions, motion, and other life signs within 50 metres."
+    },
+    {
+      "name": "Mag-Boots",
+      "text": "Maggots can walk on any metallic surface, but his speed is reduced by 3 if walking at an angle of more than 45 degrees to the plane of gravity."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Arc Pistol",
+          "damage": 14,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Arc (2)",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Omnissian Axe",
+          "damage": 12,
+          "ed": 5,
+          "ap": -2,
+          "range": [
+            2
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Weaponised Ignorance",
+      "text": "Spend 1 Ruin. Maggots presses a few buttons on his heavily modified suit of armour, and one of the following effects occurs at random:\n- Antigrav Field: Maggots gains a speed of 12 Flight until the end of his next Turn.\n- Refractor Field: Maggots's Resilience increases by +3 until the end of his next Turn.\n- Electro Generator: Every creature within 5m takes 12 + 2 ED damage (Agonising) and must make a DN 5 Toughness Test. On a failure, the creature is Restrained for 1 Round, and knocked Prone on a Complication."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 7,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Omnissian Axe prints 'Range 2' and no traits; stored [2]. Faction imperial: hive scum gang leader."
+}

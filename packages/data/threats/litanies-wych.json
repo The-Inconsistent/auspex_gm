@@ -1,0 +1,38 @@
+{
+  "id": "litanies-wych",
+  "name": "Wych",
+  "source": "litanies-of-the-lost",
+  "page": 36,
+  "faction": "drukhari",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["DRUKHARI"],
+  "attributes": { "S": 2, "T": 2, "A": 3, "I": 4, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 4, "note": "Wychsuit: AR 1" },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 3,
+  "skills": { "default": 3, "list": [
+    { "name": "Athletics", "dice": 6 },
+    { "name": "Awareness", "dice": 4, "passive": 2 },
+    { "name": "Ballistic Skill", "dice": 4 },
+    { "name": "Weapon Skill", "dice": 8 }
+  ] },
+  "bonuses": [
+    { "name": "Power from Pain: Flensing Fury", "text": "If this Threat deals a Wound it gains +3 bonus dice to Weapon Skill (I) Tests until the end of its next Turn." },
+    { "name": "Obsession: Precise Killer", "text": "If this Threat makes an All Out Attack, the AP value of their melee weapons increases by 1 for that attack." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Torturous Acrobatics", "text": "The Wych moves to their target then uses a Multi-Action to make an Athletics (S) Interaction Attack attempting to make them Vulnerable, followed by a melee attack with their Hekatarii Blade." },
+    { "type": "ACTION", "weapons": [
+      { "name": "Splinter Pistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Inflict (Poisoned)", "Pistol"] },
+      { "name": "Hekatarii Blade", "damage": 7, "ed": 4, "range": [1], "traits": ["Parry"] }
+    ] },
+    { "type": "REACTION", "name": "No Escape", "text": "When this Threat makes a Reaction Attack with a melee weapon they do so with +2 bonus dice." }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 3d6. This Threat uses Agility instead of Toughness to roll Determination.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (rank-and-file Drukhari, no Champion bonus). Inflict (Poisoned) prints no number."
+}

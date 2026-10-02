@@ -1,0 +1,115 @@
+{
+  "id": "darktide-tertium-3033rd",
+  "name": "The Tertium 3033rd",
+  "source": "darktide",
+  "page": 75,
+  "faction": "heretic",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "HERETIC"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 2,
+    "I": 2,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 6,
+    "note": "2 AR"
+  },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 2,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 4
+      }
+    ]
+  },
+  "bonuses": [],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Ancient Lasgun",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            12,
+            24,
+            30
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (1)"
+          ]
+        },
+        {
+          "name": "Axe",
+          "damage": 6,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 1,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Actions",
+      "text": "This is in addition to the Lasgun attacks the Mob usually makes.",
+      "weapons": [
+        {
+          "name": "Rusty Heavy Stubber",
+          "damage": 10,
+          "ed": 2,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 3,
+          "traits": [
+            "Unreliable"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Heedless of Injury",
+      "text": "This Mob does not take the effect of casualties it suffers until after it has acted in the Round."
+    }
+  ],
+  "note": "Ancient Lasgun ranges copied as printed (12 - 24 - 30). Printed heading 'The Tertium 3033rd'."
+}

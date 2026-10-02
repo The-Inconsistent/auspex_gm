@@ -1,0 +1,97 @@
+{
+  "id": "darktide-valgaren",
+  "name": "Valgaren, Avatar of the Typhogenic Swarm",
+  "source": "darktide",
+  "page": 96,
+  "faction": "daemon",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "NURGLE",
+    "MONSTER",
+    "PSYKER"
+  ],
+  "attributes": {
+    "S": 12,
+    "T": 10,
+    "A": 6,
+    "I": 6,
+    "Wil": 10,
+    "Int": 8,
+    "Fel": 10
+  },
+  "resilience": {
+    "value": 11
+  },
+  "defence": 5,
+  "wounds": 50,
+  "shock": null,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 5,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Intimidation",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 5,
+  "bonuses": [
+    {
+      "name": "Architect of Annihilation",
+      "text": "The GM gains 2 points of Ruin at the start of each of Valgaren's Turns."
+    },
+    {
+      "name": "Champion",
+      "text": "Valgaren may use Ruin Actions and has 5 personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Sacrilegious Form",
+      "text": "Anyone who beholds Valgaren must make a DN 5 Fear Test and a DN 7 Corruption Test."
+    },
+    {
+      "type": "ACTION",
+      "name": "Birth Evil",
+      "text": "Valgaren can spawn foul Daemonic creatures from his hideous, bloated mass. Creating a new incubation blister is a Full Round Action. Unless the Agents inflict 10 Wounds on the new blister before his next Turn, it pops to reveal one of the following: three Nurgling Swarms (page 109); two Plaguebearers (Wrath & Glory Rulebook, page 350); or a Rot Fly (page 109). The new Daemons emerge from the blister anywhere in the Slung or its surroundings."
+    },
+    {
+      "type": "RUIN",
+      "name": "Bile Spray",
+      "text": "Spend 1 Ruin to make a ranged attack from a venom-dripping mouth that appears in the middle of Valgaren's bulk (the mouth counts as being within Short Range of any target in or around the Slung): 10 +1 ED / AP -3 / Salvo - / Flamer, Inflict (Poisoned 5), Warp Weapon"
+    },
+    {
+      "type": "RUIN",
+      "name": "Suffocating Mass",
+      "text": "Spend 1 Ruin to make a melee attack against any enemy in the Slung, by drowning them beneath Valgaren: 14 +1 ED / Inflict (Restrained 5), Warp Weapon. Whilst Restrained, the target also suffocates (Wrath & Glory Rulebook, page 201)."
+    }
+  ],
+  "conviction": 10,
+  "resolve": 9,
+  "speed": 6,
+  "size": "Gargantuan",
+  "options": [],
+  "mobAbilities": [],
+  "note": "No DETERMINATION line printed. Both attacks sit in RUIN abilities with no printed range, so they stay text. Name as printed 'VALGAREN, AVATAR OF THE TYPHOGENIC SWARM'. Text points to page 109 for Nurgling Swarms and Rot Fly; they print on p.101."
+}

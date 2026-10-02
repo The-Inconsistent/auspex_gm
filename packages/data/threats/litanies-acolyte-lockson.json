@@ -1,0 +1,105 @@
+{
+  "id": "litanies-acolyte-lockson",
+  "name": "Acolyte Lockson",
+  "source": "litanies-of-the-lost",
+  "page": 83,
+  "faction": "imperial",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "INQUISITION",
+    "ORDO HERETICUS"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 3,
+    "I": 3,
+    "Wil": 4,
+    "Int": 5,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 7,
+    "note": "Flak Coat: AR 3"
+  },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Insight",
+        "dice": 8
+      },
+      {
+        "name": "Investigation",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 1,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "Lockson may use Ruin Actions, and has 1 personal Ruin."
+    },
+    {
+      "name": "Augmetic Eye",
+      "text": "Lockson ignores any penalties due to visual distance, obscured sight, or darkness."
+    },
+    {
+      "name": "Deductive",
+      "text": "Lockson has the Deductive Talent (page 132 of the Wrath & Glory Rulebook)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Illiarch Implant-Laser",
+          "damage": 7,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": null,
+          "traits": [
+            "Pistol"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Inquisitorial Decree",
+      "text": "Lockson invokes the name of his superior, Inquisitor Argyle. He gains +2 bonus dice to any social Skill Test when interacting with an individual with the IMPERIUM Keyword. Lockson can only use this ability once per scene."
+    },
+    {
+      "type": "REACTION",
+      "name": "Cracking the Case",
+      "text": "When the Agents fail on a social Test against Lockson, the GM gains 1 point of Ruin."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion with 1 personal Ruin, 5 Wounds, an NPC; a Champion under 7 Wounds is E, as Bloody Gates' Cravax)."
+}

@@ -1,0 +1,163 @@
+{
+  "id": "litanies-kaptin-slystabba",
+  "name": "Kaptin Slystabba",
+  "source": "litanies-of-the-lost",
+  "page": 67,
+  "faction": "ork",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "ORK",
+    "BLOOD AXES"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 4,
+    "I": 3,
+    "Wil": 2,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 8,
+    "note": "Ork Flak: AR 2"
+  },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 5
+      },
+      {
+        "name": "Cunning",
+        "dice": 7
+      },
+      {
+        "name": "Deception",
+        "dice": 7
+      },
+      {
+        "name": "Intimidation",
+        "dice": 5
+      },
+      {
+        "name": "Stealth",
+        "dice": 9
+      },
+      {
+        "name": "Survival",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "Kaptin Slystabba may use Ruin Actions, and has 3 personal Ruin."
+    },
+    {
+      "name": "Blood Axe",
+      "text": "This Threat gains +2 bonus dice to Leadership (Wil) and Stealth (A) Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Sneakiest Git",
+      "text": "During the first round of combat in which Kaptin Slystabba ambushes his opponent, he makes the following Multi-Action with no penalty: Slystabba makes an Interaction Attack using Stealth (A). If he succeeds, the target is Restrained. Slystabba uses his Intimidatin' Action. Slystabba makes an attack."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Slugga",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Waaagh!"
+          ]
+        },
+        {
+          "name": "Big Choppa",
+          "damage": 10,
+          "ed": 5,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Waaagh!"
+          ]
+        },
+        {
+          "name": "Stikkbombz",
+          "count": 2,
+          "damage": 9,
+          "ed": 5,
+          "range": [
+            24
+          ],
+          "salvo": null,
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Intimidatin'",
+      "text": "Kaptin Slystabba makes an Interaction Attack using Intimidation (Wil). If he succeeds, the target also suffers Fear."
+    },
+    {
+      "type": "RUIN",
+      "name": "Get 'Em Ladz!",
+      "text": "Spend 1 Ruin. All allies with the ORK Keyword within 10 metres gain +1 bonus dice to Ballistic Skill (A) and Weapon Skill (I) Tests."
+    },
+    {
+      "type": "RUIN",
+      "name": "Kunnin' Exfiltrator",
+      "text": "Spend 1 Ruin. Slystaba takes the Fall Back Combat Action and may move up to double his movement, then make a Stealth (A) Test to hide."
+    },
+    {
+      "type": "RUIN",
+      "name": "Hit & Krump!",
+      "text": "Spend 1 Ruin. If Slystabba used Kunnin' Exfiltrator and successfully hid from all enemies, he may use the Sneakiest Git Battlecry."
+    },
+    {
+      "type": "REACTION",
+      "text": "Once per Round, Slystabba may make an attack with his Big Choppa as a Reflexive Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion with 3 personal Ruin). Print: Intimidation skill printed as \"(5)\" in brackets, stored as 5 dice, no Passive; \"Slystaba\" once in the Ruin text."
+}

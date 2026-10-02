@@ -1,0 +1,99 @@
+{
+  "id": "litanies-kataphron-battle-servitor",
+  "name": "Kataphron Battle Servitor",
+  "source": "litanies-of-the-lost",
+  "page": 135,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 1,
+    "I": 1,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 10,
+    "note": "Ballistic Plasteel Plating: 4 AR"
+  },
+  "defence": 1,
+  "wounds": 10,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      },
+      {
+        "name": "Ballistics Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Hydraulic Claw",
+          "damage": 9,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (1)"
+          ]
+        },
+        {
+          "name": "Heavy Arc Rifle",
+          "damage": 14,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "traits": [
+            "Arc (2)",
+            "Rapid Fire (1)",
+            "Heavy (4)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Error",
+      "text": "The Servitor is Exhausted for 1 Round, This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (10 Wounds). Beside homebrew hat-kataphron-battle-servitor. Skill printed \"Ballistics Skill\". Heavy Arc Rifle traits printed in square brackets (Arc [2], Rapid Fire [1], Heavy [4]), stored with round brackets; no salvo printed."
+}

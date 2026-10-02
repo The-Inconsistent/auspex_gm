@@ -1,0 +1,170 @@
+{
+  "id": "litanies-tech-ganger",
+  "name": "Tech-Ganger",
+  "source": "litanies-of-the-lost",
+  "page": 79,
+  "faction": "imperial",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "SCUM",
+    "AVACHRUS FORGE WORLD"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 4,
+    "I": 3,
+    "Wil": 3,
+    "Int": 2,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 6,
+    "note": "Subdermal & External armour plating: 1 AR"
+  },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Stealth",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Augmetic",
+      "text": "Skitarii are immune to the Bleeding Condition."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Radium Pistol",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Rad (2)"
+          ]
+        },
+        {
+          "name": "Servo Arm",
+          "damage": 9,
+          "ed": 2,
+          "range": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Trick-Bionic",
+      "text": "Spend 1 Ruin to make an immediate melee attack."
+    },
+    {
+      "type": "WRATH",
+      "name": "Cyber-Chopper",
+      "text": "When attacking a target with augmetics, the target is Hindered and unable to use one of their augmented body parts effectively until it is repaired by a DN 3 Tech (Int) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Options",
+      "text": "In a Mob of ten or more Tech-Gangers, one Tech-Ganger may exchange their radium pistol for one of the following weapons.",
+      "abilities": [],
+      "weapons": [
+        {
+          "name": "Stubcarbine",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 3,
+          "traits": [
+            "Heavy (3)",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Arc Rifle",
+          "damage": 14,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Arc (2)",
+            "Rapid Fire (1)"
+          ]
+        },
+        {
+          "name": "Plasma Gun",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (1)",
+            "Supercharge"
+          ]
+        }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Initiation Implant",
+      "text": "Choose a Skill for which this threat can reroll any failed dice on Tests. (The Hardwares reroll failed dice on Weapon Skill Tests.)"
+    }
+  ]
+}

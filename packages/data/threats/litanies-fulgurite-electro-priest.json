@@ -1,0 +1,99 @@
+{
+  "id": "litanies-fulgurite-electro-priest",
+  "name": "Fulgurite Electro-Priest",
+  "source": "litanies-of-the-lost",
+  "page": 81,
+  "faction": "mechanicus",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "CULT MECHANICUS",
+    "AVACHRUS FORGE WORLD"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 3,
+    "I": 4,
+    "Wil": 4,
+    "Int": 5,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 7,
+    "note": "Voltagheist Field: AR *2; printed as \"*7\""
+  },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 6,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Intimidation",
+        "dice": 7
+      },
+      {
+        "name": "Tech",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "Ossifa may use Ruin Actions, and has 2 personal Ruin."
+    },
+    {
+      "name": "Omnissiah's Tears",
+      "text": "An Electro-Priest sees without eyes, sensing only the Motive Force that powers all life. This Threat cannot be Blinded."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Electroleech Stave",
+          "damage": 9,
+          "ed": 6,
+          "range": [
+            1
+          ],
+          "ap": -2,
+          "traits": [
+            "Agonising",
+            "Brutal"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Voltagheist Burst",
+      "text": "Inflict d3 Mortal Wounds on everyone within 5 metres that does not have this ability."
+    },
+    {
+      "type": "REACTION",
+      "name": "Siphoned Vigour",
+      "text": "Whenever this Threat inflicts one or more Wounds, it regains Shock equal to the number of Wounds it inflicted. Alternatively, it may remove any Conditions it is currently suffering from."
+    }
+  ],
+  "determination": "Fanatical Devotion: Spend 1 Ruin to roll 4d6. This threat can roll Determination against Mortal Wounds.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (Champion, Ossifa's block). Beside homebrew hat-fulgurite-electro-priest (different). Resilience printed \"*7\" and \"AR *2\" with an asterisk and no footnote."
+}

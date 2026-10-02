@@ -1,0 +1,36 @@
+{
+  "id": "rr1-worshipful-rootfolk",
+  "name": "Worshipful Rootfolk",
+  "source": "redacted-records",
+  "page": 92,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["HERETIC", "IMPERIAL"],
+  "attributes": { "S": 4, "T": 4, "A": 2, "I": 2, "Wil": 2, "Int": 2, "Fel": 2 },
+  "resilience": { "value": 5 },
+  "defence": 1,
+  "wounds": 8,
+  "shock": 4,
+  "skills": { "default": 3, "list": [] },
+  "bonuses": [
+    {
+      "name": "Servant of the Roots",
+      "text": "When defending or spreading giftroot, the cultist gains +1d6 on all Actions."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Agricultural Implement", "damage": 7, "ed": 1, "range": [2], "traits": ["Inflict (Prone)"] },
+        { "name": "Thrown Rock", "damage": 6, "ed": 1, "range": [16], "traits": [] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Resilience prints no armour note. Agricultural Implement prints 'Range 2'; Thrown Rock 'Range 16m'."
+}

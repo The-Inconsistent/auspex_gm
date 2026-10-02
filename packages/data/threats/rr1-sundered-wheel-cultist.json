@@ -1,0 +1,53 @@
+{
+  "id": "rr1-sundered-wheel-cultist",
+  "name": "Sundered Wheel Cultist",
+  "source": "redacted-records",
+  "page": 75,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ADEPTUS MECHANICUS", "CHAOS", "HERETIC"],
+  "attributes": { "S": 3, "T": 2, "A": 2, "I": 2, "Wil": 2, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 4, "note": "Protective Worksuit: 1 AR" },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 4 },
+      { "name": "Awareness", "dice": 3, "passive": 1 },
+      { "name": "Tech", "dice": 5 },
+      { "name": "Weapon Skill", "dice": 3 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Labour Augmetics",
+      "text": "Add +4 dice for Tests to lift heavy loads and ignore the penalty for using Heavy weapons."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Improperly Used Tool", "damage": 4, "ed": 2, "range": [1], "traits": [] }]
+    },
+    {
+      "type": "BATTLECRY",
+      "name": "Cybernetic Abomination",
+      "text": "Anyone that can see this Threat must make a DN 2 Fear Test"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Broken Wheel Complications",
+      "text": "Sidebar table printed under the block, d6. 1 Explodes in Breech: Deals base damage to attacker, weapon damaged too badly to use. 2 Dud!: Attack has no effect. 3 Jam: Weapon jams, requiring a DN2 Tech (Int) Test to use again. 4 Ricochet: Attack affects one additional random target. 5 Fouling: Add +1 to the DN of all Tests to use this weapon until it is taken apart and cleaned. 6 Overheating: Weapon becomes too hot to hold for 3 rounds."
+    }
+  ],
+  "note": "Improperly Used Tool prints 'Range 1'. The Broken Wheel Complications table is a sidebar, kept as a variant option."
+}

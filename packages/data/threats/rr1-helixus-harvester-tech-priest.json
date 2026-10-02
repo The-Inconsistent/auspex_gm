@@ -1,0 +1,54 @@
+{
+  "id": "rr1-helixus-harvester-tech-priest",
+  "name": "Helixus Harvester Tech-Priest",
+  "source": "redacted-records",
+  "page": 77,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ADEPTUS MECHANICUS", "HERETIC", "IMPERIUM"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 2, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 6, "note": "Heavy Vatsuit: 2 AR" },
+  "defence": 1,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 4 },
+      { "name": "Awareness", "dice": 3, "passive": 1 },
+      { "name": "Ballistic Skill", "dice": 4 },
+      { "name": "Medicae", "dice": 4 },
+      { "name": "Tech", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Cranial Augmetics",
+      "text": "Sealed internal air supply. Ignore any penalties to Tests for visual conditions."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Tranq-Gas Blower",
+          "damage": 6,
+          "ed": 1,
+          "ap": -1,
+          "range": [5, 10, 15],
+          "salvo": 2,
+          "traits": ["Inflict (Exhausted 4)", "Spread"]
+        },
+        { "name": "Vat Hook", "damage": 5, "ed": 2, "range": [2], "traits": ["Agonising"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Tranq-Gas Blower prints 'Inflict (Exhausted 4), Spread'. Vat Hook prints 'Range 2'."
+}

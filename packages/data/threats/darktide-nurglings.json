@@ -1,0 +1,79 @@
+{
+  "id": "darktide-nurglings",
+  "name": "Nurglings",
+  "source": "darktide",
+  "page": 101,
+  "faction": "daemon",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "CHAOS",
+    "DAEMON",
+    "MARK OF NURGLE"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 1,
+    "I": 1,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 2
+  },
+  "defence": 1,
+  "wounds": 3,
+  "shock": 2,
+  "skills": {
+    "default": 1,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 2
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Mischief Makers",
+      "text": "Nurglings complicate everything. Once they appear in a scene, any die roll that includes two or more 1s triggers a Wrath Complication. Characters with the Nurgle keyword are immune to this effect."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Frightful Form",
+      "text": "Anyone that can see this threat must make a DN 2 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Diseased Claws and Teeth",
+          "damage": 1,
+          "ed": 1,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poisoned 1)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Daemonic Determination: Spend 1 Ruin to roll 1d6. Daemons can roll Determination against Mortal Wounds. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Tiny",
+  "options": [],
+  "mobAbilities": []
+}

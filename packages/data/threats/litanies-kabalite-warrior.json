@@ -1,0 +1,35 @@
+{
+  "id": "litanies-kabalite-warrior",
+  "name": "Kabalite Warrior",
+  "source": "litanies-of-the-lost",
+  "page": 36,
+  "faction": "drukhari",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["DRUKHARI"],
+  "attributes": { "S": 2, "T": 2, "A": 4, "I": 4, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 6, "note": "Kabalite Armour: AR 3" },
+  "defence": 3,
+  "wounds": 4,
+  "shock": 4,
+  "skills": { "default": 4, "list": [
+    { "name": "Awareness", "dice": 4, "passive": 2 },
+    { "name": "Ballistic Skill", "dice": 6 },
+    { "name": "Weapon Skill", "dice": 5 }
+  ] },
+  "bonuses": [
+    { "name": "Power from Pain: Eager to Flay", "text": "If this Threat deals a Wound it gains +3 Speed until the end of its next Turn." },
+    { "name": "Obsession: Soul Bound", "text": "When this Threat is Wounded it gains +1 bonus dice to Determination rolls." }
+  ],
+  "abilities": [
+    { "type": "ACTION", "weapons": [
+      { "name": "Splinter Rifle", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 2, "traits": ["Inflict (Poisoned)", "Rapid Fire (2)"] },
+      { "name": "Sword", "damage": 5, "ed": 2, "range": [1], "traits": ["Parry"] }
+    ] }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (rank-and-file Drukhari, no Champion bonus). Inflict (Poisoned) prints no number."
+}

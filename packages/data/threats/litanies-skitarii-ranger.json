@@ -1,0 +1,165 @@
+{
+  "id": "litanies-skitarii-ranger",
+  "name": "Skitarii Ranger",
+  "source": "litanies-of-the-lost",
+  "page": 77,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADEPTUS MECHANICUS",
+    "SKITARII",
+    "AVACHRUS FORGE WORLD"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 4,
+    "A": 4,
+    "I": 3,
+    "Wil": 2,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 9,
+    "note": "Skirarii Auto-Cuirass: 4 AR"
+  },
+  "defence": 2,
+  "wounds": 3,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 3,
+        "passive": 2
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Insight",
+        "dice": 1
+      },
+      {
+        "name": "Tech",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Augmetic",
+      "text": "Skitarii are immune to the Bleeding Condition."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Galvanic Rifle",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (1)",
+            "Rending (1)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Options",
+      "text": "For every ten Skitarii Rangers in the Mob, three Rangers may exchange their galvanic rifle for one of the following weapons.",
+      "abilities": [],
+      "weapons": [
+        {
+          "name": "Arc Rifle",
+          "damage": 14,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Arc (2)",
+            "Rapid Fire (1)"
+          ]
+        },
+        {
+          "name": "Plasma Caliver",
+          "damage": 15,
+          "ed": 1,
+          "ap": -3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Supercharge"
+          ]
+        },
+        {
+          "name": "Transuranic Arquebus",
+          "damage": 15,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            30,
+            60,
+            90
+          ],
+          "salvo": 0,
+          "traits": [
+            "Heavy (8)",
+            "Rad (2)",
+            "Sniper (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Light Them Up",
+      "text": "A flash of blue will-o-the-wisps as the Skitarii Rangers acquire targets precedes the subsequent fusilade. On the first round of combat, this Threat gains +2 bonus dice to Ranged Attack Tests and ignores their target's Cover."
+    },
+    {
+      "name": "Enhanced Data-tether",
+      "text": "Reroll any failed dice on a Resolve Test."
+    },
+    {
+      "name": "Tireless Hunters",
+      "text": "Skitarii Rangers can Aim as part of a Standard Move (unless equipped with a transuranic arquebus)."
+    }
+  ],
+  "note": "Beside homebrew hat-skitarii-ranger (different stats). Wounds printed \"3 (6)\"; stored 3, the bracketed 6 has no explanation in the print."
+}

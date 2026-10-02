@@ -1,0 +1,82 @@
+{
+  "id": "litanies-censer-cherub",
+  "name": "Censer Cherub",
+  "source": "litanies-of-the-lost",
+  "page": 136,
+  "faction": "mechanicus",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 2,
+    "I": 4,
+    "Wil": 1,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 2,
+    "note": "Exposed Components: 0 AR"
+  },
+  "defence": 5,
+  "wounds": 3,
+  "shock": null,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Stealth",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Necrotic Censer",
+          "damage": 7,
+          "ed": 1,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "traits": [
+            "Flamer",
+            "Pistol",
+            "Inflict (Poison, DN4 to heal)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Small",
+  "note": "No Tier row printed; class proposed (3 Wounds, Shock -). Speed printed \"10 Flight\": stored 10, Flight kept here. No salvo printed on the Necrotic Censer."
+}

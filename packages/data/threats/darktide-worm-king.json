@@ -1,0 +1,108 @@
+{
+  "id": "darktide-worm-king",
+  "name": "Worm King",
+  "source": "darktide",
+  "page": 92,
+  "faction": "heretic",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "ABHUMAN",
+    "CHAOS",
+    "HERETIC",
+    "MOEBIAN"
+  ],
+  "attributes": {
+    "S": 6,
+    "T": 7,
+    "A": 3,
+    "I": 3,
+    "Wil": 3,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 11,
+    "note": "4 AR"
+  },
+  "defence": 2,
+  "wounds": 20,
+  "shock": 10,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Ballistic Skill",
+        "dice": 4
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 Personal Ruin."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Grotesque Form",
+      "text": "Anyone that can see this Threat must make a DN 4 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Infected Ripper Gun",
+          "damage": 11,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Brutal",
+            "Heavy (5)",
+            "Inflict (Poisoned 6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Decaying Miasma",
+      "text": "When this Threat takes a Wound, roll 1d6. On an Icon, noxious Warp-tainted gas and effluent spurts from the wound, hitting everyone in range with the following profile: Decaying Miasma: 3+4ED / AP -4 / Blast (7), Inflict (Poisoned 4)"
+    },
+    {
+      "type": "RUIN",
+      "name": "Embrace of Worms",
+      "text": "Spend 1 Ruin. The Worm King's worms make an opposed Strength Test against the target. If they succeed, the target is Restrained and takes 12 + 1ED damage until freed. If this reduces the target to 0 Wounds, it is dragged screaming into the Worm King's gut and digested, replenishing a number of Wounds equal to the target's Toughness. Breaking free requires an opposed Strength Test from the target or 1 or more allies."
+    },
+    {
+      "type": "RUIN",
+      "name": "Spawn-Kin",
+      "text": "Spend 2 Ruin. The Worm King bellows and drives his pack of Chaos Spawn to greater savagery. Each Chaos Spawn immediately makes a Move and Combat Action, even if they had already acted this Round."
+    }
+  ],
+  "determination": "Disgustingly Resilient: Roll 7d6. This Threat can roll Determination against Mortal Wounds, and does not require Ruin.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Large",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Decaying Miasma has no printed range, kept as ability text. Infected Ripper Gun's 'Poisoned (6)' stored Inflict (Poisoned 6)."
+}

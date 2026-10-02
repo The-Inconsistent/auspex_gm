@@ -1,0 +1,48 @@
+{
+  "id": "rr1-machinae-fractus",
+  "name": "Machinae Fractus",
+  "source": "redacted-records",
+  "page": 71,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["ADEPTUS MECHANICUS", "CHAOS", "HERETIC"],
+  "attributes": { "S": 3, "T": 3, "A": 2, "I": 2, "Wil": 2, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 5, "note": "Implants: 2 AR" },
+  "defence": 1,
+  "wounds": 6,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 3 },
+      { "name": "Medicae", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 4 }
+    ]
+  },
+  "bonuses": [{ "name": "Beyond Human Frailties", "text": "Ignore penalties for being Heavily Injured" }],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Frag Cannon", "damage": 7, "ed": 2, "range": [8, 16, 24], "salvo": null, "traits": ["Agonising"] },
+        { "name": "Crude Augmetic Limb", "damage": 6, "ed": 3, "range": [1], "traits": ["Unwieldy (1)"] }
+      ]
+    },
+    {
+      "type": "BATTLECRY",
+      "name": "Cybernetic Abomination",
+      "text": "Anyone that can see this Threat must make a DN 2 Fear Test"
+    },
+    {
+      "type": "REACTION",
+      "text": "If anybody reaches Dying within 3m of a Fractus, the Fractus may immediately pick them up and make a Movement Action to carry them away"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "note": "Crude Augmetic Limb prints 'Unwieldy 1' (stored Unwieldy (1)). Faction heretic by the CHAOS and HERETIC keywords, though it also prints ADEPTUS MECHANICUS."
+}

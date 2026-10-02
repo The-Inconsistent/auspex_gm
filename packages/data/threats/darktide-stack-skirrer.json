@@ -1,0 +1,108 @@
+{
+  "id": "darktide-stack-skirrer",
+  "name": "Stack Skirrer",
+  "source": "darktide",
+  "page": 38,
+  "faction": "imperial",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "BEAST"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 4,
+    "A": 6,
+    "I": 4,
+    "Wil": 2,
+    "Int": 1,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "2 AR"
+  },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 3,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 2,
+        "passive": 1
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 5
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Corrosive Slime",
+      "text": "When armour that isn't Invulnerable is hit by the Skirrer's Slime Glands, roll a d6. On a 6, its AR is permanently reduced by 1 (to a minimum of 0)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Skirring",
+      "text": "The Skirrer gains +3 bonus Icons to hit with its first Attack."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Hooked Talons",
+          "damage": 8,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": []
+        },
+        {
+          "name": "Slime Glands",
+          "damage": 6,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": null,
+          "traits": [
+            "Inflict (Poisoned 3)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 12,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [
+    {
+      "name": "Cooperative Hunters",
+      "text": "If a Mob initiates a grapple, it gains +2 bonus Icons to the Opposed Strength Test."
+    }
+  ],
+  "note": "No Default pool printed (skills.default null). Speed printed '12 Flight', stored 12. Cooperative Hunters is printed under Mob Abilities with no Mob option. Faction imperial: native hive fauna, as the Apocrypha beasts."
+}

@@ -1,0 +1,45 @@
+{
+  "id": "rr1-slaughter-servitor-corral",
+  "name": "Slaughter Servitor (Corral)",
+  "source": "redacted-records",
+  "page": 55,
+  "faction": "mechanicus",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["ADEPTUS MECHANICUS", "IMPERIUM", "SERVITOR"],
+  "attributes": { "S": 4, "T": 4, "A": 1, "I": 2, "Wil": 1, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 10, "note": "Heavy Plates: AR 5" },
+  "defence": 1,
+  "wounds": 8,
+  "shock": null,
+  "skills": { "default": 5, "list": [{ "name": "Athletics", "dice": 7 }, { "name": "Weapon Skill", "dice": 6 }] },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by Abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Hydraulic Claws", "damage": 9, "ed": 3, "range": [1], "traits": ["Brutal", "Unwieldy (2)"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Vice Grip",
+      "text": "The Slaughter Servitor makes an Athletics Interaction Attack. If this check succeeds the target is Restrained for 1 round."
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Gristle in the Gears",
+      "text": "The Slaughter Servitor is Exhausted for 1 Round. This can be negated by the Slaughter Servitor spending an action and succeeding at a DN 3 Athletics (Str) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Large",
+  "note": "No Tier row printed; class proposed (8 Wounds, no Champion bonus, a Large servitor, no Personal Ruin). The ACTIONS label is printed in the plural. Hydraulic Claws prints '9 + 3 ED / Range 1'."
+}

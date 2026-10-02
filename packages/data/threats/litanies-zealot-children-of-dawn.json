@@ -1,0 +1,33 @@
+{
+  "id": "litanies-zealot-children-of-dawn",
+  "name": "Zealot (Children of Dawn)",
+  "source": "litanies-of-the-lost",
+  "page": 34,
+  "faction": "imperial",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["IMPERIUM", "ADEPTUS MINISTORUM"],
+  "attributes": { "S": 3, "T": 3, "A": 1, "I": 2, "Wil": 3, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 4 },
+  "defence": 1,
+  "wounds": 5,
+  "shock": 4,
+  "skills": { "default": 3, "list": [
+    { "name": "Athletics", "dice": 5 },
+    { "name": "Awareness", "dice": 1 },
+    { "name": "Intimidation", "dice": 6 },
+    { "name": "Weapon Skill", "dice": 3 }
+  ] },
+  "bonuses": [],
+  "abilities": [
+    { "type": "BATTLECRY", "text": "The Zealot makes an Intimidation Interaction Attack and then Charges with no Multi-Action DN penalty." },
+    { "type": "ACTION", "weapons": [
+      { "name": "Scrap Metal Weapons", "damage": 6, "ed": 3, "range": [1], "traits": [] }
+    ] }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "note": "No Tier row printed; class proposed (rank-and-file fanatic, no Ruin ability). Scrap Metal Weapons print no Range; stored [1]."
+}

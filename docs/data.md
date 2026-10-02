@@ -262,8 +262,8 @@ The book uses the 1st-edition stat layout, mapped as follows:
 
 ### Supplement and adventure book notes (GitHub issue #44)
 
-Every stat block in five books, 30 threats, each book's id prefix on its ids (`threat-manifest.json` lists them). PDF
-page = printed page in all five. An identical reprint of a threat already in is skipped (rules-flow.md §11.71). Shared
+Every stat block in eight books, 88 threats, each book's id prefix on its ids (`threat-manifest.json` lists them). PDF
+page = printed page in all eight. An identical reprint of a threat already in is skipped (rules-flow.md §11.71). Shared
 calls, user rulings of 2026-10-02:
 - **A melee weapon with no printed range** is `[1]`, as Core's Painboy 'Urty Syringe. An explosion or discharge with
   no range (Kastelan Explodes, the Duke's Noxious Discharge, the Oily Squig, Ara'vitu'urhal's Warp Explosion) stays
@@ -272,7 +272,14 @@ calls, user rulings of 2026-10-02:
   armoured Strength (the Chaos Space Marine's 8). The printed pair is in `note`.
 - **A Champion bonus under another name** (Botuthrax's Beloved of Nurgle, "has 5 personal Ruin") sets `personalRuin`.
 - **Inflict spelling** is the catalogue's `Inflict (Poisoned 5)`, whatever the print's order ("Inflict Poisoned (5)").
-- **No Tier row** (Bloody Gates, all eight): the class is proposed and the note says so (rules-flow.md §11.70).
+- **No Tier row** (Bloody Gates, and 31 blocks in the three adventure books below): the class is proposed and the
+  note says so (rules-flow.md §11.70). A Champion is A only from 7 Wounds up, otherwise E (Bloody Gates' Cravax). The
+  GM confirmed every class listed here.
+- **Faction by keyword:** a beast takes the faction of whoever it lives among (Darktide's hive fauna are `imperial`,
+  as Apocrypha's Fenrisian Wolf); a SCUM ganger with no ADEPTUS MECHANICUS keyword is `imperial`; a block printing
+  ADEPTUS MECHANICUS beside CHAOS or HERETIC is `heretic`.
+- **Homebrew namesakes:** an official block that shares a name with a homebrew one (`apoc-*`, `hat-*`) is transcribed
+  beside it, and its note says so.
 
 Per book:
 - **Vow of Absolution** (`voa-`, 7): the Dreadnought and Redemptor Dreadnought (p.76) use the normal threat block, not
@@ -294,6 +301,34 @@ Per book:
   `cultist` (SCUM, Cunning) and is.
 - **Affliction Ascendant** (`aa-`, 2): Botuthrax Clostidia (`daemon`) and Putradyne Corporis (`heretic`). The
   asterisks on Putradyne's "5(9)*" and "Powered 4*" have no footnote. The door on p.10 ("Resilience of 12") is scenery.
+- **Redacted Records** (`rr1-`, 16, pp.16–92; p.55 holds two): no Tier row on Psychneuein and the three Slaughter
+  Servitors (all proposed E: 5–8 Wounds, no Champion bonus, and the Servitors print no Shock). The Order of the Throne
+  Knight Paladin (p.84) is in the normal threat format, so it's in (Gargantuan, M M M A). Psychneuein (XENOS, CHAOS) is
+  `heretic`, for want of a beast or xenos faction. Sidebars kept as `variant`: Broken Wheel Complications (Sundered Wheel
+  Cultist), A Thousand-Thousand Charms (Heralds, printed p.84, block p.83). The Escutcheon Assassin's Defence "3 (4
+  Parry)" stores 3. Kept as printed: Jacobin Grizari's Cunning "1-0" (stored 10), the Knight's Ion Shield "3* AR" (no
+  footnote), the Duelling Las's "Salvo 0", "Weapons Skill" and "Psychic Master" as skill names, the Corrupted Scribes'
+  Feeble Hands with no dice ("1 +1 ED"). p.35 is rules text.
+- **Darktide** (`darktide-`, 17, pp.31–101; p.67, p.75 and p.101 hold two): Tier rows run 4 or 5 letters, as printed;
+  Gerta Phleg, Cjarl Nefft, Primilla van Grellick and Magos Momentine print none (proposed E). The Daemonhost (p.61)
+  sits beside homebrew `apoc-daemonhost`. Valgaren prints no DETERMINATION line; his Bile Spray and Suffocating Mass have
+  no range and stay RUIN text. Navigator Mazara's Strength "2 (3)" stores 3. Kept as printed: "Angonising" (Daemonhost),
+  Valgaren's "page 109" for the Nurglings and Rot Flies (they're on p.101), the Lattice Springer's "Inflict (Poisoned)"
+  with no value, the Meltagun's "Melta" trait. Core has no Nurglings block, so `darktide-nurglings` is the only one.
+- **Litanies of the Lost** (`litanies-`, 25: Grim Harvest's stat blocks pp.34–38, then p.67, pp.77–95 and the Stat
+  Blocks section pp.134–137): only the Skitarii Ranger (p.77) and the Tech-Ganger (p.79) print a Tier row. Of the
+  other 23, A: Kaptin Slystabba, the Fulgurite Electro-Priest, Lin and Roco, Ruststalker Marech, the Entombed Champion
+  and the Clawed Fiend (10 Wounds, Large); T: the Zealot, Tech-Adept, Wych, Kabalite Warrior, Pakthertius Servitor and
+  Censer Cherub; E: the rest, including the five Champions under 7 Wounds (Acolyte Lockson, Corsair Baron Kasque, Mek
+  Fastdakka, the Succubus, the Aeldari Ranger). Beside homebrew namesakes:
+  `litanies-skitarii-ranger`, `-fulgurite-electro-priest`, `-kataphron-battle-servitor` (`hat-*`) and
+  `-cyber-mastiff` (`apoc-cyber-mastiff`). The Medicae, Warden, Fabrication and Decommissioned Servitors (p.134) print no
+  Attributes, so they're `variant` options on the Pakthertius Servitor, with the Tough and Strong Servitors sidebar. Lin
+  and Roco share one profile (SCUM, ABHUMAN: `imperial`). Kept as printed: the Skitarii Ranger's Wounds "3 (6)" (stored
+  3, the 6 unexplained), "Skirarii Auto-Cuirass", Slystabba's "Intimidation (5)" (stored as dice) and "Slystaba", the
+  Electro-Priest's "*7" and "AR *2" (no footnote), the Kataphron's square-bracketed traits (stored round), the Ogryn
+  Loader's death explosion (ANNIHILATION text). Shootas and the Heavy Arc Rifle print no Salvo, so it's omitted. The
+  "Resilience" hits on pp.55, 62, 122 and 128 are scenery.
 
 ---
 

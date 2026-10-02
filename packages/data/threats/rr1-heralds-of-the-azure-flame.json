@@ -1,0 +1,58 @@
+{
+  "id": "rr1-heralds-of-the-azure-flame",
+  "name": "Heralds of the Azure Flame",
+  "source": "redacted-records",
+  "page": 83,
+  "faction": "heretic",
+  "threat": ["A", "E", "T", "T"],
+  "keywords": ["CHAOS", "HERETIC", "PSYCHIC", "TZEENTCH"],
+  "attributes": { "S": 2, "T": 2, "A": 3, "I": 3, "Wil": 6, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 7, "note": "Warp-charms, AR 4" },
+  "defence": 2,
+  "wounds": 4,
+  "shock": 8,
+  "skills": {
+    "default": 4,
+    "list": [{ "name": "Psychic Master", "dice": 9 }, { "name": "Psyniscience", "dice": 10 }]
+  },
+  "bonuses": [
+    { "name": "Servants of the Flame", "text": "Heralds are immune to any flamers or fires that are not sanctified" },
+    {
+      "name": "Sacrificial Flame",
+      "text": "Each round before combat begins a Herald can choose to sacrifice up to 3 loyal Cultists within 20m, who burst into blue flames. This causes the DN of all attacks or powers used against the Herald to increase by an amount equal to the number of Cultists sacrificed."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Sorcerer",
+      "text": "The Herald uses any of the Pyromancy abilities (Wrath & Glory, page 275) or the Dark Flame psychic ability (Wrath & Glory, page 281). Their corruption level counts as 4"
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Daemon Stave",
+          "damage": 9,
+          "ed": 2,
+          "ap": -1,
+          "range": [2],
+          "traits": ["Force", "Inflict (On Fire)", "Parry"]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "A Thousand-Thousand Charms",
+      "text": "Within their lair, all Heralds receive +1 Defence, +1 Determination and may ignore a single 1 on the Wrath Die of each Psychic Mastery Test. All Psykers roll an extra Wrath Die on each Psychic Mastery Test they make. (Printed on p.84, under the Heralds' text.)"
+    }
+  ],
+  "note": "Skill printed 'Psychic Master'. Daemon Stave prints 'Range 2'. Faction heretic (Tzeentch cultists, not printed as daemons)."
+}

@@ -1,0 +1,73 @@
+{
+  "id": "darktide-magos-momentine",
+  "name": "Magos Momentine",
+  "source": "darktide",
+  "page": 67,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "IMPERIUM",
+    "ADMECH"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 2,
+    "I": 2,
+    "Wil": 5,
+    "Int": 6,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 8,
+    "note": "3 AR"
+  },
+  "defence": 1,
+  "wounds": 6,
+  "shock": 7,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Tech",
+        "dice": 9
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Cogitator Link",
+      "text": "+3d6 on all Tests to navigate or repair the Forgefather."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Omnissian Axe",
+          "damage": 9,
+          "ed": 5,
+          "ap": -2,
+          "range": [
+            2
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 0,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": [],
+  "note": "No Tier row printed; class proposed (named leader, 6 Wounds, no Champion bonus). Keyword 'ADMECH' as printed. Axe prints 'Range 2' and no traits; stored [2]."
+}

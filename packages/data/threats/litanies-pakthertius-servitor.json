@@ -1,0 +1,171 @@
+{
+  "id": "litanies-pakthertius-servitor",
+  "name": "Pakthertius Servitor",
+  "source": "litanies-of-the-lost",
+  "page": 134,
+  "faction": "mechanicus",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM",
+    "SERVITOR"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 2,
+    "A": 1,
+    "I": 3,
+    "Wil": 1,
+    "Int": 1,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 6,
+    "note": "Grafted Flak Plates: 3 AR"
+  },
+  "defence": 1,
+  "wounds": 4,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Weapon Skill",
+        "dice": 4
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Iron Soul",
+      "text": "This Threat is unaffected by abilities that target the mind, and never needs to make a Resolve Test to continue fighting."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Hydraulic Claw",
+          "damage": 7,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Unwieldy (1)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Error",
+      "text": "The Servitor is Exhausted for 1 Round, This can be negated by an ally succeeding on a DN 3 Tech (Int) Test."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Fabrication Servitor",
+      "text": "Bonus Protective Plating: This Threat's armour counts as Invulnerable to weapons with the PLASMA, MELTA or FIRE Keywords.",
+      "weapons": [
+        {
+          "name": "Fabrication Tools",
+          "damage": 8,
+          "ed": 2,
+          "range": [
+            1
+          ],
+          "ap": -3,
+          "traits": [
+            "Melta"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Decommissioned Servitor",
+      "text": "Replaces the Hydraulic Claw.",
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "damage": 3,
+          "ed": 1,
+          "range": [
+            1
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Medicae Servitor",
+      "text": "Automated Care: The Medicae Servitor uses an Action to make a Medicae (Int) Test with a dice pool of 5.",
+      "weapons": [
+        {
+          "name": "Fabrication Tools",
+          "damage": 7,
+          "ed": 3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Inflict (Poison, DN 3 to heal)"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Warden Servitor",
+      "text": "Replaces the Hydraulic Claw.",
+      "weapons": [
+        {
+          "name": "Shock Maul",
+          "damage": 7,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "ap": -1,
+          "traits": [
+            "Agonising",
+            "Brutal"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Tough Servitors",
+      "text": "Sidebar Servitor Modifications: a Servitor's Wounds and Resilience each increase by +1 for every extra point of Toughness they have.",
+      "weapons": [],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Strong Servitors",
+      "text": "Sidebar Servitor Modifications: a servitor with +1 Strength deals an extra +1 damage when they make melee attacks.",
+      "weapons": [],
+      "abilities": []
+    }
+  ],
+  "note": "No Tier row printed; class proposed (grunt, Shock -). The four variant blocks (Fabrication, Decommissioned, Medicae, Warden) have no Attributes row, so they are options. No range printed on any servitor melee weapon; stored [1]."
+}

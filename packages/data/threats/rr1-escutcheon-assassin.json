@@ -1,0 +1,56 @@
+{
+  "id": "rr1-escutcheon-assassin",
+  "name": "Escutcheon Assassin",
+  "source": "redacted-records",
+  "page": 87,
+  "faction": "imperial",
+  "threat": ["E", "E", "T", "T"],
+  "keywords": ["IMPERIAL"],
+  "attributes": { "S": 3, "T": 3, "A": 4, "I": 4, "Wil": 5, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 6, "note": "Armoured Clothing, AR2" },
+  "defence": 3,
+  "wounds": 8,
+  "shock": 12,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Stealth", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Well Connected",
+      "text": "The Assassin can spend 1 Ruin to be cleared of almost any criminal charges by Nethrean authorities and released. Anything incriminating will be covered up."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Sword-cane", "damage": 5, "ed": 2, "ap": -3, "range": [1], "traits": ["Agonising", "Parry"] },
+        {
+          "name": "Needler",
+          "damage": 8,
+          "ed": 2,
+          "range": [6, 12, 18],
+          "salvo": 1,
+          "traits": ["Agonising", "Inflict (Poisoned 4)", "Pistol", "Silent"]
+        }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Suicide Pill",
+      "text": "If captured by enemies, the Assassin will most likely attempt suicide. It would require an immediate DN 7 Medicae (Int) Test to save their life."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Defence prints '3 (4 Parry)'; stored 3, the Parry value is 4. Sword-cane prints no range (melee, stored [1]). Well Connected prints 'The' as 'T he'."
+}

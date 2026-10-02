@@ -1,0 +1,139 @@
+{
+  "id": "darktide-nexum-laevo-prima",
+  "name": "Nexum Laevo Prima",
+  "source": "darktide",
+  "page": 44,
+  "faction": "mechanicus",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS",
+    "IMPERIUM"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 7,
+    "A": 1,
+    "I": 1,
+    "Wil": 5,
+    "Int": 9,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 10,
+    "note": "2 AR"
+  },
+  "defence": 0,
+  "wounds": 13,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 9,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Scholar",
+        "dice": 10
+      },
+      {
+        "name": "Tech",
+        "dice": 12
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Radiation",
+      "text": "Nexum's body is highly radioactive. Any creature that ends its Turn within 10m of Nexum must make a DN 5 Toughness Test. On a failure, it takes 1d3 Mortal Wounds, 1d6 Shock Damage, and is Staggered for 1 Round."
+    },
+    {
+      "name": "Mechadendrites",
+      "text": "Nexum can make four attacks with her Mechadendrites on her Turn without Multi-Attack penalties."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Arc-Ballistic",
+          "damage": 7,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Arc (2)",
+            "Pistol"
+          ]
+        },
+        {
+          "name": "Servo",
+          "damage": 7,
+          "ed": 2,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Unwieldy (2)"
+          ]
+        },
+        {
+          "name": "Dissipated Eradication Ray",
+          "damage": 10,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": null,
+          "traits": [
+            "Agonising",
+            "Blast (4)",
+            "Rad (1)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Grasping Mechadendrites",
+      "text": "Spend 1 Ruin. Nexum wraps multiple Mechadendrites around a target. The target must succeed on a DN 7 Athletics (S) Test or become Restrained. Nexum can move a Restrained target by up to 5m in any direction, once per Round."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 0,
+  "size": "Large",
+  "options": [],
+  "mobAbilities": [],
+  "note": "Speed 0 as printed. The print lists the Arc-Ballistic and Servo as bullets under 'Mechadendrites:', then the Ray, all in one ACTION box."
+}

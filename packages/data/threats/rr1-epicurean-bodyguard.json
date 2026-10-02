@@ -1,0 +1,41 @@
+{
+  "id": "rr1-epicurean-bodyguard",
+  "name": "Epicurean Bodyguard",
+  "source": "redacted-records",
+  "page": 90,
+  "faction": "heretic",
+  "threat": ["T", "T", "T", "T"],
+  "keywords": ["HERETIC", "IMPERIAL"],
+  "attributes": { "S": 2, "T": 3, "A": 3, "I": 3, "Wil": 2, "Int": 3, "Fel": 4 },
+  "resilience": { "value": 5, "note": "Armoured Clothing: 1 AR" },
+  "defence": 2,
+  "wounds": 6,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [{ "name": "Ballistic Skill", "dice": 5 }, { "name": "Weapon Skill", "dice": 5 }]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Mono-Sword", "damage": 6, "ed": 2, "ap": -1, "range": [1], "traits": ["Parry"] },
+        {
+          "name": "Duelling Las",
+          "damage": 7,
+          "ed": 2,
+          "ap": -1,
+          "range": [4, 8, 12],
+          "salvo": 0,
+          "traits": ["Pistol", "Reliable"]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Duelling Las prints 'Salvo 0'. Mono-Sword prints 'Range 1'."
+}

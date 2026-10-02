@@ -1,0 +1,76 @@
+{
+  "id": "darktide-momentine-tech-priest",
+  "name": "Momentine Tech-Priest",
+  "source": "darktide",
+  "page": 67,
+  "faction": "mechanicus",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "ADEPTUS MECHANICUS"
+  ],
+  "attributes": {
+    "S": 4,
+    "T": 4,
+    "A": 2,
+    "I": 2,
+    "Wil": 3,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 6,
+    "note": "1 AR"
+  },
+  "defence": 1,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Tech",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Respect of the Collar",
+      "text": "Receive +3d6 on all social Tests with common folk in the Iron Collar."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Arc Pistol",
+          "damage": 14,
+          "ed": 1,
+          "ap": -1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Arc (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "options": [],
+  "mobAbilities": []
+}

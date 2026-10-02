@@ -1,0 +1,34 @@
+{
+  "id": "litanies-administratum-adept-xanther-futah",
+  "name": "Administratum Adept Xanther Futah",
+  "source": "litanies-of-the-lost",
+  "page": 34,
+  "faction": "imperial",
+  "threat": ["E", "E", "E", "E"],
+  "keywords": ["IMPERIUM", "ADEPTUS ADMINISTRATUM"],
+  "attributes": { "S": 1, "T": 2, "A": 1, "I": 2, "Wil": 2, "Int": 4, "Fel": 2 },
+  "resilience": { "value": 3 },
+  "defence": 1,
+  "wounds": 4,
+  "shock": 3,
+  "skills": { "default": 2, "list": [
+    { "name": "Awareness", "dice": 6, "passive": 3 },
+    { "name": "Cunning", "dice": 6 },
+    { "name": "Deception", "dice": 6 },
+    { "name": "Investigation", "dice": 8 },
+    { "name": "Persuasion", "dice": 6 },
+    { "name": "Scholar", "dice": 8 }
+  ] },
+  "bonuses": [],
+  "abilities": [
+    { "type": "ACTION", "weapons": [
+      { "name": "Laspistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Reliable"] }
+    ] }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Large",
+  "note": "No Tier row printed; class proposed (named NPC, 4 Wounds, one pistol: between a grunt and a Champion)."
+}
