@@ -1,0 +1,108 @@
+{
+  "id": "great-knarloc",
+  "name": "Great Knarloc",
+  "source": "threat-assessment",
+  "page": 184,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "KROOT"
+  ],
+  "attributes": {
+    "S": 15,
+    "T": 13,
+    "A": 3,
+    "I": 5,
+    "Wil": 5,
+    "Int": 1,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 16,
+    "note": "Great Knarloc Hide: 2 AR"
+  },
+  "defence": 2,
+  "wounds": 20,
+  "shock": 9,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 4,
+        "passive": 2
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Baggage Harness",
+      "text": "Threats within 2m of the Great Knarloc can gain 1 Reload for a weapon with the KROOT Keyword as a free action by pulling them from the Great Knarloc' Baggage Harness."
+    },
+    {
+      "name": "Crushing Strike",
+      "text": "When this Threat charges, all individuals within 2m must make a DN 3 Initiative Test or suffer 1d6 Mortal Wounds."
+    },
+    {
+      "name": "Handlers",
+      "text": "The Great Knarloc is typically ridden by two handlers, who use the statistics of Kroot Carnivores. Onehandler may take actions as normal, while the other operates the Kroot Bolt Thrower. The Kroot Carnivores can betargeted separately to the Great Knarloc. If both handlers die or are otherwise removed from the Great Knarloc, COMPLICATION: Lost Control immediately activates."
+    },
+    {
+      "name": "Loping Stride",
+      "text": "When this Threat runs or charges, they have Speed 20 instead of Speed 14."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Great Knarloc Roar",
+      "text": "All opponents of the Great Knarloc must make a DN 5 Fear Test."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Great Knarloc Beak & Talons",
+          "damage": 18,
+          "ed": 6,
+          "ap": -4,
+          "range": [
+            2
+          ],
+          "traits": []
+        },
+        {
+          "name": "Kroot Bolt Thrower",
+          "damage": 16,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            18
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "COMPLICATION",
+      "name": "Lost Control",
+      "text": "Whenever the Greater Knarloc or one of its handlers rolls a Complication, theGreater Knarloc becomes Frenzied. While Frenzied, the Great Knarloc will attempt to kill and eat everything insight, including its own handlers if there are no other suitable individuals within 10m. An individual with the KROOT Keyword can attempt a DN 8 Leadership Test to calm a Frenzied Great Knarloc, and may then mount it using their movement."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 13d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 7,
+  "size": "Huge",
+  "note": "No Default pool printed. Beak & Talons range printed '2m' (stored [2]); Bolt Thrower prints a single 'Range 18' (stored [18]). Loping Stride's 'Speed 14' does not match Speed 7."
+}

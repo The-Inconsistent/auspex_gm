@@ -1,0 +1,136 @@
+{
+  "id": "corsair-prince",
+  "name": "Corsair Prince",
+  "source": "threat-assessment",
+  "page": 46,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "WRAITH CONSTRUCT",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 7,
+    "I": 7,
+    "Wil": 5,
+    "Int": 4,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 10,
+    "note": "3 AR"
+  },
+  "defence": 6,
+  "wounds": 11,
+  "shock": 9,
+  "skills": {
+    "default": 9,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 10
+      },
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 12
+      },
+      {
+        "name": "Leadership",
+        "dice": 10
+      },
+      {
+        "name": "Pilot",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 4 personal Ruin."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Path of Command",
+      "text": "Any ally with a shared [COTERIE] Keyword within communication range of a Corsair Prince may use Ruin Actions using the Autarch's personal Ruin."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +6 bonus dice during All-Out Attacks."
+    },
+    {
+      "name": "Uncanny Balance",
+      "text": "The Corsair Prince gains +3 bonus die when they use Athletics (S) Interaction Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Superlative Strategist",
+      "text": "Before combat begins, the Corsair Prince may choose an ally with a shared [COTERIE] Keyword within communication range to use a Ruin Action for free. If they make a Test, as part of this Ruin Action, they gain +2 bonus dice."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Void Sabre",
+          "damage": 8,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Brutal",
+            "Parry"
+          ]
+        },
+        {
+          "name": "Fusion Pistol",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            3,
+            6,
+            9
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Melta"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Enduring Resolve: Spend 1 Ruin to roll 3d6. This Threat can roll Determination against Mortal Wounds. Include a Wrath Die in this Threat's Determination rolls. If the Wrath die rolls an Icon, the Threat does not suffer Shock damage for this Determination roll, the Wounds are simply ignored.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Keywords printed as AELDARI, ASURYANI, WRAITH CONSTRUCT, [CRAFTWORLD] (the Corsair blocks print ANHRATHE, DRUKHARI, [COTERIE]; likely a copy error). Path of Command names 'the Autarch's personal Ruin'."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "alchemicus-familiar",
+  "name": "Alchemicus Familiar",
+  "source": "threat-assessment",
+  "page": 130,
+  "faction": "genestealer",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 2, "T": 1, "A": 4, "I": 4, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 2 },
+  "defence": 3,
+  "wounds": 3,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Cunning", "dice": 4 },
+      { "name": "Medicae", "dice": 4 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Alchemicus Courier",
+      "text": "The Alchemicus Familiar can use its action to assist a Biophagus, extending the range of its Genomic Enhancement to 18m.",
+      "weapons": [
+        { "name": "Rending Claws", "damage": 5, "ed": 3, "ap": -22, "range": [1], "traits": ["Rending (2)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keyword within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 1D6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Small",
+  "note": "Print error kept: Rending Claws print 'AP -22' (probably -2). Size printed 'Sml'."
+}

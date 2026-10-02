@@ -1,0 +1,144 @@
+{
+  "id": "soul-weaver",
+  "name": "Soul Weaver",
+  "source": "threat-assessment",
+  "page": 48,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "PSYKER",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 4,
+    "I": 5,
+    "Wil": 7,
+    "Int": 4,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 7,
+    "note": "3 AR"
+  },
+  "defence": 4,
+  "wounds": 7,
+  "shock": 9,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 7
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Pilot",
+        "dice": 8
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 10
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +4 bonus dice during All-Out Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Aeldari Power Sword",
+          "damage": 7,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Plasma Grenades",
+          "count": 2,
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            12
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Soul Channel",
+      "text": "The Soul Weaver knows the following Psychic Powers: Dull Pain (Wrath & Glory, p. 269), Embolden/Horrify (page 283), Empower/Enervate (page 283)."
+    },
+    {
+      "type": "RUIN",
+      "name": "Soul Channel",
+      "text": "Spend 1 Ruin to activate a Psychic Power or Deny the Witch."
+    },
+    {
+      "type": "REACTION",
+      "name": "Channeler Stones",
+      "text": "Once per Round when this Threat or an ally within 5m would suffer damage, this Threat may activate their Channeler Stones. The damage of that attack is reduced to 0."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Shock 9 over Wounds 7 as printed."
+}

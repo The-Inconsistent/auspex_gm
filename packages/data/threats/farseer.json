@@ -1,0 +1,135 @@
+{
+  "id": "farseer",
+  "name": "Farseer",
+  "source": "threat-assessment",
+  "page": 29,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "PSYKER",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 4,
+    "A": 5,
+    "I": 5,
+    "Wil": 8,
+    "Int": 7,
+    "Fel": 5
+  },
+  "resilience": {
+    "value": 8,
+    "note": "4 AR"
+  },
+  "defence": 4,
+  "wounds": 14,
+  "shock": 13,
+  "skills": {
+    "default": 7,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Leadership",
+        "dice": 10
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 12
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    {
+      "name": "Architect of Fate",
+      "text": "When a Farseer's turn begins, the GM gains 1 Ruin."
+    },
+    {
+      "name": "Champion",
+      "text": "A Farseer may use Ruin Actions and has 4 personal Ruin. They may activate the Move Ruin Action during their own turn."
+    },
+    {
+      "name": "Ghosthelm",
+      "text": "Farseers never roll on the Perils of the Warp table. They always use the Unbound Power Level (+1 Wrath Die)."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Runes of Fate",
+      "text": "The Farseer may attempt to activate one of the following psychic powers: Smite (Wrath & Glory page 272), Forewarning (page 274), Misfortune (page 274), Guide (below)."
+    },
+    {
+      "name": "Guide",
+      "text": "DN 5, Action. An ally within 15m gains +6 bonus dice on their next attack Test. Spend 1 Shift per additional +1 bonus die on the attack Test, or 1 Shift per additional 5m of range."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Witchblade",
+          "damage": 13,
+          "ed": 5,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Force",
+            "Parry",
+            "Wary Weapon"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "The Path of the Seer",
+      "text": "Spend 1 Ruin to activate a Psychic Power or Deny the Witch (Wrath & Glory page 267)."
+    }
+  ],
+  "determination": "Power Field: Spend 1 Ruin to roll 4d6. Farseers can roll Determination against Mortal Wounds.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg"
+}

@@ -1,0 +1,99 @@
+{
+  "id": "mb3-recon-drone",
+  "name": "MB3 Recon Drone",
+  "source": "threat-assessment",
+  "page": 175,
+  "faction": "tau",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "T'AU",
+    "DRONE"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 5,
+    "A": 4,
+    "I": 3,
+    "Wil": 1,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 9,
+    "note": "AR 3"
+  },
+  "defence": 2,
+  "wounds": 7,
+  "shock": null,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Stealth",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Drone",
+      "text": "This Threat is immune to the Bleeding, Exhausted, Poisoned, and Prone Conditions, cannot Suffocate, and cannot roll Determination."
+    },
+    {
+      "name": "Orbital Uplink",
+      "text": "The MB3 can broadcast encrypted voice messages and relay its position to any other Threat with the T'AU Keyword within 100 kilometres."
+    },
+    {
+      "name": "Recon Suite",
+      "text": "This Threat and any other Threats with the T'AU Keyword within 6m gain +2 bonus dice when targeting an individual in cover."
+    },
+    {
+      "name": "Sensor Suite",
+      "text": "The MB3 constantly generates a three-dimensional map of all terrain within 50m of itself. It detects all life signs that aren't specifically shielded, and the discharge of any las, plasma, melta, or flame weapon within this area; the MB3 knows the number and direction of these phenomena, but not their exact position."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Burst Cannon",
+          "damage": 11,
+          "ed": 3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Heavy (5)",
+            "Rapid Fire (2)",
+            "Reliable"
+          ]
+        }
+      ]
+    }
+  ],
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Avg",
+  "note": "No DETERMINATION line (Drone)."
+}

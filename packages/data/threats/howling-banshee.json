@@ -1,0 +1,133 @@
+{
+  "id": "howling-banshee",
+  "name": "Howling Banshee",
+  "source": "threat-assessment",
+  "page": 35,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 6,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "4 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 8
+      },
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Intimidate",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Whirling Death & Howling Banshee Mask",
+      "text": "Howling Banshees gain an additional +2 bonus dice on melee attacks made as part of a Charge (+3 bonus dice in total). Additionally, a Howling Banshee may make an Intimidation Interaction Attack as a Free Action as part of a Charge."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Banshee Blade",
+          "damage": 8,
+          "ed": 5,
+          "ap": -4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Howling Banshee Exarch",
+      "text": "A Howling Banshee Exarch has Weapon Skill 11 and 9 Wounds. They loses their Banshee Blade, and gain the equipment and bonuses below: Executioner: 9 +5 ED / AP -3 / Parry; Champion: An Exarch may use Ruin Actions; Nerve-Shredding Shriek: Howling Banshees can emit a horrible shriek that leaves their foes reeling. When within 10m of their Exarch they may spend Shifts on Intimidate Interaction Attacks to inflict 1 Mortal Wound on the target.",
+      "weapons": [
+        {
+          "name": "Executioner",
+          "damage": 9,
+          "ed": 5,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ]
+}

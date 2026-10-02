@@ -111,7 +111,7 @@ Format follows the bestiary layout, Core p.323. Stats don't vary by Tier; only t
 | `source` | Book id from the enum above; omitted means `core`. A new book goes in `SOURCES` (`source.ts`) first, or in `THREAT_ONLY_SOURCES` (`threat.ts`, with its cite) if it has only threats |
 | `page` | Printed page, never the PDF page (see §3 for the offsets) |
 | `threat` | 4 letters for core (Tiers 1–4), 5 when the book prints Tier 5. `threatClassAt(t, tier)` picks `threat[min(tier, length) - 1]`, so a 4-letter entry at a Tier 5 campaign uses its Tier 4 class. Class rules: [rules-flow.md](rules-flow.md) §4, Threat classes |
-| Weapons | Inside an `ACTION` ability (`{ "type": "ACTION", "weapons": [...] }`, usually no name or text), never loose on the threat |
+| Weapons | Inside an `ACTION` ability (`{ "type": "ACTION", "weapons": [...] }`, usually no name or text), never loose on the threat. An attack printed under a RUIN or WRATH heading keeps that ability's type (the Tankbusta's Tankhammer, the Clawed Fiend's Tail Spike), so its cost stays visible |
 | `shock: null` | Printed "–" |
 | Mobs | Mob-only kit and rules go in `options` with `kind: "mob"`; Mob-only abilities in `mobAbilities`. Some books print `mobAbilities` without a Mob option; keep what is printed |
 | Print errors | Copy as printed; note them in the commit or PR. Don't correct silently |
@@ -329,6 +329,38 @@ Per book:
   Electro-Priest's "*7" and "AR *2" (no footnote), the Kataphron's square-bracketed traits (stored round), the Ogryn
   Loader's death explosion (ANNIHILATION text). Shootas and the Heavy Arc Rifle print no Salvo, so it's omitted. The
   "Resilience" hits on pp.55, 62, 122 and 128 are scenery.
+
+### Threat Assessment transcription notes (GitHub issue #44)
+
+Every stat block in the book, 133 threats: Aeldari 31 (pp.27–57), Drukhari 18 (pp.63–77), Orks 24 (pp.82–103; 8 were
+in before), Genestealer Cults 19 (pp.108–130), Necrons 23 (pp.136–157, in before), T'au 18 (pp.164–186). Every block
+prints five Tier letters (p.5). The Devilfish (p.187) is a vehicle and waits for vehicle rules.
+- **Ids:** a plain slug (`dire-avenger`); `ta-` when Core already has the name. Every Core namesake differs, so all are
+  in: `ta-guardian-defender`, `ta-ranger`, `ta-wraithguard`, `ta-painboy`, `ta-killa-kan`, `ta-patriarch`, `ta-magus`,
+  `ta-acolyte-hybrid`, `ta-neophyte-hybrid`, `ta-purestrain-genestealer` (the last two differ from Core only in the
+  Tier 5 letter, name and keywords, which counts under rules-flow.md §11.72). `succubus`, `wych`, `kabalite-warrior`
+  and `clawed-fiend` sit beside Litanies of the Lost's printings, `felarch` beside Core's Corsair Felarch sidebar.
+- **Stray digits, kept as printed** (the note gives the likely reading): the Archon's Leadership 102, the Sslyth's
+  Awareness 86 and Ballistic Skill 84, the Scourge's Weapon Skill 48, the Hellglaive's "+64 ED", the Agoniser's
+  "Poisoned 35", the Scissorhand's "Poisoned 14", the Incubi's 12 personal Ruin, the Wrack's "52d6" and the Razorwing
+  Flock's "13d6" Determination, the Meganob's "Passive 21", the Mek's Choppa "87", the Deff Dread Klaw's "Range 21",
+  the Morkanaut's "Blast (150)", the Gorkanaut's "124d6", the Primus's Awareness 18 (Passive 4), the Alchemicus
+  Familiar's "AP -22", the Autarch's Dragon Fusion Gun "186" and Starshot "+26 ED", the Warlock's "+21" Conceal.
+- **Text copied from another block:** the Wraithlord prints the Wraithguard's bonuses and weapons; the Wayseeker's Ruin
+  line is the Soul Weaver's; Battle Focus names the wrong unit on the Storm Guardian, Shadow Spectre and Starstorm
+  Duellist; the Morkanaut's Big 'n' Stompy says "Gorkanaut".
+- **Missing values:** the Warboss's Ballistic Skill (no dice), the Sanctus's DETERMINATION line, the Acolyte Hybrid's
+  Blasting Charge and Frag Grenade (printed "Text"), the Jackal Alphus's Blasting Charge (cut off), Harlequin's Embrace
+  (cut off at the page end). Drones print no Determination.
+- **Other oddities kept:** the Farseer's Witchblade "Wary Weapon"; the Haywire Grenade's "Can only target vehicles"
+  as a trait; "DAEMON MONSTER" as one keyword (Avatar of Khaine); the Corsair Prince's Craftworld keywords; Knarlocs'
+  Loping Stride "Speed 14" against Speed 7; the Mandrake's empty trait (dropped).
+- **Calls:** a speed printed with "(Fly)" or "(May not Run or Sprint)" stores the number, the rest in a bonus or note
+  (as `ta-big-mek`). A Jackal's mounted Defence and Speed live in `note`. A weapon with melee and thrown profiles (the
+  Squighogs' Stikka) is two weapons. The Morkanaut's Mega-Zappa ED "2d   3" is read `2d3`. Exarch, Shas'ui, Leader and
+  Options sidebars are `variant`s; Mob swaps are `mob` options. Psychic powers (Farseer, Warlock, Weirdboy, Magus,
+  Patriarch) are ability text, and p.111's Broodmind Discipline holds powers only. All Kroot and Vespid are `tau`,
+  Harlequins and Corsairs `aeldari`, every Drukhari beast `drukhari`.
 
 ---
 

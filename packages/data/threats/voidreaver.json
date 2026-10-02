@@ -1,0 +1,218 @@
+{
+  "id": "voidreaver",
+  "name": "Voidreaver",
+  "source": "threat-assessment",
+  "page": 51,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 4,
+    "I": 4,
+    "Wil": 2,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 6,
+    "note": "3 AR"
+  },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 6
+      },
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Pilot",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +2 bonus dice during All-Out Attacks"
+    },
+    {
+      "name": "Uncanny Balance",
+      "text": "Corsairs gain +1 bonus die when they use Athletics (S) Interaction Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Aeldari Power Sword",
+          "damage": 7,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Plasma Grenade",
+          "count": 1,
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            8
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Reaver of the Void",
+      "text": "Spend 1 Ruin. The Voidreaver Seizes the Initiative and gains +1 bonus dice to all attack Tests."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob of 5 or more",
+      "text": "In a Mob of 5 or more Voidreavers, one Voidreaver may exchange their Shuriken Pistol for either of the following: Corsair Blaster: 17 +2 ED / AP -4 / Range 9 - 18 - 27 / Salvo - / Brutal, Heavy (6), Spread; Corsair Shredder: 13 +2 ED / AP -1 / Range 9 - 18 - 27 / Salvo 1 / Blast (6), Heavy (4), Rending (3).",
+      "weapons": [
+        {
+          "name": "Corsair Blaster",
+          "damage": 17,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": null,
+          "traits": [
+            "Brutal",
+            "Heavy (6)",
+            "Spread"
+          ]
+        },
+        {
+          "name": "Corsair Shredder",
+          "damage": 13,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 1,
+          "traits": [
+            "Blast (6)",
+            "Heavy (4)",
+            "Rending (3)"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "mob",
+      "name": "Mob of 10 or more",
+      "text": "In a Mob of 10 or more Voidreavers, one Voidreaver may exchange their Shuriken Pistol for either of the following: Shuriken Cannon: 14 +2 ED / Range 12 - 24 - 36 / Salvo 3 / Heavy (6), Rending (4); Wraithcannon: 20 +3 ED / AP -4 / Range 9 - 18 - 27 / Salvo 1 / Assault, Heavy (8), Warp Weapon.",
+      "weapons": [
+        {
+          "name": "Shuriken Cannon",
+          "damage": 14,
+          "ed": 2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 3,
+          "traits": [
+            "Heavy (6)",
+            "Rending (4)"
+          ]
+        },
+        {
+          "name": "Wraithcannon",
+          "damage": 20,
+          "ed": 3,
+          "ap": -4,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Heavy (8)",
+            "Warp Weapon"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Section heading 'Voidreavers'. Reckless Abandon prints '+2 bonus dice' (the other Corsairs +4), with no closing full stop."
+}

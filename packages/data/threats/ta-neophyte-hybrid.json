@@ -1,0 +1,91 @@
+{
+  "id": "ta-neophyte-hybrid",
+  "name": "Neophyte Hybrid",
+  "source": "threat-assessment",
+  "page": 114,
+  "faction": "genestealer",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 3, "A": 3, "I": 3, "Wil": 3, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 6, "note": "AR 2" },
+  "defence": 2,
+  "wounds": 5,
+  "shock": 4,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 5, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 5 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 5 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Neophyte is not Human." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Autogun", "damage": 7, "ed": 1, "range": [12, 24, 36], "salvo": 3, "traits": ["Pistol"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "You can activate this ability whenever a Threat with the GENESTEALER and PSYKER Keywords within 6m of the Neophyte Hybrid is targeted by an attack. The Neophyte Hybrid interposes themself and becomes the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3D6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Options",
+      "text": "In a Mob of 10 or more Neophyte Hybrids, 2 Neophytes can exchange their Autogun for any of the following. Grenade Launcher with Frag or Krak ammunition. Webber: this weapon has a range of 9 - 18 - 27, and it does not deal damage. If it hits the target, all individuals of Large size or smaller within Blast (4) are Restrained. The restraining webs require a DN 3 Strength Test to escape as an Action.",
+      "weapons": [
+        { "name": "Flamer", "damage": 10, "ed": 4, "range": [4, 8, 12], "salvo": 1, "traits": ["Assault", "Flamer"] },
+        { "name": "Grenade Launcher (Frag)", "damage": 10, "ed": 1, "range": [12, 24, 36], "salvo": null, "traits": ["Assault", "Blast (6)"] },
+        { "name": "Grenade Launcher (Krak)", "damage": 14, "ed": 2, "range": [12, 24, 36], "salvo": null, "traits": ["Assault", "Blast (4)"] },
+        { "name": "Heavy Stubber", "damage": 10, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Heavy (4)"] },
+        { "name": "Mining Laser", "damage": 18, "ed": 1, "ap": -3, "range": [12, 24, 36], "salvo": 1, "traits": ["Heavy (6)"] }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Neophyte Options",
+      "text": "A Neophyte Hybrid can exchange their Autogun for a Cult Shotgun.",
+      "weapons": [
+        {
+          "name": "Cult Shotgun",
+          "damage": 9,
+          "ed": 2,
+          "range": [6, 12, 18],
+          "salvo": 0,
+          "traits": ["Assault", "Brutal", "Spread", "Unwieldy (2)"]
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Neophyte Leader",
+      "text": "Some Mobs of Neophytes have leaders designated by their Patriarch or the Broodmind. +1 Toughness, meaning they also have 7 Resilience and 6 Wounds. +1 Willpower, meaning they also have 5 Shock, 4 Conviction, and 3 Resolve. The Neophyte Leader may exchange their Autopistol for either a Bolt Pistol or a Web Pistol (range 6 - 12 - 18, deals no damage; if it hits the target, all individuals of Large size or smaller within Blast (3) are Restrained; the restraining webs require a DN 3 Strength Test to escape as an Action). The Neophyte Leader may exchange their Autogun for either a Chainsword or a Power Pick.",
+      "weapons": [
+        { "name": "Bolt Pistol", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Brutal", "Pistol"] },
+        { "name": "Chainsword", "damage": 8, "ed": 5, "range": [1], "traits": ["Brutal", "Parry"] },
+        { "name": "Power Pick", "damage": 8, "ed": 4, "ap": -2, "range": [1], "traits": ["Rending (3)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Broodmind",
+      "text": "This Threat gains a +3 bonus dice to Resolve Tests when within 20 metres of a Threat with the GENESTEALER CULT and PSYKER Keywords."
+    }
+  ],
+  "note": "Reprint of neophyte-hybrid; Tiers 1-4 match (T T T T), TA adds Tier 5 (T); also differs in the Mob options (Core has Three-Armed Discount) and Neophyte Options. Reaction prints 'GENESTEALER' not 'GENESTEALER CULT'."
+}

@@ -1,0 +1,99 @@
+{
+  "id": "ta-acolyte-hybrid",
+  "name": "Acolyte Hybrid",
+  "source": "threat-assessment",
+  "page": 113,
+  "faction": "genestealer",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 5, "T": 4, "A": 4, "I": 4, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 6,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Stealth", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Extra Arm",
+      "text": "This Threat has 3 arms. If this Threat is wielding a one-handed weapon in each hand, or a one-handed weapon in one hand and a two-handed weapon in its other two hands, it can make one attack with each weapon without suffering a Multi-Attack DN penalty. If this Threat is wielding a weapon with all 3 hands, they can take the Brace Action (Wrath & Glory, page 189) as a free action."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    },
+    {
+      "type": "ACTION",
+      "text": "Blasting Charge (1): Text. Frag Grenade (1): Text. (Printed as the placeholder word \"Text\", no profile.)",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Cult Knife", "damage": 7, "ed": 2, "range": [1] },
+        { "name": "Rending Claw", "damage": 11, "ed": 4, "ap": -2, "range": [1], "traits": ["Rending (2)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 6,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Acolyte Options",
+      "text": "An Acolyte Hybrid can exchange their Autopistol for a Hand Flamer (no profile printed). They may also exchange both their Autpistol and Cult Knife for any of the following options.",
+      "weapons": [
+        {
+          "name": "Heavy Rock Cutter",
+          "damage": 11,
+          "ed": 6,
+          "ap": -4,
+          "range": [1],
+          "traits": ["Brutal", "Heavy (6)", "Rending (2)", "Unwieldy (4)"]
+        },
+        {
+          "name": "Heavy Rock Drill",
+          "damage": 10,
+          "ed": 5,
+          "ap": -4,
+          "range": [1],
+          "traits": ["Brutal", "Heavy (6)", "Rending (4)", "Unwieldy (4)"]
+        },
+        {
+          "name": "Heavy Rock Saw",
+          "damage": 11,
+          "ed": 4,
+          "ap": -4,
+          "range": [1],
+          "traits": ["Brutal", "Heavy (4)", "Unwieldy (3)"]
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Acolyte Leader",
+      "text": "Some Mobs of Acolytes have leaders designated by their Patriarch or the Broodmind. +1 Toughness, meaning they also have 8 Resilience and 7 Wounds. +1 Willpower, meaning they also have 6 Shock, 5 Conviction, and 4 Resolve. An Acolyte leader has the following instead of an Autopistol and Cult Knife. An Acolyte Leader may also carry either a Cult Icon (as long as this Threat is alive, all other Threats with the GENESTEALER CULT Keyword that can see the Cult Icon gain +1 Conviction and Resolve) or a Cult Lash Whip (once per Round, a single individual within 4m of this Threat can reroll an attack Test).",
+      "weapons": [
+        { "name": "Cult Bonesword", "damage": 10, "ed": 5, "ap": -1, "range": [1], "traits": ["Brutal", "Rending (2)"] },
+        { "name": "Demolition Charge", "damage": 15, "ed": 4, "ap": -4, "range": [10], "traits": ["Blast (10)"] }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Broodmind",
+      "text": "This Threat gains a +3 bonus dice to Resolve Tests when within 20 metres of a Threat with the GENESTEALER CULT and PSYKER Keywords."
+    }
+  ],
+  "note": "Reprint of acolyte-hybrid; differs in Tier row (A E E T T; Core A E T T), Wounds 6 (Core 8), skills, Autopistol and Cult Knife profiles, options. Print errors kept: Blasting Charge and Frag Grenade profiles are the word 'Text'; 'Autpistol'."
+}

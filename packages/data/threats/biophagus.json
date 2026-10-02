@@ -1,0 +1,61 @@
+{
+  "id": "biophagus",
+  "name": "Biophagus",
+  "source": "threat-assessment",
+  "page": 130,
+  "faction": "genestealer",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 5, "A": 5, "I": 4, "Wil": 6, "Int": 7, "Fel": 2 },
+  "resilience": { "value": 7, "note": "AR 1" },
+  "defence": 3,
+  "wounds": 9,
+  "shock": 8,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Cunning", "dice": 6 },
+      { "name": "Medicae", "dice": 10 },
+      { "name": "Tech", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Biophagus is not Human." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Autopistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] },
+        { "name": "Injector Goad", "damage": 6, "ed": 2, "range": [1], "traits": ["Inflict (Poisoned 4)", "Rending (8)"] },
+        { "name": "Chemical Vials", "damage": 4, "ed": 6, "ap": -2, "range": [8], "traits": ["Rad (3)", "Rending (8)"] }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Genomic Enhancement",
+      "text": "Choose a Threat within 3m with the GENESTEALER CULT Keyword and roll 1d3. The target gains the matching effect for the next hour: 1. Enhanced Musculature: the target gains +2 Strength (this results in +2 damage with melee attacks and bonus dice for Athletics Tests). 2. Enhanced Aggression: the target is Frenzied and gains +2 Initiative (this results in +2 Defence and Weapon Skill). 3. Enhanced Resilience: the target gains +2 Toughness (this results in +2 Wounds and Resilience). An individual can only be affected by one type of Genomic Enhancement at a time, except for the use of Twisted Experiment. If the target of Genomic Enhancement is an Aberrant, you may choose the enhancement instead of rolling 1d3."
+    },
+    {
+      "type": "RUIN",
+      "name": "Twisted Experiment",
+      "text": "Spend 1 Ruin and choose one of the following effects: The Biophagus uses their Genomic Enhancement Action on two targets within range. The Biophagus uses their Genomic Enhancement Action twice on the same target."
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack. If this Threat is mounted, the range of this Reaction is half the Speed of the vehicle."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5D6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Chemical Vials prints 'Thrown 8m'."
+}

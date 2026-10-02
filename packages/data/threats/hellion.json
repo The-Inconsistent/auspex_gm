@@ -1,0 +1,45 @@
+{
+  "id": "hellion",
+  "name": "Hellion",
+  "source": "threat-assessment",
+  "page": 75,
+  "faction": "drukhari",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["DRUKHARI", "[WYCH CULT]"],
+  "attributes": { "S": 3, "T": 4, "A": 4, "I": 4, "Wil": 2, "Int": 3, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 2" },
+  "defence": 3,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Ballistic Skill", "dice": 9 },
+      { "name": "Pilot", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Hit and Run", "text": "The Hellion does not provoke Reflexive Attacks when moving out of Engagement." },
+    { "name": "Power From Pain: Flensing Fury", "text": "If this Threat deals a Wound it gains +1 bonus dice to melee attack Tests until the end of its next Turn." },
+    { "name": "Skyboard", "text": "Whilst mounted on a Skyboard the Hellion can Fly at Speed 12 and fire its Splinter Pods as though they were wielding them as a ranged weapon. If the Skyboard is damaged, the Hellion rolls a Complication, or attempts any kind of difficult aerial manoeuvre, he must succeed on a DN 4 Pilot (A) Test or the Skyboard crashes in a random direction according to the Scattering rules. Crashing deals a minimum of d3 Shock and may trigger falling damage." }
+  ],
+  "abilities": [
+    { "type": "ACTION", "name": "Helion Assault", "text": "Whilst mounted on a Skyboard a Hellion may charge as a Combat Action and Fall Back as a simple Action." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Hellglaive", "damage": 8, "ed": 64, "ap": -4, "range": [2] },
+        { "name": "Splinter Pods", "damage": 8, "ed": 2, "range": [9, 18, 27], "salvo": 3, "traits": ["Agonising", "Assault", "Inflict (Poisoned 3)"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Whips of the Master", "text": "Spend 1 Ruin to target an allied creature with the <BEAST> Keyword within 4m. The target suffers 1 Shock damage, but gains +2 bonus dice to all melee attacks and +2 Speed until the end of its next turn." }
+  ],
+  "determination": "Spend 1 Ruin to roll 4d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "note": "Print: the Hellglaive's ED is printed \"+64 ED\", stored as printed (likely 6 or 4); \"Helion Assault\" has one L; its AP prints \"– 4\"."
+}

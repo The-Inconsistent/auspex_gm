@@ -1,0 +1,104 @@
+{
+  "id": "vespid-stingwing",
+  "name": "Vespid Stingwing",
+  "source": "threat-assessment",
+  "page": 186,
+  "faction": "tau",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "VESPID"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 5,
+    "A": 5,
+    "I": 3,
+    "Wil": 2,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 9,
+    "note": "AR 3"
+  },
+  "defence": 2,
+  "wounds": 7,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Pilot",
+        "dice": 6
+      },
+      {
+        "name": "Survival",
+        "dice": 5
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Alien Mind",
+      "text": "When anyone attempts to communicate with or issue a command to a Vespid Stingwing without a Vespid Strain Leader within 10m, they must succeed on a DN 10 Leadership (Wil) Test. On a failure, the Vespid Stingwing is unresponsive. A Complication on the Test causes the Vespid Stingwing to attack whoever made the communication attempt."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Neutron Blaster",
+          "damage": 12,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 1,
+          "traits": [
+            "Arc (2)",
+            "Assault",
+            "Melta"
+          ]
+        },
+        {
+          "name": "Stingwing Claws",
+          "damage": 7,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 14,
+  "size": "Avg"
+}

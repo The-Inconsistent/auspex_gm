@@ -1,0 +1,188 @@
+{
+  "id": "pathfinder",
+  "name": "Pathfinder",
+  "source": "threat-assessment",
+  "page": 172,
+  "faction": "tau",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "T'AU"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 2,
+    "A": 4,
+    "I": 3,
+    "Wil": 2,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 5,
+    "note": "AR 2"
+  },
+  "defence": 2,
+  "wounds": 4,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 4
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Orbital Uplink",
+      "text": "The Pathfinder can broadcast encrypted voice messages and relay its position to any other Threat with the T'AU Keyword within 100 kilometres."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Pulse Carbine",
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Rapid Fire (2)",
+            "Reliable"
+          ]
+        },
+        {
+          "name": "Pulse Pistol",
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Pistol",
+            "Reliable"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ACTION",
+      "name": "Fire Markerlight",
+      "text": "This Threat illuminates an individual within 36m with a Markerlight. Until the start of this Threat's next turn, any Threat with the T'AU Keyword gains +2 bonus dice to ranged attack Tests targeting the individual affected by the Markerlight. The effects of Markerlights do not stack."
+    },
+    {
+      "type": "RUIN",
+      "name": "Neuroweb System Jammer",
+      "text": "Spend 1 Ruin to target an individual or Mob within 20m. The DN of all ranged attack Tests the target makes is increased by +2."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 2d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Four-Strong Pathfinder Team",
+      "text": "A Mob of eight or more Pathfinders can control one Tactical Support Drone, and one Pathfinder can exchange their Pulse Carbine for a Rail Rifle with a tripod.",
+      "weapons": [
+        {
+          "name": "Rail Rifle",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": 1,
+          "traits": [
+            "Sniper (2)",
+            "Heavy (6)",
+            "Reliable"
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "kind": "variant",
+      "name": "Pathfinder Shas'ui",
+      "text": "Sidebar (p.172): Resilience 6 (Recon Armour: 3 AR), Defence 2, Wounds 5, Shock 4, Toughness 3, Willpower 4, Conviction 4, Resolve 3. Other stats as the Pathfinder.",
+      "weapons": [
+        {
+          "name": "Ion Rifle",
+          "damage": 14,
+          "ed": 2,
+          "ap": -2,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": 1,
+          "traits": [
+            "Supercharge"
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Battlefield Awareness",
+          "text": "The Pathfinder Shas'ui's Passive Awareness is doubled (8)."
+        },
+        {
+          "name": "Drone Controller",
+          "text": "The Pathfinder Shas'ui can control one Tactical Support Drone."
+        },
+        {
+          "type": "RUIN",
+          "name": "Lessons of Kauyon",
+          "text": "Spend 1 Ruin. All Threats with the T'AU Keyword within 10m of the Pathfinder Shas'ui suffer only half (rounded up) the usual Stealth Score reduction on their next turn."
+        },
+        {
+          "type": "COMPLICATION",
+          "name": "Experimental Technology",
+          "text": "When the Pathfinder Shas'ui rolls a Complication on a Supercharge Attack with their Ion Rifle, the weapon explodes for: 10 +6 ED / AP -2 / Blast (4)."
+        },
+        {
+          "name": "DETERMINATION",
+          "text": "Spend 1 Ruin to roll 3d6."
+        }
+      ]
+    }
+  ],
+  "note": "Mob option is titled 'Four-Strong Pathfinder Team' but reads 'a Mob of eight or more' (copied as printed). Fire Markerlight is under the ACTION heading."
+}

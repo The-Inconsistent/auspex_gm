@@ -1,0 +1,130 @@
+{
+  "id": "fate-dealer",
+  "name": "Fate Dealer",
+  "source": "threat-assessment",
+  "page": 49,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 6,
+    "I": 4,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "3 AR"
+  },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 7
+      },
+      {
+        "name": "Awareness",
+        "dice": 10,
+        "passive": 5
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 10
+      },
+      {
+        "name": "Pilot",
+        "dice": 9
+      },
+      {
+        "name": "Stealth",
+        "dice": 9
+      },
+      {
+        "name": "Survival",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 7
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Cameleoline Cloak",
+      "text": "Gain +1 bonus die to Stealth (A) Tests and +1 Defence while in cover or shadows."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +4 bonus dice during All-Out Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Ranger Long Rifle",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": null,
+          "traits": [
+            "Sniper (4)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Sniper",
+      "text": "When the Threat rolls a 6 on the Wrath Die as part of a ranged attack it deals an additional 1d3 Mortal Wounds."
+    }
+  ],
+  "determination": "Enduring Resolve: Spend 1 Ruin to roll 3d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 8,
+  "size": "Avg"
+}

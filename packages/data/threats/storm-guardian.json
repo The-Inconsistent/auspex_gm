@@ -1,0 +1,203 @@
+{
+  "id": "storm-guardian",
+  "name": "Storm Guardian",
+  "source": "threat-assessment",
+  "page": 32,
+  "faction": "aeldari",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 4,
+    "I": 4,
+    "Wil": 3,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "4 AR"
+  },
+  "defence": 3,
+  "wounds": 7,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Pilot",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Stormblades",
+      "text": "If a Storm Guardian is Engaged at the start of their Turn, they gain +1 bonus dice to Weapon melee attack Tests and +1 Defence when attacked in melee."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Catapult",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 3,
+          "traits": [
+            "Assault",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Plasma Grenade",
+          "count": 1,
+          "damage": 10,
+          "ed": 5,
+          "ap": -1,
+          "range": [
+            8
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Battle Focus",
+      "text": "Spend 1 Ruin immediately before or after making a ranged attack to Move up to the Guardian Defender's Speed as a Free Action."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Heavy Weapons Platform",
+      "text": "In a Mob of ten or more Guardian Defenders, two Guardians can operate a heavy weapons platform with one of these weapons: Aeldari Missile Launcher (Sunburst), Bright Lance, Scatter Laser, Starcannon, Shuriken Cannon.",
+      "weapons": [
+        {
+          "name": "Aeldari Missile Launcher (Sunburst)",
+          "damage": 12,
+          "ed": 6,
+          "ap": -3,
+          "range": [
+            24,
+            48,
+            72
+          ],
+          "salvo": null,
+          "traits": [
+            "Blast (10)",
+            "Heavy (4)"
+          ]
+        },
+        {
+          "name": "Bright Lance",
+          "damage": 16,
+          "ed": 2,
+          "ap": -4,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 1,
+          "traits": [
+            "Heavy (12)",
+            "Lance",
+            "Reliable"
+          ]
+        },
+        {
+          "name": "Scatter Laser",
+          "damage": 13,
+          "ed": 2,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 4,
+          "traits": [
+            "Mounted (Large)",
+            "Rapid Fire (3)"
+          ]
+        },
+        {
+          "name": "Starcannon",
+          "damage": 14,
+          "ed": 3,
+          "ap": -3,
+          "range": [
+            18,
+            36,
+            54
+          ],
+          "salvo": 2,
+          "traits": [
+            "Mounted (Large)",
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "Shuriken Cannon",
+          "damage": 14,
+          "ed": 2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 3,
+          "traits": [
+            "Assault",
+            "Heavy (6)",
+            "Rending (4)"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "Battle Focus and the Mob Options text name the Guardian Defender (copied from the Guardian Defender block, as printed). Prints no melee weapon."
+}

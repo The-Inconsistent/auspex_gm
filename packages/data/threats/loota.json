@@ -1,0 +1,44 @@
+{
+  "id": "loota",
+  "name": "Loota",
+  "source": "threat-assessment",
+  "page": 98,
+  "faction": "ork",
+  "threat": ["E", "E", "T", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 5, "T": 6, "A": 2, "I": 2, "Wil": 1, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 6, "note": "AR 0" },
+  "defence": 1,
+  "wounds": 7,
+  "shock": 2,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 3 },
+      { "name": "Weapon Skill", "dice": 6 },
+      { "name": "Tech", "dice": 3 }
+    ]
+  },
+  "bonuses": [
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." },
+    { "name": "Gubbinz Grabba", "text": "The Loota gains +2 bonus dice to any Tests to loot or salvage." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Deffgun", "damage": 15, "ed": 2, "ap": -1, "range": [24, 48, 72], "salvo": 2, "traits": ["Cumbersome", "Bulk (1)", "Heavy (5)", "Waaagh!"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to add 2d6",
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 5,
+  "size": "Avg",
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Lootas gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten lootas." }
+  ],
+  "note": "Resilience prints \"6 (AR 0)\"."
+}

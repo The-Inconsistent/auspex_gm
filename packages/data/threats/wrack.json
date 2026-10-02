@@ -1,0 +1,50 @@
+{
+  "id": "wrack",
+  "name": "Wrack",
+  "source": "threat-assessment",
+  "page": 67,
+  "faction": "drukhari",
+  "threat": ["E", "T", "T", "T", "T"],
+  "keywords": ["DRUKHARI", "[COVEN]"],
+  "attributes": { "S": 3, "T": 5, "A": 3, "I": 3, "Wil": 3, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 6, "note": "AR 0" },
+  "defence": 2,
+  "wounds": 9,
+  "shock": 5,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 2, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Power from Pain: Inured to Suffering", "text": "If this Threat deals a Wound it gains +1 bonus dice to Determination Tests until the end of its next Turn." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Wrack Blades", "damage": 8, "ed": 2, "range": [1], "traits": ["Parry"] }
+      ]
+    }
+  ],
+  "determination": "Insensible to Pain: Spend 1 Ruin to roll 52d6. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 7,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "mob",
+      "name": "Mob Options",
+      "text": "For every 5 Wracks in a Mob, one may be equipped with either of the following:",
+      "weapons": [
+        { "name": "Liquifier Gun", "damage": 10, "ed": 1, "ap": -2, "range": [6, 12, 18], "salvo": 2, "traits": ["Assault", "Flamer", "Melta"] },
+        { "name": "Ossefactor", "damage": 6, "ed": 3, "ap": -3, "range": [12, 24, 36], "salvo": 1, "traits": ["Agonising", "Rad (4)"] }
+      ]
+    }
+  ],
+  "note": "Print: Awareness is printed 2 with Passive 2; Determination prints \"52d6\"."
+}

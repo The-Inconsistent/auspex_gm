@@ -1,0 +1,45 @@
+{
+  "id": "mandrake",
+  "name": "Mandrake",
+  "source": "threat-assessment",
+  "page": 71,
+  "faction": "drukhari",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["DRUKHARI"],
+  "attributes": { "S": 5, "T": 3, "A": 4, "I": 4, "Wil": 4, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 7, "note": "AR 3" },
+  "defence": 5,
+  "wounds": 7,
+  "shock": 6,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 8 },
+      { "name": "Intimidation", "dice": 6 },
+      { "name": "Stealth", "dice": 9 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Power From Pain", "text": "This If this Threat deals a Wound, it gains +2 bonus dice to Weapon Skill Tests until the end of its next Turn." },
+    { "name": "Shrouded From Sight", "text": "A Mandrake's shadowy form gives them +2 Defence." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "From Out of the Shadows", "text": "The Mandrake emerges from the shadows. All opponents of the Mandrake must make a DN 2 Initiative Test or are Ambushed. Additionally, all opponents of the Mandrake must make a DN 2 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Baleblast", "damage": 10, "ed": 2, "range": [9, 18, 27], "salvo": 1, "traits": ["Assault", "Rending (2)", "Spread"] },
+        { "name": "Glimmersteel Blade", "damage": 9, "ed": 3, "ap": -1, "range": [1], "traits": ["Parry"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Fade Away", "text": "Spend 1 Ruin. The Mandrake disappears into the shadows. At the start of its next Turn, the Mandrake may appear from any shadow within 1km using its BATTLECRY: From Out of the Shadows." }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Print: Baleblast's trait list prints an empty entry (\"Assault, , Rending (2), Spread\"); the Power From Pain text reads \"This If this Threat\"."
+}

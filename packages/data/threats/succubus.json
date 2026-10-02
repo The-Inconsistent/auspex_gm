@@ -1,0 +1,47 @@
+{
+  "id": "succubus",
+  "name": "Succubus",
+  "source": "threat-assessment",
+  "page": 65,
+  "faction": "drukhari",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["DRUKHARI", "[WYCH CULT]"],
+  "attributes": { "S": 4, "T": 4, "A": 6, "I": 7, "Wil": 7, "Int": 6, "Fel": 5 },
+  "resilience": { "value": 6, "note": "AR 1" },
+  "defence": 6,
+  "wounds": 12,
+  "shock": 11,
+  "skills": {
+    "default": 7,
+    "list": [
+      { "name": "Athletics", "dice": 12 },
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Intimidation", "dice": 12 },
+      { "name": "Leadership", "dice": 12 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Cunning", "dice": 8 },
+      { "name": "Weapon Skill", "dice": 14 }
+    ]
+  },
+  "personalRuin": 3,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 3 personal Ruin." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Agoniser", "damage": 8, "ed": 4, "ap": -2, "range": [4], "traits": ["Agonising", "Inflict (Poisoned 35)"] },
+        { "name": "Archite Glaive", "damage": 10, "ed": 4, "ap": -3, "range": [1], "traits": ["Unwieldy (2)"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Brides of Death", "text": "All Threats that share a <WYCH CULT> Keyword within 5 metres of the Succubus gain +2 bonus dice to any Weapon Skill (I) Tests until the end of the Succubus' next Turn." },
+    { "type": "REACTION", "name": "No Escape", "text": "When this Threat makes a Reaction Attack with a melee weapon they do so with +2 bonus dice." }
+  ],
+  "determination": "Lightning Dodge: Spend 1 Ruin to roll 6 d6. This Threat uses Agility instead of Toughness to roll Determination, and can roll determination against Mortal Wounds.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Another printing exists: litanies-succubus (Litanies of the Lost). Print: the Agoniser's Inflict is printed \"Poisoned, 35\"."
+}

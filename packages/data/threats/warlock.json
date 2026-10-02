@@ -1,0 +1,127 @@
+{
+  "id": "warlock",
+  "name": "Warlock",
+  "source": "threat-assessment",
+  "page": 30,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "PSYKER",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 7,
+    "Int": 5,
+    "Fel": 3
+  },
+  "resilience": {
+    "value": 7,
+    "note": "4 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 9,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Leadership",
+        "dice": 8
+      },
+      {
+        "name": "Psychic Mastery",
+        "dice": 12
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Champion",
+      "text": "A Warlock may use Ruin Actions. They may activate the Move Ruin Action during their own turn."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Runes of Battle",
+      "text": "The Warlock may attempt to activate one of the following psychic powers: Smite (Wrath & Glory, page 272), any Runes of Battle power (page 283), Conceal (below)."
+    },
+    {
+      "name": "Conceal",
+      "text": "DN 5, Action, Sustained. While sustained, allies within 5 m gain +1 Defence and +1 bonus dice on Stealth (A) Tests. Spend 3 Shifts per additional +1 Defence and +21 on Stealth (A) Tests."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Witchblade",
+          "damage": 9,
+          "ed": 5,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Force",
+            "Parry",
+            "Warp Weapon"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "The Path of the Seer",
+      "text": "Spend 1 Ruin to activate a Psychic Power or Deny the Witch (Wrath & Glory page 267)."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6. Warlocks can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Conceal's '+21 on Stealth (A) Tests' printed as is. The Path of the Seer sidebar (Perils of the Warp for Aeldari psykers) is rules text, not transcribed. Champion prints no personal Ruin number."
+}

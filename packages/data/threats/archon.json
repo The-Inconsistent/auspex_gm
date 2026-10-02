@@ -1,0 +1,49 @@
+{
+  "id": "archon",
+  "name": "Archon",
+  "source": "threat-assessment",
+  "page": 63,
+  "faction": "drukhari",
+  "threat": ["A", "A", "A", "A", "A"],
+  "keywords": ["DRUKHARI", "[KABAL]"],
+  "attributes": { "S": 4, "T": 4, "A": 6, "I": 6, "Wil": 7, "Int": 7, "Fel": 5 },
+  "resilience": { "value": 8, "note": "AR 4" },
+  "defence": 5,
+  "wounds": 14,
+  "shock": 12,
+  "skills": {
+    "default": 8,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Cunning", "dice": 10 },
+      { "name": "Intimidation", "dice": 12 },
+      { "name": "Leadership", "dice": 102 },
+      { "name": "Weapon Skill", "dice": 12 }
+    ]
+  },
+  "personalRuin": 4,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 4 personal Ruin." },
+    { "name": "Court of the Archon", "text": "Whenever this Threat suffers Mortal Wounds they may instead allocate them to any ally within 10m with the <COURT OF THE ARCHON> Keyword." },
+    { "name": "Power from Pain: Flensing Fury", "text": "If this Threat deals a Wound it gains +1 bonus dice to melee attack Tests until the end of its next Turn." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Splinter Pistol", "damage": 7, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Inflict (Poisoned 3)", "Pistol"] },
+        { "name": "Power Sword", "damage": 9, "ed": 4, "ap": -3, "range": [1], "traits": ["Parry"] }
+      ]
+    },
+    { "type": "REACTION", "name": "No Escape", "text": "When this Threat makes a Reaction Attack with a melee weapon they do so with +2 bonus dice." },
+    { "type": "REACTION", "name": "Shadowfield", "text": "As a reaction to being attacked, this Threat can activate its Shadowfield to gain +8* AR. The Shadowfield cannot be used again until it is recharged over the course of an hour." },
+    { "type": "RUIN", "name": "Overlord", "text": "Spend 1 Ruin. Until the end of the Archon's next Turn, the Archon and all allied individuals with a matching [KABAL] Keyword within 5m may reroll all failing dice on any attack Test they make as though they had spent Ruin." }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 6d6. This Threat uses Agility instead of Toughness to roll Determination and can roll against Mortal Wounds.",
+  "conviction": 7,
+  "resolve": 6,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Print: Leadership is printed \"102\", stored as printed (likely 10 or 12); Ballistic Skill is listed twice (both 10); Shadowfield \"+8*\" has no footnote."
+}

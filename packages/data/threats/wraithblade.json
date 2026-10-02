@@ -1,0 +1,105 @@
+{
+  "id": "wraithblade",
+  "name": "Wraithblade",
+  "source": "threat-assessment",
+  "page": 43,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "WRAITH CONSTRUCT",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 8,
+    "T": 9,
+    "A": 3,
+    "I": 4,
+    "Wil": 5,
+    "Int": 3,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 14,
+    "note": "4 AR"
+  },
+  "defence": 3,
+  "wounds": 17,
+  "shock": 9,
+  "skills": {
+    "default": 4,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 10
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Wraithsight",
+      "text": "Wraithblades can communicate telepathically, and perceive the presence of psychic powers and Warp phenomena, as well as thoughts and feelings at the GM's discretion. However, unless there is a living Aeldari character within line of sight, Wraithblades gain the Hindered Condition."
+    },
+    {
+      "name": "War Construct",
+      "text": "Wraithblades are immune to the Blinded, Bleeding, and Poisoned Conditions, and cannot Suffocate. Any ranged weapons wielded by Wraithblades can be used whilst Engaged, as though they had the Pistol Trait."
+    },
+    {
+      "name": "Blades of Bone",
+      "text": "Wraithblades are equipped with either two Ghostswords or one Ghostaxe. If equipped with Ghostswords, they reduce the DN penalty for making Multi-Attacks by 2. If equipped with a Ghostaxe, they also gain a Forceshield (*2 AR / Power Field, Shield)"
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Ghostsword",
+          "count": 2,
+          "damage": 13,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        },
+        {
+          "name": "Ghostaxe",
+          "damage": 14,
+          "ed": 6,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Rending (2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 9d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 5,
+  "size": "Large"
+}

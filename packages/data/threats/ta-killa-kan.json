@@ -1,0 +1,51 @@
+{
+  "id": "ta-killa-kan",
+  "name": "Killa Kan",
+  "source": "threat-assessment",
+  "page": 100,
+  "faction": "ork",
+  "threat": ["A", "A", "E", "T", "T"],
+  "keywords": ["GROT", "ORK"],
+  "attributes": { "S": 6, "T": 6, "A": 3, "I": 3, "Wil": 2, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 13, "note": "AR 6" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 4,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 7 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Big Shoota", "damage": 12, "ed": 2, "range": [18, 36, 54], "salvo": 3, "traits": ["Assault", "Waaagh!"] },
+        { "name": "Kan Klaw", "damage": 12, "ed": 5, "ap": -3, "range": [2], "traits": ["Brutal", "Unwieldy (3)"] }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Kanned Rage",
+      "text": "Whenever a Killa Kan is Exhausted or fails a Resolve Test, roll 1d6. If you roll an Icon, the Killa Kan becomes Frenzied, ignoring any penalties and continuing to fight."
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Explosive",
+      "text": "When a Killa Kan dies, roll a d6. If you roll a Complication, the Killa Kan explodes. Killa Kan Explosion: 12 +5 ED / Blast (10)"
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Large",
+  "mobAbilities": [
+    { "name": "Scrag 'Em", "text": "When a Mob of Killa Kans makes a melee attack Test, it gains a number of bonus dice equal to the Tier of the game." },
+    { "name": "Mob Confidence", "text": "A Mob of Killa Kans gains +1 bonus dice to Resolve Tests for every individual in the Mob." }
+  ],
+  "note": "Reprint of killa-kan; differs in Strength 6 (Core 10), Toughness 6 (5), Wounds 10 (9), Shock 4 (5), Resilience 13 (AR 6) (Core 12), Wil 2 (3), Weapons Big Shoota and Kan Klaw 12 +5 ED (Core Grotzooka, Buzz Saw, with Big Shoota and Kan Klaw as options), Ballistic Skill 7 / Weapon Skill 7, Determination 6d6, speed 6, no Kan Weapons options, and the Tier row (5 Tiers). SKILLS line is printed under the ABILITIES header."
+}

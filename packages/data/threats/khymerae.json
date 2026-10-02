@@ -1,0 +1,41 @@
+{
+  "id": "khymerae",
+  "name": "Khymerae",
+  "source": "threat-assessment",
+  "page": 74,
+  "faction": "drukhari",
+  "threat": ["A", "A", "E", "T", "T"],
+  "keywords": ["DRUKHARI", "BEAST"],
+  "attributes": { "S": 5, "T": 5, "A": 5, "I": 6, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 8, "note": "Otherworldly: +2 AR*" },
+  "defence": 5,
+  "wounds": 9,
+  "shock": 4,
+  "skills": {
+    "default": 3,
+    "list": [
+      { "name": "Athletics", "dice": 7 },
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Stealth", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Otherworldly", "text": "The Khymerae shifts between the physical world and the Warp with ease, blows passing straight through its incorporeal form. Khymerae have +2 AR*" }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Claws and Talons",
+      "weapons": [
+        { "name": "Claws and Talons", "damage": 9, "ed": 3, "ap": -1, "range": [1] }
+      ]
+    }
+  ],
+  "determination": "Phased Defence: Spend 1 Ruin to roll 5d6. This Threat can roll determination against Mortal Wounds.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Avg",
+  "note": "The SKILLS line prints no \"Default\" label (\"SKILLS: 3, Athletics 7...\"); 3 is stored as the Default pool. The \"+2 AR*\" asterisk has no footnote. Apocrypha's apoc-khymera is a different printing."
+}

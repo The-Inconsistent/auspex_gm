@@ -1,0 +1,45 @@
+{
+  "id": "incubi",
+  "name": "Incubi",
+  "source": "threat-assessment",
+  "page": 70,
+  "faction": "drukhari",
+  "threat": ["A", "E", "E", "T", "T"],
+  "keywords": ["DRUKHARI", "COURT OF THE ARCHON"],
+  "attributes": { "S": 3, "T": 3, "A": 5, "I": 6, "Wil": 4, "Int": 3, "Fel": 2 },
+  "resilience": { "value": 9, "note": "AR 5" },
+  "defence": 5,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Athletics", "dice": 6 },
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Intimidate", "dice": 8 },
+      { "name": "Leadership", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 11 }
+    ]
+  },
+  "personalRuin": 12,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 12 personal Ruin." },
+    { "name": "Power from Pain: Mantle of Agony", "text": "If this Threat deals a Wound it gains +2 bonus dice to Intimidation Tests until the end of its next Turn." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Klaive", "damage": 8, "ed": 7, "ap": -3, "range": [1], "traits": ["Parry", "Brutal"] }
+      ]
+    },
+    { "type": "WRATH", "name": "Lethal Precision", "text": "When an Incubus successfully hits with a Wrath Critical in melee they deal +4 Mortal Wounds." },
+    { "type": "RUIN", "name": "Tormentors", "text": "Spend 1 Ruin to target an individual or a Mob. The Incubus makes an Intimidation Test opposed by its target's Leadership. If the Incubus wins, the target suffers the Fear Condition." }
+  ],
+  "determination": "Spend 1 ruin to roll 3d6",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 7,
+  "size": "Avg",
+  "note": "Print: the Champion bonus prints 12 personal Ruin (a Succubus has 3, an Archon 4); the Klaive prints \"8 + 7 ED\"; the skill is printed \"Intimidate\"."
+}

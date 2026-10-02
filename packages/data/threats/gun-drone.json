@@ -1,0 +1,135 @@
+{
+  "id": "gun-drone",
+  "name": "Gun Drone",
+  "source": "threat-assessment",
+  "page": 174,
+  "faction": "tau",
+  "threat": [
+    "T",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "T'AU",
+    "DRONE"
+  ],
+  "attributes": {
+    "S": 2,
+    "T": 4,
+    "A": 4,
+    "I": 3,
+    "Wil": 1,
+    "Int": 2,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 8,
+    "note": "AR 3"
+  },
+  "defence": 3,
+  "wounds": 3,
+  "shock": null,
+  "skills": {
+    "default": 1,
+    "list": [
+      {
+        "name": "Ballistic Skill",
+        "dice": 3
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Artificial Helper",
+      "text": "This Threat cannot perform any Actions except Attack, Multi-Attack, and Reload. It can only attack one additional time when performing a Multi-Attack."
+    },
+    {
+      "name": "Drone",
+      "text": "This Threat is immune to the Bleeding, Exhausted, Poisoned, and Prone Conditions, cannot Suffocate, and cannot roll Determination. It is unaffected by any abilities that target the mind and never needs to make a Resolve Test to continue fighting."
+    },
+    {
+      "name": "Twin-linked Weapons",
+      "text": "The first additional attack of the Gun Drone when performing a Multi-Attack does not suffer any penalties when both attacks are made against the same target."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Pulse Carbine",
+          "count": 2,
+          "damage": 12,
+          "ed": 2,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Rapid Fire (2)",
+            "Reliable"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "REACTION",
+      "name": "Programmed Sacrifice",
+      "text": "When a Threat with the T'AU Keyword within 5m of the Gun Drone is targeted by a ranged attack, the Gun Drone can move to interpose itself, suffering the attack instead."
+    }
+  ],
+  "conviction": 1,
+  "resolve": 1,
+  "speed": 10,
+  "size": "Small",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Marker Drone (Tactical Support)",
+      "text": "Identical to the Gun Drone but does not have Twin-linked Weapons and replaces its 2 Pulse Carbines with Fire Markerlight (p.176). A T'au trooper that controls drones adds the bonus to its own.",
+      "weapons": [],
+      "abilities": [
+        {
+          "name": "Fire Markerlight",
+          "text": "This Threat illuminates an individual within 36m with a Markerlight. Until the start of this Threat's next turn, any Threat with the T'AU Keyword gains +2 bonus dice to ranged attack Tests targeting the individual affected by the Markerlight. The effects of Markerlights do not stack."
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Shield Drone (Tactical Support)",
+      "text": "Identical to the Gun Drone but does not have Twin-linked Weapons and replaces its 2 Pulse Carbines with Shield Projector (p.176).",
+      "weapons": [],
+      "abilities": [
+        {
+          "name": "Shield Projector",
+          "text": "This Threat gains AR 3*, raising its Resilience to 11 (Drone Plating: 3 AR, Shield Projector AR 3*)"
+        }
+      ]
+    },
+    {
+      "kind": "variant",
+      "name": "Stealth Drone (Tactical Support)",
+      "text": "Identical to the Gun Drone, but has Stealth 6, does not have Twin-linked Weapons, and replaces its 2 Pulse Carbines with Stealth Field Generator (p.176).",
+      "weapons": [],
+      "abilities": [
+        {
+          "name": "Stealth Field Generator",
+          "text": "This Threat has +3 bonus Defence against ranged attacks that are made from 18m or further. All Threats with the T'AU Keyword within 10m gain +2 bonus dice to Stealth Tests."
+        }
+      ]
+    }
+  ],
+  "mobAbilities": [
+    {
+      "name": "Linked AIs",
+      "text": "A squadron of 8 or more Gun Drones has Ballistic Skill 6."
+    }
+  ],
+  "note": "Programmed Sacrifice is printed twice (once in plain type); kept once. No DETERMINATION line (Drone). 2 Pulse Carbines stored as count 2."
+}

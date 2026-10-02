@@ -1,0 +1,130 @@
+{
+  "id": "shade-runner",
+  "name": "Shade Runner",
+  "source": "threat-assessment",
+  "page": 50,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ANHRATHE",
+    "DRUKHARI",
+    "[COTERIE]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 6,
+    "Wil": 2,
+    "Int": 4,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 7,
+    "note": "3 AR"
+  },
+  "defence": 5,
+  "wounds": 7,
+  "shock": 4,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Athletics",
+        "dice": 7
+      },
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Pilot",
+        "dice": 9
+      },
+      {
+        "name": "Stealth",
+        "dice": 9
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 12
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Blademaster",
+      "text": "When wielding its Paired Hekatarri Blades , this Threat reduces the DN penalty for Multi-Attack by 2."
+    },
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Reckless Abandon",
+      "text": "This Threat's attacks gain +4 bonus dice during All-Out Attacks."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "BATTLECRY",
+      "name": "Shade Runner Assaults",
+      "text": "The Shade Runner Charges at a target, potentially using its Blink Pack, and attacks a minimum of twice with its Hekatarri Blades. If it deals any Wounds, the target is Vulnerable."
+    },
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Shuriken Pistol",
+          "damage": 10,
+          "ed": 1,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 2,
+          "traits": [
+            "Pistol",
+            "Rending (3)"
+          ]
+        },
+        {
+          "name": "Paired Hekatarri Blades",
+          "damage": 8,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Blink Pack",
+      "text": "The Shade Runner slips from sight, momentarily entering the Warp, before appearing again. They may make a DN 3 Pilot (A) test to increase their Speed to 12. They may move in any direction, ignoring terrain, though may not end their movement within terrain. If the test fails, their movement is resolved using the Scattering rules (Wrath & Glory, page 186). A Complication triggers here indicates that the Shade Runner ends up somewhere they did not intend — the exact results of this are up to the GM."
+    }
+  ],
+  "determination": "Dodge: Spend 1 Ruin to roll 5d6. This Threat uses Agility instead of Toughness to roll Determination.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 8,
+  "size": "Avg",
+  "note": "Section heading 'Shade Runner' (text: 'Shaderunners'). Paired Hekatarri Blades printed '8 + 4 ED / -3 AP / Range 1 / Parry'."
+}

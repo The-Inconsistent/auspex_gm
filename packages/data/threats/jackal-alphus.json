@@ -1,0 +1,57 @@
+{
+  "id": "jackal-alphus",
+  "name": "Jackal Alphus",
+  "source": "threat-assessment",
+  "page": 128,
+  "faction": "genestealer",
+  "threat": ["A", "A", "E", "E", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 3, "T": 5, "A": 6, "I": 5, "Wil": 5, "Int": 4, "Fel": 4 },
+  "resilience": { "value": 8, "note": "AR 2" },
+  "defence": 4,
+  "wounds": 11,
+  "shock": 8,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 10 },
+      { "name": "Cunning", "dice": 8 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Pilot", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Master Outrider",
+      "text": "If this Threat is Mounted and moves on its Turn it gains +2 Defence until the start of its next Turn. Additionally, if an Atalan Jackal is within 6m of the Jackal Alphus, its Defence increases by a further +2."
+    },
+    { "name": "Mounted", "text": "By default, Jackal Alphus is mounted on a Dirtcycle (see Church of Steel)." },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Jackal Alphus is not Human." },
+    { "name": "Priority Target", "text": "All of the Jackal Alphus' ranged weapons have the Inflict (Vulnerable) weapon trait." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "text": "Blasting Charge: 10 + 2 ED / -4 (the profile is cut off here in print: no range or traits).",
+      "weapons": [{ "name": "Autopistol", "damage": 8, "ed": 2, "range": [6, 12, 18], "salvo": 2, "traits": ["Pistol"] }]
+    },
+    {
+      "type": "RUIN",
+      "name": "Jackal Manoeuvre",
+      "text": "If Mounted, this Threat can move and attack as a single Ruin Action."
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack. If this Threat is mounted, the range of this Reaction is half the Speed of the vehicle."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 5D6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Defence printed '4 (6 Mounted)' (stored 4) and Speed '6 / 38 (Mounted)' (stored 6). Not a Champion (no Champion bonus or Ruin). The Blasting Charge profile breaks off after '-4'; kept as ability text."
+}

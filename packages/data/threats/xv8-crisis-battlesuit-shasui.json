@@ -1,0 +1,254 @@
+{
+  "id": "xv8-crisis-battlesuit-shasui",
+  "name": "XV8 Crisis Battlesuit Shas'ui",
+  "source": "threat-assessment",
+  "page": 164,
+  "faction": "tau",
+  "threat": [
+    "A",
+    "A",
+    "E",
+    "E",
+    "E"
+  ],
+  "keywords": [
+    "T'AU"
+  ],
+  "attributes": {
+    "S": 7,
+    "T": 7,
+    "A": 8,
+    "I": 8,
+    "Wil": 5,
+    "Int": 3,
+    "Fel": 4
+  },
+  "resilience": {
+    "value": 13,
+    "note": "AR 5"
+  },
+  "defence": 6,
+  "wounds": 15,
+  "shock": 9,
+  "skills": {
+    "default": 6,
+    "list": [
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Pilot",
+        "dice": 8
+      }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    {
+      "name": "Manoeuvring Jet Packs",
+      "text": "The XV8 can make a controlled descent from any height and never takes damage from falling. The XV8 has a Long Jump and High Jump distance of 10m and can make these jumps as part of their movement without making Athletics (S) Tests."
+    },
+    {
+      "name": "Champion",
+      "text": "This Threat may use Ruin Actions and has 2 personal Ruin."
+    },
+    {
+      "name": "Drone Controller",
+      "text": ": The XV8 can control up to two Tactical Support Drones."
+    },
+    {
+      "name": "Twin-linked Weapons",
+      "text": "When the XV8 is equipped with two weapons of the same type, it can fire both weapons once on its turn without suffering Multi-Attack DN penalties."
+    },
+    {
+      "name": "XV8 Powered Battlesuit",
+      "text": "The XV8 Crisis Battlesuit increases the wearers Strength, Toughness, Agility, and Initiative Attribute Bonuses by +4. These increases have been applied to this statblock."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Burst Cannon",
+          "damage": 11,
+          "ed": 3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Heavy (5)",
+            "Rapid Fire (2)",
+            "Reliable"
+          ]
+        }
+      ],
+      "text": "See Crisis Battlesuit Variations for more information."
+    },
+    {
+      "type": "RUIN",
+      "name": "Jet Pack Jump",
+      "text": "Spend 1 Ruin. The XV25 gains a Speed of 12 (Fly) for its turn."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 7d6.",
+  "conviction": 5,
+  "resolve": 4,
+  "speed": 10,
+  "size": "Large",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Crisis Battlesuit Variations",
+      "text": "An XV8 Crisis Battlesuit has 4 Wargear slots. Each XV8 Crisis Battlesuit can have 1 of the following: Counterfire Defence System, Early Warning Override, Multi-tracker, Shield Generator, Target Lock, Velocity Tracker. And can install any of the following on their remaining Wargear slots: Installing multiple instances of the same Wargear does not increase the effectiveness of that Wargear or stack the effects, unless they are Twin-Linked Weapons. Crisis Suit Wargear Options follow (p.165).",
+      "weapons": [
+        {
+          "name": "Airbursting Fragmentation Projector",
+          "damage": 10,
+          "ed": 3,
+          "ap": -1,
+          "range": [
+            12,
+            24,
+            36
+          ],
+          "traits": [
+            "Blast (6)"
+          ]
+        },
+        {
+          "name": "Burst Cannon",
+          "damage": 11,
+          "ed": 3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Assault",
+            "Heavy (5)",
+            "Rapid Fire (2)",
+            "Reliable"
+          ]
+        },
+        {
+          "name": "Cyclic Ion Blaster",
+          "damage": 16,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 2,
+          "traits": [
+            "Rapid Fire (2)",
+            "Heavy (5)",
+            "Supercharge"
+          ]
+        },
+        {
+          "name": "Fusion Blaster",
+          "damage": 16,
+          "ed": 1,
+          "ap": -4,
+          "range": [
+            9,
+            18,
+            24
+          ],
+          "salvo": 1,
+          "traits": [
+            "Melta",
+            "Heavy (5)",
+            "Rapid Fire (2)"
+          ]
+        },
+        {
+          "name": "Missile Pod",
+          "damage": 14,
+          "ed": 4,
+          "ap": -2,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": null,
+          "traits": [
+            "Heavy (5)"
+          ]
+        },
+        {
+          "name": "Plasma Rifle",
+          "damage": 15,
+          "ed": 1,
+          "ap": -4,
+          "range": [
+            15,
+            30,
+            45
+          ],
+          "salvo": 1,
+          "traits": []
+        },
+        {
+          "name": "T'au Flamer",
+          "damage": 10,
+          "ed": 4,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "traits": [
+            "Assault",
+            "Flamer"
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Airbursting Fragmentation Projector",
+          "text": "This weapon can target anyone in range, regardless of visibility."
+        },
+        {
+          "type": "RUIN",
+          "name": "Counterfire Defence System",
+          "text": "As a reflexive action, spend 1 Ruin to increase Defence by +4"
+        },
+        {
+          "type": "RUIN",
+          "name": "Early Warning Override",
+          "text": "Spend 1 Ruin. As a reflexive action, make a ranged attack."
+        },
+        {
+          "name": "Multi-Tracker",
+          "text": "Whenever this Threat targets a Mob with a ranged attack Test, they gain +4 bonus dice."
+        },
+        {
+          "name": "Shield Generator",
+          "text": "This Threat gains AR 3*."
+        },
+        {
+          "type": "RUIN",
+          "name": "Target Lock",
+          "text": "Spend 1 Ruin. This Threat ignores the effects of cover until the end of its turn."
+        },
+        {
+          "name": "Velocity Tracker",
+          "text": "Whenever this Threat targets an individual that is flying with a ranged attack Test, they gain +4 bonus dice."
+        }
+      ]
+    }
+  ],
+  "note": "Print errors copied: Jet Pack Jump names the XV25; Drone Controller text starts with a stray colon. The Crisis Suit Wargear Options (p.165) are kept as one variant; the T'au Flamer prints no Salvo or AP."
+}

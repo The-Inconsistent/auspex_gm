@@ -1,0 +1,80 @@
+{
+  "id": "kelermorph",
+  "name": "Kelermorph",
+  "source": "threat-assessment",
+  "page": 124,
+  "faction": "genestealer",
+  "threat": ["A", "A", "A", "E", "E"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 4, "T": 4, "A": 8, "I": 7, "Wil": 6, "Int": 4, "Fel": 3 },
+  "resilience": { "value": 7, "note": "AR 2" },
+  "defence": 5,
+  "wounds": 10,
+  "shock": 9,
+  "skills": {
+    "default": 6,
+    "list": [
+      { "name": "Athletics", "dice": 8 },
+      { "name": "Awareness", "dice": 10, "passive": 5 },
+      { "name": "Ballistic Skill", "dice": 12 },
+      { "name": "Leadership", "dice": 8 },
+      { "name": "Stealth", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 8 }
+    ]
+  },
+  "personalRuin": 2,
+  "bonuses": [
+    { "name": "Champion", "text": "This Threat may use Ruin Actions and has 2 personal Ruin." },
+    {
+      "name": "Extra Arm",
+      "text": "This Threat has 3 arms. If this Threat is wielding a one-handed weapon in each hand, or a one-handed weapon in one hand and a two-handed weapon in its other two hands, it can make one attack with each weapon without suffering a Multi-Attack DN penalty. If this Threat is wielding a weapon with all 3 hands, they can take the Brace Action (Wrath & Glory, page 189) as a free action and ignore the Unwieldy weapon trait."
+    },
+    {
+      "name": "Hypersensory Abilities",
+      "text": "If the Kelermorph fires any of its Liberator Autostub Pistols it can Sprint as a Simple Action on the same turn."
+    },
+    { "name": "Passes For Human", "text": "A DN 3 Awareness (Int) Test is required to notice a Kelermorph is not Human." },
+    {
+      "name": "Revolutionary Anarch",
+      "text": "All Threats with the GENESTEALER CULT Keyword that see a Kelermorph kill an opponent gain +1 Conviction and Resolve for 1 day."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "name": "Liberator Autostub Pistol",
+      "weapons": [
+        {
+          "name": "Liberator Autostub Pistol",
+          "damage": 12,
+          "ed": 1,
+          "ap": -1,
+          "range": [9, 18, 27],
+          "salvo": 2,
+          "traits": ["Pistol", "Rad (2)"]
+        }
+      ]
+    },
+    {
+      "type": "WRATH",
+      "name": "Dead Shot",
+      "text": "When the Kelermorph scores a wrath critical on a ranged attack test with a Liberator Autostub Pistol, the target automatically suffers 1d3 Mortal Wounds."
+    },
+    {
+      "type": "RUIN",
+      "name": "Gunslinger",
+      "text": "Whenever the Kelermorph successfully deals a Wound using a Liberator Autostub Pistol it may spend 1 Ruin to make another attack with the same weapon against the same target as a Free Action."
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keywords within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack. Takes the Initiative and can Charge up to 20m."
+    }
+  ],
+  "determination": "Preternatural Reflexes: Spend 1 Ruin to roll 4D6. This Threat can roll Determination against Mortal Wounds.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 6,
+  "size": "Avg",
+  "note": "Unquestioning Loyalty ends with a stray 'Takes the Initiative and can Charge up to 20m.', kept as printed."
+}

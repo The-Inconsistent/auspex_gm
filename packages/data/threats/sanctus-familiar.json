@@ -1,0 +1,50 @@
+{
+  "id": "sanctus-familiar",
+  "name": "Sanctus Familiar",
+  "source": "threat-assessment",
+  "page": 126,
+  "faction": "genestealer",
+  "threat": ["T", "T", "T", "T", "T"],
+  "keywords": ["GENESTEALER CULT", "TYRANID"],
+  "attributes": { "S": 2, "T": 1, "A": 6, "I": 4, "Wil": 2, "Int": 1, "Fel": 1 },
+  "resilience": { "value": 2 },
+  "defence": 4,
+  "wounds": 3,
+  "shock": 3,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Athletics", "dice": 8 },
+      { "name": "Awareness", "dice": 8, "passive": 4 },
+      { "name": "Stealth", "dice": 10 },
+      { "name": "Weapon Skill", "dice": 6 }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Cloaked by Shadows",
+      "text": "If this Threat is in cover or hidden by shadows it gains +2 Defence. Additionally, attacks that target this Threat from 12m or more away suffer a +2 DN penalty."
+    },
+    {
+      "name": "Second Strike",
+      "text": "This Threat reduces the Multi-Attack penalty by 2 DN, as though it had the Dual Wield Talent (Wrath & Glory, page 133)."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [{ "name": "Familiar's Claws", "damage": 10, "ed": 4, "range": [1] }]
+    },
+    {
+      "type": "REACTION",
+      "name": "Unquestioning Loyalty",
+      "text": "When a Threat with the GENESTEALER CULT and PSYKER Keyword within 6m of this Threat is targeted by a ranged attack, this Threat may interpose themself as a reaction and become the new target for the attack."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 4D6.",
+  "conviction": 2,
+  "resolve": 1,
+  "speed": 6,
+  "size": "Small",
+  "note": "Skills line printed 'SKILLS: : Default 4'. Size printed 'Small'."
+}

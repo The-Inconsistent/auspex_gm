@@ -1,0 +1,46 @@
+{
+  "id": "cronos",
+  "name": "Cronos",
+  "source": "threat-assessment",
+  "page": 77,
+  "faction": "drukhari",
+  "threat": ["A", "A", "E", "E", "E"],
+  "keywords": ["DRUKHARI", "PAIN ENGINE"],
+  "attributes": { "S": 8, "T": 10, "A": 4, "I": 4, "Wil": 6, "Int": 2, "Fel": 1 },
+  "resilience": { "value": 14, "note": "AR 3" },
+  "defence": 2,
+  "wounds": 20,
+  "shock": 11,
+  "skills": {
+    "default": 4,
+    "list": [
+      { "name": "Awareness", "dice": 6, "passive": 3 },
+      { "name": "Ballistic Skill", "dice": 9 },
+      { "name": "Weapon Skill", "dice": 7 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Lobotomized", "text": "This Threat is barely sentient and acts out the will of its dark master relentlessly. It ignores abilities that target the mind and never needs to make a Resolve Test to continue fighting." },
+    { "name": "Pain Engine", "text": "Drukhari constructs are immune to the Blinded, Fear, Poisoned, and Terror Conditions" },
+    { "name": "Power From Pain: Flensing Fury", "text": "If this Threat deals a Wound it gains +1 bonus dice to melee attack Tests until the end of its next Turn." },
+    { "name": "Second Strike", "text": "This Threat reduces the Multi-Attack penalty by 2DN, as though it had the Dual Wield Talent (Wrath & Glory, page 133)." }
+  ],
+  "abilities": [
+    { "type": "BATTLECRY", "name": "Frightful Form", "text": "Anyone that can see this Threat must make a DN 3 Fear Test." },
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Spirit-Leech Tentacles", "damage": 11, "ed": 3, "ap": -2, "range": [1], "traits": ["Brutal", "Inflict (Vulnerable)"] },
+        { "name": "Spirit Syphon", "damage": 12, "ed": 2, "ap": -2, "range": [6, 12, 24], "salvo": 1, "traits": ["Assault", "Brutal", "Flamer"] }
+      ]
+    },
+    { "type": "RUIN", "name": "Reservoir Of Pain", "text": "Spend 1 Ruin to select one target with the DRUKHARI Keyword within 10m. That target recovers 1 Wound for every Wound the Cronos caused on its last Turn." },
+    { "type": "ANNIHILATION", "text": "When this Threat dies, roll a d6. If you roll a Complication, the threat explodes using the following profile: 11 +4 ED / Blast (8)" }
+  ],
+  "determination": "Insensible to Pain: Spend 1 Ruin to roll 10d6. Any Wounds negated by Determination are ignored instead of being converted to Shock.",
+  "conviction": 6,
+  "resolve": 5,
+  "speed": 8,
+  "size": "Large",
+  "note": "Speed is printed \"8 (Fly)\". The death explosion prints no range and no weapon profile, so it stays ANNIHILATION text. Normal threat format, not the vehicle format."
+}

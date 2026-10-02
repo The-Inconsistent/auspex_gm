@@ -1,0 +1,50 @@
+{
+  "id": "flash-git",
+  "name": "Flash Git",
+  "source": "threat-assessment",
+  "page": 88,
+  "faction": "ork",
+  "threat": ["A", "A", "E", "T", "T"],
+  "keywords": ["ORK", "[CLAN]"],
+  "attributes": { "S": 6, "T": 6, "A": 2, "I": 3, "Wil": 3, "Int": 1, "Fel": 2 },
+  "resilience": { "value": 11, "note": "AR 4" },
+  "defence": 2,
+  "wounds": 10,
+  "shock": 5,
+  "skills": {
+    "default": 5,
+    "list": [
+      { "name": "Awareness", "dice": 4, "passive": 2 },
+      { "name": "Ballistic Skill", "dice": 6 },
+      { "name": "Weapon Skill", "dice": 9 }
+    ]
+  },
+  "bonuses": [
+    { "name": "Addicted to Dakka", "text": "This Threat always counts as an Adversary for the purposes of determining how much Ammo it has." },
+    { "name": "'Ere We Go!", "text": "If this Threat is Engaged at the start of its Turn, it gains +2 damage to melee attacks." }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        { "name": "Slugga", "damage": 10, "ed": 1, "range": [6, 12, 18], "salvo": 1, "traits": ["Pistol", "Waaagh!"] },
+        { "name": "Snazzgun", "damage": 12, "ed": 2, "ap": -2, "range": [12, 24, 36], "salvo": 3, "traits": ["Heavy (4)", "Kustom"] },
+        { "name": "Choppa", "damage": 9, "ed": 3, "range": [1], "traits": ["Reliable", "Waaagh!"] },
+        { "name": "Stikkbombz", "count": 2, "damage": 9, "ed": 5, "range": [24], "traits": ["Blast (6)"] }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 5,
+  "size": "Avg",
+  "options": [
+    { "kind": "mob", "name": "MORE DAKKA!", "text": "For every ten Flash Gitz in the Mob one may have" },
+    { "kind": "mob", "name": "Gitfinda Squig", "text": "The Flash Git gains a +4 bonus dice to ranged attack tests. The Gitfinda Squig uses the same statistics as a Squig, but cannot attack." }
+  ],
+  "mobAbilities": [
+    { "name": "Mob Rule", "text": "A Mob of Flash Gitz gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Flash Gitz." }
+  ],
+  "note": "Heading reads Flash Git, stat block title reads Flash Gitz. Printed as \"MOB ACTIONS\": MORE DAKKA! and Gitfinda Squig, kept as mob options. Resilience prints \"11(AR 4)\"; the MORE DAKKA! sentence is unfinished as printed."
+}

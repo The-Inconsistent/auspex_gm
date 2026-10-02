@@ -1,0 +1,134 @@
+{
+  "id": "warp-spider",
+  "name": "Warp Spider",
+  "source": "threat-assessment",
+  "page": 40,
+  "faction": "aeldari",
+  "threat": [
+    "A",
+    "E",
+    "E",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "AELDARI",
+    "ASURYANI",
+    "ASPECT WARRIOR",
+    "[CRAFTWORLD]"
+  ],
+  "attributes": {
+    "S": 3,
+    "T": 3,
+    "A": 5,
+    "I": 5,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 8,
+    "note": "5 AR"
+  },
+  "defence": 4,
+  "wounds": 9,
+  "shock": 7,
+  "skills": {
+    "default": 5,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 6,
+        "passive": 3
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 8
+      },
+      {
+        "name": "Pilot",
+        "dice": 10
+      },
+      {
+        "name": "Stealth",
+        "dice": 7
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 8
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Intense Emotions",
+      "text": "This Threat takes a penalty of +1 DN to all Resolve Tests."
+    },
+    {
+      "name": "Warp Spider Jump Generator",
+      "text": "Warp Spiders may make a DN 3 Pilot (A) test to increase their Speed to 12 when they Move, teleporting horizontally through characters and ignoring terrain penalties. If the Test fails, their movement deviates according to Scattering rules (Wrath & Glory, page 186). A Complication means something has gone terribly wrong — the results are up to the GM, but it is likely the Warp Spider is simply dead."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Death Spinner",
+          "damage": 14,
+          "ed": 1,
+          "ap": -2,
+          "range": [
+            6,
+            12,
+            18
+          ],
+          "salvo": 1,
+          "traits": [
+            "Assault",
+            "Blast (4)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "RUIN",
+      "name": "Battle Focus",
+      "text": "Spend 1 Ruin immediately before or after making a ranged attack to Move up to the Warp Spider's Speed as a Free Action."
+    },
+    {
+      "type": "REACTION",
+      "name": "Flickerjump",
+      "text": "When a character enters Engagement with an Unengaged Warp Spider, the Warp Spider may Move up to their Speed, teleporting as a Reflexive Action. This Move does not provoke Reflexive Attacks."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 3d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 8,
+  "size": "Avg",
+  "options": [
+    {
+      "kind": "variant",
+      "name": "Warp Spider Exarch",
+      "text": "A Warp Spider Exarch has Weapon Skill 9 and 9 Wounds. They gain an upgraded dual-Death Spinner (replace their Death Spinner's Blast [6] trait with Blast [10]), and gain the equipment and bonuses below: Powerblade (x2): 8 +4 ED / AP -3 / Parry; Champion: An Exarch may use Ruin Actions; Spider's Lair: Warp Spiders within 10m of their Exarch inflict 1 Mortal Wound on any enemy that Moves into their Engagement.",
+      "weapons": [
+        {
+          "name": "Powerblade",
+          "count": 2,
+          "damage": 8,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Parry"
+          ]
+        }
+      ],
+      "abilities": []
+    }
+  ],
+  "note": "The Exarch sidebar says the Death Spinner's trait is Blast [6]; the block prints Blast (4). Both copied as printed."
+}

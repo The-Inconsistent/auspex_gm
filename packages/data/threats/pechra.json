@@ -1,0 +1,85 @@
+{
+  "id": "pechra",
+  "name": "Pech'ra",
+  "source": "threat-assessment",
+  "page": 183,
+  "faction": "tau",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "KROOT"
+  ],
+  "attributes": {
+    "S": 1,
+    "T": 1,
+    "A": 6,
+    "I": 4,
+    "Wil": 3,
+    "Int": 1,
+    "Fel": 2
+  },
+  "resilience": {
+    "value": 2,
+    "note": "AR 0"
+  },
+  "defence": 4,
+  "wounds": 3,
+  "shock": 4,
+  "skills": {
+    "default": null,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Stealth",
+        "dice": 8
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Good Omen",
+      "text": "Threats with the KROOT Keyword within 2m of the Kroothawk gain +1 bonus dice to all Tests."
+    },
+    {
+      "name": "Skirmisher",
+      "text": "Reflexive attacks made against this Threat suffer a +2 DN Penalty."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Serrated Beak",
+          "damage": 3,
+          "ed": 4,
+          "range": [
+            1
+          ],
+          "traits": [
+            "Silent"
+          ]
+        }
+      ]
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 1d6.",
+  "conviction": 3,
+  "resolve": 2,
+  "speed": 10,
+  "size": "Small",
+  "note": "No Default pool printed. Good Omen says 'Kroothawk' (the block is the Pech'ra), copied. Speed prints '10 (Fly)'."
+}

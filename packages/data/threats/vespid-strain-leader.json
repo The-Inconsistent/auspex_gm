@@ -1,0 +1,113 @@
+{
+  "id": "vespid-strain-leader",
+  "name": "Vespid Strain Leader",
+  "source": "threat-assessment",
+  "page": 186,
+  "faction": "tau",
+  "threat": [
+    "E",
+    "T",
+    "T",
+    "T",
+    "T"
+  ],
+  "keywords": [
+    "VESPID"
+  ],
+  "attributes": {
+    "S": 5,
+    "T": 6,
+    "A": 5,
+    "I": 3,
+    "Wil": 4,
+    "Int": 3,
+    "Fel": 1
+  },
+  "resilience": {
+    "value": 10,
+    "note": "AR 3"
+  },
+  "defence": 2,
+  "wounds": 8,
+  "shock": 3,
+  "skills": {
+    "default": 3,
+    "list": [
+      {
+        "name": "Awareness",
+        "dice": 8,
+        "passive": 4
+      },
+      {
+        "name": "Ballistic Skill",
+        "dice": 6
+      },
+      {
+        "name": "Leadership",
+        "dice": 6
+      },
+      {
+        "name": "Pilot",
+        "dice": 6
+      },
+      {
+        "name": "Survival",
+        "dice": 6
+      },
+      {
+        "name": "Weapon Skill",
+        "dice": 6
+      }
+    ]
+  },
+  "bonuses": [
+    {
+      "name": "Communion Helmet",
+      "text": "The Vespid Strain Leader can communicate with and receive commands from any Troop with the <T'AU> Keyword. It never needs to make a Resolve Test to continue fighting while there is a Threat with the <T'AU> Keyword within 10m. This bonus also applies to any Vespid Stingwings within 10m of the Vespid Strain Leader."
+    }
+  ],
+  "abilities": [
+    {
+      "type": "ACTION",
+      "weapons": [
+        {
+          "name": "Neutron Blaster",
+          "damage": 12,
+          "ed": 4,
+          "ap": -3,
+          "range": [
+            9,
+            18,
+            27
+          ],
+          "salvo": 1,
+          "traits": [
+            "Arc (2)",
+            "Assault",
+            "Melta"
+          ]
+        },
+        {
+          "name": "Stingwing Claws",
+          "damage": 7,
+          "ed": 2,
+          "ap": -1,
+          "range": [
+            1
+          ],
+          "traits": []
+        }
+      ]
+    },
+    {
+      "type": "ANNIHILATION",
+      "name": "Sonic Feedback",
+      "text": "Any Vespid Stingwing within 10m of the Vespid Strain Leader becomes Frenzied."
+    }
+  ],
+  "determination": "Spend 1 Ruin to roll 6d6.",
+  "conviction": 4,
+  "resolve": 3,
+  "speed": 14,
+  "size": "Avg"
+}
