@@ -9,6 +9,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { CodexEditor } from "./components/codex-editor/codex-editor";
 import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
 import { FactionCard } from "./components/faction-card/faction-card";
+import { FactionPicker } from "./components/faction-picker/faction-picker";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
@@ -81,6 +82,14 @@ export function CodexView({ codex, characters, send, initialKind = "npc", factio
                 + NEW {kind.toUpperCase()}
               </button>
             </div>
+            {kind === "faction" && factionPresets.presets.length > 0 && (
+              <FactionPicker
+                presets={factionPresets.presets}
+                factions={codex.factions}
+                send={send}
+                onError={setError}
+              />
+            )}
             <div className="list">
               {rows.length === 0 && <div className="dim">Nothing recorded yet.</div>}
               {rows.map((r) => (

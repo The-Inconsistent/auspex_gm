@@ -26,6 +26,7 @@ import {
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
+  presetFaction,
   presetLine,
   presetScene,
   type ScenePresets,
@@ -667,7 +668,7 @@ test("GM and player share a table", async (t) => {
   // CODEX › FACTIONS' Keywords (issue #46): keyword records and the ones sub-factions fill in, GM only.
   const factionPresets = await get(`/campaigns/${campaignId}/faction-presets`, bearer(gmClerk));
   assert.equal(factionPresets.status, 200);
-  const { keywords } = (await factionPresets.json()) as FactionPresets;
+  const { keywords, presets: printed } = (await factionPresets.json()) as FactionPresets;
   assert.ok(
     keywords.some((k) => k.name === "ORK" && k.text),
     "ORK, with its glossary text (Core p.377)",
@@ -698,6 +699,18 @@ test("GM and player share a table", async (t) => {
     "a write-in Keyword survives the save",
   );
   assert.equal(player.codex()?.factions.length, 0, "factions never reach a phone");
+  // ADD FROM BOOK: Core's Orks (p.80) come in with the ORK Keyword and the cite opening the notes.
+  const orks = await gm.send({
+    type: "codex.save",
+    kind: "faction",
+    data: presetFaction(printed.find((p) => p.id === "orks")!),
+  });
+  assert.ok(orks.ok);
+  await eventually(() => {
+    const f = gm.codex()?.factions.find((x) => x.id === orks.id);
+    return f?.keywords.join() === "ORK" && f.notes.startsWith("Core p.80") && f.stance === "neutral";
+  }, "a printed faction saves with its Keyword and cite");
+  assert.ok(!printed.some((p) => p.source === "apocrypha"), "no homebrew factions unless the campaign allows them");
   // The rules reference is book text for any seat: a guest player reads it, a stranger doesn't. An entry from the
   // Gamemaster chapter reaches only the GM (§11.74).
   const rules = await get(`/campaigns/${campaignId}/rules`, { cookie: `wg_token=${issued.token}` });

@@ -38,7 +38,8 @@ export function frameworkCatalogue(homebrew: boolean): FrameworkCatalogue {
 }
 
 // CODEX › FACTIONS (issue #46): the Keywords the picker suggests, keyword records first and then the ones sub-factions
-// fill in ("SPACE WOLVES"), each name once, without the homebrew books unless the campaign allows them.
+// fill in ("SPACE WOLVES"), each name once, and the printed factions to start one from, without the homebrew books
+// unless the campaign allows them.
 export function factionPresets(homebrew: boolean): FactionPresets {
   const keep = (r: { source: Source }) => homebrew || SOURCES[r.source].official;
   const seen = new Set<string>();
@@ -48,7 +49,11 @@ export function factionPresets(homebrew: boolean): FactionPresets {
       .filter(keep)
       .map(({ keyword, source, page }) => ({ name: keyword, text: "", source, page })),
   ].filter((k) => !seen.has(k.name) && seen.add(k.name));
-  return { keywords, presets: [] };
+  // ADD FROM BOOK: the creation catalogue's factions, with the Keyword each stands for (docs/data.md §9).
+  const presets = creation.factions
+    .filter(keep)
+    .map(({ id, name, source, page, keywords }) => ({ id, name, source, page, keywords, notes: "", secrets: "" }));
+  return { keywords, presets };
 }
 
 // GET /creation's body for each setting of the campaign's homebrew switch, built and gzipped once: about 2 MB of JSON.

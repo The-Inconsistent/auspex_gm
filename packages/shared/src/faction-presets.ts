@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CodexInput } from "./codex.ts";
 import { Source } from "./source.ts";
-import { THREAT_SOURCES, type ThreatSource } from "./threat.ts";
+import { THREAT_SOURCES, threatCite, type ThreatSource } from "./threat.ts";
 
 // GM-only book data for CODEX › FACTIONS (GitHub issue #46), served by /api/campaigns/:id/faction-presets. Book text,
 // so it never reaches a player; factions themselves never do either (toPlayerCodex).
@@ -29,3 +29,22 @@ export const FactionPresets = z.object({
   presets: z.array(FactionPreset),
 });
 export type FactionPresets = z.infer<typeof FactionPresets>;
+
+// ADD FROM BOOK: a printed faction as a new codex faction. The stance starts neutral (the books don't say how a faction
+// stands with this group), and the notes open with the cite so the GM can find the page again.
+export function presetFaction(p: FactionPreset) {
+  const cite = threatCite(p);
+  return {
+    name: p.name,
+    keywords: p.keywords,
+    stance: "neutral",
+    notes: p.notes ? `${cite}\n\n${p.notes}` : cite,
+    secrets: p.secrets,
+  } satisfies z.input<typeof CodexInput.faction>;
+}
+
+// Whether a codex faction came from this preset: the same name, and the cite `presetFaction` opens its notes with. The
+// cite tells two books' factions of the same name apart (the Administratum of the Forsaken System Player's Guide and of
+// Litanies of the Lost).
+export const fromPreset = (f: { name: string; notes: string }, p: FactionPreset) =>
+  f.name === p.name && f.notes.split("\n", 1)[0] === threatCite(p);
