@@ -191,19 +191,22 @@ for (const file of readdirSync(rulesDir)
     failed = true;
     console.error(`✖ scene-presets/skill-dns.json\n${z.prettifyError(r.error)}`);
   } else {
-    const keys = r.data.map((d) => `${d.skill} ${d.dn}`);
-    const twice = keys.filter((k, i) => keys.indexOf(k) !== i);
-    if (twice.length) {
-      failed = true;
-      console.error(`✖ scene-presets/skill-dns.json: ${twice.join(", ")} twice`);
+    // Every Skill but Psychic Mastery prints exactly DN 1, 3, 5, 7 and 9, so a dropped, doubled or stray row fails.
+    const printed = [1, 3, 5, 7, 9].join();
+    for (const skill of Object.keys(SKILLS) as (keyof typeof SKILLS)[]) {
+      const dns = r.data
+        .filter((d) => d.skill === skill)
+        .map((d) => d.dn)
+        .sort((a, b) => a - b)
+        .join();
+      const want = skill === "Psychic Mastery" ? "" : printed;
+      if (dns !== want) {
+        failed = true;
+        console.error(`✖ scene-presets/skill-dns.json: ${skill} has DNs [${dns}], expected [${want}]`);
+      }
     }
     const skills = new Set(r.data.map((d) => d.skill));
-    const missing = Object.keys(SKILLS).filter((k) => k !== "Psychic Mastery" && !skills.has(k as keyof typeof SKILLS));
-    if (missing.length) {
-      failed = true;
-      console.error(`✖ scene-presets/skill-dns.json: no rows for ${missing.join(", ")}`);
-    }
-    console.log(`scene-presets/skill-dns.json: ${r.data.length} sample DNs (expected 85), ${skills.size} Skills`);
+    console.log(`scene-presets/skill-dns.json: ${r.data.length} sample DNs, ${skills.size} Skills`);
   }
 }
 

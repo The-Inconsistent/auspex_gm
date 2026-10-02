@@ -642,7 +642,8 @@ GM-only book data for building scenes (GitHub issue #39), served by `GET /api/ca
 
 - `skill-dns.json` (`SkillDn[]`): Skills and DN, the table at the foot of Core pp.122, 123, 125 and 126. There is one
   row per Skill and printed DN, `{ skill, dn, source, page, example }`, with the example verbatim: 17 Skills × DN 1,
-  3, 5, 7, 9 = 85 rows. Psychic Mastery prints none. Kept as printed: "enginge" (Tech DN 5, p.126) and the full stop
+  3, 5, 7, 9 = 85 rows. Psychic Mastery prints none. `validate` fails unless every other Skill has exactly those five
+  DNs, so a dropped, doubled or stray row can't slip through. Kept as printed: "enginge" (Tech DN 5, p.126) and the full stop
   ending the Investigation DN 1 example (p.123). The scene editor shows the row for a Test's Skill and DN under its DN
   chips.
 
