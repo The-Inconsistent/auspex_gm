@@ -153,7 +153,7 @@ Built:
 - [x] codex
 - [x] party and session flow
 - [x] player sheet
-- [x] 44 threats (core rulebook and supplements)
+- [x] 369 threats (core rulebook, supplements and adventure books; vehicles wait for vehicle rules)
 - [x] production deploy (Docker images, Dockhand, Clerk production instance with Google sign-in)
 
 Not built yet:
