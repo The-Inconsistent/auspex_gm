@@ -1,0 +1,147 @@
+[
+  {
+    "id": "palatine-zoraya-matriana",
+    "name": "Palatine Zoraya Matriana",
+    "source": "redacted-records-2",
+    "page": 41,
+    "note": "The two Frameworks on p.42 print no LIMITATIONS, WARGEAR or BONUS boxes, so those are empty. Printed \"Sisters widow\", \"Cicatrix Maledictrum\" and \"Canoness Athanasia\" (p.42; \"Athenasia\" on p.41), and no full stop after \"Gilead system\" in The Palatine’s Left Hand; copied as printed.",
+    "text": "Palatine Zoraya Matriana is the senior ranking Sister of the preceptory of the Order of the Sanctified Shield. Although numbering only a thousand Sisters widow, a curious twist of fate meant the vast majority of her order were present in the Gilead System at the opening of the Great Rift, and they wield influence far in excess of their numbers.\n\nWhen the ageing Canoness Athenasia died shortly after the appearance of the Cicatrix Maledictrum, Palatine Zoraya assumed overall command of her order, though she refuses to declare herself Canoness until she can make contact with the Abbess Sanctorum to have her position formally ratified. The ranks of the Holy Ossuary have swollen with numerous Sisters of other orders.\n\nThose who have lost their allies, or otherwise found themselves isolated and alone, have found a warm welcome and lasting place amongst this sisterhood.\n\nWith the war for Balthazar now well underway, Palatine Zoraya has assumed overall command of the war zone, with the full support of the local Ecclesiarchy. Some senior Sisters, most notably the Sister Dogmata Valatia Rimesk, have spoken out against her command, considering it inappropriate that a relatively young palatine of a minor order should assume authority of other, more senior Sisters, but for now Zoraya’s hold on power remains firm.\n\nLike the rest of her order, Palatine Zoraya wears armour the colour of bleached bone, with crimson vestments lined in gold. Her Sabbat Pattern helm is crowned with a filigree circlet of golden leaves; she carries a Godwyn-De’az pattern Boltgun, while an exquisitely crafted power sword hangs at her right hip. Burn scars cover the majority of her face and shaven scalp, and a red augmetic glows in place of her left eye. She wears her battle-scars proudly as a mark of the God-Emperor’s salvation. She is a compelling and charismatic speaker, and a figure of tremendous inspiration to the majority of the Sisters under her command.",
+    "options": [
+      {
+        "name": "The Order of the Holy Ossuary",
+        "text": "The Sisters of the Holy Ossuary are the backbone of Palatine Zoraya’s organisation, though the nature of the Gilead System means that she has been forced to adopt practices that might be considered unorthodox in the wider Imperium. Although she remains fully compliant with the Decree Passive, she accepts the service of Agents of all genders as part of the Frateris Militia, seconding them to the overall command of a Sister of Battle while in the field.\n\nExample Missions:\n- The Chapel of Augustinian the Reformer sits on an airless moon in orbit around Enoch. It is there that the bones of the recently deceased Canoness Athanasia are to be laid to rest. With the bulk of the Ecclesiarchy’s ships committed to Balthazar, the Palatine can spare a single gun-cutter to carry the Agents and a casket containing the late Canoness’s bones to the shrine. However, the Canoness was an enemy of the forces of Chaos for all her long life, and a squad of Heretic Astartes with a score to settle are willing to invest considerable time and effort to take their revenge on her remains.\n- A squad of Battle Sisters has become stranded behind enemy lines on one of Enoch’s satellites. A lesser commander might consider them beyond help, but not the Palatine. The Agents are sent to locate the lost mission and extract the Sisters, along with the group of civilians they had rescued from the moon’s mines.",
+        "limitations": [],
+        "wargear": [],
+        "grants": []
+      },
+      {
+        "name": "The Palatine’s Left Hand",
+        "text": "For all that Palatine Zoraya is happy to present herself as an uncomplicated warrior, she is well aware that the Adepta Sororitas are not without their enemies, and that sometimes actions must be taken out of the public eye. Her ‘left hand’ is a carefully selected group of spies, assassins, and infiltrators willing to undertake deeply reprehensible actions for the sake of the Order, the Ecclesiarchy, and the God-Emperor, even if they will never receive recognition for their efforts.\n\nExample Missions:\n- A magnificent procession is arranged to transport the bones of an Imperial Saint to a newly built cathedrum in the planetary capital of Enoch, and pilgrims are flocking from all corners of the Gilead system But word has reached the Palatine’s ears that a prominent but unnamed member of the Ecclesiarchy, perhaps jealous of her influence, plans to have her assassinated during the ceremony. Rather than change her plans, the Palatine has decided to draw out the assassin by proceeding as though she knows nothing. The Agents are given the task of ensuring that the attempt is foiled before it can begin, and that the cardinal’s assassin is delivered into her hands for questioning.\n- The war for Balthazar is raging, and the city of Praxania is a vital staging post for the Ecclesiarchy’s troops. Some seemingly unconnected acts of sabotage have hindered their progress, and the Palatine has suspicions that a heretical cult of resistance is spreading through the city. The Agents are provided with false identities and sent into the city to infiltrate the heretic cult, identify its leaders, and bring them in to face the Palatine’s justice.",
+        "limitations": [],
+        "wargear": [],
+        "grants": []
+      }
+    ]
+  },
+  {
+    "id": "magos-statox-pavarnus",
+    "name": "Magos Statox Pavarnus",
+    "source": "redacted-records-2",
+    "page": 59,
+    "text": "Magos Pavarnus is a senior Cybernetica Datasmith who maintains noospheric security for all battle-automata on Avachrus. Having long since retired from front-line combat, he would almost certainly have been anointed to a more senior rank if contact with Mars had been retained. The only member of a rather cryptic and mystical sect within the Legio Cybernetica in the Gilead System, he has repeatedly demonstrated enormous insight into the programming of complex Machine Spirits and in particular how to rid them of hostile scrap code. An apolitical figure, he was Vakuul’s first choice to command the Breach once she discovered the Necron presence. She has given him great latitude and resources, and allowed him to hand-pick specialist Tech-Priests from across Avachrus to assist with this endeavour. Pavarnus has largely chosen oddballs and free-thinkers to run the research labs in Outpost Nemo, reasoning both that they can produce the radical outcomes needed to secure victory, and that they would not be missed if disaster did happen. These projects are carefully isolated, so that individual researchers never have the full picture.\n\nPavarnus is an extremely calm and steady old man. After centuries of life he is nearly unflappable, if given to the occasional cryptic comment or mystical quotation. Within his quarters he keeps a training schedule, practising doctrinal close combat and meditative communion with Machine Spirits to maintain his effeciency. His lab contains the shattered remains of dozens of ancient automata, their cogitators wired together to form what he refers to as the Choir Cybernetica. He spends hours each day mentally linked to the Choir, using them as his personal data-loom and advisory system. The Choir is complex to the point where it might be considered a Silica Animus by some, but it has no true will or directive without Pavarnus.\n\nWhen Pavarnus seeks help from outsiders, he accesses every scrap of information the Adeptus Mechanicus holds on them beforehand, and usually tailors both ‘carrot’ and ‘stick’ as carefully as possible. Despite his urbane manners and frail exterior, he’s utterly committed to the Adeptus Mechanicus, and considers every single individual in the Breach expendable if it achieves his overall goal. Currently, he’s relishing the challenge of facing the xenos, but he’s also prepared to publicly accept responsibility if the operation is exposed.",
+    "note": "Printed \"effeciency\"; copied as printed.",
+    "options": [
+      {
+        "name": "Kardaur Breacher",
+        "text": "You’ve been brought to the Breach secretly, and won’t be leaving until the job is done. It’s a desolate, hellish landscape infested with murderous half-living xenos, and a battlezone the Adeptus Mechanicus won’t admit to. There are many experimental pieces of equipment to test, xenos artefacts to be collected, and deadly foes to be slain. And all that’s just a dry run for assaulting the most powerful fortification in the system.\n\nExample Missions:\n- Firing Solution: The Tech-Priests believe that they may have discovered a method of triangulating the exact location of the Necron base in the Breach. They require a dozen experimental auspex units planted throughout the region, including in several sites where patrols have recently gone missing.\n- Test Bed: The Agents are given an experimental Phase Inhibitor which is theorised to stop Necron teleportation. They are tasked with ambushing a Necron patrol and activating the Inhibitor so that their remains are left behind. Unfortunately, it does not work — in fact it causes Necron warriors to begin phasing in all around the Agents!",
+        "limitations": [
+          {
+            "kind": "either",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "ADEPTUS MECHANICUS"
+                ]
+              },
+              {
+                "kind": "all",
+                "of": [
+                  {
+                    "kind": "keyword",
+                    "anyOf": [
+                      "IMPERIUM"
+                    ]
+                  },
+                  {
+                    "kind": "notKeyword",
+                    "anyOf": [
+                      "SCUM"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "gm",
+            "text": "At least one Agent must have the ADEPTUS MECHANICUS Keyword."
+          }
+        ],
+        "wargear": [
+          {
+            "choose": 1,
+            "from": [
+              {
+                "wargear": {
+                  "name": "Void Suit",
+                  "qty": 1,
+                  "wargearId": "void-suit"
+                }
+              },
+              {
+                "wargear": {
+                  "name": "Respirator",
+                  "qty": 1,
+                  "wargearId": "respirator"
+                }
+              }
+            ]
+          },
+          {
+            "wargear": {
+              "name": "Sacred Machine Oil",
+              "qty": 1,
+              "wargearId": "sacred-machine-oil"
+            }
+          }
+        ],
+        "bonus": "+1 ED on all attack rolls made against characters with the NECRON Keyword.",
+        "grants": []
+      },
+      {
+        "name": "Unorthodox Minds",
+        "text": "You’ve been lured to the Breach with the promise of xenos technologies and unfettered research opportunities. You work directly with the ‘oddball’ Tech-Priests that Pavarnus has collected, assisting them with their research, and cleaning up after their mistakes. Almost anyone can be useful in this kind of work, but especially those with technical knowledge, or the ability to bend the rules or scavenge the war zone. Pavarnus has picked creative problem solvers for this role, but keeps them under observation.\n\nExample Missions:\n- Asset Recovery: One of Tram’s experimental Cybercanids has escaped from the pens, and is hiding in a dense thicket of crystalline growths. It has a tracker, but it’s only detectable at short range. Maddened by pain, the Cybercanid is completely feral, but the Magos wants it returned alive.\n- The Great Data Heist: One of the researchers needs some information held in the private data-vault of a noble house on Gilead Prime, and the Agents are dispatched to pilfer it. What they don’t know is that this vault is secretly operated by the Inquisition. Getting the information is one thing, but getting back to Avachrus alive, quite another.",
+        "limitations": [
+          {
+            "kind": "either",
+            "of": [
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "ADEPTUS MECHANICUS"
+                ]
+              },
+              {
+                "kind": "keyword",
+                "anyOf": [
+                  "IMPERIUM",
+                  "SCUM"
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "gm",
+            "text": "At least one Agent must have the ADEPTUS MECHANICUS Keyword."
+          }
+        ],
+        "wargear": [
+          {
+            "pick": 1,
+            "wargearOf": {
+              "kinds": [
+                "augmetic"
+              ],
+              "rarity": {
+                "atMost": "Rare"
+              }
+            }
+          }
+        ],
+        "bonus": "+2 Bonus Dice on Cunning (Fel) Tests to do with acquiring technological items.",
+        "grants": []
+      }
+    ]
+  }
+]
