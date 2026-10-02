@@ -15,9 +15,10 @@ import {
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
 
-import type { Beat, EncounterEntry } from "../../types";
-import { stripBeat } from "../../utils";
+import type { Beat, EncounterEntry, PoolDrafts } from "../../types";
+import { savedPools, stripBeat } from "../../utils";
 import { Exits } from "./components/exits/exits";
+import { RuinGlory } from "./components/ruin-glory/ruin-glory";
 import { Tests } from "./components/tests/tests";
 import { BEAT_TEXT_FIELDS, type BeatTextField } from "./constants";
 
@@ -32,11 +33,14 @@ type BeatEditorProps = {
   onDone: () => void;
 };
 
+// The beat as the editor holds it: a Ruin or Glory amount, or a spend's cost, may be empty until the GM sets it.
+type Draft = Omit<ReturnType<typeof stripBeat>, keyof PoolDrafts> & PoolDrafts;
+
 // Adds `id` to the list, or removes it if already there.
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
 export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, skillDns, onDone }: BeatEditorProps) {
-  const [b, setB] = useState(() =>
+  const [b, setB] = useState<Draft>(() =>
     beat
       ? stripBeat(beat)
       : {
@@ -54,6 +58,9 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
           encounter: [] as EncounterEntry[],
           exits: [] as BeatExit[],
           tests: [] as BeatTest[],
+          ruin: [],
+          glory: [],
+          spends: [],
         },
   );
   const [error, setError] = useState<string | null>(null);
@@ -63,14 +70,17 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
   const troops = b.encounter.reduce((n, e) => n + e.count, 0);
   const scenes = codex.adventures.find((a) => a.id === adventureId)?.beats ?? [];
 
-  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows and Shift rungs go, and an exit
-  // target deleted while the editor was open (its select shows —) is dropped rather than refused by the server.
+  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows, Shift rungs and Ruin and Glory
+  // lines go, and an exit target deleted while the editor was open (its select shows —) is dropped rather than refused
+  // by the server. A Ruin or Glory line with no amount, or a spend with no cost, holds the save.
   const save = async () => {
+    const pools = savedPools(b);
+    if (!pools) return setError("Set the amount of every Ruin and Glory line, and the cost of every spend");
     const exits = b.exits
       .map((e) => ({ ...e, beatId: scenes.some((s) => s.id === e.beatId) ? e.beatId : null }))
       .filter((e) => e.label.trim() || e.beatId);
     const tests = b.tests.map((t) => ({ ...t, shifts: t.shifts.filter((s) => s.trim()) }));
-    const data = { ...b, exits, tests };
+    const data = { ...b, exits, tests, ...pools };
     const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
     if (!r.ok) return setError(r.error);
     onDone();
@@ -208,6 +218,7 @@ export function BeatEditor({ adventureId, beat, codex, players, send, bestiary, 
       </div>
 
       <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />
+      <RuinGlory lines={b} onChange={(lines) => setB({ ...b, ...lines })} />
 
       <div className="field">
         <span className="label">PREPARED ENCOUNTER</span>

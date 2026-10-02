@@ -1,6 +1,6 @@
 import { ATTRIBUTE_NAMES, DN_TABLE, SKILLS, type BeatTest } from "@wg/shared";
 
-import type { Beat } from "./types";
+import type { Beat, PoolDrafts } from "./types";
 
 // A beat's editable fields: what `codex.save` takes as `data` (id and order are server-owned).
 export const stripBeat = ({ id, order, ...rest }: Beat) => rest;
@@ -34,3 +34,13 @@ export const ruinOnFailure = (t: BeatTest) =>
     : t.kind === "resolve"
       ? "FAILED FEAR: GM GAINS 1 RUIN · p.320"
       : null;
+
+// What SAVE SCENE sends of a scene's Ruin and Glory lines: blank ones go. Null while a line that stays has no amount or
+// cost, since the app never invents one (issue #40).
+export function savedPools({ ruin, glory, spends }: PoolDrafts): Pick<Beat, "ruin" | "glory" | "spends"> | null {
+  const written = (lines: PoolDrafts["ruin"]) => lines.filter((l) => l.text.trim());
+  const kept = { ruin: written(ruin), glory: written(glory), spends: spends.filter((s) => s.name.trim()) };
+  const unset =
+    [...kept.ruin, ...kept.glory].some((l) => l.amount === null) || kept.spends.some((s) => s.cost === null);
+  return unset ? null : (kept as Pick<Beat, "ruin" | "glory" | "spends">); // every amount and cost checked just above
+}

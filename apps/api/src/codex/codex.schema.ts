@@ -50,6 +50,9 @@ export const beat = pgTable("beat", {
   encounter: jsonb().$type<unknown[]>().notNull().default([]),
   exits: jsonb().$type<unknown[]>().notNull().default([]), // BeatExit[]; codex.delete clears a deleted target
   tests: jsonb().$type<unknown[]>().notNull().default([]), // BeatTest[]
+  ruin: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
+  glory: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
+  spends: jsonb().$type<unknown[]>().notNull().default([]), // PoolSpend[]
 });
 
 export const location = pgTable("location", {

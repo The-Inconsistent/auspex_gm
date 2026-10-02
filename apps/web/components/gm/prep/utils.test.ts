@@ -3,7 +3,7 @@ import { describe, test } from "node:test";
 
 import { BeatTest } from "@wg/shared";
 
-import { dnLabel, ruinOnFailure, testTitle } from "./utils.ts";
+import { dnLabel, ruinOnFailure, savedPools, testTitle } from "./utils.ts";
 
 describe("scene Test labels", () => {
   test("a Test is named by what it rolls", () => {
@@ -29,4 +29,20 @@ describe("scene Test labels", () => {
     assert.equal(ruinOnFailure(BeatTest.parse({ kind: "skill", skill: "Tech", dn: 3 })), null);
     assert.match(ruinOnFailure(BeatTest.parse({ kind: "corruption", dn: 3 })) ?? "", /GM GAINS 1 RUIN/);
   });
+});
+
+test("SAVE drops blank Ruin and Glory lines, and waits for every amount and cost (issue #40)", () => {
+  const spend = { pool: "ruin", name: "[spend]", cost: 2, text: "" } as const;
+  const lines = {
+    ruin: [
+      { text: "[trigger]", amount: 1 },
+      { text: " ", amount: null },
+    ],
+    glory: [],
+    spends: [spend],
+  };
+  assert.deepEqual(savedPools(lines), { ruin: [{ text: "[trigger]", amount: 1 }], glory: [], spends: [spend] });
+  assert.equal(savedPools({ ...lines, glory: [{ text: "[feat]", amount: null }] }), null, "an award with no amount");
+  assert.equal(savedPools({ ...lines, spends: [{ ...spend, cost: null }] }), null, "a book that prints no cost");
+  assert.deepEqual(savedPools({ ...lines, spends: [{ ...spend, name: "", cost: null }] })?.spends, [], "blank goes");
 });

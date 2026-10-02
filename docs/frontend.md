@@ -497,6 +497,10 @@ The tests are in `lib/command/command.test.ts`.
     `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`: NO DN on an Opposed Test, DN · GM SETS on one without a DN yet, §11.75), EACH, the Shift count and, on a
     Fear or Corruption Test, the Ruin reminder (`ruinOnFailure`, Core p.320); inside are the purpose, SHIFT 1, 2… and
     both outcomes
+  - its RUIN & GLORY (`components/scene-pools/scene-pools.tsx`, issue #40): the RUIN, GLORY, COMPLICATIONS and COMBAT
+    COMPLICATIONS rule links, then each Ruin and Glory line with a +N button and each spend with SPEND N. A tap sends
+    `pool.adjust` and reports in the message line, with what was lost at the pool's maximum (`poolMax`, Core pp.164,
+    320). A spend the pool can't pay is disabled (`canSpend`): the server floors at 0 and would undercharge
   - a summary of its prepared encounter
 - **Beat controls:**
   - ↑ / ↓ swap a beat with its neighbour and send the full `ids` order as `beat.reorder`.
@@ -518,8 +522,8 @@ The tests are in `lib/command/command.test.ts`.
     - a Skill and/or Attribute select by `TEST_POOL`
     - ONE / EACH, and PURPOSE
     - DN chips from `DN_TABLE` with their modifier inline, "5 CHALLENGING (+2)" (`CORRUPTION_DNS` for Corruption)
-    - a DN field (`components/dn-input`): it keeps the text as typed while editing, counts a DN from 1 to 20 at once,
-      and clamps on blur
+    - a DN field (`components/ui/number-input`): it keeps the text as typed while editing, counts a DN from 1 to 20 at
+      once, and clamps on blur; emptied, it leaves the DN for the GM to set (§11.75)
     - the book's example for that Skill at that DN (`skillDns` from `GmApp`'s `presets`, Core pp.122–126)
     - a DN under 3 hint (Core p.122)
     - the Shift ladder, up to `MAX_SHIFTS`. Chips add the uses on pp.165–166, with +1 Glory only once per Test
@@ -529,6 +533,10 @@ The tests are in `lib/command/command.test.ts`.
 
     An Opposed Test shows a NO DN note and no Shift ladder: Shifting is defined against a DN (p.165). Up to
     `MAX_TESTS` Tests; SAVE drops blank Shift rungs
+  - Ruin and Glory (`components/ruin-glory/ruin-glory.tsx`, issue #40): RUIN · WHAT EARNS IT HERE and GLORY · AWARDS,
+    an amount (a `NumberInput` up to `MAX_POOL_STEP`) and a line each; SPENDS · PLANNED, a RUIN / GLORY toggle, a
+    cost, a name and its effect. Up to `MAX_POOL_LINES` each. SAVE drops blank lines (`savedPools`), and holds the
+    save while a line has no amount or a spend no cost
   - location
   - NPC and handout toggle chips (`aria-pressed`)
   - the prepared encounter entries: threat, count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements)

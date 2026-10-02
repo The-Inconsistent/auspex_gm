@@ -356,6 +356,8 @@ with `.$type<>` from the shared `z.enum`s.
 | `npc.stat_source` | `StatSource` | On write by `CodexInput.npc`, cast in `loadCodex` |
 | `beat.exits` | `BeatExit[]`, at most `MAX_EXITS` | On write by `CodexInput.beat`, cast in `loadCodex` |
 | `beat.tests` | `BeatTest[]`, at most 12; the kind decides which of Skill, Attribute and DN are set | On write by `CodexInput.beat`, cast in `loadCodex` |
+| `beat.ruin`, `beat.glory` | `PoolEntry[]`, at most `MAX_POOL_LINES` | On write by `CodexInput.beat`, cast in `loadCodex` |
+| `beat.spends` | `PoolSpend[]`, at most `MAX_POOL_LINES`; each names its pool and cost | On write by `CodexInput.beat`, cast in `loadCodex` |
 
 The id arrays have no FK, so `codex.delete` of an NPC or handout clears its id from `beat.npc_ids` / `beat.handout_ids` itself, and `codex.delete` of a beat clears it from `beat.exits`.
 

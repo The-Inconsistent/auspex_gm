@@ -26,11 +26,14 @@ Rank from total XP earned: 0–39 = 1, 40–79 = 2, 80–99 = 3 (max 3); 100+ in
 | Pool | Start | Max | Gains | Page |
 |---|---|---|---|---|
 | **Wrath** (per character) | 2 | none | GM award; completing the session Objective | p.164, p.43 |
-| **Glory** (party) | 0 | **max(6, players + 2)**; overflow lost | +1 per Wrath Critical (Wrath Die 6); +1 by Shifting an Exalted Icon (once per Test) | p.164, p.166 |
+| **Glory** (party) | 0 | **max(6, players + 2)**; overflow lost | +1 per Wrath Critical (Wrath Die 6); +1 by Shifting an Exalted Icon (once per Test); a GM award for an impressive feat, no amount printed (§11.77) | p.164, p.166, p.316 |
 | **Ruin** (GM) | players | **2 × players**; overflow lost | +1 when a player fails a Corruption Test, fails a Fear Test, or the GM rolls a 6 on the Wrath Die; optional: +1 instead of narrating a Complication | p.320, p.163 |
 | **Personal Ruin** (Champion threat) | per stat block | — | — | p.323, p.325 |
 
 Ruin is **visible to the players** (p.320), but [HOUSE] the app keeps it GM-only (§11.58).
+
+A scene can carry its own Ruin triggers, Glory awards and planned spends of either pool (GitHub issue #40). The GM taps
+one on the PREP card and it moves the pool through `pool.adjust`, capped as above.
 
 **Spends**
 
@@ -581,6 +584,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     the Gamemaster chapter and the pool is GM-only (§11.58), so it carries `gm: true`, as Fail Forward does (§11.74):
     the GM explains it at the table. Wrath Complications (p.163, with its optional "award the GM a point of Ruin") and
     Combat Complications (p.191) are in the player chapters and stay open to every seat.
+    *(User ruling, 2026-10-02.)*
+77. **How much Glory an award is worth** (Core p.316; GitHub issue #40). "You might want to award players Glory for
+    particularly impressive feats", and the book prints no amount. A scene's Glory line carries its own amount, which
+    the GM sets; a new line starts at 1. The pool maximum (p.164) still bounds it, and an award at the maximum is lost.
     *(User ruling, 2026-10-02.)*
 
 ---

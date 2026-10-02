@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ATTRIBUTES, Marker, SKILLS, Visibility, type Skill } from "./state.ts";
+import { ATTRIBUTES, Marker, Pool, SKILLS, Visibility, type Skill } from "./state.ts";
 
 // Campaign content beyond combat (docs/campaign-model.md). Broadcast separately from the live state,
 // so a Wounds tap doesn't resend every NPC and beat.
@@ -95,6 +95,22 @@ export function retypeTest(t: BeatTest, kind: TestKind): BeatTest {
   const opposed = pool === "either";
   return { ...t, kind, skill, attribute, dn: opposed ? null : (t.dn ?? 3), shifts: opposed ? [] : t.shifts };
 }
+// A scene's Ruin and Glory (issue #40): what earns the GM Ruin here (Core p.320: a failed Corruption or Fear Test, a 6 on
+// the Wrath Die; p.163: a Complication taken as Ruin), what earns the Agents Glory (an impressive feat, p.316, which
+// prints no amount: the GM sets it, rules-flow.md §11.77), and the spends the GM plans from either pool. A tap moves the
+// pool, capped by poolMax as pp.164 and 320 say.
+// ponytail: app limits, not rules, and no "used" flag per line: the GM watches the pool. Add one if mis-taps matter.
+export const MAX_POOL_LINES = 20;
+export const MAX_POOL_STEP = 10;
+const poolStep = z.number().int().min(1).max(MAX_POOL_STEP);
+export const PoolEntry = z.object({ text: text(200), amount: poolStep.default(1) });
+export type PoolEntry = z.infer<typeof PoolEntry>;
+export const PoolSpend = z.object({ pool: Pool, name: text(100), cost: poolStep, text: text(500).default("") });
+export type PoolSpend = z.infer<typeof PoolSpend>;
+// A spend the pool can't pay is refused before it's sent: `pool.adjust` floors at 0, so it would undercharge.
+export const canSpend = (pools: Record<Pool, number>, { pool, cost }: Pick<PoolSpend, "pool" | "cost">) =>
+  pools[pool] >= cost;
+
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 
@@ -134,6 +150,9 @@ export const CodexInput = {
       .default([]),
     exits: z.array(BeatExit).max(MAX_EXITS).default([]),
     tests: z.array(BeatTest).max(MAX_TESTS).default([]),
+    ruin: z.array(PoolEntry).max(MAX_POOL_LINES).default([]),
+    glory: z.array(PoolEntry).max(MAX_POOL_LINES).default([]),
+    spends: z.array(PoolSpend).max(MAX_POOL_LINES).default([]),
   }),
   location: z.object({
     name: text(200),
