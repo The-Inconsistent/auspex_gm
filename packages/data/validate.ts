@@ -25,6 +25,11 @@ import {
   PoolPresetTable,
   PoolSpend,
   presetLine,
+  HULK_HAZARDS,
+  type HulkRow,
+  hulkNotes,
+  MAX_HULK_ORIGINS,
+  SpaceHulkGenerator,
 } from "@wg/shared";
 import {
   eventTableFiles,
@@ -35,6 +40,7 @@ import {
   packNames,
   placeFiles,
   poolPresetFiles,
+  SPACE_HULK_FILE,
 } from "./index.ts";
 
 // Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
@@ -359,8 +365,8 @@ const EXPECTED_HAZARDS: Record<string, number> = {
   "redacted-records-space-hulk-hazards": 5, // p.11, Stage 4 of the Space Hulk Generator
 };
 const hazardIds = new Set<string>();
+const hazardTableIds = new Set<string>();
 {
-  const hazardTableIds = new Set<string>();
   for (const file of hazardFiles()) {
     const r = HazardTable.array().safeParse(
       JSON.parse(readFileSync(new URL(`./scene-presets/hazards/${file}`, import.meta.url), "utf8")),
@@ -400,6 +406,48 @@ const hazardIds = new Set<string>();
   }
   const pending = Object.keys(EXPECTED_HAZARDS).filter((id) => !hazardTableIds.has(id));
   if (pending.length) console.log(`scene-presets/hazards: not transcribed yet: ${pending.join(", ")}`);
+}
+
+// The Space Hulk Generator (scene-presets/space-hulk.json, issue #50 step 8): each table holds the rows RR1 pp.7–10
+// print, row ids are unique (codex.addHulk takes them), and the longest notes a hulk can get fit GM NOTES' 5,000.
+const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as const;
+{
+  const r = SpaceHulkGenerator.safeParse(
+    JSON.parse(readFileSync(new URL(`./scene-presets/${SPACE_HULK_FILE}`, import.meta.url), "utf8")),
+  );
+  const problem = (message: string) => {
+    failed = true;
+    console.error(`✖ scene-presets/${SPACE_HULK_FILE}: ${message}`);
+  };
+  if (!r.success) problem(z.prettifyError(r.error));
+  else {
+    const g = r.data;
+    const ids = new Set<string>();
+    for (const [k, n] of Object.entries(EXPECTED_HULK) as [keyof typeof EXPECTED_HULK, number][]) {
+      if (g[k].rows.length !== n) problem(`${k}: ${g[k].rows.length} rows, expected ${n}`);
+      for (const row of g[k].rows) {
+        if (ids.has(row.id)) problem(`duplicate row id "${row.id}"`);
+        ids.add(row.id);
+      }
+    }
+    const longest = (rows: HulkRow[]) =>
+      rows.reduce((a, b) => (b.name.length + (b.text?.length ?? 0) > a.name.length + (a.text?.length ?? 0) ? b : a));
+    const worst = hulkNotes(g, {
+      origins: Array(MAX_HULK_ORIGINS).fill(longest(g.origin.rows)),
+      occupants: longest(g.occupants.rows),
+      objective: longest(g.objectives.rows),
+    });
+    if (worst.length > 5000) problem(`the longest hulk notes run ${worst.length} characters, over 5000`);
+    if (!hazardTableIds.has(HULK_HAZARDS)) problem(`Stage 4's hazard table ${HULK_HAZARDS} is missing`);
+    console.log(
+      `scene-presets/${SPACE_HULK_FILE}: ` +
+        Object.keys(EXPECTED_HULK)
+          .map((k) => `${g[k as keyof typeof EXPECTED_HULK].rows.length} ${k}`)
+          .join(", ") +
+        `, longest hulk notes ${worst.length}/5000` +
+        (g.objectives.gaps.length ? `, as printed: objectives gaps ${g.objectives.gaps.join(",")}` : ""),
+    );
+  }
 }
 
 // Creation catalogue (docs/data.md, "Creation catalogue"): creation/<type>/<source>.json. Schema per file, the

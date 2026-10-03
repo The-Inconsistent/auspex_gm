@@ -863,8 +863,17 @@ section heading. Kept as printed: "Daealon", "moons' production reports".
 
 **Redacted Records notes.** The third hulk is the Umbraeus (p.28), and a fifth, "Space Hulk Designation Wrath of
 Janus" (pp.32–33), is in as the Wrath of Janus. No hulk prints headed rooms, so none nests. Each Mission Briefs entry is
-a hook; each hulk's secrets follow its description under a capitals line. Relic and NPC blocks are out, and so is the
-Space Hulk Generator (pp.6–11, #50 step 8). Kept as printed: "that that the vessel", "Gilead Rosarious", "planets ,and".
+a hook; each hulk's secrets follow its description under a capitals line. Relic and NPC blocks are out; the Space Hulk
+Generator (pp.6–11) is its own file, below. Kept as printed: "that that the vessel", "Gilead Rosarious", "planets ,and".
+
+**The Space Hulk Generator** (`scene-presets/space-hulk.json`, `SpaceHulkGenerator` in `places.ts`, #50 step 8). One
+object: `source`, `page` (6) and four d66 tables, `origin` (p.7, 5 rows), `occupants` (p.8, 10), `objectives` (p.8, 5)
+and `rooms` (pp.9–10, 21). A row is `{ id, from, to, name, page, text? }`: the table's result as `name`, the section
+that describes it as `text` (the Occupants rows have none). Stage 4 is the Hazards Table above (`HULK_HAZARDS`).
+`codex.addHulk` takes row ids and writes the hulk and its rooms as places, with `hulkNotes` and `roomNotes` as their GM
+NOTES. Served on `/scene-presets` as `spaceHulk`. `validate` checks the row counts, unique ids, and that the longest
+notes a hulk can get (five origins) fit 5,000. Kept as printed: the Objective table prints no row for 14–16 or 46
+(`gaps`), "Genestealer Putation" (p.8), and the table's "Warp Tainted Chamber" over the section's "Warp-Tainted".
 
 ---
 

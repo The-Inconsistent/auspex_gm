@@ -1,0 +1,360 @@
+{
+  "source": "redacted-records",
+  "page": 6,
+  "origin": {
+    "id": "rr1-hulk-origin",
+    "name": "Origin Table",
+    "page": 7,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "rr1-hulk-origin-imperial",
+        "from": 11,
+        "to": 33,
+        "name": "Imperial",
+        "page": 7,
+        "text": "A monument to the past, Imperial space hulks are relics of outdated ordinance riddled with the insignia of sundry Space Marine chapters and Astra Militarum regiments, vaulted with gothic ceilings and threaded with twisted forge world arcana."
+      },
+      {
+        "id": "rr1-hulk-origin-chaos",
+        "from": 34,
+        "to": 46,
+        "name": "Chaos",
+        "page": 7,
+        "text": "Chaos hulks might be mistaken at a cursory glance for sinister Imperial hulks. Only when one approaches does the mockery of Imperial design become apparent, warped metal infected with hooked barbs and the jagged sigils of forbidden gods."
+      },
+      {
+        "id": "rr1-hulk-origin-aeldari",
+        "from": 51,
+        "to": 54,
+        "name": "Aeldari",
+        "page": 7,
+        "text": "Rare and ancient even amongst space hulks, Aeldari crafts are elegant even in death. Twisting spires of wraithbone form a tangled skein of latticework, appearing almost like a living thing. Psionic resonance often surrounds Aeldari space hulks, warning off intruders with waves of primal fear."
+      },
+      {
+        "id": "rr1-hulk-origin-ork",
+        "from": 55,
+        "to": 62,
+        "name": "Ork",
+        "page": 7,
+        "text": "Ork ships aren’t far from lumps of twisted metal to begin with. Centuries or millennia of compression into a single hulk just makes them sturdier. Up close they still bear broad red stripes of flame motifs, and defunct guns and cannons."
+      },
+      {
+        "id": "rr1-hulk-origin-mixed",
+        "from": 63,
+        "to": 66,
+        "name": "Mixed Origin",
+        "page": 7,
+        "text": "The incredible size and age of a space hulk means a single one can accumulate ships of different origins as it floats through the void — in this case, consider rolling more than once on the Origin table to determine which races are represented in the makeup of the space hulk."
+      }
+    ]
+  },
+  "occupants": {
+    "id": "rr1-hulk-occupants",
+    "name": "Occupation Table",
+    "page": 8,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "rr1-hulk-occupants-lost-cult",
+        "from": 11,
+        "to": 13,
+        "name": "A lost cult who believe the Emperor is dead",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-aeldari-stasis",
+        "from": 14,
+        "to": 16,
+        "name": "Aeldari in deep meditative stasis",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-genestealer-cult",
+        "from": 21,
+        "to": 22,
+        "name": "A Genestealer cult of 4th-5th generation",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-chaos-cultists",
+        "from": 23,
+        "to": 26,
+        "name": "Cultists of Chaos cursed with longevity",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-rogue-psykers",
+        "from": 31,
+        "to": 34,
+        "name": "A cabal of rogue psykers hiding from the Imperium",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-purestrains",
+        "from": 35,
+        "to": 36,
+        "name": "Genestealer Purestrains",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-chaos-space-marines",
+        "from": 41,
+        "to": 43,
+        "name": "Chaos Space Marines preparing to summon a Greater Daemon",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-orks",
+        "from": 44,
+        "to": 46,
+        "name": "A band of Orks who have descended into internecine civil war",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-feral-mutants",
+        "from": 51,
+        "to": 56,
+        "name": "A society of feral mutant Humans",
+        "page": 8
+      },
+      {
+        "id": "rr1-hulk-occupants-explorators",
+        "from": 61,
+        "to": 66,
+        "name": "An Explorator force, supported by Battle Servitors and Kastelan Robots",
+        "page": 8
+      }
+    ]
+  },
+  "objectives": {
+    "id": "rr1-hulk-objectives",
+    "name": "Occupation Objective",
+    "page": 8,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "rr1-hulk-objective-escape",
+        "from": 11,
+        "to": 13,
+        "name": "Escape/Hijack",
+        "page": 8,
+        "text": "The occupants wish to escape the space hulk. The only way off is the ship the Agents arrived on. As soon as the inhabitants learn of newcomers, they immediately attempt to seize the vessel and use it to escape. A parasite such as the Genestealer Putation will be satisfied with simply making sure one of the crew members is compromised before they leave."
+      },
+      {
+        "id": "rr1-hulk-objective-infect",
+        "from": 21,
+        "to": 26,
+        "name": "Infect/Subsume",
+        "page": 8,
+        "text": "Whether an alien parasite, or the scions of Papa Nurgle, the occupants want to infect the newcomers and welcome them into the fold. Ideally the group will come quietly, but the occupants are quite prepared to assimilate them by force if necessary."
+      },
+      {
+        "id": "rr1-hulk-objective-consume",
+        "from": 31,
+        "to": 45,
+        "name": "Consume/Harvest",
+        "page": 8,
+        "text": "Perhaps the occupants are short on food, or perhaps they need organs for transplants. Either way, biomass is hard to come by on a space hulk, which means it’s all the better that strangers just boarded."
+      },
+      {
+        "id": "rr1-hulk-objective-raid",
+        "from": 51,
+        "to": 54,
+        "name": "Raid/Steal",
+        "page": 8,
+        "text": "The occupants of the hulk are mainly concerned with the gear the group brought with them, as they sorely need firearms, technology, or some other commodity. The occupants might be willing to trade, but should these negotiations go sour, they turn to force to obtain what they need."
+      },
+      {
+        "id": "rr1-hulk-objective-defend",
+        "from": 55,
+        "to": 66,
+        "name": "Defend/Protect",
+        "page": 8,
+        "text": "The occupants are deeply invested with protecting something aboard the ship. The last of a rare species, the idol to a Chaos God, or a cache of precious materials are all reasonable candidates. The occupants are prepared to give their lives in its defense."
+      }
+    ],
+    "gaps": [
+      14,
+      15,
+      16,
+      46
+    ]
+  },
+  "rooms": {
+    "id": "rr1-hulk-rooms",
+    "name": "Rooms Table",
+    "page": 9,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "rr1-hulk-room-supply-cache",
+        "from": 11,
+        "to": 12,
+        "name": "Supply Cache",
+        "page": 9,
+        "text": "By some miracle of the Emperor, this room contains untainted (and useful) supplies preserved across the centuries. They may be archaic, but they still work. Agents might find ammunition, power supplies, or needed tools."
+      },
+      {
+        "id": "rr1-hulk-room-reliquary",
+        "from": 13,
+        "to": 14,
+        "name": "Reliquary",
+        "page": 9,
+        "text": "This locked, and probably trapped, chamber contains one or more sacred relics belonging to the original builders, sealed away under dust and silence."
+      },
+      {
+        "id": "rr1-hulk-room-warp-tainted-chamber",
+        "from": 15,
+        "to": 16,
+        "name": "Warp Tainted Chamber",
+        "page": 9,
+        "text": "Whether compromised or simply tainted by contact with the Immaterium, this chamber lies close to the Warp, and seethes with latent Corruption."
+      },
+      {
+        "id": "rr1-hulk-room-vast-hangar",
+        "from": 21,
+        "to": 22,
+        "name": "Vast Hangar",
+        "page": 9,
+        "text": "This room is hundreds of metres in length, perhaps even thousands for larger space hulks. There’s nothing here, all the viable ships having departed long ago. It has an eerie, silent feel."
+      },
+      {
+        "id": "rr1-hulk-room-impossible-stairwells",
+        "from": 23,
+        "to": 24,
+        "name": "Impossible Stairwells",
+        "page": 9,
+        "text": "The tangled mess of the Space Hulk becomes evident in a mish-mash of ladders, stairs and sloping passageways that almost seem to bend back on themselves. Warp-Energies infuse and imperil this place."
+      },
+      {
+        "id": "rr1-hulk-room-vertical-shaft",
+        "from": 25,
+        "to": 26,
+        "name": "Vertical Shaft",
+        "page": 9,
+        "text": "A ship corridor has become fused into the path the wrong way up, resulting in a vertical tunnel the group must ascend or descend in order to continue."
+      },
+      {
+        "id": "rr1-hulk-room-compressed-junction",
+        "from": 31,
+        "to": 32,
+        "name": "Compressed Junction",
+        "page": 9,
+        "text": "Two ships have become fused together by warp energies, and the group enters a new vessel, perhaps even one with a new origin."
+      },
+      {
+        "id": "rr1-hulk-room-weapons-silo",
+        "from": 33,
+        "to": 34,
+        "name": "Weapons Silo",
+        "page": 9,
+        "text": "This part of the ship was once an outwards facing weapons array. Now the gigantic cannons point at one of the internal walls, and the array is inert. At your discretion, the ammunition may still be live."
+      },
+      {
+        "id": "rr1-hulk-room-tangled-piping",
+        "from": 35,
+        "to": 36,
+        "name": "Tangled Piping",
+        "page": 9,
+        "text": "This piping is large enough to walk through, if a little cramped, though its original purpose is ambiguous. Ventilation? Waste? Fluids? Perhaps best not to ask."
+      },
+      {
+        "id": "rr1-hulk-room-endless-labyrinth",
+        "from": 41,
+        "to": 42,
+        "name": "Endless Labyrinth",
+        "page": 10,
+        "text": "The influence of the Warp is strong here, as the path stretches endlessly underfoot, and identical corridors blend into each other. An unprepared expedition could starve here, trapped in a recursive nightmare."
+      },
+      {
+        "id": "rr1-hulk-room-damaged-consoles",
+        "from": 43,
+        "to": 44,
+        "name": "Damaged Consoles",
+        "page": 10,
+        "text": "Whatever race built this particular ship, their consoles did not survive intact. This console room is filled with broken wiring and butchered devices."
+      },
+      {
+        "id": "rr1-hulk-room-worrisome-lever",
+        "from": 45,
+        "to": 46,
+        "name": "Worrisome Lever",
+        "page": 10,
+        "text": "This temptingly large lever has its own room. That probably makes it really important. Does it still work? What would a lever this large even do?"
+      },
+      {
+        "id": "rr1-hulk-room-unknown-technology",
+        "from": 51,
+        "to": 51,
+        "name": "Unknown Technology",
+        "page": 10,
+        "text": "This room contains technology anachronistic to the rest of the hulk. It matches no recorded xenos configuration, and was likely transposed here by some quirk of the Immaterium. It’s heretical to look at it."
+      },
+      {
+        "id": "rr1-hulk-room-unmarked-graveyard",
+        "from": 52,
+        "to": 52,
+        "name": "Unmarked Graveyard",
+        "page": 10,
+        "text": "No ship of the 41st millennium goes down without a fight. Here lie the defenders of the vessel, scattered like ragdolls across the floor. Consider how they died, and what this might tell the explorers."
+      },
+      {
+        "id": "rr1-hulk-room-hull-breach",
+        "from": 53,
+        "to": 53,
+        "name": "Hull Breach",
+        "page": 10,
+        "text": "Space hulks frequently generate their own atmosphere due to their gravitational influence. Through a hull breach, characters can see the stars without being sucked out into the void. One who falls into the dark is likely lost forever."
+      },
+      {
+        "id": "rr1-hulk-room-jammed-doorways",
+        "from": 54,
+        "to": 54,
+        "name": "Jammed Doorways",
+        "page": 10,
+        "text": "The compression of the ship has damaged these doorways, and they are thoroughly jammed. An ingenious character might find a way to force them open but whatever awaits on the other side is huge and threatening."
+      },
+      {
+        "id": "rr1-hulk-room-communications-array",
+        "from": 55,
+        "to": 56,
+        "name": "Communications Array",
+        "page": 10,
+        "text": "This room contains devices for transmitting messages across the ship. Sometimes it also contains recorded testimonials from the ship’s last, or first, crew."
+      },
+      {
+        "id": "rr1-hulk-room-derelict-engines",
+        "from": 61,
+        "to": 62,
+        "name": "Derelict Engines",
+        "page": 10,
+        "text": "Huge ship engines are buried here inside the hulk. Should they somehow be activated, it would damage the integrity of the hulk and cause catastrophic damage."
+      },
+      {
+        "id": "rr1-hulk-room-dead-end",
+        "from": 63,
+        "to": 64,
+        "name": "Dead End",
+        "page": 10,
+        "text": "This corridor is cut off by the hull of a different vessel, or by space junk rammed into the gap. Opportunistic occupants might stage an attack here against disoriented explorers."
+      },
+      {
+        "id": "rr1-hulk-room-life-support",
+        "from": 65,
+        "to": 65,
+        "name": "Life Support",
+        "page": 10,
+        "text": "This apparatus served to keep the original crew alive, and its nature differs based on the ship’s origin. It no longer functions, but could be salvaged for parts."
+      },
+      {
+        "id": "rr1-hulk-room-medical-bay",
+        "from": 66,
+        "to": 66,
+        "name": "Medical Bay",
+        "page": 10,
+        "text": "This area of the ship provided medical support to the crew, and parts of it survived. Characters with Keywords matching the hulk’s Origin can scavenge some medical supplies here."
+      }
+    ]
+  }
+}

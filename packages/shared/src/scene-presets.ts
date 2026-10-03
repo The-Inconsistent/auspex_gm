@@ -11,6 +11,7 @@ import {
   type PoolSpend,
 } from "./codex.ts";
 import { Amount } from "./creation.ts";
+import { SpaceHulkGenerator } from "./places.ts";
 import { Dice, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
 import { ATTRIBUTES, Pool, SKILLS, type Skill } from "./state.ts";
@@ -195,6 +196,7 @@ export const ScenePresets = z.object({
   tables: z.array(EventTable),
   pools: z.array(PoolPresetTable),
   hazards: z.array(HazardTable).default([]), // an api from before issue #49 sends none; the rest still loads
+  spaceHulk: SpaceHulkGenerator.nullable().default(null), // RR1 pp.6–11 (issue #50 step 8); likewise
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 

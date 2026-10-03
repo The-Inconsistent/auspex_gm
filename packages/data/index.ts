@@ -14,6 +14,7 @@ import {
   RuleEntry,
   type ScenePresets,
   SkillDn,
+  SpaceHulkGenerator,
   Threat,
   Wargear,
 } from "@wg/shared";
@@ -45,10 +46,11 @@ export const rulesList = (): RuleEntry[] =>
 
 // scene-presets/: GM-only book data for building scenes (issue #39): the sample DNs per Skill (Core pp.122–126),
 // each book's rolled event tables in <source>.json, its Ruin and Glory lists in pools/<source>.json (issue #40), and
-// its hazard tables for places in hazards/<source>.json (issue #49).
+// its hazard tables for places in hazards/<source>.json (issue #49), and the Space Hulk Generator (issue #50 step 8).
 const presetsDir = new URL("./scene-presets/", import.meta.url);
 export const SKILL_DNS_FILE = "skill-dns.json";
-export const eventTableFiles = () => jsonFiles(presetsDir).filter((f) => f !== SKILL_DNS_FILE);
+export const SPACE_HULK_FILE = "space-hulk.json";
+export const eventTableFiles = () => jsonFiles(presetsDir).filter((f) => f !== SKILL_DNS_FILE && f !== SPACE_HULK_FILE);
 const poolsDir = new URL("./pools/", presetsDir);
 export const poolPresetFiles = () => jsonFiles(poolsDir);
 const hazardsDir = new URL("./hazards/", presetsDir);
@@ -58,11 +60,13 @@ const hazardTables = () => hazardFiles().flatMap((f) => HazardTable.array().pars
 export const hazards: ReadonlyMap<string, HazardRow> = new Map(
   hazardTables().flatMap((t) => t.rows.map((r) => [r.id, r] as const)),
 );
+export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
   pools: poolPresetFiles().flatMap((f) => PoolPresetTable.array().parse(json(new URL(f, poolsDir)))),
   hazards: hazardTables(),
+  spaceHulk,
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

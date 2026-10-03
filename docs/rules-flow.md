@@ -713,6 +713,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      cite, the stat line, the hook sidebars and the description. Where they run longer, the description stops at a
      whole paragraph with "… continues, <cite> p.N", and hooks that still don't fit are named in a last line, so the GM
      opens the page from the cite. *(User ruling, 2026-10-03.)*
+101. **The Space Hulk Generator rolls in prep, and any stage may be rolled again or picked** (RR1 p.6; GitHub issue
+     #50). The book: "if the result you roll doesn't take the adventure where you want to go, re-roll". Each stage
+     takes ROLL, I ROLLED or a tapped row, as the other book tables do (§11.91). A roll on a print gap (Objective 14–16
+     and 46) names the gap and the GM rolls again. Mixed Origin (63–66) says to roll Origin more than once, so the hulk
+     keeps every origin the GM rolls, up to five. *(User ruling, 2026-10-03.)*
+102. **A generated hulk's rooms can come later, and its hazard is structured** (RR1 pp.9, 11; GitHub issue #50). Rooms
+     may be rolled "as the group enters", so the generator also adds rooms under an existing place. Stage 4's feature
+     goes on the hulk's hazard list as its book row (§11.95), not into GM NOTES: every row reads "while aboard this
+     vessel", so it sits on the hulk, not on a room. *(User ruling, 2026-10-03.)*
 
 ---
 
