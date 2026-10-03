@@ -170,7 +170,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Gutshiva's Kommandos | `gutshivas-kommandos` (NPC presets, #47) | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` (Frameworks, #45; NPC presets, #47) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
-| Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46; NPC presets, #47) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
+| Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46; NPC presets, #47; places, #50) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
 | An Abundance of Apocrypha v9 (homebrew) | `apocrypha` (creation only) | `Wrath & Glory - An Abundance of Apocrypha v9.pdf` | printed + 3 |
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
@@ -797,6 +797,7 @@ The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one
 | Book | Pages | Places |
 |---|---|---|
 | Core Rulebook | pp.296–309 | 16: the Gilead System, its six worlds with their stat lines and hooks, the Reach and the Membrane Worlds |
+| Forsaken System Player's Guide | pp.5–38 | 7: the six worlds, each with its adventure-hook sidebars; Enoch's Maintenance Undercrofts |
 
 **Conventions** (the transcription brief):
 - A place is a named site with its own printed heading: a system, world, city, hive, ship, site, region, building or
@@ -813,6 +814,14 @@ The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one
 places. Charybdion sits under the system, beside the Reach: its orbit "marks the border" between the Heartworlds and the
 Reach (p.306). Craftworld Ul-Khari is a subheading inside Trollius. Kept as printed: "For all it's impressive power"
 (Avachrus), "Andraste" and "Andrastre", "subtlety builds on" (The Harvest Smith), "targeting conveys" (the Voidmire).
+
+**Forsaken System Player's Guide notes.** These pages print no heading for the system, so the six worlds are top level;
+their cities and forges appear only in running text, so only Enoch's titled Maintenance Undercrofts sidebar (p.25) is a
+place inside one. Each world has four to six hook sidebars, which fill most of its 5,000 characters: the description
+stops after a few paragraphs, and Faces of Faith (Avachrus), A Crop of Psykers (Ostia) and A Noble Pursuit (Gilead
+Primus) are named as left out. Two hooks print in the next world's section and go with the world they are about: The
+Ion Hastilude (p.17, about Nethreus) and A Noble Pursuit (p.33, about Gilead Primus). Kept as printed: "of the of the
+Sanctified Shield", "seeking the churches blessings", "Gilead Prime" (p.21), "Julyana"/"Julyanna".
 
 ---
 
