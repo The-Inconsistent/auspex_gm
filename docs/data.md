@@ -704,7 +704,8 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
       encounters.
     - Ambush, Broadside, Pursuit and Lattice Springer make combat scenes.
     - Vibrations' Toughness Test notes its repeats and Shock in `gm`.
-    - Out of scope: the Sump Events (the scenes of the book's adventure) and the Chapter 2 hazard tables.
+    - Out of scope: the Sump Events (the scenes of the book's adventure). The Chapter 2 Hazards tables are in
+      `hazards/darktide.json` (issue #49); its Bounties are not.
   - **Litanies of the Lost** (`litanies-of-the-lost.json`):
     - Random Encounters: 2d6, 11 events, each with its read-aloud, and 3 Tests: Tech DN 7, Medicae DN 3, and an
       Opposed Stealth Test.
@@ -750,6 +751,14 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
     Light, Moderate and Intense intensities as `variants`, each a Toughness DN (3, 5, 7) and its damage. Heat & Cold,
     Fire and Radiation print no DN ("The GM decides"), so those Tests have none. The section's opening line is the
     table's `gm`. Kept as printed: "Inflict (On Fire ) Trait" (p.202).
+  - **Darktide** (`darktide.json`): the seven Hive Encounter Hazards tables, 2d6, 9 rows each, pp.14–26: Warrens,
+    Hab Settlement, Industrial Works, Gang Turf, Militarum Depot, Quarantine Zone and Profaned Ground, transcribed
+    from page renders. Written for Hive Tertium, "adapted to fit into any game … set within a hive city" (p.13). The
+    Bounties tables on the facing pages are rewards, not hazards, and stay out. A printed Mob size is the Threat's
+    `count` ("a Mob of 20 Troopers"). Kept as printed: `<LOCATION REDACTED>` (Militarum Depot 6, p.22), "Intimidate
+    (Wil)" (Militarum Depot 7), "Agility (S) Test" (Gang Turf, Pneumatic Crusher, an Agility Test in the data), and
+    the missing comma between Stack Skirrers and Lattice Springers (Warrens 11–12). "Chem-Squad Garrison" keeps the
+    hyphen the page breaks the line on (p.22).
   - **Core Rulebook** (`core.json`): 3 lists, 10 rows. Acquiring Ruin (p.320): the three +1 triggers, plus a
     Complication taken as Ruin (p.163) and Fail Forward's "The GM gains 1 Ruin" (p.319), both named in our words.
     Spending Ruin (p.320): the four priced spends; Activate Ruin Actions isn't one, since each Threat prices its own.
