@@ -35,6 +35,8 @@ const s: LiveState = {
     framework: "",
     frameworkBonus: "",
     patron: "",
+    kind: [],
+    limits: [],
     homebrew: false,
   },
   access: { members: [], invites: [], guests: [] },

@@ -108,6 +108,10 @@ test("a file from before items still loads (issue #51)", () => {
   assert.deepEqual([parsed.adventures[0]!.beats[0]!.itemIds, parsed.items], [[], []]);
 });
 
+test("a file from before the kind of game and limits still loads (rules-flow §11.79)", () => {
+  assert.deepEqual([file.campaign.kind, file.campaign.limits], [[], []]);
+});
+
 test("an exit is a bounded label, with no target unless the GM picks one", () => {
   assert.deepEqual(BeatExit.parse({ label: "If they run" }), { label: "If they run", beatId: null });
   assert.equal(BeatExit.safeParse({ label: "x".repeat(201) }).success, false);

@@ -518,9 +518,6 @@ textarea.input {
   line-height: 18px;
   text-align: center;
 }
-.setup-tick.prompt {
-  border-style: dashed;
-}
 /* START FROM A FRAMEWORK on PARTY (issue #45): the list by book and patron, the GM-only preview beside it. */
 .fw-picker {
   border: 2px solid var(--iron);

@@ -8,7 +8,7 @@ type GoTo = { label: string } & (TabTarget | { anchor: string });
 
 // SETUP's GO TO per step: where the step is done in the app (docs/campaign-model.md "Building a campaign").
 export const SETUP_GO_TO = {
-  kind: null, // a reminder only (rules-flow §11.79)
+  kind: { label: "KIND OF GAME", anchor: "table-talk" },
   framework: { label: "FRAMEWORK", anchor: "fw" },
   tier: { label: "ASCEND", anchor: "ascend" },
   setting: { label: "CODEX › LOCATIONS", tab: "CODEX", kind: "location" },
@@ -19,4 +19,4 @@ export const SETUP_GO_TO = {
   scenes: { label: "PREP", tab: "PREP" },
   combat: { label: "PREP › SCENES", tab: "PREP" },
   session: { label: "SESSION", anchor: "session" },
-} as const satisfies Record<SetupKey, GoTo | null>;
+} as const satisfies Record<SetupKey, GoTo>;

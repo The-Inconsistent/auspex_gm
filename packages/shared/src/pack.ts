@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { BeatExit, CodexInput, MAX_EXITS } from "./codex.ts";
-import { CharacterDetail, CharacterStats, Objectives, Tier } from "./state.ts";
+import { CharacterDetail, CharacterStats, Objectives, TableLines, Tier } from "./state.ts";
 import { CUSTOM_THREAT_CAP, CustomThreatData } from "./threat.ts";
 
 // A content pack: a whole campaign start (framework, codex, adventure, characters) as data, loaded by
@@ -18,6 +18,8 @@ export const Pack = z
       framework: z.string().max(5000).default(""),
       frameworkBonus: z.string().max(1000).default(""),
       patron: z.string().max(200).default(""),
+      kind: TableLines.default([]),
+      limits: TableLines.default([]),
       homebrew: z.boolean().default(false), // the builds may use the homebrew books (issue #9 decision 1)
     }),
     // Stat blocks the pack brings with it (issue #43), as `threat.save` takes them: the seeder sends these first, and

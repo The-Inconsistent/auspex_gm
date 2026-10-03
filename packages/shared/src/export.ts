@@ -2,7 +2,7 @@ import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput } from "./codex.ts";
 import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
-import { CharacterDetail, CharacterStats, Objectives, Overrides, Tier } from "./state.ts";
+import { CharacterDetail, CharacterStats, Objectives, Overrides, TableLines, Tier } from "./state.ts";
 
 // A campaign as a file: the GM's EXPORT, loaded back by the lobby's IMPORT GAME as a new campaign. Rows keep their old
 // ids so references resolve inside the file; the importer gives every row a fresh id. Seats (members, invites, guest
@@ -23,6 +23,8 @@ export const CampaignExport = z.object({
     framework: z.string().max(5000),
     frameworkBonus: z.string().max(1000).default(""), // files from before issue #45 have none
     patron: z.string().max(200),
+    kind: TableLines.default([]), // files from before the NEW CAMPAIGN flow have none
+    limits: TableLines.default([]),
     homebrew: z.boolean(),
   }),
   characters: z

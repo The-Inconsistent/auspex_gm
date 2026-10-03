@@ -14,6 +14,7 @@ import {
   Objectives,
   Overrides,
   Pool,
+  TableLines,
   Tier,
   Visibility,
 } from "./state.ts";
@@ -49,6 +50,8 @@ export const Action = z.union([
       framework: z.string().max(5000).optional(),
       frameworkBonus: z.string().max(1000).optional(),
       patron: z.string().max(200).optional(),
+      kind: TableLines.optional(),
+      limits: TableLines.optional(),
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),

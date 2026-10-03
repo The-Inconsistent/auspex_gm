@@ -11,7 +11,7 @@ text, notes and handouts. Build order: combat tracker plus this campaign core fi
 
 ```
 Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sheet p.374),
- │           patron, party keywords
+ │           patron, kind[] and limits[] (core p.316, rules-flow §11.79), party keywords
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
  ├─ Adventure    title, premise, status (planned | running | done)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
@@ -104,7 +104,7 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 
 | # | Step | Book | In the app | Ticks when |
 |---|---|---|---|---|
-| 1 | Kind of game and content limits | core p.316 | a reminder in SETUP (§11.79) | never |
+| 1 | Kind of game and content limits | core p.316 | PARTY › FRAMEWORK (§11.79) | a kind of game |
 | 2 | Framework (who, what, the shared goal) and Framework Bonus | core pp.18–20, 316–317, 374 | PARTY › FRAMEWORK | `framework` not empty |
 | 3 | Tier (100–400 XP; custom 50, 75 or 500) | core pp.19–20, 160 | lobby NEW GAME, PARTY › ASCEND | always |
 | 4 | Setting, kept to a limited area | core pp.296–309, 320 | CODEX › LOCATIONS (ADD FROM BOOK copies a book's place and the places inside it; the SPACE HULK GENERATOR writes a hulk and its rooms, #50) | a location |
