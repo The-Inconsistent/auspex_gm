@@ -583,6 +583,12 @@ The tests are in `lib/command/command.test.ts`.
 - **List:** each entry shows its name or title and an EDIT button. Kinds that have a `revealed` field (every kind
   except factions) also get a REVEALED / HIDDEN button. It flips `revealed` with a `codex.save` of the whole entry;
   players get the entry the moment it's revealed.
+- **LOCATIONS is a tree** (issue #50). `placeTree` nests each place under its `parentId`, and the rows indent with a
+  dotted rule (`.place-branch`). A place with places inside gets an "N INSIDE" button that folds them, counting
+  everything below it, and EXPAND ALL and COLLAPSE ALL appear once anything nests. A loop saved before the guard shows
+  as a root, so no place disappears. Every place select lists in tree order, indented (`placeOptions`, `lib/places`).
+  INSIDE leaves out the place and everything under it. A location's DELETE asks a second tap when places are inside
+  (rules-flow §11.96).
 - **`CodexEditor`** is generic, driven by `fieldsFor(kind, codex)`:
 
 | Kind | Fields |
@@ -660,7 +666,7 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 |---|---|---|---|
 | SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions, read-only (each name opens its rule); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour, each with its `UpgradeRow` at a table (fit and remove, `host` weapon or armour) and the notes a fitted upgrade leaves to the GM; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type) | Spending their own Wealth and Ammo (−1, `character.supply`; × on an empty type removes it). Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
 | FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
-| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations | Nothing |
+| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first), known persons, known locations (nested by `placeTree`, indented) | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:

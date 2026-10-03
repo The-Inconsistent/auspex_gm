@@ -698,6 +698,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     is likely to happen, and a place can host several scenes, so the list sits on the place (`location.hazardList`) and
     each scene picks from it (`beat.hazards`). SPOTTED is per scene: the Agents may spot a danger before one fight and
     not another. A fresh start clears it. *(User ruling, 2026-10-03, over the issue's one list per place.)*
+96. **Deleting a place makes the places inside it top-level** (GitHub issue #50). The books nest places (system,
+    world, site, room) but say nothing of an app deleting one. The places directly inside go to the top level, and
+    what's inside them stays where it is. Because that reshapes the tree, DELETE asks a second tap when anything is
+    inside ("DELETE · 2 INSIDE GO TOP-LEVEL"). *(User ruling, 2026-10-03.)*
+97. **Revealing a place doesn't reveal the places inside it** (GitHub issue #50). Players learn the Hive without the
+    Spire. A revealed place whose parent is hidden shows at the top level on the phones. *(User ruling, 2026-10-03.)*
 
 ---
 

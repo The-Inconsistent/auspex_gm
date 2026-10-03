@@ -2,7 +2,7 @@ import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, inArray, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, scenePresets, threats, wargear } from "@wg/data";
-import { CharacterStats } from "@wg/shared";
+import { CharacterStats, wouldCycle } from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -91,6 +91,10 @@ export async function importCampaign({
     ...c.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
   ]);
   checkHazards(c.locations.flatMap((l) => l.hazardList));
+  // Packs can't nest a place inside itself (parents come first), but a hand-edited file can (issue #50).
+  const parentOf = new Map(c.locations.map((l) => [l.id, l.parentId]));
+  if (c.locations.some((l) => wouldCycle({ id: l.id, parentId: l.parentId, parentOf })))
+    fail("That file nests a place inside itself");
   // A scene keeps only the picks its place lists, as codex.save does (§11.95).
   const listed = new Map(c.locations.map((l) => [l.id, new Set(l.hazardList.map((h) => h.id))]));
 

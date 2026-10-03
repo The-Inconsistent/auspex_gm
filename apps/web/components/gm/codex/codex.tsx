@@ -1,15 +1,18 @@
 "use client";
-import { useMemo, useState, type MouseEvent } from "react";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { Fragment, useMemo, useState, type MouseEvent } from "react";
 
-import type {
-  ActionInput,
-  Character,
-  Codex,
-  FactionPresets,
-  FlavourTable,
-  HazardTable,
-  NpcPreset,
-  Threat,
+import {
+  placeTree,
+  type ActionInput,
+  type Character,
+  type Codex,
+  type FactionPresets,
+  type FlavourTable,
+  type HazardTable,
+  type NpcPreset,
+  type PlaceNode,
+  type Threat,
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
@@ -24,6 +27,8 @@ import { NpcCard } from "./components/npc-card/npc-card";
 import { NpcPicker } from "./components/npc-picker/npc-picker";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
+
+type Place = Row & { parentId: string | null };
 
 type CodexViewProps = {
   codex: Codex;
@@ -85,6 +90,85 @@ export function CodexView({
     setError(result.ok ? null : result.error);
   };
 
+  // LOCATIONS is a tree (issue #50): a place's "N INSIDE" button folds the places inside it.
+  const [folded, setFolded] = useState<ReadonlySet<string>>(new Set());
+  const tree = useMemo(() => (kind === "location" ? placeTree(rows as Place[]) : []), [kind, rows]);
+  // N INSIDE: fold or unfold one place.
+  const toggleFold = (id: string) =>
+    setFolded((f) => (f.has(id) ? new Set([...f].filter((x) => x !== id)) : new Set([...f, id])));
+  // COLLAPSE ALL: fold every place that holds another.
+  const collapseAll = () => setFolded(new Set(codex.locations.flatMap((l) => (l.parentId ? [l.parentId] : []))));
+  const nests = codex.locations.some((l) => l.parentId);
+
+  // One entry: its head (title, chips, REVEALED / HIDDEN, EDIT) and, opened, what it records.
+  const entry = (r: Row, node?: PlaceNode<Place>) => {
+    const npc = kind === "npc" ? npcById.get(r.id) : undefined;
+    const open = !folded.has(r.id);
+    return (
+      <details key={r.id} className="item">
+        <summary className="item-head">
+          <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
+          {node && node.inside > 0 && (
+            <button
+              className="btn sm"
+              aria-expanded={open}
+              aria-label={`${open ? "Hide" : "Show"} the ${node.inside} places inside ${titleOf(r)}`}
+              onClick={only(() => toggleFold(r.id))}
+            >
+              {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {node.inside} INSIDE
+            </button>
+          )}
+          {npc && <AttitudeChip attitude={npc.attitude} />}
+          {"revealed" in r && (
+            <button
+              className="btn sm"
+              style={{ color: r.revealed ? "var(--ink)" : "var(--red)" }}
+              onClick={only(() => toggleRevealed(r))}
+            >
+              {r.revealed ? "REVEALED" : "HIDDEN"}
+            </button>
+          )}
+          <button className="btn sm" onClick={only(() => setEditing(r))}>
+            EDIT
+          </button>
+        </summary>
+        {kind === "faction" && factionById.get(r.id) && (
+          <FactionCard faction={factionById.get(r.id)!} npcs={codex.npcs} />
+        )}
+        {CODEX_KINDS[kind].read.map(([key, label]) =>
+          r[key] ? (
+            <div key={key} className={GM_ONLY_FIELDS.has(key) ? "field plate" : "field"}>
+              <span className="label">{label}</span>
+              <pre className="text">{String(r[key])}</pre>
+            </div>
+          ) : null,
+        )}
+        {npc && (
+          <NpcCard
+            npc={npc}
+            adventures={codex.adventures}
+            bestiary={bestiary}
+            tier={tier}
+            players={players}
+            send={send}
+            onError={setError}
+          />
+        )}
+      </details>
+    );
+  };
+
+  // The places inside a place, indented under it unless folded.
+  const branch = (nodes: PlaceNode<Place>[]) =>
+    nodes.map((n) => (
+      <Fragment key={n.row.id}>
+        {entry(n.row, n)}
+        {n.children.length > 0 && !folded.has(n.row.id) && (
+          <div className="list place-branch">{branch(n.children)}</div>
+        )}
+      </Fragment>
+    ));
+
   return (
     <div className="stack">
       <nav className="tabs sub" role="tablist" style={{ padding: "0 16px" }}>
@@ -117,6 +201,16 @@ export function CodexView({
                 + NEW {kind.toUpperCase()}
               </button>
             </div>
+            {kind === "location" && nests && (
+              <div className="keys" style={{ paddingTop: 0 }}>
+                <button className="btn sm" onClick={() => setFolded(new Set())}>
+                  EXPAND ALL
+                </button>
+                <button className="btn sm" onClick={collapseAll}>
+                  COLLAPSE ALL
+                </button>
+              </div>
+            )}
             {kind === "npc" && npcPresets.length > 0 && (
               <NpcPicker presets={npcPresets} codex={codex} send={send} onError={setError} />
             )}
@@ -130,51 +224,7 @@ export function CodexView({
             )}
             <div className="list">
               {rows.length === 0 && <div className="dim">Nothing recorded yet.</div>}
-              {rows.map((r) => {
-                const npc = kind === "npc" ? npcById.get(r.id) : undefined;
-                return (
-                  <details key={r.id} className="item">
-                    <summary className="item-head">
-                      <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
-                      {npc && <AttitudeChip attitude={npc.attitude} />}
-                      {"revealed" in r && (
-                        <button
-                          className="btn sm"
-                          style={{ color: r.revealed ? "var(--ink)" : "var(--red)" }}
-                          onClick={only(() => toggleRevealed(r))}
-                        >
-                          {r.revealed ? "REVEALED" : "HIDDEN"}
-                        </button>
-                      )}
-                      <button className="btn sm" onClick={only(() => setEditing(r))}>
-                        EDIT
-                      </button>
-                    </summary>
-                    {kind === "faction" && factionById.get(r.id) && (
-                      <FactionCard faction={factionById.get(r.id)!} npcs={codex.npcs} />
-                    )}
-                    {CODEX_KINDS[kind].read.map(([key, label]) =>
-                      r[key] ? (
-                        <div key={key} className={GM_ONLY_FIELDS.has(key) ? "field plate" : "field"}>
-                          <span className="label">{label}</span>
-                          <pre className="text">{String(r[key])}</pre>
-                        </div>
-                      ) : null,
-                    )}
-                    {npc && (
-                      <NpcCard
-                        npc={npc}
-                        adventures={codex.adventures}
-                        bestiary={bestiary}
-                        tier={tier}
-                        players={players}
-                        send={send}
-                        onError={setError}
-                      />
-                    )}
-                  </details>
-                );
-              })}
+              {kind === "location" ? branch(tree) : rows.map((r) => entry(r))}
             </div>
           </>
         )}

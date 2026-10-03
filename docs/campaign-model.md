@@ -18,7 +18,7 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
  │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[],
  │               hazards[] (picks from its location's list, each spotted or not), outcome
- ├─ Location     name, parentId (planet → site → chamber), description, gmNotes,
+ ├─ Location     name, parentId (planet → site → chamber; never a loop, `wouldCycle`), description, gmNotes,
  │               hazards (free-text notes), hazardList[] (book rows from Threat Assessment, the Core
  │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed
  ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
