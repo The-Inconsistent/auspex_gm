@@ -18,6 +18,7 @@ import {
 } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
+import { wargearLabels } from "@/lib/wargear-label/wargear-label";
 
 import { REQUISITION_KINDS } from "../../constants";
 
@@ -56,10 +57,7 @@ export function RequisitionForm({
   const [fitTo, setFitTo] = useState(""); // a weapon of the character's, for an upgrade (Core p.227)
 
   // A name printed in more than one book is listed with its cite ("Bolt Rifle (VoA p.67)").
-  const seen = new Map<string, number>();
-  for (const w of catalogue) seen.set(w.name.toLowerCase(), (seen.get(w.name.toLowerCase()) ?? 0) + 1);
-  const labelOf = (w: Wargear) => ((seen.get(w.name.toLowerCase()) ?? 0) > 1 ? `${w.name} (${sourceCite(w)})` : w.name);
-  const find = (v: string) => catalogue.find((w) => labelOf(w).toLowerCase() === v.trim().toLowerCase());
+  const { labelOf, find } = wargearLabels(catalogue);
   const picked = find(item);
 
   // ITEM: picking a catalogue entry fills in its kind, Value, Rarity and Keywords; the GM can still change them

@@ -12,6 +12,7 @@ import {
   type Threat,
 } from "@wg/shared";
 
+import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
@@ -277,6 +278,30 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                     {label}: {names}
                   </div>
                 ))}
+                {codex.items.some((it) => b.itemIds.includes(it.id)) && (
+                  <div className="field">
+                    <span className="label">ITEMS TO FIND</span>
+                    {codex.items
+                      .filter((it) => b.itemIds.includes(it.id))
+                      .map((it) => {
+                        const holder = holderOf(it, { codex, characters: state.characters });
+                        return (
+                          <div key={it.id} className="keys" style={{ padding: 0, alignItems: "center" }}>
+                            <b style={{ flex: 1 }}>{it.name.toUpperCase()}</b>
+                            <span className="dim">
+                              {holder.label} {holder.name}
+                            </span>
+                            <ItemGive
+                              item={it}
+                              characters={state.characters}
+                              send={send}
+                              onError={(e) => setMsg(e && `! ${e}`)}
+                            />
+                          </div>
+                        );
+                      })}
+                  </div>
+                )}
                 {b.tests.length > 0 && <SceneTests tests={b.tests} />}
                 {b.ruin.length + b.glory.length + b.spends.length > 0 && (
                   <ScenePools beat={b} pools={state.campaign} players={players} send={send} onReport={report} />

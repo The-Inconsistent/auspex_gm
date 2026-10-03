@@ -8,6 +8,8 @@ export const FIELD_TYPES = {
   picks: { empty: [] }, // toggle chips over `options`, stored as the chosen values
   statSource: { empty: { kind: "none" } }, // an NPC's stats: a bestiary threat, a Quick NPC Tier, or none (issue #47)
   hazardList: { empty: [] }, // a place's hazards: book rows by id, or the GM's own (issue #49)
+  wargearName: { empty: "" }, // an item's NAME, which searches the catalogue and sets `wargearId` (issue #51)
+  holder: { empty: null }, // an item's place (`locationId`) or NPC (`npcId`), one or the other
 } as const;
 export type FieldType = keyof typeof FIELD_TYPES;
 
