@@ -2,20 +2,23 @@ import type { FormEvent } from "react";
 
 import { startingXp } from "@wg/shared";
 
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { STEP_LABELS } from "@/components/ui/wizard-steps/constants";
+import type { FieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 
 import { CREATE_FORM, type Draft, type NewStep } from "../../constants";
 
 type NameStepProps = {
   draft: Draft;
   error: string | null;
+  fields: FieldErrors; // NAME is required (CreateGame)
   onName: (name: string) => void;
   onEdit: (step: NewStep) => void;
   onCreate: (e: FormEvent<HTMLFormElement>) => void;
 };
 
 // NAME, and everything the steps before asked, to check once before CREATE.
-export function NameStep({ draft, error, onName, onEdit, onCreate }: NameStepProps) {
+export function NameStep({ draft, error, fields, onName, onEdit, onCreate }: NameStepProps) {
   const rows: [label: string, value: string, edit: NewStep | null][] = [
     ["TIER", `${draft.tier} · ${startingXp(draft.tier)} XP`, "tier"],
     ["FRAMEWORK", draft.framework.trim(), "premise"],
@@ -37,8 +40,13 @@ export function NameStep({ draft, error, onName, onEdit, onCreate }: NameStepPro
           maxLength={100}
           placeholder="VOLKUS DIG SITE"
           value={draft.name}
-          onChange={(e) => onName(e.target.value)}
+          onChange={(e) => {
+            onName(e.target.value);
+            fields.clear("name");
+          }}
+          {...fields.marks("name")}
         />
+        <FieldError {...fields.reason("name")} />
       </div>
       <div className="rule">REVIEW</div>
       {rows.map(([label, value, edit]) => (

@@ -924,6 +924,8 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
       s.campaign.kind[0] === "combat heavy" && // trimmed
       s.campaign.limits[0] === "body horror",
   );
+  // A save names its entry (CodexSave): a blank NPC can't be listed or picked.
+  assert.equal((await gm.send({ type: "codex.save", kind: "npc", data: { name: " " } })).ok, false);
   // A table line is short, and there are at most 12 (rules-flow §11.79).
   assert.equal((await gm.send({ type: "campaign.update", limits: ["x".repeat(61)] })).ok, false);
   assert.equal((await gm.send({ type: "campaign.update", kind: Array(13).fill("x") })).ok, false);

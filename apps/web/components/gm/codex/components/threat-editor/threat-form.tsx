@@ -4,7 +4,9 @@ import { useState, type ChangeEvent } from "react";
 
 import { SKILLS, threatWeapon, type PoolPresetTable, type Skill, type Threat, type Wargear } from "@wg/shared";
 
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
+import type { FieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 
 import { ABILITY_TYPES, ATTR_FIELDS, CLASS_OPTIONS, FACTIONS, ruinAbility, SIZES, type ThreatDraft } from "./constants";
 import { threatHints } from "./hints";
@@ -13,6 +15,7 @@ type ThreatFormProps = {
   draft: ThreatDraft;
   wargear: Wargear[];
   ruinActions: PoolPresetTable | null; // Threat Assessment p.7, offered as RUIN abilities
+  fields: FieldErrors; // SAVE's marks: NAME and KEYWORDS are required (CustomThreatData), inputs t-<key>
   onChange: (d: ThreatDraft) => void;
 };
 
@@ -74,7 +77,9 @@ function NumField({
 }
 
 // A list of short strings (keywords), edited as one comma-separated line: a row per keyword would fill the tablet.
-function Words({ label, value, onChange }: { label: string; value: string[]; onChange: (v: string[]) => void }) {
+type WordsProps = { id: string; label: string; value: string[]; marks: object; onChange: (v: string[]) => void };
+
+function Words({ id, label, value, marks, onChange }: WordsProps) {
   const [text, setText] = useState<string | null>(null); // the line as typed; null shows `value`
 
   // Typing: keep the raw line, so a comma or a space between words survives, and commit the parsed list as it goes.
@@ -92,8 +97,10 @@ function Words({ label, value, onChange }: { label: string; value: string[]; onC
     <label className="field">
       <span className="label">{label}</span>
       <input
+        id={id}
         className="input"
         aria-label={label}
+        {...marks}
         value={text ?? value.join(", ")}
         onChange={handleChange}
         onBlur={() => setText(null)}
@@ -104,9 +111,13 @@ function Words({ label, value, onChange }: { label: string; value: string[]; onC
 
 // The stat block the GM is writing (Threat Assessment p.5's order: name and Tier row, keywords, Attributes, the derived
 // line, Skills, Bonuses, Abilities, then Mob content). Every field is the GM's; the hints never block a save (§11.109).
-export function ThreatForm({ draft: d, wargear, ruinActions, onChange }: ThreatFormProps) {
+export function ThreatForm({ draft: d, wargear, ruinActions, fields, onChange }: ThreatFormProps) {
   const [weaponQuery, setWeaponQuery] = useState("");
-  const set = (patch: Partial<ThreatDraft>) => onChange({ ...d, ...patch });
+  // An edit clears the mark on the field it changed.
+  const set = (patch: Partial<ThreatDraft>) => {
+    onChange({ ...d, ...patch });
+    Object.keys(patch).forEach((k) => fields.clear(k));
+  };
   const hints = threatHints(d);
   const weapons = wargear.filter((w) => w.weapon);
   const found = weaponQuery.trim()
@@ -129,12 +140,15 @@ export function ThreatForm({ draft: d, wargear, ruinActions, onChange }: ThreatF
         <label className="field" style={{ flex: 1, minWidth: 200 }}>
           <span className="label">NAME</span>
           <input
+            id="t-name"
             className="input"
             aria-label="Name"
             maxLength={100}
             value={d.name}
             onChange={(e) => set({ name: e.target.value })}
+            {...fields.marks("name")}
           />
+          <FieldError {...fields.reason("name")} />
         </label>
         <label className="field">
           <span className="label">FACTION</span>
@@ -208,7 +222,14 @@ export function ThreatForm({ draft: d, wargear, ruinActions, onChange }: ThreatF
         </div>
       </div>
 
-      <Words label="KEYWORDS" value={d.keywords} onChange={(keywords) => set({ keywords })} />
+      <Words
+        id="t-keywords"
+        label="KEYWORDS"
+        value={d.keywords}
+        marks={fields.marks("keywords")}
+        onChange={(keywords) => set({ keywords })}
+      />
+      <FieldError {...fields.reason("keywords")} />
 
       <div className="field">
         <span className="label">ATTRIBUTES</span>

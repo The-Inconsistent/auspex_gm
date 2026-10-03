@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { CodexInput, CodexSave, MAX_HAZARDS } from "./codex.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
 import { CustomThreatData, MAX_SLUG } from "./threat.ts";
@@ -33,8 +33,12 @@ const conditions = z.array(z.string().max(60)).max(30);
 export const MAX_DRAFT_CHARS = 64_000;
 
 const codexSave = (Object.keys(CodexInput) as (keyof typeof CodexInput)[]).map((kind) =>
-  z.object({ type: z.literal("codex.save"), kind: z.literal(kind), id: id.optional(), data: CodexInput[kind] }),
+  z.object({ type: z.literal("codex.save"), kind: z.literal(kind), id: id.optional(), data: CodexSave[kind] }),
 );
+
+// Fields a form checks before it sends (useFieldErrors in the web app), so the field shows why rather than the server.
+export const CharacterName = z.string().trim().min(1).max(100);
+export const RequisitionItem = z.string().trim().min(1).max(100); // for ammo and grenades, the ammo type ("Bolt")
 
 // Every mutation goes through one socket event: "action". Counters use deltas, so two taps never overwrite each other.
 // The two ways a group Ascends (Core pp.147–148): the XP every character has earned, or the GM's Milestone.
@@ -70,7 +74,7 @@ export const Action = z.union([
 
     z.object({
       type: z.literal("character.create"),
-      name: z.string().min(1).max(100),
+      name: CharacterName,
       stats: CharacterStats.optional(),
       detail: CharacterDetail.optional(),
       objectives: Objectives.optional(),
@@ -112,7 +116,7 @@ export const Action = z.union([
       type: z.literal("character.requisition"),
       id,
       kind: RequisitionKind,
-      item: z.string().trim().min(1).max(100), // for ammo and grenades, the ammo type ("Bolt", "Frag Grenade")
+      item: RequisitionItem,
       value: z.number().int().min(0).max(20),
       rarity: Rarity,
       keywords: z.array(z.string().trim().min(1).max(60)).max(12), // the item's

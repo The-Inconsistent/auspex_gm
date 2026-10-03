@@ -1,26 +1,33 @@
 "use client";
 import { useState, type FormEvent } from "react";
 
-import type { ActionResult } from "@wg/shared";
+import { CodexSave } from "@wg/shared";
+
+import { FieldError } from "@/components/ui/field-error/field-error";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
+import type { Send } from "@/hooks/use-table/use-table";
 
 type AddByNameProps = {
   id: string;
-  max: number;
-  onAdd: (name: string) => Promise<ActionResult>;
+  kind: "location" | "faction";
+  send: Send;
   onError: (error: string | null) => void;
 };
 
 // OR TYPE ONE: a place or a faction by its name only; CODEX fills in the rest later.
-export function AddByName({ id, max, onAdd, onError }: AddByNameProps) {
+export function AddByName({ id, kind, send, onError }: AddByNameProps) {
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const fields = useFieldErrors(id);
 
-  // ADD: one codex.save; the field clears once it lands.
+  // ADD: one codex.save; an empty name is marked instead (CodexSave), and the field clears once the save lands.
   const handleAdd = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name.trim() || busy) return;
+    if (busy) return;
+    const named = fields.check(CodexSave[kind].shape.name, name);
+    if (named === null) return;
     setBusy(true);
-    const r = await onAdd(name.trim());
+    const r = await send({ type: "codex.save", kind, data: { name: named } });
     setBusy(false);
     onError(r.ok ? null : r.error);
     if (r.ok) setName("");
@@ -36,14 +43,18 @@ export function AddByName({ id, max, onAdd, onError }: AddByNameProps) {
           id={id}
           className="input"
           style={{ maxWidth: 360 }}
-          maxLength={max}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            fields.clear();
+          }}
+          {...fields.marks()}
         />
-        <button className="btn" aria-busy={busy} disabled={!name.trim()}>
+        <button className="btn" aria-busy={busy}>
           ADD
         </button>
       </div>
+      <FieldError {...fields.reason()} />
     </form>
   );
 }

@@ -282,6 +282,19 @@ export const CodexInput = {
 export type CodexKind = keyof typeof CodexInput;
 export const CODEX_KINDS = Object.keys(CodexInput) as CodexKind[];
 
+// What `codex.save` takes: the same rows, but each must be named, since a nameless entry can't be listed or picked. The
+// editors check it before SAVE and mark the field. CodexInput stays lenient for exports and packs from before.
+const named = (max: number) => z.string().trim().min(1).max(max);
+export const CodexSave = {
+  faction: CodexInput.faction.extend({ name: named(100) }),
+  adventure: CodexInput.adventure.extend({ title: named(200) }),
+  beat: CodexInput.beat.extend({ title: named(200) }),
+  location: CodexInput.location.extend({ name: named(200) }),
+  npc: CodexInput.npc.extend({ name: named(200) }),
+  handout: CodexInput.handout.extend({ title: named(200) }),
+  item: CodexInput.item.extend({ name: named(200) }),
+} as const satisfies Record<CodexKind, z.ZodType>;
+
 type Row<K extends CodexKind> = z.infer<(typeof CodexInput)[K]> & { id: string };
 export type Codex = {
   factions: Row<"faction">[];

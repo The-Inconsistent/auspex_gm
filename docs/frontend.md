@@ -780,7 +780,8 @@ with `bun test lib`.
 | Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
 | Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
 | Inline editor error | `BeatEditor`, `CodexEditor` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
-| Inline form error | `NewCampaign` (CREATE), `LobbyView` (IMPORT GAME), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
+| Refused field | Every CREATE, ADD and SAVE with a required field: NEW CAMPAIGN's NAME, `TableTalk`, `AddByName`, PREP's adventure, ADD AGENT, the codex and scene editors, the threat editor, YOUR OWN HAZARD, requisition | `useFieldErrors` parses with the server's own zod schema (`CreateGame`, `CodexSave`, `CharacterName`, `CustomThreatData`…) before sending: each refused input gets `aria-invalid` (a red border on a red tint, `globals.css`), `FieldError` says why under it (`! Required.`, `! At most 100 characters.`, `sayIssue`), and the first takes the focus. A refusal on a field with no input of its own (an ability in a list) goes to the form's error line as `KEY: reason` | When that field is edited |
+| Inline form error | `NewCampaign` (CREATE), `LobbyView` (IMPORT GAME, which also marks the file input), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
 
 The error text is either the server's `ActionError` message or one of the two client strings from `send`
 (`No signal`, and `No reply from server. Check before retrying`).

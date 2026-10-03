@@ -185,14 +185,24 @@ export function LobbyView({ lobby }: LobbyViewProps) {
             <label className="label" htmlFor="import-file">
               EXPORTED FILE
             </label>
-            <input id="import-file" name="file" className="input" type="file" accept=".json,application/json" />
+            {/* Marked like a refused field (useFieldErrors), since every IMPORT refusal is about the file. */}
+            <input
+              id="import-file"
+              name="file"
+              className="input"
+              type="file"
+              accept=".json,application/json"
+              aria-invalid={!!importError}
+              aria-describedby={importError ? "import-file-error" : undefined}
+              onChange={() => setImportError(null)}
+            />
           </div>
           <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
             <input type="checkbox" checked={fresh} onChange={(e) => setFresh(e.target.checked)} /> FRESH START: reset
             sessions, reveals and wounds for a new group
           </label>
           {importError && (
-            <div className="red" role="alert">
+            <div id="import-file-error" className="red" role="alert">
               ! {importError}
             </div>
           )}

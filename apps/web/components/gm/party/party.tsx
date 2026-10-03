@@ -5,6 +5,7 @@ import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 import {
   activeCharacterIds,
   AMMO_TYPES,
+  CharacterName,
   CONDITIONS,
   CharacterStats,
   deriveStats,
@@ -19,8 +20,10 @@ import {
 } from "@wg/shared";
 
 import { NEW_CHARACTER } from "@/components/builder/constants";
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
 import { qrImage } from "@/lib/qr/qr";
@@ -47,6 +50,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const [reqFor, setReqFor] = useState<string | null>(null);
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
+  const agentFields = useFieldErrors("new-agent"); // ADD AGENT's name
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
   const open = codex.sessions.find((s) => !s.endedAt);
@@ -185,8 +189,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   // ADD AGENT: creates a character with the typed name.
   const handleAddCharacter = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name.trim()) return;
-    report(await send({ type: "character.create", name: name.trim() }), `${name.toUpperCase()} ADDED`);
+    const named = agentFields.check(CharacterName, name);
+    if (named === null) return;
+    report(await send({ type: "character.create", name: named }), `${named.toUpperCase()} ADDED`);
     setName("");
   };
 
@@ -438,17 +443,23 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       </datalist>
       <form style={{ display: "flex", gap: 8 }} onSubmit={handleAddCharacter}>
         <input
+          id="new-agent"
           className="input"
           aria-label="New character name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            agentFields.clear();
+          }}
           placeholder="NEW AGENT NAME"
+          {...agentFields.marks()}
         />
         <button className="btn">ADD AGENT</button>
         <a className="btn" href={`/c/${state.campaign.id}/build/${NEW_CHARACTER}`}>
           NEW FROM BUILDER
         </a>
       </form>
+      <FieldError {...agentFields.reason()} />
 
       {qr && <QrDialog qr={qr} onClose={() => setQr(null)} />}
     </div>
