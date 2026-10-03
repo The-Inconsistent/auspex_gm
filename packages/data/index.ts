@@ -6,8 +6,10 @@ import {
   EventTable,
   FactionPreset,
   type HazardRow,
+  type LootRow,
   HazardTable,
   HULK_HAZARDS,
+  LootTable,
   NpcPreset,
   Pack,
   Place,
@@ -67,6 +69,14 @@ export const hulkHazardIds: ReadonlySet<string> = new Set(
     .find((t) => t.id === HULK_HAZARDS)
     ?.rows.map((r) => r.id),
 );
+// loot/<source>.json: the books' loot tables and lists of named finds (issue #51).
+const lootDir = new URL("./loot/", presetsDir);
+export const lootFiles = () => jsonFiles(lootDir);
+const lootTables = () => lootFiles().flatMap((f) => LootTable.array().parse(json(new URL(f, lootDir))));
+// Every loot row by id with its table, for codex.addLoot (issue #51).
+export const loot: ReadonlyMap<string, { table: LootTable; row: LootRow }> = new Map(
+  lootTables().flatMap((table) => table.rows.map((row) => [row.id, { table, row }] as const)),
+);
 export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
@@ -74,6 +84,7 @@ export const scenePresets = (): ScenePresets => ({
   pools: poolPresetFiles().flatMap((f) => PoolPresetTable.array().parse(json(new URL(f, poolsDir)))),
   hazards: hazardTables(),
   spaceHulk,
+  loot: lootTables(),
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

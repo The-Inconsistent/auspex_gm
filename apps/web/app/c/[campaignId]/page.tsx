@@ -45,9 +45,11 @@ async function loadScenePresets(campaignId: string): Promise<ScenePresets> {
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/scene-presets`);
     const parsed = ScenePresets.safeParse(res.ok ? await res.json() : null);
-    return parsed.success ? parsed.data : { skillDns: [], tables: [], pools: [], hazards: [], spaceHulk: null };
+    return parsed.success
+      ? parsed.data
+      : { skillDns: [], tables: [], pools: [], hazards: [], spaceHulk: null, loot: [] };
   } catch {
-    return { skillDns: [], tables: [], pools: [], hazards: [], spaceHulk: null };
+    return { skillDns: [], tables: [], pools: [], hazards: [], spaceHulk: null, loot: [] };
   }
 }
 

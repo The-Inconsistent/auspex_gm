@@ -2160,6 +2160,53 @@ test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (i
   await eventually(() => itemOf(relic).givenTo === null && itemOf(slate).givenTo === null, "Vex's items are loose");
 });
 
+test("FROM LOOT TABLE: a book row makes loose items with its text in GM NOTES (issue #51)", async (t) => {
+  const gm = await newCampaign("Loot", 3);
+  t.after(() => gm.socket.close());
+  const presets = (await (
+    await get(`/campaigns/${gm.campaignId}/scene-presets`, bearer(gm.gmClerk))
+  ).json()) as ScenePresets;
+  const trinkets = presets.loot.find((x) => x.id === "core-trinkets-1")!;
+  const row = trinkets.rows[0]!;
+  const refused = async (a: object, error: string) =>
+    assert.deepEqual(await gm.send({ type: "codex.addLoot", rowId: row.id, ...a } as ActionInput), {
+      ok: false,
+      error,
+    });
+  await refused({ rowId: "nope" }, 'Unknown loot row "nope"');
+  await refused(
+    { faultId: "rr1-loot-faults-1" },
+    '"rr1-loot-faults-1" isn\'t on the fault table for Trinket Table One',
+  );
+  await refused({ picks: ["laspistol"] }, `Pick 0 catalogue items for ${row.name}`);
+  const made = await gm.send({ type: "codex.addLoot", rowId: row.id, roll: row.from });
+  assert.ok(made.ok && made.id);
+  await eventually(() => gm.codex()?.items.length === 1, "the item");
+  const [it] = gm.codex()!.items;
+  assert.deepEqual(
+    [it!.id, it!.name, it!.wargearId, it!.locationId, it!.givenTo],
+    [made.id, row.name, null, null, null],
+  );
+  assert.ok(
+    it!.gmNotes.startsWith(`Core p.${row.page} · ${trinkets.name}, roll ${row.from}: ${row.name}`),
+    it!.gmNotes,
+  );
+  assert.ok(it!.gmNotes.includes(row.text), "the printed result");
+
+  const kael = await gm.send({ type: "character.create", name: "Kael" });
+  assert.ok(kael.ok && kael.id);
+  const token = await gm.send({ type: "token.issue", characterId: kael.id });
+  assert.ok(token.ok && token.token);
+  const phone = connect({ auth: { token: token.token } });
+  t.after(() => phone.socket.close());
+  await eventually(() => !!phone.codex(), "the player's codex");
+  assert.deepEqual(await phone.send({ type: "codex.addLoot", rowId: row.id }), { ok: false, error: "GM only" });
+  assert.equal(
+    (await get(`/campaigns/${gm.campaignId}/scene-presets`, { cookie: `wg_token=${token.token}` })).status,
+    403,
+  );
+});
+
 test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {
   const gm = await newCampaign("Export", 3);
   t.after(() => gm.socket.close());

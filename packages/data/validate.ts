@@ -33,12 +33,15 @@ import {
   hulkNotes,
   MAX_HULK_ORIGINS,
   SpaceHulkGenerator,
+  LootTable,
+  wargearMatches,
 } from "@wg/shared";
 import {
   eventTableFiles,
   factionPresetFiles,
   hazardFiles,
   loadPackRaw,
+  lootFiles,
   npcPresetFiles,
   packNames,
   placeFiles,
@@ -149,6 +152,7 @@ function followerError(follower: boolean, threatId?: string, variant?: string) {
 // Wargear catalogue: schema per file, ids unique across files.
 const wargearDir = new URL("./wargear/", import.meta.url);
 const wargearIds = new Set<string>();
+const wargearEntries: Wargear[] = []; // what a loot table's `pick` is matched against (issue #51)
 const wargearRequires: { where: string; requires: unknown }[] = []; // resolved once the creation ids are known
 const wargearUpgrades: { where: string; upgrade: unknown }[] = []; // its trait ids resolve against the rules reference
 for (const file of readdirSync(wargearDir)
@@ -166,6 +170,7 @@ for (const file of readdirSync(wargearDir)
       console.error(`✖ wargear/${file}: duplicate id "${w.id}"`);
     }
     wargearIds.add(w.id);
+    wargearEntries.push(w);
     if (w.requires) wargearRequires.push({ where: `wargear/${file} "${w.id}"`, requires: w.requires });
     // Every upgrade carries its slot, what it fits and its structured effect (rules-flow.md §11.64), and nothing else
     // does: an `upgrade` block on another kind would never be read.
@@ -416,6 +421,73 @@ const hazardTableIds = new Set<string>();
   }
   const pending = Object.keys(EXPECTED_HAZARDS).filter((id) => !hazardTableIds.has(id));
   if (pending.length) console.log(`scene-presets/hazards: not transcribed yet: ${pending.join(", ")}`);
+}
+
+// Loot tables (scene-presets/loot/<source>.json, issue #51): the rows each table prints, ids unique across files, every
+// catalogue item exists, every `pick` matches something, and a table's `faults` names a fault table in its own file.
+const EXPECTED_LOOT: Record<string, number> = {
+  "core-trinkets-1": 36, // Core pp.248–249
+  "core-trinkets-2": 36,
+  "core-trinkets-3": 36,
+  "rr1-loot-imperium": 8, // RR1 pp.17–22
+  "rr1-loot-chaos": 5,
+  "rr1-loot-aeldari": 5,
+  "rr1-loot-ork": 4,
+  "rr1-loot-weird": 4,
+  "rr1-loot-faults": 4,
+  "darktide-bounties-warrens": 9, // Darktide pp.15–27
+  "darktide-bounties-hab-settlements": 9,
+  "darktide-bounties-industrial-works": 9,
+  "darktide-bounties-gang-turf": 9,
+  "darktide-bounties-militarum-depot": 9,
+  "darktide-bounties-quarantine-zone": 9,
+  "darktide-bounties-profaned-ground": 9,
+  "rr2-holy-relics": 6, // RR2 pp.20–31
+  "bg-mission-equipment": 7, // Bloody Gates pp.6, 13, 21, 24
+};
+{
+  const ids = new Set<string>();
+  const tableIds = new Set<string>();
+  for (const file of lootFiles()) {
+    const r = LootTable.array().safeParse(
+      JSON.parse(readFileSync(new URL(`./scene-presets/loot/${file}`, import.meta.url), "utf8")),
+    );
+    const problem = (message: string) => {
+      failed = true;
+      console.error(`✖ scene-presets/loot/${file}: ${message}`);
+    };
+    if (!r.success) {
+      problem(z.prettifyError(r.error));
+      continue;
+    }
+    for (const t of r.data) {
+      tableIds.add(t.id);
+      for (const id of [t.id, ...t.rows.map((x) => x.id)]) {
+        if (ids.has(id)) problem(`duplicate id "${id}"`);
+        ids.add(id);
+      }
+      if (EXPECTED_LOOT[t.id] !== t.rows.length)
+        problem(`${t.id} has ${t.rows.length} rows, expected ${EXPECTED_LOOT[t.id]}`);
+      if (t.faults && !r.data.some((x) => x.id === t.faults && x.fault))
+        problem(`${t.id}: "${t.faults}" isn't a fault table`);
+      const items = t.rows.flatMap((x) => x.items.map((it) => ({ row: x.id, it })));
+      for (const { row, it } of items) {
+        if (it.wargearId && !wargearIds.has(it.wargearId)) problem(`${row}: unknown wargear "${it.wargearId}"`);
+        if (it.pick && !wargearEntries.some((w) => wargearMatches(w, it.pick!, { tier: 4, newTier: 4 })))
+          problem(`${row}: its pick matches nothing in the catalogue`);
+      }
+      console.log(
+        `scene-presets/loot/${file} ${t.id}: ${t.rows.length}/${EXPECTED_LOOT[t.id]} rows, ${items.length} items ` +
+          `(${items.filter((x) => x.it.pick).length} picks), ${t.rows.filter((x) => x.ammo.length || x.wealth).length} with Ammo or Wealth, ` +
+          `${t.rows.filter((x) => x.gm).length} gm notes` +
+          (t.gaps.length || t.overlaps.length
+            ? `, as printed: gaps ${t.gaps.join(",") || "none"}, overlaps ${t.overlaps.join(",") || "none"}`
+            : ""),
+      );
+    }
+  }
+  const pending = Object.keys(EXPECTED_LOOT).filter((id) => !tableIds.has(id));
+  if (pending.length) console.log(`scene-presets/loot: not transcribed yet: ${pending.join(", ")}`);
 }
 
 // The Space Hulk Generator (scene-presets/space-hulk.json, issue #50 step 8): each table holds the rows RR1 pp.7–10

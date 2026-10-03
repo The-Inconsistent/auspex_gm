@@ -274,6 +274,16 @@ export const Action = z.union([
         .nullable(),
       rooms: z.array(rowId).max(MAX_PLACES_PER_ADD - 1),
     }),
+    // FROM LOOT TABLE (issue #51): codex items made from one book row. The client sends ids and the GM's choices (one
+    // catalogue entry per `pick` item, in order; the roll that landed, for the note; a fault) and the server reads the
+    // text from its own data.
+    z.object({
+      type: z.literal("codex.addLoot"),
+      rowId,
+      picks: z.array(rowId).max(10).default([]),
+      roll: z.number().int().min(1).max(66).optional(),
+      faultId: rowId.optional(),
+    }),
     z.object({ type: z.literal("beat.startEncounter"), id }),
   ]),
   ...codexSave,
