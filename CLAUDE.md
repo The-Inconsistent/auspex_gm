@@ -170,7 +170,8 @@ apps/web/components/builder/ builder (draft, live resolveBuild, one screen per c
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
-                             field-error (a refused field's reason)
+                             field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
+                             CODEX › THREATS or a scene)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),

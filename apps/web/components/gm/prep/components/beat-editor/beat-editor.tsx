@@ -4,6 +4,7 @@ import { useState, type ChangeEvent } from "react";
 import {
   BeatType,
   CodexSave,
+  CUSTOM_THREAT_CAP,
   Marker,
   type BeatExit,
   type BeatStatus,
@@ -13,11 +14,15 @@ import {
   type PoolPresetTable,
   type SkillDn,
   type Threat,
+  type Wargear,
 } from "@wg/shared";
 
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { RUIN_ACTIONS_TABLE, type ThreatDraft } from "@/components/ui/threat-builder/constants";
+import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { ThreatScale } from "@/components/ui/threat-scale/threat-scale";
+import { ThreatStarts } from "@/components/ui/threat-starts/threat-starts";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -43,6 +48,7 @@ type BeatEditorProps = {
   skillDns: SkillDn[];
   poolTables: PoolPresetTable[];
   hazardTables: HazardTable[]; // to name the place's book hazards (issue #49)
+  wargear: Wargear[]; // + NEW CUSTOM THREAT's weapons, as CODEX › THREATS has them
   onDone: () => void;
 };
 
@@ -63,6 +69,7 @@ export function BeatEditor({
   skillDns,
   poolTables,
   hazardTables,
+  wargear,
   onDone,
 }: BeatEditorProps) {
   const [b, setB] = useState<Draft>(() =>
@@ -92,6 +99,11 @@ export function BeatEditor({
   );
   const [error, setError] = useState<string | null>(null);
   const fieldErrors = useFieldErrors("b-"); // each text field's input is b-<key>
+  // + NEW CUSTOM THREAT: closed, choosing how to start (clone, blank, quick), or writing that draft.
+  const [building, setBuilding] = useState<"start" | ThreatDraft | null>(null);
+  // Counted from the merged bestiary: nothing outside CODEX › THREATS reads codex.customThreats (issue #43).
+  const customsFull = bestiary.filter((t) => t.source === "custom").length >= CUSTOM_THREAT_CAP;
+  const drafting = building !== null && building !== "start"; // a stat block is being written
 
   const setEntry = (i: number, patch: Partial<EncounterEntry>) =>
     setB({ ...b, encounter: b.encounter.map((e, j) => (j === i ? { ...e, ...patch } : e)) });
@@ -135,8 +147,22 @@ export function BeatEditor({
   };
 
   // + THREAT: the picker names the threat, so the new entry is one model of it.
-  const addEntry = (t: Threat) =>
-    setB({ ...b, encounter: [...b.encounter, { threatId: t.id, count: 1, asMob: false, profiles: [], scale: false }] });
+  // Functional, because + NEW CUSTOM THREAT adds after the save's round trip, and the scene may have changed meanwhile.
+  const addEntry = (threatId: string) =>
+    setB((p) => ({
+      ...p,
+      encounter: [...p.encounter, { threatId, count: 1, asMob: false, profiles: [], scale: false }],
+    }));
+
+  // + NEW CUSTOM THREAT: opens or closes START FROM. A stat block being written closes only by its own CANCEL, so a stray
+  // tap can't drop it; START FROM always closes, even once the cap is reached from another tablet.
+  const handleToggleBuilder = () => setBuilding(building === "start" ? null : "start");
+
+  // + NEW CUSTOM THREAT › CREATE: the new stat block joins this scene's encounter; it's in CODEX › THREATS too.
+  const handleThreatBuilt = (threatId: string) => {
+    addEntry(threatId);
+    setBuilding(null);
+  };
 
   // ×: removes encounter entry i.
   const removeEntry = (i: number) => setB({ ...b, encounter: b.encounter.filter((_, j) => j !== i) });
@@ -366,17 +392,54 @@ export function BeatEditor({
           </div>
         ))}
         <div className="keys" style={{ alignItems: "center" }}>
-          <ThreatPicker bestiary={bestiary} tier={tier} onPick={addEntry} label="+ THREAT" className="btn sm" />
+          <ThreatPicker
+            bestiary={bestiary}
+            tier={tier}
+            onPick={(t) => addEntry(t.id)}
+            label="+ THREAT"
+            className="btn sm"
+          />
+          {/* Writing one here keeps the scene open; leaving for CODEX › THREATS would drop its unsaved changes. */}
+          <button
+            className={`btn sm ${building ? "primary" : ""}`}
+            aria-expanded={building !== null}
+            disabled={drafting || (building === null && customsFull)}
+            onClick={handleToggleBuilder}
+          >
+            + NEW CUSTOM THREAT
+          </button>
           {/* The picker disables itself with nothing to show; say why, because a failed load looks like an empty book. */}
           {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
+          {customsFull && <span className="dim">Custom threats are full ({CUSTOM_THREAT_CAP}).</span>}
         </div>
+        {building === "start" && (
+          <div className="keys" style={{ alignItems: "center" }}>
+            <span className="label">START FROM</span>
+            <ThreatStarts bestiary={bestiary} tier={tier} disabled={customsFull} onStart={setBuilding} />
+          </div>
+        )}
+        {drafting && (
+          <i className="dim">CREATE saves it to CODEX › THREATS straight away, whatever happens to this scene.</i>
+        )}
+        {building && building !== "start" && (
+          <ThreatBuilder
+            start={{ slug: null, draft: building }}
+            wargear={wargear}
+            ruinActions={poolTables.find((t) => t.id === RUIN_ACTIONS_TABLE) ?? null}
+            send={send}
+            onSaved={handleThreatBuilt}
+            onCancel={() => setBuilding(null)}
+          />
+        )}
       </div>
       {textField({ key: "outcome" })}
       {(error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))) && (
         <div className="red">! {error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))}</div>
       )}
+      {drafting && <div className="dim">Finish or cancel the custom threat to save the scene.</div>}
       <div className="keys">
-        <button className="btn primary" onClick={save}>
+        {/* Not while a custom threat is open: its CREATE adds to this encounter, so the scene waits for it or CANCEL. */}
+        <button className="btn primary" disabled={drafting} onClick={save}>
           SAVE SCENE
         </button>
         <button className="btn" onClick={onDone}>

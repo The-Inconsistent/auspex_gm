@@ -8,8 +8,16 @@ import { FieldError } from "@/components/ui/field-error/field-error";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { FieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 
-import { ABILITY_TYPES, ATTR_FIELDS, CLASS_OPTIONS, FACTIONS, ruinAbility, SIZES, type ThreatDraft } from "./constants";
-import { threatHints } from "./hints";
+import {
+  ABILITY_TYPES,
+  ATTR_FIELDS,
+  CLASS_OPTIONS,
+  FACTIONS,
+  ruinAbility,
+  SIZES,
+  type ThreatDraft,
+} from "../../constants";
+import { threatHints } from "../../hints";
 
 type ThreatFormProps = {
   draft: ThreatDraft;
