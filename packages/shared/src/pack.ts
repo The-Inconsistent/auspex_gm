@@ -2,6 +2,7 @@ import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { BeatExit, CodexInput, MAX_EXITS } from "./codex.ts";
 import { CharacterDetail, CharacterStats, Objectives, Tier } from "./state.ts";
+import { CUSTOM_THREAT_CAP, CustomThreatData } from "./threat.ts";
 
 // A content pack: a whole campaign start (framework, codex, adventure, characters) as data, loaded by
 // `apps/api/scripts/seed.ts` through the normal action pipeline. Entries reference each other by `key`.
@@ -19,6 +20,9 @@ export const Pack = z
       patron: z.string().max(200).default(""),
       homebrew: z.boolean().default(false), // the builds may use the homebrew books (issue #9 decision 1)
     }),
+    // Stat blocks the pack brings with it (issue #43), as `threat.save` takes them: the seeder sends these first, and
+    // a beat or an NPC then names one as `custom-<slug>`, where the slug comes from the name.
+    threats: z.array(CustomThreatData).max(CUSTOM_THREAT_CAP).default([]),
     factions: z.array(CodexInput.faction.extend({ key })).default([]),
     locations: z
       .array(CodexInput.location.omit({ parentId: true }).extend({ key, parent: key.optional() }))
