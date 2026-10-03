@@ -764,6 +764,32 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      the GM's own work lives. A custom threat is campaign content, like an NPC or a scene: it rides that campaign's codex,
      its export and its import, and there is no shared library across tables. A GM who wants one in a second game exports
      and imports, or writes it again. *(User ruling, 2026-10-03.)*
+112. **Giving a found item uses the Agent's Wargear Test for the session** (Core pp.205–206; GitHub issue #51). The
+     books put Wargear in an Agent's hands by requisition; a found item is the GM's other way in. GIVE takes no
+     Influence Test and needs no Keyword in common, but it counts as that Agent's Wargear Test: it needs an open
+     session, and it is refused once the Agent has made this session's Wargear Test, by requisition or an earlier GIVE.
+     *(User ruling, 2026-10-03, over the issue's "skip all three".)*
+113. **One item is one piece** (GitHub issue #51). "4 Respirators" is four items, each a gear line once given. A loot
+     row with a count makes that many items, up to 20 at once. Ammo and grenades are counted by type on the sheet, so
+     GIVE refuses them: the GM awards them with PARTY's supply or a requisition. *(User ruling, 2026-10-03.)*
+114. **TAKE BACK undoes a GIVE** (GitHub issue #51). The given weapon comes off the sheet and any upgrades fitted to it
+     return as gear lines, as REMOVE does. A given upgrade that has since been fitted comes off its weapon. A
+     gear line the GM already deleted just ends the record. The item is loose again (no place, no NPC) and can be
+     given again; the session's Wargear Test is not refunded. *(User ruling, 2026-10-03, over the issue's "not built".)*
+115. **Trinkets & Charms are keepsakes and loot** (Core p.247; Darktide p.15). The Core Rulebook rolls them for a past
+     life; Darktide hands them out as finds. FROM LOOT TABLE lists the three Trinket tables beside the books' loot
+     tables. *(User ruling, 2026-10-03.)*
+116. **A relic's Powers apply where a weapon profile can hold them** (RR2 pp.12–19; GitHub issue #51). A rolled Power
+     is recorded as the same changes an upgrade makes (a Trait, +Damage, +ED, AP, Salvo, range, bonus dice), with the
+     rest as a note for the GM (`gm`, as §11.68). Given as a weapon, the relic carries them on the sheet beside the
+     printed profile, and the shown profile is derived, so nothing applies twice. On a relic that is not a weapon, the
+     Powers stay in GM NOTES. *(User ruling, 2026-10-03, over the issue's "notes only".)*
+117. **The Holy Relic creator follows its grid** (RR2 pp.12–13; GitHub issue #51). The worked example on p.12 reads
+     a 3 then a 1 as a Force Weapon; the Form grid on p.13 prints the Force Weapon at row 6, column 1. The data copies
+     the grid as printed, and the example is noted, not followed. *Proposed; awaiting the GM.*
+118. **GIVE refuses a weapon the Agent already carries** (GitHub issue #51). Requisition joins a catalogue weapon once
+     by name and skips a second copy silently. A silent GIVE would leave the item recorded as given with
+     nothing on the sheet, and TAKE BACK would then remove the Agent's own weapon. *Proposed; awaiting the GM.*
 
 ---
 
