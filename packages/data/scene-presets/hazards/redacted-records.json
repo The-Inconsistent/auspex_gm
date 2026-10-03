@@ -1,0 +1,73 @@
+[
+  {
+    "id": "redacted-records-space-hulk-hazards",
+    "name": "Hazards Table",
+    "source": "redacted-records",
+    "page": 11,
+    "dice": "d6",
+    "gm": "Space hulks by their very nature constitute some of the most dangerous locations known to humankind. Warped by the Immaterium, composed of mashed together ancient (or simply xenos) ordinance, infested with predators… only the bravest, or most desperate would seek them out. Use the following table to generate the features and traits that make your space hulk a dangerous place to be.",
+    "rows": [
+      {
+        "id": "rr1-space-hulk-gravitational-surges",
+        "from": 1,
+        "to": 2,
+        "name": "Gravitational Surges",
+        "page": 11,
+        "text": "The gravity of a space hulk is unpredictable, generated entirely from its accumulated mass. Sometimes it shifts, forcing everything on the hulk to adjust to a new way of life (or even fall to their death, if they happen to be in a particularly large room at the time).\nEffect: While aboard this vessel, a Complication on any Test causes gravity to change direction. The GM decides the new direction, but a player may spend a point of Glory to make the decision themselves. See Wrath & Glory page 201 for the rules on Falling.",
+        "gm": "A Complication on any Test turns gravity; a player may spend 1 Glory to choose the direction"
+      },
+      {
+        "id": "rr1-space-hulk-collapsing-inwards",
+        "from": 3,
+        "to": 3,
+        "name": "Collapsing Inwards",
+        "page": 11,
+        "text": "The immense gravity at the centre of the largest Space Hulks causes them to slowly collapse inwards like a dying star. Sometimes entire rooms crumple up like paper, crushing everything inside.\nEffect: While aboard this vessel, a Complication on any non-combat Test causes the room to tear itself apart. Characters must make an Initiative test (DN 3) or suffer Annihilation. Characters can Shift to save another character who fails their check.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "attribute": "I",
+            "dn": 3,
+            "purpose": "Escape the collapsing room",
+            "gm": "On a Complication on a non-combat Test; failure is Annihilation, and a Shift can save another"
+          }
+        ]
+      },
+      {
+        "id": "rr1-space-hulk-warp-twisted",
+        "from": 4,
+        "to": 4,
+        "name": "Warp Twisted",
+        "page": 11,
+        "text": "The Warp has tainted this space hulk to the very core, and every level of each vessel is completely saturated with dangerous warp energies. The occupants' mutations make them unrecognisable.\nEffect: Boarding this vessel triggers an immediate Corruption Test (see Wrath & Glory, page 286). The GM determines the difficulty. The GM may call for additional Corruption tests when appropriate, such as Complications when exploring the interior of the vessel.",
+        "tests": [
+          {
+            "kind": "corruption",
+            "dn": null,
+            "purpose": "Resist the Warp on boarding",
+            "gm": "The GM sets the DN, and may call for more on Complications aboard"
+          }
+        ]
+      },
+      {
+        "id": "rr1-space-hulk-genestealer-trap",
+        "from": 5,
+        "to": 5,
+        "name": "Genestealer Trap",
+        "page": 11,
+        "text": "This vessel is a carefully laid trap by a Genestealer cult. As soon as explorers set foot on board the hulk, it's a matter of time before the waiting Genestealer forces in the bowels of the space hulk awaken.\nEffect: Whenever an Agent enters a new room, roll a single die. On a result of 1, the GM gains 1 Ruin. The GM may spend 5 Ruin at any time to awaken the hive. After this, whenever the group enters any room, they encounter a single Genestealer (Wrath & Glory, page 366), plus an additional Genestealer for each room after the first. This includes backtracking through rooms they have already discovered.",
+        "threats": [{ "threatId": "genestealer", "count": 1 }],
+        "gm": "A 1 on a die per new room: GM gains 1 Ruin. 5 Ruin awakens the hive: 1 Genestealer per room, +1 per room after"
+      },
+      {
+        "id": "rr1-space-hulk-into-the-warp",
+        "from": 6,
+        "to": 6,
+        "name": "Into the Warp",
+        "page": 11,
+        "text": "The accumulated mass of space hulks mean they often enter the warp spontaneously, travelling unprotected in the Immaterium for unknown periods of time before manifesting somewhere completely new.\nEffect: Whenever the group enters a new room, roll three dice. If all dice roll 1, then the space hulk begins to fade into the Warp over a period of several torturous minutes. Any characters still on the space hulk when it completes the transition are lost forever.",
+        "gm": "Three dice per new room; all 1s and the hulk fades into the Warp within minutes"
+      }
+    ]
+  }
+]

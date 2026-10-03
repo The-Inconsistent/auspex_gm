@@ -353,6 +353,7 @@ const EXPECTED_HAZARDS: Record<string, number> = {
   "darktide-militarum-depot-hazards": 9, // p.22
   "darktide-quarantine-zone-hazards": 9, // p.24
   "darktide-profaned-ground-hazards": 9, // p.26
+  "redacted-records-space-hulk-hazards": 5, // p.11, Stage 4 of the Space Hulk Generator
 };
 const hazardIds = new Set<string>();
 {

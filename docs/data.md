@@ -759,6 +759,10 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
     (Wil)" (Militarum Depot 7), "Agility (S) Test" (Gang Turf, Pneumatic Crusher, an Agility Test in the data), and
     the missing comma between Stack Skirrers and Lattice Springers (Warrens 11–12). "Chem-Squad Garrison" keeps the
     hyphen the page breaks the line on (p.22).
+  - **Redacted Records** (`redacted-records.json`): Stage 4 of the Space Hulk Generator, the Hazards Table, d6, p.11:
+    five features of a whole hulk (1–2, 3, 4, 5, 6), each row's description and Effect as its text. The opening
+    paragraph is the table's `gm`. The table prints "Warp Twisted" and "Into the Warp", the sections "Warped" and
+    "Into The Warp": rows take the table's names. Kept as printed: "ordinance" and "mean they" (p.11).
   - **Core Rulebook** (`core.json`): 3 lists, 10 rows. Acquiring Ruin (p.320): the three +1 triggers, plus a
     Complication taken as Ruin (p.163) and Fail Forward's "The GM gains 1 Ruin" (p.319), both named in our words.
     Spending Ruin (p.320): the four priced spends; Activate Ruin Actions isn't one, since each Threat prices its own.
