@@ -51,7 +51,7 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
 - **Framework, Framework Bonus and patron** (issue #45): three player-visible text fields, typed by the GM. The
   Framework is "a sentence or two" (core p.18); the Bonus is its own field because the party sheet has one (p.374,
   rules-flow.md §11.80). The printed Frameworks are a creation type (`creation/frameworks/*.json`, patron-less) and
-  the options of `creation/patrons/*.json`; PARTY's picker reads them through the GM-only
+  the options of `creation/patrons/*.json`; SETUP's picker reads them through the GM-only
   `/api/campaigns/:id/frameworks` and fills in only the patron's and Framework's names (§11.80).
 - **Faction Keywords** (issue #46): `keywords` stays a plain list of names. The editor's picker suggests the books'
   Keywords (core pp.375–378: the keyword records, then the ones sub-factions fill in, each with its glossary text) from
@@ -99,16 +99,16 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
 ## Building a campaign
 
 The Core Rulebook has no adventure-writing procedure; it sends the GM to the GM's guide on Cubicle 7's website
-(core pp.315, 317). This is what it does say, in the order a GM meets it. PARTY's SETUP checklist (issue #45) walks
+(core pp.315, 317). This is what it does say, in the order a GM meets it. The GM app's SETUP tab (issue #45) walks
 these steps and ticks each one from what the campaign already holds; nothing is stored.
 
 | # | Step | Book | In the app | Ticks when |
 |---|---|---|---|---|
-| 1 | Kind of game and content limits | core p.316 | PARTY › FRAMEWORK (§11.79) | a kind of game |
-| 2 | Framework (who, what, the shared goal) and Framework Bonus | core pp.18–20, 316–317, 374 | PARTY › FRAMEWORK | `framework` not empty |
-| 3 | Tier (100–400 XP; custom 50, 75 or 500) | core pp.19–20, 160 | lobby NEW GAME, PARTY › ASCEND | always |
+| 1 | Kind of game and content limits | core p.316 | NEW CAMPAIGN › TABLE, SETUP › FRAMEWORK (§11.79) | a kind of game |
+| 2 | Framework (who, what, the shared goal) and Framework Bonus | core pp.18–20, 316–317, 374 | NEW CAMPAIGN › PREMISE, SETUP › FRAMEWORK | `framework` not empty |
+| 3 | Tier (100–400 XP; custom 50, 75 or 500) | core pp.19–20, 160 | NEW CAMPAIGN › TIER, PARTY › ASCEND | always |
 | 4 | Setting, kept to a limited area | core pp.296–309, 320 | CODEX › LOCATIONS (ADD FROM BOOK copies a book's place and the places inside it; the SPACE HULK GENERATOR writes a hulk and its rooms, #50) | a location |
-| 5 | Patron (two Frameworks each), optional | core pp.310–313; Forsaken System Player's Guide pp.64–89 | PARTY › PATRON | `patron` not empty |
+| 5 | Patron (two Frameworks each), optional | core pp.310–313; Forsaken System Player's Guide pp.64–89 | NEW CAMPAIGN › PREMISE, SETUP › PATRON | `patron` not empty |
 | 6 | Factions and Keywords; who can work together | core pp.42–87, 167, 317, 375–378 | CODEX › FACTIONS | a faction |
 | 7 | Characters | core p.17 | PARTY › the builder | an Agent |
 | 8 | NPCs and locations, a few vivid features each | core pp.315, 317, 168, 326 | CODEX › NPCS, LOCATIONS | an NPC |

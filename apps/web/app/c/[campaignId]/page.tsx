@@ -34,7 +34,7 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
   }
 }
 
-// GM-only printed patrons and Frameworks for PARTY's picker (issue #45). Empty on failure; the picker then lists none.
+// GM-only printed patrons and Frameworks for SETUP's picker (issue #45). Empty on failure; the picker then lists none.
 async function loadFrameworks(campaignId: string): Promise<FrameworkCatalogue> {
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/frameworks`);

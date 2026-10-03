@@ -20,7 +20,7 @@ type NewCampaignProps = { catalogue: FrameworkCatalogue };
 const isNewStep = (s: string): s is NewStep => BEFORE_CREATE.some((n) => n === s);
 
 // CREATE NEW CAMPAIGN (the lobby): Tier, premise, the table's limits and a name, held here and sent in one POST, so
-// leaving half-way leaves no empty campaign behind. Everything after TIER may be skipped; PARTY's SETUP lists what's left.
+// leaving half-way leaves no empty campaign behind. Everything after TIER may be skipped; the SETUP tab lists what's left.
 export function NewCampaign({ catalogue }: NewCampaignProps) {
   const router = useRouter();
   const [step, setStep] = useState<NewStep>("tier");

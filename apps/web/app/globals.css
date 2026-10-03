@@ -441,7 +441,7 @@ textarea.input {
   height: 18px;
   flex: none;
 }
-/* SETUP on PARTY (issue #45): the book's set-up order as a table, each step ticked from the campaign. */
+/* The SETUP tab (issue #45): the book's set-up order as a table, each step ticked from the campaign. */
 .setup-head {
   display: flex;
   flex-wrap: wrap;
@@ -518,7 +518,7 @@ textarea.input {
   line-height: 18px;
   text-align: center;
 }
-/* START FROM A FRAMEWORK on PARTY (issue #45): the list by book and patron, the GM-only preview beside it. */
+/* START FROM A FRAMEWORK on SETUP and NEW CAMPAIGN (issue #45): the list by book and patron, the GM-only preview beside it. */
 .fw-picker {
   border: 2px solid var(--iron);
   background: var(--vellum);

@@ -318,15 +318,16 @@ const { state, codex, online, send } = useTable(campaignId);
   - `RND nn` while an encounter is live.
   - One `.pool` per `Pool.options` (Glory, Ruin). Each shows `current/max`, with the cap from `poolMax(p, players)`,
     and has − / + buttons that send `pool.adjust` ±1. A refusal shows in the page's `Refusal` banner.
-- **Tabs:** `GM_TABS` in `gm-app/constants.ts` = TRACK, PREP, CODEX, PARTY. The selected tab is local state and
-  starts on TRACK.
+- **Tabs:** `GM_TABS` in `gm-app/constants.ts` = TRACK, SETUP, PREP, CODEX, PARTY, RULES, BOOKS. The selected tab is
+  local state and starts on TRACK, or on `?tab=` (`asGmTab`; NEW CAMPAIGN's last step opens SETUP).
 
 | Tab | Component | Files |
 |---|---|---|
 | TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
+| SETUP | `Setup` | `setup/setup.tsx`, `setup/components/setup-panel` (the checklist and its GO TO, `lib/setup`), `setup/components/framework-picker`, `ui/table-talk` |
 | PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards`; the scene editor's ITEMS TO FIND chips and the card's ITEMS TO FIND with `item-give` (issue #51) |
 | CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint), `codex/components/faction-picker` (ADD FROM BOOK: `presetFaction` per printed faction), `codex/components/stat-source-field` (an NPC's BESTIARY threat through `ThreatPicker`, QUICK Tier chips and a specialty Skill, or NONE; issue #47), `codex/components/npc-card` (the Attitude's DN, the `StatBlock`, or the Quick NPC row with the p.326 scaling lines; its `add-to-scene` child appends a bestiary NPC to a scene's prepared encounter with `lib/add-to-scene`, one `codex.save`), `codex/components/npc-picker` (ADD FROM BOOK: `presetNpc` per printed NPC, a name search and a book filter in BOOKS order), `codex/components/npc-roller` (ROLL NAME into NAME and ROLL LOOK onto DESCRIPTION, from GM-only `/flavour` through `rollOn` and `rollLook`; sends nothing until SAVE, issue #48), `codex/components/place-picker` (ADD FROM BOOK for places: each book's tree from GM-only `/places`, a name search, book chips in BOOKS order, INSIDE, and ADD TO CODEX sending `codex.addPlaces`; issue #50), `codex/components/hulk-generator` (the Space Hulk Generator: a `TableRoll` per stage, NEW HULK or ROOMS FOR A PLACE, WRITE TO CODEX sending `codex.addHulk`; issue #50 step 8), `codex/components/wargear-name` (an item's NAME: a native datalist over the catalogue, `lib/wargear-label`, shared with the requisition form; picking an entry links `wargearId`, issue #51), `codex/components/holder-field` (NOBODY / A PLACE / AN NPC), `codex/components/item-card` (FROM THE CATALOGUE: kind, Value, Rarity, the profile with a relic's Powers applied, what GIVE makes), `ui/item-give` (GIVE TO an Agent or TAKE BACK, `holderOf`; shared by CODEX and PREP's scene card), `codex/components/loot-picker` (FROM LOOT TABLE: a book's table in BOOKS order, `TableRoll` or a tapped row, a search per catalogue `pick`, an optional fault, MAKE sending `codex.addLoot`), `codex/components/relic-wizard` (HOLY RELIC CREATOR: the hulk generator's `Stage` per table and the loot picker's `Pick` for the Form's catalogue entry, MAKE RELIC sending `codex.addRelic`) |
-| PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx` |
+| PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx`, `party/components/room-invite` |
 
 ### 3.1 TRACK: live combat tracker
 
@@ -644,7 +645,17 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   - A refusal shows inline and keeps the editor open.
   - The page-level `Refusal` banner is used only for the reveal toggle.
 
-### 3.5 PARTY: session, framework, table access, kill team
+### 3.4a SETUP: the set-up checklist, framework and export
+
+`Setup`.
+- **SETUP checklist** (`SetupPanel`): the Core Rulebook's eleven set-up steps, each ticked from the campaign
+  (`lib/setup`, nothing stored). GO TO opens the tab a step is done in (CODEX on the right kind, PARTY for ASCEND,
+  AGENTS and SESSION) and scrolls to its panel.
+- **Framework panel:** patron, framework, Framework Bonus, and the kind of game and limits (`TableTalk`), saved
+  together with `campaign.update`; START FROM A FRAMEWORK opens `FrameworkPicker`. Players see all of it on INTEL.
+- **EXPORT:** the whole campaign as a file, for a backup or the lobby's IMPORT GAME.
+
+### 3.5 PARTY: session, table access, kill team
 
 `Party`.
 - **Session panel:**
@@ -652,7 +663,6 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
     recap (players see it), then END SESSION (`session.end { xp, recap }`).
   - Otherwise: START SESSION n (`session.start`).
   - What the pools reset to is covered in [game-logic.md](game-logic.md).
-- **Framework panel:** patron and framework text, saved with `campaign.update`. Players see both on INTEL.
 - **TABLE ACCESS panel** (from `state.access`, which only the GM receives in full):
   - ROOM QR (`RoomInvite`, also on NEW CAMPAIGN's PLAYERS step) sends `invite.create { mode: "room", hours:
     ROOM_INVITE_HOURS }` (12) and shows `/invite/<code>` as a QR.

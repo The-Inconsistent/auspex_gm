@@ -37,7 +37,7 @@ type CampaignSetupProps = {
 const isSetupStep = (s: string): s is SetupStep => AFTER_CREATE.some((a) => a === s);
 
 // NEW CAMPAIGN after CREATE: the setting, the factions and the players, each saved as it goes, through CODEX's and
-// PARTY's own pickers and actions. Every step may be skipped; PARTY's SETUP lists what's left.
+// PARTY's own pickers and actions. Every step may be skipped; the SETUP tab lists what's left.
 export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, hazards }: CampaignSetupProps) {
   const router = useRouter();
   const { state, codex, send } = useTable(campaignId);
@@ -56,8 +56,8 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
     window.scrollTo({ top: 0 });
   };
 
-  // OPEN THE CAMPAIGN: PARTY, where SETUP lists the steps still to do.
-  const open = () => startTransition(() => router.push(`/c/${campaignId}?${TAB_PARAM}=party`));
+  // OPEN THE CAMPAIGN: the SETUP tab, which lists the steps still to do.
+  const open = () => startTransition(() => router.push(`/c/${campaignId}?${TAB_PARAM}=setup`));
 
   return (
     <div className="bld">
@@ -157,7 +157,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
             </button>
           )}
         </div>
-        <i className="dim">Nothing here is required: PARTY&apos;s SETUP lists whatever is left.</i>
+        <i className="dim">Nothing here is required: the campaign&apos;s SETUP tab lists whatever is left.</i>
       </main>
     </div>
   );

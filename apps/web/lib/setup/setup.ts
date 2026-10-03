@@ -25,7 +25,7 @@ const count = ({ n, noun, none }: { n: number; noun: string; none: string }) =>
   n ? `${n} ${noun}${n === 1 ? "" : "S"}` : none;
 const has = (n: number, noun: string) => ({ now: count({ n, noun, none: "NONE YET" }), done: n > 0 });
 
-// SETUP on PARTY (issue #45): each step ticked from what the campaign already holds. Nothing is stored.
+// The SETUP tab (issue #45): each step ticked from what the campaign already holds. Nothing is stored.
 export function setupSteps({ campaign, codex, characters }: SetupInput): SetupStep[] {
   const beats = codex.adventures.flatMap((a) => a.beats);
   const prepared = beats.filter((b) => b.encounter.length).length;
