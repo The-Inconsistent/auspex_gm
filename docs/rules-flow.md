@@ -722,6 +722,34 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      may be rolled "as the group enters", so the generator also adds rooms under an existing place. Stage 4's feature
      goes on the hulk's hazard list as its book row (§11.95), not into GM NOTES: every row reads "while aboard this
      vessel", so it sits on the hulk, not on a room. *(User ruling, 2026-10-03.)*
+103. **Which classes may take a Threat Profile** (VoA p.126; GitHub issue #42). The three Tier 5 profiles "can be applied
+     to any enemy Threat", while p.127's advice is about Champions and signature Adversaries. So the app offers them on
+     any class, at any count, and leaves the judgement to the GM. A Mob is the one place to think twice: every member
+     takes the same raised profile, so the beat editor says so rather than refusing it. *(User ruling, 2026-10-03.)*
+104. **Profiles stack, additively** (VoA p.126; GitHub issue #42). The book prints three and is silent on combining them.
+     Each is a separate toggle on the entry, so Heretical Strength and Xenos Cunning together give Strength +2,
+     Intellect +2, Willpower +2, Weapon Skill +2, Resilience +2 and Resolve +1. "The increase does not affect related
+     statistics or abilities", so nothing is re-derived from a raised Attribute: a +2 to Strength does not move melee
+     damage, and a +2 to Resilience is the printed number plus 2, armour note unchanged. *(User ruling, 2026-10-03.)*
+105. **A profile's Skill the Threat doesn't list** (VoA p.126, Core p.323; GitHub issue #42). Weapon Skill and Ballistic
+     Skill are Skills, and a stat block prints only some of them; an unlisted Skill rolls the Default pool (p.323). So a
+     profile adds the Skill at Default + its bonus, which is what that Threat would have rolled anyway, raised. A Threat
+     with no Default either (a printed "–") keeps its Skills untouched and the applied bonus says the raise had nowhere
+     to land, rather than inventing a pool from nothing. *(User ruling, 2026-10-03.)*
+106. **"The number of players" in scaling** (Core p.326; GitHub issue #42). Scaling Threats adds "the number of players
+     plus the game's Tier" to an Adversary's or Monstrous Creature's Wounds and Shock. The app counts the Agents in the
+     fight — the active ones `beat.startEncounter` adds (`claimedCharacterIds` server-side), as the encounter budget does
+     (§11.82) — not every character in PARTY, since a reserve Agent is not at the table for that fight. While nobody
+     holds a seat yet, it counts the whole roster instead, as the budget does (`agentsInFight`). The count is
+     taken when the Threat is added and fixed in its snapshot: an Agent who joins mid-fight does not re-scale a Threat
+     already in play, as nothing else about a snapshot changes once it is taken. *(User ruling, 2026-10-03.)*
+107. **Scaling does nothing to a Mob** (Core pp.325–326; GitHub issue #42). Every member of a Mob has 1 Wound (p.325), so
+     added Wounds have nowhere to go: SCALE adds nothing on a Mob entry, nor on a Troop, which p.326 says to keep as
+     simple as possible. The toggle still shows a tick the GM has set there, and says it adds nothing, because the tick
+     would take effect again with the Mob off. Profiles still apply to both. *(User ruling, 2026-10-03.)*
+108. **Profiles are not Tier 5 only** (VoA p.126; GitHub issue #42). They are printed in a Tier 5 chapter and nothing in
+     them is bounded by Tier, so the app offers them in any game. Scaling already carries the Tier in its own arithmetic
+     (p.326). *(User ruling, 2026-10-03.)*
 
 ---
 
