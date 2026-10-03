@@ -181,7 +181,7 @@ export function FrameworkPicker({ catalogue, tier, patron, onUse, onClose }: Fra
                 <button className="btn" onClick={onClose}>
                   CANCEL
                 </button>
-                <i className="dim">Fills PATRON and FRAMEWORK above. Nothing is saved until SAVE.</i>
+                <i className="dim">Fills in PATRON and FRAMEWORK. Nothing is saved yet.</i>
               </div>
             </div>
           ) : (

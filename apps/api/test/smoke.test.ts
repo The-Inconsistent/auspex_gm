@@ -119,6 +119,33 @@ async function newCampaign(name: string, tier: number) {
 
 const threatOf = (s: LiveState) => s.encounter?.combatants.find((c): c is ThreatCombatant => c.kind === "threat");
 
+test("NEW CAMPAIGN: the Frameworks before a campaign exists, then one POST with every step", async () => {
+  assert.equal((await get("/frameworks")).status, 401, "book text needs a signed-in user");
+  assert.equal((await get("/frameworks", bearer(clerk("not-a-creator")))).status, 403, "and the creator role");
+  const gmClerk = clerk("gm-new-campaign", "creator");
+  const frameworks = await get("/frameworks", bearer(gmClerk));
+  assert.equal(frameworks.status, 200);
+  assert.ok(((await frameworks.json()) as FrameworkCatalogue).patrons.length > 0);
+
+  const setup = {
+    framework: "Deathwatch",
+    frameworkBonus: "+1 die",
+    patron: "Ordo Xenos",
+    kind: ["investigative"],
+    limits: ["body horror"],
+  };
+  const tooLong = { name: "Fresh", tier: 3, limits: ["x".repeat(61)] };
+  assert.equal((await post("/campaigns", tooLong, bearer(gmClerk))).status, 400, "the same limits as campaign.update");
+  const created = await post("/campaigns", { name: "Fresh", tier: 3, ...setup }, bearer(gmClerk));
+  assert.equal(created.status, 201);
+  const { campaignId } = (await created.json()) as { campaignId: string };
+  // The export reads the row back without a socket (the suite is near the connect rate limit).
+  const file = (await (await get(`/campaigns/${campaignId}/export`, bearer(gmClerk))).json()) as CampaignExport;
+  const { framework, frameworkBonus, patron, kind, limits } = file.campaign;
+  assert.deepEqual({ framework, frameworkBonus, patron, kind, limits }, setup);
+  assert.equal(file.campaign.tier, 3);
+});
+
 test("GM and player share a table", async (t) => {
   const gmClerk = clerk("gm-smoke", "creator");
   assert.equal(

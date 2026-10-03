@@ -17,6 +17,7 @@ seat.
 | Path | File | Kind | Job |
 |---|---|---|---|
 | `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
+| `/c/new` | `app/c/new/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps before the campaign exists: asks `/api/frameworks` (a creator's only, so it is the gate too) and renders `NewCampaign` |
 | `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen` |
 | `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
 | `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
@@ -42,7 +43,7 @@ wraps the body in `<AuthProvider>` (`@wg/auth/react`: `ClerkProvider` with `sign
   <sessionToken()>` (`@wg/auth/next`), and forwards the guest cookie (`TOKEN_COOKIE` = `wg_token`), which is httpOnly, so only the
   server can read it.
 - **The browser** reaches the api through the rewrites, so the Clerk `__session` cookie and the guest cookie ride along
-  on its own requests (NEW GAME, accepting an invite, the socket handshake).
+  on its own requests (NEW CAMPAIGN, accepting an invite, the socket handshake).
 
 ### `/`: `app/page.tsx`
 
@@ -66,9 +67,19 @@ sections:
   builder, with the count beside it, and is disabled at `LIBRARY_CAP`.
 - **RUNNING NOW**: games with a session in progress where the caller has no seat (`running` filtered to `role: null`).
   They're cards only, with no OPEN: joining needs an invite.
-- **NEW GAME**, only when `lobby.canCreate` (the Clerk creator role): a name and a Tier from `TIERS`. CREATE AS GM POSTs
-  to `/api/campaigns` from the browser, then pushes to `/c/<campaignId>`. Setup is REST, not a table action. A refusal
-  shows inline.
+- **CREATE NEW CAMPAIGN**, only when `lobby.canCreate` (the Clerk creator role): a link to `/c/new`.
+
+### `/c/new`: `app/c/new/page.tsx`
+
+`NewCampaign` (`components/new-campaign/`) holds four steps in state, in the builder's chrome (`.bld-head`, and the
+`WizardSteps` strip from `components/ui/wizard-steps/`, which also shows the steps after CREATE greyed out):
+1. **TIER**: radio cards, 1–5, with the starting XP (Core p.20).
+2. **PREMISE**: the Framework, patron and Framework Bonus, with PARTY's `FrameworkPicker` (rules-flow §11.80).
+3. **TABLE**: `TableTalk`, the kind of game and what to leave out (Core p.316, §11.79).
+4. **NAME**: the name and a review of every step, each with EDIT.
+
+CREATE NEW CAMPAIGN POSTs everything to `/api/campaigns` from the browser in one go, so leaving half-way stores
+nothing, then replaces the page with `/c/<campaignId>`. A refusal shows inline.
 
 ### `/c/<campaignId>`: `app/c/[campaignId]/page.tsx`
 
@@ -746,7 +757,7 @@ with `bun test lib`.
 | Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
 | Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
 | Inline editor error | `BeatEditor`, `CodexEditor` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
-| Inline form error | `LobbyView` (NEW GAME), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
+| Inline form error | `NewCampaign` (CREATE), `LobbyView` (IMPORT GAME), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
 
 The error text is either the server's `ActionError` message or one of the two client strings from `send`
 (`No signal`, and `No reply from server. Check before retrying`).
@@ -863,8 +874,8 @@ This section summarises the binding rules. The full text is in
   - the wake lock
   - `navigator.vibrate`
 
-  There's no client-side read. The only browser `fetch` calls are the two REST writes: NEW GAME and accepting an
-  invite.
+  There's no client-side read. The browser `fetch` calls are REST writes: NEW CAMPAIGN's CREATE, the lobby's IMPORT
+  GAME and library rows, and accepting an invite.
 - **Server-side identity.** The guest cookie is httpOnly, and the Clerk token comes from `auth().getToken()`, so the
   lobby, seat (`/api/campaigns/:id/me`), bestiary and invite-preview reads and the `/join` exchange run on the server
   (the pages, `route.ts`, through `apiGet`). Client components get the results as props (`lobby`, `preview`,

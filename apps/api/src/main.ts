@@ -34,7 +34,7 @@ const libraryKey = (req: Request) => {
     : `ip:${clientIp(req.headers, req.socket.remoteAddress)}`;
 };
 app.use(
-  ["/api/library", "/api/creation", "/api/rules", "/api/campaigns/import"],
+  ["/api/library", "/api/creation", "/api/rules", "/api/frameworks", "/api/campaigns/import"],
   (req: Request, res: Response, next: NextFunction) => {
     if (allowLibrary(libraryKey(req))) return next();
     res.status(429).json({ message: "Too many requests. Wait a minute." });

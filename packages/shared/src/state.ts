@@ -341,6 +341,14 @@ export const sideOf = (c: Combatant): Side => sideOfKind(c.kind);
 export const MAX_TABLE_LINES = 12;
 export const MAX_TABLE_LINE = 60;
 export const TableLines = z.array(z.string().trim().min(1).max(MAX_TABLE_LINE)).max(MAX_TABLE_LINES);
+// What the GM settles about the campaign itself (Core pp.18–19, 316): NEW CAMPAIGN sends it at creation, PARTY patches it.
+export const CampaignSetup = z.object({
+  framework: z.string().max(5000),
+  frameworkBonus: z.string().max(1000),
+  patron: z.string().max(200),
+  kind: TableLines,
+  limits: TableLines,
+});
 
 export const LiveState = z.object({
   campaign: z.object({

@@ -40,7 +40,7 @@ in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not sil
   - Split large reading jobs across subagents, one book section each.
 - **Copyright:** the book PDFs and the stat-block and rules text in `packages/data` are copyrighted. Keep the
   repo private and never serve book content to anyone without an account (`/api/campaigns/:id/threats`, `/wargear`,
-  `/scene-presets`, `/frameworks`, `/faction-presets`, `/npc-presets`, `/flavour` and `/places` are GM-only; `/rules` and `/creation` need any seat, and a rules entry flagged `gm` goes to the GM's seat only; their seatless twins `/api/rules` and `/api/creation`, for the
+  `/scene-presets`, `/frameworks`, `/faction-presets`, `/npc-presets`, `/flavour` and `/places` are GM-only, and the seatless `/api/frameworks` for NEW CAMPAIGN needs the creator role; `/rules` and `/creation` need any seat, and a rules entry flagged `gm` goes to the GM's seat only; their seatless twins `/api/rules` and `/api/creation`, for the
   character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
   **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
@@ -151,12 +151,14 @@ apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
 apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM), drop-placeholders.ts (one-off pack fix)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
-apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/[campaignId]/page.tsx (seat → GM or player app),
+apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/new/page.tsx (CREATE NEW CAMPAIGN before the campaign exists),
+                    c/[campaignId]/page.tsx (seat → GM or player app),
                     c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),
                     library/[characterId]/page.tsx (the builder without a campaign),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
                     server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
-apps/web/components/lobby/   lobby-view (your games, your characters, running now, new game)
+apps/web/components/lobby/   lobby-view (your games, CREATE NEW CAMPAIGN, import, your characters, running now)
+apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: tier, premise, name (table is ui/table-talk)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (with ascend-panel; kebab-case folders, children under
                              components/)
@@ -165,7 +167,7 @@ apps/web/components/builder/ builder (draft, live resolveBuild, one screen per c
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
-                             status-screen, refusal
+                             status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach)

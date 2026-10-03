@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 
 import { UserButton } from "@wg/auth/react";
-import { LIBRARY_CAP, TIERS, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
+import { LIBRARY_CAP, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
 
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 
@@ -72,10 +72,7 @@ function CharacterCard({
 
 export function LobbyView({ lobby }: LobbyViewProps) {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [tier, setTier] = useState(1);
-  const [error, setError] = useState<string | null>(null);
-  // Its own line: NEW GAME's error sits in a form only creators see, and anyone may keep a library.
+  // Its own line: IMPORT GAME's error sits in a form only creators see, and anyone may keep a library.
   const [libraryError, setLibraryError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
   const [fresh, setFresh] = useState(false);
@@ -120,23 +117,6 @@ export function LobbyView({ lobby }: LobbyViewProps) {
       if (!res?.ok || typeof body?.id !== "string")
         return setLibraryError(typeof body?.message === "string" ? body.message : "Couldn't start a character.");
       go(`/library/${body.id}`);
-    });
-  };
-
-  // NEW GAME: creates the campaign with you as GM, then opens it. Setup is REST, not a table action.
-  const handleCreate = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-    setError(null);
-    run("create", async () => {
-      const res = await fetch("/api/campaigns", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), tier }),
-      }).catch(() => null);
-      const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
-      if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
-      go(`/c/${body.campaignId}`);
     });
   };
 
@@ -189,50 +169,13 @@ export function LobbyView({ lobby }: LobbyViewProps) {
         ))}
       </div>
 
+      {/* The steps are on their own page (/c/new): Tier, premise, the table's limits and a name. */}
       {lobby.canCreate && (
-        <form className="panel pad stack" onSubmit={handleCreate}>
-          <div className="rule">NEW GAME</div>
-          <div className="field">
-            <label className="label" htmlFor="game-name">
-              NAME
-            </label>
-            <input
-              id="game-name"
-              className="input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="VOLKUS DIG SITE"
-            />
-          </div>
-          <div className="field">
-            <span className="label" id="tier-label">
-              TIER
-            </span>
-            <div className="keys" role="group" aria-labelledby="tier-label" style={{ paddingTop: 0 }}>
-              {TIERS.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  className={`btn ${tier === t ? "primary" : ""}`}
-                  aria-pressed={tier === t}
-                  onClick={() => setTier(t)}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-          {error && (
-            <div className="red" role="alert">
-              ! {error}
-            </div>
-          )}
-          <div>
-            <button className="btn primary" aria-busy={isBusy("create")}>
-              CREATE AS GM
-            </button>
-          </div>
-        </form>
+        <div>
+          <Link className="btn primary" href="/c/new">
+            CREATE NEW CAMPAIGN
+          </Link>
+        </div>
       )}
 
       {lobby.canCreate && (

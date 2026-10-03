@@ -21,7 +21,7 @@ and the bestiary.
 3. Global prefix `api`, so REST lives under `/api/*`. Socket.IO keeps its default path `/socket.io/`.
 4. Two in-process rate limiters (`core/rate-limit.ts`, fixed windows): 60/min **per IP** on the unauthenticated door
    (`/api/join`, `/api/guest`, `/api/invites`), and 120/min **per caller** on the library routes (`/api/library`,
-   `/api/creation`, `/api/rules`), keyed by a hash of their session token and falling back to the IP when there is
+   `/api/creation`, `/api/rules`, `/api/frameworks`, `/api/campaigns/import`), keyed by a hash of their session token and falling back to the IP when there is
    none — a whole table building together sits behind one NAT, and the builder autosaves, so one shared bucket would cut
    them off. Over either, a `429`.
 5. `enableShutdownHooks()`, then listen on `PORT` (default 4000).
@@ -67,12 +67,13 @@ text.
 
 | Method, path | Auth | Body | Success | Errors |
 |---|---|---|---|---|
-| `POST /api/campaigns` | `x-admin-key` equal to `ADMIN_KEY` (constant-time, `isAdmin`), else Clerk with the creator role | `{ name: string 1–100, tier: 1–5 }` (`CreateGame`), plus `ownerUserId` with the admin key | `201 { campaignId }`. The creator, or `ownerUserId`, is seated as GM | `401` not signed in. `403 "Only creators can start a game"`. `400` bad body |
+| `POST /api/campaigns` | `x-admin-key` equal to `ADMIN_KEY` (constant-time, `isAdmin`), else Clerk with the creator role | `{ name: string 1–100, tier: 1–5 }` plus, optional, NEW CAMPAIGN's `framework`, `frameworkBonus`, `patron`, `kind` and `limits` (`CreateGame`, the same `CampaignSetup` limits as `campaign.update`), plus `ownerUserId` with the admin key | `201 { campaignId }`. The creator, or `ownerUserId`, is seated as GM | `401` not signed in. `403 "Only creators can start a game"`. `400` bad body |
 | `GET /api/lobby` | Clerk | none | `200 Lobby` (`packages/shared/src/access.ts`): `canCreate`, `mine`, `running`, `characters` (the caller's library, §3.1) | `401` |
 | `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/scene-presets` | Seat, GM only | none | `200 ScenePresets`: `{ skillDns, tables, pools, hazards, spaceHulk, loot, relics }`, the sample DNs per Skill (Core pp.122–126), the books' event tables (#39), Ruin and Glory lists (#40), hazard tables for places (#49), the Space Hulk Generator (#50), loot tables and the Holy Relic creator (#51) | `400` bad id. `401` no seat. `403` player |
+| `GET /api/frameworks` | Clerk with the creator role | none | `200 FrameworkCatalogue` from the official books, for NEW CAMPAIGN's PREMISE before the campaign exists | `401`. `403` not a creator |
 | `GET /api/campaigns/:id/frameworks` | Seat, GM only | none | `200 FrameworkCatalogue`: `{ patrons, frameworks }`, the printed patrons and Frameworks for PARTY's picker (#45), without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/faction-presets` | Seat, GM only | none | `200 FactionPresets`: `{ keywords, presets }`, the Keywords CODEX › FACTIONS suggests (keyword records, then the ones sub-factions fill in, each name once, with glossary `text`) and the printed factions for ADD FROM BOOK (#46), without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/npc-presets` | Seat, GM only | none | `200 NpcPreset[]`: the printed NPCs for CODEX › NPCS' ADD FROM BOOK (#47), the creation catalogue's patrons (cite only) and then `npc-presets/*.json`, a transcribed NPC replacing the patron of the same id; without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
@@ -109,7 +110,7 @@ What still holds:
   no GM to tick them; they come back on the campaign's REVIEW after the import (`docs/rules-flow.md` §11.59).
 - **Scope.** A row that isn't the caller's is a `404`, never a `403`: a `403` would tell them the id exists.
 - **Book text needs an account.** `/api/creation` and `/api/rules` serve book content without a seat, so the account is
-  the gate, and it holds because Clerk's Access mode is Invite-only (`docs/development.md` §Clerk, `CLAUDE.md`,
+  the gate (`/api/frameworks` also needs the creator role), and it holds because Clerk's Access mode is Invite-only (`docs/development.md` §Clerk, `CLAUDE.md`,
   Copyright). If sign-up ever opens, these need a role check —
   marked `// ponytail:` on the controller.
 - **Bounded.** `LIBRARY_CAP` (20, `packages/shared/src/library.ts`) per account, and exactly: counting and inserting is a
