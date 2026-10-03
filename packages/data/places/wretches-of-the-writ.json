@@ -1,0 +1,30 @@
+[
+ {
+  "id": "wretches-of-the-writ-the-divers-bell",
+  "name": "The Diver’s Bell",
+  "source": "wretches-of-the-writ",
+  "page": 8,
+  "gm": "On the swelling seas of Enoch, the ship The Diver’s Bell scours the deep for the mighty krakens known as Bathysquids. This titanic ship is a city in itself, home to twenty thousand souls, and a whole industry has sprung up around hunting the mighty Bathysquids and extracting their ink sacs for use in scribing holy Ecclesiarchy texts.\n\nThe Wretches have identified this as a prime opportunity for sabotage, and a cult has been created, centred around tainting this holy ink with the blood of Possessed Astartes. Over time this ink warps the texts penned by the scribes, twisting the holy words into blasphemous tracts. These texts are then exported unknowingly to worlds across Gilead, thus spreading the Writ’s influence to unsuspecting priests."
+ },
+ {
+  "id": "wretches-of-the-writ-the-fallow",
+  "name": "The Fallow",
+  "source": "wretches-of-the-writ",
+  "page": 8,
+  "gm": "Ostia is a world of plenty, but its bounty of crops are mostly exported off-planet to feed the billions of Gilead Primus and the surrounding worlds. Every inch of the planet is harvested for whatever it can provide.\n\nIt is odd, then, to see a field left to grow wild. The Fallow, as the locals call it, is covered in dense razor grass: not native to Ostia, this plant was deliberately utilised by the ancient Aeldari to wall off holy sites, the sharp fronds preventing any edible crop from growing. As such, the Ecclesiarchy have forbidden the populace from entering, lest they be tainted by the inherent foulness of such relics. Stories of massive shapes looming out of the underbrush, devouring the Emperor’s faithful have become common: in fact, the Writ are using this patch of land as a hunting ground, attempting to have their Possessed brethren gain greater control of the daemon within while allowing them to make sport as they do so."
+ },
+ {
+  "id": "wretches-of-the-writ-daedalons-labyrinth",
+  "name": "Daedalon’s Labyrinth",
+  "source": "wretches-of-the-writ",
+  "page": 8,
+  "gm": "Orbiting the capital planet of Gilead Primus, the moon Daedalon is one massive graveyard, funeral barges unloading the corpses of millions every day. The worthiest are buried with full honours, while the rank and file are processed for corpse starch and candle fat, so they may continue serving the Emperor in death as they did in life.\n\nBuried beneath Daedalon’s surface is a labyrinth, a packed ossuary where servants of the Ecclesiarchy disassemble and reuse their dead, scrimshawing the bones of the fallen and reclaiming augmetics. Recently the Administratum has established a more prominent presence on Daealon following discrepancies in the moons’ production reports. This has become a source of tension between the two factions, the Ecclesiarchy writing off the missing produce as simple error while adepts of the Administratum make accusations of theft and poor record keeping. The truth is far darker — the scrap metal and tallow grease extracted from those millions of dead are being stolen for the construction of a titanic machine, designed to funnel the power of the Warp, aiding in Maloquence’s attempts to create a daemon prince."
+ },
+ {
+  "id": "wretches-of-the-writ-brothers-ruin",
+  "name": "Brother’s Ruin",
+  "source": "wretches-of-the-writ",
+  "page": 9,
+  "gm": "Disgorged from the Warp into the fringes of the Gilead System during the formation of the Great Rift, Vulkaris is home to the pestilent legions of the Death Guard. Alongside untold numbers of disease ridden and mutated cultists, these Warp-tainted worshippers of Nurgle have turned Vulkaris into a festering nightmare of a planet in devotion to the Plague God. The entrance of Vulkaris into the Gilead system has upset the Writ somewhat — the arrival of a whole planet of their virulent cousins threatens their position as the dominant Traitor force in-system.\n\nIn what may appear to be a fit of pique, then, Maloquence has demanded that the world be conquered. Brother’s Ruin is the speartip of his endeavour, a ramshackle gunship that will vulcanise the infection from orbit. While this plan may seem to be merely a symptom of Maloquence’s growing insanity, it is in fact the culmination of the Dark Apostles’ malign schemes. By sacrificing the plague addled millions of Nurgle followers present on the planet Maloquence hopes to begin a dark ritual that will see the gifts of Daemonhood bestowed upon him."
+ }
+]
