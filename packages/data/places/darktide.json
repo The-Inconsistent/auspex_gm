@@ -1,0 +1,303 @@
+[
+ {
+  "id": "darktide-moebian-domain",
+  "name": "The Moebian Domain",
+  "source": "darktide",
+  "page": 5,
+  "gm": "The Moebian Domain is located in the Segmentum Solar — galactically speaking, a stone’s throw from Holy Terra itself. It is a sparsely populated region of the Imperium compared to some others, but nevertheless offers important tithes of fuel, arms, and soldiers. Its proximity to Terra also offers strategic and political advantages that its rulers have historically been quick to take advantage of. The current rulers are the Margraves, a highborn family that holds sway over the entire region from their seat of power on Atoma Prime. Though much of the planet has been rendered an ecological wasteland, its gleaming spires and the constant influx of voidships bearing tithed goods to and from the planet stand as a testament to its status as the region’s capital world.\n\nHISTORY\n\nSome of the earliest records that still exist on the oldest of the Astra Cartographica’s mouldering charts indicate that the region was settled during the earliest years of the Dark Age of Technology. Oral traditions remain that speak of the arrival of the Emperor, of the glorious expansion that followed, and of the titanic war of angels that ended it all in flames, but beyond ancient tales retold in ramshackle habs and dwellings, precious little of the Moebian Domain’s true history is widely known.\n\nMany worlds still bear the mark of this buried history, however. Relics of that benighted age have been found across the Moebian Domain. Most are thoroughly exorcised by adepts of the Cult Mechanicus, their secrets recovered for the greater glory of the Omnissiah, any corruption that remains cleansed by immersion in sacred acids, but doubtless more remain."
+ },
+ {
+  "id": "darktide-atoma-prime",
+  "name": "Atoma Prime",
+  "parent": "darktide-moebian-domain",
+  "source": "darktide",
+  "page": 5,
+  "stats": [
+   {
+    "label": "Pronunciation",
+    "value": "A-TOME-a Pry-muh"
+   },
+   {
+    "label": "Class",
+    "value": "Capital World - Hive World"
+   },
+   {
+    "label": "Satellites",
+    "value": "One large moon, Atrox, a naval depot, and two smaller satellites, Tomal and Tomek. Atoma is also orbited by an orbital dock and defence station."
+   },
+   {
+    "label": "System",
+    "value": "Singular Sol-like star named Aton. Seven planets. Atoma is orbited closely by two small rocky planets, Atoma Prime, three large gas giants, and a small icy world at the system’s edge. All worlds other than Atoma Prime are uninhabited but have orbital stations and small research outposts."
+   },
+   {
+    "label": "Geology",
+    "value": "Atoma Prime has an active core that provides heat and energy for the hives, and generates infrequent tectonic movement."
+   },
+   {
+    "label": "Climate",
+    "value": "Atoma Prime is a desert world in late-stage environmental collapse, requiring breathing apparatus. Every few months there are super storms that unleash massive amounts of lightning, corrosive rain, and dust storms"
+   },
+   {
+    "label": "Population",
+    "value": "90 Billion (Approx)"
+   },
+   {
+    "label": "Population Centres",
+    "value": "Tertium Hive covers a region almost 890 miles across at the widest point, 93 miles high, and descending 12 miles into the surface."
+   },
+   {
+    "label": "Ruler",
+    "value": "Lord Constance Margrave"
+   }
+  ],
+  "gm": "Governance: Lord Margrave holds court in Tertium Hive and is the appointed representative of the High Lords of Terra. It is his task to ensure law and order are maintained and that the Moebian Domain provides its tithe to the Adeptus Administratum in the form of weapons, munitions, fuel, soldiers, and foodstuffs. Lord Margrave assigns “fiefs” to those loyal nobles within his court who oversee particular worlds or portions of Atoma Prime’s economy and industry. Lord Margrave maintains law and order by fostering a degree of rivalry between the rival houses and guilds so that none are powerful enough to challenge his rule.\n\nLord Margrave maintains a form of law-keeping force known as the Tertium Magistratum Enforcers (often called “Mags” or “Strats” amongst the hive population). The primary task of the Mags is quelling riots amongst Tertium’s population, while also keeping watch for signs of sedition, cults, and heresy. As Lord Moebian, numerous military forces report directly to Lord Margrave, including the Domain Navy Admiral, and the local military defence forces stationed on Atoma Prime. The Moebian 4th is the “Hiveguard” — a professional army dedicated to planetary defence, and they maintain a rivalry with the Moebian 6th, who consider themselves true soldiers as they are deployed as part of the Astra Militarum off-world.\n\nLord Margrave, along with the other noble houses, maintains a personal private army. Lord Margrave’s force, known as the Graven Elite, bears ornately fashioned armour and weapons."
+ },
+ {
+  "id": "darktide-hive-tertium",
+  "name": "Hive Tertium",
+  "parent": "darktide-atoma-prime",
+  "source": "darktide",
+  "page": 6,
+  "gm": "SPIRES OF STEEL, ROOTS OF BONE\n\nHive Tertium is gargantuan, rivalling even the storied hives of Mordian and Armageddon. Multiple spires, like some clawed hand, grasp upwards to the stars. While below, the hive city proper and the derelict sub-hive are home to over 99% of the 90 billion people that live upon Atoma Prime, the hive spires are luxurious by comparison and are home to the noble families who endeavour to keep the factorums running while conspiring with and against each other so that they may one day claim the Moebian throne.\n\nThe population of a hive is a melting pot of cultures and peoples, with some groups originating from worlds many thousands of lightyears away. Of the entire hive population, almost two-thirds are factory workers, who toil away in the choking factorums, producing arms and equipment for the Astra Militarum. Another third of the population is given over to Administratum workers, who deal with the drudgery of accounting, signing, counter signing, and auditing the input and output of factorums. The remaining population comprises the auxiliary services that keep the hive running, the hive Enforcers, the planetary defence force, detention centres filled with criminals, and the hive nobility and guilders.\n\nThe vast majority of the population are humans. Still, there is an abhuman population, consisting of around 1% of the population, and of these abhumans, most are Ogryn labourers, while the rest are all mutants and accepted abhumans."
+ },
+ {
+  "id": "darktide-main-hive",
+  "name": "Main Hive",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 6,
+  "gm": "Most servants, valets, accountants, merchants and craftspeople live in the Main Hive. A significant amount of this population is either Administratum clerks or Ministorum priests. Compared to The Reaches, the Main Hive has a more utilitarian feel, but it is still in a good state of repair. At this level, the outside world is kept out, as the Main Hive sits beneath the cloud layer and is subject to the hazardous climate that would choke the city. However, the Main Hive is bursting at the seams, and despite the population working in better conditions, they must put up with cramped living quarters and meagre food rations."
+ },
+ {
+  "id": "darktide-spireside",
+  "name": "Spireside",
+  "parent": "darktide-main-hive",
+  "source": "darktide",
+  "page": 6,
+  "gm": "“Spireside” is the term used by Tertium natives for any part of the hive above ground. At the very pinnacle of the spires is the High Hive, where opulent palaces, opera houses, alabaster cathedrals, and grand promenades sit high up above the toxic clouds and enjoy the undiluted sunlight and clean air. Attending to the noble houses are the Guilds and the lesser nobility, who occupy smaller but no less comfortable abodes and apartments that make up the Reaches, which lie below the High Hive."
+ },
+ {
+  "id": "darktide-the-hourglass",
+  "name": "The Hourglass",
+  "parent": "darktide-main-hive",
+  "source": "darktide",
+  "page": 6,
+  "gm": "The Hourglass - Freight Port HL 34-2 - is a zone in the Main Hive, that once served as a light industrial port for the Main Hive, with hauliers ferrying small cargos and service workers to and from the upper and lower hive districts. The dock also served as a staging ground for the rapid deployment of planetary defence forces, with dozens of Valkyries and squads of Tempestus Scions ready to launch. However, over more recent centuries, the Hourglass has fallen into disrepair. The zone is caked in dust and blown in through cracks in the hive shell, making the zone hazardous to life. It is because of the constant rain of dust in the zone that the region gets its name. Without the trade and the defence force deployments, the zone has become a nest for criminal gangs, Obscura lords and cold traders.\n\nThe Hourglass’s criminal and disenfranchised population made easy converts to the cult when the Moebian 6th struck. Despite efforts to seal off the Hourglass, Lord Margrave wishes to reclaim the zone, even if there are other places to claim that are of greater value."
+ },
+ {
+  "id": "darktide-the-carnival",
+  "name": "The Carnival",
+  "parent": "darktide-main-hive",
+  "source": "darktide",
+  "page": 7,
+  "gm": "The Carnival - Habzone HL 70-04 - is another zone within the Main Hive and is a stinking and cramped slum. The Mags have written off the zone, leaving the citizens to their own devices. The lack of oversight by the Mags means that crime lords and exploitative merchants have set up shop in the Carnival. Deep within the slums are all manner of narco dens, fighting pits, black market bazaars, and traders of all manner of seedy and salacious desires. Despite the dangers that the Carnival presents to outsiders drawn to the profane spectacles, nobles and guilders come to the Carnival, slumming it, to sate their repugnant habits."
+ },
+ {
+  "id": "darktide-habculum",
+  "name": "Habculum",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 7,
+  "gm": "Stretching from the Main Hive down to the surface is the Habculum. Here the living conditions of the Carnival are the norm, as hab blocks are squeezed in between the pounding factorums, allowing labourers to live as close to their place of work as possible and so increasing efficiency. The air is hot, humid, and filled with pollutants, making life difficult for even the hardiest hive worker. For those that are maimed in the factorums, or die from Abraded Lung (a chronic condition resulting from pollutants scarring the sensitive tissue of the respiratory organs), their remains are taken away to be processed into Corpse Starch, the very rations that the workers survive upon."
+ },
+ {
+  "id": "darktide-throneside",
+  "name": "Throneside",
+  "parent": "darktide-habculum",
+  "source": "darktide",
+  "page": 7,
+  "gm": "Habzone HL 19-24 - “Throneside” - is densely populated, but compared to much of the Habculum, is less polluted and benefits from proximity to “The Stack”, which provides fresher air from the upper atmosphere. Music-halls provide entertainment in the form of parables and dramas that portray the victories of the Imperium. Some markets exist, as workers spend their few credits on clothes, rations imported from Incron, and holy trinkets and books. Crime is low thanks to the patrols of the Mags. Central to the zone is the Inkwell, a cathedral-sized complex where Administratum workers sit in cubicles, attended to by servo-skulls and servitors which ferry back and forth stacks of records from creaking shelves containing millions of files — each one containing stories of failed maintenance, forgotten disasters, and the weight of human suffering."
+ },
+ {
+  "id": "darktide-the-torrent",
+  "name": "The Torrent",
+  "parent": "darktide-habculum",
+  "source": "darktide",
+  "page": 8,
+  "gm": "The Torrent - Habzone HL 18-66 - is damp and mouldering. Decay and rust touch everything in the zone, thanks to the constant drainage from the upper levels. Streets and abodes are covered in waterproof sheets, but the acidity of the rain means these covers need to be replaced periodically. The citizens of this zone are not untouched either, as many show signs of chemical burns from the caustic rain. Because of the hazardous climate, the Mags refrain from policing the zone, leaving it at the mercy of criminal gangs. For this reason, a black-market water purification plant purifies the polluted rain for resale across the hive. The value of this water, despite not being pure, is that the water is treated as a holy offering from the God-Emperor. A side product of the purification is the toxic extracts. Drums of these carcinogenic chemicals are resold to factorums or used as chemical weapons against rival gangs. The lowest levels of the zone are flooded, as drains and pipes are clogged with waste. Settlements at this level sit on stilts above the stinking filth, and punts and boats navigate the polluted waters, ever on the watch for the mutated creatures that lurk beneath the surface."
+ },
+ {
+  "id": "darktide-metalfab-36",
+  "name": "Metalfab 36",
+  "parent": "darktide-habculum",
+  "source": "darktide",
+  "page": 8,
+  "gm": "Metalfab 36, a huge manufactorum, like many other zones given over to industry, lies on level 17 of the hive. Ores are smelted, chemicals refined, and a ceaseless conveyor belt of products winds through the factory.\n\nWorkers toil in the stifling heat, taking a few minutes for their breaks to pray and eat in the on-site chapel and canteen. Worn-looking passenger haulers rumble into the nearby station, disgorging the next batch of workers before taking away those who have finished their 16-hour shift. The factory never shuts down, producing parts for tanks, mainly armour plating to be fitted on Leman Russ battle tanks and the equally ubiquitous Chimera-based hulls. Such is the need to keep the wheels of production turning and feed the galactic war machine, that the Ministorum priests strive to ensure the workers believe in the holy service they are committed to."
+ },
+ {
+  "id": "darktide-chasm-station",
+  "name": "Chasm Station",
+  "parent": "darktide-habculum",
+  "source": "darktide",
+  "page": 8,
+  "gm": "Chasm Station serves the network of rail lines that crisscross the hive. Chasm is different from most rail stations, as it once connected two separate hive spires, but as Tertium Hive grew and the hive spires expanded and connected, the point where Chasm Station stands remained open to the outside. Instead of being filled in, the gap between the two hive spires was maintained and serves as a great shaft to facilitate fresh air cycling from the upper atmosphere into the hive city. The station itself is cathedral-like, servicing many rail lines and countless serfs that pass through it daily. As a critical connection to almost all parts of the hive, it was a primary target of the initial traitor forces who captured it and utilised it as a landing zone for more troops."
+ },
+ {
+  "id": "darktide-the-deep-below",
+  "name": "The Deep Below",
+  "parent": "darktide-habculum",
+  "source": "darktide",
+  "page": 9,
+  "gm": "As the hive reaches the surface level of Atoma Prime, it spreads out wide to provide the foundations to support the towering spires above. Atoma Prime covers such a large area that nearly 70% of the population lives at this level or below. This is “The Downside”, and the upper portion is known as “The Belows”, while deeper still is “The Deep Hive”, and then “The Lower Depths”.\n\nThe Belows is a continuation of the Habiculum levels, with the hab zones and manufactorum blending into the decaying, squalid, and abandoned domes of the Belows. Many of the structures are millennia old and were once magnificent habitation domes. Forgotten, damaged, and given over to crime gangs that eke out a life here, the domes periodically shudder and quake as the billion tonnes of plasteel of the hive above press down on the old hive city. All manner of mutants, outcasts, and criminals stalk the long-forgotten passageways. Some groups have, by some miracle, existed in the Deep Hive for so long with little interaction with the upper levels that their own culture has diverged from that of accepted Imperial norms. These techno-barbarians and nomads scour the old hive for anything to help their survival, and such people make for useful guides when those from the upper hive come to the lower levels in search of lost treasures and archaeotech.\n\nThe Lower Depths are perilous, as it is at this level that all waste and filth filter down and gather, concentrating and forming a vast sump. Here radiation levels and the very atmosphere of mutagenic gases kill most people in a few scant hours, while those who do survive are often subject to the start of grotesque mutations. The sump and Lower Depths are off-limits to all hive citizens, save for those Enforcers and military personnel dispatched to quell a particularly dangerous mutant scavenger lord or cult hierophant. The bizarre creatures and people that live there are the thing of nightmares and the boogymen that parents speak of to make their children say their prayers to the God-Emperor each night.\n\nJust as moving downward towards The Lower Depths leads to ancient and decaying portions of the old hive, so does moving outwards from the centre of the hive. Beyond the spire of Tertium there are numerous smaller spires, rising for a few miles above the hive surface. But as one moves further towards the perimeter of the hive, more of the outer shell is penetrated and collapsed, allowing in the ravages of the Atoma Prime atmosphere. These regions, known as the Outerwaste and Edge Waste, are home to those nomadic tribes that brave the storms and radioactive dust clouds. However, armoured convoys travel the interspire tunnels, carrying precious cargo and coin, while weathering storms and raids by the nomads."
+ },
+ {
+  "id": "darktide-the-snakestack",
+  "name": "The Snakestack",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 9,
+  "gm": "Chasm Station sits above one of the many shafts that run through Tertium Hive. These shafts are a product of the merging of the cluster of hive spires that formed Tertium Hive, and like chimneys, they draw down clean air while allowing fumes and pollutants to flow out. The Snakestack is one of these shafts, and though smaller than the Chasm, it is no less important for the hive’s health. Like all such shafts, its initial structure was partially planned, and as the hive grew and the shaft was naturally extended upwards, the structure was mapped. Schematics were drawn up as gargantuan fans, storm panels, and charge dissipators were installed.\n\nHowever, like all things in the Imperium, vast bureaucracy, coupled with corruption and war, led the Snakestack, and all the other shafts and systems of the Tertium Hive, to fall into disrepair. As the spires grew and merged, their collective weight bent and contorted the shafts, including the Snakestack. The growth of Tertium Hive, and so, in turn, the Snakestack, resulted in many lower sections being neglected. Over the centuries, this neglect has allowed hive residents of all stripes to use the Snakestack for their own purposes. There are those criminals who syphon energy from the giant fans, steal oil from the lubrication pipes to use as fuel, or have commandeered portions of the Snakestack maintenance tunnels to use as a means of trafficking people and goods up and down the hive."
+ },
+ {
+  "id": "darktide-e07-mass-transit-cargo-elevator",
+  "name": "E07 - Mass Transit Cargo Elevator",
+  "parent": "darktide-the-snakestack",
+  "source": "darktide",
+  "page": 10,
+  "gm": "Towards the apex of the Snakestake is the disused elevator, E07. This huge platform is large enough to hold an entire Astra Militarum regiment, and hangs over the vast cavity of the Snakestack. It became the base of operations for Thirbal Tet and his gang, Clan Mechanicus, and came to be known as Slung. Over time, Slung was expanded and built upon, with cargo containers suspended below, from the sides, and stacked on top, creating a shanty town that, with one bad hive quake, could collapse into the abyss below. Despite Slung being exploited by the Clan Mechanicus, the people of Slung rally around Primilla van Grellick, a fallen scion of a noble house.\n\nAlso occupying the very top of the Snakestack are the Chain Gangs. These collections of rival gangs operate small lifts, requiring manual labour to move goods up and down the shaft. Those gangs maintain teams of hundreds of hive citizens who toil away on industrial-scale treadmill systems that raise and lower the gargantuan platforms day and night.\n\nDescending the Snakestack, numerous smaller settlements cling to the sides of the vast shaft, making a living as best they can. Station Chi-Zeta-Blue is the primary rail station that services this section of Tertium Hive, through which hundreds of thousands of hive workers pass each day. Millions of metric tons of goods pass through the station as they head up the spire to the space dock, while raw materials head down the spire, deep into the hive and the manufacturing domes. The loading docks are deafening and treacherous as crates are moved, servo haulers rumble around carrying industrial loads, and thousands of workers are marshalled by domineering foremen to keep quotas on schedule. Of the gangs that operate in the station, the Rattlebone Roustabouts jealously patrol the station, cornering the market on narcotics and illegal tech, and extorting a tithe from those desperate enough to seek their assistance in escaping up-spire.\n\nThe train from Station Chi-Zeta-Blue, known as the Snake Ways, spirals down the Snakestack, before crossing the Snake Pass Bridge and passing into the main hive body. Like Slung, an entire settlement exists suspended below the Snake Pass Bridge. Known simply as the Span, this town offers a means for desperate citizens to jump a train or quickly move from one side of the Snakestack to the other.\n\nThe Span is dominated by two clans that control either end of the settlement, and the Mags rarely dare to involve themselves in their affairs. The Abyss Stalkers comprise former pit slaves who put augmented limbs to work maintaining the Span and fending off rival gangs who encroach on their territory. Their neighbours, the Wings of Heliosis, are a cult devoted to the God-Emperor, who they revere as the sun above Atoma Prime. These fanatics believe they are blessed to see the sun and bask in the untainted glory of the Emperor’s light, free of the ground, like his angels."
+ },
+ {
+  "id": "darktide-the-iron-collar",
+  "name": "The Iron Collar",
+  "parent": "darktide-the-snakestack",
+  "source": "darktide",
+  "page": 10,
+  "gm": "Further below, before reaching the Iron Collar, the Snakestack walls bristle with spines. These massive antennae crackle with energy as the chill dust-laden air from above meets the warm fumes and smoke pumped out from the hive factorums. Here the churning of the atmosphere, driven by The Iron Collar below, generates static electricity that is discharged into the galvanic vanes to power the local systems. Flitting about conductive towers, winged tech thralls, similar to the Pteraxii cyborgs of the Adeptus Mechanicus military, tend to the galvanic arrays before returning to the Chapel Cupernium to rest and venerate the Omnissiah. This work is a holy duty, and their transformation from regular humans into augmented Pteraxii is seen as a blessing.\n\nThe Iron Collar likely has existed for thousands of years, and once would have been located near the very apex of the nascent Snakestack, connecting the tops of five hive spires before their merger in later centuries. As a connective structure, the Iron Collar would have marked a natural point at which construction would have stopped, and then started again as the hive city grew in height. In later years, thanks to the present structure and the massive locomotives that raced around it, the site was designated by the hive Tech-Priests as the location for the installation of the massive fans that would suck in clean air from above. The Iron Collar was expanded, supporting even more large trains to carry the legions of workers who would build and maintain the ventilation systems.\n\nThirty years ago, disaster struck the Iron Collar when a fusion reactor went critical, annihilating a portion of the hive about the Ring and forming the lawless warren known as the Calamity Zone. Little did the occupants of the Iron Collar, or of the massive train, Forgefather, realise that the orchestrators of this catastrophe were agents of House Van Sparsii. Seeking to shut down the ventilation of the entire Snakestack, and in turn, choke the industrial domes of Tertium Hive, the Van Sparsii nobility hoped that such destruction would eventually lead to the elevation of Branx Magna to the throne world of the Moebian Domain. The agents of the Van Sparsii, known only to themselves as Veridian Spear, remain in the area, seeking to access the train and destroy the entire Ring.\n\nPast the massive fans of the Iron Collar, the atmosphere of the Snakestack changes dramatically as the air becomes thick with fumes, and the condensing pollutants drip from the fans high above, forming an artificial acid rain that falls upon the lower levels and the Sump below."
+ },
+ {
+  "id": "darktide-the-belows",
+  "name": "The Belows",
+  "parent": "darktide-the-snakestack",
+  "source": "darktide",
+  "page": 11,
+  "gm": "The Snakestack widens as it descends into the Belows. Still, the structures of these former hive spires are contorted and crushed as the weight of miles of plasteel and the millions of people living within press down upon some of the oldest structures of Tertium Hive. Some of the former spire tops are so displaced, they jut out into the chasm of the Snakestack, and it is one of these that the Church of the Emperor’s Tears has consecrated as their own. Here in their make-shift chapel, led by Mother Vallientilus, this cult suffers under the acid rain, thanking the Emperor for each deluge of potent, burning water that drenches the lower hive and washes away the filth. They believe that soon a holy rain, the likes of which has never been seen before, will cleanse the hive of heretics and mutants in a storm of divine fury.\n\nWithin the walls of the Belows that encircle the Snakestack, in amongst the warren of hab domes and manufactorums, the clan of mutants known as the Scarred Tongues reign. As one of the largest warbands of mutants that stalk the Belows, they have come to dominate large swathes of the decrepit domes, and are capable smugglers, moving illicit cargo in and out of the city. They are also traders with the representatives of the Adeptus Mechanicus in Tertium Hive, as the Scarred Tongues chance upon pieces of archaeotech that the Cult Mechanicus treasure so dearly.\n\nThe very bottom of the Snakestack, where the waste and effluents flow to, is the vast lake, many miles across, known as the Sump. This body of water is a steaming sea of toxic waste within which very little can live, though there are monstrosities that occasionally pull themselves out and terrorise the wretched souls that call the Belows home. The Sump was not always there. Before the Snakestack, and before the formal formation of Tertium Hive, the Sump was a populous settlement and home to the renowned Order of the Silver Quill. These priests of the Imperial Creed maintained a cathedral and grand library that rivalled the baroque temples of Curcis. But as the hive spires about it grew ever taller, blocking out light and destabilising the earth beneath them, the cathedral was abandoned. Visitors, foolhardy enough to navigate the Sump in a properly treated boat, can find the towers and spires of the former cathedral and monasteries that the Order of the Silver Quill once maintained. Where once the proud edifices were alabaster white, the outer shells of these buildings are now corroded and crumbling, and only the skeletons of the structures survive, like charred bones protruding from the luminous Sump."
+ },
+ {
+  "id": "darktide-warrens",
+  "name": "Warrens",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 14,
+  "gm": "Warrens make up the bulk of Hive Tertium. They are a jumbled network of ventilation systems, water channels, abandoned tunnels, and forgotten walkways. Warrens are usually deserted, and rarely intriguing.\n\nWhilst Warrens are rarely life-threatening, they are often dark, wet, hot, cramped, poorly ventilated, and unsanitary. Agents cannot use any rest actions, either Regroups or Respites, whilst inside the Warrens of Hive Tertium."
+ },
+ {
+  "id": "darktide-hab-settlement",
+  "name": "Hab Settlement",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 16,
+  "gm": "The Snakestack services numerous hab domes, providing fresh air from the upper atmosphere while pollutants from the many factorums are pumped out. Hab domes are heaving with life, with citizens occupying towering hab blocks, typically with dozens sharing a single living quarter as they operate different work shifts.\n\nThese hab domes are rife with crime, as narco lords and gangs try to swindle workers out of their meagre credits, and rival manufactorum masters seek to cripple their rivals through intimidation of their workforce. While the Mags should be patrolling these zones to keep the peace, they are rarely present."
+ },
+ {
+  "id": "darktide-industrial-works",
+  "name": "Industrial Works",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 18,
+  "gm": "Coordinating supplies and labour in a seething hive of 90 billion souls is beyond any mortal’s ability. Consequently, vast tracts of the hive’s industrial space have been lost to ad-hoc amendments, hivequakes, and riots. Other areas have been repurposed for industrial processes despite being wholly unsuited to such tasks.\n\nEach day countless workers depart to labour in this industrial warren, each one knowing only the limited skills necessary to maintain productivity at their station. Technomat guilds compete fiercely for privilege, and only the blessed Adeptus Mechanicus can rein them in."
+ },
+ {
+  "id": "darktide-gang-turf",
+  "name": "Gang Turf",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 20,
+  "gm": "Deeper into the hive, far from the oversight of the Imperial authorities and the Mags, the criminal gangs of Tertium maintain their holdings. Many of these are factorums, refineries and settlements, though nominally part of the hive city and manufacturing domes are given to the gangs and their clans, as fiefdoms.\n\nBy keeping the gangs at each other’s throats, the hive’s overlords keep the clans distracted from other ideas, like usurping power from the noble houses of the upper spire."
+ },
+ {
+  "id": "darktide-militarum-depot",
+  "name": "Militarum Depot",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 22,
+  "gm": "The vast armies of Tertium require a logistics network to recruit, equip, and train soldiers. This network includes Departmento Munitorum stockpiles, specialist training institutes, hospitals, live-fire training grounds, and more.\n\nAccess is forbidden to non-military personnel, and usually enforced by lethal security protocols. Many depots were lost as the hive grew, and have now been commandeered by the Moebian 6th — leaving you unsure if they are friend or foe."
+ },
+ {
+  "id": "darktide-quarantine-zone",
+  "name": "Quarantine Zone",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 24,
+  "gm": "Pollution, disaster, infestation, and administrative confusion have left many areas of the hive quarantined behind makeshift barriers meant to keep intruders out and inhabitants in.\n\nSome have been sealed for so long that legends tell of insane mutants lurking behind them, while others are so fresh that they are simply festering abscesses in the body of the hive. The prospect of untouched salvage from such areas sometimes lures the greedy or insane to break the quarantine."
+ },
+ {
+  "id": "darktide-profaned-ground",
+  "name": "Profaned Ground",
+  "parent": "darktide-hive-tertium",
+  "source": "darktide",
+  "page": 26,
+  "gm": "Even before the Moebian 6th turned traitor, parts of Tertium Hive were desecrated by dark powers. Sacrificial atrocities and forbidden sorceries twist reality into a grim parody of itself — the dead walk, the shadows come alive, and the air whispers damning secrets to the weak-minded. Only the brave or insane dare to venture into such unnatural places, and few return.\n\nIf the Agents attempt a Regroup or Respite on Profaned Ground, they must pass a DN 5 Corruption Test. Failure results in 1 Corruption, and the Regroup or Respite is ruined. The GM may spend Ruin to augment the enemies on Profaned Ground with Mutations: 1 Ruin to roll on the Subtle Mutation table, 2 Ruin to roll on the Minor Mutation table, and 3 Ruin to roll on the Major Mutation table (Wrath & Glory Core Rulebook, page 288)."
+ },
+ {
+  "id": "darktide-the-slung",
+  "name": "The Slung",
+  "parent": "darktide-e07-mass-transit-cargo-elevator",
+  "source": "darktide",
+  "page": 29,
+  "gm": "The Slung is built of industrial junk and forgotten Imperial structures, held together by desperate necessity. Those who have nowhere else to go find a haven in the Slung — be they hive scum or fallen spire aristocrats. The only thing that prevents their fragile city from disintegrating is that each and every one of them is at the end of their rope — they would all be dead, or worse, if not for the Slung.\n\nA BRIEF HISTORY\n\nThe Slung’s origins are shrouded in lost and unrecorded history. Though the hive gang responsible for its foundations was forgotten like so many others over the centuries, the name Thirbal Tet remains. Reduced to an allegorical folk tale about inflated ambition, and surviving as a warning to children to never stray from their stations and duties, Tet fled from Spireside into the Downside of Tertium Hive to survive after the attempted theft of Mechanicus assets. He might have been a fair technician, but he excelled as a grifter and confidence trickster in this new environment. Using stolen tech and his wits, he soon established himself as a gang leader — which, unfortunately, renewed the Mags’ interest.\n\nHowever Tet knew from his obsessive data collection on the Mechanicus of Elevator E07 — the Mechanicus had deemed the device volatile following a number of hivequakes, and left only an efficient yet limited maintenance detail to tend to the ageing machine. The wider Mechanicus left to safeguard more essential technologies, entrusting the Tech-Priests left behind with gathering all the knowledge they could of the elevator and its mechanisms before its inevitable collapse. Tet and his gang eagerly eliminated the Mechanicus detail and took over, establishing the Slung. Tet and his Clan Mechanicus swiftly rose to popular power, heralded as heroes and saviours, providing for the needs of all.\n\nHowever, a challenge to the authority of the Mags and the Mechanicus could not go unpunished, despite the failing power shunt. In a final assault by the Mags, Tet was captured by the authorities and turned into a Servitor, as a reminder to all those who would try and escape their ordained position in the glorious hierarchy of Tertium.\n\nMuch to the surprise of the inhabitant of the Slung, with Tet punished and the Clan Mechanicus humbled, the authorities left the Slung and its inhabitants to their own devices — relocating the dregs and removing the Slung from the elevator would require massive maintenance and shutting down the Snakestack, an unacceptable inefficiency.\n\nThe Mechanicus and the Administratum are happy to let the Slung and E07 die a slow death, as successive generations of hivers purge each other and eventually when the time comes they will repair and reconsecrate the machine once more.\n\nToday, the Slung’s society is more fractured than ever. It is full of hive scum too shunned even to survive among the gangs of Tertium Hive, desperate criminals wanted for heresy, and exiled nobles. There is a large native-born population, but continued influx ensures that ties — and grievances — with the wider hive are never severed. The Clan Mechanicus’s hold on the Slung is tenuous at best, their lack of maintenance for the power coupling, leading to ever-increasing blackouts in the small settlement.\n\nA TOUR OF THE SLUNG\n\nWhere other cities have buildings set on solid ground, the Slung has freight containers and hollowed-out industrial machinery haphazardly suspended from void port-grade mooring cables. Where other cities have streets and habways, the Slung has rickety gangways, zip lines, and people not afraid to jump a gap. Nonetheless, life carries on, and the Slung has facilities for all the amenities and services needed to keep a settlement of its size alive, thriving in the thousands."
+ },
+ {
+  "id": "darktide-the-pile-up",
+  "name": "The Pile Up",
+  "parent": "darktide-the-slung",
+  "source": "darktide",
+  "page": 31,
+  "gm": "The Pile Up is the largest general goods store in the Slung — a junkyard, by any other name. It is controlled by Primilla van Grellick (see page 36), a noble from Spireside hidden here from assassins as a child and then forgotten. Almost any goods that could be procured in a hive can be found in the Pile Up, if at a higher price and slightly worse for wear.\n\nThe Pile Up is run by Craftol Glot, a massive bear of a man with Augmetic Legs. His mood swings between jovial and belligerent, depending on whether he’s buying or selling, attempting to get the best price for goods by being friendly and welcoming or bullying people into paying more when he’s selling them something. You can requisition wargear from him in the usual way (Wrath & Glory page 205) on any IMPERIUM items up to Value 4."
+ },
+ {
+  "id": "darktide-the-snake-hole",
+  "name": "The Snake Hole",
+  "parent": "darktide-the-slung",
+  "source": "darktide",
+  "page": 31,
+  "gm": "The Snake Hole is a tavern with a mixed reputation — which, in the Slung, is saying something. It is run by Gerta Phleg, a matronly woman in her late sixties, beloved and feared by all in equal measure, and with a commanding voice any Astra Militarum captain would relish in. She can be a barkeep, fixer, or shoulder to cry on — so long as her customers keep the money flowing into her pockets. The Snake Hole is the only true neutral ground in the Slung, where no gang or sect has control. Gerta guarantees this state of affairs with a Meltagun behind the bar that none of the gangers know how she acquired, but she assures them that it still functions perfectly."
+ },
+ {
+  "id": "darktide-the-sump",
+  "name": "The Sump",
+  "parent": "darktide-the-snakestack",
+  "source": "darktide",
+  "page": 79,
+  "gm": "With the colossal fans of the Iron Collar behind them, the Agents descend into the heart of the rot eating away at the Snakestack. The shaft has been used as a dump for centuries and at the very bottom is the Sump — a vast lake of toxic sludge broken up by an archipelago of islands made of compacted refuse and discarded machinery. Shoddy bridges and stinking canals ferry people and goods sluggishly between dishevelled alleys and buildings. The cogitator the Agents need is found on the largest island, near the centre of the Sump — Port Odium. Between them lies an army of corrupted Moebian Guardsmen, a handful of surviving but mutated loyalists, and a dizzying array of the Plague Lord’s most grotesque minions and virulent blessings.\n\nA BRIEF HISTORY OF THE SUMP\n\nEven before the outbreak, the bottom of the Snakestack was a disgusting environment, but now that the Plague Lord has gained a foothold, the Sump has become a true nightmare.\n\nIronically, the Sump was one of the last to be infiltrated by the treacherous legions of the Moebian 6th, although nobody who visited before the outbreak would have considered it safe for body or mind. It was always where the dregs of the lowest levels landed, outcasts and criminals that even the lowest ‘civilised’ hive levels shunned, bathed in toxic wastes and industrial runoff. The Sumpfolk, as they call themselves, trawled the lake for the majority of their food (though any common Imperial servant would shudder at the thought of consuming these mutated creatures), and this nautical culture informed the development of the main population centres, where canals are more common than streets.\n\nThe Sump is a den of iniquity, but it’s still a very Imperial sort of iniquity, and while all manner of heretical cults fester so far from authority, the Sumpfolk try to keep to the Imperial Creed as best they can. Their harsh life has turned the Imperial Creed’s hatred of the mutant inwards — shame over one’s own mutations became the highest of virtues. Typical’ Sumpfolk attire consists of a few dirty rags held in place by a dizzying array of holy necklaces, bracelets, piercings and more extreme displays of faith.\n\nWhen the corruption of the Moebian 6th came to the Sump, it came in a deluge. Almost overnight the already putrid ‘waters’ of the lake were completely suffused with the rot and filth of the Plague Lord, tainting everything the Sumpfolk ate or drank. Within a matter of days, Warp-spawned infections had taken hold across the Sump, save for the self-sufficient (and well-armed) Tech-Priests.\n\nAnarchy was rife in the early days of the Sump outbreak. The Sump was not considered strategically important by the Moebian 6th, but when rumours reached them of a manifestation of the foul corruption in the Deep Below, a unit was dispatched on a pilgrimage to the Sump to assess whether it was truly blessed by the Plague Lord. Only when they arrived did they learn of the Tech-Priest enclave and the priceless cogitator they guarded. Since then, Moebian reinforcements have been sent to the Sump as often as they can be spared from the front lines of the rebellion. Moebian dominance faltered when a mass release of Warp-tainted filth (the torrent of sludge unleashed by traitor operatives in Chapter 4: Crash Site) unleashed a second outbreak of disease and mutation. The remaining Sumpfolk who retain some fragment of their sanity live under violent, nightmarish military occupation, and despise how these new people revel in their new mutations instead of loathing them, calling them the Shameless.\n\nBut the worst change festers underneath all of these: The sacrifices that the Moebian 6th throw into the lake have already brought forth a malevolent, Daemonic consciousness. It and the foetid sludge are now one and the same, and while it still slumbers fitfully, each new sacrifice brings it closer to waking, when it will rise through the Snakestack and flood the upper levels in an unstoppable tide of rot.\n\nLAYOUT OF THE SUMP\n\nBeyond the lake are doorways and corridors to even darker places — the putrid lake waters flood many of the deeper levels, and only the most outcast or desperate Sumpfolk venture into these claustrophobic spaces. A large number of refugees from the upper levels, hoping to escape the Moebian 6th, travelled downwards, emerging into the rim of the Sump. Most made their way to the larger islands, where they thought themselves safe until the Moebian 6th arrived in force. They tell of many encounters on their journeys; how friends or lovers answered the call of the Church of the Emperor’s Tears, or were simply taken by the mutant Scarred Tongues clan as payment for passage through their domains.\n\n… continues, Darktide p.81"
+ },
+ {
+  "id": "darktide-the-refuse-archipelago",
+  "name": "The Refuse Archipelago",
+  "parent": "darktide-the-sump",
+  "source": "darktide",
+  "page": 83,
+  "gm": "A network of island communities dot the surface of the lake, atop piles of corrosion-resistant garbage. The islands are constantly sinking and new buildings are regularly built on top of the ruins of the old. The one exception is Port Odium, built around the Adeptus Mechanicus outpost maintaining the cogitator, which in turn is built on top of the massive cathedral located at the true base of the Sump. Nevertheless, the slowly rising wastewaters have forced Tech-Priests to build their enclave ever upwards, and at least a third of its chambers are now below the waterline, some flooded, others maintained by ancient pumping technology. It is commonly rumoured that there are tunnels deep beneath the various islands that all connect to the enclave.\n\nThe tunnels follow the original streets and walkways of the Sump when it was young and pollution-free, environmentally sealed and reinforced by the Adeptus Mechanicus over the millennia. One may travel across almost the entire region using the tunnels, but travellers must frequently surface to bypass cave-ins, flooded sections and quarantine zones. The tunnels are also constantly guarded by a handful of Sicarian Ruststalkers, backed up by a plethora of Combat Servitors. The Tech-Priests give safe directions and access codes to their most valued servants, enabling their reach to encompass the whole Sump even as the Sumpfolk believe they never leave their enclave.\n\nThe Agents can either learn of the underwater tunnel network by saving the resistance fighters in Blot (See A Stay of Execution, page 89), or by accidentally stumbling into them through an appropriate Warren Hazard (See Chapter 2: Hive Encounters).\n\nTravelling through the secret tunnels allows Agents to bypass many hazards on the surface, but the network is tricky to navigate and has its own dangers:\n\nu Agents may opt to use the tunnel network in their journey. If they do so, they must encounter at least three Profaned Ground or Quarantine Zone Hazards."
+ },
+ {
+  "id": "darktide-port-odium",
+  "name": "Port Odium",
+  "parent": "darktide-the-refuse-archipelago",
+  "source": "darktide",
+  "page": 81,
+  "gm": "Port Odium occupies the centre of the Sump. It is the largest, oldest island with the most inhabitants, now transformed into a warzone. The Adeptus Mechanicus maintains a large compound in the centre of the island, rarely admitting visitors. It was the largest hub of trade and construction before the outbreak, and the Tech-Priests recruited primarily from this island’s inhabitants. The Moebian forces surround the Tech-Priest enclave, probing its defences and mounting occasional assaults that, so far, have all failed. Mechanicus forces are running out of bodies and ammunition however, and it is only a matter of time before they fall and the cogitator is lost."
+ },
+ {
+  "id": "darktide-blot",
+  "name": "Blot",
+  "parent": "darktide-the-refuse-archipelago",
+  "source": "darktide",
+  "page": 81,
+  "gm": "Blot lies approximately 2 kilometres from Port Odium. It is the second largest island, and by a quirk of the waste composing it, sinks far more slowly than the others, making it tower above the rest of the Sump. It is unique in that it lacks any waterways beyond the piers that transport goods and people to other islands. A powerful contingent of Moebian 6th resides here, who are hunting supposed resistance fighters. The resistance itself has a heavy presence in Blot, making use of little-known tunnels under the streets to move undetected."
+ },
+ {
+  "id": "darktide-saint-wretch",
+  "name": "Saint Wretch",
+  "parent": "darktide-the-refuse-archipelago",
+  "source": "darktide",
+  "page": 81,
+  "gm": "Saint Wretch is the arrival point of the freight elevator carrying the Agents. It was never populous, but it is now a ghost town: after the Grandfather’s Rain, most of the inhabitants suffered vivid, waking dreams, and walked serenely into the noisome waters. The streets are empty, buildings scrawled with graffiti; ‘THE SWARM RISES’ is repeated frequently. Agents can find preserved food and Common Wargear, all abandoned in the strange exodus. The island is home now only to a handful of pitiful survivors, and a number of horrific Chaos Spawn stalk the dark streets, rumoured to be tormented amalgamations of those who walked into the lake. The Moebians, warned of the freight elevator’s arrival, have sent a platoon of troops here to ambush and kill the Agents before they can offer aid to the Tech-Priests."
+ },
+ {
+  "id": "darktide-the-dark-zones",
+  "name": "The Dark Zones",
+  "parent": "darktide-the-sump",
+  "source": "darktide",
+  "page": 83,
+  "gm": "Few Sumpfolk dare venture to the edge of the lake, and fewer still brave the hive corridors beyond. Mutants too grotesque to be accepted in the Sump roam the dark places, feral and cannibalistic. Some band together into raiding clans, with a rare few approaching the status of legitimate organisations, such as the Scarred Tongues, who serve as intermediaries between organisations above and below.When navigating the Dark Zones, the Hazards are Gang Turf, Militarum Depot, Quarantine Zone or Profaned Ground. If a gang is encountered, there is a 50% chance it will be the Scarred Tongues, who may be amenable to a deal instead of violence if an Agent passes a DN 6 Test (Cunning, Deception, Intimidate or Persuasion as appropriate to the situation). The DN may be modified depending on any past encounters with the group. Outside of watering holes or black markets, the other mutant gangs are always hostile."
+ }
+]
