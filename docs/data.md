@@ -787,7 +787,8 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
     render. Two are priced: “Cower Before Me!” at 1 (the book prices a "second Ruin point", which adds the Tier to the
     DN; that stays in its text) and Counterattack at 1. Blasphemous Resilience, Gleeful Mockery and “Enough!” print
     no cost, so `n` is null and the GM sets it per scene (rules-flow.md §11.78). The list's `gm` is p.7's note that
-    any enemy capable of Ruin Actions may use them. Kept as printed: Counterattack's "the Champion orders another
+    any enemy capable of Ruin Actions may use them. The custom-threat editor offers the same five rows as RUIN
+    abilities (issue #43 step 5). Kept as printed: Counterattack's "the Champion orders another
     enemy", though the table never says which enemy is the Champion.
   - **Bloody Gates** (`bloody-gates.json`): The Deadly Battlefield, pp.25–26, checked against a page render. Calling
     for Support: 6 Glory spends (2, 2, 1, 1, 3, 1); its `gm` is p.25's two paragraphs (a Full Round Action, rolls that

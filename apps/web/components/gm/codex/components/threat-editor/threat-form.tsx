@@ -2,16 +2,17 @@
 
 import { useState, type ChangeEvent } from "react";
 
-import { SKILLS, threatWeapon, type Skill, type Threat, type Wargear } from "@wg/shared";
+import { SKILLS, threatWeapon, type PoolPresetTable, type Skill, type Threat, type Wargear } from "@wg/shared";
 
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 
-import { ABILITY_TYPES, ATTR_FIELDS, CLASS_OPTIONS, FACTIONS, SIZES, type ThreatDraft } from "./constants";
+import { ABILITY_TYPES, ATTR_FIELDS, CLASS_OPTIONS, FACTIONS, ruinAbility, SIZES, type ThreatDraft } from "./constants";
 import { threatHints } from "./hints";
 
 type ThreatFormProps = {
   draft: ThreatDraft;
   wargear: Wargear[];
+  ruinActions: PoolPresetTable | null; // Threat Assessment p.7, offered as RUIN abilities
   onChange: (d: ThreatDraft) => void;
 };
 
@@ -103,7 +104,7 @@ function Words({ label, value, onChange }: { label: string; value: string[]; onC
 
 // The stat block the GM is writing (Threat Assessment p.5's order: name and Tier row, keywords, Attributes, the derived
 // line, Skills, Bonuses, Abilities, then Mob content). Every field is the GM's; the hints never block a save (§11.109).
-export function ThreatForm({ draft: d, wargear, onChange }: ThreatFormProps) {
+export function ThreatForm({ draft: d, wargear, ruinActions, onChange }: ThreatFormProps) {
   const [weaponQuery, setWeaponQuery] = useState("");
   const set = (patch: Partial<ThreatDraft>) => onChange({ ...d, ...patch });
   const hints = threatHints(d);
@@ -433,6 +434,23 @@ export function ThreatForm({ draft: d, wargear, onChange }: ThreatFormProps) {
             + ABILITY
           </button>
         </div>
+        {/* p.7 warns against giving common Elites many unique Ruin Actions; these five are the shared ones. */}
+        {ruinActions && (
+          <div className="keys" role="group" aria-label="Additional Ruin Actions" style={{ paddingTop: 0 }}>
+            {ruinActions.rows
+              .filter((row) => !abilities.some((a) => a.type === "RUIN" && a.name === row.name))
+              .map((row) => (
+                <button
+                  key={row.name}
+                  className="btn sm"
+                  title={row.text}
+                  onClick={() => set({ abilities: [...abilities, ruinAbility(ruinActions, row)] })}
+                >
+                  + RUIN: {row.name.toUpperCase()}
+                </button>
+              ))}
+          </div>
+        )}
       </div>
 
       <label className="field">

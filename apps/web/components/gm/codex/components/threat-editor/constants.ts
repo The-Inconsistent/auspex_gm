@@ -1,4 +1,13 @@
-import { quickRow, quickScaling, type ActionInput, type Threat, type ThreatClass } from "@wg/shared";
+import {
+  quickRow,
+  quickScaling,
+  threatCite,
+  type ActionInput,
+  type PoolPreset,
+  type PoolPresetTable,
+  type Threat,
+  type ThreatClass,
+} from "@wg/shared";
 
 // What `threat.save` takes: a stat block without the id, source and page the server sets (issue #43).
 export type ThreatDraft = Extract<ActionInput, { type: "threat.save" }>["data"];
@@ -99,4 +108,15 @@ export const draftOf = (t: Threat): ThreatDraft => {
 export const cloneDraft = (t: Threat, cite: string): ThreatDraft => ({
   ...draftOf(t),
   note: `Cloned from ${t.name} (${cite})`,
+});
+
+// Threat Assessment p.7's Additional Ruin Actions are "available to any enemy capable of using Ruin Actions" (issue #43
+// step 5). They already reach the GM's tablet as a Ruin pool table on /scene-presets, so the editor offers that table's
+// rows as RUIN abilities rather than keeping a second copy of the text.
+export const RUIN_ACTIONS_TABLE = "threat-assessment-ruin-actions";
+export const ruinAbility = (table: PoolPresetTable, row: PoolPreset) => ({
+  type: "RUIN" as const,
+  name: row.name,
+  text: `${row.text} (${threatCite({ source: table.source, page: row.page ?? table.page })})`,
+  weapons: [],
 });

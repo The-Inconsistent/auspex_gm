@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 
-import { CUSTOM_THREAT_CAP, threatCite, threatLabel, type Threat, type Wargear } from "@wg/shared";
+import {
+  CUSTOM_PREFIX,
+  CUSTOM_THREAT_CAP,
+  threatCite,
+  threatLabel,
+  type PoolPresetTable,
+  type Threat,
+  type Wargear,
+} from "@wg/shared";
 
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
@@ -15,6 +23,7 @@ type ThreatEditorProps = {
   customThreats: Threat[];
   bestiary: Threat[]; // the books' stat blocks plus the customs, as GmApp merges them
   wargear: Wargear[];
+  ruinActions: PoolPresetTable | null;
   tier: number;
   send: Send;
 };
@@ -22,7 +31,7 @@ type ThreatEditorProps = {
 // A stat block the GM writes for their table (issue #43): the customs this campaign holds, and the two ways to start a
 // new one — CLONE FROM BESTIARY, or BLANK. Saving sends `threat.save`, which re-parses it server-side and sets the id,
 // the source and the page.
-export function ThreatEditor({ customThreats, bestiary, wargear, tier, send }: ThreatEditorProps) {
+export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, tier, send }: ThreatEditorProps) {
   // `slug` is null for one not saved yet; the server returns the slug it made.
   const [editing, setEditing] = useState<{ slug: string | null; draft: ThreatDraft } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +43,7 @@ export function ThreatEditor({ customThreats, bestiary, wargear, tier, send }: T
     setEditing({ slug, draft });
   };
 
-  const clone = (t: Threat) => start(cloneDraft(t, t.source === "custom" ? "Custom" : threatCite(t)));
+  const clone = (t: Threat) => start(cloneDraft(t, threatCite(t)));
 
   const save = async () => {
     if (!editing) return;
@@ -51,14 +60,19 @@ export function ThreatEditor({ customThreats, bestiary, wargear, tier, send }: T
   };
 
   const remove = async (t: Threat) => {
-    const r = await send({ type: "threat.delete", slug: t.id.slice("custom-".length) });
+    const r = await send({ type: "threat.delete", slug: t.id.slice(CUSTOM_PREFIX.length) });
     setError(r.ok ? null : r.error);
   };
 
   if (editing)
     return (
       <div className="panel pad stack">
-        <ThreatForm draft={editing.draft} wargear={wargear} onChange={(draft) => setEditing({ ...editing, draft })} />
+        <ThreatForm
+          draft={editing.draft}
+          wargear={wargear}
+          ruinActions={ruinActions}
+          onChange={(draft) => setEditing({ ...editing, draft })}
+        />
         {error && <div className="red">! {error}</div>}
         {/* A stat block carries at least one Keyword (Core p.323), so the server would refuse one without. */}
         {!editing.draft.keywords.length && <div className="dim">Add a keyword to save.</div>}
