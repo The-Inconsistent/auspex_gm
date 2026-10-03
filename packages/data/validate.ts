@@ -345,6 +345,7 @@ const EXPECTED_HAZARDS: Record<string, number> = {
   "threat-assessment-volcanic-wastes": 13, // p.17
   "threat-assessment-frozen-tundra": 13, // p.19
   "threat-assessment-forgeworld": 13, // p.21
+  "core-environmental-hazards": 6, // pp.201–202, a list to pick from
 };
 const hazardIds = new Set<string>();
 {

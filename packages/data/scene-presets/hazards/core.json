@@ -1,0 +1,131 @@
+[
+  {
+    "id": "core-environmental-hazards",
+    "name": "Environmental Hazards",
+    "source": "core",
+    "page": 201,
+    "dice": null,
+    "gm": "The 41st Millennium is hostile to all forms of life. Every world in the galaxy boasts treacherous biomes waiting to kill you. These hazards are as common on uninhabited and alien worlds as they are on crowded Imperial Hive Worlds and Forge Worlds. Most hazards can be grouped into the following core categories.",
+    "rows": [
+      {
+        "id": "core-suffocation",
+        "name": "Suffocation",
+        "page": 201,
+        "text": "When deprived of oxygen underwater, in a smoke-filled manufactorum, or in the void outside a Space Hulk, the consequence is the same — you suffocate.\nYou can attempt to hold your breath to conserve oxygen for a number of minutes equal to your Toughness Attribute. Certain enhancements and equipment can extend this time, such as the Adeptus Astartes Imbiber or multi-lung.\nIf you attempt to hold your breath during combat or any other Round-based encounter, you can do so for a number of Rounds equal to double your Toughness Attribute. If you reach the end of either of these times without breathing, you fall unconscious.\nYou must pass a DN 3 Toughness Attribute Test every minute or Round you hold your breath. If you fail the Test, you suffer 1d3 Shock damage. If suffocation causes you to suffer more Shock than your maximum, you fall unconscious. If you do not breathe oxygen before the allotted time runs out, then you automatically fall unconscious, even if you do not exceed your Maximum Shock. If you are deprived of oxygen and unconscious, you die after a number of Rounds equal to your Toughness Attribute.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "attribute": "T",
+            "dn": 3,
+            "purpose": "Hold your breath",
+            "gm": "Every minute or Round; 1d3 Shock on a failure"
+          }
+        ]
+      },
+      {
+        "id": "core-electricity",
+        "name": "Electricity",
+        "page": 201,
+        "text": "Nature can be as deadly as any foe imaginable. Weaponised by countless militaries throughout the long and grim history of the galaxy, electrical currents can turn armour against its wearer, reduce a tank to molten slag, and cook an Ork from the inside out.\nAnyone struck by an electrical discharge faces the same devastating effects. First, you suffer damage equal to the intensity of the electricity. All electricity damage is Agonising (p.208).\nAfter resolving the effects of the damage, you must then make a Toughness Attribute Test. If you fail, you are Restrained for one Round and knocked Prone on a Complication. If you pass, the electrical charge dissipates and you may act normally.",
+        "conditions": ["restrained", "prone"],
+        "gm": "Restrained for one Round on a failure; Prone only on a Complication",
+        "variants": [
+          {
+            "name": "Light",
+            "tests": [{ "kind": "attribute", "attribute": "T", "dn": 3, "purpose": "Shake off the charge" }],
+            "text": "7 + 1ED; Agonising"
+          },
+          {
+            "name": "Moderate",
+            "tests": [{ "kind": "attribute", "attribute": "T", "dn": 5, "purpose": "Shake off the charge" }],
+            "text": "12 + 2ED; Agonising"
+          },
+          {
+            "name": "Intense",
+            "tests": [{ "kind": "attribute", "attribute": "T", "dn": 7, "purpose": "Shake off the charge" }],
+            "text": "17 + 3ED; Agonising"
+          }
+        ]
+      },
+      {
+        "id": "core-extreme-heat-and-cold",
+        "name": "Extreme Heat & Cold",
+        "page": 201,
+        "text": "Countless planets possess extreme environments that are far too hostile to support life, but the need for resources and defensible positions means there are Imperium colonies on almost every kind of world. Sometimes extreme temperatures occur naturally. Other temperature changes are caused by destructive weaponry, such as the Exterminatus, or the terraforming process of the Tyranid bio-fleets.\nWhen you find yourself exposed to extreme hot or cold temperatures, you must pass a Toughness Attribute Test with a DN determined by the GM. During narrative time, you make a Test every hour. During combat time, you make a Toughness Test after a number of Rounds equal to your Toughness.\nIf you fail the Toughness Test, you become Exhausted (p.199) until you Regroup or seek Respite (p.196).",
+        "tests": [
+          {
+            "kind": "attribute",
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Endure the temperature",
+            "gm": "The GM sets the DN; every hour, or after Rounds equal to Toughness in combat"
+          }
+        ],
+        "conditions": ["exhausted"]
+      },
+      {
+        "id": "core-falling",
+        "name": "Falling",
+        "page": 201,
+        "text": "Gravity is inevitable, indiscriminate, and often has painful consequences. When you fall a distance of 5 metres or more you suffer falling damage. You suffer 1 Mortal Wound, plus 1d3 Mortal Wounds for every extra 5 metres you fall."
+      },
+      {
+        "id": "core-fire",
+        "name": "Fire",
+        "page": 202,
+        "text": "Forge World furnaces, promethium tank explosions, overheating Plasma weaponry; the 41st Millennium is filled with flammable situations. You must make an Athletics (S) Test every Round you are exposed to a hazard that could set you On Fire (p.199). The GM determines the DN of this Test. If you fail, you're On Fire. If you take a Wound from a weapon with the Inflict (On Fire ) Trait, you are On Fire.\nAnything that doesn't have an Agility Attribute automatically passes Agility Attribute Tests to avoid being ignited or to put out a fire.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": ["Athletics"],
+            "dn": null,
+            "purpose": "Avoid catching fire",
+            "gm": "The GM sets the DN; every Round of exposure"
+          }
+        ],
+        "conditions": ["on-fire"]
+      },
+      {
+        "id": "core-radiation",
+        "name": "Radiation",
+        "page": 202,
+        "text": "Radiation comes in many different forms, and is one of the most lethal and hardest to detect of all environmental hazards. The fuel of a crippled void ship, journeying the irradiated plains of a Death World, or encountering a sabotaged reactor on a Forge World can all lead to radiation exposure. A few weapons in the 41st Millennium even harness this dangerous and volatile power.\nDetecting radiation is difficult. Without the correct equipment, a high DN Survival Test (minimum 9) is required to detect any source of radiation.\nYou must immediately take a Toughness Attribute Test whenever exposed to radiation, which repeats every Turn you are exposed. The GM decides on the DN — it should never be easy. If you fail the Test, the results are severe:\n- You take 1d3 Mortal Wounds.\n- You take 1d6 Shock damage.\n- You are Staggered for 1 Round.\nWhenever you are exposed to radiation, the GM may also call for a Corruption Test (see p.285).\nRad Poison: If you are exposed to radiation for a significant time, or a particularly abundant source, you may contract rad poisoning. The GM should use the following table to select an intensity and apply the effects listed.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": ["Survival"],
+            "dn": 9,
+            "purpose": "Detect the radiation",
+            "gm": "Without the correct equipment; DN 9 is the minimum"
+          },
+          {
+            "kind": "attribute",
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Resist the radiation",
+            "gm": "The GM sets the DN, never easy; every Turn exposed"
+          },
+          { "kind": "corruption", "dn": null, "purpose": "Resist corruption", "gm": "If the GM calls for it" }
+        ],
+        "conditions": ["staggered"],
+        "variants": [
+          {
+            "name": "Light",
+            "tests": [{ "kind": "attribute", "attribute": "T", "dn": 3, "purpose": "Resist rad poison" }],
+            "text": "Rad Poison: 1 Mortal Wound"
+          },
+          {
+            "name": "Moderate",
+            "tests": [{ "kind": "attribute", "attribute": "T", "dn": 5, "purpose": "Resist rad poison" }],
+            "text": "Rad Poison: 1d3 Mortal Wounds"
+          },
+          {
+            "name": "Intense",
+            "tests": [{ "kind": "attribute", "attribute": "T", "dn": 7, "purpose": "Resist rad poison" }],
+            "text": "Rad Poison: 1d6 Mortal Wounds"
+          }
+        ]
+      }
+    ]
+  }
+]
