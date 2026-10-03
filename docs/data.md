@@ -24,7 +24,7 @@ Commands and setup: [development.md](development.md).
 
 | Symbol | Does |
 |---|---|
-| `threats` | `ReadonlyMap<id, Threat>`. Parses every `threats/*.json` with `Threat.parse` **at import time**, sorted by filename |
+| `threats` | `ReadonlyMap<id, Threat>`. Parses every `threats/*.json` with `Threat.parse` **at import time**, sorted by filename. The api resolves a threat id through `loadThreats` (`apps/api/src/threat/threat.service.ts`), which reads this map plus the campaign's own `custom_threat` rows (issue #43) |
 | `packNames()` | Folder names under `packs/` |
 | `loadPackRaw(name)` | `pack.json` plus `characters: [...]` from `characters/*.json` (sorted by filename, so `01-`, `02-` prefixes set the order). A missing `characters/` folder is fine. Unparsed |
 | `loadPack(name)` | `Pack.parse(loadPackRaw(name))`; throws on a bad pack |
@@ -183,6 +183,12 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44; NPC presets, #47; places, #50) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
 | Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40; Frameworks, #45) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.5, 24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
+
+**`custom` is not a book.** A stat block the GM writes or clones (issue #43) carries `source: "custom"` (cite
+`Custom`), lives in that campaign's `custom_threat` rows and has no page, so it gets no row in this table: `BOOKS` is
+typed over `BookThreatSource` (every source but `custom`), which keeps it out of `BookSource`, the Books tab and the
+`book:*` relay by construction. `validate` refuses a `threats/*.json` whose source is `custom` or whose id starts with
+`custom-`, so a file can never shadow one a GM wrote. Anything that shows a source beside a threat reads `sourceName()`.
 
 The seven books added for the bestiary (GitHub issue #44) sit in `SOURCES`, not `THREAT_ONLY_SOURCES`: each also holds
 scene, item, NPC or location data that other work types as `Source`. Church of Steel joins them for its scene presets (issue #39).
@@ -406,7 +412,8 @@ The entry shapes reuse `CodexInput` from `packages/shared/src/codex.ts`. The ser
 |---|---|---|
 | `campaign` | `{ name (1–100), tier (1–5), framework? (≤ 5000), patron? (≤ 200), homebrew? (false) }` | `homebrew`: the builds may use the homebrew books |
 | `factions[]` | `CodexInput.faction` + `key` | `name`, `keywords[]` (≤ 20), `stance` (`ally`/`neutral`/`rival`/`enemy`), `notes`, `secrets` |
-| `locations[]` | `CodexInput.location`, with `parent?: key` in place of `parentId` | `name`, `description`, `gmNotes`, `hazards`, `hazardList[]` (issue #49: `{ id, kind: "book", hazardId }` with a `scene-presets/hazards` row id, or the GM's own; `validate` checks every `hazardId`), `revealed` |
+| `locations[]` | `CodexInput.location`, with `parent?: key` in place of `parentId` | `name`, `description`, `gmNotes`, `hazards`, `revealed` |
+| `threats[]` | `Threat` without `id`, `source` and `page` (what `threat.save` takes), at most 100 | The pack's own stat blocks (issue #43). `seed.ts` saves them before the NPCs and beats, which name one as `custom-<slug>` where the slug comes from the name |
 | `npcs[]` | `CodexInput.npc`, with `faction?: key` in place of `factionId` | `name`, `role`, `description`, `gmNotes`, `secrets`, `attitude` (`hostile` … `helpful`, Core p.168), `statSource`, `revealed` |
 | `handouts[]` | `CodexInput.handout` + `key` | `title`, `body` (≤ 20000), `revealed` |
 | `adventures[]` | `CodexInput.adventure` + `key` + `beats[]` | `title`, `premise`, `status` (`planned`/`running`/`done`) |
@@ -426,7 +433,7 @@ required. Entity semantics: [campaign-model.md](campaign-model.md).
 | `beats[].location` | A location key |
 | `beats[].npcs[]` | NPC keys |
 | `beats[].handouts[]` | Handout keys |
-| `encounter[].threatId`, `npcs[].statSource.threatId` | A threat id. `validate.ts` checks this against the loaded threats; the schema doesn't |
+| `encounter[].threatId`, `npcs[].statSource.threatId` | A threat id. `validate.ts` checks this against the loaded threats plus the pack's own `threats` (issue #43); the schema doesn't |
 
 ### Prepared encounters (`EncounterEntry`, `codex.ts`)
 
@@ -455,7 +462,7 @@ is always `threatClassAt` on the printed block (Core p.323).
 
 | `kind` | Extra field | Meaning |
 |---|---|---|
-| `bestiary` | `threatId` | Uses a threat file's stat block |
+| `bestiary` | `threatId` | Uses a threat file's stat block, or one of the campaign's own (`custom-<slug>`, issue #43) |
 | `quick` | `tier` (1–4) | Quick NPC table, Core p.326 |
 | `none` | — | No stats (the default) |
 

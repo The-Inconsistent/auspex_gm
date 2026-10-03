@@ -69,10 +69,15 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   line and printed text in GM NOTES, the faction linked by name when the codex has it. The first presets are the
   creation catalogue's 16 patrons.
 - **NPC statSource**: one of `bestiary` (a `threatId` from any loaded book), `quick` (a Tier, from the Quick NPC table,
-  core p.326, with an optional specialty Skill, rules-flow §11.87), or `none`. Custom stat blocks aren't built yet. The Mechanicus has no bestiary entries in the core
+  core p.326, with an optional specialty Skill, rules-flow §11.87), or `none`. A `bestiary` id may also be one of the campaign's own custom threats (`custom-<slug>`, issue #43). The Mechanicus has no bestiary entries in the core
   book; its stat blocks come from the homebrew High Altar of Technology (`hat-*` threats), Redacted Records and
   Redacted Records 2 (`rr1-*`, `rr2-*`), Darktide and Litanies of the Lost (docs/data.md §4).
-- **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
+- **Custom threats** (issue #43): a stat block the GM writes in CODEX › THREATS, from blank or cloned from a book
+  entry, kept with the campaign (at most 100). It is usable wherever a bestiary threat is — a prepared encounter,
+  `+ THREAT`, an NPC's stat source — because the GM's app merges `codex.customThreats` into the one bestiary list every
+  picker reads. Players never receive them (`toPlayerCodex`), export and import carry them, and `freshStart` keeps them.
+  Deleting one is refused while a scene or an NPC names it.
+- **Prepared encounter**: a list of `{threatId, count, asMob, marker, label, visibility, profiles, scale}` (`EncounterEntry`, see [data.md](data.md)). "Start encounter" on the beat
   loads it into the tracker. Each entry's threat comes from the `ThreatPicker` (search, plus faction, class-at-Tier and
   book chips), and a scene card prints the threat's name, not its id. A budget panel checks the roster against Building
   Encounters line by line, each reading UNDER / ON TARGET / OVER: Troops (2 per Agent), of those in Mobs (half, but a

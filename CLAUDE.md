@@ -144,6 +144,8 @@ apps/api/src/
                library.service.ts, library.schema.ts (library_character: characters outside any campaign)
   encounter/   encounter.actions.ts (encounters, turns, combatants, beat.startEncounter), encounter.schema.ts
   codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts
+  threat/      threat.schema.ts (custom_threat: the GM's own stat blocks), threat.actions.ts (threat.save/delete),
+               threat.service.ts (loadThreats: bestiary + this campaign's customs, checkThreats)
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
 apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
@@ -272,4 +274,6 @@ These are binding; follow them when writing code and use them when reviewing:
 ## Not built yet
 
 - Advanced Creation (Core pp.38–39)
+- The five **Additional Ruin Actions** (TA p.7) as data behind a GM-only `/threat-parts`, offered as ready-made Ruin
+  abilities in that editor (issue #43 step 5)
 - Server-side undo history (client undo is inverse deltas)
