@@ -15,7 +15,8 @@ import {
 } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { z } from "zod";
-import { CampaignExport, CreateGame, freshStart } from "@wg/shared";
+import { places } from "@wg/data";
+import { CampaignExport, CreateGame, freshStart, placeSummary } from "@wg/shared";
 import { COOKIE, readCookie, resolveCtx, resolveGuest, signedInUser } from "../auth/auth.service.ts";
 import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
@@ -78,6 +79,8 @@ function setGuestCookie(res: Response, token: string) {
     path: "/",
   });
 }
+
+const PLACES = [...places.values()].map(placeSummary); // in file order, parents first
 
 @Controller()
 export class CampaignController {
@@ -195,6 +198,17 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return npcPresets(await campaignHomebrew(campaignId));
+  }
+
+  // The books' places for CODEX › LOCATIONS' ADD FROM BOOK (issue #50): names, pages and nesting only. GM only, like
+  // every preset; the printed text stays here until codex.addPlaces copies a place into the campaign.
+  @Get("campaigns/:id/places")
+  async places(@Param("id") id: string, @Req() req: Request) {
+    const campaignId = parse(CampaignId, id);
+    const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    return PLACES;
   }
 
   // Book tables for CODEX › NPCS' ROLL NAME and ROLL LOOK (issue #48). Book text, so GM only like the bestiary; only

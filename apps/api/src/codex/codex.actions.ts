@@ -1,14 +1,23 @@
+import { randomUUID } from "node:crypto";
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { hazards, threats } from "@wg/data";
+import { hazards, places, threats } from "@wg/data";
 import type { z } from "zod";
-import { LocationHazard, wouldCycle, type Action, type ActionResult, type CodexInput } from "@wg/shared";
+import {
+  LocationHazard,
+  MAX_PLACES_PER_ADD,
+  placeNotes,
+  wouldCycle,
+  type Action,
+  type ActionResult,
+  type CodexInput,
+} from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { adventure, beat, faction, handout, location, npc } from "./codex.schema.ts";
 
-export type CodexAction = Extract<Action, { type: "codex.save" | "codex.delete" | "beat.reorder" }>;
+export type CodexAction = Extract<Action, { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" }>;
 
 const codexTable = { faction, adventure, beat, location, npc, handout } as const;
 type RefTable = typeof faction | typeof adventure | typeof location | typeof npc | typeof handout | typeof character;
@@ -183,6 +192,37 @@ export async function applyCodexAction(
         fail("Reorder must list every beat exactly once");
       for (const [order, bid] of a.ids.entries()) await tx.update(beat).set({ order }).where(eq(beat.id, bid));
       return { ok: true };
+    }
+
+    // ADD FROM BOOK (issue #50): the place and everything inside it, from the server's own data, so the client never
+    // sends book text. Parents come first in a place file, so one pass finds the subtree and one insert keeps it nested.
+    case "codex.addPlaces": {
+      const root = places.get(a.placeId) ?? fail(`Unknown place "${a.placeId}"`);
+      const subtree = new Set([root.id]);
+      for (const p of places.values()) if (p.parent && subtree.has(p.parent)) subtree.add(p.id);
+      // ponytail: MAX_PLACES_PER_ADD keeps one action's insert small; a whole system goes in world by world.
+      if (subtree.size > MAX_PLACES_PER_ADD)
+        fail(`${root.name} holds ${subtree.size - 1} places; add the places inside it one by one`);
+      await checkRefs(tx, { campaignId: cid, table: location, ids: [a.parentId], what: "Parent location" });
+      const ids = new Map([...subtree].map((id) => [id, randomUUID()]));
+      // One createdAt per row in book order, as import does: one transaction shares one now(), and lists load in
+      // createdAt order.
+      const t0 = Date.now();
+      await tx.insert(location).values(
+        // Every id in subtree came from places, and validate puts parents first, so each lookup below exists.
+        [...subtree].map((id, i) => {
+          const p = places.get(id)!;
+          return {
+            id: ids.get(id)!,
+            campaignId: cid,
+            name: p.name,
+            parentId: p.id === root.id ? a.parentId : ids.get(p.parent!)!,
+            gmNotes: placeNotes(p),
+            createdAt: new Date(t0 + i),
+          };
+        }),
+      );
+      return { ok: true, id: ids.get(root.id)! };
     }
   }
 }

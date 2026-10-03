@@ -8,6 +8,7 @@ export * from "./flavour.ts";
 export * from "./scene-presets.ts";
 export * from "./faction-presets.ts";
 export * from "./npc-presets.ts";
+export * from "./places.ts";
 export * from "./actions.ts";
 export * from "./pack.ts";
 export * from "./access.ts";

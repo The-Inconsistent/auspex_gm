@@ -25,6 +25,7 @@ import {
   type FactionPresets,
   type FlavourTable,
   type NpcPreset,
+  type PlaceSummary,
   type FrameworkCatalogue,
   type LibraryCharacter,
   type LibraryEntry,
@@ -1800,6 +1801,62 @@ test("a library character comes into a campaign as a copy (issue #14 step 4)", a
     build: { ...augmented, gm: { approved: ["talent/augmetic/xp"] } },
   });
   assert.ok(ticked.ok, JSON.stringify(ticked));
+});
+
+test("ADD FROM BOOK copies a printed place and the places inside it (issue #50)", async (t) => {
+  const gm = await newCampaign("Places", 3);
+  t.after(() => gm.socket.close());
+  const path = `/campaigns/${gm.campaignId}/places`;
+  const res = await get(path, bearer(gm.gmClerk));
+  assert.equal(res.status, 200);
+  const list = (await res.json()) as PlaceSummary[];
+  const primus = list.find((p) => p.id === "core-gilead-primus")!;
+  assert.deepEqual(Object.keys(primus).sort(), ["id", "name", "page", "parentId", "source"], "no printed text");
+  assert.equal((await get(path, bearer(clerk("stranger")))).status, 401);
+
+  const sector = await gm.send({ type: "codex.save", kind: "location", data: { name: "Sector", revealed: true } });
+  assert.ok(sector.ok && sector.id);
+  const added = await gm.send({ type: "codex.addPlaces", placeId: primus.id, parentId: sector.id });
+  assert.ok(added.ok && added.id);
+  await eventually(() => (gm.codex()?.locations.length ?? 0) > 2, "the copied places");
+  const world = gm.codex()!.locations.find((l) => l.id === added.id)!;
+  const inside = gm.codex()!.locations.filter((l) => l.parentId === world.id);
+  assert.equal(world.parentId, sector.id);
+  assert.equal(world.name, primus.name);
+  assert.deepEqual([world.revealed, world.description], [false, ""], "hidden, and DESCRIPTION is the GM's to write");
+  assert.equal(world.gmNotes.split("\n", 1)[0], "Core p.304", "GM NOTES open with the cite");
+  assert.deepEqual(
+    inside.map((l) => l.name),
+    list.filter((p) => p.parentId === primus.id).map((p) => p.name),
+    "the places inside come along, nested",
+  );
+
+  assert.deepEqual(await gm.send({ type: "codex.addPlaces", placeId: "nope", parentId: null }), {
+    ok: false,
+    error: 'Unknown place "nope"',
+  });
+  assert.deepEqual(await gm.send({ type: "codex.addPlaces", placeId: primus.id, parentId: crypto.randomUUID() }), {
+    ok: false,
+    error: "Parent location not found",
+  });
+
+  const kael = await gm.send({ type: "character.create", name: "Kael" });
+  assert.ok(kael.ok && kael.id);
+  const token = await gm.send({ type: "token.issue", characterId: kael.id });
+  assert.ok(token.ok && token.token);
+  assert.equal((await get(path, { cookie: `wg_token=${token.token}` })).status, 403);
+  const phone = connect({ auth: { token: token.token } });
+  t.after(() => phone.socket.close());
+  await eventually(() => !!phone.codex(), "the player's codex");
+  assert.deepEqual(await phone.send({ type: "codex.addPlaces", placeId: primus.id, parentId: null }), {
+    ok: false,
+    error: "GM only",
+  });
+  // Only the revealed Sector reaches the phone; the copies start hidden, and their text never leaves the GM's seat.
+  assert.deepEqual(
+    phone.codex()!.locations.map((l) => [l.name, l.gmNotes]),
+    [["Sector", ""]],
+  );
 });
 
 test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {

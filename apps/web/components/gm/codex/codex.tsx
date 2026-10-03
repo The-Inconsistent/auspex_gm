@@ -3,6 +3,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { Fragment, useMemo, useState, type MouseEvent } from "react";
 
 import {
+  parseCite,
   placeTree,
   type ActionInput,
   type Character,
@@ -11,11 +12,13 @@ import {
   type FlavourTable,
   type HazardTable,
   type NpcPreset,
+  type PlaceSummary,
   type PlaceNode,
   type Threat,
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -25,6 +28,7 @@ import { FactionCard } from "./components/faction-card/faction-card";
 import { FactionPicker } from "./components/faction-picker/faction-picker";
 import { NpcCard } from "./components/npc-card/npc-card";
 import { NpcPicker } from "./components/npc-picker/npc-picker";
+import { PlacePicker } from "./components/place-picker/place-picker";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
 
@@ -37,6 +41,7 @@ type CodexViewProps = {
   initialKind?: CodexKind;
   factionPresets: FactionPresets;
   npcPresets: NpcPreset[];
+  places: PlaceSummary[]; // the books' places, for ADD FROM BOOK (issue #50)
   flavour: FlavourTable[];
   hazards: HazardTable[]; // the books' hazard tables, for a place's list (issue #49)
   bestiary: Threat[];
@@ -47,6 +52,11 @@ type CodexViewProps = {
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
 const stripId = ({ id, revealedAt, ...rest }: Row) => rest;
+// A place copied from a book opens its GM NOTES with the cite (issue #50): split off, it becomes a link to the page.
+const citeOf = (notes: string) => {
+  const [first = "", ...rest] = notes.split("\n");
+  return parseCite(first) ? { cite: first, rest: rest.join("\n").trim() } : null;
+};
 // A button inside <summary> would also open or close the row; run its action only.
 const only = (fn: () => void) => (e: MouseEvent) => {
   e.preventDefault();
@@ -60,6 +70,7 @@ export function CodexView({
   initialKind = "npc",
   factionPresets,
   npcPresets,
+  places,
   flavour,
   hazards,
   bestiary,
@@ -139,7 +150,16 @@ export function CodexView({
           r[key] ? (
             <div key={key} className={GM_ONLY_FIELDS.has(key) ? "field plate" : "field"}>
               <span className="label">{label}</span>
-              <pre className="text">{String(r[key])}</pre>
+              {key === "gmNotes" && kind === "location" && citeOf(String(r[key])) ? (
+                <>
+                  <span>
+                    <PageCite cite={citeOf(String(r[key]))!.cite} />
+                  </span>
+                  <pre className="text">{citeOf(String(r[key]))!.rest}</pre>
+                </>
+              ) : (
+                <pre className="text">{String(r[key])}</pre>
+              )}
             </div>
           ) : null,
         )}
@@ -213,6 +233,9 @@ export function CodexView({
             )}
             {kind === "npc" && npcPresets.length > 0 && (
               <NpcPicker presets={npcPresets} codex={codex} send={send} onError={setError} />
+            )}
+            {kind === "location" && places.length > 0 && (
+              <PlacePicker places={places} codex={codex} send={send} onError={setError} />
             )}
             {kind === "faction" && factionPresets.presets.length > 0 && (
               <FactionPicker

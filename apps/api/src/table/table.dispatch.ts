@@ -10,7 +10,7 @@ import { applyEncounterAction } from "../encounter/encounter.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
 export function touches(a: Action): { state: boolean; codex: boolean } {
-  if (a.type === "codex.save" || a.type === "codex.delete" || a.type === "beat.reorder")
+  if (a.type === "codex.save" || a.type === "codex.delete" || a.type === "beat.reorder" || a.type === "codex.addPlaces")
     return { state: false, codex: true };
   // character.delete drops the Agent from handout audiences (character.actions).
   if (a.type === "beat.startEncounter" || a.type === "character.delete" || a.type.startsWith("session."))
@@ -95,6 +95,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "codex.save":
     case "codex.delete":
     case "beat.reorder":
+    case "codex.addPlaces":
       return applyCodexAction(tx, { ctx, action });
 
     case "invite.create":

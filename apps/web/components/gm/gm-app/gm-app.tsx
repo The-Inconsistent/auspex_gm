@@ -8,6 +8,7 @@ import {
   type FactionPresets,
   type FlavourTable,
   type NpcPreset,
+  type PlaceSummary,
   type FrameworkCatalogue,
   type RuleEntry,
   type ScenePresets,
@@ -44,6 +45,7 @@ type GmAppProps = {
   factionPresets: FactionPresets;
   npcPresets: NpcPreset[];
   flavour: FlavourTable[];
+  places: PlaceSummary[];
 };
 
 export function GmApp({
@@ -56,6 +58,7 @@ export function GmApp({
   factionPresets,
   npcPresets,
   flavour,
+  places,
 }: GmAppProps) {
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
@@ -154,6 +157,7 @@ export function GmApp({
                 factionPresets={factionPresets}
                 npcPresets={npcPresets}
                 flavour={flavour}
+                places={places}
                 hazards={presets.hazards}
                 bestiary={bestiary}
                 tier={state.campaign.tier}

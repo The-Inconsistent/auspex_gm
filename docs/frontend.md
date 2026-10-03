@@ -302,7 +302,7 @@ const { state, codex, online, send } = useTable(campaignId);
 |---|---|---|
 | TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
 | PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards` |
-| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint), `codex/components/faction-picker` (ADD FROM BOOK: `presetFaction` per printed faction), `codex/components/stat-source-field` (an NPC's BESTIARY threat through `ThreatPicker`, QUICK Tier chips and a specialty Skill, or NONE; issue #47), `codex/components/npc-card` (the Attitude's DN, the `StatBlock`, or the Quick NPC row with the p.326 scaling lines; its `add-to-scene` child appends a bestiary NPC to a scene's prepared encounter with `lib/add-to-scene`, one `codex.save`), `codex/components/npc-picker` (ADD FROM BOOK: `presetNpc` per printed NPC, a name search and a book filter in BOOKS order), `codex/components/npc-roller` (ROLL NAME into NAME and ROLL LOOK onto DESCRIPTION, from GM-only `/flavour` through `rollOn` and `rollLook`; sends nothing until SAVE, issue #48) |
+| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint), `codex/components/faction-picker` (ADD FROM BOOK: `presetFaction` per printed faction), `codex/components/stat-source-field` (an NPC's BESTIARY threat through `ThreatPicker`, QUICK Tier chips and a specialty Skill, or NONE; issue #47), `codex/components/npc-card` (the Attitude's DN, the `StatBlock`, or the Quick NPC row with the p.326 scaling lines; its `add-to-scene` child appends a bestiary NPC to a scene's prepared encounter with `lib/add-to-scene`, one `codex.save`), `codex/components/npc-picker` (ADD FROM BOOK: `presetNpc` per printed NPC, a name search and a book filter in BOOKS order), `codex/components/npc-roller` (ROLL NAME into NAME and ROLL LOOK onto DESCRIPTION, from GM-only `/flavour` through `rollOn` and `rollLook`; sends nothing until SAVE, issue #48), `codex/components/place-picker` (ADD FROM BOOK for places: each book's tree from GM-only `/places`, a name search, book chips in BOOKS order, INSIDE, and ADD TO CODEX sending `codex.addPlaces`; issue #50) |
 | PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx` |
 
 ### 3.1 TRACK: live combat tracker
@@ -589,6 +589,11 @@ The tests are in `lib/command/command.test.ts`.
   as a root, so no place disappears. Every place select lists in tree order, indented (`placeOptions`, `lib/places`).
   INSIDE leaves out the place and everything under it. A location's DELETE asks a second tap when places are inside
   (rules-flow §11.96).
+- **ADD FROM BOOK** (`PlacePicker`, LOCATIONS only, issue #50) lists the books' places from `/places` (names and
+  nesting only), each book a fold with its tree, or flat matches for a name search. Picking one shows its cite, its
+  parent, "COPIES X + N INSIDE" and what goes into GM NOTES; ADD TO CODEX sends `codex.addPlaces` with the INSIDE
+  chosen. A place holding 60 or more is refused, so a system goes in world by world. A copied place opens its GM NOTES
+  with the cite, which the opened row shows as a `PageCite` link.
 - **`CodexEditor`** is generic, driven by `fieldsFor(kind, codex)`:
 
 | Kind | Fields |

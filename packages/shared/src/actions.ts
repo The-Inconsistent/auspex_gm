@@ -225,6 +225,12 @@ export const Action = z.union([
       id,
     }),
     z.object({ type: z.literal("beat.reorder"), adventureId: id, ids: z.array(id).max(200) }),
+    // Copies a book's place and every place inside it (issue #50); the server reads the text from its own data.
+    z.object({
+      type: z.literal("codex.addPlaces"),
+      placeId: z.string().regex(/^[a-z0-9-]+$/),
+      parentId: id.nullable().default(null),
+    }),
     z.object({ type: z.literal("beat.startEncounter"), id }),
   ]),
   ...codexSave,
