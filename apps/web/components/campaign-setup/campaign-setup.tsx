@@ -40,7 +40,7 @@ const isSetupStep = (s: string): s is SetupStep => AFTER_CREATE.some((a) => a ==
 // PARTY's own pickers and actions. Every step may be skipped; the SETUP tab lists what's left.
 export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, hazards }: CampaignSetupProps) {
   const router = useRouter();
-  const { state, codex, send } = useTable(campaignId);
+  const { state, codex, send, online } = useTable(campaignId);
   const [step, setStep] = useState<SetupStep>("setting");
   const [error, setError] = useState<string | null>(null);
   // OPEN THE CAMPAIGN pulses (aria-busy) from the tap until the GM app is up.
@@ -50,6 +50,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
   const back = AFTER_CREATE[at - 1];
   const next = AFTER_CREATE[at + 1];
 
+  // A step tab, BACK or NEXT: that step, from the top, with the last step's refusal gone.
   const go = (s: SetupStep) => {
     setError(null);
     setStep(s);
@@ -61,6 +62,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
 
   return (
     <div className="bld">
+      {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
       <header className="band torn bld-head">
         <Link href={`/c/${campaignId}`} aria-label="Open the campaign" className="display" style={{ fontSize: 30 }}>
           ◂

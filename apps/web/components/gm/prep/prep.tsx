@@ -135,6 +135,12 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
     if (r.ok) setAdvDraft(null);
   };
 
+  // EDIT on the adventure: its title and premise, with no marks left from an earlier SAVE.
+  const editAdventure = (a: { title: string; premise: string }) => {
+    advFields.reset();
+    setAdvDraft({ title: a.title, premise: a.premise });
+  };
+
   // RUN SCENE: puts the beat's prepared encounter live and jumps to the tracker.
   const runBeat = async (b: Beat) => {
     const r = await send({ type: "beat.startEncounter", id: b.id });
@@ -158,10 +164,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
             aria-label="New adventure title"
             placeholder="NEW ADVENTURE"
             value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              newFields.clear();
-            }}
+            onChange={(e) => setTitle(e.target.value)}
             {...newFields.marks()}
           />
           <button className="btn" aria-label="Create adventure">
@@ -189,10 +192,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                   id="adv-title"
                   className="input"
                   value={advDraft.title}
-                  onChange={(e) => {
-                    setAdvDraft({ ...advDraft, title: e.target.value });
-                    advFields.clear("title");
-                  }}
+                  onChange={(e) => setAdvDraft({ ...advDraft, title: e.target.value })}
                   {...advFields.marks("title")}
                 />
                 <FieldError {...advFields.reason("title")} />
@@ -227,7 +227,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                 </details>
               )}
               <div>
-                <button className="btn sm" onClick={() => setAdvDraft({ title: adv.title, premise: adv.premise })}>
+                <button className="btn sm" onClick={() => editAdventure(adv)}>
                   EDIT ADVENTURE
                 </button>
               </div>

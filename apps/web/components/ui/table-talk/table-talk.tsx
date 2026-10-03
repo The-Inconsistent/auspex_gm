@@ -74,10 +74,7 @@ function LineList({ id, label, examples, lines, onChange }: LineListProps) {
           placeholder="Type another…"
           maxLength={MAX_TABLE_LINE}
           value={draft}
-          onChange={(e) => {
-            setDraft(e.target.value);
-            fields.clear();
-          }}
+          onChange={(e) => setDraft(e.target.value)}
           {...fields.marks()}
         />
         <button className="btn" disabled={full}>

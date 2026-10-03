@@ -17,7 +17,7 @@ export type Draft = {
 };
 export const NEW_DRAFT: Draft = {
   name: "",
-  tier: 2, // the lobby's old NEW GAME form started here too
+  tier: 1, // where the lobby's NEW GAME form started
   framework: "",
   frameworkBonus: "",
   patron: "",

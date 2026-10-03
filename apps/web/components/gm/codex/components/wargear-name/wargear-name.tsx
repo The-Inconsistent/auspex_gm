@@ -1,6 +1,7 @@
 "use client";
 import { sourceCite, type Wargear } from "@wg/shared";
 
+import type { FieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import { wargearLabels } from "@/lib/wargear-label/wargear-label";
 
 type WargearNameProps = {
@@ -8,13 +9,14 @@ type WargearNameProps = {
   name: string;
   wargearId: string | null;
   catalogue: Wargear[];
+  marks?: ReturnType<FieldErrors["marks"]>; // SAVE's mark when NAME is empty (useFieldErrors)
   onChange: (v: { name: string; wargearId: string | null }) => void;
 };
 
 // An item's NAME, which searches the Wargear catalogue (issue #51): picking an entry links it, so GIVE builds the
 // profile and cite from the book; anything else typed keeps the name as a custom item. A native datalist, as the
 // requisition form's ITEM is.
-export function WargearName({ id, name, wargearId, catalogue, onChange }: WargearNameProps) {
+export function WargearName({ id, name, wargearId, catalogue, marks, onChange }: WargearNameProps) {
   const { labelOf, find } = wargearLabels(catalogue);
   const linked = catalogue.find((w) => w.id === wargearId);
   // Typing: a label that names an entry links it; the name stays as typed until then.
@@ -27,6 +29,7 @@ export function WargearName({ id, name, wargearId, catalogue, onChange }: Wargea
       <input
         id={id}
         className="input"
+        {...marks}
         list={`${id}-catalogue`}
         // The name alone, never the cite-carrying label, so an edit can't save the cite into it.
         value={name}

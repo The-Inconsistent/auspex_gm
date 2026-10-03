@@ -15,7 +15,7 @@ type PremiseStepProps = Premise & {
 };
 
 // PREMISE: the Framework, "a sentence or two" saying who the Agents are, what they do and their shared goal (Core p.18).
-// SETUP's picker fills in the printed names only (rules-flow §11.80); players see all three under MISSION.
+// SETUP's picker fills in the printed names only (rules-flow §11.80).
 export function PremiseStep({ catalogue, tier, framework, frameworkBonus, patron, onChange }: PremiseStepProps) {
   const [picking, setPicking] = useState(false);
 
@@ -83,15 +83,6 @@ export function PremiseStep({ catalogue, tier, framework, frameworkBonus, patron
           value={frameworkBonus}
           onChange={(e) => onChange({ frameworkBonus: e.target.value })}
         />
-      </div>
-      <div className="fw-phone">
-        <span className="label">A PHONE SHOWS</span> <b>MISSION</b> {framework.trim() || "nothing yet"}
-        {patron.trim() && (
-          <>
-            {" "}
-            · <b>PATRON</b> {patron}
-          </>
-        )}
       </div>
     </>
   );

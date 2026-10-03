@@ -21,8 +21,8 @@ import {
 import { HazardChips } from "@/components/gm/prep/components/hazard-chips/hazard-chips";
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { NumberInput } from "@/components/ui/number-input/number-input";
-import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import { TableRoll } from "@/components/ui/table-roll/table-roll";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import { hazardView, rollHazards } from "@/lib/hazards/hazards";
 
 type HazardListProps = {
@@ -180,10 +180,7 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
               aria-label="Your own hazard: name"
               placeholder="Name"
               value={own.name}
-              onChange={(e) => {
-                setOwn({ ...own, name: e.target.value });
-                ownFields.clear("name");
-              }}
+              onChange={(e) => setOwn({ ...own, name: e.target.value })}
               {...ownFields.marks("name")}
             />
             <select
@@ -210,18 +207,21 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
           </div>
           <div className="keys" style={{ paddingTop: 0 }}>
             <input
+              id={`${id}-own-effect`}
               className="input"
               style={{ flex: "1 1 200px", width: "auto" }}
               aria-label="Your own hazard: what happens"
               placeholder="What happens"
               value={own.effect}
               onChange={(e) => setOwn({ ...own, effect: e.target.value })}
+              {...ownFields.marks("effect")}
             />
             <button className="btn sm" disabled={full} onClick={addOwn}>
               + ADD
             </button>
           </div>
           <FieldError {...ownFields.reason("name")} />
+          <FieldError {...ownFields.reason("effect")} />
         </div>
 
         <div className="stack" style={{ gap: 8 }}>

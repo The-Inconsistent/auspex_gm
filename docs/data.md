@@ -410,7 +410,7 @@ The entry shapes reuse `CodexInput` from `packages/shared/src/codex.ts`. The ser
 
 | Field | Shape | Notes |
 |---|---|---|
-| `campaign` | `{ name (1–100), tier (1–5), framework? (≤ 5000), patron? (≤ 200), homebrew? (false) }` | `homebrew`: the builds may use the homebrew books |
+| `campaign` | `{ name (1–100), tier (1–5), framework? (≤ 5000), frameworkBonus? (≤ 1000), patron? (≤ 200), kind? and limits? (`TableLines`: ≤ 12 lines of ≤ 60, rules-flow §11.79), homebrew? (false) }` | `homebrew`: the builds may use the homebrew books |
 | `factions[]` | `CodexInput.faction` + `key` | `name`, `keywords[]` (≤ 20), `stance` (`ally`/`neutral`/`rival`/`enemy`), `notes`, `secrets` |
 | `locations[]` | `CodexInput.location`, with `parent?: key` in place of `parentId` | `name`, `description`, `gmNotes`, `hazards`, `revealed` |
 | `threats[]` | `Threat` without `id`, `source` and `page` (what `threat.save` takes), at most 100 | The pack's own stat blocks (issue #43). `seed.ts` saves them before the NPCs and beats, which name one as `custom-<slug>` where the slug comes from the name |
@@ -1018,7 +1018,7 @@ rulings, and vehicles (see the Wargear catalogue).
 | `talents` | `Talent` | `category` talent, faith, exarch, prayer or vow; XP, requirements, effect |
 | `packages` | `Package` | Ascension and Advancement Packages |
 | `disciplines`, `powers` | `Discipline`, `PsychicPower` | Psychic powers. A discipline's `requires` is who may learn it (checked for every power in it); a power's `requires` is only its own prerequisite. `tags` are the power's own Keywords (PSYCHIC), not Faction Keywords; `alsoIn` lists other disciplines that print it. Minor powers and the free Universal Psyker Abilities are the pseudo-disciplines `minor` and `universal-psyker-abilities` |
-| `patrons` | `Patron` | Patrons (Core pp.310–313, FSPG) and their Framework options, each a `FrameworkBody`: description, Limitations (Requirements, shown and never checked, rules-flow.md §11.81), Wargear and Bonus (Grants). Not read by the builder; PARTY's Framework picker shows them to the GM (issue #45) |
+| `patrons` | `Patron` | Patrons (Core pp.310–313, FSPG) and their Framework options, each a `FrameworkBody`: description, Limitations (Requirements, shown and never checked, rules-flow.md §11.81), Wargear and Bonus (Grants). Not read by the builder; SETUP's Framework picker and NEW CAMPAIGN's PREMISE show them to the GM (issue #45) |
 | `frameworks` | `Framework` | Frameworks with no patron: Core p.20's examples (with the printed `tier`, `characters`, `enemies`), Redacted Records' by Faction (`factionId`) and by Tier. A Framework printed both on its own and under a patron is kept once, under the patron |
 | `languages` | `Language` | The Core p.31 languages: `keywords` that allow the one free pick, `xenos` for an alien tongue. Low Gothic (everyone) has no record; unlisted languages are GM-approved write-ins (rules-flow.md §11.48–50) |
 | `flavour` | `FlavourTable` | Names, appearance. The name lists and the Eye Colour, Hair Colour and Features tables also go to the GM's `/flavour` for CODEX › NPCS' ROLL NAME and ROLL LOOK (`rollOn`, issue #48) |

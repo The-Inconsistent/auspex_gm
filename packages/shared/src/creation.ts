@@ -537,7 +537,7 @@ export const Framework = z.object({
 });
 export type Framework = z.infer<typeof Framework>;
 
-// GET /api/campaigns/:id/frameworks: PARTY's Framework picker (issue #45). Book text, so GM only.
+// GET /api/campaigns/:id/frameworks: SETUP's Framework picker (issue #45); GET /api/frameworks for NEW CAMPAIGN. Book text, so GM only.
 export const FrameworkCatalogue = z.object({ patrons: z.array(Patron), frameworks: z.array(Framework) });
 export type FrameworkCatalogue = z.infer<typeof FrameworkCatalogue>;
 

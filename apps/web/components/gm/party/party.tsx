@@ -447,10 +447,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           className="input"
           aria-label="New character name"
           value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            agentFields.clear();
-          }}
+          onChange={(e) => setName(e.target.value)}
           placeholder="NEW AGENT NAME"
           {...agentFields.marks()}
         />

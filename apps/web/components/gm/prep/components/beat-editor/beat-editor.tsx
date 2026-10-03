@@ -15,10 +15,10 @@ import {
   type Threat,
 } from "@wg/shared";
 
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { ThreatScale } from "@/components/ui/threat-scale/threat-scale";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
-import { FieldError } from "@/components/ui/field-error/field-error";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { hazardView } from "@/lib/hazards/hazards";
@@ -101,6 +101,7 @@ export function BeatEditor({
   // lines go, and an exit target deleted while the editor was open (its select shows —) is dropped rather than refused
   // by the server. A Ruin or Glory line with no amount, or a spend with no cost, holds the save.
   const save = async () => {
+    setError(null);
     const pools = savedPools(b);
     if (!pools) return setError("Set the amount of every Ruin and Glory line, and the cost of every spend");
     const exits = b.exits
@@ -108,7 +109,7 @@ export function BeatEditor({
       .filter((e) => e.label.trim() || e.beatId);
     const tests = b.tests.map((t) => ({ ...t, shifts: t.shifts.filter((s) => s.trim()) }));
     const data = { ...b, exits, tests, ...pools };
-    // The save's own schema first, so a missing TITLE is marked on the field rather than refused by the server.
+    // CodexSave first: a nameless scene can't be listed or picked, so TITLE is marked on the field.
     if (!fieldErrors.check(CodexSave.beat, data)) return;
     const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
     if (!r.ok) return setError(r.error);
@@ -161,10 +162,7 @@ export function BeatEditor({
             {...fieldErrors.marks(key)}
             className="input"
             value={b[key]}
-            onChange={(e) => {
-              setB({ ...b, [key]: e.target.value });
-              fieldErrors.clear(key);
-            }}
+            onChange={(e) => setB({ ...b, [key]: e.target.value })}
           />
         ) : (
           <input
@@ -172,10 +170,7 @@ export function BeatEditor({
             {...fieldErrors.marks(key)}
             className="input"
             value={b[key]}
-            onChange={(e) => {
-              setB({ ...b, [key]: e.target.value });
-              fieldErrors.clear(key);
-            }}
+            onChange={(e) => setB({ ...b, [key]: e.target.value })}
           />
         )}
         <FieldError {...fieldErrors.reason(key)} />

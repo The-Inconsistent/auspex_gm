@@ -38,7 +38,7 @@ export function buildRefusal(r: ResolvedBuild, { gmLater = false }: { gmLater?: 
   return problem ? `${problem.what}${problem.cite ? ` (${problem.cite})` : ""}` : null;
 }
 
-// PARTY's Framework picker (issue #45): the printed patrons and Frameworks, without the homebrew books unless the
+// SETUP's Framework picker (issue #45): the printed patrons and Frameworks, without the homebrew books unless the
 // campaign allows them, as /creation filters them.
 export function frameworkCatalogue(homebrew: boolean): FrameworkCatalogue {
   const keep = (r: { source: Source }) => homebrew || SOURCES[r.source].official;
@@ -70,7 +70,7 @@ export function factionPresets(homebrew: boolean): FactionPresets {
 
 // CODEX › NPCS' ADD FROM BOOK (issue #47): the catalogue's patrons, then the transcribed NPCs, without the homebrew
 // books unless the campaign allows them. A patron's printed text runs past GM NOTES' 5,000 characters, so its preset
-// carries the cite only; the text stays in PARTY's Framework picker. A transcribed NPC with a patron's id replaces it.
+// carries the cite only; the text stays in SETUP's Framework picker. A transcribed NPC with a patron's id replaces it.
 export function npcPresets(homebrew: boolean): NpcPreset[] {
   const keep = (p: NpcPreset) => homebrew || p.cites.every((c) => THREAT_SOURCES[c.source].official);
   const byId = new Map(

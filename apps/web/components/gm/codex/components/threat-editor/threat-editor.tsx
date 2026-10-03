@@ -43,6 +43,7 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
 
   const start = (draft: ThreatDraft, slug: string | null = null) => {
     setError(null);
+    fields.reset();
     setEditing({ slug, draft });
   };
 
@@ -50,6 +51,7 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
 
   const save = async () => {
     if (!editing) return;
+    setError(null);
     // The server's own schema first, so a missing NAME or Keyword is marked on its field.
     if (!fields.check(CustomThreatData, editing.draft)) return;
     setBusy(true);

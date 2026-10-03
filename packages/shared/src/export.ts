@@ -86,13 +86,14 @@ export const CampaignExport = z.object({
 });
 export type CampaignExport = z.infer<typeof CampaignExport>;
 
-// The same campaign for a new group: no sessions, empty pools, nothing revealed, every Agent rested. Sheets, builds and
-// XP stay, since a build's XP ledger is spent against `xp`. Given items stay given, because the sheets keep their gear.
+// The same campaign for a new group: no sessions, empty pools, nothing revealed, every Agent rested, and no kind of game
+// or limits, which the new table agrees for itself (Core p.316, rules-flow §11.79). Sheets, builds and XP stay, since a
+// build's XP ledger is spent against `xp`. Given items stay given, because the sheets keep their gear.
 export function freshStart(e: CampaignExport): CampaignExport {
   const { codex: c } = e;
   return {
     ...e,
-    campaign: { ...e.campaign, glory: 0, ruin: 0 },
+    campaign: { ...e.campaign, glory: 0, ruin: 0, kind: [], limits: [] },
     characters: e.characters.map((ch) => ({
       ...ch,
       wounds: 0,

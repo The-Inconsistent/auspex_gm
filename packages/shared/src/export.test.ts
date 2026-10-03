@@ -123,9 +123,10 @@ test("a file that isn't an export is refused", () => {
 });
 
 test("freshStart resets play, keeps the sheet and the XP", () => {
-  const f = freshStart(file);
+  const f = freshStart({ ...file, campaign: { ...file.campaign, kind: ["political"], limits: ["body horror"] } });
   const [c] = f.characters;
   assert.deepEqual([f.campaign.glory, f.campaign.ruin], [0, 0]);
+  assert.deepEqual([f.campaign.kind, f.campaign.limits], [[], []], "a new table agrees its own (§11.79)");
   assert.deepEqual([c!.wounds, c!.shock, c!.wrath, c!.traumatic, c!.conditions], [0, 0, 2, 0, []]);
   assert.equal(c!.xp, 30);
   assert.equal(c!.objectives[0]!.done, false);

@@ -24,13 +24,15 @@ export function sayIssue(i: Issue): string {
   return i.message;
 }
 
-// CREATE, ADD and SAVE check their form with the same zod schema the server parses, before sending. Each refused field
+// CREATE, ADD and SAVE check their form with a shared zod schema before sending. Each refused field
 // gets a red border (aria-invalid, globals.css) and its reason under it (FieldError), and the first one takes the
 // focus; typing in a field clears its mark. Errors are keyed by the field's top-level key ("" for a bare value), and
 // each input's id is `idPrefix + key`.
 export function useFieldErrors(idPrefix: string) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const idOf = (key: string) => idPrefix + key;
+  const clear = (key = "") =>
+    setErrors((e) => (key in e ? Object.fromEntries(Object.entries(e).filter(([k]) => k !== key)) : e));
 
   // The parsed value, or null after marking every field the schema refused.
   const check = <T>(schema: Schema<T>, value: unknown): T | null => {
@@ -48,18 +50,24 @@ export function useFieldErrors(idPrefix: string) {
 
   return {
     check,
-    // An input's marks: aria-invalid (the red border) and the reason it points to.
+    // An input's marks: aria-invalid (the red border), the reason it points to, and typing in it clears them (onInput
+    // fires beside the input's own onChange).
     marks: (key = "") =>
-      errors[key] !== undefined ? { "aria-invalid": true, "aria-describedby": `${idOf(key)}-error` } : {},
+      errors[key] !== undefined
+        ? { "aria-invalid": true, "aria-describedby": `${idOf(key)}-error`, onInput: () => clear(key) }
+        : {},
     // FieldError's props: the reason, under the field.
     reason: (key = "") => ({ id: `${idOf(key)}-error`, error: errors[key] }),
-    // Typing in a field clears its mark.
-    clear: (key = "") =>
-      setErrors((e) => (key in e ? Object.fromEntries(Object.entries(e).filter(([k]) => k !== key)) : e)),
-    // A refusal on a field the form doesn't show by itself (a nested list), as one line for its error banner.
+    // A field edited some other way than typing (a picker, a list) clears its own mark.
+    clear,
+    // A form closed or opened afresh starts unmarked.
+    reset: () => setErrors({}),
+    // A refusal on a field the form doesn't show by itself (a nested list, or the whole form), as one line for its
+    // error banner.
     elsewhere: (shown: readonly string[]) => {
       const key = Object.keys(errors).find((k) => !shown.includes(k));
-      return key === undefined ? null : `${key.toUpperCase()}: ${errors[key]}`;
+      if (key === undefined) return null;
+      return key ? `${key.toUpperCase()}: ${errors[key]}` : (errors[key] ?? null);
     },
   };
 }

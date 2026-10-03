@@ -7,9 +7,11 @@ import { FieldError } from "@/components/ui/field-error/field-error";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 
+import type { TypedKind } from "../../constants";
+
 type AddByNameProps = {
   id: string;
-  kind: "location" | "faction";
+  kind: TypedKind;
   send: Send;
   onError: (error: string | null) => void;
 };
@@ -44,10 +46,7 @@ export function AddByName({ id, kind, send, onError }: AddByNameProps) {
           className="input"
           style={{ maxWidth: 360 }}
           value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            fields.clear();
-          }}
+          onChange={(e) => setName(e.target.value)}
           {...fields.marks()}
         />
         <button className="btn" aria-busy={busy}>

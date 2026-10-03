@@ -599,7 +599,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     both as short lines (`kind`, `limits`, at most 12 of 60 characters each): NEW CAMPAIGN's TABLE step and the GM's
     SETUP tab offer the book's examples and take typed ones, and every phone shows both under MISSION so the
     table remembers. SETUP's first step ticks once a kind of game is set; the limits may rightly stay empty. They travel
-    in an export and a pack. *(User ruling, 2026-10-03; replaces the 2026-10-02 ruling that kept them a reminder.)*
+    in an export and a pack, and FRESH START clears both, since a new group agrees its own. *(User rulings, 2026-10-03;
+    replaces the 2026-10-02 ruling that kept them a reminder.)*
 80. **The Framework Bonus is its own field** (Core p.19, party sheet p.374; GitHub issue #45). The party sheet has a
     FRAMEWORK and a FRAMEWORK BONUS box, so the campaign has `framework` and `frameworkBonus`, and players see both under
     MISSION. The Framework picker shows the printed Bonus to the GM only and fills in names only (the patron's and the

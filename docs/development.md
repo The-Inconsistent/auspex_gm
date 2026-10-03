@@ -29,7 +29,7 @@ bun run dev:web                             # :3000, proxies /api and /socket.io
 cd apps/api && bun run seed volkus --owner user_2abc…   # your Clerk user id; prints /c/<campaignId>
 ```
 
-Or sign in at `http://localhost:3000` as a creator and start an empty game with **NEW GAME** in the lobby.
+Or sign in at `http://localhost:3000` as a creator and start one with **CREATE NEW CAMPAIGN** in the lobby.
 
 ## Aspire
 
@@ -85,7 +85,7 @@ Accounts come from Clerk. Guests with a QR token don't need one, but the GM does
 
 3. Invite yourself under **Users → Invite** and sign up from the link (or **Create user**), then under **Users →**
    your user, set **public metadata** to `{ "role": "creator" }`. Only
-   creators see NEW GAME in the lobby. There's no in-app way to grant it; set it by hand for each GM.
+   creators see CREATE NEW CAMPAIGN in the lobby. There's no in-app way to grant it; set it by hand for each GM.
 4. Copy the keys from **API keys**:
 
    | File | Vars |
@@ -206,7 +206,7 @@ the local diff when there's no PR.
 | Postgres port clash | 5432 and 5433 are taken on the main dev machine, hence 5434 |
 | Login works on localhost but not the LAN | `COOKIE_SECURE=true` on plain http, or the LAN address missing from `WEB_ORIGIN` |
 | Every page is a 500 "Missing publishableKey" | No Clerk keys in `apps/web/.env.local` ([Clerk](#clerk)) |
-| Signed in, but no NEW GAME in the lobby | Your Clerk user has no `{ "role": "creator" }` public metadata, or the session-token claims are missing `metadata` ([Clerk](#clerk)) |
+| Signed in, but no CREATE NEW CAMPAIGN in the lobby | Your Clerk user has no `{ "role": "creator" }` public metadata, or the session-token claims are missing `metadata` ([Clerk](#clerk)) |
 | Sign-in fails, or a signed-in player can't reload or reconnect, when the venue's internet is down | Clerk needs internet: for sign-in, and to refresh the session token about every 60 s. Guests on a QR token depend only on the api, so hand out GUEST QRs if the connection is unreliable |
 | Smoke test fails with 401s on every signed-in call | The api isn't running with `CLERK_TEST_SECRET`, or the test sees a different value |
 | Player page stuck on "NO SIGNAL · RECONNECTING" | The api is down. The client retries a DB refusal every 3 s and reloads on `unauthorized` |
