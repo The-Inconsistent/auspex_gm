@@ -7,8 +7,9 @@ export const FIELD_TYPES = {
   select: { empty: "" },
   picks: { empty: [] }, // toggle chips over `options`, stored as the chosen values
   statSource: { empty: { kind: "none" } }, // an NPC's stats: a bestiary threat, a Quick NPC Tier, or none (issue #47)
+  hazardList: { empty: [] }, // a place's hazards: book rows by id, or the GM's own (issue #49)
 } as const;
 export type FieldType = keyof typeof FIELD_TYPES;
 
 // Fields players never see (toPlayerCodex drops them): drawn on a riveted plate.
-export const GM_ONLY_FIELDS: ReadonlySet<string> = new Set(["gmNotes", "secrets", "hazards"]);
+export const GM_ONLY_FIELDS: ReadonlySet<string> = new Set(["gmNotes", "secrets", "hazards", "hazardList"]);

@@ -1,18 +1,9 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import {
-  BOOKS,
-  BeatTest,
-  presetScene,
-  results,
-  roll,
-  rowsFor,
-  threatCite,
-  type EventTable,
-  type ThreatSource,
-} from "@wg/shared";
+import { BOOKS, BeatTest, presetScene, rowsFor, threatCite, type EventTable, type ThreatSource } from "@wg/shared";
 
+import { TableRoll } from "@/components/ui/table-roll/table-roll";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { dnLabel, testTitle } from "../../utils";
@@ -29,7 +20,6 @@ export function ScenePicker({ adventureId, tables, send, onDone }: ScenePickerPr
   const [tableId, setTableId] = useState(inBook[0]?.id);
   const table = inBook.find((t) => t.id === tableId) ?? inBook[0];
   const [rolled, setRolled] = useState<number | null>(null);
-  const [typed, setTyped] = useState("");
   const [picked, setPicked] = useState<number | null>(null); // index into table.rows
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +28,6 @@ export function ScenePicker({ adventureId, tables, send, onDone }: ScenePickerPr
     setSource(book);
     setTableId(id);
     setRolled(null);
-    setTyped("");
     setPicked(null);
   };
 
@@ -54,13 +43,6 @@ export function ScenePicker({ adventureId, tables, send, onDone }: ScenePickerPr
     setRolled(result);
     const hits = rowsFor(table.rows, result);
     setPicked(hits.length === 1 ? table.rows.indexOf(hits[0]!) : null);
-  };
-
-  // I ROLLED: only a result these dice can show.
-  const handleTyped = (e: ChangeEvent<HTMLInputElement>) => {
-    const digits = e.target.value.replace(/\D/g, "").slice(0, 2);
-    setTyped(digits);
-    if (table && results(table.dice).includes(Number(digits))) land(Number(digits));
   };
 
   // MAKE THIS SCENE: saves the event as a scene, last in the adventure, then closes the picker.
@@ -117,33 +99,7 @@ export function ScenePicker({ adventureId, tables, send, onDone }: ScenePickerPr
         </details>
       )}
 
-      <div className="keys" style={{ alignItems: "center" }}>
-        <button className="btn sm primary" onClick={() => land(roll(table.dice))}>
-          ROLL {table.dice.toUpperCase()}
-        </button>
-        <input
-          className="input"
-          style={{ width: 90 }}
-          aria-label={`I rolled (${table.dice})`}
-          placeholder="I ROLLED"
-          inputMode="numeric"
-          value={typed}
-          onChange={handleTyped}
-        />
-        {rolled !== null && (
-          <span>
-            <b>ROLLED {rolled}</b>
-            {table.dice === "d66" && (
-              <span className="dim">
-                {" "}
-                (TENS {Math.floor(rolled / 10)} · UNITS {rolled % 10})
-              </span>
-            )}
-            {!hits.length && <span className="red"> · the book prints no event for {rolled}</span>}
-            {hits.length > 1 && <span className="dim"> · the book prints two events for {rolled}: pick one</span>}
-          </span>
-        )}
-      </div>
+      <TableRoll key={table.id} dice={table.dice} rolled={rolled} hits={hits.length} noun="event" onLand={land} />
 
       <div className="list">
         {table.rows.map((e, i) => (

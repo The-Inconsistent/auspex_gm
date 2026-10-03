@@ -301,7 +301,7 @@ const { state, codex, online, send } = useTable(campaignId);
 | Tab | Component | Files |
 |---|---|---|
 | TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
-| PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}` |
+| PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards` |
 | CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint), `codex/components/faction-picker` (ADD FROM BOOK: `presetFaction` per printed faction), `codex/components/stat-source-field` (an NPC's BESTIARY threat through `ThreatPicker`, QUICK Tier chips and a specialty Skill, or NONE; issue #47), `codex/components/npc-card` (the Attitude's DN, the `StatBlock`, or the Quick NPC row with the p.326 scaling lines; its `add-to-scene` child appends a bestiary NPC to a scene's prepared encounter with `lib/add-to-scene`, one `codex.save`), `codex/components/npc-picker` (ADD FROM BOOK: `presetNpc` per printed NPC, a name search and a book filter in BOOKS order), `codex/components/npc-roller` (ROLL NAME into NAME and ROLL LOOK onto DESCRIPTION, from GM-only `/flavour` through `rollOn` and `rollLook`; sends nothing until SAVE, issue #48) |
 | PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx` |
 
@@ -497,6 +497,12 @@ The tests are in `lib/command/command.test.ts`.
 - **Each beat in the list** shows:
   - its number (`sceneNumber`), title, type chip and status chip (amber when active)
   - its GOAL, read-aloud text and GM notes (closed on a plate)
+  - its HAZARDS (`components/scene-hazards/scene-hazards.tsx`, issue #49), closed on a plate: the hazards the scene
+    picked from its location (rules-flow §11.95), each through `hazardView` and `HazardChips` (Tests as chips with
+    `testTitle` and `dnLabel`, a DN of the Tier plus n worked out from the campaign's Tier, Conditions as rule links,
+    Threats with their stat block in a fold, the book's notes, the printed text in a fold). SPOTTED saves the beat
+    (`stripBeat`, `hazards` with the flag flipped) and adds the "lower the DN" reminder: the app applies no number
+    (§11.92)
   - its EXITS: each label, then `→ 04 · THE DEAL` for a target in this adventure, or `→ NO SCENE YET`
   - its TESTS (`components/scene-tests/scene-tests.tsx`): the DN TABLE, SHIFTING and FAIL FORWARD rule links, then one
     `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`: NO DN on an Opposed Test, DN · GM SETS on one without a DN yet, §11.75), EACH, the Shift count and, on a
@@ -544,7 +550,8 @@ The tests are in `lib/command/command.test.ts`.
     save while a line has no amount or a spend no cost. ADD FROM BOOK (`components/pool-picker`, shown when
     `presets.pools` has any) picks a book and one of its lists, shows its HOW TO USE THIS LIST notes, and ADD copies a
     row with `presetLine` into the right list (a cost the book doesn't print stays empty)
-  - location
+  - location, then HAZARDS AT THIS PLACE: toggle chips over the location's `hazardList`, stored as the scene's
+    `hazards` picks (issue #49). Changing the location clears the picks
   - NPC and handout toggle chips (`aria-pressed`)
   - the prepared encounter entries: the threat through a `ThreatPicker` (§5), count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements). + THREAT adds a row through the same picker
 
@@ -557,7 +564,8 @@ The tests are in `lib/command/command.test.ts`.
   `presets.tables` has any), issue #39:
   - The GM picks a book (`BOOKS[source].name`) and one of its tables. The cite, the dice and any printed default DN
     show, plus the table's `gm` notes behind HOW TO USE THIS TABLE.
-  - ROLL rolls the table's dice (`roll`, prep only), and I ROLLED takes a number the dice can show (`results`). Either
+  - ROLL rolls the table's dice (`roll`, prep only), and I ROLLED takes a number the dice can show (`results`), both
+    through `components/ui/table-roll`, which the location's hazard list shares. Either
     one highlights the event(s) it lands on (`rowsFor`): one, none in a printed gap, or two in a printed overlap. A d66
     roll also shows its tens and units, so the GM can read a printed Wrath Die rule.
   - Tapping an event previews it: its read-aloud, its GM notes with the cite, and its Tests as the scene will get
@@ -580,9 +588,16 @@ The tests are in `lib/command/command.test.ts`.
 | Kind | Fields |
 |---|---|
 | npc | name, role, faction (select), attitude, description (players see it), GM notes, secrets, revealed |
-| location | name, inside (parent location), description (players see it), hazards, GM notes, revealed |
+| location | name, inside (parent location), description (players see it), HAZARDS · GM ONLY (`HazardList`), HAZARDS · YOUR NOTES (the free text), GM notes, revealed |
 | handout | title, text, sent to players |
 | faction | name, keywords (`KeywordPicker`: chips, a search over the books' Keywords, Enter for exactly what was typed), stance, notes, secrets |
+
+`HazardList` (`codex/components/hazard-list/hazard-list.tsx`, issue #49) edits a location's `hazardList` in the
+draft; SAVE sends it with the rest. ON THIS PLACE lists each entry through `hazardView` and `HazardChips`, with × and,
+for a Core Rulebook hazard, LIGHT / MODERATE / INTENSE chips (rules-flow §11.94). ADD FROM A BOOK TABLE picks a book and
+one of its `presets.hazards` tables; the GM taps a row, or ROLLs / types I ROLLED (`TableRoll`), then + ADD. ×TIER ·
+n adds one rolled row per Tier, rolling again on a printed gap (`rollHazards`, §11.93). YOUR OWN HAZARD takes a name, a
+Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stores only its row id.
 
   - The draft starts from the whole row, so fields that have no input in the editor (an NPC's `statSource`)
     survive a save.

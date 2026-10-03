@@ -531,7 +531,8 @@ textarea.input {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 10px;
 }
-.fw-body {
+.fw-body,
+.hazard-body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
   gap: 16px;
@@ -584,6 +585,7 @@ textarea.input {
 }
 @media (max-width: 900px) {
   .fw-body,
+  .hazard-body,
   .fw-filters {
     grid-template-columns: minmax(0, 1fr);
   }

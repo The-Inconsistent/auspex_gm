@@ -8,6 +8,7 @@ import {
   type BeatStatus,
   type BeatTest,
   type Codex,
+  type HazardTable,
   type PoolPresetTable,
   type SkillDn,
   type Threat,
@@ -16,6 +17,7 @@ import {
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
+import { hazardView } from "@/lib/hazards/hazards";
 
 import type { Beat, EncounterEntry, PoolDrafts } from "../../types";
 import { savedPools, stripBeat } from "../../utils";
@@ -35,6 +37,7 @@ type BeatEditorProps = {
   bestiary: Threat[];
   skillDns: SkillDn[];
   poolTables: PoolPresetTable[];
+  hazardTables: HazardTable[]; // to name the place's book hazards (issue #49)
   onDone: () => void;
 };
 
@@ -54,6 +57,7 @@ export function BeatEditor({
   bestiary,
   skillDns,
   poolTables,
+  hazardTables,
   onDone,
 }: BeatEditorProps) {
   const [b, setB] = useState<Draft>(() =>
@@ -101,6 +105,16 @@ export function BeatEditor({
     if (!r.ok) return setError(r.error);
     onDone();
   };
+
+  const place = codex.locations.find((l) => l.id === b.locationId);
+  // A hazard chip: the scene picks one of its place's hazards, unspotted, or drops it.
+  const toggleHazard = (id: string) =>
+    setB({
+      ...b,
+      hazards: b.hazards.some((x) => x.id === id)
+        ? b.hazards.filter((x) => x.id !== id)
+        : [...b.hazards, { id, spotted: false }],
+    });
 
   // DELETE: removes the beat, then closes the editor; a refusal stays open with the reason.
   const handleDelete = async () => {
@@ -188,7 +202,7 @@ export function BeatEditor({
           id="b-loc"
           className="input"
           value={b.locationId ?? ""}
-          onChange={(e) => setB({ ...b, locationId: e.target.value || null })}
+          onChange={(e) => setB({ ...b, locationId: e.target.value || null, hazards: [] })}
         >
           <option value="">—</option>
           {codex.locations.map((l) => (
@@ -198,6 +212,27 @@ export function BeatEditor({
           ))}
         </select>
       </div>
+      {place && place.hazardList.length > 0 && (
+        <div className="field plate">
+          <span className="label">HAZARDS AT THIS PLACE · PICK WHAT APPLIES</span>
+          <div className="keys" role="group" aria-label="Hazards in this scene">
+            {place.hazardList.map((h) => {
+              const on = b.hazards.some((x) => x.id === h.id);
+              const name = hazardView({ entry: h, tables: hazardTables, tier })?.name ?? "Unknown hazard";
+              return (
+                <button
+                  key={h.id}
+                  className={`btn sm ${on ? "primary" : ""}`}
+                  aria-pressed={on}
+                  onClick={() => toggleHazard(h.id)}
+                >
+                  {name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
       <div className="field">
         <span className="label">NPCS PRESENT</span>
         <div className="keys" role="group" aria-label="NPCs present">
