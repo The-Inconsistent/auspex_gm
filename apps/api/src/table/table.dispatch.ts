@@ -22,8 +22,15 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "threat.delete"
   )
     return { state: false, codex: true };
-  // character.delete drops the Agent from handout audiences (character.actions).
-  if (a.type === "beat.startEncounter" || a.type === "character.delete" || a.type.startsWith("session."))
+  // character.delete drops the Agent from handout audiences (character.actions) and leaves their items loose; giving and
+  // taking an item change the sheet and the item.
+  if (
+    a.type === "beat.startEncounter" ||
+    a.type === "character.delete" ||
+    a.type === "character.giveItem" ||
+    a.type === "character.takeItem" ||
+    a.type.startsWith("session.")
+  )
     return { state: true, codex: true };
   return { state: true, codex: false };
 }
@@ -80,6 +87,8 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "character.requisition":
     case "character.fitUpgrade":
     case "character.removeUpgrade":
+    case "character.giveItem":
+    case "character.takeItem":
     case "character.objectives":
     case "character.respite":
     case "character.delete":

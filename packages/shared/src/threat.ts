@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SOURCES } from "./source.ts";
+import { UpgradeMod } from "./weapon-effect.ts";
 
 // Bestiary format: Core Rulebook p.323. Stats don't vary by Tier, only the Threat class does.
 
@@ -83,6 +84,9 @@ export const Weapon = z.object({
   // numbers may already count a Talent (a volkus pregen's printed Rapid Fire), so no weapon effect is applied to it
   // (rules-flow.md §11.68) until the build's own line replaces it.
   asPrinted: z.literal(true).optional(),
+  // A relic's Powers, given with it (character.giveItem, rules-flow.md §11.116): the same changes an upgrade makes,
+  // stored beside the printed profile and applied by `withUpgrades` after the upgrades fitted to it.
+  mods: z.array(UpgradeMod).max(10).optional(),
   // Derived, never stored: set by `withUpgrades` for display.
   upgradeNames: z.array(z.string()).optional(),
   effects: z.array(z.string()).optional(), // the Talents and abilities `withWeaponEffects` applied, by name

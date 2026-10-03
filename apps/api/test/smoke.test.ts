@@ -5,6 +5,7 @@ import assert from "node:assert/strict";
 import { isDeepStrictEqual } from "node:util";
 import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
+import { wargear } from "@wg/data";
 import {
   ASCENSION_XP,
   BeatTest,
@@ -2012,6 +2013,151 @@ test("items: what the Agents can find, in a place, with an NPC or on a scene (is
   await eventually(() => !!phone.codex(), "the player's codex");
   assert.deepEqual(phone.codex()!.items, []);
   await refused(phone.send({ type: "codex.save", kind: "item", data: { name: "Mine" } }), "GM only");
+});
+
+test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (issue #51)", async (t) => {
+  const gm = await newCampaign("Give", 3);
+  t.after(() => gm.socket.close());
+  const id = async (r: Promise<ActionResult>) => {
+    const x = await r;
+    assert.ok(x.ok && x.id, JSON.stringify(x));
+    return x.id;
+  };
+  const refused = async (a: Promise<ActionResult>, error: string) => assert.deepEqual(await a, { ok: false, error });
+  const newItem = (data: object) => id(gm.send({ type: "codex.save", kind: "item", data } as never));
+  const give = (who: string, itemId: string) => gm.send({ type: "character.giveItem", id: who, itemId });
+  const take = (who: string, itemId: string) => gm.send({ type: "character.takeItem", id: who, itemId });
+  const nextSession = async () => {
+    assert.ok((await gm.send({ type: "session.end", xp: 0, recap: "" })).ok);
+    assert.ok((await gm.send({ type: "session.start" })).ok);
+  };
+  const sheet = (who: string) => gm.until(() => true).then((s) => s.characters.find((c) => c.id === who)!.stats);
+  const itemOf = (itemId: string) => gm.codex()!.items.find((i) => i.id === itemId)!;
+
+  const kael = await id(gm.send({ type: "character.create", name: "Kael" }));
+  const vex = await id(gm.send({ type: "character.create", name: "Vex" }));
+  const shaft = await id(gm.send({ type: "codex.save", kind: "location", data: { name: "Shaft" } }));
+  const pistol = await newItem({ name: "Bolt Pistol", wargearId: "bolt-pistol", locationId: shaft });
+  const scope = await newItem({ name: "Magnocular Scope", wargearId: "magnocular-scope" });
+  const sight = await newItem({ name: "Red-Dot Sight", wargearId: "red-dot-sight" });
+  const slate = await newItem({ name: "Surveyor's Slate" });
+  const frag = await newItem({ name: "Frag Grenade", wargearId: "frag-grenade" });
+  const relic = await newItem({
+    name: "Saint's Laspistol",
+    wargearId: "laspistol",
+    mods: [{ kind: "damage", delta: 1 }],
+  });
+
+  await refused(
+    give(kael, pistol),
+    "Start a session first: giving an item uses the Agent's Wargear Test (rules-flow.md §11.112)",
+  );
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  await refused(
+    give(kael, frag),
+    "Frag Grenade is counted by type on the sheet: award it with SUPPLY or a requisition (rules-flow.md §11.113)",
+  );
+  const token = await gm.send({ type: "token.issue", characterId: kael });
+  assert.ok(token.ok && token.token);
+  const phone = connect({ auth: { token: token.token } });
+  t.after(() => phone.socket.close());
+  await eventually(() => !!phone.codex(), "the player's codex");
+  await refused(phone.send({ type: "character.giveItem", id: kael, itemId: pistol }), "GM only");
+  await refused(phone.send({ type: "character.takeItem", id: kael, itemId: pistol }), "GM only");
+
+  // A catalogue weapon joins the armament with its wargearId; the item leaves its place and records the Agent.
+  assert.ok((await give(kael, pistol)).ok);
+  const armed = await gm.until((s) => !!s.characters.find((c) => c.id === kael)?.stats.weapons.length);
+  const bolt = armed.characters.find((c) => c.id === kael)!.stats.weapons[0]!;
+  assert.deepEqual([bolt.name, bolt.wargearId], ["Bolt Pistol", "bolt-pistol"]);
+  await eventually(() => itemOf(pistol).givenTo === kael, "the codex records the gift");
+  assert.equal(itemOf(pistol).locationId, null);
+  await refused(give(kael, scope), "Kael already made this session's wargear Test (p.205)");
+  await refused(give(vex, pistol), "Bolt Pistol was given already: take it back first");
+  await refused(
+    gm.send({ type: "codex.save", kind: "item", id: pistol, data: { name: "Bolt Pistol", locationId: shaft } }),
+    "Bolt Pistol is with an Agent now: take it back first",
+  );
+  // TAKE BACK finds the sheet line by the item's name and entry, so those stay as given; its notes don't.
+  await refused(
+    gm.send({ type: "codex.save", kind: "item", id: pistol, data: { name: "Ordo Pistol", wargearId: "bolt-pistol" } }),
+    "Bolt Pistol is with an Agent now: take it back first",
+  );
+  assert.ok(
+    (
+      await gm.send({
+        type: "codex.save",
+        kind: "item",
+        id: pistol,
+        data: { name: "Bolt Pistol", wargearId: "bolt-pistol", gmNotes: "Maren wants it back" },
+      })
+    ).ok,
+  );
+  // The same weapon again would be a silent no-op, and TAKE BACK would then take the Agent's own (§11.118).
+  await nextSession();
+  const spare = await newItem({ name: "Bolt Pistol", wargearId: "bolt-pistol" });
+  await refused(give(kael, spare), "Kael already carries a Bolt Pistol (rules-flow.md §11.118)");
+
+  // Other kinds become a gear line with the cite; a custom item a plain line; a full gear list refuses.
+  assert.ok((await give(kael, scope)).ok);
+  await gm.until(
+    (s) => !!s.characters.find((c) => c.id === kael)?.stats.gear.some((g) => g.startsWith("Magnocular Scope (")),
+  );
+  const full = Array.from({ length: 60 }, (_, i) => `line ${i}`);
+  assert.ok((await gm.send({ type: "character.update", id: vex, stats: { gear: full } })).ok);
+  await refused(give(vex, slate), "Vex's gear list is full (60 lines)");
+  assert.ok((await gm.send({ type: "character.update", id: vex, stats: { gear: [] } })).ok);
+  assert.ok((await give(vex, slate)).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === vex)?.stats.gear.join() === "Surveyor's Slate");
+
+  // A relic's Powers show on the table's sheet and stay stored beside the printed profile (§11.116).
+  await nextSession();
+  assert.ok((await give(vex, relic)).ok);
+  const shown = await gm.until((s) => !!s.characters.find((c) => c.id === vex)?.stats.weapons.length);
+  const las = shown.characters.find((c) => c.id === vex)!.stats.weapons[0]!;
+  assert.equal(las.damage, wargear.get("laspistol")!.weapon!.damage + 1);
+
+  // TAKE BACK: the weapon comes off and its fitted upgrade returns as a gear line (§11.114).
+  assert.ok(
+    (
+      await gm.send({
+        type: "character.fitUpgrade",
+        id: kael,
+        host: "weapon",
+        weapon: "Bolt Pistol",
+        upgradeId: "red-dot-sight",
+      })
+    ).ok,
+  );
+  await refused(take(vex, pistol), "Vex doesn't have Bolt Pistol");
+  assert.ok((await take(kael, pistol)).ok);
+  const after = await gm.until((s) => !s.characters.find((c) => c.id === kael)?.stats.weapons.length);
+  assert.ok(after.characters.find((c) => c.id === kael)!.stats.gear.some((g) => g.startsWith("Red-Dot Sight (")));
+  await eventually(() => itemOf(pistol).givenTo === null, "the pistol is loose again");
+  // A line the GM already deleted just ends the record.
+  assert.ok((await gm.send({ type: "character.update", id: kael, stats: { gear: [] } })).ok);
+  assert.ok((await take(kael, scope)).ok);
+  await eventually(() => itemOf(scope).givenTo === null, "the scope is loose again");
+  // A given upgrade fitted since comes off its weapon.
+  await nextSession();
+  assert.ok((await give(vex, sight)).ok);
+  assert.ok(
+    (
+      await gm.send({
+        type: "character.fitUpgrade",
+        id: vex,
+        host: "weapon",
+        weapon: "Laspistol",
+        upgradeId: "red-dot-sight",
+      })
+    ).ok,
+  );
+  assert.deepEqual((await sheet(vex)).weapons[0]!.upgradeNames, ["Red-Dot Sight"]);
+  assert.ok((await take(vex, sight)).ok);
+  await gm.until((s) => !s.characters.find((c) => c.id === vex)?.stats.weapons[0]?.fitted);
+  // Deleting the Agent leaves what they were given loose.
+  assert.ok((await gm.send({ type: "character.delete", id: vex })).ok);
+  await eventually(() => itemOf(relic).givenTo === null && itemOf(slate).givenTo === null, "Vex's items are loose");
 });
 
 test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {
