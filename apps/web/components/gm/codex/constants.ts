@@ -26,6 +26,13 @@ export const CODEX_KINDS = {
       ["secrets", "SECRETS"],
     ],
   },
+  item: {
+    collection: "items",
+    read: [
+      ["description", "DESCRIPTION"],
+      ["gmNotes", "GM NOTES"],
+    ],
+  },
 } as const;
 export type CodexKind = keyof typeof CODEX_KINDS;
 export const CODEX_KIND_KEYS = Object.keys(CODEX_KINDS) as CodexKind[];

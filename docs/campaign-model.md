@@ -23,8 +23,9 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed
  ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
  │               gmNotes, secrets, revealed
- ├─ Item         name, kind (weapon | armour | wargear | relic | ammo | clue-object),
- │               holder (party | characterId | npcId | locationId), profile?, notes
+ ├─ Item         name, wargearId? (a catalogue entry, else a custom item), description, gmNotes,
+ │               locationId | npcId (where it lies or who carries it, one or neither), mods[] (a relic's
+ │               Powers, rules-flow §11.116), givenTo (server-owned: the Agent GIVE handed it to; issue #51)
  ├─ Handout      title, body (text), image?, revealedAt, audience (all | characterIds)
  └─ Session      number, date, recap ("Previously in…", core p.317), beatIds played,
                  objectives rolled (core p.43), xpAwarded (8/10/12, core p.321), notes
@@ -88,6 +89,9 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   book leaves are [rules-flow.md](rules-flow.md) §11.82.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
   by the same server-side view as hidden threat stats.
+- **Items** (issue #51): what the Agents can find, never sent to phones (`toPlayerCodex` → `items: []`). A scene
+  lists them (`beat.itemIds`); GIVE TO (`character.giveItem`) builds the sheet line from the catalogue and spends the
+  Agent's Wargear Test for the session (§11.112), TAKE BACK (`character.takeItem`) undoes it (§11.114).
 - **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those
   Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
   (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.

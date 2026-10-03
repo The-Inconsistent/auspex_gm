@@ -268,6 +268,25 @@ export function BeatEditor({
           {codex.handouts.length === 0 && <span className="dim">Add handouts in CODEX.</span>}
         </div>
       </div>
+      <div className="field">
+        <span className="label">ITEMS TO FIND</span>
+        <div className="keys" role="group" aria-label="Items to find">
+          {codex.items.map((it) => (
+            <button
+              key={it.id}
+              className={`btn sm ${b.itemIds.includes(it.id) ? "primary" : ""}`}
+              aria-pressed={b.itemIds.includes(it.id)}
+              onClick={() => setB({ ...b, itemIds: toggled(b.itemIds, it.id) })}
+            >
+              {it.name}
+            </button>
+          ))}
+          {codex.items.length === 0 && <span className="dim">Add items in CODEX.</span>}
+        </div>
+        <span className="dim">
+          <i>What the Agents can find in this scene. Hand one over with GIVE TO on the scene&apos;s card in PREP.</i>
+        </span>
+      </div>
 
       <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />
       <RuinGlory lines={b} tables={poolTables} onChange={(lines) => setB({ ...b, ...lines })} />

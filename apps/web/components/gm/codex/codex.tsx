@@ -21,6 +21,7 @@ import {
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -32,6 +33,7 @@ import { FactionPicker } from "./components/faction-picker/faction-picker";
 import { NpcCard } from "./components/npc-card/npc-card";
 import { NpcPicker } from "./components/npc-picker/npc-picker";
 import { HulkGenerator } from "./components/hulk-generator/hulk-generator";
+import { ItemCard } from "./components/item-card/item-card";
 import { PlacePicker } from "./components/place-picker/place-picker";
 import { ThreatEditor } from "./components/threat-editor/threat-editor";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
@@ -53,7 +55,7 @@ type CodexViewProps = {
   bestiary: Threat[];
   tier: number;
   players: number; // Scaling Threats adds the number of players for an Adversary (Core p.326)
-  wargear: Wargear[]; // where a custom threat's weapons come from (issue #43)
+  wargear: Wargear[]; // the catalogue: a custom threat's weapons (issue #43), an item's NAME and profile (issue #51)
   ruinActions: PoolPresetTable | null; // Threat Assessment p.7, for a custom threat's RUIN abilities (issue #43)
 };
 
@@ -98,6 +100,8 @@ export function CodexView({
   const rows = rowsFor(kind, codex);
   const factionById = useMemo(() => new Map(codex.factions.map((f) => [f.id, f])), [codex.factions]);
   const npcById = useMemo(() => new Map(codex.npcs.map((n) => [n.id, n])), [codex.npcs]);
+  const itemById = useMemo(() => new Map(codex.items.map((i) => [i.id, i])), [codex.items]);
+  const catalogue = useMemo(() => new Map(wargear.map((w) => [w.id, w])), [wargear]);
 
   // Sub-tab: switch lists and close any open editor.
   const pickKind = (k: SubTab) => {
@@ -129,6 +133,8 @@ export function CodexView({
   // One entry: its head (title, chips, REVEALED / HIDDEN, EDIT) and, opened, what it records.
   const entry = (r: Row, node?: PlaceNode<Place>) => {
     const npc = kind === "npc" ? npcById.get(r.id) : undefined;
+    const item = kind === "item" ? itemById.get(r.id) : undefined;
+    const holder = item && holderOf(item, { codex, characters });
     const open = !folded.has(r.id);
     return (
       <details key={r.id} className="item">
@@ -145,6 +151,17 @@ export function CodexView({
             </button>
           )}
           {npc && <AttitudeChip attitude={npc.attitude} />}
+          {item && !item.wargearId && <span className="chip">CUSTOM</span>}
+          {holder && (
+            <span className="dim">
+              {holder.label} <span style={{ color: "var(--ink)" }}>{holder.name}</span>
+            </span>
+          )}
+          {item && (
+            <span onClick={(e) => e.preventDefault()}>
+              <ItemGive item={item} characters={characters} send={send} onError={setError} />
+            </span>
+          )}
           {"revealed" in r && (
             <button
               className="btn sm"
@@ -178,6 +195,7 @@ export function CodexView({
             </div>
           ) : null,
         )}
+        {item && <ItemCard item={item} entry={item.wargearId ? catalogue.get(item.wargearId) : undefined} />}
         {npc && (
           <NpcCard
             npc={npc}
@@ -239,6 +257,7 @@ export function CodexView({
             tier={tier}
             flavour={flavour}
             hazards={hazards}
+            wargear={wargear}
             onDone={() => setEditing(null)}
           />
         ) : (
@@ -247,6 +266,11 @@ export function CodexView({
               <button className="btn primary" onClick={() => setEditing("new")}>
                 + NEW {kind.toUpperCase()}
               </button>
+              {kind === "item" && (
+                <span className="dim" style={{ float: "right" }}>
+                  {codex.items.length} ITEMS · {codex.items.filter((i) => i.givenTo).length} GIVEN
+                </span>
+              )}
             </div>
             {kind === "location" && nests && (
               <div className="keys" style={{ paddingTop: 0 }}>

@@ -14,6 +14,7 @@ import {
   type LocationHazard,
   type StatSource,
   type Threat,
+  type Wargear,
 } from "@wg/shared";
 
 import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
@@ -23,9 +24,11 @@ import { placeOptions } from "@/lib/places/places";
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
 import { HazardList } from "../hazard-list/hazard-list";
+import { HolderField } from "../holder-field/holder-field";
 import { KeywordPicker } from "../keyword-picker/keyword-picker";
 import { NpcRoller } from "../npc-roller/npc-roller";
 import { StatSourceField } from "../stat-source-field/stat-source-field";
+import { WargearName } from "../wargear-name/wargear-name";
 import { FIELD_TYPES, GM_ONLY_FIELDS, type FieldType } from "./constants";
 
 type Option = [value: string, label: string];
@@ -41,6 +44,7 @@ type CodexEditorProps = {
   tier: number;
   flavour: FlavourTable[]; // the books' name and appearance tables, for an NPC's ROLL NAME and ROLL LOOK (issue #48)
   hazards: HazardTable[]; // the books' hazard tables, for a place's hazard list (issue #49)
+  wargear: Wargear[]; // the catalogue an item's NAME searches (issue #51)
   onDone: () => void;
 };
 
@@ -117,6 +121,13 @@ function fieldsFor({
         { key: "notes", label: "NOTES", type: "area" },
         { key: "secrets", label: "SECRETS", type: "area" },
       ];
+    case "item":
+      return [
+        { key: "name", label: "NAME (SEARCHES THE WARGEAR CATALOGUE)", type: "wargearName" },
+        { key: "description", label: "DESCRIPTION (WHAT YOU READ OUT WHEN THE AGENTS FIND IT)", type: "area" },
+        { key: "gmNotes", label: "GM NOTES", type: "area" },
+        { key: "locationId", label: "HOLDER", type: "holder" },
+      ];
   }
 }
 
@@ -140,6 +151,7 @@ export function CodexEditor({
   tier,
   flavour,
   hazards,
+  wargear,
   onDone,
 }: CodexEditorProps) {
   const fields = fieldsFor({ kind, codex, characters, id: row?.id });
@@ -199,7 +211,7 @@ export function CodexEditor({
             <span className="label" id={`f-${f.key}`}>
               {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
             </span>
-          ) : f.type === "statSource" || f.type === "hazardList" ? (
+          ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" ? (
             <span className="label" id={`f-${f.key}`}>
               {f.label}
             </span>
@@ -251,6 +263,24 @@ export function CodexEditor({
               onChange={(v) => setField(f.key, v)}
             />
           )}
+          {f.type === "wargearName" && (
+            <WargearName
+              id={`f-${f.key}`}
+              name={String(draft.name ?? "")}
+              wargearId={(draft.wargearId as string | null | undefined) ?? null}
+              catalogue={wargear}
+              onChange={(v) => setDraft({ ...draft, ...v })}
+            />
+          )}
+          {f.type === "holder" && (
+            <HolderField
+              id={`f-${f.key}`}
+              locationId={(draft.locationId as string | null | undefined) ?? null}
+              npcId={(draft.npcId as string | null | undefined) ?? null}
+              codex={codex}
+              onChange={(v) => setDraft({ ...draft, ...v })}
+            />
+          )}
           {f.type === "bool" && (
             <input
               id={`f-${f.key}`}
@@ -294,6 +324,21 @@ export function CodexEditor({
           )}
         </div>
       ))}
+      {kind === "item" && (
+        <div className="field">
+          <span className="label">GIVEN TO</span>
+          <span>
+            {characters.find((c) => c.id === row?.givenTo)?.name ?? "Nobody yet"}{" "}
+            <span className="dim">· set by GIVE TO, not here</span>
+          </span>
+        </div>
+      )}
+      {kind === "item" && Array.isArray(draft.mods) && draft.mods.length > 0 && (
+        <div className="field plate">
+          <span className="label">POWERS (rules-flow.md §11.116)</span>
+          <span>{(draft.mods as { kind: string; what?: string }[]).map((m) => m.what ?? m.kind).join(" · ")}</span>
+        </div>
+      )}
       {error && <div className="red">! {error}</div>}
       <div className="keys">
         <button className="btn primary" onClick={save}>
