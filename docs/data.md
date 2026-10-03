@@ -180,7 +180,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24; Frameworks, #45; NPC presets, #47; places, #50) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41, 42, 60) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39; NPC presets, #47; places, #50) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45; faction presets, #46; NPC presets, #47; places, #50) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
-| Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44; NPC presets, #47) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
+| Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44; NPC presets, #47; places, #50) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
 | Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40; Frameworks, #45) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.5, 24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
 
@@ -803,6 +803,7 @@ The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one
 | Darktide | pp.4–12, 14–26, 29–33, 79–83 | 33: the Moebian Domain, Atoma Prime (with its stat line), Hive Tertium's Main Hive, Habculum and Snakestack districts, the Slung, the Sump and its Refuse Archipelago (Port Odium, Blot, Saint Wretch), and the seven hive location types |
 | Litanies of the Lost | pp.6–7, 10–22, 44, 53–61, 112–132 | 52: the Valley of Ancra and its sites, the monastery Hephesteum's Rest and its rooms, and the Pakthertius Manufactorum's floors and numbered areas |
 | Redacted Records 2 | pp.38–40, 56–58, 78–93 | 10: Battlezone Balthazar, the Kaurdar Breach with Outpost Nemo and the Shattered Monolith, three shrines and three sites of discovery |
+| Wretches of the Writ | pp.8–9 | 4: the Diver's Bell, the Fallow, Daedalon's Labyrinth and Brother's Ruin |
 
 **Conventions** (the transcription brief):
 - A place is a named site with its own printed heading: a system, world, city, hive, ship, site, region, building or
@@ -855,6 +856,9 @@ organisation sections, encounters, Tests and sidebars are out. Kept as printed: 
 are top level; Trollius has no heading of its own. The "Shrines of Gilead" and "Sites of Discovery" intros are
 groupings. NPCs, stat blocks, Tests and item rules are out; each "Adventure Hook" sidebar is a hook of its place. Kept
 as printed: "shrine-cites", "suprise", "descendents", "archeotech"/"archaeotech".
+
+**Wretches of the Writ notes.** Ostia has no heading of its own, so the Fallow is top level; "Gathering Chaos" is a
+section heading. Kept as printed: "Daealon", "moons' production reports".
 
 ---
 
