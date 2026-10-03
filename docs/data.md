@@ -177,7 +177,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | `church-of-steel` (cite CoS; scene presets, issue #39; vehicles not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
 | Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24; Frameworks, #45; faction presets, #46; places, #50; loot, #51) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.17, 18, 27, 35, 70, 71, 75, 83, 90) |
-| Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24; Frameworks, #45; NPC presets, #47; places, #50) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41, 42, 60) |
+| Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24; Frameworks, #45; NPC presets, #47; places, #50; relics, #51) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41, 42, 60) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39; NPC presets, #47; places, #50; loot, #51) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45; faction presets, #46; NPC presets, #47; places, #50) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44; NPC presets, #47; places, #50) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
@@ -757,6 +757,13 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
     `wealth` and `gm` boons are a reminder to award in PARTY, not items.
   - `validate` checks the rows each table prints (`EXPECTED_LOOT`), unique ids, every `wargearId`, that every `pick`
     matches something, and each `faults` link.
+- `relic-creator.json` (`RelicCreator`, GitHub issue #51 step 8): the Holy Relic creator, RR2 pp.12–19, served on
+  `/scene-presets` as `relics`. The Form grid (p.13, printed as two d6) is a d66; each Form has a `kind` (which Powers
+  table applies) and a `pick` (a `WargearFilter` over the catalogue). Owners and Anointments (p.14, d6, with their
+  pp.14–15 text), one d6 Powers table per kind (pp.16–18; `mods` only where a weapon profile holds the effect, `enemy`
+  where it names an enemy, §11.116), Oddities (p.19, d6) and the Enemy Keyword Table (p.18, 4d6). The p.12 worked
+  example contradicts the grid; the grid is copied as printed (§11.117). The six named relics (pp.20–31) are catalogue
+  entries in `wargear/rr2-relics.json`, listed by `loot/redacted-records-2.json`.
 - `hazards/<source>.json` (`HazardTable[]`, one file per book, GitHub issue #49): the books' hazards, for a place's
   hazard list. A place's entry points at a row by `id`, as an encounter points at a threat, so the text stays here.
   - A table is `{ id, name, source, page, dice, gm?, rows, gaps, overlaps }`. `dice` is null for a list to pick from

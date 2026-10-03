@@ -2231,6 +2231,34 @@ test("FROM LOOT TABLE: a book row makes loose items with its text in GM NOTES (i
   );
 });
 
+test("the Holy Relic creator writes one item from its rolls (RR2 pp.12–19, issue #51 step 8)", async (t) => {
+  const gm = await newCampaign("Relic", 3);
+  t.after(() => gm.socket.close());
+  const relic = {
+    type: "codex.addRelic",
+    form: "rr2-relic-form-61", // Force Weapon (p.13)
+    wargearId: "force-sword",
+    owner: "rr2-relic-owner-1",
+    anointment: "rr2-relic-anointment-4",
+    power: "rr2-power-melee-4", // Holy Hatred: names an enemy
+    oddity: "rr2-relic-oddity-1",
+    enemy: "rr2-enemy-11",
+  } as const;
+  const refused = async (a: object, error: string) =>
+    assert.deepEqual(await gm.send({ ...relic, ...a } as ActionInput), { ok: false, error });
+  await refused({ form: "nope" }, '"nope" isn\'t on the Relic Form');
+  await refused({ power: "rr2-power-ranged-1" }, '"rr2-power-ranged-1" isn\'t on the Melee Weapon Relic Powers');
+  await refused({ power: "rr2-power-melee-1" }, "Transformative Strength names no enemy");
+  await refused({ wargearId: "laspistol" }, "Laspistol isn't a Force Weapon");
+  const made = await gm.send(relic);
+  assert.ok(made.ok && made.id);
+  await eventually(() => gm.codex()?.items.length === 1, "the relic");
+  const [it] = gm.codex()!.items;
+  assert.deepEqual([it!.name, it!.wargearId, it!.givenTo], ["Relic Force Sword", "force-sword", null]);
+  assert.ok(it!.gmNotes.startsWith("RR2 p.12 · Holy Relic"), it!.gmNotes);
+  assert.ok(it!.gmNotes.includes("ENEMY: HERETIC") && it!.gmNotes.includes("POWER (melee): Holy Hatred"));
+});
+
 test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {
   const gm = await newCampaign("Export", 3);
   t.after(() => gm.socket.close());

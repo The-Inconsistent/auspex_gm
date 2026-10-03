@@ -284,6 +284,19 @@ export const Action = z.union([
       roll: z.number().int().min(1).max(66).optional(),
       faultId: rowId.optional(),
     }),
+    // The Holy Relic creator (RR2 pp.12–19, issue #51 step 8): one item from the rows the GM rolled or picked and the
+    // catalogue entry its Form became. The server reads the text from its own data.
+    z.object({
+      type: z.literal("codex.addRelic"),
+      name: z.string().trim().min(1).max(200).optional(), // else "Relic <entry>"
+      form: rowId,
+      wargearId: rowId,
+      owner: rowId,
+      anointment: rowId,
+      power: rowId,
+      oddity: rowId,
+      enemy: rowId.optional(), // when the Power names an enemy
+    }),
     z.object({ type: z.literal("beat.startEncounter"), id }),
   ]),
   ...codexSave,

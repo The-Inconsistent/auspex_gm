@@ -42,7 +42,7 @@ const makes = (r: LootRow, catalogue: ReadonlyMap<string, Wargear>) => {
 };
 
 // One `pick` of a row: the catalogue entries it offers, with a search (issue #51).
-function Pick({
+export function Pick({
   item,
   matches,
   value,

@@ -10,6 +10,7 @@ import {
   HazardTable,
   HULK_HAZARDS,
   LootTable,
+  RelicCreator,
   NpcPreset,
   Pack,
   Place,
@@ -53,7 +54,9 @@ export const rulesList = (): RuleEntry[] =>
 const presetsDir = new URL("./scene-presets/", import.meta.url);
 export const SKILL_DNS_FILE = "skill-dns.json";
 export const SPACE_HULK_FILE = "space-hulk.json";
-export const eventTableFiles = () => jsonFiles(presetsDir).filter((f) => f !== SKILL_DNS_FILE && f !== SPACE_HULK_FILE);
+export const RELICS_FILE = "relic-creator.json"; // RR2 pp.12–19, the Holy Relic creator (issue #51 step 8)
+export const eventTableFiles = () =>
+  jsonFiles(presetsDir).filter((f) => f !== SKILL_DNS_FILE && f !== SPACE_HULK_FILE && f !== RELICS_FILE);
 const poolsDir = new URL("./pools/", presetsDir);
 export const poolPresetFiles = () => jsonFiles(poolsDir);
 const hazardsDir = new URL("./hazards/", presetsDir);
@@ -77,6 +80,7 @@ const lootTables = () => lootFiles().flatMap((f) => LootTable.array().parse(json
 export const loot: ReadonlyMap<string, { table: LootTable; row: LootRow }> = new Map(
   lootTables().flatMap((table) => table.rows.map((row) => [row.id, { table, row }] as const)),
 );
+export const relics: RelicCreator = RelicCreator.parse(json(new URL(RELICS_FILE, presetsDir)));
 export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
@@ -85,6 +89,7 @@ export const scenePresets = (): ScenePresets => ({
   hazards: hazardTables(),
   spaceHulk,
   loot: lootTables(),
+  relics,
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

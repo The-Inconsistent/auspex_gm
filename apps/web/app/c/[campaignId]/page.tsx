@@ -40,16 +40,17 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
   }
 }
 
+// What PREP and CODEX get when the api can't serve the presets: every list empty, by the schema's own defaults.
+const NO_PRESETS = ScenePresets.parse({ skillDns: [], tables: [], pools: [] });
+
 // GM-only book data for building scenes (issue #39). Empty on failure; the scene editor then shows no examples.
 async function loadScenePresets(campaignId: string): Promise<ScenePresets> {
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/scene-presets`);
     const parsed = ScenePresets.safeParse(res.ok ? await res.json() : null);
-    return parsed.success
-      ? parsed.data
-      : { skillDns: [], tables: [], pools: [], hazards: [], spaceHulk: null, loot: [] };
+    return parsed.success ? parsed.data : NO_PRESETS;
   } catch {
-    return { skillDns: [], tables: [], pools: [], hazards: [], spaceHulk: null, loot: [] };
+    return NO_PRESETS;
   }
 }
 

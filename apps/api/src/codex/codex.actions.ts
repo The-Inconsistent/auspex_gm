@@ -1,11 +1,13 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { hazards, hulkHazardIds, loot, places, spaceHulk, wargear } from "@wg/data";
+import { hazards, hulkHazardIds, loot, places, relics, spaceHulk, wargear } from "@wg/data";
 import type { z } from "zod";
 import {
   LocationHazard,
   hulkNotes,
   lootNotes,
+  relicNotes,
+  sourceCite,
   MAX_LOOT_ITEMS,
   roll,
   wargearMatches,
@@ -29,7 +31,16 @@ import { adventure, beat, faction, handout, item, location, npc } from "./codex.
 
 export type CodexAction = Extract<
   Action,
-  { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" | "codex.addHulk" | "codex.addLoot" }
+  {
+    type:
+      | "codex.save"
+      | "codex.delete"
+      | "beat.reorder"
+      | "codex.addPlaces"
+      | "codex.addHulk"
+      | "codex.addLoot"
+      | "codex.addRelic";
+  }
 >;
 
 const codexTable = { faction, adventure, beat, location, npc, handout, item } as const;
@@ -362,6 +373,43 @@ export async function applyCodexAction(
         .values(made.map((m, i) => ({ ...m, gmNotes, campaignId: cid, createdAt: new Date(t0 + i) })))
         .returning({ id: item.id });
       return { ok: true, id: rows[0]!.id }; // at least one row was just inserted
+    }
+
+    // The Holy Relic creator (RR2 pp.12–19): one loose item, the catalogue entry its Form became, its Power's changes
+    // where a weapon profile holds them (§11.116), and every roll with its text in GM NOTES.
+    case "codex.addRelic": {
+      const c = relics;
+      const row = <R extends { id: string }>(t: { name: string; rows: R[] }, id: string) =>
+        t.rows.find((x) => x.id === id) ?? fail(`"${id}" isn't on the ${t.name}`);
+      const form = row(c.form, a.form);
+      const powers = c.powers.find((p) => p.kind === form.kind)!; // validate holds one table per kind
+      const power = row(powers, a.power);
+      const enemy = a.enemy ? row(c.enemies, a.enemy) : undefined;
+      if (enemy && !power.enemy) fail(`${power.name} names no enemy`);
+      const entry = wargear.get(a.wargearId) ?? fail(`Unknown wargear "${a.wargearId}"`);
+      const { tier } = await campaignRules(tx, cid);
+      if (!wargearMatches(entry, form.pick, { tier, newTier: tier })) fail(`${entry.name} isn't a ${form.name}`);
+      const gmNotes = relicNotes({
+        creator: c,
+        form,
+        item: `${entry.name} (${sourceCite(entry)})`,
+        owner: row(c.owners, a.owner),
+        anointment: row(c.anointments, a.anointment),
+        power: { ...power, kind: form.kind },
+        oddity: row(c.oddities, a.oddity),
+        enemy,
+      });
+      const [made] = await tx
+        .insert(item)
+        .values({
+          campaignId: cid,
+          name: a.name ?? `Relic ${entry.name}`,
+          wargearId: entry.id,
+          gmNotes,
+          mods: entry.weapon ? power.mods : [], // on anything else the Power stays in the notes (§11.116)
+        })
+        .returning({ id: item.id });
+      return { ok: true, id: made!.id }; // the row was just inserted
     }
   }
 }

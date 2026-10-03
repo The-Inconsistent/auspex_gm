@@ -20,7 +20,8 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "codex.addHulk" ||
     a.type === "threat.save" ||
     a.type === "threat.delete" ||
-    a.type === "codex.addLoot"
+    a.type === "codex.addLoot" ||
+    a.type === "codex.addRelic"
   )
     return { state: false, codex: true };
   // character.delete drops the Agent from handout audiences (character.actions) and leaves their items loose; giving and
@@ -118,6 +119,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "codex.addPlaces":
     case "codex.addHulk":
     case "codex.addLoot":
+    case "codex.addRelic":
       return applyCodexAction(tx, { ctx, action });
 
     case "threat.save":
