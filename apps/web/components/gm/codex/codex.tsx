@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState, type MouseEvent } from "react";
 
-import type { ActionInput, Character, Codex, FactionPresets, NpcPreset, Threat } from "@wg/shared";
+import type { ActionInput, Character, Codex, FactionPresets, FlavourTable, NpcPreset, Threat } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { Refusal } from "@/components/ui/refusal/refusal";
@@ -23,6 +23,7 @@ type CodexViewProps = {
   initialKind?: CodexKind;
   factionPresets: FactionPresets;
   npcPresets: NpcPreset[];
+  flavour: FlavourTable[];
   bestiary: Threat[];
   tier: number;
   players: number; // Scaling Threats adds the number of players for an Adversary (Core p.326)
@@ -44,6 +45,7 @@ export function CodexView({
   initialKind = "npc",
   factionPresets,
   npcPresets,
+  flavour,
   bestiary,
   tier,
   players,
@@ -93,6 +95,7 @@ export function CodexView({
             keywords={factionPresets.keywords}
             bestiary={bestiary}
             tier={tier}
+            flavour={flavour}
             onDone={() => setEditing(null)}
           />
         ) : (

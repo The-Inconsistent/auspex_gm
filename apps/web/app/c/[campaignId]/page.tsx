@@ -1,4 +1,13 @@
-import { FactionPresets, FrameworkCatalogue, Me, NpcPreset, ScenePresets, Threat, Wargear } from "@wg/shared";
+import {
+  FactionPresets,
+  FlavourTable,
+  FrameworkCatalogue,
+  Me,
+  NpcPreset,
+  ScenePresets,
+  Threat,
+  Wargear,
+} from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet, loadRules } from "@/app/server-api";
@@ -75,6 +84,18 @@ async function loadNpcPresets(campaignId: string): Promise<NpcPreset[]> {
   }
 }
 
+// GM-only name and appearance tables for CODEX › NPCS' ROLL NAME and ROLL LOOK (issue #48). Empty on failure; the
+// editor then shows no roll buttons.
+async function loadFlavour(campaignId: string): Promise<FlavourTable[]> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/flavour`);
+    const parsed = FlavourTable.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : [];
+  } catch {
+    return [];
+  }
+}
+
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
 export default async function Table({ params }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
@@ -90,7 +111,7 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear, rules, presets, frameworks, factionPresets, npcPresets] = await Promise.all([
+    const [bestiary, wargear, rules, presets, frameworks, factionPresets, npcPresets, flavour] = await Promise.all([
       loadBestiary(me.campaignId),
       loadWargear(me.campaignId),
       loadRules(me.campaignId),
@@ -98,6 +119,7 @@ export default async function Table({ params }: TableProps) {
       loadFrameworks(me.campaignId),
       loadFactionPresets(me.campaignId),
       loadNpcPresets(me.campaignId),
+      loadFlavour(me.campaignId),
     ]);
     return (
       <GmApp
@@ -109,6 +131,7 @@ export default async function Table({ params }: TableProps) {
         frameworks={frameworks}
         factionPresets={factionPresets}
         npcPresets={npcPresets}
+        flavour={flavour}
       />
     );
   }

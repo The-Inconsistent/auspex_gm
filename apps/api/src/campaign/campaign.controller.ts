@@ -21,7 +21,13 @@ import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
 import { sendCached } from "../core/http.ts";
-import { creationPayload, factionPresets, frameworkCatalogue, npcPresets } from "../character/creation.service.ts";
+import {
+  creationPayload,
+  factionPresets,
+  flavourTables,
+  frameworkCatalogue,
+  npcPresets,
+} from "../character/creation.service.ts";
 import { TableGateway } from "../table/table.gateway.ts";
 import {
   campaignHomebrew,
@@ -189,6 +195,17 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return npcPresets(await campaignHomebrew(campaignId));
+  }
+
+  // Book tables for CODEX › NPCS' ROLL NAME and ROLL LOOK (issue #48). Book text, so GM only like the bestiary; only
+  // the words the GM keeps in NAME and DESCRIPTION reach a phone.
+  @Get("campaigns/:id/flavour")
+  async flavour(@Param("id") id: string, @Req() req: Request) {
+    const campaignId = parse(CampaignId, id);
+    const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    return flavourTables(await campaignHomebrew(campaignId));
   }
 
   // Rules reference (book text) for any seat at this table, GM or player.

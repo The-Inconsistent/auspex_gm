@@ -22,6 +22,7 @@ import {
   type Codex,
   type CreationPayload,
   type FactionPresets,
+  type FlavourTable,
   type NpcPreset,
   type FrameworkCatalogue,
   type LibraryCharacter,
@@ -32,6 +33,7 @@ import {
   presetNpc,
   presetLine,
   presetScene,
+  rollLook,
   type ScenePresets,
   type ThreatCombatant,
 } from "@wg/shared";
@@ -714,6 +716,21 @@ test("GM and player share a table", async (t) => {
     return f?.keywords.join() === "ORK" && f.notes.startsWith("Core p.80") && f.stance === "neutral";
   }, "a printed faction saves with its Keyword and cite");
   assert.ok(!printed.some((p) => p.source === "apocrypha"), "no homebrew factions unless the campaign allows them");
+  // ROLL NAME and ROLL LOOK (issue #48): the name and appearance tables, GM only, no homebrew books unless allowed.
+  const flavour = await get(`/campaigns/${campaignId}/flavour`, bearer(gmClerk));
+  assert.equal(flavour.status, 200);
+  const flavourList = (await flavour.json()) as FlavourTable[];
+  assert.ok(
+    ["human-names", "asuryani-names", "eye-colour", "hair-colour", "features"].every((id) =>
+      flavourList.some((t) => t.id === id),
+    ),
+  );
+  assert.ok(
+    !flavourList.some((t) => t.id === "custodian-names" || t.id === "drukhari-names-apocrypha" || t.id === "age"),
+  );
+  assert.ok(rollLook({ tables: flavourList, species: "aeldari" })?.line, "the tables roll a look");
+  assert.equal((await get(`/campaigns/${campaignId}/flavour`, { cookie: `wg_token=${issued.token}` })).status, 403);
+  assert.equal((await get(`/campaigns/${campaignId}/flavour`, bearer(clerk("stranger")))).status, 401);
   // CODEX › NPCS (issue #47): printed NPCs, GM only. The catalogue's patrons come in with their cite.
   const npcPresets = await get(`/campaigns/${campaignId}/npc-presets`, bearer(gmClerk));
   assert.equal(npcPresets.status, 200);
