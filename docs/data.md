@@ -168,7 +168,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Core rulebook | `core` (places, #50) | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
 | Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40; faction presets, #46) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` (NPC presets, #47) | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
-| Vow of Absolution | `vow-of-absolution` (Frameworks, #45; NPC presets, #47) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
+| Vow of Absolution | `vow-of-absolution` (Frameworks, #45; NPC presets, #47; places, #50) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
 | Threat Assessment: Daemons & Heretics (Jun 2024 update) | `daemons-and-heretics` (cite D&H; creation, relics, rules, threats) | `Warhammer 40,000_Wrath & Glory_Threat Assessment_ Daemons.pdf` (the second copy with spaces is byte-identical) | printed |
 | Forsaken System Player's Guide | `forsaken-system` (creation; faction presets, #46; NPC presets, #47; places, #50) | `Wrath & Glory - Forsaken System Player's Guide.pdf` | printed |
 | Aeldari: Inheritance of Embers | `inheritance-of-embers` (creation only) | `Warhammer 40,000_ Wrath and Glory_ Aeldari_ Inheritance of Embers.pdf` | printed |
@@ -798,6 +798,7 @@ The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one
 |---|---|---|
 | Core Rulebook | pp.296–309 | 16: the Gilead System, its six worlds with their stat lines and hooks, the Reach and the Membrane Worlds |
 | Forsaken System Player's Guide | pp.5–38 | 7: the six worlds, each with its adventure-hook sidebars; Enoch's Maintenance Undercrofts |
+| Vow of Absolution | pp.94–111 | 9: the battle barge with the Crucible of Command and Relics of War, Castle Grigori with its halls and the Training Fields, the Vault of Absolution and the Vault of the Endless Watch |
 
 **Conventions** (the transcription brief):
 - A place is a named site with its own printed heading: a system, world, city, hive, ship, site, region, building or
@@ -822,6 +823,12 @@ stops after a few paragraphs, and Faces of Faith (Avachrus), A Crop of Psykers (
 Primus) are named as left out. Two hooks print in the next world's section and go with the world they are about: The
 Ion Hastilude (p.17, about Nethreus) and A Noble Pursuit (p.33, about Gilead Primus). Kept as printed: "of the of the
 Sanctified Shield", "seeking the churches blessings", "Gilead Prime" (p.21), "Julyana"/"Julyanna".
+
+**Vow of Absolution notes.** The ship's id is `vow-of-absolution-barge`, since `vow-of-absolution` is the source id.
+Castle Grigori and the Vault have no place parent in these pages, so they are top level; the Endless Watch nests in the
+Vault, which the book calls its core. The NPC pages (Captain Akahir p.98, Brother Loastin p.106, Chaplain Heractis
+p.112) and the Chaplains box (p.111) are out. Kept as printed: "philosphies", "assign theseto", "Gilead Syatem", "Master
+Loastin can not abide", "the mater investigated", "Brevit Captain".
 
 ---
 
