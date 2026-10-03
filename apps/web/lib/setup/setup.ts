@@ -4,7 +4,7 @@ import { SETUP_STEPS, type SetupKey } from "./constants.ts";
 
 // Only what the ticks read, so a live Codex and a content pack both fit.
 type SetupInput = {
-  campaign: { tier: number; framework: string; patron: string };
+  campaign: { tier: number; framework: string; patron: string; kind: readonly string[] };
   codex: {
     locations: unknown[];
     factions: unknown[];
@@ -18,7 +18,7 @@ type SetupInput = {
 export type SetupStep = (typeof SETUP_STEPS)[number] & {
   n: number;
   now: string;
-  done: boolean | null; // null: a prompt that never ticks (content limits, rules-flow §11.79)
+  done: boolean;
 };
 
 const count = ({ n, noun, none }: { n: number; noun: string; none: string }) =>
@@ -30,8 +30,9 @@ export function setupSteps({ campaign, codex, characters }: SetupInput): SetupSt
   const beats = codex.adventures.flatMap((a) => a.beats);
   const prepared = beats.filter((b) => b.encounter.length).length;
   const set = (text: string) => ({ now: text.trim() ? "SET" : "EMPTY", done: !!text.trim() });
-  const ticks: Record<SetupKey, { now: string; done: boolean | null }> = {
-    kind: { now: "A PROMPT, NEVER TICKS", done: null },
+  const ticks: Record<SetupKey, { now: string; done: boolean }> = {
+    // The limits may rightly stay empty, so the kind of game the table agreed on is what ticks (rules-flow §11.79).
+    kind: { now: campaign.kind.join(" · ").toUpperCase() || "NOT AGREED YET", done: campaign.kind.length > 0 },
     framework: set(campaign.framework),
     // Tiers 1–4 start with 100–400 XP (Core p.20).
     tier: { now: `TIER ${campaign.tier} · ${startingXp(campaign.tier)} XP TO START`, done: true },

@@ -155,6 +155,8 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       framework: c.framework,
       frameworkBonus: c.frameworkBonus,
       patron: c.patron,
+      kind: c.kind,
+      limits: c.limits,
       homebrew: c.homebrew,
     },
     characters: chars.map(toCharacter),

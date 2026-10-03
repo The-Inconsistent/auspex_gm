@@ -23,6 +23,7 @@ import {
 import { NEW_CHARACTER } from "@/components/builder/constants";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { TableTalk } from "@/components/ui/table-talk/table-talk";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
 import { setupSteps } from "@/lib/setup/setup";
@@ -60,6 +61,7 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
   const [framework, setFramework] = useState(state.campaign.framework);
   const [frameworkBonus, setFrameworkBonus] = useState(state.campaign.frameworkBonus);
   const [patron, setPatron] = useState(state.campaign.patron);
+  const [table, setTable] = useState({ kind: state.campaign.kind, limits: state.campaign.limits });
   const open = codex.sessions.find((s) => !s.endedAt);
   const { members, invites } = state.access;
   const seatOf = (characterId: string) => members.find((m) => m.characterId === characterId);
@@ -165,7 +167,7 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
 
   // Framework SAVE.
   const saveFramework = async () =>
-    report(await send({ type: "campaign.update", framework, frameworkBonus, patron }), "FRAMEWORK SAVED");
+    report(await send({ type: "campaign.update", framework, frameworkBonus, patron, ...table }), "FRAMEWORK SAVED");
 
   // START FROM A FRAMEWORK › USE: the picked names go into the form, saved only by SAVE.
   const fillFramework = (picked: { patron: string; framework: string }) => {
@@ -321,6 +323,7 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
               onChange={(e) => setFrameworkBonus(e.target.value)}
             />
           </div>
+          <TableTalk {...table} onChange={setTable} />
           <div className="keys">
             <button
               className={`btn ${picking ? "primary" : ""}`}

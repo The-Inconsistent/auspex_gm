@@ -337,6 +337,11 @@ export type Combatant = z.infer<typeof Combatant>;
 export const sideOfKind = (kind: CombatantKind): Side => (kind === "pc" ? "agents" : "threats");
 export const sideOf = (c: Combatant): Side => sideOfKind(c.kind);
 
+// The kind of game the table wants and what it leaves out (Core p.316, rules-flow §11.79): short lines, players see them.
+export const MAX_TABLE_LINES = 12;
+export const MAX_TABLE_LINE = 60;
+export const TableLines = z.array(z.string().trim().min(1).max(MAX_TABLE_LINE)).max(MAX_TABLE_LINES);
+
 export const LiveState = z.object({
   campaign: z.object({
     id: z.string(),
@@ -347,6 +352,8 @@ export const LiveState = z.object({
     framework: z.string(),
     frameworkBonus: z.string(),
     patron: z.string(),
+    kind: z.array(z.string()),
+    limits: z.array(z.string()),
     homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
   }),
   characters: z.array(Character),

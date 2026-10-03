@@ -108,6 +108,8 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
     framework: "",
     frameworkBonus: "",
     patron: "",
+    kind: [],
+    limits: [],
     homebrew: false,
   },
   characters,
@@ -126,6 +128,8 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       framework: "",
       frameworkBonus: "",
       patron: "",
+      kind: ["investigative"],
+      limits: ["body horror"],
       homebrew: false,
     },
     characters: [],
@@ -161,6 +165,8 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
     { members: s.access.members, invites: [], guests: [] },
     "players see who's seated, never the invite links",
   );
+  // The table agreed on them together, so every phone shows them under MISSION (rules-flow §11.79).
+  assert.deepEqual(toPlayerView(s, null).campaign.limits, ["body horror"]);
 });
 
 test("toPlayerView: each player gets only their own Agent's objectives", () => {

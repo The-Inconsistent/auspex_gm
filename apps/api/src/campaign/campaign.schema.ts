@@ -1,5 +1,5 @@
 import { boolean, integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { body, createdAt } from "../core/sql.ts";
+import { body, conditions, createdAt } from "../core/sql.ts";
 
 export const campaign = pgTable("campaign", {
   id: uuid().primaryKey().defaultRandom(),
@@ -10,6 +10,8 @@ export const campaign = pgTable("campaign", {
   framework: text().notNull().default(""),
   frameworkBonus: text().notNull().default(""), // the party sheet's FRAMEWORK BONUS box (Core p.374, rules-flow §11.80)
   patron: text().notNull().default(""),
+  kind: conditions(), // the kind of game the table agreed on (Core p.316, rules-flow §11.79)
+  limits: conditions(), // what the table leaves out (Core p.316)
   homebrew: boolean().notNull().default(false), // the character builder may use the homebrew books (issue #9)
   createdAt: createdAt(),
 });

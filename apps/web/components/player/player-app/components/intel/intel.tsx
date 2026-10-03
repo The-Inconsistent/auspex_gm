@@ -7,14 +7,18 @@ type IntelProps = { codex: Codex; state: LiveState };
 export function Intel({ codex, state }: IntelProps) {
   const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
   const last = [...codex.sessions].reverse().find((s) => s.recap);
+  const { framework, frameworkBonus, patron, kind, limits } = state.campaign;
   return (
     <>
-      {state.campaign.framework && (
+      {(framework || kind.length > 0 || limits.length > 0) && (
         <div className="stack" style={{ gap: 4 }}>
           <div className="rule">MISSION</div>
-          <pre className="text">{state.campaign.framework}</pre>
-          {state.campaign.frameworkBonus && <div className="dim">BONUS: {state.campaign.frameworkBonus}</div>}
-          {state.campaign.patron && <div className="dim">PATRON: {state.campaign.patron}</div>}
+          {framework && <pre className="text">{framework}</pre>}
+          {frameworkBonus && <div className="dim">BONUS: {frameworkBonus}</div>}
+          {patron && <div className="dim">PATRON: {patron}</div>}
+          {/* What the whole table agreed (Core p.316, rules-flow §11.79), so nobody has to remember it. */}
+          {kind.length > 0 && <div className="dim">KIND OF GAME: {kind.join(" · ")}</div>}
+          {limits.length > 0 && <div className="dim">LEAVE OUT: {limits.join(" · ")}</div>}
         </div>
       )}
       {last && (

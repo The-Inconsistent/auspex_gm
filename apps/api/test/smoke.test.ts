@@ -884,6 +884,8 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
         framework: "Deathwatch",
         frameworkBonus: "+1 die",
         patron: "Ordo Xenos",
+        kind: [" combat heavy "],
+        limits: ["body horror"],
       })
     ).ok,
   );
@@ -891,8 +893,13 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
     (s) =>
       s.campaign.framework === "Deathwatch" &&
       s.campaign.frameworkBonus === "+1 die" &&
-      s.campaign.patron === "Ordo Xenos",
+      s.campaign.patron === "Ordo Xenos" &&
+      s.campaign.kind[0] === "combat heavy" && // trimmed
+      s.campaign.limits[0] === "body horror",
   );
+  // A table line is short, and there are at most 12 (rules-flow §11.79).
+  assert.equal((await gm.send({ type: "campaign.update", limits: ["x".repeat(61)] })).ok, false);
+  assert.equal((await gm.send({ type: "campaign.update", kind: Array(13).fill("x") })).ok, false);
 
   const hero = await gm.send({ type: "character.create", name: "Hero" });
   const b = await gm.send({ type: "character.create", name: "B" });
@@ -975,8 +982,11 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   assert.ok(issued.ok && issued.token);
   const player = connect({ auth: { token: issued.token } });
   t.after(() => player.socket.close());
-  const seen = threatOf(await player.until((s) => !!threatOf(s)))!;
+  const seenState = await player.until((s) => !!threatOf(s));
+  const seen = threatOf(seenState)!;
   assert.deepEqual([seen.threatId, seen.personalRuin, seen.stats], ["", 0, null]);
+  // The whole table agreed the limits, so every phone has them (MISSION).
+  assert.deepEqual(seenState.campaign.limits, ["body horror"]);
   assert.ok((await gm.send({ type: "encounter.end" })).ok);
   await gm.until((s) => s.encounter === null);
 

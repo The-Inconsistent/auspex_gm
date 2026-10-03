@@ -594,9 +594,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     Additional Ruin Actions). The preset keeps the cost null, a scene's copy has none, and SAVE waits until the GM sets
     it for that scene. There is no default: the app never invents a cost.
     *(User ruling, 2026-10-02.)*
-79. **Content limits stay a reminder** (Core p.316; GitHub issue #45). The GM decides the kind of game and "identify any
-    inappropriate content to avoid", and nobody should have to explain what they want left out. SETUP's first step is
-    a prompt that never ticks; nothing is stored, so nothing travels in an export. *(User ruling, 2026-10-02.)*
+79. **The kind of game and the content limits are stored** (Core p.316). The table agrees the kind of game and "identify any
+    inappropriate content to avoid", and nobody should have to explain what they want left out. The campaign keeps
+    both as short lines (`kind`, `limits`, at most 12 of 60 characters each): NEW CAMPAIGN's TABLE step and PARTY's
+    FRAMEWORK panel offer the book's examples and take typed ones, and every phone shows both under MISSION so the
+    table remembers. SETUP's first step ticks once a kind of game is set; the limits may rightly stay empty. They travel
+    in an export and a pack. *(User ruling, 2026-10-03; replaces the 2026-10-02 ruling that kept them a reminder.)*
 80. **The Framework Bonus is its own field** (Core p.19, party sheet p.374; GitHub issue #45). The party sheet has a
     FRAMEWORK and a FRAMEWORK BONUS box, so the campaign has `framework` and `frameworkBonus`, and players see both under
     MISSION. The Framework picker shows the printed Bonus to the GM only and fills in names only (the patron's and the

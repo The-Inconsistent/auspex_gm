@@ -43,6 +43,8 @@ await send(
     framework: pack.campaign.framework,
     frameworkBonus: pack.campaign.frameworkBonus,
     patron: pack.campaign.patron,
+    kind: pack.campaign.kind,
+    limits: pack.campaign.limits,
     homebrew: pack.campaign.homebrew,
   },
   "framework",
