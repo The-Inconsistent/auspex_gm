@@ -1836,3 +1836,10 @@ pre.text.bld-rules {
   background: var(--vellum);
   font-size: 15px;
 }
+
+/* CODEX › LOCATIONS: the places inside a place, indented under it (issue #50). */
+.place-branch {
+  margin-left: 18px;
+  padding-left: 10px;
+  border-left: 1px dotted var(--line);
+}

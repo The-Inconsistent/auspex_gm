@@ -1,4 +1,4 @@
-import type { Codex, LiveState } from "@wg/shared";
+import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 
@@ -44,8 +44,9 @@ export function Intel({ codex, state }: IntelProps) {
         </div>
       ))}
       <div className="rule">KNOWN LOCATIONS</div>
-      {codex.locations.map((l) => (
-        <div key={l.id} className="item">
+      {/* Nested as the GM files them (issue #50); a place under a hidden one comes top-level (toPlayerCodex). */}
+      {flatTree(placeTree(codex.locations)).map(({ row: l, depth }) => (
+        <div key={l.id} className="item" style={{ marginLeft: depth * 18 }}>
           <b>{l.name.toUpperCase()}</b>
           {l.description && <pre className="text">{l.description}</pre>}
         </div>

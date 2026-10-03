@@ -1,7 +1,7 @@
 import { and, eq, inArray, max, sql } from "drizzle-orm";
 import { hazards, threats } from "@wg/data";
 import type { z } from "zod";
-import { LocationHazard, type Action, type ActionResult, type CodexInput } from "@wg/shared";
+import { LocationHazard, wouldCycle, type Action, type ActionResult, type CodexInput } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
@@ -99,6 +99,19 @@ export async function applyCodexAction(
         if (parentId && parentId === a.id) fail("A location can't be inside itself");
         checkHazards((a.data as z.output<typeof CodexInput.location>).hazardList);
         await refs(location, [parentId], "Parent location");
+        // Nor inside a place that is inside it (issue #50). Only a saved place can have places inside; the action queue
+        // serialises the campaign, so nothing moves between this read and the write. A save that keeps the parent
+        // (REVEALED, an edit) passes, so a loop saved before this guard never locks a place.
+        if (a.id && parentId) {
+          const rows = await tx
+            .select({ id: location.id, name: location.name, parentId: location.parentId })
+            .from(location)
+            .where(eq(location.campaignId, cid));
+          const row = (id: string) => rows.find((l) => l.id === id);
+          const parentOf = new Map(rows.map((l) => [l.id, l.id === a.id ? parentId : l.parentId]));
+          if (row(a.id)?.parentId !== parentId && wouldCycle({ id: a.id, parentId, parentOf }))
+            fail(`${row(a.id)?.name} can't go inside ${row(parentId)?.name}: it is already inside it`);
+        }
       }
       if (a.kind === "handout")
         await refs(character, (a.data as z.output<typeof CodexInput.handout>).audience, "Audience character");

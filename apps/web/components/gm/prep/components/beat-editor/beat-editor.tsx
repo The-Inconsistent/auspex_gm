@@ -18,6 +18,7 @@ import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import type { Send } from "@/hooks/use-table/use-table";
 import { hazardView } from "@/lib/hazards/hazards";
+import { placeOptions } from "@/lib/places/places";
 
 import type { Beat, EncounterEntry, PoolDrafts } from "../../types";
 import { savedPools, stripBeat } from "../../utils";
@@ -205,9 +206,9 @@ export function BeatEditor({
           onChange={(e) => setB({ ...b, locationId: e.target.value || null, hazards: [] })}
         >
           <option value="">—</option>
-          {codex.locations.map((l) => (
-            <option key={l.id} value={l.id}>
-              {l.name}
+          {placeOptions(codex.locations).map(([id, label]) => (
+            <option key={id} value={id}>
+              {label}
             </option>
           ))}
         </select>

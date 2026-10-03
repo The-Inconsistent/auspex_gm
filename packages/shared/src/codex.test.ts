@@ -15,6 +15,9 @@ import {
   StatSource,
   TestKind,
   canSpend,
+  flatTree,
+  placeTree,
+  wouldCycle,
   quickRow,
   quickScaling,
   retypeTest,
@@ -180,4 +183,43 @@ test("a place's hazard is a book row by id, at an intensity, or the GM's own (is
   assert.ok(climb.kind === "custom" && climb.tests[0]!.dn === 3 && climb.effect === "");
   assert.equal(LocationHazard.safeParse({ id, kind: "custom", name: "" }).success, false, "a custom hazard is named");
   assert.equal(BeatHazard.parse({ id }).spotted, false, "a scene's pick starts unspotted");
+});
+
+test("wouldCycle refuses a place inside itself or its own descendants (issue #50)", () => {
+  // Hive > Spire > Vault; Dock is top level.
+  const parentOf = new Map<string, string | null>([
+    ["hive", null],
+    ["spire", "hive"],
+    ["vault", "spire"],
+    ["dock", null],
+  ]);
+  assert.equal(wouldCycle({ id: "hive", parentId: "hive", parentOf }), true);
+  assert.equal(wouldCycle({ id: "hive", parentId: "spire", parentOf }), true); // two places
+  assert.equal(wouldCycle({ id: "hive", parentId: "vault", parentOf }), true); // three
+  assert.equal(wouldCycle({ id: "vault", parentId: "dock", parentOf }), false); // a legal move
+  assert.equal(wouldCycle({ id: "spire", parentId: null, parentOf }), false);
+  // A loop saved before the guard doesn't hang the walk.
+  const loop = new Map<string, string | null>([
+    ["a", "b"],
+    ["b", "a"],
+  ]);
+  assert.equal(wouldCycle({ id: "c", parentId: "a", parentOf: loop }), false);
+});
+
+test("placeTree nests places in order and keeps a leftover loop as a root (issue #50)", () => {
+  const row = (id: string, parentId: string | null = null) => ({ id, parentId });
+  const tree = placeTree([row("hive"), row("vault", "spire"), row("spire", "hive"), row("dock"), row("lost", "gone")]);
+  assert.deepEqual(
+    flatTree(tree).map(({ row, depth }) => `${depth}:${row.id}`),
+    ["0:hive", "1:spire", "2:vault", "0:dock", "0:lost"], // a missing parent makes a root
+  );
+  assert.deepEqual(
+    tree.map((n) => n.inside),
+    [2, 0, 0],
+  );
+  const loop = placeTree([row("a", "b"), row("b", "a")]);
+  assert.deepEqual(
+    flatTree(loop).map(({ row, depth }) => `${depth}:${row.id}`),
+    ["0:a", "1:b"],
+  );
 });

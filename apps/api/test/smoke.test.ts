@@ -1844,6 +1844,12 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
     error: '"Falling" has no Moderate intensity',
   });
   const spire = await place([shock, climb]);
+  assert.ok(spire.ok && spire.id);
+  // The place tree (issue #50): the Hive can't go inside the Spire, which is inside it.
+  assert.deepEqual(
+    await gm.send({ type: "codex.save", kind: "location", id: hive.id, data: { name: "Hive", parentId: spire.id } }),
+    { ok: false, error: "Hive can't go inside Spire: it is already inside it" },
+  );
   const orders = await gm.send({
     type: "codex.save",
     kind: "handout",
@@ -1918,6 +1924,9 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
     400,
     "unknown hazard",
   );
+  const loop = structuredClone(file);
+  loop.codex.locations[0].parentId = loop.codex.locations[1].id; // Hive inside Spire, inside Hive
+  assert.equal((await post("/campaigns/import", { file: loop }, bearer(gm.gmClerk))).status, 400, "a place loop");
   const orphan = structuredClone(file);
   orphan.codex.handouts[0].audience = [crypto.randomUUID()];
   assert.equal(

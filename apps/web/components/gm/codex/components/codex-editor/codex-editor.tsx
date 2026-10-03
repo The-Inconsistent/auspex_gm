@@ -18,6 +18,7 @@ import {
 
 import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
 import type { Send } from "@/hooks/use-table/use-table";
+import { placeOptions } from "@/lib/places/places";
 
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
@@ -47,7 +48,17 @@ const upperOptions = (values: readonly string[]): Option[] => values.map((v) => 
 const NONE: Option = ["", "—"];
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
-function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex; characters: Character[] }): Field[] {
+function fieldsFor({
+  kind,
+  codex,
+  characters,
+  id,
+}: {
+  kind: CodexKind;
+  codex: Codex;
+  characters: Character[];
+  id?: string; // the entry being edited
+}): Field[] {
   switch (kind) {
     case "npc":
       return [
@@ -78,7 +89,7 @@ function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex;
           key: "parentId",
           label: "INSIDE",
           type: "select",
-          options: [NONE, ...codex.locations.map((l): Option => [l.id, l.name])],
+          options: [NONE, ...placeOptions(codex.locations, id)], // not inside itself (issue #50)
         },
         { key: "description", label: "DESCRIPTION (players see)", type: "area" },
         { key: "hazardList", label: "HAZARDS · GM ONLY", type: "hazardList" },
@@ -131,7 +142,7 @@ export function CodexEditor({
   hazards,
   onDone,
 }: CodexEditorProps) {
-  const fields = fieldsFor({ kind, codex, characters });
+  const fields = fieldsFor({ kind, codex, characters, id: row?.id });
   const [draft, setDraft] = useState<Record<string, unknown>>(() => {
     // Start from the whole row, so fields with no input here survive a save; zod strips the rest.
     const init: Record<string, unknown> = { ...row };
@@ -140,6 +151,7 @@ export function CodexEditor({
     return init;
   });
   const [error, setError] = useState<string | null>(null);
+  const [armed, setArmed] = useState<number | null>(null); // DELETE's first tap, at that many places inside
 
   const setField = (key: string, value: unknown) => setDraft({ ...draft, [key]: value });
 
@@ -158,9 +170,13 @@ export function CodexEditor({
     onDone();
   };
 
-  // DELETE: removes the entry, then closes the editor; a refusal stays open with the reason.
+  // DELETE: removes the entry, then closes the editor; a refusal stays open with the reason. A place with places inside
+  // asks a second tap first: they become top-level (§11.96).
+  const inside = kind === "location" && row ? codex.locations.filter((l) => l.parentId === row.id).length : 0;
   const handleDelete = async () => {
     if (!row) return;
+    // The count may change while the editor is open (another tablet); a new count asks again.
+    if (inside && armed !== inside) return setArmed(inside);
     const r = await send({ type: "codex.delete", kind, id: row.id });
     if (!r.ok) return setError(r.error);
     onDone();
@@ -288,7 +304,7 @@ export function CodexEditor({
         </button>
         {row && (
           <button className="btn danger" onClick={handleDelete}>
-            DELETE
+            {inside && armed === inside ? `DELETE · ${inside} INSIDE GO TOP-LEVEL` : "DELETE"}
           </button>
         )}
       </div>

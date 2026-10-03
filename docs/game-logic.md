@@ -334,7 +334,7 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 | threat combatant, `visibility: "bars"` | label, marker, class, mob count, Wounds / Shock and their maxima, Conditions, turn flags | `stats` → null, `threatId` → `""`, `personalRuin` → 0 |
 | threat combatant, `visibility: "stats"` | all of the above plus `stats` | — |
 | `Codex.factions`, `Codex.adventures` (with beats) | nothing (empty arrays) | all |
-| `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked, `hazardList` emptied; `parentId` → null unless the parent is revealed |
+| `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked, `hazardList` emptied; `parentId` → null unless the parent is revealed, so the phone nests the rest with `placeTree` (§11.97) |
 | `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none`; `factionId` → null; `attitude` kept (rules-flow §11.89) |
 | `Codex.handouts` | revealed ones only | — |
 | `Codex.sessions` | all, with recaps | — |

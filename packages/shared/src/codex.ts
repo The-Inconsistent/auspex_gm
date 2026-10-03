@@ -292,3 +292,47 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
     sessions: c.sessions,
   };
 }
+
+// Places nest through `parentId` (GitHub issue #50). Whether putting `id` inside `parentId` would make a loop: the parent
+// is the place itself, or walking up from the parent reaches it. `parentOf` holds every place's current parent; the
+// visited set stops on a loop that is already there.
+export function wouldCycle({
+  id,
+  parentId,
+  parentOf,
+}: {
+  id: string;
+  parentId: string | null;
+  parentOf: ReadonlyMap<string, string | null>;
+}): boolean {
+  const seen = new Set<string>();
+  for (let at = parentId; at && !seen.has(at); at = parentOf.get(at) ?? null) {
+    if (at === id) return true;
+    seen.add(at);
+  }
+  return false;
+}
+
+export type PlaceNode<T> = { row: T; inside: number; children: PlaceNode<T>[] };
+
+// The places as a tree, in the rows' order. A root has no parent, or a parent that isn't in `rows` (a player's codex
+// drops hidden ones). A place no root reaches (a loop saved before the guard) becomes a root, so none disappears.
+export function placeTree<T extends { id: string; parentId: string | null }>(rows: readonly T[]): PlaceNode<T>[] {
+  const ids = new Set(rows.map((r) => r.id));
+  const kids = new Map<string, T[]>();
+  for (const r of rows)
+    if (r.parentId && ids.has(r.parentId)) kids.set(r.parentId, [...(kids.get(r.parentId) ?? []), r]);
+  const placed = new Set<string>();
+  const grow = (row: T): PlaceNode<T> => {
+    placed.add(row.id);
+    const children = (kids.get(row.id) ?? []).filter((c) => !placed.has(c.id)).map(grow);
+    return { row, children, inside: children.reduce((n, c) => n + 1 + c.inside, 0) };
+  };
+  const roots = rows.filter((r) => !r.parentId || !ids.has(r.parentId)).map(grow);
+  for (const r of rows) if (!placed.has(r.id)) roots.push(grow(r));
+  return roots;
+}
+
+// The tree in reading order with each place's depth, for a select or a flat list.
+export const flatTree = <T>(nodes: PlaceNode<T>[], depth = 0): { row: T; depth: number }[] =>
+  nodes.flatMap((n) => [{ row: n.row, depth }, ...flatTree(n.children, depth + 1)]);
