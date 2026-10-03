@@ -5,7 +5,6 @@ import { useState } from "react";
 import {
   CUSTOM_PREFIX,
   CUSTOM_THREAT_CAP,
-  CustomThreatData,
   threatCite,
   threatLabel,
   type PoolPresetTable,
@@ -14,12 +13,10 @@ import {
 } from "@wg/shared";
 
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
-import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
-import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
+import { cloneDraft, draftOf, type ThreatDraft } from "@/components/ui/threat-builder/constants";
+import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
+import { ThreatStarts } from "@/components/ui/threat-starts/threat-starts";
 import type { Send } from "@/hooks/use-table/use-table";
-
-import { blankDraft, cloneDraft, draftOf, quickDraft, type ThreatDraft } from "./constants";
-import { ThreatForm } from "./threat-form";
 
 type ThreatEditorProps = {
   customThreats: Threat[];
@@ -30,41 +27,22 @@ type ThreatEditorProps = {
   send: Send;
 };
 
-// A stat block the GM writes for their table (issue #43): the customs this campaign holds, and the two ways to start a
-// new one — CLONE FROM BESTIARY, or BLANK. Saving sends `threat.save`, which re-parses it server-side and sets the id,
+// A stat block the GM writes for their table (issue #43): the customs this campaign holds, and the three ways to start
+// a new one (ThreatStarts) — CLONE FROM BESTIARY, BLANK or QUICK. Saving sends `threat.save`, which re-parses it server-side and sets the id,
 // the source and the page.
 export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, tier, send }: ThreatEditorProps) {
   // `slug` is null for one not saved yet; the server returns the slug it made.
   const [editing, setEditing] = useState<{ slug: string | null; draft: ThreatDraft } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const fields = useFieldErrors("t-");
   const full = customThreats.length >= CUSTOM_THREAT_CAP;
 
   const start = (draft: ThreatDraft, slug: string | null = null) => {
     setError(null);
-    fields.reset();
     setEditing({ slug, draft });
   };
 
+  // CLONE on a saved one: a second copy, which takes its own slug from the name.
   const clone = (t: Threat) => start(cloneDraft(t, threatCite(t)));
-
-  const save = async () => {
-    if (!editing) return;
-    setError(null);
-    // The server's own schema first, so a missing NAME or Keyword is marked on its field.
-    if (!fields.check(CustomThreatData, editing.draft)) return;
-    setBusy(true);
-    const r = await send({
-      type: "threat.save",
-      ...(editing.slug ? { slug: editing.slug } : {}),
-      data: editing.draft,
-    });
-    setBusy(false);
-    if (!r.ok) return setError(r.error);
-    setError(null);
-    setEditing(null);
-  };
 
   const remove = async (t: Threat) => {
     const r = await send({ type: "threat.delete", slug: t.id.slice(CUSTOM_PREFIX.length) });
@@ -73,50 +51,20 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
 
   if (editing)
     return (
-      <div className="panel pad stack">
-        <ThreatForm
-          draft={editing.draft}
-          wargear={wargear}
-          ruinActions={ruinActions}
-          fields={fields}
-          onChange={(draft) => setEditing({ ...editing, draft })}
-        />
-        {/* A refusal inside a list (an ability, a weapon) has no field of its own: it says where. */}
-        {(error ?? fields.elsewhere(["name", "keywords"])) && (
-          <div className="red">! {error ?? fields.elsewhere(["name", "keywords"])}</div>
-        )}
-        {/* A stat block carries at least one Keyword (Core p.323), so the server would refuse one without. */}
-        {!editing.draft.keywords.length && <div className="dim">A threat needs at least one keyword.</div>}
-        <div className="keys">
-          <button className="btn primary" disabled={busy} onClick={save}>
-            {editing.slug ? "SAVE THREAT" : "CREATE THREAT"}
-          </button>
-          <button className="btn" onClick={() => setEditing(null)}>
-            CANCEL
-          </button>
-        </div>
-      </div>
+      <ThreatBuilder
+        start={editing}
+        wargear={wargear}
+        ruinActions={ruinActions}
+        send={send}
+        onSaved={() => setEditing(null)}
+        onCancel={() => setEditing(null)}
+      />
     );
 
   return (
     <div className="stack">
       <div className="keys" style={{ alignItems: "center" }}>
-        {/* Disabled at the cap like the other two: a form the server would refuse on CREATE wastes the GM's typing. */}
-        <ThreatPicker
-          bestiary={bestiary}
-          tier={tier}
-          onPick={clone}
-          label="CLONE FROM BESTIARY"
-          className="btn sm"
-          disabled={full}
-        />
-        <button className="btn sm" disabled={full} onClick={() => start(blankDraft())}>
-          BLANK
-        </button>
-        {/* The Core p.326 row for this Tier: the derived numbers, and the Attributes left to the GM (§11.110). */}
-        <button className="btn sm" disabled={full} onClick={() => start(quickDraft(tier))}>
-          QUICK (TIER {Math.min(Math.max(Math.trunc(tier), 1), 4)})
-        </button>
+        <ThreatStarts bestiary={bestiary} tier={tier} disabled={full} onStart={start} />
         <span className="dim">
           {customThreats.length} / {CUSTOM_THREAT_CAP}
           {full ? " · full" : ""}

@@ -11,6 +11,7 @@ import {
   type LiveState,
   type ScenePresets,
   type Threat,
+  type Wargear,
 } from "@wg/shared";
 
 import { FieldError } from "@/components/ui/field-error/field-error";
@@ -39,10 +40,11 @@ type PrepProps = {
   send: Send;
   bestiary: Threat[];
   presets: ScenePresets;
+  wargear: Wargear[]; // for a scene's + NEW CUSTOM THREAT
   onRun: () => void;
 };
 
-export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps) {
+export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: PrepProps) {
   const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
   // The scene editor (a scene, or "new"), or the book-table picker ("table").
   const [editing, setEditing] = useState<Beat | "new" | "table" | null>(null);
@@ -398,6 +400,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
           skillDns={presets.skillDns}
           poolTables={presets.pools}
           hazardTables={presets.hazards}
+          wargear={wargear}
           onDone={() => setEditing(null)}
         />
       )}

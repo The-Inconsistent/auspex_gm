@@ -19,7 +19,6 @@ import {
 import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
 import type { CodexKind } from "@/components/gm/codex/constants";
-import { RUIN_ACTIONS_TABLE } from "@/components/gm/codex/components/threat-editor/constants";
 import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
@@ -32,6 +31,7 @@ import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
+import { RUIN_ACTIONS_TABLE } from "@/components/ui/threat-builder/constants";
 import { useBookServer } from "@/hooks/use-book-server/use-book-server";
 import { useTable } from "@/hooks/use-table/use-table";
 
@@ -160,6 +160,7 @@ export function GmApp({
                 send={send}
                 bestiary={allThreats}
                 presets={presets}
+                wargear={wargear}
                 onRun={() => setTab("TRACK")}
               />
             )}
