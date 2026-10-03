@@ -16,6 +16,7 @@ Commands and setup: [development.md](development.md).
 | `packages/data/packs/<name>/characters/*.json` | One character per file, `{ name, stats }`. `stats` is `CharacterStats` in `packages/shared/src/state.ts` |
 | `packages/data/faction-presets/<source>.json` | Printed factions for CODEX › FACTIONS' ADD FROM BOOK (GitHub issue #46), one file per book. Schema `FactionPreset` in `packages/shared/src/faction-presets.ts`: the codex faction (name, `keywords`, `notes`, `secrets`) plus `id`, `source` and printed `page`. GM-only, served by `/api/campaigns/:id/faction-presets` beside the creation catalogue's own factions. Keywords only where the page prints them, or a §11 ruling maps them (rules-flow.md §11.84, §11.85); notes and secrets verbatim |
 | `packages/data/npc-presets/<source>.json` | Printed NPCs for CODEX › NPCS' ADD FROM BOOK (GitHub issue #47), in the file of each NPC's first cite. Schema `NpcPreset` in `packages/shared/src/npc-presets.ts`: the codex NPC (name, `role`, `gmNotes`, `secrets`, `attitude`, `statSource`) plus `id`, `cites` (one or more `{ source, page }`) and an optional `faction` name to link. GM-only, served by `/api/campaigns/:id/npc-presets` after the creation catalogue's patrons (cite only: their text runs past GM NOTES' 5,000 characters); a file NPC with a patron's id replaces it and keeps both cites. Players see a revealed NPC's name, role and description, so DESCRIPTION stays empty and printed text goes in GM NOTES; a stat source only where the book names one |
+| `packages/data/places/<source>.json` | Printed systems, worlds, sites and rooms for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50). Schema `Place` in `packages/shared/src/places.ts`: `id` (prefixed by the source id), `name`, `parent` (a place earlier in the same file), `source`, `page`, `stats` (a printed stat line, `{ label, value }`), `hooks` (adventure-hook sidebars, `{ title, text }`) and `gm` (the printed description). GM-only: `/api/campaigns/:id/places` sends only `PlaceSummary` (`id`, `name`, `parentId`, `source`, `page`), and `codex.addPlaces` copies the text server-side through `placeNotes` |
 | `packages/data/index.ts` | Server-side loaders (below) |
 | `packages/data/validate.ts` | `bun run validate` (§6) |
 
@@ -31,6 +32,7 @@ Commands and setup: [development.md](development.md).
 | `rulesList()` | The rules reference (`rules/*.json`) |
 | `factionPresetList()` | The printed factions (`faction-presets/*.json`), parsed |
 | `npcPresetList()` | The printed NPCs (`npc-presets/*.json`), parsed |
+| `placeList()`, `places` | The printed places (`places/*.json`), parsed in file order, and by id |
 | `creationCatalogue()` | The creation catalogue (§9): every `creation/<type>/<source>.json`, parsed, one array per type |
 
 **Who loads it.** The api imports `threats` in `apps/api/src/encounter/encounter.actions.ts` and
@@ -163,7 +165,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 
 | Book | `source` id | File in `books/` | PDF page = |
 |---|---|---|---|
-| Core rulebook | `core` | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
+| Core rulebook | `core` (places, #50) | `Warhammer 40000 Roleplay Wrath and Glory - Rulebook.pdf` | printed + 1 |
 | Threat Assessment | `threat-assessment` (threats; Ruin Actions, #40; faction presets, #46) | `Wrath & Glory_ Threat Assessment.pdf` | printed |
 | Gutshiva's Kommandos | `gutshivas-kommandos` (NPC presets, #47) | `Wrath & Glory_ Gutshiva’s Kommandos.pdf` (curly apostrophe) | printed |
 | Vow of Absolution | `vow-of-absolution` (Frameworks, #45; NPC presets, #47) | `Wrath & Glory_ Vow of Absolution.pdf` | printed (checked p.93) |
@@ -788,6 +790,30 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
     lines in its text, standing in for the printed skull bullets. Kept as printed: "-2 AP" with a hyphen in Staggering
     Blow beside "−1 AP" elsewhere, and "(see Wrath & Glory, page 194)".
 
+### Places (`packages/data/places/<source>.json`, `Place` in `packages/shared/src/places.ts`)
+
+The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one file per book, parents first:
+
+| Book | Pages | Places |
+|---|---|---|
+| Core Rulebook | pp.296–309 | 16: the Gilead System, its six worlds with their stat lines and hooks, the Reach and the Membrane Worlds |
+
+**Conventions** (the transcription brief):
+- A place is a named site with its own printed heading: a system, world, city, hive, ship, site, region, building or
+  room. Organisations, people, events, rules and tables are not places. A heading that only groups places isn't one.
+- `stats` holds only a printed "Label: value" stat line; `hooks` holds adventure-hook sidebars with their printed
+  titles; `gm` holds the place's own section, verbatim. Non-place sections inside it (an organisation in a world's
+  chapter) may follow under a line with their heading in capitals.
+- GM NOTES are `placeNotes`: the cite, the stat line, the hooks, then `gm`, and must fit 5,000 characters. Long text
+  stops at a whole paragraph, with a last line `… continues, <cite> p.N`; hooks that don't fit are named in a final
+  `Hooks left out for length: …` line (rules-flow §11.100).
+- Print errors are copied as printed and listed in the PR.
+
+**Core Rulebook notes.** "The Heartworlds" and "The Straits of Andraste" are lore headings inside the system's text, not
+places. Charybdion sits under the system, beside the Reach: its orbit "marks the border" between the Heartworlds and the
+Reach (p.306). Craftworld Ul-Khari is a subheading inside Trollius. Kept as printed: "For all it's impressive power"
+(Avachrus), "Andraste" and "Andrastre", "subtlety builds on" (The Harvest Smith), "targeting conveys" (the Voidmire).
+
 ---
 
 ## 6. `validate.ts`
@@ -824,6 +850,8 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
 | Faction preset summary | `faction-presets/<file>: N factions (N with Keywords, N with secrets)` |
 | Every `npc-presets/<source>.json` parses as `NpcPreset[]`; the filename matches the first cite's book; every cite is an official book; ids are unique across the files (a patron's id is allowed, to replace it); `description` is empty; a bestiary stat source names a threat | `✖ npc-presets/<file>` + zod error, `is first cited from`, `homebrew`, `duplicate id`, `DESCRIPTION reaches players`, or `unknown threat` |
 | NPC preset summary | `npc-presets/<file>: N NPCs (N with stats, N replacing a patron)` |
+| Every `places/<source>.json` parses as `Place[]`; the filename is the source; official books only; ids are unique across the files and start with the source id; a `parent` comes earlier in the same file; a copied place's GM NOTES (`placeNotes`) fit 5,000 characters (rules-flow §11.100) | `✖ places/<file>` + zod error, `is from`, `homebrew`, `doesn't start with`, `duplicate id`, `parent … is unknown or comes later`, or `over 5,000` |
+| Place summary | `places/<file>: N places (N top level, N with a stat line, N hooks)` |
 | A `mundane` item links nothing in the catalogue | `✖ creation/… "<id>": "…" is mundane but links the catalogue` |
 
 ---
@@ -848,7 +876,7 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
 | Copyrighted | Where |
 |---|---|
 | The book PDFs | `books/`, gitignored (`*.pdf`); never commit them |
-| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/**/*.json`, and any rule text in packs and characters |
+| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/**/*.json`, `packages/data/places/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
 - Never serve book content without an access token. `GET /api/campaigns/:id/threats`, `/wargear` and `/scene-presets` return 401 unless
@@ -856,6 +884,9 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
 - Players get a threat's `stats` only after the GM reveals that combatant (`toPlayerView`). They never get NPC
   `statSource`.
 - In docs, issues and PRs, show structure or placeholders, never a real stat block.
+- `codex.addPlaces` (issue #50) copies a place's printed text into the campaign's GM NOTES, so it is stored in the
+  database and leaves the app in the GM's export file. Only the GM receives it (`toPlayerCodex` blanks `gmNotes`), as
+  with a threat snapshotted into a fight.
 
 ---
 

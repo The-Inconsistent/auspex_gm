@@ -4,6 +4,7 @@ import {
   FrameworkCatalogue,
   Me,
   NpcPreset,
+  PlaceSummary,
   ScenePresets,
   Threat,
   Wargear,
@@ -84,6 +85,18 @@ async function loadNpcPresets(campaignId: string): Promise<NpcPreset[]> {
   }
 }
 
+// GM-only printed places for CODEX › LOCATIONS' ADD FROM BOOK (issue #50): names and nesting only. Empty on failure;
+// the picker then hides.
+async function loadPlaces(campaignId: string): Promise<PlaceSummary[]> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/places`);
+    const parsed = PlaceSummary.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : [];
+  } catch {
+    return [];
+  }
+}
+
 // GM-only name and appearance tables for CODEX › NPCS' ROLL NAME and ROLL LOOK (issue #48). Empty on failure; the
 // editor then shows no roll buttons.
 async function loadFlavour(campaignId: string): Promise<FlavourTable[]> {
@@ -111,16 +124,18 @@ export default async function Table({ params }: TableProps) {
   }
 
   if (me.role === "gm") {
-    const [bestiary, wargear, rules, presets, frameworks, factionPresets, npcPresets, flavour] = await Promise.all([
-      loadBestiary(me.campaignId),
-      loadWargear(me.campaignId),
-      loadRules(me.campaignId),
-      loadScenePresets(me.campaignId),
-      loadFrameworks(me.campaignId),
-      loadFactionPresets(me.campaignId),
-      loadNpcPresets(me.campaignId),
-      loadFlavour(me.campaignId),
-    ]);
+    const [bestiary, wargear, rules, presets, frameworks, factionPresets, npcPresets, flavour, places] =
+      await Promise.all([
+        loadBestiary(me.campaignId),
+        loadWargear(me.campaignId),
+        loadRules(me.campaignId),
+        loadScenePresets(me.campaignId),
+        loadFrameworks(me.campaignId),
+        loadFactionPresets(me.campaignId),
+        loadNpcPresets(me.campaignId),
+        loadFlavour(me.campaignId),
+        loadPlaces(me.campaignId),
+      ]);
     return (
       <GmApp
         campaignId={me.campaignId}
@@ -132,6 +147,7 @@ export default async function Table({ params }: TableProps) {
         factionPresets={factionPresets}
         npcPresets={npcPresets}
         flavour={flavour}
+        places={places}
       />
     );
   }

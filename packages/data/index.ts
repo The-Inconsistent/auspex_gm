@@ -9,6 +9,7 @@ import {
   HazardTable,
   NpcPreset,
   Pack,
+  Place,
   PoolPresetTable,
   RuleEntry,
   type ScenePresets,
@@ -77,6 +78,13 @@ const npcPresetsDir = new URL("./npc-presets/", import.meta.url);
 export const npcPresetFiles = () => jsonFiles(npcPresetsDir);
 export const npcPresetList = (): NpcPreset[] =>
   npcPresetFiles().flatMap((f) => NpcPreset.array().parse(json(new URL(f, npcPresetsDir))));
+
+// places/<source>.json: GM-only printed systems, worlds, sites and rooms for CODEX › LOCATIONS' ADD FROM BOOK (issue
+// #50). A file lists parents before the places inside them.
+const placesDir = new URL("./places/", import.meta.url);
+export const placeFiles = () => jsonFiles(placesDir);
+export const placeList = (): Place[] => placeFiles().flatMap((f) => Place.array().parse(json(new URL(f, placesDir))));
+export const places: ReadonlyMap<string, Place> = new Map(placeList().map((p) => [p.id, p]));
 
 // creation/<type>/<source>.json: the character-creation catalogue, book text served to seats only (docs/data.md).
 const creationDir = new URL("./creation/", import.meta.url);

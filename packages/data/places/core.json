@@ -1,0 +1,313 @@
+[
+ {
+  "id": "core-gilead-system",
+  "name": "The Gilead System",
+  "source": "core",
+  "page": 296,
+  "gm": "The worlds of the Gilead System have stood for millennia as a beacon of Imperial order, located in the coreward region near the border of the Segmentum Solar and the Segmentum Obscurus. The numerous habitable planets and moons of the system were discovered by an Adeptus Mechanicus Explorator fleet. Heretics and corrupted Astartes had infested the halcyon system, and so the Imperium launched a war against the traitors to claim what was rightfully the Emperor’s territory.\n\nThis war is recorded in Imperial Archives as the ‘Gilead Crusade’, so named for the heroic leader of the Imperial forces: Saint Julyanna Gilead. The crusade expanded to worlds far beyond the Gilead System, but the first victories against the heretic legions began here.\n\nJulyanna Gilead was supported by the Astra Militarum, the Imperial Navy, and the Adeptus Astartes. The Departmento Munitorium sent countless Astra Militarum regiments, while the Imperial Navy dispatched two full battlefleets. But most impressive was the almost complete deployment of the Absolvers Chapter of Adeptus Astartes, led by Chapter Master Tygranus Dalir, the ‘Emperor’s Archangel’.\n\nUntil the dawn of the Dark Imperium, these worlds thrived and prospered. The Gilead System was considered one of the greatest successes of its sector of space, a gleaming example of the Imperium’s majesty and righteousness. However, the Noctis Aeterna — the darkness that obscured the light of the Astronomican’s beacon — isolated the system, rendering Gilead’s previous glories meaningless and wreathing the region in the Warp-storms of the Great Rift. With no communication, transportation, or backup, the Emperor’s light no longer shines on the worlds of the Gilead, and has not for three grim years. Many wonder if it will ever return.\n\nTHE STRAITS OF ANDRASTE\n\nThe tides of the Great Rift shifted and roiled, forming what seemed at first to be a stable corridor that might offer passage to Imperium Sanctus from the Gilead. However, this appearance was an Empyrean mirage, luring dozens of vessels to their doom as they broke apart or were lost forever upon the Warp shoals. Only after many attempts had failed and all hope seemed lost, was the promise of this dangerous journey fulfilled.\n\nRogue Trader Jakel Varonius and his fleet did the impossible: by some navigational miracle, they found a route through the Great Rift. They dubbed the channel of seemingly safe passage through the Warp storm ‘the Straits of Andrastre’, named after Varonius’s forward scout frigate.\n\nLady Octavia Ecedes Omincara, an ancient and skilled Navigator and elder of the renowned House Omincara, was aboard the Rogue Trader’s flagship. Only through Lady Octavia’s impressive power and a healthy portion of good fortune was the fleet able to arrive in the Gilead System. Once there, the Rogue Trader’s charismatic leadership, his influential Warrant of Trade, and the weight of House Omincara’s aid convinced the Imperial officials of the system to bow to the Varonius Dynasty as their saviour and guardian. A symbol of the apparently still thriving Imperium, Varonius is to many a beacon of hope that the Emperor’s light will return. Others see him as a charlatan, another flickering flame of false hope in the darkness of the Imperium Nihilus.\n\nTHE HEARTWORLDS\n\nCircling the swollen star of ancient Gilead are the bastions of Imperial authority, the most powerful, prosperous, and populated planets. These are collectively known as the ‘Heartworlds’."
+ },
+ {
+  "id": "core-avachrus",
+  "name": "Avachrus",
+  "source": "core",
+  "page": 297,
+  "parent": "core-gilead-system",
+  "stats": [
+   {
+    "label": "Classification",
+    "value": "Forge World"
+   },
+   {
+    "label": "Population",
+    "value": "Approximately ten billion"
+   },
+   {
+    "label": "Geography",
+    "value": "Lifeless tundra blasted by unsurvivable heat (day side) or frozen into poisonous crystalscapes (night side)."
+   },
+   {
+    "label": "Planetary Governance",
+    "value": "Princeps Ultima Gol Bessor (presumed deceased). Archdomina Aexekra Vakuul of Belaxia Foundry rules as self-proclaimed regent. The Suspire Priesthood holds the most functional leverage and power, should it ever deign to wield it."
+   },
+   {
+    "label": "Tithe Grade",
+    "value": "Aptus Nihil (no longer capable of paying Terra’s due)."
+   }
+  ],
+  "hooks": [
+   {
+    "title": "The Last Crusader",
+    "text": "Seeking freedom from their imprisonment by the Great Rift, some members of the Adeptus Mechanicus practice the sin of ‘innovation’, or research questionable and forbidden technologies. No small number have turned utterly traitor to the precepts of the Machine God, joining the blasphemous ranks of the Hereteks; the Dark Mechanicum.\n\nThe lost foundry-forges of Avachrus and its moons hide archeotech both wondrous and profane. Beneath dark Uru’s surface, a war between competing tech-heresies rages. A group who refer to themselves as the Unshackled Fane seek a series of engramic-codes that can supposedly shut down augmetics at a distance, allowing them to incapacitate or kill Tech-Priests and Skitarii throughout the system with a single broadcast. They are opposed by a rag-tag band of pirates, who have somehow managed to defeat everything the Adeptus Mechanicus and the Unshackled Fane have sent against them.\n\nVaronius’s agents believe the pirates are led by a hive warrior named Cimbria. Undercover agents have reported Cimbria preaches her own creed to indoctrinate her crew, focusing around the worship of ‘the Man of Iron’. This ‘Man’ is a crumbling relic of millennia-old technology, designated Thanatar-Calix Class Siege Automata XGL345-3. Cimbria claims she can converse with this ancient machine, a tactician without peer that knows many secrets. The machine’s purpose — if it is more than Cimbria’s own invention — is a mystery."
+   }
+  ],
+  "gm": "A barren rock of vast mineral wealth wreathed in storms of toxic clouds and corrosive acid rain, Avachrus is locked in close orbit of the Gilead star. The force of gravity keeps one side of Avachrus facing the system’s sun, its blazing heat reducing simple metals to slag in seconds, while the other side is bound in perpetual night.\n\nThe billions who serve the Adeptus Mechanicus on Avachrus spend their entire existence underground, living in perpetual toil. Foundry-forges dot the world, protecting its citizens from the elements with sheathes of iron. Beneath the surface are vast engineering warrens, each a self-contained atmospheric blister of industrial activity. Surrounding the planet is an orbital ring of shipyards and space-docks through which the wealth of Avachrus flows. Two moons orbit Avachrus: the silvery Odo and the black-rocked Uru.\n\nAmidst the forges, foundries, and fortresses are other, older structures. The Eternal Engines are relics of the Dark Age of Technology recovered and repurposed by the Magos of the Cult Mechanicus. Vast solar collectors power the city-foundries of the world and the great space elevators that reach to the orbital ring above. These are essential for the running of the planet’s other machinery and a failure in any Eternal Engine dooms millions to die in seconds. Imperial records show such a tragedy occurring only once, at Illiarch. The foundry-city now stands empty and silent, a haunting reminder of the fragility of life on this Forge World.\n\nA sacred order of Tech-Priests known as the ‘Suspire’ tend to these vital machines, granting the order great political power. However, they remain aloof from the infighting among the cities and other Magos — or so they claim. Recently Inquisitor Argyle of the Order Malleus fortress on Imperia has been seen in contact with several Magos-adepts of the Suspire. Combined teams of Skitarii and Argyle’s retinue have been reported combing the shell of Illiarch, with artefacts removed to Imperia under Tech-Priest supervision.\n\nFor all it’s impressive power, the resources of Avachrus are finite; its moons were hollowed ages ago for their mineral wealth and have since become havens for pirates and Corsairs. The Legio Kaurthos, long deployed across the galaxy, has left many of its fortifications empty. However, there is more archeotech here than the Eternal Engines, and scavengers have begun gathering in the night of Imperium Nihilus to plunder it.\n\nXenos and renegade raids have become an increasing threat, but more worrying to Archdomina Vakuul by far are the rumours of the presence of a scrap code beginning to infest isolated systems. Hushed whispers tell of a new order growing within the shadows of the Adeptus Mechanicus on Avachrus, of tech-heresy practised in abandoned warren cities, and of a mad Magos crafting technological horrors.\n\n… continues, Core p.299"
+ },
+ {
+  "id": "core-nethreus",
+  "name": "Nethreus",
+  "source": "core",
+  "page": 299,
+  "parent": "core-gilead-system",
+  "stats": [
+   {
+    "label": "Classification",
+    "value": "Death World (sub-reference: Knight World)"
+   },
+   {
+    "label": "Population",
+    "value": "Approximately ten million"
+   },
+   {
+    "label": "Geography",
+    "value": "Volcanic wastelands undergoing continual tectonic unrest"
+   },
+   {
+    "label": "Planetary Governance",
+    "value": "High King Vilmaar XIV of the Acastan Lineage"
+   },
+   {
+    "label": "Tithe Grade",
+    "value": "Aptus Nihil (no longer capable of paying Terra’s due)"
+   }
+  ],
+  "hooks": [
+   {
+    "title": "Knights of Nethreus",
+    "text": "Imperial Knights are ancient robotic battlesuits, some of which were created before the foundations of the Imperium. Each Knight is controlled using a sophisticated device called a Throne Mechanicum, which allows a pilot to mentally direct their war machine — its senses are their senses, its weapons extensions of their own limbs.\n\nLong ago, Imperial Knights were used to protect Human colony worlds. Their pilots started as guardians, but eventually became noble rulers. Throne Mechanicums carry echoes of their past pilots, whose mindsets affect their current user. This has continually reinforced the principles of personal honour, protecting one’s charges, and preferred isolation that define the Nethreun code.\n\nAt present, many of the Barons are more worried about the dire predictions concerning the Athros Run than the woes of the Gilead System. The Run is a regularly recurring event when a specific sub-breed of Nethreun megafauna — the serpentine Chorbok — attack the dominions en masse. Reports seem to indicate that the Chorbok have grown consistently mightier and more devious every year. The Barons don’t want the Chorbok eliminated entirely, as roasted Chorbok is delicious and a good Run can feed a dominion for months; a luxurious and prized change from the bland world root and unappetising corpse starch. However, discovering why the Chorbok are seemingly obsessed with destroying the dominions and putting a stop to it could earn mighty and fiercely honourable allies."
+   }
+  ],
+  "gm": "Nethreus is a tectonic nightmare of a world. Volcanoes spit fire and ash into the sky with unrelenting fury and earthquakes ripple across the broken surface of the second planet from the Gilead star. Temperatures burn hot, but humanity survives on the surface of this hostile rock. Megafauna fly, stalk, and burrow across Nethreus like nightmare beasts risen from the mythologies of Old Earth.\n\nThe population lives in shielded fortress-cities called ‘dominions’ where they cultivate Nethreus’s only known native vegetation: a hardy breed of tuber called ‘world root’. The people of Nethreus are forever under siege, breeding a mentality that separates them from the rest of the Gilead System, their planet functionally abandoned after it was settled during the Gilead Crusade. The Barons of the Acastan League have little interest in affairs outside their world — unless, of course, those affairs further their own plots.\n\nThe Knights of House Acasta hone their battle skills against the planet’s megafauna that persistently attack the void-shielded dominions. Chitinous insectoid monstrosities, drill-headed bore-worms, and serpents a 100 metres long all provide constant challenge and threat to the warriors of the house, breeding a brazen bravery into every generation. Even those who serve on the great anti-grav land trains or sky-freighters are used to facing down terrors that few others in the system will ever know. This builds a fierce loyalty and sense of martial pride in the population, while also encouraging the isolationism that runs through the dominions. Such pride, while serving many citizens well, has also led to recent social schisms in House Acasta. The Barons all swear fealty to the Throne of Ivory Knives and whoever sits upon it, but secretly covet the throne and the power it brings.\n\nYoung King Vilmaar has proven receptive to advances from Rogue Trader Jakel Varonius. The Varonius Dynasty has traded off-world flora and Adeptus Mechanicus services to convince the monarch to lend the Knights of House Acasta to the plans of unity within the system. As the threat of Chaos incursion grows, the knights are called upon more and more. Although precious few have been committed by the king, these requests draw resentment from the barons of Nethreus. Recently envoys have been seen at various dominions, some bearing the livery of Lord Militant Taleria Fylamon, while others have arrived in secret bearing no livery at all.\n\nCompounding the reluctance of the barons is the imminent threat of new breeds of megafauna that assault dominions and land train convoys in the southern hemisphere. Casualties not seen in generations have been felt by the House as they face an enemy with an uncanny intelligence."
+ },
+ {
+  "id": "core-ostia",
+  "name": "Ostia",
+  "source": "core",
+  "page": 300,
+  "parent": "core-gilead-system",
+  "stats": [
+   {
+    "label": "Classification",
+    "value": "Agri-World"
+   },
+   {
+    "label": "Population",
+    "value": "Approximately nine billion"
+   },
+   {
+    "label": "Geography",
+    "value": "Varied but temperate; said to be reminiscent of pre-Imperial Ancient Terra"
+   },
+   {
+    "label": "Planetary Governance",
+    "value": "Sortium-Lord Eshgar Quintillius Lorae"
+   },
+   {
+    "label": "Tithe Grade",
+    "value": "Aptus Nihil (no longer capable of paying Terra’s due)"
+   }
+  ],
+  "hooks": [
+   {
+    "title": "The Harvest Smith",
+    "text": "The fields of Ostia are ripe with rebellious organisations and sinister cults. Many are deeply influenced by the Ruinous Powers, such as the Cult Luxuria, which subtlety builds on the teachings of the Ecclesiarchy. The Dawn Lord wants what is best for his followers; the Cult Luxuria preaches he wishes them to indulge all of their senses to the fullest in order to truly enjoy their lives. Adherents swiftly tire of the simple pleasures Ostia offers, soon descending into carefully encouraged depravity, as the Cult offers more and more extreme sensations in exchange for performing increasingly terrible deeds.\n\nOne of the more effective deterrents of cultist activity comes from a man the Sortium considers a far greater problem — the Harvest Smith. Finial Raslan is a former Gilead Gravedigger who deserted his post. His posting educated him on the System’s situation and the poorly treated workers of Ostia, and led to his establishing the Harvest Keepers. This group is, effectively, an underground union, to which Raslan has taught the basics of collective action.\n\nThe Keepers have learned to carefully dissent, constantly pushing the Sortium for better rations and improved tools; but always just to the edge of provoking violence from their overseers. The Sortium wants the Harvest Smith eliminated, but Raslan and his followers are amongst the most connected on Ostia — they cover their trail by implicating the many dangerous cults, and occasionally employ off-worlders to assist them."
+   }
+  ],
+  "gm": "A green jewel in the Gilead void, bountiful Ostia is a planet of vast forests, fields, and oceans. It stands as a mirror to Terra in her ancient prime, verdant and abundant. This glorious world is the breadbasket of Gilead, providing vital foodstuffs and clean water across the system, the lion’s share of which goes to feed the massive populations on Gilead Primus. So vital is this world that it is surrounded by a network of defensive satellites, orbital batteries, and space stations known as the Crown of Blades; Ostia bears enough firepower to dissuade or decimate any attack fleet. A garrison of two million souls maintain Ostia’s battle stations.\n\nWeather fronts of all kinds blow across Ostia; the crops are varied, and many of the biomes are halcyon places. However, the lives of many Ostians are dour compared to their environment. Demands for food have escalated rapidly since the Gilead was cut off from sources of sustenance beyond the System.\n\nIn particular, the noble houses of Gilead Primus and the refugee hordes of Enoch increase the pressure with undeniable requests. As a consequence, those who till the fields in gigantic combi-harvesters reap little of what they sow.\n\nOstia is ruled by the ‘Sortium’, a hierarchy of Administratum officials that oversee everything bigger than a small town. These bureaucrats are responsible for the rationing system that leaves the population hungry. The Sortium rule with a combination of subjugation and Ecclesiarchal manipulation; Ostians worship the Emperor as a sun god, and any Imperial officials are treated with a detached awe by the masses of mech-plowers and villam harvesters. The populace would never dare to deny the warriors and wise messengers of the Lord of Dawn. The Sortium have used this fervour to their advantage, ensuring crops are rationed first to themselves, then to the military, then their demanding superiors on Gilead Primus.\n\nImpious uprisings have thus far been easily put down, though they are rising in number and the rebels are showing a marked creativity in using farm equipment as weaponry. To avoid any loss of productivity, the Sortium have employed Tech Adepts of the Cult Mechanicus to create Servitors by lobotomising captive rebels. The prototype Servo-Farms have yielded consistent harvests over the past two years, though the Adepts have repeatedly denied visitation requests from even the Sortium.\n\nScattered across Ostia are the shattered ruins of an ancient empire. Mosses and creepers cling to odd structures of wraithbone marked with Aeldari runes. Small collections of ruined buildings form intricate and elaborate patterns, too few to be the remains of settlements, but too numerous and precise to be incidental. The native population avoids these places, considering them haunted or cursed, and local folklore is filled with wild tales of these strange ruins that look like they were grown instead of built. These tales are often quashed by Ministorum preachers or turned to the ends of the Imperial Creed, but recently Imperial Guard regiments have begun patrolling near the most prominent ruins as shadowy shapes have been seen flitting amongst them."
+ },
+ {
+  "id": "core-enoch",
+  "name": "Enoch",
+  "source": "core",
+  "page": 302,
+  "parent": "core-gilead-system",
+  "stats": [
+   {
+    "label": "Classification",
+    "value": "Shrine World (sub-reference: Ocean World)"
+   },
+   {
+    "label": "Population",
+    "value": "One billion, officially recorded. Ad hoc census estimates more than twice that."
+   },
+   {
+    "label": "Geography",
+    "value": "Largely oceanic, equatorial regions are habitable desert, polar regions are ice-covered tundra"
+   },
+   {
+    "label": "Planetary Governance",
+    "value": "Archdeacon Merramar Clade of the Enochian Synod"
+   },
+   {
+    "label": "Tithe Grade",
+    "value": "Aptus Nihil (no longer capable of paying Terra’s due)"
+   }
+  ],
+  "hooks": [
+   {
+    "title": "The Ravening Trials",
+    "text": "Strict rationing has been in effect since the emergence of the Great Rift, but food stores have dwindled further in the three nightmarish years of night the Gilead System has thus far endured. The gangs that have emerged strong from the refugee camps have formed tenuous alliances with the unscrupulous Enforcers of craven Ministorum officials. Through favours, bribery, trade, and coercion, the gang leaders ensure they take the lion’s share of the rations.\n\nGangers and Enforcers have recently devised a new source of entertainment and fresh recruits, known as the Ravening Trials; a mass gladiatorial combat where the starving and strong can battle for food. Those that put on the most impressive displays are invited to join the well-fed gangers, or even the ranks of the Enforcers.\n\nDark undercurrents of faith lurk in the bloody shadow of the Ravening Trials, promises of better ways and grander rewards than the scraps offered by brutal gangs and the cruel officials of a dying Imperium. In crumbling cloisters of once great cathedrals, whispered appeals are made to any powers that care to listen. Some are answered."
+   },
+   {
+    "title": "On Deadlier Tides",
+    "text": "The countless forms of sea life dwelling within the oceans of Enoch have provided for the majority of Enoch’s natives since its founding. The bulk of Enoch’s fisherfolk live in heavily fortified villages along the coasts, behind Gun-Servitor lined walls protecting them from the desperate pilgrims. Proud and insular, with membership mostly limited to ancient Enochian lines, their once-idyllic lives grow harder by the day.\n\nSince the coming of the Great Rift, the sea life of Enoch has changed. The fauna has turned increasingly smarter, deadlier, and stranger. The Enochians now armour their boats against attacks and have long since moved on from their traditional nets to armoured lattices and harpoons.\n\nThe overwhelming demands for sustenance are such that the fisherfolk now trawl the waters daily, from before sunrise to long after sunset, forced to bring in the largest catches they can to pass on to Ecclesiarchy agents for dissemination. Progressively larger quotas, coupled with the loss of fisherfolk, have run the villages to exhaustion. Worse still, rumours persist that the best of Enoch’s seas exclusively end up on the tables of the wealthy and privileged, with only tiny portions making it to the general populace. Rebellion foments amidst the fisherfolk.\n\nInterrogator Inge Xenia believes something even more sinister than Warp-borne corruption is behind these bioforms; she has found evidence of stitched flesh and biological tampering. Likewise, the patterned redistribution of food shows a practiced and familiar malice. With her Inquisitor lost to the Rift wars, she is looking for help to prevent a system-wide disaster."
+   }
+  ],
+  "gm": "The fourth planet from the Gilead star was once filled with wealth and songs of joy. An oceanic world, its tremendous fathoms-deep reefs teemed with edible flora. Small landmasses dotted its equatorial span, with archipelagos and a few continents of significant scale. Its polar regions were swathes of snow-covered tundra. Life on Enoch was spent dedicated to the Imperial Creed; the bones of Gilead’s saints and heroes rest in sanctity in the cathedrals and monasteries of Enoch. Natives lived across the coastlands, drawing in the bounty of the reefs in great harvests to feed the Ministorum Adepts and pilgrims alike.\n\nWhen the Cicatrix Maledictum ripped the galaxy in half and the Noctis Aeterna obscured the Emperor’s Light from Gilead, Enoch, once known as a sacred bastion of faith, was plunged into turmoil. With travel through the Warp impossible, millions of pilgrims sought safe harbour amongst Enoch’s trapped populace, causing unprecedented overpopulation. The crowded civilian ships seeking refuge at Enoch became easy prey for xenos raiders, and the skies above the world burned. Food rapidly became scarce and violence soon erupted amongst the starving millions of stranded pilgrims. The former culture of Enoch crumbled into a cycle of deprivation and growing madness.\n\n… continues, Core p.303"
+ },
+ {
+  "id": "core-gilead-primus",
+  "name": "Gilead Primus",
+  "source": "core",
+  "page": 304,
+  "parent": "core-gilead-system",
+  "stats": [
+   {
+    "label": "Classification",
+    "value": "Hive World"
+   },
+   {
+    "label": "Population",
+    "value": "Approximately sixteen billion"
+   },
+   {
+    "label": "Geography",
+    "value": "Arid wasteland plains, lifeless alkali flats"
+   },
+   {
+    "label": "Planetary Governance",
+    "value": "Lord-Militant Taleria Fylamon"
+   },
+   {
+    "label": "Tithe Grade",
+    "value": "Aptus Nihil (no longer capable of paying Terra’s due)"
+   }
+  ],
+  "hooks": [
+   {
+    "title": "Slippery Heights",
+    "text": "On the surface, Gilead Primus exists as it always has — the heart of the system, a hub of industry, and the home of the wealthiest and most influential. Now, these truths are slowly crumbling. The foundations of wealth for many of the noble families once stretched far beyond the Gilead System, with many of them being involved in various enterprises and intra-sector shipping concerns. These connections, along with the wealth and power they brought, are gone and seem increasingly unlikely to ever return. Numerous lesser noble houses can barely afford to hold onto their hive spire palaces and teeter on the edge of total dissolution. In their desperation, some have become willing to do near anything to cling on to their fading power and prestige. In the majority of cases, this means they’ve begun to engage in criminal enterprises. Many dabble in illicit substances, deal with pirates to move stolen cargo, or smuggle banned goods. A few have been willing to go much further, however.\n\nHouse Lond Ko has always been a patron of somewhat esoteric arts, but now seem to regularly ‘find’ new sculptures to auction off that are clearly of Aeldari manufacture. House Morven quietly sells a variety of exceedingly useful devices and artefacts, many of which, if closely examined by a Tech-Priest, could get their bearer censured or killed for tech-heresy. Rumours of a clandestine auction hall where suspected Psykers are bought and sold have been tenuously linked to House Kaylar, but verifying their involvement has proven, so far, to be a fatal task for many investigators."
+   }
+  ],
+  "gm": "Gilead Primus, capital world of the Gilead System, home to uncounted billions of Imperial citizens, and the seat of power of Lord-Militant Taleria Fylamon. Massive hives dominate the red rock wastelands, and the scars of centuries of aggressive strip mining cut deeply through the crimson deserts. Abandoned mining towns and waystations dot the land, but all life on Gilead Primus is contained within the multi-kilometre tall hives. The massive skeletons of carnosaurs that would dwarf the megafauna of Nethreus litter the red sands surrounding the hives, long fallen to the silence of extinction. The hives themselves rise kilometres from the harsh desert wastes, with the uppermost spires providing the palatial housing for the lesser branches of Imperial noble families and racketeers who rule each hive.\n\nPolitics here run on a knife edge, as gaining rank means greater privilege, power, and breathable air above the poisonous effusions of Imperium industry. Manufactorums ache with the suffering of billions of workers, each enduring backbreaking labour to pay for a taste of clean air and the nutrients to survive.\n\nThe low-orbit plate Brassyl is the only orbital body visible from the surface. This magnificent floating remnant of the Dark Age of Technology drifts through the toxic clouds with the glimmer of void shields, the static haze of atmosphere scrubbing fields, and the shimmer of rad-barriers. Here are the fortress palaces of the elite of Gilead Primus: the nobility who have ascended beyond the hive spires themselves.\n\nGilded cathedrals overseen by cardinal-confessors of the Adeptus Ministorum rise in glory upon the plate of Brassyl, and high-ranking Adeptus Administratum officials make their homes among small estates filled with luxuries. The technologies here are tended by select representatives of the Adeptus Mechanicus, producing an artificial paradise upon which lesser nobles in the hive spires gaze upon with envy.\n\nFive moons orbit the planet, all shrouded from the surface dwellers due to the perpetual cloud of pollutants and radioactive dust that fills the stratosphere. The five moons of Gilead Primus are:\n\n• Anval, an ore processor, super-massive manufactorum and chem-plant.\n\n• Skaelas, an ore mine twice the size of Anval. This moon’s gravity is unusually high, and houses a penal complex where an inmate’s life span is measured in months working the mines. The Ogryn guards are occasionally called on to serve in Taleria Fylamon’s assaults.\n\n• Saintshold, the fortified barracks-moon of the Gilead Gravediggers, the system’s Imperial Guard regiment drilled to exemplary standards under the watchful eye of the Lord Militant.\n\n• Daedalon, a graveyard of untold billions with more arriving in funerary barges every day, presided over by the Adeptus Ministorum and a Preceptory of the Order of the Sanctified Shield.\n\n… continues, Core p.305"
+ },
+ {
+  "id": "core-castle-grigori",
+  "name": "Castle Grigori",
+  "source": "core",
+  "page": 304,
+  "parent": "core-gilead-primus",
+  "gm": "Considered a rumour by most, the mysterious Castle Grigori is veiled by the irradiated dust storms of the southern polar regions. With the isolation of the Gilead System, the Absolvers have expanded their secret garrison on Gilead Primus to a full Apothecarion and training facility. The tortured wastelands and dangerous hives provide perfect recruiting grounds for the insular Chapter Astartes."
+ },
+ {
+  "id": "core-charybdion",
+  "name": "Charybdion",
+  "source": "core",
+  "page": 306,
+  "parent": "core-gilead-system",
+  "stats": [
+   {
+    "label": "Classification",
+    "value": "Hive World (Sub-category: Ocean World)"
+   },
+   {
+    "label": "Population",
+    "value": "Approximately four billion"
+   },
+   {
+    "label": "Geography",
+    "value": "Rocky islands, long jagged cliffs, massive reef structures"
+   },
+   {
+    "label": "Planetary Governance",
+    "value": "Governor Ganthet Veneratio"
+   },
+   {
+    "label": "Tithe Grade",
+    "value": "Aptus Nihil (no longer capable of paying Terra’s due)"
+   }
+  ],
+  "hooks": [
+   {
+    "title": "Cruor Cetus",
+    "text": "Within the polluted oceans of Charybdion dwell many strange lifeforms, but none so titanic as the whale-like Worldfish. The smallest are over 30 metres wide and span a 100 or more metres in length. The folk of Charybdion’s hives make use of almost every part of Worldfish; they consume their flesh, use their steel-like bones as construction material, their teeth as ornaments, their oil as industrial lubricant, their rendered blubber as cheap fuel… but not their blood.\n\nIn the processing yards, their blood is doused with special chemical foams, hosed away, and allowed to drain back into the spoilt sea, for the vitae of Worldfish has strange properties. It is highly flammable, far more unstable than raw promethium, and the cells within do not succumb to death readily.\n\nThere are ancient tales, variations of which stretch from the deepest underhives to the highest spires, that tell of corrupt mariners who regularly drank and bathed in the blood of the Worldfish. Every such story is invariably a cautionary tragedy, but all agree that those who use Worldfish ichor become far more than Human, and less as well.\n\nDark rumour holds that there is a ship called the Tarshish that secretly ploughs the contaminated oceans of Charybdion collecting Worldfish blood for those who would dare partake of it. Some say the ship is disguised as a simple trawler, others claim that it is a submarine vessel formed from the corpse of a Worldfish."
+   }
+  ],
+  "gm": "The orbit of Charybdion marks the border between the Imperial Heartworlds and the wild, disputed territories of the Reach. The black pearl of the Gilead System, its dark, roiling oceans seethe with chemical waste and leviathan creatures. Hive cities cling like drowning men to the handful of rocky continental plates that rise above sea level, some towering into the slate grey skies, others plunging into the obsidian waters.\n\nCharybdion is a tightly held military resource, its numerous promethium refineries supporting industrial efforts across the system. Established by the Explorator fleet that discovered the system millennia ago, the refineries are sealed machine-temples on the ocean floor. Some lie mysteriously dormant, others are half destroyed; the malign influence of the Great Rift seems to have agitated the riptides, tearing asunder the thick walls and flooding the facilities. Magos of the Adeptus Mechanicus constantly canvas for mercenaries willing to brave the savage depths to rescue lost technologies; few return.\n\nThe planetary governor maintains a sizable facility named Ironwatch to process and contain Psykers, hoping against hope a Black Ship will penetrate Cicatrix Maledictum. This foreboding tower is connected to the capital hive, Aidon. In recent decades, the build-up of Psykers turned Ironwatch into a horrific place, filled with the collected psychic nightmares of its ever-growing imprisoned population.\n\nDARK TIDES\n\nCharybdion is detailed further in the adventure anthology Dark Tides. Check out www.cubicle7games.com for more information."
+ },
+ {
+  "id": "core-the-reach",
+  "name": "The Reach",
+  "source": "core",
+  "page": 306,
+  "parent": "core-gilead-system",
+  "gm": "Beyond the Imperial authority of the Heartworlds lie the chill and deadly expanse of the true void. A collection of stellar debris and the swirling edge of the Great Rift that has become known as the ‘Reach’."
+ },
+ {
+  "id": "core-the-voidmire",
+  "name": "The Voidmire",
+  "source": "core",
+  "page": 307,
+  "parent": "core-the-reach",
+  "gm": "The Voidmire is a treacherous region of real space that runs up against the roiling Warp storms of Cicatrix Maledictum. Here the tides of the Empyrean flow back and forth in a chaotic display of cackling insanity, breaking against the rock of the ‘real’ before receding again into the rift.\n\nDead ships litter the space of the Voidmire, along with fragments of broken worlds, shards of asteroid collisions, and alien cityscapes drifting silently in this coreward shoal. The shifting nature of the Warp crossing into reality makes navigation in this region hazardous for all but the most skilled crews and talented navigators, as translation between the Empyrean and realspace may happen without warning.\n\nHeretics in service to the Traitor Legions and Ruinous Powers haunt the flickering edge of the Warp and lurk among the derelict ships, ready to ambush vessels foolish enough to draw close. Raids launch from rips in realspace targeting conveys on the fringes of Imperial space, or even between the Heartworlds if a Warp flare tears open close enough.\n\nHowever, the true dominion of the Voidmire lies not in the hands of Chaos but those of the xenos. The Emerald Princess Ferianwyr, the swaggering corsair queen, lays claim to the entire Voidmire, supported by her Greensteel Warriors Corsair coterie. Though a fragile agreement holds between Ferianwyr and the Varonius Flotilla, the sleek and fickle corsair vessels may choose to raid anything not flying the flag of House Varonius."
+ },
+ {
+  "id": "core-gadren-helix",
+  "name": "The Gadren Helix",
+  "source": "core",
+  "page": 307,
+  "parent": "core-the-voidmire",
+  "gm": "Within the drifting wreckage of the Voidmire spins a unique facility purposefully camouflaged to resemble a piece of strangely twisted floating debris. The facility is run by a peculiar Tech-Priest of the Adeptus Mechanicus, Magos Genetor Mulvae Wot. Unlike most Tech-Priests, members of the Genetors — frequently referred to as Magos Biologis — view biological organisms as ‘living machines’ with as much inherent value as any constructed of metal, a somewhat radical viewpoint. Magos Genetor Wot once specialized in unlocking the genetic secrets of various xenos lifeforms, but now refers to herself as a ‘reluctant gardener’. All of her research — indeed, the purpose of her facility — is directed towards making more sustainable and efficient edible plant life with a rapid growth cycle, in order to feed the trapped masses of the Gilead System.\n\nMagos Genetor Wot and her small crew dwell in such an inhospitable place to hide a deadly secret: the Tech-Priest is using the time dilation effects of the Great Rift to accelerate the growth of newly synthesised strains of plant life. She has thus far hidden her tremendously heretical practices, but requests for results from the Varonius Flotilla are becoming more and more insistent.\n\nFerianwyr and her corsairs keep an eye on Genetor Wot. The Aeldari princess allows Wot to continue her work as she finds her entertaining, and her regular offerings of rare produce serve as adequate compensation for the indulgence. Varonius occasionally sends agents to check in on Wot. Invariably, these unfortunates are forcibly recruited into assisting with Wot’s latest experiments or are slain."
+ },
+ {
+  "id": "core-persephones-regret",
+  "name": "Persephone’s Regret",
+  "source": "core",
+  "page": 308,
+  "parent": "core-the-reach",
+  "gm": "Space hulk. The words inspire fear and excitement in equal measure. A gestalt of dozens of voidships and other stellar debris turned into a single colossal floating structure. Xenos, daemons, and the threats of tech heresy from the Dark Age of Technology may all lurk in the confines of a space hulk. Treasures and wonders of lost ages may also lie hidden. Standard Template Constructs have been found in ancient cogitators onboard hulks, records of the Great Crusade, lost Warrants of Trade and other quasi-holy relics have also been recovered.\n\nPersephone’s Regret tumbles through the outer void of the Reach, a space hulk of immense proportions drifting inexorably towards the Heartworlds. The labyrinthine mass of the hulk is a war zone — Genestealers and Orks infest Persephone’s Regret in vast numbers, ceaselessly slaughtering each other for centuries. The population of either xenos could spell the doom of a world, should the hulk pass close enough. Together the hostile aliens could be the end of the Gilead System, should they ever spread beyond the hull of the Persephone’s Regret. Recent, scattered reports suggest that somehow this may have already happened. Cults of personality have shown up in communities on several worlds, entire ships have fallen silent with their final broadcasts being desperate screams for help, and a few horrifying accounts report Orks falling from the sky."
+ },
+ {
+  "id": "core-the-membrane-worlds",
+  "name": "The Membrane Worlds",
+  "source": "core",
+  "page": 308,
+  "parent": "core-gilead-system",
+  "gm": "Recently the Great Rift has vomited forth two unfamiliar planets into the gravity well of the Gilead star. The new planets, dubbed Trollius and Vulkaris, have become known as the Membrane Worlds. Each clings to a uniquely irregular orbit, and both are sources of discovery and terror."
+ },
+ {
+  "id": "core-vulkaris",
+  "name": "Vulkaris",
+  "source": "core",
+  "page": 309,
+  "parent": "core-the-membrane-worlds",
+  "hooks": [
+   {
+    "title": "Copper Blight",
+    "text": "The Imperial powers of the Gilead System desperately fear the repercussions of any number of the Plague God’s diseases being unleashed amidst the fertile fields of Ostia or the densely populated hives of Gilead Primus. A debate rages within the Varonius Flotilla on what must be done about Vulkaris and the Death Guard. In normal times, Exterminatus would unquestionably have already been enacted upon the plague-ridden, mutant-infested planet and the corrupt Astartes would’ve faced battle. However, the fleet doesn’t have the resources to destroy Vulkaris, and something inexplicable seems to be going on with the Plague God’s small fleet. Several of the flotilla’s stealthier ships have gotten close enough to study the Death Guard’s warships undetected. They hang in the void above Vulkaris, each more grotesque than the last, but they seldom move. In fact, in what seems to beggar belief, several of the Death Guard’s ships have a metal contagion of some kind. One destroyer was reported to have been stricken by a massive hull breach caused by swiftly rotting metal, followed by a series of internal explosions which caused it to plummet, burning, into Vulkaris below.\n\nIt seems beyond possible that a ‘disease’ is hampering the actions of the Plague God’s corrupt Astartes, yet no other explanation seems to be forthcoming. Voices within the flotilla demand that they strike immediately, while the enemy is partially disabled, with others arguing that the apparent ‘copper blight’ may well be a trick to lure them into an ambush. For now, Varonius watches and waits."
+   }
+  ],
+  "gm": "The planet dubbed ‘Vulkaris’ follows a highly erratic orbit around the Gilead star. This dangerous ellipse brings it close to the Heartworlds, passing through their orbital trajectories, before it swings wide and out to the limits of Gilead’s gravitational pull.\n\nImpossibly, Vulkaris still possesses a somewhat breathable atmosphere, but it carries plague upon its winds. The cities of eroded marble and rust-sheathed iron that pollute the surface of the cold world are filled with millions of mutants, the twisted corruptions of once-pure Imperial citizens. Creatures roam the rotten streets and plague-ridden forests of the world as storms spill pus from the skies. The Emperor is forgotten here, and in the place of His temples stand shrines of Grandfather Nurgle. Nurglings manifest freely amongst the faithful to the Lord of Flies as the dead rise from their shallow grave-pits.\n\nMutants and monsters may populate the cities, but they do not rule them. Even the daemons that lurk around the Temples of Holy Decay are but servants to a greater power on Vulkaris. With a small number of warships held in close orbit and ready to make war, the masters of the world are the XIV Legiones Astartes, heretic Space Marines of the Death Guard — and the sons of Mortarion are not content with just one world."
+ },
+ {
+  "id": "core-trollius",
+  "name": "Trollius",
+  "source": "core",
+  "page": 309,
+  "parent": "core-the-membrane-worlds",
+  "gm": "Trollius orbits at the far limits of Gilead’s gravity, a dead Hive World locked in ice. The great spires that once housed billions in excess of even Gilead Primus’s immense population stand frozen and silent. The dense ice that covers the hives resists all but the strongest and most advanced auspex scans. The few successful pict returns show the shadowed shapes of the hive dwellers fleeing in terror from some unseen horror moments before they were frozen.\n\nSome members of the initial inspection teams reported ‘bad dreams’ after breaching attempts were made into one of the frozen hives. They have since been enjoying the ‘hospitality’ of the Inquisition, and all future survey teams are watched closely by all three of the major Ordos."
+ },
+ {
+  "id": "core-craftworld-ul-khari",
+  "name": "Craftworld Ul-Khari",
+  "source": "core",
+  "page": 309,
+  "parent": "core-trollius",
+  "hooks": [
+   {
+    "title": "Dweller in the Ice",
+    "text": "The frozen atmosphere of Trollius is unnatural. Reports from the surface indicate that the ice moves at seemingly impossible speeds, with tendrils of frost swiftly curling over anything that lingers for too long. The Aeldari of Ul-Khari have put measures in place to ensure the integrity of the few surviving habitable domes of their shattered Craftworld. Their first included jury-rigged thermal units to keep the rime at bay, but to their surprise and deep disquiet, they swiftly learned that the ice also carried what they refer to as ‘emotional resonance’ to Varonius’s agents. While the proud Aeldari are loath to admit it, they fear they need help against whatever somehow resides ‘within’ the ice and stalks any who dares walk the surface of their frozen world.\n\nThe Aeldari are reluctant to speak openly for many reasons, but they’ve suggested to agents of the flotilla that several of their brethren have already succumbed to some sort of malady, turning them feral and ravenous, while carefully implying that they could use some assistance in the matter. Varonius is rightfully wary of angering the Inquisition, yet solving the Aeldari’s problem may well be the key that unlocks the priceless resources of the frozen hives."
+   }
+  ],
+  "gm": "When Trollius appeared unexpectedly in the Gilead System, it did so directly in the path of the Ul-Khari Craftworld, resulting in a devastating crash that left the vast vessel only partially functional as a habitat. Although isolationists, the farseers of Ul-Khari made a deal with Jakel Varonius to survive in an otherwise hostile space. Much to the chagrin of the Inquisition, the details of their agreement remain unknown. The Aeldari survivors now live in a world of wraithbone and ice, occupying the remaining domes of their Craftworld and facing unnamed threats amidst the ice-locked spires."
+ }
+]

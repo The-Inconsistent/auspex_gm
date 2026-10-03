@@ -19,6 +19,8 @@ import {
   FactionPreset,
   HazardTable,
   NpcPreset,
+  Place,
+  placeNotes,
   PoolEntry,
   PoolPresetTable,
   PoolSpend,
@@ -31,6 +33,7 @@ import {
   loadPackRaw,
   npcPresetFiles,
   packNames,
+  placeFiles,
   poolPresetFiles,
 } from "./index.ts";
 
@@ -728,6 +731,39 @@ for (const file of npcPresetFiles()) {
   }
   console.log(
     `npc-presets/${file}: ${r.data.length} NPCs (${r.data.filter((p) => p.statSource.kind !== "none").length} with stats, ${r.data.filter((p) => patronIds.has(p.id)).length} replacing a patron)`,
+  );
+}
+
+// Places (places/<source>.json, issue #50): the filename names the book, ids are unique across files and start with the
+// source id, a parent comes earlier in the same file (so codex.addPlaces copies parents first and nothing loops), and a
+// copied place's GM NOTES fit their 5,000 characters (the printed text is cut at a paragraph, rules-flow §11.100).
+const placeIds = new Set<string>();
+for (const file of placeFiles()) {
+  const r = Place.array().safeParse(JSON.parse(readFileSync(new URL(`./places/${file}`, import.meta.url), "utf8")));
+  if (!r.success) {
+    failed = true;
+    console.error(`✖ places/${file}\n${z.prettifyError(r.error)}`);
+    continue;
+  }
+  const problem = (message: string) => {
+    failed = true;
+    console.error(`✖ places/${file}: ${message}`);
+  };
+  const here = new Set<string>();
+  for (const p of r.data) {
+    if (`${p.source}.json` !== file) problem(`"${p.id}" is from ${p.source}`);
+    if (!THREAT_SOURCES[p.source].official)
+      problem(`"${p.id}": homebrew, but /places serves these files to every campaign`);
+    if (!p.id.startsWith(`${p.source}-`)) problem(`"${p.id}" doesn't start with "${p.source}-"`);
+    if (placeIds.has(p.id)) problem(`duplicate id "${p.id}"`);
+    if (p.parent && !here.has(p.parent)) problem(`"${p.id}": parent "${p.parent}" is unknown or comes later`);
+    const notes = placeNotes(p).length;
+    if (notes > 5000) problem(`"${p.id}": GM NOTES would be ${notes} characters, over 5,000`);
+    placeIds.add(p.id);
+    here.add(p.id);
+  }
+  console.log(
+    `places/${file}: ${r.data.length} places (${r.data.filter((p) => !p.parent).length} top level, ${r.data.filter((p) => p.stats.length).length} with a stat line, ${r.data.reduce((n, p) => n + p.hooks.length, 0)} hooks)`,
   );
 }
 

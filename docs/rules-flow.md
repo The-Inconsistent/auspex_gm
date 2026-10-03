@@ -704,6 +704,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     inside ("DELETE · 2 INSIDE GO TOP-LEVEL"). *(User ruling, 2026-10-03.)*
 97. **Revealing a place doesn't reveal the places inside it** (GitHub issue #50). Players learn the Hive without the
     Spire. A revealed place whose parent is hidden shows at the top level on the phones. *(User ruling, 2026-10-03.)*
+98. **A book's place may be added twice** (GitHub issue #50). ADD FROM BOOK copies again and makes a second copy; the GM
+    deletes the spare. *(User ruling, 2026-10-03.)*
+99. **ADD FROM BOOK lists every book's places** (Core p.320; GitHub issue #50). The Core Rulebook advises setting
+    adventures in a limited area; that is the GM's choice of which worlds to copy, so the picker doesn't narrow it.
+    *(User ruling, 2026-10-03.)*
+100. **A place's printed text stops at GM NOTES' 5,000 characters** (GitHub issue #50). A copied place's notes are the
+     cite, the stat line, the hook sidebars and the description. Where they run longer, the description stops at a
+     whole paragraph with "… continues, <cite> p.N", and hooks that still don't fit are named in a last line, so the GM
+     opens the page from the cite. *(User ruling, 2026-10-03.)*
 
 ---
 
@@ -740,4 +749,5 @@ Implementation details: [game-logic.md](game-logic.md).
 | Encounter budget | done | `encounterBudget`, `tallyByClass`, `rosterTally` (`threat.ts`) against Building Encounters (TA p.8); `BudgetLines` prints Troops, Mob, Elite/Adversary, Monstrous and enemies ("N tracked · M models"), with a FORTIFIED toggle that doubles every target; `BudgetPanel` under the beat editor, sized by the active Agents (§11.82) |
 | Quick NPCs and Attitude | done | `QUICK_NPC`, `quickRow` (Tier 5 → Tier 4, §11.86), `quickScaling` (p.326, §11.88) and `ATTITUDE_DN` (p.168) in `codex.ts`; `StatSource` quick takes a `specialty` (§11.87); Attitude reaches phones (§11.89); CODEX's `StatSourceField` and `NpcCard`, `AttitudeChip` on both sides; ADD TO SCENE (`addNpcToBeat`) for bestiary NPCs only; ADD FROM BOOK (`NpcPreset`, `/npc-presets`) |
 | Location hazards | done | `HazardTable` and `HazardRow` in `scene-presets.ts` (Tests with a printed or Tier DN, Conditions, Threats, intensities); `scene-presets/hazards/<source>.json` for Threat Assessment pp.9–21, Core pp.201–202, Darktide pp.14–27 and RR1 p.11, served on `/scene-presets`; `location.hazardList` with `checkHazards`, a scene's `beat.hazards` picks with SPOTTED (§11.92–95); the CODEX editor's HAZARDS list and the PREP card's HAZARDS fold |
+| Location tree and places from the books | done (step 8, the Space Hulk Generator, open) | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
