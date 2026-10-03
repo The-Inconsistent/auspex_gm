@@ -290,6 +290,78 @@ export function lootNotes({
     .slice(0, 5000);
 }
 
+// The Holy Relic creator (RR2 pp.12–19, issue #51 step 8): a Form names a kind of item the GM picks from the catalogue,
+// the Origins say whose it was and how it became a Relic, a Power comes from the table for its kind, and an Oddity
+// finishes it. `codex.addRelic` writes one item. Powers are text, with `mods` only where a profile holds them (§11.116).
+export const RelicKind = z.enum(["melee", "ranged", "ammunition", "armour", "augmetic", "equipment"]);
+export type RelicKind = z.infer<typeof RelicKind>;
+const relicRow = { id: rowId, from: z.number().int(), to: z.number().int(), name: z.string().min(1).max(200) };
+const relicText = z.object({ ...relicRow, text: z.string().min(1).max(3000) });
+const relicTable = <R extends z.ZodTypeAny>(row: R) =>
+  z
+    .object({
+      name: z.string().min(1).max(200), // as printed
+      page: z.number().int().positive(),
+      dice: Dice,
+      rows: z.array(row).min(1),
+      gaps: z.array(z.number().int()).default([]),
+    })
+    .superRefine((t, ctx) => {
+      for (const message of tableProblems({ ...t, rows: t.rows as { from: number; to: number }[], overlaps: [] }))
+        ctx.addIssue({ code: "custom", message: `${t.name}: ${message}` });
+    });
+export const RelicPowerRow = z.object({
+  ...relicRow,
+  text: z.string().min(1).max(3000),
+  mods: z.array(UpgradeMod).max(10).default([]),
+  enemy: z.boolean().default(false), // the Power names an enemy: roll on the Enemy Keyword Table (RR2 p.18)
+});
+export type RelicPowerRow = z.infer<typeof RelicPowerRow>;
+export const RelicCreator = z.object({
+  source: z.enum(Object.keys(THREAT_SOURCES) as [ThreatSource, ...ThreatSource[]]),
+  page: z.number().int().positive(),
+  // The Form grid (p.13) is printed as two d6, read as a d66 (§11.117). A Form is a kind and a catalogue filter.
+  form: relicTable(z.object({ ...relicRow, kind: RelicKind, pick: WargearFilter })),
+  owners: relicTable(relicText),
+  anointments: relicTable(relicText),
+  powers: z.array(z.object({ kind: RelicKind }).and(relicTable(RelicPowerRow))).length(RelicKind.options.length),
+  oddities: relicTable(relicText),
+  enemies: relicTable(z.object(relicRow)),
+});
+export type RelicCreator = z.infer<typeof RelicCreator>;
+
+// A made relic's GM NOTES: each roll with its cite and the printed text, so the GM reads where it came from.
+export function relicNotes({
+  creator: c,
+  form,
+  item,
+  owner,
+  anointment,
+  power,
+  oddity,
+  enemy,
+}: {
+  creator: Pick<RelicCreator, "source" | "page">;
+  form: { name: string };
+  item: string; // the catalogue entry the Form became, with its cite
+  owner: { name: string; text: string };
+  anointment: { name: string; text: string };
+  power: { kind: RelicKind; name: string; text: string };
+  oddity: { name: string; text: string };
+  enemy?: { name: string };
+}) {
+  return [
+    `${threatCite({ source: c.source, page: c.page })} · Holy Relic`,
+    `FORM: ${form.name}, as ${item}`,
+    `ORIGINAL OWNER: ${owner.name}. ${owner.text}`,
+    `ANOINTMENT: ${anointment.name}. ${anointment.text}`,
+    `POWER (${power.kind}): ${power.name}. ${power.text}${enemy ? `\nENEMY: ${enemy.name}` : ""}`,
+    `ODDITY: ${oddity.name}. ${oddity.text}`,
+  ]
+    .join("\n\n")
+    .slice(0, 5000);
+}
+
 export const ScenePresets = z.object({
   skillDns: z.array(SkillDn),
   tables: z.array(EventTable),
@@ -297,6 +369,7 @@ export const ScenePresets = z.object({
   hazards: z.array(HazardTable).default([]), // an api from before issue #49 sends none; the rest still loads
   spaceHulk: SpaceHulkGenerator.nullable().default(null), // RR1 pp.6–11 (issue #50 step 8); likewise
   loot: z.array(LootTable).default([]), // issue #51; likewise
+  relics: RelicCreator.nullable().default(null), // RR2 pp.12–19 (issue #51 step 8); likewise
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 

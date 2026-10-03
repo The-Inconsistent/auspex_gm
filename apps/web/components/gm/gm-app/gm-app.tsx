@@ -175,6 +175,7 @@ export function GmApp({
                 players={players}
                 wargear={wargear}
                 loot={presets.loot}
+                relics={presets.relics}
               />
             )}
             {tab === "PARTY" && (

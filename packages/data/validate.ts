@@ -34,6 +34,7 @@ import {
   MAX_HULK_ORIGINS,
   SpaceHulkGenerator,
   LootTable,
+  RelicCreator,
   wargearMatches,
 } from "@wg/shared";
 import {
@@ -46,6 +47,7 @@ import {
   packNames,
   placeFiles,
   poolPresetFiles,
+  RELICS_FILE,
   SPACE_HULK_FILE,
 } from "./index.ts";
 
@@ -488,6 +490,37 @@ const EXPECTED_LOOT: Record<string, number> = {
   }
   const pending = Object.keys(EXPECTED_LOOT).filter((id) => !tableIds.has(id));
   if (pending.length) console.log(`scene-presets/loot: not transcribed yet: ${pending.join(", ")}`);
+}
+
+// The Holy Relic creator (scene-presets/relic-creator.json, RR2 pp.12–19, issue #51 step 8): every table covers its
+// dice, one Powers table per kind, every Form's pick matches something in the catalogue, and row ids are unique.
+{
+  const r = RelicCreator.safeParse(
+    JSON.parse(readFileSync(new URL(`./scene-presets/${RELICS_FILE}`, import.meta.url), "utf8")),
+  );
+  const problem = (message: string) => {
+    failed = true;
+    console.error(`✖ scene-presets/${RELICS_FILE}: ${message}`);
+  };
+  if (!r.success) problem(z.prettifyError(r.error));
+  else {
+    const c = r.data;
+    const kinds = new Set(c.powers.map((p) => p.kind));
+    if (kinds.size !== c.powers.length) problem("a kind has two Powers tables");
+    const rows = [c.form, c.owners, c.anointments, ...c.powers, c.oddities, c.enemies].flatMap((t) => t.rows);
+    const ids = new Set(rows.map((x) => x.id));
+    if (ids.size !== rows.length) problem("a row id repeats");
+    for (const f of c.form.rows)
+      if (!wargearEntries.some((w) => wargearMatches(w, f.pick, { tier: 4, newTier: 4 })))
+        problem(`${f.id} (${f.name}): its pick matches nothing in the catalogue`);
+    const mods = c.powers.flatMap((p) => p.rows.filter((x) => x.mods.length));
+    console.log(
+      `scene-presets/${RELICS_FILE}: ${c.form.rows.length} Forms, ${c.owners.rows.length} owners, ` +
+        `${c.anointments.rows.length} anointments, ${c.powers.length} Powers tables of ${c.powers.map((p) => p.rows.length).join("/")} ` +
+        `(${mods.length} with mods, ${c.powers.flatMap((p) => p.rows.filter((x) => x.enemy)).length} naming an enemy), ` +
+        `${c.oddities.rows.length} oddities, ${c.enemies.rows.length} enemies`,
+    );
+  }
 }
 
 // The Space Hulk Generator (scene-presets/space-hulk.json, issue #50 step 8): each table holds the rows RR1 pp.7–10

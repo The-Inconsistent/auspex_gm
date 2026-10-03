@@ -1,0 +1,77 @@
+[
+  {
+    "id": "rr2-holy-relics",
+    "name": "Relics of Renown",
+    "source": "redacted-records-2",
+    "page": 20,
+    "dice": null,
+    "rows": [
+      {
+        "id": "rr2-holy-relics-rosarius-of-saint-agatha",
+        "name": "Rosarius of Saint Agatha",
+        "page": 20,
+        "text": "A standard Rosarius whose field gives +2 to Intimidation Interaction Attacks and blinds and ignites attackers who fail a DN 3 Initiative Test.",
+        "items": [
+          {
+            "wargearId": "rr2-rosarius-of-saint-agatha"
+          }
+        ]
+      },
+      {
+        "id": "rr2-holy-relics-skadi-matrix",
+        "name": "Skadi Matrix",
+        "page": 22,
+        "text": "A targeting chip for a Mind Impulse Unit: up to +5 bonus dice on a Ranged Attack at 2 Shock per die, and a +1 DN penalty to enemy attacks.",
+        "items": [
+          {
+            "wargearId": "rr2-skadi-matrix"
+          }
+        ]
+      },
+      {
+        "id": "rr2-holy-relics-the-cornerstone",
+        "name": "The Cornerstone",
+        "page": 24,
+        "text": "A brick of Chaos-proof holy power: touching it drops the toucher one Corruption Level, at 1 Mortal Wound per Point removed, once only.",
+        "items": [
+          {
+            "wargearId": "rr2-the-cornerstone"
+          }
+        ]
+      },
+      {
+        "id": "rr2-holy-relics-the-unwilling-orb",
+        "name": "The Unwilling Orb",
+        "page": 26,
+        "text": "A Navigator's third eye in a gem: a Psychic Focus that gives GENESTEALER CULT psykers Tier bonus dice and two free Deny the Witch per round.",
+        "items": [
+          {
+            "wargearId": "rr2-the-unwilling-orb"
+          }
+        ]
+      },
+      {
+        "id": "rr2-holy-relics-a-tainted-blade",
+        "name": "A Tainted Blade",
+        "page": 28,
+        "text": "A daemon-bound Chaos power sword (S+8, ED 4, AP -4) that deals 1 Mortal Wound to its user on every rolled Complication.",
+        "items": [
+          {
+            "wargearId": "rr2-a-tainted-blade"
+          }
+        ]
+      },
+      {
+        "id": "rr2-holy-relics-tome-of-loathsome-twisting",
+        "name": "Tome of Loathsome Twisting",
+        "page": 29,
+        "text": "A daemonology book that, if its gifts are accepted, grants PSYKER, bonus dice and a Chaos familiar at the price of Corruption.",
+        "items": [
+          {
+            "wargearId": "rr2-tome-of-loathsome-twisting"
+          }
+        ]
+      }
+    ]
+  }
+]

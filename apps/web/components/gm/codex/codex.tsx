@@ -12,6 +12,7 @@ import {
   type FlavourTable,
   type HazardTable,
   type LootTable,
+  type RelicCreator,
   type SpaceHulkGenerator,
   type NpcPreset,
   type PoolPresetTable,
@@ -36,6 +37,7 @@ import { NpcPicker } from "./components/npc-picker/npc-picker";
 import { HulkGenerator } from "./components/hulk-generator/hulk-generator";
 import { ItemCard } from "./components/item-card/item-card";
 import { LootPicker } from "./components/loot-picker/loot-picker";
+import { RelicWizard } from "./components/relic-wizard/relic-wizard";
 import { PlacePicker } from "./components/place-picker/place-picker";
 import { ThreatEditor } from "./components/threat-editor/threat-editor";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
@@ -60,6 +62,7 @@ type CodexViewProps = {
   wargear: Wargear[]; // the catalogue: a custom threat's weapons (issue #43), an item's NAME and profile (issue #51)
   ruinActions: PoolPresetTable | null; // Threat Assessment p.7, for a custom threat's RUIN abilities (issue #43)
   loot: LootTable[]; // the books' loot tables, for FROM LOOT TABLE
+  relics: RelicCreator | null; // RR2 pp.12–19, for the HOLY RELIC CREATOR
 };
 
 // THREATS isn't a codex kind - it has its own action and no revealed flag - so the sub-tabs are the kinds plus it.
@@ -96,6 +99,7 @@ export function CodexView({
   wargear,
   ruinActions,
   loot,
+  relics,
 }: CodexViewProps) {
   const [sub, setSub] = useState<SubTab>(initialKind);
   const [editing, setEditing] = useState<Row | "new" | null>(null);
@@ -297,6 +301,9 @@ export function CodexView({
             )}
             {kind === "item" && (
               <LootPicker tables={loot} wargear={wargear} tier={tier} send={send} onError={setError} />
+            )}
+            {kind === "item" && relics && (
+              <RelicWizard creator={relics} wargear={wargear} tier={tier} send={send} onError={setError} />
             )}
             {kind === "faction" && factionPresets.presets.length > 0 && (
               <FactionPicker

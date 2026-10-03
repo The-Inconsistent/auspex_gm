@@ -33,7 +33,7 @@ const range = (r: Row) => (r.from === r.to ? `${r.from}` : `${r.from}–${r.to}`
 
 // One stage: ROLL or I ROLLED lands on a row (a print gap lands on none), or the GM taps one from the table. Every stage
 // may be rolled again (RR1 p.6, rules-flow §11.101).
-function Stage({
+export function Stage({
   label,
   table,
   noun,

@@ -1,0 +1,1170 @@
+{
+  "source": "redacted-records-2",
+  "page": 12,
+  "form": {
+    "name": "Relic Form",
+    "page": 13,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "rr2-relic-form-11",
+        "from": 11,
+        "to": 11,
+        "name": "Augmetic",
+        "kind": "augmetic",
+        "pick": {
+          "kinds": [
+            "augmetic"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-12",
+        "from": 12,
+        "to": 12,
+        "name": "Uncommon Tool or Equipment",
+        "kind": "equipment",
+        "pick": {
+          "kinds": [
+            "equipment"
+          ],
+          "rarity": {
+            "atLeast": "Uncommon",
+            "atMost": "Uncommon"
+          }
+        }
+      },
+      {
+        "id": "rr2-relic-form-13",
+        "from": 13,
+        "to": 13,
+        "name": "Projectile Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-14",
+        "from": 14,
+        "to": 14,
+        "name": "Las Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "LAS"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-15",
+        "from": 15,
+        "to": 15,
+        "name": "Flame Weapon",
+        "kind": "ranged",
+        "pick": {
+          "categories": [
+            "Flame Weapons"
+          ],
+          "weapon": "ranged"
+        }
+      },
+      {
+        "id": "rr2-relic-form-16",
+        "from": 16,
+        "to": 16,
+        "name": "Melta Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "MELTA"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-21",
+        "from": 21,
+        "to": 21,
+        "name": "Uncommon Tool or Equipment",
+        "kind": "equipment",
+        "pick": {
+          "kinds": [
+            "equipment"
+          ],
+          "rarity": {
+            "atLeast": "Uncommon",
+            "atMost": "Uncommon"
+          }
+        }
+      },
+      {
+        "id": "rr2-relic-form-22",
+        "from": 22,
+        "to": 22,
+        "name": "Rare Tool or Equipment",
+        "kind": "equipment",
+        "pick": {
+          "kinds": [
+            "equipment"
+          ],
+          "rarity": {
+            "atLeast": "Rare",
+            "atMost": "Rare"
+          }
+        }
+      },
+      {
+        "id": "rr2-relic-form-23",
+        "from": 23,
+        "to": 23,
+        "name": "Common Tool or Equipment",
+        "kind": "equipment",
+        "pick": {
+          "kinds": [
+            "equipment"
+          ],
+          "rarity": {
+            "atLeast": "Common",
+            "atMost": "Common"
+          }
+        }
+      },
+      {
+        "id": "rr2-relic-form-24",
+        "from": 24,
+        "to": 24,
+        "name": "Projectile Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-25",
+        "from": 25,
+        "to": 25,
+        "name": "Plasma Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "PLASMA"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-26",
+        "from": 26,
+        "to": 26,
+        "name": "Bolt Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "BOLT"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-31",
+        "from": 31,
+        "to": 31,
+        "name": "Mundane Melee Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Melee Weapons",
+            "Ordinary Melee Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-32",
+        "from": 32,
+        "to": 32,
+        "name": "Common Tool or Equipment",
+        "kind": "equipment",
+        "pick": {
+          "kinds": [
+            "equipment"
+          ],
+          "rarity": {
+            "atLeast": "Common",
+            "atMost": "Common"
+          }
+        }
+      },
+      {
+        "id": "rr2-relic-form-33",
+        "from": 33,
+        "to": 33,
+        "name": "Las Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "LAS"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-34",
+        "from": 34,
+        "to": 34,
+        "name": "Mundane Armour or Clothing",
+        "kind": "armour",
+        "pick": {
+          "kinds": [
+            "armour"
+          ],
+          "categories": [
+            "Armour"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-35",
+        "from": 35,
+        "to": 35,
+        "name": "Projectile Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-36",
+        "from": 36,
+        "to": 36,
+        "name": "Grenade or Missile Weapon",
+        "kind": "ammunition",
+        "pick": {
+          "categories": [
+            "Grenade & Missile Weapons"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-41",
+        "from": 41,
+        "to": 41,
+        "name": "Power Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Power Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-42",
+        "from": 42,
+        "to": 42,
+        "name": "Mundane Melee Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Melee Weapons",
+            "Ordinary Melee Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-43",
+        "from": 43,
+        "to": 43,
+        "name": "Chain Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Chain Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-44",
+        "from": 44,
+        "to": 44,
+        "name": "Las Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "LAS"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-45",
+        "from": 45,
+        "to": 45,
+        "name": "Bolt Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "BOLT"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-46",
+        "from": 46,
+        "to": 46,
+        "name": "Projectile Weapon",
+        "kind": "ranged",
+        "pick": {
+          "weapon": "ranged",
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-51",
+        "from": 51,
+        "to": 51,
+        "name": "Chain Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Chain Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-52",
+        "from": 52,
+        "to": 52,
+        "name": "Exotic Melee Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Exotic Melee Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-53",
+        "from": 53,
+        "to": 53,
+        "name": "Mundane Melee Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Melee Weapons",
+            "Ordinary Melee Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-54",
+        "from": 54,
+        "to": 54,
+        "name": "Flame Weapon",
+        "kind": "ranged",
+        "pick": {
+          "categories": [
+            "Flame Weapons"
+          ],
+          "weapon": "ranged"
+        }
+      },
+      {
+        "id": "rr2-relic-form-55",
+        "from": 55,
+        "to": 55,
+        "name": "Power Field",
+        "kind": "armour",
+        "pick": {
+          "categories": [
+            "Power Fields"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-56",
+        "from": 56,
+        "to": 56,
+        "name": "Mundane Armour or Clothing",
+        "kind": "armour",
+        "pick": {
+          "kinds": [
+            "armour"
+          ],
+          "categories": [
+            "Armour"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-61",
+        "from": 61,
+        "to": 61,
+        "name": "Force Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Force Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-62",
+        "from": 62,
+        "to": 62,
+        "name": "Chain Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Chain Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-63",
+        "from": 63,
+        "to": 63,
+        "name": "Power Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Power Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-64",
+        "from": 64,
+        "to": 64,
+        "name": "Mundane Melee Weapon",
+        "kind": "melee",
+        "pick": {
+          "categories": [
+            "Melee Weapons",
+            "Ordinary Melee Weapons"
+          ],
+          "weapon": "melee"
+        }
+      },
+      {
+        "id": "rr2-relic-form-65",
+        "from": 65,
+        "to": 65,
+        "name": "Mundane Armour or Clothing",
+        "kind": "armour",
+        "pick": {
+          "kinds": [
+            "armour"
+          ],
+          "categories": [
+            "Armour"
+          ]
+        }
+      },
+      {
+        "id": "rr2-relic-form-66",
+        "from": 66,
+        "to": 66,
+        "name": "Powered Armour",
+        "kind": "armour",
+        "pick": {
+          "categories": [
+            "Powered Armour"
+          ]
+        }
+      }
+    ],
+    "gaps": []
+  },
+  "owners": {
+    "name": "Relic Origins: Original Owner",
+    "page": 14,
+    "dice": "d6",
+    "rows": [
+      {
+        "id": "rr2-relic-owner-1",
+        "from": 1,
+        "to": 1,
+        "name": "Adeptus Mechanicus",
+        "text": "Adeptus Mechanicus Relics can be inscrutable to those not well-versed in the Omnissiah’s teachings. Many display machine code engravings, or mathematical formulae of significance. They usually follow STC patterns with slavish devotion, as innovation is considered an impossible affront to the fact that the Machine God already bestowed all knowledge upon Humanity many ages ago. Weapons are supremely powerful, while augmetics perform far above expected norms. Whether the source of their abilities is holy power or superior technology is irrelevant to a Tech-Priest, as they are one and the same."
+      },
+      {
+        "id": "rr2-relic-owner-2",
+        "from": 2,
+        "to": 2,
+        "name": "Adeptus Ministorum",
+        "text": "Adeptus Ministorum Relics are what most Imperial citizens think of when they think of Relics at all. While many are weapons, Adeptus Ministorum Relics also include the remains of saints and heroes that may be incorporated into useful wargear, revered tomes from learned sages, and all manner of everyday objects blessed by the Emperor and His most devout followers."
+      },
+      {
+        "id": "rr2-relic-owner-3",
+        "from": 3,
+        "to": 3,
+        "name": "Archaeotech",
+        "text": "Archaeotech Relics are items constructed in Humanity’s ancient golden age. They often conform to Standard Template Construct patterns, which may overlap with Adeptus Mechanicus Relics, but many remain utterly unique in design. These items often far outstripped the capabilities of their contemporaries even before gaining supposedly miraculous abilities."
+      },
+      {
+        "id": "rr2-relic-owner-4",
+        "from": 4,
+        "to": 4,
+        "name": "Astra Militarum",
+        "text": "Astra Militarum Relics are often plain in appearance, reflecting the mass production needed to supply the colossal armies of the Imperial Guard. More elaborately designed and decorated Relics almost all belonged to a highly decorated officer or hero. Weapons and armour are the most common Relics, though many others exist, from Entrenching Tools to copies of the Imperial Infantryman’s Uplifting Primer."
+      },
+      {
+        "id": "rr2-relic-owner-5",
+        "from": 5,
+        "to": 5,
+        "name": "Adeptus Astra Telepathica",
+        "text": "Adeptus Astra Telepathica Relics are mostly tied to knowledge or manipulation of the Immaterium, and are often a mix of holy and occult imagery that would confuse and worry the average Imperial citizen or priest. They range from skulls of renowned past psykers, to Bolters impregnated with psychic force, or tomes containing the true names of daemons."
+      },
+      {
+        "id": "rr2-relic-owner-6",
+        "from": 6,
+        "to": 6,
+        "name": "Imperial Agents",
+        "text": "Imperial Agent Relics were once wielded by the Holy Ordos of the Inquisition, or the bold bearers of a Warrant of Trade. Such heirlooms are almost universally exotic in nature, incorporating the rarest and most esoteric of technologies. Artefacts of the Inquisition may incorporate hexagrammic seals, litanies to rebuke heretics and xenos, or engraved histories of the foul foes a weapon has slain. Relics once possessed by particularly pious Rogue Traders may have been present when worlds were discovered and conquered, or been crucial in bringing low the God-Emperor’s foes beyond the borders of the Imperium."
+      }
+    ],
+    "gaps": []
+  },
+  "anointments": {
+    "name": "Relic Origins: Anointment",
+    "page": 14,
+    "dice": "d6",
+    "rows": [
+      {
+        "id": "rr2-relic-anointment-1",
+        "from": 1,
+        "to": 1,
+        "name": "Hero’s Panoply",
+        "text": "The item is known to have belonged to a hero of the Imperium, who made frequent use of it. Perhaps it was a powerful Relic even then, or perhaps it became one after its owner was canonised as a saint, or given some other exemplary title befitting the Faction they served."
+      },
+      {
+        "id": "rr2-relic-anointment-2",
+        "from": 2,
+        "to": 2,
+        "name": "Felled a Champion",
+        "text": "The item became a Relic when it was used to defeat a mighty enemy champion. It may have protected the owner, or could have struck a decisive blow in battle."
+      },
+      {
+        "id": "rr2-relic-anointment-3",
+        "from": 3,
+        "to": 3,
+        "name": "Turned the Tide",
+        "text": "When all seemed lost in a terrible battle, this Relic miraculously inspired the Imperium’s soldiers to rally and achieve victory against all odds. Perhaps it is wreathed in golden light, or its mere reputation strikes fear into the foe."
+      },
+      {
+        "id": "rr2-relic-anointment-4",
+        "from": 4,
+        "to": 4,
+        "name": "Banished a Daemon",
+        "text": "The item gained its fame for being instrumental in banishing a foul daemon. It may be useful in binding daemons, or it could be especially damaging to creatures of the Immaterium."
+      },
+      {
+        "id": "rr2-relic-anointment-5",
+        "from": 5,
+        "to": 5,
+        "name": "Revelatory",
+        "text": "The object was recognised as a holy Relic when it led believers to some grand discovery. Perhaps it led the Adeptus Mechanicus to a fragment of STC technology, or inspired a pilgrimage to find the lost tomb of an Imperial hero."
+      },
+      {
+        "id": "rr2-relic-anointment-6",
+        "from": 6,
+        "to": 6,
+        "name": "Saviour",
+        "text": "The Relic saved the life of a renowned hero. It could be suffused with pious energies, or may simply be a copy of The Imperial Infantryman’s Uplifting Primer that stopped an assassin’s bullet."
+      }
+    ],
+    "gaps": []
+  },
+  "powers": [
+    {
+      "name": "Melee Weapon Relic Powers",
+      "page": 16,
+      "dice": "d6",
+      "rows": [
+        {
+          "id": "rr2-power-melee-1",
+          "from": 1,
+          "to": 1,
+          "name": "Transformative Strength",
+          "text": "The weapon proves devastating in the most unlikely hands. Choose an Attribute or Skill besides Strength. The weapon’s Damage is increased by that Attribute, instead of Strength.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-melee-2",
+          "from": 2,
+          "to": 2,
+          "name": "Ranged Attack",
+          "text": "Whether arcs of warp-lightning or holy flame, the weapon can cast powerful attacks at a distance. By sacrificing 1 Shock, the wielder may declare a single ranged attack on their Turn, granting the weapon a Range of 6 - 12 - 18. The Damage and Weapon Traits are unchanged.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-melee-3",
+          "from": 3,
+          "to": 3,
+          "name": "Unwavering Loyalty",
+          "text": "The weapon chooses who can wield it. This is usually the Agent who discovers it, but may be the original owner, who might still be searching for it. In the hands of anyone else, it loses all Weapon Traits except Heavy (X) and Unwieldy (X). If it already has Heavy (X) or Unwieldy (X), the Rating is increased by 1.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-melee-4",
+          "from": 4,
+          "to": 4,
+          "name": "Holy Hatred",
+          "text": "The weapon hungers for the blood of the Imperium’s enemies; roll on the Enemy Keyword Table (page 18) to determine which. When the weapon successfully hits an enemy with that Keyword, it gains the Brutal Trait. If it already possesses Brutal, the Extra Damage Dice gain +1 Damage (1-2 inflicts 1 Damage, 3-4 inflicts 2 Damage, 5-6 inflicts 3).",
+          "mods": [],
+          "enemy": true
+        },
+        {
+          "id": "rr2-power-melee-5",
+          "from": 5,
+          "to": 5,
+          "name": "Defender",
+          "text": "The weapon seems to anticipate the movements of both its wielder and their opponent, darting to parry blows almost before they are made. Even bullets and las blasts can be deflected on occasion. While wielding this weapon, you gain +2 to your Defence against both melee and ranged attacks.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-melee-6",
+          "from": 6,
+          "to": 6,
+          "name": "Fearsome Aura",
+          "text": "Power radiates in palpable waves from the weapon, sowing fear among enemies and emboldening allies. While wielded in combat, the owner causes Fear (if they already cause Fear, the DN to resist is increased by +2) in enemies, and allies who can see the weapon gain a +2 bonus dice to all Fear Tests.",
+          "mods": [],
+          "enemy": false
+        }
+      ],
+      "gaps": [],
+      "kind": "melee"
+    },
+    {
+      "name": "Ranged Weapon Relic Powers",
+      "page": 16,
+      "dice": "d6",
+      "rows": [
+        {
+          "id": "rr2-power-ranged-1",
+          "from": 1,
+          "to": 1,
+          "name": "Vow of Silence",
+          "text": "The weapon makes no sound at all when fired. Physical ammunition still makes a sound as it travels, and on impact, and firing such weapons always reduces your Stealth Score by a minimum of 1.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ranged-2",
+          "from": 2,
+          "to": 2,
+          "name": "Mighty Roar",
+          "text": "The weapon makes a fearsome sound when fired. When making a ranged attack, the wielder can also make an Intimidation Interaction Attack on the target as a Free Action.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ranged-3",
+          "from": 3,
+          "to": 3,
+          "name": "Blessed Efficiency",
+          "text": "Whether through arcane science or faith in the God-Emperor, this weapon consumes far less ammunition that it should. When reloading this weapon, roll 1d6; on a result of 5-6, no ammunition is consumed.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ranged-4",
+          "from": 4,
+          "to": 4,
+          "name": "Piercing Hatred",
+          "text": "This weapon excels at killing specific enemies of the Imperium; roll on the Enemy Keyword Table (page 18) to determine which. Against enemies with that Keyword, the weapon ignores the target’s base Resilience when reducing Damage (Armour applies as normal).",
+          "mods": [],
+          "enemy": true
+        },
+        {
+          "id": "rr2-power-ranged-5",
+          "from": 5,
+          "to": 5,
+          "name": "Divine Guidance",
+          "text": "The weapon’s shots are seemingly directed by the hand of the God-Emperor Himself. The user may shift an Icon to eliminate either a single category of penalty on the Test, or bonus to the target. Roll 1d6 to randomise between: 1-2. Eliminate Range Penalties, 3-4. Eliminate Vision Penalties, 5-6. Eliminate Size Penalties",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ranged-6",
+          "from": 6,
+          "to": 6,
+          "name": "Righteous Fury",
+          "text": "The weapon seems to delight in causing particularly horrific wounds. Every Critical Hit with this weapon is improved as if 1 point of Glory had been spent. The wielder may still spend Glory points on additional effects, if available.",
+          "mods": [],
+          "enemy": false
+        }
+      ],
+      "gaps": [],
+      "kind": "ranged"
+    },
+    {
+      "name": "Ammunition Relic Powers",
+      "page": 17,
+      "dice": "d6",
+      "rows": [
+        {
+          "id": "rr2-power-ammunition-1",
+          "from": 1,
+          "to": 1,
+          "name": "Saint’s Tears",
+          "text": "This ammunition was anointed with the tears of a saint who vowed to avenge the many fallen soldiers of a battle. On a successful ranged attack, each enemy hit grants the user +1 Resilience until their next turn.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ammunition-2",
+          "from": 2,
+          "to": 2,
+          "name": "Lux Deum",
+          "text": "The shell casings, prometheum canisters or charge packs bear the seal of a famously militant hero or saint. They burn with a supernatural light when fired, inflicting the Blinded Condition on a successful hit.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ammunition-3",
+          "from": 3,
+          "to": 3,
+          "name": "Sanguis Sancti",
+          "text": "Anointed with the blood of a saint who died in battle, this ammunition demands its targets share the same fate. A successful hit inflicts the Bleeding Condition, even if the target is normally immune to Bleeding; daemons bleed the very energy holding them together, while Necrons leak coolant, lubricants or whatever other xenos filth flows through their blasphemous necrodermis.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ammunition-4",
+          "from": 4,
+          "to": 4,
+          "name": "Blessed with Hatred",
+          "text": "This ammunition was blessed with prayers against a specific enemy of the Imperium. Roll on the Enemy Keyword Table (page 18). The weapon deals double damage to enemies with this Keyword.",
+          "mods": [],
+          "enemy": true
+        },
+        {
+          "id": "rr2-power-ammunition-5",
+          "from": 5,
+          "to": 5,
+          "name": "Heretek Denunciation",
+          "text": "This ammunition reserves special hatred for the technology of the enemy, and rebukes their Machine Spirits. The target of an attack made with this ammunition cannot use a Power Field to roll Determination against Mortal Wounds caused by the attack. Additionally, targets hit with this ammo roll an automatic Complication on their next action, if that action uses any technology. Even unpowered melee weapons miss, fumble, or break. If the target has the HERETIC Keyword, attacks with this ammunition also have +Rank AP.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-ammunition-6",
+          "from": 6,
+          "to": 6,
+          "name": "Fury’s Ally",
+          "text": "Emblazoned with potent religious wards and litanies of disgust, this ammunition feeds off the hatred of its user. A weapon using this ammunition gains the Force Trait; the attacker adds half their Willpower Rating to the Damage total. The user does not need to have the PSYKER Keyword to benefit.",
+          "mods": [
+            {
+              "kind": "trait",
+              "traitId": "force"
+            }
+          ],
+          "enemy": false
+        }
+      ],
+      "gaps": [],
+      "kind": "ammunition"
+    },
+    {
+      "name": "Armour, Clothing, and Power Field Relic Powers",
+      "page": 17,
+      "dice": "d6",
+      "rows": [
+        {
+          "id": "rr2-power-armour-1",
+          "from": 1,
+          "to": 1,
+          "name": "Bulwark of the Soul",
+          "text": "The Relic protects the soul as much as the body. While wearing this Relic, the DN of all Tests against Fear, Terror, or Intimidation are reduced by 1.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-armour-2",
+          "from": 2,
+          "to": 2,
+          "name": "Blessed Healing",
+          "text": "The Relic slowly but surely knits flesh and bone back together in battle. At the end of each combat round, the wearer heals 1 Wound. Outside of combat, this relic will only activate to restore 1 Wound when its wearer is Dying. They still fall Prone and take a Memorable or Traumatic Injury.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-armour-3",
+          "from": 3,
+          "to": 3,
+          "name": "Blessing of [Skill]",
+          "text": "The holy power of this Relic courses through the body, imparting knowledge or sharpening reflexes. The Gamemaster chooses a Skill; while worn, this Relic grants +2 bonus dice to that Skill. If you are using the optional rule Innate vs Learned (Wrath & Glory Rulebook, page 127), this allows a character to make a Test for Skills they would otherwise have at Rating 0.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-armour-4",
+          "from": 4,
+          "to": 4,
+          "name": "Countersmite",
+          "text": "This Relic answers those who dare to strike its wearer with a mighty blow of its own, be it arcs of electricity, flames, or a gust of rending spectral blades. Choose a Condition (Wrath & Glory Rulebook, page 197). When an enemy successfully hits the wearer in close combat, they must pass a DN 3 Initiative (I) Test or take 1 level of that Condition.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-armour-5",
+          "from": 5,
+          "to": 5,
+          "name": "Abhor the Witch",
+          "text": "This Relic is especially contemptuous of the warp, fortifying the wearer against it. When the wearer is targeted by a Psychic Power, the caster must increase the power’s DN by 2.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-armour-6",
+          "from": 6,
+          "to": 6,
+          "name": "Haste of the Righteous",
+          "text": "The Relic grants alarming quickness of thought and action in battle. During combat, enemies cannot take Free or Reflexive Actions against the wearer.",
+          "mods": [],
+          "enemy": false
+        }
+      ],
+      "gaps": [],
+      "kind": "armour"
+    },
+    {
+      "name": "Augmetic Relic Powers",
+      "page": 18,
+      "dice": "d6",
+      "rows": [
+        {
+          "id": "rr2-power-augmetic-1",
+          "from": 1,
+          "to": 1,
+          "name": "Multitask Benediction",
+          "text": "The sacred augmetic performs the function of two augmetics; an Augmetic Arm might also filter toxins from the bloodstream like an Augmetic Respirator, or include a Cardioproxy or Mechadendrite.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-augmetic-2",
+          "from": 2,
+          "to": 2,
+          "name": "Supreme Craftsmanship",
+          "text": "This exquisite augmetic was crafted by high-ranking Tech-Priests, or hails from the Dark Age of Technology, and is heavily blessed by the Machine God. Any numeric bonuses from the Augmetic are doubled. If it’s a Ballistic Mechadendrite weapon it gains the Mastercrafted Upgrade.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-augmetic-3",
+          "from": 3,
+          "to": 3,
+          "name": "Voice in the Machine",
+          "text": "The augmetic whispers knowledge of the Omnissiah’s blessings in your mind, granting you an unusual affinity for technology. Owners gain the Binary Chatter Trait (Wrath & Glory Rulebook, page 130), even if they lack the ADEPTUS MECHANICUS Keyword. If they already possess Binary Chatter, the +Double Rank bonus becomes +Triple Rank.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-augmetic-4",
+          "from": 4,
+          "to": 4,
+          "name": "Null-alloy",
+          "text": "The augmetic is constructed from barely understood archaeotech materials with warp-resistant properties. Augmetic eyes can see through warp illusions, augmetic limbs or weapons inflict +2ED on psykers and daemons, and other augmetics grant +2 Defence against daemons and Psychic Powers.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-augmetic-5",
+          "from": 5,
+          "to": 5,
+          "name": "Motive Force Discharge Capacitor",
+          "text": "The augmetic slowly builds and stores an electrical charge from the owner’s own bioelectric field. Once per game session, the owner may discharge this capacitor at a target up to 10m away. This is treated as Moderate Electricity Damage (Wrath & Glory Rulebook, page 201).",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-augmetic-6",
+          "from": 6,
+          "to": 6,
+          "name": "Logic of Hatred",
+          "text": "The augmetic is charged with animosity toward a specific enemy of the God-Emperor or Omnissiah. Roll on the Enemy Keyword Table. The augmetic hums or vibrates when enemies with that Keyword are within 20m (this may initially require a DN 3 Insight (Fel) Test for the Agent to recognise). In combat, the user gains +1 bonus dice on Attacks against that enemy.",
+          "mods": [],
+          "enemy": true
+        }
+      ],
+      "gaps": [],
+      "kind": "augmetic"
+    },
+    {
+      "name": "Tool, Equipment and Trinket Relic Powers",
+      "page": 18,
+      "dice": "d6",
+      "rows": [
+        {
+          "id": "rr2-power-equipment-1",
+          "from": 1,
+          "to": 1,
+          "name": "Blessing of Opportunity",
+          "text": "The wearer may make 1 extra Reflexive Action per round.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-equipment-2",
+          "from": 2,
+          "to": 2,
+          "name": "Righteous Wrath",
+          "text": "On a Wrath Critical, the owner may make another attack as a Free Action.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-equipment-3",
+          "from": 3,
+          "to": 3,
+          "name": "Shield of Purity",
+          "text": "The Relic repels the corruption of the Ruinous Powers. When making Corruption Tests, roll +2 bonus dice.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-equipment-4",
+          "from": 4,
+          "to": 4,
+          "name": "Punish the Witch",
+          "text": "This Relic turns a psyker’s powers against them. If a psyker targets the owner with a Psychic Power, they must substitute a die in their Psychic Mastery (Wil) Test with an extra Wrath die.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-equipment-5",
+          "from": 5,
+          "to": 5,
+          "name": "Wrathful Sacrifice",
+          "text": "The Relic’s owner can inspire their allies to snatch victory from the jaws of defeat; the owner may spend a point of Wrath to allow an ally to re-roll failures.",
+          "mods": [],
+          "enemy": false
+        },
+        {
+          "id": "rr2-power-equipment-6",
+          "from": 6,
+          "to": 6,
+          "name": "Faith Endures",
+          "text": "When rolling Determination, the owner rolls +1 bonus die.",
+          "mods": [],
+          "enemy": false
+        }
+      ],
+      "gaps": [],
+      "kind": "equipment"
+    }
+  ],
+  "oddities": {
+    "name": "Relic Oddities",
+    "page": 19,
+    "dice": "d6",
+    "rows": [
+      {
+        "id": "rr2-relic-oddity-1",
+        "from": 1,
+        "to": 1,
+        "name": "Oathbound",
+        "text": "The Relic requires users to swear a specific oath. If the owner fails to uphold the oath, they can no longer activate the Relic’s Powers. Such oaths are often engraved on the Relic, such as along a sword’s blade, or on the cover of a book."
+      },
+      {
+        "id": "rr2-relic-oddity-2",
+        "from": 2,
+        "to": 2,
+        "name": "Appease the Machine Spirit",
+        "text": "The Relic’s Powers only activate when a specific prayer or hymn to the God-Emperor or Machine God is recited. Failure to recite the required words causes an automatic Complication."
+      },
+      {
+        "id": "rr2-relic-oddity-3",
+        "from": 3,
+        "to": 3,
+        "name": "Path of the Saints",
+        "text": "The Relic demands strict adherence to a particular moral code practised by its creator or previous owner. It should be something relatively easy that offers roleplaying opportunities, like ‘never eat Grox meat’ or ‘do not drink wine’, but any time this code is broken, the Relic forces the owner to roll on the Perils of the Warp Table (Wrath & Glory Rulebook, page 263)."
+      },
+      {
+        "id": "rr2-relic-oddity-4",
+        "from": 4,
+        "to": 4,
+        "name": "Challenging Canon",
+        "text": "The Relic sometimes grants the owner glimpses into its past. These often contradict established dogma, and could get the owner in serious trouble if mentioned in public. At the GM’s discretion, the owner may attempt a DN 4 Insight (Fel) Test, to apply such memories to the current situation, such as appeasing the Machine Spirit of a high security vault door."
+      },
+      {
+        "id": "rr2-relic-oddity-5",
+        "from": 5,
+        "to": 5,
+        "name": "Ravaged by Time",
+        "text": "Through age, neglect, or both, the Relic is on the verge of falling apart. If a Complication is rolled during its use, it becomes damaged and must be repaired during a Respite before it can be used again."
+      },
+      {
+        "id": "rr2-relic-oddity-6",
+        "from": 6,
+        "to": 6,
+        "name": "Aware",
+        "text": "While not, strictly speaking, alive, the Relic has developed a rudimentary personality of its own, and may communicate with its owner through flashes of imagery or sound, or in dreams. Aware Relics have agendas, and encourage their owners to advance them, though they are rarely more complex than ‘kill Orks’ or ‘honour the memory of my last owner’. They can also form opinions of people; someone who earns the Relic’s displeasure may find its Powers abandoning them at a crucial moment."
+      }
+    ],
+    "gaps": []
+  },
+  "enemies": {
+    "name": "Enemy Keyword Table",
+    "page": 18,
+    "dice": "4d6",
+    "rows": [
+      {
+        "id": "rr2-enemy-4",
+        "from": 4,
+        "to": 4,
+        "name": "VEHICLE"
+      },
+      {
+        "id": "rr2-enemy-5",
+        "from": 5,
+        "to": 5,
+        "name": "BEAST"
+      },
+      {
+        "id": "rr2-enemy-6",
+        "from": 6,
+        "to": 6,
+        "name": "MUTANT"
+      },
+      {
+        "id": "rr2-enemy-7",
+        "from": 7,
+        "to": 7,
+        "name": "PSYKER"
+      },
+      {
+        "id": "rr2-enemy-8",
+        "from": 8,
+        "to": 8,
+        "name": "NECRON"
+      },
+      {
+        "id": "rr2-enemy-9",
+        "from": 9,
+        "to": 9,
+        "name": "TYRANID"
+      },
+      {
+        "id": "rr2-enemy-10",
+        "from": 10,
+        "to": 10,
+        "name": "DAEMON"
+      },
+      {
+        "id": "rr2-enemy-11",
+        "from": 11,
+        "to": 11,
+        "name": "HERETIC"
+      },
+      {
+        "id": "rr2-enemy-12",
+        "from": 12,
+        "to": 12,
+        "name": "KHORNE"
+      },
+      {
+        "id": "rr2-enemy-13",
+        "from": 13,
+        "to": 13,
+        "name": "NURGLE"
+      },
+      {
+        "id": "rr2-enemy-14",
+        "from": 14,
+        "to": 14,
+        "name": "CHAOS"
+      },
+      {
+        "id": "rr2-enemy-15",
+        "from": 15,
+        "to": 15,
+        "name": "TZEENTCH"
+      },
+      {
+        "id": "rr2-enemy-16",
+        "from": 16,
+        "to": 16,
+        "name": "SLAANESH"
+      },
+      {
+        "id": "rr2-enemy-17",
+        "from": 17,
+        "to": 17,
+        "name": "AELDARI"
+      },
+      {
+        "id": "rr2-enemy-18",
+        "from": 18,
+        "to": 18,
+        "name": "ORK"
+      },
+      {
+        "id": "rr2-enemy-19",
+        "from": 19,
+        "to": 19,
+        "name": "GENESTEALER"
+      },
+      {
+        "id": "rr2-enemy-20",
+        "from": 20,
+        "to": 20,
+        "name": "DRUKHARI"
+      },
+      {
+        "id": "rr2-enemy-21",
+        "from": 21,
+        "to": 21,
+        "name": "T'AU"
+      },
+      {
+        "id": "rr2-enemy-22",
+        "from": 22,
+        "to": 22,
+        "name": "KROOT"
+      },
+      {
+        "id": "rr2-enemy-23",
+        "from": 23,
+        "to": 23,
+        "name": "ABHUMAN"
+      },
+      {
+        "id": "rr2-enemy-24",
+        "from": 24,
+        "to": 24,
+        "name": "HUMAN"
+      }
+    ],
+    "gaps": []
+  }
+}

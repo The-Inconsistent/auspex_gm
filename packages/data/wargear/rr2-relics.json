@@ -1,0 +1,96 @@
+[
+  {
+    "id": "rr2-rosarius-of-saint-agatha",
+    "name": "Rosarius of Saint Agatha",
+    "source": "redacted-records-2",
+    "page": 20,
+    "category": "Holy Relics",
+    "kind": "armour",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "note": "No Value, Rarity or armour profile printed here: it is \"a standard Rosarius\" (Core p.233, id rosarius).",
+    "effect": "It is a standard Rosarius, with the following additions; its power field crackles with arcs of golden electricity, even when dormant, giving the wearer +2 to Intimidation Interaction Attacks. Striking the field causes an energy backlash: unless the attacker passes a DN 3 Initiative (I) Test, they become Blinded and On Fire. The DN is raised by 1 for enemies with the HERETIC Keyword."
+  },
+  {
+    "id": "rr2-skadi-matrix",
+    "name": "Skadi Matrix",
+    "source": "redacted-records-2",
+    "page": 22,
+    "category": "Holy Relics",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "note": "Kind is the GM's call: a data chip installed in a Mind Impulse Unit. No Value or Rarity printed.",
+    "effect": "A Skadi Matrix must be installed in a Mind Impulse Unit. It automatically interfaces with any sensory technology within roughly 50m, including highly encrypted data feeds, which would concern other Imperial organisations deeply if they knew. The user may declare a Ranged attack using the Skadi Matrix in combat. The syphoning of energy causes nearby lights to dim and devices to malfunction, inflicting a +1 DN penalty to enemy attacks until the end of the round. The user is granted up to +5 bonus dice for a Ranged Attack, but at a cost — the chip’s calculations generate intense heat within the skull, causing severe injury. For every +1 bonus dice the user adds to the Ranged Attack, they suffer 2 Shock damage. If surrounding technology is absent, the maximum bonus may be limited as the GM decides."
+  },
+  {
+    "id": "rr2-the-cornerstone",
+    "name": "The Cornerstone",
+    "source": "redacted-records-2",
+    "page": 24,
+    "category": "Holy Relics",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "note": "No Value or Rarity printed.",
+    "effect": "The Cornerstone does not suffer the touch of Chaos. If a character is brave or foolish enough to touch the Cornerstone, they instantly lose the minimum number of Corruption Points required to lower their Corruption Level (Wrath & Glory Rulebook, page 285) by 1. For example, whether a character has 6-11 Corruption Points (Tarnished), they immediately reduce them to 5 (Pure). The affected character also takes 1 Mortal Wound for every Corruption Point removed in this way. This only works once; the Cornerstone will not save those who fall twice."
+  },
+  {
+    "id": "rr2-the-unwilling-orb",
+    "name": "The Unwilling Orb",
+    "source": "redacted-records-2",
+    "page": 26,
+    "category": "Holy Relics",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "note": "No Value or Rarity printed; it is a Psychic Focus (Core p.239, id psychic-focus). Printed \"It allows the character to cast\"; the Orb's user is meant.",
+    "effect": "The Unwilling Orb is a Psychic Focus (Wrath & Glory Rulebook, page 239), with some additions. These abilities only apply for characters with the GENESTEALER CULT and PSYKER Keywords. It grants the user a number of bonus dice equal to the game’s Tier to their Psychic Mastery (Wil) Tests. It allows the user to cast Deny the Witch up to twice each round as a Free Action. The character need not be aware that a Psychic Power is being cast."
+  },
+  {
+    "id": "rr2-a-tainted-blade",
+    "name": "A Tainted Blade",
+    "source": "redacted-records-2",
+    "page": 28,
+    "category": "Holy Relics",
+    "kind": "weapon",
+    "value": null,
+    "rarity": "Unique",
+    "keywords": [
+      "CHAOS",
+      "POWER FIELD"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 8,
+      "ed": 4,
+      "ap": -4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry",
+        "Warp Weapon"
+      ]
+    },
+    "note": "Profile table p.28: Value blank, Range \"-\" (read as melee, [1]), Damage \"(S)+8\".",
+    "effect": "All rolled Complications using a Tainted Blade or a similarly corrupted weapon inflict 1 Mortal Wound on the user, in addition to any other effects."
+  },
+  {
+    "id": "rr2-tome-of-loathsome-twisting",
+    "name": "Tome of Loathsome Twisting",
+    "source": "redacted-records-2",
+    "page": 29,
+    "category": "Holy Relics",
+    "kind": "equipment",
+    "value": null,
+    "rarity": null,
+    "keywords": [],
+    "note": "No Value or Rarity printed. Lore on pp.29-31 omitted. The Axe Legartis (Khargast's weapon, p.31) is part of a Threat stat block, not a relic entry.",
+    "effect": "Whenever an individual reads a page of the Tome of Loathsome Twisting, they must make a DN 1 Willpower Test, which they may choose to fail. If they succeed, their mind rejects the influence of the Tome, and they are left with only clouded memories of the writing and a feeling of unshakeable dread. If they fail, they immediately suffer 1 point of Corruption, and may either accept the gifts of the Tome or reject them. If they accept the Tome’s offerings, while it is in their possession they gain the PSYKER Keyword if they do not already have it, and +3 bonus dice to all Scholar (Int) and Psychic Mastery (Wil) Tests. They also gain the Chaos Familiar Talent (Wrath & Glory Rulebook, page 130) or gain a second familiar, if they already have it. This new familiar has extensive knowledge of the book’s contents and can provide advice on how best to enact the terrible rites within, granting a further +2 bonus dice to any Tests relating to performing a Chaos ritual. The mere act of choosing to keep and use the Tome of Loathsome Twisting inflicts +3 Corruption (This includes +2 from Chaos Familiar), and all Corruption Tests while in possession of the book have their DN raised by 1."
+  }
+]
