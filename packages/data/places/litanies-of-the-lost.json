@@ -1,0 +1,455 @@
+[
+  {
+    "id": "litanies-of-the-lost-valley-of-ancra",
+    "name": "The Valley of Ancra",
+    "source": "litanies-of-the-lost",
+    "page": 10,
+    "gm": "A PRIMER ON ANCRA\n\nThough small, the settlement features several locations of interest that are important in the course of Grim Harvest. Each of these locations is detailed in The Valley of Ancra starting on page 10, including any particular areas of note, clues to the mystery of the Grim Harvest, the characters the Agents could encounter, and advice on roleplaying those characters.\n\nHONEST TOIL\n\nAncra is a small farming zone in a valley of the Kharnuk Mountains. The highly fertile lands of the valley are accessible only via a narrow track or by airdrop, meaning the fruitful fields must be worked by hand as opposed to the colossal servo-tractors used elsewhere on the mega-acreages of Ostia. Despite this, the land has been farmed efficiently since its colonisation, it’s simple labourers pushed to the limit by their Administratum masters.\n\nAs the working day stretched beyond 12 hours, Ancra was held up as an exemplar of how Humanity could profit from sheer determination, and the Sortium demanded ever greater tithes from the small area as disaster inevitably loomed.\n\nUNDYING SHAME\n\nThe Imperium stands strong on a mountain of crushed rebellions, bringing its military might to bear on any foolish insurrection to ensure that Humanity is not destroyed by the needs of the selfish few. The repeated uprisings in Ancra were barely a footnote in Imperial history as thousands of disobedient labourers were cowed by the might of the Gilead Gravediggers, but even centuries later, their crimes have not been forgotten. The Administratum grew concerned with the loss of productivity, and resolved to use a less militant approach to ‘encourage’ the workforce of Ancra.\n\nFAITH HEALS ALL WOUNDS\n\nThough part of the civilised Imperium, the citizens of Ancra had little need of education, and were somewhat backwards by the standards of the people of the Gilead System. This made them the perfect target for the Ecclesiarchy of Enoch, who shaped their primitive beliefs of the Emperor in the guise of the ‘Dawn Lord’ into something far more palatable to the wider Imperium. Under the instruction of the Administratum, the priests of the Ministorum riled the zealous faith of the populace into reverence of the very act of farming itself, seeing it as ritualistic worship of the Emperor and repentance for the blasphemous rebellion of their ancestors. The Administratum soon found themselves in control of a fanatical labour force prepared to work themselves to the death in His name, and tithes increased once more — though many Adepts the potential problems that could arise from this shift in power to the Ecclesiarchy.\n\nTHE GREAT RIFT\n\nThe emergence of Cicatrix Maledictum is a curse to all Human life in the Gilead System, though not always through the immediate danger of daemonic incursion. Cut off from the wider Imperium, the system’s planets have no means of tradingfor foodstuffs, and so almost all sustenance is farmed and produced on Ostia. Ever aware of the minutiae of production numbers, the Administratum immediately raised the tithes on Ostia to ensure the lone Agri World could meet the hunger of the entire system. The faithful labourers gladly accepted this challenge, but the ensuing three years have proved that it may be beyond the abilities of the Human form. Ancra’s citizens have died in droves in their earnest attempts to martyr themselves through agriculture, and as the Administratum saw productivity dip, they searched for a solution to their problems.\n\nAUTOMATED ASSISTANCE\n\nEven the augmented forms of the Adeptus Mechanicus need sustenance, and after hearing of potential issues with harvests on Ostia, the Machine Cults of Avachrus engaged their cogitators and calculated a way to benefit. The Administratum gladly accepted the aid of their farming Servitors, even allowing them to convert the simple farmers into far more efficient lobotomised labourers, allowing the Adeptus Mechanicus to contest the power of the Ecclesiarchy on Ostia for the first time. But the earnest faith of the populace ensures that superstition runs rampant — the workforce fears and distrusts the tech-ghouls of the Mechanicus and lifeless, vacant stares of their Servitors, leading to immense tension in Ancra.\n\nTHE GRIM HARVEST\n\nAway from the large fields and industrial farm complexes, in dark woodlands buried within the ravines of great mountain ranges, are strange and shattered ruins of a once great ancient empire. Overgrown with weeds, barbed creepers laced across them, or hidden beneath darkened stone, odd structures still stand.\n\n… continues, Litanies p.7"
+  },
+  {
+    "id": "litanies-of-the-lost-cathedral-of-the-sun-emperor",
+    "name": "Cathedral of the Sun Emperor",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 10,
+    "gm": "The baroque architecture of the Cathedral of the Sun Emperor is almost incongruous amongst the utilitarian buildings of Ancra. Large and domineering, the Cathedral is composed of dark grey slabs of rockrete adorned with gothic spires and gargoyles. The broad east side of the Cathedral has several arched stained glass windows depicting sacred fables of the Cult of the Sun Emperor.\n\nThe interior is expansive and austere, carefully constructed to maximise the light of the dawn. The main chamber is tall and open with a single damaged pulpit — it once incorporated several laud-hailer systems that connected to cherubim to amplify the voice of the preacher, but these technological blasphemies have been recently removed by the technophobic populace. Now, the labourers are forced to crowd around the pulpit in hordes in hopes they will hear a sermon. Priests perpetually patrol the Cathedral swinging censers, burning the wildflower Himawari that has sacred value to the Cult of the Sun Emperor, filling the cavernous main chamber with an oily scent.\n\nSermons and hymn sessions are scheduled to occur at dawn, and then every four hours to coincide with the shifts of the farming labourers. The great Cathedral bell peals to the tune of the popular hymn Martyr’s Glory to announce the beginning of a service, at which point hundreds of labourers hurry through the nave. Each service lasts an hour, and consists of sermons to the glory of the Lord of Dawn and a few dirge-like hymns. Though the farmers in attendance are uniformly exhausted from their day’s labour, they are all rapt with attention during the service, some resorting to flagellation to ensure they stay awake."
+  },
+  {
+    "id": "litanies-of-the-lost-priests-hab-units",
+    "name": "Priests Hab Units",
+    "parent": "litanies-of-the-lost-cathedral-of-the-sun-emperor",
+    "source": "litanies-of-the-lost",
+    "page": 10,
+    "gm": "In order to maximise the space dedicated to the worship of the Emperor, all of the priests’ habs have been constructed in the centre of the bell tower, surrounded by a winding staircase. Each has a single cot, storage for a few meager personal effects, and enough empty space to walk around the bed. The flimsy plasteel walls reverberate with each toll of the bell.\n\nThe hab units at the top of the tower are currently being used to store prayer books, blank vellum, candle wax and unburnt Himawari. If the Agents demonstrate their devotion to the Cult, the priests will happily clear out enough storage habs to give them a decent place to sleep. If the Agents choose to sleep here, they will be awakened in the night by priests to assist them in events of your choice during the adventure."
+  },
+  {
+    "id": "litanies-of-the-lost-euphratis-hab",
+    "name": "Euphrati’s Hab",
+    "parent": "litanies-of-the-lost-cathedral-of-the-sun-emperor",
+    "source": "litanies-of-the-lost",
+    "page": 11,
+    "gm": "As a higher ranking member of the Ecclesiarchy, Euphrati is entitled to a larger hab at the bottom of the bell tower, furthest from the sound of the tolling. Unlike the other habs, the door is locked, requiring a DN 3 Stealth (A) Test to sneak in without attracting the attention of the priests.\n\nThe hab is relatively luxurious compared to others in Ancra, with an actual bed, a wardrobe filled with vestments, and a messy desk piled with scrolls, candles, and a few data-slates. An Agent that makes a DN 3 Investigation (Int) Test to search Euphrati’s Hab discovers a series of communications between Euphrati and Xanther Futah."
+  },
+  {
+    "id": "litanies-of-the-lost-julcian-complex",
+    "name": "Julcian Complex",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 13,
+    "gm": "A bland, imposing structure covered in industrial piping and bewildering machinery, the Adeptus Mechanicus Julcian complex is an incongruous sight amongst the fields of Ancra. Most smell the complex before they see it, inhaling the putrid, sulfurous fog belched from the chimneys that rise from its roof. The constant sound of heavy machinery and grinding metal can be heard not long after the complex can be smelt.\n\nThe complex is surrounded by high walls, and the high gates of its entrance are emblazoned with the complex symbols of the Omnissiah. Combat Servitors (Wrath & Glory, page 334) guard these gates and patrol the walls. Farming Servitors march from the complex on perfectly scheduled times to attend their fields, and march back for repairs. The citizens of Ancra avoid the Julcian Complex and its superstitious inhabitants avoid the Julcian Complex and its strange inhabitants whenever possible, eyeing both with revulsion.\n\nGenetor Heptex spends much of their time in this complex, and will begrudgingly come to meet Agents at the gates to speak to them. Heptex is initially reluctant to allow the Agents to enter the Julcian Complex, but if they succeed on a DN 5 Influence Test, agree to help in his goals, or provide him with a suitably logical reason to do so, he allows them inside, recoding the all Servitors so that the Agents are not seen as threats."
+  },
+  {
+    "id": "litanies-of-the-lost-the-workrooms",
+    "name": "The Workrooms",
+    "parent": "litanies-of-the-lost-julcian-complex",
+    "source": "litanies-of-the-lost",
+    "page": 13,
+    "gm": "A smog-filled manufactorum in miniature, the inside of the Complex is constantly abuzz with Adeptus of the Mechanicus worshipping the Omnissiah through the pursuit of knowledge and maintenance of machines.\n\nThe entire interior is given over to workspaces and production lines in which a small group of Tech-Adepts work tirelessly on the upkeep of Servitors and farming equipment. Local flora and fauna are studied and data is processed — spending even a minute within these walls is enough to convince anyone that the Adeptus Mechanicus are working as hard as possible to aid the farming efforts on Ostia."
+  },
+  {
+    "id": "litanies-of-the-lost-sortium-compound",
+    "name": "Sortium Compound",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 15,
+    "gm": "Situated centrally in the settlement, the Adeptus Administratum Overseers Compound is a stunted pyramid of bland rockcrete. Grand, austere, and featureless, it exudes a monotonous menace, though both the cathedral and the colossal silos tower over it.\n\nOutsiders seeking to gain access must navigate the complex bureaucracy of the Imperium, filling in the necessary documentation to provide proof of who you are and the official nature of your visit. A successful DN 3 Deception (Fel), Persuasion (Fel), or Scholar (Int) Test expedites this process to take about an hour, whilst failure means it takes around a day.\n\nThe compound interior is a winding maze of corridors connecting sanctums, studies, and data vaults, echoing with the scratchy sound of scribes scribbling endless piles of bureaucratic farming records. Savants and menial workers bustle through the compound with what appears to be well-organised haste, but a cursory glance will show that this is mostly pointless work, moving information from one workstation to another with little actually being achieved."
+  },
+  {
+    "id": "litanies-of-the-lost-futahs-documentorium",
+    "name": "Futah’s Documentorium",
+    "parent": "litanies-of-the-lost-sortium-compound",
+    "source": "litanies-of-the-lost",
+    "page": 15,
+    "gm": "High security documents are kept in a secure vault-like sanctum that Xanther Futah has also adopted as his bedchambers. If asked about the issue, he will calmly say that his position demands he keep a close eye on these sensitive files, and if pressed, he will ‘confess’ that he enjoys the safety this affords him.\n\nA DN 6 Stealth (A) Test is required to break into Futah’s Documentorium. The inside is organised chaos, with a profusion of incredibly boring scrolls spilling from a collection of nooks and cubbyholes. A spartan bunk is wedged awkwardly into the room, making it difficult to maneuver in the cramped space."
+  },
+  {
+    "id": "litanies-of-the-lost-the-habs",
+    "name": "The Habs",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 17,
+    "gm": "The habitation blocks that house the unwashed hordes of farm labourers are brutally bland plasteel buildings. Creeping crop-vines cover the exterior of each of the colossal habs, as the helots of Ancra have been forced to convert even their homes to farmland to satiate the rapacious hunger of the Gilead System. The vines have grown to completely cover the arched windows of each of the habs, and as they near ripening, exude a vomitous sickly-sweet smell.\n\nThough the habs are large, they could only conceivably house around a sixth of Ancra’s working population. The Administratum purposefully ensured that there were only enough beds for the workers on their mandatory four-hour-per-day rest period to prevent the possibility of labourers sleeping in or bunking off.\n\nThe interior of each hab block is dark, though scavenged candles light the thin corridors between looming bunk towers. At the lowest level, labourers sleep on the bare rockcrete floor, whilst those that can climb the mass-produced wrought metal bunks experience the heat of the sweating room.\n\nWhen a labourer leaves a bunk to go work their shift, another lays down their head. These transient sleeping conditions mean the citizens of Ancra carry their few possessions with them: carven figures of saints or sigils of the Emperor and bundled rags to make pillows. There is little for the Agents to find here beyond the labourers and their meager personal effects."
+  },
+  {
+    "id": "litanies-of-the-lost-the-silos",
+    "name": "The Silos",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 18,
+    "gm": "Dominating the skyline of the Valley of Ancra, the silos rise to a seemingly impossible height. After each harvest and processing run, all produce from the valley is stored in one of these colossal, multi-chambered silos, awaiting collection from void-capable ships. In a desperate attempt to provide more foodstuffs to the Gilead System, the outside of each of the silos has been converted into vertical farmland.\n\nA full manifold of docking technologies is built at the top of each silo, only accessible via a rusty plasteel elevator. In the rare event an elevator is needed, a senior Imperial official will gather a team of labourers to work its archaic hand-cranked mechanism, an arduous and thankless task.\n\nThe labourers of Ancra use the silos as a rudimentary sundial to keep track of the time during the day. Centuries old markings still persist in the fields, denoting inaccurate times. The workforce are happy to ‘donate’ their crops to the silos, seeing them as blessings from the Lord of Dawn — telling the time, holding the holy produce they have worked for, and stretching high into His realm. Though they were once revered as holy sites, the mainline teachings of the Imperial Cult have quashed this practice."
+  },
+  {
+    "id": "litanies-of-the-lost-processing-plants",
+    "name": "Processing Plants",
+    "parent": "litanies-of-the-lost-the-silos",
+    "source": "litanies-of-the-lost",
+    "page": 19,
+    "gm": "Built into the bottom of the silos, the processing plants are dank, dark, and loud. Their purpose is to process crops into protein and stretch every morsel of food as far as possible through a complex and little understood mechanical process. Large, rusty vats full of bubbling mulch are mixed by labourers overseen by Administratum Adepts, then pushed through pipes that snake maze like through each plant.\n\nThe stench of a processing plant is overpowering: rotten plants mixed with potent alcohol and synthetic sucrose. Moulds and fungi of little nutritional value grow on most surfaces, sustained by the moist, stinking air, and are harvested by the labourers to ensure they have something to eat after the Sortium tithes are collected. Recently, Tech Adepts aided in overseeing the processing, but after several ‘accidents’ that ended with the disciples of the Omnissiah dead in the vats, they returned to the Julcian Complex."
+  },
+  {
+    "id": "litanies-of-the-lost-the-fields",
+    "name": "The Fields",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 19,
+    "gm": "Every inch of the valley floor has been consumed by fields, from flat farming plains, tiered paddy fields, and damp crop quarries. Though the labourers are supported by a few rudimentary root planters, the fields are largely worked by hand, sown with beans, grains and rice. A few old servo-tractors pull tilling blades built from scrap, whilst edible fungi and molds are scraped with primitive tools.\n\nDue to the declining workforce and the need for increased production, the fields are constantly worked in rapid rotation. A slurry of fertilisers and growth enhancers are fed to the crops on a daily basis. The fields to the North West of the settlement are worked exclusively by Servitors. On the borders of these farmlands there is an almost audible tension between the labourers and the Mechanicus Adepts that manage the Servitors."
+  },
+  {
+    "id": "litanies-of-the-lost-outpost-polaris",
+    "name": "Outpost Polaris",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 20,
+    "gm": "Astra Militarum Outpost Polaris is tactically positioned on the rise of the western mountains, guarding the only path into the valley. The outpost consists of an immaculately kept Imperial Bastion, which also functions as an Astra Militarum storeroom, barracks, and armoury, containing spare Lasguns, a few charge packs, a Medikit and some rations. The Bastion also contains a makeshift office for the Colonel, and a few secure supply chambers that can be used as prison cells when necessary. The interior is, suffice to say, somewhat cramped. As war rages throughout the Gilead System, more and more outposts like Polaris are left understaffed as warriors are commanded to reinforce the crumbling and ever-shifting frontlines."
+  },
+  {
+    "id": "litanies-of-the-lost-the-cells",
+    "name": "The Cells",
+    "parent": "litanies-of-the-lost-outpost-polaris",
+    "source": "litanies-of-the-lost",
+    "page": 20,
+    "gm": "The dull plasteel supply chambers that form the ‘cells’ of Outpost Polaris are not the most secure, and can be broken into (or out of) with a DN 4 Stealth (A) Test. A single prisoner is currently held in the cells. Forgus, a labourer and member of the Children of Dawn, is scruffy and muscular, with a tonsure haircut and a missing leg. Forgus is imprisoned for their own good, and is the sole survivor of a suspected Grim Harvest. Futah ordered Forgus detained until they regain their wherewithal."
+  },
+  {
+    "id": "litanies-of-the-lost-the-mountains",
+    "name": "The Mountains",
+    "parent": "litanies-of-the-lost-valley-of-ancra",
+    "source": "litanies-of-the-lost",
+    "page": 22,
+    "gm": "The Valley of Ancra is almost completely surrounded by a tall, jagged mountain range that is completely impassable by foot or land vehicle. In the south-western corner of the valley is a heavily wooded area that hides the ruins, supposedly the home of the Twilight Shades. This area is always guarded by a Mob of at least 20 Children of Dawn."
+  },
+  {
+    "id": "litanies-of-the-lost-the-ruins-and-the-hollows",
+    "name": "The Ruins & The Hollows",
+    "parent": "litanies-of-the-lost-the-mountains",
+    "source": "litanies-of-the-lost",
+    "page": 22,
+    "gm": "Nestled in the South-Western end of the Valley of Ancra is a forest untouched by the rampant farming of the Imperium. Deep within this heavily wooded area are a series of ancient and haunting ruins, overgrown with twisted spindle vines and poisonous mosses.\n\nThe slender, bone-like structures twist and curve in elegant, almost organic ways that are the antithesis of Imperial architecture, and seem to guide those that walk through them to a collapsed plateau at the base of the mountain range. An ornate, half-collapsed arch frames a seemingly natural tunnel into the mountain itself. A DN 5 Scholar (Int) Test allows an Agent to identify these as ancient Aeldari ruins made of wraithbone.\n\nThough the ruins on the surface are both shattered and inscrutable they extend far underground, buried by the detritus of millennia. The hollows under the mountain are cool, damp, and soundless, punctuated by the remnants of the arcane ruins. Some feature esoteric pictographs of slender figures.\n\nThe ruins are the remnants of an ancient Aeldari settlement that colonised Ostia as a Maiden World before the fall of their Species. The hollows of the mountain contain a ruined temple once devoted to Isha, the Aeldari deity of the harvest, and the temple itself houses a Webway Gate. The Webway Gate has only recently been re-activated — perhaps by disturbances in the Warp triggered by the appearance of the Great Rift — and is now the site of a standoff between the Drukhari and the Aeldari."
+  },
+  {
+    "id": "litanies-of-the-lost-hephesteums-rest",
+    "name": "Hephesteum’s Rest",
+    "source": "litanies-of-the-lost",
+    "page": 44,
+    "gm": "The silent monastery Hephesteum’s Rest was constructed centuries ago, purposefully isolated on a small island a few hours of travel from the nearest settlement. Its monks maintain a self-sustaining lifestyle, growing what little food the island can bear and plying the surrounding oceans for seafood. The meager surplus they harvest is sent to the mainland, along with a begrudging written correspondence to the high priests of Theocropolis Vehementer.\n\nBeside pursuing elevated states of silent spiritual purity, every monk works to further the glory of the Imperium. The junior postulants sew clothing for the Ministorum and Munitorum. The novices illuminate holy manuscripts and concoct primitive medicines. All of these lower-ranked priests aspire to prove their piety and commitment to silent veneration of the Imperial Cult.\n\nOutwardly, the senior monks appear to devote their time to soundless isolated meditation in the secure Solarium, cutting themselves off from interpersonal contact to ponder the Emperor’s own silent sacrifice. In truth, they are performing a secretive and dangerous service to the Imperium."
+  },
+  {
+    "id": "litanies-of-the-lost-balneary",
+    "name": "Balneary",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 53,
+    "gm": "The communal baths for the Monastery are in a state of complete disuse. Slystabba’s Orks came through here and decided the area wasn’t worth any effort so they left it alone."
+  },
+  {
+    "id": "litanies-of-the-lost-calefactory",
+    "name": "Calefactory",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 53,
+    "gm": "This chamber was used by the monks to keep warm after a day of devotion or during particularly chilly seasons. The communal fire here has been amplified by the presence of various pieces of flammable material, including texts from the monastery’s Scriptorum and random items seized from the Storeroom. The fire is well-beyond its normal size and is close to breaking free of its container and catching some of the further timbers, which could set the entire room ablaze."
+  },
+  {
+    "id": "litanies-of-the-lost-cellarium",
+    "name": "Cellarium",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 53,
+    "gm": "The Cellarium is partially hidden behind a false wall in one of the monastery’s many corridors. The Orks haven’t found this area yet, since the monks have been exceptionally careful in not using the doorway when they know Orks are afoot. Missionary Rikard leads the Agents here, as this is where some of the junior monks hide.\n\nThe Cellarium’s interior is filled with fine wines that the monks made to sell to larger settlements and present to visiting dignitaries. There’s also a stash of preserved medicinal goods spread across three shelves that grant +2 bonus dice on up to 3 Medicae (Int) Tests made in this chamber, though the goods are ill-suited to transport and can only be effectively administered here. In addition, the Agents find some stored water here to provide Leofwynn in the Garderobe."
+  },
+  {
+    "id": "litanies-of-the-lost-chapter-house",
+    "name": "Chapter-House",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 54,
+    "gm": "This vestigial structure connects to the main monastery via a stone hall. The interior is circular with a raised ceiling partly covered in stained glass murals of the Emperor resplendent, though several have been shattered by gunfire and glass covers much of the floor. This area was originally intended for use by the monks as a meeting space, though due to their vows of silence, the area was often used as a secondary site for silent meditation."
+  },
+  {
+    "id": "litanies-of-the-lost-cloister",
+    "name": "Cloister",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 54,
+    "gm": "The Cloister used to be a site of silent reflection in a small section of nature preserved within the monastery’s walls. Open air flowed in here though the surrounding arcade and walls, protecting the monks from the harsher elements, including rain and intense winds. The area’s once lush grass is trodden and yellowed, with immense weeds sprouting up in corners.\n\nThe Orks attacking the monastery have piled up all sorts of metal and wood junk at the Cloister’s center. A crude workbench has been placed next to the pile, and a single Ork, Mek Fastdakka, works in spurts of insane inspiration. His current project is the mass assembly of Shiny Gubbinz to kustomize his komrades’ shootas to be louder. Of course, even to the purportedly stealth Kommandos, a louder weapon is always deadlier."
+  },
+  {
+    "id": "litanies-of-the-lost-arcade",
+    "name": "Arcade",
+    "parent": "litanies-of-the-lost-cloister",
+    "source": "litanies-of-the-lost",
+    "page": 55,
+    "gm": "A thickly columned arcade surrounds the Cloister, though one side has been completely destroyed by weapons fire, blocking off the entire quarter. The damage is the result of Fastdakka’s weapon testing. Being behind the arcade and firing into the Cloister grants the attacker Full Cover from their target. If an attack misses or the attacker rolls a Complication, one of the Arcade’s pillars is hit instead. The pillars have 4 Wounds and a Resilience of 8. If a pillar is destroyed, a section of the ceiling collapses onto anyone using that section of the wall for cover. Anyone in the immediate area must succeed at a DN 4 Agility Test. Those that fail take 8 +2 ED damage from falling debris."
+  },
+  {
+    "id": "litanies-of-the-lost-dormitory",
+    "name": "Dormitory",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 55,
+    "gm": "A large open space with small cells along the eastern and western walls. The cells each contain a sleeping cot, and some are closed off with sheets of dyed fabric displaying various forms of Imperial heraldry. The monks would sleep in the cells, sectioned off only by sheets to provide them a modicum of privacy."
+  },
+  {
+    "id": "litanies-of-the-lost-farm",
+    "name": "Farm",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 55,
+    "gm": "The monks farmed numerous different herbs, both for cooking and use in medicinal practices. Rows of grains and cornstalks fill the majority of the space, while smaller set-ups for specific plants dot the area. Finally, a temperature-controlled containment unit houses a small orchard of apple-peaches. This entire area has been overlooked by the Orks. If the Agents need a place to rest, the farm provides an area where they can gain some respite from the monastery’s dangers."
+  },
+  {
+    "id": "litanies-of-the-lost-garderobe",
+    "name": "Garderobe",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 55,
+    "gm": "This stone room was the monks’ private lavatory knocked over bookshelves that prevent the door from opening. The Agents can move these with a successful DN 2 Strength Test.\n\nWhen the Orks attacked, Kaptain Slystabba had the brilliant idea of taking one of their captives, a monk named Leofwynn, and trapping her inside this room.\n\nThe Orks have left the poor monk in here for nearly three days, and Leofwynn is starting to crack under the pressure of constant darkness, dehydration, and the foul stench that permeates the uncleaned room."
+  },
+  {
+    "id": "litanies-of-the-lost-storeroom",
+    "name": "Storeroom",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 56,
+    "gm": "Rows of shelving fill this cramped chamber. The shelves hold all of the Monastery’s long-term provisions, intended to last for decades. Rarely, senior monks leave the island to trade with larger settlements, and it was only recently that such arrangements were made. As a result, the storeroom is full of canned goods and miscellaneous jars of preserved contents.\n\nUnknown to the Agents or the monks, this is where Thaddeus has hidden the Emperor’s Tarot decks he stole. The false monk tries to make his way to this area as discreetly as possible in order to recover his hidden stash. If the Agents arrive before or without Thaddeus, a successful DN 6 Awareness (Int) Test notices a tile against one of the walls that is slightly ajar. Moving the tile reveals the cache of tarot decks. Similarly, a successful DN 4 Investigation (Int) Test reveals several out of place items near the location of the tile and some identifying marks that show a path made from the room’s entrance to the tile."
+  },
+  {
+    "id": "litanies-of-the-lost-infirmary",
+    "name": "Infirmary",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 56,
+    "gm": "The monastery’s Infirmary is a cramped area that was clearly not designed for its role, but repurposed at some point in the monastery’s history.\n\nMuch of the more delicate work undertaken by monks led to an abundance of cuts and bruises, which in turn required a basic Infirmary to be established. This room is little more than a single square space where a bed has been laid out, along with two cabinets of medical supplies and a short bench to lay out tools."
+  },
+  {
+    "id": "litanies-of-the-lost-kitchen",
+    "name": "Kitchen",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 57,
+    "gm": "A Mob of ten Grots runs around the wreckage of the monastery’s Kitchen. These Grots were originally released to terrorize the fleeing monks, but after the initial attack ended up gorging themselves on all the foodstuffs in the kitchen. By the time the Agents arrive in this area, the Grots have completed their days-long feast and are in a state of torpor. Five Grots lazily lie on countertops and chairs in the area, while the other five have sought shelter inside closed cabinets. An Agent with Passive Awareness 3 or higher notices the presence of the hidden Grots. Unless the Agents take particular lengths to be stealthy, one of the Grots rolls over onto its engorged belly and notices them. With a shriek, the Grot points his finger and calls for the others to come out and attack in a Mob."
+  },
+  {
+    "id": "litanies-of-the-lost-lavatorium",
+    "name": "Lavatorium",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 57,
+    "gm": "This area is the communal washing space for the monks. The Orks have no use for this place and after a casual inspection have left it undisturbed. A single trough with water running through it is the area’s most notable feature. If the Agents need to provide Leofwynn with water, they can get it here."
+  },
+  {
+    "id": "litanies-of-the-lost-misericord",
+    "name": "Misericord",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 57,
+    "gm": "The one room in the monastery where the vow of silence is lifted, the Misericord is intended for senior monks to administer disciplinary actions to others within the order. The walls are adorned with a variety of basic weapons, including a dozen knives, four swords, one maul (which counts as an industrial bludgeon), and three whips."
+  },
+  {
+    "id": "litanies-of-the-lost-nave",
+    "name": "Nave",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 57,
+    "gm": "This immense entry hall is the admissions area to the monastery, and the first location where the Agents are most likely to enter. For more information on the encounter in this area, see Ceiling Ladz on page 50. A wooden plinth at the far end of the Nave is surrounded by shattered glass. A brass nameplate on the plinth reads in High Gothic: ‘Saint Hephesteum’s Thighbone’. This should be enough for the Agents to realise that the Thighbone has been taken, though they shouldn’t immediately realize that the Thighbone is in Kaptain Slystabba’s possession until they confront the Ork or meet with Anatolius in the Solarium."
+  },
+  {
+    "id": "litanies-of-the-lost-night-stairs",
+    "name": "Night Stairs",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 57,
+    "gm": "A series of secret passageways crisscross the Monastery. Known to the monks as the Night Stairs, these pathways were originally intended to grant the senior monks the ability to move quickly throughout the compound and to provide surprise inspections of junior monks, specifically to find violators of the vow of silence. Most of these stone tunnels are extremely cramped spaces that prevent creatures of Large size or larger from entering them at all. Even Average sized creatures should feel cramped in this space, whilst Astartes, Orks, and other large individuals are unable to enter without damaging the walls.\n\nIn order to detect an entrance to the Night Stairs, the Agents must have a Passive Awareness 4 or succeed a DN 6 Awareness (Int) Test while actively searching one of the areas in the Monastery connected to the Night Stairs.\n\nThese hidden passages connect to almost every arterial hall and large chamber within the Monastery grounds, as well as a few hidden exits onto the cliffside. Navigating the Night Stairs is a complicated affair, with passageways folding back on one another and the likelihood of getting lost increasing with every minute spent in narrow corridors. Agents seeking to use the Night Stairs to reach a specific area within the Monastery must succeed at a DN 5 Survival (Wil) Test. Failing this Test leads the Agents to another area entirely, possibly even to one of the passages that exits onto the external cliff face. A Complication on this Test puts the Agents in a disadvantageous position or, on a failure, has them emerge into a group of Orks somewhere in the Monastery."
+  },
+  {
+    "id": "litanies-of-the-lost-refectory",
+    "name": "Refectory",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 58,
+    "gm": "The Refectory used to be a communal space where the monks would share meals under the stern watch of senior monks who would punish any unnecessary sounds. Two long wooden tables line the eastern and western edges of the space, while a smaller, more ornate table crosses the northern end of the room. Three immense brass chandeliers hang from the ceiling, each still glowing with the remains of candles that are getting precariously close to sputtering out. These chandeliers can be used to great effect against the Greenskins, as described in Part Two."
+  },
+  {
+    "id": "litanies-of-the-lost-scriptorium",
+    "name": "Scriptorium",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 58,
+    "gm": "Lecterns, shelving units, and small wooden cabinets fill much of this space, though they’re cluttered in corners and some appear to have been forcibly tossed. The Greenskins came here in search of monks, but when they found none they quickly moved on. Since then, this chamber, once used by the monks for their writing, has seen little use. Unless the Agents come here before they reach the Solarium, the Burna Boyz from the Calefactory come here in search of ‘more fings ta burn’.\n\nIf the Agents decide to investigate the documents here, they obtain a layout of the Monastery (with the exception of the Night Stairs passages) by succeeding a DN 3 Investigation (Int) Test. If they Shift this Test, they also discover notes that provide +2 ED on any Tests made to navigate the Night Stairs."
+  },
+  {
+    "id": "litanies-of-the-lost-solarium",
+    "name": "Solarium",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 58,
+    "gm": "The seemingly delicate glass that forms this large room allows the monks to reflect on the rising sun. Decades ago, after repeated repairs on the original Solarium, the monks of Hephesteum’s Rest had earned enough wealth to have specialised glasscrete installed in this space. The installation of this specialised glass was intended to protect against windstorms and the freak weather that the island occasionally endured, though it has had the positive side effect of repelling the Greenskin invaders. The door leading into the Solarium from the adjoining monastery is locked and a haphazard barricade has been set up by the surviving senior monks."
+  },
+  {
+    "id": "litanies-of-the-lost-anechoic-chambers",
+    "name": "Anechoic Chambers",
+    "parent": "litanies-of-the-lost-hephesteums-rest",
+    "source": "litanies-of-the-lost",
+    "page": 61,
+    "gm": "This hidden chamber is accessible only through a secret door in the Solarium that leads to a dark corridor, and another door. When the Agents arrive, the first door is open, but the second has been locked by Anatolius. Anatolius can communicate with individuals beyond the glascrete door using sign language, but no vocalizations can penetrate the soundproofed surface.\n\nInside, the Anechoic Chambers are a series of square chambers connected via an arterial hall. Each of the chambers contains a single desk covered in intricate decks of the Emperor’s Tarot and the materials for piecing together the psychoactive liquid crystal wafers used to make the decks.\n\nThe outer walls of each square chamber are covered in sound-resistant material imported from larger settlements on Enoch.These monks become incensed if the Agents make any kind of noise within this sacred space; they quickly move to escort the Agents, forcibly if necessary, into the adjoining Solarium.\n\nDespite the ongoing assault, monks still toil in these chambers under Anatolius’ supervision, assembling more decks of the Emperor’s Tarot, believing the Greenskin threat is just a test from the Emperor.\n\nIn truth, Anatolius isn’t sure about them receiving salvation and has tasked the other monks with continuing their work in order to keep them from going stir crazy or risk attracting further attacks from the Orks. Anatolius has also stored anything of value he could find in these chambers, including holy relics that would amount to 2 Wealth and a single Medikit."
+  },
+  {
+    "id": "litanies-of-the-lost-the-pakthertius-manufactorum",
+    "name": "The Pakthertius Manufactorum",
+    "source": "litanies-of-the-lost",
+    "page": 112,
+    "gm": "Beneath the smog-choked skies of Belaxia lies the Pakthertius Manufactorum. Part brutalist factory, part religious bastion, the manufactorum is a prime example of Adeptus Mechanicus architecture. Its crown of gothic spires, adorned with the skull and cog of the Machine Cult, towers above the surrounding industrial area. In the depths of its hallowed corridors waits a twisted maze of claustrophobic passages and vast fabrication halls. Thrumming power cables snake across every surface, the air stinks of pungent disinfectant and sacred oils. Dark shapes, bent under the weight of unnatural augmetics, skulk through the suffocating clouds of blessed censer smoke, their pallid flesh lit by the eerie glow of flickering displays reflecting against polished metal.\n\nBuilt by the Machine Cult for the Machine Cult, the Pakthertius Manufactorum is a hostile and alien place to most Imperial citizens at the best of times. Now it has become something much worse, a haunted place where nightmares are born."
+  },
+  {
+    "id": "litanies-of-the-lost-third-floor",
+    "name": "Third Floor (Biological Resource Production & Preparation)",
+    "parent": "litanies-of-the-lost-the-pakthertius-manufactorum",
+    "source": "litanies-of-the-lost",
+    "page": 122,
+    "stats": [
+      {
+        "label": "Minor Manifestations",
+        "value": "3–5"
+      },
+      {
+        "label": "Major Manifestations",
+        "value": "1"
+      }
+    ],
+    "gm": "Purpose: The third floor of the Pakthertius Manufactorum is dedicated to the first stage of creating Servitors. Here the biological framework upon which a Servitor is built is grown in great vats or repurposed from damned prisoners.\n\nThis entire floor stinks of medical-grade disinfectant. Every surface is coated in the sticky residue of pungent cleaning solutions.\n\nCommon Servitors: The Medicae Servitors that stalk this floor often have thick medical-grade coverings, aprons, or gloves stapled into their bloodless skin. They wield mono-molecular surgical tools and complex anesthesia injectors on their arms or faces. Unless stated otherwise, all Servitors encountered on this floor use the Medicae Servitor profile on page 134.\n\nThe third floor has three key locations the Agents can investigate."
+  },
+  {
+    "id": "litanies-of-the-lost-prison",
+    "name": "1: Prison",
+    "parent": "litanies-of-the-lost-third-floor",
+    "source": "litanies-of-the-lost",
+    "page": 123,
+    "gm": "This grim facility is filled with hundreds of cramped single-occupant cells constructed with floor to ceiling bars of plasteel in a vast grid-like organisation. Each cell has a serial number and chair bolted to the floor.\n\nBy the time the Agents enter the area, the cells are all empty and awaiting new prisoners, an eerie testament to the efficiency of Ignis Avem. Four Warden Servitors patrol the cells, stalking between the rows of bars and seeking any escaped prisoners. They use the Warden Servitor profile (page 134). If the Warden Servitors spot any of the Agents, all of the wardens in the area attack. They attempt to incapacitate, disarm, and imprison any Agents they discover."
+  },
+  {
+    "id": "litanies-of-the-lost-repurposing-facility",
+    "name": "2: Repurposing Facility",
+    "parent": "litanies-of-the-lost-third-floor",
+    "source": "litanies-of-the-lost",
+    "page": 123,
+    "gm": "The Repurposing Facility sits in the centre of the prison. This baroque central pillar is covered in purity seals and brass skulls that gaze down on a ring of twelve surgical tables surrounding it. Complex machinery, invasive tools, and cables trail down from the skulls and connect to two Medicae Servitors per Tier of the game. A hidden elevator that leads down to area 6: Augmetic Fabrication Workshop can be found by any Agent that succeeds on a DN 8 Awareness (Int) Test."
+  },
+  {
+    "id": "litanies-of-the-lost-administratum-sanctum",
+    "name": "3: Administratum Sanctum",
+    "parent": "litanies-of-the-lost-third-floor",
+    "source": "litanies-of-the-lost",
+    "page": 123,
+    "gm": "The Administratum Sanctum is a stuffy cylindrical office space. The walls are lined with stacks of shady alcoves lit only by the flickering glow of cogitators on standby. These are the cramped workstations for the dozens of Administratum personnel who used to track the manufactorium’s inputs and outputs. The alcoves are accessible via a sliding ladder affixed to a rickety railing that traces the room’s circumference.\n\nMost of the cogitators in the Sanctum are offline, broken, or otherwise inoperable, but five Administratum personnel remain in the offices. One guards the entrance to the offices with a battered Autogun, while the other three brow-beaten Administratum clerks are attempting a hapless and confused ritual to bring the cogitators back online, which will doubtlessly fail due to their lack of technical knowledge."
+  },
+  {
+    "id": "litanies-of-the-lost-vat-biomass-production",
+    "name": "4: Vat Biomass Production",
+    "parent": "litanies-of-the-lost-third-floor",
+    "source": "litanies-of-the-lost",
+    "page": 124,
+    "gm": "The floor of this area is a wide pool of foul-smelling liquid biomass that crackles with electrical charge and ejects gouts of choking steam. The only way to traverse it is across a complex network of grilled walkways.\n\nElectrified railings run beneath these walkways, with eight spider-like Medicae Servitors suspended beneath them. These Servitors trundle along the railings, dipping their long limbs down into the enormous vats to inject countless chemicals and stimulants into rows of floating, out-sized humanoid shapes just barely visible through the murky liquid. A DN 3 Medicae (Int) Test reveals the humanoid creatures as partially grown Ogryns. These are used in the creation of Loader and Combat Servitors. A secondary lift system hangs from the roof, holding aloft heavy tanks of spare biomass storage tanks, swaying and creaking amid the rank steam."
+  },
+  {
+    "id": "litanies-of-the-lost-second-floor",
+    "name": "Second Floor (Augmentation, Assembly & Human Resources)",
+    "parent": "litanies-of-the-lost-the-pakthertius-manufactorum",
+    "source": "litanies-of-the-lost",
+    "page": 125,
+    "stats": [
+      {
+        "label": "Minor Manifestations",
+        "value": "5–10"
+      },
+      {
+        "label": "Major Manifestations",
+        "value": "1–5"
+      }
+    ],
+    "gm": "Purpose: The second floor of the manufactorum is focused on fabricating and installing the mechanical parts of the Servitors. It is home to blistering hot forges where metal is moulded, hammered, and welded into shape; automated workshops where miles of copper wiring and circuitry is carefully twisted to purpose; and vast nightmarish assembly lines where flesh and metal are joined as one. In addition, this floor was also home to the Humans who once lived and worked in the manufactorum.\n\nThe sound of sporadic hammering metal and sparking soldering echoes throughout the tight corridors of this floor. Once this would have been a deafening cacophony, but since the manufactorum has not had any new prisoners for some time, very few of the assembly lines are in operation.\n\nFabrication Servitors: The Servitors that stalk this floor are heavily-built creatures equipped with welding torches, laser cutters, and other plasteel-shaping claws or tools. As forge workers, they are layered with thick plates of dissipation armour which protect them from heat and energy discharged by the massive foundries. Unless noted otherwise, all Servitors on this floor use the Fabrication Servitor profile on page 134.\n\nThere are three primary locations the Agents can investigate on this floor:"
+  },
+  {
+    "id": "litanies-of-the-lost-assembly-lines",
+    "name": "5: Assembly Lines",
+    "parent": "litanies-of-the-lost-second-floor",
+    "source": "litanies-of-the-lost",
+    "page": 125,
+    "gm": "This multi-tiered assembly area is a dizzying network of suspended automated conveyor belts that carry along the odd partially constructed Servitor or augmetic. Construction Servitors with no lower half are affixed to the assembly lines at regular intervals throughout the area, bent over the assembly lines and only springing to life when a viable subject is placed before them.\n\nThe Assembly Lines lead to and from most areas of the manufactorum, with raw materials and assembled Servitors emerging and vanishing through grating metallic apertures that open and close to let valid material pass through.\n\nAgents can attempt to use the Assembly Lines to navigate to any floor in the manufactorum barring the Sub-Facility by succeeding in a DN 5 Tech (Int) or Investigation (Int) Test to discern which conveyor belt leads to the desired area. The DN of this test is reduced by 2 if they have retrieved a map of the manufactorum."
+  },
+  {
+    "id": "litanies-of-the-lost-augmetic-fabrication-workshop",
+    "name": "6: Augmetic Fabrication Workshop",
+    "parent": "litanies-of-the-lost-second-floor",
+    "source": "litanies-of-the-lost",
+    "page": 126,
+    "gm": "This vast, maze-like workshop is filled with towering racks and teetering crates of raw materials. There are fifteen small clearings between the shelving racks, each one holding a solitary workbench manned by Fabrication Servitors who dutifully work away at constructing augmetics.\n\nIf the Agents decide they would like to search for any specific augmetic for themselves, they can make a DN 5 Investigation (Int) Test to locate any augmetic with the IMPERIAL Keyword and a Rarity of Rare or lower. There are no facilities here to implant or install the augmetics, that is done on the Assembly Lines and is a deadly prospect for any living creature. See Chapter 10 of the Wrath & Glory Rulebook for more on augmetics.\n\nThe workshop is patrolled by a heavy duty Ogryn Loader Servitor (see page 134). This Servitor moves from workbench to workbench through the maze of racks and crates. It takes around 2 minutes for it to stomp between each workbench — a full sweep of the area takes 30 minutes. If the Agents are spotted, the Ogryn Loader Servitor attacks."
+  },
+  {
+    "id": "litanies-of-the-lost-worker-hab",
+    "name": "7: Worker Hab",
+    "parent": "litanies-of-the-lost-second-floor",
+    "source": "litanies-of-the-lost",
+    "page": 127,
+    "gm": "The worker hab is a low-ceilinged area wedged between the second and third floors of the manufactorum. Anyone wishing to enter must get down on all fours and crawl, a reminder of the labourer’s position. The floor itself is a honeycomb pattern that reveals hundreds of shallow hexagonal pits. Each pit is only large enough to house a single cot, a humble shrine to the Omnissiah that doubles as a footlocker, and a small cogitator unit that constantly displays the time until the worker’s next shift. If an Agent lowers themselves into one of the habitation units, they only just have enough room to stand.\n\nThese pits are the grim barracks of the now ‘repurposed’ Adeptus Mechanicus personnel. Individual lockers can be broken open and looted, but almost all of them contain little of value beyond Adeptus Mechanicus Helot robes, writing kits, and the odd personal item. An DN 3 Investigation (Int) Test uncovers a single trinket or charm (Wrath & Glory, page247).\n\nAt the centre of the hab-pits is a larger hexagonal area filled with long plasteel benches, each bolted in place, used for meals and recreation. Brass-valved pipes ending in open-mouthed skulls hang down from tanks in the ceiling and spew a greasy, tasteless, grey protein paste when a bowl or other receptacle is placed beneath them. Bowls and utensils are stored in a steam cleaning rack in the centre of the area."
+  },
+  {
+    "id": "litanies-of-the-lost-first-floor",
+    "name": "First Floor (Quality Assurance, Packing & Power Facilities)",
+    "parent": "litanies-of-the-lost-the-pakthertius-manufactorum",
+    "source": "litanies-of-the-lost",
+    "page": 128,
+    "stats": [
+      {
+        "label": "Minor Manifestations",
+        "value": "8–12"
+      },
+      {
+        "label": "Major Manifestations",
+        "value": "3–8"
+      }
+    ],
+    "gm": "Purpose: The first floor of the manufactorum is where completed Servitors are tested, packed, and prepared for shipment. It is also the location of the self-contained fusion power plant that keeps the manufactorum operational. The thrum of the power plant can be felt through most solid surfaces, and all blast doors and archways are twice as large to accommodate massive Servitor shipping crates.\n\nLoader Servitors: Many of the Servitors normally found in this area are heavy-duty lifters, with bulky reinforced servo arms that grant them additional resilience and terrifying strength, which they use to restrain and crush their targets. Unless noted otherwise, half of the Servitors in this area use the standard Ogryn Loader Servitor profile on page 135.\n\nMany areas on this floor have containers filled with packaged Servitors ready for a dispatch that will never come. With the Agents reaching this far, Ignis Avem has begun to activate these additional reinforcements and set them to the task of eliminating the Agents. As such, half of the Servitors encountered on this floor are configurations from the third and second floors.\n\nThere are three main areas the Agents can investigate on this floor."
+  },
+  {
+    "id": "litanies-of-the-lost-quality-assurance",
+    "name": "8: Quality Assurance",
+    "parent": "litanies-of-the-lost-first-floor",
+    "source": "litanies-of-the-lost",
+    "page": 128,
+    "gm": "The Quality Assurance laboratory has tall, cathedral-like ceilings and is filled with dozens of Servitor testing areas. Pungent censer smoke falls from grinning skull-shaped vents high in the rafters and clouds the entire area, lowering visibility dramatically. Awareness (Int) and Ballistic Skill (A) Tests have +2 DN in this area; Weapon Skill (I) Tests have +1 DN. The entrances to the laboratory are blocked with heavy plasteel crates filled with Servitor components and guarded by the rag-tag remnants of the Enforcer squad.\n\nIf the Agents investigate the testing stations in the lab, they find each marked by the tell-tale glow of an active cogitator used to record the results of each test. Agents can search the Machine Spirits’ memories, but they hold little more than fastidious records of countless Servitor tests. Should they wish to investigate the tests themselves, they may encounter any of the studies listed below. The Servitors have abandoned these tests under Ignis Avem, but Agents can easily discern the purpose of most tests by sight or a simple DN 3 Investigation (Int) or Tech (Int) Test.\n\n• Multiple cover-strewn firing ranges where the weapons and targeting of Combat Servitors are tested on one end, against the resilience and avoidance of other Combat Servitors down range.\n\n• Stacks of warning-stamped plasteel crates and various obstacle courses that test the navigation and load bearing capabilities of Loader Servitors.\n\n• Bloodless corpses with various wounds and missing limbs that leak trickles of artificial fluids, all lying in mock accidents or battles to test the assessment and triage efficiency of Medicae Servitors.\n\n• A strange replica of a noble dining hall which perpetually trembles and lurches slightly to test the stability of Baroque Servitors as they serve meals.\n\n• A series of electrified rings that rotate and spin to test the flight capabilities of Servo-Skulls.\n\n• A once-pristine marble floor stained with dried viscera and paint used to test the efficiency of Janitorial Servitors.\n\n• Spools of unsubscribed resilient fabric used in the creation of purity seals."
+  },
+  {
+    "id": "litanies-of-the-lost-packing-and-shipping",
+    "name": "9: Packing & Shipping",
+    "parent": "litanies-of-the-lost-first-floor",
+    "source": "litanies-of-the-lost",
+    "page": 129,
+    "gm": "The warehouse is a densely packed area full of building-sized shipping containers and rime-encrusted, flickering, and malfunctioning stasis chambers, all stacked atop each other in an impenetrable order, creating a dizzying three-dimensional maze. Unable to release their Servitors into the wider world, but still driven by a primary directive to create as many as possible, Ignis Avem has been storing all of the completed Servitors here, resulting in a staggering stockpile. Every container is full to bursting point with inoperable and well-packaged Servitors of all kinds, ready for the command to wake. Towering Ogryn Loader Servitors patrol the area, shifting containers to make more space or rearranging the towers in a manner more pleasing to Ignis Avem’s desires.\n\nThe southern walls are lined with great blast shutters that lead out to the ground floor loading bays, but they are sealed shut and guarded by stationary Gun Servitors."
+  },
+  {
+    "id": "litanies-of-the-lost-the-power-plant",
+    "name": "10: The Power Plant",
+    "parent": "litanies-of-the-lost-first-floor",
+    "source": "litanies-of-the-lost",
+    "page": 130,
+    "gm": "Crackling arcs of electricity and the stench of electrified ozone fills the air within the eternally beating heart of the Pakthertius Manufactorum. The central power plant is a gargantuan generator smothered in snaking power cables that range in thickness from a few inches, to 10 feet wide. The generator is ringed by towering capacitors of brass and plasteel, between which bolts of incandescent light leap and crash. A narrow walkway rings the generator and weaves between the capacitors approximately 30 feet off the ground. Six monitoring and control stations are positioned at regular intervals around the walkway, each accessible via a service elevator that also act as the walkway’s primary support pillars. A dedicated Servitor stands at each station, bent over and obsessed with the careful tweaking and maintaining of the generator. They use the Combat Servitor profile, but have no weapons. They do not react to the Agent’s presence unless they attempt to interfere with the running of the power plant, to which they react quite violently.\n\nDue to the severe amount of radiation and rampant energy in this area, auspexes and other forms of augmetic visual senses do not function correctly, throwing up sensor errors or shutting down entirely. If they have not already been defeated, Ruststalker Marech is stationed in the Power Plant, waiting for any who seek the hidden entrance to the Sub-Facility and fights relentlessly until they are defeated."
+  },
+  {
+    "id": "litanies-of-the-lost-the-sub-facility",
+    "name": "The Sub-Facility (Ferro’s Laboratory & the Ignis Avem Choir)",
+    "parent": "litanies-of-the-lost-the-pakthertius-manufactorum",
+    "source": "litanies-of-the-lost",
+    "page": 131,
+    "stats": [
+      {
+        "label": "Minor Manifestations",
+        "value": "12+"
+      },
+      {
+        "label": "Major Manifestations",
+        "value": "5+"
+      }
+    ],
+    "gm": "Purpose: Once the secret laboratory of Magos Ferro and birthplace of Ignis Avem, this Sub-Facility is now dedicated solely to the generation and propagation of the Binary Chant. It is nestled beneath the auspex-cloaking interference from the Power Plant overhead, which concealed it from the prying eyes of the various inspectors. The walls are lined with countless brass organs manned by gilded Servitors which run their surprisingly dexterous hands across countless keys, summoning the Binary Chant and blasting it towards a cluster of vox units and heretical equipment at the centre of the room.\n\nThis cluster resembles a twisted brain composed of cogitators, cables, and vox units. At its centre, trapped and immobile at the very heart of her own creation, is Magos Ermintrude Ferro. The brain is flanked by a pair of Kataphron Battle Servitors (see page 135) which scan the surrounding area for intrusion."
+  }
+]

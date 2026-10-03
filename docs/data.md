@@ -179,7 +179,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24; Frameworks, #45; faction presets, #46) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 35, 70, 71, 75, 83, 90) |
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24; Frameworks, #45; NPC presets, #47) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41, 42, 60) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39; NPC presets, #47; places, #50) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
-| Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45; faction presets, #46; NPC presets, #47) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
+| Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45; faction presets, #46; NPC presets, #47; places, #50) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44; NPC presets, #47) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
 | Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40; Frameworks, #45) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.5, 24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
@@ -801,6 +801,7 @@ The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one
 | Vow of Absolution | pp.94–111 | 9: the battle barge with the Crucible of Command and Relics of War, Castle Grigori with its halls and the Training Fields, the Vault of Absolution and the Vault of the Endless Watch |
 | Gutshiva's Kommandos | p.6 | 2: Gilead Primus and Hive Gulgatha |
 | Darktide | pp.4–12, 14–26, 29–33, 79–83 | 33: the Moebian Domain, Atoma Prime (with its stat line), Hive Tertium's Main Hive, Habculum and Snakestack districts, the Slung, the Sump and its Refuse Archipelago (Port Odium, Blot, Saint Wretch), and the seven hive location types |
+| Litanies of the Lost | pp.6–7, 10–22, 44, 53–61, 112–132 | 52: the Valley of Ancra and its sites, the monastery Hephesteum's Rest and its rooms, and the Pakthertius Manufactorum's floors and numbered areas |
 
 **Conventions** (the transcription brief):
 - A place is a named site with its own printed heading: a system, world, city, hive, ship, site, region, building or
@@ -841,6 +842,13 @@ the Habculum heading in print order, so they nest in it (a reading; the book doe
 Wretch are bold run-in names, counted as places. The Enclave has only event headings, so it is not a place; travel
 rules, organisations, events (pp.85–94) and NPCs are out. Atoma Prime's Governance line runs past a stat value's 500
 characters, so it opens the description. Kept as printed: "Snakestake", "Habiculum", "(or one the factions)".
+
+**Litanies of the Lost notes.** The Valley of Ancra's description is "A Primer on Ancra" (pp.6–7) under a capitals
+line, since p.10 prints only the chapter title. The monastery takes its printed name and p.44 heading. Numbered rooms
+keep their number ("1: Prison"); the Manufactorum's floors list their Minor and Major Manifestations as `stats`. NPC and
+organisation sections, encounters, Tests and sidebars are out. Kept as printed: the Julcian Complex's doubled sentence
+(p.13), "recoding the all Servitors", "Enoch.These", "page247", "An DN 3", "three key locations" over four (p.122),
+"unsubscribed resilient fabric", "Scriptorum".
 
 ---
 
