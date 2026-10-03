@@ -10,6 +10,8 @@ import {
   type Codex,
   type FactionKeyword,
   type FlavourTable,
+  type HazardTable,
+  type LocationHazard,
   type StatSource,
   type Threat,
 } from "@wg/shared";
@@ -19,6 +21,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
+import { HazardList } from "../hazard-list/hazard-list";
 import { KeywordPicker } from "../keyword-picker/keyword-picker";
 import { NpcRoller } from "../npc-roller/npc-roller";
 import { StatSourceField } from "../stat-source-field/stat-source-field";
@@ -36,6 +39,7 @@ type CodexEditorProps = {
   bestiary: Threat[];
   tier: number;
   flavour: FlavourTable[]; // the books' name and appearance tables, for an NPC's ROLL NAME and ROLL LOOK (issue #48)
+  hazards: HazardTable[]; // the books' hazard tables, for a place's hazard list (issue #49)
   onDone: () => void;
 };
 
@@ -77,7 +81,8 @@ function fieldsFor({ kind, codex, characters }: { kind: CodexKind; codex: Codex;
           options: [NONE, ...codex.locations.map((l): Option => [l.id, l.name])],
         },
         { key: "description", label: "DESCRIPTION (players see)", type: "area" },
-        { key: "hazards", label: "HAZARDS (Battlezone tables, TA p.9–21)", type: "area" },
+        { key: "hazardList", label: "HAZARDS · GM ONLY", type: "hazardList" },
+        { key: "hazards", label: "HAZARDS · YOUR NOTES", type: "area" },
         { key: "gmNotes", label: "GM NOTES", type: "area" },
         { key: "revealed", label: "REVEALED TO PLAYERS", type: "bool" },
       ];
@@ -123,6 +128,7 @@ export function CodexEditor({
   bestiary,
   tier,
   flavour,
+  hazards,
   onDone,
 }: CodexEditorProps) {
   const fields = fieldsFor({ kind, codex, characters });
@@ -177,7 +183,7 @@ export function CodexEditor({
             <span className="label" id={`f-${f.key}`}>
               {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
             </span>
-          ) : f.type === "statSource" ? (
+          ) : f.type === "statSource" || f.type === "hazardList" ? (
             <span className="label" id={`f-${f.key}`}>
               {f.label}
             </span>
@@ -214,6 +220,16 @@ export function CodexEditor({
             <StatSourceField
               id={`f-${f.key}`}
               value={draft[f.key] as StatSource}
+              bestiary={bestiary}
+              tier={tier}
+              onChange={(v) => setField(f.key, v)}
+            />
+          )}
+          {f.type === "hazardList" && (
+            <HazardList
+              id={`f-${f.key}`}
+              value={draft[f.key] as LocationHazard[]}
+              tables={hazards}
               bestiary={bestiary}
               tier={tier}
               onChange={(v) => setField(f.key, v)}

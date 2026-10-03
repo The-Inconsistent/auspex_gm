@@ -154,6 +154,7 @@ export function GmApp({
                 factionPresets={factionPresets}
                 npcPresets={npcPresets}
                 flavour={flavour}
+                hazards={presets.hazards}
                 bestiary={bestiary}
                 tier={state.campaign.tier}
                 players={players}

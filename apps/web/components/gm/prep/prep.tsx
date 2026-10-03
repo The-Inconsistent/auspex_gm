@@ -14,6 +14,7 @@ import {
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
+import { SceneHazards } from "./components/scene-hazards/scene-hazards";
 import { ScenePicker } from "./components/scene-picker/scene-picker";
 import { ScenePools } from "./components/scene-pools/scene-pools";
 import { SceneTests } from "./components/scene-tests/scene-tests";
@@ -60,6 +61,9 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
         ["HANDOUTS", codex.handouts.filter((h) => b.handoutIds.includes(h.id)).map((h) => h.title)],
       ] as const
     ).flatMap(([label, names]) => (names.length ? [[label, names.join(", ")] as const] : []));
+
+  // A beat's place, for its hazards (issue #49).
+  const place = (b: Beat) => codex.locations.find((l) => l.id === b.locationId);
 
   // Where an exit leads, as the card numbers it; null when it has no target, or one the codex no longer has.
   const exitTarget = (beatId: string | null) => {
@@ -233,6 +237,17 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                     </div>
                   ),
                 )}
+                {place(b) && (
+                  <SceneHazards
+                    beat={b}
+                    place={place(b)!}
+                    tables={presets.hazards}
+                    bestiary={bestiary}
+                    tier={state.campaign.tier}
+                    send={send}
+                    onReport={report}
+                  />
+                )}
                 {b.exits.length > 0 && (
                   <div className="field">
                     <span className="label">EXITS</span>
@@ -343,6 +358,7 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
           bestiary={bestiary}
           skillDns={presets.skillDns}
           poolTables={presets.pools}
+          hazardTables={presets.hazards}
           onDone={() => setEditing(null)}
         />
       )}
