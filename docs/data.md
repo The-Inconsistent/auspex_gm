@@ -181,7 +181,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39; NPC presets, #47; places, #50; loot, #51) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45; faction presets, #46; NPC presets, #47; places, #50) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
 | Wretches of the Writ | `wretches-of-the-writ` (cite Wretches; threats, #44; NPC presets, #47; places, #50) | `Wrath & Glory, Nemesis - Wretches of the Writ.pdf` | printed (checked pp.6, 27) |
-| Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40; Frameworks, #45) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.5, 24, 25) |
+| Bloody Gates | `bloody-gates` (cite BG; threats, #44; Ruin and Glory lists, #40; Frameworks, #45; mission equipment, #51) | `Wrath & Glory_ Bloody Gates.pdf` | printed (checked pp.5, 13, 24, 25) |
 | Affliction Ascendant | `affliction-ascendant` (cite AA; threats, #44; Ruin and Glory lists, #40) | `Wrath & Glory_ Affliction Ascendant.pdf` | printed (checked pp.21, 22) |
 
 **`custom` is not a book.** A stat block the GM writes or clones (issue #43) carries `source: "custom"` (cite
@@ -518,10 +518,17 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 The Core Wargear chapter (printed pp.211–247), Vow of Absolution's Call to Arms (pp.59–75) and the Forsaken System
 Player's Guide armoury (pp.120–128) and Inheritance of Embers' Armoury (pp.77–99), plus the homebrew Legacy of the
 Necrontyr's Vaults of the Tomb Lords (PDF pp.10–13) and An Abundance of Apocrypha's Chapter IV (printed pp.326–482),
-and the relics of Threat Assessment: Daemons & Heretics, one JSON array per section, for the GM's requisition form. 1,228
+and the relics of Threat Assessment: Daemons & Heretics, one JSON array per section, for the GM's requisition form. 1,242
 entries:
 - Core (219): `melee` (33, pp.211–213), `ranged` (44, pp.217–219), `ranged-xenos-grenades` (21, pp.220–221, 226),
   `upgrades-ammo` (26, pp.227–230), `armour` (28, p.233), `equipment` (41, pp.236–241), `augmetics` (26, pp.243–247).
+- Redacted Records 2 (6, ids prefixed `rr2-`): `rr2-relics`: the six Relics of Renown (pp.20–31), for an item's NAME
+  and FROM LOOT TABLE (issue #51). None prints a Value; only the Tainted Blade prints a Rarity (Unique). The Rosarius
+  of Saint Agatha and the Unwilling Orb are a Core Rosarius and Psychic Focus with additions, so their `effect` holds
+  only the additions.
+- Bloody Gates (7, ids prefixed `bg-`): `bg-mission-equipment` (pp.6, 13, 21, 24, issue #51). Its printed numeric Rarity
+  is read as the requisition DN (§11.119). The Grapnel Launcher, Smoke Grenades and Frag Bomb differ from the other
+  books' items of that name, so each keeps its own entry with a `note`.
 - Daemons & Heretics (26, ids prefixed `dh-`): `dh-relics`: Chaos Terminator Armour (p.37) and the Relics of Tzeentch
   (pp.60–61), Nurgle (pp.74–75), Khorne (pp.88–89) and Slaanesh (pp.103–104). Every relic is Unique. "Must have the Mark
   of X" is a keyword requirement on the god, and "Psyker" is PSYKER. A relic only a named daemon may carry (Skullreaver:

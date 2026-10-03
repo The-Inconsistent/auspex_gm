@@ -790,6 +790,9 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 118. **GIVE refuses a weapon the Agent already carries** (GitHub issue #51). Requisition joins a catalogue weapon once
      by name and skips a second copy silently. A silent GIVE would leave the item recorded as given with
      nothing on the sheet, and TAKE BACK would then remove the Agent's own weapon. *Proposed; awaiting the GM.*
+119. **Bloody Gates prints Rarity as a number** (BG pp.6, 13, 21, 24; GitHub issue #51). Its mission equipment reads
+     "Rarity: 2" where the Core Rulebook names a Rarity. The number is read as the DN it adds to a requisition (Core
+     p.206): 0 Common, 1 Uncommon, 2 Rare, 3 Very Rare, 4 Unique. *Proposed; awaiting the GM.*
 
 ---
 

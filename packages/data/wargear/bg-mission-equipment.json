@@ -1,0 +1,173 @@
+[
+  {
+    "id": "bg-grapnel-launcher",
+    "name": "Grapnel Launcher",
+    "source": "bloody-gates",
+    "page": 6,
+    "category": "Mission Equipment",
+    "kind": "equipment",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ASTRA MILITARUM",
+      "PRIMARIS"
+    ],
+    "effect": "The Grapnel Launcher has a medium range of 30 metres, and can be fired as a Combat Action like a normal Ranged Weapon into any surface with a default DN of 3. If successfully fired into a surface, the grapnel latches on, and can be retracted to pull you up to that surface as a Free Action.\n\nA simple tool utilised by many strike teams, a Grapnel Launcher can quietly pull the full weight of a Primaris Astartes to an advantageous vertical position in seconds.",
+    "note": "Differs from fspg-grapnel-launcher: Keywords print ASTRA MILITARUM where it prints ADEPTUS ASTARTES, and the flavour paragraph is added. Rules text, Value 4 and Rarity 1 (Uncommon) match. Not voa-grapnel-launcher (a weapon profile)."
+  },
+  {
+    "id": "bg-krak-satchel",
+    "name": "Krak Satchel",
+    "source": "bloody-gates",
+    "page": 6,
+    "category": "Demo Charge",
+    "kind": "grenade",
+    "value": 5,
+    "rarity": "Very Rare",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 17,
+      "ed": 6,
+      "ap": -2,
+      "thrown": 1,
+      "salvo": null,
+      "traits": [
+        "Blast (12)"
+      ]
+    },
+    "effect": "Little more than a bag filled with Krak and Frag grenades linked by a single trigger, Krak Satchels are thrown together by desperate Astra Militarum operatives faced with something simple explosives can't destroy.",
+    "note": "Printed Rarity 3 = Very Rare (Core p.206 DN penalty). Range printed \"(S) metres\", read as thrown x1 (S metres); table row is under the DEMO CHARGE heading."
+  },
+  {
+    "id": "bg-breaching-ladder",
+    "name": "Breaching Ladder",
+    "source": "bloody-gates",
+    "page": 13,
+    "category": "Mission Equipment",
+    "kind": "equipment",
+    "value": 1,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM"
+    ],
+    "effect": "These simple, handmade steel ladders are three metres long and designed to help Astra Militarum soldiers scale wreckage or barricades to advance on their target. You can use a Breaching Ladder to walk over a gap of three metres or less, or aid in climbing as described on page 180 of Wrath & Glory.",
+    "note": "Printed Rarity 2 = Rare (Core p.206)."
+  },
+  {
+    "id": "bg-smoke-grenades",
+    "name": "Smoke Grenades",
+    "source": "bloody-gates",
+    "page": 13,
+    "category": "Mission Equipment",
+    "kind": "grenade",
+    "value": 2,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 0,
+      "ed": 0,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (9)"
+      ]
+    },
+    "effect": "A Smoke Grenade fills a Blast (9) area with thick white smoke until the end of the fourth Round after it is detonated, dramatically reducing visibility in the area and imposing a +3 DN penalty to Ballistic Skill and Awareness Tests, and a +2 DN penalty to melee attack Tests.",
+    "note": "Differs from apoc-smoke-grenades: Blast (9) not Blast (10) and no Gas; Value 2 not 4, Keywords EXPLOSIVE, IMPERIUM. Damage printed \"—\" (stored 0/0). Range \"(S) x4m or as Launcher\" read as thrown x4. Printed Rarity 1 = Uncommon."
+  },
+  {
+    "id": "bg-multi-laser",
+    "name": "Multi-laser",
+    "source": "bloody-gates",
+    "page": 21,
+    "category": "Battling the Horde",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 4,
+      "range": [
+        18,
+        36,
+        72
+      ],
+      "salvo": 4,
+      "traits": [
+        "Heavy (6)",
+        "Rapid Fire (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Printed Rarity 2 = Rare. ED printed \"+4\", AP \"—\". A Chimera turret weapon (pp.6, 21)."
+  },
+  {
+    "id": "bg-lasgun-array",
+    "name": "Lasgun Array",
+    "source": "bloody-gates",
+    "page": 21,
+    "category": "Battling the Horde",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "LAS",
+      "IMPERIUM",
+      "ASTRA MILITARUM"
+    ],
+    "weapon": {
+      "damage": 7,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        48
+      ],
+      "salvo": 3,
+      "traits": [
+        "Heavy (6)",
+        "Rapid Fire (3)",
+        "Reliable"
+      ]
+    },
+    "effect": "",
+    "note": "Printed Rarity 2 = Rare. ED printed \"+2\", AP \"—\". Chimera hull lasguns (p.21)."
+  },
+  {
+    "id": "bg-frag-bomb",
+    "name": "Frag Bomb",
+    "source": "bloody-gates",
+    "page": 24,
+    "category": "New Weapons",
+    "kind": "grenade",
+    "value": 1,
+    "rarity": "Uncommon",
+    "keywords": [
+      "EXPLOSIVE",
+      "IMPERIUM"
+    ],
+    "weapon": {
+      "damage": 6,
+      "ed": 3,
+      "thrown": 4,
+      "salvo": null,
+      "traits": [
+        "Blast (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Differs from fspg-frag-bomb: damage 6 ED 3 (it 12/4), thrown x4 (it x2), Blast (4) (it Blast (8)), Value 1 (it 5), Rarity 1 Uncommon (same). Range \"(S) x4m or as Launcher\"; AP \"—\"."
+  }
+]
