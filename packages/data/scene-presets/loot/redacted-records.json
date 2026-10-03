@@ -1,0 +1,512 @@
+[
+ {
+  "id": "rr1-loot-imperium",
+  "name": "Imperium Loot",
+  "source": "redacted-records",
+  "page": 18,
+  "dice": "2d6",
+  "rows": [
+   {
+    "id": "rr1-loot-imperium-1",
+    "from": 2,
+    "to": 3,
+    "name": "Malfunctioning Munitions",
+    "page": 17,
+    "text": "This box of ammunition is worth its weight in... well, munitions. This crate contains 20 ammo of a single kind, decided by the GM when this result is rolled. See Wrath & Glory, page 229 for ammunition.\n\nEffect: The ammunition is faulty after being abandoned for so long. Whenever a player rolls a Complication on an attack made using this ammunition, the weapon malfunctions. A DN4 Tech (Int) Test is required to fix the weapon before it can be used again.",
+    "items": [
+     {
+      "name": "Malfunctioning Munitions",
+      "pick": {
+       "kinds": [
+        "ammo"
+       ]
+      },
+      "count": 20
+     }
+    ],
+    "gm": "20 ammo of one kind, the GM's choice. Complication on an attack malfunctions the weapon; DN4 Tech (Int) Test to fix."
+   },
+   {
+    "id": "rr1-loot-imperium-2",
+    "from": 4,
+    "to": 6,
+    "name": "Archaic Weaponry",
+    "page": 18,
+    "text": "These relics of the Adeptus Mechanicus are in perfect working order, and the forge world priests would undoubtedly be grateful for their safe return, as the secret of their manufacture is lost.\n\nEffect: This stash contains three perfectly preserved weapons of the Adeptus Mechanicus, chosen by the GM. See Wrath & Glory, page 224 for specifics on Adeptus Mechanicus weaponry. Donating these to the nearest Forge World gains the machine priests' favour and removes any future penalties for sourcing ammunition from that world.",
+    "items": [
+     {
+      "pick": {
+       "kinds": [
+        "weapon"
+       ],
+       "categories": [
+        "Adeptus Mechanicus Ranged Weapons"
+       ]
+      },
+      "count": 3
+     }
+    ],
+    "gm": "Donating them to the nearest Forge World gains the machine priests' favour and removes future ammunition-sourcing penalties from that world."
+   },
+   {
+    "id": "rr1-loot-imperium-3",
+    "from": 7,
+    "to": 7,
+    "name": "Fabled Weaponry",
+    "page": 18,
+    "text": "This weapon belonged to a hero of legend, and was considered lost to the ages until you stumbled across it. It has a name, a history, and its machine spirit longs to see the light of combat once more in the hands of a worthy bearer.\n\nEffect: When you roll this result, choose a weapon with the ADEPTUS ASTARTES keyword. Whenever the wielder rolls a Wrath Critical on a Test, add an additional Glory to the pool. The weapon may or may not have opinions about how it should be used, and may withhold this effect should the bearer not live up to its standards.",
+    "items": [
+     {
+      "name": "Fabled Weapon",
+      "pick": {
+       "kinds": [
+        "weapon"
+       ],
+       "wargearKeywords": [
+        "ADEPTUS ASTARTES"
+       ]
+      }
+     }
+    ],
+    "gm": "Wrath Critical by the wielder: +1 Glory to the pool. The weapon may withhold this if the bearer is unworthy."
+   },
+   {
+    "id": "rr1-loot-imperium-4",
+    "from": 8,
+    "to": 8,
+    "name": "Apocryphal Liturgies",
+    "page": 18,
+    "text": "This book of holy songs explores new theological vistas. Unfortunately, the content borders on the heretical, and makes some unwittingly controversial statements about the nature of the God-Emperor.\n\nEffect: A character with the IMPERIUM keyword who reads this book may choose to acquire the Forbidden Knowledge talent (see New Talents, page 60).",
+    "items": [
+     {
+      "name": "Apocryphal Liturgies"
+     }
+    ],
+    "gm": "IMPERIUM reader may acquire the Forbidden Knowledge talent (New Talents, p.60)."
+   },
+   {
+    "id": "rr1-loot-imperium-5",
+    "from": 9,
+    "to": 9,
+    "name": "Discarded Augmetic",
+    "page": 18,
+    "text": "Perhaps found on the corpse of an unlucky stranger, or curiously separated from its past owner, this augmetic is still serviceable. See Wrath & Glory, page 243 for the rules on Augmetics.",
+    "items": [
+     {
+      "name": "Discarded Augmetic",
+      "pick": {
+       "kinds": [
+        "augmetic"
+       ],
+       "categories": [
+        "Augmetic Enhancements"
+       ]
+      }
+     }
+    ],
+    "gm": "The book does not say which augmetic; picked from Augmetic Enhancements (Core p.243)."
+   },
+   {
+    "id": "rr1-loot-imperium-6",
+    "from": 10,
+    "to": 10,
+    "name": "Scholastica Trinket",
+    "page": 18,
+    "text": "This discarded personal effect looks innocuous at first glance, but it contains the mental imprint of a long dead Imperial psyker.\n\nEffect: This trinket contains the knowledge of how to use a random Psychic Power from a random discipline. A character with the ADEPTUS ASTRA TELEPATHICA keyword can wield the encoded power as if they knew it, as long as they are holding the item.",
+    "items": [
+     {
+      "name": "Scholastica Trinket"
+     }
+    ],
+    "gm": "Roll a random Psychic Power from a random discipline. ADEPTUS ASTRA TELEPATHICA holder can wield it while holding the item."
+   },
+   {
+    "id": "rr1-loot-imperium-7",
+    "from": 11,
+    "to": 11,
+    "name": "Militarum Cache",
+    "page": 18,
+    "text": "This hidden supply cache could be the difference between life and death in the treacherous environs of a space hulk.\n\nEffect: The cache contains a Medikit, a Grav Chute, and a Periculum Kit (see Wrath & Glory, page 239).",
+    "items": [
+     {
+      "wargearId": "medikit"
+     },
+     {
+      "wargearId": "grav-chute"
+     },
+     {
+      "wargearId": "periculum-kit"
+     }
+    ]
+   },
+   {
+    "id": "rr1-loot-imperium-8",
+    "from": 12,
+    "to": 12,
+    "name": "Inquisitorial Dataslate",
+    "page": 18,
+    "text": "This encrypted data reserve contains a litany of redacted information to which only high ranking members of the Inquisition are privy.\n\nEffect: A character with the correct <ORDO> keyword can access the troubling information on this data slate (see Wrath & Glory, page 64 for the rules on the various Ordos of the Inquisition). The contents should be suitably damning or worrisome to explain why someone would be trying to keep it secret, such as the location and identities of high ranking Genestealer Cultists in the Gilead System.",
+    "items": [
+     {
+      "name": "Inquisitorial Dataslate"
+     }
+    ],
+    "gm": "A character with the correct <ORDO> keyword can read it; the GM writes the contents."
+   }
+  ],
+  "gaps": [],
+  "overlaps": [],
+  "gm": "The following tables generate loot and items found aboard a space hulk. You should only roll on the tables corresponding to the Keywords of your space hulk.",
+  "faults": "rr1-loot-faults"
+ },
+ {
+  "id": "rr1-loot-chaos",
+  "name": "Chaos Loot",
+  "source": "redacted-records",
+  "page": 19,
+  "dice": "d6",
+  "rows": [
+   {
+    "id": "rr1-loot-chaos-1",
+    "from": 1,
+    "to": 2,
+    "name": "Impious Artefact",
+    "page": 19,
+    "text": "While this piece of equipment still serves its intended purpose, its origin and aesthetic are profane. Marked with symbols of the Ruinous Powers and heavily adorned with jagged ornaments, it's a lethal weapon as well as a functional tool.\n\nEffect: When you roll this result, choose a single item from the Tools & Equipment section of the Wrath & Glory, page 236. This item can also be used as a Chainsword, but breaks the first time a Complication is rolled.",
+    "items": [
+     {
+      "name": "Impious Artefact",
+      "pick": {
+       "kinds": [
+        "equipment"
+       ],
+       "categories": [
+        "Imperial Equipment"
+       ]
+      }
+     }
+    ],
+    "gm": "Picked from Imperial Equipment (Core p.236, the Tools & Equipment section). Also usable as a Chainsword; breaks on the first Complication rolled."
+   },
+   {
+    "id": "rr1-loot-chaos-2",
+    "from": 3,
+    "to": 3,
+    "name": "Chaos Idol",
+    "page": 19,
+    "text": "This insidious, distorted figurine was crafted in the likeness of the Ruinous Powers. Carried by Chaos cultists and daemons, these figurines are laced with treacherous psychic potential.\n\nEffect: A character with the PSYKER keyword who picks up this idol immediately rolls Perils of the Warp (see Wrath & Glory, page 263) adding 20 to the result.",
+    "items": [
+     {
+      "name": "Chaos Idol"
+     }
+    ],
+    "gm": "PSYKER who picks it up rolls Perils of the Warp (Core p.263) with +20 to the result."
+   },
+   {
+    "id": "rr1-loot-chaos-3",
+    "from": 4,
+    "to": 4,
+    "name": "Distorted Weapon",
+    "page": 19,
+    "text": "This boltgun has been augmented with so many unreliable looking upgrades it barely resembles its former self.\n\nEffect: This boltgun already has three weapon upgrades applied to it. Whenever the wielder rolls a Wrath Critical on a Test, it loses one of these upgrades.",
+    "items": [
+     {
+      "wargearId": "boltgun"
+     }
+    ],
+    "gm": "Comes with three weapon upgrades (the book names none; GM chooses). On a Wrath Critical by the wielder it loses one."
+   },
+   {
+    "id": "rr1-loot-chaos-4",
+    "from": 5,
+    "to": 5,
+    "name": "Combat Stimms",
+    "page": 19,
+    "text": "Many worshippers of Chaos are fuelled solely by their own warped faith; others incorporate powerful combat drugs into their arsenal. The origins of these stimms are undoubtedly sinister, but their effects are powerful.\n\nEffect: The pack contains three doses of combat stimms. A single dose can be used as part of a Medicae (Int) Test to induce the Frenzied condition for the remainder of the current scene. Any Complications rolled during the Test result in a Corruption check.",
+    "items": [
+     {
+      "name": "Combat Stimms",
+      "count": 3
+     }
+    ],
+    "gm": "Three doses. One dose in a Medicae (Int) Test gives the Frenzied condition for the scene; Complications on the Test cause a Corruption check."
+   },
+   {
+    "id": "rr1-loot-chaos-5",
+    "from": 6,
+    "to": 6,
+    "name": "Daemonic Residue",
+    "page": 19,
+    "text": "This shimmering, oily residue is repulsive, with a sweet, cloying aroma. To breathe the air around it invites nausea and troubling whispers at the back of one's mind. It begs to be touched...\n\nEffect: Touching the daemonic residue triggers an immediate Mutation test. See Wrath & Glory, page 287 for rules on Mutation.",
+    "items": [
+     {
+      "name": "Daemonic Residue"
+     }
+    ],
+    "gm": "Touching it triggers an immediate Mutation test (Core p.287)."
+   }
+  ],
+  "gaps": [],
+  "overlaps": [],
+  "faults": "rr1-loot-faults"
+ },
+ {
+  "id": "rr1-loot-aeldari",
+  "name": "Aeldari Loot",
+  "source": "redacted-records",
+  "page": 20,
+  "dice": "d6",
+  "rows": [
+   {
+    "id": "rr1-loot-aeldari-1",
+    "from": 1,
+    "to": 2,
+    "name": "Corrupted Spirit Stone",
+    "page": 20,
+    "text": "Abandoned to spend eternity severed from the Infinity Circuit on their native craftworld, these spirit stones contain damaged, troubled and unpredictable souls. Nevertheless, the right Aeldari would undoubtedly pay a high price to see them returned to the fold.\n\nEffect: By threatening to damage or destroy this stone, a character can ignore Complications for any social rolls they make when trading with Aeldari. However, doing so invites unending retribution, as the Aeldari will go to any lengths necessary to take such an artefact into their own safekeeping.",
+    "items": [
+     {
+      "name": "Corrupted Spirit Stone"
+     }
+    ],
+    "gm": "Threatening to damage it lets a character ignore Complications on social rolls when trading with Aeldari; doing so invites unending Aeldari retribution."
+   },
+   {
+    "id": "rr1-loot-aeldari-2",
+    "from": 3,
+    "to": 3,
+    "name": "Bonesinger Shard",
+    "page": 20,
+    "text": "This shard of bone somehow insinuates vast potential in the finer details of its structure. It's indescribably ancient, and it yearns to be used.\n\nEffect: This handheld device is used to force wraithbone into particular shapes and forms. See Wrath & Glory, page 241 for rules on Bonesinger Shards.",
+    "items": [
+     {
+      "wargearId": "bonesinger-shard"
+     }
+    ]
+   },
+   {
+    "id": "rr1-loot-aeldari-3",
+    "from": 4,
+    "to": 4,
+    "name": "Dead God Token",
+    "page": 20,
+    "text": "This strange token is carved in worship of the dead gods who vanished at the fall of the Aeldari Empire. It retains a measure of their grace.\n\nEffect: A character with the AELDARI can hold this token to reduce the DN of any Corruption tests they must take by 1.",
+    "items": [
+     {
+      "name": "Dead God Token"
+     }
+    ],
+    "gm": "Printed \"the AELDARI\" with the keyword's word missing. Holder reduces the DN of Corruption tests by 1."
+   },
+   {
+    "id": "rr1-loot-aeldari-4",
+    "from": 5,
+    "to": 5,
+    "name": "Errant Gyrinx",
+    "page": 20,
+    "text": "Although the crew of this vessel are long dead, a lingering psychic impression of an Aeldari psyker's familiar prowls the corridors of the hulk, its lonely cries occasionally piercing the silence.\n\nEffect: This Gyrinx was a psychic creature with the appearance of a Terran feline, which only exists now as an incorporeal phantom. It can only be seen by those with Psychic Powers. If treated kindly, it may bond to a character with the PSYKER keyword over several days, and even leave the hulk with them. A bond with the Gyrinx makes it easier to maintain Psychic Powers, reducing the DN to do so by 2.",
+    "items": [
+     {
+      "name": "Errant Gyrinx"
+     }
+    ],
+    "gm": "Bonded PSYKER reduces the DN to maintain Psychic Powers by 2."
+   },
+   {
+    "id": "rr1-loot-aeldari-5",
+    "from": 6,
+    "to": 6,
+    "name": "Webway Map",
+    "page": 20,
+    "text": "This tablet displays a spinning starmap of fibrous pathways, and a set of coordinates. It must lead to somewhere lucrative or dangerous.\n\nEffect: This map leads to an opening in the Webway, a form of faster than light travel. Many of these entrances are closely guarded secrets of the Aeldari.",
+    "items": [
+     {
+      "name": "Webway Map"
+     }
+    ]
+   }
+  ],
+  "gaps": [],
+  "overlaps": [],
+  "faults": "rr1-loot-faults"
+ },
+ {
+  "id": "rr1-loot-ork",
+  "name": "Ork Loot",
+  "source": "redacted-records",
+  "page": 21,
+  "dice": "d6",
+  "rows": [
+   {
+    "id": "rr1-loot-ork-1",
+    "from": 1,
+    "to": 2,
+    "name": "Kan Opener",
+    "page": 21,
+    "text": "An ingenious Ork invention: a serrated power saw that attaches readily to most melee weapons for a kick of extra power.\n\nEffect: When attached to a melee weapon, this sawblade carves through any armour. Opponents' armour is not Invulnerable against this weapon.",
+    "items": [
+     {
+      "name": "Kan Opener"
+     }
+    ],
+    "gm": "Attaches to a melee weapon; the target's armour is not Invulnerable against it. Not a profile mod the schema holds."
+   },
+   {
+    "id": "rr1-loot-ork-2",
+    "from": 3,
+    "to": 4,
+    "name": "Brutal Stikkbombz",
+    "page": 21,
+    "text": "A case of bulky, ungainly Stikkbombz. The rest of the area is scorched and pitted, like it's been used for weapons testing.\n\nEffect: These Stikkbombz don't go far, but their explosion is deadly. They can't be fired from a launcher and their range is (S) x 2m when thrown. They also have ED 8.",
+    "items": [
+     {
+      "name": "Brutal Stikkbombz"
+     }
+    ],
+    "gm": "Range (S) x 2m thrown, ED 8, cannot be fired from a launcher. The book gives no count of bombs."
+   },
+   {
+    "id": "rr1-loot-ork-3",
+    "from": 5,
+    "to": 5,
+    "name": "Kunnin' Planz",
+    "page": 21,
+    "text": "This cache of maps, drawings, and crudely scrawled plans composed of Ork Glyphs indicate the intended path of an Ork horde. Their next three targets are clearly marked, as are the resources and troops they intend to bring to bear.\n\nEffect: If they can interpret the glyphs with a DN5 Scholar (Int) Test, the Agents are now in a position to avert, or avoid, imminent Ork activity. They could save thousands of lives with this information.",
+    "items": [
+     {
+      "name": "Kunnin' Planz"
+     }
+    ],
+    "gm": "DN5 Scholar (Int) Test to interpret the glyphs."
+   },
+   {
+    "id": "rr1-loot-ork-4",
+    "from": 6,
+    "to": 6,
+    "name": "Warboss Banner",
+    "page": 21,
+    "text": "Every Freebooter Warboss has their own banner. Undoubtedly this one once hung in pride of place somewhere prominent. In the present day, it's a glorified, skull-patterned tablecloth.\n\nEffect: This banner is a powerful symbol of an Ork warband. It should not be in human hands, and if or when Orks catch sight of it, they'll want it back. If the bearer of the banner has the ORK Keyword, D6 nearby Orks rally to the banner at the start of combat and fight alongside them. Otherwise, enemies with the ORK Keyword will always choose to attack a character with this banner rather than other foes.",
+    "items": [
+     {
+      "name": "Warboss Banner"
+     }
+    ],
+    "gm": "ORK bearer: D6 nearby Orks rally at the start of combat. Otherwise ORK enemies always attack the bearer."
+   }
+  ],
+  "gaps": [],
+  "overlaps": [],
+  "faults": "rr1-loot-faults"
+ },
+ {
+  "id": "rr1-loot-weird",
+  "name": "Weird Loot",
+  "source": "redacted-records",
+  "page": 21,
+  "dice": "d6",
+  "rows": [
+   {
+    "id": "rr1-loot-weird-1",
+    "from": 1,
+    "to": 2,
+    "name": "Wriggling Necrodermis",
+    "page": 21,
+    "text": "This severed hand is made from a strange, resilient metal, wires trailing from the wrist. It moves of its own accord, seemingly in search of something. The grisly memento has the NECRON keyword.",
+    "items": [
+     {
+      "name": "Wriggling Necrodermis"
+     }
+    ]
+   },
+   {
+    "id": "rr1-loot-weird-2",
+    "from": 3,
+    "to": 4,
+    "name": "Light Diffraction Unit",
+    "page": 21,
+    "text": "This triangular device emits a peculiar, but apparently harmless aurora when you touch it.\n\nEffect: This unit is broken and requires maintenance. Attempts to repair it add +5 to the DN unless the technician has the T'AU keyword. When properly assembled, the device distorts light to obscure the bearer, rendering them invisible for 1 Round.",
+    "items": [
+     {
+      "name": "Light Diffraction Unit"
+     }
+    ],
+    "gm": "Repair adds +5 DN unless the technician has the T'AU keyword. Repaired: bearer invisible for 1 Round."
+   },
+   {
+    "id": "rr1-loot-weird-3",
+    "from": 5,
+    "to": 5,
+    "name": "Lost Hero",
+    "page": 22,
+    "text": "This ornate sarcophagus holds a human being in perfect cryogenic stasis. The technology used to do so is ancient and unfamiliar, but surely not impenetrable to a Tech-priest.\n\nEffect: This person's identity is a mystery, but they were important enough to place into storage. If Agents can convince the Adeptus Mechanicus to study and awaken them they may obtain valuable knowledge.",
+    "items": [
+     {
+      "name": "Lost Hero"
+     }
+    ]
+   },
+   {
+    "id": "rr1-loot-weird-4",
+    "from": 6,
+    "to": 6,
+    "name": "Star Map",
+    "page": 22,
+    "text": "This badly damaged, palm-sized cogitator contains one readable file. It's a star map that highlights an asteroid field in the far fringes of the Reach, annotated with dire warnings too corrupted to read. What perils await there?",
+    "items": [
+     {
+      "name": "Star Map"
+     }
+    ]
+   }
+  ],
+  "gaps": [],
+  "overlaps": [],
+  "faults": "rr1-loot-faults"
+ },
+ {
+  "id": "rr1-loot-faults",
+  "name": "What's Wrong With It?",
+  "source": "redacted-records",
+  "page": 22,
+  "dice": "d6",
+  "rows": [
+   {
+    "id": "rr1-loot-faults-1",
+    "from": 1,
+    "to": 2,
+    "name": "Insidious Taint",
+    "page": 22,
+    "text": "This item is poisoned by the Warp. Anyone who touches it risks becoming linked to the endless chaos of the Immaterium.\n\nEffect: Whenever a character uses this item their sleep is plagued by vivid, surreal nightmares. The next day, they make Resolve Tests at +2 DN.",
+    "gm": "After using it, the next day Resolve Tests are at +2 DN."
+   },
+   {
+    "id": "rr1-loot-faults-2",
+    "from": 3,
+    "to": 4,
+    "name": "Degrading Materials",
+    "page": 22,
+    "text": "This item reacted poorly to the atmosphere of the Space Hulk. In time, it will fall apart and become useless.\n\nEffect: When a character rolls a Complication whilst using the item, there is a 1 in 6 chance the item irrevocably ceases to function or is destroyed.",
+    "gm": "On a Complication while using it: 1 in 6 chance it is destroyed."
+   },
+   {
+    "id": "rr1-loot-faults-3",
+    "from": 5,
+    "to": 5,
+    "name": "Blinking Beacon",
+    "page": 22,
+    "text": "This item has a secret function, and calls out across the galaxy towards an unknown (and likely hostile) force. As soon as the beacon leaves the atmosphere of the Space Hulk, the intended recipient hears the call and begins to head in its direction."
+   },
+   {
+    "id": "rr1-loot-faults-4",
+    "from": 6,
+    "to": 6,
+    "name": "Valuable",
+    "page": 22,
+    "text": "The item is a fine example of its type, and members of the faction who made it will assert their claim to it, and try to take it from you. You make enemies as bounty hunters and Agents of other factions try to obtain this piece of loot - but you may be able to trade it for a favour, or at least survival."
+   }
+  ],
+  "gaps": [],
+  "overlaps": [],
+  "fault": true
+ }
+]

@@ -2193,6 +2193,30 @@ test("FROM LOOT TABLE: a book row makes loose items with its text in GM NOTES (i
   );
   assert.ok(it!.gmNotes.includes(row.text), "the printed result");
 
+  // A pick (RR1 p.18, three Adeptus Mechanicus weapons the GM chooses): the choice must match, and makes one per piece.
+  const archaic = "rr1-loot-imperium-2";
+  await refused({ rowId: archaic }, "Pick 1 catalogue item for Archaic Weaponry");
+  await refused({ rowId: archaic, picks: ["laspistol"] }, "Laspistol isn't one Archaic Weaponry offers");
+  await refused(
+    { rowId: archaic, picks: ["arc-pistol"], faultId: "core-trinket-1-11" },
+    '"core-trinket-1-11" isn\'t on the fault table for Imperium Loot',
+  );
+  assert.ok(
+    (await gm.send({ type: "codex.addLoot", rowId: archaic, picks: ["arc-pistol"], faultId: "rr1-loot-faults-1" })).ok,
+  );
+  await eventually(() => gm.codex()?.items.length === 4, "three Arc Pistols");
+  const arc = gm.codex()!.items.slice(1);
+  assert.deepEqual(
+    arc.map((i) => i.wargearId),
+    ["arc-pistol", "arc-pistol", "arc-pistol"],
+  );
+  assert.ok(arc[0]!.gmNotes.includes("FAULT (RR1 p."), "the fault rides in the notes");
+  // Ammo isn't an item: GIVE refuses it (§11.113), so a row of only Ammo makes nothing and says to award it.
+  await refused(
+    { rowId: "rr1-loot-imperium-1", picks: ["bolt-ammo"] },
+    "Malfunctioning Munitions makes no item: award it in PARTY",
+  );
+
   const kael = await gm.send({ type: "character.create", name: "Kael" });
   assert.ok(kael.ok && kael.id);
   const token = await gm.send({ type: "token.issue", characterId: kael.id });
