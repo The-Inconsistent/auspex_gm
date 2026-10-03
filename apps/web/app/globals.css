@@ -1041,6 +1041,9 @@ dialog.picker {
   border-bottom: 2px solid transparent;
   color: var(--ink-3);
 }
+.tabs.sub .tab:disabled {
+  opacity: 0.5;
+}
 .tabs.sub .tab[aria-selected="true"] {
   background: transparent;
   color: var(--red);
@@ -1713,6 +1716,16 @@ pre.text.slate {
   border: 1px solid var(--line);
   background: var(--vellum);
   cursor: pointer;
+}
+/* NEW CAMPAIGN's Tier cards: a radio card big enough to tap from across the table. */
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.bld-opt.choice {
+  padding: 14px;
+  min-height: 72px;
 }
 .bld-opt:has(input:checked) {
   border-color: var(--red);

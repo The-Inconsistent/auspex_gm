@@ -99,6 +99,16 @@ export class CampaignController {
     return createCampaign({ ...parse(CreateGame, body), owner: user });
   }
 
+  // NEW CAMPAIGN's PREMISE step: the printed Frameworks before there's a campaign to ask, so a creator's only. The
+  // official books, as PARTY's picker gives a campaign without homebrew.
+  @Get("frameworks")
+  async newFrameworks(@Req() req: Request) {
+    const user = await signedInUser(headersOf(req));
+    if (!user) throw new UnauthorizedException();
+    if (!user.creator) throw new ForbiddenException("Only creators can start a game");
+    return frameworkCatalogue(false);
+  }
+
   // IMPORT GAME: a campaign file as a new campaign, the importer as GM. `fresh` resets play for a new group.
   @Post("campaigns/import")
   async import(@Req() req: Request, @Body() body: unknown) {

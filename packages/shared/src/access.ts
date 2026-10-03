@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LibraryCharacter } from "./library.ts";
-import { Character, InviteMode, Role, Tier } from "./state.ts";
+import { CampaignSetup, Character, InviteMode, Role, Tier } from "./state.ts";
 
 // REST shapes for signed-in (Clerk) users outside a table: the lobby, creating a game, and invite links.
 
@@ -25,7 +25,9 @@ export const Lobby = z.object({
 });
 export type Lobby = z.infer<typeof Lobby>;
 
-export const CreateGame = z.object({ name: z.string().min(1).max(100), tier: Tier });
+// NEW CAMPAIGN sends what its first four steps asked in one go, so leaving half-way stores nothing. Name and Tier only
+// are required: every other step may be skipped.
+export const CreateGame = z.object({ name: z.string().min(1).max(100), tier: Tier, ...CampaignSetup.partial().shape });
 
 // What /invite/<code> shows before accepting.
 export const InvitePreview = z.object({

@@ -7,6 +7,7 @@ import { CustomThreatData, MAX_SLUG } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
 import {
+  CampaignSetup,
   CharacterDetail,
   CharacterStats,
   InviteMode,
@@ -14,7 +15,6 @@ import {
   Objectives,
   Overrides,
   Pool,
-  TableLines,
   Tier,
   Visibility,
 } from "./state.ts";
@@ -47,11 +47,7 @@ export const Action = z.union([
       type: z.literal("campaign.update"),
       name: z.string().min(1).max(100).optional(),
       tier: Tier.optional(),
-      framework: z.string().max(5000).optional(),
-      frameworkBonus: z.string().max(1000).optional(),
-      patron: z.string().max(200).optional(),
-      kind: TableLines.optional(),
-      limits: TableLines.optional(),
+      ...CampaignSetup.partial().shape,
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
