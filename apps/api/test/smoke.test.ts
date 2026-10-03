@@ -1933,6 +1933,87 @@ test("the Space Hulk Generator writes a hulk with its rooms, and rooms into a pl
   assert.deepEqual(phone.codex()!.locations, [], "the hulk starts hidden, its text on the GM's seat only");
 });
 
+test("items: what the Agents can find, in a place, with an NPC or on a scene (issue #51)", async (t) => {
+  const gm = await newCampaign("Items", 3);
+  const other = await newCampaign("Items elsewhere", 3);
+  t.after(() => (gm.socket.close(), other.socket.close()));
+  const id = async (r: Promise<ActionResult>) => {
+    const x = await r;
+    assert.ok(x.ok && x.id, JSON.stringify(x));
+    return x.id;
+  };
+  const save = (kind: string, data: object, rowId?: string) =>
+    gm.send({ type: "codex.save", kind, data, ...(rowId ? { id: rowId } : {}) } as never);
+  const shaft = await id(save("location", { name: "Shaft" }));
+  const tull = await id(save("npc", { name: "Magos Tull" }));
+  const theirs = await id(other.send({ type: "codex.save", kind: "location", data: { name: "Elsewhere" } }));
+  const theirItem = await id(other.send({ type: "codex.save", kind: "item", data: { name: "Not yours" } }));
+
+  const refused = async (a: Promise<ActionResult>, error: string) => assert.deepEqual(await a, { ok: false, error });
+  await refused(save("item", { name: "X", wargearId: "nope" }), 'Unknown wargear "nope"');
+  await refused(save("item", { name: "X", locationId: theirs }), "Location not found");
+  await refused(
+    save("item", { name: "X", locationId: shaft, npcId: tull }),
+    "X lies in a place or is carried by an NPC, not both",
+  );
+  const pistol = await id(save("item", { name: "Bolt Pistol", wargearId: "bolt-pistol", locationId: shaft }));
+  const oil = await id(save("item", { name: "Sacred Machine Oil", npcId: tull }));
+  const adv = await id(save("adventure", { title: "Dig" }));
+  await refused(save("beat", { adventureId: adv, title: "X", itemIds: [theirItem] }), "Item not found");
+  await id(save("beat", { adventureId: adv, title: "Down the shaft", itemIds: [pistol, oil] }));
+  await eventually(() => gm.codex()?.items.length === 2, "the items");
+  assert.deepEqual(
+    gm.codex()!.items.map((i) => [i.name, i.wargearId, i.locationId, i.npcId, i.givenTo]),
+    [
+      ["Bolt Pistol", "bolt-pistol", shaft, null, null],
+      ["Sacred Machine Oil", null, null, tull, null],
+    ],
+  );
+
+  // An export carries the items, and an import remaps where they lie and who has them.
+  const file = await (await get(`/campaigns/${gm.campaignId}/export`, bearer(gm.gmClerk))).json();
+  assert.equal(file.codex.items.length, 2);
+  const unknown = structuredClone(file);
+  unknown.codex.items[0].wargearId = "nope";
+  assert.equal((await post("/campaigns/import", { file: unknown }, bearer(gm.gmClerk))).status, 400);
+  const twoHolders = structuredClone(file);
+  twoHolders.codex.items[0].npcId = tull;
+  assert.equal((await post("/campaigns/import", { file: twoHolders }, bearer(gm.gmClerk))).status, 400);
+  const r = await post("/campaigns/import", { file }, bearer(gm.gmClerk));
+  assert.equal(r.status, 201);
+  const copy = connect({ auth: { campaignId: (await r.json()).campaignId, clerkToken: gm.gmClerk } });
+  t.after(() => copy.socket.close());
+  await eventually(() => copy.codex()?.items.length === 2, "the imported items");
+  const cx = copy.codex()!;
+  assert.deepEqual(
+    cx.items.map((i) => [i.locationId, i.npcId]),
+    [
+      [cx.locations[0]!.id, null],
+      [null, cx.npcs[0]!.id],
+    ],
+  );
+  assert.deepEqual(
+    cx.adventures[0]!.beats[0]!.itemIds,
+    cx.items.map((i) => i.id),
+  );
+
+  // Deleting an NPC leaves its item loose; deleting an item takes it off its scenes.
+  assert.ok((await gm.send({ type: "codex.delete", kind: "npc", id: tull })).ok);
+  await eventually(() => gm.codex()!.items[1]!.npcId === null, "the item is loose");
+  assert.ok((await gm.send({ type: "codex.delete", kind: "item", id: pistol })).ok);
+  await eventually(() => gm.codex()!.adventures[0]!.beats[0]!.itemIds.join() === oil, "the scene lists the rest");
+
+  // Players see no item list.
+  const kael = await id(gm.send({ type: "character.create", name: "Kael" }));
+  const token = await gm.send({ type: "token.issue", characterId: kael });
+  assert.ok(token.ok && token.token);
+  const phone = connect({ auth: { token: token.token } });
+  t.after(() => phone.socket.close());
+  await eventually(() => !!phone.codex(), "the player's codex");
+  assert.deepEqual(phone.codex()!.items, []);
+  await refused(phone.send({ type: "codex.save", kind: "item", data: { name: "Mine" } }), "GM only");
+});
+
 test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {
   const gm = await newCampaign("Export", 3);
   t.after(() => gm.socket.close());

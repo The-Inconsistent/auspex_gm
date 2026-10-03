@@ -6,10 +6,10 @@ import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, wouldCycle }
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
-import { checkHazards } from "../codex/codex.actions.ts";
+import { checkHazards, checkHolder, checkWargear } from "../codex/codex.actions.ts";
 import { customThreat } from "../threat/threat.schema.ts";
 import { CUSTOM_THREAT_CAP } from "../threat/threat.service.ts";
-import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
+import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
 import { db, type Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { listLibrary } from "../library/library.service.ts";
@@ -112,6 +112,12 @@ export async function importCampaign({
   ].find((t) => !known.has(t));
   if (unknown) fail(`Unknown threat "${unknown}"`);
   checkHazards(c.locations.flatMap((l) => l.hazardList));
+  // Items as codex.save checks them (issue #51): a known catalogue entry, one holder, and none once given.
+  checkWargear(c.items.map((i) => i.wargearId));
+  for (const i of c.items) {
+    checkHolder(i);
+    if (i.givenTo && (i.locationId || i.npcId)) fail(`${i.name} is with an Agent and has a holder too`);
+  }
   // Packs can't nest a place inside itself (parents come first), but a hand-edited file can (issue #50).
   const parentOf = new Map(c.locations.map((l) => [l.id, l.parentId]));
   if (c.locations.some((l) => wouldCycle({ id: l.id, parentId: l.parentId, parentOf })))
@@ -119,7 +125,16 @@ export async function importCampaign({
   // A scene keeps only the picks its place lists, as codex.save does (§11.95).
   const listed = new Map(c.locations.map((l) => [l.id, new Set(l.hazardList.map((h) => h.id))]));
 
-  const rows = [...file.characters, ...c.factions, ...c.adventures, ...beats, ...c.locations, ...c.npcs, ...c.handouts];
+  const rows = [
+    ...file.characters,
+    ...c.factions,
+    ...c.adventures,
+    ...beats,
+    ...c.locations,
+    ...c.npcs,
+    ...c.handouts,
+    ...c.items,
+  ];
   const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
   if (ids.size !== rows.length) fail("That file repeats an id");
   // Like codex.save: an empty audience means every player, so an Agent missing from the file can't just be dropped.
@@ -174,6 +189,15 @@ export async function importCampaign({
           .values(
             c.handouts.map((h, i) => ({ ...own(h, i), revealedAt: at(h.revealedAt), audience: refs(h.audience) })),
           );
+      if (c.items.length)
+        await tx.insert(item).values(
+          c.items.map((it, i) => ({
+            ...own(it, i),
+            locationId: ref(it.locationId),
+            npcId: ref(it.npcId),
+            givenTo: ref(it.givenTo),
+          })),
+        );
       if (c.adventures.length)
         await tx.insert(adventure).values(c.adventures.map(({ beats: _, ...a }, i) => own(a, i)));
       if (beats.length)
@@ -184,6 +208,7 @@ export async function importCampaign({
             locationId: ref(b.locationId),
             npcIds: refs(b.npcIds),
             handoutIds: refs(b.handoutIds),
+            itemIds: refs(b.itemIds),
             hazards: b.hazards.filter((h) => b.locationId && listed.get(b.locationId)?.has(h.id)),
             exits: b.exits.map((e) => ({
               ...e,

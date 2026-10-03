@@ -60,6 +60,11 @@ export const CampaignExport = z.object({
     handouts: z
       .array(CodexInput.handout.extend({ id }).extend({ revealedAt: z.string().max(40).nullable() }))
       .max(1000),
+    // Files from before issue #51 have none. `givenTo` is a character in this file, or nobody.
+    items: z
+      .array(CodexInput.item.extend({ id }).extend({ givenTo: id.nullable() }))
+      .max(1000)
+      .default([]),
     sessions: z
       .array(
         z.object({
@@ -80,7 +85,7 @@ export const CampaignExport = z.object({
 export type CampaignExport = z.infer<typeof CampaignExport>;
 
 // The same campaign for a new group: no sessions, empty pools, nothing revealed, every Agent rested. Sheets, builds and
-// XP stay, since a build's XP ledger is spent against `xp`.
+// XP stay, since a build's XP ledger is spent against `xp`. Given items stay given, because the sheets keep their gear.
 export function freshStart(e: CampaignExport): CampaignExport {
   const { codex: c } = e;
   return {

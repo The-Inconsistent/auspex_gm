@@ -2,6 +2,7 @@ import { z } from "zod";
 import { ATTRIBUTES, Marker, Pool, SKILLS, Visibility, type Skill } from "./state.ts";
 import type { Threat } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
+import { UpgradeMod } from "./weapon-effect.ts";
 
 // Campaign content beyond combat (docs/campaign-model.md). Broadcast separately from the live state,
 // so a Wounds tap doesn't resend every NPC and beat.
@@ -189,6 +190,7 @@ export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 export type FactionStance = z.infer<typeof FactionStance>;
 export const MAX_FACTION_KEYWORDS = 20;
 export const MAX_KEYWORD_LENGTH = 60;
+export const MAX_ITEM_MODS = 10;
 
 // Editable fields per kind (what the GM sends). `id`/`campaignId` are server-owned.
 export const CodexInput = {
@@ -216,6 +218,7 @@ export const CodexInput = {
     locationId: id.nullable().default(null),
     npcIds: z.array(id).max(50).default([]),
     handoutIds: z.array(id).max(50).default([]),
+    itemIds: z.array(id).max(50).default([]), // what the Agents can find here (issue #51)
     encounter: z
       .array(EncounterEntry)
       .max(30)
@@ -257,6 +260,24 @@ export const CodexInput = {
     revealed: z.boolean().default(false),
     audience: z.array(id).max(20).default([]), // character ids it's revealed to; empty = every player
   }),
+  // Something the Agents can find (GitHub issue #51): where it lies or who carries it, at most one of the two (checked by
+  // `codex.save` and the import, not here: `.omit()` throws on a refined object, and the pack omits both). Who it was
+  // given to is server-owned (`Codex.items[].givenTo`), set by `character.giveItem`.
+  item: z.object({
+    name: text(200),
+    wargearId: z
+      .string()
+      .regex(/^[a-z0-9-]+$/)
+      .max(100)
+      .nullable()
+      .default(null), // the catalogue entry, or a custom item
+    description: text().default(""), // what the GM reads out when the Agents find it
+    gmNotes: text().default(""),
+    locationId: id.nullable().default(null),
+    npcId: id.nullable().default(null),
+    // A relic's Powers as an upgrade's changes (RR2 pp.12–19, rules-flow.md §11.116): carried onto the sheet weapon
+    mods: z.array(UpgradeMod).max(MAX_ITEM_MODS).default([]),
+  }),
 } as const;
 export type CodexKind = keyof typeof CodexInput;
 export const CODEX_KINDS = Object.keys(CodexInput) as CodexKind[];
@@ -268,6 +289,7 @@ export type Codex = {
   locations: Row<"location">[];
   npcs: Row<"npc">[];
   handouts: (Row<"handout"> & { revealedAt: string | null })[];
+  items: (Row<"item"> & { givenTo: string | null })[];
   sessions: { id: string; number: number; startedAt: string; endedAt: string | null; recap: string; xp: number }[];
   // Stat blocks the GM wrote or cloned for this table (issue #43). Book text, so GM sockets only: `toPlayerCodex`
   // sends none, and the GM's app merges them into the bestiary every picker already reads.
@@ -298,6 +320,8 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
       .map((h) => ({ ...h, audience: h.audience.length && characterId ? [characterId] : [] })),
+    // An Agent sees a found item as a line on their sheet once it's given; a found object's text goes in a handout.
+    items: [],
     sessions: c.sessions,
     customThreats: [], // a custom threat is a stat block: players never receive one
   };

@@ -729,6 +729,12 @@ for (const name of packNames()) {
       failed = true;
       console.error(`✖ pack ${name}: unknown hazard "${h.hazardId}"`);
     }
+  // An item's catalogue entry (issue #51) must exist, as codex.save checks.
+  for (const it of r.data.items)
+    if (it.wargearId && !wargearIds.has(it.wargearId)) {
+      failed = true;
+      console.error(`✖ pack ${name}: unknown wargear "${it.wargearId}"`);
+    }
   console.log(
     `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats${r.data.threats.length ? `, ${r.data.threats.length} own threats` : ""}`,
   );

@@ -18,7 +18,7 @@ import { wargear } from "@wg/data";
 import { accessToken, appUser, invite, membership } from "../auth/auth.schema.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
-import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
+import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
 import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
 import { loadCustomThreats } from "../threat/threat.service.ts";
@@ -222,12 +222,13 @@ const entriesOf = (b: { id: string; encounter: unknown[] }) => {
 };
 
 export async function loadCodex(campaignId: string): Promise<Codex> {
-  const [factions, adventures, locations, npcs, handouts, sessions, customThreats] = await Promise.all([
+  const [factions, adventures, locations, npcs, handouts, items, sessions, customThreats] = await Promise.all([
     db.select().from(faction).where(eq(faction.campaignId, campaignId)).orderBy(asc(faction.createdAt)),
     db.select().from(adventure).where(eq(adventure.campaignId, campaignId)).orderBy(asc(adventure.createdAt)),
     db.select().from(location).where(eq(location.campaignId, campaignId)).orderBy(asc(location.createdAt)),
     db.select().from(npc).where(eq(npc.campaignId, campaignId)).orderBy(asc(npc.createdAt)),
     db.select().from(handout).where(eq(handout.campaignId, campaignId)).orderBy(asc(handout.createdAt)),
+    db.select().from(item).where(eq(item.campaignId, campaignId)).orderBy(asc(item.createdAt)),
     db.select().from(session).where(eq(session.campaignId, campaignId)).orderBy(asc(session.number)),
     loadCustomThreats(db, campaignId),
   ]);
@@ -244,7 +245,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
         .orderBy(asc(beat.order), asc(beat.createdAt))
     : [];
   // DB rows were validated by CodexInput on write; the casts only narrow the untyped jsonb columns
-  // (location.hazardList, npc.statSource). A beat's `encounter` is parsed rather than cast, because a row written
+  // (location.hazardList, npc.statSource, item.mods). A beat's `encounter` is parsed rather than cast, because a row written
   // before a field existed doesn't carry it: a scene saved before `profiles` and `scale` (issue #42) would reach the
   // GM's app without them and break every reader that counts on the defaults. Parsing here is where the snapshot
   // promises the shape its type claims.
@@ -257,6 +258,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
     locations: locations.map(strip) as Codex["locations"],
     npcs: npcs.map(strip) as Codex["npcs"],
     handouts: handouts.map((h) => ({ ...strip(h), revealedAt: h.revealedAt?.toISOString() ?? null })),
+    items: items.map(strip) as Codex["items"],
     customThreats,
     sessions: sessions.map((s) => ({
       id: s.id,

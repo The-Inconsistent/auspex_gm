@@ -66,9 +66,17 @@ for (const { key, faction, ...data } of pack.npcs)
   );
 for (const { key, ...data } of pack.handouts)
   ids.set(key, (await send({ type: "codex.save", kind: "handout", data }, `handout ${key}`))!);
+for (const { key, location, npc, ...data } of pack.items)
+  ids.set(
+    key,
+    (await send(
+      { type: "codex.save", kind: "item", data: { ...data, locationId: ref(location), npcId: ref(npc) } },
+      `item ${key}`,
+    ))!,
+  );
 for (const { key, beats, ...data } of pack.adventures) {
   const adventureId = (await send({ type: "codex.save", kind: "adventure", data }, `adventure ${key}`))!;
-  for (const { location, npcs, handouts, ...b } of beats)
+  for (const { location, npcs, handouts, items, ...b } of beats)
     await send(
       {
         type: "codex.save",
@@ -79,6 +87,7 @@ for (const { key, beats, ...data } of pack.adventures) {
           locationId: ref(location),
           npcIds: npcs.map((k) => ids.get(k)!),
           handoutIds: handouts.map((k) => ids.get(k)!),
+          itemIds: items.map((k) => ids.get(k)!),
         },
       },
       `beat "${b.title}"`,
@@ -97,7 +106,7 @@ for (const c of pack.characters) {
 socket.close();
 console.log(
   `Seeded "${pack.campaign.name}": ${pack.factions.length} factions, ${pack.locations.length} locations, ${pack.npcs.length} NPCs, ` +
-    `${pack.handouts.length} handouts, ${pack.adventures.reduce((n, a) => n + a.beats.length, 0)} beats, ${pack.characters.length} characters.`,
+    `${pack.handouts.length} handouts, ${pack.items.length} items, ${pack.adventures.reduce((n, a) => n + a.beats.length, 0)} beats, ${pack.characters.length} characters.`,
 );
 const web = (process.env.WEB_ORIGIN ?? "http://localhost:3000").split(",")[0];
 console.log(`Open it (signed in as ${ownerUserId}): ${web}/c/${campaignId}`);
