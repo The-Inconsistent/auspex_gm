@@ -11,6 +11,7 @@ import {
   type FactionPresets,
   type FlavourTable,
   type HazardTable,
+  type SpaceHulkGenerator,
   type NpcPreset,
   type PlaceSummary,
   type PlaceNode,
@@ -28,6 +29,7 @@ import { FactionCard } from "./components/faction-card/faction-card";
 import { FactionPicker } from "./components/faction-picker/faction-picker";
 import { NpcCard } from "./components/npc-card/npc-card";
 import { NpcPicker } from "./components/npc-picker/npc-picker";
+import { HulkGenerator } from "./components/hulk-generator/hulk-generator";
 import { PlacePicker } from "./components/place-picker/place-picker";
 import { CODEX_KINDS, CODEX_KIND_KEYS, type CodexKind } from "./constants";
 import type { Row } from "./types";
@@ -44,6 +46,7 @@ type CodexViewProps = {
   places: PlaceSummary[]; // the books' places, for ADD FROM BOOK (issue #50)
   flavour: FlavourTable[];
   hazards: HazardTable[]; // the books' hazard tables, for a place's list (issue #49)
+  spaceHulk: SpaceHulkGenerator | null; // RR1 pp.6–11, for the SPACE HULK GENERATOR (issue #50 step 8)
   bestiary: Threat[];
   tier: number;
   players: number; // Scaling Threats adds the number of players for an Adversary (Core p.326)
@@ -73,6 +76,7 @@ export function CodexView({
   places,
   flavour,
   hazards,
+  spaceHulk,
   bestiary,
   tier,
   players,
@@ -236,6 +240,9 @@ export function CodexView({
             )}
             {kind === "location" && places.length > 0 && (
               <PlacePicker places={places} codex={codex} send={send} onError={setError} />
+            )}
+            {kind === "location" && spaceHulk && (
+              <HulkGenerator generator={spaceHulk} hazards={hazards} codex={codex} send={send} onError={setError} />
             )}
             {kind === "faction" && factionPresets.presets.length > 0 && (
               <FactionPicker

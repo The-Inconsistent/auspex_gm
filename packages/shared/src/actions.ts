@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput } from "./codex.ts";
+import { CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
 import { UpgradeHost } from "./wargear.ts";
 import {
@@ -16,6 +17,7 @@ import {
 } from "./state.ts";
 
 const id = z.uuid();
+const rowId = z.string().regex(/^[a-z0-9-]+$/); // a row of the server's book data
 const delta = z.number().int().min(-100).max(100);
 const conditions = z.array(z.string().max(60)).max(30);
 // A builder draft is a few KB; this is room for every choice twice over, and a cap on what a socket can store.
@@ -228,8 +230,24 @@ export const Action = z.union([
     // Copies a book's place and every place inside it (issue #50); the server reads the text from its own data.
     z.object({
       type: z.literal("codex.addPlaces"),
-      placeId: z.string().regex(/^[a-z0-9-]+$/),
+      placeId: rowId,
       parentId: id.nullable().default(null),
+    }),
+    // The Space Hulk Generator (issue #50 step 8): a hulk and its rooms, or rooms inside a place already in the codex
+    // (§11.102), from the row ids the GM rolled or picked; the server reads the text from its own data.
+    z.object({
+      type: z.literal("codex.addHulk"),
+      parentId: id.nullable().default(null),
+      hulk: z
+        .object({
+          name: CodexInput.location.shape.name,
+          origins: z.array(rowId).min(1).max(MAX_HULK_ORIGINS),
+          occupants: rowId,
+          objective: rowId,
+          hazards: z.array(rowId).max(MAX_HAZARDS).default([]), // rows of the d6 Hazards Table (RR1 p.11), for its list
+        })
+        .nullable(),
+      rooms: z.array(rowId).max(MAX_PLACES_PER_ADD - 1),
     }),
     z.object({ type: z.literal("beat.startEncounter"), id }),
   ]),

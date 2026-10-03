@@ -945,7 +945,7 @@ notes a hulk can get (five origins) fit 5,000. Kept as printed: the Objective ta
 - Players get a threat's `stats` only after the GM reveals that combatant (`toPlayerView`). They never get NPC
   `statSource`.
 - In docs, issues and PRs, show structure or placeholders, never a real stat block.
-- `codex.addPlaces` (issue #50) copies a place's printed text into the campaign's GM NOTES, so it is stored in the
+- `codex.addPlaces` and `codex.addHulk` (issue #50) copy a place's printed text into the campaign's GM NOTES, so it is stored in the
   database and leaves the app in the GM's export file. Only the GM receives it (`toPlayerCodex` blanks `gmNotes`), as
   with a threat snapshotted into a fight.
 

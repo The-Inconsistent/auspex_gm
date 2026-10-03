@@ -98,7 +98,7 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 | 1 | Kind of game and content limits | core p.316 | a reminder in SETUP (§11.79) | never |
 | 2 | Framework (who, what, the shared goal) and Framework Bonus | core pp.18–20, 316–317, 374 | PARTY › FRAMEWORK | `framework` not empty |
 | 3 | Tier (100–400 XP; custom 50, 75 or 500) | core pp.19–20, 160 | lobby NEW GAME, PARTY › ASCEND | always |
-| 4 | Setting, kept to a limited area | core pp.296–309, 320 | CODEX › LOCATIONS (ADD FROM BOOK copies a book's place and the places inside it, #50) | a location |
+| 4 | Setting, kept to a limited area | core pp.296–309, 320 | CODEX › LOCATIONS (ADD FROM BOOK copies a book's place and the places inside it; the SPACE HULK GENERATOR writes a hulk and its rooms, #50) | a location |
 | 5 | Patron (two Frameworks each), optional | core pp.310–313; Forsaken System Player's Guide pp.64–89 | PARTY › PATRON | `patron` not empty |
 | 6 | Factions and Keywords; who can work together | core pp.42–87, 167, 317, 375–378 | CODEX › FACTIONS | a faction |
 | 7 | Characters | core p.17 | PARTY › the builder | an Agent |

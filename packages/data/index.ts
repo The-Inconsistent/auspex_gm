@@ -7,6 +7,7 @@ import {
   FactionPreset,
   type HazardRow,
   HazardTable,
+  HULK_HAZARDS,
   NpcPreset,
   Pack,
   Place,
@@ -59,6 +60,12 @@ const hazardTables = () => hazardFiles().flatMap((f) => HazardTable.array().pars
 // Every hazard row by id, for the check that a place's book hazard exists (issue #49).
 export const hazards: ReadonlyMap<string, HazardRow> = new Map(
   hazardTables().flatMap((t) => t.rows.map((r) => [r.id, r] as const)),
+);
+// Stage 4 of the Space Hulk Generator: the rows codex.addHulk accepts as a hulk's hazards (issue #50 step 8).
+export const hulkHazardIds: ReadonlySet<string> = new Set(
+  hazardTables()
+    .find((t) => t.id === HULK_HAZARDS)
+    ?.rows.map((r) => r.id),
 );
 export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
 export const scenePresets = (): ScenePresets => ({

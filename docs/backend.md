@@ -246,7 +246,7 @@ Wounds, Shock, Wrath, Glory, Respite, Conditions, raw `stats` and granting Wealt
 
 | Actions | state | codex |
 |---|---|---|
-| `codex.save`, `codex.delete`, `beat.reorder`, `codex.addPlaces` | no | yes |
+| `codex.save`, `codex.delete`, `beat.reorder`, `codex.addPlaces`, `codex.addHulk` | no | yes |
 | `beat.startEncounter` (new encounter, and beat status → active), `session.*` (session list) | yes | yes |
 | everything else | yes | no |
 
@@ -313,6 +313,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `codex.delete` | GM | Delete one codex row by `kind` and `id` (FK effects in §7). Deleting an NPC or handout also `array_remove`s its id from every beat's `npcIds` / `handoutIds`. Deleting a beat sets `beatId: null` on every exit that led to it, keeping the label | C | |
 | `beat.reorder` | GM | `ids` must list every beat of the adventure exactly once. Sets `order` = index | C | |
 | `codex.addPlaces` | GM | ADD FROM BOOK (issue #50): copies the book place `placeId` and every place inside it (`places/*.json`, parents first) into one insert, under `parentId` (a location of this campaign, or top level). Each copy gets the printed name, `gmNotes` = `placeNotes` (the cite, stat line, hooks and description), an empty `description` (players see it) and `revealed: false`; ids are fresh, nesting kept. `'Unknown place "x"'`; more than 60 places refused (`ponytail:`; "add the places inside it one by one"); `"Parent location not found"`. Copying twice makes two copies (rules-flow §11.98). The client sends no book text. Returns the new root's `id` | C | |
+| `codex.addHulk` | GM | SPACE HULK GENERATOR (issue #50 step 8, RR1 pp.6–11): row ids of `scene-presets/space-hulk.json`. With `hulk` (`name`, `origins` 1–5, `occupants`, `objective`, `hazards`), one hidden place under `parentId` with `gmNotes` = `hulkNotes` and each hazard as a book entry on its `hazardList` (rows of the RR1 Hazards Table only, §11.102), then `rooms` inside it, each named as printed with `gmNotes` = `roomNotes`, in the order sent (a repeat is a second room). With `hulk: null`, only the rooms, inside `parentId` (§11.102). `"Pick a room, and the place it goes inside"`, `'"x" isn't on the Rooms Table'` (each table by name), `"Parent location not found"`. The client sends no book text. Returns the hulk's `id`, or the parent's | C | |
 | `beat.startEncounter` | GM | Validate the beat's `encounter` entries, start a new encounter, add **every** campaign character, then each entry (`asMob && count > 1` → one Mob row, else `count` rows labelled `Name 1..n`). Beat status → `active`. Returns the encounter `id` | S C | |
 
 Notes:
