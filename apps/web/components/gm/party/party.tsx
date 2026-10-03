@@ -13,7 +13,6 @@ import {
   type ActionResult,
   type Character,
   type Codex,
-  type FrameworkCatalogue,
   type LiveState,
   type Member,
   type Wargear,
@@ -22,21 +21,16 @@ import {
 import { NEW_CHARACTER } from "@/components/builder/constants";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
-import { TableTalk } from "@/components/ui/table-talk/table-talk";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
-import { setupSteps } from "@/lib/setup/setup";
 import { qrImage } from "@/lib/qr/qr";
 import { shareOrigin } from "@/lib/share-origin/share-origin";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
-import { FrameworkPicker } from "./components/framework-picker/framework-picker";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { RoomInvite } from "./components/room-invite/room-invite";
-import type { TabTarget } from "./components/setup-panel/constants";
-import { SetupPanel } from "./components/setup-panel/setup-panel";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, XP_AWARDS } from "./constants";
 
 type PartyProps = {
@@ -44,12 +38,9 @@ type PartyProps = {
   codex: Codex;
   send: Send;
   wargear: Wargear[];
-  frameworks: FrameworkCatalogue;
-  onTab: (to: TabTarget) => void;
 };
 
-export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyProps) {
-  const [picking, setPicking] = useState(false);
+export function Party({ state, codex, send, wargear }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
@@ -58,10 +49,6 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
   const [msg, setMsg] = useState<string | null>(null);
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
-  const [framework, setFramework] = useState(state.campaign.framework);
-  const [frameworkBonus, setFrameworkBonus] = useState(state.campaign.frameworkBonus);
-  const [patron, setPatron] = useState(state.campaign.patron);
-  const [table, setTable] = useState({ kind: state.campaign.kind, limits: state.campaign.limits });
   const open = codex.sessions.find((s) => !s.endedAt);
   const { members, invites } = state.access;
   const seatOf = (characterId: string) => members.find((m) => m.characterId === characterId);
@@ -153,18 +140,6 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
   // START SESSION: resets the pools per the rules.
   const startSession = async () => report(await send({ type: "session.start" }), "SESSION STARTED · POOLS RESET");
 
-  // Framework SAVE.
-  const saveFramework = async () =>
-    report(await send({ type: "campaign.update", framework, frameworkBonus, patron, ...table }), "FRAMEWORK SAVED");
-
-  // START FROM A FRAMEWORK › USE: the picked names go into the form, saved only by SAVE.
-  const fillFramework = (picked: { patron: string; framework: string }) => {
-    setPatron(picked.patron);
-    setFramework(picked.framework);
-    setPicking(false);
-    setMsg("FRAMEWORK FILLED IN · SAVE TO KEEP IT");
-  };
-
   // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
   const respite = async (c: Character) =>
     report(await send({ type: "character.respite", id: c.id }), `${c.name.toUpperCase()} RESPITE`);
@@ -219,128 +194,68 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
     <div className="pad stack">
       {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
 
-      <SetupPanel steps={setupSteps({ campaign: state.campaign, codex, characters: state.characters })} onTab={onTab} />
-
-      <section className="cols">
-        <div id="session" className="panel pad stack">
-          <div className="rule">SESSION</div>
-          {open ? (
-            <>
-              <div>SESSION {open.number} IN PROGRESS</div>
-              <div className="field">
-                <label className="label" htmlFor="xp">
-                  XP EACH (8 / 10 / 12, p.321)
-                </label>
-                <div style={{ display: "flex", gap: 6 }} role="group" aria-label="XP each">
-                  {XP_AWARDS.map((n) => (
-                    <button
-                      key={n}
-                      className={`btn ${xp === n ? "primary" : ""}`}
-                      aria-pressed={xp === n}
-                      onClick={() => setXp(n)}
-                    >
-                      {n}
-                    </button>
-                  ))}
-                  <input
-                    id="xp"
-                    className="input"
-                    style={{ width: 80 }}
-                    inputMode="numeric"
-                    value={xp}
-                    onChange={handleXpChange}
-                  />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label" htmlFor="recap">
-                  RECAP (players see this)
-                </label>
-                <textarea
-                  id="recap"
+      <div id="session" className="panel pad stack">
+        <div className="rule">SESSION</div>
+        {open ? (
+          <>
+            <div>SESSION {open.number} IN PROGRESS</div>
+            <div className="field">
+              <label className="label" htmlFor="xp">
+                XP EACH (8 / 10 / 12, p.321)
+              </label>
+              <div style={{ display: "flex", gap: 6 }} role="group" aria-label="XP each">
+                {XP_AWARDS.map((n) => (
+                  <button
+                    key={n}
+                    className={`btn ${xp === n ? "primary" : ""}`}
+                    aria-pressed={xp === n}
+                    onClick={() => setXp(n)}
+                  >
+                    {n}
+                  </button>
+                ))}
+                <input
+                  id="xp"
                   className="input"
-                  value={recap}
-                  onChange={(e) => setRecap(e.target.value)}
-                  placeholder="Previously in Wrath & Glory…"
+                  style={{ width: 80 }}
+                  inputMode="numeric"
+                  value={xp}
+                  onChange={handleXpChange}
                 />
               </div>
-              <div>
-                <button className="btn primary" onClick={endSession}>
-                  END SESSION
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="dim">
-                Starting a session resets per the rules (p.162): every Wrath → 2, Glory → 0, Ruin →{" "}
-                {state.characters.length} (players).
-              </div>
-              <div>
-                <button className="btn primary" onClick={startSession}>
-                  START SESSION {codex.sessions.length + 1}
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="panel pad stack">
-          <div className="rule">FRAMEWORK (p.18)</div>
-          <div className="field">
-            <label className="label" htmlFor="patron">
-              PATRON
-            </label>
-            <input id="patron" className="input" value={patron} onChange={(e) => setPatron(e.target.value)} />
-          </div>
-          <div className="field">
-            <label className="label" htmlFor="fw">
-              FRAMEWORK
-            </label>
-            <textarea id="fw" className="input" value={framework} onChange={(e) => setFramework(e.target.value)} />
-          </div>
-          {/* Its own box, as on the party sheet (Core p.374, rules-flow §11.80). Players see it under MISSION. */}
-          <div className="field">
-            <label className="label" htmlFor="fw-bonus">
-              FRAMEWORK BONUS (p.19)
-            </label>
-            <textarea
-              id="fw-bonus"
-              className="input"
-              value={frameworkBonus}
-              onChange={(e) => setFrameworkBonus(e.target.value)}
-            />
-          </div>
-          <TableTalk {...table} onChange={setTable} />
-          <div className="keys">
-            <button
-              className={`btn ${picking ? "primary" : ""}`}
-              aria-expanded={picking}
-              onClick={() => setPicking(!picking)}
-            >
-              START FROM A FRAMEWORK
-            </button>
-            <button className="btn" onClick={saveFramework}>
-              SAVE
-            </button>
-            {/* The whole campaign as a file, for a backup or the lobby's IMPORT GAME. */}
-            <a className="btn" href={`/api/campaigns/${state.campaign.id}/export`} download>
-              EXPORT
-            </a>
-          </div>
-          <i className="dim">Typing your own still works.</i>
-        </div>
-      </section>
-
-      {picking && (
-        <FrameworkPicker
-          catalogue={frameworks}
-          tier={state.campaign.tier}
-          patron={patron}
-          onUse={fillFramework}
-          onClose={() => setPicking(false)}
-        />
-      )}
+            </div>
+            <div className="field">
+              <label className="label" htmlFor="recap">
+                RECAP (players see this)
+              </label>
+              <textarea
+                id="recap"
+                className="input"
+                value={recap}
+                onChange={(e) => setRecap(e.target.value)}
+                placeholder="Previously in Wrath & Glory…"
+              />
+            </div>
+            <div>
+              <button className="btn primary" onClick={endSession}>
+                END SESSION
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="dim">
+              Starting a session resets per the rules (p.162): every Wrath → 2, Glory → 0, Ruin →{" "}
+              {state.characters.length} (players).
+            </div>
+            <div>
+              <button className="btn primary" onClick={startSession}>
+                START SESSION {codex.sessions.length + 1}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
 
       <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
 

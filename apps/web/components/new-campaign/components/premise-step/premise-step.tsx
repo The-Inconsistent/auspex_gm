@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import type { FrameworkCatalogue } from "@wg/shared";
 
-import { FrameworkPicker } from "@/components/gm/party/components/framework-picker/framework-picker";
+import { FrameworkPicker } from "@/components/gm/setup/components/framework-picker/framework-picker";
 
 import type { Draft } from "../../constants";
 
@@ -15,7 +15,7 @@ type PremiseStepProps = Premise & {
 };
 
 // PREMISE: the Framework, "a sentence or two" saying who the Agents are, what they do and their shared goal (Core p.18).
-// PARTY's picker fills in the printed names only (rules-flow §11.80); players see all three under MISSION.
+// SETUP's picker fills in the printed names only (rules-flow §11.80); players see all three under MISSION.
 export function PremiseStep({ catalogue, tier, framework, frameworkBonus, patron, onChange }: PremiseStepProps) {
   const [picking, setPicking] = useState(false);
 

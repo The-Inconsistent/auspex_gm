@@ -20,8 +20,9 @@ import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
 import type { CodexKind } from "@/components/gm/codex/constants";
 import { RUIN_ACTIONS_TABLE } from "@/components/gm/codex/components/threat-editor/constants";
-import type { TabTarget } from "@/components/gm/party/components/setup-panel/constants";
+import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
 import { Party } from "@/components/gm/party/party";
+import { Setup } from "@/components/gm/setup/setup";
 import { Prep } from "@/components/gm/prep/prep";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
@@ -66,7 +67,7 @@ export function GmApp({
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>(initialTab);
-  const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when PARTY's SETUP sends it there
+  const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when SETUP sends it there
   const [poolError, setPoolError] = useState<string | null>(null);
   // The books' stat blocks plus the ones the GM wrote (issue #43), by name. Every picker, the NPC stat source and the
   // stat block already read this one list, so nothing else needs to know about customs. Above the early return, since
@@ -149,6 +150,9 @@ export function GmApp({
           </nav>
           <main className="gm-body">
             {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} />}
+            {tab === "SETUP" && (
+              <Setup state={state} codex={codex} send={send} frameworks={frameworks} onTab={openTab} />
+            )}
             {tab === "PREP" && (
               <Prep
                 state={state}
@@ -180,16 +184,7 @@ export function GmApp({
                 relics={presets.relics}
               />
             )}
-            {tab === "PARTY" && (
-              <Party
-                state={state}
-                codex={codex}
-                send={send}
-                wargear={wargear}
-                frameworks={frameworks}
-                onTab={openTab}
-              />
-            )}
+            {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
             {tab === "RULES" && <RulesRef rules={rules} />}
             {tab === "BOOKS" && <Books server={bookServer} />}
           </main>

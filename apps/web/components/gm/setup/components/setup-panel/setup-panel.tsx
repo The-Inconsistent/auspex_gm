@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import type { SetupStep } from "@/lib/setup/setup";
 
-import { SETUP_GO_TO, type TabTarget } from "./constants";
+import { SETUP_GO_TO, type GoTo, type TabTarget } from "./constants";
 
 type SetupPanelProps = { steps: SetupStep[]; onTab: (to: TabTarget) => void };
 
@@ -16,13 +16,17 @@ export function SetupPanel({ steps, onTab }: SetupPanelProps) {
   const next = steps.find((s) => s.done === false && !isOptional(s));
   const [folded, setFolded] = useState(!next);
 
-  // GO TO: another tab, or a panel further down PARTY (a field there also takes the focus).
+  // GO TO: another tab, then the panel the step is done in (a field there also takes the focus). A new tab renders on
+  // the next commit, so the scroll waits a frame for it.
   const goTo = (s: SetupStep) => {
-    const to = SETUP_GO_TO[s.key];
-    if ("tab" in to) return onTab(to);
-    const el = document.getElementById(to.anchor);
-    el?.scrollIntoView({ behavior: "smooth", block: "center" });
-    if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.focus({ preventScroll: true });
+    const { tab, kind, anchor }: GoTo = SETUP_GO_TO[s.key];
+    if (tab) onTab({ tab, kind });
+    if (!anchor) return;
+    requestAnimationFrame(() => {
+      const el = document.getElementById(anchor);
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.focus({ preventScroll: true });
+    });
   };
 
   const progress = `${done} OF ${steps.length} STEPS DONE`;

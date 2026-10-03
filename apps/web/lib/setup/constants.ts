@@ -13,7 +13,12 @@ export const SETUP_STEPS = [
     hint: "Who the Agents are, what they want, their shared goal.",
     cite: "Core Rulebook pp.18–20, 316–317, 374",
   },
-  { key: "tier", title: "TIER", hint: "Set in the lobby; ASCEND raises it.", cite: "Core Rulebook pp.19–20, 160" },
+  {
+    key: "tier",
+    title: "TIER",
+    hint: "Set in NEW CAMPAIGN; PARTY's ASCEND raises it.",
+    cite: "Core Rulebook pp.19–20, 160",
+  },
   {
     key: "setting",
     title: "SETTING",

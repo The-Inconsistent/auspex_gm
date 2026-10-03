@@ -48,7 +48,7 @@ export function TierStep() {
       ) : (
         <p>
           The campaign is <b>Tier {tier}</b>, so the character starts with <b>{startingXp(tier)} XP</b> (Core p.20) at
-          Rank 1 (Core p.36). The GM sets the Tier and the Framework in PARTY.
+          Rank 1 (Core p.36). The GM sets the Framework in SETUP and raises the Tier in PARTY.
         </p>
       )}
       {importable && <ImportLibrary />}
