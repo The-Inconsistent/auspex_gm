@@ -25,6 +25,7 @@ import {
   type FactionPresets,
   type FlavourTable,
   type NpcPreset,
+  type HulkRow,
   type PlaceSummary,
   type FrameworkCatalogue,
   type LibraryCharacter,
@@ -1859,6 +1860,75 @@ test("ADD FROM BOOK copies a printed place and the places inside it (issue #50)"
     phone.codex()!.locations.map((l) => [l.name, l.gmNotes]),
     [["Sector", ""]],
   );
+});
+
+test("the Space Hulk Generator writes a hulk with its rooms, and rooms into a place (issue #50 step 8)", async (t) => {
+  const gm = await newCampaign("Hulk", 3);
+  t.after(() => gm.socket.close());
+  const res = await get(`/campaigns/${gm.campaignId}/scene-presets`, bearer(gm.gmClerk));
+  const g = ((await res.json()) as ScenePresets).spaceHulk!;
+  const [o1, o2] = g.origin.rows as [HulkRow, HulkRow];
+  const [r1, r2, r3] = g.rooms.rows as [HulkRow, HulkRow, HulkRow];
+  const hazard = "rr1-space-hulk-genestealer-trap";
+  const hulk = { origins: [o1.id, o2.id], occupants: g.occupants.rows[0]!.id, objective: g.objectives.rows[0]!.id };
+
+  const made = await gm.send({
+    type: "codex.addHulk",
+    hulk: { name: "The Wreck", ...hulk, hazards: [hazard] },
+    rooms: [r1.id, r2.id, r1.id],
+  });
+  assert.ok(made.ok && made.id);
+  await eventually(() => (gm.codex()?.locations.length ?? 0) === 4, "the hulk and its rooms");
+  const wreck = gm.codex()!.locations.find((l) => l.id === made.id)!;
+  assert.deepEqual([wreck.name, wreck.parentId, wreck.revealed, wreck.description], ["The Wreck", null, false, ""]);
+  assert.equal(wreck.gmNotes.split("\n", 1)[0], "RR1 p.6", "GM NOTES open with the cite");
+  assert.ok(wreck.gmNotes.includes(`ORIGIN: ${o2.name}`), "every origin rolled (§11.101)");
+  assert.deepEqual(
+    wreck.hazardList.map((h) => h.kind === "book" && [h.hazardId, h.variant]),
+    [[hazard, null]],
+    "Stage 4 goes on the hulk's hazard list (§11.102)",
+  );
+  const rooms = () => gm.codex()!.locations.filter((l) => l.parentId === wreck.id);
+  assert.deepEqual(
+    rooms().map((l) => l.name),
+    [r1.name, r2.name, r1.name],
+    "rooms in the order rolled; a repeat is a second room",
+  );
+  assert.equal(rooms()[0]!.gmNotes.split("\n", 1)[0], `RR1 p.${r1.page}`);
+
+  // ROOMS FOR A PLACE: more rooms inside the hulk later, and no new hulk.
+  const more = await gm.send({ type: "codex.addHulk", parentId: wreck.id, hulk: null, rooms: [r3.id] });
+  assert.deepEqual(more, { ok: true, id: wreck.id });
+  await eventually(() => rooms().length === 4, "the later room");
+
+  const refused = async (a: object, error: string) =>
+    assert.deepEqual(await gm.send({ type: "codex.addHulk", hulk: null, rooms: [], ...a } as ActionInput), {
+      ok: false,
+      error,
+    });
+  await refused({ rooms: [r1.id] }, "Pick a room, and the place it goes inside");
+  await refused({ parentId: wreck.id }, "Pick a room, and the place it goes inside");
+  await refused({ parentId: wreck.id, rooms: [o1.id] }, `"${o1.id}" isn't on the Rooms Table`);
+  await refused({ hulk: { name: "X", ...hulk, origins: [r1.id] } }, `"${r1.id}" isn't on the Origin Table`);
+  await refused(
+    { hulk: { name: "X", ...hulk, hazards: ["threat-assessment-space-hulk-1"] } },
+    `"threat-assessment-space-hulk-1" isn't on the space hulk Hazards Table`,
+  );
+  await refused({ parentId: crypto.randomUUID(), rooms: [r1.id] }, "Parent location not found");
+  assert.equal(gm.codex()!.locations.length, 5, "a refusal writes nothing");
+
+  const kael = await gm.send({ type: "character.create", name: "Kael" });
+  assert.ok(kael.ok && kael.id);
+  const token = await gm.send({ type: "token.issue", characterId: kael.id });
+  assert.ok(token.ok && token.token);
+  const phone = connect({ auth: { token: token.token } });
+  t.after(() => phone.socket.close());
+  await eventually(() => !!phone.codex(), "the player's codex");
+  assert.deepEqual(await phone.send({ type: "codex.addHulk", parentId: wreck.id, hulk: null, rooms: [r1.id] }), {
+    ok: false,
+    error: "GM only",
+  });
+  assert.deepEqual(phone.codex()!.locations, [], "the hulk starts hidden, its text on the GM's seat only");
 });
 
 test("export and import: a campaign file becomes a new campaign, whole or as a fresh start", async (t) => {

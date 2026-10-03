@@ -1,15 +1,18 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { hazards, places, threats } from "@wg/data";
+import { hazards, hulkHazardIds, places, spaceHulk, threats } from "@wg/data";
 import type { z } from "zod";
 import {
   LocationHazard,
+  hulkNotes,
   MAX_PLACES_PER_ADD,
   placeNotes,
+  roomNotes,
   wouldCycle,
   type Action,
   type ActionResult,
   type CodexInput,
+  type HulkTable,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
@@ -17,7 +20,10 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { adventure, beat, faction, handout, location, npc } from "./codex.schema.ts";
 
-export type CodexAction = Extract<Action, { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" }>;
+export type CodexAction = Extract<
+  Action,
+  { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" | "codex.addHulk" }
+>;
 
 const codexTable = { faction, adventure, beat, location, npc, handout } as const;
 type RefTable = typeof faction | typeof adventure | typeof location | typeof npc | typeof handout | typeof character;
@@ -223,6 +229,50 @@ export async function applyCodexAction(
         }),
       );
       return { ok: true, id: ids.get(root.id)! };
+    }
+
+    // The Space Hulk Generator (issue #50 step 8, RR1 pp.6–11): the hulk with its origins, occupants, objective and
+    // Stage 4 hazards, and its rooms inside it; or, with no hulk, more rooms inside a place already here (§11.102). The
+    // client sends row ids only, as with ADD FROM BOOK.
+    case "codex.addHulk": {
+      if (!a.hulk && (!a.parentId || !a.rooms.length)) fail("Pick a room, and the place it goes inside");
+      await checkRefs(tx, { campaignId: cid, table: location, ids: [a.parentId], what: "Parent location" });
+      const rowOf = (t: HulkTable, rowId: string) =>
+        t.rows.find((r) => r.id === rowId) ?? fail(`"${rowId}" isn't on the ${t.name}`);
+      const rooms = a.rooms.map((r) => rowOf(spaceHulk.rooms, r));
+      const h = a.hulk;
+      const hulkId = h ? randomUUID() : null;
+      // One createdAt per row, as addPlaces does, so the rooms list in the order they were rolled.
+      const t0 = Date.now();
+      const rows: (typeof location.$inferInsert)[] = rooms.map((r, i) => ({
+        id: randomUUID(),
+        campaignId: cid,
+        name: r.name,
+        parentId: hulkId ?? a.parentId,
+        gmNotes: roomNotes(spaceHulk, r),
+        createdAt: new Date(t0 + 1 + i),
+      }));
+      if (h && hulkId)
+        rows.unshift({
+          id: hulkId,
+          campaignId: cid,
+          name: h.name,
+          parentId: a.parentId,
+          gmNotes: hulkNotes(spaceHulk, {
+            origins: h.origins.map((o) => rowOf(spaceHulk.origin, o)),
+            occupants: rowOf(spaceHulk.occupants, h.occupants),
+            objective: rowOf(spaceHulk.objectives, h.objective),
+          }),
+          // Every Stage 4 row reads "while aboard this vessel", so it sits on the hulk, not a room (§11.102).
+          hazardList: [...new Set(h.hazards)].map((hazardId) => {
+            if (!hulkHazardIds.has(hazardId)) fail(`"${hazardId}" isn't on the space hulk Hazards Table`);
+            return { id: randomUUID(), kind: "book" as const, hazardId, variant: null };
+          }),
+          createdAt: new Date(t0),
+        });
+      await tx.insert(location).values(rows);
+      // Without a hulk, the guard at the top of this case made sure parentId is set.
+      return { ok: true, id: hulkId ?? a.parentId! };
     }
   }
 }

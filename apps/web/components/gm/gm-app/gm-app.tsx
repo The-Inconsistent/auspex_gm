@@ -159,6 +159,7 @@ export function GmApp({
                 flavour={flavour}
                 places={places}
                 hazards={presets.hazards}
+                spaceHulk={presets.spaceHulk}
                 bestiary={bestiary}
                 tier={state.campaign.tier}
                 players={players}
