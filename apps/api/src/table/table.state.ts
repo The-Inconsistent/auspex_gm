@@ -21,6 +21,7 @@ import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
 import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
+import { loadCustomThreats } from "../threat/threat.service.ts";
 
 // Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
 // is the api's, so this is where an id can be put next to a name for the phones (Core p.227, §11.63).
@@ -221,13 +222,14 @@ const entriesOf = (b: { id: string; encounter: unknown[] }) => {
 };
 
 export async function loadCodex(campaignId: string): Promise<Codex> {
-  const [factions, adventures, locations, npcs, handouts, sessions] = await Promise.all([
+  const [factions, adventures, locations, npcs, handouts, sessions, customThreats] = await Promise.all([
     db.select().from(faction).where(eq(faction.campaignId, campaignId)).orderBy(asc(faction.createdAt)),
     db.select().from(adventure).where(eq(adventure.campaignId, campaignId)).orderBy(asc(adventure.createdAt)),
     db.select().from(location).where(eq(location.campaignId, campaignId)).orderBy(asc(location.createdAt)),
     db.select().from(npc).where(eq(npc.campaignId, campaignId)).orderBy(asc(npc.createdAt)),
     db.select().from(handout).where(eq(handout.campaignId, campaignId)).orderBy(asc(handout.createdAt)),
     db.select().from(session).where(eq(session.campaignId, campaignId)).orderBy(asc(session.number)),
+    loadCustomThreats(db, campaignId),
   ]);
   const beats = adventures.length
     ? await db
@@ -255,6 +257,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
     locations: locations.map(strip) as Codex["locations"],
     npcs: npcs.map(strip) as Codex["npcs"],
     handouts: handouts.map((h) => ({ ...strip(h), revealedAt: h.revealedAt?.toISOString() ?? null })),
+    customThreats,
     sessions: sessions.map((s) => ({
       id: s.id,
       number: s.number,

@@ -28,6 +28,10 @@ export const CUSTOM_PREFIX = "custom-";
 export const customThreatId = (slug: string) => `${CUSTOM_PREFIX}${slug}`;
 export const isCustomThreatId = (id: string) => id.startsWith(CUSTOM_PREFIX);
 
+// ponytail: 100 per campaign, each at most MAX_CUSTOM_THREAT_CHARS, keeps the codex broadcast and the 2 MB import limit
+// comfortable; give custom threats a snapshot of their own if a table needs more.
+export const CUSTOM_THREAT_CAP = 100;
+
 export const MAX_SLUG = 60;
 // ponytail: 999 same-named threats in one campaign is already absurd; a fuller scheme if a table ever gets there
 const MAX_SLUG_TRIES = 999;
@@ -164,6 +168,21 @@ export const Threat = z.object({
   note: z.string().max(500).optional(), // a print error copied as printed, or a transcription remark
 });
 export type Threat = z.infer<typeof Threat>;
+
+// A stat block the GM writes (issue #43). The book files are checked by validate, but this one comes from a client, so
+// it is capped: one size for the whole block rather than a limit per field, since the GM shapes it freely. The longest
+// printed block is under 7,000 characters, so a clone always fits.
+// ponytail: 16,000 characters × CUSTOM_THREAT_CAP stays under the 2 MB import limit; per-field caps if one field abuses it
+export const MAX_CUSTOM_THREAT_CHARS = 16_000;
+const customName = z.string().trim().min(1).max(100);
+const fits = (t: object) => JSON.stringify(t).length <= MAX_CUSTOM_THREAT_CHARS;
+const tooBig = `A custom threat is at most ${MAX_CUSTOM_THREAT_CHARS.toLocaleString("en")} characters`;
+// What `threat.save` takes: the server sets `id`, `source` and `page`.
+export const CustomThreatData = Threat.omit({ id: true, source: true, page: true })
+  .extend({ name: customName })
+  .refine(fits, tooBig);
+// A whole custom threat, as an export file or a pack carries it.
+export const CustomThreat = Threat.extend({ name: customName }).refine(fits, tooBig);
 
 // Below its first printed Tier a threat takes that Tier's class, so the GM can still field it.
 export const threatClassAt = (t: Threat, tier: number): ThreatClass =>
