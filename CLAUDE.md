@@ -167,7 +167,8 @@ apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-pro
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach)
-packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
+packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
+                             profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
