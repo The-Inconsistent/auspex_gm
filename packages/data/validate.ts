@@ -346,6 +346,13 @@ const EXPECTED_HAZARDS: Record<string, number> = {
   "threat-assessment-frozen-tundra": 13, // p.19
   "threat-assessment-forgeworld": 13, // p.21
   "core-environmental-hazards": 6, // pp.201–202, a list to pick from
+  "darktide-warrens-hazards": 9, // p.14
+  "darktide-hab-settlement-hazards": 9, // p.16
+  "darktide-industrial-works-hazards": 9, // p.18
+  "darktide-gang-turf-hazards": 9, // p.20
+  "darktide-militarum-depot-hazards": 9, // p.22
+  "darktide-quarantine-zone-hazards": 9, // p.24
+  "darktide-profaned-ground-hazards": 9, // p.26
 };
 const hazardIds = new Set<string>();
 {

@@ -1,0 +1,1371 @@
+[
+  {
+    "id": "darktide-warrens-hazards",
+    "name": "Warren Hazards",
+    "source": "darktide",
+    "page": 14,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-warrens-reactor-leak",
+        "from": 2,
+        "to": 3,
+        "name": "Reactor Leak",
+        "page": 14,
+        "text": "You crawl through the ventricles of Hive Tertium's nuclear hearts, bathing in their radioactive glow. Unless the Agents have equipment that can detect or shield them from radiation, each Agent must succeed on a DN 4 Toughness Test, or suffer 1d3 Mortal Wounds, and 1d6 Shock.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 4,
+            "purpose": "Resist the reactor's radiation",
+            "gm": "On a fail: 1d3 Mortal Wounds and 1d6 Shock. Skipped if the Agents can detect or shield against radiation."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-warrens-electric-wrath",
+        "from": 4,
+        "to": 4,
+        "name": "Electric Wrath",
+        "page": 14,
+        "text": "Power circuits neglected for generations vent their sparking fury at the Agents as they pass. Unless an Agent succeeds on a DN 6 Tech (Int) Test to redirect the charge earthwards, the shocks inflict 10 + 1ED damage with the Agonising Trait on every Agent.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Redirect the electrical discharge earthwards",
+            "gm": "On a fail: 10 + 1ED damage with the Agonising Trait."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-warrens-sudden-descent",
+        "from": 5,
+        "to": 5,
+        "name": "Sudden Descent",
+        "page": 14,
+        "text": "The floor of the Warren unexpectedly gives way beneath the Agents. Unless the Agents have a way to mitigate falling damage, they all suffer 1 Mortal Wound from the 8-metre drop.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-warrens-raining-debris",
+        "from": 6,
+        "to": 6,
+        "name": "Raining Debris",
+        "page": 14,
+        "text": "Rubble, sludge, or a blast of sub-zero coolant douses the Agents from above. Each Agent suffers 10 + 1ED damage from the industrial precipitation, which can be converted to Shock with Determination as normal.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-warrens-wrong-turn",
+        "from": 7,
+        "to": 7,
+        "name": "Wrong Turn",
+        "page": 14,
+        "text": "Instead of reaching their destination, the Agents find themselves lost in the Warrens of Tertium. Roll an additional Hazard on this table for the Agents to encounter, and additionally they gain 1 Ruin.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Roll an additional Hazard on this table and gain 1 Ruin."
+      },
+      {
+        "id": "darktide-warrens-tough-going",
+        "from": 8,
+        "to": 8,
+        "name": "Tough Going",
+        "page": 14,
+        "text": "The Agents are exhausted after a long, difficult, sweaty stretch of their journey. Each Agent gains 1d6 Shock, and a growing list of grievances.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-warrens-uncharted-territory",
+        "from": 9,
+        "to": 9,
+        "name": "Uncharted Territory",
+        "page": 14,
+        "text": "The layout of Hive Tertium's Warrens shifts in response to architectural collapse, bulldozing of old thoroughfares, or drilling of new tunnels. Whatever maps or orienteering instincts the Agents have been relying on just became obsolete. The DN of the Agents' next Navigation Test increases by 2.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "The DN of the Agents' next Navigation Test is +2."
+      },
+      {
+        "id": "darktide-warrens-bad-air",
+        "from": 10,
+        "to": 10,
+        "name": "Bad Air",
+        "page": 14,
+        "text": "A cloud of choking 'hive gas' vents into the Warrens, infecting the Agents with its malodorous pollution. The poison has no immediate effect, but the next time each Agent suffers a Wound, they gain the Poisoned Condition. Removing the Condition is a DN 4 Toughness or Medicae (Int) Test. If an Agent does not suffer a Wound between now and the next Respite, the poison leaves their system harmlessly.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 4,
+            "purpose": "Remove the Poisoned Condition",
+            "gm": "Alternative to the DN 4 Medicae Test; one or the other."
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Medicae"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Remove the Poisoned Condition",
+            "gm": "Alternative to the DN 4 Toughness Test; one or the other."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Poisoned is gained only the next time each Agent suffers a Wound before the next Respite; otherwise it fades."
+      },
+      {
+        "id": "darktide-warrens-not-alone",
+        "from": 11,
+        "to": 12,
+        "name": "Not Alone",
+        "page": 14,
+        "text": "Hostile creatures corner the Agents, provoking them into a short-range tunnel fight. The assailants may be beasts native to the Warrens, such as Stack Skirrers (page 38) Lattice Springers (page 75), or an enemy squad that just happens to be travelling through the same thoroughfare. The GM nominates an Agent to make a DN 6 Awareness (Int) Test — unless they succeed, the Agents are ambushed and must spend 1 Glory each to act in the first round of combat.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Spot the ambush before it springs",
+            "gm": "On a fail the Agents are ambushed and each must spend 1 Glory to act in Round 1. One nominated Agent tests."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "darktide-hab-settlement-hazards",
+    "name": "Hab Settlement Hazards",
+    "source": "darktide",
+    "page": 16,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-hab-settlement-crumbling-hab-block",
+        "from": 2,
+        "to": 3,
+        "name": "Crumbling Hab Block",
+        "page": 16,
+        "text": "The densely packed hab blocks still house thousands of workers, but these decaying structures are at risk of collapse from deadly hivequakes. Each Agent must pass a DN 7 Athletics (S) Test to negotiate the dangers of the Hab Block. If they fail, they suffer 1d3 Mortal Wounds.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Negotiate the collapsing hab block",
+            "gm": "On a fail: 1d3 Mortal Wounds. Each Agent tests."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-hab-settlement-extra-judicial-punishment",
+        "from": 4,
+        "to": 4,
+        "name": "Extra-Judicial Punishment",
+        "page": 16,
+        "text": "The Mags — the Enforcers of Tertium Hive — are granted the right to maintain the law of the Lord Moebian. But there are those Mags who go too far and mete out excessive corporal punishments. You must either negotiate with them — a DN 8 Persuasion (Fel) Test — or fight the 1d3+2 Enforcers.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 8,
+            "purpose": "Talk the Mags down instead of fighting"
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "enforcer",
+            "count": "d3+2"
+          }
+        ]
+      },
+      {
+        "id": "darktide-hab-settlement-obscura-den",
+        "from": 5,
+        "to": 5,
+        "name": "Obscura Den",
+        "page": 16,
+        "text": "Desperate and exhausted citizens seek out any form of escape from their gruelling labour. Obscura dens are a constant temptation, even for those strong in faith and resolve. If the Agents do nothing to help the Obscura users, the Agents must pass a DN 3 Corruption Test.",
+        "tests": [
+          {
+            "kind": "corruption",
+            "skills": [],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Resist the temptation of the Obscura den",
+            "gm": "Only if the Agents do nothing to help the users."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-hab-settlement-mutie-raid",
+        "from": 6,
+        "to": 6,
+        "name": "Mutie Raid",
+        "page": 16,
+        "text": "From the deep hive, mutant raiders come up into the hab zones, making use of the chaos of the uprising to take what supplies they can. The Agents face 1d6+3 mutants, or they can choose to ignore the plight of the hive citizens and Ruin increases by 1d3.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "mutant",
+            "count": "d6+3"
+          }
+        ],
+        "gm": "If the Agents ignore the citizens' plight instead of fighting, Ruin increases by 1d3."
+      },
+      {
+        "id": "darktide-hab-settlement-rad-dust-storm",
+        "from": 7,
+        "to": 7,
+        "name": "Rad Dust Storm",
+        "page": 16,
+        "text": "The cracks in the hive shell let in the toxic dust storms, and drifts of radioactive debris gather and threaten to bury buildings. Agents must pass a DN 5 Toughness Test or suffer 1d3 Mortal Wounds. Agents wearing adequate protective clothing ignore the effects of the dust.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 5,
+            "purpose": "Withstand the radioactive dust",
+            "gm": "On a fail: 1d3 Mortal Wounds. Agents in adequate protective clothing are unaffected."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-hab-settlement-burst-waste-flow",
+        "from": 8,
+        "to": 8,
+        "name": "Burst Waste Flow",
+        "page": 16,
+        "text": "A burst pipe leads to a zone flooded with stinking lakes of unsanitary grey water. A DN 7 Survival (Wil) Test is required to find a safe route across. Otherwise, all Agents suffer 1 Mortal Wound and begin their next encounter Poisoned.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Find a safe route across the flooded zone",
+            "gm": "On a fail: all Agents suffer 1 Mortal Wound and start their next encounter Poisoned."
+          }
+        ],
+        "conditions": [
+          "poisoned"
+        ],
+        "threats": []
+      },
+      {
+        "id": "darktide-hab-settlement-ruinous-preacher",
+        "from": 9,
+        "to": 9,
+        "name": "Ruinous Preacher",
+        "page": 16,
+        "text": "A priest loudly pontificates, decrying the ills of the world brought down upon them by the decadent lords of the spire. A DN 5 Intellect Test will reveal to an Agent that the priest's words hide within them venerations of the Ruinous Powers. Either the Agents deal with the heretic, or must make a DN 3 Corruption Test.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "Int",
+            "dn": 5,
+            "purpose": "Recognise the priest's Ruinous veneration"
+          },
+          {
+            "kind": "corruption",
+            "skills": [],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Resist the preacher's corrupting words",
+            "gm": "Only if the Agents do not deal with the heretic."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-hab-settlement-racketeers",
+        "from": 10,
+        "to": 10,
+        "name": "Racketeers",
+        "page": 16,
+        "text": "Unscrupulous gangers threaten citizens with harm unless they pay the gang for their protection. Passing a DN 7 Persuasion (Fel) Test, the Agents can convince the gangers to join the Slung for a great chance at fortune and glory.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Recruit the gangers to the Slung"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-hab-settlement-riot",
+        "from": 11,
+        "to": 12,
+        "name": "Riot!",
+        "page": 16,
+        "text": "The breakdown of order within the hive city leads to hunger and death within the hab blocks. With the Mags elsewhere, unrest spreads, and agitators stir up resentment in the hive. A successful DN 6 Leadership (Fel) Test allows the Agents to disperse the riot.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Leadership"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Disperse the riot"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "darktide-industrial-works-hazards",
+    "name": "Industrial Works Hazards",
+    "source": "darktide",
+    "page": 18,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-industrial-works-forgotten-manufactorum",
+        "from": 2,
+        "to": 3,
+        "name": "Forgotten Manufactorum",
+        "page": 18,
+        "text": "Ancient machines, long forgotten and left to rust, still attempt to perform their sacred function. Their grinding gears and gaseous emissions increase the DN of all Awareness (Int) Tests by +2, making it a perfect ambush location for those who wish the Agents ill.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "All Awareness Tests have DN +2 here."
+      },
+      {
+        "id": "darktide-industrial-works-flooded-factory",
+        "from": 4,
+        "to": 4,
+        "name": "Flooded Factory",
+        "page": 18,
+        "text": "The Agents must pass through a partially flooded factory, diving beneath the surface of the silty, polluted water to find a safe route through. Any Agents without a sealed air supply must make a DN 6 Athletics (S) Test or suffer 1d3 Mortal Wounds.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Swim through the flooded factory",
+            "gm": "On a fail: 1d3 Mortal Wounds. Only Agents without a sealed air supply test."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-industrial-works-acid-vats",
+        "from": 5,
+        "to": 5,
+        "name": "Acid Vats",
+        "page": 18,
+        "text": "Rusting, pitted walkways stretch over enormous vats of bubbling caustic liquid. Each Agent that walks across must make a DN 2 Agility Test. If they fail, they get splashed with acid, taking 1d3 Mortal Wounds and reducing the protection of their armour by 1 AP.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "A",
+            "dn": 2,
+            "purpose": "Keep footing on the walkway over the acid",
+            "gm": "On a fail: 1d3 Mortal Wounds and armour loses 1 AP."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-industrial-works-supply-transit-hub",
+        "from": 6,
+        "to": 6,
+        "name": "Supply Transit Hub",
+        "page": 18,
+        "text": "Heavily-laden automated cargo-hoppers thunder along rails that block the Agents' path. One Agent can attempt a DN 5 Tech (Int) Test to reroute them, or all Agents risk leaping through the gaps (a DN 3 Initiative Test), taking 10 + 4ED damage if they fail.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Reroute the cargo-hoppers",
+            "gm": "One Agent tests; alternative to everyone leaping the gaps."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "I",
+            "dn": 3,
+            "purpose": "Leap through the gaps between hoppers",
+            "gm": "On a fail: 10 + 4ED damage. Alternative to the Tech reroute; each Agent tests."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-industrial-works-foundry",
+        "from": 7,
+        "to": 7,
+        "name": "Foundry",
+        "page": 18,
+        "text": "Toiling workers stoke giant furnaces here, but a group of agitators are attempting to sway them to the rebel cause. A DN 6 Persuasion (Fel) Test can stop the workers becoming pawns of the Ruinous Powers.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Keep the workers from the rebel cause"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-industrial-works-servitor-sweep",
+        "from": 8,
+        "to": 8,
+        "name": "Servitor Sweep",
+        "page": 18,
+        "text": "A group of four combat servitors are patrolling these tunnels with orders to keep intruders out. Agents with the ADEPTUS MECHANICUS keyword can attempt a DN 3 Leadership (Wil) Test to convince them to stand down, but otherwise they must be fought or evaded.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Leadership"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Order the servitors to stand down",
+            "gm": "Only Agents with the ADEPTUS MECHANICUS keyword may try."
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "combat-servitor",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "id": "darktide-industrial-works-munitions-plant",
+        "from": 9,
+        "to": 9,
+        "name": "Munitions Plant",
+        "page": 18,
+        "text": "This area is stacked with ordnance for artillery weapons. The mutants who labour here have broken loose and are out for blood. Anyone using a ranged weapon that rolls a Complication will set off a chain reaction, inflicting a Frag Missile hit on all present.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "A ranged weapon Complication triggers a Frag Missile hit on everyone present."
+      },
+      {
+        "id": "darktide-industrial-works-worker-riot",
+        "from": 10,
+        "to": 10,
+        "name": "Worker Riot",
+        "page": 18,
+        "text": "A large mob of angry workers are facing off against a small group of Adeptus Mechanicus, and violence seems imminent. A DN 6 Intimidation (Wil) Test can disperse the crowd without any harm.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Intimidation"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Disperse the crowd without violence"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-industrial-works-broken-on-the-wheel",
+        "from": 11,
+        "to": 12,
+        "name": "Broken on the Wheel",
+        "page": 18,
+        "text": "Traitor cultists are busily torturing a group of loyal tech-adepts, using their own machines to pull them apart in gruesome fashion. If the Agents choose not to intervene and leave the tech-adepts to their fate, they must all make a DN 3 Corruption Test.",
+        "tests": [
+          {
+            "kind": "corruption",
+            "skills": [],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Witnessing the tech-adepts' torture",
+            "gm": "Only if the Agents do not intervene; all Agents test."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "darktide-gang-turf-hazards",
+    "name": "Gang Turf Hazards",
+    "source": "darktide",
+    "page": 20,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-gang-turf-children-of-the-stars",
+        "from": 2,
+        "to": 3,
+        "name": "Children of the Stars",
+        "page": 20,
+        "text": "Amongst the hive gangs, there are those touched by the Genestealer Curse. The Agents encounter 1d3+4 Genestealer Cultists who are looking to exploit the unrest in the hive.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-gang-turf-infinite-black",
+        "from": 4,
+        "to": 4,
+        "name": "Infinite Black",
+        "page": 20,
+        "text": "The ruined domes, broken by hive quakes and centuries of increasing mass from above, shear and open up into the depths below. To cross the treacherous cavern, Agents must pass a DN 4 Athletics (S) Test or suffer 1d6 Mortal Wounds from the fall.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Cross the cavern without falling",
+            "gm": "On a fail: 1d6 Mortal Wounds from the fall."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-gang-turf-narco-refinery",
+        "from": 5,
+        "to": 5,
+        "name": "Narco Refinery",
+        "page": 20,
+        "text": "Gangs operate illicit manufactorums, producing narcotics that they sell throughout the hive. The dangerous chemicals splashed around can cause burns and psychotic episodes. Agents must pass a DN 4 Agility Test. If they fail, they suffer 1d3 Mortal Wounds and the Hindered Condition which lasts until the Agent passes a DN 4 Willpower Test or is treated by an Agent with a DN 5 Medicae (Int) Test.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "A",
+            "dn": 4,
+            "purpose": "Avoid the splashed chemicals",
+            "gm": "On a fail: 1d3 Mortal Wounds and the Hindered Condition."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "Wil",
+            "dn": 4,
+            "purpose": "Shake off the Hindered Condition",
+            "gm": "Ends Hindered; alternative to being treated with a DN 5 Medicae Test."
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Medicae"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Treat another Agent's Hindered Condition",
+            "gm": "Made by a treating Agent; alternative to the afflicted Agent's Willpower Test."
+          }
+        ],
+        "conditions": [
+          "hindered"
+        ],
+        "threats": []
+      },
+      {
+        "id": "darktide-gang-turf-pneumatic-crusher",
+        "from": 6,
+        "to": 6,
+        "name": "Pneumatic Crusher",
+        "page": 20,
+        "text": "The local gang has rigged a trash compactor as a trap. A DN 5 Agility (S) Test must be passed, otherwise the Agent suffers 1d3 Mortal Wounds. A further 1d3 Mortal Wounds are suffered by an Agent if they roll a Wrath Complication.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "A",
+            "dn": 5,
+            "purpose": "Escape the trash compactor",
+            "gm": "On a fail: 1d3 Mortal Wounds. Printed as Agility (S); read as the Agility Attribute."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "An Agent who rolls a Wrath Complication suffers a further 1d3 Mortal Wounds."
+      },
+      {
+        "id": "darktide-gang-turf-gang-war",
+        "from": 7,
+        "to": 7,
+        "name": "Gang War",
+        "page": 20,
+        "text": "The Agents have stumbled into a battle between rival gangs in the hive. They have no care for interlopers in their affairs. There are 2d6+3 Scum in each gang fighting.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "scum",
+            "count": "2d6+3"
+          }
+        ],
+        "gm": "The 2d6+3 Scum is per gang; the number of gangs is not stated."
+      },
+      {
+        "id": "darktide-gang-turf-pit-fight",
+        "from": 8,
+        "to": 8,
+        "name": "Pit Fight",
+        "page": 20,
+        "text": "The Agents find themselves inadvertently in a fighting pit, and to escape, they must face 1d3 Chrono Gladiators for the entertainment of the gang.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-gang-turf-crossfire",
+        "from": 9,
+        "to": 9,
+        "name": "Crossfire",
+        "page": 20,
+        "text": "Caught in the crossfire between rival gangs, the Agents need to slip through the zone. With a successful DN 5 Stealth (A) Test the Agents sneak past the warring gangers. If they fail, they suffer a hit from a weapon; roll 1d6 to determine which: (1–3) Autogun, (4–5) Boltgun, (6) Heavy Stubber.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Sneak past the warring gangers",
+            "gm": "On a fail: a hit from a weapon (d6: 1-3 Autogun, 4-5 Boltgun, 6 Heavy Stubber)."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-gang-turf-a-deals-a-deal",
+        "from": 10,
+        "to": 10,
+        "name": "A Deal's a Deal",
+        "page": 20,
+        "text": "Rival gang bosses have met to trade prisoners. However, the Agents have walked in on this meeting and tensions have risen, with each gang blaming the other. By passing a DN 7 Persuasion (Fel) Test the situation can be defused, and a further Persuasion Test at the same DN allows the Agents to recruit 1d3 Scum to the Slung. Otherwise, a fight breaks out, following the rules above in Gang War.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Defuse the standoff",
+            "gm": "On a fail a fight breaks out as in Gang War."
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Recruit 1d3 Scum to the Slung",
+            "gm": "A further Test after defusing the standoff."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-gang-turf-gun-emplacement",
+        "from": 11,
+        "to": 12,
+        "name": "Gun Emplacement",
+        "page": 20,
+        "text": "Automated Heavy Bolters begin firing. To successfully dodge and take cover, Agents need to pass a DN 6 Athletics (S) Test. If they fail, they suffer a single hit from a Heavy Bolter. If they can succeed and gain a total of 4 successes, an Agent can reach the guns and disable them, and potentially loot the emplacement by passing a DN 7 Tech (Int) Test.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Dodge and take cover from the Heavy Bolters",
+            "gm": "On a fail: a single Heavy Bolter hit. 4 total successes lets an Agent reach and disable the guns."
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Loot the disabled emplacement"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "darktide-militarum-depot-hazards",
+    "name": "MILITARUM DEPOT HAZARDS",
+    "source": "darktide",
+    "page": 22,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-militarum-depot-abandoned-outpost",
+        "from": 2,
+        "to": 3,
+        "name": "Abandoned Outpost",
+        "page": 22,
+        "text": "Though long abandoned, the empty depot is still guarded by 1d6+4 Gun Servitors. Agents with the MILITARUM Keyword may attempt a DN 3 Tech (Int) Test to submit the correct passcodes to deactivate them for salvage.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Agents with the MILITARUM Keyword enter passcodes to deactivate the Gun Servitors"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-militarum-depot-destroyed",
+        "from": 4,
+        "to": 4,
+        "name": "Destroyed",
+        "page": 22,
+        "text": "This depot was overrun, its inhabitants slaughtered and its equipment stripped before the horde moved on. But stragglers lurk in the shadows; Agents who fail a DN 4 Awareness (Int) Test are ambushed by a Mob of 2d6+3 Mutants.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Spot the lurking stragglers before being ambushed"
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "mutant",
+            "count": "2d6+3"
+          }
+        ]
+      },
+      {
+        "id": "darktide-militarum-depot-the-brood-hungers",
+        "from": 5,
+        "to": 5,
+        "name": "The Brood Hungers",
+        "page": 22,
+        "text": "The depot appears abandoned until the Agents find fresh blood and viscera from a savage attack. Passing a DN 5 Investigation (Int) Test reveals that most staff were abducted, not killed. The Genestealer responsible is still here, and its children are still hungry.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Investigation"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Learn that staff were abducted, not killed"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-militarum-depot-location-redacted",
+        "from": 6,
+        "to": 6,
+        "name": "<LOCATION REDACTED>",
+        "page": 22,
+        "text": "The purpose of the depot is top secret, the Agents are not authorised to enter. A DN 7 Intimidation (Wil) or Persuasion (Fel) Test is required to convince personnel to allow them through. Otherwise, they must go around (roll again on the Hazard Table). Alternatively, the Agents may fight 3 Mobs of 20 well-equipped Militarum Troopers each.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Intimidation",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Convince personnel to let the Agents through"
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "On failure the Agents go around: roll again on this Hazard table."
+      },
+      {
+        "id": "darktide-militarum-depot-paranoid-fortress",
+        "from": 7,
+        "to": 7,
+        "name": "Paranoid Fortress",
+        "page": 22,
+        "text": "The depot's forces open fire on anyone venturing close! Agents wishing to enter must defeat a Mob of 20 Troopers, led by a paranoid Veteran. A successful DN 7 Intimidate (Wil) or Persuasion (Fel) Test can talk the Veteran down from their delusions.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Intimidation",
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Talk the paranoid Veteran down"
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "astra-militarum-trooper",
+            "count": 20
+          }
+        ]
+      },
+      {
+        "id": "darktide-militarum-depot-chem-squad-garrison",
+        "from": 8,
+        "to": 8,
+        "name": "Chem-Squad Garrison",
+        "page": 22,
+        "text": "This depot was dedicated to training troops to deal with chemical warfare and toxic environments. The training halls are irradiated or filled with toxins, and require a successful DN 5 Toughness Test to cross. Failure inflicts Poisoned (5) or Moderate Rad Poison as appropriate.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 5,
+            "purpose": "Cross the irradiated or toxic training halls",
+            "gm": "Failure: Poisoned (5) or Moderate Rad Poison as appropriate."
+          }
+        ],
+        "conditions": [
+          "poisoned"
+        ],
+        "threats": []
+      },
+      {
+        "id": "darktide-militarum-depot-militia-garrison",
+        "from": 9,
+        "to": 9,
+        "name": "Militia Garrison",
+        "page": 22,
+        "text": "The depot houses a platoon of barely trained recruits. By passing a DN 7 Persuasion (Fel) Test, an Agent may convince their staff sergeant to assign a Mob of 20 Troopers to the Slung to aid them.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Persuasion"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Convince the staff sergeant to lend a Mob of Troopers"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-militarum-depot-traitor-base",
+        "from": 10,
+        "to": 10,
+        "name": "Traitor Base",
+        "page": 22,
+        "text": "The depot seems perfectly normal until the Agents are deep inside. Then, the personnel drop the facade and reveal the whole base has fallen to heretical influences! To escape, Agents must fight 2 Mobs of 10 Militarum Troopers, and at least 1 stationary Gun Servitor.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-militarum-depot-under-siege",
+        "from": 11,
+        "to": 12,
+        "name": "Under Siege",
+        "page": 22,
+        "text": "The depot is currently being attacked by a cocky gang of Scum. A Mob of 10 Militarum Troopers is being whittled down by a Mob of 20 Scum. Surviving defenders will be grateful, assuming they are loyal…",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "astra-militarum-trooper",
+            "count": 10
+          },
+          {
+            "threatId": "scum",
+            "count": 20
+          }
+        ]
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "darktide-quarantine-zone-hazards",
+    "name": "QUARANTINE ZONE HAZARDS",
+    "source": "darktide",
+    "page": 24,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-quarantine-zone-mutant-city",
+        "from": 2,
+        "to": 3,
+        "name": "Mutant City",
+        "page": 24,
+        "text": "The path takes the Agents through the centre of a huge mutant settlement. They must either make an offering of 1 Wealth each to pass through, or fight an enormous mob of mutants.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Passing peacefully costs each Agent 1 Wealth."
+      },
+      {
+        "id": "darktide-quarantine-zone-venting-coolant",
+        "from": 4,
+        "to": 4,
+        "name": "Venting Coolant",
+        "page": 24,
+        "text": "A nearby power-plant is venting coolant into this area, exposing the Agents to a hefty dose of radiation. Each Agent must make a DN 7 Toughness Test or take 1d3 Mortal Wounds.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 7,
+            "purpose": "Resist the radiation from the vented coolant",
+            "gm": "Failure: 1d3 Mortal Wounds. Each Agent tests."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-quarantine-zone-eerie-quiet",
+        "from": 5,
+        "to": 5,
+        "name": "Eerie Quiet",
+        "page": 24,
+        "text": "This area is dusty and deserted, with no sign of why it was quarantined. The oppressive silence means Agents suffer +3 to the DN of the next Fear Test they make.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "The next Fear Test each Agent makes has +3 DN."
+      },
+      {
+        "id": "darktide-quarantine-zone-cyclopean-gateway",
+        "from": 6,
+        "to": 6,
+        "name": "Cyclopean Gateway",
+        "page": 24,
+        "text": "A set of gigantic adamantium doors locked with an Inquisition code cipher bar the Agents' path. A DN 7 Scholar (Int) Test to crack the code or DN 10 Tech (Int) Test to override the machinery are needed in order to pass. If they fail, they encounter a Warren Hazard.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Scholar"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "Crack the Inquisition code cipher",
+            "gm": "Alternative to the DN 10 Tech Test."
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 10,
+            "purpose": "Override the door machinery",
+            "gm": "Alternative to the DN 7 Scholar Test."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "On failure the Agents encounter a Warren Hazard."
+      },
+      {
+        "id": "darktide-quarantine-zone-toxic-swamp",
+        "from": 7,
+        "to": 7,
+        "name": "Toxic Swamp",
+        "page": 24,
+        "text": "All manner of industrial pollutants have pooled here, creating a poisonous swamp. One Agent may make a DN 7 Survival (Wil) Test to find a safe route across. Otherwise, all Agents suffer 1d3 Mortal Wounds and begin their next encounter Poisoned.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": 7,
+            "purpose": "One Agent finds a safe route across the swamp",
+            "gm": "Failure: all Agents suffer 1d3 Mortal Wounds and begin their next encounter Poisoned."
+          }
+        ],
+        "conditions": [
+          "poisoned"
+        ],
+        "threats": []
+      },
+      {
+        "id": "darktide-quarantine-zone-fungal-infestation",
+        "from": 8,
+        "to": 8,
+        "name": "Fungal Infestation",
+        "page": 24,
+        "text": "A lightless jungle of gigantic fungi has sprung up in this area. Anyone breathing the air directly must make a DN 4 Toughness Test or be Poisoned while in this area.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 4,
+            "purpose": "Resist the fungal air",
+            "gm": "Failure: Poisoned while in this area."
+          }
+        ],
+        "conditions": [
+          "poisoned"
+        ],
+        "threats": []
+      },
+      {
+        "id": "darktide-quarantine-zone-medical-waste-dump",
+        "from": 9,
+        "to": 9,
+        "name": "Medical Waste Dump",
+        "page": 24,
+        "text": "This area is packed with foul, rotting medical waste that was intended for incineration. The rough footing counts as Difficult Terrain, and the area is crawling with Poxwalkers.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-quarantine-zone-trapped-souls",
+        "from": 10,
+        "to": 10,
+        "name": "Trapped Souls",
+        "page": 24,
+        "text": "The Agents force open a barricade to find a small settlement scraping a living in the foulness beyond. They swear they have no idea why they were quarantined, and that they are loyal Imperial citizens. A DN 6 Investigation (Int) Test will reveal an unholy shrine hidden beneath their town square, and evidence of extensive cannibalism.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Investigation"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Uncover the hidden shrine and cannibalism"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-quarantine-zone-sword-of-damocles",
+        "from": 11,
+        "to": 12,
+        "name": "Sword of Damocles",
+        "page": 24,
+        "text": "To pass by, the Agents will have to drain a huge container of poisonous chemicals, allowing its lethal contents to leech into the hive, potentially injuring thousands. Whichever Agent does the deed must make a DN 6 Corruption Test for the innocent souls they condemn.",
+        "tests": [
+          {
+            "kind": "corruption",
+            "skills": [],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "The Agent who drains the container resists the guilt of condemning innocents"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "darktide-profaned-ground-hazards",
+    "name": "PROFANED GROUND HAZARDS",
+    "source": "darktide",
+    "page": 26,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-profaned-ground-pestilent-congregation",
+        "from": 2,
+        "to": 3,
+        "name": "Pestilent Congregation",
+        "page": 26,
+        "text": "In a mockery of the Imperial faith, a horde of corrupted hab-dwellers is led in prayer by a fallen Ministorum priest. Uncorrupted civilians are being dragged to a sacrificial altar. Agents can fight the Mob of 30 Cultists led by a Cult Leader, or attempt to sneak through, gaining 1 Corruption and 1d3 Ruin.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "cultist",
+            "count": 30
+          }
+        ],
+        "gm": "Sneaking through gives each Agent 1 Corruption and the GM 1d3 Ruin."
+      },
+      {
+        "id": "darktide-profaned-ground-summoning-ritual",
+        "from": 4,
+        "to": 4,
+        "name": "Summoning Ritual",
+        "page": 26,
+        "text": "The Agents stumble upon a coven of plague cultists attempting to summon a daemon. The ritual is almost complete, requiring 1d6+2 Turns of chanting. The Mob consists of 2d6+10 Cultists. If any Cultists survive to complete the ritual, a Plaguebearer manifests in a gout of pus and attacks.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "cultist",
+            "count": "2d6+10"
+          }
+        ],
+        "gm": "Ritual completes after 1d6+2 Turns; a Plaguebearer then manifests if any Cultists survive."
+      },
+      {
+        "id": "darktide-profaned-ground-rogue-psyker-coven",
+        "from": 5,
+        "to": 5,
+        "name": "Rogue Psyker Coven",
+        "page": 26,
+        "text": "The area is controlled by Rogue Psykers. There are no other enemies; just the charred and warped remains of the Psykers' experiments. There are 1d3+1 Rogue Psykers with the Biomancy Discipline and 1d3+1 with the Maleficarum Discipline. All enemy psychic powers are cast at Transcendent Power Level.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-profaned-ground-necropolis",
+        "from": 6,
+        "to": 6,
+        "name": "Necropolis",
+        "page": 26,
+        "text": "Plague swept through this densely packed hab block, killing everyone. As the Agents advance, the bodies stir with unnatural life… A Mob of 30 Poxbringers attacks the Agents. The group must pass 3 DN 4 Survival (Wil) Tests to navigate to safety. Each failure introduces another Mob of 30 Poxbringers.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Navigate through the Necropolis to safety",
+            "gm": "Must pass 3 times; each failure adds another Mob of 30 Poxbringers."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-profaned-ground-river-of-bile",
+        "from": 7,
+        "to": 7,
+        "name": "River of Bile",
+        "page": 26,
+        "text": "The route is blocked by a wide river of plague filth, radioactive waste, or Warp-tainted material. To cross, a DN 5 Athletics (S) Test is required. Agents who fail must make an immediate DN 5 Corruption Test. Failure causes a random Minor Mutation.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Cross the river of filth"
+          },
+          {
+            "kind": "corruption",
+            "skills": [],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Failed crossers resist the taint",
+            "gm": "Only after failing the Athletics Test. Failure: a random Minor Mutation."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "darktide-profaned-ground-corrupted-hospital",
+        "from": 8,
+        "to": 8,
+        "name": "Corrupted Hospital",
+        "page": 26,
+        "text": "This medical facility has been twisted into a dark parody of its former purpose. Screams from patients add +2 to the DN of Fear Tests. 7 Plaguebearers are 'operating' on the staff in a large hall the Agents must cross. They are preoccupied; passing a DN 3 Stealth (A) Test is enough to ambush all 7. Trying to sneak by raises the DN to 7.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Ambush the preoccupied Plaguebearers",
+            "gm": "Trying to sneak by instead raises the DN to 7."
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "plaguebearer",
+            "count": 7
+          }
+        ],
+        "gm": "Fear Tests here have +2 DN."
+      },
+      {
+        "id": "darktide-profaned-ground-warped-gravity",
+        "from": 9,
+        "to": 9,
+        "name": "Warped Gravity",
+        "page": 26,
+        "text": "The Warp has twisted the gravity of this region so things fall left, right, or up. All Athletics (S) and Survival (Wil) Tests to navigate have their DN increased by 2. The Chaos Spawn that ambushes them suffers no such penalties.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Athletics and Survival Tests to navigate have +2 DN."
+      },
+      {
+        "id": "darktide-profaned-ground-halls-of-meat",
+        "from": 10,
+        "to": 10,
+        "name": "Halls of Meat",
+        "page": 26,
+        "text": "A daemonic pathogen melds the flesh of the citizens together, spreading them out to coat every surface in dripping, still-living meat. Eyeballs track the Agents, mouths work soundlessly as they pass. Agents must make a DN 5 Corruption Test (DN 6 for anyone with the Lip Reader Talent). Any Fear or Terror Tests made here adds +3 to their DN.",
+        "tests": [
+          {
+            "kind": "corruption",
+            "skills": [],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Resist the daemonic pathogen's whispers",
+            "gm": "DN 6 for anyone with the Lip Reader Talent."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Fear and Terror Tests here have +3 DN."
+      },
+      {
+        "id": "darktide-profaned-ground-cultist-stronghold",
+        "from": 11,
+        "to": 12,
+        "name": "Cultist Stronghold",
+        "page": 26,
+        "text": "Heretics have established a base of operations here. Navigating the area requires 3 DN 4 Stealth (A) Tests; failure causes a Mob of 20 Cultists and 1 Cult Leader to spring an ambush (Agents may spend Glory to attack on Turn 1).",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Stealth"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Navigate the stronghold unseen",
+            "gm": "Must pass 3 times; failure triggers the ambush."
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "cultist",
+            "count": 20
+          }
+        ]
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  }
+]
