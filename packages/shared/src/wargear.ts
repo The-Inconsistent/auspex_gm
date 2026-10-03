@@ -380,8 +380,10 @@ export function withUpgrades<T extends { weapons: Weapon[]; armour?: SheetArmour
       : {}),
     weapons: stats.weapons.map((w) => {
       const ids = [...(w.upgrades ?? []), ...(w.fitted ?? [])];
-      if (ids.length === 0) return w;
-      const { weapon, notes } = applyUpgrades(w, entries(ids), opts);
+      if (ids.length === 0 && !w.mods?.length) return w;
+      // A given relic's Powers read like one more upgrade, after the ones fitted to it (rules-flow.md §11.116).
+      const mods = [...entries(ids).flatMap((u) => u.upgrade?.mods ?? []), ...(w.mods ?? [])];
+      const { weapon, notes } = applyMods(w, mods, opts);
       return { ...weapon, upgradeNames: named(ids), notes: notes.length ? notes : undefined };
     }),
   };

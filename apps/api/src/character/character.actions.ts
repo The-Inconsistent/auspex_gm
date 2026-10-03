@@ -28,6 +28,7 @@ import {
   type Character,
   type ResolvedBuild,
   type UpgradeHost,
+  UpgradeMod,
   type Wargear,
   type WargearWeapon,
 } from "@wg/shared";
@@ -36,7 +37,7 @@ import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
 import { session } from "../campaign/campaign.schema.ts";
-import { handout } from "../codex/codex.schema.ts";
+import { handout, item } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
@@ -51,6 +52,15 @@ export async function ownCharacter(tx: Tx, { campaignId, id }: { campaignId: str
     .from(character)
     .where(and(eq(character.id, id), eq(character.campaignId, campaignId)));
   return c ?? fail("Character not found");
+}
+
+// A codex item of this campaign (issue #51), or a refusal.
+async function campaignItem(tx: Tx, { campaignId, id }: { campaignId: string; id: string }) {
+  const [found] = await tx
+    .select()
+    .from(item)
+    .where(and(eq(item.id, id), eq(item.campaignId, campaignId)));
+  return found ?? fail("Item not found");
 }
 
 // A character row with its derived Traits and damage state (Dying, Dead), at the campaign's Tier.
@@ -214,6 +224,35 @@ function fitUpgrade(
       fitted: [...(weapon.fitted ?? []), entry.id],
     }),
   };
+}
+
+// A catalogue weapon (or grenade) joins the armament once, by name, with its `wargearId`, which a later fitUpgrade checks
+// the upgrade's `fits` against (§11.63). A given relic brings its Powers as `mods` (rules-flow.md §11.116).
+function joinWeapon(stats: CharacterStats, { entry, mods = [] }: { entry?: Wargear; mods?: UpgradeMod[] }) {
+  if (!entry?.weapon || stats.weapons.some((w) => w.name === entry.name)) return stats;
+  const weapon = sheetWeapon(entry as { name: string; weapon: WargearWeapon }, effectiveStrength(stats));
+  return {
+    ...stats,
+    weapons: [...stats.weapons, { ...weapon, wargearId: entry.id, ...(mods.length ? { mods } : {}) }],
+  };
+}
+
+// What a successful Wargear requisition or a GIVE puts on the sheet (Core p.205, rules-flow.md §11.112): a weapon joins
+// the armament, an upgrade the GM named a weapon for goes straight on it, and anything else is a gear line, the
+// catalogue's with its cite or the name as typed.
+function grantWargear(
+  stats: CharacterStats,
+  {
+    entry,
+    name,
+    mods,
+    fit,
+  }: { entry?: Wargear; name: string; mods?: UpgradeMod[]; fit?: { weapon: string; tier: number } },
+): CharacterStats {
+  const armed = joinWeapon(stats, { entry, mods });
+  if (fit && entry?.upgrade) return fitUpgrade(armed, { weapon: fit.weapon, entry, tier: fit.tier });
+  if (entry?.weapon) return armed;
+  return { ...armed, gear: [...armed.gear, entry ? gearLine(entry) : name] };
 }
 
 // The catalogue entry a sheet weapon or suit came from, or a refusal. It must hold that host's profile for a fit to be
@@ -441,25 +480,89 @@ export async function applyCharacterAction(
       stats.wealth = out.wealth;
       stats.requisitioned = { ...stats.requisitioned, [slot]: open.id };
       if (out.success) {
-        // A catalogue weapon (or grenade) joins the armament once; everything else is a gear line.
-        if (item?.weapon && !stats.weapons.some((w) => w.name === item.name))
-          stats.weapons = [
-            ...stats.weapons,
-            // `wargearId` is what a later fitUpgrade checks the upgrade's `fits` against (§11.63).
-            {
-              ...sheetWeapon(item as { name: string; weapon: WargearWeapon }, effectiveStrength(stats)),
-              wargearId: item.id,
-            },
-          ];
         if (a.kind === "wargear") {
-          // An upgrade the GM named a weapon for goes straight on it; anything else is a gear line.
-          if (a.fitTo !== undefined && item?.upgrade)
-            Object.assign(stats, fitUpgrade(stats, { weapon: a.fitTo, entry: item, tier }));
-          else if (!item?.weapon) stats.gear = [...stats.gear, item ? gearLine(item) : a.item];
+          const fit = a.fitTo !== undefined ? { weapon: a.fitTo, tier } : undefined;
+          Object.assign(stats, grantWargear(stats, { entry: item, name: a.item, fit }));
           if (a.loadedWith) stats.ammo = adjustAmmo(stats.ammo, { kind: a.loadedWith, delta: 1 });
-        } else stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
+        } else {
+          // A grenade with a profile joins the armament too; the Ammo or grenades themselves are counted by type.
+          Object.assign(stats, joinWeapon(stats, { entry: item }));
+          stats.ammo = adjustAmmo(stats.ammo, { kind: a.item, delta: requisitionYield(a.kind, a.rarity) });
+        }
       }
       await saveStats(tx, { id: a.id, stats });
+      return { ok: true };
+    }
+
+    // A found item, handed over (rules-flow.md §11.112–§11.113, §11.118): no Influence Test and no Keyword, but it is the
+    // Agent's Wargear Test for the session. The item leaves its place or NPC and records who has it.
+    case "character.giveItem": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const stats = CharacterStats.parse(row.stats);
+      const found = await campaignItem(tx, { campaignId: cid, id: a.itemId });
+      if (found.givenTo) fail(`${found.name} was given already: take it back first`);
+      const entry = found.wargearId
+        ? (wargear.get(found.wargearId) ?? fail(`Unknown wargear "${found.wargearId}"`))
+        : undefined;
+      if (entry?.kind === "ammo" || entry?.kind === "grenade")
+        fail(
+          `${entry.name} is counted by type on the sheet: award it with SUPPLY or a requisition (rules-flow.md §11.113)`,
+        );
+      const [open] = await tx
+        .select({ id: session.id })
+        .from(session)
+        .where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
+      if (!open) fail("Start a session first: giving an item uses the Agent's Wargear Test (rules-flow.md §11.112)");
+      if (stats.requisitioned.wargear === open.id) fail(`${row.name} already made this session's wargear Test (p.205)`);
+      if (entry?.weapon && stats.weapons.some((w) => w.name === entry.name))
+        fail(`${row.name} already carries a ${entry.name} (rules-flow.md §11.118)`);
+      if (!entry?.weapon && stats.gear.length >= MAX_GEAR) fail(`${row.name}'s gear list is full (${MAX_GEAR} lines)`);
+      const given = grantWargear(stats, { entry, name: found.name, mods: UpgradeMod.array().parse(found.mods) });
+      await saveStats(tx, {
+        id: a.id,
+        stats: { ...given, requisitioned: { ...given.requisitioned, wargear: open.id } },
+      });
+      await tx.update(item).set({ givenTo: row.id, locationId: null, npcId: null }).where(eq(item.id, found.id));
+      return { ok: true };
+    }
+
+    // TAKE BACK (rules-flow.md §11.114): whatever the GIVE put on the sheet comes off, a weapon's fitted upgrades return
+    // as gear lines, and a line the GM already removed just ends the record. The Wargear Test isn't refunded.
+    case "character.takeItem": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const found = await campaignItem(tx, { campaignId: cid, id: a.itemId });
+      if (found.givenTo !== row.id) fail(`${row.name} doesn't have ${found.name}`);
+      // An entry the catalogue has lost is taken back as its name, like a custom item.
+      const entry = found.wargearId ? wargear.get(found.wargearId) : undefined;
+      const stats = CharacterStats.parse(row.stats);
+      const given = entry?.weapon
+        ? stats.weapons.find((w) => w.name === entry.name && (w.wargearId ?? entry.id) === entry.id)
+        : undefined;
+      const line = (id: string) => {
+        const e = wargear.get(id);
+        return e ? gearLine(e) : id;
+      };
+      const ownLine = stats.gear.findIndex((g) =>
+        entry ? g === gearLine(entry) || g === entry.name || g.startsWith(`${entry.name} (`) : g === found.name,
+      );
+      if (given) {
+        stats.gear = [...stats.gear, ...(given.fitted ?? []).map(line)];
+        stats.weapons = stats.weapons.filter((w) => w !== given);
+      } else if (ownLine >= 0) stats.gear = stats.gear.filter((_, i) => i !== ownLine);
+      else if (entry?.upgrade) {
+        // Fitted since it was given: one copy comes off the weapon or the suit it went on.
+        const off = <H extends { fitted?: string[] }>(h: H): H => {
+          const at = h.fitted?.indexOf(entry.id) ?? -1;
+          const fitted = h.fitted?.filter((_, i) => i !== at);
+          return { ...h, fitted: fitted?.length ? fitted : undefined };
+        };
+        const host = stats.weapons.find((w) => w.fitted?.includes(entry.id));
+        if (host) stats.weapons = stats.weapons.map((w) => (w === host ? off(w) : w));
+        else if (stats.armour.fitted?.includes(entry.id)) stats.armour = off(stats.armour);
+      }
+      if (stats.gear.length > MAX_GEAR) fail(`${row.name}'s gear list is full (${MAX_GEAR} lines)`);
+      await saveStats(tx, { id: a.id, stats });
+      await tx.update(item).set({ givenTo: null }).where(eq(item.id, found.id));
       return { ok: true };
     }
 

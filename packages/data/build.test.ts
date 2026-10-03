@@ -1015,3 +1015,23 @@ test("a melee weapon printed Damage 0 deals Strength, so it takes a Talent's +Da
   };
   assert.equal(withWeaponEffects(stats, { rank: 1, catalogue: wargear }).weapons[0]!.damage, 2);
 });
+
+test("withUpgrades: a given relic's Powers apply like an upgrade's, after the fitted ones (rules-flow.md §11.116)", () => {
+  const pistol = sheetWeapon(wargear.get("bolt-pistol") as { name: string; weapon: WargearWeapon }, 4);
+  const relic = {
+    ...pistol,
+    wargearId: "bolt-pistol",
+    fitted: ["mastercrafted"],
+    mods: [
+      { kind: "damage" as const, delta: 1 },
+      { kind: "gm" as const, what: "[power]" },
+    ],
+  };
+  const [shown] = withUpgrades({ weapons: [relic] }, wargear).weapons;
+  assert.equal(shown!.damage, pistol.damage + 1);
+  assert.ok(shown!.traits.includes("Reliable"), "the fitted upgrade still applies");
+  assert.ok(shown!.notes?.includes("[power]"), "prose is printed for the GM");
+  assert.deepEqual(relic.mods.length, 2, "the stored line keeps its Powers, so nothing applies twice");
+  const [bare] = withUpgrades({ weapons: [{ ...pistol, mods: [{ kind: "ed" as const, delta: 2 }] }] }, wargear).weapons;
+  assert.equal(bare!.ed, (pistol.ed as number) + 2, "Powers apply with nothing fitted too");
+});
