@@ -1,7 +1,16 @@
 "use client";
 import { useState } from "react";
 
-import { BOOKS, citeLine, npcFromPreset, presetNpc, type Codex, type NpcPreset, type ThreatSource } from "@wg/shared";
+import {
+  BOOKS,
+  sourceName,
+  citeLine,
+  npcFromPreset,
+  presetNpc,
+  type Codex,
+  type NpcPreset,
+  type ThreatSource,
+} from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 import { fold } from "@/lib/threat-filter/threat-filter";
@@ -59,7 +68,7 @@ export function NpcPicker({ presets, codex, send, onError }: NpcPickerProps) {
             <option value="">All books</option>
             {sources.map((s) => (
               <option key={s} value={s}>
-                {BOOKS[s].name}
+                {sourceName(s)}
               </option>
             ))}
           </select>

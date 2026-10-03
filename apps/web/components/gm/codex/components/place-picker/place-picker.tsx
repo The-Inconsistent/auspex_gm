@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 
 import {
   BOOKS,
+  sourceName,
   flatTree,
   MAX_PLACES_PER_ADD,
   placeTree,
@@ -115,7 +116,7 @@ export function PlacePicker({ places, codex, send, onError }: PlacePickerProps) 
                 aria-pressed={s === source}
                 onClick={() => setSource(s)}
               >
-                {BOOKS[s].name.toUpperCase()}
+                {sourceName(s).toUpperCase()}
               </button>
             ))}
           </div>
@@ -125,7 +126,7 @@ export function PlacePicker({ places, codex, send, onError }: PlacePickerProps) 
               : books.map((s) => (
                   <details key={s} open={!!source}>
                     <summary className="label" style={{ cursor: "pointer" }}>
-                      {BOOKS[s].name.toUpperCase()} · {places.filter((p) => p.source === s).length}
+                      {sourceName(s).toUpperCase()} · {places.filter((p) => p.source === s).length}
                     </summary>
                     <div className="list" style={{ paddingTop: 6 }}>
                       {flatTree(trees.get(s) ?? []).map(({ row: p, depth }) => row(p, depth))}

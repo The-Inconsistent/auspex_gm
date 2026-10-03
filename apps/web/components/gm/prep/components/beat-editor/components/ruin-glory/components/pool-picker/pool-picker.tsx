@@ -2,7 +2,7 @@
 import { useState, type ChangeEvent } from "react";
 
 import {
-  BOOKS,
+  sourceName,
   MAX_POOL_LINES,
   presetLine,
   threatCite,
@@ -67,7 +67,7 @@ export function PoolPicker({ tables, lines, onChange }: PoolPickerProps) {
           >
             {sources.map((s) => (
               <option key={s} value={s}>
-                {BOOKS[s].name}
+                {sourceName(s)}
               </option>
             ))}
           </select>

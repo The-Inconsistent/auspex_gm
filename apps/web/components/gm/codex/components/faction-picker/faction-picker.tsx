@@ -1,7 +1,15 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { BOOKS, fromPreset, presetFaction, threatCite, type FactionPreset, type ThreatSource } from "@wg/shared";
+import {
+  BOOKS,
+  sourceName,
+  fromPreset,
+  presetFaction,
+  threatCite,
+  type FactionPreset,
+  type ThreatSource,
+} from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -43,7 +51,7 @@ export function FactionPicker({ presets, factions, send, onError }: FactionPicke
         >
           {sources.map((s) => (
             <option key={s} value={s}>
-              {BOOKS[s].name}
+              {sourceName(s)}
             </option>
           ))}
         </select>

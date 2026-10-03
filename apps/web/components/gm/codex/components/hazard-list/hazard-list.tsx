@@ -4,7 +4,7 @@ import { useState, type ChangeEvent } from "react";
 import {
   ATTRIBUTE_NAMES,
   ATTRIBUTES,
-  BOOKS,
+  sourceName,
   BeatTest,
   MAX_HAZARDS,
   SKILLS,
@@ -223,7 +223,7 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
                     aria-pressed={s === source}
                     onClick={() => handleBook(s)}
                   >
-                    {BOOKS[s].name.toUpperCase()}
+                    {sourceName(s).toUpperCase()}
                   </button>
                 ))}
               </div>

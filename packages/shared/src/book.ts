@@ -4,7 +4,12 @@ import { THREAT_SOURCES, type ThreatSource } from "./threat.ts";
 // The books a GM can serve to the table from their own PDFs (gm/books). Nothing is uploaded: the GM's browser renders
 // the one page a player taps and the api relays that image to that player only. `offset` turns a printed page into a
 // PDF page (docs/data.md §3); Legacy of the Necrontyr and the High Altar of Technology are cited by PDF page already.
-export const BOOKS: Record<ThreatSource, { name: string; offset: number }> = {
+// Every threat source but `custom`, which is a stat block the GM wrote rather than a book (issue #43): it has no PDF,
+// no pages and no offset, so leaving it out of BOOKS keeps it out of `BookSource`, the Books tab and every book:* event
+// by construction.
+export type BookThreatSource = Exclude<ThreatSource, "custom">;
+
+export const BOOKS: Record<BookThreatSource, { name: string; offset: number }> = {
   core: { name: "Core Rulebook", offset: 1 },
   "daemons-and-heretics": { name: "Threat Assessment: Daemons & Heretics", offset: 0 },
   "vow-of-absolution": { name: "Vow of Absolution", offset: 0 },
@@ -24,15 +29,18 @@ export const BOOKS: Record<ThreatSource, { name: string; offset: number }> = {
   apocrypha: { name: "An Abundance of Apocrypha (homebrew)", offset: 3 },
   "legacy-of-the-necrontyr": { name: "Legacy of the Necrontyr (homebrew)", offset: 0 },
 };
-export const BookSource = z.enum(Object.keys(BOOKS) as [ThreatSource, ...ThreatSource[]]);
+export const BookSource = z.enum(Object.keys(BOOKS) as [BookThreatSource, ...BookThreatSource[]]);
+
+// A source's name wherever one is shown beside a threat: the book's title, or "Custom" for one the GM wrote.
+export const sourceName = (s: ThreatSource) => (s === "custom" ? THREAT_SOURCES.custom.cite : BOOKS[s].name);
 
 export const BookPage = z.object({ source: BookSource, page: z.number().int().min(1).max(2000) });
 export type BookPage = z.infer<typeof BookPage>;
 export const pdfPage = ({ source, page }: BookPage) => page + BOOKS[source].offset;
 
 // "Core p.113" back to its book and page: the sheet stores cites as text (build.ts addRule). Anything else is null.
-const BY_CITE = new Map<string, ThreatSource>(
-  Object.entries(THREAT_SOURCES).map(([id, s]) => [s.cite, id as ThreatSource]),
+const BY_CITE = new Map<string, BookThreatSource>(
+  Object.entries(THREAT_SOURCES).flatMap(([id, s]) => (id === "custom" ? [] : [[s.cite, id as BookThreatSource]])),
 );
 export function parseCite(cite: string): BookPage | null {
   const m = /^(\S+) p\.(\d+)$/.exec(cite.trim());

@@ -9,13 +9,27 @@ export const THREAT_ONLY_SOURCES = {
   "threat-assessment": { cite: "TA", official: true },
   "gutshivas-kommandos": { cite: "GK", official: true },
   "high-altar-of-technology": { cite: "HAT", official: false }, // homebrew Mechanicus supplement, no printed pages: PDF pages
+  // Not a book at all: a stat block the GM wrote or cloned for their own table (GitHub issue #43). It lives in the
+  // campaign's `custom_threat` rows, never in threats/, and its id is always `custom-<slug>`. It has no page, so its
+  // cite is "Custom" alone and the Books tab never offers it as a PDF (`BOOKS` leaves it out). `official` gates the homebrew
+  // books out of the creation catalogues, which a custom threat never joins.
+  custom: { cite: "Custom", official: false },
 } as const;
 export const THREAT_SOURCES = { ...SOURCES, ...THREAT_ONLY_SOURCES };
 export type ThreatSource = keyof typeof THREAT_SOURCES;
 
-// "Core p.339", "TA p.8": a stat block's page cite.
+// "Core p.339", "TA p.8": a stat block's page cite. A custom threat's `page` is a placeholder, so it cites no page.
 export const threatCite = ({ source, page }: { source: ThreatSource; page: number }) =>
-  `${THREAT_SOURCES[source].cite} p.${page}`;
+  source === "custom" ? THREAT_SOURCES.custom.cite : `${THREAT_SOURCES[source].cite} p.${page}`;
+
+// A custom threat's id, from its slug. The id carries the slug so an import needs no rewriting of the `threatId`s
+// inside beats and NPCs (GitHub issue #43).
+export const CUSTOM_PREFIX = "custom-";
+export const customThreatId = (slug: string) => `${CUSTOM_PREFIX}${slug}`;
+export const isCustomThreatId = (id: string) => id.startsWith(CUSTOM_PREFIX);
+
+// A threat on a picker row, a select or a scene card: the name with where it came from.
+export const threatLabel = (t: { name: string; source: ThreatSource; page: number }) => `${t.name} · ${threatCite(t)}`;
 
 export const ThreatClass = z.enum(["T", "E", "A", "M"]); // Troop, Elite, Adversary, Monstrous Creature
 export type ThreatClass = z.infer<typeof ThreatClass>;

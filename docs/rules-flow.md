@@ -750,6 +750,20 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 108. **Profiles are not Tier 5 only** (VoA p.126; GitHub issue #42). They are printed in a Tier 5 chapter and nothing in
      them is bounded by Tier, so the app offers them in any game. Scaling already carries the Tier in its own arithmetic
      (p.326). *(User ruling, 2026-10-03.)*
+109. **A custom threat's class row is the GM's** (Core p.323, p.326; TA p.6; GitHub issue #43). Threat Assessment p.6
+     ties a Threat's class to the Tier it is met at, with no formula, and Core p.326's Quick Threats gives numbers per
+     Tier "to be tweaked". So the editor accepts any class in any Tier slot — with "–" allowed before the last, as the
+     printed blocks have it — and only hints: a Troop over 1 Wound or 3 Shock (p.326), and a Mob option on a Threat that
+     is a Troop at no Tier (p.324, where Mobs are Troops only). The server accepts whatever `Threat` accepts: a hint that
+     refused a save would be the app inventing a rule. *(User ruling, 2026-10-03.)*
+110. **QUICK fills what the book's table holds, and no more** (Core p.326; GitHub issue #43). The Quick NPC Stats table
+     gives Default Skills, Defence, Resilience, Wounds, Shock, Conviction, Resolve and Speed per Tier, and no Attributes.
+     So QUICK (Tier N) prefills those eight and leaves the seven Attributes to the GM, rather than inventing a spread the
+     book doesn't print. Troops start at 1 Wound and 3 Shock, as p.326 says they usually are. *(User ruling, 2026-10-03.)*
+111. **A custom threat belongs to one campaign** (GitHub issue #43). Nothing in the books is at stake; this is about where
+     the GM's own work lives. A custom threat is campaign content, like an NPC or a scene: it rides that campaign's codex,
+     its export and its import, and there is no shared library across tables. A GM who wants one in a second game exports
+     and imports, or writes it again. *(User ruling, 2026-10-03.)*
 
 ---
 

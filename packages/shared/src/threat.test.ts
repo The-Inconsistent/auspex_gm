@@ -6,7 +6,9 @@ import {
   encounterBudget,
   rosterTally,
   tallyByClass,
+  threatCite,
   threatClassAt,
+  threatLabel,
   type ThreatClass,
 } from "./index.ts";
 
@@ -121,4 +123,10 @@ test("threatClassAt reads the letter printed for the Tier (Core p.323; TA p.5)",
   assert.equal(threatClassAt(mixed, 4), "T");
   assert.equal(threatClassAt(mixed, 1), "E", "a printed '–' takes the next Tier's class, so the GM can still field it");
   assert.equal(threatClassAt(mixed, 5), "T", "a four-letter entry in a Tier 5 game uses its Tier 4 class");
+});
+
+test("a custom threat cites no page: its page is a placeholder (issue #43)", () => {
+  assert.equal(threatCite({ source: "core", page: 339 }), "Core p.339");
+  assert.equal(threatCite({ source: "custom", page: 1 }), "Custom");
+  assert.equal(threatLabel({ name: "Warped Ogryn", source: "custom", page: 1 }), "Warped Ogryn · Custom");
 });
