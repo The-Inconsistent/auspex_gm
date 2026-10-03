@@ -1,0 +1,89 @@
+[
+  {
+    "id": "bg-mission-equipment",
+    "name": "Mission Equipment",
+    "source": "bloody-gates",
+    "page": 6,
+    "dice": null,
+    "rows": [
+      {
+        "id": "bg-mission-equipment-grapnel-launcher",
+        "name": "Grapnel Launcher",
+        "page": 6,
+        "text": "Fire a grapnel at a surface, then reel up to it as a Free Action.",
+        "items": [
+          {
+            "wargearId": "bg-grapnel-launcher"
+          }
+        ]
+      },
+      {
+        "id": "bg-mission-equipment-krak-satchel",
+        "name": "Krak Satchel",
+        "page": 6,
+        "text": "Thrown bag of Krak and Frag grenades with one trigger.",
+        "items": [
+          {
+            "wargearId": "bg-krak-satchel"
+          }
+        ]
+      },
+      {
+        "id": "bg-mission-equipment-breaching-ladder",
+        "name": "Breaching Ladder",
+        "page": 13,
+        "text": "Three-metre steel ladder to bridge gaps or aid climbing.",
+        "items": [
+          {
+            "wargearId": "bg-breaching-ladder"
+          }
+        ]
+      },
+      {
+        "id": "bg-mission-equipment-smoke-grenades",
+        "name": "Smoke Grenades",
+        "page": 13,
+        "text": "Smoke fills a Blast (9) area for four Rounds, raising DNs; the Fireteam is issued 2.",
+        "items": [
+          {
+            "wargearId": "bg-smoke-grenades",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "id": "bg-mission-equipment-multi-laser",
+        "name": "Multi-laser",
+        "page": 21,
+        "text": "Chimera-mounted Heavy, Rapid Fire las weapon.",
+        "items": [
+          {
+            "wargearId": "bg-multi-laser"
+          }
+        ]
+      },
+      {
+        "id": "bg-mission-equipment-lasgun-array",
+        "name": "Lasgun Array",
+        "page": 21,
+        "text": "Chimera-mounted Heavy, Rapid Fire, Reliable lasguns.",
+        "items": [
+          {
+            "wargearId": "bg-lasgun-array"
+          }
+        ]
+      },
+      {
+        "id": "bg-mission-equipment-frag-bomb",
+        "name": "Frag Bomb",
+        "page": 24,
+        "text": "Thrown or launched Blast (4) fragmentation bomb.",
+        "items": [
+          {
+            "wargearId": "bg-frag-bomb"
+          }
+        ]
+      }
+    ]
+  }
+]
