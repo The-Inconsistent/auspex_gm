@@ -1,4 +1,4 @@
-import { QR_SIZE } from "../../constants";
+import { QR_SIZE } from "@/lib/qr/qr";
 
 export type JoinQr = { title: string; url: string; img: string };
 type QrDialogProps = { qr: JoinQr; onClose: () => void };

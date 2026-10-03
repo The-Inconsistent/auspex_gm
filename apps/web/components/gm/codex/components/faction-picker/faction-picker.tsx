@@ -18,12 +18,13 @@ type FactionPickerProps = {
   factions: readonly { name: string; notes: string }[]; // the codex's, to mark the presets already added
   send: Send;
   onError: (error: string | null) => void;
+  open?: boolean; // NEW CAMPAIGN's FACTIONS step shows it open; CODEX keeps it folded
 };
 
 // ADD FROM BOOK (issue #46): a book, then one of its printed factions. + ADD saves `presetFaction` as a new faction:
 // its name, the Keywords the page prints and a cite line, neutral until the GM says otherwise. A faction already added
 // from that book isn't offered twice. Books follow BOOKS, so the Core Rulebook leads and homebrew comes last.
-export function FactionPicker({ presets, factions, send, onError }: FactionPickerProps) {
+export function FactionPicker({ presets, factions, send, onError, open }: FactionPickerProps) {
   const order = Object.keys(BOOKS);
   const sources = [...new Set(presets.map((p) => p.source))].sort((a, b) => order.indexOf(a) - order.indexOf(b));
   const [source, setSource] = useState<ThreatSource | undefined>(sources[0]);
@@ -39,7 +40,7 @@ export function FactionPicker({ presets, factions, send, onError }: FactionPicke
   };
 
   return (
-    <details className="field">
+    <details className="field" open={open}>
       <summary className="label">ADD FROM BOOK</summary>
       <div className="stack" style={{ paddingTop: 8 }}>
         <select

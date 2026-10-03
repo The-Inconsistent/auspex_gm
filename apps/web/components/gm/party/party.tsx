@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import QRCode from "qrcode";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
@@ -27,17 +26,18 @@ import { TableTalk } from "@/components/ui/table-talk/table-talk";
 import type { Send } from "@/hooks/use-table/use-table";
 import { portrait } from "@/lib/portraits/portraits";
 import { setupSteps } from "@/lib/setup/setup";
+import { qrImage } from "@/lib/qr/qr";
 import { shareOrigin } from "@/lib/share-origin/share-origin";
-import { TOKENS } from "@/lib/tokens/tokens";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { FrameworkPicker } from "./components/framework-picker/framework-picker";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
+import { RoomInvite } from "./components/room-invite/room-invite";
 import type { TabTarget } from "./components/setup-panel/constants";
 import { SetupPanel } from "./components/setup-panel/setup-panel";
-import { CHARACTER_INVITE_HOURS, DEFAULT_XP, QR_SIZE, ROOM_INVITE_HOURS, XP_AWARDS } from "./constants";
+import { CHARACTER_INVITE_HOURS, DEFAULT_XP, XP_AWARDS } from "./constants";
 
 type PartyProps = {
   state: LiveState;
@@ -81,12 +81,7 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
   // Renders a join URL as a full-screen QR code.
   const showCode = async ({ title, url }: { title: string; url: string }) => {
     try {
-      const img = await QRCode.toDataURL(url, {
-        margin: 1,
-        width: QR_SIZE,
-        color: { dark: TOKENS.ink, light: TOKENS.vellum },
-      });
-      setQr({ title, url, img });
+      setQr({ title, url, img: await qrImage(url) });
     } catch (e) {
       setMsg(`! QR code failed: ${e instanceof Error ? e.message : "unknown error"}`);
     }
@@ -109,13 +104,6 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
     });
     if (!r.ok || !r.token) return report(r, "");
     await showCode({ title: `${c.name} invite`, url: `${shareOrigin(window.location)}/invite/${r.token}` });
-  };
-
-  // ROOM QR: one code for the whole table tonight; each player claims an open agent or starts a new one.
-  const inviteRoom = async () => {
-    const r = await send({ type: "invite.create", mode: "room", hours: ROOM_INVITE_HOURS });
-    if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: "Room", url: `${shareOrigin(window.location)}/invite/${r.token}` });
   };
 
   // REVOKE (invite): the link stops working; anyone already seated keeps their seat.
@@ -358,14 +346,7 @@ export function Party({ state, codex, send, wargear, frameworks, onTab }: PartyP
 
       <section className="panel pad stack">
         <div className="rule">TABLE ACCESS</div>
-        <div className="keys" style={{ paddingTop: 0 }}>
-          <button className="btn primary" onClick={inviteRoom}>
-            ROOM QR
-          </button>
-          <span className="dim">
-            Players scan it, sign in or join as a guest, and claim an agent. Live {ROOM_INVITE_HOURS} h.
-          </span>
-        </div>
+        <RoomInvite send={send} onError={(e) => setMsg(`! ${e}`)} />
         {invites.length > 0 && (
           <div className="list">
             {invites.map((i) => (

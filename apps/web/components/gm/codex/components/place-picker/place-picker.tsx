@@ -23,12 +23,13 @@ type PlacePickerProps = {
   codex: Pick<Codex, "locations">; // where the copy can go
   send: Send;
   onError: (error: string | null) => void;
+  open?: boolean; // NEW CAMPAIGN's SETTING step shows it open; CODEX keeps it folded
 };
 
 // ADD FROM BOOK (issue #50): a printed place and every place inside it, picked from each book's tree or by name.
 // ADD TO CODEX sends only the place's id: the server copies the printed text into GM NOTES, leaves DESCRIPTION for the
 // GM's own words (Core p.315) and starts the copies hidden. Books follow BOOKS, so the Core Rulebook leads.
-export function PlacePicker({ places, codex, send, onError }: PlacePickerProps) {
+export function PlacePicker({ places, codex, send, onError, open }: PlacePickerProps) {
   const [source, setSource] = useState<ThreatSource | null>(null);
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<PlaceSummary | null>(null);
@@ -90,7 +91,7 @@ export function PlacePicker({ places, codex, send, onError }: PlacePickerProps) 
   );
 
   return (
-    <details className="field">
+    <details className="field" open={open}>
       <summary className="label">ADD FROM BOOK</summary>
       <div className="hazard-body" style={{ paddingTop: 8 }}>
         <div className="stack" style={{ gap: 8 }}>

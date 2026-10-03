@@ -19,9 +19,6 @@ export const ASCEND_KINDS = {
 } as const satisfies Record<AscensionKind, { label: string; cite: string; gist: string }>;
 export type AscendKind = AscensionKind;
 
-// Join QR code edge, in CSS px.
-export const QR_SIZE = 320;
-
 // How long invites stay live: the room QR covers one evening at the table; a character link a week of lead time.
 export const ROOM_INVITE_HOURS = 12;
 export const CHARACTER_INVITE_HOURS = 168;

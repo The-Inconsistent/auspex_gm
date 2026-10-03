@@ -1,7 +1,7 @@
 import { cookies, headers as requestHeaders } from "next/headers";
 
 import { sessionToken } from "@wg/auth/next";
-import { CreationPayload, RuleEntry } from "@wg/shared";
+import { CreationPayload, FactionPresets, PlaceSummary, RuleEntry, ScenePresets } from "@wg/shared";
 
 import { API_ORIGIN, TOKEN_COOKIE } from "@/app/constants";
 
@@ -61,5 +61,43 @@ export async function loadCreationFor(homebrew: boolean): Promise<CreationPayloa
     return parsed.success ? parsed.data : null;
   } catch {
     return null;
+  }
+}
+
+// What PREP and CODEX get when the api can't serve the presets: every list empty, by the schema's own defaults.
+const NO_PRESETS = ScenePresets.parse({ skillDns: [], tables: [], pools: [] });
+
+// GM-only book data for building scenes (issue #39). Empty on failure; the scene editor then shows no examples.
+export async function loadScenePresets(campaignId: string): Promise<ScenePresets> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/scene-presets`);
+    const parsed = ScenePresets.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : NO_PRESETS;
+  } catch {
+    return NO_PRESETS;
+  }
+}
+
+// GM-only Keywords (and printed factions) for CODEX › FACTIONS (issue #46). Empty on failure; the picker then takes
+// write-ins only.
+export async function loadFactionPresets(campaignId: string): Promise<FactionPresets> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/faction-presets`);
+    const parsed = FactionPresets.safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : { keywords: [], presets: [] };
+  } catch {
+    return { keywords: [], presets: [] };
+  }
+}
+
+// GM-only printed places for CODEX › LOCATIONS' ADD FROM BOOK (issue #50): names and nesting only. Empty on failure;
+// the picker then hides.
+export async function loadPlaces(campaignId: string): Promise<PlaceSummary[]> {
+  try {
+    const res = await apiGet(`/api/campaigns/${campaignId}/places`);
+    const parsed = PlaceSummary.array().safeParse(res.ok ? await res.json() : null);
+    return parsed.success ? parsed.data : [];
+  } catch {
+    return [];
   }
 }

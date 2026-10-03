@@ -47,6 +47,7 @@ type GmAppProps = {
   npcPresets: NpcPreset[];
   flavour: FlavourTable[];
   places: PlaceSummary[];
+  initialTab?: GmTab;
 };
 
 export function GmApp({
@@ -60,10 +61,11 @@ export function GmApp({
   npcPresets,
   flavour,
   places,
+  initialTab = "TRACK",
 }: GmAppProps) {
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
-  const [tab, setTab] = useState<GmTab>("TRACK");
+  const [tab, setTab] = useState<GmTab>(initialTab);
   const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when PARTY's SETUP sends it there
   const [poolError, setPoolError] = useState<string | null>(null);
   // The books' stat blocks plus the ones the GM wrote (issue #43), by name. Every picker, the NPC stat source and the

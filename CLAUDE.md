@@ -152,13 +152,15 @@ apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessi
 apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM), drop-placeholders.ts (one-off pack fix)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/new/page.tsx (CREATE NEW CAMPAIGN before the campaign exists),
-                    c/[campaignId]/page.tsx (seat → GM or player app),
+                    c/[campaignId]/page.tsx (seat → GM or player app; ?tab= opens a GM tab),
+                    c/[campaignId]/setup/page.tsx (CREATE NEW CAMPAIGN after CREATE: setting, factions, players),
                     c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),
                     library/[characterId]/page.tsx (the builder without a campaign),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
                     server-api.ts (apiGet: Clerk Bearer + guest cookie), layout.tsx (AuthProvider)
 apps/web/components/lobby/   lobby-view (your games, CREATE NEW CAMPAIGN, import, your characters, running now)
 apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: tier, premise, name (table is ui/table-talk)
+apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
 apps/web/components/invite/  invite-accept
 apps/web/components/gm/      gm-app, tracker, prep, codex, party (with ascend-panel; kebab-case folders, children under
                              components/)
@@ -170,7 +172,7 @@ apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-pro
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
-                             share-origin (QR and invite links carry an address a phone can reach)
+                             share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image)
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
