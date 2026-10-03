@@ -40,10 +40,7 @@ export function NameStep({ draft, error, fields, onName, onEdit, onCreate }: Nam
           maxLength={100}
           placeholder="VOLKUS DIG SITE"
           value={draft.name}
-          onChange={(e) => {
-            onName(e.target.value);
-            fields.clear("name");
-          }}
+          onChange={(e) => onName(e.target.value)}
           {...fields.marks("name")}
         />
         <FieldError {...fields.reason("name")} />

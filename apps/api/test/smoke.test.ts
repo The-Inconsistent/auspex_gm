@@ -700,7 +700,7 @@ test("GM and player share a table", async (t) => {
     (await get(`/campaigns/${campaignId}/scene-presets`, { cookie: `wg_token=${issued.token}` })).status,
     403,
   );
-  // And the printed patrons and Frameworks for PARTY's picker (issue #45).
+  // And the printed patrons and Frameworks for SETUP's picker (issue #45).
   const frameworks = await get(`/campaigns/${campaignId}/frameworks`, bearer(gmClerk));
   assert.equal(frameworks.status, 200);
   const { patrons } = (await frameworks.json()) as FrameworkCatalogue;
@@ -924,8 +924,6 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
       s.campaign.kind[0] === "combat heavy" && // trimmed
       s.campaign.limits[0] === "body horror",
   );
-  // A save names its entry (CodexSave): a blank NPC can't be listed or picked.
-  assert.equal((await gm.send({ type: "codex.save", kind: "npc", data: { name: " " } })).ok, false);
   // A table line is short, and there are at most 12 (rules-flow §11.79).
   assert.equal((await gm.send({ type: "campaign.update", limits: ["x".repeat(61)] })).ok, false);
   assert.equal((await gm.send({ type: "campaign.update", kind: Array(13).fill("x") })).ok, false);

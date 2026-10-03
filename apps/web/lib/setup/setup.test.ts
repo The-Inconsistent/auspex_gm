@@ -30,7 +30,7 @@ const volkus = {
     tier: 4,
     framework: "Deathwatch Kill Team.",
     patron: "Inquisitor Marie Von Xardt, Ordo Xenos",
-    kind: ["combat heavy"],
+    kind: [], // the pack sets no kind of game (rules-flow §11.79)
   },
   codex: {
     locations: [{}],
@@ -48,11 +48,11 @@ test("the kind of game ticks its step; the limits may stay empty", () => {
   assert.equal(steps[0]?.now, "INVESTIGATIVE · POLITICAL");
 });
 
-test("the volkus pack with one session started ticks every step", () => {
+test("the volkus pack with one session started ticks every step but the kind of game", () => {
   const steps = setupSteps(volkus);
   assert.deepEqual(
     steps.filter((s) => s.done === false).map((s) => s.key),
-    [],
+    ["kind"],
   );
   assert.equal(steps.find((s) => s.key === "tier")?.now, "TIER 4 · 400 XP TO START");
 });

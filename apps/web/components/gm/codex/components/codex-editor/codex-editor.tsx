@@ -182,9 +182,10 @@ export function CodexEditor({
 
   // SAVE: empty id selects become null (no faction / no parent), then create or update.
   const save = async () => {
+    setError(null);
     const data: Record<string, unknown> = { ...draft };
     for (const f of fields) if (f.type === "select" && data[f.key] === "" && f.key.endsWith("Id")) data[f.key] = null;
-    // The save's own schema first, so a missing NAME is marked on the field rather than refused by the server.
+    // CodexSave first: a nameless entry can't be listed or picked, so NAME (or TITLE) is marked on the field.
     if (!fieldErrors.check<unknown>(CodexSave[kind], data)) return;
     const r = await send({ type: "codex.save", kind, ...(row ? { id: row.id } : {}), data } as ActionInput);
     if (!r.ok) return setError(r.error);
@@ -277,6 +278,7 @@ export function CodexEditor({
           {f.type === "wargearName" && (
             <WargearName
               id={`f-${f.key}`}
+              marks={fieldErrors.marks("name")}
               name={String(draft.name ?? "")}
               wargearId={(draft.wargearId as string | null | undefined) ?? null}
               catalogue={wargear}

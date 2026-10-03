@@ -282,8 +282,9 @@ export const CodexInput = {
 export type CodexKind = keyof typeof CodexInput;
 export const CODEX_KINDS = Object.keys(CodexInput) as CodexKind[];
 
-// What `codex.save` takes: the same rows, but each must be named, since a nameless entry can't be listed or picked. The
-// editors check it before SAVE and mark the field. CodexInput stays lenient for exports and packs from before.
+// What an editor's SAVE requires before it sends: the same rows, but each must be named, since a nameless entry can't
+// be listed or picked (useFieldErrors marks the field). `codex.save` itself stays on the lenient CodexInput, like
+// exports and packs: a row saved nameless before this can still be revealed, toggled or put in a scene.
 const named = (max: number) => z.string().trim().min(1).max(max);
 export const CodexSave = {
   faction: CodexInput.faction.extend({ name: named(100) }),

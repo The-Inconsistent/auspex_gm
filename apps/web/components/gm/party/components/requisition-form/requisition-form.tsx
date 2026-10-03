@@ -68,7 +68,6 @@ export function RequisitionForm({
   // (Rarity by location, p.206).
   const handleItem = (v: string) => {
     setItem(v);
-    itemFields.clear();
     const w = find(v);
     if (!w) return;
     setKind(requisitionKindOf(w.kind));

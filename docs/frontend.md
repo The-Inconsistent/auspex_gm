@@ -18,7 +18,7 @@ seat.
 |---|---|---|---|
 | `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
 | `/c/new` | `app/c/new/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps before the campaign exists: asks `/api/frameworks` (a creator's only, so it is the gate too) and renders `NewCampaign` |
-| `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen`. `?tab=party` (any GM tab) opens the GM app there |
+| `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen`. `?tab=setup` (any GM tab) opens the GM app there |
 | `/c/<campaignId>/setup` | `app/c/[campaignId]/setup/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps after CREATE, for the GM only: loads the places, faction presets and scene presets, and renders `CampaignSetup` |
 | `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
 | `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
@@ -58,24 +58,29 @@ The checks run in this order, and the first one that matches decides what render
 | Signed in, `/api/lobby` fails, errors or doesn't parse as `Lobby` | `JOIN_ERRORS.nosignal` |
 | Signed in | `<LobbyView lobby={…} />` |
 
-**`LobbyView`** (`components/lobby/lobby-view/lobby-view.tsx`) has Clerk's `<UserButton />` in the header and four
-sections:
+**`LobbyView`** (`components/lobby/lobby-view/lobby-view.tsx`) has Clerk's `<UserButton />` in the header, then, in this
+order (creating a game sits above the lists that grow):
 
-- **YOUR GAMES** (`lobby.mine`): a card per seat with a GM or PLAYER chip and OPEN (to `/c/<id>`).
+- **YOUR GAMES** (`lobby.mine`): a card per seat with a GM or PLAYER chip and OPEN (a `next/link` to `/c/<id>`).
+- **CREATE NEW CAMPAIGN**, only when `lobby.canCreate` (the Clerk creator role): a link to `/c/new`.
+- **IMPORT GAME**, creators only: a campaign export as a new campaign, with FRESH START.
 - **YOUR CHARACTERS** (`lobby.characters`, issue #14): the caller's own library — the Tier, the archetype once the build
   resolves, ready or in progress, and a homebrew mark. OPEN goes to `/library/<id>`; DELETE asks once (the button turns
   to CONFIRM), because no GM owns these, then `router.refresh()`. NEW CHARACTER posts an empty row and opens its
   builder, with the count beside it, and is disabled at `LIBRARY_CAP`.
 - **RUNNING NOW**: games with a session in progress where the caller has no seat (`running` filtered to `role: null`).
   They're cards only, with no OPEN: joining needs an invite.
-- **CREATE NEW CAMPAIGN**, only when `lobby.canCreate` (the Clerk creator role): a link to `/c/new`.
+
+Every button that posts (IMPORT AS GM, NEW CHARACTER, DELETE) pulses (`aria-busy`) from the tap until the next page is
+up, through `useTransition`, and a second tap is ignored meanwhile. `app/loading.tsx` shows SYNCING COGITATOR… the
+moment any link is tapped, since every page fetches from the api first.
 
 ### `/c/new`: `app/c/new/page.tsx`
 
 `NewCampaign` (`components/new-campaign/`) holds four steps in state, in the builder's chrome (`.bld-head`, and the
 `WizardSteps` strip from `components/ui/wizard-steps/`, which also shows the steps after CREATE greyed out):
 1. **TIER**: radio cards, 1–5, with the starting XP (Core p.20).
-2. **PREMISE**: the Framework, patron and Framework Bonus, with PARTY's `FrameworkPicker` (rules-flow §11.80).
+2. **PREMISE**: the Framework, patron and Framework Bonus, with SETUP's `FrameworkPicker` (rules-flow §11.80).
 3. **TABLE**: `TableTalk`, the kind of game and what to leave out (Core p.316, §11.79).
 4. **NAME**: the name and a review of every step, each with EDIT.
 
@@ -91,7 +96,7 @@ each saved as it goes through CODEX's and PARTY's own pieces:
 6. **FACTIONS**: `FactionPicker` (open), or a typed name (`codex.save` kind `faction`).
 7. **PLAYERS**: `RoomInvite`, PARTY's ROOM QR.
 
-OPEN THE CAMPAIGN pushes `/c/<campaignId>?tab=party`, where SETUP lists what's left.
+OPEN THE CAMPAIGN pushes `/c/<campaignId>?tab=setup`, where the checklist lists what's left.
 
 ### `/c/<campaignId>`: `app/c/[campaignId]/page.tsx`
 
@@ -687,7 +692,7 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
 | REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
 
 Every code (room, invite, guest) becomes a `QR_SIZE` (320px) PNG through `qrImage` (`lib/qr`), built from `shareOrigin`
-with `qrcode`, using `TOKENS.bg` modules on `TOKENS.fg`, and shows it full-screen in `QrDialog` with the URL written
+with `qrcode`, using `TOKENS.ink` modules on `TOKENS.vellum`, and shows it full-screen in `QrDialog` with the URL written
 underneath. The code is returned only once, so a closed dialog can't be reopened; make a new one.
 
 - **ADD AGENT** sends `character.create { name }`.
@@ -780,7 +785,7 @@ with `bun test lib`.
 | Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
 | Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
 | Inline editor error | `BeatEditor`, `CodexEditor` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
-| Refused field | Every CREATE, ADD and SAVE with a required field: NEW CAMPAIGN's NAME, `TableTalk`, `AddByName`, PREP's adventure, ADD AGENT, the codex and scene editors, the threat editor, YOUR OWN HAZARD, requisition | `useFieldErrors` parses with the server's own zod schema (`CreateGame`, `CodexSave`, `CharacterName`, `CustomThreatData`…) before sending: each refused input gets `aria-invalid` (a red border on a red tint, `globals.css`), `FieldError` says why under it (`! Required.`, `! At most 100 characters.`, `sayIssue`), and the first takes the focus. A refusal on a field with no input of its own (an ability in a list) goes to the form's error line as `KEY: reason` | When that field is edited |
+| Refused field | Every CREATE, ADD and SAVE with a required field: NEW CAMPAIGN's NAME, `TableTalk`, `AddByName`, PREP's adventure, ADD AGENT, the codex and scene editors, the threat editor, YOUR OWN HAZARD, requisition | `useFieldErrors` parses with a shared zod schema (`CreateGame`, `CodexSave`, `CharacterName`, `CustomThreatData`…) before sending: each refused input gets `aria-invalid` (a red border on a red tint, `globals.css`), `FieldError` says why under it (`! Required.`, `! At most 100 characters.`, `sayIssue`), and the first takes the focus. A refusal on a field with no input of its own (an ability in a list) goes to the form's error line as `KEY: reason` | When that field is edited |
 | Inline form error | `NewCampaign` (CREATE), `LobbyView` (IMPORT GAME, which also marks the file input), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
 
 The error text is either the server's `ActionError` message or one of the two client strings from `send`

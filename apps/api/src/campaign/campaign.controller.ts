@@ -100,7 +100,7 @@ export class CampaignController {
   }
 
   // NEW CAMPAIGN's PREMISE step: the printed Frameworks before there's a campaign to ask, so a creator's only. The
-  // official books, as PARTY's picker gives a campaign without homebrew.
+  // official books, as SETUP's picker gives a campaign without homebrew.
   @Get("frameworks")
   async newFrameworks(@Req() req: Request) {
     const user = await signedInUser(headersOf(req));
@@ -177,7 +177,7 @@ export class CampaignController {
     return listScenePresets();
   }
 
-  // The printed patrons and Frameworks for PARTY's picker (issue #45). Book text, so GM only like the bestiary; the
+  // The printed patrons and Frameworks for SETUP's picker (issue #45). Book text, so GM only like the bestiary; the
   // picker fills in names only, so the MISSION players see carries no printed prose (rules-flow §11.80).
   @Get("campaigns/:id/frameworks")
   async frameworks(@Param("id") id: string, @Req() req: Request) {

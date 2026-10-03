@@ -35,6 +35,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
   const back = BEFORE_CREATE[at - 1];
   const next = BEFORE_CREATE[at + 1];
 
+  // A step tab, BACK, NEXT or EDIT: that step, from the top.
   const go = (s: NewStep) => {
     setStep(s);
     window.scrollTo({ top: 0 });
@@ -53,10 +54,12 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(game),
       }).catch(() => null);
-      const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
-      if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
+      const body = (await res?.json().catch(() => null)) as { campaignId?: unknown; message?: unknown } | null;
+      const id = body?.campaignId;
+      if (!res?.ok || typeof id !== "string")
+        return setError(typeof body?.message === "string" ? body.message : "No signal");
       // After an await the router call is outside the transition, so it's wrapped again to keep the pulse until it lands.
-      startTransition(() => router.replace(`/c/${body.campaignId}/setup`));
+      startTransition(() => router.replace(`/c/${id}/setup`));
     });
   };
 

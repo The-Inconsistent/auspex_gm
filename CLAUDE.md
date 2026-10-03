@@ -169,9 +169,10 @@ apps/web/components/builder/ builder (draft, live resolveBuild, one screen per c
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
-                             status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip)
+                             status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
+                             field-error (a refused field's reason)
 apps/web/hooks/use-table/    socket + wake lock
-apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check the server's zod schema first and mark refused fields (ui/field-error)
+apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image)
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
@@ -270,7 +271,7 @@ These are binding; follow them when writing code and use them when reviewing:
   socket.io's handshake gets a 308 or 404.
 - **Rate limits** (`apps/api/src/core/rate-limit.ts`, in-process): 60/min per IP on `/api/join`, `/api/guest` and
   `/api/invites`, 120/min **per caller** (their session, falling back to the IP) on `/api/library`, `/api/creation`,
-  `/api/rules` and `/api/campaigns/import`, because the library builder autosaves and a whole table shares one IP,
+  `/api/rules`, `/api/frameworks` and `/api/campaigns/import`, because the library builder autosaves and a whole table shares one IP,
   60 socket connects/min per IP, 120 actions/min per socket (the admin key is exempt, for `seed.ts`).
   The IP is `CF-Connecting-IP`, so Next's server-side fetches to the api must forward it.
 - **Style:** match the surrounding code. Comments say *why*, with page cites. Deliberate shortcuts are marked

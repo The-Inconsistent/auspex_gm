@@ -199,7 +199,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
           </div>
           <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
             <input type="checkbox" checked={fresh} onChange={(e) => setFresh(e.target.checked)} /> FRESH START: reset
-            sessions, reveals and wounds for a new group
+            sessions, reveals, wounds and the table&apos;s limits for a new group
           </label>
           {importError && (
             <div id="import-file-error" className="red" role="alert">
