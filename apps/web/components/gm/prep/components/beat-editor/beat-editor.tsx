@@ -77,6 +77,7 @@ export function BeatEditor({
           locationId: null as string | null,
           npcIds: [] as string[],
           handoutIds: [] as string[],
+          itemIds: [] as string[],
           encounter: [] as EncounterEntry[],
           exits: [] as BeatExit[],
           tests: [] as BeatTest[],

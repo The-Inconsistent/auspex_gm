@@ -68,6 +68,11 @@ export const weaponMods = <A extends z.ZodTypeAny>(amount: A) =>
     z.object({ kind: z.literal("gm"), what: z.string().min(1).max(200) }), // the GM applies it at the table
   ]);
 
+// The structured part of an upgrade's printed effect: what the fitted profile shows, in fixed amounts. A relic's Powers
+// take the same shape (rules-flow.md §11.116).
+export const UpgradeMod = weaponMods(z.number().int());
+export type UpgradeMod = z.infer<typeof UpgradeMod>;
+
 // A Talent's amount: fixed, Rank or Double Rank ({ perRank: 2 }), and maybe more ("Double Rank +1"). Rank is the
 // character's Rank now, so these are resolved when the sheet is read (rules-flow.md §11.68).
 export const RankAmount = z.union([

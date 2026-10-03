@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { Requirement, WargearFilter, weaponMods } from "./creation.ts";
+import { Requirement, WargearFilter } from "./creation.ts";
+import { UpgradeMod } from "./weapon-effect.ts";
+export { UpgradeMod };
 import { Rarity, WargearKind, type RequisitionKind } from "./requisition.ts";
 import { Source, sourceCite } from "./source.ts";
 import { Weapon } from "./threat.ts";
@@ -55,11 +57,6 @@ export type UpgradeSlot = z.infer<typeof UpgradeSlot>;
 export const UPGRADE_HOSTS = ["weapon", "armour"] as const;
 export const UpgradeHost = z.enum(UPGRADE_HOSTS);
 export type UpgradeHost = z.infer<typeof UpgradeHost>;
-
-// The structured part of an upgrade's printed effect: what the fitted profile shows, in fixed amounts (`weaponMods`,
-// creation.ts, which a Talent's weapon effect shares with Rank amounts).
-export const UpgradeMod = weaponMods(z.number().int());
-export type UpgradeMod = z.infer<typeof UpgradeMod>;
 
 // What an upgrade fits and what it does. `fits` is the printed compatibility line ("any melee weapon with the BLADE
 // keyword", Apocrypha p.387) as a filter, so the server can refuse a bad fit.

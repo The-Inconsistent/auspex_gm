@@ -54,6 +54,7 @@ const file = CampaignExport.parse({
             order: 0,
             locationId: ID(4),
             hazards: [{ id: ID(8), spotted: true }],
+            itemIds: [ID(9)],
           },
         ],
       },
@@ -69,6 +70,10 @@ const file = CampaignExport.parse({
     npcs: [{ id: ID(5), name: "Magos Tull", revealed: true }],
     handouts: [
       { id: ID(6), title: "Orders", revealed: true, revealedAt: "2026-09-01T00:00:00.000Z", audience: [ID(1)] },
+    ],
+    items: [
+      { id: ID(9), name: "Bolt Pistol", wargearId: "bolt-pistol", locationId: ID(4), givenTo: null },
+      { id: ID(10), name: "Magnocular Scope", givenTo: ID(1) },
     ],
     sessions: [{ id: ID(7), number: 1, startedAt: "2026-09-01T00:00:00.000Z", endedAt: null, recap: "", xp: 0 }],
   },
@@ -91,6 +96,16 @@ test("a file from before place hazards still loads (issue #49)", () => {
   delete old.codex.locations[0]!.hazardList;
   const parsed = CampaignExport.parse(old).codex;
   assert.deepEqual([parsed.adventures[0]!.beats[0]!.hazards, parsed.locations[0]!.hazardList], [[], []]);
+});
+
+test("a file from before items still loads (issue #51)", () => {
+  const old = structuredClone(file) as unknown as {
+    codex: { adventures: { beats: { itemIds?: unknown }[] }[]; items?: unknown };
+  };
+  delete old.codex.adventures[0]!.beats[0]!.itemIds;
+  delete old.codex.items;
+  const parsed = CampaignExport.parse(old).codex;
+  assert.deepEqual([parsed.adventures[0]!.beats[0]!.itemIds, parsed.items], [[], []]);
 });
 
 test("an exit is a bounded label, with no target unless the GM picks one", () => {
@@ -126,4 +141,9 @@ test("freshStart resets play, keeps the sheet and the XP", () => {
   assert.deepEqual([f.codex.handouts[0]!.revealed, f.codex.handouts[0]!.revealedAt], [false, null]);
   assert.deepEqual(f.codex.handouts[0]!.audience, [ID(1)]);
   assert.equal(f.codex.sessions.length, 0);
+  assert.deepEqual(
+    f.codex.items.map((i) => i.givenTo),
+    [null, ID(1)],
+    "a given item stays given: the sheet keeps its line",
+  );
 });

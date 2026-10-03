@@ -195,6 +195,7 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
     locations: [],
     npcs: [],
     handouts: [h("public"), h("for-a", { audience: ["a", "c"] }), h("unrevealed", { revealed: false })],
+    items: [],
     sessions: [],
   };
   const titles = (viewer: string | null) => toPlayerCodex(codex, viewer).handouts.map((x) => x.title);
@@ -446,6 +447,7 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
       },
     ],
     handouts: [],
+    items: [],
     sessions: [],
   };
   const p = toPlayerCodex(codex, null);
@@ -467,7 +469,16 @@ test("a revealed place reaches phones without its hazards, notes or list (issue 
     ...CodexInput.location.parse({ name: "Shaft", revealed: true, hazards: "[notes]", hazardList: [hazard] }),
   };
   const [p] = toPlayerCodex(
-    { factions: [], adventures: [], locations: [place], npcs: [], handouts: [], sessions: [], customThreats: [] },
+    {
+      factions: [],
+      adventures: [],
+      locations: [place],
+      npcs: [],
+      handouts: [],
+      items: [],
+      sessions: [],
+      customThreats: [],
+    },
     null,
   ).locations;
   assert.deepEqual([p!.name, p!.hazards, p!.hazardList], ["Shaft", "", []]);
@@ -554,4 +565,25 @@ test("threatCite uses the SOURCES cite, or the threat-only one", () => {
   assert.equal(threatCite({ source: "core", page: 339 }), "Core p.339");
   assert.equal(threatCite({ source: "vow-of-absolution", page: 43 }), "VoA p.43");
   assert.equal(threatCite({ source: "gutshivas-kommandos", page: 8 }), "GK p.8");
+});
+
+test("phones get no items: an Agent sees one as a line on their sheet once it's given (issue #51)", () => {
+  const item = {
+    id: "00000000-0000-4000-8000-000000000003",
+    givenTo: "a",
+    ...CodexInput.item.parse({ name: "Auspex" }),
+  };
+  assert.deepEqual(item.mods, [], "an item defaults to no Powers");
+  assert.equal(item.wargearId, null);
+  const codex: Codex = {
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [],
+    items: [item],
+    sessions: [],
+    customThreats: [],
+  };
+  assert.deepEqual(toPlayerCodex(codex, "a").items, []);
 });

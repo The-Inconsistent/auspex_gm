@@ -29,18 +29,27 @@ export const Pack = z
       .default([]),
     npcs: z.array(CodexInput.npc.omit({ factionId: true }).extend({ key, faction: key.optional() })).default([]),
     handouts: z.array(CodexInput.handout.extend({ key })).default([]),
+    // Never given: a pack is a campaign start, so an item lies in a place or with an NPC, or nowhere yet (issue #51).
+    items: z
+      .array(
+        CodexInput.item
+          .omit({ locationId: true, npcId: true })
+          .extend({ key, location: key.optional(), npc: key.optional() }),
+      )
+      .default([]),
     adventures: z
       .array(
         CodexInput.adventure.extend({
           key,
           beats: z.array(
             CodexInput.beat
-              .omit({ adventureId: true, locationId: true, npcIds: true, handoutIds: true, exits: true })
+              .omit({ adventureId: true, locationId: true, npcIds: true, handoutIds: true, itemIds: true, exits: true })
               // A pack beat has no key to point at, so its exits are labels; the GM wires them in the app.
               .extend({
                 location: key.optional(),
                 npcs: keys,
                 handouts: keys,
+                items: keys,
                 exits: z
                   .array(BeatExit.pick({ label: true }))
                   .max(MAX_EXITS)
@@ -69,7 +78,8 @@ export const Pack = z
     const factions = has(p.factions),
       locations = has(p.locations),
       npcs = has(p.npcs),
-      handouts = has(p.handouts);
+      handouts = has(p.handouts),
+      items = has(p.items);
     const check = (ok: boolean, path: (string | number)[], msg: string) =>
       ok || ctx.addIssue({ code: "custom", path, message: msg });
     // Parents must come first so the seeder can resolve them in one pass.
@@ -83,12 +93,18 @@ export const Pack = z
     p.npcs.forEach((n, i) =>
       check(!n.faction || factions.has(n.faction), ["npcs", i, "faction"], `unknown faction "${n.faction}"`),
     );
+    p.items.forEach((it, i) => {
+      check(!it.location || locations.has(it.location), ["items", i, "location"], `unknown location "${it.location}"`);
+      check(!it.npc || npcs.has(it.npc), ["items", i, "npc"], `unknown npc "${it.npc}"`);
+      check(!(it.location && it.npc), ["items", i], "an item lies in a place or is carried by an NPC, not both");
+    });
     p.adventures.forEach((a, ai) =>
       a.beats.forEach((b, bi) => {
         const at = ["adventures", ai, "beats", bi];
         check(!b.location || locations.has(b.location), [...at, "location"], `unknown location "${b.location}"`);
         b.npcs.forEach((k) => check(npcs.has(k), [...at, "npcs"], `unknown npc "${k}"`));
         b.handouts.forEach((k) => check(handouts.has(k), [...at, "handouts"], `unknown handout "${k}"`));
+        b.items.forEach((k) => check(items.has(k), [...at, "items"], `unknown item "${k}"`));
       }),
     );
   });

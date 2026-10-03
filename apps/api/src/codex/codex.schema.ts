@@ -3,6 +3,7 @@ import { boolean, integer, jsonb, pgTable, text, timestamp, uuid, type AnyPgColu
 import type { z } from "zod";
 import type { AdventureStatus, Attitude, BeatStatus, BeatType, FactionStance } from "@wg/shared";
 import { owned } from "../campaign/campaign.schema.ts";
+import { character } from "../character/character.schema.ts";
 import { body } from "../core/sql.ts";
 
 // Campaign content (docs/campaign-model.md). Editable fields are validated by CodexInput in @wg/shared.
@@ -47,6 +48,7 @@ export const beat = pgTable("beat", {
   locationId: uuid().references(() => location.id, { onDelete: "set null" }),
   npcIds: ids(),
   handoutIds: ids(),
+  itemIds: ids(), // codex.delete clears a deleted item
   encounter: jsonb().$type<unknown[]>().notNull().default([]),
   exits: jsonb().$type<unknown[]>().notNull().default([]), // BeatExit[]; codex.delete clears a deleted target
   tests: jsonb().$type<unknown[]>().notNull().default([]), // BeatTest[]
@@ -87,4 +89,18 @@ export const handout = pgTable("handout", {
   revealed: boolean().notNull().default(false),
   revealedAt: timestamp({ withTimezone: true }),
   audience: ids(), // character ids; empty = every player. No FK in a uuid array: character.delete clears them.
+});
+
+// Something the Agents can find (issue #51). `wargearId` names a catalogue entry (JSON data, so no FK); `givenTo` is
+// server-owned, set by character.giveItem, and a deleted character leaves the item loose.
+export const item = pgTable("item", {
+  ...owned(),
+  name: text().notNull(),
+  wargearId: text(),
+  description: body(),
+  gmNotes: body(),
+  locationId: uuid().references(() => location.id, { onDelete: "set null" }),
+  npcId: uuid().references(() => npc.id, { onDelete: "set null" }),
+  mods: jsonb().$type<unknown[]>().notNull().default([]), // UpgradeMod[]: a relic's Powers (rules-flow.md §11.116)
+  givenTo: uuid().references(() => character.id, { onDelete: "set null" }),
 });

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { hazards, hulkHazardIds, places, spaceHulk } from "@wg/data";
+import { hazards, hulkHazardIds, places, spaceHulk, wargear } from "@wg/data";
 import type { z } from "zod";
 import {
   LocationHazard,
@@ -19,15 +19,16 @@ import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { checkThreats } from "../threat/threat.service.ts";
-import { adventure, beat, faction, handout, location, npc } from "./codex.schema.ts";
+import { adventure, beat, faction, handout, item, location, npc } from "./codex.schema.ts";
 
 export type CodexAction = Extract<
   Action,
   { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" | "codex.addHulk" }
 >;
 
-const codexTable = { faction, adventure, beat, location, npc, handout } as const;
-type RefTable = typeof faction | typeof adventure | typeof location | typeof npc | typeof handout | typeof character;
+const codexTable = { faction, adventure, beat, location, npc, handout, item } as const;
+type RefTable =
+  typeof faction | typeof adventure | typeof location | typeof npc | typeof handout | typeof item | typeof character;
 
 // Every id the client sends must name a row of this campaign; the FKs alone would accept another campaign's row.
 async function checkRefs(
@@ -55,6 +56,18 @@ export function checkHazards(list: LocationHazard[]) {
   }
 }
 
+// An item's catalogue entry must exist, or GIVE couldn't build its profile later (issue #51).
+export function checkWargear(wargearIds: (string | null)[]) {
+  const unknown = wargearIds.find((w) => w !== null && !wargear.has(w));
+  if (unknown) fail(`Unknown wargear "${unknown}"`);
+}
+
+// An item lies in one place or is carried by one NPC, not both (issue #51). Not a zod refinement: `.omit()` throws on a
+// refined object, and the pack omits both.
+export function checkHolder(i: { name: string; locationId: string | null; npcId: string | null }) {
+  if (i.locationId && i.npcId) fail(`${i.name} lies in a place or is carried by an NPC, not both`);
+}
+
 export async function applyCodexAction(
   tx: Tx,
   { ctx, action: a }: { ctx: Ctx; action: CodexAction },
@@ -74,6 +87,7 @@ export async function applyCodexAction(
         await refs(location, [b.locationId], "Location");
         await refs(npc, b.npcIds, "NPC");
         await refs(handout, b.handoutIds, "Handout");
+        await refs(item, b.itemIds, "Item");
         await checkThreats(
           tx,
           cid,
@@ -127,6 +141,29 @@ export async function applyCodexAction(
             fail(`${row(a.id)?.name} can't go inside ${row(parentId)?.name}: it is already inside it`);
         }
       }
+      if (a.kind === "item") {
+        const i = a.data as z.output<typeof CodexInput.item>;
+        checkHolder(i);
+        checkWargear([i.wargearId]);
+        await refs(location, [i.locationId], "Location");
+        await refs(npc, [i.npcId], "NPC");
+        // A given item is with an Agent now: TAKE BACK first (rules-flow.md §11.114). Its holder can't change, nor what
+        // TAKE BACK finds on the sheet by (its name, catalogue entry and Powers); its notes can. `givenTo` itself is
+        // server-owned, so CodexInput strips it and this save leaves it alone.
+        if (a.id) {
+          const [given] = await tx
+            .select({ givenTo: item.givenTo, name: item.name, wargearId: item.wargearId, mods: item.mods })
+            .from(item)
+            .where(and(eq(item.id, a.id), eq(item.campaignId, cid)));
+          const moved =
+            i.locationId ||
+            i.npcId ||
+            i.name !== given?.name ||
+            i.wargearId !== given?.wargearId ||
+            JSON.stringify(i.mods) !== JSON.stringify(given?.mods);
+          if (given?.givenTo && moved) fail(`${given.name} is with an Agent now: take it back first`);
+        }
+      }
       if (a.kind === "handout")
         await refs(character, (a.data as z.output<typeof CodexInput.handout>).audience, "Audience character");
       // First reveal stamps the time; later saves keep it (only an UPDATE can read the old value).
@@ -163,7 +200,7 @@ export async function applyCodexAction(
         .where(and(eq(table.id, a.id), eq(table.campaignId, cid)))
         .returning({ id: table.id });
       if (!r.length) fail("Not found");
-      // Beats list NPCs and handouts in uuid arrays, which have no FK to clear them.
+      // Beats list NPCs, handouts and items in uuid arrays, which have no FK to clear them.
       if (a.kind === "npc")
         await tx
           .update(beat)
@@ -173,6 +210,11 @@ export async function applyCodexAction(
         await tx
           .update(beat)
           .set({ handoutIds: sql`array_remove(${beat.handoutIds}, ${a.id}::uuid)` })
+          .where(eq(beat.campaignId, cid));
+      if (a.kind === "item")
+        await tx
+          .update(beat)
+          .set({ itemIds: sql`array_remove(${beat.itemIds}, ${a.id}::uuid)` })
           .where(eq(beat.campaignId, cid));
       // Exits name their target inside jsonb: keep the label, drop the target. PREP's DONE and SKIP re-send the whole
       // beat, so a dangling id would make the save check refuse them.
