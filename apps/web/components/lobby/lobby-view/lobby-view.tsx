@@ -1,6 +1,7 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useState, useTransition, type FormEvent } from "react";
 
 import { UserButton } from "@wg/auth/react";
 import { LIBRARY_CAP, TIERS, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
@@ -18,9 +19,9 @@ function GameCard({ game }: { game: LobbyGame }) {
         <b style={{ flex: 1 }}>{game.name.toUpperCase()}</b>
         {game.role && <span className="chip">{game.role === "gm" ? "GM" : "PLAYER"}</span>}
         {game.role && (
-          <a className="btn sm primary" href={`/c/${game.id}`}>
+          <Link className="btn sm primary" href={`/c/${game.id}`}>
             OPEN
-          </a>
+          </Link>
         )}
       </div>
       <div className="dim">{line}</div>
@@ -32,10 +33,12 @@ function GameCard({ game }: { game: LobbyGame }) {
 function CharacterCard({
   character,
   confirming,
+  deleting,
   onDelete,
 }: {
   character: LibraryCharacter;
   confirming: boolean;
+  deleting: boolean;
   onDelete: (id: string) => void;
 }) {
   const line = [
@@ -50,12 +53,13 @@ function CharacterCard({
     <div className="item">
       <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
         <b style={{ flex: 1 }}>{(character.name.trim() || "UNNAMED").toUpperCase()}</b>
-        <a className="btn sm primary" href={`/library/${character.id}`}>
+        <Link className="btn sm primary" href={`/library/${character.id}`}>
           OPEN
-        </a>
+        </Link>
         <button
           className="btn sm danger"
           aria-label={`Delete ${character.name || "this character"}`}
+          aria-busy={deleting}
           onClick={() => onDelete(character.id)}
         >
           {confirming ? "CONFIRM" : "DELETE"}
@@ -78,65 +82,86 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const [importError, setImportError] = useState<string | null>(null);
   const others = lobby.running.filter((g) => !g.role);
   const full = lobby.characters.length >= LIBRARY_CAP;
+  // The tapped button pulses (aria-busy, globals.css) from the tap until the next page is up, and a second tap is
+  // ignored meanwhile: the request and the page load take a moment, and without it the lobby looks frozen.
+  const [pending, startTransition] = useTransition();
+  const [busy, setBusy] = useState<string | null>(null);
+  const run = (key: string, work: () => Promise<void>) => {
+    if (pending) return;
+    setBusy(key);
+    startTransition(work);
+  };
+  const isBusy = (key: string) => pending && busy === key;
+  // After an await the router call is outside the transition, so it's wrapped again to keep the pulse until it lands.
+  const go = (href: string) => startTransition(() => router.push(href));
 
   // DELETE: a library character is the user's own, so it goes without a GM; the lobby asks once first.
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (confirming !== id) return setConfirming(id);
     setConfirming(null);
-    const res = await fetch(`/api/library/${id}`, { method: "DELETE" }).catch(() => null);
-    if (!res?.ok) return setLibraryError("Couldn't delete that character.");
-    router.refresh();
+    run(`delete:${id}`, async () => {
+      const res = await fetch(`/api/library/${id}`, { method: "DELETE" }).catch(() => null);
+      if (!res?.ok) return setLibraryError("Couldn't delete that character.");
+      startTransition(() => router.refresh());
+    });
   };
 
   // NEW CHARACTER: starts an empty library row, then opens its builder. A POST from here rather than a link, so a
   // cross-site navigation can't create characters in someone's library on their behalf (the session cookie is Lax).
-  const handleNewCharacter = async () => {
+  const handleNewCharacter = () => {
     setLibraryError(null);
-    const res = await fetch("/api/library", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: "{}",
-    }).catch(() => null);
-    const body = (await res?.json().catch(() => null)) as { id?: unknown; message?: unknown } | null;
-    if (!res?.ok || typeof body?.id !== "string")
-      return setLibraryError(typeof body?.message === "string" ? body.message : "Couldn't start a character.");
-    router.push(`/library/${body.id}`);
+    run("character", async () => {
+      const res = await fetch("/api/library", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: "{}",
+      }).catch(() => null);
+      const body = (await res?.json().catch(() => null)) as { id?: unknown; message?: unknown } | null;
+      if (!res?.ok || typeof body?.id !== "string")
+        return setLibraryError(typeof body?.message === "string" ? body.message : "Couldn't start a character.");
+      go(`/library/${body.id}`);
+    });
   };
 
   // NEW GAME: creates the campaign with you as GM, then opens it. Setup is REST, not a table action.
-  const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
+  const handleCreate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name.trim()) return;
-    const res = await fetch("/api/campaigns", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ name: name.trim(), tier }),
-    }).catch(() => null);
-    const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
-    if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
-    router.push(`/c/${body.campaignId}`);
+    setError(null);
+    run("create", async () => {
+      const res = await fetch("/api/campaigns", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), tier }),
+      }).catch(() => null);
+      const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
+      if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
+      go(`/c/${body.campaignId}`);
+    });
   };
 
   // IMPORT GAME: a file from a GM's EXPORT becomes a new campaign with you as GM. FRESH START resets play for a new group.
-  const handleImport = async (e: FormEvent<HTMLFormElement>) => {
+  const handleImport = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setImportError(null);
     const picked = new FormData(e.currentTarget).get("file");
     if (!(picked instanceof File) || !picked.size) return setImportError("Pick an exported .json file.");
-    let file: unknown;
-    try {
-      file = JSON.parse(await picked.text());
-    } catch {
-      return setImportError("That file isn't a campaign export.");
-    }
-    const res = await fetch("/api/campaigns/import", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ file, fresh }),
-    }).catch(() => null);
-    const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
-    if (!res?.ok || !body?.campaignId) return setImportError(body?.message ?? "No signal");
-    router.push(`/c/${body.campaignId}`);
+    run("import", async () => {
+      let file: unknown;
+      try {
+        file = JSON.parse(await picked.text());
+      } catch {
+        return setImportError("That file isn't a campaign export.");
+      }
+      const res = await fetch("/api/campaigns/import", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ file, fresh }),
+      }).catch(() => null);
+      const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
+      if (!res?.ok || !body?.campaignId) return setImportError(body?.message ?? "No signal");
+      go(`/c/${body.campaignId}`);
+    });
   };
 
   return (
@@ -163,41 +188,6 @@ export function LobbyView({ lobby }: LobbyViewProps) {
           <GameCard key={g.id} game={g} />
         ))}
       </div>
-
-      <div className="rule">YOUR CHARACTERS</div>
-      <div className="list">
-        {lobby.characters.length === 0 && (
-          <div className="dim">None yet. Build one here and bring it into a game from that game&apos;s builder.</div>
-        )}
-        {lobby.characters.map((c) => (
-          <CharacterCard key={c.id} character={c} confirming={confirming === c.id} onDelete={handleDelete} />
-        ))}
-      </div>
-      <div className="keys" style={{ alignItems: "center" }}>
-        <button className="btn primary" disabled={full} onClick={handleNewCharacter}>
-          NEW CHARACTER
-        </button>
-        <span className="dim">
-          {lobby.characters.length} of {LIBRARY_CAP}
-          {full ? " · delete one to make room" : ""}
-        </span>
-      </div>
-      {libraryError && (
-        <div className="red" role="alert">
-          ! {libraryError}
-        </div>
-      )}
-
-      {others.length > 0 && (
-        <>
-          <div className="rule">RUNNING NOW</div>
-          <div className="list">
-            {others.map((g) => (
-              <GameCard key={g.id} game={g} />
-            ))}
-          </div>
-        </>
-      )}
 
       {lobby.canCreate && (
         <form className="panel pad stack" onSubmit={handleCreate}>
@@ -238,7 +228,9 @@ export function LobbyView({ lobby }: LobbyViewProps) {
             </div>
           )}
           <div>
-            <button className="btn primary">CREATE AS GM</button>
+            <button className="btn primary" aria-busy={isBusy("create")}>
+              CREATE AS GM
+            </button>
           </div>
         </form>
       )}
@@ -262,9 +254,52 @@ export function LobbyView({ lobby }: LobbyViewProps) {
             </div>
           )}
           <div>
-            <button className="btn primary">IMPORT AS GM</button>
+            <button className="btn primary" aria-busy={isBusy("import")}>
+              IMPORT AS GM
+            </button>
           </div>
         </form>
+      )}
+
+      <div className="rule">YOUR CHARACTERS</div>
+      <div className="list">
+        {lobby.characters.length === 0 && (
+          <div className="dim">None yet. Build one here and bring it into a game from that game&apos;s builder.</div>
+        )}
+        {lobby.characters.map((c) => (
+          <CharacterCard
+            key={c.id}
+            character={c}
+            confirming={confirming === c.id}
+            deleting={isBusy(`delete:${c.id}`)}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+      <div className="keys" style={{ alignItems: "center" }}>
+        <button className="btn primary" disabled={full} aria-busy={isBusy("character")} onClick={handleNewCharacter}>
+          NEW CHARACTER
+        </button>
+        <span className="dim">
+          {lobby.characters.length} of {LIBRARY_CAP}
+          {full ? " · delete one to make room" : ""}
+        </span>
+      </div>
+      {libraryError && (
+        <div className="red" role="alert">
+          ! {libraryError}
+        </div>
+      )}
+
+      {others.length > 0 && (
+        <>
+          <div className="rule">RUNNING NOW</div>
+          <div className="list">
+            {others.map((g) => (
+              <GameCard key={g.id} game={g} />
+            ))}
+          </div>
+        </>
       )}
     </main>
   );
