@@ -274,6 +274,4 @@ These are binding; follow them when writing code and use them when reviewing:
 ## Not built yet
 
 - Advanced Creation (Core pp.38–39)
-- The five **Additional Ruin Actions** (TA p.7) as data behind a GM-only `/threat-parts`, offered as ready-made Ruin
-  abilities in that editor (issue #43 step 5)
 - Server-side undo history (client undo is inverse deltas)

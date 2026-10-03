@@ -13,6 +13,7 @@ import {
   type HazardTable,
   type SpaceHulkGenerator,
   type NpcPreset,
+  type PoolPresetTable,
   type PlaceSummary,
   type PlaceNode,
   type Threat,
@@ -53,6 +54,7 @@ type CodexViewProps = {
   tier: number;
   players: number; // Scaling Threats adds the number of players for an Adversary (Core p.326)
   wargear: Wargear[]; // where a custom threat's weapons come from (issue #43)
+  ruinActions: PoolPresetTable | null; // Threat Assessment p.7, for a custom threat's RUIN abilities (issue #43)
 };
 
 // THREATS isn't a codex kind - it has its own action and no revealed flag - so the sub-tabs are the kinds plus it.
@@ -87,6 +89,7 @@ export function CodexView({
   tier,
   players,
   wargear,
+  ruinActions,
 }: CodexViewProps) {
   const [sub, setSub] = useState<SubTab>(initialKind);
   const [editing, setEditing] = useState<Row | "new" | null>(null);
@@ -219,6 +222,7 @@ export function CodexView({
             customThreats={codex.customThreats}
             bestiary={bestiary}
             wargear={wargear}
+            ruinActions={ruinActions}
             tier={tier}
             send={send}
           />

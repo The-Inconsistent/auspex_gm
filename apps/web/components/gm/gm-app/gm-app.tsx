@@ -19,6 +19,7 @@ import {
 import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
 import type { CodexKind } from "@/components/gm/codex/constants";
+import { RUIN_ACTIONS_TABLE } from "@/components/gm/codex/components/threat-editor/constants";
 import type { TabTarget } from "@/components/gm/party/components/setup-panel/constants";
 import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
@@ -168,6 +169,7 @@ export function GmApp({
                 places={places}
                 hazards={presets.hazards}
                 spaceHulk={presets.spaceHulk}
+                ruinActions={presets.pools.find((t) => t.id === RUIN_ACTIONS_TABLE) ?? null}
                 bestiary={allThreats}
                 tier={state.campaign.tier}
                 players={players}
