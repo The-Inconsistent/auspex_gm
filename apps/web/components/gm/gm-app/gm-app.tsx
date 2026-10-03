@@ -174,6 +174,7 @@ export function GmApp({
                 tier={state.campaign.tier}
                 players={players}
                 wargear={wargear}
+                loot={presets.loot}
               />
             )}
             {tab === "PARTY" && (

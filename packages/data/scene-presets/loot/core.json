@@ -1,0 +1,1434 @@
+[
+ {
+  "id": "core-trinkets-1",
+  "name": "Trinket Table One",
+  "source": "core",
+  "page": 248,
+  "dice": "d66",
+  "rows": [
+   {
+    "id": "core-trinket-1-11",
+    "from": 11,
+    "to": 11,
+    "name": "An Ork tooth",
+    "page": 248,
+    "text": "An Ork tooth. A string of numbers is etched into the enamel.",
+    "items": [
+     {
+      "name": "An Ork tooth"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-12",
+    "from": 12,
+    "to": 12,
+    "name": "A phial of soil from your home world",
+    "page": 248,
+    "text": "A phial of soil from your home world.",
+    "items": [
+     {
+      "name": "A phial of soil from your home world"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-13",
+    "from": 13,
+    "to": 13,
+    "name": "A bent spanner from a Hive World manufactorum",
+    "page": 248,
+    "text": "A bent spanner from a Hive World manufactorum.",
+    "items": [
+     {
+      "name": "A bent spanner from a Hive World manufactorum"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-14",
+    "from": 14,
+    "to": 14,
+    "name": "A small effigy of a Jokaero made from spare parts",
+    "page": 248,
+    "text": "A small effigy of a Jokaero made from spare parts.",
+    "items": [
+     {
+      "name": "A small effigy of a Jokaero made from spare parts"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-15",
+    "from": 15,
+    "to": 15,
+    "name": "A book of ribald poetry bound into the cover of a chronicle of Saint Julyana Gilead",
+    "page": 248,
+    "text": "A book of ribald poetry bound into the cover of a chronicle of Saint Julyana Gilead.",
+    "items": [
+     {
+      "name": "A book of ribald poetry bound into the cover of a chronicle of Saint Julyana Gilead"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-16",
+    "from": 16,
+    "to": 16,
+    "name": "Three pieces of dried alien fruit wrapped in wax paper",
+    "page": 248,
+    "text": "Three pieces of dried alien fruit wrapped in wax paper.",
+    "items": [
+     {
+      "name": "Three pieces of dried alien fruit wrapped in wax paper"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-21",
+    "from": 21,
+    "to": 21,
+    "name": "The hilt of a combat knife, the blade dissolved by acid",
+    "page": 248,
+    "text": "The hilt of a combat knife, the blade dissolved by acid.",
+    "items": [
+     {
+      "name": "The hilt of a combat knife, the blade dissolved by acid"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-22",
+    "from": 22,
+    "to": 22,
+    "name": "A canteen of rotgut brewed from corpse starches and thruster coolant",
+    "page": 248,
+    "text": "A canteen of rotgut brewed from corpse starches and thruster coolant.",
+    "items": [
+     {
+      "name": "A canteen of rotgut brewed from corpse starches and thruster coolant"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-23",
+    "from": 23,
+    "to": 23,
+    "name": "An icon of Saint Julyana Gilead covering her face as if weeping",
+    "page": 248,
+    "text": "An icon of Saint Julyana Gilead covering her face as if weeping.",
+    "items": [
+     {
+      "name": "An icon of Saint Julyana Gilead covering her face as if weeping"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-24",
+    "from": 24,
+    "to": 24,
+    "name": "A shard of wraithbone",
+    "page": 248,
+    "text": "A shard of wraithbone. When unobserved, the shard orients itself to point towards Ostia.",
+    "items": [
+     {
+      "name": "A shard of wraithbone"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-25",
+    "from": 25,
+    "to": 25,
+    "name": "The milky eye of an Astropath suspended in a vial of preservative fluid",
+    "page": 248,
+    "text": "The milky eye of an Astropath suspended in a vial of preservative fluid.",
+    "items": [
+     {
+      "name": "The milky eye of an Astropath suspended in a vial of preservative fluid"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-26",
+    "from": 26,
+    "to": 26,
+    "name": "A power cell incompatible with all known Imperium technology",
+    "page": 248,
+    "text": "A power cell incompatible with all known Imperium technology.",
+    "items": [
+     {
+      "name": "A power cell incompatible with all known Imperium technology"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-31",
+    "from": 31,
+    "to": 31,
+    "name": "A pack of thick Astra Militarum issue socks, never opened",
+    "page": 248,
+    "text": "A pack of thick Astra Militarum issue socks, never opened.",
+    "items": [
+     {
+      "name": "A pack of thick Astra Militarum issue socks, never opened"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-32",
+    "from": 32,
+    "to": 32,
+    "name": "A bottle of finest amasec brewed in Imperium Sanctus",
+    "page": 248,
+    "text": "A bottle of finest amasec brewed in Imperium Sanctus.",
+    "items": [
+     {
+      "name": "A bottle of finest amasec brewed in Imperium Sanctus"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-33",
+    "from": 33,
+    "to": 33,
+    "name": "A leather pouch containing 1d6 seeds",
+    "page": 248,
+    "text": "A leather pouch containing 1d6 seeds.",
+    "items": [
+     {
+      "name": "A leather pouch containing 1d6 seeds"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-34",
+    "from": 34,
+    "to": 34,
+    "name": "A book of confounding riddles with a blue and yellow cover and 81 pages",
+    "page": 248,
+    "text": "A book of confounding riddles with a blue and yellow cover and 81 pages.",
+    "items": [
+     {
+      "name": "A book of confounding riddles with a blue and yellow cover and 81 pages"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-35",
+    "from": 35,
+    "to": 35,
+    "name": "A boot polish tin containing 1d6 lho sticks",
+    "page": 248,
+    "text": "A boot polish tin containing 1d6 lho sticks.",
+    "items": [
+     {
+      "name": "A boot polish tin containing 1d6 lho sticks"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-36",
+    "from": 36,
+    "to": 36,
+    "name": "A necklace made of five regicide playing pieces on a silver chain",
+    "page": 248,
+    "text": "A necklace made of five regicide playing pieces on a silver chain.",
+    "items": [
+     {
+      "name": "A necklace made of five regicide playing pieces on a silver chain"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-41",
+    "from": 41,
+    "to": 41,
+    "name": "A doll in the form of a Space Marine made from an old shirt",
+    "page": 248,
+    "text": "A doll in the form of a Space Marine made from an old shirt.",
+    "items": [
+     {
+      "name": "A doll in the form of a Space Marine made from an old shirt"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-42",
+    "from": 42,
+    "to": 42,
+    "name": "A decagon carved roughly from bone with strange symbols on each face",
+    "page": 248,
+    "text": "A decagon carved roughly from bone with strange symbols on each face.",
+    "items": [
+     {
+      "name": "A decagon carved roughly from bone with strange symbols on each face"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-43",
+    "from": 43,
+    "to": 43,
+    "name": "A Data-Slate containing fragmentary maps of an ancient vessel lost in the Warp",
+    "page": 248,
+    "text": "A Data-Slate containing fragmentary maps of an ancient vessel lost in the Warp.",
+    "items": [
+     {
+      "name": "A Data-Slate containing fragmentary maps of an ancient vessel lost in the Warp"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-44",
+    "from": 44,
+    "to": 44,
+    "name": "A thick tome of the Imperial Creed, its cover sealed closed by an archaic lock",
+    "page": 248,
+    "text": "A thick tome of the Imperial Creed, its cover sealed closed by an archaic lock.",
+    "items": [
+     {
+      "name": "A thick tome of the Imperial Creed, its cover sealed closed by an archaic lock"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-45",
+    "from": 45,
+    "to": 45,
+    "name": "The ident tags of a long-dead soldier of the Astra Militarum",
+    "page": 248,
+    "text": "The ident tags of a long-dead soldier of the Astra Militarum.",
+    "items": [
+     {
+      "name": "The ident tags of a long-dead soldier of the Astra Militarum"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-46",
+    "from": 46,
+    "to": 46,
+    "name": "A counterfeit Administratum notary seal carved from a starchy tuber",
+    "page": 248,
+    "text": "A counterfeit Administratum notary seal carved from a starchy tuber.",
+    "items": [
+     {
+      "name": "A counterfeit Administratum notary seal carved from a starchy tuber"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-51",
+    "from": 51,
+    "to": 51,
+    "name": "A bucket of foul smelling red paint that cannot be washed off",
+    "page": 248,
+    "text": "A bucket of foul smelling red paint that cannot be washed off.",
+    "items": [
+     {
+      "name": "A bucket of foul smelling red paint that cannot be washed off"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-52",
+    "from": 52,
+    "to": 52,
+    "name": "A sheaf of Astra Militarum enlistment papers, never filled out",
+    "page": 248,
+    "text": "A sheaf of Astra Militarum enlistment papers, never filled out.",
+    "items": [
+     {
+      "name": "A sheaf of Astra Militarum enlistment papers, never filled out"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-53",
+    "from": 53,
+    "to": 53,
+    "name": "The severed finger of a Space Marine Power Fist, its markings inconsistent with any known Chapter",
+    "page": 248,
+    "text": "The severed finger of a Space Marine Power Fist, its markings inconsistent with any known Chapter.",
+    "items": [
+     {
+      "name": "The severed finger of a Space Marine Power Fist, its markings inconsistent with any known Chapter"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-54",
+    "from": 54,
+    "to": 54,
+    "name": "An ornate child’s puzzle box",
+    "page": 248,
+    "text": "An ornate child’s puzzle box. When solved, the box opens to reveal a disquieting symbol.",
+    "items": [
+     {
+      "name": "An ornate child’s puzzle box"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-55",
+    "from": 55,
+    "to": 55,
+    "name": "A pict of a distant relation",
+    "page": 248,
+    "text": "A pict of a distant relation. Their face shows signs of subtle mutation.",
+    "items": [
+     {
+      "name": "A pict of a distant relation"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-56",
+    "from": 56,
+    "to": 56,
+    "name": "An Explorator’s journal with strange plant clippings and insects pressed between the pages",
+    "page": 249,
+    "text": "An Explorator’s journal with strange plant clippings and insects pressed between the pages.",
+    "items": [
+     {
+      "name": "An Explorator’s journal with strange plant clippings and insects pressed between the pages"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-61",
+    "from": 61,
+    "to": 61,
+    "name": "A single card of the Emperor’s Tarot bearing a name hastily written in blood",
+    "page": 249,
+    "text": "A single card of the Emperor’s Tarot bearing a name hastily written in blood.",
+    "items": [
+     {
+      "name": "A single card of the Emperor’s Tarot bearing a name hastily written in blood"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-62",
+    "from": 62,
+    "to": 62,
+    "name": "A magnetised piece of scrap metal showing an Ork glyph",
+    "page": 249,
+    "text": "A magnetised piece of scrap metal showing an Ork glyph. It takes great force to remove the chit once attached.",
+    "items": [
+     {
+      "name": "A magnetised piece of scrap metal showing an Ork glyph"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-63",
+    "from": 63,
+    "to": 63,
+    "name": "A copy of the Imperial Infantryman’s Uplifting Primer",
+    "page": 249,
+    "text": "A copy of the Imperial Infantryman’s Uplifting Primer. The book is bloodstained and charred from the impact of an energy weapon.",
+    "items": [
+     {
+      "name": "A copy of the Imperial Infantryman’s Uplifting Primer"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-64",
+    "from": 64,
+    "to": 64,
+    "name": "An unread message from someone important to you",
+    "page": 249,
+    "text": "An unread message from someone important to you.",
+    "items": [
+     {
+      "name": "An unread message from someone important to you"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-65",
+    "from": 65,
+    "to": 65,
+    "name": "A fur hat made from the tufted crest of an Eldar Exarch’s helmet",
+    "page": 249,
+    "text": "A fur hat made from the tufted crest of an Eldar Exarch’s helmet.",
+    "items": [
+     {
+      "name": "A fur hat made from the tufted crest of an Eldar Exarch’s helmet"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-1-66",
+    "from": 66,
+    "to": 66,
+    "name": "A pilgrim’s token from Holy Terra",
+    "page": 249,
+    "text": "A pilgrim’s token from Holy Terra.",
+    "items": [
+     {
+      "name": "A pilgrim’s token from Holy Terra"
+     }
+    ]
+   }
+  ],
+  "gm": "Good luck charms, trophies, or clues to your destiny; trinkets are (seemingly) harmless curiosities picked up in your past life or on an earlier adventure. You can work with your GM to come up with a suitably mysterious trinket or a charm with sentimental value, or you can decide randomly. Roll a d3 to select one of the three Trinket Tables on the following pages, then roll a d66 for a random trinket."
+ },
+ {
+  "id": "core-trinkets-2",
+  "name": "Trinket Table Two",
+  "source": "core",
+  "page": 249,
+  "dice": "d66",
+  "rows": [
+   {
+    "id": "core-trinket-2-11",
+    "from": 11,
+    "to": 11,
+    "name": "A cheap copy of a Ministorum seal made from moulded resin covered in a patina of metal",
+    "page": 249,
+    "text": "A cheap copy of a Ministorum seal made from moulded resin covered in a patina of metal.",
+    "items": [
+     {
+      "name": "A cheap copy of a Ministorum seal made from moulded resin covered in a patina of metal"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-12",
+    "from": 12,
+    "to": 12,
+    "name": "A polymorphine ampoule jury-rigged to hold a preserved blood sample",
+    "page": 249,
+    "text": "A polymorphine ampoule jury-rigged to hold a preserved blood sample.",
+    "items": [
+     {
+      "name": "A polymorphine ampoule jury-rigged to hold a preserved blood sample"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-13",
+    "from": 13,
+    "to": 13,
+    "name": "The dedication plaque of a Dauntless-class Light Cruiser thought lost during the Gilead Crusade",
+    "page": 249,
+    "text": "The dedication plaque of a Dauntless-class Light Cruiser thought lost during the Gilead Crusade.",
+    "items": [
+     {
+      "name": "The dedication plaque of a Dauntless-class Light Cruiser thought lost during the Gilead Crusade"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-14",
+    "from": 14,
+    "to": 14,
+    "name": "A faint vox-recording of a parent’s last words",
+    "page": 249,
+    "text": "A faint vox-recording of a parent’s last words.",
+    "items": [
+     {
+      "name": "A faint vox-recording of a parent’s last words"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-15",
+    "from": 15,
+    "to": 15,
+    "name": "A page torn from a sacred text of the Imperial Creed bearing a black smudge in the centre",
+    "page": 249,
+    "text": "A page torn from a sacred text of the Imperial Creed bearing a black smudge in the centre.",
+    "items": [
+     {
+      "name": "A page torn from a sacred text of the Imperial Creed bearing a black smudge in the centre"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-16",
+    "from": 16,
+    "to": 16,
+    "name": "A diadem from a feudal world, its perimeter decorated with xenos claws",
+    "page": 249,
+    "text": "A diadem from a feudal world, its perimeter decorated with xenos claws.",
+    "items": [
+     {
+      "name": "A diadem from a feudal world, its perimeter decorated with xenos claws"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-21",
+    "from": 21,
+    "to": 21,
+    "name": "An antique Chrono that always runs 15 minutes fast",
+    "page": 249,
+    "text": "An antique Chrono that always runs 15 minutes fast.",
+    "items": [
+     {
+      "name": "An antique Chrono that always runs 15 minutes fast"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-22",
+    "from": 22,
+    "to": 22,
+    "name": "A jawbone, supposedly from a saint, with High Gothic script worked into its surface in delicate scrimshaw",
+    "page": 249,
+    "text": "A jawbone, supposedly from a saint, with High Gothic script worked into its surface in delicate scrimshaw.",
+    "items": [
+     {
+      "name": "A jawbone, supposedly from a saint, with High Gothic script worked into its surface in delicate scrimshaw"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-23",
+    "from": 23,
+    "to": 23,
+    "name": "An unfired Bolt round, initials carved into its surface",
+    "page": 249,
+    "text": "An unfired Bolt round, initials carved into its surface.",
+    "items": [
+     {
+      "name": "An unfired Bolt round, initials carved into its surface"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-24",
+    "from": 24,
+    "to": 24,
+    "name": "A necklace of Imperial coins from various worlds strung on silver wire",
+    "page": 249,
+    "text": "A necklace of Imperial coins from various worlds strung on silver wire. The coins are worth just enough to pay for a funeral.",
+    "items": [
+     {
+      "name": "A necklace of Imperial coins from various worlds strung on silver wire"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-25",
+    "from": 25,
+    "to": 25,
+    "name": "A wind instrument made from meteoric iron that requires six fingers on each hand to play properly",
+    "page": 249,
+    "text": "A wind instrument made from meteoric iron that requires six fingers on each hand to play properly.",
+    "items": [
+     {
+      "name": "A wind instrument made from meteoric iron that requires six fingers on each hand to play properly"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-26",
+    "from": 26,
+    "to": 26,
+    "name": "A purity seal stamped with a grinning skull",
+    "page": 249,
+    "text": "A purity seal stamped with a grinning skull.",
+    "items": [
+     {
+      "name": "A purity seal stamped with a grinning skull"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-31",
+    "from": 31,
+    "to": 31,
+    "name": "A book of dirty Limericks and bawdy verse written in Low Gothic",
+    "page": 249,
+    "text": "A book of dirty Limericks and bawdy verse written in Low Gothic.",
+    "items": [
+     {
+      "name": "A book of dirty Limericks and bawdy verse written in Low Gothic"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-32",
+    "from": 32,
+    "to": 32,
+    "name": "A sealed translucent box containing a metallic liquid",
+    "page": 249,
+    "text": "A sealed translucent box containing a metallic liquid. The liquid splits and moves to avoid your direct gaze.",
+    "items": [
+     {
+      "name": "A sealed translucent box containing a metallic liquid"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-33",
+    "from": 33,
+    "to": 33,
+    "name": "A tiny servitor made from the remains of an avian believed native to Holy Terra",
+    "page": 249,
+    "text": "A tiny servitor made from the remains of an avian believed native to Holy Terra. It sings sweetly, never repeating a tune.",
+    "items": [
+     {
+      "name": "A tiny servitor made from the remains of an avian believed native to Holy Terra"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-34",
+    "from": 34,
+    "to": 34,
+    "name": "A gauzy crimson sash woven from mono-fibre once used to garrotte a treasonous Sub-Sector governor",
+    "page": 249,
+    "text": "A gauzy crimson sash woven from mono-fibre once used to garrotte a treasonous Sub-Sector governor.",
+    "items": [
+     {
+      "name": "A gauzy crimson sash woven from mono-fibre once used to garrotte a treasonous Sub-Sector governor"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-35",
+    "from": 35,
+    "to": 35,
+    "name": "A marble hand broken off an Imperial monument, its surface stained with Ork blood",
+    "page": 249,
+    "text": "A marble hand broken off an Imperial monument, its surface stained with Ork blood.",
+    "items": [
+     {
+      "name": "A marble hand broken off an Imperial monument, its surface stained with Ork blood"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-36",
+    "from": 36,
+    "to": 36,
+    "name": "Three corroded, magnetised ball bearings",
+    "page": 249,
+    "text": "Three corroded, magnetised ball bearings. Each is engraved with markings mimicking the continents of alien worlds.",
+    "items": [
+     {
+      "name": "Three corroded, magnetised ball bearings"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-41",
+    "from": 41,
+    "to": 41,
+    "name": "A lighter in the shape of a compact laspistol",
+    "page": 249,
+    "text": "A lighter in the shape of a compact laspistol. Pulling the trigger produces a tiny, steady chemical flame from the barrel.",
+    "items": [
+     {
+      "name": "A lighter in the shape of a compact laspistol"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-42",
+    "from": 42,
+    "to": 42,
+    "name": "A sheaf of grave rubbings taken from multiple headstones bearing the same name but different dates of birth and death",
+    "page": 250,
+    "text": "A sheaf of grave rubbings taken from multiple headstones bearing the same name but different dates of birth and death",
+    "items": [
+     {
+      "name": "A sheaf of grave rubbings taken from multiple headstones bearing the same name but different dates of birth and death"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-43",
+    "from": 43,
+    "to": 43,
+    "name": "A shard of stained glass from a fallen cathedral",
+    "page": 250,
+    "text": "A shard of stained glass from a fallen cathedral.",
+    "items": [
+     {
+      "name": "A shard of stained glass from a fallen cathedral"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-44",
+    "from": 44,
+    "to": 44,
+    "name": "The spent power cell of a T’au Pulse Pistol",
+    "page": 250,
+    "text": "The spent power cell of a T’au Pulse Pistol.",
+    "items": [
+     {
+      "name": "The spent power cell of a T’au Pulse Pistol"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-45",
+    "from": 45,
+    "to": 45,
+    "name": "The command codes for a highly specific class of Cherub Servitors",
+    "page": 250,
+    "text": "The command codes for a highly specific class of Cherub Servitors.",
+    "items": [
+     {
+      "name": "The command codes for a highly specific class of Cherub Servitors"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-46",
+    "from": 46,
+    "to": 46,
+    "name": "A signet ring bearing the seal of a Nethreun Questor Imperialis unheard of since the opening of the Great Rift",
+    "page": 250,
+    "text": "A signet ring bearing the seal of a Nethreun Questor Imperialis unheard of since the opening of the Great Rift.",
+    "items": [
+     {
+      "name": "A signet ring bearing the seal of a Nethreun Questor Imperialis unheard of since the opening of the Great Rift"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-51",
+    "from": 51,
+    "to": 51,
+    "name": "A battered Astra Militarum survival kit",
+    "page": 250,
+    "text": "A battered Astra Militarum survival kit. Its contents spent except for three water purification tablets.",
+    "items": [
+     {
+      "name": "A battered Astra Militarum survival kit"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-52",
+    "from": 52,
+    "to": 52,
+    "name": "A crystal bottle of intoxicating perfume made from gyrinx musk glands",
+    "page": 250,
+    "text": "A crystal bottle of intoxicating perfume made from gyrinx musk glands.",
+    "items": [
+     {
+      "name": "A crystal bottle of intoxicating perfume made from gyrinx musk glands"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-53",
+    "from": 53,
+    "to": 53,
+    "name": "A tattered flag showing an Ork emblem of infamous Freebooter Kaptin Mag Galluz",
+    "page": 250,
+    "text": "A tattered flag showing an Ork emblem of infamous Freebooter Kaptin Mag Galluz.",
+    "items": [
+     {
+      "name": "A tattered flag showing an Ork emblem of infamous Freebooter Kaptin Mag Galluz"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-54",
+    "from": 54,
+    "to": 54,
+    "name": "A sealed bottle of red corrective ink bearing the label of the Adeptus Administratum",
+    "page": 250,
+    "text": "A sealed bottle of red corrective ink bearing the label of the Adeptus Administratum.",
+    "items": [
+     {
+      "name": "A sealed bottle of red corrective ink bearing the label of the Adeptus Administratum"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-55",
+    "from": 55,
+    "to": 55,
+    "name": "A braided lock of synthetic hair",
+    "page": 250,
+    "text": "A braided lock of synthetic hair.",
+    "items": [
+     {
+      "name": "A braided lock of synthetic hair"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-56",
+    "from": 56,
+    "to": 56,
+    "name": "A signed second volume of the memoirs of an Imperial hero",
+    "page": 250,
+    "text": "A signed second volume of the memoirs of an Imperial hero.",
+    "items": [
+     {
+      "name": "A signed second volume of the memoirs of an Imperial hero"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-61",
+    "from": 61,
+    "to": 61,
+    "name": "A burned-out memetic coil from a Servitor Skull",
+    "page": 250,
+    "text": "A burned-out memetic coil from a Servitor Skull.",
+    "items": [
+     {
+      "name": "A burned-out memetic coil from a Servitor Skull"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-62",
+    "from": 62,
+    "to": 62,
+    "name": "Sealed orders meant for a long-dead Lord Marshal of the Gilead Gravediggers",
+    "page": 250,
+    "text": "Sealed orders meant for a long-dead Lord Marshal of the Gilead Gravediggers.",
+    "items": [
+     {
+      "name": "Sealed orders meant for a long-dead Lord Marshal of the Gilead Gravediggers"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-63",
+    "from": 63,
+    "to": 63,
+    "name": "A battle damaged ID chip from a T’au Fire Warrior",
+    "page": 250,
+    "text": "A battle damaged ID chip from a T’au Fire Warrior.",
+    "items": [
+     {
+      "name": "A battle damaged ID chip from a T’au Fire Warrior"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-64",
+    "from": 64,
+    "to": 64,
+    "name": "A stale wafer of hard tack from a Militarum commissary, thick enough to stop a slug round — as the dent in it may prove",
+    "page": 250,
+    "text": "A stale wafer of hard tack from a Militarum commissary, thick enough to stop a slug round — as the dent in it may prove.",
+    "items": [
+     {
+      "name": "A stale wafer of hard tack from a Militarum commissary, thick enough to stop a slug round — as the dent in it may prove"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-65",
+    "from": 65,
+    "to": 65,
+    "name": "A diamantine tuning fork engraved with the seal of a Choir Master of the Adeptus Ministorum",
+    "page": 250,
+    "text": "A diamantine tuning fork engraved with the seal of a Choir Master of the Adeptus Ministorum.",
+    "items": [
+     {
+      "name": "A diamantine tuning fork engraved with the seal of a Choir Master of the Adeptus Ministorum"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-2-66",
+    "from": 66,
+    "to": 66,
+    "name": "A deck of playing cards",
+    "page": 250,
+    "text": "A deck of playing cards. Each card bears the image of an enemy of the Imperium.",
+    "items": [
+     {
+      "name": "A deck of playing cards"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "core-trinkets-3",
+  "name": "Trinket Table Three",
+  "source": "core",
+  "page": 250,
+  "dice": "d66",
+  "rows": [
+   {
+    "id": "core-trinket-3-11",
+    "from": 11,
+    "to": 11,
+    "name": "A vox recording of haunting xenos music from a species long thought extinct",
+    "page": 250,
+    "text": "A vox recording of haunting xenos music from a species long thought extinct.",
+    "items": [
+     {
+      "name": "A vox recording of haunting xenos music from a species long thought extinct"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-12",
+    "from": 12,
+    "to": 12,
+    "name": "A death mask in the image of a Canoness of the Adepta Sororitas",
+    "page": 250,
+    "text": "A death mask in the image of a Canoness of the Adepta Sororitas.",
+    "items": [
+     {
+      "name": "A death mask in the image of a Canoness of the Adepta Sororitas"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-13",
+    "from": 13,
+    "to": 13,
+    "name": "A reliquary containing a shard of gleaming ice",
+    "page": 250,
+    "text": "A reliquary containing a shard of gleaming ice. The ice never melts.",
+    "items": [
+     {
+      "name": "A reliquary containing a shard of gleaming ice"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-14",
+    "from": 14,
+    "to": 14,
+    "name": "A wafer-thin sheet of wraithbone covered in interconnected Aeldari glyphs",
+    "page": 250,
+    "text": "A wafer-thin sheet of wraithbone covered in interconnected Aeldari glyphs.",
+    "items": [
+     {
+      "name": "A wafer-thin sheet of wraithbone covered in interconnected Aeldari glyphs"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-15",
+    "from": 15,
+    "to": 15,
+    "name": "An improvised pendulum made from a length of optic cable and an autogun slug",
+    "page": 250,
+    "text": "An improvised pendulum made from a length of optic cable and an autogun slug.",
+    "items": [
+     {
+      "name": "An improvised pendulum made from a length of optic cable and an autogun slug"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-16",
+    "from": 16,
+    "to": 16,
+    "name": "A portable Auto-Quill modified to print Ork glyphs",
+    "page": 250,
+    "text": "A portable Auto-Quill modified to print Ork glyphs.",
+    "items": [
+     {
+      "name": "A portable Auto-Quill modified to print Ork glyphs"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-21",
+    "from": 21,
+    "to": 21,
+    "name": "A shrill whistle carved from a preserved horn",
+    "page": 250,
+    "text": "A shrill whistle carved from a preserved horn.",
+    "items": [
+     {
+      "name": "A shrill whistle carved from a preserved horn"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-22",
+    "from": 22,
+    "to": 22,
+    "name": "An Imperial noble’s commissioning scroll, signed and notarised, dated in M43",
+    "page": 250,
+    "text": "An Imperial noble’s commissioning scroll, signed and notarised, dated in M43.",
+    "items": [
+     {
+      "name": "An Imperial noble’s commissioning scroll, signed and notarised, dated in M43"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-23",
+    "from": 23,
+    "to": 23,
+    "name": "A rockcrete brick pried from the defensive wall of a fallen Imperial bastion",
+    "page": 250,
+    "text": "A rockcrete brick pried from the defensive wall of a fallen Imperial bastion.",
+    "items": [
+     {
+      "name": "A rockcrete brick pried from the defensive wall of a fallen Imperial bastion"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-24",
+    "from": 24,
+    "to": 24,
+    "name": "A forged promissory note from the Upstanding Starch Guild on Gilead Primus",
+    "page": 251,
+    "text": "A forged promissory note from the Upstanding Starch Guild on Gilead Primus.",
+    "items": [
+     {
+      "name": "A forged promissory note from the Upstanding Starch Guild on Gilead Primus"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-25",
+    "from": 25,
+    "to": 25,
+    "name": "A ring of keys, each one encoded to a stasis vault on a different world",
+    "page": 251,
+    "text": "A ring of keys, each one encoded to a stasis vault on a different world.",
+    "items": [
+     {
+      "name": "A ring of keys, each one encoded to a stasis vault on a different world"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-26",
+    "from": 26,
+    "to": 26,
+    "name": "A list of seemingly unrelated machine components written in blocky, crabbed handwriting",
+    "page": 251,
+    "text": "A list of seemingly unrelated machine components written in blocky, crabbed handwriting.",
+    "items": [
+     {
+      "name": "A list of seemingly unrelated machine components written in blocky, crabbed handwriting"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-31",
+    "from": 31,
+    "to": 31,
+    "name": "An ornate silver snuffbox",
+    "page": 251,
+    "text": "An ornate silver snuffbox. The snuff within is fortified with trace amounts of xenos pollen.",
+    "items": [
+     {
+      "name": "An ornate silver snuffbox"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-32",
+    "from": 32,
+    "to": 32,
+    "name": "A fetish carved from volcanic glass depicting a skull-faced god sitting on a gothic throne",
+    "page": 251,
+    "text": "A fetish carved from volcanic glass depicting a skull-faced god sitting on a gothic throne.",
+    "items": [
+     {
+      "name": "A fetish carved from volcanic glass depicting a skull-faced god sitting on a gothic throne"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-33",
+    "from": 33,
+    "to": 33,
+    "name": "A ticket stub for a performance of an opera proscribed by the Ecclesiarchy",
+    "page": 251,
+    "text": "A ticket stub for a performance of an opera proscribed by the Ecclesiarchy.",
+    "items": [
+     {
+      "name": "A ticket stub for a performance of an opera proscribed by the Ecclesiarchy"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-34",
+    "from": 34,
+    "to": 34,
+    "name": "A dog-eared, lavishly illustrated children’s primer of Imperial history",
+    "page": 251,
+    "text": "A dog-eared, lavishly illustrated children’s primer of Imperial history.",
+    "items": [
+     {
+      "name": "A dog-eared, lavishly illustrated children’s primer of Imperial history"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-35",
+    "from": 35,
+    "to": 35,
+    "name": "A classified document, redacted so that every word is blacked out except for one",
+    "page": 251,
+    "text": "A classified document, redacted so that every word is blacked out except for one. It could read ‘crucible’ or ‘cubicle’.",
+    "items": [
+     {
+      "name": "A classified document, redacted so that every word is blacked out except for one"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-36",
+    "from": 36,
+    "to": 36,
+    "name": "Coded data-slate of a significant Human bloodline showing possible mutation and xenos gene-grafting",
+    "page": 251,
+    "text": "Coded data-slate of a significant Human bloodline showing possible mutation and xenos gene-grafting.",
+    "items": [
+     {
+      "name": "Coded data-slate of a significant Human bloodline showing possible mutation and xenos gene-grafting"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-41",
+    "from": 41,
+    "to": 41,
+    "name": "A notched hourglass filled with the ruddy sand of Mars",
+    "page": 251,
+    "text": "A notched hourglass filled with the ruddy sand of Mars.",
+    "items": [
+     {
+      "name": "A notched hourglass filled with the ruddy sand of Mars"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-42",
+    "from": 42,
+    "to": 42,
+    "name": "Half of a shattered mask depicting a face distorted with fear",
+    "page": 251,
+    "text": "Half of a shattered mask depicting a face distorted with fear.",
+    "items": [
+     {
+      "name": "Half of a shattered mask depicting a face distorted with fear"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-43",
+    "from": 43,
+    "to": 43,
+    "name": "A smooth river stone with an Aeldari glyph carved into its surface",
+    "page": 251,
+    "text": "A smooth river stone with an Aeldari glyph carved into its surface.",
+    "items": [
+     {
+      "name": "A smooth river stone with an Aeldari glyph carved into its surface"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-44",
+    "from": 44,
+    "to": 44,
+    "name": "An eight-spoked cogwheel",
+    "page": 251,
+    "text": "An eight-spoked cogwheel.",
+    "items": [
+     {
+      "name": "An eight-spoked cogwheel"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-45",
+    "from": 45,
+    "to": 45,
+    "name": "A small triptych of the God-Emperor ascendant, martyred, and interred upon the Golden Throne",
+    "page": 251,
+    "text": "A small triptych of the God-Emperor ascendant, martyred, and interred upon the Golden Throne. The hinges are rusted shut.",
+    "items": [
+     {
+      "name": "A small triptych of the God-Emperor ascendant, martyred, and interred upon the Golden Throne"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-46",
+    "from": 46,
+    "to": 46,
+    "name": "The remote detonator to a Penal Legionnaire’s explosive collar",
+    "page": 251,
+    "text": "The remote detonator to a Penal Legionnaire’s explosive collar.",
+    "items": [
+     {
+      "name": "The remote detonator to a Penal Legionnaire’s explosive collar"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-51",
+    "from": 51,
+    "to": 51,
+    "name": "A xenohide pouch containing the mummified heart of an unknown organism",
+    "page": 251,
+    "text": "A xenohide pouch containing the mummified heart of an unknown organism.",
+    "items": [
+     {
+      "name": "A xenohide pouch containing the mummified heart of an unknown organism"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-52",
+    "from": 52,
+    "to": 52,
+    "name": "A radiation-damaged design template for a plasma reactor with a single fatal design flaw",
+    "page": 251,
+    "text": "A radiation-damaged design template for a plasma reactor with a single fatal design flaw.",
+    "items": [
+     {
+      "name": "A radiation-damaged design template for a plasma reactor with a single fatal design flaw"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-53",
+    "from": 53,
+    "to": 53,
+    "name": "An exhaustive phrase book translating common phrases between multiple dialects of Low Gothic",
+    "page": 251,
+    "text": "An exhaustive phrase book translating common phrases between multiple dialects of Low Gothic.",
+    "items": [
+     {
+      "name": "An exhaustive phrase book translating common phrases between multiple dialects of Low Gothic"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-54",
+    "from": 54,
+    "to": 54,
+    "name": "The knob from the end of a Weirdboy’s channelling rod",
+    "page": 251,
+    "text": "The knob from the end of a Weirdboy’s channelling rod.",
+    "items": [
+     {
+      "name": "The knob from the end of a Weirdboy’s channelling rod"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-55",
+    "from": 55,
+    "to": 55,
+    "name": "A clockwork replica of an attack bike that sparks and runs in circles when wound",
+    "page": 251,
+    "text": "A clockwork replica of an attack bike that sparks and runs in circles when wound.",
+    "items": [
+     {
+      "name": "A clockwork replica of an attack bike that sparks and runs in circles when wound"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-56",
+    "from": 56,
+    "to": 56,
+    "name": "A sash made from the interlocking scales of a Maiden World reptile",
+    "page": 251,
+    "text": "A sash made from the interlocking scales of a Maiden World reptile.",
+    "items": [
+     {
+      "name": "A sash made from the interlocking scales of a Maiden World reptile"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-61",
+    "from": 61,
+    "to": 61,
+    "name": "An illuminated book of hours",
+    "page": 251,
+    "text": "An illuminated book of hours. Many of the prayers within are edited in red ink.",
+    "items": [
+     {
+      "name": "An illuminated book of hours"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-62",
+    "from": 62,
+    "to": 62,
+    "name": "A prism-like mirror shard",
+    "page": 251,
+    "text": "A prism-like mirror shard. Staring at one’s own reflection in the shard causes vivid hallucinations.",
+    "items": [
+     {
+      "name": "A prism-like mirror shard"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-63",
+    "from": 63,
+    "to": 63,
+    "name": "A piece of ceramite marked with the emblem of the Absolvers Chapter",
+    "page": 251,
+    "text": "A piece of ceramite marked with the emblem of the Absolvers Chapter.",
+    "items": [
+     {
+      "name": "A piece of ceramite marked with the emblem of the Absolvers Chapter"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-64",
+    "from": 64,
+    "to": 64,
+    "name": "Several lengths of ribbed cable meant to be worn around the head and neck, giving the wearer the appearance of possessing several high-quality augmetics",
+    "page": 251,
+    "text": "Several lengths of ribbed cable meant to be worn around the head and neck, giving the wearer the appearance of possessing several high-quality augmetics.",
+    "items": [
+     {
+      "name": "Several lengths of ribbed cable meant to be worn around the head and neck, giving the wearer the appearance of possessing several high-quality augmetics"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-65",
+    "from": 65,
+    "to": 65,
+    "name": "A bottle of sacramental wine blessed by Arch-Deacon Merramar Clade",
+    "page": 251,
+    "text": "A bottle of sacramental wine blessed by Arch-Deacon Merramar Clade.",
+    "items": [
+     {
+      "name": "A bottle of sacramental wine blessed by Arch-Deacon Merramar Clade"
+     }
+    ]
+   },
+   {
+    "id": "core-trinket-3-66",
+    "from": 66,
+    "to": 66,
+    "name": "A cheap replica of an Arbitrator’s badge of office",
+    "page": 251,
+    "text": "A cheap replica of an Arbitrator’s badge of office.",
+    "items": [
+     {
+      "name": "A cheap replica of an Arbitrator’s badge of office"
+     }
+    ]
+   }
+  ]
+ }
+]

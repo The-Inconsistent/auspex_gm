@@ -16,6 +16,7 @@ import { Dice, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
 import { ATTRIBUTES, Pool, SKILLS, type Skill } from "./state.ts";
 import { THREAT_SOURCES, threatCite, type ThreatSource } from "./threat.ts";
+import { UpgradeMod, WargearFilter } from "./weapon-effect.ts";
 
 // GM-only book data for building scenes (GitHub issue #39), served by /api/campaigns/:id/scene-presets. Book text, so
 // it never reaches a player; once the GM makes a scene from an event, its text lives in that campaign (and its export).
@@ -191,12 +192,111 @@ export const HazardTable = z
   });
 export type HazardTable = z.infer<typeof HazardTable>;
 
+// What the Agents can find (issue #51): the books' loot and bounty tables (Core pp.247–251, RR1 pp.17–22, Darktide
+// pp.15–27) and lists of named items (RR2 pp.20–31, Bloody Gates). A row makes codex items through `codex.addLoot`, so
+// the book text reaches the campaign only as the GM's notes.
+const rowId = z.string().regex(/^[a-z0-9-]+$/);
+// How many: a printed number, or dice ("1d3 Hazard Suits") the server rolls when the GM makes the items (§11.113).
+export const LootCount = z.union([z.number().int().min(1).max(20), Dice]);
+export type LootCount = z.infer<typeof LootCount>;
+// One thing a row hands over: a catalogue entry (`wargearId`), a choice the GM makes from the catalogue (`pick`, "an
+// IMPERIUM weapon of Value 4 or less"), or a one-off the catalogue doesn't hold (`name` alone).
+export const LootItem = z
+  .object({
+    name: z.string().min(1).max(200).optional(), // as printed, where it differs from the catalogue's, or a one-off
+    wargearId: rowId.optional(),
+    pick: WargearFilter.optional(),
+    count: LootCount.default(1),
+    mods: z.array(UpgradeMod).max(10).default([]), // a printed change to its profile, as an upgrade's (§11.116)
+  })
+  .refine(
+    (i) => !(i.wargearId && i.pick) && !!(i.wargearId || i.pick || i.name),
+    "An item is a wargearId, a pick or a name",
+  );
+export type LootItem = z.infer<typeof LootItem>;
+export const LootRow = z.object({
+  id: rowId, // unique across scene-presets/loot/*.json
+  from: z.number().int().optional(), // the printed range, on a rolled table
+  to: z.number().int().optional(),
+  name: z.string().min(1).max(200), // as printed
+  page: z.number().int().positive(), // printed page
+  text: z.string().min(1).max(5000), // the printed result, verbatim
+  items: z.array(LootItem).max(10).default([]),
+  ammo: z
+    .array(z.object({ kind: z.string().min(1).max(60), count: LootCount }))
+    .max(4)
+    .default([]),
+  wealth: z.number().int().min(1).max(10).optional(),
+  gm: z.string().min(1).max(300).optional(), // what the fields can't hold: a boon, healing, bonus dice
+});
+export type LootRow = z.infer<typeof LootRow>;
+// A book's loot table. `dice: null` is a list to pick from. A `fault` table (RR1's "What's Wrong With It?") is rolled
+// for another table's find, which names it in `faults`.
+export const LootTable = z
+  .object({
+    id: rowId,
+    name: z.string().min(1).max(200), // as printed
+    source: z.enum(Object.keys(THREAT_SOURCES) as [ThreatSource, ...ThreatSource[]]),
+    page: z.number().int().positive(), // printed page the table starts on
+    dice: Dice.nullable(),
+    gm: z.string().min(1).max(2000).optional(), // the book's notes on using the table, verbatim
+    fault: z.boolean().default(false),
+    faults: rowId.optional(),
+    rows: z.array(LootRow).min(1),
+    gaps: z.array(z.number().int()).default([]),
+    overlaps: z.array(z.number().int()).default([]),
+  })
+  .superRefine((t, ctx) => {
+    const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+    if (!t.dice) {
+      if (t.rows.some((r) => r.from !== undefined || r.to !== undefined)) fail("A list to pick from has no ranges");
+      return;
+    }
+    const rows = t.rows.flatMap((r) =>
+      r.from === undefined || r.to === undefined ? [] : [{ from: r.from, to: r.to }],
+    );
+    if (rows.length < t.rows.length) fail("Every row of a rolled table has a range");
+    for (const message of tableProblems({ ...t, dice: t.dice, rows })) fail(message);
+  });
+export type LootTable = z.infer<typeof LootTable>;
+// The most items one row makes at once (§11.113). ponytail: a fixed cap, a per-row confirm if a book prints more.
+export const MAX_LOOT_ITEMS = 20;
+
+// The GM NOTES a made item opens with: where it came from, the printed result, and what the app doesn't hand out itself
+// (Ammo, Wealth, a boon), so the GM awards it in PARTY.
+export function lootNotes({
+  table,
+  row,
+  roll,
+  fault,
+  award,
+}: {
+  table: Pick<LootTable, "name" | "source">;
+  row: LootRow;
+  roll?: number;
+  fault?: LootRow;
+  award?: string[];
+}) {
+  const cite = threatCite({ source: table.source, page: row.page });
+  return [
+    `${cite} · ${table.name}${roll === undefined ? "" : `, roll ${roll}`}: ${row.name}`,
+    row.text,
+    fault && `FAULT (${threatCite({ source: table.source, page: fault.page })}): ${fault.name}. ${fault.text}`,
+    row.gm && `GM: ${row.gm}`,
+    award?.length && `Award in PARTY: ${award.join(", ")}`,
+  ]
+    .filter(Boolean)
+    .join("\n\n")
+    .slice(0, 5000);
+}
+
 export const ScenePresets = z.object({
   skillDns: z.array(SkillDn),
   tables: z.array(EventTable),
   pools: z.array(PoolPresetTable),
   hazards: z.array(HazardTable).default([]), // an api from before issue #49 sends none; the rest still loads
   spaceHulk: SpaceHulkGenerator.nullable().default(null), // RR1 pp.6–11 (issue #50 step 8); likewise
+  loot: z.array(LootTable).default([]), // issue #51; likewise
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 

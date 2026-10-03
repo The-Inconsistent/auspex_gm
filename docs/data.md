@@ -745,6 +745,18 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
   - `validate` checks that ids are unique, that a file holds only its book's lists, that each planned list holds the
     rows the book prints, and that every row fits a scene line once copied; it prints each file's presets, `gm`
     conditions and rows with no printed number.
+- `loot/<source>.json` (`LootTable[]`, one file per book, GitHub issue #51): what the Agents can find. Core's three
+  Trinket tables (pp.248–251, d66), and the other books' loot and bounty tables and lists of named finds, served on
+  `/scene-presets` as `loot`. `codex.addLoot` makes codex items from a row, so the text reaches a campaign only as GM
+  NOTES.
+  - A table is `{ id, name, source, page, dice, gm?, fault, faults?, rows, gaps, overlaps }`. `dice: null` is a list.
+    A `fault` table (RR1's "What's Wrong With It?") is offered with the finds of a table that names it in `faults`.
+  - A row is `{ id, from?, to?, name, page, text, items, ammo, wealth?, gm? }`. An item is a catalogue `wargearId`, a
+    `pick` (a `WargearFilter` the GM chooses from) or a one-off `name`, with a `count` (a number, or dice the server
+    rolls) and `mods` (an upgrade's changes, §11.116). One item per piece (§11.113); Ammo and grenade entries, `ammo`,
+    `wealth` and `gm` boons are a reminder to award in PARTY, not items.
+  - `validate` checks the rows each table prints (`EXPECTED_LOOT`), unique ids, every `wargearId`, that every `pick`
+    matches something, and each `faults` link.
 - `hazards/<source>.json` (`HazardTable[]`, one file per book, GitHub issue #49): the books' hazards, for a place's
   hazard list. A place's entry points at a row by `id`, as an encounter points at a threat, so the text stays here.
   - A table is `{ id, name, source, page, dice, gm?, rows, gaps, overlaps }`. `dice` is null for a list to pick from

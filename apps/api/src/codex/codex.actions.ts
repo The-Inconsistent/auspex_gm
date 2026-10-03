@@ -1,10 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { hazards, hulkHazardIds, places, spaceHulk, wargear } from "@wg/data";
+import { hazards, hulkHazardIds, loot, places, spaceHulk, wargear } from "@wg/data";
 import type { z } from "zod";
 import {
   LocationHazard,
   hulkNotes,
+  lootNotes,
+  MAX_LOOT_ITEMS,
+  roll,
+  wargearMatches,
   MAX_PLACES_PER_ADD,
   placeNotes,
   roomNotes,
@@ -13,8 +17,10 @@ import {
   type ActionResult,
   type CodexInput,
   type HulkTable,
+  type UpgradeMod,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
+import { campaignRules } from "../campaign/campaign.actions.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
@@ -23,7 +29,7 @@ import { adventure, beat, faction, handout, item, location, npc } from "./codex.
 
 export type CodexAction = Extract<
   Action,
-  { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" | "codex.addHulk" }
+  { type: "codex.save" | "codex.delete" | "beat.reorder" | "codex.addPlaces" | "codex.addHulk" | "codex.addLoot" }
 >;
 
 const codexTable = { faction, adventure, beat, location, npc, handout, item } as const;
@@ -314,6 +320,48 @@ export async function applyCodexAction(
       await tx.insert(location).values(rows);
       // Without a hulk, the guard at the top of this case made sure parentId is set.
       return { ok: true, id: hulkId ?? a.parentId! };
+    }
+
+    // FROM LOOT TABLE (issue #51): one item per piece (§11.113), loose, with the printed result in GM NOTES. Ammo,
+    // grenades, Wealth and boons aren't items: GIVE refuses them, so the notes tell the GM to award them in PARTY.
+    case "codex.addLoot": {
+      const { table, row } = loot.get(a.rowId) ?? fail(`Unknown loot row "${a.rowId}"`);
+      const fault = a.faultId ? loot.get(a.faultId) : undefined;
+      if (a.faultId && (!fault || fault.table.id !== table.faults))
+        fail(`"${a.faultId}" isn't on the fault table for ${table.name}`);
+      const picks = row.items.filter((it) => it.pick).length;
+      if (a.picks.length !== picks) fail(`Pick ${picks} catalogue item${picks === 1 ? "" : "s"} for ${row.name}`);
+      const { tier } = await campaignRules(tx, cid);
+      const count = (c: number | Parameters<typeof roll>[0]) => (typeof c === "number" ? c : roll(c));
+      const award = [
+        ...row.ammo.map((x) => `${count(x.count)} ${x.kind} Ammo`),
+        ...(row.wealth ? [`${row.wealth} Wealth`] : []),
+      ];
+      const made: { name: string; wargearId: string | null; mods: UpgradeMod[] }[] = [];
+      let p = 0;
+      for (const it of row.items) {
+        // A pick is the GM's choice, in order (the count was checked above); anything else is the row's own.
+        const id = it.pick ? a.picks[p++] : it.wargearId;
+        const entry = id ? (wargear.get(id) ?? fail(`Unknown wargear "${id}"`)) : undefined;
+        if (it.pick && !(entry && wargearMatches(entry, it.pick, { tier, newTier: tier })))
+          fail(`${entry?.name ?? id} isn't one ${row.name} offers`);
+        // LootItem holds a wargearId, a pick or a name, so one of these is there.
+        const name = (it.pick ? undefined : it.name) ?? entry?.name ?? fail(`${row.name} names no item`);
+        const n = count(it.count);
+        if (entry?.kind === "ammo" || entry?.kind === "grenade") award.push(`${n} × ${name}`);
+        else for (let i = 0; i < n; i++) made.push({ name, wargearId: entry?.id ?? null, mods: it.mods });
+      }
+      if (!made.length) fail(`${row.name} makes no item: award it in PARTY`);
+      if (made.length > MAX_LOOT_ITEMS)
+        fail(`${row.name} would make ${made.length} items, more than ${MAX_LOOT_ITEMS}`);
+      const gmNotes = lootNotes({ table, row, roll: a.roll, fault: fault?.row, award });
+      // Lists load in createdAt order, and now() is the same for the whole transaction: each item gets its own ms.
+      const t0 = Date.now();
+      const rows = await tx
+        .insert(item)
+        .values(made.map((m, i) => ({ ...m, gmNotes, campaignId: cid, createdAt: new Date(t0 + i) })))
+        .returning({ id: item.id });
+      return { ok: true, id: rows[0]!.id }; // at least one row was just inserted
     }
   }
 }
