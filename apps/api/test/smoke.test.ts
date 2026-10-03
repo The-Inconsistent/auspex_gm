@@ -622,8 +622,10 @@ test("GM and player share a table", async (t) => {
   // So are the scene presets (issue #39): the sample DNs per Skill (Core pp.122-126) and the books' event tables.
   const presets = await get(`/campaigns/${campaignId}/scene-presets`, bearer(gmClerk));
   assert.equal(presets.status, 200);
-  const { skillDns, tables, pools } = (await presets.json()) as ScenePresets;
+  const { skillDns, tables, pools, hazards } = (await presets.json()) as ScenePresets;
   assert.equal(skillDns.length, 85);
+  // A place's hazard tables (issue #49) ride along: Threat Assessment p.11 prints no Space Hulk row for 66 (§11.93).
+  assert.deepEqual(hazards.find((x) => x.id === "threat-assessment-space-hulk")?.gaps, [66]);
   // ADD FROM BOOK (issue #40): a Core Ruin spend copies into a scene with its cite; Core p.316's Glory award prints no
   // amount and starts at 1 (§11.77).
   const spends = pools.find((x) => x.id === "core-ruin-spends")!;

@@ -643,8 +643,8 @@ kind (psychic powers, talents), extend `RuleKind` and add a file.
 
 ### Scene presets (`packages/data/scene-presets/*.json`, `ScenePresets` in `packages/shared/src/scene-presets.ts`)
 
-GM-only book data for building scenes (GitHub issues #39 and #40), served by `GET /api/campaigns/:id/scene-presets` as
-`{ skillDns, tables, pools }`. Loaded once at api startup by `scenePresets()` (`index.ts`).
+GM-only book data for building scenes (GitHub issues #39, #40 and #49), served by `GET /api/campaigns/:id/scene-presets` as
+`{ skillDns, tables, pools, hazards }`. Loaded once at api startup by `scenePresets()` (`index.ts`).
 
 - `skill-dns.json` (`SkillDn[]`): Skills and DN, the table at the foot of Core pp.122, 123, 125 and 126. There is one
   row per Skill and printed DN, `{ skill, dn, source, page, example }`, with the example verbatim: 17 Skills × DN 1,
@@ -728,6 +728,23 @@ GM-only book data for building scenes (GitHub issues #39 and #40), served by `GE
   - `validate` checks that ids are unique, that a file holds only its book's lists, that each planned list holds the
     rows the book prints, and that every row fits a scene line once copied; it prints each file's presets, `gm`
     conditions and rows with no printed number.
+- `hazards/<source>.json` (`HazardTable[]`, one file per book, GitHub issue #49): the books' hazards, for a place's
+  hazard list. A place's entry points at a row by `id`, as an encounter points at a threat, so the text stays here.
+  - A table is `{ id, name, source, page, dice, gm?, rows, gaps, overlaps }`. `dice` is null for a list to pick from
+    rather than roll on (Core pp.201–202); its rows have no ranges.
+  - A row is `{ id, from?, to?, name, page, text, tests, conditions, threats, variants, gm? }`. `id` is unique across
+    files. `text` is the printed result, verbatim. `tests` are `PresetTest`s, whose `tierDn` holds a DN of the game's
+    Tier plus n ("a DN equal to the game's Tier", TA p.11, is 0). `conditions` are ids in `rules/conditions.json`,
+    `threats` are `{ threatId, count }` with a bestiary id and an `Amount` ("3d6"): the Threats a row may bring in, as
+    printed, whether always or only on a failed Test or a GM spend; the condition stays in `text` and `gm`. `variants` are the printed
+    intensities (Light, Moderate, Intense), each with its Tests and effect. `gm` holds what the fields can't: a
+    Wrath Complication trigger, a DN penalty for some Rounds, Influence or Wealth lost.
+  - `validate` checks the ranges against the dice (the Space Hulk's 66 is a listed gap), unique table and row ids,
+    each planned table's row count, and every Condition and Threat; it prints each table's Tests, Conditions, Threats
+    and `gm` notes.
+  - **Threat Assessment** (`threat-assessment.json`): the six Battlezone tables, d66, pp.11–21: Space Hulk (12 rows,
+    no row for 66), Hive City, Deathworld, Volcanic Wastes, Frozen Tundra and Forgeworld (13 each), transcribed from
+    page renders.
   - **Core Rulebook** (`core.json`): 3 lists, 10 rows. Acquiring Ruin (p.320): the three +1 triggers, plus a
     Complication taken as Ruin (p.163) and Fail Forward's "The GM gains 1 Ruin" (p.319), both named in our words.
     Spending Ruin (p.320): the four priced spends; Activate Ruin Actions isn't one, since each Threat prices its own.

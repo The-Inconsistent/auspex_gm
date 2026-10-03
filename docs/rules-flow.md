@@ -684,6 +684,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     NPC is revealed, and a look is what they see. The words are short table cells, the GM edits them before SAVE, and
     nothing is saved until then. The roll buttons take no I ROLLED: name lists have no dice, and NAME and DESCRIPTION
     stay editable for a physical roll. *(User ruling, 2026-10-03.)*
+92. **A spotted hazard lowers its DN by the GM's call** (TA p.9; GitHub issue #49). An Agent who identifies a hazard in
+    advance earns a lower DN on the Tests to avoid it, but the book prints no amount. The app applies none: a spotted
+    hazard shows the reminder "lower the DN", and the GM decides by how much. *(User ruling, 2026-10-03.)*
+93. **A Space Hulk hazard roll of 66 rolls again** (TA p.11; GitHub issue #49). The Space Hulk table prints rows to 65
+    and none for 66. ROLL and ×TIER roll again on a 66; a typed 66 (I ROLLED) shows that the book prints no row, and
+    the GM rolls again or taps one. *(User ruling, 2026-10-03.)*
+94. **One hazard per Tier, and the GM's pick of intensity** (TA p.9, Core pp.201–202; GitHub issue #49). Rolling a d66
+    per Tier is "probably enough" (TA p.9), so ×TIER rolls once per Tier of the campaign; the GM adds or drops any.
+    Electricity and Rad Poison print Light, Moderate and Intense, each with its own damage and Toughness DN, and the
+    GM chooses ("select an intensity", p.202): a place's entry stores the one picked. *(User ruling, 2026-10-03.)*
 
 ---
 
