@@ -745,6 +745,11 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
   - **Threat Assessment** (`threat-assessment.json`): the six Battlezone tables, d66, pp.11–21: Space Hulk (12 rows,
     no row for 66), Hive City, Deathworld, Volcanic Wastes, Frozen Tundra and Forgeworld (13 each), transcribed from
     page renders.
+  - **Core Rulebook** (`core.json`): Environmental Hazards, pp.201–202, a list of six to pick from: Suffocation,
+    Electricity, Extreme Heat & Cold, Falling, Fire and Radiation. Electricity and Radiation's Rad Poison carry their
+    Light, Moderate and Intense intensities as `variants`, each a Toughness DN (3, 5, 7) and its damage. Heat & Cold,
+    Fire and Radiation print no DN ("The GM decides"), so those Tests have none. The section's opening line is the
+    table's `gm`. Kept as printed: "Inflict (On Fire ) Trait" (p.202).
   - **Core Rulebook** (`core.json`): 3 lists, 10 rows. Acquiring Ruin (p.320): the three +1 triggers, plus a
     Complication taken as Ruin (p.163) and Fail Forward's "The GM gains 1 Ruin" (p.319), both named in our words.
     Spending Ruin (p.320): the four priced spends; Activate Ruin Actions isn't one, since each Threat prices its own.
