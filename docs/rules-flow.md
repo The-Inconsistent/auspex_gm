@@ -2,7 +2,7 @@
 
 Source: *Warhammer 40,000 Wrath & Glory* core rulebook (Cubicle 7). Every rule cites the **printed** page
 (PDF page = printed + 1). This is the spec the app implements; where the book is ambiguous, the house
-decision is marked **[HOUSE]** and listed in §11. The app does not roll dice (in-person play) — it tracks
+decision is marked **[HOUSE]** and listed in §11. The app does not roll a Test (in-person play; in prep it may roll on a book table, §11.91) — it tracks
 state, enforces limits, and shows the right rule at the right moment.
 
 ---
@@ -675,6 +675,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 89. **An NPC's Attitude reaches the players** (Core p.168; GitHub issue #47). `toPlayerCodex` blanks a revealed NPC's
     stat source, GM notes, secrets and faction, but keeps its Attitude, and KNOWN PERSONS shows it with its DN modifier
     (`ATTITUDE_DN`). *(User ruling, 2026-10-02.)*
+90. **Aeldari Eye Colour is capped at 12** (Core p.32; GitHub issue #48). An Aeldari adds 3 to the 2d6 Eye Colour
+    roll, which can reach 15, but the table ends at 12, "Mismatched – roll twice". A total over 12 reads row 12, so
+    9 or more on the dice gives mismatched eyes. Each of the two re-rolls is an Eye Colour roll and adds 3 too, and a
+    re-roll that lands on row 12 rolls again (`rollOn`). "Mismatched" means two colours, so a second re-roll on the
+    first's colour rolls again too. *(User ruling, 2026-10-03; the repeat re-roll is a reading of "Mismatched".)*
+91. **ROLL LOOK writes to DESCRIPTION** (Core pp.32–33; GitHub issue #48). DESCRIPTION is what players read once the
+    NPC is revealed, and a look is what they see. The words are short table cells, the GM edits them before SAVE, and
+    nothing is saved until then. The roll buttons take no I ROLLED: name lists have no dice, and NAME and DESCRIPTION
+    stay editable for a physical roll. *(User ruling, 2026-10-03.)*
 
 ---
 
@@ -710,3 +719,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |
 | Encounter budget | done | `encounterBudget`, `tallyByClass`, `rosterTally` (`threat.ts`) against Building Encounters (TA p.8); `BudgetLines` prints Troops, Mob, Elite/Adversary, Monstrous and enemies ("N tracked · M models"), with a FORTIFIED toggle that doubles every target; `BudgetPanel` under the beat editor, sized by the active Agents (§11.82) |
 | Quick NPCs and Attitude | done | `QUICK_NPC`, `quickRow` (Tier 5 → Tier 4, §11.86), `quickScaling` (p.326, §11.88) and `ATTITUDE_DN` (p.168) in `codex.ts`; `StatSource` quick takes a `specialty` (§11.87); Attitude reaches phones (§11.89); CODEX's `StatSourceField` and `NpcCard`, `AttitudeChip` on both sides; ADD TO SCENE (`addNpcToBeat`) for bestiary NPCs only; ADD FROM BOOK (`NpcPreset`, `/npc-presets`) |
+| NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
