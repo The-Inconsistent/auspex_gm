@@ -3,6 +3,7 @@ import { CharacterBuild } from "./build.ts";
 import { CodexInput, MAX_HAZARDS } from "./codex.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
+import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
 import {
   CharacterDetail,
@@ -197,6 +198,9 @@ export const Action = z.union([
       mobCount: z.number().int().min(2).max(500).optional(),
       marker: Marker.optional(),
       visibility: Visibility.optional(), // "hidden" adds it without a flash on the phones (rules-flow §11.56)
+      // As on a prepared entry: profiles (VoA p.126) and scaling (Core p.326) are applied before the snapshot.
+      profiles: Profiles,
+      scale: z.boolean().default(false),
     }),
     z.object({ type: z.literal("combatant.addCharacter"), characterId: id }),
     z.object({

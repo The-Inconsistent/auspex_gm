@@ -1,6 +1,8 @@
+import { Logger } from "@nestjs/common";
 import { and, asc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
 import {
   CharacterDetail,
+  EncounterEntry,
   CharacterStats,
   Objectives,
   Overrides,
@@ -207,6 +209,17 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
 
 const strip = <T extends { campaignId: string; createdAt: Date }>({ campaignId, createdAt, ...rest }: T) => rest;
 
+// One beat's prepared roster, with every field a row may predate filled in by its default. A roster this can't parse
+// can only come from a hand-edited database, and the codex is the whole GM app: an empty list there loses one scene's
+// roster on screen, where throwing would leave the tablet on SYNCING COGITATOR with nothing to work from. The row is
+// untouched, so `beat.startEncounter` still refuses it loudly.
+const entriesOf = (b: { id: string; encounter: unknown[] }) => {
+  const r = EncounterEntry.array().safeParse(b.encounter);
+  if (r.success) return r.data;
+  new Logger("loadCodex").warn(`beat ${b.id}: unreadable prepared encounter, sent as empty`);
+  return [];
+};
+
 export async function loadCodex(campaignId: string): Promise<Codex> {
   const [factions, adventures, locations, npcs, handouts, sessions] = await Promise.all([
     db.select().from(faction).where(eq(faction.campaignId, campaignId)).orderBy(asc(faction.createdAt)),
@@ -228,13 +241,16 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
         )
         .orderBy(asc(beat.order), asc(beat.createdAt))
     : [];
-  // DB rows were validated by CodexInput on write; the casts only narrow the untyped jsonb columns (beat.encounter,
-  // location.hazardList, npc.statSource).
+  // DB rows were validated by CodexInput on write; the casts only narrow the untyped jsonb columns
+  // (location.hazardList, npc.statSource). A beat's `encounter` is parsed rather than cast, because a row written
+  // before a field existed doesn't carry it: a scene saved before `profiles` and `scale` (issue #42) would reach the
+  // GM's app without them and break every reader that counts on the defaults. Parsing here is where the snapshot
+  // promises the shape its type claims.
   return {
     factions: factions.map(strip),
     adventures: adventures.map((a) => ({
       ...strip(a),
-      beats: beats.filter((b) => b.adventureId === a.id).map(strip),
+      beats: beats.filter((b) => b.adventureId === a.id).map((b) => ({ ...strip(b), encounter: entriesOf(b) })),
     })) as Codex["adventures"],
     locations: locations.map(strip) as Codex["locations"],
     npcs: npcs.map(strip) as Codex["npcs"],

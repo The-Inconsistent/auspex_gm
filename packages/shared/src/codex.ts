@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ATTRIBUTES, Marker, Pool, SKILLS, Visibility, type Skill } from "./state.ts";
+import { Profiles } from "./threat-scale.ts";
 
 // Campaign content beyond combat (docs/campaign-model.md). Broadcast separately from the live state,
 // so a Wounds tap doesn't resend every NPC and beat.
@@ -64,6 +65,10 @@ export const EncounterEntry = z.object({
   marker: Marker.optional(),
   label: z.string().max(100).optional(),
   visibility: Visibility.optional(), // "hidden" for ambushers and reinforcements (rules-flow §11.56)
+  // What the GM ticks on this entry before the fight: Tier 5 Threat Profiles (VoA p.126) and Scaling Threats
+  // (Core p.326). Applied to the stat block as it is snapshotted (threat-scale.ts, rules-flow §11.103–§11.108).
+  profiles: Profiles,
+  scale: z.boolean().default(false),
 });
 
 // ponytail: app limit, not a rule. Bounds the inserts one beat.startEncounter runs in a transaction; a Mob is one row.

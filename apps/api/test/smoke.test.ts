@@ -1882,7 +1882,7 @@ test("the Space Hulk Generator writes a hulk with its rooms, and rooms into a pl
   const wreck = gm.codex()!.locations.find((l) => l.id === made.id)!;
   assert.deepEqual([wreck.name, wreck.parentId, wreck.revealed, wreck.description], ["The Wreck", null, false, ""]);
   assert.equal(wreck.gmNotes.split("\n", 1)[0], "RR1 p.6", "GM NOTES open with the cite");
-  assert.ok(wreck.gmNotes.includes(`ORIGIN: ${o2.name}`), "every origin rolled (§11.101)");
+  assert.ok(wreck.gmNotes.includes(`ORIGIN: ${o2.name}`), "every origin rolled (§11.103)");
   assert.deepEqual(
     wreck.hazardList.map((h) => h.kind === "book" && [h.hazardId, h.variant]),
     [[hazard, null]],
@@ -1995,7 +1995,8 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
       status: "done",
       locationId: spire.id,
       handoutIds: [orders.id],
-      encounter: [{ threatId: "ork-boy", count: 3 }],
+      // One entry carries a profile and scaling (issue #42), so the export and import keep both.
+      encounter: [{ threatId: "ork-boy", count: 3, profiles: ["heretical-strength"], scale: true }],
       // The scene picks its place's hazards (§11.95); a pick its place doesn't list is dropped.
       hazards: [
         { id: shock.id, spotted: true },
@@ -2099,6 +2100,12 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const spireList = locs.find((l) => l.name === "Spire")?.hazardList;
   assert.deepEqual(spireList, [shock, { ...climb, effect: "", tests: [BeatTest.parse(climb.tests[0])] }]);
   assert.deepEqual(b?.hazards, [{ id: shock.id, spotted: true }], "the scene's pick comes along");
+  assert.deepEqual(
+    b?.encounter[0]?.profiles,
+    ["heretical-strength"],
+    "a prepared entry's profiles survive the round trip",
+  );
+  assert.equal(b?.encounter[0]?.scale, true);
   // An exit follows its target to the new id (issue #38), and the Tests come along (issue #39).
   const exitTo = (codex: Codex) => {
     const [first, second] = codex.adventures[0]!.beats;
@@ -2275,4 +2282,115 @@ test("Ascension: campaign.update's Tier restarts the 100-XP window", async (t) =
     ok: false,
     error: "Hand has not earned 100 XP in Tier 3 yet (Core p.147)",
   });
+});
+
+// Issue #42: the Tier 5 Threat Profiles (VoA p.126) and Scaling Threats (Core p.326) are ticked on the entry or on
+// + THREAT, and applied to the stat block before it is snapshotted.
+test("threat profiles and scaling reach the snapshot (issue #42, VoA p.126, Core p.326)", async (t) => {
+  const gm = await newCampaign("Scaling", 3);
+  t.after(() => gm.socket.close());
+  const kael = await gm.send({ type: "character.create", name: "Kael" });
+  assert.ok(kael.ok && kael.id);
+  // One Agent claimed: "the number of players" in Adversary scaling counts the Agents in the fight (§11.106).
+  const issued = await gm.send({ type: "token.issue", characterId: kael.id });
+  assert.ok(issued.ok && issued.token);
+
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  const byId = (s: LiveState, id: string) =>
+    s.encounter?.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === id);
+
+  // An Adversary at Tier 3 with two profiles: +1 Agent +3 Tier on Wounds and Shock, Strength and Weapon Skill up.
+  const archon = await gm.send({
+    type: "combatant.addThreat",
+    threatId: "archon",
+    profiles: ["heretical-strength", "xenos-cunning"],
+    scale: true,
+  });
+  assert.ok(archon.ok && archon.id);
+  const a = byId(await gm.until((s) => !!byId(s, archon.id!)), archon.id)!;
+  assert.equal(a.threatClass, "A");
+  assert.equal(a.maxWounds, 18, "14 + 1 Agent + Tier 3");
+  assert.equal(a.maxShock, 16, "12 + 1 Agent + Tier 3");
+  assert.deepEqual(
+    a.stats?.bonuses.slice(-3).map((b) => b.name),
+    ["Heretical Strength (VoA p.126)", "Xenos Cunning (VoA p.126)", "Scaled (Core p.326)"],
+    "each change explains itself in BONUSES",
+  );
+
+  // The same threat added plain is the printed stat block again: nothing was mutated in the shared bestiary.
+  const plain = await gm.send({ type: "combatant.addThreat", threatId: "archon" });
+  assert.ok(plain.ok && plain.id);
+  const p = byId(await gm.until((s) => !!byId(s, plain.id!)), plain.id)!;
+  assert.equal(p.maxWounds, 14);
+  assert.equal(p.maxShock, 12);
+  assert.ok(!p.stats?.bonuses.some((b) => b.name.startsWith("Scaled")), "no scaling on a plain add");
+
+  // A Troop takes no scaling (Core p.326, §11.107), and a Mob's members have 1 Wound each (p.325), but both still
+  // take a profile.
+  const mob = await gm.send({
+    type: "combatant.addThreat",
+    threatId: "ork-boy",
+    mobCount: 6,
+    profiles: ["heretical-strength"],
+    scale: true,
+  });
+  assert.ok(mob.ok && mob.id);
+  const m = byId(await gm.until((s) => !!byId(s, mob.id!)), mob.id)!;
+  assert.equal(m.threatClass, "T");
+  assert.equal(m.maxWounds, 6, "the printed Wounds, unscaled");
+  assert.equal(m.stats?.attributes.S, 6, "Strength +2 still applies");
+  assert.equal(m.stats?.skills.list.find((s) => s.name === "Weapon Skill")?.dice, 9);
+  assert.equal(m.stats?.resilience.value, 7);
+  assert.ok(!m.stats?.bonuses.some((b) => b.name.startsWith("Scaled")));
+
+  // A prepared entry carries the same two fields, and a beat saved before this change (no profiles, no scale) still
+  // starts: the defaults parse for it.
+  assert.ok((await gm.send({ type: "encounter.end" })).ok);
+  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Raid" } });
+  assert.ok(adv.ok && adv.id);
+  const beat = await gm.send({
+    type: "codex.save",
+    kind: "beat",
+    data: {
+      adventureId: adv.id,
+      title: "Ambush",
+      encounter: [
+        { threatId: "canoptek-wraith", profiles: ["enemy-within"], scale: true },
+        { threatId: "ork-boy", count: 2 },
+      ],
+    },
+  });
+  assert.ok(beat.ok && beat.id);
+  assert.ok((await gm.send({ type: "beat.startEncounter", id: beat.id })).ok);
+  const prepared = await gm.until(
+    (s) => (s.encounter?.combatants.filter((c) => c.kind === "threat").length ?? 0) === 3,
+  );
+  const wraith = prepared.encounter!.combatants.find(
+    (c): c is ThreatCombatant => c.kind === "threat" && c.threatId === "canoptek-wraith",
+  )!;
+  assert.equal(wraith.threatClass, "E", "an Elite at Tier 3");
+  assert.equal(wraith.maxWounds, 11, "8 + Tier 3, the Tier alone for an Elite");
+  assert.equal(wraith.maxShock, 6);
+  assert.equal(wraith.stats?.skills.list.find((s) => s.name === "Ballistic Skill")?.dice, 4, "unlisted: Default + 1");
+  const boy = prepared.encounter!.combatants.find(
+    (c): c is ThreatCombatant => c.kind === "threat" && c.threatId === "ork-boy",
+  )!;
+  assert.equal(boy.maxWounds, 6);
+  assert.deepEqual(
+    boy.stats?.bonuses.map((b) => b.name),
+    ["'Ere We Go!"],
+    "an untouched entry keeps the printed block",
+  );
+});
+
+test("scaling counts the whole roster while nobody holds a seat (Core p.326, §11.106)", async (t) => {
+  const gm = await newCampaign("Unseated", 3);
+  t.after(() => gm.socket.close());
+  for (const name of ["Kael", "Vex"]) assert.ok((await gm.send({ type: "character.create", name })).ok);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  const archon = await gm.send({ type: "combatant.addThreat", threatId: "archon", scale: true });
+  assert.ok(archon.ok && archon.id);
+  const s = await gm.until((x) => !!x.encounter?.combatants.some((c) => c.id === archon.id));
+  const a = s.encounter!.combatants.find((c): c is ThreatCombatant => c.id === archon.id)!;
+  assert.equal(a.maxWounds, 19, "14 + 2 Agents on the roster + Tier 3, as the SCALE preview shows");
 });

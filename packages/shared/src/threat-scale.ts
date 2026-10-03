@@ -62,6 +62,14 @@ export const THREAT_PROFILES: readonly {
   },
 ];
 
+// At most one of each profile: they are toggles, and the same one twice would raise a stat twice and write two
+// BONUSES lines with one name (§11.84). The server decides, so the schema drops the repeat whatever a client sends.
+export const Profiles = z
+  .array(ProfileId)
+  .max(THREAT_PROFILES.length)
+  .transform((ids) => [...new Set(ids)])
+  .default([]);
+
 export const threatProfile = (id: ProfileId) => THREAT_PROFILES.find((p) => p.id === id)!;
 
 const bonus = (name: string, parts: string[]) => ({ name, text: `${parts.join(". ")}.` });
@@ -147,6 +155,7 @@ export type PrepareInput = ScaleInput & { profiles?: readonly ProfileId[]; scale
 // The stat block as it goes into a combatant's snapshot: profiles first, then scaling, which reads the printed class
 // either way (`threatClassAt` on the block, which no profile changes). Profiles stack additively (§11.104).
 export function prepareThreat(t: Threat, { profiles = [], scale = false, ...input }: PrepareInput): Threat {
-  const profiled = profiles.reduce<Threat>((acc, id) => applyProfile(acc, id), t);
+  // Each profile at most once, as `Profiles` parses them: a caller holding an unparsed list can't double a stat.
+  const profiled = [...new Set(profiles)].reduce<Threat>((acc, id) => applyProfile(acc, id), t);
   return scale ? scaleThreat(profiled, input) : { ...profiled };
 }
