@@ -350,6 +350,11 @@ button[data-sent="no"] {
   border-color: var(--red);
   box-shadow: 0 0 0 1px var(--red);
 }
+/* A field CREATE, ADD or SAVE refused (useFieldErrors): red, and tinted, so it still reads as wrong while focused. */
+.input[aria-invalid="true"] {
+  border-color: var(--red);
+  background: var(--red-tint);
+}
 textarea.input {
   min-height: 90px;
   resize: vertical;

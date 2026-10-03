@@ -3,6 +3,7 @@ import { useState, type ChangeEvent } from "react";
 
 import {
   BeatType,
+  CodexSave,
   Marker,
   type BeatExit,
   type BeatStatus,
@@ -17,6 +18,8 @@ import {
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
 import { ThreatScale } from "@/components/ui/threat-scale/threat-scale";
 import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
+import { FieldError } from "@/components/ui/field-error/field-error";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { hazardView } from "@/lib/hazards/hazards";
 import { placeOptions } from "@/lib/places/places";
@@ -88,6 +91,7 @@ export function BeatEditor({
         },
   );
   const [error, setError] = useState<string | null>(null);
+  const fieldErrors = useFieldErrors("b-"); // each text field's input is b-<key>
 
   const setEntry = (i: number, patch: Partial<EncounterEntry>) =>
     setB({ ...b, encounter: b.encounter.map((e, j) => (j === i ? { ...e, ...patch } : e)) });
@@ -104,6 +108,8 @@ export function BeatEditor({
       .filter((e) => e.label.trim() || e.beatId);
     const tests = b.tests.map((t) => ({ ...t, shifts: t.shifts.filter((s) => s.trim()) }));
     const data = { ...b, exits, tests, ...pools };
+    // The save's own schema first, so a missing TITLE is marked on the field rather than refused by the server.
+    if (!fieldErrors.check(CodexSave.beat, data)) return;
     const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
     if (!r.ok) return setError(r.error);
     onDone();
@@ -152,18 +158,27 @@ export function BeatEditor({
         {area ? (
           <textarea
             id={`b-${key}`}
+            {...fieldErrors.marks(key)}
             className="input"
             value={b[key]}
-            onChange={(e) => setB({ ...b, [key]: e.target.value })}
+            onChange={(e) => {
+              setB({ ...b, [key]: e.target.value });
+              fieldErrors.clear(key);
+            }}
           />
         ) : (
           <input
             id={`b-${key}`}
+            {...fieldErrors.marks(key)}
             className="input"
             value={b[key]}
-            onChange={(e) => setB({ ...b, [key]: e.target.value })}
+            onChange={(e) => {
+              setB({ ...b, [key]: e.target.value });
+              fieldErrors.clear(key);
+            }}
           />
         )}
+        <FieldError {...fieldErrors.reason(key)} />
         {hint && (
           <div className="dim" style={{ fontSize: 12 }}>
             {hint}
@@ -362,7 +377,9 @@ export function BeatEditor({
         </div>
       </div>
       {textField({ key: "outcome" })}
-      {error && <div className="red">! {error}</div>}
+      {(error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))) && (
+        <div className="red">! {error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))}</div>
+      )}
       <div className="keys">
         <button className="btn primary" onClick={save}>
           SAVE SCENE

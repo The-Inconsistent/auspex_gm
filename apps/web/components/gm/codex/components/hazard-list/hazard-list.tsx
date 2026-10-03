@@ -6,6 +6,7 @@ import {
   ATTRIBUTES,
   sourceName,
   BeatTest,
+  LocationHazard,
   MAX_HAZARDS,
   SKILLS,
   rowsFor,
@@ -13,13 +14,14 @@ import {
   type HazardRow,
   type HazardTable,
   type Intensity,
-  type LocationHazard,
   type Threat,
   type ThreatSource,
 } from "@wg/shared";
 
 import { HazardChips } from "@/components/gm/prep/components/hazard-chips/hazard-chips";
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { NumberInput } from "@/components/ui/number-input/number-input";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import { TableRoll } from "@/components/ui/table-roll/table-roll";
 import { hazardView, rollHazards } from "@/lib/hazards/hazards";
 
@@ -51,6 +53,7 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
   const [rolled, setRolled] = useState<number | null>(null);
   const [picked, setPicked] = useState<string | null>(null); // a row id
   const [own, setOwn] = useState({ name: "", test: "", dn: null as number | null, effect: "" });
+  const ownFields = useFieldErrors(`${id}-own-`); // YOUR OWN HAZARD: a custom hazard is named (LocationHazard)
   const full = value.length >= MAX_HAZARDS;
   const ranged =
     table?.rows.flatMap((r) =>
@@ -109,10 +112,15 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
   const addOwn = () => {
     const [kind, what] = own.test.split(":");
     const test = kind ? BeatTest.parse({ kind, [kind]: what, dn: own.dn }) : null;
-    onChange([
-      ...value,
-      { id: crypto.randomUUID(), kind: "custom", name: own.name.trim(), tests: test ? [test] : [], effect: own.effect },
-    ]);
+    const hazard = ownFields.check(LocationHazard, {
+      id: crypto.randomUUID(),
+      kind: "custom",
+      name: own.name.trim(),
+      tests: test ? [test] : [],
+      effect: own.effect,
+    });
+    if (!hazard) return;
+    onChange([...value, hazard]);
     setOwn({ name: "", test: "", dn: null, effect: "" });
   };
 
@@ -166,12 +174,17 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
           <span className="label">YOUR OWN HAZARD</span>
           <div className="keys" style={{ paddingTop: 0 }}>
             <input
+              id={`${id}-own-name`}
               className="input"
               style={{ flex: "1 1 160px", width: "auto" }}
               aria-label="Your own hazard: name"
               placeholder="Name"
               value={own.name}
-              onChange={(e) => setOwn({ ...own, name: e.target.value })}
+              onChange={(e) => {
+                setOwn({ ...own, name: e.target.value });
+                ownFields.clear("name");
+              }}
+              {...ownFields.marks("name")}
             />
             <select
               className="input"
@@ -204,10 +217,11 @@ export function HazardList({ id, value, tables, bestiary, tier, onChange }: Haza
               value={own.effect}
               onChange={(e) => setOwn({ ...own, effect: e.target.value })}
             />
-            <button className="btn sm" disabled={!own.name.trim() || full} onClick={addOwn}>
+            <button className="btn sm" disabled={full} onClick={addOwn}>
               + ADD
             </button>
           </div>
+          <FieldError {...ownFields.reason("name")} />
         </div>
 
         <div className="stack" style={{ gap: 8 }}>

@@ -3,12 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 
-import type { FrameworkCatalogue } from "@wg/shared";
+import { CreateGame, type FrameworkCatalogue } from "@wg/shared";
 
 import { TableTalk } from "@/components/ui/table-talk/table-talk";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { STEP_LABELS } from "@/components/ui/wizard-steps/constants";
 import { WizardSteps } from "@/components/ui/wizard-steps/wizard-steps";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 
 import { NameStep } from "./components/name-step/name-step";
 import { PremiseStep } from "./components/premise-step/premise-step";
@@ -26,6 +27,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
   const [step, setStep] = useState<NewStep>("tier");
   const [draft, setDraft] = useState<Draft>(NEW_DRAFT);
   const [error, setError] = useState<string | null>(null);
+  const fields = useFieldErrors("nc-");
   // CREATE pulses (aria-busy) from the tap until the campaign is up, and a second tap is ignored meanwhile.
   const [pending, startTransition] = useTransition();
   const patch = (p: Partial<Draft>) => setDraft((d) => ({ ...d, ...p }));
@@ -42,13 +44,14 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
   const handleCreate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (pending) return;
-    if (!draft.name.trim()) return setError("Name the campaign first.");
+    const game = fields.check(CreateGame, { ...draft, name: draft.name.trim() });
+    if (!game) return;
     setError(null);
     startTransition(async () => {
       const res = await fetch("/api/campaigns", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...draft, name: draft.name.trim() }),
+        body: JSON.stringify(game),
       }).catch(() => null);
       const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
       if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
@@ -97,6 +100,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
           <NameStep
             draft={draft}
             error={error}
+            fields={fields}
             onName={(name) => patch({ name })}
             onEdit={go}
             onCreate={handleCreate}

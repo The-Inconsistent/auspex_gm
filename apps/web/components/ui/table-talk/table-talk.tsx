@@ -1,7 +1,10 @@
 "use client";
 import { useState, type FormEvent } from "react";
 
-import { MAX_TABLE_LINE, MAX_TABLE_LINES } from "@wg/shared";
+import { MAX_TABLE_LINE, MAX_TABLE_LINES, TableLines } from "@wg/shared";
+
+import { FieldError } from "@/components/ui/field-error/field-error";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 
 import { KIND_EXAMPLES, LIMIT_EXAMPLES } from "./constants";
 
@@ -20,16 +23,18 @@ const same = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
 // One list: the book's examples toggle on and off, a typed line joins the list, and ✕ takes it out again.
 function LineList({ id, label, examples, lines, onChange }: LineListProps) {
   const [draft, setDraft] = useState("");
+  const fields = useFieldErrors(`${id}-add`);
   const full = lines.length >= MAX_TABLE_LINES;
   const own = lines.filter((l) => !examples.some((e) => same(e, l)));
   const toggle = (line: string) =>
     onChange(lines.some((l) => same(l, line)) ? lines.filter((l) => !same(l, line)) : [...lines, line]);
 
-  // ADD: the typed line, once.
+  // ADD: the typed line, once; an empty one is marked instead (TableLines).
   const handleAdd = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const line = draft.trim();
-    if (!line || full) return;
+    if (full) return;
+    const line = fields.check(TableLines.element, draft);
+    if (line === null) return;
     if (!lines.some((l) => same(l, line))) onChange([...lines, line]);
     setDraft("");
   };
@@ -62,18 +67,24 @@ function LineList({ id, label, examples, lines, onChange }: LineListProps) {
       </div>
       <form className="keys" onSubmit={handleAdd}>
         <input
+          id={`${id}-add`}
           className="input"
           style={{ maxWidth: 320 }}
           aria-label={`Add to ${label.toLowerCase()}`}
           placeholder="Type another…"
           maxLength={MAX_TABLE_LINE}
           value={draft}
-          onChange={(e) => setDraft(e.target.value)}
+          onChange={(e) => {
+            setDraft(e.target.value);
+            fields.clear();
+          }}
+          {...fields.marks()}
         />
-        <button className="btn" disabled={full || !draft.trim()}>
+        <button className="btn" disabled={full}>
           ADD
         </button>
       </form>
+      <FieldError {...fields.reason()} />
     </div>
   );
 }

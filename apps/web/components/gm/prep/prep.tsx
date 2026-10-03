@@ -3,6 +3,7 @@ import { useMemo, useState, type FormEvent } from "react";
 
 import {
   agentsInFight,
+  CodexSave,
   threatProfile,
   type ActionResult,
   type BeatStatus,
@@ -12,7 +13,9 @@ import {
   type Threat,
 } from "@wg/shared";
 
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
@@ -46,6 +49,8 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
   const [title, setTitle] = useState("");
   const [advDraft, setAdvDraft] = useState<{ title: string; premise: string } | null>(null); // adventure being edited
   const [msg, setMsg] = useState<string | null>(null);
+  const newFields = useFieldErrors("adv-new"); // the new adventure's title
+  const advFields = useFieldErrors("adv-"); // the open adventure's
   const adv = codex.adventures.find((a) => a.id === advId) ?? null;
   const players = state.characters.length; // the pool maxima count every Agent (`poolMax`, Core pp.164, 320)
   // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for
@@ -112,8 +117,9 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
   // New adventure form: creates it and switches to it.
   const handleCreateAdventure = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!title.trim()) return;
-    const r = await send({ type: "codex.save", kind: "adventure", data: { title: title.trim() } });
+    const named = newFields.check(CodexSave.adventure.shape.title, title);
+    if (named === null) return;
+    const r = await send({ type: "codex.save", kind: "adventure", data: { title: named } });
     report(r, "ADVENTURE CREATED");
     if (r.ok && r.id) setAdvId(r.id);
     setTitle("");
@@ -121,13 +127,10 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
 
   // SAVE on the adventure: keeps its status (codex.save would reset it to the default) and closes the editor.
   const saveAdventure = async () => {
-    if (!adv || !advDraft?.title.trim()) return;
-    const r = await send({
-      type: "codex.save",
-      kind: "adventure",
-      id: adv.id,
-      data: { title: advDraft.title.trim(), premise: advDraft.premise, status: adv.status },
-    });
+    if (!adv || !advDraft) return;
+    const data = advFields.check(CodexSave.adventure, { ...advDraft, status: adv.status });
+    if (!data) return;
+    const r = await send({ type: "codex.save", kind: "adventure", id: adv.id, data });
     report(r, "ADVENTURE SAVED");
     if (r.ok) setAdvDraft(null);
   };
@@ -150,17 +153,23 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
         ))}
         <form style={{ display: "flex", gap: 6 }} onSubmit={handleCreateAdventure}>
           <input
+            id="adv-new"
             className="input"
             aria-label="New adventure title"
             placeholder="NEW ADVENTURE"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              newFields.clear();
+            }}
+            {...newFields.marks()}
           />
           <button className="btn" aria-label="Create adventure">
             +
           </button>
         </form>
       </div>
+      <FieldError {...newFields.reason()} />
 
       {!adv && (
         <p className="dim">
@@ -180,8 +189,13 @@ export function Prep({ state, codex, send, bestiary, presets, onRun }: PrepProps
                   id="adv-title"
                   className="input"
                   value={advDraft.title}
-                  onChange={(e) => setAdvDraft({ ...advDraft, title: e.target.value })}
+                  onChange={(e) => {
+                    setAdvDraft({ ...advDraft, title: e.target.value });
+                    advFields.clear("title");
+                  }}
+                  {...advFields.marks("title")}
                 />
+                <FieldError {...advFields.reason("title")} />
               </div>
               <div className="field">
                 <label className="label" htmlFor="adv-premise">

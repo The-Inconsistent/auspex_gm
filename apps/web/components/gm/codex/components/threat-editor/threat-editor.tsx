@@ -5,6 +5,7 @@ import { useState } from "react";
 import {
   CUSTOM_PREFIX,
   CUSTOM_THREAT_CAP,
+  CustomThreatData,
   threatCite,
   threatLabel,
   type PoolPresetTable,
@@ -14,6 +15,7 @@ import {
 
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { blankDraft, cloneDraft, draftOf, quickDraft, type ThreatDraft } from "./constants";
@@ -36,6 +38,7 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
   const [editing, setEditing] = useState<{ slug: string | null; draft: ThreatDraft } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const fields = useFieldErrors("t-");
   const full = customThreats.length >= CUSTOM_THREAT_CAP;
 
   const start = (draft: ThreatDraft, slug: string | null = null) => {
@@ -47,6 +50,8 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
 
   const save = async () => {
     if (!editing) return;
+    // The server's own schema first, so a missing NAME or Keyword is marked on its field.
+    if (!fields.check(CustomThreatData, editing.draft)) return;
     setBusy(true);
     const r = await send({
       type: "threat.save",
@@ -71,17 +76,17 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
           draft={editing.draft}
           wargear={wargear}
           ruinActions={ruinActions}
+          fields={fields}
           onChange={(draft) => setEditing({ ...editing, draft })}
         />
-        {error && <div className="red">! {error}</div>}
+        {/* A refusal inside a list (an ability, a weapon) has no field of its own: it says where. */}
+        {(error ?? fields.elsewhere(["name", "keywords"])) && (
+          <div className="red">! {error ?? fields.elsewhere(["name", "keywords"])}</div>
+        )}
         {/* A stat block carries at least one Keyword (Core p.323), so the server would refuse one without. */}
-        {!editing.draft.keywords.length && <div className="dim">Add a keyword to save.</div>}
+        {!editing.draft.keywords.length && <div className="dim">A threat needs at least one keyword.</div>}
         <div className="keys">
-          <button
-            className="btn primary"
-            disabled={busy || !editing.draft.name.trim() || !editing.draft.keywords.length}
-            onClick={save}
-          >
+          <button className="btn primary" disabled={busy} onClick={save}>
             {editing.slug ? "SAVE THREAT" : "CREATE THREAT"}
           </button>
           <button className="btn" onClick={() => setEditing(null)}>

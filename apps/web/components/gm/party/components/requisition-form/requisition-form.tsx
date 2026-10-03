@@ -5,6 +5,7 @@ import {
   AMMO_TYPES,
   Rarity,
   RARITY_DN,
+  RequisitionItem,
   RequisitionKind,
   requisitionKindOf,
   requisitionOutcome,
@@ -17,6 +18,8 @@ import {
   type Wargear,
 } from "@wg/shared";
 
+import { FieldError } from "@/components/ui/field-error/field-error";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { wargearLabels } from "@/lib/wargear-label/wargear-label";
 
@@ -47,6 +50,7 @@ export function RequisitionForm({
 }: RequisitionFormProps) {
   const [kind, setKind] = useState<RequisitionKind>("wargear");
   const [item, setItem] = useState("");
+  const itemFields = useFieldErrors(`rq-item-${c.id}`); // RECORD needs an item (RequisitionItem)
   const [value, setValue] = useState(0);
   const [rarity, setRarity] = useState<Rarity>("Common");
   const [keywords, setKeywords] = useState("");
@@ -64,6 +68,7 @@ export function RequisitionForm({
   // (Rarity by location, p.206).
   const handleItem = (v: string) => {
     setItem(v);
+    itemFields.clear();
     const w = find(v);
     if (!w) return;
     setKind(requisitionKindOf(w.kind));
@@ -85,11 +90,13 @@ export function RequisitionForm({
 
   // RECORD: the server re-checks Keywords, the session limit and Wealth, then adds the item on a success.
   const record = async () => {
+    const named = itemFields.check(RequisitionItem, picked?.name ?? item);
+    if (named === null) return;
     const r = await send({
       type: "character.requisition",
       id: c.id,
       kind,
-      item: picked?.name ?? item.trim(),
+      item: named,
       value,
       rarity,
       keywords: itemKeywords,
@@ -135,7 +142,9 @@ export function RequisitionForm({
           value={item}
           onChange={(e) => handleItem(e.target.value)}
           placeholder="Search the Wargear chapter"
+          {...itemFields.marks()}
         />
+        <FieldError {...itemFields.reason()} />
         <datalist id="rq-catalogue">
           {catalogue.map((w) => (
             <option key={w.id} value={labelOf(w)}>{`${w.category} · ${sourceCite(w)}`}</option>
@@ -285,7 +294,7 @@ export function RequisitionForm({
         {out.success ? `SUCCESS: GETS ${gets.toUpperCase()}` : "FAILS"} · WEALTH {c.stats.wealth} → {out.wealth}
       </div>
       <div className="keys">
-        <button className="btn primary" disabled={!sessionId || used || !t.eligible || !item.trim()} onClick={record}>
+        <button className="btn primary" disabled={!sessionId || used || !t.eligible} onClick={record}>
           RECORD
         </button>
         <button className="btn" onClick={onCancel}>

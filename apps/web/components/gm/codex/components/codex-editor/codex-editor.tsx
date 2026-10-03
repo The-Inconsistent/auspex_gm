@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   Attitude,
   CodexInput,
+  CodexSave,
   FactionStance,
   type ActionInput,
   type Character,
@@ -18,6 +19,8 @@ import {
 } from "@wg/shared";
 
 import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
+import { FieldError } from "@/components/ui/field-error/field-error";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { placeOptions } from "@/lib/places/places";
 
@@ -163,9 +166,13 @@ export function CodexEditor({
     return init;
   });
   const [error, setError] = useState<string | null>(null);
+  const fieldErrors = useFieldErrors("f-"); // each field's input is f-<key>
   const [armed, setArmed] = useState<number | null>(null); // DELETE's first tap, at that many places inside
 
-  const setField = (key: string, value: unknown) => setDraft({ ...draft, [key]: value });
+  const setField = (key: string, value: unknown) => {
+    setDraft({ ...draft, [key]: value });
+    fieldErrors.clear(key);
+  };
 
   // ROLL LOOK: the rolled line goes under what DESCRIPTION already says (rules-flow §11.91).
   const appendLook = (line: string) => {
@@ -177,6 +184,8 @@ export function CodexEditor({
   const save = async () => {
     const data: Record<string, unknown> = { ...draft };
     for (const f of fields) if (f.type === "select" && data[f.key] === "" && f.key.endsWith("Id")) data[f.key] = null;
+    // The save's own schema first, so a missing NAME is marked on the field rather than refused by the server.
+    if (!fieldErrors.check<unknown>(CodexSave[kind], data)) return;
     const r = await send({ type: "codex.save", kind, ...(row ? { id: row.id } : {}), data } as ActionInput);
     if (!r.ok) return setError(r.error);
     onDone();
@@ -223,6 +232,7 @@ export function CodexEditor({
           {f.type === "text" && (
             <input
               id={`f-${f.key}`}
+              {...fieldErrors.marks(f.key)}
               className="input"
               value={String(draft[f.key] ?? "")}
               onChange={(e) => setField(f.key, e.target.value)}
@@ -231,6 +241,7 @@ export function CodexEditor({
           {f.type === "area" && (
             <textarea
               id={`f-${f.key}`}
+              {...fieldErrors.marks(f.key)}
               className="input"
               value={String(draft[f.key] ?? "")}
               onChange={(e) => setField(f.key, e.target.value)}
@@ -311,6 +322,7 @@ export function CodexEditor({
           {f.type === "select" && (
             <select
               id={`f-${f.key}`}
+              {...fieldErrors.marks(f.key)}
               className="input"
               value={String(draft[f.key] ?? "")}
               onChange={(e) => setField(f.key, e.target.value)}
@@ -322,6 +334,7 @@ export function CodexEditor({
               ))}
             </select>
           )}
+          <FieldError {...fieldErrors.reason(f.key)} />
         </div>
       ))}
       {kind === "item" && (
@@ -339,7 +352,10 @@ export function CodexEditor({
           <span>{(draft.mods as { kind: string; what?: string }[]).map((m) => m.what ?? m.kind).join(" · ")}</span>
         </div>
       )}
-      {error && <div className="red">! {error}</div>}
+      {/* A refusal on something with no field of its own (an item's Powers) still says what. */}
+      {(error ?? fieldErrors.elsewhere(fields.map((f) => f.key))) && (
+        <div className="red">! {error ?? fieldErrors.elsewhere(fields.map((f) => f.key))}</div>
+      )}
       <div className="keys">
         <button className="btn primary" onClick={save}>
           SAVE

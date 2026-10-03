@@ -84,12 +84,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
             {spaceHulk && (
               <HulkGenerator generator={spaceHulk} hazards={hazards} codex={codex} send={send} onError={setError} />
             )}
-            <AddByName
-              id="setup-place"
-              max={200}
-              onAdd={(name) => send({ type: "codex.save", kind: "location", data: { name } })}
-              onError={setError}
-            />
+            <AddByName id="setup-place" kind="location" send={send} onError={setError} />
             <div className="field">
               <span className="label">IN THIS CAMPAIGN</span>
               {codex.locations.length === 0 && <i className="dim">No places yet.</i>}
@@ -109,12 +104,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
             {factionPresets.length > 0 && (
               <FactionPicker open presets={factionPresets} factions={codex.factions} send={send} onError={setError} />
             )}
-            <AddByName
-              id="setup-faction"
-              max={100}
-              onAdd={(name) => send({ type: "codex.save", kind: "faction", data: { name } })}
-              onError={setError}
-            />
+            <AddByName id="setup-faction" kind="faction" send={send} onError={setError} />
             <div className="field">
               <span className="label">IN THIS CAMPAIGN</span>
               {codex.factions.length === 0 && <i className="dim">No factions yet.</i>}
