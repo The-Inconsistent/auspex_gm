@@ -1,0 +1,830 @@
+[
+  {
+    "id": "darktide-bounties-warrens",
+    "name": "Warren Bounties",
+    "source": "darktide",
+    "page": 15,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-warrens-2",
+        "from": 2,
+        "to": 3,
+        "name": "Smuggler's Cache",
+        "page": 15,
+        "text": "A busted open panel in the wall of this warren reveals a long abandoned smuggler's cache — an Ammo Backpack (Wrath & Glory Rulebook page 230) containing 2 Las Ammo and 2 Bolt Ammo",
+        "items": [
+          {
+            "wargearId": "ammo-backpack"
+          }
+        ],
+        "ammo": [
+          {
+            "kind": "Las",
+            "count": 2
+          },
+          {
+            "kind": "Bolt",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "id": "darktide-bounties-warrens-4",
+        "from": 4,
+        "to": 4,
+        "name": "Roving Marketeer",
+        "page": 15,
+        "text": "Lit by a single dirty lumen an enterprising marketeer is selling wares scavenged from the Warrens. He has three random pieces of IMPERIUM, value 3 or less for sale (Wrath & Glory Rulebook, page 236).",
+        "items": [
+          {
+            "pick": {
+              "wargearKeywords": [
+                "IMPERIUM"
+              ],
+              "maxValue": 3
+            },
+            "count": 3
+          }
+        ],
+        "gm": "For sale, not free: three random IMPERIUM pieces of Value 3 or less."
+      },
+      {
+        "id": "darktide-bounties-warrens-5",
+        "from": 5,
+        "to": 5,
+        "name": "Tunnel Fungus",
+        "page": 15,
+        "text": "A cluster of edible (if unappetising) fungus grows from a ruptured water pipe. It is slightly psychoactive, and when consumed, it gives +1 Bonus Dice to any Psychic Mastery (Wil) Tests for the next hour.",
+        "gm": "+1 Bonus Dice to Psychic Mastery (Wil) Tests for the next hour."
+      },
+      {
+        "id": "darktide-bounties-warrens-6",
+        "from": 6,
+        "to": 6,
+        "name": "Dropped Trinket",
+        "page": 15,
+        "text": "While journeying through the hazards of the Warrens, some lonely traveller has accidentally dropped a precious trinket among the detritus of the hive. Roll on any of the trinket tables (Wrath & Glory Rulebook page 247).",
+        "gm": "Roll on any of the Core trinket tables (p.247)."
+      },
+      {
+        "id": "darktide-bounties-warrens-7",
+        "from": 7,
+        "to": 7,
+        "name": "Abandoned Weapon",
+        "page": 15,
+        "text": "Splashed with blood from some long ago firefight, you find a random IMPERIUM (value 4 or less) weapon left behind by a fleeing Mags or PDF trooper.",
+        "items": [
+          {
+            "pick": {
+              "wargearKeywords": [
+                "IMPERIUM"
+              ],
+              "maxValue": 4,
+              "kinds": [
+                "weapon"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "darktide-bounties-warrens-8",
+        "from": 8,
+        "to": 8,
+        "name": "Friendly Felid",
+        "page": 15,
+        "text": "Meows echo off the tunnel walls, as you come across a friendly felid. It purrs as it rubs up against your legs. Agents recover 1d6 Shock.",
+        "gm": "Agents recover 1d6 Shock."
+      },
+      {
+        "id": "darktide-bounties-warrens-9",
+        "from": 9,
+        "to": 9,
+        "name": "Medicae Servitor",
+        "page": 15,
+        "text": "At a junction in the Warrens you come across a still functioning medicae servitor. It patches you up with its tools, healing 3 Wounds and all Shock. As you leave it mournfully says 'Can you take me with you? Please? I am so lonely.'",
+        "gm": "Heal 3 Wounds and all Shock."
+      },
+      {
+        "id": "darktide-bounties-warrens-10",
+        "from": 10,
+        "to": 10,
+        "name": "Repair Kit",
+        "page": 15,
+        "text": "A maintenance team have left their gear behind after patching a leak. You find a vial of Sacred Machine Oil and a Combi-Tool (Wrath & Glory Rulebook pages 237 and 240).",
+        "items": [
+          {
+            "wargearId": "sacred-machine-oil"
+          },
+          {
+            "wargearId": "combi-tool"
+          }
+        ]
+      },
+      {
+        "id": "darktide-bounties-warrens-11",
+        "from": 11,
+        "to": 12,
+        "name": "Respirator Rack",
+        "page": 15,
+        "text": "Near to an old ventilation pathway, you find a rack of four Respirators, ideal for filtering out the harsh toxins of Tertium (Wrath & Glory Rulebook page 239).",
+        "items": [
+          {
+            "wargearId": "respirator",
+            "count": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "darktide-bounties-hab-settlements",
+    "name": "Hab Settlement Bounties",
+    "source": "darktide",
+    "page": 17,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-hab-settlements-2",
+        "from": 2,
+        "to": 3,
+        "name": "Doc Shop",
+        "page": 17,
+        "text": "Unregulated doctors maintain small surgeries, filled with barely sanitary medical tools and dubious drugs. A DN 6 Persuasion (Fel) Test, with bonus dice to the pool equal to the highest Wealth rating of the characters present, allows a single character to heal a single Traumatic Injury or install a single Augmetic (you will need to have acquired one first!). After, roll 2d6. On a double 1, the patient suffers a Mortal Wound.",
+        "gm": "DN 6 Persuasion (Fel) Test: heal a Traumatic Injury or install an Augmetic. Then 2d6; double 1 = Mortal Wound."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-4",
+        "from": 4,
+        "to": 4,
+        "name": "Fungal Brick Stash",
+        "page": 17,
+        "text": "You come across a stash of foil-wrapped bars of fungus bricks. This stash may be used to provide +2d6 bonus dice on a Persuasion (Fel) Test with hive citizens.",
+        "gm": "+2d6 bonus dice on one Persuasion (Fel) Test with hive citizens."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-5",
+        "from": 5,
+        "to": 5,
+        "name": "Slop House",
+        "page": 17,
+        "text": "There's an independent canteen here, serving anyone with the credits something more nourishing than the usual daily rations. You may heal 1d3+2 Wounds. Roll 2d6. On a double 1, a gang of 3d3+2 Hive Gangers attempt to start a fight.",
+        "gm": "Heal 1d3+2 Wounds. 2d6: double 1 = 3d3+2 Hive Gangers start a fight."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-6",
+        "from": 6,
+        "to": 6,
+        "name": "Drinking Hole",
+        "page": 17,
+        "text": "Boisterous watering holes, where tired workers drown their sorrows drinking alcohol better suited for degreasing engines. You may restore 1d3 Shock.",
+        "gm": "Restore 1d3 Shock."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-7",
+        "from": 7,
+        "to": 7,
+        "name": "Refuse Dump",
+        "page": 17,
+        "text": "Massive piles of rubbish form dune-like landscapes of decaying matter and rusting metal. Succeeding on a DN 7 Awareness (Int) Test allows the character to roll 1d6. The resulting band can be increased by Shifting Exalted Icons. On a 1–3 they gain a random Trinket. On a 4–5 they gain a Reload or an IMPERIUM Common item of Value 3 or less. On a 6–7 they gain an Imperium item of Value 5 or less. On an 8+ they find either an Imperium item of Value 8 or less, or a cache of weapons to arm a single Mob (Autoguns, Lasguns, Stubguns). If they fail the Test they suffer 1d3 Wounds.",
+        "gm": "DN 7 Awareness (Int); roll 1d6, Icons raise it: 1-3 Trinket, 4-5 Reload or Common IMPERIUM V3-, 6-7 IMPERIUM V5-, 8+ IMPERIUM V8- or Mob arms. Fail: 1d3 Wounds."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-8",
+        "from": 8,
+        "to": 8,
+        "name": "Destitute Hive Workers",
+        "page": 17,
+        "text": "Some citizens are so oppressed by the system that they become desperate for any chance to escape the toil of the factorums. With a DN 6 Leadership (Fel) Test 1d3 Mobs of Hive Gangers can be recruited to the Slung to act as a militia.",
+        "gm": "DN 6 Leadership (Fel) Test: recruit 1d3 Mobs of Hive Gangers as militia."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-9",
+        "from": 9,
+        "to": 9,
+        "name": "Galvanic Powerline Tap",
+        "page": 17,
+        "text": "You have a chance to surreptitiously recharge a Las weapon before the local gang comes back. Gain 1 Ammo for a Las weapon. For every extra weapon you recharge, gain 1 Ammo, and roll 1d6. On a 4+ the gang catches you and you must fight 1d3+2 Hive Gangers.",
+        "ammo": [
+          {
+            "kind": "Las",
+            "count": 1
+          }
+        ],
+        "gm": "1 Las Ammo, +1 per extra weapon recharged; each extra: 1d6, 4+ = fight 1d3+2 Hive Gangers."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-10",
+        "from": 10,
+        "to": 10,
+        "name": "Promethium Tank",
+        "page": 17,
+        "text": "This potent oil is kept by the local Guild of Illumination, who bless every ampule that is distributed to the citizens so that they may benefit from the God-Emperor's holy light. Gain 1 Ammo for a Flamer weapon. On a successful DN 8 Persuasion (Fel) Test, a tank of the fuel, and a member of the Guild, will return with you to the Slung.",
+        "ammo": [
+          {
+            "kind": "Flamer",
+            "count": 1
+          }
+        ],
+        "gm": "DN 8 Persuasion (Fel) Test: a fuel tank and a Guild member join the Slung."
+      },
+      {
+        "id": "darktide-bounties-hab-settlements-11",
+        "from": 11,
+        "to": 12,
+        "name": "Forgotten Aquilla",
+        "page": 17,
+        "text": "Under crates or piles of trash, a forgotten holy idol, an Aquila, lies daubed in graffiti. With some care and cleaning, this relic can act as a Shield of Faith in the Slung (see page 105).",
+        "items": [
+          {
+            "name": "Aquila"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "darktide-bounties-industrial-works",
+    "name": "Industrial Works Bounties",
+    "source": "darktide",
+    "page": 19,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-industrial-works-2",
+        "from": 2,
+        "to": 3,
+        "name": "Labourer Enhancement Facility",
+        "page": 19,
+        "text": "This assemblage of mechanical blades and arms can 'upgrade' one Agent by installing whichever augmetic it deems most useful to labouring in the hive manufactorums. An Agent who chooses to undergo this gruesome procedure takes 1d6 Mortal Wounds Roll 1d6 to see what augmetic they gain: (1–2) Augmetic Arm, (3–4) Augmetic Legs, (5) Augmetic Respirator, (6) Cardioproxy.",
+        "gm": "Optional: 1d6 Mortal Wounds, then d6: 1-2 Augmetic Arm, 3-4 Augmetic Legs, 5 Augmetic Respirator, 6 Cardioproxy."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-4",
+        "from": 4,
+        "to": 4,
+        "name": "Hazard Lockers",
+        "page": 19,
+        "text": "These lockers contain equipment for workers to deal with toxic spills and radioactive leaks. They contain 1d3 Hazard Suits (equivalent to a Voidsuit), a Multi-Tool, and a simple Auspex which can only detect radiation and harmful chemicals.",
+        "items": [
+          {
+            "name": "Hazard Suit",
+            "count": "d3"
+          },
+          {
+            "name": "Multi-Tool"
+          },
+          {
+            "wargearId": "auspex"
+          }
+        ],
+        "gm": "Hazard Suits count as a Voidsuit. This Auspex only detects radiation and harmful chemicals."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-5",
+        "from": 5,
+        "to": 5,
+        "name": "Divine Unguents",
+        "page": 19,
+        "text": "A small shrine to the Omnissiah is worked into the wall here. By pushing on the skull, it ejects scented golden oil intended for use on recalcitrant machine spirits. It dispenses one dose of Sacred Machine Oil per Agent before running dry.",
+        "items": [
+          {
+            "wargearId": "sacred-machine-oil"
+          }
+        ],
+        "gm": "One dose of Sacred Machine Oil per Agent."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-6",
+        "from": 6,
+        "to": 6,
+        "name": "Well-Stocked Workshop",
+        "page": 19,
+        "text": "This Mechanicus workstation area contains machinery and a haul of precious metals, cogitator parts, minor relics and other small items of high value that can be easily bartered. All Agents gain +1 Wealth. Any Tech (Int) Tests attempted here gain +3d6 bonus dice.",
+        "wealth": 1,
+        "gm": "+1 Wealth to every Agent. Tech (Int) Tests here gain +3d6 bonus dice."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-7",
+        "from": 7,
+        "to": 7,
+        "name": "Incendiary Maintenance Unit",
+        "page": 19,
+        "text": "This storeroom contains flamers used by maintenance workers for the removal of vermin, spores, and biological blockages from ducts and tunnels. It contains 1d3 Flamers and 2d6 Flamer Ammo.",
+        "items": [
+          {
+            "wargearId": "flamer",
+            "count": "d3"
+          }
+        ],
+        "ammo": [
+          {
+            "kind": "Flamer",
+            "count": "2d6"
+          }
+        ]
+      },
+      {
+        "id": "darktide-bounties-industrial-works-8",
+        "from": 8,
+        "to": 8,
+        "name": "Isotropic Charging Station",
+        "page": 19,
+        "text": "A potent liquid-metal energy storage device based on a design from an age lost to time, this fuel rod is being used to recharge a variety of batteries and charge packs. The Agents may recharge any portable powered devices, and gain 3 Ammo for any Las weapon.",
+        "ammo": [
+          {
+            "kind": "Las",
+            "count": 3
+          }
+        ],
+        "gm": "Agents may recharge any portable powered devices."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-9",
+        "from": 9,
+        "to": 9,
+        "name": "Munitions Cache",
+        "page": 19,
+        "text": "A collection of munitions and parts for a range of weapons. Each Agent gains 1 Ammo for a single weapon. There's also one additional random item either an Autoloader, Chain Bayonet, or Preysense Sight.",
+        "gm": "Each Agent gains 1 Ammo for a single weapon. Plus one random item: Autoloader, Chain Bayonet or Preysense Sight."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-10",
+        "from": 10,
+        "to": 10,
+        "name": "Security Cypher Servo-Skull",
+        "page": 19,
+        "text": "This Servo-Skull follows a random Agent in the group, allowing them access to parts of the hive's security camera system. For the remainder of this and the next session, they may add +1d6 on all Awareness (Int) Tests, and they may use the Tech Skill instead of Awareness if they wish.",
+        "gm": "A random Agent: +1d6 on Awareness (Int) Tests, may use Tech instead, for this and the next session."
+      },
+      {
+        "id": "darktide-bounties-industrial-works-11",
+        "from": 11,
+        "to": 12,
+        "name": "Sacred Data-Slate",
+        "page": 19,
+        "text": "This ancient, cracked Data-Slate still flickers to life, revealing secret pathways and access routes known only to the Tech-Priests of the Snakestack. This may be used to bypass any one Hazard.",
+        "gm": "Bypass any one Hazard."
+      }
+    ]
+  },
+  {
+    "id": "darktide-bounties-gang-turf",
+    "name": "Gang Turf Bounties",
+    "source": "darktide",
+    "page": 21,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-gang-turf-2",
+        "from": 2,
+        "to": 3,
+        "name": "Weapons Cache",
+        "page": 21,
+        "text": "Gangs steal and manufacture their weapons for use in bloody turf wars. The Agents make a DN 4 Awareness (Int) Test to detect any booby traps. If they fail, they set off a Frag Grenade bomb. Otherwise, they can claim an IMPERIUM weapon of Value 6 or less.",
+        "items": [
+          {
+            "pick": {
+              "wargearKeywords": [
+                "IMPERIUM"
+              ],
+              "maxValue": 6,
+              "kinds": [
+                "weapon"
+              ]
+            }
+          }
+        ],
+        "gm": "DN 4 Awareness (Int) Test; fail sets off a Frag Grenade bomb."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-4",
+        "from": 4,
+        "to": 4,
+        "name": "Prison",
+        "page": 21,
+        "text": "Gangers who are captured during their vicious skirmishes are kept for ransom, or sale to guilders or rogue docs. Make a DN 6 Tech (Int) Test to break the lock and release 1d3+3 hive Scum who join the the Slung militia.",
+        "gm": "DN 6 Tech (Int) Test: free 1d3+3 hive Scum for the Slung militia."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-5",
+        "from": 5,
+        "to": 5,
+        "name": "Gang Bar",
+        "page": 21,
+        "text": "Gangers return to their local bar to commiserate or celebrate after a good fight. Fungal brews and potent alcohols are thrown back and Sump-Rat soup is served. You may restore 1d3 Shock. Roll 1d6 for each character at the Gang Bar. If a double is rolled, a gang of 3d3+2 Scum attempt to start a fight.",
+        "gm": "Restore 1d3 Shock. Roll 1d6 per character; a double = 3d3+2 Scum start a fight."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-6",
+        "from": 6,
+        "to": 6,
+        "name": "Settlement Market",
+        "page": 21,
+        "text": "The bazaar of the gang settlement is host to merchants from across the hive and their plethora of strange trinkets and gear. A successful DN 5 Persuasion (Fel) Test allows the Agents to acquire a weapon of Value 4 or lower for half price. Shifting Exalted Icons allows a weapon of greater Value to be obtained, with each Icon Shifted increasing the Value by 1.",
+        "gm": "DN 5 Persuasion (Fel): a weapon of Value 4 or less at half price; each Icon Shifted +1 Value."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-7",
+        "from": 7,
+        "to": 7,
+        "name": "Up and Coming",
+        "page": 21,
+        "text": "Looking for a chance to prove their worth, these gangers are ready for a fight, any fight, and can be recruited to the Slung. Passing a DN 4 Leadership (Fel) Test allows the Agents to recruit 1d6+2 Gangers.",
+        "gm": "DN 4 Leadership (Fel) Test: recruit 1d6+2 Gangers."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-8",
+        "from": 8,
+        "to": 8,
+        "name": "Black Market",
+        "page": 21,
+        "text": "There are some items so dangerous or profane that they are only found far from the auspices of the authorities. Items found here are either Common or Uncommon, and their Value is treated as 2 less than normal. By passing a DN 5 Persuasion (Fel) Test the Agent may acquire a weapon of effective Value 6 or less. However, trading here means the items gained are potentially corrupted or dangerous. Increase Ruin by 1. The first time an Agent decides to use such a weapon, they must pass a DN 3 Corruption Test.",
+        "gm": "DN 5 Persuasion (Fel): a Common or Uncommon weapon of effective Value 6 or less (Value -2). +1 Ruin; first use needs a DN 3 Corruption Test."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-9",
+        "from": 9,
+        "to": 9,
+        "name": "Hive Map",
+        "page": 21,
+        "text": "Written on the skin of some mutated creature is a map of a portion of the Snakestack. This may be used to bypass any one Hazard.",
+        "gm": "Bypass any one Hazard."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-10",
+        "from": 10,
+        "to": 10,
+        "name": "Obscura Den",
+        "page": 21,
+        "text": "The potent narcotic, Obscura, is smoked in run-down dens managed by narco lords. The effects of the drug can numb the user to the horrors of war. A user of Obscura recovers all Shock but must pass a DN 2 Corruption Test.",
+        "gm": "A user recovers all Shock but must pass a DN 2 Corruption Test."
+      },
+      {
+        "id": "darktide-bounties-gang-turf-11",
+        "from": 11,
+        "to": 12,
+        "name": "Vox Station",
+        "page": 21,
+        "text": "Gangs must coordinate their activities over a broad region of the hive, and vox stations provide the communication equipment for gang leaders to organise with their clan lords. A successful DN 5 Tech (Int) Test allows the Agents to recover a Vox Antenna (page 106) for installation in the Slung.",
+        "items": [
+          {
+            "name": "Vox Antenna"
+          }
+        ],
+        "gm": "DN 5 Tech (Int) Test to recover it."
+      }
+    ]
+  },
+  {
+    "id": "darktide-bounties-militarum-depot",
+    "name": "Militarum Depot Bounties",
+    "source": "darktide",
+    "page": 23,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-militarum-depot-2",
+        "from": 2,
+        "to": 3,
+        "name": "All Present and Correct",
+        "page": 23,
+        "text": "Scrupulous records and detailed manifests kept this depot well-stocked and orderly. Agents may acquire 3 Ammo of Common Rarity with no roll. For anything else, instead of an Influence Test, Agents may attempt an Investigation (Int) Test at a DN equal to the weapon's Value. Only Wargear with the IMPERIUM and ASTRA MILITARUM Keywords are available.",
+        "gm": "3 Ammo of Common Rarity, no roll. Else Investigation (Int) at DN = Value; only IMPERIUM and ASTRA MILITARUM Wargear."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-4",
+        "from": 4,
+        "to": 4,
+        "name": "Enginseer Shrine",
+        "page": 23,
+        "text": "This depot serviced Imperial vehicles. Although none are present, the sacred tools still function. With a successful DN 6 Tech (Int) Test, the equipment may be repurposed as a Defensive Fortification (page 105).",
+        "gm": "DN 6 Tech (Int) Test: becomes a Defensive Fortification (p.105)."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-5",
+        "from": 5,
+        "to": 5,
+        "name": "Weapons Armoury",
+        "page": 23,
+        "text": "A large stockpile of Militarum weaponry. Agents may acquire any weapon with the IMPERIUM or ASTRA MILITARUM Keywords of Value 6 or less. The stockpile can equip up to 30 denizens of the Slung with Lasguns and Frag Grenades.",
+        "items": [
+          {
+            "pick": {
+              "wargearKeywords": [
+                "IMPERIUM",
+                "ASTRA MILITARUM"
+              ],
+              "maxValue": 6,
+              "kinds": [
+                "weapon"
+              ]
+            }
+          }
+        ],
+        "gm": "Also arms up to 30 denizens of the Slung with Lasguns and Frag Grenades."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-6",
+        "from": 6,
+        "to": 6,
+        "name": "Survey Post",
+        "page": 23,
+        "text": "This depot was concerned with the surrounding geography and contains a wealth of reasonably up-to-date exploratory data. Agents may bypass a single Hazard.",
+        "gm": "Bypass a single Hazard."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-7",
+        "from": 7,
+        "to": 7,
+        "name": "Ammo Depot",
+        "page": 23,
+        "text": "A large cache of ammunition of various types. Agents may acquire any Common Ammo type. Specialist Ammo requires an Investigation (Int) Test with a DN of the Ammo's Value + Rarity rating. Success finds 1 of that Ammo type. Exalted Icons may be Shifted to procure an extra unit. Transport to the Slung allows for ammo reserves (ignore the first Complication when activating weapon defences).",
+        "gm": "Any Common Ammo; Specialist Ammo: Investigation (Int) at DN Value + Rarity, 1 unit, Icons add one. Slung ammo reserves: ignore the first Complication on weapon defences."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-8",
+        "from": 8,
+        "to": 8,
+        "name": "Tactica Imperialis",
+        "page": 23,
+        "text": "A book containing excerpts from various famed tactical treatises, focusing on hive warfare. The owner may ignore their first Complication rolled in combat (cannot be used again until after a Regroup).",
+        "gm": "The owner ignores their first combat Complication; not again until after a Regroup."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-9",
+        "from": 9,
+        "to": 9,
+        "name": "Military Prison",
+        "page": 23,
+        "text": "Deserters, insubordinates and worse are locked up here, awaiting execution. A successful DN 8 Persuasion (Fel) Test convinces 1d6+3 grizzled veterans to throw in their lot with the Agents, defending the Slung in exchange for a chance at redemption.",
+        "gm": "DN 8 Persuasion (Fel) Test: 1d6+3 grizzled veterans defend the Slung."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-10",
+        "from": 10,
+        "to": 10,
+        "name": "A Place of Honour",
+        "page": 23,
+        "text": "Atop a small mountain of heretic bodies lie the remains of the brave loyalist soldiers who defeated a huge assault at the cost of their lives. It is a monument to faith and duty, a spark of hope in the dark. All Agents recover 1d3 Shock.",
+        "gm": "All Agents recover 1d3 Shock."
+      },
+      {
+        "id": "darktide-bounties-militarum-depot-11",
+        "from": 11,
+        "to": 12,
+        "name": "Medicae Facility",
+        "page": 23,
+        "text": "This outpost served to treat injured soldiers and still contains a number of useful supplies. Each Agent may acquire a Medikit. Passing a DN 5 Awareness (Int) Test also turns up a dose of Stimm (Exalted Icons may be Shifted to acquire an extra dose).",
+        "items": [
+          {
+            "wargearId": "medikit"
+          },
+          {
+            "wargearId": "stimm"
+          }
+        ],
+        "gm": "A Medikit per Agent. The Stimm needs a DN 5 Awareness (Int) Test; Icons add a dose."
+      }
+    ]
+  },
+  {
+    "id": "darktide-bounties-quarantine-zone",
+    "name": "Quarantine Zone Bounties",
+    "source": "darktide",
+    "page": 25,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-quarantine-zone-2",
+        "from": 2,
+        "to": 3,
+        "name": "Forbidden Librarium",
+        "page": 25,
+        "text": "The ancient books held here contain writings by free-thinkers, radicals, and heretics alike. Anyone taking or skimming a book adds +3d6 to their next Int based Test but must make a DN 4 Corruption Test. If the group burns the books, they gain 1 Glory.",
+        "gm": "+3d6 to the next Int Test but a DN 4 Corruption Test. Burning the books gains 1 Glory."
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-4",
+        "from": 4,
+        "to": 4,
+        "name": "Massacre Site",
+        "page": 25,
+        "text": "A huge mound of freshly killed soldiers stands testament to somebody's victory. A single Agent may make a DN 4 Cunning (Fel) Test to loot the bodies. For each Icon, they may retrieve one item of standard Astra Militarum gear (Lasgun, Charge Pack, etc.).",
+        "gm": "DN 4 Cunning (Fel) Test; one standard Astra Militarum item per Icon."
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-5",
+        "from": 5,
+        "to": 5,
+        "name": "Mummified Tunnel Scout",
+        "page": 25,
+        "text": "One of the hive's PDF force scouts perished here, alone in the darkness. Their preserved body has a set of Preysense Goggles, a Rebreather, and a copy of the Uplifting Primer.",
+        "items": [
+          {
+            "wargearId": "preysense-goggles"
+          },
+          {
+            "name": "Rebreather"
+          },
+          {
+            "wargearId": "uplifting-primer"
+          }
+        ]
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-6",
+        "from": 6,
+        "to": 6,
+        "name": "Untriggered Explosives",
+        "page": 25,
+        "text": "Somebody set a bomb here, but never detonated it. It can be disarmed for recovery with a DN 3 Tech (Int) Test. When triggered, it will explode with the effect of a Krak Missile.",
+        "items": [
+          {
+            "wargearId": "krak-missile"
+          }
+        ],
+        "gm": "DN 3 Tech (Int) Test to disarm; if triggered it explodes like a Krak Missile."
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-7",
+        "from": 7,
+        "to": 7,
+        "name": "Chem Shack",
+        "page": 25,
+        "text": "This little shack is filled with tubing and jars filled with dirty liquids. The local Hereteks use this place to create drugs from the pollutants of the hive. There are 2d6 doses of tainted Stimm here — users must make a DN 2 Corruption Test for each dose utilised.",
+        "items": [
+          {
+            "wargearId": "stimm",
+            "count": "2d6"
+          }
+        ],
+        "gm": "Tainted Stimm: a DN 2 Corruption Test per dose used."
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-8",
+        "from": 8,
+        "to": 8,
+        "name": "Blessed Sanctuary",
+        "page": 25,
+        "text": "Amid the putrid vileness, the Agents come across an area that seems miraculously untouched. This marks the spot where a band of crusaders perished, and their holy power protects the faithful. Any Regroup taken in this holy site counts as a Respite.",
+        "gm": "A Regroup taken here counts as a Respite."
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-9",
+        "from": 9,
+        "to": 9,
+        "name": "Anti-Toxin",
+        "page": 25,
+        "text": "A small cache of ampoules bears the mark of a Magos Biologis who was testing pharmaceuticals to protect workers from pollution. There are 1d6 doses. Each one provides +2d6 on all Toughness Tests versus poisonous materials for one hour.",
+        "gm": "1d6 doses; each +2d6 on Toughness Tests versus poisonous materials for one hour."
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-10",
+        "from": 10,
+        "to": 10,
+        "name": "Teleport Beacon",
+        "page": 25,
+        "text": "This ancient piece of archaeotech is battered and cracked but contains enough charge to activate one last time. The Beacon can be activated to allow a single replacement Agent to teleport directly to the group's current location before burning out.",
+        "items": [
+          {
+            "name": "Teleport Beacon"
+          }
+        ]
+      },
+      {
+        "id": "darktide-bounties-quarantine-zone-11",
+        "from": 11,
+        "to": 12,
+        "name": "Captured Pilgrims",
+        "page": 25,
+        "text": "A cage here contains a group of pilgrims that have been held captive. They are exhausted and injured, but their faith has not wavered, and they will head back to the Slung if released. Each Agent may regain 1 Wrath Point for freeing the pilgrims.",
+        "gm": "Each Agent may regain 1 Wrath Point for freeing the pilgrims."
+      }
+    ]
+  },
+  {
+    "id": "darktide-bounties-profaned-ground",
+    "name": "Profaned Ground Bounties",
+    "source": "darktide",
+    "page": 27,
+    "dice": "2d6",
+    "rows": [
+      {
+        "id": "darktide-bounties-profaned-ground-2",
+        "from": 2,
+        "to": 3,
+        "name": "Warp-Stimm",
+        "page": 27,
+        "text": "A dose of Stimm for each Agent. It looks perfectly fine, but it has absorbed Warp energies from its environment. The taint can be recognised by passing a DN 5 Psychic Mastery (Wil) Test. The user recovers 1d3 Shock but must pass a DN 5 Corruption Test.",
+        "items": [
+          {
+            "wargearId": "stimm"
+          }
+        ],
+        "gm": "One dose per Agent. DN 5 Psychic Mastery (Wil) spots the taint. Use: 1d3 Shock, DN 5 Corruption Test."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-4",
+        "from": 4,
+        "to": 4,
+        "name": "Cleansing Flames",
+        "page": 27,
+        "text": "The Agents happen across a rogue member of the Church of the Emperor's Tears, determined to wash away the filth with Flamer and Chainsword. The Agents must prove they aren't heretics by passing a DN 7 Leadership (Wil) or Scholar (Int) Test. Success gains them an ally (Militarum Trooper with Flamer and Chainsword, and Fear 2 from facial scars). Failure results in combat.",
+        "gm": "DN 7 Leadership (Wil) or Scholar (Int): an ally Militarum Trooper (Flamer, Chainsword, Fear 2). Failure: combat."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-5",
+        "from": 5,
+        "to": 5,
+        "name": "Plague Munitions",
+        "page": 27,
+        "text": "Agents find 2 units of Ammo for a weapon they possess, clearly marked with signs of the Plague Lord and modified to deliver toxins. In addition to its normal damage, it inflicts Poisoned (5), but the GM gains 1 Ruin each time it is fired.",
+        "gm": "2 Ammo for a weapon they own. Adds Poisoned (5); the GM gains 1 Ruin each time it is fired."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-6",
+        "from": 6,
+        "to": 6,
+        "name": "Profaned Chapel",
+        "page": 27,
+        "text": "The Agents come across a profaned Imperial Chapel — if they can cleanse it of its filth they can claim the Imperial Aquila and return it to the Slung where it can serve as a Shield of Faith (page 105). Doing so requires a DN 3 Corruption Test.",
+        "items": [
+          {
+            "name": "Aquila"
+          }
+        ],
+        "gm": "Cleansing it needs a DN 3 Corruption Test."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-7",
+        "from": 7,
+        "to": 7,
+        "name": "Corrupted Unguents",
+        "page": 27,
+        "text": "Agents find 1d3 doses of Sacred Machine Oil. It looks normal but is corrupted with Nurgle's power. A DN 5 Tech (Int) Test is required to notice the corruption. When used before a Test, it adds +1 dice to the roll but automatically causes a Complication: alarms are triggered, a weapon jams, etc.",
+        "items": [
+          {
+            "wargearId": "sacred-machine-oil",
+            "count": "d3"
+          }
+        ],
+        "gm": "Corruption noticed on a DN 5 Tech (Int) Test. Used before a Test: +1 dice, but a Complication."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-8",
+        "from": 8,
+        "to": 8,
+        "name": "Spoils of War",
+        "page": 27,
+        "text": "Two rival cultist factions are arguing over the ownership of a Bolt Pistol taken from a dead hive noble. Each group is a Mob of 3d6 Cultists and 1 Cult Leader. If seen, both groups attack the Agents. An Agent may provoke the groups to attack each other by passing a DN 5 Cunning (Fel) Test.  Defeating both groups allows Agents to recover a Bolt Pistol with the Mastercrafted upgrade and 2 units of Ammo.",
+        "items": [
+          {
+            "wargearId": "bolt-pistol"
+          }
+        ],
+        "ammo": [
+          {
+            "kind": "Bolt",
+            "count": 2
+          }
+        ],
+        "gm": "Bolt Pistol with the Mastercrafted upgrade. Two Mobs of 3d6 Cultists plus 1 Cult Leader each; DN 5 Cunning (Fel) turns them on each other."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-9",
+        "from": 9,
+        "to": 9,
+        "name": "Cursed Chainsword",
+        "page": 27,
+        "text": "Buried deep in the flesh of a dead Chaos Spawn is a gleaming Chainsword. The crossguard is shaped like the Imperial Aquila, and it has the Mastercrafted upgrade. It shows no sign of corruption until the first time it misses in combat; the daemon within stirs, making the user Frenzied. It may be resisted at the start of the user's turn by passing a DN 5 Willpower Test. If the user runs out of enemies while Frenzied, failing the Willpower Test to end the frenzy causes them to attack the nearest ally. This may prompt Corruption Tests.",
+        "items": [
+          {
+            "wargearId": "chainsword"
+          }
+        ],
+        "gm": "Mastercrafted. First miss: user is Frenzied; resist at turn start, DN 5 Willpower Test; failing to end it with no enemies left = attack nearest ally."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-10",
+        "from": 10,
+        "to": 10,
+        "name": "Mutant Wretches",
+        "page": 27,
+        "text": "The group encounters a horde of Humans recently mutated by Nurgle's touch. Their faith has all but crumbled and tensions are high; passing a DN 7 Leadership (Wil) or Persuasion (Fel) Test could convince them to seek out the safety of the Slung. Failure, or letting them fall to Chaos, generates 3 Ruin.",
+        "gm": "DN 7 Leadership (Wil) or Persuasion (Fel): they seek the Slung. Failure or letting them fall: 3 Ruin."
+      },
+      {
+        "id": "darktide-bounties-profaned-ground-11",
+        "from": 11,
+        "to": 12,
+        "name": "Cult Convoy",
+        "page": 27,
+        "text": "The Agents come across a force of heretics transporting fuel, ammunition, weapons or medical supplies. Sneaking past requires passing a DN 3 Stealth (A) Test. Ambush raises the DN to 5. There are 30 Cultists, 1 Cult Leader and 7 Plagueridden. The convoy is carrying materials that could build a single improvement for the Slung, and enough general goods to provide +2 Wealth to each Agent.",
+        "wealth": 2,
+        "gm": "DN 3 Stealth (A) to sneak past, DN 5 if ambushing. 30 Cultists, 1 Cult Leader, 7 Plagueridden. +2 Wealth to each Agent and materials for one Slung improvement."
+      }
+    ]
+  }
+]
