@@ -228,14 +228,15 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
         )
         .orderBy(asc(beat.order), asc(beat.createdAt))
     : [];
-  // DB rows were validated by CodexInput on write; the casts only narrow the untyped jsonb columns (beat.encounter, npc.statSource).
+  // DB rows were validated by CodexInput on write; the casts only narrow the untyped jsonb columns (beat.encounter,
+  // location.hazardList, npc.statSource).
   return {
     factions: factions.map(strip),
     adventures: adventures.map((a) => ({
       ...strip(a),
       beats: beats.filter((b) => b.adventureId === a.id).map(strip),
     })) as Codex["adventures"],
-    locations: locations.map(strip),
+    locations: locations.map(strip) as Codex["locations"],
     npcs: npcs.map(strip) as Codex["npcs"],
     handouts: handouts.map((h) => ({ ...strip(h), revealedAt: h.revealedAt?.toISOString() ?? null })),
     sessions: sessions.map((s) => ({

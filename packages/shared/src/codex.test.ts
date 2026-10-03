@@ -2,9 +2,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   ATTITUDE_DN,
+  BeatHazard,
   BeatTest,
   CodexInput,
   DN_TABLE,
+  LocationHazard,
   MAX_POOL_LINES,
   Pack,
   PoolEntry,
@@ -148,4 +150,34 @@ test("a Quick stat source may name one specialty Skill (§11.87)", () => {
   assert.ok(ok({ kind: "quick", tier: 1 }));
   assert.ok(!ok({ kind: "quick", tier: 1, specialty: { skill: "Gunnery", dice: 6 } }));
   assert.ok(!ok({ kind: "quick", tier: 5 }));
+});
+
+test("a place's hazard is a book row by id, at an intensity, or the GM's own (issue #49)", () => {
+  const id = "00000000-0000-4000-8000-000000000001";
+  assert.deepEqual(LocationHazard.parse({ id, kind: "book", hazardId: "core-electricity", variant: "Moderate" }), {
+    id,
+    kind: "book",
+    hazardId: "core-electricity",
+    variant: "Moderate",
+  });
+  assert.deepEqual(LocationHazard.parse({ id, kind: "book", hazardId: "core-falling" }), {
+    id,
+    kind: "book",
+    hazardId: "core-falling",
+    variant: null,
+  });
+  assert.equal(LocationHazard.safeParse({ id, kind: "book", hazardId: "Core Falling" }).success, false, "an id");
+  assert.equal(
+    LocationHazard.safeParse({ id, kind: "book", hazardId: "core-fire", variant: "Searing" }).success,
+    false,
+  );
+  const climb = LocationHazard.parse({
+    id,
+    kind: "custom",
+    name: "Climb",
+    tests: [{ ...awareness, skill: "Athletics" }],
+  });
+  assert.ok(climb.kind === "custom" && climb.tests[0]!.dn === 3 && climb.effect === "");
+  assert.equal(LocationHazard.safeParse({ id, kind: "custom", name: "" }).success, false, "a custom hazard is named");
+  assert.equal(BeatHazard.parse({ id }).spotted, false, "a scene's pick starts unspotted");
 });

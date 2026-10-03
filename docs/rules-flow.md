@@ -694,6 +694,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     per Tier is "probably enough" (TA p.9), so ×TIER rolls once per Tier of the campaign; the GM adds or drops any.
     Electricity and Rad Poison print Light, Moderate and Intense, each with its own damage and Toughness DN, and the
     GM chooses ("select an intensity", p.202): a place's entry stores the one picked. *(User ruling, 2026-10-03.)*
+95. **A place holds its hazards; each scene picks which apply** (TA p.9; GitHub issue #49). A Battlezone is where combat
+    is likely to happen, and a place can host several scenes, so the list sits on the place (`location.hazardList`) and
+    each scene picks from it (`beat.hazards`). SPOTTED is per scene: the Agents may spot a danger before one fight and
+    not another. A fresh start clears it. *(User ruling, 2026-10-03, over the issue's one list per place.)*
 
 ---
 

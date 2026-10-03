@@ -648,6 +648,12 @@ for (const name of packNames()) {
     failed = true;
     console.error(`✖ pack ${name}: unknown threat "${id}"`);
   }
+  // A place's book hazards (issue #49) must name a row of scene-presets/hazards, as codex.save checks.
+  for (const h of r.data.locations.flatMap((l) => l.hazardList))
+    if (h.kind === "book" && !hazardIds.has(h.hazardId)) {
+      failed = true;
+      console.error(`✖ pack ${name}: unknown hazard "${h.hazardId}"`);
+    }
   console.log(
     `pack ${name}: ${r.data.characters.length} characters, ${r.data.npcs.length} NPCs, ${r.data.adventures.reduce((n, a) => n + a.beats.length, 0)} beats`,
   );

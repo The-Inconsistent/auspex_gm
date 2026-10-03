@@ -5,6 +5,7 @@ import {
   type CreationType,
   EventTable,
   FactionPreset,
+  type HazardRow,
   HazardTable,
   NpcPreset,
   Pack,
@@ -51,11 +52,16 @@ const poolsDir = new URL("./pools/", presetsDir);
 export const poolPresetFiles = () => jsonFiles(poolsDir);
 const hazardsDir = new URL("./hazards/", presetsDir);
 export const hazardFiles = () => jsonFiles(hazardsDir);
+const hazardTables = () => hazardFiles().flatMap((f) => HazardTable.array().parse(json(new URL(f, hazardsDir))));
+// Every hazard row by id, for the check that a place's book hazard exists (issue #49).
+export const hazards: ReadonlyMap<string, HazardRow> = new Map(
+  hazardTables().flatMap((t) => t.rows.map((r) => [r.id, r] as const)),
+);
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
   pools: poolPresetFiles().flatMap((f) => PoolPresetTable.array().parse(json(new URL(f, poolsDir)))),
-  hazards: hazardFiles().flatMap((f) => HazardTable.array().parse(json(new URL(f, hazardsDir)))),
+  hazards: hazardTables(),
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

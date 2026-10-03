@@ -53,6 +53,7 @@ export const beat = pgTable("beat", {
   ruin: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
   glory: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
   spends: jsonb().$type<unknown[]>().notNull().default([]), // PoolSpend[]
+  hazards: jsonb().$type<unknown[]>().notNull().default([]), // BeatHazard[]: picks from its location's hazardList
 });
 
 export const location = pgTable("location", {
@@ -62,6 +63,7 @@ export const location = pgTable("location", {
   description: body(),
   gmNotes: body(),
   hazards: body(),
+  hazardList: jsonb().$type<unknown[]>().notNull().default([]), // LocationHazard[]
   revealed: boolean().notNull().default(false),
 });
 

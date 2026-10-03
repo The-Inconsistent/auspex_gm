@@ -16,9 +16,11 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  ├─ Adventure    title, premise, status (planned | running | done)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
- │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[], outcome
+ │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[],
+ │               hazards[] (picks from its location's list, each spotted or not), outcome
  ├─ Location     name, parentId (planet → site → chamber), description, gmNotes,
- │               hazards (Battlezone tables, Threat Assessment p.9–21), revealed
+ │               hazards (free-text notes), hazardList[] (book rows from Threat Assessment, the Core
+ │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed
  ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
  │               gmNotes, secrets, revealed
  ├─ Item         name, kind (weapon | armour | wargear | relic | ammo | clue-object),
