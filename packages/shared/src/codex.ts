@@ -151,6 +151,33 @@ export type PoolSpend = z.infer<typeof PoolSpend>;
 export const canSpend = (pools: Record<Pool, number>, { pool, cost }: Pick<PoolSpend, "pool" | "cost">) =>
   pools[pool] >= cost;
 
+// A place's hazards (issue #49): a book row by its id (the text stays in the GM-only catalogue, as a prepared encounter
+// holds a threatId, not a stat block), with the intensity the GM picked where the book prints them (rules-flow.md
+// §11.94), or the GM's own. Each has an id of its own, so a scene can pick which of its place's hazards apply (§11.95).
+export const Intensity = z.enum(["Light", "Moderate", "Intense"]); // Electricity, Rad Poison (Core pp.201–202)
+export type Intensity = z.infer<typeof Intensity>;
+export const MAX_HAZARDS = 30; // ponytail: app limit, not a rule; raise it if a place needs more
+export const LocationHazard = z.discriminatedUnion("kind", [
+  z.object({
+    id,
+    kind: z.literal("book"),
+    hazardId: z.string().regex(/^[a-z0-9-]+$/),
+    variant: Intensity.nullable().default(null),
+  }),
+  z.object({
+    id,
+    kind: z.literal("custom"),
+    name: text(200).min(1),
+    tests: z.array(BeatTest).max(4).default([]),
+    effect: text(1000).default(""),
+  }),
+]);
+export type LocationHazard = z.infer<typeof LocationHazard>;
+// A scene's pick of its place's hazards, by entry id, and whether the Agents spotted it in advance: then the DN to avoid
+// it drops by the GM's call (TA p.9, §11.92).
+export const BeatHazard = z.object({ id, spotted: z.boolean().default(false) });
+export type BeatHazard = z.infer<typeof BeatHazard>;
+
 export const AdventureStatus = z.enum(["planned", "running", "done"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 export type FactionStance = z.infer<typeof FactionStance>;
@@ -196,13 +223,15 @@ export const CodexInput = {
     ruin: z.array(PoolEntry).max(MAX_POOL_LINES).default([]),
     glory: z.array(PoolEntry).max(MAX_POOL_LINES).default([]),
     spends: z.array(PoolSpend).max(MAX_POOL_LINES).default([]),
+    hazards: z.array(BeatHazard).max(MAX_HAZARDS).default([]),
   }),
   location: z.object({
     name: text(200),
     parentId: id.nullable().default(null),
     description: text().default(""),
     gmNotes: text().default(""),
-    hazards: text().default(""),
+    hazards: text().default(""), // the GM's free-text notes, kept beside the list (issue #49)
+    hazardList: z.array(LocationHazard).max(MAX_HAZARDS).default([]),
     revealed: z.boolean().default(false),
   }),
   npc: z.object({
@@ -250,6 +279,7 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
         ...l,
         gmNotes: "",
         hazards: "",
+        hazardList: [],
         parentId: l.parentId && shownLocations.has(l.parentId) ? l.parentId : null,
       })),
     npcs: c.npcs

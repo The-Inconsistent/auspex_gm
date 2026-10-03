@@ -97,7 +97,12 @@ export function freshStart(e: CampaignExport): CampaignExport {
       adventures: c.adventures.map((a) => ({
         ...a,
         status: "planned",
-        beats: a.beats.map((b) => ({ ...b, status: "planned", outcome: "" })),
+        beats: a.beats.map((b) => ({
+          ...b,
+          status: "planned",
+          outcome: "",
+          hazards: b.hazards.map((h) => ({ ...h, spotted: false })),
+        })),
       })),
       locations: c.locations.map((l) => ({ ...l, revealed: false })),
       npcs: c.npcs.map((n) => ({ ...n, revealed: false })),

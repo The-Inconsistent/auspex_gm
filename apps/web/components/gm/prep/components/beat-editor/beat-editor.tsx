@@ -77,6 +77,7 @@ export function BeatEditor({
           ruin: [],
           glory: [],
           spends: [],
+          hazards: [],
         },
   );
   const [error, setError] = useState<string | null>(null);

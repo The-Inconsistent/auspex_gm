@@ -139,7 +139,8 @@ because it carries GM notes, secrets and the book text in the sheets. Import doe
 counters, sessions and reveal times. It writes every row directly, inside `createCampaign`'s transaction (`fill`):
 - each row gets a fresh id
 - references are remapped through those new ids, and one pointing outside the file is dropped
-- threat ids go through the same `checkThreats` as `codex.save`
+- threat ids go through the same `checkThreats` as `codex.save`, and a location's hazards through `checkHazards`; a
+  scene keeps only the hazard picks its location lists
 - an exit keeps its target only if it's a beat of the same adventure in the file
 - a handout audience must name Agents in the file, like `codex.save`: an empty audience means every player, so a
   dropped reader would leak a private handout
@@ -305,7 +306,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `combatant.adjust` | GM | Threat combatants only. Deltas on `wounds`, `shock`, `personalRuin`, floored at 0. On a Mob, `wounds` removes members (clamped `[0, mobStart]`) instead, and one hit of `shock` above the members' max Shock removes one member (a smaller hit does nothing; a Mob keeps no Shock track). Refuses Shock for a threat whose Shock is "–" | S | p.324, p.325 |
 | `combatant.aware` | GM | Ambushed combatant pays 1 Glory or Ruin by side, then `ambushed = false` | S | p.177 |
 | `combatant.remove` | GM | Delete from the active encounter. `currentId` is nulled by the FK | S | |
-| `codex.save` | GM | Insert (no `id`) or full replace (`id`) of one codex row. `data` is validated per `kind` by `CodexInput`. Every referenced id must be in the campaign (`checkRefs()`, `"<What> not found"`): a beat's `adventureId`, `locationId`, `npcIds` and `handoutIds`, an NPC's `factionId`, a location's `parentId` (which can't be itself). A beat's `exits[].beatId` must be a beat of the same adventure (`"Exit scene not found"`). A beat's encounter `threatId`s and a bestiary NPC's `statSource.threatId` must exist (`checkThreats()`, `'Unknown threat "x"'`). Handouts stamp `revealedAt` on first reveal and clear it on unreveal. A new beat gets `max(order) + 1` in its adventure, so it goes last; an update leaves `order` to `beat.reorder`. Returns `id` | C | |
+| `codex.save` | GM | Insert (no `id`) or full replace (`id`) of one codex row. `data` is validated per `kind` by `CodexInput`. Every referenced id must be in the campaign (`checkRefs()`, `"<What> not found"`): a beat's `adventureId`, `locationId`, `npcIds` and `handoutIds`, an NPC's `factionId`, a location's `parentId` (which can't be itself). A beat's `exits[].beatId` must be a beat of the same adventure (`"Exit scene not found"`). A beat's encounter `threatId`s and a bestiary NPC's `statSource.threatId` must exist (`checkThreats()`, `'Unknown threat "x"'`). A location's book hazards must name a row of `scene-presets/hazards`, at an intensity it prints (`checkHazards()`, `'Unknown hazard "x"'`), and a beat keeps only the hazard picks its location lists. Handouts stamp `revealedAt` on first reveal and clear it on unreveal. A new beat gets `max(order) + 1` in its adventure, so it goes last; an update leaves `order` to `beat.reorder`. Returns `id` | C | |
 | `codex.delete` | GM | Delete one codex row by `kind` and `id` (FK effects in §7). Deleting an NPC or handout also `array_remove`s its id from every beat's `npcIds` / `handoutIds`. Deleting a beat sets `beatId: null` on every exit that led to it, keeping the label | C | |
 | `beat.reorder` | GM | `ids` must list every beat of the adventure exactly once. Sets `order` = index | C | |
 | `beat.startEncounter` | GM | Validate the beat's `encounter` entries, start a new encounter, add **every** campaign character, then each entry (`asMob && count > 1` → one Mob row, else `count` rows labelled `Name 1..n`). Beat status → `active`. Returns the encounter `id` | S C | |
@@ -341,7 +342,7 @@ No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
 | `faction` (`codex.schema.ts`) | Factions | `name`, `keywords text[]`, `stance`, `notes`, `secrets` | campaign cascade |
 | `adventure` | Adventures | `title`, `premise`, `status` | campaign cascade |
 | `beat` | Scenes of an adventure | `adventure_id`, `order`, `title`, `type`, `status`, `read_aloud`, `gm_notes`, `outcome`, `location_id`, `npc_ids uuid[]`, `handout_ids uuid[]` | campaign cascade. adventure **cascade**. location **set null**. The id arrays have no FK |
-| `location` | Places, nestable | `parent_id`, `name`, `description`, `gm_notes`, `hazards`, `revealed` | campaign cascade. `parent_id` → location **set null** |
+| `location` | Places, nestable | `parent_id`, `name`, `description`, `gm_notes`, `hazards`, `hazard_list`, `revealed` | campaign cascade. `parent_id` → location **set null** |
 | `npc` | NPCs | `faction_id`, `name`, `role`, `description`, `gm_notes`, `secrets`, `attitude`, `revealed` | campaign cascade. faction **set null** |
 | `handout` | Player handouts | `title`, `body`, `revealed`, `revealed_at` | campaign cascade |
 
@@ -362,6 +363,8 @@ with `.$type<>` from the shared `z.enum`s.
 | `beat.tests` | `BeatTest[]`, at most 12; the kind decides which of Skill, Attribute and DN are set | On write by `CodexInput.beat`, cast in `loadCodex` |
 | `beat.ruin`, `beat.glory` | `PoolEntry[]`, at most `MAX_POOL_LINES` | On write by `CodexInput.beat`, cast in `loadCodex` |
 | `beat.spends` | `PoolSpend[]`, at most `MAX_POOL_LINES`; each names its pool and cost | On write by `CodexInput.beat`, cast in `loadCodex` |
+| `location.hazard_list` | `LocationHazard[]`, at most `MAX_HAZARDS`: a book row by `hazardId` (and the intensity picked) or the GM's own (issue #49) | On write by `CodexInput.location` and `checkHazards`, cast in `loadCodex` |
+| `beat.hazards` | `BeatHazard[]`, at most `MAX_HAZARDS`: the scene's picks of its location's hazards by entry id, each with `spotted` | On write by `CodexInput.beat`; `codex.save` and import drop a pick its location doesn't list, or a repeated one. A place that loses a hazard leaves its scenes' picks until each is saved again; PREP shows only the ones still listed |
 
 The id arrays have no FK, so `codex.delete` of an NPC or handout clears its id from `beat.npc_ids` / `beat.handout_ids` itself, and `codex.delete` of a beat clears it from `beat.exits`.
 
@@ -389,7 +392,7 @@ are by `number`.
 | Function | Hides from players | Keeps |
 |---|---|---|
 | `toPlayerView` (`state.ts`) | `access.invites` → `[]`. `encounter.upNext` ← `sideUpNext` of the full state; `currentId` → `UNSEEN_ID` while a hidden threat acts. Threat combatants with `visibility: "hidden"` are dropped; with `"bars"`: `stats` → null, `threatId` → `""`, `personalRuin` → 0. Every other character's `objectives` → `[]` | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
-| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`. NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed. A handout whose `audience` is set and excludes the viewer; `audience` → the viewer's own id only | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
+| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`, `hazardList` (→ `[]`). NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed. A handout whose `audience` is set and excludes the viewer; `audience` → the viewer's own id only | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
 
 Both take the viewer's `characterId`; the gateway emits one view per character. A new field is visible to players unless one of these functions drops it. Decide when you add it.
 

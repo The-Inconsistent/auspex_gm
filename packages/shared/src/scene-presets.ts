@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   BeatType,
+  Intensity,
   MAX_POOL_STEP,
   TEST_POOL,
   TestKind,
@@ -136,8 +137,6 @@ export function presetLine({ table, row }: { table: PoolPresetTable; row: PoolPr
 // A place's dangers (issue #49): Battlezone hazards (TA pp.9–21), Environmental Hazards (Core pp.201–202), a hive's
 // Hazards (Darktide pp.14–27) and a space hulk's (RR1 p.11). A place's hazard list points at a row by `id`, as an
 // encounter points at a threat, so the book text stays here, GM-only.
-export const Intensity = z.enum(["Light", "Moderate", "Intense"]); // Electricity, Rad Poison (Core pp.201–202)
-export type Intensity = z.infer<typeof Intensity>;
 export const HazardRow = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/), // unique across scene-presets/hazards/*.json
   from: z.number().int().optional(), // the printed range, on a rolled table

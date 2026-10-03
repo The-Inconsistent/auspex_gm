@@ -404,11 +404,11 @@ The entry shapes reuse `CodexInput` from `packages/shared/src/codex.ts`. The ser
 |---|---|---|
 | `campaign` | `{ name (1–100), tier (1–5), framework? (≤ 5000), patron? (≤ 200), homebrew? (false) }` | `homebrew`: the builds may use the homebrew books |
 | `factions[]` | `CodexInput.faction` + `key` | `name`, `keywords[]` (≤ 20), `stance` (`ally`/`neutral`/`rival`/`enemy`), `notes`, `secrets` |
-| `locations[]` | `CodexInput.location`, with `parent?: key` in place of `parentId` | `name`, `description`, `gmNotes`, `hazards`, `revealed` |
+| `locations[]` | `CodexInput.location`, with `parent?: key` in place of `parentId` | `name`, `description`, `gmNotes`, `hazards`, `hazardList[]` (issue #49: `{ id, kind: "book", hazardId }` with a `scene-presets/hazards` row id, or the GM's own; `validate` checks every `hazardId`), `revealed` |
 | `npcs[]` | `CodexInput.npc`, with `faction?: key` in place of `factionId` | `name`, `role`, `description`, `gmNotes`, `secrets`, `attitude` (`hostile` … `helpful`, Core p.168), `statSource`, `revealed` |
 | `handouts[]` | `CodexInput.handout` + `key` | `title`, `body` (≤ 20000), `revealed` |
 | `adventures[]` | `CodexInput.adventure` + `key` + `beats[]` | `title`, `premise`, `status` (`planned`/`running`/`done`) |
-| `adventures[].beats[]` | `CodexInput.beat` with `location?: key`, `npcs: key[]`, `handouts: key[]` in place of the id fields | `title`, `type`, `status`, `readAloud`, `gmNotes`, `outcome`, `encounter[]`. Beats have no key; their order is their array order |
+| `adventures[].beats[]` | `CodexInput.beat` with `location?: key`, `npcs: key[]`, `handouts: key[]` in place of the id fields | `title`, `type`, `status`, `readAloud`, `gmNotes`, `outcome`, `encounter[]`, `hazards[]` (picks by the entry `id` in its location's `hazardList`; one that isn't there is dropped on save). Beats have no key; their order is their array order |
 | `characters[]` | `{ name (1–100), stats: CharacterStats, detail?, objectives?, build?: CharacterBuild }` | Filled from `characters/*.json` by the loader; don't put it in `pack.json`. `stats` is the sheet as printed; `build` is how it was made, so the builder opens it filled in (`packages/data/build.test.ts` checks one against the other) |
 
 Beat `type` is one of `briefing`, `travel`, `investigation`, `social`, `combat`, `revelation` or `rest`. Beat `status`

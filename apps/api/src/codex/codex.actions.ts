@@ -1,7 +1,7 @@
 import { and, eq, inArray, max, sql } from "drizzle-orm";
-import { threats } from "@wg/data";
+import { hazards, threats } from "@wg/data";
 import type { z } from "zod";
-import type { Action, ActionResult, CodexInput } from "@wg/shared";
+import { LocationHazard, type Action, type ActionResult, type CodexInput } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
@@ -33,6 +33,18 @@ export function checkThreats(threatIds: string[]) {
   if (unknown) fail(`Unknown threat "${unknown}"`);
 }
 
+// A place's book hazards must name a row of the catalogue, at an intensity that row prints (rules-flow.md §11.94).
+export function checkHazards(list: LocationHazard[]) {
+  if (new Set(list.map((h) => h.id)).size < list.length) fail("A place lists the same hazard entry twice");
+  for (const h of list) {
+    if (h.kind !== "book") continue;
+    const row = hazards.get(h.hazardId);
+    if (!row) fail(`Unknown hazard "${h.hazardId}"`);
+    if (h.variant && !row.variants.some((v) => v.name === h.variant))
+      fail(`"${row.name}" has no ${h.variant} intensity`);
+  }
+}
+
 export async function applyCodexAction(
   tx: Tx,
   { ctx, action: a }: { ctx: Ctx; action: CodexAction },
@@ -53,6 +65,20 @@ export async function applyCodexAction(
         await refs(npc, b.npcIds, "NPC");
         await refs(handout, b.handoutIds, "Handout");
         checkThreats(b.encounter.map((e) => e.threatId));
+        // A scene picks among its place's hazards (§11.95). A pick its place no longer lists is dropped, not refused,
+        // so a scene whose place lost a hazard still saves.
+        const [place] = b.locationId
+          ? await tx
+              .select({ list: location.hazardList })
+              .from(location)
+              .where(and(eq(location.id, b.locationId), eq(location.campaignId, cid)))
+          : [];
+        const listed = new Set(
+          LocationHazard.array()
+            .safeParse(place?.list)
+            .data?.map((h) => h.id),
+        );
+        data.hazards = b.hazards.filter((h, i) => listed.has(h.id) && b.hazards.findIndex((x) => x.id === h.id) === i);
         // An exit leads to a scene of the same adventure; checkRefs alone would accept one from another adventure.
         const targets = [...new Set(b.exits.flatMap((e) => (e.beatId ? [e.beatId] : [])))];
         if (targets.length) {
@@ -71,6 +97,7 @@ export async function applyCodexAction(
       if (a.kind === "location") {
         const parentId = (a.data as z.output<typeof CodexInput.location>).parentId;
         if (parentId && parentId === a.id) fail("A location can't be inside itself");
+        checkHazards((a.data as z.output<typeof CodexInput.location>).hazardList);
         await refs(location, [parentId], "Parent location");
       }
       if (a.kind === "handout")

@@ -6,7 +6,7 @@ import { CharacterStats } from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
-import { checkThreats } from "../codex/codex.actions.ts";
+import { checkHazards, checkThreats } from "../codex/codex.actions.ts";
 import { adventure, beat, faction, handout, location, npc } from "../codex/codex.schema.ts";
 import { db, type Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
@@ -90,6 +90,9 @@ export async function importCampaign({
     ...beats.flatMap((b) => b.encounter.map((e) => e.threatId)),
     ...c.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
   ]);
+  checkHazards(c.locations.flatMap((l) => l.hazardList));
+  // A scene keeps only the picks its place lists, as codex.save does (§11.95).
+  const listed = new Map(c.locations.map((l) => [l.id, new Set(l.hazardList.map((h) => h.id))]));
 
   const rows = [...file.characters, ...c.factions, ...c.adventures, ...beats, ...c.locations, ...c.npcs, ...c.handouts];
   const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
@@ -144,6 +147,7 @@ export async function importCampaign({
             locationId: ref(b.locationId),
             npcIds: refs(b.npcIds),
             handoutIds: refs(b.handoutIds),
+            hazards: b.hazards.filter((h) => b.locationId && listed.get(b.locationId)?.has(h.id)),
             exits: b.exits.map((e) => ({
               ...e,
               beatId: e.beatId && adventureOf.get(e.beatId) === b.adventureId ? ref(e.beatId) : null,

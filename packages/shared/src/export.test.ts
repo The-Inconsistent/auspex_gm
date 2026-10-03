@@ -44,10 +44,28 @@ const file = CampaignExport.parse({
         id: ID(2),
         title: "The Dig",
         status: "running",
-        beats: [{ id: ID(3), adventureId: ID(2), title: "Arrival", status: "done", outcome: "Went well", order: 0 }],
+        beats: [
+          {
+            id: ID(3),
+            adventureId: ID(2),
+            title: "Arrival",
+            status: "done",
+            outcome: "Went well",
+            order: 0,
+            locationId: ID(4),
+            hazards: [{ id: ID(8), spotted: true }],
+          },
+        ],
       },
     ],
-    locations: [{ id: ID(4), name: "Site 7", revealed: true }],
+    locations: [
+      {
+        id: ID(4),
+        name: "Site 7",
+        revealed: true,
+        hazardList: [{ id: ID(8), kind: "book", hazardId: "core-falling" }],
+      },
+    ],
     npcs: [{ id: ID(5), name: "Magos Tull", revealed: true }],
     handouts: [
       { id: ID(6), title: "Orders", revealed: true, revealedAt: "2026-09-01T00:00:00.000Z", audience: [ID(1)] },
@@ -63,6 +81,16 @@ test("an export round-trips through its schema", () => {
 test("a file from before scene goals, exits and Tests still loads (issues #38, #39)", () => {
   const [b] = file.codex.adventures[0]!.beats;
   assert.deepEqual([b!.goal, b!.exits, b!.tests], ["", [], []]);
+});
+
+test("a file from before place hazards still loads (issue #49)", () => {
+  const old = structuredClone(file) as unknown as {
+    codex: { adventures: { beats: { hazards?: unknown }[] }[]; locations: { hazardList?: unknown }[] };
+  };
+  delete old.codex.adventures[0]!.beats[0]!.hazards;
+  delete old.codex.locations[0]!.hazardList;
+  const parsed = CampaignExport.parse(old).codex;
+  assert.deepEqual([parsed.adventures[0]!.beats[0]!.hazards, parsed.locations[0]!.hazardList], [[], []]);
 });
 
 test("an exit is a bounded label, with no target unless the GM picks one", () => {
@@ -88,6 +116,12 @@ test("freshStart resets play, keeps the sheet and the XP", () => {
     ["planned", ""],
   );
   assert.equal(f.codex.locations[0]!.revealed, false);
+  assert.deepEqual(
+    f.codex.adventures[0]!.beats[0]!.hazards,
+    [{ id: ID(8), spotted: false }],
+    "spotted resets (§11.92)",
+  );
+  assert.equal(f.codex.locations[0]!.hazardList.length, 1, "the place keeps its list");
   assert.equal(f.codex.npcs[0]!.revealed, false);
   assert.deepEqual([f.codex.handouts[0]!.revealed, f.codex.handouts[0]!.revealedAt], [false, null]);
   assert.deepEqual(f.codex.handouts[0]!.audience, [ID(1)]);

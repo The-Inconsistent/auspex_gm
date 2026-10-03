@@ -27,6 +27,7 @@ import {
   sideUpNext,
   threatStatus,
   toPlayerCodex,
+  CodexInput,
   toPlayerView,
   UNSEEN_ID,
   type Character,
@@ -455,6 +456,19 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
   assert.deepEqual(p.npcs[0]!.statSource, { kind: "none" });
   assert.equal(p.npcs[0]!.attitude, "uncooperative", "attitude reaches phones (rules-flow §11.89)");
   assert.equal(p.factions.length, 0);
+});
+
+test("a revealed place reaches phones without its hazards, notes or list (issue #49)", () => {
+  const hazard = { id: "00000000-0000-4000-8000-000000000002", kind: "book", hazardId: "core-falling" };
+  const place = {
+    id: "00000000-0000-4000-8000-000000000001",
+    ...CodexInput.location.parse({ name: "Shaft", revealed: true, hazards: "[notes]", hazardList: [hazard] }),
+  };
+  const [p] = toPlayerCodex(
+    { factions: [], adventures: [], locations: [place], npcs: [], handouts: [], sessions: [] },
+    null,
+  ).locations;
+  assert.deepEqual([p!.name, p!.hazards, p!.hazardList], ["Shaft", "", []]);
 });
 
 test("adjustAmmo: per type, clamped at 0, −1 on an empty type removes it (p.229)", () => {

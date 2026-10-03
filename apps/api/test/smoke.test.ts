@@ -7,6 +7,7 @@ import { io } from "socket.io-client";
 import { testSessionToken } from "@wg/auth/api";
 import {
   ASCENSION_XP,
+  BeatTest,
   LIBRARY_CAP,
   Lobby,
   SKILL_XP,
@@ -1822,7 +1823,27 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.ok((await gm.send({ type: "character.update", id: kael.id, stats: armed })).ok);
   const hive = await gm.send({ type: "codex.save", kind: "location", data: { name: "Hive", revealed: true } });
   assert.ok(hive.ok && hive.id);
-  const spire = await gm.send({ type: "codex.save", kind: "location", data: { name: "Spire", parentId: hive.id } });
+  // A place's hazards (issue #49): a book row at an intensity it prints, and the GM's own. The book text stays in the
+  // catalogue; an unknown row or an intensity the row doesn't print is refused.
+  const shock = { id: crypto.randomUUID(), kind: "book", hazardId: "core-electricity", variant: "Moderate" } as const;
+  const climb = {
+    id: crypto.randomUUID(),
+    kind: "custom",
+    name: "Climb",
+    tests: [{ kind: "skill", skill: "Athletics" }],
+  };
+  const place = (hazardList: unknown[]) =>
+    gm.send({
+      type: "codex.save",
+      kind: "location",
+      data: { name: "Spire", parentId: hive.id, revealed: true, hazardList },
+    } as never);
+  assert.deepEqual(await place([{ ...shock, hazardId: "nope" }]), { ok: false, error: 'Unknown hazard "nope"' });
+  assert.deepEqual(await place([{ ...shock, hazardId: "core-falling" }]), {
+    ok: false,
+    error: '"Falling" has no Moderate intensity',
+  });
+  const spire = await place([shock, climb]);
   const orders = await gm.send({
     type: "codex.save",
     kind: "handout",
@@ -1840,9 +1861,22 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
       locationId: spire.id,
       handoutIds: [orders.id],
       encounter: [{ threatId: "ork-boy", count: 3 }],
+      // The scene picks its place's hazards (§11.95); a pick its place doesn't list is dropped.
+      hazards: [
+        { id: shock.id, spotted: true },
+        { id: crypto.randomUUID(), spotted: true },
+      ],
     },
   });
   assert.ok(ambush.ok && ambush.id);
+  await eventually(
+    () =>
+      gm
+        .codex()
+        ?.adventures[0]?.beats[0]?.hazards.map((h) => h.id)
+        .join() === shock.id,
+    "only the place's own hazard is kept",
+  );
   const regroup = {
     adventureId: adv.id,
     title: "Regroup",
@@ -1857,6 +1891,12 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
 
   const player = await gm.send({ type: "token.issue", characterId: kael.id });
   assert.ok(player.ok && player.token);
+  // A phone sees the revealed place, never its hazards.
+  const phone = connect({ auth: { token: player.token } });
+  t.after(() => phone.socket.close());
+  await eventually(() => phone.codex()?.locations.some((l) => l.name === "Spire") ?? false, "the player's codex");
+  const seen = phone.codex()!.locations.find((l) => l.name === "Spire")!;
+  assert.deepEqual([seen.hazards, seen.hazardList], ["", []]);
   const exportPath = `/campaigns/${gm.campaignId}/export`;
   assert.equal((await get(exportPath, { cookie: `wg_token=${player.token}` })).status, 403, "GM only");
   const res = await get(exportPath, bearer(gm.gmClerk));
@@ -1871,6 +1911,13 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const forged = structuredClone(file);
   forged.codex.adventures[0].beats[0].encounter[0].threatId = "nope";
   assert.equal((await post("/campaigns/import", { file: forged }, bearer(gm.gmClerk))).status, 400, "unknown threat");
+  const unknownHazard = structuredClone(file);
+  unknownHazard.codex.locations[1].hazardList[0].hazardId = "nope";
+  assert.equal(
+    (await post("/campaigns/import", { file: unknownHazard }, bearer(gm.gmClerk))).status,
+    400,
+    "unknown hazard",
+  );
   const orphan = structuredClone(file);
   orphan.codex.handouts[0].audience = [crypto.randomUUID()];
   assert.equal(
@@ -1911,6 +1958,9 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(b?.locationId, locs.find((l) => l.name === "Spire")?.id);
   assert.deepEqual(b?.handoutIds, [h?.id]);
   assert.equal(b?.status, "done");
+  const spireList = locs.find((l) => l.name === "Spire")?.hazardList;
+  assert.deepEqual(spireList, [shock, { ...climb, effect: "", tests: [BeatTest.parse(climb.tests[0])] }]);
+  assert.deepEqual(b?.hazards, [{ id: shock.id, spotted: true }], "the scene's pick comes along");
   // An exit follows its target to the new id (issue #38), and the Tests come along (issue #39).
   const exitTo = (codex: Codex) => {
     const [first, second] = codex.adventures[0]!.beats;
@@ -1934,6 +1984,7 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   assert.equal(fresh.codex.adventures[0]?.beats[0]?.status, "planned");
   assert.deepEqual(exitTo(fresh.codex), scene2);
   assert.equal(fresh.codex.locations.find((l) => l.name === "Hive")?.revealed, false);
+  assert.deepEqual(fresh.codex.adventures[0]?.beats[0]?.hazards, [{ id: shock.id, spotted: false }], "§11.92");
 });
 
 test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp.147-148)", async (t) => {
