@@ -1,0 +1,17 @@
+[
+ {
+  "id": "gutshivas-kommandos-gilead-primus",
+  "name": "Gilead Primus",
+  "source": "gutshivas-kommandos",
+  "page": 6,
+  "gm": "Gilead Primus, capital world of the Gilead System, home to uncounted billions of Imperial citizens, and the seat of Lord-Militant Taleria Fylamon’s power. Massive hives dominate the red rock wastelands, and the scars of centuries of aggressive strip mining cut deeply into the crimson deserts. Abandoned mining towns and waystations dot the land, but all life on Gilead Primus is contained within the titanic hives. The skeletons of massive long-dead beasts litter the red sands surrounding the hives, long since fallen to the silence of extinction. The hives themselves rise kilometres from the harsh desert wastes, with the uppermost spires providing the palatial housing for the lesser branches of Imperial noble families and racketeers who rule each hive."
+ },
+ {
+  "id": "gutshivas-kommandos-hive-gulgatha",
+  "name": "Hive Gulgatha",
+  "parent": "gutshivas-kommandos-gilead-primus",
+  "source": "gutshivas-kommandos",
+  "page": 6,
+  "gm": "Hive Gulgatha rests almost exactly in the planetary equator, in the most hot and arid region of its dusty deserts. The hive has subsided over a kilometre since its creation, the lowest levels sinking down beneath the desert sands. In the underhive, huge pumping systems inject a pressurised cocktail of aggregate and binding compounds into the bedrock to stabilise it, lest the hive be swallowed entirely. From time to time these pipes rupture, filling whole sub-districts in quick setting rockcrete. A few of these have been excavated by industrious citizens, leading to a series of cave-like tunnels that serve as habitation and a sort of mine for the riches and potential archeotech the former inhabitants may have possessed. A handful of mummified remains have been recovered, their dying moments preserved forever. Those who died in particularly pious poses are cast as statues, forever sealed in a moment of desperate supplication.\n\nThe hive is ruled by House Varadgar, a particularly savvy noble family who keep more of a presence in the hive than is traditional on Gilead Primus. Most families maintain personal estates on the sub-orbital Brasyl plate, high above the dusty world. Lord Starn Varadgar VII has ruled the hive for more than a century, and keeps a careful watch on goings on there. He is aware of Ork infiltration in the lower sections but has failed to appreciate the threat they pose to the greater hive, underestimating their capabilities and attempting to deal with their presence quietly.\n\nHe has kept knowledge of their presence from both the general population and other ruling families, content to tackle the issue with his own forces. He has come under scrutiny from the Absolvers in the past — the chapter often recruits from Gilead Primus and takes a special interest in the world, but thus far he has no reason to believe they know of the Orks. If they did, the result would almost certainly be a costly and destructive military action in the hive — something Varadgar is keen to avoid."
+ }
+]
