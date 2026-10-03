@@ -5,6 +5,7 @@ import {
   type CreationType,
   EventTable,
   FactionPreset,
+  HazardTable,
   NpcPreset,
   Pack,
   PoolPresetTable,
@@ -41,16 +42,20 @@ export const rulesList = (): RuleEntry[] =>
   jsonFiles(rulesDir).flatMap((f) => RuleEntry.array().parse(json(new URL(f, rulesDir))));
 
 // scene-presets/: GM-only book data for building scenes (issue #39): the sample DNs per Skill (Core pp.122–126),
-// each book's rolled event tables in <source>.json, and its Ruin and Glory lists in pools/<source>.json (issue #40).
+// each book's rolled event tables in <source>.json, its Ruin and Glory lists in pools/<source>.json (issue #40), and
+// its hazard tables for places in hazards/<source>.json (issue #49).
 const presetsDir = new URL("./scene-presets/", import.meta.url);
 export const SKILL_DNS_FILE = "skill-dns.json";
 export const eventTableFiles = () => jsonFiles(presetsDir).filter((f) => f !== SKILL_DNS_FILE);
 const poolsDir = new URL("./pools/", presetsDir);
 export const poolPresetFiles = () => jsonFiles(poolsDir);
+const hazardsDir = new URL("./hazards/", presetsDir);
+export const hazardFiles = () => jsonFiles(hazardsDir);
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
   pools: poolPresetFiles().flatMap((f) => PoolPresetTable.array().parse(json(new URL(f, poolsDir)))),
+  hazards: hazardFiles().flatMap((f) => HazardTable.array().parse(json(new URL(f, hazardsDir)))),
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

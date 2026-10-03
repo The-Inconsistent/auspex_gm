@@ -1,0 +1,1452 @@
+[
+  {
+    "id": "threat-assessment-space-hulk",
+    "name": "Space Hulk Battlezone Hazards",
+    "source": "threat-assessment",
+    "page": 11,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "ta-space-hulk-steam-pipes",
+        "from": 11,
+        "to": 15,
+        "name": "Steam Pipes",
+        "page": 11,
+        "text": "Pipelines that produce a plume of steam when shot. It hurts, but does no Damage. Canny Agents who pass a DN 3 Ranged Attack Test may use them to provide a smokescreen, or flush enemies out of cover.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Ballistic Skill"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Use the steam as a smokescreen or to flush enemies out"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-promethium-line",
+        "from": 16,
+        "to": 24,
+        "name": "Promethium Line",
+        "page": 11,
+        "text": "Pipes containing volatile fuel. DN 3 to hit, success bathes a Blast 5 area underneath in flames as if attacked with a Flamer (Wrath & Glory, page 219).",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Ballistic Skill"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Hit the pipe to ignite the fuel"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-tarantula-sentry-turret",
+        "from": 25,
+        "to": 33,
+        "name": "Tarantula Sentry Turret",
+        "page": 11,
+        "text": "Somehow still functional after millennia, a rapid-fire turret targets the Agents. Use the stats for a Combat Servitor (Wrath & Glory, page 335) with 0 movement, replacing the Heavy Bolter with any gun that has the Salvo ability, as appropriate for the origin of the Space Hulk.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "combat-servitor",
+            "count": 1
+          }
+        ],
+        "gm": "Turret has 0 movement; swap the Heavy Bolter for a Salvo gun fitting the hulk's origin."
+      },
+      {
+        "id": "ta-space-hulk-timed-corridor",
+        "from": 34,
+        "to": 42,
+        "name": "Timed Corridor",
+        "page": 11,
+        "text": "Perhaps a capacitor regularly discharges arcs of electricity along its length, or maybe it is bisected by the teeth of an enormous turning cog: whatever the case, traversing this part of the Battlezone requires passing a DN 3 Athletics (S) Test or suffering a 10+2ED hit.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Cross the corridor without being hit",
+            "gm": "Or suffer a 10+2ED hit."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-gravitic-anomalies",
+        "from": 43,
+        "to": 44,
+        "name": "Gravitic Anomalies",
+        "page": 11,
+        "text": "Part of the Battlezone has very different gravity from the rest. Moving through requires a DN 3 Strength (for high gravity) or Agility (for low gravity) Test. If failed, traversing the area takes twice as long as it should.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "S",
+            "dn": 3,
+            "purpose": "Move through high gravity",
+            "gm": "Strength for high gravity; failure doubles the crossing time."
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "A",
+            "dn": 3,
+            "purpose": "Move through low gravity",
+            "gm": "Agility for low gravity; failure doubles the crossing time."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-flooded-with-gas",
+        "from": 45,
+        "to": 46,
+        "name": "Flooded with Gas",
+        "page": 11,
+        "text": "This section of the Space Hulk is filled with leaking pipes spilling dangerous gas into the air. Without rebreathers or Astartes implants, anyone passing through must test for Suffocation (Wrath & Glory, page 201.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-lurking-broods",
+        "from": 51,
+        "to": 52,
+        "name": "Lurking Broods",
+        "page": 11,
+        "text": "Somewhere aboard the ship is a nest of Genestealers that hasn't woken up yet. A Complication on any attack sends debris tumbling below deck, waking 1 Genestealer. If neither side are Tyranids, it attacks at random on the following Turn. At the GMs discretion, a sufficently large explosion, or waking 3 or more Genesteakers, alerts the entire nest of 3d6 Genestealers.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "genestealer",
+            "count": 1
+          }
+        ],
+        "gm": "A Complication on any attack wakes 1. At GM's call, a big explosion or 3+ woken wakes the entire nest of 3d6 Genestealers."
+      },
+      {
+        "id": "ta-space-hulk-industrial-machinery",
+        "from": 53,
+        "to": 54,
+        "name": "Industrial machinery",
+        "page": 11,
+        "text": "Cargo loaders, cutting lasers, abandoned mining drill platforms or other assorted machinery make effective cover, but might make an even more effective weapon with a successful DN4 Tech (Int) Test. Machinery may be repurposed for a single use attack on the enemy. The results may vary according to the nature of the machine; A single Heavy Flamer, Lascannon, or Autocannon shot are appropriate.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Repurpose the machinery as a one-use weapon"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-tenebro-maze",
+        "from": 55,
+        "to": 56,
+        "name": "Tenebro-Maze",
+        "page": 11,
+        "text": "The Battlezone resides partly in a ship's Tenebro-Maze, making movement confusing. Any combatant who Sprints must pass an Awareness (Int) Test or their intended destination moves (Roll for Scatter, Wrath & Glory, page 186)",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Sprint without the destination scattering"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-we-pray-for-souls-adrift-on-the-tide",
+        "from": 61,
+        "to": 62,
+        "name": "\"We Pray for Souls Adrift on the Tide\"",
+        "page": 11,
+        "text": "The ship containing this Battlezone was originally lost in the Warp, and it is still haunted by phantoms of the crew's final moments. Illusions of screaming deckhands and desperate battles against an unseen foe flit across the area, saturating it in an aura of visceral dread. On a Wrath Complication, one such vision targets the combatant and they must pass a Resolve Test with a DN equal to the game's Tier, or suffer the Terror Condition.",
+        "tests": [
+          {
+            "kind": "resolve",
+            "skills": [],
+            "attribute": null,
+            "dn": null,
+            "tierDn": 0,
+            "purpose": "Resist the vision",
+            "gm": "Triggered by a Wrath Complication; DN equals the game's Tier."
+          }
+        ],
+        "conditions": [
+          "terror"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-space-hulk-home-advantage",
+        "from": 63,
+        "to": 64,
+        "name": "Home Advantage",
+        "page": 11,
+        "text": "An illustrious Imperial cruiser, a magnificent Aeldari Void Dancer, or an Ork Kroozer festooned with guns, spiky bitz and bosspoles, this Battlezone resides in a ship that exemplifies a particular Faction's golden age. GM chooses a Faction: any combatants with that keyword get +1 dice to all rolls while in the Battlezone.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "GM picks a Faction; its keyword holders get +1 dice to all rolls in the Battlezone."
+      },
+      {
+        "id": "ta-space-hulk-prison-ship-block",
+        "from": 65,
+        "to": 65,
+        "name": "Prison Ship Block",
+        "page": 11,
+        "text": "This Battlezone contains shattered corridors filled with small prison cells and the ceilings contain multiple pict-feeds and defence turrets. If the Agents can locate the warden's office, they can attempt to power up the cogitators and screens (DN 4 Tech (Int) Test) and gain an immense tactical advantage over the enemy. Enemy movements are automatically detected unless they are aware of the picts (which also give Agents +2 dice to detect enemies attempting stealth), and a successful DN5 Tech (Int) Test allows an Agent to locate and command a turret to fire at detected enemies. Treat turrets as stationary Gun-Servitors that always fire full auto and have 4 ammo points.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Power up the cogitators and screens in the warden's office"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Command a turret to fire at detected enemies"
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Powered picts give Agents +2 dice to detect enemies attempting stealth. Turrets: stationary Gun-Servitors, full auto, 4 ammo."
+      }
+    ],
+    "gaps": [
+      66
+    ],
+    "overlaps": []
+  },
+  {
+    "id": "threat-assessment-hive-city",
+    "name": "Hive City Battlezone Hazards",
+    "source": "threat-assessment",
+    "page": 13,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "ta-hive-city-bad-weather",
+        "from": 11,
+        "to": 15,
+        "name": "Bad \"Weather\"",
+        "page": 13,
+        "text": "Waste runoff from upper levels mixed with condensation from the billions of workers results in a deeply unpleasant rain of sludge that smears visors and makes the skin itch. For 1D6 Rounds everyone takes a +1DN penalty as the shower gets in the way.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "+1DN penalty to everyone for 1D6 Rounds."
+      },
+      {
+        "id": "ta-hive-city-promethium-tanks",
+        "from": 16,
+        "to": 24,
+        "name": "Promethium Tanks",
+        "page": 13,
+        "text": "Whether on the same hive level or just above or below, a stray shot or explosion could cause a section of Battlezone to go up in flames! On a Wrath Complication, the shot penetrates a prometheum tank causing a 10+4ED damage explosion with Blast rating equal to the AP of the weapon. Depending on the Hive City, feel free to replace promethium with any number of substances under pressure that might inflict Poisoned, On Fire, or other Conditions.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "On a Wrath Complication: 10+4ED explosion, Blast rating equal to the weapon's AP."
+      },
+      {
+        "id": "ta-hive-city-keep-moving-citizen",
+        "from": 25,
+        "to": 33,
+        "name": "\"Keep Moving, Citizen.\"",
+        "page": 13,
+        "text": "This part of the Battlezone has a heavy presence of Guild Enforcers, private security or even Adeptus Arbites. They take a dim view of any violence they are not personally inflicting in their jurisdiction, and are more inclined to kill than arrest. Wrath or Ruin points can be spent to declare that the fight has been noticed by 1D6 security (use Enforcers, Wrath & Glory, page 331, with improved Wargear the higher up the Hive they are), and unless it is extremely obvious that one side is not their enemy, they will attack both equally.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "enforcer",
+            "count": "1d6"
+          }
+        ],
+        "gm": "Spend Wrath or Ruin to bring them in; they attack both sides equally. Better Wargear higher up the Hive."
+      },
+      {
+        "id": "ta-hive-city-malfunctioning-power",
+        "from": 34,
+        "to": 42,
+        "name": "Malfunctioning Power",
+        "page": 13,
+        "text": "The lighting flickers, air vents sputter, and temperatures fluctuate uncomfortably; without torches, breathing aids etc. Agents are Hindered.",
+        "tests": [],
+        "conditions": [
+          "hindered"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-hive-city-in-the-name-of-the-golden-throne-protect-me",
+        "from": 43,
+        "to": 44,
+        "name": "\"In the Name of the Golden Throne, Protect me!\"",
+        "page": 13,
+        "text": "A Preacher, Confessor, or other holy person is caught in the Battlezone! They may have a bodyguard or two (use Enforcers in Wrath & Glory, page 331) but won't last long against the Agents' enemies unless they move to protect them. Failure grants the GM 1 Ruin, success grants players 1 Glory.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Failure to protect them: GM gains 1 Ruin. Success: players gain 1 Glory."
+      },
+      {
+        "id": "ta-hive-city-weapons-manufactorum",
+        "from": 45,
+        "to": 46,
+        "name": "Weapons Manufactorum",
+        "page": 13,
+        "text": "The Battlezone is littered with half-assembled weapons and their accessories. Any Common-rarity weapons do not run out of ammo during combat.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-hive-city-pharmacopoeia-production",
+        "from": 51,
+        "to": 52,
+        "name": "Pharmacopoeia Production",
+        "page": 13,
+        "text": "The Battlezone includes a production line for simple medical and first aid items. Combatants rolling Determination convert 1 bonus Wound into Shock.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Determination rolls convert 1 bonus Wound into Shock."
+      },
+      {
+        "id": "ta-hive-city-food-processing",
+        "from": 53,
+        "to": 54,
+        "name": "Food Processing",
+        "page": 13,
+        "text": "Silos filled with Ostian grain, fish from Enoch or Charybdion, corpse starch, and more can be found in abundance here. While the silos may be targeted like Waste Storage above, food is incredibly precious in Gilead and such waste will cost Agents Influence and/or Wealth if they survive.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Destroying the silos costs Agents Influence and/or Wealth if they survive."
+      },
+      {
+        "id": "ta-hive-city-riot",
+        "from": 55,
+        "to": 56,
+        "name": "Riot!",
+        "page": 13,
+        "text": "The many civilians decide to stand and fight both the Agents and their foes! A Wrath Complication results in 1 Wound lost, as bloodthirsty but untrained citizens vent their fury on everyone around them.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "On a Wrath Complication the combatant loses 1 Wound."
+      },
+      {
+        "id": "ta-hive-city-bewildering-crowds",
+        "from": 61,
+        "to": 62,
+        "name": "Bewildering Crowds",
+        "page": 13,
+        "text": "There are simply so many hivers that it is nearly impossible to detect surprise attacks. Combatants attacking from stealth reduce the amount deducted from their Stealth Score by 2 (Wrath & Glory, page 182).",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Attackers from stealth reduce the Stealth Score deduction by 2."
+      },
+      {
+        "id": "ta-hive-city-panicking-citizens",
+        "from": 63,
+        "to": 64,
+        "name": "Panicking Citizens",
+        "page": 13,
+        "text": "Throngs of people run every which way as violence erupts. All ranged attacks get a +2DN penalty as combatants are shoved and jostled by fleeing citizens.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "All ranged attacks take a +2DN penalty."
+      },
+      {
+        "id": "ta-hive-city-misinformed-witnesses",
+        "from": 65,
+        "to": 65,
+        "name": "Misinformed Witnesses",
+        "page": 13,
+        "text": "Crowds in the Battlezone see the Agents fight, and get the wrong impression. They will go to the authorities (which could be Arbites or the local gang). The Agents have time after the Encounter to convince, bribe, intimidate, or assassinate any witnesses, should they wish. If they decline, a group of the appropriate security guards for that hive level will accost them later, possibly resulting in further Encounters.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-hive-city-meat-shield",
+        "from": 66,
+        "to": 66,
+        "name": "Meat Shield",
+        "page": 13,
+        "text": "The civilians here don't know whether to run or fight, which makes them potential allies! With a successful Deception (Fel), Intimidation (Wil), or Leadership (Fel) Test, an Agent turns the crowd into an allied Mob of 3D6 Imperial Citizens (Wrath & Glory, page 327).",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Deception",
+              "Intimidation",
+              "Leadership"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Turn the crowd into an allied Mob"
+          }
+        ],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "imperial-citizen",
+            "count": "3d6"
+          }
+        ]
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "threat-assessment-deathworld",
+    "name": "Deathworld Battlezone Hazards",
+    "source": "threat-assessment",
+    "page": 15,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "ta-deathworld-spore-gas-emissions",
+        "from": 11,
+        "to": 15,
+        "name": "Spore/Gas Emissions",
+        "page": 15,
+        "text": "Whether volcanism, fungal spores, or toxic insectoids, a Wrath Complication may be used to cause a target to Test for poison as a wrong step stirs up trouble.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "A Wrath Complication can force a target to Test for poison."
+      },
+      {
+        "id": "ta-deathworld-antagonistic-flora",
+        "from": 16,
+        "to": 24,
+        "name": "Antagonistic Flora",
+        "page": 15,
+        "text": "Creeping razorvines, super-adhesive lichen, or strangling liana severely inhibits movement; Combatants that move faster than half their Speed must pass an Awareness (Int) Test or take 1 Wound as the Deathworld Flora attacks the unwary.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Move fast through the flora unharmed",
+            "gm": "Applies to combatants moving faster than half Speed; failure costs 1 Wound."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-dangerous-cover",
+        "from": 25,
+        "to": 33,
+        "name": "Dangerous Cover",
+        "page": 15,
+        "text": "Whether a tree turns out to be carnivorous, a rocky outcrop proves highly radioactive, or a cloud of insects administers lethal stings, there is no safe shelter on a Deathworld. Combatants taking cover must pass a DN 2Awareness (Int) Test each Round or take 1 Wound.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": 2,
+            "purpose": "Spot the danger while in cover",
+            "gm": "Each Round in cover; failure costs 1 Wound."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-blood-in-the-water",
+        "from": 34,
+        "to": 42,
+        "name": "Blood in the Water",
+        "page": 15,
+        "text": "The scent of the wounded draws swarms of vicious Deathworld carnivores. Any combatant who causes Wounds may spend a Wrath (or Ruin) Point to summon a Mob of 1d6 carnivores that attack the wounded target until it is slain, or they are. Other combatants may spend Wrath/Ruin Points on their turn to add another 1D6 carnivores to the Mob. If not creating your own creatures, use the stats for a Dissector-Skull in Wrath & Glory, page 336.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Spend Wrath/Ruin to summon a Mob of 1d6 carnivores; others may spend more to add 1D6 each."
+      },
+      {
+        "id": "ta-deathworld-caustic-surroundings",
+        "from": 43,
+        "to": 44,
+        "name": "Caustic Surroundings",
+        "page": 15,
+        "text": "The air, plants, and animals steadily corrode your equipment. Wrath Complications on an attack roll reduce the Damage of the weapon by 1 until repaired with a Tech (Int) Test after the Encounter.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Repair the corroded weapon after the Encounter"
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Each Wrath Complication on an attack roll lowers the weapon's Damage by 1 until repaired."
+      },
+      {
+        "id": "ta-deathworld-ambush-predator",
+        "from": 45,
+        "to": 46,
+        "name": "Ambush Predator",
+        "page": 15,
+        "text": "Plant or animal, something lies in wait, ready to pounce. Combatants must pass a DN 4 Awareness (Int) Test to notice the predator and may attempt to lure enemies towards it with an appropriate Interaction Attack. Use an Elite-level enemy with appropriate stats or abilities if not designing your own creature.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Awareness"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Notice the lurking predator"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-venomous-terrain",
+        "from": 51,
+        "to": 52,
+        "name": "Venomous Terrain",
+        "page": 15,
+        "text": "Plants, birds, insects, even the rocks are toxic and hostile! All Wrath Complications additionally force combatants to pass a DN 2 Toughness Test or become Poisoned.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 2,
+            "purpose": "Resist the toxins",
+            "gm": "Forced by every Wrath Complication."
+          }
+        ],
+        "conditions": [
+          "poisoned"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-extreme-temperatures",
+        "from": 53,
+        "to": 54,
+        "name": "Extreme Temperatures",
+        "page": 15,
+        "text": "Perhaps a solar flare bathes the planet in fire, or the Agents venture to the night side of a tidally locked world. The Battlezone is suddenly subjected to intense heat or cold. Combatants without appropriate protection or shelter must Test for Exhaustion after a number of Rounds equal to their Toughness (Wrath & Glory, page 201).",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-hard-rain",
+        "from": 55,
+        "to": 56,
+        "name": "Hard Rain",
+        "page": 15,
+        "text": "Whether torrential downpours or showers of radioactive isotopes, the rain is trying to kill you! Combatants without appropriate protection or shelter must pass Athletics (S) or Toughness Tests to avoid being knocked Prone, and subjected to radiation or Poisoned as appropriate.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid being knocked Prone by the rain"
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Avoid being knocked Prone by the rain",
+            "gm": "Either Test avoids it; radiation or Poisoned as appropriate."
+          }
+        ],
+        "conditions": [
+          "prone"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-ill-winds",
+        "from": 61,
+        "to": 62,
+        "name": "Ill Winds",
+        "page": 15,
+        "text": "Powerful winds blow radiation, toxins, or even seeds that pierce armour and feast on the flesh within are common on this Deathworld. Combatants not sheltering behind cover must pass a DN 3 Athletics (S) or Toughness Test to avoid being knocked Prone, irradiated, Bleeding, etc. as appropriate.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Avoid being knocked Prone by the wind"
+          },
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 3,
+            "purpose": "Avoid the wind's effects",
+            "gm": "Either Test avoids it; irradiated or Bleeding etc. as appropriate."
+          }
+        ],
+        "conditions": [
+          "prone"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-lethal-humidity",
+        "from": 63,
+        "to": 64,
+        "name": "Lethal Humidity",
+        "page": 15,
+        "text": "The air is so full of moisture that human lungs can't extract oxygen. Without breathing apparatus or augmetics, combatants on this Battlezone are subject to Suffocation.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-psycho-spores",
+        "from": 65,
+        "to": 65,
+        "name": "Psycho-spores",
+        "page": 15,
+        "text": "The air is filled with microbes or spores that not only bypass most filters, but cause terrifying hallucinations! The GM chooses a psychological Condition for the spores to cause before combat. Without sealed breathing environments or lung augmentations, combatants must make a DN 5 Willpower Test. Failure causes the combatant to take the Condition. A successful use of Medicae (Int) can remove the Condition, or prevent it if used before exposure (requires local knowledge or a DN 6 Scholar (Int) Test).",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "Wil",
+            "dn": 5,
+            "purpose": "Resist the spores",
+            "gm": "Failure inflicts the psychological Condition the GM chose before combat."
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Medicae"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Remove or prevent the Condition"
+          },
+          {
+            "kind": "skill",
+            "skills": [
+              "Scholar"
+            ],
+            "attribute": null,
+            "dn": 6,
+            "purpose": "Gain the local knowledge needed to prevent it with Medicae"
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-deathworld-apex-predator",
+        "from": 66,
+        "to": 66,
+        "name": "Apex Predator",
+        "page": 15,
+        "text": "Whether Nethrean megafauna or Catachan Devils, the Battlezone is part of their territory! If not creating your own lethal creature, use an Adversary-level enemy with stats and abilities thematically appropriate for the Deathworld. It will attack a random side at first but considers all combatants threats/food.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "threat-assessment-volcanic-wastes",
+    "name": "Volcanic Wastes Battlezone Hazards",
+    "source": "threat-assessment",
+    "page": 17,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "ta-volcanic-wastes-combustible-scenery",
+        "from": 11,
+        "to": 15,
+        "name": "Combustible Scenery",
+        "page": 17,
+        "text": "Stray shots may ignite gas pockets, volatile minerals etc. An attack that misses but rolls a Wrath Critical may set the target On Fire if they fail a DN 3 Athletics (S) Test (Wrath & Glory, page 202).",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Avoid being set On Fire"
+          }
+        ],
+        "conditions": [
+          "on-fire"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-volcanic-wastes-pyroclastic-vents",
+        "from": 16,
+        "to": 24,
+        "name": "Pyroclastic Vents",
+        "page": 17,
+        "text": "For 2D6 Rounds, toxic gases flood the area. Characters without a sealed air supply Test for suffocation (Wrath & Glory, page 201), with failures inflicting Poisoned Condition.",
+        "tests": [],
+        "conditions": [
+          "poisoned"
+        ],
+        "threats": [],
+        "gm": "Duration 2D6 Rounds; Poisoned follows a failed Suffocation test."
+      },
+      {
+        "id": "ta-volcanic-wastes-thin-crust",
+        "from": 25,
+        "to": 33,
+        "name": "Thin Crust",
+        "page": 17,
+        "text": "Part of the Battlezone has a deceptively solid surface. Characters moving into it who fail a DN 3 Athletics (S) Test suffer a 10+2ED hit and are On Fire.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Cross the thin crust unburned",
+            "gm": "Failure: a 10+2ED hit and On Fire."
+          }
+        ],
+        "conditions": [
+          "on-fire"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-volcanic-wastes-ash-storm",
+        "from": 34,
+        "to": 42,
+        "name": "Ash Storm",
+        "page": 17,
+        "text": "Unshielded equipment clogs and stops working on a Wrath Complication. Breathing without protection requires DN 3 Toughness Test or Agent begins Suffocating (Wrath & Glory, page 201).",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 3,
+            "purpose": "Breathe in the ash without suffocating"
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "A Wrath Complication clogs and stops unshielded equipment."
+      },
+      {
+        "id": "ta-volcanic-wastes-ash-dunes",
+        "from": 43,
+        "to": 44,
+        "name": "Ash Dunes",
+        "page": 17,
+        "text": "Agents sink down to their knees in hot ash. This is Difficult Terrain (Wrath & Glory, page 181) where crawling is impossible.",
+        "tests": [],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-volcanic-wastes-searing-terrain",
+        "from": 45,
+        "to": 46,
+        "name": "Searing terrain",
+        "page": 17,
+        "text": "While solid, large parts of the Battlezone are still dangerously hot; Taking cover, falling prone, or being pushed into such a hazard prompts a DN 2 Athletics (s) Test to avoid being set On Fire.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 2,
+            "purpose": "Avoid being set On Fire by hot ground"
+          }
+        ],
+        "conditions": [
+          "on-fire"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-volcanic-wastes-geysers",
+        "from": 51,
+        "to": 52,
+        "name": "Geysers",
+        "page": 17,
+        "text": "Part of the Battlezone regularly erupts with superheated steam, chemicals, or radiation. Roll 1D6; This is the number of Rounds between eruptions, as well as its Blast Rating. Anyone in the area must pass a DN 2 Athletics (S) Test or suffer a 10+2ED hit. Other factors such as rad poisoning may apply as appropriate for the Deathworld.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 2,
+            "purpose": "Avoid the eruption",
+            "gm": "Failure: a 10+2ED hit. Roll 1D6 for Rounds between eruptions, which is also the Blast Rating."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-volcanic-wastes-grit-storm",
+        "from": 53,
+        "to": 54,
+        "name": "Grit Storm",
+        "page": 17,
+        "text": "The wind blows fine grit into unshielded equipment, jamming triggers, shorting circuits, and scouring exposed skin. All ranged attacks that roll a Wrath Complication automatically suffer the Weapon Jam Combat Complication.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Ranged attacks that roll a Wrath Complication automatically suffer Weapon Jam."
+      },
+      {
+        "id": "ta-volcanic-wastes-endless-smoke",
+        "from": 55,
+        "to": 56,
+        "name": "Endless Smoke",
+        "page": 17,
+        "text": "Ash-laden smoke obscures vision across the Battlezone, adding +2DN to Ranged attacks and Awareness (Int) Tests, and +1DN to melee attacks, unless combatants have acute senses or vision augmentations.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "+2DN to Ranged attacks and Awareness Tests, +1DN to melee attacks, unless acute senses or vision augmentations."
+      },
+      {
+        "id": "ta-volcanic-wastes-heat-mirage",
+        "from": 61,
+        "to": 62,
+        "name": "Heat Mirage",
+        "page": 17,
+        "text": "The intense heat plays tricks with your vision, forming mirages and distorting your perception. All ranged attacks are +1DN",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "All ranged attacks +1DN."
+      },
+      {
+        "id": "ta-volcanic-wastes-tectonic-rumblings",
+        "from": 63,
+        "to": 64,
+        "name": "Tectonic Rumblings",
+        "page": 17,
+        "text": "The Battlezone is near a tectonic fault, and earthquakes are frequent. Players may spend 1 Glory, and the GM may spend 1 Ruin, to trigger a quake; all opposed combatants must pass a DN 4 Athletics (S) Test or fall Prone.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 4,
+            "purpose": "Stay standing in the quake"
+          }
+        ],
+        "conditions": [
+          "prone"
+        ],
+        "threats": [],
+        "gm": "Players spend 1 Glory or the GM 1 Ruin to trigger a quake."
+      },
+      {
+        "id": "ta-volcanic-wastes-accelerant",
+        "from": 65,
+        "to": 65,
+        "name": "Accelerant",
+        "page": 17,
+        "text": "The air of the Battlezone contains pockets of highly flammable gases. Any firearms that roll a Wrath Complication ignite a nearby pocket, causing 1D6+1ED Damage to the weapon user, who must also pass a DN 3 Athletics (S) Test or be set On Fire.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": 3,
+            "purpose": "Avoid being set On Fire by the gas"
+          }
+        ],
+        "conditions": [
+          "on-fire"
+        ],
+        "threats": [],
+        "gm": "A firearm Wrath Complication deals 1D6+1ED Damage to the user."
+      },
+      {
+        "id": "ta-volcanic-wastes-volcanic-apocalypse",
+        "from": 66,
+        "to": 66,
+        "name": "Volcanic Apocalypse",
+        "page": 17,
+        "text": "D6 Rounds after combat begins, massive volcanic activity strikes the Battlezone! Constant earthquakes throw buildings and combatants about, jagged lances of red-hot stone erupt from the ground and flaming balls of lava arc into the air before splattering on the ground. Each Round, combatants must pass an Athletics (S) Test with DN equal to the game Tier, or suffer one of the following (Roll 1D3): 1: Knocked Prone 2: Stuck by a 10+1ED damage with AP -2 3: Stuck by a 12+2ED damage with AP -1 and the Flamer Trait",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Survive the volcanic eruption each Round",
+            "tierDn": 0,
+            "gm": "Each Round. Failure, roll 1D3: Prone; 10+1ED AP -2; 12+2ED AP -1 Flamer."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Starts D6 Rounds after combat begins."
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "threat-assessment-frozen-tundra",
+    "name": "Frozen Tundra Battlezone Hazards",
+    "source": "threat-assessment",
+    "page": 19,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "ta-frozen-tundra-thin-ice",
+        "from": 11,
+        "to": 15,
+        "name": "Thin Ice",
+        "page": 19,
+        "text": "A thin crust of ice conceals deep snow or a drop. Target must make an Athletics (S) Test to avoid getting stuck, falling Prone, or taking fall damage as appropriate.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid breaking through the ice",
+            "gm": "No DN printed. Failure: stuck, Prone, or fall damage as fits."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-frozen-tundra-glacial-scree",
+        "from": 16,
+        "to": 24,
+        "name": "Glacial Scree",
+        "page": 19,
+        "text": "Aeons of glacial movement have cracked and loosened the ground of this Battlezone. If a combatant rolls a Wrath Complication on their turn, the ground gives way and they must pass an Athletics (S) Test or fall Prone. Cunning Agents may use this hazard against their enemies, for example a DN 4 Called Shot at the target's feet could cause a landslide.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Keep footing as the ground gives way",
+            "gm": "No DN printed. Triggered by a Wrath Complication on the combatant's turn."
+          }
+        ],
+        "conditions": [
+          "prone"
+        ],
+        "threats": [],
+        "gm": "A DN 4 Called Shot at the target's feet can cause a landslide."
+      },
+      {
+        "id": "ta-frozen-tundra-icicle-overhangs",
+        "from": 25,
+        "to": 33,
+        "name": "Icicle Overhangs",
+        "page": 19,
+        "text": "Sharp spikes of frozen liquid litter the ceiling or overhangs of this Battlezone. A Wrath Complication causes shots to ricochet and send one such icicle crashing downwards. The target must pass an Athletics (S) Test or suffer damage equal to a single Boltgun shot (10+1ED, Brutal).",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Dodge the falling icicle",
+            "gm": "No DN printed. Failure: 10+1ED, Brutal. Triggered by a Wrath Complication."
+          }
+        ],
+        "conditions": [],
+        "threats": []
+      },
+      {
+        "id": "ta-frozen-tundra-frozen-volatiles",
+        "from": 34,
+        "to": 42,
+        "name": "Frozen Volatiles",
+        "page": 19,
+        "text": "Many highly combustible substances are found frozen or crystallised on this Battlezone. By making a DN 5 Called Shot, a combatant may hit one such deposit and cause an explosion equivalent to a Frag Grenade. Flame or heat weapons reduce the DN by 2. A Wrath Complication may cause the shooter to be included in the blast!",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Ballistic Skill"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Called Shot to detonate a frozen deposit",
+            "gm": "Flame or heat weapons reduce the DN by 2."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Explosion equals a Frag Grenade; a Wrath Complication may catch the shooter in the blast."
+      },
+      {
+        "id": "ta-frozen-tundra-bitter-winds",
+        "from": 43,
+        "to": 44,
+        "name": "Bitter Winds",
+        "page": 19,
+        "text": "Savagely cold winds sap the strength and speed from your body. For the duration of the Encounter all Free Actions are counted as Simple Actions.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "For the Encounter, Free Actions count as Simple Actions."
+      },
+      {
+        "id": "ta-frozen-tundra-freezing-joints",
+        "from": 45,
+        "to": 46,
+        "name": "Freezing Joints",
+        "page": 19,
+        "text": "The bitter cold ices up joints in your armour, making your movements sluggish. All combatants are Vulnerable for the duration of the Encounter.",
+        "tests": [],
+        "conditions": [
+          "vulnerable"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-frozen-tundra-brittle-cold",
+        "from": 51,
+        "to": 52,
+        "name": "Brittle Cold",
+        "page": 19,
+        "text": "The intense cold makes armour plates prone to shattering. Combatants may Shift Exalted Icons to reduce target Resilience by 1 as if they possessed the Armourbane Talent. Agents who already possess Armourbane reduce target Resilience by 2.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Shifting Exalted Icons reduces target Resilience by 1 (2 with Armourbane)."
+      },
+      {
+        "id": "ta-frozen-tundra-fierce-blizzards",
+        "from": 53,
+        "to": 54,
+        "name": "Fierce Blizzards",
+        "page": 19,
+        "text": "Heavy snow impairs vision and dulls sound. +2DN to all Ranged attacks, and -2DN to Stealth Tests.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "+2DN to Ranged attacks, -2DN to Stealth Tests."
+      },
+      {
+        "id": "ta-frozen-tundra-reactive-snow",
+        "from": 55,
+        "to": 56,
+        "name": "Reactive Snow",
+        "page": 19,
+        "text": "Instead of water, the snow is composed of some other substance, and it reacts violently to blood! Whenever a combatant takes Wounds, they must pass an Athletics (S) Test at a DN equal to the number of Wounds lost, or be set On Fire.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Avoid being set On Fire after taking Wounds",
+            "gm": "DN equals the number of Wounds lost."
+          }
+        ],
+        "conditions": [
+          "on-fire"
+        ],
+        "threats": []
+      },
+      {
+        "id": "ta-frozen-tundra-hardy-scrub",
+        "from": 61,
+        "to": 62,
+        "name": "Hardy Scrub",
+        "page": 19,
+        "text": "Small mounds of vegetation such as bushes and stunted trees cover the Battlezone. All combatants who are prone at the end of their Turn Get a +1 Resilience bonus for light cover.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Prone at end of Turn: +1 Resilience for light cover."
+      },
+      {
+        "id": "ta-frozen-tundra-abominable-snow-beast",
+        "from": 63,
+        "to": 64,
+        "name": "Abominable Snow Beast",
+        "page": 19,
+        "text": "A dangerous predator stalks the frozen tundra! Use the profile of an Ork Nob if not designing your own snow creature. It attacks a random faction, but may be coerced or persuaded to switch sides by passing a DN 5 Survival (Wil) Test.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Survival"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Coerce the snow beast to switch sides"
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Creature uses an Ork Nob profile (not a bestiary id here); it attacks a random faction."
+      },
+      {
+        "id": "ta-frozen-tundra-snow-blind",
+        "from": 65,
+        "to": 65,
+        "name": "Snow Blind",
+        "page": 19,
+        "text": "Overexposure to ultraviolet light due to the reflective snow and ice before or during this Encounter risks causing snow blindness. Combatants not wearing protective eyewear or possessing augmetics or implants protecting the eyes must take a DN 3 Toughness Test. If they fail, they are Blinded for the duration of the Encounter. If they roll a Wrath Complication, the accompanying headaches and dizziness make them Staggered until the Encounter is resolved.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 3,
+            "purpose": "Resist snow blindness"
+          }
+        ],
+        "conditions": [
+          "blinded",
+          "staggered"
+        ],
+        "threats": [],
+        "gm": "Blinded only on a failed Test; Staggered only on a Wrath Complication, until the Encounter ends."
+      },
+      {
+        "id": "ta-frozen-tundra-avalanche",
+        "from": 66,
+        "to": 66,
+        "name": "Avalanche!",
+        "page": 19,
+        "text": "The heavy snowfall is one loud noise away from crashing down a mountainside and engulfing the Battlezone! Every time a non-Silent weapon is used, roll 2D6 (Blast weapons roll 3D6): On a double 1, the avalanche is triggered. The full effects are up to the GM but should include 10+3ED damage to each combatant who fails to find shelter, and in subsequent Rounds the entire Battlezone is Difficult Terrain.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Roll 2D6 (3D6 for Blast) per non-Silent weapon use; double 1 triggers it. 10+3ED to those without shelter; Difficult Terrain after."
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  },
+  {
+    "id": "threat-assessment-forgeworld",
+    "name": "Forgeworld Battlezone Hazards",
+    "source": "threat-assessment",
+    "page": 21,
+    "dice": "d66",
+    "rows": [
+      {
+        "id": "ta-forgeworld-servo-skull-network",
+        "from": 11,
+        "to": 15,
+        "name": "Servo Skull Network",
+        "page": 21,
+        "text": "For whatever reason, the Battlezone is constantly crossed by Servo Skulls on their way to or from some inscrutable task. Ranged attacks which roll a Wrath Complication hit a Servo Skull instead of the intended target.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Ranged attacks that roll a Wrath Complication hit a Servo Skull instead of the target."
+      },
+      {
+        "id": "ta-forgeworld-security-checkpoints",
+        "from": 16,
+        "to": 24,
+        "name": "Security Checkpoints",
+        "page": 21,
+        "text": "The Tech-Priests control the flow of their workers as tightly as their data. The Battlezone contains a number of scanners and automated checkpoints. The GM may spend 1 Ruin to have the automated guns mounted on them target an Agent. (Treat as an immobile Gun Servitor from Wrath & Glory, page 335).",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "GM spends 1 Ruin to have the guns target an Agent; immobile Gun Servitor (not a bestiary id here)."
+      },
+      {
+        "id": "ta-forgeworld-binary-flood",
+        "from": 25,
+        "to": 33,
+        "name": "Binary Flood",
+        "page": 21,
+        "text": "A series of vox-speakers \"sing\" hymns in the static shriek of Binary Cant, disorientating and deafening combatants. GM rolls 1D6: the result is the number of Rounds between bursts. Combatants must pass a DN 3 Toughness Test for each burst, or gain 1 Shock.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": 3,
+            "purpose": "Withstand each burst of binary cant",
+            "gm": "Each burst; failure gains 1 Shock."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "GM rolls 1D6 for Rounds between bursts."
+      },
+      {
+        "id": "ta-forgeworld-forge-shrine",
+        "from": 34,
+        "to": 42,
+        "name": "Forge-Shrine",
+        "page": 21,
+        "text": "The Battlezone houses a shrine to the Omnissiah. If it is damaged in the Encounter, the Agents may lose Influence. It may also be accessed by any combatant to deploy an allied Gun Servitor, with a successful DN 5 Tech (Int) Test.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Tech"
+            ],
+            "attribute": null,
+            "dn": 5,
+            "purpose": "Access the shrine to deploy an allied Gun Servitor"
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Agents may lose Influence if the shrine is damaged."
+      },
+      {
+        "id": "ta-forgeworld-magrail-tunnels",
+        "from": 43,
+        "to": 44,
+        "name": "Magrail Tunnels",
+        "page": 21,
+        "text": "The Battlezone is divided by one or more railway lines over which mag-trains occasionally ferry material from one manufactorum to another at blistering speeds. Agents may spend 1 Wrath (and the GM may spend 1 Ruin) to declare that one such train begins speeding through the battlezone. For 3 Rounds combatants cannot move or shoot across the rail line, and anyone caught in front of the mag-train suffers 15+2ED damage as if from a weapon with the Brutal trait.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "Agents spend 1 Wrath or GM 1 Ruin to start a train; 3 Rounds, 15+2ED Brutal to anyone in its path."
+      },
+      {
+        "id": "ta-forgeworld-abandoned-cathedral-forge",
+        "from": 45,
+        "to": 46,
+        "name": "Abandoned Cathedral Forge",
+        "page": 21,
+        "text": "Little but dust and rust is found in this Battlezone. Malfunctioning servitors, no longer useful in the eyes of the Tech-Priests, leak strange ichors from scabrous interface sockets and perform nonsensical tasks in eternal repetition. This Battlezone is desolate, dark, and profoundly disturbing. When the Encounter begins, all combatants gain 1 Shock.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "When the Encounter begins, all combatants gain 1 Shock."
+      },
+      {
+        "id": "ta-forgeworld-manufactorum-oversight",
+        "from": 51,
+        "to": 52,
+        "name": "Manufactorum Oversight",
+        "page": 21,
+        "text": "The Battlezone is part of a production line monitored by a Tech-Priest (use the suggested Attributes, Skills and Talents in Wrath & Glory, page 109). They are heedless of the actual battle unless it interrupts the task they are supervising. If this happens, they summon a Mob of 5 Combat Servitors and attack the combatants responsible.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "combat-servitor",
+            "count": 5
+          }
+        ],
+        "gm": "Only if the battle interrupts the Tech-Priest's task; the Tech-Priest uses Core p.109 suggestions."
+      },
+      {
+        "id": "ta-forgeworld-automated-firing-range",
+        "from": 53,
+        "to": 54,
+        "name": "Automated Firing Range",
+        "page": 21,
+        "text": "The Battlezone covers a large empty space, with various targets at one end and a constant stream of Servitors at the other, as newly forged guns are tested for defects. On a Wrath Complication, a combatant finds themselves in the firing line of one such weapon! Make a Ranged Attack against the combatant (assume a dice pool of 6) with a randomly chosen Las or Projectile weapon.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "On a Wrath Complication the GM makes a Ranged Attack (dice pool 6) with a random Las or Projectile weapon."
+      },
+      {
+        "id": "ta-forgeworld-scrap-wastes",
+        "from": 55,
+        "to": 56,
+        "name": "Scrap Wastes",
+        "page": 21,
+        "text": "The Battlezone is used as the Forgeworld's dump, and automated hauler ships constantly ferry waste from populated areas to be unloaded from a great height. On a Wrath Complication, one such hauler dumps tonnes of waste scrap onto the Agent. They must take an Athletics (S) Test: they take a 10+2ED hit if they fail, and take no damage but are knocked Prone and away from cover if they pass.",
+        "tests": [
+          {
+            "kind": "skill",
+            "skills": [
+              "Athletics"
+            ],
+            "attribute": null,
+            "dn": null,
+            "purpose": "Survive the dumped scrap",
+            "gm": "No DN printed. Fail: 10+2ED hit. Pass: no damage, Prone and away from cover."
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Triggered by a Wrath Complication."
+      },
+      {
+        "id": "ta-forgeworld-organics-unworthy-beyond",
+        "from": 61,
+        "to": 62,
+        "name": "Organics Unworthy Beyond",
+        "page": 21,
+        "text": "This section of the Forgeworld is devoted to work impossible for unaugmented workers, be it saturated with superheated steam, flooded in pollutants or features dangerous falls for those not blessed with leg augmetics. Choose an Environmental Hazard from Wrath & Glory, page 201, or an appropriate Hazard from another table. On a Wrath Complication, the combatant is targeted by that Hazard, taking any Tests required.",
+        "tests": [],
+        "conditions": [],
+        "threats": [],
+        "gm": "GM picks the Hazard; it hits the combatant on a Wrath Complication."
+      },
+      {
+        "id": "ta-forgeworld-wall-of-smoke",
+        "from": 63,
+        "to": 64,
+        "name": "Wall of Smoke",
+        "page": 21,
+        "text": "The Battlezone is poorly ventilated, and the smoke and steam are so thick that visibility is poor and breathing difficult. Awareness and Ballistic Skill Tests take +2DN, and anyone not wearing a rebreather or appropriate implants must pass a Toughness Test each Round or become Hindered. Levels of Hindered stack.",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Breathe the smoke without becoming Hindered",
+            "gm": "No DN printed. Each Round; Hindered stacks."
+          }
+        ],
+        "conditions": [
+          "hindered"
+        ],
+        "threats": [],
+        "gm": "Awareness and Ballistic Skill Tests +2DN."
+      },
+      {
+        "id": "ta-forgeworld-caught-in-the-cogs",
+        "from": 65,
+        "to": 65,
+        "name": "Caught in the Cogs",
+        "page": 21,
+        "text": "The Wargear and augmetics of the combatants catch the eye of one of the Forgeworld's few gangs, and they want them for themselves. 1D6 Rounds after the Encounter begins, a Mob of 1D6+10 Scum (Wrath & Glory, page 334) arrives to the fight, splitting attacks between both groups.",
+        "tests": [],
+        "conditions": [],
+        "threats": [
+          {
+            "threatId": "scum",
+            "count": "1d6+10"
+          }
+        ],
+        "gm": "Arrives 1D6 Rounds after the Encounter begins and splits attacks between both groups."
+      },
+      {
+        "id": "ta-forgeworld-cathode-sterilization-plant",
+        "from": 66,
+        "to": 66,
+        "name": "Cathode Sterilization Plant",
+        "page": 21,
+        "text": "This section of the Battlezone is a huge production line where augmetics and other medically sensitive items are bathed in radiation to destroy micro-organisms. Such delicate machinery mixes badly with combat: Wrath Complications on any attack roll disrupt the emitters, and the combatant must pass a Toughness Test with a DN equal to the game's Tier +3 or immediately suffer Radiation exposure (Wrath & Glory, page 202).",
+        "tests": [
+          {
+            "kind": "attribute",
+            "skills": [],
+            "attribute": "T",
+            "dn": null,
+            "purpose": "Avoid Radiation exposure from the emitters",
+            "tierDn": 3
+          }
+        ],
+        "conditions": [],
+        "threats": [],
+        "gm": "Triggered by a Wrath Complication on any attack roll."
+      }
+    ],
+    "gaps": [],
+    "overlaps": []
+  }
+]

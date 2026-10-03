@@ -17,6 +17,7 @@ import {
   SkillDn,
   EventTable,
   FactionPreset,
+  HazardTable,
   NpcPreset,
   PoolEntry,
   PoolPresetTable,
@@ -26,6 +27,7 @@ import {
 import {
   eventTableFiles,
   factionPresetFiles,
+  hazardFiles,
   loadPackRaw,
   npcPresetFiles,
   packNames,
@@ -176,6 +178,7 @@ const ruleIds = new Set<string>();
 const weaponTraitIds = new Set<string>();
 const itemTraitIds = new Set<string>(); // weapon and armour Traits together: an upgrade mod names either
 const traitKeys = new Set<string>(); // ruleKey of every Condition and trait, for the trait-name check at the end
+const conditionIds = new Set<string>(); // for the hazards' Conditions
 for (const file of readdirSync(rulesDir)
   .filter((f) => f.endsWith(".json"))
   .sort()) {
@@ -192,6 +195,7 @@ for (const file of readdirSync(rulesDir)
     }
     ruleIds.add(e.id);
     if (e.kind === "weapon-trait") weaponTraitIds.add(e.id);
+    if (e.kind === "condition") conditionIds.add(e.id);
     if (e.kind === "weapon-trait" || e.kind === "armour-trait") itemTraitIds.add(e.id);
     if (LINKED_RULE_KINDS.includes(e.kind)) traitKeys.add(ruleKey(e.name));
   }
@@ -330,6 +334,61 @@ for (const file of poolPresetFiles()) {
 }
 const pendingPools = Object.keys(EXPECTED_POOL_ROWS).filter((id) => !poolIds.has(id));
 if (pendingPools.length) console.log(`scene-presets/pools: not transcribed yet: ${pendingPools.join(", ")}`);
+
+// Hazard tables (scene-presets/hazards/<source>.json, issue #49): the filename names the book, table and row ids are
+// unique (a place's list points at a row id), each planned table holds the rows the book prints, and every Condition
+// and Threat a row names exists. HazardTable's own check holds the ranges to the dice.
+const EXPECTED_HAZARDS: Record<string, number> = {
+  "threat-assessment-space-hulk": 12, // p.11, no row for 66
+  "threat-assessment-hive-city": 13, // p.13
+  "threat-assessment-deathworld": 13, // p.15
+  "threat-assessment-volcanic-wastes": 13, // p.17
+  "threat-assessment-frozen-tundra": 13, // p.19
+  "threat-assessment-forgeworld": 13, // p.21
+};
+const hazardIds = new Set<string>();
+{
+  const hazardTableIds = new Set<string>();
+  for (const file of hazardFiles()) {
+    const r = HazardTable.array().safeParse(
+      JSON.parse(readFileSync(new URL(`./scene-presets/hazards/${file}`, import.meta.url), "utf8")),
+    );
+    if (!r.success) {
+      failed = true;
+      console.error(`✖ scene-presets/hazards/${file}\n${z.prettifyError(r.error)}`);
+      continue;
+    }
+    const problem = (message: string) => {
+      failed = true;
+      console.error(`✖ scene-presets/hazards/${file}: ${message}`);
+    };
+    for (const t of r.data) {
+      if (`${t.source}.json` !== file) problem(`table "${t.id}" is from ${t.source}`);
+      if (hazardTableIds.has(t.id)) problem(`duplicate table id "${t.id}"`);
+      hazardTableIds.add(t.id);
+      if (EXPECTED_HAZARDS[t.id] !== t.rows.length)
+        problem(`${t.id}: ${t.rows.length} rows, expected ${EXPECTED_HAZARDS[t.id] ?? "none (not a planned table)"}`);
+      for (const row of t.rows) {
+        if (hazardIds.has(row.id)) problem(`duplicate hazard id "${row.id}"`);
+        hazardIds.add(row.id);
+        for (const c of row.conditions) if (!conditionIds.has(c)) problem(`${row.id}: unknown Condition "${c}"`);
+        for (const x of row.threats)
+          if (!found.includes(x.threatId)) problem(`${row.id}: unknown threat "${x.threatId}"`);
+      }
+      const tests = t.rows.flatMap((x) => [...x.tests, ...x.variants.flatMap((v) => v.tests)]);
+      console.log(
+        `scene-presets/hazards/${file} ${t.id}: ${t.rows.length}/${EXPECTED_HAZARDS[t.id]} hazards, ${tests.length} Tests, ` +
+          `${t.rows.reduce((n, x) => n + x.conditions.length, 0)} Conditions, ${t.rows.reduce((n, x) => n + x.threats.length, 0)} Threats, ` +
+          `${t.rows.filter((x) => x.gm).length + tests.filter((x) => x.gm).length} gm notes` +
+          (t.gaps.length || t.overlaps.length
+            ? `, as printed: gaps ${t.gaps.join(",") || "none"}, overlaps ${t.overlaps.join(",") || "none"}`
+            : ""),
+      );
+    }
+  }
+  const pending = Object.keys(EXPECTED_HAZARDS).filter((id) => !hazardTableIds.has(id));
+  if (pending.length) console.log(`scene-presets/hazards: not transcribed yet: ${pending.join(", ")}`);
+}
 
 // Creation catalogue (docs/data.md, "Creation catalogue"): creation/<type>/<source>.json. Schema per file, the
 // filename names the book, ids unique per type, every id reference resolves, one record per thing across books.

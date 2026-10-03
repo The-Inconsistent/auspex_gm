@@ -9,6 +9,7 @@ import {
   type PoolEntry,
   type PoolSpend,
 } from "./codex.ts";
+import { Amount } from "./creation.ts";
 import { Dice, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
 import { ATTRIBUTES, Pool, SKILLS, type Skill } from "./state.ts";
@@ -40,6 +41,10 @@ export const PresetTest = z
     skills: z.array(skill).max(6).default([]),
     attribute: z.enum(ATTRIBUTES).nullable().default(null),
     dn: z.number().int().min(1).max(20).nullable().default(null),
+    // A DN of the game's Tier plus this: "a DN equal to the game's Tier" (TA p.11) is 0. `dn` stays null. A place's
+    // hazard works it out from the campaign's Tier (apps/web/lib/hazards); a scene made from an event leaves it to the GM
+    // (§11.75).
+    tierDn: z.number().int().min(0).max(5).optional(),
     purpose: z.string().min(1).max(300), // what it's for, in our words: the book's own text stays in the event
     gm: z.string().min(1).max(300).optional(), // what a Test can't hold (a condition, repeats, bonus dice, a non-Core Skill)
   })
@@ -49,7 +54,8 @@ export const PresetTest = z
     if (pool === "skill" && (!t.skills.length || t.attribute)) fail("A Skill Test names its Skills and no Attribute");
     if (pool === "attribute" && (!t.attribute || t.skills.length)) fail("An Attribute Test names one Attribute");
     if (pool === "either" && !t.skills.length === !t.attribute) fail("An Opposed Test names Skills or an Attribute");
-    if (pool === "either" && t.dn !== null) fail("An Opposed Test has no DN");
+    if (pool === "either" && (t.dn !== null || t.tierDn !== undefined)) fail("An Opposed Test has no DN");
+    if (t.dn !== null && t.tierDn !== undefined) fail("A Test has a printed DN or a Tier DN, not both");
     if (pool === "trait" && (t.skills.length || t.attribute)) fail(`A ${t.kind} Test rolls a trait`);
   });
 export type PresetTest = z.infer<typeof PresetTest>;
@@ -127,10 +133,69 @@ export function presetLine({ table, row }: { table: PoolPresetTable; row: PoolPr
   return { list: "spends", line } as const;
 }
 
+// A place's dangers (issue #49): Battlezone hazards (TA pp.9–21), Environmental Hazards (Core pp.201–202), a hive's
+// Hazards (Darktide pp.14–27) and a space hulk's (RR1 p.11). A place's hazard list points at a row by `id`, as an
+// encounter points at a threat, so the book text stays here, GM-only.
+export const Intensity = z.enum(["Light", "Moderate", "Intense"]); // Electricity, Rad Poison (Core pp.201–202)
+export type Intensity = z.infer<typeof Intensity>;
+export const HazardRow = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/), // unique across scene-presets/hazards/*.json
+  from: z.number().int().optional(), // the printed range, on a rolled table
+  to: z.number().int().optional(),
+  name: z.string().min(1).max(200), // as printed
+  page: z.number().int().positive(), // printed page
+  text: z.string().min(1).max(5000), // the printed result, verbatim
+  tests: z.array(PresetTest).max(6).default([]),
+  conditions: z
+    .array(z.string().regex(/^[a-z-]+$/))
+    .max(4)
+    .default([]), // ids in rules/conditions.json
+  threats: z
+    .array(z.object({ threatId: z.string().min(1), count: Amount }))
+    .max(4)
+    .default([]), // in the bestiary
+  // One per intensity the book prints, each with its own Tests and effect; the GM picks one per place (§11.94).
+  variants: z
+    .array(
+      z.object({ name: Intensity, tests: z.array(PresetTest).max(6).default([]), text: z.string().min(1).max(500) }),
+    )
+    .max(3)
+    .default([]),
+  gm: z.string().min(1).max(300).optional(), // what the fields can't hold: a Wrath trigger, Rounds, Influence lost
+});
+export type HazardRow = z.infer<typeof HazardRow>;
+// A book's hazard table. `dice: null` is a list to pick from, not roll on (Core pp.201–202).
+export const HazardTable = z
+  .object({
+    id: z.string().regex(/^[a-z0-9-]+$/),
+    name: z.string().min(1).max(200), // as printed
+    source: z.enum(Object.keys(THREAT_SOURCES) as [ThreatSource, ...ThreatSource[]]),
+    page: z.number().int().positive(), // printed page the table starts on
+    dice: Dice.nullable(),
+    gm: z.string().min(1).max(2000).optional(), // the book's notes on using the table, verbatim
+    rows: z.array(HazardRow).min(1),
+    gaps: z.array(z.number().int()).default([]),
+    overlaps: z.array(z.number().int()).default([]),
+  })
+  .superRefine((t, ctx) => {
+    const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+    if (!t.dice) {
+      if (t.rows.some((r) => r.from !== undefined || r.to !== undefined)) fail("A list to pick from has no ranges");
+      return;
+    }
+    const rows = t.rows.flatMap((r) =>
+      r.from === undefined || r.to === undefined ? [] : [{ from: r.from, to: r.to }],
+    );
+    if (rows.length < t.rows.length) fail("Every row of a rolled table has a range");
+    for (const message of tableProblems({ ...t, dice: t.dice, rows })) fail(message);
+  });
+export type HazardTable = z.infer<typeof HazardTable>;
+
 export const ScenePresets = z.object({
   skillDns: z.array(SkillDn),
   tables: z.array(EventTable),
   pools: z.array(PoolPresetTable),
+  hazards: z.array(HazardTable).default([]), // an api from before issue #49 sends none; the rest still loads
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 
