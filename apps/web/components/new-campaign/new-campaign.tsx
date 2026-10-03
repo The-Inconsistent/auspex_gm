@@ -38,7 +38,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
     window.scrollTo({ top: 0 });
   };
 
-  // CREATE NEW CAMPAIGN: you as GM, with everything the steps asked; then into the campaign.
+  // CREATE NEW CAMPAIGN: you as GM, with everything the steps asked; then on to SETTING inside it (/c/<id>/setup).
   const handleCreate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (pending) return;
@@ -53,7 +53,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
       const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
       if (!res?.ok || !body?.campaignId) return setError(body?.message ?? "No signal");
       // After an await the router call is outside the transition, so it's wrapped again to keep the pulse until it lands.
-      startTransition(() => router.replace(`/c/${body.campaignId}`));
+      startTransition(() => router.replace(`/c/${body.campaignId}/setup`));
     });
   };
 

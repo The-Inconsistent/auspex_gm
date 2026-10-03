@@ -18,7 +18,8 @@ seat.
 |---|---|---|---|
 | `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
 | `/c/new` | `app/c/new/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps before the campaign exists: asks `/api/frameworks` (a creator's only, so it is the gate too) and renders `NewCampaign` |
-| `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen` |
+| `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen`. `?tab=party` (any GM tab) opens the GM app there |
+| `/c/<campaignId>/setup` | `app/c/[campaignId]/setup/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps after CREATE, for the GM only: loads the places, faction presets and scene presets, and renders `CampaignSetup` |
 | `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
 | `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
 | `/library/<characterId>` | `app/library/[characterId]/page.tsx` | Server Component | The builder on a character in the signed-in user's own library (issue #14): no campaign, no seat |
@@ -79,7 +80,18 @@ sections:
 4. **NAME**: the name and a review of every step, each with EDIT.
 
 CREATE NEW CAMPAIGN POSTs everything to `/api/campaigns` from the browser in one go, so leaving half-way stores
-nothing, then replaces the page with `/c/<campaignId>`. A refusal shows inline.
+nothing, then replaces the page with `/c/<campaignId>/setup`. A refusal shows inline.
+
+### `/c/<campaignId>/setup`: `app/c/[campaignId]/setup/page.tsx`
+
+`CampaignSetup` (`components/campaign-setup/`) opens the table socket (`useTable`) and walks the last three steps,
+each saved as it goes through CODEX's and PARTY's own pieces:
+5. **SETTING**: `PlacePicker` (open), `HulkGenerator`, or a typed name (`codex.save` kind `location`), with the
+   campaign's places as a tree underneath.
+6. **FACTIONS**: `FactionPicker` (open), or a typed name (`codex.save` kind `faction`).
+7. **PLAYERS**: `RoomInvite`, PARTY's ROOM QR.
+
+OPEN THE CAMPAIGN pushes `/c/<campaignId>?tab=party`, where SETUP lists what's left.
 
 ### `/c/<campaignId>`: `app/c/[campaignId]/page.tsx`
 
@@ -642,7 +654,8 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   - What the pools reset to is covered in [game-logic.md](game-logic.md).
 - **Framework panel:** patron and framework text, saved with `campaign.update`. Players see both on INTEL.
 - **TABLE ACCESS panel** (from `state.access`, which only the GM receives in full):
-  - ROOM QR sends `invite.create { mode: "room", hours: ROOM_INVITE_HOURS }` (12) and shows `/invite/<code>` as a QR.
+  - ROOM QR (`RoomInvite`, also on NEW CAMPAIGN's PLAYERS step) sends `invite.create { mode: "room", hours:
+    ROOM_INVITE_HOURS }` (12) and shows `/invite/<code>` as a QR.
     Players scan it, sign in or join as a guest, and claim an agent.
   - The open invites: ROOM or the character's name, uses, ACCOUNTS ONLY when guests aren't allowed, the expiry, and
     REVOKE (`invite.revoke`). Anyone already seated keeps their seat.
@@ -663,7 +676,7 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
 | ±COND | `character.update { conditions }` | Toggles a Condition on the character, also outside a fight (the tracker reaches only combatants) |
 | REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
 
-Every code (room, invite, guest) goes through `showCode`: it builds `${location.origin}/…` into a `QR_SIZE` (320px) PNG
+Every code (room, invite, guest) becomes a `QR_SIZE` (320px) PNG through `qrImage` (`lib/qr`), built from `shareOrigin`
 with `qrcode`, using `TOKENS.bg` modules on `TOKENS.fg`, and shows it full-screen in `QrDialog` with the URL written
 underneath. The code is returned only once, so a closed dialog can't be reopened; make a new one.
 

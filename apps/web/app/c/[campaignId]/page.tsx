@@ -1,22 +1,16 @@
-import {
-  FactionPresets,
-  FlavourTable,
-  FrameworkCatalogue,
-  Me,
-  NpcPreset,
-  PlaceSummary,
-  ScenePresets,
-  Threat,
-  Wargear,
-} from "@wg/shared";
+import { FlavourTable, FrameworkCatalogue, Me, NpcPreset, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
-import { apiGet, loadRules } from "@/app/server-api";
+import { apiGet, loadFactionPresets, loadPlaces, loadRules, loadScenePresets } from "@/app/server-api";
+import { asGmTab, TAB_PARAM } from "@/components/gm/gm-app/constants";
 import { GmApp } from "@/components/gm/gm-app/gm-app";
 import { PlayerApp } from "@/components/player/player-app/player-app";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 
-type TableProps = { params: Promise<{ campaignId: string }> };
+type TableProps = {
+  params: Promise<{ campaignId: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
 // GM bestiary for the add-threat pickers, sorted by name. Empty on failure; the pickers just show nothing.
 async function loadBestiary(campaignId: string): Promise<Threat[]> {
@@ -40,20 +34,6 @@ async function loadWargear(campaignId: string): Promise<Wargear[]> {
   }
 }
 
-// What PREP and CODEX get when the api can't serve the presets: every list empty, by the schema's own defaults.
-const NO_PRESETS = ScenePresets.parse({ skillDns: [], tables: [], pools: [] });
-
-// GM-only book data for building scenes (issue #39). Empty on failure; the scene editor then shows no examples.
-async function loadScenePresets(campaignId: string): Promise<ScenePresets> {
-  try {
-    const res = await apiGet(`/api/campaigns/${campaignId}/scene-presets`);
-    const parsed = ScenePresets.safeParse(res.ok ? await res.json() : null);
-    return parsed.success ? parsed.data : NO_PRESETS;
-  } catch {
-    return NO_PRESETS;
-  }
-}
-
 // GM-only printed patrons and Frameworks for PARTY's picker (issue #45). Empty on failure; the picker then lists none.
 async function loadFrameworks(campaignId: string): Promise<FrameworkCatalogue> {
   try {
@@ -65,35 +45,11 @@ async function loadFrameworks(campaignId: string): Promise<FrameworkCatalogue> {
   }
 }
 
-// GM-only Keywords (and printed factions) for CODEX › FACTIONS (issue #46). Empty on failure; the picker then takes
-// write-ins only.
-async function loadFactionPresets(campaignId: string): Promise<FactionPresets> {
-  try {
-    const res = await apiGet(`/api/campaigns/${campaignId}/faction-presets`);
-    const parsed = FactionPresets.safeParse(res.ok ? await res.json() : null);
-    return parsed.success ? parsed.data : { keywords: [], presets: [] };
-  } catch {
-    return { keywords: [], presets: [] };
-  }
-}
-
 // GM-only printed NPCs for CODEX › NPCS' ADD FROM BOOK (issue #47). Empty on failure; the picker then hides.
 async function loadNpcPresets(campaignId: string): Promise<NpcPreset[]> {
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/npc-presets`);
     const parsed = NpcPreset.array().safeParse(res.ok ? await res.json() : null);
-    return parsed.success ? parsed.data : [];
-  } catch {
-    return [];
-  }
-}
-
-// GM-only printed places for CODEX › LOCATIONS' ADD FROM BOOK (issue #50): names and nesting only. Empty on failure;
-// the picker then hides.
-async function loadPlaces(campaignId: string): Promise<PlaceSummary[]> {
-  try {
-    const res = await apiGet(`/api/campaigns/${campaignId}/places`);
-    const parsed = PlaceSummary.array().safeParse(res.ok ? await res.json() : null);
     return parsed.success ? parsed.data : [];
   } catch {
     return [];
@@ -113,8 +69,9 @@ async function loadFlavour(campaignId: string): Promise<FlavourTable[]> {
 }
 
 // One table: the GM board or the player view, by the caller's seat (membership or guest QR).
-export default async function Table({ params }: TableProps) {
-  const campaignId = encodeURIComponent((await params).campaignId);
+export default async function Table({ params, searchParams }: TableProps) {
+  const [p, query] = await Promise.all([params, searchParams]);
+  const campaignId = encodeURIComponent(p.campaignId);
   let me: Me;
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/me`);
@@ -151,6 +108,7 @@ export default async function Table({ params }: TableProps) {
         npcPresets={npcPresets}
         flavour={flavour}
         places={places}
+        initialTab={asGmTab(query[TAB_PARAM])}
       />
     );
   }
