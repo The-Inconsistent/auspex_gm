@@ -679,7 +679,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     roll, which can reach 15, but the table ends at 12, "Mismatched – roll twice". A total over 12 reads row 12, so
     9 or more on the dice gives mismatched eyes. Each of the two re-rolls is an Eye Colour roll and adds 3 too, and a
     re-roll that lands on row 12 rolls again (`rollOn`). "Mismatched" means two colours, so a second re-roll on the
-    first's colour rolls again too. *(User ruling, 2026-10-03; the repeat re-roll is a reading of "Mismatched".)*
+    first's colour rolls again too. *(User ruling, 2026-10-03.)*
 91. **ROLL LOOK writes to DESCRIPTION** (Core pp.32–33; GitHub issue #48). DESCRIPTION is what players read once the
     NPC is revealed, and a look is what they see. The words are short table cells, the GM edits them before SAVE, and
     nothing is saved until then. The roll buttons take no I ROLLED: name lists have no dice, and NAME and DESCRIPTION
