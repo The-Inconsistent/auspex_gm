@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { UserButton } from "@wg/auth/react";
 import {
@@ -65,6 +65,14 @@ export function GmApp({
   const [tab, setTab] = useState<GmTab>("TRACK");
   const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when PARTY's SETUP sends it there
   const [poolError, setPoolError] = useState<string | null>(null);
+  // The books' stat blocks plus the ones the GM wrote (issue #43), by name. Every picker, the NPC stat source and the
+  // stat block already read this one list, so nothing else needs to know about customs. Above the early return, since
+  // hooks run in the same order every render.
+  const customs = codex?.customThreats;
+  const allThreats = useMemo(
+    () => [...bestiary, ...(customs ?? [])].sort((a, b) => a.name.localeCompare(b.name)),
+    [bestiary, customs],
+  );
   if (!state || !codex) return <StatusScreen text="SYNCING COGITATOR…" />;
 
   // SETUP's GO TO: opens a tab, and CODEX on the step's kind.
@@ -137,13 +145,13 @@ export function GmApp({
             ))}
           </nav>
           <main className="gm-body">
-            {tab === "TRACK" && <Tracker state={state} send={send} bestiary={bestiary} />}
+            {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} />}
             {tab === "PREP" && (
               <Prep
                 state={state}
                 codex={codex}
                 send={send}
-                bestiary={bestiary}
+                bestiary={allThreats}
                 presets={presets}
                 onRun={() => setTab("TRACK")}
               />
@@ -160,9 +168,10 @@ export function GmApp({
                 places={places}
                 hazards={presets.hazards}
                 spaceHulk={presets.spaceHulk}
-                bestiary={bestiary}
+                bestiary={allThreats}
                 tier={state.campaign.tier}
                 players={players}
+                wargear={wargear}
               />
             )}
             {tab === "PARTY" && (
