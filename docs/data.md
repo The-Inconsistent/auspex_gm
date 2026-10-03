@@ -176,7 +176,7 @@ The PDFs are in `books/` (gitignored by `*.pdf`).
 | Legacy of the Necrontyr (homebrew, 1st-edition format) | `legacy-of-the-necrontyr` (creation only) | `Legacy of the Necrontyr.pdf` | no printed pages: cite PDF pages |
 | The High Altar of Technology (homebrew Adeptus Mechanicus, 1st-edition format) | `high-altar-of-technology` (threats only, `THREAT_ONLY_SOURCES`) | `The High Altar of Technology.pdf` | no printed pages: cite PDF pages |
 | Church of Steel | `church-of-steel` (cite CoS; scene presets, issue #39; vehicles not transcribed) | `Warhammer 40,000_ Wrath & Glory, Church of Steel.pdf` | printed |
-| Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24; Frameworks, #45; faction presets, #46) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 35, 70, 71, 75, 83, 90) |
+| Redacted Records | `redacted-records` (cite RR1; threats, GitHub issue #44; scene presets, #39; creation, #24; Frameworks, #45; faction presets, #46; places, #50) | `Wrath & Glory_ Redacted Records.pdf` | printed (checked pp.27, 35, 70, 71, 75, 83, 90) |
 | Redacted Records 2 | `redacted-records-2` (cite RR2; threats, #44; creation, #24; Frameworks, #45; NPC presets, #47; places, #50) | `Warhammer 40k_ Wrath & Glory Redacted Records 2.pdf` | printed (checked pp.3, 41, 42, 60) |
 | Darktide (Apr 2025 update) | `darktide` (threats, #44; scene presets, #39; NPC presets, #47; places, #50) | `Warhammer 40,000 Roleplay_ Wrath & Glory – Darktide.pdf` (en dash) | printed (checked pp.61, 75) |
 | Litanies of the Lost | `litanies-of-the-lost` (cite Litanies; threats, #44; scene presets, #39; Frameworks, #45; faction presets, #46; NPC presets, #47; places, #50) | `Wrath and Glory_ Litanies of the Lost.pdf` | printed (checked pp.34, 73, 77) |
@@ -804,6 +804,7 @@ The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one
 | Litanies of the Lost | pp.6–7, 10–22, 44, 53–61, 112–132 | 52: the Valley of Ancra and its sites, the monastery Hephesteum's Rest and its rooms, and the Pakthertius Manufactorum's floors and numbered areas |
 | Redacted Records 2 | pp.38–40, 56–58, 78–93 | 10: Battlezone Balthazar, the Kaurdar Breach with Outpost Nemo and the Shattered Monolith, three shrines and three sites of discovery |
 | Wretches of the Writ | pp.8–9 | 4: the Diver's Bell, the Fallow, Daedalon's Labyrinth and Brother's Ruin |
+| Redacted Records | pp.23–33 | 5: the named space hulks: the Caveat Emptor, the Compostela, the Umbraeus, the Dominus Vobiscum and the Wrath of Janus |
 
 **Conventions** (the transcription brief):
 - A place is a named site with its own printed heading: a system, world, city, hive, ship, site, region, building or
@@ -859,6 +860,11 @@ as printed: "shrine-cites", "suprise", "descendents", "archeotech"/"archaeotech"
 
 **Wretches of the Writ notes.** Ostia has no heading of its own, so the Fallow is top level; "Gathering Chaos" is a
 section heading. Kept as printed: "Daealon", "moons' production reports".
+
+**Redacted Records notes.** The third hulk is the Umbraeus (p.28), and a fifth, "Space Hulk Designation Wrath of
+Janus" (pp.32–33), is in as the Wrath of Janus. No hulk prints headed rooms, so none nests. Each Mission Briefs entry is
+a hook; each hulk's secrets follow its description under a capitals line. Relic and NPC blocks are out, and so is the
+Space Hulk Generator (pp.6–11, #50 step 8). Kept as printed: "that that the vessel", "Gilead Rosarious", "planets ,and".
 
 ---
 
