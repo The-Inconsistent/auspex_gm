@@ -1,5 +1,5 @@
 "use client";
-import { sourceCite, type Archetype } from "@wg/shared";
+import { outOfReach, sourceCite, type Archetype } from "@wg/shared";
 
 import { RecordList } from "@/components/ui/record-list/record-list";
 
@@ -47,8 +47,11 @@ function PlayAscension({ arch }: { arch: Archetype }) {
   const rank = resolved?.advancement?.rank ?? 1;
   const chosen = (draft.advancement?.packages ?? []).filter((id) => lookups.packages.get(id)?.kind === "ascension");
   const ascended = draft.advancement?.archetypeAscension?.archetypeId;
+  // Not the ones out of this character's reach (species, archetype, keyword), but always the ones taken, to untake.
   const ascensions = [...lookups.packages.values()]
-    .filter((p) => p.kind === "ascension")
+    .filter(
+      (p) => p.kind === "ascension" && (chosen.includes(p.id) || !resolved || !outOfReach(p.requires, resolved.who)),
+    )
     .sort((a, b) => a.name.localeCompare(b.name));
   // "An Archetype of their Faction" is the same `factionId` (§11.67), at a Tier Ascended to (Core p.155).
   const archetypes = [...lookups.archetypes.values()]
@@ -159,9 +162,11 @@ function PlayAscension({ arch }: { arch: Archetype }) {
 // Creation Ascension (Core p.148, rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension
 // Package, then the rest of the XP is spent as usual. The character still starts at Rank 1.
 function CreationAscension({ arch }: { arch: Archetype }) {
-  const { draft, update, lookups, tier } = useBuilder();
-  const ascensions = [...lookups.packages.values()].filter((p) => p.kind === "ascension");
+  const { draft, update, lookups, tier, resolved } = useBuilder();
   const chosen = (draft.packages ?? []).filter((id) => lookups.packages.get(id)?.kind === "ascension");
+  const ascensions = [...lookups.packages.values()].filter(
+    (p) => p.kind === "ascension" && (chosen.includes(p.id) || !resolved || !outOfReach(p.requires, resolved.who)),
+  );
 
   // One Ascension Package: picking another replaces it; the Advancement Packages bought stay.
   const pick = (id: string) =>

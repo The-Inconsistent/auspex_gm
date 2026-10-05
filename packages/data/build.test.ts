@@ -11,6 +11,7 @@ import {
   deriveStats,
   keepPlay,
   keepSheetWeapons,
+  outOfReach,
   resolveBuild,
   applyUpgrades,
   sheetWeapon,
@@ -202,6 +203,23 @@ test("Change of Kinship at Creation Ascension only joins the Ynnari (IoE pp.20, 
   assert.ok(!barred(ynnari));
   assert.ok(ynnari.sheet.keywords.includes("YNNARI") && !ynnari.sheet.keywords.includes("ASURYANI"));
   assert.ok(barred(kinship(2)));
+});
+
+test("the talent list hides what XP can't buy: species, archetype, keyword", () => {
+  const talent = (id: string) => catalogue.creation.talents.find((t) => t.id === id)!.requires;
+  const guardsman = run({ tier: 1, archetypeId: "imperial-guardsman" }).who;
+  const corsair = run({ tier: 1, archetypeId: "corsair" }).who;
+  assert.ok(outOfReach(talent("legacy-of-sorrow"), guardsman)); // Aeldari only (Core p.135)
+  assert.ok(!outOfReach(talent("legacy-of-sorrow"), corsair));
+  assert.ok(!outOfReach(talent("brutalist"), guardsman)); // Strength 3 can still be bought
+  // Favoured by the Warp (Core p.133) needs PSYKER, which Latent Psyker gives a Human (Apocrypha p.238).
+  assert.ok(!outOfReach(talent("favoured-by-the-warp"), run({ tier: 1, archetypeId: "imperial-guardsman" }, true).who));
+  // A Terminator picks Adeptus Astartes or Primaris: before the pick, Angel of Death (Core p.129) is still open.
+  assert.ok(!outOfReach(talent("angel-of-death"), run({ tier: 3, archetypeId: "terminator" }).who));
+  // A keyword is only buyable from a record this character can take: Lost on the Warrior Path's EXARCH needs an
+  // ASPECT WARRIOR (IoE p.59), so a Dire Avenger can buy it and a Corsair can't.
+  assert.ok(run({ tier: 3, archetypeId: "dire-avenger" }).who.buyable.includes("EXARCH"));
+  assert.ok(!run({ tier: 3, archetypeId: "corsair" }).who.buyable.includes("EXARCH"));
 });
 
 test("a granted Talent whose requirements aren't met waits for the GM, and the tick clears it", () => {

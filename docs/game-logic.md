@@ -18,7 +18,7 @@ table (`roll-table.ts`, `flavour.ts`).
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
 | | `packages/shared/src/flavour.ts` | `rollOn` (one roll on a name or appearance table, by its shape), `rollLook` and `LOOK` (Core p.32's species rules, §11.90), `isNameTable`: prep flavour only (issue #48) |
 | | `packages/shared/src/actions.ts` | `Action` union, `PLAYER_ACTIONS` |
-| | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `purchaseKey` (the key an advancement purchase is dated by, §11.69), `meets` (every `Requirement` kind), `wargearMatches` |
+| | `packages/shared/src/build.ts` | `CharacterBuild` (a character as its creation choices), `resolveBuild` (sheet, XP ledger, pending choices, problems), `purchaseKey` (the key an advancement purchase is dated by, §11.69), `meets` (every `Requirement` kind), `outOfReach` (a record the builder's lists hide: a species, archetype or keyword no purchase gives), `wargearMatches` |
 | Enforcement | `apps/api/src/table/table.dispatch.ts` | `authorize` (who may send what) |
 | | `apps/api/src/campaign/campaign.actions.ts` | pools, `session.start`, `session.end` |
 | | `apps/api/src/character/character.actions.ts` | `character.adjust` (runs `pcHit`: Exhausted, Dying, Annihilation), `character.respite` |
