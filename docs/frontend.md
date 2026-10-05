@@ -141,13 +141,16 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
 - **SEND TO GM** (players, on REVIEW): puts the draft on the table. PARTY then shows OPEN DRAFT for that character; the
   GM ticks what only the GM judges and saves, which clears the draft.
 - **Live preview:** every change runs `resolveBuild` from `@wg/shared` (`useMemo`); the screens read its sheet,
-  ledger, `pending`, `choices` (every grant choice with its picker kind and answer) and `problems`. `BuilderContext`
+  ledger, `pending`, `choices` (every grant choice with its picker kind and answer), `problems` and `who` (for
+  `outOfReach`). `BuilderContext`
   (`useBuilder()`) carries the draft, the result and the catalogue lookups.
 - **Screens** (`StepNav`, one tab per Core p.17 step, "N LEFT" per tab): TIER (budget; the GM's HOMEBREW switch, which
   reloads the page), ARCHETYPE, CUSTOMISE (ratings, USE SUGGESTIONS, Talents, powers for a PSYKER, Advancement
   Packages), FACTION (placeholder fills, Background and its one bonus, option groups), ASCENSION (only below the
   campaign's Tier), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
   ticks and this character's rulings: species, keywords, gear swaps). Grant choices render as `ChoiceCard`s.
+  The Talent, power and package lists leave out what `outOfReach` says no purchase can open (a species, archetype or
+  keyword nothing buyable gives); a power or package already taken stays, so it can be untaken.
 - **Ledger:** a side panel from 900px (`XpLedger`), a fixed bottom bar on a phone (`XpBar`). Its IN PLAY section groups
   the purchases by the session they were bought in, latest first (`LedgerRow.session`, §11.69); anything the server has
   not dated — not saved yet, or bought before the app recorded it — sits last under NOT RECORDED YET.

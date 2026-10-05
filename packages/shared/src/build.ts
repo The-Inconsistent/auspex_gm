@@ -224,7 +224,11 @@ export type ResolvedBuild = {
   effects: BuildEffect[];
   // In play: the XP earned (the advancement budget), what advancement spends of it, what is left, Rank, the Tier now.
   advancement: { budget: number; spent: number; rank: number; tier: number } | null;
+  // Who the finished character is, for `outOfReach`: species (with what it counts as, null before one is picked),
+  // archetype, keywords, and the keywords a Talent or Package could still add.
+  who: Who;
 };
+export type Who = { species: string[] | null; archetypeId: string; keywords: string[]; buyable: string[] };
 
 // Ready to save: nothing left to choose, nothing wrong, and every GM question ticked.
 export const buildReady = (r: ResolvedBuild) => r.pending.length === 0 && r.problems.length === 0;
@@ -829,6 +833,7 @@ export function resolveBuild({
       problems,
       effects,
       advancement: null,
+      who: { species: null, archetypeId: build.archetypeId, keywords: [], buyable: [] },
     };
   }
   allowed(arch, "archetype");
@@ -1763,7 +1768,21 @@ export function resolveBuild({
     wealth: s.wealth,
   });
   const advancement = play ? { budget: earned, spent: advanceSpent, rank, tier: nowTier } : null;
-  return { sheet, budget, spent, ledger, pending, choices, problems, effects, advancement };
+  const self = {
+    species: species ? final.species : null,
+    archetypeId: final.archetypeId,
+    keywords: [...final.keywords],
+  };
+  const who = {
+    ...self,
+    buyable: buyableKeywords(
+      [...catalogue.creation.talents, ...catalogue.creation.packages].filter(
+        (r) => catalogue.homebrew || official(r.source),
+      ),
+      self,
+    ),
+  };
+  return { sheet, budget, spent, ledger, pending, choices, problems, effects, advancement, who };
 }
 
 // ── requirements ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -1880,6 +1899,67 @@ export function meets(r: Requirement, c: BuildCtx): true | string | { gm: string
       return gm ?? whys.filter((w) => typeof w === "string").join(", or ");
     }
   }
+}
+
+// Keywords a Talent or Package this character can take would give, however deep in its choices: Latent Psyker's
+// PSYKER for a Human (not an Aeldari), Lost on the Warrior Path's EXARCH. A record or choice whose own requirements are
+// out of reach gives nothing, and one keyword can open the next record (CHAOS, then Mark of Chaos's PSYKER), so this
+// runs until nothing new turns up. A placeholder ("[ANY]") names no keyword yet, so it opens nothing.
+function buyableKeywords(
+  records: readonly { requires?: Requirement[]; grants?: unknown }[],
+  self: Omit<Who, "buyable">,
+): string[] {
+  const found = new Set<string>();
+  const add = (k: unknown) => typeof k === "string" && !k.startsWith("[") && found.add(k);
+  const walk = (x: unknown): void => {
+    if (Array.isArray(x)) return x.forEach(walk);
+    if (!x || typeof x !== "object") return;
+    // Catalogue data, parsed at load: a `requires` anywhere in it is a Requirement list.
+    const reqs = (x as { requires?: Requirement[] }).requires;
+    if (reqs && outOfReach(reqs, { ...self, buyable: [...found] })) return;
+    for (const [k, v] of Object.entries(x)) {
+      if (k === "keyword") add(v);
+      else if (k === "keywords" && Array.isArray(v)) v.forEach(add);
+      else if (k !== "requires") walk(v);
+    }
+  };
+  for (let size = -1; size !== found.size;) {
+    size = found.size;
+    walk(records.map((r) => ({ requires: r.requires, grants: r.grants })));
+  }
+  return [...found];
+}
+
+// True when a requirement no purchase can meet fails: the species, the archetype, a keyword nothing buyable gives. The
+// builder hides such a record from its lists; anything a purchase can still meet (a rating, another Talent, PSYKER from
+// Latent Psyker) stays, and `resolveBuild` flags it. Before a species is picked, species requirements hide nothing.
+export function outOfReach(reqs: readonly Requirement[] | undefined, who: Who): boolean {
+  const keywords = new Set(who.keywords);
+  const buyable = new Set(who.buyable);
+  const { species } = who;
+  const out = (r: Requirement): boolean => {
+    switch (r.kind) {
+      case "species":
+        return !!species && !r.anyOf.some((x) => species.includes(x));
+      case "notSpecies":
+        return !!species && r.anyOf.some((x) => species.includes(x));
+      case "archetype":
+        return !r.anyOf.includes(who.archetypeId);
+      case "notArchetype":
+        return r.anyOf.includes(who.archetypeId);
+      case "keyword":
+        return !r.anyOf.some((k) => keywords.has(k) || buyable.has(k));
+      case "notKeyword":
+        return r.anyOf.some((k) => keywords.has(k));
+      case "all":
+        return r.of.some(out);
+      case "either":
+        return r.of.every(out);
+      default:
+        return false;
+    }
+  };
+  return (reqs ?? []).some(out);
 }
 
 // ── wargear filters ──────────────────────────────────────────────────────────────────────────────────────────────────

@@ -5,6 +5,7 @@ import {
   SKILL_XP,
   SKILLS,
   LANGUAGE_XP,
+  outOfReach,
   sourceCite,
   type Attribute,
   type Skill,
@@ -249,6 +250,7 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
           label="Search talents"
           searchable
           items={[...lookups.talents.values()]
+            .filter((t) => !outOfReach(t.requires, r.who))
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((t) => ({
               id: t.id,
@@ -284,6 +286,15 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
             label="Search psychic powers"
             searchable
             items={[...lookups.powers.values()]
+              // A power needs a Discipline's requirements too, through any Discipline it's in (`alsoIn`), as
+              // `resolveBuild` checks them; the ones taken stay, to untake.
+              .filter(
+                (p) =>
+                  mine.powers?.includes(p.id) ||
+                  [p.disciplineId, ...p.alsoIn].some(
+                    (id) => !outOfReach([...(lookups.disciplines.get(id)?.requires ?? []), ...p.requires], r.who),
+                  ),
+              )
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((p) => ({
                 id: p.id,
@@ -317,7 +328,9 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
           label="Search packages"
           searchable
           items={[...lookups.packages.values()]
-            .filter((p) => p.kind === "advancement")
+            .filter(
+              (p) => p.kind === "advancement" && (mine.packages?.includes(p.id) || !outOfReach(p.requires, r.who)),
+            )
             .map((p) => ({
               id: p.id,
               label: p.name,
