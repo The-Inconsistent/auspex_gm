@@ -124,7 +124,8 @@ export function StatBlock({ t, tier, legend }: StatBlockProps) {
           <div className="sb-body">{t.determination}</div>
         </>
       )}
-      <div className="sb-grid sb-shade" style={{ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}>
+      {/* CONVICTION is the longest label: a wider share keeps it whole in the tracker's 300px side panel */}
+      <div className="sb-grid sb-shade" style={{ gridTemplateColumns: "minmax(0, 1.4fr) repeat(2, minmax(0, 1fr))" }}>
         <span className="label">CONVICTION</span>
         <span className="label">RESOLVE</span>
         <span className="label">SIZE</span>
