@@ -106,6 +106,9 @@ export const Action = z.union([
       wealth: delta.optional(),
       ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
     }),
+    // GM only: Corruption gained or removed (Core pp.285–287, rules-flow §9). `ruin` is a failed Corruption Test: the GM
+    // also gains 1 Ruin (p.320). The notices name the Mutation Tests a new level owes.
+    z.object({ type: z.literal("character.corruption"), id, delta, ruin: z.boolean().optional() }),
     // GM only: a codex item handed to an Agent, which uses their Wargear Test for the session (rules-flow.md §11.112),
     // and taken back again (§11.114). The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),

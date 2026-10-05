@@ -169,6 +169,16 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
   assert.deepEqual(toPlayerView(s, null).campaign.limits, ["body horror"]);
 });
 
+test("toPlayerView: Corruption reaches only its own Agent's phone", () => {
+  const withC = (id: string, corruption: number) => char({ id, stats: CharacterStats.parse({ corruption }) });
+  const s = table(enc([]), [withC("a", 7), withC("b", 12)]);
+  const seen = (viewer: string | null) => toPlayerView(s, viewer).characters.map((c) => c.stats.corruption);
+  assert.deepEqual(seen("a"), [7, 0]);
+  assert.deepEqual(seen("b"), [0, 12]);
+  assert.deepEqual(seen(null), [0, 0]);
+  assert.equal(s.characters[1]!.stats.corruption, 12, "input not mutated");
+});
+
 test("toPlayerView: each player gets only their own Agent's objectives", () => {
   const goal = [{ text: "Recover the relic", done: false }];
   const s = table(enc([]), [char({ id: "a", objectives: goal }), char({ id: "b", objectives: goal })]);

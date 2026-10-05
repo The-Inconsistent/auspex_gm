@@ -9,6 +9,8 @@ import {
   creationKey,
   keepPlay,
   keepSheetWeapons,
+  mutationTests,
+  poolMax,
   deriveStats,
   effectiveStrength,
   gearLine,
@@ -35,8 +37,8 @@ import {
 import { wargear } from "@wg/data";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
-import { campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
-import { session } from "../campaign/campaign.schema.ts";
+import { campaignRules, campaignTier, playerCount } from "../campaign/campaign.actions.ts";
+import { campaign, session } from "../campaign/campaign.schema.ts";
 import { handout, item } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
@@ -350,7 +352,7 @@ export async function applyCharacterAction(
                 ...keepPlay({ previous: old, next: r.sheet, before: r.sheet }),
                 weapons: keepSheetWeapons(old.weapons, r.sheet.weapons),
               }
-            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
+            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned, corruption: old.corruption };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
       // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.
       const xpSpent = r.advancement?.spent ?? 0;
@@ -440,6 +442,31 @@ export async function applyCharacterAction(
       if (a.ammo) stats.ammo = adjustAmmo(stats.ammo, a.ammo);
       await saveStats(tx, { id: a.id, stats });
       return { ok: true };
+    }
+
+    // GM only (not in PLAYER_ACTIONS). A failed Corruption Test also gives the GM 1 Ruin (Core p.320), in the same
+    // transaction, capped like `pool.adjust`. A new level owes a Mutation Test (pp.286–287), told in the notices.
+    case "character.corruption": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const stats = CharacterStats.parse(row.stats);
+      const from = stats.corruption;
+      stats.corruption = Math.max(0, from + a.delta);
+      await saveStats(tx, { id: a.id, stats });
+      if (a.ruin) {
+        const cap = poolMax("ruin", await playerCount(tx, cid));
+        await tx
+          .update(campaign)
+          .set({ ruin: sql`least(${cap}, ${bump(campaign.ruin, 1)})` })
+          .where(eq(campaign.id, cid));
+      }
+      const { dns, chaosSpawn } = mutationTests(from, stats.corruption);
+      const notices = [
+        ...dns.map((dn) => `${row.name}: MUTATION TEST · DN ${dn} (Conviction; may choose to fail, Core p.286)`),
+        ...(chaosSpawn
+          ? [`${row.name}: CHAOS SPAWN at ${stats.corruption} Corruption, the Agent is lost (Core p.286)`]
+          : []),
+      ];
+      return notices.length ? { ok: true, notices } : { ok: true };
     }
 
     case "character.requisition": {

@@ -90,7 +90,8 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
     return to ? `${sceneNumber(i)} · ${to.title.toUpperCase()}` : null;
   };
 
-  const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
+  const report = (r: ActionResult, ok: string) =>
+    setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`); // notices: a Mutation Test owed
 
   // ↑ / ↓: swaps a beat with its neighbour and saves the new order.
   const move = async ({ index, dir }: { index: number; dir: -1 | 1 }) => {
@@ -318,7 +319,9 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                       })}
                   </div>
                 )}
-                {b.tests.length > 0 && <SceneTests tests={b.tests} />}
+                {b.tests.length > 0 && (
+                  <SceneTests tests={b.tests} characters={state.characters} send={send} onReport={report} />
+                )}
                 {b.ruin.length + b.glory.length + b.spends.length > 0 && (
                   <ScenePools beat={b} pools={state.campaign} players={players} send={send} onReport={report} />
                 )}

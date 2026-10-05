@@ -4,6 +4,8 @@ import { useState } from "react";
 import {
   ATTRIBUTES,
   SKILLS,
+  corruptionLabel,
+  corruptionLevel,
   deriveStats,
   effectiveStrength,
   pcStatus,
@@ -265,6 +267,17 @@ export function Sheet({ me, tier, table }: SheetProps) {
         <div className="dim" style={{ fontSize: 12 }}>
           AMMO: 1 per Reload (p.185), each type fits its own weapons (p.229). WEALTH: 1 per Icon on an Influence Test
           (p.206). The GM grants both.
+        </div>
+      </div>
+
+      {/* Read-only here: the GM keeps the tally (PARTY), and `toPlayerView` sends it to its own Agent only. Core pp.285–287. */}
+      <div className="stack" style={{ gap: 4 }}>
+        <div className="rule">CORRUPTION</div>
+        <div className="keys" style={{ alignItems: "center" }}>
+          <b>{s.corruption}</b>
+          <span className={`chip ${corruptionLevel(s.corruption).modifier > 0 ? "warn" : ""}`}>
+            {corruptionLabel(s.corruption)}
+          </span>
         </div>
       </div>
 

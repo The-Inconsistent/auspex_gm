@@ -180,6 +180,9 @@ export const CharacterStats = z.object({
   // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
   // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),
+  // Corruption total (Core pp.285–287, rules-flow §9), changed by `character.corruption`; the level is derived. The GM's
+  // and its owner's only: `toPlayerView` clears it from every other Agent's sheet.
+  corruption: z.number().int().min(0).default(0),
   ammo: z
     .record(z.string().min(1).max(60), z.number().int().min(0).max(99))
     .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`)
@@ -528,7 +531,10 @@ const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidd
 export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
   campaign: { ...s.campaign, ruin: 0 },
-  characters: s.characters.map((c) => (c.id === characterId ? c : { ...c, objectives: [] })),
+  // Objectives and Corruption are private: only the owner's phone gets them.
+  characters: s.characters.map((c) =>
+    c.id === characterId ? c : { ...c, objectives: [], stats: { ...c.stats, corruption: 0 } },
+  ),
   access: { members: s.access.members, invites: [], guests: [] },
   encounter: s.encounter && {
     ...s.encounter,

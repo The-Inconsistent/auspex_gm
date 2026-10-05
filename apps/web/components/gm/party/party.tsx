@@ -8,6 +8,8 @@ import {
   CharacterName,
   CONDITIONS,
   CharacterStats,
+  corruptionLabel,
+  corruptionLevel,
   deriveStats,
   pcStatus,
   rankOf,
@@ -153,6 +155,13 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
     report(
       await send({ type: "character.supply", id: c.id, wealth }),
       `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
+    );
+
+  // ±1 CORRUPTION: the GM's tally (Core pp.285–287); the ack's notices name any Mutation Test a new level owes.
+  const adjCorruption = async (c: Character, delta: number) =>
+    report(
+      await send({ type: "character.corruption", id: c.id, delta }),
+      `${c.name.toUpperCase()} CORRUPTION ${delta > 0 ? "+" : ""}${delta}`,
     );
 
   // ±1 AMMO: loot or an award of one type (§11.57), starting the type if it's new; −1 takes back a slip, and at 0
@@ -334,6 +343,26 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                       .map(([k, n]) => `${n} ${k}`)
                       .join(", ") || "NONE"}
                     {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
+                  </div>
+                  <div className="keys" style={{ alignItems: "center" }}>
+                    <span className="dim">CORRUPTION {c.stats.corruption}</span>
+                    <span className={`chip ${corruptionLevel(c.stats.corruption).modifier > 0 ? "warn" : ""}`}>
+                      {corruptionLabel(c.stats.corruption)}
+                    </span>
+                    <button
+                      className="btn sm"
+                      aria-label={`${c.name} Corruption minus 1`}
+                      onClick={() => adjCorruption(c, -1)}
+                    >
+                      −
+                    </button>
+                    <button
+                      className="btn sm"
+                      aria-label={`${c.name} Corruption plus 1`}
+                      onClick={() => adjCorruption(c, 1)}
+                    >
+                      +
+                    </button>
                   </div>
                   <div className="dim">
                     WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}

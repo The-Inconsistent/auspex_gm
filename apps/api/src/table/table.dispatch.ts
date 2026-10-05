@@ -86,6 +86,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "character.draft":
     case "character.adjust":
     case "character.supply":
+    case "character.corruption":
     case "character.requisition":
     case "character.fitUpgrade":
     case "character.removeUpgrade":

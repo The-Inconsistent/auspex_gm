@@ -206,11 +206,12 @@ Complication). Levels: 0–5 Pure (+0), 6–10 Tarnished (+1) [HOUSE: 11 belongs
 **Tracks and enforces (server):** pools with caps; session start/reset; alternating turns with Seize
 (cost + once-per-handoff limit + GM round-start seize); ambush; Round rollover; per-class damage outcomes
 (slain/Dying/Exhausted); Mob members (1 Wound each) and the half-slain Resolve prompt; Traumatic Injury count
-vs Tier + 1; personal Ruin; Respite reset.
+vs Tier + 1; personal Ruin; Respite reset; Corruption per Agent (`stats.corruption`, GM-only `character.corruption`; a
+failed Test also adds 1 Ruin, and a new level notices the Mutation Test owed, DN 3 + level modifier).
 
 **Shows (UI):** derived traits; auto states (Wounded, Dying, Exhausted, Slain); turn-boundary reminders
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
-rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
+Corruption total and level (the owner's phone only; the Mutation tables, p.287, stay in the book); rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
 
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.

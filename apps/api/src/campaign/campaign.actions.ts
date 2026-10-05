@@ -42,7 +42,7 @@ export async function campaignRules(tx: Tx, campaignId: string) {
   return c!; // ctx.campaignId comes from a valid token, so the campaign exists
 }
 
-async function playerCount(tx: Tx, campaignId: string) {
+export async function playerCount(tx: Tx, campaignId: string) {
   const [{ n } = { n: 0 }] = await tx
     .select({ n: count() })
     .from(character)

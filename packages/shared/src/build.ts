@@ -210,7 +210,7 @@ export type ChoicePick =
 export type BuildChoicePrompt = PendingChoice & { pick: ChoicePick; answer: BuildChoice };
 // "error" blocks saving; "gm" needs the GM's tick (its path in `gm.approved`) before it does.
 export type BuildProblem = { step: BuildStep; what: string; cite?: string; severity: "error" | "gm"; path?: string };
-// What the build gives that a sheet has no field for: Faith, Corruption, followers, bonus dice in a situation…
+// What the build gives that a sheet has no field for: Faith, a starting Corruption, followers, bonus dice in a situation…
 export type BuildEffect = { what: string; cite?: string };
 
 export type ResolvedBuild = {
@@ -2264,6 +2264,7 @@ export function keepPlay({
       .filter((g, i, all) => all.indexOf(g) === i)
       .slice(0, 60),
     wealth: previous.wealth,
+    corruption: previous.corruption, // earned in play, never by a build
     ammo: previous.ammo,
     requisitioned: previous.requisitioned,
   };
