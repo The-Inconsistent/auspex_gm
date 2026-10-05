@@ -1,0 +1,394 @@
+[
+  {
+    "id": "rr2-anointed-halberd",
+    "name": "Anointed Halberd",
+    "source": "redacted-records-2",
+    "page": 43,
+    "category": "Ecclesiarchy Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 4,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Blessed (1)"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare. Differs from apoc-anointed-halberd (Apocrypha p.331)."
+  },
+  {
+    "id": "rr2-hallowed-mace",
+    "name": "Hallowed Mace",
+    "source": "redacted-records-2",
+    "page": 43,
+    "category": "Ecclesiarchy Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 4,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Blessed (1)",
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206): Rare. Differs from apoc-hallowed-mace (Apocrypha p.331)."
+  },
+  {
+    "id": "rr2-mace-of-the-righteous",
+    "name": "Mace of the Righteous",
+    "source": "redacted-records-2",
+    "page": 43,
+    "category": "Ecclesiarchy Melee Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 6,
+      "ap": -2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Blessed (2)",
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare."
+  },
+  {
+    "id": "rr2-novitiate-melee-weapon",
+    "name": "Novitiate Melee Weapon",
+    "source": "redacted-records-2",
+    "page": 43,
+    "category": "Ecclesiarchy Melee Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Parry"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"1\" (the DN modifier, Core p.206): Uncommon. ED printed \"4\" (no +); AP printed \"-\". The description: most commonly a sword, though maces and one-handed spears are preferred by some Orders Minoris."
+  },
+  {
+    "id": "rr2-spear-of-the-faithful",
+    "name": "Spear of the Faithful",
+    "source": "redacted-records-2",
+    "page": 43,
+    "category": "Ecclesiarchy Melee Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 7,
+      "ed": 6,
+      "ap": -3,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Parry",
+        "Blessed (2)"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare. Differs from apoc-spear-of-the-faithful (Apocrypha p.331)."
+  },
+  {
+    "id": "rr2-vindictor",
+    "name": "Vindictor",
+    "source": "redacted-records-2",
+    "page": 43,
+    "category": "Ecclesiarchy Melee Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "FLAME",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 5,
+      "ap": -2,
+      "range": [
+        2
+      ],
+      "traits": [
+        "Brutal",
+        "Inflict (On Fire)"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206): Rare. Melee row (p.43); the p.44 ranged table prints its shooting profile as \"Vindictor (Shooting)\" (rr2-vindictor-shooting). Keyword FLAME as printed (Core uses FIRE). Differs from apoc-vindictor and apoc-vindictor-melee (Apocrypha p.353)."
+  },
+  {
+    "id": "rr2-artificer-crafted-storm-bolter",
+    "name": "Artificer-crafted Storm Bolter",
+    "source": "redacted-records-2",
+    "page": 44,
+    "category": "Ecclesiarchy Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "BOLT",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        12,
+        24,
+        36
+      ],
+      "salvo": 4,
+      "traits": [
+        "Brutal",
+        "Heavy (3)",
+        "Rapid Fire (4)"
+      ]
+    },
+    "effect": "Mastercrafted (Core p.228): The weapon gains the Reliable Trait. You gain +2 bonus dice to any Attack Test made with this weapon.",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare. The Traits column prints \"Mastercrafted\" in italics: the Core p.228 weapon upgrade (id mastercrafted), not a Trait, so it is in effect with Core's text and Reliable is not added to traits. Differs from Core storm-bolter (ED +2, Rapid Fire (4))."
+  },
+  {
+    "id": "rr2-ministorum-flamer",
+    "name": "Ministorum Flamer",
+    "source": "redacted-records-2",
+    "page": 44,
+    "category": "Ecclesiarchy Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FLAME",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 11,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Flamer"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare. Keyword FLAME as printed (Core uses FIRE)."
+  },
+  {
+    "id": "rr2-ministorum-hand-flamer",
+    "name": "Ministorum Hand Flamer",
+    "source": "redacted-records-2",
+    "page": 44,
+    "category": "Ecclesiarchy Ranged Weapons",
+    "kind": "weapon",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FLAME",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Flamer",
+        "Pistol"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare. Keyword FLAME as printed (Core uses FIRE)."
+  },
+  {
+    "id": "rr2-ministorum-shotgun",
+    "name": "Ministorum Shotgun",
+    "source": "redacted-records-2",
+    "page": 44,
+    "category": "Ecclesiarchy Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 9,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Spread"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206): Rare. The description also calls it \"Munitorum Shotguns\" (p.44), as printed."
+  },
+  {
+    "id": "rr2-vindictor-shooting",
+    "name": "Vindictor (Shooting)",
+    "source": "redacted-records-2",
+    "page": 44,
+    "category": "Ecclesiarchy Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "FLAME",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "weapon": {
+      "addStrength": false,
+      "damage": 11,
+      "ed": 2,
+      "ap": -1,
+      "range": [
+        4,
+        8,
+        12
+      ],
+      "salvo": 0,
+      "traits": [
+        "Flamer"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206): Rare. Shooting profile of the Vindictor; the melee profile is rr2-vindictor (p.43). A starting \"Vindictor\" is a bundle of both. Keyword FLAME as printed."
+  },
+  {
+    "id": "rr2-novitiate-armour",
+    "name": "Novitiate Armour",
+    "source": "redacted-records-2",
+    "page": 45,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 3,
+    "rarity": "Rare",
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": false,
+      "powered": 0,
+      "traits": []
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206): Rare. The description calls it a suit of carapace armour (corselet, vambraces and greaves). No Traits printed."
+  },
+  {
+    "id": "rr2-sacresant-shield",
+    "name": "Sacresant Shield",
+    "source": "redacted-records-2",
+    "page": 45,
+    "category": "Armour",
+    "kind": "armour",
+    "value": 6,
+    "rarity": "Very Rare",
+    "keywords": [
+      "FORCE FIELD",
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS"
+    ],
+    "armour": {
+      "ar": 3,
+      "invulnerable": true,
+      "powered": 0,
+      "traits": [
+        "Shield",
+        "Power Field"
+      ]
+    },
+    "effect": "",
+    "note": "Rarity printed \"3\" (the DN modifier, Core p.206): Very Rare. AR printed \"*3\" (Invulnerable)."
+  }
+]

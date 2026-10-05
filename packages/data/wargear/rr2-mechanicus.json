@@ -1,0 +1,472 @@
+[
+  {
+    "id": "rr2-arc-maul",
+    "name": "Arc Maul",
+    "source": "redacted-records-2",
+    "page": 61,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Rare",
+    "keywords": [
+      "ARC",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 6,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Arc (3)",
+        "Brutal"
+      ],
+      "ap": -2
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Rare."
+  },
+  {
+    "id": "rr2-cavalry-sabre",
+    "name": "Cavalry Sabre",
+    "source": "redacted-records-2",
+    "page": 61,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 3,
+    "rarity": "Uncommon",
+    "keywords": [
+      "BLADE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Traits printed \"-\". Rarity printed \"1\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Uncommon."
+  },
+  {
+    "id": "rr2-clawed-serberys-limbs",
+    "name": "Clawed Serberys Limbs",
+    "source": "redacted-records-2",
+    "page": 61,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 4,
+      "ed": 3,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Brutal"
+      ]
+    },
+    "effect": "",
+    "note": "Value and Rarity printed \"-\": the Cybercanids' natural weapon (Clawed Limbs on rr2-raider-cybercanid and rr2-sulphurhound-cybercanid, p.54). AP printed \"-\"."
+  },
+  {
+    "id": "rr2-electroleech-stave",
+    "name": "Electroleech Stave",
+    "source": "redacted-records-2",
+    "page": 61,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 6,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising",
+        "Brutal"
+      ],
+      "ap": -2
+    },
+    "effect": "",
+    "note": "Described as \"Wielded only by the Fulgurite sect of Electro-Priests\" (p.61); no Requirements line, so no requires. Rarity printed \"3\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Very Rare."
+  },
+  {
+    "id": "rr2-electrostatic-gauntlets",
+    "name": "Electrostatic Gauntlets",
+    "source": "redacted-records-2",
+    "page": 61,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 5,
+      "ed": 4,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Agonising",
+        "Brutal"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Melee profile; the ranged profile (p.63 table, same Value and Rarity) is rr2-electrostatic-gauntlets-ranged. One item: a starting one is a bundle of both. Rarity printed \"3\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Very Rare."
+  },
+  {
+    "id": "rr2-pteraxii-talons",
+    "name": "Pteraxii Talons",
+    "source": "redacted-records-2",
+    "page": 61,
+    "category": "Adeptus Mechanicus Melee Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "addStrength": true,
+      "damage": 3,
+      "ed": 2,
+      "range": [
+        1
+      ],
+      "traits": [
+        "Reliable"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Value and Rarity printed \"-\": the Pteraxii's augmetic limb (Pteraxii archetypes, p.49)."
+  },
+  {
+    "id": "rr2-archeo-revolver",
+    "name": "Archeo-revolver",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Unique",
+    "keywords": [
+      "PROJECTILE"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol"
+      ],
+      "ap": -2
+    },
+    "effect": "",
+    "note": "Keywords printed \"PROJECTILE\" only (no ADEPTUS MECHANICUS), kept as printed. Described as \"Exclusive to the Serberys Raiders\" (p.62); no Requirements line. Differs from apoc-archeo-revolver (Apocrypha p.356). Rarity printed \"4\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Unique."
+  },
+  {
+    "id": "rr2-electrostatic-gauntlets-ranged",
+    "name": "Electrostatic Gauntlets (ranged)",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 11,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Agonising",
+        "Brutal"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Ranged profile of rr2-electrostatic-gauntlets (p.61); the p.63 table prints the same Value and Rarity. Rarity printed \"3\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Very Rare."
+  },
+  {
+    "id": "rr2-flechette-carbine",
+    "name": "Flechette Carbine",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 4,
+    "rarity": "Uncommon",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 8,
+      "ed": 2,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Rapid Fire (4)"
+      ]
+    },
+    "effect": "",
+    "note": "Trait printed \"Rapid fire (4)\" (lower-case f). AP printed \"-\". Differs from apoc-flechette-carbine (Apocrypha p.356). Rarity printed \"1\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Uncommon."
+  },
+  {
+    "id": "rr2-gamma-pistol",
+    "name": "Gamma Pistol",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Very Rare",
+    "keywords": [
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 13,
+      "ed": 3,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Pistol",
+        "Rad (3)"
+      ],
+      "ap": -3
+    },
+    "effect": "",
+    "note": "Described as \"Issued only to Cybernetica Datasmiths\" (p.62); no Requirements line. Rarity printed \"3\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Very Rare."
+  },
+  {
+    "id": "rr2-galvanic-carbine",
+    "name": "Galvanic Carbine",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 5,
+    "rarity": "Rare",
+    "keywords": [
+      "PROJECTILE",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        9,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Rending (1)"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Rarity printed \"2\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Rare."
+  },
+  {
+    "id": "rr2-phosphor-blast-carbine",
+    "name": "Phosphor Blast Carbine",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        8,
+        18,
+        27
+      ],
+      "salvo": 2,
+      "traits": [
+        "Assault",
+        "Blast (4)",
+        "Melta"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Range printed 8/18/27, kept as printed (the other 18/27 rows in the table have Short 9). Rarity printed \"4\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Unique."
+  },
+  {
+    "id": "rr2-phosphor-blast-pistol",
+    "name": "Phosphor Blast Pistol",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 8,
+    "rarity": "Unique",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 12,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Blast (4)",
+        "Melta",
+        "Pistol"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Differs from apoc-phosphor-blast-pistol (Apocrypha p.357). Rarity printed \"4\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Unique."
+  },
+  {
+    "id": "rr2-phosphor-pistol",
+    "name": "Phosphor Pistol",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Melta",
+        "Pistol"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Differs from apoc-phosphor-pistol (Apocrypha p.357). Rarity printed \"3\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Very Rare."
+  },
+  {
+    "id": "rr2-phosphor-torch",
+    "name": "Phosphor Torch",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": 7,
+    "rarity": "Very Rare",
+    "keywords": [
+      "PHOSPHEX",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 1,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 1,
+      "traits": [
+        "Flamer",
+        "Melta"
+      ],
+      "ap": -1
+    },
+    "effect": "",
+    "note": "Differs from apoc-phosphor-torch (Apocrypha p.357). Rarity printed \"3\" (the DN modifier, Core p.206, as FSPG, rules-flow.md §11.44): Very Rare."
+  },
+  {
+    "id": "rr2-sulphur-breath",
+    "name": "Sulphur Breath",
+    "source": "redacted-records-2",
+    "page": 63,
+    "category": "Adeptus Mechanicus Ranged Weapons",
+    "kind": "weapon",
+    "value": null,
+    "rarity": null,
+    "keywords": [
+      "FLAMER",
+      "ADEPTUS MECHANICUS"
+    ],
+    "weapon": {
+      "damage": 10,
+      "ed": 2,
+      "range": [
+        6,
+        12,
+        18
+      ],
+      "salvo": 0,
+      "traits": [
+        "Assault",
+        "Flamer"
+      ],
+      "ap": -2
+    },
+    "effect": "",
+    "note": "Value and Rarity printed \"-\": the Sulphurhound Cybercanid's natural weapon (rr2-sulphurhound-cybercanid, p.54). Salvo printed 0."
+  }
+]

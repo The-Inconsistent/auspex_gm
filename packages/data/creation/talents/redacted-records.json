@@ -1,0 +1,909 @@
+[
+  {
+    "id": "absolute-incineration",
+    "name": "Absolute Incineration",
+    "source": "redacted-records",
+    "page": 60,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" \"Increase … AP by +Rank\" read as the usual \"+Rank AP\" (AP made more negative); only at Short Range, so it is a gm weapon note, not a standing profile change.",
+    "xp": 20,
+    "requires": [],
+    "effect": "You unleash a blistering thermal assault that reduces flesh and armour alike to liquid.\n\nWhen you use a weapon with the Melta Trait at Short Range, increase both the ED and AP by +Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "weaponTraits": [
+            "Melta"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "At Short Range: +Rank ED and +Rank AP"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "anatomical-scourge",
+    "name": "Anatomical Scourge",
+    "source": "redacted-records",
+    "page": 60,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Requirements print \"PSYKER Keyword or Medicae 2+\" (no \"Rating\"). The +2ED applies to Called Shots only, so it stays in the effect.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "keyword",
+            "anyOf": [
+              "PSYKER"
+            ]
+          },
+          {
+            "kind": "skill",
+            "skill": "Medicae",
+            "min": 2
+          }
+        ]
+      }
+    ],
+    "effect": "Whether you’re a trained medic, a Sister Hospitaller, a Mechanicus Biologis, or even a Psyker trained in Biomancy, your knowledge of anatomy and biology can be extremely useful for targeting vital organs with precision shots.\n\nYou gain +2ED when making Called Shots."
+  },
+  {
+    "id": "angel-of-mercy",
+    "name": "Angel Of Mercy",
+    "source": "redacted-records",
+    "page": 60,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Medicae",
+        "min": 2
+      }
+    ],
+    "effect": "You are resolved to lend medical assistance to as many as you can, never resting when there is work to be done.\n\nAdd +Rank to your Medicae (Int) dice pool to determine how many Wounds you can remove in a Regroup of an hour or longer. You can split the number of Wounds you remove between multiple characters, rather than a single target."
+  },
+  {
+    "id": "animal-wrangler",
+    "name": "Animal Wrangler",
+    "source": "redacted-records",
+    "page": 60,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 2
+      }
+    ],
+    "effect": "You have a background in taming wild beasts, domesticating them as beasts of burden or relating to them as one animal to another.\n\nYou gain +Double Rank bonus dice on any social Skill Test against a target with the BEAST Keyword. You may choose to use the Survival (Wil) Skill for any social Skill Tests against these targets."
+  },
+  {
+    "id": "arch-performer",
+    "name": "Arch-Performer",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" The performance is an open choice (\"etc.\"), so no `options`; the text doesn't say it can be bought more than once.",
+    "xp": 10,
+    "requires": [],
+    "effect": "You have devoted your body to a creative endeavour you perform live before an audience. As well as providing personal fulfilment, it occasionally provides an excellent distraction.\n\nChoose a type of performance appropriate for the 41st Millennium — choral singing, organ playing, hagiographic recital, ritual dance, etc. You excel at this art form or craft.\n\nIf an enthusiast of the arts witnesses your performance, you gain +Rank bonus dice to social Skills targeting them for the rest of the scene.\n\nIf you ever undertake a skill Test to determine the success of the performance itself — rolling Deception (Fel) to attract attention away from companions, for example — you gain +Double Rank bonus dice on the Test.\n\nIf you have a chance to practise your performing art during a Regroup, you reduce your Shock to zero."
+  },
+  {
+    "id": "arsonist",
+    "name": "Arsonist",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 10,
+    "requires": [],
+    "effect": "You keep starting fires, and they burn long into the night. When you inflict the On Fire Condition, your victims suffer an additional +Rank Mortal Wounds at the start of each of your Turns. The DN for the Athletics (S) Test for your victims to remove the Condition is also increased by +Rank."
+  },
+  {
+    "id": "assault-doctrine",
+    "name": "Assault Doctrine",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Printed as a Talent here; Vow of Absolution p.27 prints an Assault Doctrine Advancement Package (package `assault-doctrine`) for Scouts becoming Tactical Marines, with different wording, a plain Chainsword and no \"not Primaris\". \"(not Primaris)\" is `notSpecies` primaris-astartes. Print error kept: \"Aquilla Mark VII armour\" (linked to Core's Aquila Mk VII). The Astartes Chainsword (page 49) is RR1's Absolver Honourpact profile (Dam (S)+6/ED 5/AP -1/Brutal, Parry/Value 6/Very Rare), which differs from apoc-astartes-chainsword, so it is not linked. \"If you don’t already have them\": the grants list the items unconditionally. \"Instead of an Ascension Package\" when Ascending from Tier 2 to 3 stays in the effect.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      },
+      {
+        "kind": "notSpecies",
+        "anyOf": [
+          "primaris-astartes"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 3
+      }
+    ],
+    "effect": "You fight at the vanguard of any advance, shrieking across the battlefield to bring the might of your Astartes physiology to bear.\n\nYou receive a Bolt Pistol, Astartes Chainsword (page 49), Aquilla Mark VII armour, and Jump Pack, if you don’t already have them.\n\nYou gain additional +Rank AP on any melee weapon you wield, or any ranged weapons with the Pistol Trait.\n\nAn Agent Ascending from Tier 2 to Tier 3 may purchase this Talent instead of an Ascension Package.",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Astartes Chainsword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Aquilla Mark VII armour",
+          "wargearId": "aquila-mk-vii"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Jump Pack",
+          "wargearId": "jump-pack"
+        }
+      }
+    ],
+    "weapons": [
+      {
+        "fits": {
+          "weapon": "melee"
+        },
+        "mods": [
+          {
+            "kind": "ap",
+            "delta": {
+              "perRank": -1
+            }
+          }
+        ]
+      },
+      {
+        "fits": {
+          "weapon": "ranged",
+          "weaponTraits": [
+            "Pistol"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "ap",
+            "delta": {
+              "perRank": -1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a-feast-in-famine",
+    "name": "A Feast in Famine",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" The chapter's contents list calls it \"A Warm Meal\"; the entry heading is \"A Feast in Famine\" (the entry is the rule).",
+    "xp": 10,
+    "requires": [],
+    "effect": "You are a talented and resourceful cook, able to make a satisfying repast from meagre ration packs, hunted local fauna, or scavenged scraps, raising the spirits of your comrades.\n\nWhen you prepare food for your allies during a Regroup, anyone who partakes in the meal besides yourself removes all Shock."
+  },
+  {
+    "id": "battle-psyker-rr1",
+    "name": "Battle-Psyker (RR1)",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Same name as IoE p.60's Battle Psyker (AELDARI, Runes of Battle, 10 XP), a different Talent, so both are kept and this one is named with its book.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 4
+      }
+    ],
+    "effect": "You wield your powers with unstoppable force, compelling your victims to submit to your will.\n\nWhen you successfully use a psychic power that forces targets to take a Test to resist its effects, the DN of that Test is increased by +Rank."
+  },
+  {
+    "id": "blademaster",
+    "name": "Blademaster",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Not the Apocrypha Exarch Power Blademaster (`blademaster`, category exarch, p.247): a different category, so a separate record. Defence is a character Trait while wielding, so it is a gm weapon note.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You have mastered the art of blocking and riposting, giving you the edge when you clash swords with an opponent. Any weapons you use with the BLADE Keyword gain the Parry Trait.\n\nWhen using a weapon that already has the Parry Trait (whether it has the BLADE Keyword or not), you gain additional +Rank Defence against melee attacks.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "BLADE"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "trait",
+            "traitId": "parry"
+          },
+          {
+            "kind": "gm",
+            "what": "+Rank Defence against melee attacks while wielding it"
+          }
+        ]
+      },
+      {
+        "fits": {
+          "weaponTraits": [
+            "Parry"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "+Rank Defence against melee attacks while wielding it"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloodhound",
+    "name": "Bloodhound",
+    "source": "redacted-records",
+    "page": 61,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" No Requirements line is printed (read as none).",
+    "xp": 10,
+    "requires": [],
+    "effect": "Once you have the scent of a potential target, nothing short of their death or yours can end your pursuit.\n\nYou may nominate a single creature or individual as the target of this Talent — you cannot switch targets until the next Regroup.\n\nYou gain +Rank bonus dice to Survival (Wil) Tests to track the target, and any attack Tests you make against the target."
+  },
+  {
+    "id": "bombardier",
+    "name": "Bombardier",
+    "source": "redacted-records",
+    "page": 62,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 20,
+    "requires": [],
+    "effect": "Your munitions are modified to be extra explosive and pitched at the perfect arc to cause maximum carnage.\n\nAny weapons you use with the Blast Trait increase their Blast rating by +Double Rank. Against Mobs (or when using a simplified theatre of the mind approach) this therefore increases the number of targets hit by +Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "weaponTraits": [
+            "Blast"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "traitRating",
+            "traitId": "blast",
+            "delta": {
+              "perRank": 2
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "born-survivor",
+    "name": "Born Survivor",
+    "source": "redacted-records",
+    "page": 62,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Vow of Absolution p.46 prints this same text under the heading Built Tough (VoA's `built-tough` record).",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 2
+      }
+    ],
+    "effect": "You are aggressively self-reliant, substituting your culture’s folk remedies for formal medical training.\n\nYou can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions (Wrath & Glory, page 124). You do not suffer the usual DN penalties for using this ability on yourself."
+  },
+  {
+    "id": "bullet-hell",
+    "name": "Bullet Hell",
+    "source": "redacted-records",
+    "page": 62,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 20,
+    "requires": [],
+    "effect": "You discharge a hailstorm of lead from your shooter, spent bullet casings puddling around your feet. Any weapons you carry with the PROJECTILE Keyword increase their Salvo rating by +Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "PROJECTILE"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "salvo",
+            "delta": {
+              "perRank": 1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "concealed-cavity",
+    "name": "Concealed Cavity",
+    "source": "redacted-records",
+    "page": 62,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 10,
+    "requires": [],
+    "effect": "You have a tiny compartment hidden on your person, either inside an augmetic or carved into your flesh.\n\nYou can declare that you are concealing an item inside your compartment — this item can be no larger than a small knife, recording device, or miniaturised auspex. Normal searches of your person will never reveal this cavity, but if the search involves the use of technology, you gain +Double Rank bonus dice on Stealth (A) Tests to conceal it.\n\nIf you retrieve a weapon from the compartment and attack with it on the same Turn, you gain +Double Rank bonus dice on the attack Test."
+  },
+  {
+    "id": "counter-curse",
+    "name": "Counter-Curse",
+    "source": "redacted-records",
+    "page": 62,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" \"+Rank on Tests\" as printed (no \"bonus dice\").",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 2
+      }
+    ],
+    "effect": "Your allies tolerate your presence as a necessary evil, to prevent the enemy witches from thwarting their work.\n\nYou gain +Rank on Tests to Deny The Witch (Wrath & Glory, pages 267-268). Once per session, you can Deny The Witch as a Reflexive Action."
+  },
+  {
+    "id": "deathworld-veteran",
+    "name": "Deathworld Veteran",
+    "source": "redacted-records",
+    "page": 63,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" The last option stands for the printed \"another option at the GM’s discretion\".",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "T",
+        "min": 3
+      }
+    ],
+    "effect": "You were raised or campaigned on one of the deadliest worlds in the Imperium, and survived only by adapting your body to resist its environmental hazards.\n\nChoose one environmental hazard: suffocation, extreme heat, extreme cold, radiation, poisons, or another option at the GM’s discretion (Wrath & Glory, pages 201-202). You gain +Rank on Toughness Tests to resist the hazard’s effects, and +Double Rank to Medicae (Int) and Survival (Wil) Tests to adapt protections against that hazard.\n\nYou can purchase this Talent multiple times, choosing a different environmental hazard each time.",
+    "repeatable": "perChoice",
+    "options": [
+      "suffocation",
+      "extreme heat",
+      "extreme cold",
+      "radiation",
+      "poisons",
+      "another hazard (GM's discretion)"
+    ]
+  },
+  {
+    "id": "dedicate-the-kill",
+    "name": "Dedicate The Kill",
+    "source": "redacted-records",
+    "page": 63,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Requirements print \"Faith 1+\"; the schema has no Faith-rating requirement, so it is a gm requirement (Core's \"at least 1 Faith\" is read as a Faith Talent first, docs/rules-flow.md §11.30; that reading would be talentCategory faith min 1). A normal Talent, not a Faith Talent: it gives no Faith on purchase and prints no IMPERIUM limit (\"your God\"). \"Faith 1+\" is read as at least one Faith Talent, as The Emperor Protects (rules-flow.md §11.30).",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "talentCategory",
+        "category": "faith",
+        "min": 1
+      }
+    ],
+    "effect": "You are a devout believer that only offerings of flesh and blood can appease your God.\n\nIn combat, you may sacrifice your Move for the Turn to nominate an Elite or Adversary in line of sight as your target. You may nominate a new target by sacrificing another Move, but this replaces the previous target.\n\nIf you personally kill your target in melee combat, you regain 1 Faith."
+  },
+  {
+    "id": "deductive-genius",
+    "name": "Deductive Genius",
+    "source": "redacted-records",
+    "page": 63,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Investigation",
+        "min": 3
+      }
+    ],
+    "effect": "You are renowned for incredible leaps of logic, as though the voice of the God-Emperor whispers truths into your ear.\n\nYou can spend 1 Glory at any time for a clue on the fastest way to proceed with your current mission. The GM will give you an honest answer, but will not give you brand new information unless it can be plausibly extrapolated from what you already know. More likely, they will direct you to an individual or location where new information can be found, but this may take you into further danger!\n\nYour GM may invite you to suggest how you reached this conclusion, or even help determine the most direct way forward."
+  },
+  {
+    "id": "deflect-shot",
+    "name": "Deflect Shot",
+    "source": "redacted-records",
+    "page": 63,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\"",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "I",
+        "min": 4
+      }
+    ],
+    "effect": "Your combat reflexes are so refined that a twitch of your wrist can redirect missiles back on their shooter.\n\nYou can only use this Talent when wielding a weapon that has the Parry Trait and either the POWER FIELD or FORCE Keyword.\n\nThe Defence bonus you gain for wielding a Parry weapon against melee attacks also applies against ranged attacks. If your attacker misses and rolls a Complication, the attack is resolved as if they had been struck by their own weapon.\n\nThis Talent has no effect against area effect weapons, such as weapons with the Blast or Flamer Traits.",
+    "weapons": [
+      {
+        "fits": {
+          "weaponTraits": [
+            "Parry"
+          ],
+          "wargearKeywords": [
+            "POWER FIELD",
+            "FORCE"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "gm",
+            "what": "Parry's Defence bonus also applies against ranged attacks (not area effect)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "devastator-doctrine",
+    "name": "Devastator Doctrine",
+    "source": "redacted-records",
+    "page": 63,
+    "category": "talent",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Printed as a Talent here; Vow of Absolution p.27 prints a Devastator Doctrine Advancement Package (package `devastator-doctrine`) for Scouts, with different wording and no \"not Primaris\". \"(not Primaris)\" is `notSpecies` primaris-astartes. Print error kept: \"Aquilla Mark VII armour\" (linked to Core's Aquila Mk VII). Weapons linked to the Core catalogue. \"If you don’t already have one\": the armour grant is unconditional. \"Instead of an Ascension Package\" when Ascending from Tier 2 to 3 stays in the effect.",
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes"
+        ]
+      },
+      {
+        "kind": "notSpecies",
+        "anyOf": [
+          "primaris-astartes"
+        ]
+      },
+      {
+        "kind": "tier",
+        "min": 3
+      }
+    ],
+    "effect": "An Astartes who becomes a full Battle-Brother usually starts off as a Devastator Marine, learning to master warfare from the relative safety of long range.\n\nYou receive a suit of Aquilla Mark VII armour, if you don’t already have one, and any one of the following weapons:\n- Heavy Bolter\n- Heavy Flamer\n- Lascannon\n- Missile Launcher\n- Multi-Melta\n- Plasma Cannon\n\nYou gain additional +Rank AP when using this weapon.\n\nAn Agent Ascending from Tier 2 to Tier 3 may purchase this Talent instead of an Ascension Package.",
+    "grants": [
+      {
+        "wargear": {
+          "name": "Aquilla Mark VII armour",
+          "wargearId": "aquila-mk-vii"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Heavy Bolter",
+              "wargearId": "heavy-bolter"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Heavy Flamer",
+              "wargearId": "heavy-flamer"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Lascannon",
+              "wargearId": "lascannon"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Missile Launcher",
+              "wargearId": "missile-launcher"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Multi-Melta",
+              "wargearId": "multi-melta"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Cannon",
+              "wargearId": "plasma-cannon"
+            }
+          }
+        ]
+      }
+    ],
+    "weapons": [
+      {
+        "fits": {
+          "granted": true
+        },
+        "mods": [
+          {
+            "kind": "ap",
+            "delta": {
+              "perRank": -1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "de-escalator",
+    "name": "De-Escalator",
+    "source": "redacted-records",
+    "page": 64,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You can disarm people with your bare hands, preventing someone you just want to talk to from making a mistake they’ll regret.\n\nWhen making a Shot To Disarm with an Unarmed Strike, you do not suffer DN penalties for a Called Shot (Wrath & Glory, pages 189-190). The DN for your opponent’s Strength Test is equal to the Damage you’d have inflicted, instead of half of it."
+  },
+  {
+    "id": "death-from-above",
+    "name": "Death From Above",
+    "source": "redacted-records",
+    "page": 64,
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Athletics",
+        "min": 3
+      }
+    ],
+    "effect": "You take a three-dimensional approach to every battle, searching for higher ground you can quickly scale and drop down from.\n\nYou gain +Rank bonus dice to attack Tests made from higher ground.\n\nYou can climb vertically at the same Speed as horizontal Movement without an Athletics (S) Test.\n\nYou can roll Determination against Mortal Wounds from falling (Wrath & Glory, page 201)."
+  },
+  {
+    "id": "dig-in-deep",
+    "name": "Dig In Deep",
+    "source": "redacted-records",
+    "page": 64,
+    "xp": 10,
+    "requires": [],
+    "effect": "You are an expert of defensive warfare, making maximum use of cover to reinforce your position.\n\nWhen targeted by enemy attacks whilst concealed by cover, you gain +2 Defence (instead of +1) if less than half of you is concealed, and +4 Defence (instead of +2) if more than half of you is concealed.\n\nIf enemies target you by Shoot Through Cover (Wrath & Glory, page 189) gain +Rank Resilience."
+  },
+  {
+    "id": "disarming-stare",
+    "name": "Disarming Stare",
+    "source": "redacted-records",
+    "page": 64,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Intimidation",
+        "min": 2
+      }
+    ],
+    "effect": "With a few choice words, or even just a look, you can slow an enemy’s charge as they think better of picking a fight with you.\n\nWhen you succeed on an Interaction Attack using Intimidation (Wrath & Glory, page 190), your enemy is Staggered, in addition to other effects."
+  },
+  {
+    "id": "disciple-of-the-holy-trinity",
+    "name": "Disciple Of The Holy Trinity",
+    "source": "redacted-records",
+    "page": 64,
+    "xp": 30,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS"
+        ]
+      }
+    ],
+    "effect": "The Sisters of Battle venerate the Holy Trinity of bolter, flamer and melta above all other weapons, and veterans of their Order are rewarded with the most exceptional versions of such sacred tools.\n\nYou add +Rank to the Damage of any weapons you use with the BOLT, FIRE or MELTA Keywords.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "BOLT",
+            "FIRE",
+            "MELTA"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "damage",
+            "delta": {
+              "perRank": 1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "disruptive-launch",
+    "name": "Disruptive Launch",
+    "source": "redacted-records",
+    "page": 64,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS ASTARTES",
+          "AELDARI",
+          "HERETIC ASTARTES",
+          "ORK"
+        ]
+      }
+    ],
+    "effect": "You employ short bursts of your Jump Pack as suppressive fire, protecting you from retaliatory assaults.\n\nWhen equipped with a Jump Pack, you can spend a Shift on successful melee attack Tests to inflict the Hindered (1) Condition on an enemy you’re engaged with. Additional Shifts can be spent to target 1 additional enemy per Shift, or increase the DN penalty of a victim’s Hindered Condition by 1 per Shift."
+  },
+  {
+    "id": "escape-artist-rr1",
+    "name": "Escape Artist (RR1)",
+    "source": "redacted-records",
+    "page": 64,
+    "note": "Also Core p.133, a different Talent of the same name (20 XP, no Requirements: +Double Rank bonus dice to escape bondage or a Grapple), so both are kept and this one is named with its book.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "A",
+        "min": 3
+      }
+    ],
+    "effect": "You are a dextrous contortionist, twirling around restrictions to navigate your environment with enviable grace.\n\nDifficult terrain does not reduce your Speed. You may Fall Back as a Move instead of a Combat Action.\n\nYou are immune to the Staggered Condition. You suffer no restrictions on replacement Movement options when you remove the Prone Condition as a Free Action. You gain +Double Rank bonus dice on Tests to remove the Restrained Condition.\n\nAt the GM’s discretion, you may be able to insert yourself into otherwise impassable spaces."
+  },
+  {
+    "id": "fashionista",
+    "name": "Fashionista",
+    "source": "redacted-records",
+    "page": 65,
+    "note": "The printed Requirement \"Wealth 2+\" has no Requirement kind, so it is a GM-judged requirement.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "gm",
+        "text": "Wealth 2+"
+      }
+    ],
+    "effect": "You remain on the cutting edge of Gothic fashion, delighting in any opportunity to make a memorable entrance.\n\nWhen you requisition Clothing (Wrath & Glory, pages 236-237), you gain bonus dice on social Skill Tests equal to the Rarity of the Clothing, in situations where your appearance would make a positive impression. You only gain this benefit for the duration of a single mission — after that reappearing in the same outfit again provides no advantage, and you must requisition new Clothing to regain the bonus."
+  },
+  {
+    "id": "fast-draw",
+    "name": "Fast Draw",
+    "source": "redacted-records",
+    "page": 65,
+    "xp": 10,
+    "requires": [],
+    "effect": "You blindside your enemies by drawing and firing whilst they are still preparing for combat.\n\nYou may draw a weapon as a Free Action or Reaction. In combat, any attacks you make against enemies who have not yet taken a Turn gain +Double Rank bonus dice on the attack Test."
+  },
+  {
+    "id": "feint-attack",
+    "name": "Feint Attack",
+    "source": "redacted-records",
+    "page": 65,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Weapon Skill",
+        "min": 2
+      }
+    ],
+    "effect": "You disorient enemies with distraction attacks, setting them up for follow-up hits.\n\nYou can use Weapon Skill to make Interaction Attacks against enemies you are Engaged with (Wrath & Glory, page 190)."
+  },
+  {
+    "id": "first-response",
+    "name": "First Response",
+    "source": "redacted-records",
+    "page": 65,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Medicae",
+        "min": 2
+      }
+    ],
+    "effect": "You have an unerring knack for being in the right place at the right time when someone needs patching up.\n\nOnce per combat, you can make a Medicae (Int) Test to remove Wounds, Shock or a Condition as a Simple Action instead of a Combat Action."
+  },
+  {
+    "id": "forbidden-knowledge",
+    "name": "Forbidden Knowledge",
+    "source": "redacted-records",
+    "page": 65,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      }
+    ],
+    "effect": "Through curiosity or ill-fortune, you have learned secrets your Imperium does not want you to know.\n\nChoose a proscribed subject you have unsanctioned knowledge of: for example, daemons, heretical beliefs, a specific alien species, even a secretive Faction you don’t have the Keyword for (such as INQUISITION, ADEPTUS ASTRA TELEPATHICA or OFFICIO ASSASSINORUM). Alternatively, with your GM’s consent, you can detail a little known and dangerous secret — the true allegiances of a powerful Patron, the fate of the Absolver Chapter Command, etc.\n\nYou gain +Double Rank bonus dice on Tests that benefit from your forbidden knowledge. However, GMs may spend Complications rolled on these Tests to award themselves 2 Ruin instead of 1.\n\nYour forbidden knowledge may increase the DN on resistance Tests to learn more tantalising truths about the subject, such as social Skills used by individuals with the relevant Keyword, or Corruption Tests.\n\nWhilst your knowledge makes you a useful asset to some, it makes you a dangerous liability to others. Caveat emptor!"
+  },
+  {
+    "id": "force-of-will",
+    "name": "Force Of Will",
+    "source": "redacted-records",
+    "page": 65,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Psychic Mastery",
+        "min": 2
+      }
+    ],
+    "effect": "To those who risk their souls tangling with daemons, traumas of the flesh are a distant concern.\n\nYou gain +Double Rank bonus dice on Willpower Tests to continue sustaining psychic powers when you suffer damage (Wrath & Glory, page 265)."
+  },
+  {
+    "id": "honed-to-lethality",
+    "name": "Honed to Lethality",
+    "source": "redacted-records",
+    "page": 65,
+    "xp": 20,
+    "requires": [],
+    "effect": "You have refined the edge of your weapon’s power field into the perfect armour-shredding tool.\n\nWhen using a weapon with the POWER FIELD Keyword, increase the AP by +Rank.",
+    "weapons": [
+      {
+        "fits": {
+          "wargearKeywords": [
+            "POWER FIELD"
+          ]
+        },
+        "mods": [
+          {
+            "kind": "ap",
+            "delta": {
+              "perRank": 1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "identify-weakness",
+    "name": "Identify Weakness",
+    "source": "redacted-records",
+    "page": 66,
+    "note": "The Skill is chosen on purchase and must be rated 3+: the either-requirement checks any of the four; the option names which one.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Awareness",
+            "min": 3
+          },
+          {
+            "kind": "skill",
+            "skill": "Insight",
+            "min": 3
+          },
+          {
+            "kind": "skill",
+            "skill": "Investigation",
+            "min": 3
+          },
+          {
+            "kind": "skill",
+            "skill": "Scholar",
+            "min": 3
+          }
+        ]
+      }
+    ],
+    "effect": "Knowledge is power, and you wield it as a weapon to most efficiently destroy your enemies.\n\nWhen you encounter an Elite or Adversary, you can make a Skill Test to size it up for weaknesses. You might Test any of the following Skills:\n- Awareness (Int), when you spend a Combat Action watching the target in combat.\n- Insight (Fel), when you have a conversation with the target.\n- Investigation (Int), when you dedicate a full day or longer to learning more about the target.\n- Scholar (Int), when you spend a Combat Action recalling relevant knowledge whilst watching the target in combat.\n\nWhichever Skill you use must be chosen when you first purchase this Talent, and must be rated 3 or higher. The DN of the Skill Test is usually 3, but may vary; for example, a target may make an Opposed Test against Insight (Fel) using their Deception (Fel) Skill. You can only track one enemy’s weakness at a time.\n\nWhen you or an informed ally makes an attack against a target whose weakness you know, you inflict +Double Rank additional ED.",
+    "options": [
+      "Awareness",
+      "Insight",
+      "Investigation",
+      "Scholar"
+    ]
+  },
+  {
+    "id": "imposing-presence",
+    "name": "Imposing Presence",
+    "source": "redacted-records",
+    "page": 66,
+    "note": "As printed: \"substitute your Willpower Attribute rating for your Strength Attribute rating on Intimidation (Wil) Tests\" reads backwards (Intimidation already uses Willpower); Strength in place of Willpower is presumably meant.",
+    "xp": 20,
+    "requires": [],
+    "effect": "You leverage your sheer physical size and weight as an implicit threat if you don’t get your way.\n\nYou can substitute your Willpower Attribute rating for your Strength Attribute rating on Intimidation (Wil) Tests. You also gain +Rank bonus dice to Intimidation (Wil) Tests if wearing armour with the HEAVY Keyword. These effects only apply when the target of your Intimidation can see you."
+  },
+  {
+    "id": "improvised-weaponry",
+    "name": "Improvised Weaponry",
+    "source": "redacted-records",
+    "page": 66,
+    "note": "Starts at the foot of p.66 (left column) and continues in the right column. Its weapon table is printed at the top of p.65, transcribed here as the last two lines of the effect. The weapon is crafted in play, so there is no wargear grant.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "either",
+        "of": [
+          {
+            "kind": "skill",
+            "skill": "Survival",
+            "min": 2
+          },
+          {
+            "kind": "skill",
+            "skill": "Tech",
+            "min": 2
+          }
+        ]
+      }
+    ],
+    "effect": "You are never truly disarmed, as long as you have access to raw materials and crafting time.\n\nYou may make a Survival (Wil) or Tech (Int) Test to fashion a crude weapon. By default this takes 8 minutes. The DN is usually 3 for a melee weapon, or 5 for a simple firearm, but may increase depending on the availability of tools and materials.\n\nShifts on this Test can be spent to:\n- Half the crafting time (this option may be chosen more than once).\n- Increase the weapon Damage by +Rank.\n- Remove the Unwieldy Trait.\n- Add one of the following Traits: Inflict (On Fire), Inflict (Poisoned 3), Inflict (Restrained), Parry, Pistol, Silent. This option may be chosen more than once, selecting a different Trait each time.\n- Double all weapon Ranges (Simple Firearm only).\n\nPlayers should provide details about the weapon they craft, which may affect its Keywords and possibly the range of available Traits you can spend Shifts on.\n\nMelee Weapon: Damage (S) +2, ED 2, AP —, Range —, Salvo —, Traits Unwieldy (2).\nSimple Firearm: Damage 6, ED 1, AP —, Range 6 / 12 / 18, Salvo —, Traits Unwieldy (2)."
+  },
+  {
+    "id": "investigative-omophagy",
+    "name": "Investigative Omophagy",
+    "source": "redacted-records",
+    "page": 66,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "species",
+        "anyOf": [
+          "adeptus-astartes",
+          "primaris-astartes"
+        ]
+      },
+      {
+        "kind": "gm",
+        "text": "Must have functioning Omophagea (Space Marine Implant 8)"
+      }
+    ],
+    "effect": "Through flesh-tasting rituals and psycho-conditioning, you have learned to reliably extract useful intelligence by absorbing the memories of what you consume.\n\nWhen you eat the flesh of a sentient creature, you may ask the GM one question. The GM will provide as honest an answer as the consumed creature’s memories can provide, but be aware that this answer may be skewed by the target’s personal perspective. In addition, you may choose a Skill. Until the next Regroup, when Testing that Skill, you use the Attribute+Skill dice pool of the creature you consumed instead of your own. Consuming the flesh of a Heretic requires a Corruption Test with a DN of at least 4 (higher at the GM’s discretion).\n\nExtracting a creature’s flesh requires the target to be incapacitated first, and using this Talent requires a Combat Action. Due to extreme psychological disorientation of blending another creature’s memories with your own, you cannot re-use this Talent until after the next Regroup."
+  }
+]

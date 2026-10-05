@@ -2522,7 +2522,7 @@
     "name": "Kâhl",
     "source": "apocrypha",
     "page": 173,
-    "note": "Suggested talent not in the catalogue: Identify Weakness (RR1 p. 66).",
+    "note": "Suggested talents printed in Redacted Records, now linked: Identify Weakness (RR1 p. 66).",
     "factionId": "leagues-of-votann",
     "tier": 4,
     "speciesIds": [
@@ -2606,7 +2606,8 @@
       },
       "talentIds": [
         "deductive",
-        "tenacious"
+        "tenacious",
+        "identify-weakness"
       ],
       "xp": {
         "attributes": 90,
@@ -2982,7 +2983,7 @@
     "name": "Navis Scion",
     "source": "apocrypha",
     "page": 177,
-    "note": "Suggested talent not in the catalogue: Fashionista (RR1 p.65). Tracks in the Stars and Void Watcher, listed as Suggested Talents, are Navigator powers, so they are in powerIds. XP as printed; ratings + (Tier − 1) × 10 = 176.",
+    "note": "Suggested talents printed in Redacted Records, now linked: Fashionista (RR1 p.65). Tracks in the Stars and Void Watcher, listed as Suggested Talents, are Navigator powers, so they are in powerIds. XP as printed; ratings + (Tier − 1) × 10 = 176.",
     "factionId": "navis-nobilite",
     "tier": 4,
     "speciesIds": [
@@ -3094,7 +3095,8 @@
         "Weapon Skill": 2
       },
       "talentIds": [
-        "noble-peer"
+        "noble-peer",
+        "fashionista"
       ],
       "powerIds": [
         "tracks-in-the-stars",
@@ -4369,7 +4371,7 @@
     "name": "Adamus Assassin",
     "source": "apocrypha",
     "page": 192,
-    "note": "No INFLUENCE printed. Suggested talent not in the catalogue: Blademaster (RR1 p.61), which is not the Apocrypha Exarch Power of that name.",
+    "note": "No INFLUENCE printed. Suggested talents printed in Redacted Records, now linked: Blademaster (RR1 p.61), which is not the Apocrypha Exarch Power of that name (blademaster-exarch).",
     "factionId": "officio-assassinorum",
     "tier": 5,
     "speciesIds": [
@@ -4455,7 +4457,8 @@
       },
       "talentIds": [
         "eliminator",
-        "silent"
+        "silent",
+        "blademaster"
       ],
       "powerIds": [],
       "xp": {
@@ -5110,7 +5113,7 @@
     "name": "Vanus Assassin",
     "source": "apocrypha",
     "page": 205,
-    "note": "No INFLUENCE printed. Suggested talents not in the catalogue: Identify Weakness (RR1 p.66), Rumoursmith (RR2 p.66).",
+    "note": "No INFLUENCE printed. Suggested talents printed in Redacted Records, now linked: Identify Weakness (RR1 p.66), Rumoursmith (RR2 p.66).",
     "factionId": "officio-assassinorum",
     "tier": 5,
     "speciesIds": [
@@ -5244,7 +5247,9 @@
         "Weapon Skill": 4
       },
       "talentIds": [
-        "acute-sense"
+        "acute-sense",
+        "identify-weakness",
+        "rumoursmith"
       ],
       "powerIds": [],
       "xp": {
@@ -5258,7 +5263,7 @@
     "name": "Venenum Assassin",
     "source": "apocrypha",
     "page": 206,
-    "note": "Print error, copied as printed: KEYWORDS prints \"TEMPLUM VANUS\" (the Vanus Assassin's keyword; probably meant TEMPLUM VENENUM). The ability name \"The Venem\" is as printed. No INFLUENCE printed. Suggested talents not in the catalogue: Anatomical Scourge (RR1 p.60), Trapmaster (RR2 p.66).",
+    "note": "Print error, copied as printed: KEYWORDS prints \"TEMPLUM VANUS\" (the Vanus Assassin's keyword; probably meant TEMPLUM VENENUM). The ability name \"The Venem\" is as printed. No INFLUENCE printed. Suggested talents printed in Redacted Records, now linked: Anatomical Scourge (RR1 p.60), Trapmaster (RR2 p.66).",
     "factionId": "officio-assassinorum",
     "tier": 5,
     "speciesIds": [
@@ -5343,7 +5348,9 @@
       },
       "talentIds": [
         "silent",
-        "unremarkable"
+        "unremarkable",
+        "anatomical-scourge",
+        "trapmaster"
       ],
       "powerIds": [],
       "xp": {
@@ -5357,7 +5364,7 @@
     "name": "Vindicare Assassin",
     "source": "apocrypha",
     "page": 207,
-    "note": "No INFLUENCE printed. Suggested talent not in the catalogue: Longshot (RR2 p.65).",
+    "note": "No INFLUENCE printed. Suggested talents printed in Redacted Records, now linked: Longshot (RR2 p.65).",
     "factionId": "officio-assassinorum",
     "tier": 5,
     "speciesIds": [
@@ -5457,7 +5464,8 @@
       "talentIds": [
         "deadshot",
         "eliminator",
-        "silent"
+        "silent",
+        "longshot"
       ],
       "powerIds": [],
       "xp": {
@@ -5958,7 +5966,7 @@
       "human"
     ],
     "xp": 99,
-    "note": "Suggested talents not in the catalogue: Anatomical Scourge (RR1 p. 60), Angel of Mercy (RR1 p. 60). XP as printed; ratings + (Tier − 1) × 10 = 117.",
+    "note": "Suggested talents printed in Redacted Records, now linked: Anatomical Scourge (RR1 p. 60), Angel of Mercy (RR1 p. 60). XP as printed; ratings + (Tier − 1) × 10 = 117.",
     "keywords": [
       "IMPERIUM",
       "INQUISITION",
@@ -6062,119 +6070,13 @@
         "Weapon Skill": 2
       },
       "talentIds": [
-        "deductive"
+        "deductive",
+        "anatomical-scourge",
+        "angel-of-mercy"
       ],
       "xp": {
         "attributes": 44,
         "skills": 36
-      }
-    }
-  },
-  {
-    "source": "apocrypha",
-    "id": "corpuscarius-electro-priest",
-    "name": "Corpuscarius Electro-Priest",
-    "page": 110,
-    "factionId": "adeptus-mechanicus",
-    "tier": 2,
-    "speciesIds": [
-      "human"
-    ],
-    "xp": 46,
-    "note": "Suggested talent printed as \"Duty Unto Death (p. 133)\"; resolved to Duty Until Death.",
-    "keywords": [
-      "IMPERIUM",
-      "ADEPTUS MECHANICUS",
-      "CULT MECHANICUS",
-      "[FORGE WORLD]"
-    ],
-    "attributes": {
-      "T": 3,
-      "Wil": 3
-    },
-    "skills": {
-      "Ballistic Skill": 2,
-      "Scholar": 1,
-      "Tech": 2,
-      "Weapon Skill": 1
-    },
-    "abilities": [
-      {
-        "name": "Voltaic Fanaticism",
-        "text": "Your maximum Shock is increased by +Double Rank, and you ignore all penalties for being Wounded.",
-        "grants": [
-          {
-            "mods": {
-              "maxShock": {
-                "perRank": 2
-              }
-            }
-          }
-        ]
-      }
-    ],
-    "wargear": [
-      {
-        "wargear": {
-          "name": "Luminen Capacitor",
-          "wargearId": "apoc-luminen-capacitor"
-        }
-      },
-      {
-        "bundle": [
-          {
-            "name": "Electrostatic Gauntlets",
-            "wargearId": "apoc-electrostatic-gauntlets"
-          },
-          {
-            "name": "Electrostatic Gauntlets (ranged)",
-            "wargearId": "apoc-electrostatic-gauntlets-ranged"
-          }
-        ]
-      },
-      {
-        "wargear": {
-          "name": "Voltagheist Field Generator",
-          "wargearId": "apoc-voltagheist-field-generator"
-        }
-      },
-      {
-        "pick": 2,
-        "wargearOf": {
-          "kinds": [
-            "augmetic"
-          ]
-        }
-      }
-    ],
-    "influence": 1,
-    "suggested": {
-      "attributes": {
-        "S": 3,
-        "T": 4,
-        "A": 3,
-        "I": 3,
-        "Wil": 4,
-        "Int": 3,
-        "Fel": 1
-      },
-      "skills": {
-        "Athletics": 2,
-        "Awareness": 1,
-        "Ballistic Skill": 3,
-        "Medicae": 1,
-        "Scholar": 2,
-        "Tech": 2,
-        "Weapon Skill": 2
-      },
-      "talentIds": [
-        "augmetic",
-        "duty-until-death",
-        "tenacious"
-      ],
-      "xp": {
-        "attributes": 60,
-        "skills": 24
       }
     }
   },
@@ -6364,107 +6266,6 @@
       "xp": {
         "attributes": 78,
         "skills": 52
-      }
-    }
-  },
-  {
-    "source": "apocrypha",
-    "id": "fulgurite-electro-priest",
-    "name": "Fulgurite Electro-Priest",
-    "page": 113,
-    "factionId": "adeptus-mechanicus",
-    "tier": 2,
-    "speciesIds": [
-      "human"
-    ],
-    "xp": 50,
-    "note": "Suggested talent printed as \"Duty Unto Death (p. 133)\"; resolved to Duty Until Death.",
-    "keywords": [
-      "IMPERIUM",
-      "ADEPTUS MECHANICUS",
-      "CULT MECHANICUS",
-      "[FORGE WORLD]"
-    ],
-    "attributes": {
-      "T": 3,
-      "Wil": 3
-    },
-    "skills": {
-      "Scholar": 1,
-      "Tech": 2,
-      "Weapon Skill": 3
-    },
-    "abilities": [
-      {
-        "name": "Voltaic Fanaticism",
-        "text": "Your maximum Shock is increased by +Double Rank, and you ignore all penalties for being Wounded.",
-        "grants": [
-          {
-            "mods": {
-              "maxShock": {
-                "perRank": 2
-              }
-            }
-          }
-        ]
-      }
-    ],
-    "wargear": [
-      {
-        "wargear": {
-          "name": "Luminen Capacitor",
-          "wargearId": "apoc-luminen-capacitor"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Electroleech Staff",
-          "wargearId": "apoc-electroleech-staff"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Voltagheist Field Generator",
-          "wargearId": "apoc-voltagheist-field-generator"
-        }
-      },
-      {
-        "pick": 2,
-        "wargearOf": {
-          "kinds": [
-            "augmetic"
-          ]
-        }
-      }
-    ],
-    "influence": 1,
-    "suggested": {
-      "attributes": {
-        "S": 3,
-        "T": 4,
-        "A": 3,
-        "I": 3,
-        "Wil": 4,
-        "Int": 3,
-        "Fel": 1
-      },
-      "skills": {
-        "Athletics": 2,
-        "Awareness": 1,
-        "Ballistic Skill": 3,
-        "Medicae": 1,
-        "Scholar": 2,
-        "Tech": 2,
-        "Weapon Skill": 2
-      },
-      "talentIds": [
-        "augmetic",
-        "duty-until-death",
-        "furious-charge"
-      ],
-      "xp": {
-        "attributes": 60,
-        "skills": 24
       }
     }
   },
@@ -6691,7 +6492,7 @@
       "human"
     ],
     "xp": 62,
-    "note": "Suggested talent not in the catalogue: Bloodhound (RR1. P61), Identify Weakness (RR1, p.66).",
+    "note": "Suggested talents printed in Redacted Records, now linked: Bloodhound (RR1. P61), Identify Weakness (RR1, p.66).",
     "keywords": [
       "IMPERIUM",
       "ASTRA MILITARUM",
@@ -6783,7 +6584,9 @@
       "talentIds": [
         "deadshot",
         "die-hard",
-        "overwatch"
+        "overwatch",
+        "identify-weakness",
+        "bloodhound"
       ],
       "xp": {
         "attributes": 38,
@@ -7505,7 +7308,7 @@
       "drukhari"
     ],
     "xp": 68,
-    "note": "Suggested talent not in the catalogue: Death From Above (RR1 p. 64). XP as printed; ratings + (Tier − 1) × 10 = 78. The printed XP equals the ratings alone, without the (Tier − 1) × 10.",
+    "note": "Suggested talents printed in Redacted Records, now linked: Death From Above (RR1 p. 64). XP as printed; ratings + (Tier − 1) × 10 = 78. The printed XP equals the ratings alone, without the (Tier − 1) × 10.",
     "keywords": [
       "AELDARI",
       "DRUKHARI",
@@ -7590,7 +7393,8 @@
       },
       "talentIds": [
         "power-through-pain",
-        "blood-must-flow"
+        "blood-must-flow",
+        "death-from-above"
       ],
       "xp": {
         "attributes": 54,
@@ -7609,7 +7413,7 @@
       "human"
     ],
     "xp": 32,
-    "note": "The stat block is titled \"CULT WITCH\"; the heading and the Chaos table (p.72) say Rogue Psyker. KEYWORDS also print \"You may not select the KHORNE keyword.\" (in requires). The Suggested Talents print Dark Flame, Soul Shrivel and Touch of Corruption (Core p.281), which are psychic powers; they are in powerIds. \"Battle-Psyker (RR1, p. 61)\" resolved to Battle Psyker. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline of your choice\" is the Species' default choice (Disciplines Known, Core p.257), so it isn't granted here.",
+    "note": "The stat block is titled \"CULT WITCH\"; the heading and the Chaos table (p.72) say Rogue Psyker. KEYWORDS also print \"You may not select the KHORNE keyword.\" (in requires). The Suggested Talents print Dark Flame, Soul Shrivel and Touch of Corruption (Core p.281), which are psychic powers; they are in powerIds. \"Battle-Psyker (RR1, p. 61)\" is battle-psyker-rr1, not IoE's Aeldari Battle Psyker. The Universal Psyker Abilities come with the PSYKER keyword (Core p.375); the \"one other Psychic Discipline of your choice\" is the Species' default choice (Disciplines Known, Core p.257), so it isn't granted here.",
     "keywords": [
       "CHAOS",
       "[MARK OF CHAOS]",
@@ -7699,7 +7503,7 @@
         "Scholar": 1
       },
       "talentIds": [
-        "battle-psyker"
+        "battle-psyker-rr1"
       ],
       "powerIds": [
         "dark-flame",
@@ -8234,7 +8038,7 @@
       "ork"
     ],
     "xp": 58,
-    "note": "Suggested talent not in the catalogue: Bullet Hell (RR1 p. 132).",
+    "note": "Suggested talents printed in Redacted Records, now linked: Bullet Hell (printed \"RR1 p. 132\"; it is on RR1 p.62).",
     "keywords": [
       "ORK",
       "[CLAN]"
@@ -8306,7 +8110,8 @@
       },
       "talentIds": [
         "combat-driving",
-        "more-dakka"
+        "more-dakka",
+        "bullet-hell"
       ],
       "xp": {
         "attributes": 54,
@@ -10754,134 +10559,6 @@
     "source": "apocrypha"
   },
   {
-    "id": "sister-novitiate",
-    "name": "Sister Novitiate",
-    "page": 92,
-    "factionId": "adepta-sororitas",
-    "tier": 1,
-    "speciesIds": [
-      "human"
-    ],
-    "xp": 22,
-    "keywords": [
-      "IMPERIUM",
-      "ADEPTA SORORITAS",
-      "[ORDER]",
-      "ADEPTUS MINISTORUM"
-    ],
-    "attributes": {
-      "S": 2,
-      "T": 2,
-      "A": 2,
-      "Wil": 2
-    },
-    "skills": {
-      "Ballistic Skill": 2,
-      "Scholar": 1,
-      "Weapon Skill": 1
-    },
-    "abilities": [
-      {
-        "name": "Impetuous Fervour",
-        "text": "Your youthful zeal makes you quick to action, adding +Double Rank bonus dice to any skill test attempted during the first round of a combat."
-      }
-    ],
-    "wargear": [
-      {
-        "wargear": {
-          "name": "Sororitas Vestments",
-          "wargearId": "clothing"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Carapace armour",
-          "wargearId": "carapace-armour"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Auto-pistol",
-          "wargearId": "autopistol"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Chaplet Ecclesiasticus",
-          "wargearId": "chaplet-ecclesiasticus"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Rule of the Sororitas",
-          "wargearId": "rule-of-the-sororitas"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Frag grenade",
-          "qty": 2,
-          "wargearId": "frag-grenade"
-        }
-      },
-      {
-        "wargear": {
-          "name": "Krak grenade",
-          "qty": 2,
-          "wargearId": "krak-grenade"
-        }
-      },
-      {
-        "choose": 1,
-        "from": [
-          {
-            "wargear": {
-              "name": "Autogun",
-              "wargearId": "autogun"
-            }
-          },
-          {
-            "wargear": {
-              "name": "Sword",
-              "wargearId": "sword"
-            }
-          }
-        ]
-      }
-    ],
-    "influence": 0,
-    "suggested": {
-      "attributes": {
-        "S": 2,
-        "T": 3,
-        "A": 3,
-        "I": 3,
-        "Wil": 3,
-        "Int": 2,
-        "Fel": 2
-      },
-      "skills": {
-        "Athletics": 1,
-        "Awareness": 1,
-        "Ballistic Skill": 2,
-        "Intimidation": 1,
-        "Scholar": 1,
-        "Weapon Skill": 2
-      },
-      "talentIds": [
-        "death-or-glory",
-        "orthopraxy",
-        "by-his-will"
-      ],
-      "xp": {
-        "attributes": 36,
-        "skills": 12
-      }
-    },
-    "note": "Marked red in the p.70 table: an official book has a version (not in this catalogue's id list). \"copy of Rule of the Sororitas\". XP as printed; ratings + (Tier − 1) × 10 = 26.",
-    "source": "apocrypha"
-  },
-  {
     "id": "slaangor",
     "name": "Slaangor",
     "page": 93,
@@ -11905,14 +11582,16 @@
       },
       "talentIds": [
         "war-hymns",
-        "consecrated-light"
+        "consecrated-light",
+        "disarming-stare",
+        "forbidden-knowledge"
       ],
       "xp": {
         "attributes": 68,
         "skills": 42
       }
     },
-    "note": "Suggested talents not in the catalogue: Disarming Stare (RR1 p.64), Forbidden Knowledge (RR1 p.65). XP as printed; ratings + (Tier − 1) × 10 = 80.",
+    "note": "Suggested talents printed in Redacted Records, now linked: Disarming Stare (RR1 p.64), Forbidden Knowledge (RR1 p.65). XP as printed; ratings + (Tier − 1) × 10 = 80.",
     "source": "apocrypha"
   },
   {
