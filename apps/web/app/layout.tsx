@@ -24,7 +24,12 @@ export const metadata: Metadata = {
   openGraph: { title, description, siteName: "Auspex", type: "website" },
   twitter: { card: "summary_large_image", title, description },
 };
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: TOKENS.iron };
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: TOKENS.iron,
+};
 
 type RootLayoutProps = { children: React.ReactNode };
 

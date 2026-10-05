@@ -114,8 +114,8 @@ export function GmApp({
     <BooksProvider books={books} requestPage={requestPage}>
       <RulesProvider rules={rules}>
         <div className="gm">
-          {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
           <header className="gm-head band torn">
+            {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
             <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
               ◂
             </a>
