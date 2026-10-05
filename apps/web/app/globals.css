@@ -277,6 +277,11 @@ a {
   padding: 0;
   font-size: 20px;
 }
+/* The dense square (the builder's −/+ rating steppers): 32px both ways, like .btn.sm, so it fits its grid column. */
+.btn.sq.sm {
+  width: 32px;
+  font-size: 16px;
+}
 
 /* Tap feedback. Tablets and phones have no hover, so every button answers the tap itself: it darkens (and a .btn
    sinks) while pressed, pulses while the server hasn't answered (use-table sets aria-busy), then rings once in its own
@@ -1535,6 +1540,11 @@ button.row.now:nth-of-type(even) {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+/* In a height-capped, scrolling list a row must keep its height: shrunk to min-height, wrapped names overprinted the
+   next row (CODEX › ITEMS › FROM LOOT TABLE). */
+.list > * {
+  flex-shrink: 0;
 }
 .item {
   border: 1px solid var(--line);
