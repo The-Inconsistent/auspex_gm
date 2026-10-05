@@ -9,7 +9,7 @@ const file = CampaignExport.parse({
   version: 1,
   exportedAt: "2026-10-01T00:00:00.000Z",
   campaign: {
-    name: "Volkus",
+    name: "Test Campaign",
     tier: 4,
     glory: 3,
     ruin: 5,

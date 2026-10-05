@@ -1030,7 +1030,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
     kind: "npc",
     data: { name: "Magos Vex", factionId: faction.id, revealed: true },
   });
-  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Volkus" } });
+  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "First Mission" } });
   assert.ok(vex.ok && vex.id && adv.ok && adv.id);
   assert.deepEqual(
     await gm.send({
@@ -1330,7 +1330,7 @@ test("accounts: lobby, room and character invites, guests, removing a member", a
   });
 });
 
-// The volkus Disruptor (docs/pregens.md #2), as the builder would send it (packages/data/build.test.ts).
+// The Disruptor pregen fixture (packages/data/fixtures/pregens), as the builder would send it.
 const disruptor = {
   tier: 4,
   archetypeId: "primaris-incursor",

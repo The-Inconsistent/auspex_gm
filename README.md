@@ -51,11 +51,11 @@ Sign-in runs on [Clerk](https://clerk.com). Set it up once (details in
 4. Put `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` in `apps/web/.env.local`, and `CLERK_SECRET_KEY` and
    `CLERK_JWT_KEY` in `apps/api/.env`. Without them the web app answers 500 with "Missing publishableKey".
 
-Start a game from the lobby at `http://localhost:3000` (**NEW GAME**), or seed the bundled campaign with yourself as GM:
+Start a game from the lobby at `http://localhost:3000` (**NEW GAME**), or seed a content pack (none ships in the repo now) with yourself as GM:
 
 ```bash
 cd apps/api
-bun run seed volkus --owner user_2abc…     # your Clerk user id (Dashboard → Users); prints /c/<campaignId>
+bun run seed <pack> --owner user_2abc…     # your Clerk user id (Dashboard → Users); prints /c/<campaignId>
 ```
 
 Open the table on the tablet. On the **PARTY** tab, show the **ROOM QR**; players scan it, sign in or join as a guest,
@@ -142,7 +142,7 @@ A campaign's opening content lives in `packages/data/packs/<name>/`:
 - `characters/*.json` holds the pregenerated characters.
 
 `bun run validate` checks every reference in a pack. `bun run seed <name>` loads the pack through the same actions the
-app uses. To start a new campaign, copy `volkus/` and edit it.
+app uses. The repo ships no pack now; to make one, add `packages/data/packs/<name>/` in that shape.
 
 ## Status
 

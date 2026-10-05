@@ -38,7 +38,7 @@ export function NameStep({ draft, error, fields, onName, onEdit, onCreate }: Nam
           id="nc-name"
           className="input"
           maxLength={100}
-          placeholder="VOLKUS DIG SITE"
+          placeholder="EMBERS OF ENOCH"
           value={draft.name}
           onChange={(e) => onName(e.target.value)}
           {...fields.marks("name")}

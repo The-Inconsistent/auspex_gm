@@ -62,7 +62,7 @@ clamped to 1.
 
 | Mechanism | Who sets it | Use for |
 |---|---|---|
-| `stats.mods` | whoever edits the sheet (GM, or the player on their own character) | printed modifiers: Primaris +3 Wounds, Honour the Chapter +1 Resolve ([kill-team.md](kill-team.md), [pregens.md](pregens.md)) |
+| `stats.mods` | whoever edits the sheet (GM, or the player on their own character) | printed modifiers: Primaris +3 Wounds, Honour the Chapter +1 Resolve |
 | `overrides` | GM only (`authorize` refuses `character.update` with `overrides` from a player) | anything the formula gets wrong |
 
 **Not modelled:** only one armour layer (`armour.ar`); a shield's bonus goes in `mods.resilience`. `armour.invulnerable`
@@ -397,7 +397,7 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 | 12 | Exhausted conversion starts after the hit that Exhausts | `exhaustedShock` (in `pcHit` and `combatant.adjust`) |
 | 13 | Mob Resolve prompted at every Round end while half slain | `roundEndReminders`, tracker `endTurn` / NEW ROUND |
 
-Campaign-specific GM decisions are in [kill-team.md](kill-team.md); they live in the pack data, not in code.
+Campaign-specific GM decisions live in the pack data, not in code; the ones the code depends on are in rules-flow.md §11.
 
 ## 11. What the app deliberately doesn't do
 
