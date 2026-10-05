@@ -138,6 +138,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   @SubscribeMessage("book:request")
   async onBookRequest(@ConnectedSocket() socket: Socket, @MessageBody() body: unknown): Promise<BookAck> {
     const seat = socket.data as Seat;
+    if (seat.role === "screen") return { ok: false, error: "The table screen shows no book pages." }; // nobody reads there
     if (!allowPage(socket.id)) return { ok: false, error: "Too many pages. Slow down." };
     const parsed = BookPage.safeParse(body);
     if (!parsed.success) return { ok: false, error: z.prettifyError(parsed.error) };
@@ -260,15 +261,17 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     }
   }
 
-  // Disconnects the sockets that just lost access: a removed member, or the players of a revoked/deleted character.
+  // Disconnects the sockets that just lost access: a removed member, the players of a revoked/deleted character, or every table screen.
   private async kick({ campaignId, kick }: { campaignId: string; kick: Kick }) {
     const r = rooms(campaignId);
     for (const s of await this.server.in([r.gm, r.players]).fetchSockets()) {
       const c = s.data as Ctx;
       const hit =
-        "userId" in kick
-          ? c.userId === kick.userId
-          : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
+        "screens" in kick
+          ? c.role === "screen"
+          : "userId" in kick
+            ? c.userId === kick.userId
+            : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
       if (hit) s.disconnect(true);
     }
   }

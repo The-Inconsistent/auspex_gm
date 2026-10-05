@@ -5,6 +5,7 @@ import { apiGet, loadFactionPresets, loadPlaces, loadRules, loadScenePresets } f
 import { asGmTab, TAB_PARAM } from "@/components/gm/gm-app/constants";
 import { GmApp } from "@/components/gm/gm-app/gm-app";
 import { PlayerApp } from "@/components/player/player-app/player-app";
+import { TableScreen } from "@/components/screen/table-screen/table-screen";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 
 type TableProps = {
@@ -68,7 +69,7 @@ async function loadFlavour(campaignId: string): Promise<FlavourTable[]> {
   }
 }
 
-// One table: the GM board or the player view, by the caller's seat (membership or guest QR).
+// One table: the GM board, the player view or the table screen, by the caller's seat (membership or guest QR).
 export default async function Table({ params, searchParams }: TableProps) {
   const [p, query] = await Promise.all([params, searchParams]);
   const campaignId = encodeURIComponent(p.campaignId);
@@ -112,6 +113,8 @@ export default async function Table({ params, searchParams }: TableProps) {
       />
     );
   }
+  // The TV in the middle of the table: a guest "screen" seat, read-only, no character.
+  if (me.role === "screen") return <TableScreen campaignId={me.campaignId} />;
   if (!me.characterId) return <StatusScreen text="NO CHARACTER YET. ASK YOUR GM." />;
   return <PlayerApp campaignId={me.campaignId} characterId={me.characterId} rules={await loadRules(me.campaignId)} />;
 }

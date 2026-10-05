@@ -38,9 +38,10 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
 }
 
 // Sockets to disconnect after this action: a removed member, or whoever plays a revoked/deleted character.
-export type Kick = { userId: string } | { characterId: string; guestsOnly: boolean };
+export type Kick = { userId: string } | { characterId: string; guestsOnly: boolean } | { screens: true };
 export function kicks(a: Action): Kick | null {
   if (a.type === "token.revoke") return { characterId: a.characterId, guestsOnly: true }; // members keep their seat
+  if (a.type === "screen.revoke") return { screens: true };
   if (a.type === "character.delete") return { characterId: a.id, guestsOnly: false };
   if (a.type === "member.remove") return { userId: a.userId };
   return null;
@@ -48,6 +49,7 @@ export function kicks(a: Action): Kick | null {
 
 function authorize(ctx: Ctx, a: Action) {
   if (ctx.role === "gm") return;
+  if (ctx.role === "screen") fail("The table screen is read-only");
   if (!PLAYER_ACTIONS.has(a.type)) fail("GM only");
   if (
     (a.type === "character.update" ||
@@ -130,6 +132,8 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "invite.revoke":
     case "member.remove":
     case "seat.leave":
+    case "screen.issue":
+    case "screen.revoke":
       return applyAccessAction(tx, { ctx, action });
   }
 }

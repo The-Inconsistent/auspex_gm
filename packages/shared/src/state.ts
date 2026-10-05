@@ -7,7 +7,8 @@ import { WargearFilter, WeaponMod } from "./weapon-effect.ts";
 
 export const TIERS = [1, 2, 3, 4, 5] as const; // the campaign Tiers that Tier accepts
 export const Tier = z.number().int().min(1).max(5);
-export const Role = z.enum(["gm", "player"]);
+// "screen" is only ever a guest token (the table TV, read-only), never a membership.
+export const Role = z.enum(["gm", "player", "screen"]);
 export type Role = z.infer<typeof Role>;
 
 // Who the caller is at one table (GET /api/campaigns/:id/me). userId is the Clerk user; null for a guest (QR token).

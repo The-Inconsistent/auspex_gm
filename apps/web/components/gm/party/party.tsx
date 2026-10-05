@@ -85,6 +85,16 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
     await showCode({ title: c.name, url: `${shareOrigin(window.location)}/join/${r.token}` });
   };
 
+  // TABLE SCREEN: a read-only guest seat for the TV in the middle of the table; its browser keeps the token in a cookie.
+  const showScreenQr = async () => {
+    const r = await send({ type: "screen.issue" });
+    if (!r.ok || !r.token) return report(r, "");
+    await showCode({ title: "Table screen", url: `${shareOrigin(window.location)}/join/${r.token}` });
+  };
+
+  // REVOKE SCREENS: every table screen token dies and the TVs disconnect.
+  const revokeScreens = async () => report(await send({ type: "screen.revoke" }), "TABLE SCREENS REVOKED");
+
   // INVITE: a single-use link for one character; the player signs in (or joins as a guest) and takes that seat.
   const inviteCharacter = async (c: Character) => {
     const r = await send({
@@ -441,6 +451,15 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           <option key={t} value={t} />
         ))}
       </datalist>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <span className="label">TABLE SCREEN</span>
+        <button className="btn sm" onClick={showScreenQr}>
+          SCREEN QR
+        </button>
+        <button className="btn sm danger" onClick={revokeScreens}>
+          REVOKE SCREENS
+        </button>
+      </div>
       <form style={{ display: "flex", gap: 8 }} onSubmit={handleAddCharacter}>
         <input
           id="new-agent"

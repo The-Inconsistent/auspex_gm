@@ -182,6 +182,9 @@ export const Action = z.union([
 
     z.object({ type: z.literal("token.issue"), characterId: id }),
     z.object({ type: z.literal("token.revoke"), characterId: id }),
+    // The table screen: a read-only guest seat for a TV. The token comes back once, in `token`; revoking drops them all.
+    z.object({ type: z.literal("screen.issue") }),
+    z.object({ type: z.literal("screen.revoke") }),
 
     // Invite links for signed-in players (and guests, if allowed). The code comes back once, in `token`.
     z.object({

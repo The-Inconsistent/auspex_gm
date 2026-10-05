@@ -21,6 +21,14 @@ export async function issueToken(tx: Tx, { campaignId, characterId }: { campaign
   return token;
 }
 
+// Guest screen token for the table's TV: no character, and the seat is read-only (table.dispatch authorize).
+// ponytail: every SCREEN QR tap mints a token that lives until REVOKE SCREENS; reuse or expire them if TVs multiply.
+export async function issueScreenToken(tx: Tx, { campaignId }: { campaignId: string }) {
+  const token = newSecret();
+  await tx.insert(accessToken).values({ tokenHash: hash(token), campaignId, role: "screen", characterId: null });
+  return token;
+}
+
 export async function resolveGuest(token: string | undefined): Promise<Ctx | null> {
   if (!token) return null;
   const [row] = await db

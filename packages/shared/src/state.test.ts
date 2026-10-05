@@ -211,6 +211,38 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
   assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
 });
 
+test("the table screen's view (viewer null) carries no Agent's private data", () => {
+  const goal = [{ text: "Recover the relic", done: false }];
+  const s = table(enc([threat("h", { visibility: "hidden" }), threat("t"), pc("p")]), [
+    char({ id: "a", objectives: goal }),
+  ]);
+  s.campaign.ruin = 3;
+  const v = toPlayerView(s, null);
+  assert.deepEqual(
+    v.characters.map((c) => c.objectives),
+    [[]],
+  );
+  assert.equal(v.campaign.ruin, 0);
+  assert.equal(v.encounter!.combatants.length, 2, "the hidden threat isn't sent");
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [
+      { id: "h", title: "private", body: "", revealed: true, audience: ["a"], revealedAt: null },
+      { id: "p", title: "public", body: "", revealed: true, audience: [], revealedAt: null },
+    ],
+    items: [],
+    sessions: [],
+  };
+  assert.deepEqual(
+    toPlayerCodex(codex, null).handouts.map((h) => h.title),
+    ["public"],
+  );
+});
+
 test("toPlayerView: a hidden threat's Turn still shows as due", () => {
   const s = table(
     enc([threat("a", { acted: true }), threat("h", { visibility: "hidden" }), pc("p")], { lastSide: "agents" }),
