@@ -1,5 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { keepPlay } from "./build.ts";
+import { CharacterStats } from "./state.ts";
 import { corruptionGain, corruptionTestDn, corruptionLevel, levelsCrossed, mutationDns } from "./corruption.ts";
 
 test("levels follow p.286, with 11 Contaminated (house rule §11.5)", () => {
@@ -37,4 +39,9 @@ test("the Test DN is the source DN plus the current level's modifier", () => {
   assert.equal(corruptionTestDn({ source: 3, points: 0 }), 3);
   assert.equal(corruptionTestDn({ source: 3, points: 6 }), 4);
   assert.equal(corruptionTestDn({ source: 5, points: 21 }), 9);
+});
+
+test("a rebuild keeps the Corruption gained in play", () => {
+  const previous = CharacterStats.parse({ corruption: 12 });
+  assert.equal(keepPlay({ previous, next: CharacterStats.parse({}) }).corruption, 12);
 });
