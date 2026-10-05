@@ -1117,6 +1117,7 @@ dialog.picker {
   gap: 0;
   border: 1px solid var(--line);
   margin-bottom: 10px;
+  min-width: min-content; /* the border and .tbar wrap the rows' column floors if anything ever scrolls */
 }
 
 .tracker {
@@ -1144,7 +1145,7 @@ dialog.picker {
 .row {
   display: grid;
   grid-template-columns:
-    76px minmax(130px, 1.5fr) 52px minmax(104px, 1fr) minmax(84px, 0.8fr) 34px 34px minmax(92px, 1fr)
+    76px minmax(112px, 1.5fr) 60px minmax(104px, 1fr) minmax(84px, 0.8fr) 34px 34px minmax(84px, 1fr)
     64px;
   gap: 8px;
   align-items: center;
@@ -1262,6 +1263,22 @@ button.row.now:nth-of-type(even) {
   outline-offset: 2px;
 } /* the input's own outline is off; ring the bar */
 
+/* Tablets in landscape: the full row needs ~740px (its floors, gaps and padding), which doesn't fit beside the rail
+   and a 300px side panel below ~1190px, so the side panel (stat block, vox log) goes under the table instead. */
+@media (max-width: 1200px) {
+  .tracker {
+    display: block;
+    height: auto;
+  }
+  .tracker-main {
+    overflow: visible;
+  }
+  .tracker-side {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
 @media (max-width: 900px) {
   /* Narrow screens: one scrolling page instead of fixed-height panes. */
   .gm {
@@ -1306,17 +1323,6 @@ button.row.now:nth-of-type(even) {
   .pool .btn.sq {
     width: 40px;
     min-height: 40px;
-  }
-  .tracker {
-    display: block;
-    height: auto;
-  }
-  .tracker-main {
-    overflow: visible;
-  }
-  .tracker-side {
-    border-left: 0;
-    border-top: 1px solid var(--line);
   }
   .row {
     /* no floors: at 390px the four columns must fit ~316px; tracks clip their cells before the number */
