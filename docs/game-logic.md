@@ -387,7 +387,7 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 | 2 | GM Round-start Seize costs 1 Ruin, same once-per-turn limit | `canSeize` (`lastSide` null → threats only), `spend()` in `turn.seize` |
 | 3 | Monstrous: free Determination, killed past Max Wounds | `threatStatus` (M → Slain); `THREAT_CLASS_RULES` chip. Determination is left to the table |
 | 4 | Withstand repeatable while Ruin lasts | not coded; a manual Ruin spend and HEAL |
-| 5 | Corruption 11 = Contaminated | not coded (Corruption isn't tracked) |
+| 5 | Corruption 11 = Contaminated | `corruptionLevel` (`corruption.ts`); `CharacterStats.corruption`, changed by `character.corrupt` (a failed Test adds the gain and +1 Ruin together, and notices the Mutation Tests) |
 | 6 | Passive Awareness uses Awareness | `deriveStats().passiveAwareness` |
 | 7 | Annihilation after Resilience | `pcHit` (the entered Wounds are after Resilience) |
 | 8 | "End of next Turn" = the affected character's | `combatant.expiring`, armed in `turn.start` / `turn.seize`, removed in `turn.end` |

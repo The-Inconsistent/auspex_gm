@@ -127,6 +127,20 @@ export const Action = z.union([
       wealth: delta.optional(),
       ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
     }),
+    // GM only: Corruption (Core pp.285–286, §9). `delta` is a plain change (a Corrupting weapon, a GM fix); `test` is a
+    // failed Corruption Test, where the server works out the gain and adds the GM's +1 Ruin in the same transaction.
+    z.object({
+      type: z.literal("character.corrupt"),
+      id,
+      delta: delta.optional(),
+      test: z
+        .object({
+          dn: z.number().int().min(1).max(20),
+          icons: z.number().int().min(0).max(60),
+          complication: z.boolean().default(false),
+        })
+        .optional(),
+    }),
     // GM only: a codex item handed to an Agent, which uses their Wargear Test for the session (rules-flow.md §11.112),
     // and taken back again (§11.114). The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),

@@ -212,6 +212,8 @@ vs Tier + 1; personal Ruin; Respite reset.
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
 rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
 
+**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY), level and Test modifier on the sheet, a failed Test's gain and +1 Ruin in one action, Mutation Test DNs as notices. The Mutation tables (p.287) and creation grants of Corruption are not coded.
+
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.
 

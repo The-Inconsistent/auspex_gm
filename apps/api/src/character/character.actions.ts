@@ -6,6 +6,9 @@ import {
   Objectives,
   Overrides,
   adjustAmmo,
+  corruptionGain,
+  corruptionLevel,
+  mutationDns,
   creationKey,
   keepPlay,
   keepSheetWeapons,
@@ -35,7 +38,7 @@ import {
 import { wargear } from "@wg/data";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
-import { campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
+import { adjustPool, campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
 import { session } from "../campaign/campaign.schema.ts";
 import { handout, item } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
@@ -350,7 +353,7 @@ export async function applyCharacterAction(
                 ...keepPlay({ previous: old, next: r.sheet, before: r.sheet }),
                 weapons: keepSheetWeapons(old.weapons, r.sheet.weapons),
               }
-            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned };
+            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned, corruption: old.corruption };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
       // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.
       const xpSpent = r.advancement?.spent ?? 0;
@@ -440,6 +443,24 @@ export async function applyCharacterAction(
       if (a.ammo) stats.ammo = adjustAmmo(stats.ammo, a.ammo);
       await saveStats(tx, { id: a.id, stats });
       return { ok: true };
+    }
+
+    // Corruption (Core p.286, §9). A failed Test and its +1 Ruin land in one transaction, so a refusal changes neither.
+    case "character.corrupt": {
+      if ((a.delta === undefined) === (a.test === undefined)) fail("Send a delta or a failed Test, not both");
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      if (a.test && a.test.icons >= a.test.dn)
+        fail(`${row.name} rolled ${a.test.icons} Icons against DN ${a.test.dn}: that Test passed (Core p.286)`);
+      const stats = CharacterStats.parse(row.stats);
+      const before = stats.corruption;
+      stats.corruption = Math.max(0, before + (a.test ? corruptionGain(a.test) : (a.delta ?? 0)));
+      await saveStats(tx, { id: a.id, stats });
+      if (a.test) await adjustPool(tx, { campaignId: cid, pool: "ruin", delta: 1 }); // p.286, p.320
+      // The Mutation Tests (and the end of the character) are rolled at the table, so the GM is told what they are.
+      const notices = mutationDns(before, stats.corruption).map((dn) => `MUTATION TEST · DN ${dn}`);
+      if (corruptionLevel(stats.corruption).chaosSpawn && !corruptionLevel(before).chaosSpawn)
+        notices.push("CHAOS SPAWN · THE AGENT IS LOST (p.286)");
+      return notices.length ? { ok: true, notices } : { ok: true };
     }
 
     case "character.requisition": {

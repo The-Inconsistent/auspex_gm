@@ -183,6 +183,8 @@ export const CharacterStats = z.object({
   // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
   // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),
+  // Corruption points (Core p.286), changed by `character.corrupt`; the level and its Test modifier are `corruptionLevel`.
+  corruption: z.number().int().min(0).default(0),
   ammo: z
     .record(z.string().min(1).max(60), z.number().int().min(0).max(99))
     .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`)

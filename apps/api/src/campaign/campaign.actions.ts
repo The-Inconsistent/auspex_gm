@@ -1,5 +1,14 @@
 import { and, asc, count, desc, eq, isNull, sql } from "drizzle-orm";
-import { ASCENSION_XP, MAX_TIER, ascensionGroup, poolMax, rankOf, type Action, type ActionResult } from "@wg/shared";
+import {
+  ASCENSION_XP,
+  MAX_TIER,
+  ascensionGroup,
+  poolMax,
+  rankOf,
+  type Action,
+  type ActionResult,
+  type Pool,
+} from "@wg/shared";
 import { invite } from "../auth/auth.schema.ts";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
@@ -66,7 +75,20 @@ async function abandonSession(tx: Tx, campaignId: string) {
   return closed.length > 0;
 }
 
-async function playerCount(tx: Tx, campaignId: string) {
+// A pool changed by a delta, floored at 0 and capped at poolMax (overflow lost, p.320). Shared by `pool.adjust` and
+// whatever else moves a pool, e.g. a failed Corruption Test's +1 Ruin.
+export async function adjustPool(
+  tx: Tx,
+  { campaignId, pool, delta }: { campaignId: string; pool: Pool; delta: number },
+) {
+  const cap = poolMax(pool, await playerCount(tx, campaignId));
+  await tx
+    .update(campaign)
+    .set({ [pool]: sql`least(${cap}, ${bump(campaign[pool], delta)})` })
+    .where(eq(campaign.id, campaignId));
+}
+
+export async function playerCount(tx: Tx, campaignId: string) {
   const [{ n } = { n: 0 }] = await tx
     .select({ n: count() })
     .from(character)
@@ -97,11 +119,7 @@ export async function applyCampaignAction(
     }
 
     case "pool.adjust": {
-      const cap = poolMax(a.pool, await playerCount(tx, cid));
-      await tx
-        .update(campaign)
-        .set({ [a.pool]: sql`least(${cap}, ${bump(campaign[a.pool], a.delta)})` })
-        .where(eq(campaign.id, cid));
+      await adjustPool(tx, { campaignId: cid, pool: a.pool, delta: a.delta });
       return { ok: true };
     }
 
