@@ -10,6 +10,7 @@ import {
   creationKey,
   deriveStats,
   keepPlay,
+  meets,
   keepSheetWeapons,
   outOfReach,
   resolveBuild,
@@ -1052,4 +1053,96 @@ test("withUpgrades: a given relic's Powers apply like an upgrade's, after the fi
   assert.deepEqual(relic.mods.length, 2, "the stored line keeps its Powers, so nothing applies twice");
   const [bare] = withUpgrades({ weapons: [{ ...pistol, mods: [{ kind: "ed" as const, delta: 2 }] }] }, wargear).weapons;
   assert.equal(bare!.ed, (pistol.ed as number) + 2, "Powers apply with nothing fitted too");
+});
+
+// ── Advanced Character Creation (Core pp.38–39, rules-flow.md §11.120–127) ──
+
+// The worked example on Core p.39: a Tier 1 Human with no Archetype.
+const worked: CharacterBuildInput = {
+  tier: 1,
+  advanced: {},
+  speciesId: "human",
+  attributes: { A: 4, Fel: 3, T: 2, I: 2, Int: 2 },
+  skills: { Pilot: 2, "Ballistic Skill": 2, Awareness: 1, Cunning: 1, "Weapon Skill": 1 },
+  talents: [{ id: "jargon", choice: "Pilot" }, { id: "scum-savvy" }],
+};
+
+test("Advanced Creation prices the Core p.39 worked example from scratch, with the Tier × 10 bonus on top", () => {
+  const r = run(worked);
+  const cost = (what: string) => r.ledger.find((l) => l.what === what)?.xp;
+  assert.equal(cost("Agility 1 → 4"), 20);
+  assert.equal(cost("Pilot 0 → 2"), 6);
+  assert.equal(cost("Fellowship 1 → 3"), 10);
+  for (const a of ["Toughness", "Initiative", "Intellect"]) assert.equal(cost(`${a} 1 → 2`), 4, a);
+  assert.equal(cost("Ballistic Skill 0 → 2"), 6);
+  for (const k of ["Awareness", "Cunning", "Weapon Skill"]) assert.equal(cost(`${k} 0 → 1`), 2, k);
+  assert.equal(cost("Human (species)"), 0, "the Human species adds nothing to the printed 100 XP");
+  assert.equal(r.spent, 100, "the book's total");
+  assert.equal(r.budget, 110, "Tier 1's 100 XP and the Advanced bonus; the book leaves the 10 unspent");
+  assert.equal(r.sheet.archetype, "Advanced");
+  assert.ok(!r.problems.some((p) => p.severity === "error"), JSON.stringify(r.problems));
+});
+
+test("Advanced Creation asks for a species, offering them all, and refuses neither or both of archetype and advanced", () => {
+  const r = run({ tier: 1, advanced: {} });
+  const ask = r.pending.find((p) => p.what === "Choose a species");
+  assert.ok(ask && ask.options.includes("Human") && ask.options.includes("Ork"));
+  assert.ok(!CharacterBuild.safeParse({ tier: 1 }).success, "neither");
+  assert.ok(!CharacterBuild.safeParse({ tier: 1, archetypeId: "ganger", advanced: {} }).success, "both");
+  assert.ok(
+    CharacterBuild.safeParse({ tier: 1, archetypeId: "ganger" }).success,
+    "a saved archetype build still parses",
+  );
+});
+
+test("an Advanced Adeptus Astartes has the Species Keywords and is asked IMPERIUM or CHAOS (Core p.38)", () => {
+  const r = run({ tier: 4, advanced: {}, speciesId: "adeptus-astartes" });
+  assert.ok(r.sheet.keywords.includes("ADEPTUS ASTARTES") && r.sheet.keywords.includes("[CHAPTER]"));
+  const choice = r.choices.find((c) => c.options.includes("IMPERIUM") || c.options.some((o) => o.includes("IMPERIUM")));
+  assert.ok(choice && choice.options.some((o) => o.includes("CHAOS")), "IMPERIUM or CHAOS");
+  assert.ok(r.pending.some((p) => p.path === choice!.path));
+  // the species' own ratings stand (§11.120): Agility 4, not 1
+  assert.equal(r.sheet.attributes.A, 4);
+  assert.equal(r.ledger.find((l) => l.what === "Adeptus Astartes (species)")?.xp, 160);
+});
+
+test("a bought Archetype Ability costs its Archetype's Tier × 10 and needs the GM; it brings the ability alone (§11.125)", () => {
+  const build = { tier: 4, advanced: { abilityOf: "inquisitor" }, speciesId: "human" };
+  const r = run(build);
+  const row = r.ledger.find((l) => l.what === "Inquisitor Archetype Ability");
+  assert.equal(row?.xp, 40);
+  const gm = r.problems.find((p) => p.severity === "gm" && p.path === "advanced/ability/inquisitor");
+  assert.ok(gm, "a GM approval item");
+  assert.ok(r.sheet.abilities.length > 0);
+  assert.ok(!r.sheet.keywords.includes("INQUISITION"), "no keywords from the Archetype");
+  const ok = run({ ...build, gm: { approved: ["advanced/ability/inquisitor"] } });
+  assert.ok(!ok.problems.some((p) => p.path === "advanced/ability/inquisitor"));
+});
+
+test("archetype requirements fail for an Advanced character and notArchetype passes (§11.127)", () => {
+  const ctx = (archetypeId: string | null) => ({ archetypeId }) as Parameters<typeof meets>[1];
+  assert.notEqual(meets({ kind: "archetype", anyOf: ["ganger"] }, ctx(null)), true);
+  assert.equal(meets({ kind: "notArchetype", anyOf: ["ganger"] }, ctx(null)), true);
+  assert.ok(
+    outOfReach([{ kind: "archetype", anyOf: ["ganger"] }], {
+      species: null,
+      archetypeId: null,
+      keywords: [],
+      buyable: [],
+    }),
+  );
+});
+
+test("Advanced Wargear is added to the sheet and checked against the Tier's limits (Core p.39)", () => {
+  const ok = run({ ...worked, advanced: { wargear: ["frag-grenade", "frag-missile"] } });
+  assert.ok(ok.sheet.weapons.length > 0 || ok.sheet.gear.length > 0);
+  assert.ok(!ok.problems.some((p) => p.what.startsWith("Total Value")));
+  const over = run({
+    ...worked,
+    advanced: { wargear: ["krak-missile", "frag-missile", "missile-launcher", "krak-grenade"] },
+  });
+  assert.ok(
+    over.problems.some((p) => p.what.startsWith("Total Value")),
+    JSON.stringify(over.problems),
+  );
 });

@@ -1,15 +1,16 @@
 "use client";
 import { useState } from "react";
 
-import { ATTRIBUTES, sourceCite, type Archetype } from "@wg/shared";
+import { ATTRIBUTES, advancedBonusXp, archetypeAbilityXp, sourceCite, type Archetype } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
-import { rulesText, titleOf } from "../../utils";
+import { rulesText, titleOf, toggle } from "../../utils";
 import { RecordList } from "@/components/ui/record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
 // Choose your Archetype (Core pp.21–22). Its XP already includes its species' (p.29); a lower Tier than the campaign's
-// is allowed and adds Creation Ascension (p.22).
+// is allowed and adds Creation Ascension (p.22). Or Advanced Creation (pp.38–39): no Archetype, a species, the Tier × 10
+// bonus, and an optional Archetype Ability or Wargear kit.
 export function ArchetypeStep() {
   const { draft, update, lookups, tier, go } = useBuilder();
   const [all, setAll] = useState(false);
@@ -19,6 +20,11 @@ export function ArchetypeStep() {
   const chosen = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
 
   // Picking an archetype starts its purchases and choices afresh: they were priced from the old one's ratings.
+  const advanced = draft.advanced;
+  const startAdvanced = () =>
+    update((d) =>
+      d.advanced ? d : { tier: d.tier, name: d.name, advanced: { wargear: [] }, gm: d.gm, languages: d.languages },
+    );
   const pick = (id: string) =>
     update((d) =>
       d.archetypeId === id
@@ -29,6 +35,12 @@ export function ArchetypeStep() {
   return (
     <div className="stack">
       <div className="rule">CHOOSE YOUR ARCHETYPE</div>
+      <div className="keys">
+        <button className={`btn sm ${advanced ? "primary" : ""}`} aria-pressed={!!advanced} onClick={startAdvanced}>
+          ADVANCED CREATION (NO ARCHETYPE)
+        </button>
+      </div>
+      {advanced && <AdvancedPanel />}
       {chosen && <ArchetypeCard a={chosen} />}
       {chosen && chosen.speciesIds.length > 1 && (
         <fieldset className="panel pad stack">
@@ -48,14 +60,14 @@ export function ArchetypeStep() {
         </fieldset>
       )}
       <StepChoices step="archetype" title="STARTING WARGEAR AND OTHER CHOICES" />
-      {chosen && (
+      {(chosen || advanced) && (
         <div>
           <button className="btn primary" onClick={() => go("customise")}>
             NEXT: CUSTOMISE
           </button>
         </div>
       )}
-      <div className="rule">{chosen ? "OR ANOTHER" : "ARCHETYPES"}</div>
+      <div className="rule">{chosen || advanced ? "OR AN ARCHETYPE" : "ARCHETYPES"}</div>
       <div className="keys" role="group" aria-label="Tier filter">
         <button className={`btn sm ${all ? "" : "primary"}`} aria-pressed={!all} onClick={() => setAll(false)}>
           TIER ≤ {tier}
@@ -82,6 +94,71 @@ export function ArchetypeStep() {
         onPick={pick}
       />
     </div>
+  );
+}
+
+// Advanced Creation (Core pp.38–39): the species (its XP is paid, rules-flow.md §11.120), an Archetype Ability the GM
+// agrees to (§11.125) and the kit that replaces an Archetype's (§11.122–124). What is allowed is `resolveBuild`'s.
+function AdvancedPanel() {
+  const { draft, update, lookups, catalogue, tier } = useBuilder();
+  const advanced = draft.advanced!;
+  const set = (patch: Partial<NonNullable<typeof draft.advanced>>) =>
+    update((d) => ({ ...d, advanced: { ...d.advanced, ...patch } }));
+  const wargear = advanced.wargear ?? [];
+  // Only entries with a printed Value and Rarity can be counted against the table (p.39).
+  const kit = [...catalogue.wargear.values()]
+    .filter((w) => w.value !== null && w.rarity !== null && w.kind !== "upgrade")
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return (
+    <>
+      <fieldset className="panel pad stack">
+        <legend className="label">SPECIES · Core p.38 · +{advancedBonusXp(tier)} XP, no Archetype Ability</legend>
+        <div className="keys" role="group" aria-label="Species">
+          {[...lookups.species.values()].map((s) => (
+            <button
+              key={s.id}
+              className={`btn sm ${draft.speciesId === s.id ? "primary" : ""}`}
+              aria-pressed={draft.speciesId === s.id}
+              onClick={() => update((d) => ({ ...d, speciesId: s.id }))}
+            >
+              {s.name} · {s.xp} XP
+            </button>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset className="panel pad stack">
+        <legend className="label">BUY AN ARCHETYPE ABILITY (GM AGREES) · Core p.38</legend>
+        <RecordList
+          label="Search archetypes for an ability"
+          searchable
+          items={[...lookups.archetypes.values()]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((a) => ({
+              id: a.id,
+              label: a.name,
+              meta: `Tier ${a.tier} · ${sourceCite(a)}`,
+              xp: archetypeAbilityXp(a.tier),
+              detail: a.abilities.map((r) => `${r.name}. ${r.text}`).join("\n\n"),
+            }))}
+          selected={advanced.abilityOf ? [advanced.abilityOf] : []}
+          onPick={(id) => set({ abilityOf: advanced.abilityOf === id ? undefined : id })}
+        />
+      </fieldset>
+      <fieldset className="panel pad stack">
+        <legend className="label">WARGEAR · Core p.39 · common clothing and a trinket come free</legend>
+        <RecordList
+          label="Search wargear"
+          searchable
+          items={kit.map((w) => ({
+            id: w.id,
+            label: w.name,
+            meta: `Value ${w.value} · ${w.rarity} · ${sourceCite(w)}`,
+          }))}
+          selected={wargear}
+          onPick={(id) => set({ wargear: toggle(wargear, id) })}
+        />
+      </fieldset>
+    </>
   );
 }
 

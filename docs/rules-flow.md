@@ -797,6 +797,36 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 119. **Bloody Gates prints Rarity as a number** (BG pp.6, 13, 21, 24; GitHub issue #51). Its mission equipment reads
      "Rarity: 2" where the Core Rulebook names a Rarity. The number is read as the DN it adds to a requisition (Core
      p.206): 0 Common, 1 Uncommon, 2 Rare, 3 Very Rare, 4 Unique. *Proposed; awaiting the GM.*
+120. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
+     Skill at 0, but p.38 charges the Species' XP "as in Know Your Faction" for its benefits, and an Adeptus Astartes'
+     160 XP is its Attributes and Skills. The species' printed ratings stand, everything else starts at 1 and 0, and
+     XP buys from there (the Human has none, so the p.39 example prices from scratch). *Proposed; awaiting the GM.*
+121. **The Advanced bonus is budget, and stays when an Archetype Ability is bought** (Core p.38). Tier × 10 is added to
+     the budget (a GM's custom budget plus it), so the ledger shows only what is spent; the p.39 example spends 100 of
+     110. The book lists buying an Archetype Ability as a separate option and prices it itself, so the bonus is not
+     given back. *Proposed; awaiting the GM.*
+122. **Advanced Wargear: Total Value is strictly under the limit, Max. Value is inclusive** (Core p.39). The text says
+     Total Value "less than" the number (Tier 1: at most 14), and a "Max. Value" column reads as a ceiling an item may
+     equal (Tier 1: an item of 7 is fine). Each copy counts. `advancedWargearProblems` in `wargear.ts`.
+     *Proposed; awaiting the GM.*
+123. **Advanced Wargear Rarity accumulates and refuses Unique** (Core p.39). Common and Uncommon are always allowed. The
+     Rarity column is read as adding allowances: Tier 2 up to two Rare, Tier 3 the same plus one Very Rare, Tier 4 the
+     same plus two Very Rare. A Unique item fits no Tier. *Proposed; awaiting the GM.*
+124. **Advanced Wargear at Tier 5 and above, and unpriced items** (Core p.39). The table stops at Tier 4, so a higher
+     Tier is checked against the Tier 4 row and the GM must agree. An item with no printed Value or Rarity can't be
+     counted and needs the GM. Common clothing and the trinket (Trinkets Table, p.247) are a note, not sheet lines.
+     *Proposed; awaiting the GM.*
+125. **A bought Archetype Ability brings the ability only** (Core p.38). It costs the Archetype's Tier × 10, needs the
+     GM's tick (`advanced/ability/<archetype>`) and adds that Archetype's abilities, not its Keywords, kit, Influence,
+     ratings or requirements. *Proposed; awaiting the GM.*
+126. **An Ascension Package at Advanced Creation is the GM's** (Core p.38). There is no Archetype Tier to ascend from, so
+     the build takes at most one Ascension Package, asks for the GM's tick, prices "× the new Tier" at the campaign
+     Tier, and meets the package's requirements at that Tier. It brings no Creation Ascension screen yet.
+     *Proposed; awaiting the GM.*
+127. **An Advanced character has no Archetype for requirements or Archetype Ascension** (Core pp.38, 155). A requirement
+     of kind `archetype` fails and `notArchetype` passes. Archetype Ascension needs "an Archetype of their Faction", so
+     an Advanced character can't take it. Species Keywords stand in for the Archetype's (a Human's "any 2" arrive as
+     one `[ANY]` fill for now, because the build lists a keyword once). *Proposed; awaiting the GM.*
 
 ---
 
@@ -826,6 +856,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Ascension Package count | done | One Ascension Package per Ascension (Core p.148, §11.55), one Ascension per Tier since creation: `build.ts` fills them in the order bought, prices "× the new Tier" at each one's own Tier, and refuses a package past the last |
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
 | Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
+| Advanced Creation | spike | `advanced` in `CharacterBuild` (no `archetypeId`): a species, Tier × 10 bonus, a bought Archetype Ability, Wargear by Tier (Core pp.38–39, §11.120–127), and a builder panel on the archetype step. Open: a Faction picker, a Human's second `[ANY]`, a Creation Ascension screen |
 | Wargear upgrades on a weapon | done | All 64 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
 | Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |

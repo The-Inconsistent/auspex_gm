@@ -2,6 +2,7 @@ import {
   CharacterBuild,
   StoredDraft,
   type BuildStep,
+  type CharacterBuildInput,
   type CharacterDetail,
   type Overrides,
   type PsychicPower,
@@ -33,6 +34,8 @@ export function stepsFor({
 }): BuilderStep[] {
   if (locked) return ascending ? ["ascension", "advance", "review"] : ["advance", "review"];
   const a = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
+  // ponytail: an Advanced build has no Creation Ascension screen, since it has no Archetype Tier to ascend from; one
+  // bought at creation is the GM's (Core p.38, §11.126) and `resolveBuild` takes it, so add a picker when a table asks.
   return BUILDER_STEPS.filter(
     (s) => (s !== "ascension" || ascending || (a !== undefined && a.tier < tier)) && (s !== "advance" || made),
   );
@@ -45,6 +48,13 @@ export const asBuilderStep = (asked: unknown): BuilderStep | null => BUILDER_STE
 
 export function stepFromQuery(search: string): BuilderStep | null {
   return asBuilderStep(new URLSearchParams(search).get(BUILD_STEP_PARAM));
+}
+
+// The build a draft holds, without the name, detail and timestamps that travel with it; null while neither an Archetype
+// nor Advanced Creation (Core p.38) is chosen.
+export function startedBuild(draft: Draft): CharacterBuildInput | null {
+  const { name: _, detail: __, savedAt: ___, builtAt: ____, ...build } = draft;
+  return build.archetypeId || build.advanced ? build : null;
 }
 
 // What still blocks a step: choices left and problems that aren't the GM's tick.

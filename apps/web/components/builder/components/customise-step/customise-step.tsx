@@ -63,7 +63,7 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
   const update = (fn: (p: Purchases) => Purchases) =>
     updateDraft((d) => withPurchases(d, layer, fn(purchasesOf(d, layer))));
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  if (!arch || !r)
+  if ((!arch && !draft.advanced) || !r)
     return (
       <div className="stack">
         <p>Choose an archetype first.</p>
@@ -74,7 +74,7 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
         </div>
       </div>
     );
-  const speciesId = draft.gm?.species ?? draft.speciesId ?? arch.speciesIds[0];
+  const speciesId = draft.gm?.species ?? draft.speciesId ?? arch?.speciesIds[0];
   const max = (speciesId ? lookups.species.get(speciesId)?.max : undefined) ?? undefined;
   const sheet = r.sheet;
   const psyker = sheet.keywords.includes("PSYKER");
@@ -83,11 +83,11 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
   const useSuggestions = () =>
     update((d) => ({
       ...d,
-      attributes: { ...d.attributes, ...arch.suggested?.attributes },
-      skills: { ...d.skills, ...arch.suggested?.skills },
+      attributes: { ...d.attributes, ...arch?.suggested?.attributes },
+      skills: { ...d.skills, ...arch?.suggested?.skills },
       talents: [
         ...(d.talents ?? []),
-        ...(arch.suggested?.talentIds ?? [])
+        ...(arch?.suggested?.talentIds ?? [])
           .filter((t) => lookups.talents.has(t) && !d.talents?.some((x) => x.id === t))
           .map((id) => ({ id })),
       ],
@@ -180,7 +180,7 @@ export function CustomiseStep({ layer = "creation" }: CustomiseStepProps) {
           </span>
         </div>
       )}
-      {!inPlay && arch.suggested && (
+      {!inPlay && arch?.suggested && (
         <div className="panel pad keys" style={{ alignItems: "center" }}>
           <span style={{ flex: "1 1 220px" }}>
             Buy the archetype&apos;s suggested Attributes, Skills and Talents in one go (Core p.22).

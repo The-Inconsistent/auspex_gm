@@ -17,21 +17,24 @@ const ROW_LABELS: Record<BackgroundRow, string> = {
 export function FactionStep() {
   const { draft, update, resolved: r, lookups, tier, go } = useBuilder();
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  if (!arch || !r) return <p>Choose an archetype first.</p>;
+  // An Advanced build names no Faction (Core p.38): its tables come from the species and the sub-factions chosen.
+  // ponytail: no Faction picker for Advanced Creation, the GM adds Faction Keywords through `gm.keywords`; add one when
+  // a table wants the Faction's own Background tables.
+  if ((!arch && !draft.advanced) || !r) return <p>Choose an archetype first.</p>;
 
   const keywordByName = new Map([...lookups.keywords.values()].map((k) => [k.name, k]));
   const fills = draft.fills ?? {};
   const placeholders = [...new Set([...r.sheet.keywords.filter((k) => k.startsWith("[")), ...Object.keys(fills)])];
-  const speciesId = draft.gm?.species ?? draft.speciesId ?? arch.speciesIds[0];
+  const speciesId = draft.gm?.species ?? draft.speciesId ?? arch?.speciesIds[0];
   const subFactionIds = Object.values(fills).flatMap((f) => ("id" in f ? [f.id] : []));
   const owns = (o: BackgroundTable["owner"]) =>
-    ("factionId" in o && o.factionId === arch.factionId) ||
+    ("factionId" in o && o.factionId === arch?.factionId) ||
     ("speciesId" in o && o.speciesId === speciesId) ||
     ("speciesIds" in o && !!speciesId && o.speciesIds.includes(speciesId)) ||
     ("subFactionId" in o && subFactionIds.includes(o.subFactionId));
   // A Corsair takes the Background of their former faction (rules-flow.md §11.60); an Objectives-only table (Anhrathe)
   // has nothing to choose.
-  const from = lookups.factions.get(arch.factionId)?.backgroundsFrom ?? [];
+  const from = (arch ? lookups.factions.get(arch.factionId)?.backgroundsFrom : undefined) ?? [];
   const tables = [...lookups.backgrounds.values()].filter(
     (t) =>
       (owns(t.owner) || ("factionId" in t.owner && from.includes(t.owner.factionId))) &&
@@ -73,7 +76,8 @@ export function FactionStep() {
     <div className="stack">
       <div className="rule">KNOW YOUR FACTION</div>
       <div className="dim">
-        {titleOf(arch.factionId)} · {lookups.species.get(speciesId ?? "")?.name ?? "no species yet"}
+        {arch ? titleOf(arch.factionId) : "Advanced Creation"} ·{" "}
+        {lookups.species.get(speciesId ?? "")?.name ?? "no species yet"}
       </div>
 
       {placeholders.map((k) => {
@@ -215,8 +219,8 @@ export function FactionStep() {
 
       <StepChoices step="faction" />
       <div>
-        <button className="btn primary" onClick={() => go(arch.tier < tier ? "ascension" : "detail")}>
-          NEXT: {arch.tier < tier ? "ASCENSION" : "DETAIL"}
+        <button className="btn primary" onClick={() => go(arch && arch.tier < tier ? "ascension" : "detail")}>
+          NEXT: {arch && arch.tier < tier ? "ASCENSION" : "DETAIL"}
         </button>
       </div>
     </div>
