@@ -66,7 +66,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
   return (
     <div className="bld">
       <header className="band torn bld-head">
-        <Link href="/" aria-label="Back to the lobby" className="display" style={{ fontSize: 30 }}>
+        <Link href="/" aria-label="Back to the lobby" className="btn sq">
           ◂
         </Link>
         <div className="display gm-title">

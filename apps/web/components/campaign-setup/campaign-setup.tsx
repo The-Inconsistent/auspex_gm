@@ -64,7 +64,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
     <div className="bld">
       {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
       <header className="band torn bld-head">
-        <Link href={`/c/${campaignId}`} aria-label="Open the campaign" className="display" style={{ fontSize: 30 }}>
+        <Link href={`/c/${campaignId}`} aria-label="Open the campaign" className="btn sq">
           ◂
         </Link>
         <div className="display gm-title">
