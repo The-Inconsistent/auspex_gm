@@ -149,7 +149,7 @@ export function GmApp({
             ))}
           </nav>
           <main className="gm-body">
-            {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} />}
+            {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} lookups={presets.lookups} />}
             {tab === "SETUP" && (
               <Setup state={state} codex={codex} send={send} frameworks={frameworks} onTab={openTab} />
             )}

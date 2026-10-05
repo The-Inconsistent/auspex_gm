@@ -1,7 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
 import {
+  CONDITIONS,
   CREATION_TYPES,
+  type CritRow,
   LINKED_RULE_KINDS,
   type CreationType,
   Pack,
@@ -32,6 +34,8 @@ import {
   type HulkRow,
   hulkNotes,
   MAX_HULK_ORIGINS,
+  openRangeProblems,
+  tableProblems,
   SpaceHulkGenerator,
   LootTable,
   RelicCreator,
@@ -42,6 +46,8 @@ import {
   factionPresetFiles,
   hazardFiles,
   loadPackRaw,
+  LOOKUP_FILES,
+  lookups,
   lootFiles,
   npcPresetFiles,
   packNames,
@@ -562,6 +568,33 @@ const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as 
         `, longest hulk notes ${worst.length}/5000` +
         (g.objectives.gaps.length ? `, as printed: objectives gaps ${g.objectives.gaps.join(",")}` : ""),
     );
+  }
+}
+
+// Critical Hit and Perils tables (lookups/*.json, §11.120): an empty table is not transcribed yet; once it has rows
+// the ranges must cover the dice (Perils: no overlaps, only the last open-ended), and every Condition must exist.
+{
+  const l = lookups();
+  const conditions = new Set<string>(CONDITIONS);
+  for (const [key, table] of Object.entries(l) as [keyof typeof l, (typeof l)[keyof typeof l]][]) {
+    const file = `lookups/${LOOKUP_FILES[key]}`;
+    if (!table.rows.length) {
+      console.log(`${file}: not transcribed yet`);
+      continue;
+    }
+    const problems =
+      key === "criticalHits"
+        ? tableProblems({ dice: "d66", rows: table.rows as CritRow[], gaps: [], overlaps: [] })
+        : openRangeProblems(table.rows);
+    for (const row of table.rows)
+      for (const a of row.apply)
+        if (a.kind === "condition" && !conditions.has(a.condition))
+          problems.push(`${row.name}: unknown Condition "${a.condition}"`);
+    for (const message of problems) {
+      failed = true;
+      console.error(`✖ ${file}: ${message}`);
+    }
+    console.log(`${file}: ${table.rows.length} rows`);
   }
 }
 

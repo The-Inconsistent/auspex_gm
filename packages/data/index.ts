@@ -9,6 +9,7 @@ import {
   type LootRow,
   HazardTable,
   HULK_HAZARDS,
+  Lookups,
   LootTable,
   RelicCreator,
   NpcPreset,
@@ -82,6 +83,14 @@ export const loot: ReadonlyMap<string, { table: LootTable; row: LootRow }> = new
 );
 export const relics: RelicCreator = RelicCreator.parse(json(new URL(RELICS_FILE, presetsDir)));
 export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
+// lookups/: the Critical Hit table (Core p.198) and Perils of the Warp, d66 tables the GM reads mid-fight. Served inside
+// scenePresets (GM-only); an empty `rows` is a table not transcribed yet.
+export const LOOKUP_FILES = { criticalHits: "critical-hits.json", perils: "perils.json" } as const;
+export const lookups = (): Lookups =>
+  Lookups.parse({
+    criticalHits: json(new URL(`./lookups/${LOOKUP_FILES.criticalHits}`, import.meta.url)),
+    perils: json(new URL(`./lookups/${LOOKUP_FILES.perils}`, import.meta.url)),
+  });
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
@@ -90,6 +99,7 @@ export const scenePresets = (): ScenePresets => ({
   spaceHulk,
   loot: lootTables(),
   relics,
+  lookups: lookups(),
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

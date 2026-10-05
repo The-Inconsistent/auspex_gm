@@ -831,6 +831,15 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
     lines in its text, standing in for the printed skull bullets. Kept as printed: "-2 AP" with a hyphen in Staggering
     Blow beside "−1 AP" elsewhere, and "(see Wrath & Glory, page 194)".
 
+### Lookups (`packages/data/lookups/*.json`, `Lookups` in `packages/shared/src/lookups.ts`)
+
+The Critical Hit table (Core p.198) and Perils of the Warp, d66 tables the GM reads mid-fight (rules-flow.md §11.120).
+Each file is `{ source, page, dice: "d66", rows }`; a row has `from`/`to` (Perils: the last `to` may be `null`, open-ended,
+since +10 per extra 1 passes 66), `name`, verbatim `text`, an optional `apply` list (`wounds`/`shock` with `amount` or
+`dice`, or a `condition` named as in `rules/conditions.json`) and, for crits, `glorious`. `rows: []` means not transcribed
+yet (the Perils `page` is `null` until read). Served GM-only as `lookups` on `/scene-presets`; `validate` checks the
+ranges and Conditions once rows exist.
+
 ### Places (`packages/data/places/<source>.json`, `Place` in `packages/shared/src/places.ts`)
 
 The books' places for CODEX › LOCATIONS' ADD FROM BOOK (GitHub issue #50), one file per book, parents first:
