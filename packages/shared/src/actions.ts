@@ -3,6 +3,7 @@ import { CharacterBuild } from "./build.ts";
 import { CodexInput, MAX_HAZARDS } from "./codex.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
+import { MAX_SPEND_AMOUNT, SpendKind } from "./spend.ts";
 import { CustomThreatData, MAX_SLUG } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
@@ -55,6 +56,16 @@ export const Action = z.union([
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
+    // A player asks for a spend, the GM answers (rules-flow.md §11.120). `amount` only counts for the Glory kinds.
+    // Accepting runs pool.adjust, character.adjust or turn.seize, so their refusals are the answer.
+    z.object({
+      type: z.literal("spend.request"),
+      characterId: id,
+      kind: SpendKind,
+      amount: z.number().int().min(1).max(MAX_SPEND_AMOUNT).default(1),
+    }),
+    z.object({ type: z.literal("spend.cancel"), id }),
+    z.object({ type: z.literal("spend.resolve"), id, accept: z.boolean() }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     z.object({ type: z.literal("session.start") }),
@@ -319,6 +330,9 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.fitUpgrade",
   "character.removeUpgrade",
   "seat.leave",
+  // Asking for a spend, and taking the ask back, are the player's; answering it is the GM's (§11.120).
+  "spend.request",
+  "spend.cancel",
 ]);
 
 // `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry

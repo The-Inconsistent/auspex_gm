@@ -797,6 +797,18 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 119. **Bloody Gates prints Rarity as a number** (BG pp.6, 13, 21, 24; GitHub issue #51). Its mission equipment reads
      "Rarity: 2" where the Core Rulebook names a Rarity. The number is read as the DN it adds to a requisition (Core
      p.206): 0 Common, 1 Uncommon, 2 Rare, 3 Very Rare, 4 Unique. *Proposed; awaiting the GM.*
+120. **Spend requests are a convenience; the GM's ACCEPT is the spend** (p.164, p.165, p.177; spike 4). A player can ask,
+     from their phone, for a Wrath Reroll or Restore Shock, Glory dice or damage, or a Seize (`spend.request`). Nothing
+     moves until the GM taps ACCEPT, which runs the same `character.adjust`, `pool.adjust` or `turn.seize` as the tablet
+     in one transaction, so a spend the pool can't pay (the pools clamp at 0, so `spend.resolve` checks it first) or a
+     Seize the turn rules refuse fails and the request stays pending for the GM to DENY. Restore Shock recovers Rank +
+     Tier Shock and only a conscious Agent (p.164, p.196). An Agent has at most three pending, one of each kind. A
+     Seize request needs a fight, and ending the fight clears them.
+121. **Pending spend requests are visible to the whole table** (p.165). Glory is the party's pool and p.165 has the group
+     agree on how it is spent, so every phone lists every pending request, read-only for the others; only the asker may
+     cancel. Ruin is not asked for: it stays the GM's (§11.58).
+122. **Requests clear at session start and end** (p.162, p.164). `session.start` resets Wrath and Glory and `session.end`
+     closes the session, so a request made against the old pools would be answered against new ones.
 
 ---
 

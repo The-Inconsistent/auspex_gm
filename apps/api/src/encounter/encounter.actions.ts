@@ -33,6 +33,7 @@ import { beat } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
+import { clearSpendRequests } from "../spend/spend.actions.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
@@ -174,6 +175,7 @@ export async function applyEncounterAction(
 
     case "encounter.end":
       await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, cid));
+      await clearSpendRequests(tx, { campaignId: cid, kind: "seize" }); // there is no fight left to Seize in
       return { ok: true };
 
     case "encounter.newRound": {
