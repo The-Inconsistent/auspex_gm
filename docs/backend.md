@@ -42,7 +42,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | `character/` | Characters and guest tokens; the creation catalogue every builder resolves against | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character`. `creation.service.ts`: `buildCatalogue`, `creationPayload`, `buildRefusal` (why a resolved build can't be saved, in the words both `character.build` and the library use) |
 | `library/` | Characters a signed-in user owns outside any campaign, and their REST (issue #14) | `library.controller.ts`: `LibraryController`. `library.service.ts`: `listLibrary`, `readLibrary`, `createLibraryCharacter`, `saveLibraryCharacter`, `deleteLibraryCharacter`. `library.schema.ts`: `libraryCharacter` |
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
-| `spend/` | Players' spend requests, answered by the GM (rules-flow §11.120) | `spend.actions.ts`: `SpendAction`, `applySpendAction`, `clearSpendRequests`. `spend.schema.ts`: `spendRequest` |
+| `spend/` | Players' spend requests, answered by the GM (rules-flow §11.122) | `spend.actions.ts`: `SpendAction`, `applySpendAction`. `spend.clear.ts`: `clearSpendRequests`. `spend.schema.ts`: `spendRequest` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts, items | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the seven tables |
 | `table/` | The socket | `table.gateway.ts`: `TableGateway`. `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
 

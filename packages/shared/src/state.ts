@@ -378,7 +378,7 @@ export const LiveState = z.object({
       upNext: Side.nullable().optional(),
     })
     .nullable(),
-  // Spends the players have asked for and the GM hasn't answered, oldest first (rules-flow.md §11.120). Every phone
+  // Spends the players have asked for and the GM hasn't answered, oldest first (rules-flow.md §11.123). Every phone
   // sees them all: Glory is the party's pool and p.165 has the group agree on it.
   spendRequests: z.array(SpendRequest),
   // guests: characters a live guest QR token points at (no account, so not in members).

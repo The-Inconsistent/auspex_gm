@@ -8,7 +8,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 type SpendRequestsProps = { state: LiveState; send: Send };
 
-// Spends the players asked for from their phones (rules-flow.md §11.120), on every tab so none waits behind one. ACCEPT
+// Spends the players asked for from their phones (rules-flow.md §11.122), on every tab so none waits behind one. ACCEPT
 // is the spend itself, run by the server's own handlers; if it refuses (no Wrath, can't Seize now), the request stays
 // and the reason shows here, so the GM can DENY it.
 export function SpendRequests({ state, send }: SpendRequestsProps) {

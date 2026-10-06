@@ -5,7 +5,7 @@ import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
-import { clearSpendRequests } from "../spend/spend.actions.ts";
+import { clearSpendRequests } from "../spend/spend.clear.ts";
 import { toCharacter } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
 

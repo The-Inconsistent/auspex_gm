@@ -16,7 +16,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 type RequestSpendProps = { state: LiveState; characterId: string; send: Send };
 
-// Ask the GM to spend a Wrath or Glory for you (rules-flow.md §11.120). Nothing is spent until the GM accepts. Everyone
+// Ask the GM to spend a Wrath or Glory for you (rules-flow.md §11.122). Nothing is spent until the GM accepts. Everyone
 // at the table sees what is pending: Glory is the party's pool, and p.165 has the group agree on it.
 export function RequestSpend({ state, characterId, send }: RequestSpendProps) {
   const [amount, setAmount] = useState(1);

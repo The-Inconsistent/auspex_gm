@@ -33,7 +33,7 @@ async function activeEncounterId(tx: Tx, campaignId: string) {
 }
 
 // A pending request of this campaign, or a refusal. Never trust the id from the client.
-async function ownRequest(tx: Tx, { campaignId, id }: { campaignId: string; id: string }) {
+async function requestOf(tx: Tx, { campaignId, id }: { campaignId: string; id: string }) {
   const [r] = await tx
     .select()
     .from(spendRequest)
@@ -69,7 +69,7 @@ export async function applySpendAction(
     }
 
     case "spend.cancel": {
-      const r = await ownRequest(tx, { campaignId: cid, id: a.id });
+      const r = await requestOf(tx, { campaignId: cid, id: a.id });
       // authorize() only knows the action, so a player's ownership is checked here against the row.
       if (ctx.role !== "gm" && r.characterId !== ctx.characterId) fail("Not your request");
       await tx.delete(spendRequest).where(eq(spendRequest.id, r.id));
@@ -79,7 +79,7 @@ export async function applySpendAction(
     // GM only. Accepting is the spend itself, through the handlers the tablet already uses, in this transaction: a
     // refusal rolls the whole thing back, so the request stays pending and the GM can DENY it.
     case "spend.resolve": {
-      const r = await ownRequest(tx, { campaignId: cid, id: a.id });
+      const r = await requestOf(tx, { campaignId: cid, id: a.id });
       if (a.accept) await spendIt(tx, { ctx, request: r });
       await tx.delete(spendRequest).where(eq(spendRequest.id, r.id));
       return { ok: true };
@@ -111,6 +111,7 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
       const c = toCharacter(row);
       const status = pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier }));
       if (status.includes("Dying") || status.includes("Dead")) fail(`${row.name} is not conscious (p.196)`);
+      if (row.shock <= 0) fail(`${row.name} has no Shock to restore`); // the Wrath would buy nothing
       await applyCharacterAction(tx, {
         ctx,
         action: {
@@ -140,12 +141,4 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
       return;
     }
   }
-}
-
-// Clearing: session.start and session.end reset the pools the requests were about (p.162, p.164), and a fight's end
-// ends its Seize requests. Deletes only; callers pass the campaign they already scoped to.
-export async function clearSpendRequests(tx: Tx, { campaignId, kind }: { campaignId: string; kind?: "seize" }) {
-  await tx
-    .delete(spendRequest)
-    .where(and(eq(spendRequest.campaignId, campaignId), kind ? eq(spendRequest.kind, kind) : undefined));
 }

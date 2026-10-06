@@ -596,7 +596,7 @@ test("phones get no items: an Agent sees one as a line on their sheet once it's 
   assert.deepEqual(toPlayerCodex(codex, "a").items, []);
 });
 
-test("toPlayerView: every phone sees every pending spend request (rules-flow §11.120)", () => {
+test("toPlayerView: every phone sees every pending spend request (rules-flow §11.123)", () => {
   const spendRequests = [
     { id: "r1", characterId: "a", kind: "reroll" as const, amount: 1, createdAt: "2026-01-01T00:00:00.000Z" },
     { id: "r2", characterId: "b", kind: "gloryDice" as const, amount: 2, createdAt: "2026-01-01T00:00:01.000Z" },

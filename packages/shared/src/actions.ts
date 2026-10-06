@@ -56,7 +56,7 @@ export const Action = z.union([
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
-    // A player asks for a spend, the GM answers (rules-flow.md §11.120). `amount` only counts for the Glory kinds.
+    // A player asks for a spend, the GM answers (rules-flow.md §11.122). `amount` only counts for the Glory kinds.
     // Accepting runs pool.adjust, character.adjust or turn.seize, so their refusals are the answer.
     z.object({
       type: z.literal("spend.request"),
@@ -330,7 +330,7 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.fitUpgrade",
   "character.removeUpgrade",
   "seat.leave",
-  // Asking for a spend, and taking the ask back, are the player's; answering it is the GM's (§11.120).
+  // Asking for a spend, and taking the ask back, are the player's; answering it is the GM's (§11.122).
   "spend.request",
   "spend.cancel",
 ]);

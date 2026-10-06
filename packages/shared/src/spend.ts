@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// A spend a player asks the GM to make from their phone (rules-flow.md §11.120). The request is a convenience: the GM's
+// A spend a player asks the GM to make from their phone (rules-flow.md §11.122). The request is a convenience: the GM's
 // ACCEPT runs the same pool, Wrath and Seize handlers the tablet already has, so the rules stay in one place.
 export const SpendKind = z.enum(["reroll", "restoreShock", "gloryDice", "gloryDamage", "seize"]);
 export type SpendKind = z.infer<typeof SpendKind>;

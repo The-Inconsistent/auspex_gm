@@ -4,7 +4,7 @@ import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { createdAt } from "../core/sql.ts";
 
-// Pending spend requests only (rules-flow.md §11.120): answering, cancelling and a session or fight ending delete the row.
+// Pending spend requests only (rules-flow.md §11.122): answering, cancelling and a session or fight ending delete the row.
 export const spendRequest = pgTable("spend_request", {
   id: uuid().primaryKey().defaultRandom(),
   campaignId: uuid()
