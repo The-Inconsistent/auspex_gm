@@ -1213,7 +1213,7 @@ test("a Human's any 2 Keywords are two picks, and they differ (Core p.38, §11.1
   assert.ok(same.problems.some((p) => p.severity === "error" && p.what.includes("repeats SCUM")));
 });
 
-test("an Advanced build with a Faction takes its Keywords and is asked no Species Keyword choice (§11.134, §11.136)", () => {
+test("an Advanced build with a Faction takes its Keywords and is asked no Species Keyword choice (§11.140, §11.142)", () => {
   // The Human's any 2: not asked, the Faction's Keyword stands.
   const human = run({ tier: 1, advanced: { factionId: "orks" }, speciesId: "human" });
   assert.deepEqual(human.sheet.keywords, ["ORK"]);
@@ -1238,7 +1238,7 @@ test("an Advanced build with a Faction takes its Keywords and is asked no Specie
   assert.ok(!asked(run({ tier: 1, advanced: { factionId: "asuryani" }, speciesId: "aeldari" }), "ASURYANI"));
 });
 
-test("an Advanced Faction must exist, and a homebrew one needs homebrew (§11.134)", () => {
+test("an Advanced Faction must exist, and a homebrew one needs homebrew (§11.140)", () => {
   const unknown = run({ tier: 1, advanced: { factionId: "no-such-faction" }, speciesId: "human" });
   assert.ok(unknown.problems.some((p) => p.severity === "error" && p.what.includes("Unknown faction")));
   const apoc = { tier: 1, advanced: { factionId: "adeptus-arbites" }, speciesId: "human" } as const;

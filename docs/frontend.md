@@ -148,7 +148,7 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   reloads the page), ARCHETYPE (or ADVANCED CREATION, Core pp.38–39: a species, an Archetype Ability the GM agrees to
   and the Wargear kit, §11.126–132, each list without the homebrew books unless allowed), CUSTOMISE (ratings, USE SUGGESTIONS, Talents, powers for a PSYKER, Advancement
   Packages), FACTION (placeholder fills, Background and its one bonus, option groups; an Advanced build picks its optional
-  Faction here, §11.134, and a placeholder no record fills, `[ANY]`, takes a write-in the GM ticks), ASCENSION (below
+  Faction here, §11.140, and a placeholder no record fills, `[ANY]`, takes a write-in the GM ticks), ASCENSION (below
   the campaign's Tier, and always for an Advanced build, whose one package is the GM's, §11.132), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
   ticks and this character's rulings: species, keywords, gear swaps). Grant choices render as `ChoiceCard`s.
   The Talent, power and package lists leave out what `outOfReach` says no purchase can open (a species, archetype or

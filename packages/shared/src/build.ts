@@ -129,7 +129,7 @@ export function purchaseKey(p: Purchase): string {
 }
 
 // Advanced Character Creation (Core pp.38–39): a build with no Archetype. `factionId` is the optional Faction (p.38,
-// rules-flow.md §11.134); `abilityOf` buys one Archetype Ability the GM agrees to (§11.131); `wargear` is the kit that
+// rules-flow.md §11.140); `abilityOf` buys one Archetype Ability the GM agrees to (§11.131); `wargear` is the kit that
 // replaces an Archetype's, as catalogue ids, limited by Tier (p.39, §11.128).
 export const AdvancedBuild = z.object({
   factionId: id.optional(),
@@ -939,9 +939,9 @@ export function resolveBuild({
       granted: true,
     };
     ownRules(species.abilities).forEach((r) => addRule(r, so));
-    // Species Keywords are Advanced Creation's (Core p.38, rules-flow.md §11.135): an archetype prints its own, so its
+    // Species Keywords are Advanced Creation's (Core p.38, rules-flow.md §11.141): an archetype prints its own, so its
     // species' Keyword grants (a Human's any 2, an Astartes' IMPERIUM or CHAOS, an Aeldari's ANHRATHE or ASURYANI)
-    // are skipped for it. The fixed ones stand beside a Faction, and the choices are asked only without one (§11.136).
+    // are skipped for it. The fixed ones stand beside a Faction, and the choices are asked only without one (§11.142).
     if (advanced) species.keywords.forEach(addKeyword);
     const asksKeywords = !!advanced && !advanced.factionId;
     species.grants.forEach((g, i) => {
@@ -961,7 +961,7 @@ export function resolveBuild({
   if (advanced) {
     const ao: Origin = { path: "advanced", step: "archetype", cite: "Core p.38", tiersAscended: 0, granted: true };
     // The optional Faction (Core p.38): the Keywords its record names; its Background tables and option groups are the
-    // FACTION step's, offered by `factionId` as an archetype's are by its own (§11.134).
+    // FACTION step's, offered by `factionId` as an archetype's are by its own (§11.140).
     if (advanced.factionId) {
       const faction = ix.factions.get(advanced.factionId);
       if (!faction)
@@ -2292,7 +2292,7 @@ export function label(g: Grant): string {
 }
 
 // A grant whose only content is Keywords: one or several, or a choice between such options. Core p.38 puts a Species'
-// Keywords under Advanced Creation, so these are the species grants an archetype build skips (rules-flow.md §11.135).
+// Keywords under Advanced Creation, so these are the species grants an archetype build skips (rules-flow.md §11.141).
 const keywordsOnly = (g: Grant): boolean =>
   "keyword" in g ||
   "keywords" in g ||

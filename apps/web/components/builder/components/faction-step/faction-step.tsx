@@ -16,7 +16,7 @@ const ROW_LABELS: Record<BackgroundRow, string> = {
 
 // Know your Faction (Core pp.26–30): what fills each [PLACEHOLDER], the Background (three rows, one bonus,
 // rules-flow.md §11.22), and the option groups the species or faction offers. An Advanced build picks its Faction here,
-// or none (Core p.38, §11.134), and gets from it what an archetype gets from its own.
+// or none (Core p.38, §11.140), and gets from it what an archetype gets from its own.
 export function FactionStep() {
   const { draft, update, resolved: r, lookups, tier, go, homebrew } = useBuilder();
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
@@ -99,7 +99,7 @@ export function FactionStep() {
 
       {draft.advanced && (
         <fieldset className="panel pad stack">
-          <legend className="label">FACTION (OPTIONAL) · Core p.38 · {citeLabel("rules-flow.md §11.134")}</legend>
+          <legend className="label">FACTION (OPTIONAL) · Core p.38 · {citeLabel("rules-flow.md §11.140")}</legend>
           <div className="dim">
             A Faction brings its Keywords, its Background tables and its option groups, as an Archetype&apos;s Faction
             does; the Species&apos; own Keywords stay. With none, the Species&apos; Keyword choices are asked instead.
