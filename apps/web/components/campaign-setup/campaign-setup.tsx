@@ -62,8 +62,8 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
 
   return (
     <div className="bld">
-      {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
       <header className="band torn bld-head">
+        {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
         <Link href={`/c/${campaignId}`} aria-label="Open the campaign" className="btn sq">
           ◂
         </Link>

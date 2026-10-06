@@ -139,6 +139,10 @@ body {
   line-height: 1.4;
   font-variant-numeric: lining-nums tabular-nums;
   -webkit-tap-highlight-color: transparent;
+  /* viewport-fit=cover (layout.tsx) lets the page draw under the notch; pad the sides once here so no content sits under
+     it in landscape. Headers add only the top inset, fixed bars (which ignore this padding) carry their own. */
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 button,
 input,
@@ -1114,8 +1118,7 @@ dialog.picker {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: calc(8px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 8px
-    max(16px, env(safe-area-inset-left, 0px));
+  padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 8px; /* sides: body pads the notch */
   flex-wrap: wrap;
 }
 .gm-title {
@@ -1411,6 +1414,10 @@ button.row.now:nth-of-type(even) {
     flex: none;
     padding: 0 18px;
   }
+  /* The phone rule above resets .gm-head's padding; put its notch inset back. */
+  .gm-head {
+    padding-top: calc(6px + env(safe-area-inset-top, 0px));
+  }
   /* Headers share a row with the back button when there is room; .gm-title's own floor wraps it when there isn't. */
   .gm-head .gm-title,
   .bld-head .gm-title {
@@ -1431,8 +1438,7 @@ button.row.now:nth-of-type(even) {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 10px;
-  padding: calc(12px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px
-    max(16px, env(safe-area-inset-left, 0px));
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 10px; /* sides: body pads the notch */
 }
 .pl-banner-text {
   flex: 1 1 160px; /* below ~160px of room the buttons wrap under the text instead of squeezing it */
@@ -1726,8 +1732,7 @@ pre.text.slate {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: calc(8px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 8px
-    max(16px, env(safe-area-inset-left, 0px));
+  padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 8px; /* sides: body pads the notch */
   flex-wrap: wrap;
 }
 .bld-head a:not(.btn) {

@@ -494,8 +494,8 @@ function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
   return (
     <BuilderContext.Provider value={value}>
       <div className="bld">
-        {bench.banner && <div className="badge-offline">{bench.banner}</div>}
         <header className="band torn bld-head">
+          {bench.banner && <div className="badge-offline">{bench.banner}</div>}
           <a href={bench.backHref} aria-label={bench.backLabel} className="btn sq">
             ◂
           </a>
