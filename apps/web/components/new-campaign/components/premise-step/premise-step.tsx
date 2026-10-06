@@ -36,7 +36,7 @@ export function PremiseStep({ catalogue, tier, framework, frameworkBonus, patron
           id="nc-framework"
           className="input"
           maxLength={5000}
-          placeholder="A Deathwatch Kill Team hunting the cult beneath the dig site…"
+          placeholder="A Rogue Trader's retinue chasing a lost archeotech vault…"
           value={framework}
           onChange={(e) => onChange({ framework: e.target.value })}
         />

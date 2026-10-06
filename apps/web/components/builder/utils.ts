@@ -35,7 +35,7 @@ export function stepsFor({
   if (locked) return ascending ? ["ascension", "advance", "review"] : ["advance", "review"];
   const a = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
   // ponytail: an Advanced build has no Creation Ascension screen, since it has no Archetype Tier to ascend from; one
-  // bought at creation is the GM's (Core p.38, §11.126) and `resolveBuild` takes it, so add a picker when a table asks.
+  // bought at creation is the GM's (Core p.38, §11.132) and `resolveBuild` takes it, so add a picker when a table asks.
   return BUILDER_STEPS.filter(
     (s) => (s !== "ascension" || ascending || (a !== undefined && a.tier < tier)) && (s !== "advance" || made),
   );

@@ -97,8 +97,8 @@ export function ArchetypeStep() {
   );
 }
 
-// Advanced Creation (Core pp.38–39): the species (its XP is paid, rules-flow.md §11.120), an Archetype Ability the GM
-// agrees to (§11.125) and the kit that replaces an Archetype's (§11.122–124). What is allowed is `resolveBuild`'s.
+// Advanced Creation (Core pp.38–39): the species (its XP is paid, rules-flow.md §11.126), an Archetype Ability the GM
+// agrees to (§11.131) and the kit that replaces an Archetype's (§11.128–130). What is allowed is `resolveBuild`'s.
 function AdvancedPanel() {
   const { draft, update, lookups, catalogue, tier } = useBuilder();
   const advanced = draft.advanced!;

@@ -15,7 +15,7 @@ import { StepChoices } from "../step-choices/step-choices";
 export function AscensionStep() {
   const { draft, lookups, tier, go, ascending } = useBuilder();
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  // An Advanced build has no Archetype: no Creation Ascension to offer, and no Archetype Ascension (§11.126–127).
+  // An Advanced build has no Archetype: no Creation Ascension to offer, and no Archetype Ascension (§11.132–133).
   if (!arch && !draft.advanced) return <p>Choose an archetype first.</p>;
   const atCreation = !!arch && arch.tier < tier;
 

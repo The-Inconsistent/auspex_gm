@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
   ATTRIBUTE_XP,
   CharacterBuild,
+  CharacterStats,
   SKILL_XP,
   buildReady,
   slotOf,
@@ -27,28 +28,29 @@ import {
   type WargearWeapon,
   type CharacterBuildInput,
 } from "@wg/shared";
-import { creationCatalogue, loadPack, rulesList, wargear } from "./index.ts";
+import { creationCatalogue, rulesList, wargear } from "./index.ts";
 
-// Issue #9 step 1 and #18 acceptance: every volkus pregen (docs/pregens.md), rebuilt from the build its pack file
-// carries, comes out at the XP of its ledger and with the sheet the pack prints. The GM's part of each build holds
-// the rulings that make it so (pregens.md "Every [GM] choice").
-const volkus = loadPack("volkus");
+// Issue #9 step 1 and #18 acceptance: every pregen fixture (fixtures/pregens), rebuilt from its build, comes out at
+// the XP of its ledger and with the sheet its stats print. The GM's part of each build holds the rulings that make it so.
+const dir = new URL("./fixtures/pregens/", import.meta.url);
+const fixtures = readdirSync(dir)
+  .filter((f) => f.endsWith(".json"))
+  .sort()
+  .map((f) => JSON.parse(readFileSync(new URL(f, dir), "utf8")));
 const catalogue = { creation: creationCatalogue(), wargear, homebrew: false };
-const PREGENS = volkus.characters.map((c, i) => ({ n: i + 1, name: c.name, want: c.stats, build: c.build! }));
+const PREGENS = fixtures.map((c, i) => ({
+  n: i + 1,
+  name: c.name as string,
+  want: c.stats as CharacterStats,
+  build: CharacterBuild.parse(c.build),
+  ledger: c.ledger as number[],
+  homebrew: c.homebrew as boolean,
+}));
 const norm = (s: string) =>
   s
     .toLowerCase()
     .replace(/\s*\(.*?\)\s*/g, "")
     .replace(/[^a-z0-9]/g, "");
-
-// Each pregen's ledger costs, from its "### XP ledger" table.
-const doc = readFileSync(new URL("../../docs/pregens.md", import.meta.url), "utf8");
-const ledgerOf = (n: number) => {
-  const section = doc.split(/^## /m).find((s) => s.startsWith(`${n}. `))!;
-  return [
-    ...section.matchAll(/^\| (?:Archetype|Ascension|Package|Attribute|Skill|Talent) \|.*?\| (\d+) \| \**\d+\** \|$/gm),
-  ].map((m) => Number(m[1]));
-};
 
 // A weapon line as the table compares it: the numbers, the Traits the rules reference knows (with their ratings), and
 // the upgrades fitted, whether printed as a Trait ("Duelling Grip (+1 bonus die)") or fitted (`upgradeNames`).
@@ -71,14 +73,14 @@ const profile = (w: Weapon) => ({
     .sort(),
 });
 
-test("every volkus pregen carries a build", () => {
+test("every pregen fixture carries a build", () => {
   assert.equal(PREGENS.length, 11);
   for (const p of PREGENS) assert.ok(p.build, p.name);
 });
 
 for (const { want, ...p } of PREGENS) {
   test(`${p.name}: the build resolves to the pregen's ledger and sheet`, () => {
-    const r = resolveBuild({ catalogue: { ...catalogue, homebrew: volkus.campaign.homebrew }, build: p.build });
+    const r = resolveBuild({ catalogue: { ...catalogue, homebrew: p.homebrew }, build: p.build });
     assert.deepEqual(r.pending, [], "nothing left to choose");
     assert.deepEqual(
       r.problems.map((x) => x.what),
@@ -89,11 +91,11 @@ for (const { want, ...p } of PREGENS) {
 
     assert.equal(
       r.spent,
-      ledgerOf(p.n).reduce((a, b) => a + b, 0),
+      p.ledger.reduce((a, b) => a + b, 0),
     );
     assert.deepEqual(
       r.ledger.map((l) => l.xp).sort((a, b) => a - b),
-      ledgerOf(p.n).sort((a, b) => a - b),
+      p.ledger.sort((a, b) => a - b),
     );
 
     const s = r.sheet;
@@ -116,12 +118,12 @@ for (const { want, ...p } of PREGENS) {
     for (const a of want.abilities.filter((x) => !packages.includes(norm(x.name))))
       assert.ok(abilities.includes(norm(a.name)), a.name);
 
-    assert.deepEqual(s.mods, want.mods); // the extra Background bonuses are the GM's (pregens.md GM choice 23)
+    assert.deepEqual(s.mods, want.mods); // the extra Background bonuses are the GM's (the GM grants all three Background bonuses)
 
     // Since #27 the weapons are the build's, with their Talents applied on read (rules-flow.md §11.68), and they must
     // come out as the pregen prints them: the numbers, every real Trait with its rating, and the fitted upgrades.
     // `keepSheet` keeps the printed armour and gear lines, and a printed weapon the build has none of by name (the GM's
-    // own Haywire Mine and deployed smoke, pregens.md GM choice 8). Printed prose ("ED includes +1 Explosive Fury") is
+    // own Haywire Mine and deployed smoke, a GM choice). Printed prose ("ED includes +1 Explosive Fury") is
     // the effect's own name now, so it isn't compared.
     const weapons = keepSheetWeapons(want.weapons, s.weapons); // what `keepSheet` stores (character.actions.ts)
     const live = withWeaponEffects(withUpgrades({ ...s, weapons }, wargear), { rank: 1, catalogue: wargear });
@@ -597,7 +599,7 @@ test("Ever Vigilant's Passive Awareness reaches the sheet's number, scaled by Ra
 });
 
 test("a granted Talent with options asks for one; a bought one must be one of them (Acute Sense, Core p.129)", () => {
-  const wolf = PREGENS.find((p) => p.name === "Brother Hjalmar Grimsson")!.build;
+  const wolf = PREGENS.find((p) => p.name === "Aegis")!.build;
   const path = "subfaction/space-wolves/huntersunleashed/0/choice";
   const { [path]: _, ...unpicked } = wolf.choices;
   const asked = run({ ...wolf, choices: unpicked }, true);
@@ -940,37 +942,37 @@ const shown = (name: string, rank = 1) => {
 const line = (sheet: ReturnType<typeof shown>, name: string) => sheet.weapons.find((w) => w.name === name)!;
 
 test("Bolter Discipline: BOLT weapons gain Rapid Fire (2), or +Rank on the one they have (VoA p.45)", () => {
-  const sergeant = shown("Watch Sergeant Qaan Toghril");
+  const sergeant = shown("Watch Sergeant");
   assert.ok(line(sergeant, "Boltgun").traits.includes("Rapid Fire (3)"), "Rapid Fire (2) + Rank 1");
   assert.deepEqual(line(sergeant, "Boltgun").effects, ["Bolter Discipline"]);
   assert.ok(!line(sergeant, "Power Sword").effects, "a Power Sword isn't BOLT");
-  const disruptor = shown("Brother Octavius Serren");
+  const disruptor = shown("Disruptor");
   assert.ok(line(disruptor, "Bolt Pistol").traits.includes("Rapid Fire (2)"), "gained, at 2");
   // At Rank 3 the same build's Boltgun shows Rapid Fire (5): the Rank is read, not stored.
-  assert.ok(line(shown("Watch Sergeant Qaan Toghril", 3), "Boltgun").traits.includes("Rapid Fire (5)"));
+  assert.ok(line(shown("Watch Sergeant", 3), "Boltgun").traits.includes("Rapid Fire (5)"));
 });
 
 test("Trademark Weapon reaches only the weapon its choice names (Core p.141)", () => {
-  const marksman = shown("Brother Aurelian Tarsus");
+  const marksman = shown("Marksman");
   assert.equal(line(marksman, "Bolt Sniper Rifle").ed, 3, "1 + Double Rank");
   assert.ok(!line(marksman, "Bolt Pistol").effects);
 });
 
 test("a Doctrine's +Rank AP reaches the weapon it granted, and nothing once the GM swaps it out (VoA p.35)", () => {
-  const hordeSlayer = shown("Brother Hesh Tu'var");
+  const hordeSlayer = shown("Horde Slayer");
   assert.equal(line(hordeSlayer, "Heavy Bolter").ap, -2, "−1 and Rank 1 more");
   assert.equal(line(hordeSlayer, "Bolt Rifle").ap, -1, "not the Doctrine's weapon");
-  const bombard = shown("Brother Idrian Kostas"); // the Heavy Bolter became the Frag Cannon (pregens.md GM choice 22)
+  const bombard = shown("Bombard"); // the Heavy Bolter became the Frag Cannon (a GM choice)
   assert.ok(bombard.weapons.every((w) => !w.effects?.includes("Heavy Intercessor Doctrine")));
 });
 
 test("Explosive Fury: +Rank ED on grenades, none on smoke, which deals no damage (VoA p.33)", () => {
-  const disruptor = shown("Brother Octavius Serren");
+  const disruptor = shown("Disruptor");
   assert.equal(line(disruptor, "Frag Grenade").ed, 5);
   assert.equal(line(disruptor, "Krak Grenade").ed, 6);
-  // The pack keeps the GM's deployed smoke as written (GM choice 8), so the catalogue's is added here to be sure.
+  // The fixture keeps the GM's deployed smoke as written, so the catalogue's is added here to be sure.
   const entry = wargear.get("apoc-smoke-grenades")!;
-  const p = PREGENS.find((x) => x.name === "Brother Octavius Serren")!;
+  const p = PREGENS.find((x) => x.name === "Disruptor")!;
   const sheet = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
   const withSmoke = {
     ...sheet,
@@ -992,7 +994,7 @@ test("a weapon not from the catalogue is left as written: it may already count t
 
 test("a printed line a rebuild tags with its catalogue entry isn't given its Talents again (rules-flow.md §11.68)", () => {
   // A campaign seeded before #27 keeps the printed lines, which count Bolter Discipline already: Rapid Fire (3).
-  const p = PREGENS.find((x) => x.name === "Watch Sergeant Qaan Toghril")!;
+  const p = PREGENS.find((x) => x.name === "Watch Sergeant")!;
   const next = resolveBuild({ catalogue: { ...catalogue, homebrew: true }, build: p.build }).sheet;
   const rebuilt = keepPlay({ previous: p.want, next, before: next }); // a rebuild before the #27 migration ran
   const boltgun = rebuilt.weapons.find((w) => w.name === "Boltgun")!;
@@ -1055,7 +1057,7 @@ test("withUpgrades: a given relic's Powers apply like an upgrade's, after the fi
   assert.equal(bare!.ed, (pistol.ed as number) + 2, "Powers apply with nothing fitted too");
 });
 
-// ── Advanced Character Creation (Core pp.38–39, rules-flow.md §11.120–127) ──
+// ── Advanced Character Creation (Core pp.38–39, rules-flow.md §11.126–133) ──
 
 // The worked example on Core p.39: a Tier 1 Human with no Archetype.
 const worked: CharacterBuildInput = {
@@ -1101,12 +1103,12 @@ test("an Advanced Adeptus Astartes has the Species Keywords and is asked IMPERIU
   const choice = r.choices.find((c) => c.options.includes("IMPERIUM") || c.options.some((o) => o.includes("IMPERIUM")));
   assert.ok(choice && choice.options.some((o) => o.includes("CHAOS")), "IMPERIUM or CHAOS");
   assert.ok(r.pending.some((p) => p.path === choice!.path));
-  // the species' own ratings stand (§11.120): Agility 4, not 1
+  // the species' own ratings stand (§11.126): Agility 4, not 1
   assert.equal(r.sheet.attributes.A, 4);
   assert.equal(r.ledger.find((l) => l.what === "Adeptus Astartes (species)")?.xp, 160);
 });
 
-test("a bought Archetype Ability costs its Archetype's Tier × 10 and needs the GM; it brings the ability alone (§11.125)", () => {
+test("a bought Archetype Ability costs its Archetype's Tier × 10 and needs the GM; it brings the ability alone (§11.131)", () => {
   const build = { tier: 4, advanced: { abilityOf: "inquisitor" }, speciesId: "human" };
   const r = run(build);
   const row = r.ledger.find((l) => l.what === "Inquisitor Archetype Ability");
@@ -1119,7 +1121,7 @@ test("a bought Archetype Ability costs its Archetype's Tier × 10 and needs the 
   assert.ok(!ok.problems.some((p) => p.path === "advanced/ability/inquisitor"));
 });
 
-test("archetype requirements fail for an Advanced character and notArchetype passes (§11.127)", () => {
+test("archetype requirements fail for an Advanced character and notArchetype passes (§11.133)", () => {
   const ctx = (archetypeId: string | null) => ({ archetypeId }) as Parameters<typeof meets>[1];
   assert.notEqual(meets({ kind: "archetype", anyOf: ["ganger"] }, ctx(null)), true);
   assert.equal(meets({ kind: "notArchetype", anyOf: ["ganger"] }, ctx(null)), true);
@@ -1145,4 +1147,18 @@ test("Advanced Wargear is added to the sheet and checked against the Tier's limi
     over.problems.some((p) => p.what.startsWith("Total Value")),
     JSON.stringify(over.problems),
   );
+});
+
+test("Advanced Wargear refuses an upgrade: it is fitted, not carried (Core p.39)", () => {
+  const r = run({ ...worked, advanced: { wargear: ["ammo-drum"] } });
+  assert.ok(r.problems.some((p) => p.severity === "error" && p.what.includes("is an upgrade")));
+  assert.ok(!r.sheet.gear.some((g) => g.includes("Ammo Drum")));
+});
+
+test("an Ascension Package at Advanced Creation grants its per-Tier bonus once (§11.132)", () => {
+  const base = { tier: 2, advanced: {}, speciesId: "human" } as const;
+  const without = run(base);
+  const with_ = run({ ...base, packages: ["dauntless-reputation"] });
+  // Influence +2 per Tier Ascended (Core p.151)
+  assert.equal((with_.sheet.mods.influence ?? 0) - (without.sheet.mods.influence ?? 0), 2);
 });

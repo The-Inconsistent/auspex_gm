@@ -41,7 +41,7 @@ app.use(
   },
 );
 
-// IMPORT GAME posts a whole campaign file, bigger than the 100 kB default (the volkus export is about 120 kB). Only that
+// IMPORT GAME posts a whole campaign file, bigger than the 100 kB default (a full campaign export runs to about 120 kB). Only that
 // route, and after its rate limit. Wrapped so the handler isn't named `jsonParser`: Nest skips its own global parser if
 // it finds one by that name, and every other route would lose its body.
 const importJson = express.json({ limit: "2mb" });

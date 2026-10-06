@@ -45,7 +45,7 @@ test("threatWeapon keeps a count and a null Salvo as printed", () => {
   assert.deepEqual(w.range, [8]);
 });
 
-// Advanced Creation's Wargear table (Core p.39); the readings are rules-flow.md §11.122–124.
+// Advanced Creation's Wargear table (Core p.39); the readings are rules-flow.md §11.128–130.
 const piece = (value: number | null, rarity: Wargear["rarity"], name = "Thing") => ({ name, value, rarity });
 const messages = (items: ReturnType<typeof piece>[], tier: number) =>
   advancedWargearProblems(items, tier).map((p) => p.what);

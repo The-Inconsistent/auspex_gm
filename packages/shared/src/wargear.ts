@@ -390,7 +390,7 @@ export function withUpgrades<T extends { weapons: Weapon[]; armour?: SheetArmour
 }
 
 // Advanced Creation's Wargear (Core p.39): in place of an Archetype's kit, any number of items within a limit that
-// grows with the Tier. Every reading below is a house decision, rules-flow.md §11.122–124.
+// grows with the Tier. Every reading below is a house decision, rules-flow.md §11.128–130.
 export const ADVANCED_WARGEAR = {
   1: { total: 15, max: 7, rare: 0, veryRare: 0 },
   2: { total: 20, max: 9, rare: 2, veryRare: 0 },
@@ -400,8 +400,8 @@ export const ADVANCED_WARGEAR = {
 export type AdvancedWargearProblem = { what: string; gm?: boolean };
 
 // What breaks the Tier's limits: Total Value strictly under the printed number, no item over the Max. Value, and the
-// Rarity allowance (§11.123). The table stops at Tier 4, so a higher Tier is checked against Tier 4's row and the GM
-// is asked to agree (§11.124). An item with no printed Value or Rarity can't be counted: the GM's call.
+// Rarity allowance (§11.129). The table stops at Tier 4, so a higher Tier is checked against Tier 4's row and the GM
+// is asked to agree (§11.130). An item with no printed Value or Rarity can't be counted: the GM's call.
 export function advancedWargearProblems(
   items: readonly Pick<Wargear, "name" | "value" | "rarity">[],
   tier: number,

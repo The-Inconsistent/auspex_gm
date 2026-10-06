@@ -129,8 +129,8 @@ export function purchaseKey(p: Purchase): string {
 }
 
 // Advanced Character Creation (Core pp.38–39): a build with no Archetype. `abilityOf` buys one Archetype Ability the
-// GM agrees to (p.38, rules-flow.md §11.125); `wargear` is the kit that replaces an Archetype's, as catalogue ids,
-// limited by Tier (p.39, §11.122).
+// GM agrees to (p.38, rules-flow.md §11.131); `wargear` is the kit that replaces an Archetype's, as catalogue ids,
+// limited by Tier (p.39, §11.128).
 export const AdvancedBuild = z.object({
   abilityOf: id.optional(),
   wargear: z.array(id).max(60).prefault([]),
@@ -180,14 +180,14 @@ export const CharacterBuild = z
     // The GM's part: rulings on this character that no book makes, and ticks on what only the GM can judge.
     gm: z
       .object({
-        species: id.optional(), // "Rubicon Primaris makes him Primaris Astartes" (docs/pregens.md, GM choice 2)
-        keywords: z.array(keyword).prefault([]), // DEATHWATCH (docs/kill-team.md decision 3)
+        species: id.optional(), // "Rubicon Primaris makes him Primaris Astartes" (rules-flow.md §11.121)
+        keywords: z.array(keyword).prefault([]), // e.g. DEATHWATCH (rules-flow.md §11.121)
         gear: z
           .object({ remove: z.array(z.string().min(1)).prefault([]), add: z.array(WargearItem).prefault([]) })
           .prefault({}),
         approved: z.array(z.string().min(1).max(200)).prefault([]), // paths of `gm` requirements and `story` grants
-        // Trait bonuses granted by ruling, added to the build's: the volkus pregens keep all three Background bonuses
-        // (docs/pregens.md, GM choice 23; rules-flow.md §11.22).
+        // Trait bonuses granted by ruling, added to the build's: a pregen made before §11.22 can keep all three
+        // Background bonuses (rules-flow.md §11.22).
         mods: Mods.prefault({}),
       })
       .prefault({}),
@@ -393,7 +393,7 @@ export function resolveBuild({
   // Rank 1 at creation (Core p.36), also after a Creation Ascension (p.148); then +1 per 40 XP earned (pp.146–147).
   const rank = play ? rankOf(play.xpEarned) : 1;
   const advanced = build.advanced;
-  // No Archetype Ability, so the Tier × 10 bonus (Core p.38, rules-flow.md §11.121) is part of the budget.
+  // No Archetype Ability, so the Tier × 10 bonus (Core p.38, rules-flow.md §11.127) is part of the budget.
   const budget = (build.budget ?? startingXp(tier)) + (advanced ? advancedBonusXp(tier) : 0);
   const ledger: LedgerRow[] = [];
   const pending: PendingChoice[] = [];
@@ -922,7 +922,7 @@ export function resolveBuild({
 
   // The archetype's printed ratings already include the species' (Core p.29); what it doesn't print, the species gives.
   // Advanced Creation starts every Attribute at 1 and every Skill at 0 (Core p.39), and the species' own ratings, which
-  // its XP paid for, stand (rules-flow.md §11.120).
+  // its XP paid for, stand (rules-flow.md §11.126).
   for (const a of ATTRIBUTES) s.base.attributes[a] = arch?.attributes[a] ?? species?.attributes[a] ?? 1;
   for (const k of Object.keys(SKILLS) as Skill[]) {
     const v = arch?.skills[k] ?? species?.skills[k];
@@ -953,7 +953,7 @@ export function resolveBuild({
   }
   if (advanced) {
     const ao: Origin = { path: "advanced", step: "archetype", cite: "Core p.38", tiersAscended: 0, granted: true };
-    // A bought Archetype Ability brings the ability alone: no Keywords, kit or Influence (§11.125). The GM must agree.
+    // A bought Archetype Ability brings the ability alone: no Keywords, kit or Influence (§11.131). The GM must agree.
     if (advanced.abilityOf) {
       const from = ix.archetypes.get(advanced.abilityOf);
       if (!from)
@@ -986,6 +986,14 @@ export function resolveBuild({
     const kit = advanced.wargear.map((w) => ({ id: w, w: catalogue.wargear.get(w) }));
     for (const { id: wid, w } of kit) {
       if (!w) problem({ step: "archetype", severity: "error", what: `Unknown wargear ${wid}`, cite: "Core p.39" });
+      // An upgrade is fitted to a weapon or armour, not carried as a piece of the kit (Core p.227).
+      else if (w.kind === "upgrade")
+        problem({
+          step: "archetype",
+          severity: "error",
+          what: `${w.name} is an upgrade, not Wargear`,
+          cite: "Core p.39",
+        });
       else if (allowed(w, "archetype"))
         addItem(
           { name: w.name, qty: 1, wargearId: w.id, scope: "character" },
@@ -1009,7 +1017,7 @@ export function resolveBuild({
   // ── packages: one Creation Ascension Package when the archetype's Tier is below the campaign's (Core p.148), and any
   // Advancement Packages bought at creation ──
   // An Advanced character has no Archetype Tier to ascend from: an Ascension Package bought at creation is the GM's to
-  // allow (Core p.38, rules-flow.md §11.126), one at most.
+  // allow (Core p.38, rules-flow.md §11.132), one at most.
   const tiersAscended = arch ? Math.max(0, tier - arch.tier) : 0;
   const ascensions = build.packages.filter((p) => ix.packages.get(p)?.kind === "ascension");
   if (arch && tiersAscended > 0 && ascensions.length === 0)
@@ -1046,7 +1054,8 @@ export function resolveBuild({
       path: `package/${p.id}`,
       step,
       cite: cite(p),
-      tiersAscended: p.kind === "ascension" ? tiersAscended : 0,
+      // An Advanced build's Ascension Package counts as one Tier Ascended for its "per Tier" grants (§11.132).
+      tiersAscended: p.kind === "ascension" ? (advanced ? 1 : tiersAscended) : 0,
       granted: true,
     };
     if (advanced && p.kind === "ascension")
@@ -1200,7 +1209,7 @@ export function resolveBuild({
           what: `Archetype Ascension needs Rank 3; ${play?.xpEarned ?? 0} XP earned is Rank ${rank}`,
           cite: "Core pp.146, 155",
         });
-      // An Advanced character has no Archetype, so no Faction to stay in (§11.127).
+      // An Advanced character has no Archetype, so no Faction to stay in (§11.133).
       if (!arch || to.factionId !== arch.factionId)
         problem({
           step: "ascension",
@@ -1417,7 +1426,7 @@ export function resolveBuild({
         cite: fo.cite,
       });
     } else if ("writeIn" in fill) {
-      // The GM may allow one anyway (rules-flow.md §11.25: the Red Scorpions, kill-team.md ruling 13).
+      // The GM may allow one anyway (rules-flow.md §11.25: the Red Scorpions).
       if (!kw?.writeIn)
         problem({
           step: "faction",
@@ -1826,8 +1835,8 @@ export function resolveBuild({
       }),
   ];
   // The weapon effects as the sheet keeps them: a Talent's chosen weapon becomes its name, a record's granted weapon its
-  // catalogue ids. One whose weapon isn't there (the GM swapped the Doctrine's Heavy Bolter out, pregens.md GM choice
-  // 22) reaches nothing, so it isn't kept.
+  // catalogue ids. One whose weapon isn't there (the GM swapped the Doctrine's Heavy Bolter
+  // out) reaches nothing, so it isn't kept.
   const weaponEffects = s.weaponEffects.flatMap(({ effect, source, cite, path, choice }) => {
     const { chosen, granted, unarmed, ...fits } = effect.fits;
     // ponytail: no sheet line for unarmed strikes, so an unarmed effect stays in its Talent's text; a line if one appears
@@ -2289,7 +2298,7 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
 
 // The weapons a hand-made sheet keeps when its build is attached (`keepSheet`, issue #27): the build's lines, whose
 // Talents are applied on read (rules-flow.md §11.68), plus a hand-written line the build has no weapon of that name for
-// (a GM's own profile, the volkus Haywire Mine). What play gave a same-name line carries over to the build's: the
+// (a GM's own profile, a placed Haywire Mine). What play gave a same-name line carries over to the build's: the
 // upgrades fitted at the table, and a second copy of that name (a requisitioned Bolt Pistol), which is its own weapon.
 export function keepSheetWeapons(old: CharacterStats["weapons"], built: CharacterStats["weapons"]) {
   const seen = new Set<string>();

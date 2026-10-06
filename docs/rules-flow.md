@@ -264,8 +264,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 21. **Asuryani Ghost Warriors count as Aeldari Species** for requirements (their "Aeldari" ability, Apocrypha p.6).
     **Drukhari never walk Asuryani Paths**, even with the ASURYANI keyword (IoE p.10).
 22. **One Background bonus** (Core p.43): of the three Background rows a character takes, only one +1 bonus applies.
-    The builder enforces it. A GM may grant more by ruling (`gm.mods` in the build): the volkus pregens keep all three
-    (docs/pregens.md, GM choice 23).
+    The builder enforces it. A GM may grant more by ruling (`gm.mods` in the build): a pregen made before this rule can
+    keep all three that way.
 23. **Absolvers are a Blood Angels Successor** (VoA pp.30, 78), not of unknown succession (Core p.71): they take the
     Blood Angels Chapter Traits, and the Red Thirst (Gene-seed) flaw applies, to Primaris Absolvers too: this
     overrides Core p.71's "Primaris ignore (Gene-seed) traits" for the Absolvers. `successorOf` on the sub-faction.
@@ -273,7 +273,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     (Orders Militant, Dialogus, Famulous, Hospitaller, Sabine, Pronatus, Core p.51) are groupings, not choices.
 25. **Write-in sub-factions:** players may name their own Forge World, Craftworld or Coterie (`writeIn` on the
     placeholder keyword). Ordos are only the printed three, so Core p.64's "Other Ordos" isn't a choice. A write-in on
-    any other placeholder needs the GM's tick (a `gm` problem), as for the Red Scorpions (kill-team.md ruling 13).
+    any other placeholder needs the GM's tick (a `gm` problem), as for a Chapter the catalogue has no record of (the Red Scorpions, of unknown origin: Core p.71 lets such a Chapter
+    take a First Founding Chapter's traits, but only "may").
 26. **Navis Nobilite Origins** (Apocrypha p.54) match the character's House: a Magisterial, Nomadic or Shrouded House
     Origin needs that House type. A Renegade House has no Origin row.
 27. **Species gaps:** Ogryn and Ratling have the ABHUMAN Species Keyword, Kroot has KROOT (FSPG prints none), and
@@ -346,7 +347,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
     fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
 53. **A granted Talent whose requirements the character doesn't meet** (Rubicon Primaris gives Built Tough, which needs
-    Survival 2, VoA pp.43, 46; pregens.md ambiguity 7): the books don't say whether a grant ignores them. The builder
+    Survival 2, VoA pp.43, 46): the books don't say whether a grant ignores them. The builder
     keeps the Talent and asks the GM to tick it, rather than refusing the build. *Proposed; awaiting the GM.*
 54. **Creation Ascension** (Core p.148): one Ascension Package, whose requirements are met at the archetype's Tier
     (before Ascending). "Per Tier Ascended" counts from the archetype's Tier to the campaign's, and "× the new Tier" XP
@@ -512,7 +513,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     text: charging, aiming, a target type, a spend of Glory, Wrath or Ruin, an attack option.
     - **Rank** is the character's Rank now (Core pp.146–147), from the XP earned. It rises at session end without a
       rebuild, so the effects are applied when the sheet is read, after the weapon's upgrades, never stored.
-    - **Explosive Fury's "+Rank bonus extra damage"** (VoA p.33) is +Rank ED on grenades (docs/pregens.md, GM choice 9).
+    - **Explosive Fury's "+Rank bonus extra damage"** (VoA p.33) is read as +Rank ED on grenades, as the book doesn't say whether flat damage or ED.
     - **Not numbers, notes:** a re-roll or bonus dice with a kind of weapon ("re-roll up to Double Rank dice", Hellblaster
       Focus, VoA p.35), an effect the player "may" use, and one the GM judges ("or similar", "weapons made for smaller
       users") show as a cited note on the weapon's line.
@@ -523,7 +524,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     - Only a weapon that came from the Wargear catalogue (`wargearId`) is matched: a hand-written line may already
       count the Talent, and it would count twice. A hand-written line a rebuild matched to its catalogue entry (so an
       upgrade can be fitted to it) is marked `asPrinted` and isn't matched either, as on a sheet written by hand before
-      #27. The live volkus agents' printed lines were swapped for their builds' lines by a one-off script (issue #27).
+      #27. A campaign's live agents' printed lines were swapped for their builds' lines by a one-off script (issue #27).
     - **A weapon that deals no damage** (a Smoke Grenade: Damage 0, ED 0) takes no Talent +Damage or +ED: Explosive
       Fury adds to "successful attacks", and smoke makes none. A melee weapon printed Damage 0 deals Strength (S + 0)
       and a grenade with ED on Damage 0 still deals damage, so those take them.
@@ -797,33 +798,47 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 119. **Bloody Gates prints Rarity as a number** (BG pp.6, 13, 21, 24; GitHub issue #51). Its mission equipment reads
      "Rarity: 2" where the Core Rulebook names a Rarity. The number is read as the DN it adds to a requisition (Core
      p.206): 0 Common, 1 Uncommon, 2 Rare, 3 Very Rare, 4 Unique. *Proposed; awaiting the GM.*
-120. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
+120. **Kommando stand-ins are Core's Kommando with one wargear swap** (Core p.355; house variants, `kommando-breacha-boy`,
+     `kommando-slasha-boy`, `kommando-snipa-boy`). `combatant.addThreat` has no per-combatant weapon swap, so each swap
+     is its own threat file: the Kommando copied exactly, with one change and a `note`. The Choppa becomes a Power Klaw
+     (Core p.213), a Knife (Core p.211) is added as throwing knives (Thrown, not Silent), or the Slugga becomes a Big
+     Shoota (Core p.220) with a Magnocular Scope (Core p.228) and a Silencer (Core p.229). The files keep the MORE DAKKA!
+     text as printed ("while keeping their Choppa and Slugga"), even where the swap removed one of them. `validate.ts`
+     lists them as `HOUSE_VARIANTS`, so they aren't part of the printed bestiary. TA p.89 reprints the Kommando with a
+     Threat row, Conviction, Resolve, Speed and Size that look copied from another block (`ta-kommando.json` note); a
+     table that wants the Core p.355 block fields that one.
+121. **A build's GM part may grant keywords and a species** (`gm.keywords`, `gm.species`, `build.ts`). Where the books
+     print no rules for a group (the Deathwatch has no keyword, archetype or ammo rule, Core pp.19, 64, 303), the GM
+     gives an Agent its keyword by ruling, for Influence with the faction it works for. A Primaris marine whose
+     archetype page lists "Adeptus Astartes" (VoA pp.32, 33, 37) or who comes by Rubicon Primaris (VoA p.43) takes the
+     Primaris Astartes species the same way (Core p.29; see §11.18).
+126. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
      Skill at 0, but p.38 charges the Species' XP "as in Know Your Faction" for its benefits, and an Adeptus Astartes'
      160 XP is its Attributes and Skills. The species' printed ratings stand, everything else starts at 1 and 0, and
      XP buys from there (the Human has none, so the p.39 example prices from scratch). *Proposed; awaiting the GM.*
-121. **The Advanced bonus is budget, and stays when an Archetype Ability is bought** (Core p.38). Tier × 10 is added to
+127. **The Advanced bonus is budget, and stays when an Archetype Ability is bought** (Core p.38). Tier × 10 is added to
      the budget (a GM's custom budget plus it), so the ledger shows only what is spent; the p.39 example spends 100 of
      110. The book lists buying an Archetype Ability as a separate option and prices it itself, so the bonus is not
      given back. *Proposed; awaiting the GM.*
-122. **Advanced Wargear: Total Value is strictly under the limit, Max. Value is inclusive** (Core p.39). The text says
+128. **Advanced Wargear: Total Value is strictly under the limit, Max. Value is inclusive** (Core p.39). The text says
      Total Value "less than" the number (Tier 1: at most 14), and a "Max. Value" column reads as a ceiling an item may
      equal (Tier 1: an item of 7 is fine). Each copy counts. `advancedWargearProblems` in `wargear.ts`.
      *Proposed; awaiting the GM.*
-123. **Advanced Wargear Rarity accumulates and refuses Unique** (Core p.39). Common and Uncommon are always allowed. The
+129. **Advanced Wargear Rarity accumulates and refuses Unique** (Core p.39). Common and Uncommon are always allowed. The
      Rarity column is read as adding allowances: Tier 2 up to two Rare, Tier 3 the same plus one Very Rare, Tier 4 the
      same plus two Very Rare. A Unique item fits no Tier. *Proposed; awaiting the GM.*
-124. **Advanced Wargear at Tier 5 and above, and unpriced items** (Core p.39). The table stops at Tier 4, so a higher
+130. **Advanced Wargear at Tier 5 and above, and unpriced items** (Core p.39). The table stops at Tier 4, so a higher
      Tier is checked against the Tier 4 row and the GM must agree. An item with no printed Value or Rarity can't be
      counted and needs the GM. Common clothing and the trinket (Trinkets Table, p.247) are a note, not sheet lines.
      *Proposed; awaiting the GM.*
-125. **A bought Archetype Ability brings the ability only** (Core p.38). It costs the Archetype's Tier × 10, needs the
+131. **A bought Archetype Ability brings the ability only** (Core p.38). It costs the Archetype's Tier × 10, needs the
      GM's tick (`advanced/ability/<archetype>`) and adds that Archetype's abilities, not its Keywords, kit, Influence,
      ratings or requirements. *Proposed; awaiting the GM.*
-126. **An Ascension Package at Advanced Creation is the GM's** (Core p.38). There is no Archetype Tier to ascend from, so
+132. **An Ascension Package at Advanced Creation is the GM's** (Core p.38). There is no Archetype Tier to ascend from, so
      the build takes at most one Ascension Package, asks for the GM's tick, prices "× the new Tier" at the campaign
-     Tier, and meets the package's requirements at that Tier. It brings no Creation Ascension screen yet.
+     Tier, meets the package's requirements at that Tier, and counts as one Tier Ascended for its "per Tier" grants. It brings no Creation Ascension screen yet.
      *Proposed; awaiting the GM.*
-127. **An Advanced character has no Archetype for requirements or Archetype Ascension** (Core pp.38, 155). A requirement
+133. **An Advanced character has no Archetype for requirements or Archetype Ascension** (Core pp.38, 155). A requirement
      of kind `archetype` fails and `notArchetype` passes. Archetype Ascension needs "an Archetype of their Faction", so
      an Advanced character can't take it. Species Keywords stand in for the Archetype's (a Human's "any 2" arrive as
      one `[ANY]` fill for now, because the build lists a keyword once). *Proposed; awaiting the GM.*
@@ -856,7 +871,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Ascension Package count | done | One Ascension Package per Ascension (Core p.148, §11.55), one Ascension per Tier since creation: `build.ts` fills them in the order bought, prices "× the new Tier" at each one's own Tier, and refuses a package past the last |
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
 | Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
-| Advanced Creation | spike | `advanced` in `CharacterBuild` (no `archetypeId`): a species, Tier × 10 bonus, a bought Archetype Ability, Wargear by Tier (Core pp.38–39, §11.120–127), and a builder panel on the archetype step. Open: a Faction picker, a Human's second `[ANY]`, a Creation Ascension screen |
+| Advanced Creation | spike | `advanced` in `CharacterBuild` (no `archetypeId`): a species, Tier × 10 bonus, a bought Archetype Ability, Wargear by Tier (Core pp.38–39, §11.126–133), and a builder panel on the archetype step. Open: a Faction picker, a Human's second `[ANY]`, a Creation Ascension screen |
 | Wargear upgrades on a weapon | done | All 64 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
 | Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |

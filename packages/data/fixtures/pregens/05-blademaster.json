@@ -1,5 +1,73 @@
 {
-  "name": "Brother Sariel Voss",
+  "name": "Blademaster",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "tactical-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "dark-angels"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Killer Instinct",
+      "accomplishment": "Crusader",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "S": 5
+    },
+    "skills": {
+      "Weapon Skill": 6,
+      "Survival": 2,
+      "Intimidation": 1
+    },
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "duelling-grip"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Mk VII Power Armour",
+          "Astartes Combat Knife",
+          "Duelling Grip"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Xenophase blade",
+            "wargearId": "voa-power-sword",
+            "upgrades": [
+              "duelling-grip"
+            ]
+          }
+        ]
+      },
+      "mods": {
+        "determination": 1,
+        "conviction": 1
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Tactical Space Marine + Rubicon Primaris",
@@ -90,7 +158,7 @@
       },
       {
         "name": "Built Tough",
-        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself.",
+        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions \u2026 You do not suffer the usual DN penalties for using this ability on yourself.",
         "page": "VoA p.46"
       }
     ],
@@ -179,85 +247,16 @@
       "Bolt": 2
     }
   },
-  "detail": {
-    "portrait": "deathwatch-blademaster-veteran",
-    "personality": "Carries a xenophase blade and a private list of names. He duels like a confession: patient, precise, final."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: slay a champion in single combat.",
-      "done": false
-    },
-    {
-      "text": "Secret: learn why your xenophase blade hums near the crypt, and tell no one outside the Chapter.",
-      "done": false
-    }
+  "ledger": [
+    277,
+    80,
+    22,
+    15,
+    4,
+    2
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "tactical-space-marine",
-    "packages": [
-      "rubicon-primaris"
-    ],
-    "fills": {
-      "[CHAPTER]": {
-        "id": "dark-angels"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Killer Instinct",
-      "accomplishment": "Crusader",
-      "goal": "Honour the Chapter",
-      "bonus": "origin"
-    },
-    "attributes": {
-      "S": 5
-    },
-    "skills": {
-      "Weapon Skill": 6,
-      "Survival": 2,
-      "Intimidation": 1
-    },
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "choices": {
-      "package/rubicon-primaris/3": [
-        "duelling-grip"
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "species": "primaris-astartes",
-      "gear": {
-        "remove": [
-          "Aquila Mk VII Power Armour",
-          "Astartes Combat Knife",
-          "Duelling Grip"
-        ],
-        "add": [
-          {
-            "name": "Mk X Tacticus",
-            "wargearId": "voa-mk-x-tacticus-armour"
-          },
-          {
-            "name": "Xenophase blade",
-            "wargearId": "voa-power-sword",
-            "upgrades": [
-              "duelling-grip"
-            ]
-          }
-        ]
-      },
-      "mods": {
-        "determination": 1,
-        "conviction": 1
-      }
-    }
+  "parts": {
+    "tacticalspacemarine": 277,
+    "rubiconprimaris": 80
   }
 }

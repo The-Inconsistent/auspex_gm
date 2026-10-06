@@ -26,7 +26,7 @@ bun run dev:db                              # Postgres on 127.0.0.1:5434, waits 
 bun run dev:api                             # :4000, bun --watch; runs migrations on startup
 bun run dev:web                             # :3000, proxies /api and /socket.io to :4000
 
-cd apps/api && bun run seed volkus --owner user_2abc…   # your Clerk user id; prints /c/<campaignId>
+cd apps/api && bun run seed <pack> --owner user_2abc…   # your Clerk user id; prints /c/<campaignId>
 ```
 
 Or sign in at `http://localhost:3000` as a creator and start one with **CREATE NEW CAMPAIGN** in the lobby.
