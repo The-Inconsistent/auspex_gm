@@ -11,6 +11,8 @@ import { applyThreatAction } from "../threat/threat.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
 export function touches(a: Action): { state: boolean; codex: boolean } {
+  // A table screen token is no part of either snapshot (players never see access).
+  if (a.type === "screen.issue" || a.type === "screen.revoke") return { state: false, codex: false };
   // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
   if (
     a.type === "codex.save" ||

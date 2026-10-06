@@ -1,5 +1,14 @@
 "use client";
-import { Side, UNSEEN_ID, deriveStats, sideOf, threatStatus, type Combatant, type LiveState } from "@wg/shared";
+import {
+  Side,
+  UNSEEN_ID,
+  deriveStats,
+  pcStatus,
+  sideOf,
+  threatStatus,
+  type Combatant,
+  type LiveState,
+} from "@wg/shared";
 
 import { Bar } from "@/components/ui/bar/bar";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
@@ -10,6 +19,18 @@ import { useTable } from "@/hooks/use-table/use-table";
 import "./table-screen.css";
 
 type TableScreenProps = { campaignId: string };
+
+// Status and Conditions under a name: what the table can already see on the phones' FIGHT tab.
+const statusLine = (status: string[], conditions: string[]) => (
+  <div className="ts-bars">
+    <StatusChips items={status} />
+    {conditions.map((k) => (
+      <span key={k} className="chip">
+        {k.toUpperCase()}
+      </span>
+    ))}
+  </div>
+);
 
 // Whose side is up: the side of whoever is acting, else the side that picks next. upNext was worked out server-side
 // before hidden threats were dropped (toPlayerView); sideUpNext on this view would miss their Turns.
@@ -52,6 +73,7 @@ export function TableScreen({ campaignId }: TableScreenProps) {
               </span>
             </div>
           )}
+          {ch && d && statusLine(pcStatus(ch, d), ch.conditions)}
         </div>
       );
     }
@@ -69,14 +91,7 @@ export function TableScreen({ campaignId }: TableScreenProps) {
         ) : (
           <Track value={Math.max(0, c.maxWounds - c.wounds)} max={c.maxWounds} label={`${c.label} Wounds`} />
         )}
-        <div className="ts-bars">
-          <StatusChips items={threatStatus(c)} />
-          {c.conditions.map((k) => (
-            <span key={k} className="chip">
-              {k.toUpperCase()}
-            </span>
-          ))}
-        </div>
+        {statusLine(threatStatus(c), c.conditions)}
       </div>
     );
   };

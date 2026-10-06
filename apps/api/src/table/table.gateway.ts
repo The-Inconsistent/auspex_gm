@@ -235,6 +235,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   private async broadcast(campaignId: string, what: { state: boolean; codex: boolean }) {
+    if (!what.state && !what.codex) return;
     const r = rooms(campaignId);
     // ponytail: per-socket fan-out, fine at table scale; per-character rooms if it grows
     const players = await this.server.in(r.players).fetchSockets();

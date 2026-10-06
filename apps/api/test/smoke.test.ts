@@ -887,6 +887,54 @@ test("private notes: a handout's audience and an Agent's objectives reach only t
   await eventually(() => gm.codex()?.handouts.find((h) => h.title === "For A")?.revealed === false, "hidden again");
 });
 
+test("table screen: a read-only seat with no character, the table's view and no book text", async (t) => {
+  const gm = await newCampaign("Table screen", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A", objectives: [{ text: "Find the relic" }] });
+  assert.ok(a.ok && a.id);
+  assert.ok(
+    (await gm.send({ type: "codex.save", kind: "handout", data: { title: "For A", revealed: true, audience: [a.id] } }))
+      .ok,
+  );
+  assert.ok(
+    (await gm.send({ type: "codex.save", kind: "handout", data: { title: "For all", revealed: true, audience: [] } }))
+      .ok,
+  );
+
+  const issued = await gm.send({ type: "screen.issue" });
+  assert.ok(issued.ok && issued.token);
+  const join = await post("/join", { token: issued.token });
+  assert.equal(join.status, 200);
+  assert.deepEqual(await join.json(), { campaignId: gm.campaignId, role: "screen", characterId: null, userId: null });
+  const cookie = { cookie: `wg_token=${issued.token}` };
+  assert.equal(
+    ((await (await get(`/campaigns/${gm.campaignId}/me`, cookie)).json()) as { role: string }).role,
+    "screen",
+  );
+  assert.equal((await get(`/campaigns/${gm.campaignId}/rules`, cookie)).status, 403, "no book text on the TV");
+  assert.equal((await get(`/campaigns/${gm.campaignId}/creation`, cookie)).status, 403);
+
+  const screen = connect({ auth: { token: issued.token } });
+  t.after(() => screen.socket.close());
+  const s = await screen.until((v) => v.characters.length === 1);
+  assert.deepEqual(s.characters[0]!.objectives, [], "no Agent's objectives");
+  assert.equal(s.campaign.ruin, 0, "Ruin is the GM's");
+  await eventually(() => (screen.codex()?.handouts.length ?? 0) > 0, "the screen gets its codex");
+  assert.deepEqual(
+    screen.codex()!.handouts.map((h) => h.title),
+    ["For all"],
+    "no private handout",
+  );
+  const refused = await screen.send({ type: "pool.adjust", pool: "glory", delta: 1 });
+  assert.ok(!refused.ok && refused.error === "The table screen is read-only");
+
+  // REVOKE SCREENS kicks the TV and kills its link.
+  const kicked = new Promise((r) => screen.socket.on("disconnect", r));
+  assert.ok((await gm.send({ type: "screen.revoke" })).ok);
+  await kicked;
+  assert.equal((await post("/join", { token: issued.token })).status, 401);
+});
+
 test("a malformed login cookie is refused, not fatal", async () => {
   const bad = { cookie: "wg_token=%; __session=%" }; // decodeURIComponent throws on these
   assert.equal((await get("/guest", bad)).status, 401);

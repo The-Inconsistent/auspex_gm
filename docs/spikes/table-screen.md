@@ -23,22 +23,23 @@ Agents' and visible threats' bars. Item 5 of the feature-spike list.
 
 None. `access_token.role` is plain text, so no migration.
 
-## Left out on purpose
+## Decisions (Tony left them to Claude, 2026-10-06)
 
-- Not run against a live api or looked at on a real TV: there is no Postgres or Clerk in the spike environment. Typecheck,
-  lint, format and the 266 unit tests pass.
-- No layout choices for the GM (what to show, portrait vs landscape, hiding Agents' bars).
-- `screen.*` actions take the default `touches()` and cause one needless state broadcast.
-- Every SCREEN QR tap mints a new token that lives until REVOKE SCREENS (marked `ponytail` in `auth.service.ts`).
-- `membership.role` is typed `Role`, so TypeScript would allow `"screen"` there; a separate member role type would be tidier.
+1. **The Agents' Wounds, Shock, status and Conditions show on the TV.** The phones' FIGHT tab already shows them to
+   the whole table, so the screen adds nothing private.
+2. **Nothing else for now.** Sending a handout to the screen is a separate feature (a new "cast" action and a codex
+   field); worth it only if the table asks.
+3. **Several screens are fine.** Each SCREEN QR tap makes a new token, and REVOKE SCREENS drops them all at once.
 
-## Open questions for Tony
+## Since the spike
 
-1. Should the TV show the Agents' Wounds and Shock, or only the threats and the turn?
-2. Should anything else go up there: Conditions on Agents, the scene's name, a revealed handout the GM "casts" to it?
-3. One screen per table, or several (a TV and a tablet at the far end)?
+- `screen.issue` and `screen.revoke` touch neither snapshot, so they no longer rebroadcast the state.
+- A smoke test (`apps/api/test/smoke.test.ts`, "table screen") covers the join, `/me`, the refused book text, the
+  view (no objectives, no Ruin, no private handout), a refused action, and REVOKE SCREENS kicking the socket. The
+  whole smoke suite passes against a local Postgres 16.
 
-## Size of the full feature
+## Still unchecked
 
-S: one PR. Polish the layout on a real TV, add a smoke test (screen token joins, its actions are refused, revoke kicks
-it), narrow `touches()` for `screen.*`, and decide token reuse.
+- The layout on a real TV: the web app can't run here without Clerk keys. Its styles are in
+  `components/screen/table-screen/table-screen.css` rather than `globals.css`, to stay clear of the UI pass.
+- `membership.role` is typed `Role`, so TypeScript would allow `"screen"` there; nothing writes it.
