@@ -534,7 +534,7 @@ const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidd
 
 // What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
 // invite links (each one is a way in), nor another Agent's objectives or Corruption, nor the GM's Ruin (docs/rules-flow.md
-// §11.58). Corruption is between the GM and that Agent's player (spike #170).
+// §11.58).
 export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
   campaign: { ...s.campaign, ruin: 0 },

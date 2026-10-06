@@ -179,7 +179,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
     );
 
-  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is the form below, which adds Ruin too.
+  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is CorruptionForm.
   const adjCorruption = async (c: Character, delta: number) =>
     report(
       await send({ type: "character.corrupt", id: c.id, delta }),

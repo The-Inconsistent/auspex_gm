@@ -1,16 +1,23 @@
 "use client";
-import type { BeatTest } from "@wg/shared";
+import { isCorruptionDn, type ActionResult, type BeatTest, type Character } from "@wg/shared";
 
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
+import type { Send } from "@/hooks/use-table/use-table";
 
 import { TEST_RULES } from "../../constants";
 import { dnLabel, ruinOnFailure, testTitle } from "../../utils";
+import { CorruptionFailed } from "./components/corruption-failed/corruption-failed";
 
-type SceneTestsProps = { tests: BeatTest[] };
+type SceneTestsProps = {
+  tests: BeatTest[];
+  characters: Character[];
+  send: Send;
+  onReport: (r: ActionResult, ok: string) => void;
+};
 
 // A scene's Tests on its PREP card (issue #39): one line each, opening to its purpose, Shift ladder and outcomes. The
 // dice stay on the table; this is what the GM has ready.
-export function SceneTests({ tests }: SceneTestsProps) {
+export function SceneTests({ tests, characters, send, onReport }: SceneTestsProps) {
   return (
     <div className="field">
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
@@ -57,6 +64,9 @@ export function SceneTests({ tests }: SceneTestsProps) {
                 <div>
                   <span className="label">FAILURE</span> {t.onFailure}
                 </div>
+              )}
+              {t.kind === "corruption" && isCorruptionDn(t.dn) && characters.length > 0 && (
+                <CorruptionFailed source={t.dn} characters={characters} send={send} onReport={onReport} />
               )}
             </div>
           </details>

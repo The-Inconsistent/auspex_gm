@@ -8,6 +8,7 @@ import {
   adjustAmmo,
   corruptionGain,
   corruptionLevel,
+  corruptionTestDn,
   mutationDns,
   creationKey,
   keepPlay,
@@ -447,19 +448,23 @@ export async function applyCharacterAction(
 
     // Corruption (Core p.286, §9). A failed Test and its +1 Ruin land in one transaction, so a refusal changes neither.
     case "character.corrupt": {
-      if ((a.delta === undefined) === (a.test === undefined)) fail("Send a delta or a failed Test, not both");
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
-      if (a.test && a.test.icons >= a.test.dn)
-        fail(`${row.name} rolled ${a.test.icons} Icons against DN ${a.test.dn}: that Test passed (Core p.286)`);
       const stats = CharacterStats.parse(row.stats);
       const before = stats.corruption;
-      stats.corruption = Math.max(0, before + (a.test ? corruptionGain(a.test) : (a.delta ?? 0)));
+      let gain = a.delta ?? 0; // the schema guarantees a delta or a test
+      if (a.test) {
+        const dn = corruptionTestDn({ source: a.test.source, points: before });
+        if (a.test.icons >= dn)
+          fail(`${row.name} rolled ${a.test.icons} Icons against DN ${dn}: that Test passed (Core p.286)`);
+        gain = corruptionGain({ dn, icons: a.test.icons, complication: a.test.complication });
+      }
+      stats.corruption = Math.max(0, before + gain);
       await saveStats(tx, { id: a.id, stats });
       if (a.test) await adjustPool(tx, { campaignId: cid, pool: "ruin", delta: 1 }); // p.286, p.320
       // The Mutation Tests (and the end of the character) are rolled at the table, so the GM is told what they are.
       const notices = mutationDns(before, stats.corruption).map((dn) => `MUTATION TEST · DN ${dn}`);
       if (corruptionLevel(stats.corruption).chaosSpawn && !corruptionLevel(before).chaosSpawn)
-        notices.push("CHAOS SPAWN · THE AGENT IS LOST (p.286)");
+        notices.push("CHAOS SPAWN · THE GM TAKES THE AGENT OVER (pp.286, 352)");
       return notices.length ? { ok: true, notices } : { ok: true };
     }
 

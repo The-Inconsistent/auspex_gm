@@ -276,7 +276,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
         <SupplyRow label="Corruption" value={s.corruption} />
         <div className="dim" style={{ fontSize: 12 }}>
           {corruption.chaosSpawn
-            ? "CHAOS SPAWN · THIS AGENT IS LOST (p.286)"
+            ? "CHAOS SPAWN · THE GM TAKES THIS AGENT OVER (p.286)"
             : `${corruption.name.toUpperCase()} · +${corruption.modifier} TO CORRUPTION TEST DNs (p.286)`}
         </div>
       </div>
