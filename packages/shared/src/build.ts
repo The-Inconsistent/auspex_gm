@@ -158,14 +158,14 @@ export const CharacterBuild = z.object({
   // The GM's part: rulings on this character that no book makes, and ticks on what only the GM can judge.
   gm: z
     .object({
-      species: id.optional(), // "Rubicon Primaris makes him Primaris Astartes" (docs/pregens.md, GM choice 2)
-      keywords: z.array(keyword).prefault([]), // DEATHWATCH (docs/kill-team.md decision 3)
+      species: id.optional(), // "Rubicon Primaris makes him Primaris Astartes" (rules-flow.md §11.121)
+      keywords: z.array(keyword).prefault([]), // e.g. DEATHWATCH (rules-flow.md §11.121)
       gear: z
         .object({ remove: z.array(z.string().min(1)).prefault([]), add: z.array(WargearItem).prefault([]) })
         .prefault({}),
       approved: z.array(z.string().min(1).max(200)).prefault([]), // paths of `gm` requirements and `story` grants
-      // Trait bonuses granted by ruling, added to the build's: the volkus pregens keep all three Background bonuses
-      // (docs/pregens.md, GM choice 23; rules-flow.md §11.22).
+      // Trait bonuses granted by ruling, added to the build's: a pregen made before §11.22 can keep all three
+      // Background bonuses (rules-flow.md §11.22).
       mods: Mods.prefault({}),
     })
     .prefault({}),
@@ -1294,7 +1294,7 @@ export function resolveBuild({
         cite: fo.cite,
       });
     } else if ("writeIn" in fill) {
-      // The GM may allow one anyway (rules-flow.md §11.25: the Red Scorpions, kill-team.md ruling 13).
+      // The GM may allow one anyway (rules-flow.md §11.25: the Red Scorpions).
       if (!kw?.writeIn)
         problem({
           step: "faction",
@@ -1703,8 +1703,8 @@ export function resolveBuild({
       }),
   ];
   // The weapon effects as the sheet keeps them: a Talent's chosen weapon becomes its name, a record's granted weapon its
-  // catalogue ids. One whose weapon isn't there (the GM swapped the Doctrine's Heavy Bolter out, pregens.md GM choice
-  // 22) reaches nothing, so it isn't kept.
+  // catalogue ids. One whose weapon isn't there (the GM swapped the Doctrine's Heavy Bolter
+  // out) reaches nothing, so it isn't kept.
   const weaponEffects = s.weaponEffects.flatMap(({ effect, source, cite, path, choice }) => {
     const { chosen, granted, unarmed, ...fits } = effect.fits;
     // ponytail: no sheet line for unarmed strikes, so an unarmed effect stays in its Talent's text; a line if one appears
@@ -2166,7 +2166,7 @@ function successors(sf: SubFaction, all: ReadonlyMap<string, SubFaction>): strin
 
 // The weapons a hand-made sheet keeps when its build is attached (`keepSheet`, issue #27): the build's lines, whose
 // Talents are applied on read (rules-flow.md §11.68), plus a hand-written line the build has no weapon of that name for
-// (a GM's own profile, the volkus Haywire Mine). What play gave a same-name line carries over to the build's: the
+// (a GM's own profile, a placed Haywire Mine). What play gave a same-name line carries over to the build's: the
 // upgrades fitted at the table, and a second copy of that name (a requisitioned Bolt Pistol), which is its own weapon.
 export function keepSheetWeapons(old: CharacterStats["weapons"], built: CharacterStats["weapons"]) {
   const seen = new Set<string>();

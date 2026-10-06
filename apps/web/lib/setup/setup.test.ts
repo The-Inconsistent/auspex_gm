@@ -23,13 +23,13 @@ test("a Framework ticks its step and nothing else", () => {
   assert.deepEqual(ticked(steps), ["framework", "tier"]);
 });
 
-// Shaped like the volkus pack, inline: the web image's `turbo prune @wg/web` leaves packages/data out, so a test here
+// Shaped like a seeded content pack, inline: the web image's `turbo prune @wg/web` leaves packages/data out, so a test here
 // can't read packages/data/packs (the Next build type-checks tests too).
-const volkus = {
+const pack = {
   campaign: {
     tier: 4,
-    framework: "Deathwatch Kill Team.",
-    patron: "Inquisitor Marie Von Xardt, Ordo Xenos",
+    framework: "A Kill Team of the Ordo Xenos.",
+    patron: "An Inquisitor of the Ordo Xenos",
     kind: [], // the pack sets no kind of game (rules-flow §11.79)
   },
   codex: {
@@ -48,8 +48,8 @@ test("the kind of game ticks its step; the limits may stay empty", () => {
   assert.equal(steps[0]?.now, "INVESTIGATIVE · POLITICAL");
 });
 
-test("the volkus pack with one session started ticks every step but the kind of game", () => {
-  const steps = setupSteps(volkus);
+test("a pack with one session started ticks every step but the kind of game", () => {
+  const steps = setupSteps(pack);
   assert.deepEqual(
     steps.filter((s) => s.done === false).map((s) => s.key),
     ["kind"],

@@ -1,5 +1,77 @@
 {
-  "name": "Brother Octavius Serren",
+  "name": "Disruptor",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-incursor",
+    "fills": {
+      "[CHAPTER]": {
+        "id": "ultramarines"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Cunning",
+      "accomplishment": "Cleanse and Purge",
+      "goal": "Vengeance",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "A": 5,
+      "Int": 5
+    },
+    "skills": {
+      "Tech": 5,
+      "Stealth": 5,
+      "Awareness": 4
+    },
+    "talents": [
+      {
+        "id": "codex-innovator"
+      },
+      {
+        "id": "bolter-discipline"
+      },
+      {
+        "id": "silent"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "add": [
+          {
+            "name": "Omni-Scrambler",
+            "wargearId": "voa-omni-scrambler"
+          },
+          {
+            "name": "Occulus Bolt Carbine",
+            "wargearId": "bolt-rifle"
+          },
+          {
+            "name": "Paired Astartes Combat Knives",
+            "wargearId": "voa-astartes-combat-knife"
+          }
+        ],
+        "remove": [
+          "Occulus Bolt Carbine",
+          "Astartes Combat Knife",
+          "Smoke Grenade"
+        ]
+      },
+      "mods": {
+        "maxShock": 1,
+        "determination": 1
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Incursor",
@@ -188,7 +260,7 @@
         "traits": [
           "Blast (4)",
           "Placed",
-          "DN 3 Tech: Damage 15, AP −3 (Explosive Fury)"
+          "DN 3 Tech: Damage 15, AP \u22123 (Explosive Fury)"
         ]
       },
       {
@@ -218,89 +290,18 @@
       "Bolt": 2
     }
   },
-  "detail": {
-    "portrait": "deathwatch-disruptor-veteran",
-    "personality": "Counts every enemy transmission and files it by Codex signal doctrine. A war is won when the enemy stops talking."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: silence the Kommandos' comms before the killing starts.",
-      "done": false
-    },
-    {
-      "text": "Secret: find out who else has been transmitting from Volkus.",
-      "done": false
-    }
+  "ledger": [
+    273,
+    15,
+    15,
+    10,
+    18,
+    8,
+    20,
+    20,
+    20
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "primaris-incursor",
-    "fills": {
-      "[CHAPTER]": {
-        "id": "ultramarines"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Cunning",
-      "accomplishment": "Cleanse and Purge",
-      "goal": "Vengeance",
-      "bonus": "origin"
-    },
-    "attributes": {
-      "A": 5,
-      "Int": 5
-    },
-    "skills": {
-      "Tech": 5,
-      "Stealth": 5,
-      "Awareness": 4
-    },
-    "talents": [
-      {
-        "id": "codex-innovator"
-      },
-      {
-        "id": "bolter-discipline"
-      },
-      {
-        "id": "silent"
-      }
-    ],
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "gear": {
-        "add": [
-          {
-            "name": "Omni-Scrambler",
-            "wargearId": "voa-omni-scrambler"
-          },
-          {
-            "name": "Occulus Bolt Carbine",
-            "wargearId": "bolt-rifle"
-          },
-          {
-            "name": "Paired Astartes Combat Knives",
-            "wargearId": "voa-astartes-combat-knife"
-          }
-        ],
-        "remove": [
-          "Occulus Bolt Carbine",
-          "Astartes Combat Knife",
-          "Smoke Grenade"
-        ]
-      },
-      "mods": {
-        "maxShock": 1,
-        "determination": 1
-      }
-    }
+  "parts": {
+    "primarisincursor": 273
   }
 }

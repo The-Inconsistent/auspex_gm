@@ -1,8 +1,80 @@
 {
-  "name": "Brother Hjalmar Grimsson",
+  "name": "Demolisher",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "assault-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "space-wolves"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Courage",
+      "accomplishment": "Crusader",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "Wil": 4
+    },
+    "skills": {
+      "Weapon Skill": 5,
+      "Survival": 2,
+      "Scholar": 2
+    },
+    "talents": [
+      {
+        "id": "hammer-of-wrath"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "chaplet-ecclesiasticus"
+      ],
+      "subfaction/space-wolves/huntersunleashed/0/choice": [
+        2
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Power Armour",
+          "Astartes Chainsword"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Heavy Thunder Hammer",
+            "wargearId": "voa-heavy-thunder-hammer"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 1,
+        "conviction": 1
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
-    "archetype": "Tactical Space Marine + Rubicon Primaris",
+    "archetype": "Assault Space Marine + Rubicon Primaris",
     "keywords": [
       "IMPERIUM",
       "ADEPTUS ASTARTES",
@@ -22,8 +94,8 @@
     "skills": {
       "Athletics": 3,
       "Awareness": 3,
-      "Ballistic Skill": 5,
-      "Leadership": 1,
+      "Ballistic Skill": 3,
+      "Pilot": 4,
       "Scholar": 2,
       "Stealth": 3,
       "Survival": 2,
@@ -41,15 +113,14 @@
       "maxWounds": 3,
       "resolve": 2,
       "conviction": 1,
-      "influence": 4,
-      "determination": 1,
-      "speed": -1
+      "influence": 3,
+      "determination": 1
     },
     "abilities": [
       {
-        "name": "Tactical Versatility",
-        "text": "Your training has prepared you for any circumstance. When you make a Critical Hit you may roll twice on the Critical Hit Table and choose either result.",
-        "page": "Core p.113"
+        "name": "Hammer of Wrath",
+        "text": "When you charge into melee using your jump pack, all enemies 2 metres of the point where you land must pass an Agility test (DN 2 +Rank) or be knocked Prone.",
+        "page": "Apocrypha p.137"
       },
       {
         "name": "Defender of Humanity",
@@ -73,7 +144,7 @@
       },
       {
         "name": "Background",
-        "text": "Origin Courage (+1 Resolve); Accomplishment Crusader (+1 Determination); Goal Honour the Chapter (+1 Conviction). Determination is 6 (T 5 + 1).",
+        "text": "Origin Courage (+1 Resolve); Accomplishment Crusader (+1 Determination); Goal Honour the Chapter (+1 Conviction).",
         "page": "Core p.72"
       }
     ],
@@ -85,8 +156,13 @@
       },
       {
         "name": "Built Tough",
-        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself.",
+        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions \u2026 You do not suffer the usual DN penalties for using this ability on yourself.",
         "page": "VoA p.46"
+      },
+      {
+        "name": "Hammer of Wrath",
+        "text": "When equipped with a Jump Pack (Wrath & Glory Core Rulebook, page 237), you may spend one Wrath to make any attack you make as part of a flying Charge deal Mortal Wounds for damage.",
+        "page": "VoA p.47"
       },
       {
         "name": "Acute Sense (smell)",
@@ -101,16 +177,17 @@
     ],
     "weapons": [
       {
-        "name": "Power Maul",
-        "damage": 5,
+        "name": "Heavy Thunder Hammer",
+        "damage": 10,
         "addStrength": true,
-        "ed": 4,
+        "ed": 8,
+        "ap": -3,
         "range": [
-          1
+          2
         ],
         "traits": [
           "Brutal",
-          "Duelling Grip (+1 bonus die)"
+          "Unwieldy (3)"
         ]
       },
       {
@@ -127,21 +204,6 @@
           "Brutal",
           "Pistol",
           "Rapid Fire (2)"
-        ]
-      },
-      {
-        "name": "Boltgun",
-        "damage": 10,
-        "ed": 1,
-        "range": [
-          12,
-          24,
-          36
-        ],
-        "salvo": 2,
-        "traits": [
-          "Brutal",
-          "Rapid Fire (3)"
         ]
       },
       {
@@ -173,104 +235,28 @@
       }
     ],
     "gear": [
-      "Storm Shield (Core pp.232–233): AR *2. Shield: +2 Defence and Resilience when the GM agrees it blocks. Power Field: Determination vs Mortal Wounds. Bulk (1): −1 Speed",
-      "Duelling Grip on the Power Maul (Rubicon Uncommon item, Core p.228): +1 bonus die on Attack Tests using this weapon",
-      "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
+      "Jump Pack (Core p.237): using your Movement, fly at double Speed with a DN 3 Pilot (A) Test, ignoring terrain; a failure scatters (p.186); a Complication crashes (1d3+ Shock and falling damage)",
+      "Heavy Thunder Hammer is 2-HANDED (VoA p.62)",
+      "Chaplet Ecclesiasticus (Rubicon Uncommon item, Core p.237): his penitent's chaplet; can be used as a Symbol of Authority (p.240) or a garrote",
+      "Hellfire Bolt rounds (+3 ED against organic targets, +2 ED against inorganic, Core p.230; BOLT weapons only)"
     ],
     "wealth": 4,
     "ammo": {
-      "Kraken Bolt": 1,
+      "Hellfire Bolt": 1,
       "Bolt": 2
     }
   },
-  "detail": {
-    "portrait": "deathwatch-aegis-veteran",
-    "personality": "A Fenrisian shield-bearer who trusts his nose over any auspex. He stands in the breach so no brother has to, and sings the saga of every one that held."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: let no xenos artefact leave Volkus intact.",
-      "done": false
-    },
-    {
-      "text": "Secret: stop the Magos taking anything from the crypt.",
-      "done": false
-    }
+  "ledger": [
+    270,
+    80,
+    6,
+    20,
+    10,
+    10,
+    4
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "tactical-space-marine",
-    "packages": [
-      "rubicon-primaris"
-    ],
-    "fills": {
-      "[CHAPTER]": {
-        "id": "space-wolves"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Courage",
-      "accomplishment": "Crusader",
-      "goal": "Honour the Chapter",
-      "bonus": "accomplishment"
-    },
-    "attributes": {
-      "S": 5,
-      "Wil": 4
-    },
-    "skills": {
-      "Weapon Skill": 5,
-      "Survival": 2,
-      "Scholar": 2
-    },
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "choices": {
-      "package/rubicon-primaris/3": [
-        "duelling-grip"
-      ],
-      "subfaction/space-wolves/huntersunleashed/0/choice": [
-        2
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "species": "primaris-astartes",
-      "gear": {
-        "remove": [
-          "Aquila Mk VII Power Armour",
-          "Astartes Combat Knife",
-          "Duelling Grip"
-        ],
-        "add": [
-          {
-            "name": "Mk X Tacticus",
-            "wargearId": "voa-mk-x-tacticus-armour"
-          },
-          {
-            "name": "Power Maul",
-            "wargearId": "fspg-power-maul",
-            "upgrades": [
-              "duelling-grip"
-            ]
-          },
-          {
-            "name": "Storm Shield",
-            "wargearId": "storm-shield"
-          }
-        ]
-      },
-      "mods": {
-        "resolve": 1,
-        "conviction": 1,
-        "speed": -1
-      }
-    }
+  "parts": {
+    "rubiconprimaris": 80,
+    "assaultspacemarine": 270
   }
 }

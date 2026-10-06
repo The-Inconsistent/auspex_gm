@@ -51,7 +51,7 @@ import {
   SPACE_HULK_FILE,
 } from "./index.ts";
 
-// Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
+// Core blocks with one GM wargear swap (rules-flow.md §11.120), so not part of the printed bestiary.
 const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).

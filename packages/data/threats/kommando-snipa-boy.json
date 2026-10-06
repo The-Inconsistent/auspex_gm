@@ -57,5 +57,5 @@
   "mobAbilities": [
     { "name": "Kunnin' Infiltraters", "text": "When a Mob of Kommandos makes a Stealth (A) Test, add +1 Icon to the result." }
   ],
-  "note": "Kill Team stand-in (docs/kill-team.md, Kommandos): the Kommando (Core p.355) with its Slugga swapped for a Big Shoota (Core p.220) fitted with a Magnocular Scope (Core p.228: all Range penalties reduced by 2) and a Silencer (Core p.229: gains Silent; the Big Shoota is PROJECTILE). The scope has no weapon field, so it is named on the weapon."
+  "note": "House variant (rules-flow.md §11.120): the Kommando (Core p.355) with its Slugga swapped for a Big Shoota (Core p.220) fitted with a Magnocular Scope (Core p.228: all Range penalties reduced by 2) and a Silencer (Core p.229: gains Silent; the Big Shoota is PROJECTILE). The scope has no weapon field, so it is named on the weapon."
 }

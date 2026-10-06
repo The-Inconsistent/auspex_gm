@@ -6,7 +6,7 @@ export type KeywordMatches = { matches: FactionKeyword[]; writeIn: string | null
 
 // The faction editor's Keyword search (issue #46): the books' Keywords that contain the query, minus the ones already
 // chosen, the one it spells exactly first, then those that start with it. The books don't list every Keyword
-// (KOMMANDO, GROT, the volkus pack's own), so a query no suggestion spells exactly is also offered as a write-in,
+// (KOMMANDO, GROT, a campaign's own), so a query no suggestion spells exactly is also offered as a write-in,
 // upper-cased as the books print Keywords. `enter` is what Enter adds: exactly what was typed, in the books' spelling
 // when they have it ("tau" → T'AU, never the longer T'AU EMPIRE).
 export function matchKeywords({

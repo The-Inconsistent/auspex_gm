@@ -21,13 +21,6 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 | [rules-flow.md](rules-flow.md) | The game flow as the core rulebook defines it. It's the spec, with house decisions (§11) and gap status (§12) |
 | [campaign-model.md](campaign-model.md) | The campaign and codex model: adventures, beats, NPCs, locations, handouts, factions |
 
-## The current campaign
-
-| Doc | Contents |
-| --- | --- |
-| [kill-team.md](kill-team.md) | Deathwatch Kill Team at Tier 4: how the books map onto it, and GM decisions |
-| [pregens.md](pregens.md) | The eleven Tier 4 Primaris pregens (the players pick five), with XP ledgers |
-
 ## Rules for these docs
 
 - Game rules cite the **printed** page, and never paste book text: it's copyrighted.
