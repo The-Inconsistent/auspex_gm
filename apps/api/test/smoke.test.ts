@@ -18,12 +18,16 @@ import {
   poolMax,
   type ActionInput,
   type ActionResult,
+  type AdminCampaign,
+  type AdminEvent,
+  type AdminUser,
   type BookAvailable,
   type BookPage,
   type BookReply,
   type CampaignExport,
   type Character,
   type Codex,
+  type Me,
   type CreationPayload,
   type FactionPresets,
   type FlavourTable,
@@ -47,7 +51,7 @@ import {
 const API = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
 
 // A test-only Clerk session token (packages/auth/src/api.ts) and the headers that carry one.
-const clerk = (userId: string, role: "creator" | "member" = "member") =>
+const clerk = (userId: string, role: "creator" | "member" | "admin" = "member") =>
   testSessionToken({ secret: process.env.CLERK_TEST_SECRET ?? "", userId, role });
 const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
 const get = (path: string, headers: Record<string, string> = {}) => fetch(`${API}/api${path}`, { headers });
@@ -2987,4 +2991,198 @@ test("custom threats: saved, used, refused and never sent to a player", async (t
     ok: false,
     error: 'Unknown threat "custom-warped-ogryn-2"',
   });
+});
+
+test("admin: acts as GM without a seat, housekeeping over REST, archive and delete", async (t) => {
+  const admin = bearer(clerk("root-admin", "admin"));
+  const creator = bearer(clerk("admin-gm", "creator"));
+  const member = bearer(clerk("admin-member"));
+  const adminId = "root-admin";
+  const act = async (id: string, action: ActionInput) =>
+    (await (await post(`/admin/campaigns/${id}/action`, action, admin)).json()) as ActionResult;
+  const gmGame = async (name: string) => {
+    const created = await post("/campaigns", { name, tier: 2 }, creator);
+    return ((await created.json()) as { campaignId: string }).campaignId;
+  };
+  const gmClerk = clerk("admin-gm", "creator");
+  const campaignId = await gmGame("Admin Table");
+  await get("/lobby", bearer(clerk("second-gm"))); // a user the app has seen, for member.seat
+
+  // No seat, no membership row: the admin is the GM here and PARTY doesn't list them. Not even a member gets in.
+  const me = (await (await get(`/campaigns/${campaignId}/me`, admin)).json()) as Me;
+  assert.deepEqual([me.role, me.admin, me.userId, me.characterId], ["gm", true, adminId, null]);
+  assert.equal((await get(`/campaigns/${campaignId}/me`, member)).status, 401);
+  assert.equal((await get(`/campaigns/${campaignId}/threats`, admin)).status, 200, "GM-only content, as GM");
+  assert.equal((await get(`/campaigns/${campaignId}/me`, creator).then((r) => r.json())).admin, false);
+  assert.equal((await get(`/campaigns/${crypto.randomUUID()}/me`, admin)).status, 401, "no such game, no seat");
+
+  // The admin routes are for admins only.
+  for (const path of ["/admin/users", "/admin/campaigns", "/admin/events"]) {
+    assert.equal((await get(path)).status, 401, path);
+    assert.equal((await get(path, member)).status, 403, path);
+    assert.equal((await get(path, creator)).status, 403, `${path}: a creator isn't an admin`);
+    assert.equal((await get(path, admin)).status, 200, path);
+  }
+  assert.equal((await post(`/admin/campaigns/${campaignId}/action`, { type: "session.abandon" }, member)).status, 403);
+  const lobbies = async (h: Record<string, string>) => (await (await get("/lobby", h)).json()) as Lobby;
+  assert.deepEqual(
+    [(await lobbies(admin)).admin, (await lobbies(creator)).admin, (await lobbies(admin)).canCreate],
+    [true, false, true],
+  );
+
+  const users = (await (await get("/admin/users", admin)).json()) as AdminUser[];
+  const gmUser = users.find((u) => u.id === "admin-gm");
+  assert.equal(gmUser?.role, "creator");
+  assert.deepEqual(
+    gmUser?.seats.filter((x) => x.campaignId === campaignId).map((x) => x.role),
+    ["gm"],
+  );
+  assert.equal(users.find((u) => u.id === adminId)?.role, "admin");
+  assert.ok(!users.find((u) => u.id === adminId)?.seats.length, "the admin has no seat anywhere");
+  // Refreshed at most hourly, so a user seen by an earlier run can be that stale.
+  assert.ok(Date.now() - new Date(gmUser!.lastSeenAt).getTime() < 3_700_000);
+  assert.deepEqual(
+    users.map((u) => u.name),
+    [...users.map((u) => u.name)].sort((a, b) => a.localeCompare(b)),
+  );
+
+  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
+  t.after(() => gm.socket.close());
+  await gm.until((s) => s.campaign.name === "Admin Table");
+  const hero = await gm.send({ type: "character.create", name: "Hero" });
+  assert.ok(hero.ok && hero.id);
+  const campaigns = async () => (await (await get("/admin/campaigns", admin)).json()) as AdminCampaign[];
+  const entry = async () => (await campaigns()).find((c) => c.id === campaignId)!;
+
+  // session.abandon: ends the running session with no XP.
+  assert.deepEqual(await act(campaignId, { type: "session.abandon" }), { ok: false, error: "No session in progress" });
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  const running = await entry();
+  assert.deepEqual(
+    [running.session?.number, running.players, running.gms, running.archivedAt],
+    [1, 1, ["admin-gm"], null],
+  );
+  assert.ok(Date.now() - new Date(running.lastActivity).getTime() < 60_000);
+  assert.equal((await campaigns())[0]?.id, campaignId, "newest activity first");
+  assert.ok(
+    (await lobbies(member)).running.some((g) => g.id === campaignId),
+    "a running game is a card for anyone signed in",
+  );
+  assert.deepEqual(await act(campaignId, { type: "session.abandon" }), { ok: true });
+  assert.equal((await entry()).session, null);
+  await eventually(() => gm.codex()?.sessions[0]?.endedAt != null, "the session closed");
+  assert.equal(gm.codex()?.sessions[0]?.xp, 0);
+  assert.equal((await gm.until((s) => s.characters.length === 1)).characters[0]?.xp, 0, "no XP awarded");
+
+  // session.delete: the latest, ended session only; its XP stays.
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.deepEqual(await act(campaignId, { type: "session.delete" }), {
+    ok: false,
+    error: "End the session in progress before deleting it",
+  });
+  assert.ok((await gm.send({ type: "session.end", xp: 5 })).ok);
+  const deleted = await act(campaignId, { type: "session.delete" });
+  assert.ok(deleted.ok && deleted.notices?.[0]?.includes("5 XP"), JSON.stringify(deleted));
+  await eventually(() => gm.codex()?.sessions.length === 1, "only session 1 is left");
+  assert.equal(
+    (await gm.until((s) => s.characters.length === 1)).characters[0]?.xp,
+    5,
+    "the XP stays on the character",
+  );
+  assert.ok((await gm.send({ type: "session.start" })).ok, "numbering carries on from the one that is left");
+  assert.equal((await entry()).session?.number, 2);
+
+  // member.seat: admin only, an existing user only; an existing seat turns into the GM's.
+  assert.deepEqual(await gm.send({ type: "member.seat", userId: "second-gm" }), { ok: false, error: "Admin only" });
+  assert.deepEqual(await act(campaignId, { type: "member.seat", userId: "nobody-here" }), {
+    ok: false,
+    error: "User not found",
+  });
+  assert.deepEqual(await act(campaignId, { type: "member.seat", userId: "second-gm" }), { ok: true });
+  const seated = await gm.until((s) => s.access.members.some((m) => m.userId === "second-gm"));
+  assert.equal(seated.access.members.find((m) => m.userId === "second-gm")?.role, "gm");
+  assert.ok(!seated.access.members.some((m) => m.userId === adminId), "PARTY doesn't list the admin");
+  assert.deepEqual(await act(campaignId, { type: "member.remove", userId: "second-gm" }), { ok: true });
+  await gm.until((s) => !s.access.members.some((m) => m.userId === "second-gm"));
+
+  // ARCHIVE: read-only, hidden from `mine` and `running`, listed apart; the way out still works.
+  assert.deepEqual(await gm.send({ type: "campaign.delete", name: "Admin Table" }), {
+    ok: false,
+    error: "Archive the game before deleting it",
+  });
+  assert.deepEqual(await act(campaignId, { type: "campaign.archive" }), { ok: true });
+  const archived = await gm.until((s) => s.campaign.archived);
+  assert.equal(archived.campaign.archived, true);
+  assert.equal((await entry()).session, null, "archiving ends the running session");
+  assert.ok((await entry()).archivedAt);
+  assert.deepEqual(await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 }), {
+    ok: false,
+    error: "This game is archived",
+  });
+  assert.equal(
+    (await post(`/admin/campaigns/${campaignId}/action`, { type: "pool.adjust", pool: "glory", delta: 1 }, admin))
+      .status,
+    400,
+    "only the housekeeping actions go through the admin route",
+  );
+  const lobbyOfGm = await lobbies(creator);
+  assert.ok(!lobbyOfGm.mine.some((g) => g.id === campaignId) && !lobbyOfGm.running.some((g) => g.id === campaignId));
+  assert.ok(lobbyOfGm.archived.some((g) => g.id === campaignId));
+  const file = (await (await get(`/campaigns/${campaignId}/export`, admin)).json()) as CampaignExport;
+  assert.equal(file.campaign.name, "Admin Table", "an admin exports without a seat");
+  assert.ok(!("archived" in file.campaign), "and an import starts a live game");
+
+  assert.deepEqual(await act(campaignId, { type: "campaign.unarchive" }), { ok: true });
+  await gm.until((s) => !s.campaign.archived);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 })).ok, "writable again");
+  assert.ok((await lobbies(creator)).mine.some((g) => g.id === campaignId));
+
+  // DELETE: the exact name, and a GM's own only once archived; everyone at the table is kicked.
+  assert.ok((await gm.send({ type: "campaign.archive" })).ok, "a GM archives their own game");
+  const gone = new Promise<string>((resolve) => gm.socket.on("disconnect", resolve));
+  assert.deepEqual(await gm.send({ type: "campaign.delete", name: "admin table" }), {
+    ok: false,
+    error: "Type the game's name to delete it",
+  });
+  assert.deepEqual(await gm.send({ type: "campaign.delete", name: "Admin Table" }), { ok: true });
+  assert.match(await gone, /disconnect/, "the room is kicked");
+  assert.equal((await get(`/campaigns/${campaignId}/me`, admin)).status, 401);
+  assert.ok(!(await campaigns()).some((c) => c.id === campaignId));
+
+  // An admin deletes a game that isn't archived; REMOVE FROM ALL GAMES takes a user out of every game.
+  const other = await gmGame("Admin Table B");
+  assert.deepEqual(await act(other, { type: "member.seat", userId: "second-gm" }), { ok: true });
+  const seatsOf = async (id: string) =>
+    ((await (await get("/admin/users", admin)).json()) as AdminUser[]).find((u) => u.id === id)?.seats;
+  assert.equal((await seatsOf("second-gm"))?.length, 1);
+  assert.equal((await del(`/admin/users/${adminId}/seats`, admin)).status, 400, "not your own seat");
+  assert.equal((await del("/admin/users/second-gm/seats", creator)).status, 403);
+  const removed = await del("/admin/users/second-gm/seats", admin);
+  assert.deepEqual(await removed.json(), { removed: 1 });
+  assert.equal((await seatsOf("second-gm"))?.length, 0);
+  assert.deepEqual(await act(other, { type: "campaign.delete", name: "wrong" }), {
+    ok: false,
+    error: "Type the game's name to delete it",
+  });
+  assert.deepEqual(await act(other, { type: "campaign.delete", name: "Admin Table B" }), { ok: true });
+  assert.equal((await post(`/admin/campaigns/${other}/action`, { type: "campaign.archive" }, admin)).status, 404);
+
+  // Every action an admin applied is in the log, which outlives the games it names.
+  const events = (await (await get("/admin/events", admin)).json()) as AdminEvent[];
+  const mine = (id: string) => events.filter((e) => e.campaignId === id).map((e) => e.action);
+  assert.ok(events.length <= 50);
+  assert.deepEqual(mine(campaignId).reverse(), [
+    "session.abandon",
+    "session.delete",
+    "member.seat",
+    "member.remove",
+    "campaign.archive",
+    "campaign.unarchive",
+  ]);
+  assert.deepEqual(mine(other).reverse(), ["member.seat", "member.remove", "campaign.delete"]);
+  const seat = events.find((e) => e.campaignId === other && e.action === "member.seat");
+  assert.deepEqual(
+    [seat?.targetUserId, seat?.campaignName, seat?.actorUserId],
+    ["second-gm", "Admin Table B", adminId],
+  );
 });

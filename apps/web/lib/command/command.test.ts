@@ -38,6 +38,7 @@ const s: LiveState = {
     kind: [],
     limits: [],
     homebrew: false,
+    archived: false,
   },
   access: { members: [], invites: [], guests: [] },
   characters: [

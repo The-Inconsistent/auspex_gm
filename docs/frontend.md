@@ -17,6 +17,7 @@ seat.
 | Path | File | Kind | Job |
 |---|---|---|---|
 | `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
+| `/admin` | `app/admin/page.tsx` | Server Component | The admin page (USERS, GAMES, the latest admin events): asks `/api/admin/*` and sends a non-admin to `/` |
 | `/c/new` | `app/c/new/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps before the campaign exists: asks `/api/frameworks` (a creator's only, so it is the gate too) and renders `NewCampaign` |
 | `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen`. `?tab=setup` (any GM tab) opens the GM app there |
 | `/c/<campaignId>/setup` | `app/c/[campaignId]/setup/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps after CREATE, for the GM only: loads the places, faction presets and scene presets, and renders `CampaignSetup` |

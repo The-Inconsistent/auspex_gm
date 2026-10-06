@@ -16,11 +16,13 @@ export const LobbyGame = z.object({
 export type LobbyGame = z.infer<typeof LobbyGame>;
 
 // Anyone signed in sees every running game as a card; only members can open one. `characters` is their own library
-// (issue #14), which belongs to no game.
+// (issue #14), which belongs to no game. `archived` is the caller's own archived games, kept out of `mine` and `running`.
 export const Lobby = z.object({
   canCreate: z.boolean(),
+  admin: z.boolean(), // shows the ADMIN link
   mine: z.array(LobbyGame),
   running: z.array(LobbyGame),
+  archived: z.array(LobbyGame),
   characters: z.array(LibraryCharacter),
 });
 export type Lobby = z.infer<typeof Lobby>;

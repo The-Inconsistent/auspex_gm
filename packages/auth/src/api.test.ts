@@ -16,8 +16,12 @@ test("test tokens need the right secret", async () => {
     userId: "gm",
     name: "gm",
     creator: true,
+    admin: false,
   });
   assert.equal((await verifySession(testSessionToken({ secret: "s3cret", userId: "ana" })))?.creator, false);
+  // An admin is also a creator.
+  const admin = await verifySession(testSessionToken({ secret: "s3cret", userId: "root", role: "admin" }));
+  assert.deepEqual([admin?.creator, admin?.admin], [true, true]);
   assert.equal(await verifySession(testSessionToken({ secret: "wrong", userId: "gm", role: "creator" })), null);
 });
 

@@ -63,6 +63,16 @@ export const Action = z.union([
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
+    // Ends the running session with no XP and no Rank notices (a session that was never played, or left open overnight).
+    z.object({ type: z.literal("session.abandon") }),
+    // Deletes the latest session once it has ended. The XP it awarded stays on the characters.
+    z.object({ type: z.literal("session.delete") }),
+    // An archived game is read-only (applyAction refuses everything but unarchive and delete). Archiving also ends a
+    // running session, as session.abandon does. Delete needs the game's exact name; it's an admin's, or the GM's once
+    // the game is archived, and removes the campaign with everything it owns.
+    z.object({ type: z.literal("campaign.archive") }),
+    z.object({ type: z.literal("campaign.unarchive") }),
+    z.object({ type: z.literal("campaign.delete"), name: z.string().max(100) }),
     // The group Ascends: the campaign's Tier goes up by one, for everyone at once (Core pp.147–148, §11.66).
     // `experience`: every character must have earned 100 XP in the current Tier. `milestone`: the GM's call, which
     // first gives every character 100 XP (Core p.148 step 1) and may waive the Ascension Package (step 2).
@@ -193,6 +203,8 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("invite.revoke"), id }),
     z.object({ type: z.literal("member.remove"), userId: z.string().min(1).max(100) }),
+    // Admin only: seats a known user as this table's GM (a new seat, or an existing one turned into the GM's).
+    z.object({ type: z.literal("member.seat"), userId: z.string().min(1).max(100) }),
     // A player gives up their seat: the Agent goes back to reserve and the room QR offers it again.
     z.object({ type: z.literal("seat.leave") }),
 

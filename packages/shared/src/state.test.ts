@@ -111,6 +111,7 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
     kind: [],
     limits: [],
     homebrew: false,
+    archived: false,
   },
   characters,
   encounter: e,
@@ -131,6 +132,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       kind: ["investigative"],
       limits: ["body horror"],
       homebrew: false,
+      archived: false,
     },
     characters: [],
     encounter: enc(

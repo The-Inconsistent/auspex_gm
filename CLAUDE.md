@@ -88,7 +88,8 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
 - **Access: Clerk accounts, plus guest QR tokens.**
   - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
     member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user
-    start games in the lobby. The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
+    start games in the lobby; `"admin"` is a creator who also reaches `/admin` and acts as GM at every game without a seat
+    (`Ctx.admin`, logged in `admin_event`). The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
     `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `packages/auth/src/api.ts`).
   - Guests hold a per-character player token (`access_token`) in the httpOnly `wg_token` cookie, from a GUEST QR
     (`/join/<token>`) or a guest-friendly invite.
@@ -134,6 +135,7 @@ apps/api/src/
   auth/        auth.schema.ts (access_token, app_user, membership, invite),
                auth.service.ts (guest tokens, cookie, Ctx, resolveCtx), invite.service.ts (preview, accept),
                access.actions.ts (invite.create/revoke, member.remove)
+  admin/       admin.controller.ts (REST /api/admin: users, games, one housekeeping action, events), admin.service.ts, admin.schema.ts (admin_event)
   campaign/    campaign.controller.ts (REST: campaigns, lobby, me, threats, join, guest, invites), campaign.service.ts,
                campaign.actions.ts (campaign, pools, sessions), campaign.schema.ts
   character/   character.actions.ts (characters, guest tokens), character.schema.ts,

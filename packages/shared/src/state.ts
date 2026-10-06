@@ -16,6 +16,7 @@ export const Me = z.object({
   role: Role,
   characterId: z.string().nullable(),
   userId: z.string().nullable(),
+  admin: z.boolean(), // a Clerk admin acting as GM without a seat (docs/architecture.md, "Access")
 });
 export type Me = z.infer<typeof Me>;
 
@@ -363,6 +364,7 @@ export const LiveState = z.object({
     kind: z.array(z.string()),
     limits: z.array(z.string()),
     homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
+    archived: z.boolean(), // read-only: every action but unarchive and delete is refused (campaign.archive)
   }),
   characters: z.array(Character),
   encounter: z

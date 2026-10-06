@@ -3,10 +3,11 @@
 export {};
 
 declare global {
-  // Set by hand per GM in the Clerk Dashboard (Users → public metadata). "creator" may start games in the lobby;
-  // anyone else only joins by invite (docs/architecture.md, "Access").
+  // Set by hand per user in the Clerk Dashboard (Users → public metadata). "creator" may start games in the lobby;
+  // anyone else only joins by invite. "admin" is a creator who also reaches /admin and acts as GM at every table
+  // (docs/architecture.md, "Access").
   interface UserPublicMetadata {
-    role?: "creator";
+    role?: "creator" | "admin";
   }
 
   // The Dashboard's session-token template:

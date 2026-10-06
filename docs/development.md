@@ -85,7 +85,8 @@ Accounts come from Clerk. Guests with a QR token don't need one, but the GM does
 
 3. Invite yourself under **Users → Invite** and sign up from the link (or **Create user**), then under **Users →**
    your user, set **public metadata** to `{ "role": "creator" }`. Only
-   creators see CREATE NEW CAMPAIGN in the lobby. There's no in-app way to grant it; set it by hand for each GM.
+   creators see CREATE NEW CAMPAIGN in the lobby. There's no in-app way to grant it; set it by hand for each GM. `{ "role": "admin" }` makes an admin: a creator
+   who also reaches `/admin` (users, games, archive and delete) and acts as GM at every game. Several are fine.
 4. Copy the keys from **API keys**:
 
    | File | Vars |
@@ -98,7 +99,7 @@ Accounts come from Clerk. Guests with a QR token don't need one, but the GM does
 Without the web keys, every page answers 500 with "Missing publishableKey".
 
 `CLERK_TEST_SECRET` in `apps/api/.env` is **dev/test only**: it lets the smoke test act as signed-in users with fake
-tokens (`test.<secret>.<userId>.<creator|member>`), and the api refuses to start with it when `NODE_ENV=production`.
+tokens (`test.<secret>.<userId>.<creator|member|admin>`), and the api refuses to start with it when `NODE_ENV=production`.
 
 ## Environment
 
