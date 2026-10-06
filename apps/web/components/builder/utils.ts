@@ -1,5 +1,6 @@
 import {
   CharacterBuild,
+  SOURCES,
   StoredDraft,
   type BuildStep,
   type CharacterBuildInput,
@@ -8,15 +9,17 @@ import {
   type PsychicPower,
   type Requirement,
   type ResolvedBuild,
+  type Source,
 } from "@wg/shared";
 
 import type { Draft, Lookups } from "./builder-context";
 import { ATTRIBUTE_NAMES, BUILD_STEP_PARAM, BUILDER_STEPS, type BuilderStep } from "./constants";
 
-// The screens this build needs: Creation Ascension only when the archetype's Tier is below the campaign's (Core p.148),
-// ADVANCE once the character is made, and ASCENSION again in play once the group has Ascended past the Tier this
-// character was made at (Core p.148, rules-flow.md §11.55): that Ascension takes one package or an Archetype Ascension.
-// A player's made character shows only those: its creation choices are the GM's to change.
+// The screens this build needs: Creation Ascension when the archetype's Tier is below the campaign's (Core p.148), and
+// for an Advanced build always, since the book lets the GM allow one Ascension Package at Advanced Creation (Core p.38,
+// rules-flow.md §11.132); ADVANCE once the character is made, and ASCENSION again in play once the group has Ascended
+// past the Tier this character was made at (Core p.148, §11.55): that Ascension takes one package or an Archetype
+// Ascension. A player's made character shows only those: its creation choices are the GM's to change.
 export function stepsFor({
   draft,
   lookups,
@@ -34,12 +37,18 @@ export function stepsFor({
 }): BuilderStep[] {
   if (locked) return ascending ? ["ascension", "advance", "review"] : ["advance", "review"];
   const a = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  // ponytail: an Advanced build has no Creation Ascension screen, since it has no Archetype Tier to ascend from; one
-  // bought at creation is the GM's (Core p.38, §11.132) and `resolveBuild` takes it, so add a picker when a table asks.
-  return BUILDER_STEPS.filter(
-    (s) => (s !== "ascension" || ascending || (a !== undefined && a.tier < tier)) && (s !== "advance" || made),
-  );
+  const atCreation = draft.advanced !== undefined || (a !== undefined && a.tier < tier);
+  return BUILDER_STEPS.filter((s) => (s !== "ascension" || ascending || atCreation) && (s !== "advance" || made));
 }
+
+// What the builder may offer from a catalogue list: the homebrew books are the GM's switch for the whole campaign, and
+// `resolveBuild` refuses their records (build.ts `allowed`) when it's off. Whatever is already `taken` stays listed, so
+// it can be given back.
+export const offered = <T extends { id: string; source: Source }>(
+  list: Iterable<T>,
+  taken: readonly string[],
+  homebrew: boolean,
+) => [...list].filter((r) => taken.includes(r.id) || homebrew || SOURCES[r.source].official);
 
 // The screen a link asked for. Anything that doesn't name one is ignored, so a stale or hand-typed link just opens the
 // builder where it would have opened anyway. The page reads it on the server (`searchParams`) and passes it in, so the

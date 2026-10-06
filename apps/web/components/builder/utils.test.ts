@@ -114,6 +114,20 @@ describe("stepsFor", () => {
     assert.ok(steps({ tier: 3 }).includes("ascension"));
   });
 
+  test("ASCENSION always appears for an Advanced build, which may take one package if the GM agrees (Core p.38, §11.132)", () => {
+    const advanced = (tier: number) =>
+      stepsFor({
+        draft: { tier, name: "X", advanced: { wargear: [] } },
+        lookups,
+        tier,
+        made: false,
+        locked: false,
+        ascending: false,
+      });
+    assert.ok(advanced(1).includes("ascension"));
+    assert.ok(advanced(4).includes("ascension"));
+  });
+
   test("ADVANCE appears once the character is made, ASCENSION again when the group has Ascended (§11.55)", () => {
     assert.ok(!steps({}).includes("advance"));
     assert.deepEqual(steps({ made: true, ascending: true }).slice(-4), ["ascension", "detail", "advance", "review"]);

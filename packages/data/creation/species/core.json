@@ -4,7 +4,7 @@
     "name": "Human",
     "source": "core",
     "page": 29,
-    "note": "Maximums from the table on p.25; Species Keywords from p.38. As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
+    "note": "Maximums from the table on p.25; Species Keywords from p.38 (any 2: [ANY] and [ANY 2], rules-flow.md §11.133). As a PSYKER it learns powers from a single Discipline of choice (Disciplines Known, Core p.257): the PSYKER-only grant.",
     "xp": 0,
     "speed": 6,
     "size": "Average",
@@ -26,7 +26,7 @@
         "keyword": "[ANY]"
       },
       {
-        "keyword": "[ANY]"
+        "keyword": "[ANY 2]"
       },
       {
         "all": [

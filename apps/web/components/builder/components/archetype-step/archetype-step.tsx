@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ATTRIBUTES, advancedBonusXp, archetypeAbilityXp, sourceCite, type Archetype } from "@wg/shared";
 
 import { useBuilder } from "../../builder-context";
-import { rulesText, titleOf, toggle } from "../../utils";
+import { offered, rulesText, titleOf, toggle } from "../../utils";
 import { RecordList } from "@/components/ui/record-list/record-list";
 import { StepChoices } from "../step-choices/step-choices";
 
@@ -100,13 +100,15 @@ export function ArchetypeStep() {
 // Advanced Creation (Core pp.38–39): the species (its XP is paid, rules-flow.md §11.126), an Archetype Ability the GM
 // agrees to (§11.131) and the kit that replaces an Archetype's (§11.128–130). What is allowed is `resolveBuild`'s.
 function AdvancedPanel() {
-  const { draft, update, lookups, catalogue, tier } = useBuilder();
+  const { draft, update, lookups, catalogue, tier, homebrew } = useBuilder();
   const advanced = draft.advanced!;
   const set = (patch: Partial<NonNullable<typeof draft.advanced>>) =>
     update((d) => ({ ...d, advanced: { ...d.advanced, ...patch } }));
   const wargear = advanced.wargear ?? [];
   // Only entries with a printed Value and Rarity can be counted against the table (p.39).
-  const kit = [...catalogue.wargear.values()]
+  // ponytail: Core p.39's optional EXTRA WARGEAR sidebar (swap a piece for one of equal or lesser Value and Rarity that
+  // shares a Keyword) is left out; the GM swaps through `gm.gear`. Add a swap check when a table asks for the rule.
+  const kit = offered(catalogue.wargear.values(), wargear, homebrew)
     .filter((w) => w.value !== null && w.rarity !== null && w.kind !== "upgrade")
     .sort((a, b) => a.name.localeCompare(b.name));
   return (
@@ -114,7 +116,7 @@ function AdvancedPanel() {
       <fieldset className="panel pad stack">
         <legend className="label">SPECIES · Core p.38 · +{advancedBonusXp(tier)} XP, no Archetype Ability</legend>
         <div className="keys" role="group" aria-label="Species">
-          {[...lookups.species.values()].map((s) => (
+          {offered(lookups.species.values(), draft.speciesId ? [draft.speciesId] : [], homebrew).map((s) => (
             <button
               key={s.id}
               className={`btn sm ${draft.speciesId === s.id ? "primary" : ""}`}
@@ -131,7 +133,7 @@ function AdvancedPanel() {
         <RecordList
           label="Search archetypes for an ability"
           searchable
-          items={[...lookups.archetypes.values()]
+          items={offered(lookups.archetypes.values(), advanced.abilityOf ? [advanced.abilityOf] : [], homebrew)
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((a) => ({
               id: a.id,

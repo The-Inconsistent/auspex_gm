@@ -1162,3 +1162,86 @@ test("an Ascension Package at Advanced Creation grants its per-Tier bonus once (
   // Influence +2 per Tier Ascended (Core p.151)
   assert.equal((with_.sheet.mods.influence ?? 0) - (without.sheet.mods.influence ?? 0), 2);
 });
+
+// ── Species Keywords belong to Advanced Creation (Core p.38, rules-flow.md §11.133–135, GitHub issue #189) ──
+
+const asked = (r: ReturnType<typeof run>, keyword: string) =>
+  r.choices.some((c) => c.options.some((o) => o.split(/ \+ | \/ | and /).includes(keyword)));
+
+test("an archetype build is asked for no Species Keyword: an Imperial Guardsman has no [ANY], a Corsair no ANHRATHE or ASURYANI", () => {
+  const guard = run({ tier: 1, archetypeId: "imperial-guardsman" });
+  assert.deepEqual(
+    guard.sheet.keywords,
+    ["IMPERIUM", "ASTRA MILITARUM", "[REGIMENT]"],
+    "the Archetype's own, no [ANY]",
+  );
+  assert.ok(!guard.pending.some((p) => p.path.startsWith("fill/any") || p.path.startsWith("species/human/")));
+
+  const corsair = run({ tier: 1, archetypeId: "corsair" });
+  assert.deepEqual(corsair.sheet.keywords, ["AELDARI", "ANHRATHE", "[COTERIE]"]);
+  assert.ok(!asked(corsair, "ASURYANI") && !asked(corsair, "ANHRATHE"), JSON.stringify(corsair.choices));
+
+  const scout = run({ tier: 2, archetypeId: "space-marine-scout" });
+  assert.ok(!asked(scout, "CHAOS"), "the Scout prints IMPERIUM; no IMPERIUM or CHAOS question");
+  assert.ok(scout.sheet.keywords.includes("IMPERIUM"));
+});
+
+test("an archetype build keeps its species' other grants: a PSYKER Human still picks a Discipline", () => {
+  const r = run({ tier: 1, archetypeId: "imperial-guardsman", gm: { keywords: ["PSYKER"] } });
+  assert.ok(
+    r.pending.some((p) => p.path.startsWith("species/human/2")),
+    JSON.stringify(r.pending),
+  );
+});
+
+test("a Human's any 2 Keywords are two picks, and they differ (Core p.38, §11.133)", () => {
+  const base = { tier: 1, advanced: {}, speciesId: "human" } as const;
+  const bare = run(base);
+  assert.deepEqual(bare.sheet.keywords, ["[ANY]", "[ANY 2]"]);
+  assert.ok(bare.pending.some((p) => p.path === "fill/any") && bare.pending.some((p) => p.path === "fill/any2"));
+
+  const two = run({
+    ...base,
+    fills: { "[ANY]": { writeIn: "SCUM" }, "[ANY 2]": { writeIn: "INQUISITION" } },
+    gm: { approved: ["fill/any", "fill/any2"] },
+  });
+  assert.deepEqual(two.sheet.keywords, ["SCUM", "INQUISITION"]);
+  assert.ok(!two.problems.some((p) => p.severity === "error"), JSON.stringify(two.problems));
+  assert.ok(!two.pending.some((p) => p.path.startsWith("fill/")));
+
+  const same = run({ ...base, fills: { "[ANY]": { writeIn: "SCUM" }, "[ANY 2]": { writeIn: "SCUM" } } });
+  assert.ok(same.problems.some((p) => p.severity === "error" && p.what.includes("repeats SCUM")));
+});
+
+test("an Advanced build with a Faction takes its Keywords and is asked no Species Keyword choice (§11.134, §11.136)", () => {
+  // The Human's any 2: not asked, the Faction's Keyword stands.
+  const human = run({ tier: 1, advanced: { factionId: "orks" }, speciesId: "human" });
+  assert.deepEqual(human.sheet.keywords, ["ORK"]);
+  assert.ok(!human.pending.some((p) => p.path.startsWith("fill/any")));
+  assert.ok(human.effects.some((e) => e.what === "Orks Faction: ORK"));
+
+  // The Astartes' fixed Species Keywords stand beside a Faction; IMPERIUM or CHAOS is asked only without one.
+  const without = run({ tier: 4, advanced: {}, speciesId: "adeptus-astartes" });
+  assert.ok(asked(without, "CHAOS"));
+  const with_ = run({ tier: 4, advanced: { factionId: "adeptus-astartes" }, speciesId: "adeptus-astartes" });
+  assert.ok(!asked(with_, "CHAOS"));
+  assert.deepEqual(with_.sheet.keywords, ["ADEPTUS ASTARTES", "[CHAPTER]"]);
+  const ork = run({ tier: 1, advanced: { factionId: "adeptus-mechanicus" }, speciesId: "ork" });
+  assert.deepEqual(
+    ork.sheet.keywords,
+    ["ORK", "[CLAN]", "ADEPTUS MECHANICUS"],
+    "a Species' fixed Keywords always stand",
+  );
+
+  // The Aeldari's ANHRATHE or ASURYANI is a Species choice, so a Faction replaces it.
+  assert.ok(asked(run({ tier: 1, advanced: {}, speciesId: "aeldari" }), "ASURYANI"));
+  assert.ok(!asked(run({ tier: 1, advanced: { factionId: "asuryani" }, speciesId: "aeldari" }), "ASURYANI"));
+});
+
+test("an Advanced Faction must exist, and a homebrew one needs homebrew (§11.134)", () => {
+  const unknown = run({ tier: 1, advanced: { factionId: "no-such-faction" }, speciesId: "human" });
+  assert.ok(unknown.problems.some((p) => p.severity === "error" && p.what.includes("Unknown faction")));
+  const apoc = { tier: 1, advanced: { factionId: "adeptus-arbites" }, speciesId: "human" } as const;
+  assert.ok(run(apoc).problems.some((p) => p.severity === "error" && p.what.includes("homebrew")));
+  assert.ok(!run(apoc, true).problems.some((p) => p.severity === "error"));
+});
