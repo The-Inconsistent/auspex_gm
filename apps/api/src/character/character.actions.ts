@@ -335,7 +335,7 @@ export async function applyCharacterAction(
       // A character already made keeps what play changed (keepPlay), and gains only what the new build adds over the
       // stored one; a first build keeps only Ammo and requisitions, or with `keepSheet` the hand-made sheet's armour and
       // gear lines and Wealth too. Its weapons are the build's, whose Talents are applied on read (rules-flow.md §11.68),
-      // plus any hand-written line the build has no weapon of that name for: a GM's own profile (the volkus Haywire Mine).
+      // plus any hand-written line the build has no weapon of that name for: a GM's own profile (a homemade mine, say).
       const old = row ? CharacterStats.parse(row.stats) : undefined;
       const stats = !old
         ? r.sheet

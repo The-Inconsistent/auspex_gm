@@ -143,7 +143,7 @@
     "name": "Apocryphon Oath",
     "source": "apocrypha",
     "page": 211,
-    "note": "Deathwatch Kill Team campaign package (docs/kill-team.md). Bolt rounds: one reload each; Vengeance is not in the Wargear catalogue.",
+    "note": "Deathwatch campaign package. Bolt rounds: one reload each; Vengeance is not in the Wargear catalogue.",
     "kind": "ascension",
     "xp": {
       "perTier": 10

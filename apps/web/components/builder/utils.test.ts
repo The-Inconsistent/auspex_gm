@@ -4,7 +4,7 @@ import { describe, test } from "node:test";
 import type { Draft, Lookups } from "./builder-context.tsx";
 import { asBuilderStep, mergeOverrides, pickDraft, stepFromQuery, stepsFor } from "./utils.ts";
 
-// The volkus Disruptor's choices, cut down to what CharacterBuild needs (packages/data/build.test.ts has the whole one).
+// The Disruptor pregen's choices, cut down to what CharacterBuild needs (packages/data/fixtures/pregens has the whole one).
 const build = { tier: 1, archetypeId: "primaris-incursor" };
 const draft = (savedAt: number, name = "Draft"): Draft => ({ tier: 1, name, savedAt });
 

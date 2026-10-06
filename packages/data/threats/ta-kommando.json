@@ -61,5 +61,5 @@
     { "name": "Mob Rule", "text": "A Mob of Kommandos gains +1 bonus Icon to any Resolve Tests. This increases by +1 for every ten Kommandos." },
     { "name": "Kunnin' Infiltraters", "text": "When a Mob of Kommandos makes a Stealth (A) Test, add +1 Icon to the result." }
   ],
-  "note": "Print oddity, copied as printed: TA p.89 gives this Kommando Threat A|A|A|A|A, Conviction 6, Resolve 5, Speed 5 (May not Run or Sprint) and Size Lrg, yet it has Mob options and Mob Rule. Those look copied from another block; the Core p.355 Kommando prints E E T T, Conviction 2, Resolve 1, Speed 6, Avg, and this campaign fields that one instead (docs/kill-team.md)."
+  "note": "Print oddity, copied as printed: TA p.89 gives this Kommando Threat A|A|A|A|A, Conviction 6, Resolve 5, Speed 5 (May not Run or Sprint) and Size Lrg, yet it has Mob options and Mob Rule. Those look copied from another block; the Core p.355 Kommando prints E E T T, Conviction 2, Resolve 1, Speed 6, Avg, and a table that wants the Core block fields that one (rules-flow.md §11.120)."
 }

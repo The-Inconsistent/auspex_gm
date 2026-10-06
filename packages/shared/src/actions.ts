@@ -175,7 +175,7 @@ export const Action = z.union([
       name: z.string().min(1).max(100).optional(),
       detail: CharacterDetail.optional(),
       build: CharacterBuild,
-      // GM only: a first build over a hand-made sheet keeps its armour and gear lines and its Wealth (the volkus
+      // GM only: a first build over a hand-made sheet keeps its armour and gear lines and its Wealth (a campaign's hand-made
       // pregens, issue #18). Its weapons are the build's, with their Talents applied on read (rules-flow.md §11.68,
       // issue #27). One action, so the swap can't half-happen.
       keepSheet: z.boolean().optional(),

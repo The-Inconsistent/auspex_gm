@@ -134,18 +134,4 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 Bestiary data is one flat folder, `packages/data/threats/*.json`, with each file's book in its `source` field ([data.md](data.md)). An adventure can be exported and imported as
 JSON (factions, NPCs, locations, beats, handouts) so a new campaign can start from a prepared pack.
 
-## First campaign (seed pack, editable)
-
-*"Ordo Xenos dispatch a five-member Deathwatch Kill Team to eliminate Ork Kommandos near the Volkus dig site, where
-they uncover a hidden tomb world. What lies beneath, and why are the Mechanicus set on recapturing the site?"*
-
-- **Tier 4**, five Primaris Space Marines (Vow of Absolution archetypes). With 5 players, Glory max 7; Ruin starts
-  at 5, max 10.
-- **Kommandos**: Gutshiva's Kommandos (NPCs and hooks), Threat Assessment p.89, core p.355. At Tier 4 a Kommando is
-  a **Troop** (Tier row E E T T), so they come in Mobs led by an Elite or Adversary.
-- **Tomb**: Necrons, Threat Assessment pp.131–156.
-- **Mechanicus**: the High Altar of Technology stat blocks (`hat-*`, see above).
-- **Patron**: Inquisitor Marie Von Xardt, Ordo Xenos (FSPG p.26). She directs the Watch station under Enoch's northern tundra.
-- **Session 1** (the six scenes of the 2026-09-27 campaign bible: briefing, drop, camp, Magos, ambush, below the seal) is
-  in the seed pack, `packages/data/packs/volkus/pack.json`. Session 2 ("The Tomb Beneath") is an outline of beat titles.
-  A handout meant for one Agent (Von Xardt's private order) ships with an empty audience; the GM sets it at the table.
+The repo ships no pack now; the first campaign was moved out to an import file. A pack is `packages/data/packs/<name>/` (`pack.json` + `characters/*.json`), loaded with `bun run seed <name> --owner …`.
