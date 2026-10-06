@@ -815,33 +815,33 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 126. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
      Skill at 0, but p.38 charges the Species' XP "as in Know Your Faction" for its benefits, and an Adeptus Astartes'
      160 XP is its Attributes and Skills. The species' printed ratings stand, everything else starts at 1 and 0, and
-     XP buys from there (the Human has none, so the p.39 example prices from scratch). *Proposed; awaiting the GM.*
+     XP buys from there (the Human has none, so the p.39 example prices from scratch). *Approved by the GM, 2026-10-06.*
 127. **The Advanced bonus is budget, and stays when an Archetype Ability is bought** (Core p.38). Tier × 10 is added to
      the budget (a GM's custom budget plus it), so the ledger shows only what is spent; the p.39 example spends 100 of
      110. The book lists buying an Archetype Ability as a separate option and prices it itself, so the bonus is not
-     given back. *Proposed; awaiting the GM.*
+     given back. *Approved by the GM, 2026-10-06.*
 128. **Advanced Wargear: Total Value is strictly under the limit, Max. Value is inclusive** (Core p.39). The text says
      Total Value "less than" the number (Tier 1: at most 14), and a "Max. Value" column reads as a ceiling an item may
      equal (Tier 1: an item of 7 is fine). Each copy counts. `advancedWargearProblems` in `wargear.ts`.
-     *Proposed; awaiting the GM.*
+     *Approved by the GM, 2026-10-06.*
 129. **Advanced Wargear Rarity accumulates and refuses Unique** (Core p.39). Common and Uncommon are always allowed. The
      Rarity column is read as adding allowances: Tier 2 up to two Rare, Tier 3 the same plus one Very Rare, Tier 4 the
-     same plus two Very Rare. A Unique item fits no Tier. *Proposed; awaiting the GM.*
+     same plus two Very Rare. A Unique item fits no Tier. *Approved by the GM, 2026-10-06.*
 130. **Advanced Wargear at Tier 5 and above, and unpriced items** (Core p.39). The table stops at Tier 4, so a higher
      Tier is checked against the Tier 4 row and the GM must agree. An item with no printed Value or Rarity can't be
      counted and needs the GM. Common clothing and the trinket (Trinkets Table, p.247) are a note, not sheet lines.
-     *Proposed; awaiting the GM.*
+     *Approved by the GM, 2026-10-06.*
 131. **A bought Archetype Ability brings the ability only** (Core p.38). It costs the Archetype's Tier × 10, needs the
      GM's tick (`advanced/ability/<archetype>`) and adds that Archetype's abilities, not its Keywords, kit, Influence,
-     ratings or requirements. *Proposed; awaiting the GM.*
+     ratings or requirements. *Approved by the GM, 2026-10-06.*
 132. **An Ascension Package at Advanced Creation is the GM's** (Core p.38). There is no Archetype Tier to ascend from, so
      the build takes at most one Ascension Package, asks for the GM's tick, prices "× the new Tier" at the campaign
      Tier, meets the package's requirements at that Tier, and counts as one Tier Ascended for its "per Tier" grants. It brings no Creation Ascension screen yet.
-     *Proposed; awaiting the GM.*
+     *Approved by the GM, 2026-10-06.*
 133. **An Advanced character has no Archetype for requirements or Archetype Ascension** (Core pp.38, 155). A requirement
      of kind `archetype` fails and `notArchetype` passes. Archetype Ascension needs "an Archetype of their Faction", so
      an Advanced character can't take it. Species Keywords stand in for the Archetype's (a Human's "any 2" arrive as
-     one `[ANY]` fill for now, because the build lists a keyword once). *Proposed; awaiting the GM.*
+     one `[ANY]` fill for now, because the build lists a keyword once). *Approved by the GM, 2026-10-06.*
 
 ---
 
