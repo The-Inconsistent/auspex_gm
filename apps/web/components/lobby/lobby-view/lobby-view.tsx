@@ -11,13 +11,14 @@ import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 type LobbyViewProps = { lobby: Lobby };
 
 // One game card. Members open the table; others only see that it's running (joining needs an invite).
-function GameCard({ game }: { game: LobbyGame }) {
+function GameCard({ game, archived = false }: { game: LobbyGame; archived?: boolean }) {
   const line = `T${game.tier} · GM ${game.gm.toUpperCase()} · ${game.players} AGENTS${game.session ? ` · SESSION ${game.session} LIVE` : ""}`;
   return (
     <div className="item">
       <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
         <b style={{ flex: 1 }}>{game.name.toUpperCase()}</b>
         {game.role && <span className="chip">{game.role === "gm" ? "GM" : "PLAYER"}</span>}
+        {archived && <span className="chip warn">ARCHIVED</span>}
         {game.role && (
           <Link className="btn sm primary" href={`/c/${game.id}`}>
             OPEN
@@ -76,6 +77,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const [libraryError, setLibraryError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
   const [fresh, setFresh] = useState(false);
+  const [showArchived, setShowArchived] = useState(false); // the ARCHIVED fold, closed until asked
   const [importError, setImportError] = useState<string | null>(null);
   const others = lobby.running.filter((g) => !g.role);
   const full = lobby.characters.length >= LIBRARY_CAP;
@@ -148,11 +150,23 @@ export function LobbyView({ lobby }: LobbyViewProps) {
     <main className="pad stack" style={{ maxWidth: 760, margin: "0 auto" }}>
       <header
         className="band torn"
-        style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", marginBottom: 12 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 12,
+          padding: "14px 16px",
+          marginBottom: 12,
+        }}
       >
         <div className="display" style={{ fontSize: 30, flex: 1 }}>
           AUSPEX <span className="dim">· LOBBY</span>
         </div>
+        {lobby.admin && (
+          <Link className="btn sm" href="/admin">
+            ADMIN
+          </Link>
+        )}
         <ThemeToggle />
         <UserButton />
       </header>
@@ -252,6 +266,30 @@ export function LobbyView({ lobby }: LobbyViewProps) {
               <GameCard key={g.id} game={g} />
             ))}
           </div>
+        </>
+      )}
+
+      {/* Archived games are read-only; they stay out of YOUR GAMES until unarchived (in SETUP, or by an admin). */}
+      {lobby.archived.length > 0 && (
+        <>
+          <div className="rule">ARCHIVED · {lobby.archived.length}</div>
+          <div>
+            <button
+              className="btn sm"
+              aria-expanded={showArchived}
+              aria-controls="archived-games"
+              onClick={() => setShowArchived(!showArchived)}
+            >
+              {showArchived ? "HIDE ARCHIVED GAMES" : "SHOW ARCHIVED GAMES"}
+            </button>
+          </div>
+          {showArchived && (
+            <div id="archived-games" className="list">
+              {lobby.archived.map((g) => (
+                <GameCard key={g.id} game={g} archived />
+              ))}
+            </div>
+          )}
         </>
       )}
     </main>

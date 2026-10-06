@@ -108,6 +108,7 @@ export default async function Table({ params, searchParams }: TableProps) {
         npcPresets={npcPresets}
         flavour={flavour}
         places={places}
+        admin={me.admin}
         initialTab={asGmTab(query[TAB_PARAM])}
       />
     );

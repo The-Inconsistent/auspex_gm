@@ -20,6 +20,7 @@ import {
 } from "@wg/shared";
 
 import { NEW_CHARACTER } from "@/components/builder/constants";
+import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
@@ -34,6 +35,7 @@ import { ObjectivesEditor } from "./components/objectives-editor/objectives-edit
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { RoomInvite } from "./components/room-invite/room-invite";
+import { SessionHistory } from "./components/session-history/session-history";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, XP_AWARDS } from "./constants";
 
 type PartyProps = {
@@ -68,6 +70,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   // compare before with after — who crossed a Rank on `session.end`, whether the group may Ascend (Core pp.146–147).
   const report = (r: ActionResult, ok: string) =>
     setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`);
+
+  // DELETE LAST SESSION's line: the server's notice says what it removed and that the XP stays.
+  const sessionReport = (r: ActionResult, ok: string) =>
+    setMsg(r.ok ? (r.notices?.length ? r.notices.join(" · ") : ok) : `! ${r.error}`);
 
   // Renders a join URL as a full-screen QR code.
   const showCode = async ({ title, url }: { title: string; url: string }) => {
@@ -140,6 +146,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   // END SESSION: awards XP to everyone and saves the recap.
   const endSession = async () =>
     report(await send({ type: "session.end", xp, recap }), `SESSION ENDED · +${xp} XP EACH`);
+
+  // END SESSION WITHOUT XP: closes a session that was never played or left open; no XP, no Rank notices, pools as they are.
+  const abandonSession = async () => report(await send({ type: "session.abandon" }), "SESSION ENDED · NO XP");
 
   // START SESSION: resets the pools per the rules.
   const startSession = async () => report(await send({ type: "session.start" }), "SESSION STARTED · POOLS RESET");
@@ -241,10 +250,15 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                 placeholder="Previously in Wrath & Glory…"
               />
             </div>
-            <div>
+            <div className="keys" style={{ alignItems: "center", paddingTop: 0 }}>
               <button className="btn primary" onClick={endSession}>
                 END SESSION
               </button>
+              <ConfirmAction
+                label="END SESSION WITHOUT XP"
+                prompt="End this session with no XP and no recap?"
+                onConfirm={abandonSession}
+              />
             </div>
           </>
         ) : (
@@ -260,6 +274,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
             </div>
           </>
         )}
+        <SessionHistory sessions={codex.sessions} send={send} onResult={sessionReport} />
       </div>
 
       <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
