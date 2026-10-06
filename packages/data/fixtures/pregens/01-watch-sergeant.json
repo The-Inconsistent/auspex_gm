@@ -1,5 +1,79 @@
 {
-  "name": "Watch Sergeant Qaan Toghril",
+  "name": "Watch Sergeant",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "tactical-space-marine",
+    "packages": [
+      "rubicon-primaris"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "white-scars"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Courage",
+      "accomplishment": "Badge of Honour",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "S": 5,
+      "Wil": 4
+    },
+    "skills": {
+      "Leadership": 3,
+      "Survival": 2,
+      "Scholar": 2
+    },
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/rubicon-primaris/3": [
+        "duelling-grip"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "species": "primaris-astartes",
+      "gear": {
+        "remove": [
+          "Aquila Mk VII Power Armour",
+          "Bolt Pistol",
+          "Astartes Combat Knife",
+          "Duelling Grip"
+        ],
+        "add": [
+          {
+            "name": "Mk X Tacticus",
+            "wargearId": "voa-mk-x-tacticus-armour"
+          },
+          {
+            "name": "Plasma Pistol",
+            "wargearId": "plasma-pistol"
+          },
+          {
+            "name": "Power Sword",
+            "wargearId": "voa-power-sword",
+            "upgrades": [
+              "duelling-grip"
+            ]
+          }
+        ]
+      },
+      "mods": {
+        "influence": 1,
+        "conviction": 1
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Tactical Space Marine + Rubicon Primaris",
@@ -88,7 +162,7 @@
       },
       {
         "name": "Built Tough",
-        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions … You do not suffer the usual DN penalties for using this ability on yourself.",
+        "text": "You can use Survival (Wil) instead of Medicae (Int) to remove your own Wounds, Shock, or Conditions \u2026 You do not suffer the usual DN penalties for using this ability on yourself.",
         "page": "VoA p.46"
       }
     ],
@@ -168,7 +242,7 @@
     ],
     "gear": [
       "Duelling Grip on the Power Sword (Rubicon Uncommon item, Core p.228): +1 bonus die on Attack Tests using this weapon",
-      "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
+      "Kraken Bolt rounds (AP \u22122, Core p.231; BOLT weapons only)"
     ],
     "wealth": 4,
     "ammo": {
@@ -177,91 +251,17 @@
       "Plasma": 1
     }
   },
-  "detail": {
-    "portrait": "deathwatch-watch-sergeant",
-    "personality": "A Chogorian storyteller who keeps the song-cycle of every kill team he has led, and of every brother it lost."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: add one brother's deed to the song-cycle each session.",
-      "done": false
-    },
-    {
-      "text": "Secret: bring every brother home, even if the Mandate fails.",
-      "done": false
-    }
+  "ledger": [
+    277,
+    80,
+    15,
+    10,
+    10,
+    4,
+    4
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "tactical-space-marine",
-    "packages": [
-      "rubicon-primaris"
-    ],
-    "fills": {
-      "[CHAPTER]": {
-        "id": "white-scars"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Courage",
-      "accomplishment": "Badge of Honour",
-      "goal": "Honour the Chapter",
-      "bonus": "origin"
-    },
-    "attributes": {
-      "S": 5,
-      "Wil": 4
-    },
-    "skills": {
-      "Leadership": 3,
-      "Survival": 2,
-      "Scholar": 2
-    },
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "choices": {
-      "package/rubicon-primaris/3": [
-        "duelling-grip"
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "species": "primaris-astartes",
-      "gear": {
-        "remove": [
-          "Aquila Mk VII Power Armour",
-          "Bolt Pistol",
-          "Astartes Combat Knife",
-          "Duelling Grip"
-        ],
-        "add": [
-          {
-            "name": "Mk X Tacticus",
-            "wargearId": "voa-mk-x-tacticus-armour"
-          },
-          {
-            "name": "Plasma Pistol",
-            "wargearId": "plasma-pistol"
-          },
-          {
-            "name": "Power Sword",
-            "wargearId": "voa-power-sword",
-            "upgrades": [
-              "duelling-grip"
-            ]
-          }
-        ]
-      },
-      "mods": {
-        "influence": 1,
-        "conviction": 1
-      }
-    }
+  "parts": {
+    "tacticalspacemarine": 277,
+    "rubiconprimaris": 80
   }
 }

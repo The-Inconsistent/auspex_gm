@@ -1,5 +1,67 @@
 {
-  "name": "Brother Kael Tirrow",
+  "name": "Gunner",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-hellblaster",
+    "fills": {
+      "[CHAPTER]": {
+        "id": "ultramarines"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Cunning",
+      "accomplishment": "Cleanse and Purge",
+      "goal": "Advancement",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "A": 6,
+      "T": 6,
+      "I": 5,
+      "Wil": 4
+    },
+    "skills": {
+      "Ballistic Skill": 6,
+      "Awareness": 4,
+      "Tech": 4,
+      "Scholar": 1
+    },
+    "talents": [
+      {
+        "id": "deadshot"
+      },
+      {
+        "id": "duty-until-death"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "remove": [
+          "Plasma Incinerator"
+        ],
+        "add": [
+          {
+            "name": "Heavy Plasma Incinerator",
+            "wargearId": "apoc-heavy-plasma-incinerator"
+          }
+        ]
+      },
+      "mods": {
+        "maxShock": 1,
+        "influence": 1
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Hellblaster",
@@ -176,79 +238,20 @@
       "Dragonfire Bolt": 1
     }
   },
-  "detail": {
-    "portrait": "deathwatch-gunner-veteran",
-    "personality": "A son of the Elara's Veil, raised among the war-tribes of a Chapter long cut off from the Imperium. He cherishes wargear as heirlooms and trades in relics the way his Chapter always has, with whoever keeps its guns firing."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: recover one intact archeotech device.",
-      "done": false
-    },
-    {
-      "text": "Secret: trade it to the Magos for Mechanicus favour, not hand it to the Inquisitor.",
-      "done": false
-    }
+  "ledger": [
+    228,
+    35,
+    22,
+    20,
+    15,
+    10,
+    8,
+    20,
+    2,
+    20,
+    20
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "primaris-hellblaster",
-    "fills": {
-      "[CHAPTER]": {
-        "id": "ultramarines"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Cunning",
-      "accomplishment": "Cleanse and Purge",
-      "goal": "Advancement",
-      "bonus": "origin"
-    },
-    "attributes": {
-      "A": 6,
-      "T": 6,
-      "I": 5,
-      "Wil": 4
-    },
-    "skills": {
-      "Ballistic Skill": 6,
-      "Awareness": 4,
-      "Tech": 4,
-      "Scholar": 1
-    },
-    "talents": [
-      {
-        "id": "deadshot"
-      },
-      {
-        "id": "duty-until-death"
-      }
-    ],
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "gear": {
-        "remove": [
-          "Plasma Incinerator"
-        ],
-        "add": [
-          {
-            "name": "Heavy Plasma Incinerator",
-            "wargearId": "apoc-heavy-plasma-incinerator"
-          }
-        ]
-      },
-      "mods": {
-        "maxShock": 1,
-        "influence": 1
-      }
-    }
+  "parts": {
+    "primarishellblaster": 228
   }
 }

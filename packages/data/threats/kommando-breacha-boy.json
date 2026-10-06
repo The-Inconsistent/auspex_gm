@@ -57,5 +57,5 @@
   "mobAbilities": [
     { "name": "Kunnin' Infiltraters", "text": "When a Mob of Kommandos makes a Stealth (A) Test, add +1 Icon to the result." }
   ],
-  "note": "Kill Team stand-in (docs/kill-team.md, Kommandos): the Kommando (Core p.355) with its Choppa swapped for a Power Klaw (Core p.213: (S)+6, at S 4 = 10 +5 ED / AP -3 / Brutal, Unwieldy (3), Waaagh!) as the breacha ram. Smashing through walls uses Shoot Through Cover (Core p.189); no new rule."
+  "note": "House variant (rules-flow.md §11.120): the Kommando (Core p.355) with its Choppa swapped for a Power Klaw (Core p.213: (S)+6, at S 4 = 10 +5 ED / AP -3 / Brutal, Unwieldy (3), Waaagh!) as the breacha ram. Smashing through walls uses Shoot Through Cover (Core p.189); no new rule."
 }

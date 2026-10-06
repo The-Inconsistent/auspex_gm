@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import {
   CREATION_TYPES,
   type Creation,
@@ -129,10 +129,14 @@ const creationOf = <K extends CreationType>(type: K) => {
 export const creationCatalogue = (): Creation =>
   Object.fromEntries(Object.keys(CREATION_TYPES).map((t) => [t, creationOf(t as CreationType)])) as Creation;
 
-export const packNames = () =>
-  readdirSync(new URL("./packs/", import.meta.url), { withFileTypes: true })
+// The repo ships no pack today (campaigns travel as export files), so the folder may be missing.
+export const packNames = () => {
+  const dir = new URL("./packs/", import.meta.url);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
+};
 
 // packs/<name>/pack.json plus one file per character in packs/<name>/characters/.
 export function loadPackRaw(name: string): unknown {

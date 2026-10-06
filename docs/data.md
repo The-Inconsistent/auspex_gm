@@ -489,7 +489,7 @@ Each file is `{ "name": "...", "stats": { ... } }`. Every field has a default.
 | `ammo` | record of ammo type → count 0–99, ≤ 12 types | Live counter (`character.supply`). Per type, because each only reloads its own weapons (Core p.229): `{ "Bolt": 2, "Kraken Bolt": 1 }`. Describe special rounds in `gear` |
 
 GM `overrides` are not part of a pack; the GM sets them in the app, and they win over the derived value plus `mods`.
-The Volkus characters and their sources are in [pregens.md](pregens.md) and [kill-team.md](kill-team.md).
+The pregen test fixtures are `packages/data/fixtures/pregens/`.
 
 ### How `seed.ts` loads a pack
 
@@ -1002,7 +1002,7 @@ notes a hulk can get (five origins) fit 5,000. Kept as printed: the Objective ta
 
 Everything a character is built from, for the character builder. `resolveBuild` (`packages/shared/src/build.ts`) turns a
 `CharacterBuild` (the choices) into a sheet, an XP ledger, the choices still pending and the problems; the acceptance
-test `packages/data/build.test.ts` rebuilds the volkus pregens. Nothing serves this data to clients yet. Schemas
+test `packages/data/build.test.ts` rebuilds the pregen fixtures. Nothing serves this data to clients yet. Schemas
 are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
 file, loaded by `creationCatalogue()` in `index.ts`.
 
@@ -1090,8 +1090,8 @@ restrictions (Black Templars can't be PSYKER; World Eaters must take KHORNE as t
 done is counted as pending, not failed, so data can land wave by wave. Every type is done now, so validate is strict: a
 new type added to `CREATION_TYPES` starts pending until it is added to `done`.
 
-**Test.** `packages/data/creation.test.ts` (part of `bun run test`) checks that every volkus pregen resolves: its
-species, archetype and packages (at the XP in `docs/pregens.md`'s ledgers), talents, and Chapter with its traits.
+**Test.** `packages/data/creation.test.ts` (part of `bun run test`) checks that every pregen fixture resolves: its
+species, archetype and packages (at the XP in the fixture's build), talents, and Chapter with its traits.
 
 **Transcribing.**
 - **One record per thing.** When several books print the same species, archetype or talent, transcribe only the first

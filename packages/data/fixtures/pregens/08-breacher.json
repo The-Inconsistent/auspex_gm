@@ -1,5 +1,71 @@
 {
-  "name": "Brother Idrian Kostas",
+  "name": "Breacher",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-intercessor",
+    "packages": [
+      "heavy-intercessor-doctrine"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "imperial-fists"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Killer Instinct",
+      "accomplishment": "Crusader",
+      "goal": "Vengeance",
+      "bonus": "origin"
+    },
+    "skills": {
+      "Tech": 3,
+      "Athletics": 4
+    },
+    "talents": [
+      {
+        "id": "legacy-of-the-primarch"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/heavy-intercessor-doctrine/1": [
+        1
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "gear": {
+        "remove": [
+          "Heavy Bolter"
+        ],
+        "add": [
+          {
+            "name": "Hellstorm Bolt Rifle",
+            "wargearId": "voa-hellstorm-bolt-rifle"
+          },
+          {
+            "name": "Astartes Grenade Launcher",
+            "wargearId": "voa-astartes-grenade-launcher"
+          },
+          {
+            "name": "Melta Bomb",
+            "wargearId": "fspg-melta-bomb"
+          }
+        ]
+      },
+      "mods": {
+        "determination": 2
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Intercessor + Heavy Intercessor Doctrine",
@@ -7,7 +73,7 @@
       "ADEPTUS ASTARTES",
       "IMPERIUM",
       "PRIMARIS",
-      "FLESH TEARERS",
+      "IMPERIAL FISTS",
       "DEATHWATCH"
     ],
     "attributes": {
@@ -15,15 +81,16 @@
       "T": 6,
       "A": 5,
       "I": 5,
-      "Wil": 4,
+      "Wil": 3,
       "Int": 3,
       "Fel": 1
     },
     "skills": {
-      "Athletics": 3,
+      "Athletics": 4,
       "Awareness": 3,
       "Ballistic Skill": 6,
       "Stealth": 3,
+      "Tech": 3,
       "Weapon Skill": 3
     },
     "armour": {
@@ -35,8 +102,8 @@
     },
     "speed": 7,
     "mods": {
-      "maxWounds": 3,
-      "resolve": 2,
+      "maxWounds": 4,
+      "resolve": 1,
       "influence": 1,
       "determination": 2
     },
@@ -67,13 +134,13 @@
         "page": "Core p.29"
       },
       {
-        "name": "Fury Within",
-        "text": "You are possessed of a bloodthirsty recklessness. When properly directed, this murderous ferocity makes you unstoppable. You may re-roll Double Rank dice once per melee attack Test. In addition, if you shift one or more Icons on a melee attack, improve the AP of your attack by 1 (i.e., from -1 to -2).",
-        "page": "Apocrypha p.28"
+        "name": "Siege Masters",
+        "text": "You may reroll Double Rank dice once per attack against a building, fortification, or enemy in cover. You may also add +Rank bonus dice whenever you make a Test related to architectural engineering. Against a wall or bulkhead he is breaching, and against Kommandos in cover.",
+        "page": "Core p.73"
       },
       {
         "name": "Background",
-        "text": "Origin Courage (+1 Resolve); Accomplishment Crusader (+1 Determination); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
+        "text": "Origin Killer Instinct (+1 Max Wounds); Accomplishment Crusader (+1 Determination); Goal Vengeance (+1 Determination). Determination is 8 (T 6 + 2).",
         "page": "Core p.72"
       }
     ],
@@ -84,46 +151,74 @@
         "page": "VoA p.45"
       },
       {
-        "name": "Fearless",
-        "text": "You automatically pass any Fear Test. You are immune to Intimidation (Wil) Interaction Attacks.",
-        "page": "Core p.133"
+        "name": "Legacy of the Primarch",
+        "text": "[IMPERIAL FISTS]: Once per game session, you may draw on your knowledge of siege warfare to reduce by (Rank) either the DN of a Test made to attack a building, fortification, or enemy in cover, or the DN of a Test related to architectural engineering.",
+        "page": "VoA p.48"
       }
     ],
     "weapons": [
       {
-        "name": "Deathwatch Frag Cannon (Shrapnel)",
-        "damage": 14,
+        "name": "Hellstorm Bolt Rifle",
+        "damage": 10,
         "ed": 2,
         "ap": -1,
         "range": [
-          4,
-          8,
-          12
+          15,
+          30,
+          45
         ],
         "salvo": 2,
         "traits": [
-          "Assault",
-          "Barrage",
-          "Blast (10)",
-          "Heavy (6)",
-          "Spread"
+          "Brutal",
+          "Rapid Fire (3)"
         ]
       },
       {
-        "name": "Deathwatch Frag Cannon (Shell)",
-        "damage": 16,
-        "ed": 2,
+        "name": "Grenade Launcher (Frag)",
+        "damage": 10,
+        "ed": 4,
+        "range": [
+          12,
+          24,
+          36
+        ],
+        "salvo": null,
+        "traits": [
+          "Assault",
+          "Blast (6)",
+          "Fires one of his Frag Grenades"
+        ]
+      },
+      {
+        "name": "Grenade Launcher (Krak)",
+        "damage": 14,
+        "ed": 5,
         "ap": -2,
         "range": [
           12,
           24,
           36
         ],
-        "salvo": 2,
+        "salvo": null,
         "traits": [
           "Assault",
-          "Heavy (6)",
-          "AP −3 at Short range (Special)"
+          "Blast (4)",
+          "Fires one of his Krak Grenades"
+        ]
+      },
+      {
+        "name": "Melta Bomb",
+        "count": 1,
+        "damage": 16,
+        "ed": 4,
+        "ap": -4,
+        "range": [
+          18
+        ],
+        "salvo": null,
+        "traits": [
+          "Blast (4)",
+          "Thrown S\u00d72 m"
         ]
       },
       {
@@ -201,88 +296,26 @@
       }
     ],
     "gear": [
+      "Astartes Grenade Launcher (VoA p.67): Range 12/24/36, Assault; fires his Frag or Krak Grenades (VoA p.64)",
       "Spare armour: Mk X Tacticus (AR 5, Powered (4)); only one suit's AR counts at a time (Core p.231)",
       "Ballistic Appeasement Auto-Reliquary (Core p.236): clear a jammed weapon as a Free Action",
-      "Kraken Bolt rounds (AP −2, Core p.231; BOLT weapons only)"
+      "Dragonfire Bolt rounds (Spread; ignores Defence bonuses from cover, Core p.230; BOLT weapons only)"
     ],
     "wealth": 4,
     "ammo": {
-      "Projectile": 2,
-      "Kraken Bolt": 1
+      "Dragonfire Bolt": 1,
+      "Bolt": 2
     }
   },
-  "detail": {
-    "portrait": "deathwatch-bombard-veteran",
-    "personality": "His Chapter was nearly wiped out and rebuilt. He rations ammunition like bread and laughs only when the odds are hopeless, which is when the frag cannon speaks. He knows the Red Thirst from the inside, and he watches Sarrius the way a man watches his own reflection."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: let no Ork escape the site.",
-      "done": false
-    },
-    {
-      "text": "Secret: kill Gutshiva yourself.",
-      "done": false
-    }
+  "ledger": [
+    300,
+    60,
+    20,
+    12,
+    8
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "primaris-intercessor",
-    "packages": [
-      "heavy-intercessor-doctrine"
-    ],
-    "fills": {
-      "[CHAPTER]": {
-        "id": "flesh-tearers"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Courage",
-      "accomplishment": "Crusader",
-      "goal": "Vengeance",
-      "bonus": "origin"
-    },
-    "attributes": {
-      "Wil": 4
-    },
-    "talents": [
-      {
-        "id": "fearless"
-      }
-    ],
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "choices": {
-      "package/heavy-intercessor-doctrine/1": [
-        1
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "gear": {
-        "remove": [
-          "Heavy Bolter"
-        ],
-        "add": [
-          {
-            "name": "Deathwatch Frag Cannon (Shrapnel)",
-            "wargearId": "apoc-deathwatch-frag-cannon-shrapnel"
-          },
-          {
-            "name": "Deathwatch Frag Cannon (Shell)",
-            "wargearId": "apoc-deathwatch-frag-cannon-shell"
-          }
-        ]
-      },
-      "mods": {
-        "determination": 2
-      }
-    }
+  "parts": {
+    "primarisintercessor": 300,
+    "heavyintercessordoctrine": 60
   }
 }
