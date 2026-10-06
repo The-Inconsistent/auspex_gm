@@ -1,5 +1,56 @@
 {
-  "name": "Brother Hesh Tu'var",
+  "name": "Horde Slayer",
+  "homebrew": true,
+  "build": {
+    "tier": 4,
+    "archetypeId": "primaris-intercessor",
+    "packages": [
+      "heavy-intercessor-doctrine"
+    ],
+    "fills": {
+      "[CHAPTER]": {
+        "id": "salamanders"
+      }
+    },
+    "background": {
+      "tableId": "adeptus-astartes",
+      "origin": "Cunning",
+      "accomplishment": "Badge of Honour",
+      "goal": "Honour the Chapter",
+      "bonus": "origin"
+    },
+    "attributes": {
+      "Wil": 4
+    },
+    "skills": {
+      "Awareness": 4,
+      "Tech": 2
+    },
+    "talents": [
+      {
+        "id": "master-artisan"
+      }
+    ],
+    "languages": {
+      "picks": [
+        "high-gothic"
+      ]
+    },
+    "choices": {
+      "package/heavy-intercessor-doctrine/1": [
+        1
+      ]
+    },
+    "gm": {
+      "keywords": [
+        "DEATHWATCH"
+      ],
+      "mods": {
+        "influence": 1,
+        "conviction": 1
+      }
+    }
+  },
   "stats": {
     "species": "Primaris Astartes",
     "archetype": "Primaris Intercessor + Heavy Intercessor Doctrine",
@@ -194,68 +245,16 @@
       "Bolt": 2
     }
   },
-  "detail": {
-    "portrait": "deathwatch-horde-slayer-veteran",
-    "personality": "A Nocturnean smith who forges his own Infernus-pattern heavy bolter. He has held the front line in many Tyranid wars, which earned him the title Horde-Slayer."
-  },
-  "objectives": [
-    {
-      "text": "Chapter: get the dig-site workers out alive.",
-      "done": false
-    },
-    {
-      "text": "Secret: keep your brothers from killing any human guardsmen.",
-      "done": false
-    }
+  "ledger": [
+    300,
+    60,
+    10,
+    8,
+    6,
+    15
   ],
-  "build": {
-    "tier": 4,
-    "archetypeId": "primaris-intercessor",
-    "packages": [
-      "heavy-intercessor-doctrine"
-    ],
-    "fills": {
-      "[CHAPTER]": {
-        "id": "salamanders"
-      }
-    },
-    "background": {
-      "tableId": "adeptus-astartes",
-      "origin": "Cunning",
-      "accomplishment": "Badge of Honour",
-      "goal": "Honour the Chapter",
-      "bonus": "origin"
-    },
-    "attributes": {
-      "Wil": 4
-    },
-    "skills": {
-      "Awareness": 4,
-      "Tech": 2
-    },
-    "talents": [
-      {
-        "id": "master-artisan"
-      }
-    ],
-    "languages": {
-      "picks": [
-        "high-gothic"
-      ]
-    },
-    "choices": {
-      "package/heavy-intercessor-doctrine/1": [
-        1
-      ]
-    },
-    "gm": {
-      "keywords": [
-        "DEATHWATCH"
-      ],
-      "mods": {
-        "influence": 1,
-        "conviction": 1
-      }
-    }
+  "parts": {
+    "primarisintercessor": 300,
+    "heavyintercessordoctrine": 60
   }
 }

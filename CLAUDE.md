@@ -16,14 +16,12 @@ bands (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a
 
 This app encodes game rules. **Do not invent rules.** Every rule in code cites its printed page
 (`// p.177`, `Core p.324`, `VoA p.43`, `TA p.8`, `D&H p.114`). Where a book is ambiguous, the house decision is written down
-in `docs/rules-flow.md` §11 or `docs/kill-team.md`. Add new ones there, not silently in code.
+in `docs/rules-flow.md` §11. Add new ones there, not silently in code.
 
 - **Specs:** (index: `docs/README.md`; code-level docs: `architecture`, `backend`, `frontend`, `game-logic`, `data`,
   `development`, `deploy`)
   - `docs/rules-flow.md`: game flow (session, pools, combat state machine, damage, conditions, traits).
   - `docs/campaign-model.md`: the campaign and codex model.
-  - `docs/kill-team.md`: the current campaign's Deathwatch Kill Team mapping and GM decisions.
-  - `docs/pregens.md`: its eleven Tier 4 agents (the players pick five), each with its build.
 - **Books** are the PDFs in `books/`, gitignored. Page offsets:
   - Core rulebook: PDF page = printed + 1.
   - Vow of Absolution, Threat Assessment, Gutshiva's Kommandos: PDF page = printed.
@@ -149,7 +147,7 @@ apps/api/src/
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
 apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
-apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM), drop-placeholders.ts (one-off pack fix)
+apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/new/page.tsx (CREATE NEW CAMPAIGN before the campaign exists),
                     c/[campaignId]/page.tsx (seat → GM or player app; ?tab= opens a GM tab),
@@ -181,7 +179,7 @@ packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), t
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
-                             creation.test.ts (the volkus pregens resolve in the creation catalogue)
+                             creation.test.ts (the pregen fixtures resolve in the creation catalogue)
 aspire-apphost/     apphost.mts: optional Aspire TypeScript AppHost (Postgres → api → web, with a dashboard)
 ```
 
@@ -198,7 +196,7 @@ bun run dev:web             # Next on :3000; proxies /api and /socket.io to :400
 aspire run                  # optional: same stack with a dashboard (logs, OTel traces), health-gated startup.
                             # TypeScript AppHost, no .NET SDK. Podman needs DOTNET_ASPIRE_CONTAINER_RUNTIME=podman.
                             # Turborepo still owns `build`; deploy unchanged. See docs/development.md §Aspire
-cd apps/api && bun run seed volkus --owner user_2abc…       # packages/data/packs/volkus, that Clerk user as GM; prints /c/<id>
+cd apps/api && bun run seed <pack> --owner user_2abc…       # packages/data/packs/<pack>, that Clerk user as GM; prints /c/<id> (no pack ships in the repo now)
 
 bun run typecheck           # shared + api + web (with test, the Husky pre-commit hook: .husky/pre-commit)
 bun run lint                # ESLint (eslint.config.mjs): typescript-eslint everywhere, Next + React rules in apps/web

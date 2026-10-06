@@ -83,10 +83,10 @@ In Pangolin:
 
 Finally, back in the VPS shell:
 
-11. Seed the first campaign:
+11. Seed a content pack, if you have one:
 
     ```bash
-    docker exec auspex-gm-api-1 bun scripts/seed.ts volkus --owner <clerk user id>
+    docker exec auspex-gm-api-1 bun scripts/seed.ts <pack> --owner <clerk user id>
     ```
 
 ## Checking a deploy
