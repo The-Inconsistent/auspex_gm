@@ -814,7 +814,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      archetype page lists "Adeptus Astartes" (VoA pp.32, 33, 37) or who comes by Rubicon Primaris (VoA p.43) takes the
      Primaris Astartes species the same way (Core p.29; see §11.18).
 
-122. **CRIT / PERILS looks up the printed row and applies only its mechanical part** (Core p.198 Critical Hit table,
+125. **CRIT / PERILS looks up the printed row and applies only its mechanical part** (Core p.198 Critical Hit table,
      pp.197–198 Glorious Criticals, §5, §8). The GM rolls the d66 at the table (and counts the extra Wrath Dice
      showing 1 for Perils, +10 each) and types it; the app shows the row and, on APPLY, sends the Wounds, Shock and
      Conditions through `character.adjust` / `combatant.adjust` and `character.update` / `combatant.update`, so the
@@ -864,4 +864,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
 | Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
-| Critical Hit and Perils lookup | partial | `lookups.ts` (`perilsResult`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.122). Tables are untranscribed (`rows: []`); Glorious Criticals don't spend Glory |
+| Critical Hit and Perils lookup | partial | `lookups.ts` (`perilsResult`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125). Tables are untranscribed (`rows: []`); Glorious Criticals don't spend Glory |

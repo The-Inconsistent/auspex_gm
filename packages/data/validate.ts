@@ -571,7 +571,7 @@ const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as 
   }
 }
 
-// Critical Hit and Perils tables (lookups/*.json, §11.122): an empty table is not transcribed yet; once it has rows
+// Critical Hit and Perils tables (lookups/*.json, §11.125): an empty table is not transcribed yet; once it has rows
 // crits must cover the d66 once each; Perils rows only run in order without overlaps, the last open-ended (coverage
 // waits on the printed table), and every Condition must exist.
 {

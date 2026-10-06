@@ -833,7 +833,7 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
 
 ### Lookups (`packages/data/lookups/*.json`, `Lookups` in `packages/shared/src/lookups.ts`)
 
-The Critical Hit table (Core p.198) and Perils of the Warp, d66 tables the GM reads mid-fight (rules-flow.md §11.122).
+The Critical Hit table (Core p.198) and Perils of the Warp, d66 tables the GM reads mid-fight (rules-flow.md §11.125).
 Each file is `{ source, page, dice: "d66", rows }`; a row has `from`/`to` (Perils: the last `to` may be `null`, open-ended,
 since +10 per extra 1 passes 66), `name`, verbatim `text`, an optional `apply` list (`wounds`/`shock` with `amount` or
 `dice`, or a `condition` named as in `CONDITIONS`, `state.ts`) and, for crits, `glorious`. `rows: []` means not transcribed

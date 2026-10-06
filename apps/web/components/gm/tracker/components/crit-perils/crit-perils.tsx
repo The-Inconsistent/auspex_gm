@@ -30,7 +30,7 @@ const printed = (a: LookupApply) =>
   a.kind === "condition" ? a.condition : `${"amount" in a ? a.amount : a.dice} ${a.kind}`;
 
 // CRIT / PERILS: the GM types the d66 rolled at the table; the app shows the printed row and applies only its
-// mechanical part to the selected combatant through the existing actions. It never rolls (§11.122). Glorious
+// mechanical part to the selected combatant through the existing actions. It never rolls (§11.125). Glorious
 // Criticals show their text and price only: spending the Glory stays the GM's tap on the pool.
 // ponytail: no Glory auto-spend, add a GLORIOUS apply once the column is transcribed.
 export function CritPerils({ lookups, target, run }: CritPerilsProps) {

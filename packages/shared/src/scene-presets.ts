@@ -371,7 +371,7 @@ export const ScenePresets = z.object({
   spaceHulk: SpaceHulkGenerator.nullable().default(null), // RR1 pp.6–11 (issue #50 step 8); likewise
   loot: z.array(LootTable).default([]), // issue #51; likewise
   relics: RelicCreator.nullable().default(null), // RR2 pp.12–19 (issue #51 step 8); likewise
-  lookups: Lookups.nullable().default(null), // Critical Hit and Perils tables (§11.122); likewise
+  lookups: Lookups.nullable().default(null), // Critical Hit and Perils tables (§11.125); likewise
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 
