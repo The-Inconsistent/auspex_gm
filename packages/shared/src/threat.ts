@@ -81,7 +81,7 @@ export const Weapon = z.object({
   upgrades: z.array(z.string()).max(8).optional(), // from the build: starting wargear's own upgrades (§11.42)
   fitted: z.array(z.string()).max(8).optional(), // fitted in play (character.fitUpgrade), so a rebuild keeps them
   // A hand-written profile a rebuild matched to its catalogue entry (keepPlay), so an upgrade can be fitted to it. Its
-  // numbers may already count a Talent (a volkus pregen's printed Rapid Fire), so no weapon effect is applied to it
+  // numbers may already count a Talent (a pregen's printed Rapid Fire), so no weapon effect is applied to it
   // (rules-flow.md §11.68) until the build's own line replaces it.
   asPrinted: z.literal(true).optional(),
   // A relic's Powers, given with it (character.giveItem, rules-flow.md §11.116): the same changes an upgrade makes,

@@ -30,7 +30,7 @@ const printed = (a: LookupApply) =>
   a.kind === "condition" ? a.condition : `${"amount" in a ? a.amount : a.dice} ${a.kind}`;
 
 // CRIT / PERILS: the GM types the d66 rolled at the table; the app shows the printed row and applies only its
-// mechanical part to the selected combatant through the existing actions. It never rolls (§11.120). Glorious
+// mechanical part to the selected combatant through the existing actions. It never rolls (§11.122). Glorious
 // Criticals show their text and price only: spending the Glory stays the GM's tap on the pool.
 // ponytail: no Glory auto-spend, add a GLORIOUS apply once the column is transcribed.
 export function CritPerils({ lookups, target, run }: CritPerilsProps) {
@@ -39,11 +39,17 @@ export function CritPerils({ lookups, target, run }: CritPerilsProps) {
   const [ones, setOnes] = useState("0");
   const [typed, setTyped] = useState<Record<number, string>>({});
 
+  // A new table, d66 or count of 1s can land on another row: its dice need a fresh roll, never the last one typed.
+  const pick = <T,>(set: (v: T) => void, v: T) => {
+    set(v);
+    setTyped({});
+  };
+
   if (!lookups) return null;
   const data = lookups[table];
   const roll = Number(d66);
   const valid = isD66(roll);
-  const extra = table === "perils" ? Math.max(0, Math.min(5, Math.trunc(Number(ones) || 0))) : 0;
+  const extra = table === "perils" ? Math.trunc(Number(ones) || 0) : 0;
   const result = table === "perils" ? perilsResult(roll, extra) : roll;
   const rows: (CritRow | PerilsRow)[] = valid ? lookup(data, result) : [];
   const row = rows[0];
@@ -63,7 +69,7 @@ export function CritPerils({ lookups, target, run }: CritPerilsProps) {
       <div className="rule">CRIT / PERILS</div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         {(Object.keys(TITLE) as Table[]).map((t) => (
-          <button key={t} className="btn sm" aria-pressed={t === table} onClick={() => setTable(t)}>
+          <button key={t} className="btn sm" aria-pressed={t === table} onClick={() => pick(setTable, t)}>
             {TITLE[t]}
           </button>
         ))}
@@ -76,7 +82,7 @@ export function CritPerils({ lookups, target, run }: CritPerilsProps) {
           placeholder="D66"
           maxLength={2}
           value={d66}
-          onChange={(e) => setD66(e.target.value.replace(/\D/g, ""))}
+          onChange={(e) => pick(setD66, e.target.value.replace(/\D/g, ""))}
         />
         {table === "perils" && (
           <input
@@ -87,7 +93,7 @@ export function CritPerils({ lookups, target, run }: CritPerilsProps) {
             placeholder="EXTRA 1s"
             maxLength={1}
             value={ones}
-            onChange={(e) => setOnes(e.target.value.replace(/\D/g, ""))}
+            onChange={(e) => pick(setOnes, e.target.value.replace(/\D/g, ""))}
           />
         )}
       </div>

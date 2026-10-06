@@ -57,7 +57,7 @@ import {
   SPACE_HULK_FILE,
 } from "./index.ts";
 
-// Core blocks with one GM wargear swap (docs/kill-team.md, Kommandos), so not part of the printed bestiary.
+// Core blocks with one GM wargear swap (rules-flow.md §11.120), so not part of the printed bestiary.
 const HOUSE_VARIANTS = ["kommando-breacha-boy", "kommando-slasha-boy", "kommando-snipa-boy"];
 
 // Bestiary entries from the Core Rulebook contents page (pp.326-371).
@@ -571,8 +571,9 @@ const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as 
   }
 }
 
-// Critical Hit and Perils tables (lookups/*.json, §11.120): an empty table is not transcribed yet; once it has rows
-// the ranges must cover the dice (Perils: no overlaps, only the last open-ended), and every Condition must exist.
+// Critical Hit and Perils tables (lookups/*.json, §11.122): an empty table is not transcribed yet; once it has rows
+// crits must cover the d66 once each; Perils rows only run in order without overlaps, the last open-ended (coverage
+// waits on the printed table), and every Condition must exist.
 {
   const l = lookups();
   const conditions = new Set<string>(CONDITIONS);

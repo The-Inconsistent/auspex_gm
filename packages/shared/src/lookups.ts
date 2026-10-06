@@ -3,7 +3,7 @@ import type { ActionInput } from "./actions.ts";
 import { rowsFor } from "./roll-table.ts";
 import { Source } from "./source.ts";
 
-// The Critical Hit table and Perils of the Warp, which the GM reads most mid-fight (rules-flow.md §11.120). The app
+// The Critical Hit table and Perils of the Warp, which the GM reads most mid-fight (rules-flow.md §11.122). The app
 // never rolls on them: the GM types the d66 from the physical dice, the app shows the printed row, and only its
 // mechanical part is applied, through the existing damage and Condition actions. GM-only book data, served inside
 // /scene-presets (docs/data.md, Copyright).

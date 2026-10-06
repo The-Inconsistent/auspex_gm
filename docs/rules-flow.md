@@ -264,8 +264,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 21. **Asuryani Ghost Warriors count as Aeldari Species** for requirements (their "Aeldari" ability, Apocrypha p.6).
     **Drukhari never walk Asuryani Paths**, even with the ASURYANI keyword (IoE p.10).
 22. **One Background bonus** (Core p.43): of the three Background rows a character takes, only one +1 bonus applies.
-    The builder enforces it. A GM may grant more by ruling (`gm.mods` in the build): the volkus pregens keep all three
-    (docs/pregens.md, GM choice 23).
+    The builder enforces it. A GM may grant more by ruling (`gm.mods` in the build): a pregen made before this rule can
+    keep all three that way.
 23. **Absolvers are a Blood Angels Successor** (VoA pp.30, 78), not of unknown succession (Core p.71): they take the
     Blood Angels Chapter Traits, and the Red Thirst (Gene-seed) flaw applies, to Primaris Absolvers too: this
     overrides Core p.71's "Primaris ignore (Gene-seed) traits" for the Absolvers. `successorOf` on the sub-faction.
@@ -273,7 +273,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     (Orders Militant, Dialogus, Famulous, Hospitaller, Sabine, Pronatus, Core p.51) are groupings, not choices.
 25. **Write-in sub-factions:** players may name their own Forge World, Craftworld or Coterie (`writeIn` on the
     placeholder keyword). Ordos are only the printed three, so Core p.64's "Other Ordos" isn't a choice. A write-in on
-    any other placeholder needs the GM's tick (a `gm` problem), as for the Red Scorpions (kill-team.md ruling 13).
+    any other placeholder needs the GM's tick (a `gm` problem), as for a Chapter the catalogue has no record of (the Red Scorpions, of unknown origin: Core p.71 lets such a Chapter
+    take a First Founding Chapter's traits, but only "may").
 26. **Navis Nobilite Origins** (Apocrypha p.54) match the character's House: a Magisterial, Nomadic or Shrouded House
     Origin needs that House type. A Renegade House has no Origin row.
 27. **Species gaps:** Ogryn and Ratling have the ABHUMAN Species Keyword, Kroot has KROOT (FSPG prints none), and
@@ -346,7 +347,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     points, that one included. Ratings an archetype or species grants are exempt (36 of 205 printed archetypes would
     fail otherwise, the Imperial Guardsman's lone Ballistic Skill 2 among them).
 53. **A granted Talent whose requirements the character doesn't meet** (Rubicon Primaris gives Built Tough, which needs
-    Survival 2, VoA pp.43, 46; pregens.md ambiguity 7): the books don't say whether a grant ignores them. The builder
+    Survival 2, VoA pp.43, 46): the books don't say whether a grant ignores them. The builder
     keeps the Talent and asks the GM to tick it, rather than refusing the build. *Proposed; awaiting the GM.*
 54. **Creation Ascension** (Core p.148): one Ascension Package, whose requirements are met at the archetype's Tier
     (before Ascending). "Per Tier Ascended" counts from the archetype's Tier to the campaign's, and "× the new Tier" XP
@@ -512,7 +513,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     text: charging, aiming, a target type, a spend of Glory, Wrath or Ruin, an attack option.
     - **Rank** is the character's Rank now (Core pp.146–147), from the XP earned. It rises at session end without a
       rebuild, so the effects are applied when the sheet is read, after the weapon's upgrades, never stored.
-    - **Explosive Fury's "+Rank bonus extra damage"** (VoA p.33) is +Rank ED on grenades (docs/pregens.md, GM choice 9).
+    - **Explosive Fury's "+Rank bonus extra damage"** (VoA p.33) is read as +Rank ED on grenades, as the book doesn't say whether flat damage or ED.
     - **Not numbers, notes:** a re-roll or bonus dice with a kind of weapon ("re-roll up to Double Rank dice", Hellblaster
       Focus, VoA p.35), an effect the player "may" use, and one the GM judges ("or similar", "weapons made for smaller
       users") show as a cited note on the weapon's line.
@@ -523,7 +524,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     - Only a weapon that came from the Wargear catalogue (`wargearId`) is matched: a hand-written line may already
       count the Talent, and it would count twice. A hand-written line a rebuild matched to its catalogue entry (so an
       upgrade can be fitted to it) is marked `asPrinted` and isn't matched either, as on a sheet written by hand before
-      #27. The live volkus agents' printed lines were swapped for their builds' lines by a one-off script (issue #27).
+      #27. A campaign's live agents' printed lines were swapped for their builds' lines by a one-off script (issue #27).
     - **A weapon that deals no damage** (a Smoke Grenade: Damage 0, ED 0) takes no Talent +Damage or +ED: Explosive
       Fury adds to "successful attacks", and smoke makes none. A melee weapon printed Damage 0 deals Strength (S + 0)
       and a grenade with ED on Damage 0 still deals damage, so those take them.
@@ -798,7 +799,22 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      "Rarity: 2" where the Core Rulebook names a Rarity. The number is read as the DN it adds to a requisition (Core
      p.206): 0 Common, 1 Uncommon, 2 Rare, 3 Very Rare, 4 Unique. *Proposed; awaiting the GM.*
 
-120. **CRIT / PERILS looks up the printed row and applies only its mechanical part** (Core p.198 Critical Hit table,
+120. **Kommando stand-ins are Core's Kommando with one wargear swap** (Core p.355; house variants, `kommando-breacha-boy`,
+     `kommando-slasha-boy`, `kommando-snipa-boy`). `combatant.addThreat` has no per-combatant weapon swap, so each swap
+     is its own threat file: the Kommando copied exactly, with one change and a `note`. The Choppa becomes a Power Klaw
+     (Core p.213), a Knife (Core p.211) is added as throwing knives (Thrown, not Silent), or the Slugga becomes a Big
+     Shoota (Core p.220) with a Magnocular Scope (Core p.228) and a Silencer (Core p.229). The files keep the MORE DAKKA!
+     text as printed ("while keeping their Choppa and Slugga"), even where the swap removed one of them. `validate.ts`
+     lists them as `HOUSE_VARIANTS`, so they aren't part of the printed bestiary. TA p.89 reprints the Kommando with a
+     Threat row, Conviction, Resolve, Speed and Size that look copied from another block (`ta-kommando.json` note); a
+     table that wants the Core p.355 block fields that one.
+121. **A build's GM part may grant keywords and a species** (`gm.keywords`, `gm.species`, `build.ts`). Where the books
+     print no rules for a group (the Deathwatch has no keyword, archetype or ammo rule, Core pp.19, 64, 303), the GM
+     gives an Agent its keyword by ruling, for Influence with the faction it works for. A Primaris marine whose
+     archetype page lists "Adeptus Astartes" (VoA pp.32, 33, 37) or who comes by Rubicon Primaris (VoA p.43) takes the
+     Primaris Astartes species the same way (Core p.29; see §11.18).
+
+122. **CRIT / PERILS looks up the printed row and applies only its mechanical part** (Core p.198 Critical Hit table,
      pp.197–198 Glorious Criticals, §5, §8). The GM rolls the d66 at the table (and counts the extra Wrath Dice
      showing 1 for Perils, +10 each) and types it; the app shows the row and, on APPLY, sends the Wounds, Shock and
      Conditions through `character.adjust` / `combatant.adjust` and `character.update` / `combatant.update`, so the
@@ -806,6 +822,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      and typed in, and a Glorious Criticals price is shown but the Glory is not spent by the app. The tables are GM-only
      book data in `packages/data/lookups/`, served inside `/scene-presets`; an empty table reads "not transcribed
      yet". *Proposed; awaiting the GM.*
+
 
 ---
 
@@ -847,4 +864,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
 | Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
-| Critical Hit and Perils lookup | partial | `lookups.ts` (`perilsResult`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.120). Tables are untranscribed (`rows: []`); Glorious Criticals don't spend Glory |
+| Critical Hit and Perils lookup | partial | `lookups.ts` (`perilsResult`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.122). Tables are untranscribed (`rows: []`); Glorious Criticals don't spend Glory |
