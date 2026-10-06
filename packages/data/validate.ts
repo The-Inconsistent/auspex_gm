@@ -34,7 +34,9 @@ import {
   type HulkRow,
   hulkNotes,
   MAX_HULK_ORIGINS,
+  lookup,
   openRangeProblems,
+  results,
   tableProblems,
   SpaceHulkGenerator,
   LootTable,
@@ -572,8 +574,9 @@ const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as 
 }
 
 // Critical Hit and Perils tables (lookups/*.json, §11.125): an empty table is not transcribed yet; once it has rows
-// crits must cover the d66 once each; Perils rows only run in order without overlaps, the last open-ended (coverage
-// waits on the printed table), and every Condition must exist.
+// crits must cover the d66 once each. Perils prints rows up to 105–106 (Core pp.263–264: extra 1s add +10, so 71–106
+// only come that way), so every d66 result plus 10 × 0–4 lands on exactly one row. Every Condition must exist, read
+// without its rating ("Vulnerable (2)", as the Conditions picker stacks them).
 {
   const l = lookups();
   const conditions = new Set<string>(CONDITIONS);
@@ -586,10 +589,16 @@ const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as 
     const problems =
       key === "criticalHits"
         ? tableProblems({ dice: "d66", rows: table.rows as CritRow[], gaps: [], overlaps: [] })
-        : openRangeProblems(table.rows);
+        : [
+            ...openRangeProblems(table.rows),
+            ...[0, 1, 2, 3, 4]
+              .flatMap((extra) => results("d66").map((n) => n + 10 * extra))
+              .filter((n) => n <= 106 && lookup(table, n).length !== 1)
+              .map((n) => `${n} lands on ${lookup(table, n).length} rows`),
+          ];
     for (const row of table.rows)
       for (const a of row.apply)
-        if (a.kind === "condition" && !conditions.has(a.condition))
+        if (a.kind === "condition" && !conditions.has(a.condition.replace(/ \(\d+\)$/, "")))
           problems.push(`${row.name}: unknown Condition "${a.condition}"`);
     for (const message of problems) {
       failed = true;

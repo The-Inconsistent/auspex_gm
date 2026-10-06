@@ -34,8 +34,8 @@ export const CritRow = z.object({
 });
 export type CritRow = z.infer<typeof CritRow>;
 
-// Perils of the Warp: d66 plus 10 per extra Wrath Die showing 1 (§8), so a result can pass 66. The last row's `to` may
-// be null: open-ended, for whatever the book prints at the top (not assumed here).
+// Perils of the Warp (Core pp.263–264): d66 plus 10 per extra Wrath Die showing 1 (§8), so a result can pass 66; the
+// book prints rows up to 105–106. A `to` of null is open-ended, for a table that prints one.
 export const PerilsRow = z.object({
   from: z.number().int().min(11),
   to: z.number().int().min(11).nullable(),
@@ -45,7 +45,7 @@ export type PerilsRow = z.infer<typeof PerilsRow>;
 
 const base = {
   source: Source,
-  // printed page; null until transcribed (the Perils page is read from the book with its rows)
+  // printed page; null for a table not transcribed yet
   page: z.number().int().positive().nullable(),
   dice: z.literal("d66"),
 };

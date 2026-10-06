@@ -818,10 +818,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      pp.197–198 Glorious Criticals, §5, §8). The GM rolls the d66 at the table (and counts the extra Wrath Dice
      showing 1 for Perils, +10 each) and types it; the app shows the row and, on APPLY, sends the Wounds, Shock and
      Conditions through `character.adjust` / `combatant.adjust` and `character.update` / `combatant.update`, so the
-     damage rules still run. It never rolls, narration stays at the table, a dice amount ("1d3") is rolled by the GM
-     and typed in, and a Glorious Criticals price is shown but the Glory is not spent by the app. The tables are GM-only
-     book data in `packages/data/lookups/`, served inside `/scene-presets`; an empty table reads "not transcribed
-     yet". *Proposed; awaiting the GM.*
+     damage rules still run. It never rolls, narration stays at the table, a dice amount ("1d3+1") is rolled by the
+     GM and typed in as the total, and a Glorious Criticals line ("+1 Wound for every Glory you spend", p.197) is shown
+     but the Glory is not spent by the app. APPLY carries only what a row puts on its one target with no Test: Mortal
+     Wounds, Corruption, area effects, durations and the Glory choices stay with the GM. Perils prints rows up to
+     105–106 (pp.263–264); a total above 106 has no printed row, so the app shows none and the GM rules. The tables are
+     GM-only book data in `packages/data/lookups/`, served inside `/scene-presets`. *Proposed; awaiting the GM.*
 
 
 ---
@@ -864,4 +866,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
 | Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
-| Critical Hit and Perils lookup | partial | `lookups.ts` (`perilsResult`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125). Tables are untranscribed (`rows: []`); Glorious Criticals don't spend Glory |
+| Critical Hit and Perils lookup | partial | `lookups.ts` (`perilsResult`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125). Glorious Criticals don't spend Glory; Mortal Wounds and Corruption aren't applied |

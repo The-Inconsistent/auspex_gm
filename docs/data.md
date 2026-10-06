@@ -833,12 +833,16 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
 
 ### Lookups (`packages/data/lookups/*.json`, `Lookups` in `packages/shared/src/lookups.ts`)
 
-The Critical Hit table (Core p.198) and Perils of the Warp, d66 tables the GM reads mid-fight (rules-flow.md §11.125).
-Each file is `{ source, page, dice: "d66", rows }`; a row has `from`/`to` (Perils: the last `to` may be `null`, open-ended,
-since +10 per extra 1 passes 66), `name`, verbatim `text`, an optional `apply` list (`wounds`/`shock` with `amount` or
-`dice`, or a `condition` named as in `CONDITIONS`, `state.ts`) and, for crits, `glorious`. `rows: []` means not transcribed
-yet (the Perils `page` is `null` until read). Served GM-only as `lookups` on `/scene-presets`; `validate` checks the
-ranges and Conditions once rows exist.
+The Critical Hit table (Core p.198, 14 rows) and Perils of the Warp (Core pp.263–264, 30 rows, 11 to 106), d66 tables
+the GM reads mid-fight (rules-flow.md §11.125). Each file is `{ source, page, dice: "d66", rows }`; a row has
+`from`/`to` (a `to` of `null` would be open-ended; neither printed table needs it), `name`, verbatim `text` (the flavour
+sentence and its "Effect:"), an optional `apply` list (`wounds`/`shock` with `amount` or `dice` such as `1d3+1`, or a
+`condition` named as in `CONDITIONS`, `state.ts`, with its printed rating: `Vulnerable (2)`) and, for crits,
+`glorious` (everything after "Glory:", skull bullets as "•"). Perils names are printed in capitals and title-cased here.
+Kept as printed: Unspeakable Carnage's "strewn are across", Murderous Onslaught's "+1 Wound" Glory line beside its Mortal
+Wounds, Perils 21–22's "Vulnerable [2]", 31–32's "chorus or low laughter", 63–64's missing "Tests", 103–104's "item ,".
+Served GM-only as `lookups` on `/scene-presets`; `validate` checks that crits cover the d66 and Perils covers every
+d66 + 10 × 0–4 once, and that each Condition exists.
 
 ### Places (`packages/data/places/<source>.json`, `Place` in `packages/shared/src/places.ts`)
 
