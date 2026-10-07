@@ -7,6 +7,7 @@ import { TableTalk } from "@/components/ui/table-talk/table-talk";
 import type { Send } from "@/hooks/use-table/use-table";
 import { setupSteps } from "@/lib/setup/setup";
 
+import { ArchivePanel } from "./components/archive-panel/archive-panel";
 import { FrameworkPicker } from "./components/framework-picker/framework-picker";
 import type { TabTarget } from "./components/setup-panel/constants";
 import { SetupPanel } from "./components/setup-panel/setup-panel";
@@ -17,11 +18,12 @@ type SetupProps = {
   send: Send;
   frameworks: FrameworkCatalogue;
   onTab: (to: TabTarget) => void;
+  onDeleted: () => void; // the game was deleted: leave its table
 };
 
 // SETUP: the Core Rulebook's campaign set-up checklist, then the campaign's own answers, the ones NEW CAMPAIGN asked
-// first (the Framework, its Bonus, the patron, the kind of game and the limits), and the campaign as a file.
-export function Setup({ state, codex, send, frameworks, onTab }: SetupProps) {
+// first (the Framework, its Bonus, the patron, the kind of game and the limits), the campaign as a file, and ARCHIVE.
+export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: SetupProps) {
   const [picking, setPicking] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [framework, setFramework] = useState(state.campaign.framework);
@@ -104,6 +106,8 @@ export function Setup({ state, codex, send, frameworks, onTab }: SetupProps) {
           onClose={() => setPicking(false)}
         />
       )}
+
+      <ArchivePanel campaign={state.campaign} send={send} onDeleted={onDeleted} />
     </div>
   );
 }

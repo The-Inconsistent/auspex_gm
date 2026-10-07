@@ -1,7 +1,10 @@
-import { PLAYER_ACTIONS, type Action, type ActionResult } from "@wg/shared";
+import { eq } from "drizzle-orm";
+import { ADMIN_ACTIONS, PLAYER_ACTIONS, type Action, type ActionResult } from "@wg/shared";
+import { adminEvent } from "../admin/admin.schema.ts";
 import { applyAccessAction } from "../auth/access.actions.ts";
 import type { Ctx } from "../auth/auth.service.ts";
 import { applyCampaignAction } from "../campaign/campaign.actions.ts";
+import { campaign } from "../campaign/campaign.schema.ts";
 import { applyCharacterAction } from "../character/character.actions.ts";
 import { applyCodexAction } from "../codex/codex.actions.ts";
 import type { Tx } from "../core/db.ts";
@@ -12,6 +15,10 @@ import { applyThreatAction } from "../threat/threat.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
 export function touches(a: Action): { state: boolean; codex: boolean } {
+  // A deleted game has nothing left to broadcast; the gateway kicks the room instead (kicks).
+  if (a.type === "campaign.delete") return { state: false, codex: false };
+  // Archiving ends a running session, so the session list changes too.
+  if (a.type === "campaign.archive") return { state: true, codex: true };
   // A table screen token is no part of either snapshot (players never see access).
   if (a.type === "screen.issue" || a.type === "screen.revoke") return { state: false, codex: false };
   // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
@@ -41,16 +48,19 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
 }
 
 // Sockets to disconnect after this action: a removed member, or whoever plays a revoked/deleted character.
-export type Kick = { userId: string } | { characterId: string; guestsOnly: boolean } | { screens: true };
+export type Kick =
+  { userId: string } | { characterId: string; guestsOnly: boolean } | { screens: true } | { all: true };
 export function kicks(a: Action): Kick | null {
   if (a.type === "token.revoke") return { characterId: a.characterId, guestsOnly: true }; // members keep their seat
   if (a.type === "screen.revoke") return { screens: true };
   if (a.type === "character.delete") return { characterId: a.id, guestsOnly: false };
   if (a.type === "member.remove") return { userId: a.userId };
+  if (a.type === "campaign.delete") return { all: true };
   return null;
 }
 
 function authorize(ctx: Ctx, a: Action) {
+  if (a.type === "member.seat" && !ctx.admin) fail("Admin only");
   if (ctx.role === "gm") return;
   if (ctx.role === "screen") fail("The table screen is read-only");
   if (!PLAYER_ACTIONS.has(a.type)) fail("GM only");
@@ -76,14 +86,52 @@ function authorize(ctx: Ctx, a: Action) {
     fail("Only the GM grants Wealth and Ammo");
 }
 
+// What still works at an archived game: the way out of it, and taking access away (a player leaving, a guest token,
+// invite or table screen revoked). An admin may also remove a seat (REMOVE FROM ALL GAMES reaches archived games too).
+const ARCHIVED_OPEN: ReadonlySet<Action["type"]> = new Set([
+  "campaign.unarchive",
+  "campaign.delete",
+  "seat.leave",
+  "token.revoke",
+  "invite.revoke",
+  "screen.revoke",
+]);
+
 export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {
   authorize(ctx, action);
+  // The game's name goes to the admin log below (copied, since campaign.delete removes the row), and an archived game
+  // is read-only except for the way out of it.
+  const [c] = await tx
+    .select({ name: campaign.name, archivedAt: campaign.archivedAt })
+    .from(campaign)
+    .where(eq(campaign.id, ctx.campaignId));
+  if (c?.archivedAt && !ARCHIVED_OPEN.has(action.type) && !(ctx.admin && action.type === "member.remove"))
+    fail("This game is archived");
+  const result = await dispatch(tx, { ctx, action });
+  // Only the housekeeping is logged: an admin running a table would otherwise bury it under every Wounds tap.
+  if (ctx.admin && ctx.userId && result.ok && ADMIN_ACTIONS.has(action.type))
+    await tx.insert(adminEvent).values({
+      actorUserId: ctx.userId,
+      action: action.type,
+      campaignId: ctx.campaignId,
+      campaignName: c?.name ?? null,
+      targetUserId: "userId" in action ? action.userId : null,
+    });
+  return result;
+}
+
+function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {
   switch (action.type) {
     case "campaign.update":
     case "campaign.ascend":
     case "pool.adjust":
     case "session.start":
     case "session.end":
+    case "session.abandon":
+    case "session.delete":
+    case "campaign.archive":
+    case "campaign.unarchive":
+    case "campaign.delete":
       return applyCampaignAction(tx, { ctx, action });
 
     case "spend.request":
@@ -140,6 +188,7 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "invite.create":
     case "invite.revoke":
     case "member.remove":
+    case "member.seat":
     case "seat.leave":
     case "screen.issue":
     case "screen.revoke":

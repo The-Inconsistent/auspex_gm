@@ -165,6 +165,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       kind: c.kind,
       limits: c.limits,
       homebrew: c.homebrew,
+      archived: c.archivedAt !== null,
     },
     characters: chars.map(toCharacter),
     encounter: enc

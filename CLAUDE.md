@@ -72,9 +72,12 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
   2. It first calls `authorize(ctx)`, which checks the caller's role and ownership.
   3. The gateway rebroadcasts.
   Actions are serialised per campaign with an in-process queue, which assumes a single api instance.
-  The one exception is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
+  There are two exceptions. The first is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
   campaign is nobody's live state, so there is no room to broadcast to and no action to queue. It's plain REST, scoped
-  to the owner, and still re-resolves a build server-side before saving it.
+  to the owner, and still re-resolves a build server-side before saving it. The second is the **admin page's
+  housekeeping** (`POST /api/admin/campaigns/:id/action`, `docs/backend.md`): an admin outside any table sends an
+  allowlisted action over REST, and `TableGateway.run` gives it the socket path exactly (queue, transaction,
+  `authorize`, kicks, broadcast).
 - **The server decides.** Counters take deltas (`+2 Wounds`), clamped at 0 and capped where the rules cap them,
   so simultaneous taps never overwrite each other. Postgres holds all live state; the server keeps no in-memory
   game state.
@@ -88,7 +91,8 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
 - **Access: Clerk accounts, plus guest QR tokens.**
   - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
     member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user
-    start games in the lobby. The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
+    start games in the lobby; `"admin"` is a creator who also reaches `/admin` and acts as GM at every game without a seat
+    (`Ctx.admin`, logged in `admin_event`). The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
     `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `packages/auth/src/api.ts`).
   - Guests hold a per-character player token (`access_token`) in the httpOnly `wg_token` cookie, from a GUEST QR
     (`/join/<token>`) or a guest-friendly invite.
@@ -134,6 +138,7 @@ apps/api/src/
   auth/        auth.schema.ts (access_token, app_user, membership, invite),
                auth.service.ts (guest tokens, cookie, Ctx, resolveCtx), invite.service.ts (preview, accept),
                access.actions.ts (invite.create/revoke, member.remove)
+  admin/       admin.controller.ts (REST /api/admin: users, games, one housekeeping action, events), admin.service.ts, admin.schema.ts (admin_event)
   campaign/    campaign.controller.ts (REST: campaigns, lobby, me, threats, join, guest, invites), campaign.service.ts,
                campaign.actions.ts (campaign, pools, sessions), campaign.schema.ts
   character/   character.actions.ts (characters, guest tokens), character.schema.ts,
@@ -160,6 +165,7 @@ apps/web/components/lobby/   lobby-view (your games, CREATE NEW CAMPAIGN, import
 apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: tier, premise, name (table is ui/table-talk)
 apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
 apps/web/components/invite/  invite-accept
+apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab with game-card, events-log; lib/admin has its calls)
 apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel; kebab-case folders, children under
                              components/)
 apps/web/components/player/  player-app (sheet, fight, intel)

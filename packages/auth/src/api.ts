@@ -7,11 +7,12 @@ import { verifyToken } from "@clerk/backend";
 
 export const SESSION_COOKIE = "__session";
 
-export type AuthUser = { userId: string; name: string; creator: boolean };
+// An admin is also a creator.
+export type AuthUser = { userId: string; name: string; creator: boolean; admin: boolean };
 
-type TestRole = "creator" | "member";
+type TestRole = "creator" | "member" | "admin";
 
-// Test-only tokens `test.<secret>.<userId>.<creator|member>` let the smoke test act as signed-in users without a
+// Test-only tokens `test.<secret>.<userId>.<creator|member|admin>` let the smoke test act as signed-in users without a
 // Clerk instance. Never in production.
 const TEST_SECRET = process.env.CLERK_TEST_SECRET;
 if (TEST_SECRET && process.env.NODE_ENV === "production")
@@ -43,13 +44,21 @@ export async function verifySession(token: string | undefined): Promise<AuthUser
   if (!token) return null;
   if (TEST_SECRET && token.startsWith("test.")) {
     const [, secret, userId, role] = token.split(".");
-    return secret === TEST_SECRET && userId ? { userId, name: userId, creator: role === "creator" } : null;
+    return secret === TEST_SECRET && userId
+      ? { userId, name: userId, creator: role === "creator" || role === "admin", admin: role === "admin" }
+      : null;
   }
   try {
     const claims = await verifyToken(token, { jwtKey, secretKey: process.env.CLERK_SECRET_KEY, authorizedParties });
     const { metadata, name, username } = claims;
     const displayName = [name, username].find((v): v is string => typeof v === "string" && v.trim() !== "") ?? "Player";
-    return { userId: claims.sub, name: displayName, creator: metadata?.role === "creator" };
+    const role = metadata?.role;
+    return {
+      userId: claims.sub,
+      name: displayName,
+      creator: role === "creator" || role === "admin",
+      admin: role === "admin",
+    };
   } catch {
     return null; // expired, forged, or from another origin: treated as signed out
   }

@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { UserButton } from "@wg/auth/react";
@@ -25,6 +26,7 @@ import type { TabTarget } from "@/components/gm/setup/components/setup-panel/con
 import { Setup } from "@/components/gm/setup/setup";
 import { SpendRequests } from "@/components/gm/spend-requests/spend-requests";
 import { Tracker } from "@/components/gm/tracker/tracker";
+import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
@@ -49,6 +51,7 @@ type GmAppProps = {
   npcPresets: NpcPreset[];
   flavour: FlavourTable[];
   places: PlaceSummary[];
+  admin: boolean; // a Clerk admin acting as GM without a seat
   initialTab?: GmTab;
 };
 
@@ -63,13 +66,16 @@ export function GmApp({
   npcPresets,
   flavour,
   places,
+  admin,
   initialTab = "TRACK",
 }: GmAppProps) {
+  const router = useRouter();
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>(initialTab);
   const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when SETUP sends it there
   const [poolError, setPoolError] = useState<string | null>(null);
+  const [deleted, setDeleted] = useState(false); // DELETE GAME went through: the server drops the room next
   // The books' stat blocks plus the ones the GM wrote (issue #43), by name. Every picker, the NPC stat source and the
   // stat block already read this one list, so nothing else needs to know about customs. Above the early return, since
   // hooks run in the same order every render.
@@ -78,12 +84,20 @@ export function GmApp({
     () => [...bestiary, ...(customs ?? [])].sort((a, b) => a.name.localeCompare(b.name)),
     [bestiary, customs],
   );
+  if (deleted) return <StatusScreen text="GAME DELETED · BACK TO THE LOBBY…" />;
   if (!state || !codex) return <StatusScreen text="SYNCING COGITATOR…" />;
 
   // SETUP's GO TO: opens a tab, and CODEX on the step's kind.
   const openTab = ({ tab: t, kind }: TabTarget) => {
     setCodexKind(kind);
     setTab(t);
+  };
+
+  // DELETE GAME's ack: the server kicks the whole room a moment later, our socket included. That disconnect is
+  // expected, so leave for the lobby now (which closes the socket) instead of showing NO SIGNAL.
+  const handleDeleted = () => {
+    setDeleted(true);
+    router.push("/");
   };
 
   const players = state.characters.length;
@@ -130,6 +144,11 @@ export function GmApp({
               <div className="display page-title">RND {String(state.encounter.round).padStart(2, "0")}</div>
             )}
             {Pool.options.map(pool)}
+            {admin && (
+              <span className="chip bad" aria-label="Signed in as an admin, acting as GM">
+                ADMIN
+              </span>
+            )}
             <ThemeToggle />
             <UserButton />
           </header>
@@ -149,9 +168,23 @@ export function GmApp({
           </nav>
           <SpendRequests state={state} send={send} />
           <main className="gm-body">
+            {state.campaign.archived && (
+              <ArchivedBanner text="READ ONLY. UNARCHIVE IT IN SETUP TO PLAY ON.">
+                <button className="btn sm" onClick={() => openTab({ tab: "SETUP" })}>
+                  OPEN SETUP
+                </button>
+              </ArchivedBanner>
+            )}
             {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} />}
             {tab === "SETUP" && (
-              <Setup state={state} codex={codex} send={send} frameworks={frameworks} onTab={openTab} />
+              <Setup
+                state={state}
+                codex={codex}
+                send={send}
+                frameworks={frameworks}
+                onTab={openTab}
+                onDeleted={handleDeleted}
+              />
             )}
             {tab === "PREP" && (
               <Prep

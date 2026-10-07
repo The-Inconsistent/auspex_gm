@@ -2081,3 +2081,75 @@ pre.text.bld-rules {
   padding-left: 10px;
   border-left: 1px dotted var(--line);
 }
+
+/* ARCHIVED: a read-only game (campaign.archive). The words carry it; the crimson frame only backs them up. */
+.archived-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 0 16px 12px;
+  padding: 8px 12px;
+  border: 2px solid var(--red);
+  background: var(--red-tint);
+  color: var(--red);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.archived-banner > span {
+  flex: 1;
+  min-width: 0;
+}
+.pl-body > .archived-banner {
+  margin: 0;
+}
+
+/* ConfirmAction: the question and its two buttons, in one wrapping row. */
+.confirm {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  min-width: 0;
+}
+
+/* /admin: rows of chips and buttons that wrap at phone width, never scroll the page sideways. */
+.admin {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+.admin-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-width: 0;
+}
+.admin-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.admin-gm {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.admin-pick {
+  flex: 1 1 180px;
+  width: auto;
+  max-width: 320px;
+}
+.delete-game {
+  flex: 1 1 100%;
+}
+.admin .chip {
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}

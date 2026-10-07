@@ -44,15 +44,17 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
 | `spend/` | Players' spend requests, answered by the GM (rules-flow §11.122) | `spend.actions.ts`: `SpendAction`, `applySpendAction`. `spend.clear.ts`: `clearSpendRequests`. `spend.schema.ts`: `spendRequest` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts, items | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the seven tables |
-| `table/` | The socket | `table.gateway.ts`: `TableGateway`. `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
+| `admin/` | The admin page's reads and housekeeping (§3.2) | `admin.controller.ts`: `AdminController`. `admin.service.ts`: `listUsers`, `listCampaigns`, `listEvents`, `adminAction`, `removeSeats`. `admin.schema.ts`: `adminEvent` |
+| `table/` | The socket | `table.gateway.ts`: `TableGateway` (`run`: one action with its kicks and broadcast, for the socket and the admin route). `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
 
 Rules:
 
 - `*.actions.ts` and `*.service.ts` import no Nest symbols. Transports (controller, gateway) parse, resolve `Ctx` and call them.
 - Each feature owns its tables in `<feature>.schema.ts`. `drizzle.config.ts` globs `src/**/*.schema.ts`, and `core/db.ts`
   spreads every schema module into the client.
-- `Ctx = { campaignId, role, characterId, userId }` comes from a Clerk membership, a guest token or the admin key, and is
-  the only source of campaign scope. `userId` is the Clerk user; it's null for guests and the admin.
+- `Ctx = { campaignId, role, characterId, userId, admin }` comes from a Clerk membership, a guest token, the admin key or
+  a Clerk admin without a seat, and is the only source of campaign scope. `userId` is the Clerk user; it's null for guests
+  and the admin key. `admin` is true only for a Clerk admin acting as GM without a seat (§10).
 
 ## 3. REST endpoints
 
@@ -69,7 +71,7 @@ text.
 | Method, path | Auth | Body | Success | Errors |
 |---|---|---|---|---|
 | `POST /api/campaigns` | `x-admin-key` equal to `ADMIN_KEY` (constant-time, `isAdmin`), else Clerk with the creator role | `{ name: string 1–100, tier: 1–5 }` plus, optional, NEW CAMPAIGN's `framework`, `frameworkBonus`, `patron`, `kind` and `limits` (`CreateGame`, the same `CampaignSetup` limits as `campaign.update`), plus `ownerUserId` with the admin key | `201 { campaignId }`. The creator, or `ownerUserId`, is seated as GM | `401` not signed in. `403 "Only creators can start a game"`. `400` bad body |
-| `GET /api/lobby` | Clerk | none | `200 Lobby` (`packages/shared/src/access.ts`): `canCreate`, `mine`, `running`, `characters` (the caller's library, §3.1) | `401` |
+| `GET /api/lobby` | Clerk | none | `200 Lobby` (`packages/shared/src/access.ts`): `canCreate`, `admin`, `mine`, `running` (sessions open under 18 h), `archived` (the caller's archived games, kept out of the other two), `characters` (the caller's library, §3.1) | `401` |
 | `GET /api/campaigns/:id/me` | Seat | none | `200` `Ctx` (`Me` in `packages/shared/src/state.ts`) | `400` bad id. `401` |
 | `GET /api/campaigns/:id/threats` | Seat, GM only | none | `200 Threat[]`, the whole bestiary | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/wargear` | Seat, GM only | none | `200 Wargear[]`, the whole catalogue | `400` bad id. `401` no seat. `403` player |
@@ -81,7 +83,7 @@ text.
 | `GET /api/campaigns/:id/places` | Seat, GM only | none | `200 PlaceSummary[]`: the books' places for CODEX › LOCATIONS' ADD FROM BOOK (#50), in file order with parents first: `id`, `name`, `parentId`, `source`, `page`, no printed text | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/flavour` | Seat, GM only | none | `200 FlavourTable[]`: the creation catalogue's name lists and the Eye Colour, Hair Colour and Features tables (Core pp.27–33) for CODEX › NPCS' ROLL NAME and ROLL LOOK (#48); without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
 | `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 2 MB | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a place nested inside itself, a handout audience naming an Agent not in the file, an item with an unknown `wargearId`, two holders, or a holder once given |
-| `GET /api/campaigns/:id/export` | Seat, GM only | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`) | `400` bad id. `401` no seat. `403` player |
+| `GET /api/campaigns/:id/export` | Seat, GM only (an admin without a seat counts) | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`) | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
 | `GET /api/creation?homebrew=0\|1` | Clerk | none | `200 CreationPayload`, the same body and `ETag` as the campaign route, but the caller picks the books, because no campaign decides for them — so an account with no seat can read the homebrew books that a seated player at an official-only table can't | `401` |
@@ -158,6 +160,22 @@ counters, sessions and reveal times. It writes every row directly, inside `creat
 the rest: sessions are dropped, the pools emptied, every reveal undone, every Agent rested, adventures and beats go
 back to `planned`, and the kind of game and limits are cleared, since the new table agrees its own (rules-flow §11.79).
 
+### 3.2 Admin REST (`admin/`)
+
+Every route is for a Clerk admin (`403 "Admins only"`, `401` signed out), under `/api/admin`, rate limited 120/min per
+caller like the library. Shapes: `packages/shared/src/admin.ts`.
+
+| Route | Body | Returns |
+|---|---|---|
+| `GET /api/admin/users` | none | `AdminUser[]` by name: `{ id, name, role: "creator" \| "admin" \| null, lastSeenAt, seats: { campaignId, campaignName, role }[] }` |
+| `DELETE /api/admin/users/:id/seats` | none | `200 RemovedSeats` (`{ removed, failed: { campaignName, error }[] }`): one `member.remove` per seat through `TableGateway.run` (kicks, rebroadcast, log), each its own transaction, so a refusal at one game leaves the rest done and is listed in `failed`. `400` for the caller's own id |
+| `GET /api/admin/campaigns` | none | `AdminCampaign[]`, newest activity first: `{ id, name, tier, gms, players, session: { number, startedAt } \| null, archivedAt, lastActivity }` |
+| `POST /api/admin/campaigns/:id/action` | an `ActionInput` of `session.abandon`, `session.delete`, `member.seat`, `member.remove`, `campaign.archive`, `campaign.unarchive` or `campaign.delete` (`ADMIN_ACTIONS`) | `200 ActionResult` (a refusal is `{ ok: false, error }`, as on the socket). `400` bad body or another action, `404` no such game |
+| `GET /api/admin/events` | none | the latest 50 `AdminEvent` rows: `{ id, actorUserId, action, campaignId, campaignName, targetUserId, detail, createdAt }` |
+
+The action route runs `TableGateway.run` with `{ role: "gm", characterId: null, userId: <admin>, admin: true }`: the same
+queue, transaction, kicks and broadcast as a socket action.
+
 ## 4. Socket lifecycle (`table/table.gateway.ts`)
 
 ### Handshake: `afterInit` middleware
@@ -229,7 +247,8 @@ Always the full snapshot, never a diff.
 
 ### `authorize(ctx, action)`
 
-- GM: everything.
+- `member.seat` needs `ctx.admin`, whatever the role (`"Admin only"`).
+- GM: everything else.
 - Player: only types in `PLAYER_ACTIONS` (`packages/shared/src/actions.ts`), else `"GM only"`. Then:
 
 | Action | Extra player check | Refusal |
@@ -249,7 +268,8 @@ Wounds, Shock, Wrath, Glory, Respite, Conditions, raw `stats` and granting Wealt
 | Actions | state | codex |
 |---|---|---|
 | `codex.save`, `codex.delete`, `beat.reorder`, `codex.addPlaces`, `codex.addHulk`, `codex.addLoot`, `codex.addRelic`, `threat.save`, `threat.delete` | no | yes |
-| `beat.startEncounter` (new encounter, and beat status → active), `session.*` (session list) | yes | yes |
+| `beat.startEncounter` (new encounter, and beat status → active), `session.*` (session list), `campaign.archive` (ends a running session) | yes | yes |
+| `campaign.delete` | no | no (the room is kicked instead) |
 | everything else | yes | no |
 
 `token.*` rebroadcasts `state` even though tokens aren't in it. `invite.*` and `member.remove` change `state.access`.
@@ -261,15 +281,25 @@ Wounds, Shock, Wrath, Glory, Respite, Conditions, raw `stats` and granting Wealt
 | `token.revoke` | `{ characterId, guestsOnly: true }` | guest sockets (`userId` null) playing that character. A member playing it keeps their seat |
 | `character.delete` | `{ characterId: a.id, guestsOnly: false }` | every socket playing it. Its tokens and invites are cascade-deleted; a member's `character_id` is set null |
 | `member.remove` | `{ userId }` | every socket of that user at this table |
+| `campaign.delete` | `{ all: true }` | every socket at the game, a moment (200 ms) after the ack, so the sender's own ack still arrives |
 | `screen.revoke` | `{ screens: true }` | every table screen socket at this table |
 
 The gateway checks the sockets in both rooms of the campaign.
 
 ### `applyAction` routing
 
+Around the routing, `applyAction` reads the campaign once: an **archived** game (`archived_at` set) refuses every action
+but `campaign.unarchive`, `campaign.delete` and the ones that take access away (`seat.leave`, `token.revoke`,
+`invite.revoke`) with `"This game is archived"` (an admin's `member.remove` is also let through, so REMOVE FROM ALL
+GAMES reaches archived games). Archiving revokes the game's open invites, and `acceptInvite` refuses an archived game
+too. Sockets still connect and receive snapshots, and
+`LiveState.campaign.archived` tells both apps. After the handler, a housekeeping action (`ADMIN_ACTIONS`) applied with
+`ctx.admin` writes one `admin_event` row (an admin's Wounds taps and turn steps at a table aren't logged) in the same transaction (action, campaign id and name, `targetUserId` when the action carries a
+`userId`). The ADMIN_KEY ctx has `admin: false` and is never logged.
+
 A `switch` on `action.type` hands each action to the owning feature's `apply*Action(tx, { ctx, action })`. Each feature
 narrows its slice with `Extract<Action, …>` (`CampaignAction`, `CharacterAction`, `EncounterAction`, `CodexAction`),
-so a type missing from the switch is a compile error. `invite.*` and `member.remove` go to `applyAccessAction`
+so a type missing from the switch is a compile error. `invite.*`, `member.remove` and `member.seat` go to `applyAccessAction`
 (`auth/access.actions.ts`, `AccessAction`).
 
 ## 6. Action catalogue
@@ -283,6 +313,11 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `campaign.ascend` | GM | Raises the Tier by 1 for the whole group (Core pp.147–148, §11.66). `kind: "experience"` needs every **living** character at 100+ XP in the current Tier (`xp − xpAtAscension`) and names who is short — a Dead character (`pcStatus`) has left the group (Core p.147), and a campaign with none alive is refused; `kind: "milestone"` is the GM's call and first awards every character 100 XP (step 1). Then the Tier moves (refused at Tier 5, and refused with no characters), every character's `xpAtAscension` becomes its post-award `xp`, and `ascensionPackageWaived` takes `waivePackage` — so a waiver is honoured and the next Ascension clears it. One transaction, delta SQL, no read-modify-write | S | Core pp.147–148 |
 | `pool.adjust` | GM | `pool += delta`, clamped to `[0, poolMax(pool, #characters)]` | S | p.164, p.320 |
 | `session.start` | GM | Every character Wrath → 2. Glory → 0. Ruin → number of characters. Closes any open session (no XP). Inserts session `number = count + 1`. Returns `id`, and a `notices` line naming the built characters with XP left to spend (`xp − xpSpent`, the first `NUDGE_NAMES` of them and then "N more", since the GM report is one line), because XP is spent between sessions (Core p.146, p.148; §11.69) | S C | p.162, p.164, p.320 |
+| `session.abandon` | GM | Ends the running session with `xp` 0: no XP, no Rank notices. `"No session in progress"` | S, C | |
+| `session.delete` | GM | Deletes the latest session, once it has ended (`"End the session in progress before deleting it"`, `"This game has no sessions"`). Its XP stays on the characters, and the ack's `notices` says so | S, C | |
+| `campaign.archive` | GM | Sets `archived_at`, ends a running session like `session.abandon` and revokes open invites. An archived game is read-only (§5) | S, C | |
+| `campaign.unarchive` | GM | Clears `archived_at` | S | |
+| `campaign.delete` | admin, or GM once archived | `{ name }`, which must equal the game's name (`"Type the game's name to delete it"`; `"Archive the game before deleting it"` for a GM). Deletes the campaign row; everything it owns cascades. The gateway then kicks the whole room and broadcasts nothing | | |
 | `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Acks `notices`: each character that crossed a Rank (Core p.146) and, when every one of them has 100+ XP in the current Tier, that the group may Ascend (Core p.147). Fails `"No session in progress"` | S C | p.321 |
 | `character.create` | GM | Insert with `name`, `stats` (default `{}`). Returns `id` | S | |
 | `character.build` | GM; Own | Re-runs `resolveBuild` on `build` with the campaign's homebrew setting, and for an existing character `play` (the campaign's Tier now, `character.xp` earned). A new build is at the campaign's Tier; a made one keeps the Tier it was made at, and a player may change only its `advancement` (and the choices under `advance/`): `"Only your GM changes a character's creation choices once it's made"`. Refuses `"Still to choose: …"` or the first problem. Writes the derived `stats`, the `build` and `built_at` (now: the builder drops device drafts older than it) and clears `build_draft`; a made character keeps what play changed (`keepPlay`: Wealth, Ammo, requisitions, gained weapons and gear) and gains only the weapons and gear the new build adds over the stored one (so a save with no changes changes nothing), a first build keeps `ammo` and `requisitioned`. A player's build keeps the stored `build.gm`. `keepSheet` (GM only, refused from a player as `"GM only"`): a first build over a hand-made sheet keeps its armour and gear lines and Wealth, as `keepPlay` would; its weapons are the build's, with their Talents applied on read (rules-flow.md §11.68). The seed uses it for a pack's pregens. No `id`: inserts a character (GM). Returns `id`. It also stamps the purchase history (§11.69): the client's `advancement.boughtIn` is replaced by the stored one, every advancement purchase the resolved ledger names that has no date yet takes the open session's number (else the last session played, else none), and a date whose purchase is gone is dropped. One extra query, and only when something new was bought | S | Core pp.17–38 |
@@ -304,6 +339,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `invite.create` | GM | New invite: `mode` `"room"` (no `characterId`) or `"character"` (needs one in this campaign, `maxUses` 1). `allowGuests` defaults to true, `hours` 1–720 (default 12). Returns `id` and the code in `token` (plaintext, once) | S | |
 | `invite.revoke` | GM | Stamp `revokedAt` on one live invite. Anyone already seated keeps their seat | S | |
 | `member.remove` | GM | Delete a user's `membership` here. Refuses yourself (`"You can't remove yourself"`). Kicks that user | S | |
+| `member.seat` | admin | `{ userId }`: seats a known `app_user` as this table's GM, or turns their existing seat into the GM's (`character_id` null). `"Admin only"` without `ctx.admin`, `"User not found"` for an id the app hasn't seen | S | |
 | `encounter.start` | GM | Deactivate any active encounter, insert an empty one. Returns `id` | S | |
 | `encounter.end` | GM | Deactivate all the campaign's encounters | S | |
 | `encounter.newRound` | GM | Round + 1. Clear `acted`, `ambushed`, `currentId`, `lastSide`, `seizedSide` | S | p.176–177 |
@@ -341,14 +377,15 @@ Postgres, `snake_case` columns (`casing: "snake_case"` in both `drizzle.config.t
 `defaultRandom()`, except `app_user.id`, which is the Clerk user id. Timestamps are `timestamptz`. The only unique
 constraints beyond primary keys are `invite.code_hash` and `membership (campaign_id, user_id)`.
 Campaign-owned rows share `owned()` from `campaign.schema.ts` (`id`, `campaign_id` → campaign **cascade**, `created_at`).
-No action or endpoint deletes a campaign; the cascades apply to manual cleanup.
+`campaign.delete` removes a campaign and the cascades take everything it owns.
 
 | Table (file) | Purpose | Key columns | FKs (on delete) |
 |---|---|---|---|
-| `campaign` (`campaign.schema.ts`) | The root. Party Glory and GM Ruin live here | `name`, `tier`, `glory`, `ruin`, `framework`, `patron` | none |
+| `campaign` (`campaign.schema.ts`) | The root. Party Glory and GM Ruin live here | `name`, `tier`, `glory`, `ruin`, `framework`, `patron`, `archived_at` | none |
 | `session` (`campaign.schema.ts`) | Play sessions and recaps | `number`, `started_at`, `ended_at` (null = in progress), `recap`, `xp` | campaign cascade |
 | `access_token` (`auth.schema.ts`) | Guest tokens | `token_hash` (PK, SHA-256 hex), `role` (always `player` now), `character_id`, `revoked_at` | campaign cascade. character cascade |
-| `app_user` (`auth.schema.ts`) | Clerk users seen by the api | `id` (Clerk user id), `name` (refreshed from the session token on each request), `updated_at` | none |
+| `app_user` (`auth.schema.ts`) | Clerk users seen by the api | `id` (Clerk user id), `name` and `role` (`creator`, `admin` or null; refreshed from the session token when they change, or once an hour with `last_seen_at`), `updated_at` | none |
+| `admin_event` (`admin.schema.ts`) | What an admin did at a table | `actor_user_id`, `action`, `campaign_id`, `campaign_name` (copied), `target_user_id`, `detail`, `created_at` | none, so the log survives the game or user it names |
 | `membership` (`auth.schema.ts`) | A signed-in user's seat at one table | `user_id`, `role`, `character_id` | campaign cascade. app_user cascade. character **set null** |
 | `invite` (`auth.schema.ts`) | Invite links | `code_hash`, `mode`, `character_id`, `allow_guests`, `expires_at`, `max_uses` (null = until it expires), `uses`, `revoked_at` | campaign cascade. character cascade |
 | `custom_threat` (`threat.schema.ts`) | A stat block the GM wrote or cloned for this campaign (issue #43) | `slug` (unique per campaign, made once from the name), `data` (a whole `Threat`, id `custom-<slug>`, source `custom`) | campaign cascade |
@@ -440,16 +477,24 @@ token in `access_token`. The admin key is for scripts only. There are no GM toke
 - **Verify:** `verifySession(token)` calls `@clerk/backend`'s `verifyToken` with `jwtKey: CLERK_JWT_KEY` (no network
   call; `CLERK_SECRET_KEY` is the fallback) and `authorizedParties` from `WEB_ORIGIN`, split on commas. An expired,
   forged or wrong-origin token returns null, which reads as signed out.
-- **Claims:** the name comes from `name`, else `username`, else `"Player"`. `creator` is `metadata.role === "creator"`.
+- **Claims:** the name comes from `name`, else `username`, else `"Player"`. `creator` is `metadata.role` of `"creator"` or `"admin"` (an admin is also a creator), and `admin` is `"admin"`.
   These are custom claims: the Clerk Dashboard's session-token template must include
   `{ "metadata": "{{user.public_metadata}}", "name": "{{user.full_name}}", "username": "{{user.username}}" }`
   ([development.md](development.md#clerk)). The creator role is set by hand in the user's public metadata. Both shapes
-  are typed once, as Clerk's global `UserPublicMetadata` (`role?: "creator"`) and `CustomJwtSessionClaims`, in
+  are typed once, as Clerk's global `UserPublicMetadata` (`role?: "creator" | "admin"`) and `CustomJwtSessionClaims`, in
   `packages/auth/type.d.ts`.
 - **Where the token comes from:** `bearerOf(Authorization)` first, else the `__session` cookie. `signedInUser()` also
-  upserts `app_user` so member lists and the lobby show a current name.
-- **Test tokens:** with `CLERK_TEST_SECRET` set, `test.<secret>.<userId>.<creator|member>` is accepted without Clerk.
+  upserts `app_user` (name, role, `last_seen_at`) so member lists, the lobby and the admin page show current values; the write fires
+  only when the name or role changed or `last_seen_at` is over an hour old.
+- **Test tokens:** with `CLERK_TEST_SECRET` set, `test.<secret>.<userId>.<creator|member|admin>` is accepted without Clerk.
   `testSessionToken({ secret, userId, role })` builds one. It's for the smoke test only, and the api refuses to start if it's set with `NODE_ENV=production`.
+
+### Admins
+
+A Clerk user with `publicMetadata.role = "admin"` (set by hand, like `creator`; several are fine) is also a creator.
+`resolveCtx` lets a membership win; with none, an admin gets `{ role: "gm", characterId: null, userId, admin: true }`
+at any game that exists, so every GM-only route and socket works for them without a seat, and PARTY never lists them.
+`Me` and `Lobby` carry `admin`. Nothing admin-only goes into `LiveState` or `Codex`.
 
 ### Invites (`invite.service.ts`, `access.actions.ts`)
 
@@ -502,7 +547,7 @@ Because seeding goes through the socket, it gets the same validation, scoping an
 fresh Clerk user id per run instead.
 
 The api must run with `CLERK_TEST_SECRET` set (dev only), and the test must see the same value: it signs in as Clerk
-users with test tokens (`test.<secret>.<userId>.<creator|member>`, §10), sent as `Bearer` headers and socket
+users with test tokens (`test.<secret>.<userId>.<creator|member|admin>`, §10), sent as `Bearer` headers and socket
 `clerkToken`s.
 
 ```bash

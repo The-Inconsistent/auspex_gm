@@ -51,6 +51,7 @@ const allowAction = limiter({ max: 120, windowMs: 60_000 });
 // A player flipping through cited pages; each one costs the GM's tablet a render.
 const allowPage = limiter({ max: 30, windowMs: 60_000 });
 const PAGE_TIMEOUT_MS = 15_000;
+const KICK_GRACE_MS = 200;
 
 // A GM socket that serves book pages from its own PDFs (book:serving). Presence only, so it dies with the socket.
 type Seat = Ctx & { books?: ThreatSource[] };
@@ -62,7 +63,7 @@ async function handshakeCtx({ auth, headers }: { auth: unknown; headers: { cooki
   if (adminKey && campaignId) {
     if (!isAdmin(adminKey)) return null;
     const [c] = await db.select({ id: campaign.id }).from(campaign).where(eq(campaign.id, campaignId));
-    return c ? { campaignId, role: "gm", characterId: null, userId: null } : null;
+    return c ? { campaignId, role: "gm", characterId: null, userId: null, admin: false } : null;
   }
   if (token) {
     const guest = await resolveGuest(token);
@@ -166,6 +167,12 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     if (!parsed.success) return { ok: false, error: z.prettifyError(parsed.error) };
     const action = parsed.data;
 
+    return this.run({ ctx, action });
+  }
+
+  // One action, as the socket handler and the admin REST route both apply it: queued per campaign, in a transaction,
+  // then the kicks and the rebroadcast. Refusals come back as { ok: false }.
+  run({ ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {
     return this.serial(ctx.campaignId, async () => {
       let result: ActionResult;
       try {
@@ -178,7 +185,13 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
       // Committed: report success even if fan-out fails, or a retap would apply the delta twice. The next broadcast resyncs.
       try {
         const kick = kicks(action);
-        if (kick) await this.kick({ campaignId: ctx.campaignId, kick });
+        // A deleted game kicks its sender too, so the room goes a moment later: the ack has to reach them first.
+        if (kick && "all" in kick)
+          setTimeout(
+            () => this.kick({ campaignId: ctx.campaignId, kick }).catch((e) => this.log.error(e)),
+            KICK_GRACE_MS,
+          );
+        else if (kick) await this.kick({ campaignId: ctx.campaignId, kick });
         await this.broadcast(ctx.campaignId, touches(action));
       } catch (e) {
         this.log.error(e);
@@ -262,17 +275,20 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     }
   }
 
-  // Disconnects the sockets that just lost access: a removed member, the players of a revoked/deleted character, or every table screen.
+  // Disconnects the sockets that just lost access: a removed member, the players of a revoked/deleted character, every
+  // table screen, or everyone at a deleted game.
   private async kick({ campaignId, kick }: { campaignId: string; kick: Kick }) {
     const r = rooms(campaignId);
     for (const s of await this.server.in([r.gm, r.players]).fetchSockets()) {
       const c = s.data as Ctx;
       const hit =
-        "screens" in kick
-          ? c.role === "screen"
-          : "userId" in kick
-            ? c.userId === kick.userId
-            : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
+        "all" in kick
+          ? true
+          : "screens" in kick
+            ? c.role === "screen"
+            : "userId" in kick
+              ? c.userId === kick.userId
+              : c.characterId === kick.characterId && (!kick.guestsOnly || c.userId === null);
       if (hit) s.disconnect(true);
     }
   }

@@ -1,5 +1,5 @@
 import { randomUUID, timingSafeEqual } from "node:crypto";
-import { and, count, eq, inArray, isNull } from "drizzle-orm";
+import { and, count, eq, gt, inArray, isNotNull, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, scenePresets, threats, wargear } from "@wg/data";
 import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, wouldCycle } from "@wg/shared";
@@ -58,7 +58,7 @@ export async function exportCampaign(campaignId: string): Promise<CampaignExport
   // The sheets as stored, not as the table shows them: the state's have the upgrades and weapon effects applied
   // (withUpgrades, withWeaponEffects), and an import would store those and apply them again on read.
   const statsOf = new Map(stored.map((r) => [r.id, CharacterStats.parse(r.stats)]));
-  const { id: _, ...camp } = state.campaign;
+  const { id: _, archived: _archived, ...camp } = state.campaign; // an import starts a live game
   return {
     format: "auspex-campaign",
     version: 1,
@@ -229,7 +229,11 @@ export async function importCampaign({
   });
 }
 
+// A session open longer than this is one nobody closed, so the lobby stops advertising the game as running.
+const STALE_SESSION_HOURS = 18;
+
 // The lobby: the caller's games, and every game with a session in progress (as cards only; opening one needs a seat).
+// Archived games are only listed, apart, for their own members.
 export async function lobby(user: AuthUser): Promise<Lobby> {
   // `characters` is their own library (issue #14): it belongs to no game, so it's listed whether or not they have a
   // seat anywhere.
@@ -238,15 +242,21 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
       .select({ campaignId: membership.campaignId, role: membership.role })
       .from(membership)
       .where(eq(membership.userId, user.userId)),
-    db.select({ campaignId: session.campaignId, number: session.number }).from(session).where(isNull(session.endedAt)),
+    db
+      .select({ campaignId: session.campaignId, number: session.number })
+      .from(session)
+      .where(
+        and(isNull(session.endedAt), gt(session.startedAt, new Date(Date.now() - STALE_SESSION_HOURS * 3600_000))),
+      ),
     listLibrary(user.userId),
   ]);
   const ids = [...new Set([...mine, ...running].map((r) => r.campaignId))];
-  if (!ids.length) return { canCreate: user.creator, mine: [], running: [], characters };
+  if (!ids.length)
+    return { canCreate: user.creator, admin: user.admin, mine: [], running: [], archived: [], characters };
 
   const [camps, gms, players] = await Promise.all([
     db
-      .select({ id: campaign.id, name: campaign.name, tier: campaign.tier })
+      .select({ id: campaign.id, name: campaign.name, tier: campaign.tier, archived: isNotNull(campaign.archivedAt) })
       .from(campaign)
       .where(inArray(campaign.id, ids)),
     db
@@ -261,11 +271,14 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
       .groupBy(character.campaignId),
   ]);
   const roleOf = new Map<string, Role>(mine.map((m) => [m.campaignId, m.role]));
+  const archivedIds = new Set(camps.filter((c) => c.archived).map((c) => c.id));
   const card = (id: string): LobbyGame | null => {
     const c = camps.find((x) => x.id === id);
     if (!c) return null;
     return {
-      ...c,
+      id: c.id,
+      name: c.name,
+      tier: c.tier,
       gm:
         gms
           .filter((g) => g.campaignId === id)
@@ -276,9 +289,19 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
       role: roleOf.get(id) ?? null,
     };
   };
-  const cards = (list: { campaignId: string }[]) =>
-    list.map((r) => card(r.campaignId)).filter((g): g is LobbyGame => !!g);
-  return { canCreate: user.creator, mine: cards(mine), running: cards(running), characters };
+  const cards = (list: { campaignId: string }[], archived: boolean) =>
+    list
+      .filter((r) => archivedIds.has(r.campaignId) === archived)
+      .map((r) => card(r.campaignId))
+      .filter((g): g is LobbyGame => !!g);
+  return {
+    canCreate: user.creator,
+    admin: user.admin,
+    mine: cards(mine, false),
+    running: cards(running, false),
+    archived: cards(mine, true),
+    characters,
+  };
 }
 
 // Whether the campaign's character builder may use the homebrew books (a REST read, outside any action).

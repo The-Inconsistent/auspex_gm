@@ -1,5 +1,6 @@
-import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, isNull, sql } from "drizzle-orm";
 import { ASCENSION_XP, MAX_TIER, ascensionGroup, poolMax, rankOf, type Action, type ActionResult } from "@wg/shared";
+import { invite } from "../auth/auth.schema.ts";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
@@ -11,7 +12,19 @@ import { campaign, session } from "./campaign.schema.ts";
 
 export type CampaignAction = Extract<
   Action,
-  { type: "campaign.update" | "campaign.ascend" | "pool.adjust" | "session.start" | "session.end" }
+  {
+    type:
+      | "campaign.update"
+      | "campaign.ascend"
+      | "pool.adjust"
+      | "session.start"
+      | "session.end"
+      | "session.abandon"
+      | "session.delete"
+      | "campaign.archive"
+      | "campaign.unarchive"
+      | "campaign.delete";
+  }
 >;
 
 // Every character in table order, for the Ascension rules (ascensionGroup).
@@ -41,6 +54,16 @@ export async function campaignRules(tx: Tx, campaignId: string) {
     .from(campaign)
     .where(eq(campaign.id, campaignId));
   return c!; // ctx.campaignId comes from a valid token, so the campaign exists
+}
+
+// Closes the running session without awarding anything. False when none was running.
+async function abandonSession(tx: Tx, campaignId: string) {
+  const closed = await tx
+    .update(session)
+    .set({ endedAt: new Date(), xp: 0 })
+    .where(and(eq(session.campaignId, campaignId), isNull(session.endedAt)))
+    .returning({ id: session.id });
+  return closed.length > 0;
 }
 
 async function playerCount(tx: Tx, campaignId: string) {
@@ -137,6 +160,52 @@ export async function applyCampaignAction(
         ...(ready ? [`Everyone has earned ${ASCENSION_XP} XP in Tier ${tier}: the group may Ascend (Core p.147)`] : []),
       ];
       return notices.length ? { ok: true, notices } : { ok: true };
+    }
+
+    // For a session that was never played or got left open: no XP, no Rank notices, pools untouched.
+    case "session.abandon":
+      return (await abandonSession(tx, cid)) ? { ok: true } : fail("No session in progress");
+
+    // Only the latest, so session.start's numbering (count + 1) stays unbroken, and only once it has ended.
+    case "session.delete": {
+      const [s] = await tx
+        .select()
+        .from(session)
+        .where(eq(session.campaignId, cid))
+        .orderBy(desc(session.number))
+        .limit(1);
+      if (!s) fail("This game has no sessions");
+      if (!s.endedAt) fail("End the session in progress before deleting it");
+      await tx.delete(session).where(eq(session.id, s.id));
+      const kept = s.xp > 0 ? `; the ${s.xp} XP it awarded stays on the characters` : "";
+      return { ok: true, notices: [`Deleted session ${s.number}${kept}`] };
+    }
+
+    // A read-only game takes no one new, so its open invite links die with it (acceptInvite checks too).
+    case "campaign.archive":
+      await abandonSession(tx, cid); // nothing to close is fine here
+      await tx.update(campaign).set({ archivedAt: new Date() }).where(eq(campaign.id, cid));
+      await tx
+        .update(invite)
+        .set({ revokedAt: new Date() })
+        .where(and(eq(invite.campaignId, cid), isNull(invite.revokedAt)));
+      return { ok: true };
+
+    case "campaign.unarchive":
+      await tx.update(campaign).set({ archivedAt: null }).where(eq(campaign.id, cid));
+      return { ok: true };
+
+    // Everything the campaign owns cascades. The gateway then kicks the whole room (kicks) and broadcasts nothing.
+    case "campaign.delete": {
+      const [c] = await tx
+        .select({ name: campaign.name, archivedAt: campaign.archivedAt })
+        .from(campaign)
+        .where(eq(campaign.id, cid));
+      if (!c) fail("Campaign not found");
+      if (!ctx.admin && !c.archivedAt) fail("Archive the game before deleting it");
+      if (a.name !== c.name) fail("Type the game's name to delete it");
+      await tx.delete(campaign).where(eq(campaign.id, cid));
+      return { ok: true };
     }
 
     // The group Ascends together (Core pp.147–148, §11.66): one Tier for the whole campaign, never one character.

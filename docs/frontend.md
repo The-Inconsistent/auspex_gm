@@ -17,6 +17,7 @@ seat.
 | Path | File | Kind | Job |
 |---|---|---|---|
 | `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
+| `/admin` | `app/admin/page.tsx` | Server Component | The admin page (USERS, GAMES, the latest admin events): asks `/api/admin/*` and sends a non-admin to `/` |
 | `/c/new` | `app/c/new/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps before the campaign exists: asks `/api/frameworks` (a creator's only, so it is the gate too) and renders `NewCampaign` |
 | `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen`. `?tab=setup` (any GM tab) opens the GM app there |
 | `/c/<campaignId>/setup` | `app/c/[campaignId]/setup/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps after CREATE, for the GM only: loads the places, faction presets and scene presets, and renders `CampaignSetup` |
@@ -70,6 +71,9 @@ order (creating a game sits above the lists that grow):
   builder, with the count beside it, and is disabled at `LIBRARY_CAP`.
 - **RUNNING NOW**: games with a session in progress where the caller has no seat (`running` filtered to `role: null`).
   They're cards only, with no OPEN: joining needs an invite.
+- **ADMIN** (a header link, only when `lobby.admin`) goes to `/admin`.
+- **ARCHIVED** (`lobby.archived`, collapsed until SHOW ARCHIVED GAMES): the caller's archived games, with an ARCHIVED chip
+  and OPEN. They're kept out of YOUR GAMES and RUNNING NOW.
 
 Every button that posts (IMPORT AS GM, NEW CHARACTER, DELETE) pulses (`aria-busy`) from the tap until the next page is
 up, through `useTransition`, and a second tap is ignored meanwhile. `app/loading.tsx` shows SYNCING COGITATOR… the
@@ -655,6 +659,37 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   - A refusal shows inline and keeps the editor open.
   - The page-level `Refusal` banner is used only for the reveal toggle.
 
+### 3.4b ARCHIVE, the ARCHIVED banner and the ADMIN marker
+
+- **`state.campaign.archived`:** `GmApp` and `PlayerApp` show `ArchivedBanner` (`ui/archived-banner`, first in the body) when
+  it's set. The server refuses every action but `campaign.unarchive` and `campaign.delete` ("This game is archived"), so
+  the banner says why before anyone taps. The GM's has OPEN SETUP.
+- **SETUP › ARCHIVE** (`setup/components/archive-panel`): ARCHIVE GAME (`campaign.archive`, `ConfirmAction`). Once archived
+  the panel is UNARCHIVE (`campaign.unarchive`), EXPORT and DELETE GAME (`ui/delete-game`: EXPORT FIRST, then type the
+  game's name, then DELETE FOREVER, `campaign.delete { name }`). A deleted game's ack makes `GmApp` show `GAME DELETED`
+  and `router.push("/")`, which closes the socket before the server kicks the room (about 200 ms later), so the
+  disconnect never shows as NO SIGNAL.
+- **PARTY › SESSION:** END SESSION WITHOUT XP (`session.abandon`, confirmed) sits beside END SESSION, and
+  `session-history` lists the latest sessions with DELETE LAST SESSION (`session.delete`, confirmed; the server's notice,
+  that the XP it awarded stays, is shown).
+- **ADMIN chip** in the GM header when `me.admin` (`GmApp`'s `admin` prop, from `/api/campaigns/:id/me`): a Clerk admin
+  acting as GM at a table where they hold no seat.
+- `ui/confirm-action` is the app's confirm for these: the button turns into the question with CONFIRM and CANCEL.
+
+### 3.4c `/admin`: `components/admin/admin-view/`
+
+`app/admin/page.tsx` reads `/api/admin/users`, `/campaigns` and `/events` on the server (`apiGet`) and sends a signed-out
+caller, or a 401 or 403 (not an admin), to `/`. `AdminView` has two tabs, USERS and GAMES, and the ADMIN LOG under them.
+- **USERS** (`users-tab`): name, role chip (ADMIN, CREATOR, NO ROLE; Clerk stays the source), last seen, the seats held;
+  OPEN CLERK DASHBOARD for role changes; REMOVE FROM ALL GAMES (confirmed; not offered for yourself).
+- **GAMES** (`games-tab/components/game-card`): OPEN AS ADMIN (`/c/<id>`), EXPORT, ARCHIVE (confirmed) or UNARCHIVE, END
+  SESSION (`session.abandon`, confirmed), the GMs with REMOVE (`member.remove`, confirmed), ADD GM (a user picker,
+  `member.seat`) and DELETE GAME (`DeleteGame`).
+- **Calls** (`lib/admin`, `useAdminCall`): the browser POSTs `/api/admin/campaigns/:id/action` through the `/api` rewrite
+  with the Clerk cookie. A refusal comes back as HTTP 200 `{ ok: false, error }`, so `toResult` turns every shape into
+  an `ActionResult`; the line (with the server's notices) shows above the tabs, and a success runs `router.refresh()`.
+- Times are shown in UTC (`stamp`): the page renders on the server and in the browser, and two zones would differ.
+
 ### 3.4a SETUP: the set-up checklist, framework and export
 
 `Setup`.
@@ -664,6 +699,7 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
 - **Framework panel:** patron, framework, Framework Bonus, and the kind of game and limits (`TableTalk`), saved
   together with `campaign.update`; START FROM A FRAMEWORK opens `FrameworkPicker`. Players see all of it on INTEL.
 - **EXPORT:** the whole campaign as a file, for a backup or the lobby's IMPORT GAME.
+- **ARCHIVE:** shelves the game, or deletes an archived one (§3.4b).
 
 ### 3.5 PARTY: session, table access, kill team
 

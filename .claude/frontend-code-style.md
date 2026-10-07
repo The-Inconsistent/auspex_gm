@@ -96,8 +96,9 @@ const handleConditionPick = (e: ChangeEvent<HTMLSelectElement>) => { … };
 ### Mutations go through socket actions
 
 Every game change is `send(action)` from `useTable()`. That is the server's single validated, serialised mutation path
-(see CLAUDE.md). **Don't use Server Actions or REST routes for game state.** REST is only for login (`/join`, `/me`) and
-the GM bestiary.
+(see CLAUDE.md). **Don't use Server Actions or REST routes for game state.** REST is only for login (`/join`, `/me`),
+the GM bestiary, the character library (no table), and the admin page's housekeeping (`lib/admin`: an admin outside any
+table; the api runs it through the socket's own path, `TableGateway.run`).
 
 - Build actions with the `ActionInput` type from `@wg/shared`.
 - Counters send **deltas**, never absolute values.
