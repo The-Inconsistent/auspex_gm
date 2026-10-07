@@ -184,7 +184,8 @@ ties to the initiator (p.170). Round up always (p.159).
 A scene can list the Tests it expects (`BeatTest`, GitHub issue #39): the kind (Skill, Attribute, Opposed, Influence,
 Resolve, Corruption, pp.169–170), its Skill or Attribute, the DN (`DN_TABLE`, p.161; `CORRUPTION_DNS`, p.285), who
 rolls (§11.73), the Shifts the GM has ready (pp.165–166) and both outcomes (Fail Forward, p.319). It is the GM's plan
-for the scene: the app never rolls a Test.
+for the scene: the app never rolls a Test. It may roll on a book table instead: an event table in prep, or the
+Mutation tables after a failed Mutation Test (pp.287–288, GitHub issue #182), with I ROLLED beside ROLL.
 
 ## 8. Psychic powers (pp.257–267)
 
@@ -199,7 +200,13 @@ Potency Shifts; uses your Combat Action.
 Corruption Test: Conviction vs source DN + level modifier. Fail → GM +1 Ruin, gain DN − Icons (×2 on a
 Complication). Levels: 0–5 Pure (+0), 6–10 Tarnished (+1) [HOUSE: 11 belongs to Contaminated], 11–15 Contaminated
 (+2), 16–20 Tainted (+3), 21–25 Defiled (+4), 26+ Chaos Spawn (character lost). Each level increase → Mutation Test
-(Conviction vs DN 3 + level modifier; may choose to fail).
+(Conviction vs DN 3 + level modifier; may choose to fail). A Wrath Critical takes 2 off a Corruption Test's DN, a spent
+Wrath 1, never below 1 (§11.134).
+
+Mutations (pp.287–295): a failed Mutation Test rolls d6 for severity (1–2 Subtle, 3–4 Minor, 5–6 Severe), then d66 on
+that table + 10 per mutation held (§11.136); Subtle and Minor 61+ send the roll on. A held mutation is rerolled. Removing
+the mutated part removes its effect, not the Corruption. The GM adds one in PARTY › MUTATIONS (`character.mutate`); its
+always-on numbers reach the sheet (`withMutations`), the rest is its printed Effect.
 
 ## 10. What the app does with all this
 

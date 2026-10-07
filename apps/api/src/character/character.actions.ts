@@ -9,12 +9,14 @@ import {
   corruptionGain,
   corruptionLevel,
   corruptionTestDn,
+  findMutation,
+  sheetMutation,
+  MAX_MUTATIONS,
   mutationDns,
   creationKey,
   keepPlay,
   keepSheetWeapons,
   deriveStats,
-  effectiveStrength,
   gearLine,
   pcHit,
   pcStatus,
@@ -36,7 +38,7 @@ import {
   type Wargear,
   type WargearWeapon,
 } from "@wg/shared";
-import { wargear } from "@wg/data";
+import { mutationTables, wargear } from "@wg/data";
 import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { adjustPool, campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
@@ -49,6 +51,9 @@ import { character } from "./character.schema.ts";
 import { buildCatalogue, buildRefusal } from "./creation.service.ts";
 
 export type CharacterAction = Extract<Action, { type: `character.${string}` | `token.${string}` }>;
+
+// The Mutation tables, loaded once like the Wargear catalogue (Core pp.287–295).
+const MUTATIONS = mutationTables();
 
 export async function ownCharacter(tx: Tx, { campaignId, id }: { campaignId: string; id: string }) {
   const [c] = await tx
@@ -234,7 +239,11 @@ function fitUpgrade(
 // the upgrade's `fits` against (§11.63). A given relic brings its Powers as `mods` (rules-flow.md §11.116).
 function joinWeapon(stats: CharacterStats, { entry, mods = [] }: { entry?: Wargear; mods?: UpgradeMod[] }) {
   if (!entry?.weapon || stats.weapons.some((w) => w.name === entry.name)) return stats;
-  const weapon = sheetWeapon(entry as { name: string; weapon: WargearWeapon }, effectiveStrength(stats));
+  // The stored Strength, not a mutation's: the thrown range is written into the line, and a mutation can be cut off.
+  const weapon = sheetWeapon(
+    entry as { name: string; weapon: WargearWeapon },
+    stats.attributes.S + stats.armour.powered,
+  );
   return {
     ...stats,
     weapons: [...stats.weapons, { ...weapon, wargearId: entry.id, ...(mods.length ? { mods } : {}) }],
@@ -354,7 +363,13 @@ export async function applyCharacterAction(
                 ...keepPlay({ previous: old, next: r.sheet, before: r.sheet }),
                 weapons: keepSheetWeapons(old.weapons, r.sheet.weapons),
               }
-            : { ...r.sheet, ammo: old.ammo, requisitioned: old.requisitioned, corruption: old.corruption };
+            : {
+                ...r.sheet,
+                ammo: old.ammo,
+                requisitioned: old.requisitioned,
+                corruption: old.corruption,
+                mutations: old.mutations,
+              };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
       // the catalogue. `advancement` is null for a build with no `play` — a character being made has spent nothing yet.
       const xpSpent = r.advancement?.spent ?? 0;
@@ -476,6 +491,37 @@ export async function applyCharacterAction(
       if (corruptionLevel(stats.corruption).chaosSpawn && !corruptionLevel(before).chaosSpawn)
         notices.push("CHAOS SPAWN · THE GM TAKES THE AGENT OVER (pp.286, 352)");
       return notices.length ? { ok: true, notices } : { ok: true };
+    }
+
+    // A mutation rolled at the table (Core pp.287–295), snapshotted from the book data.
+    case "character.mutate": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const stats = CharacterStats.parse(row.stats);
+      const m = findMutation(MUTATIONS, a.mutationId);
+      if (!m) fail("No such mutation (Core pp.288–295)");
+      const sub = m.sub?.rows.find((r) => r.id === a.subId);
+      if (m.sub && !sub) fail(`${m.name} rolls on its ${m.sub.name} table first`);
+      if (!m.sub && a.subId) fail(`${m.name} has no table of its own`);
+      const held = new Set(stats.mutations.map((x) => x.id));
+      if (held.has(m.id)) fail(`${row.name} already has ${m.name}: reroll on the same table (Core p.287)`);
+      // The Warp Made Manifest brings others with it; one already held stays as it is.
+      const included = m.includes.flatMap((id) => {
+        const r = findMutation(MUTATIONS, id);
+        return r && !held.has(id) ? [sheetMutation(r)] : [];
+      });
+      stats.mutations.push(sheetMutation(m, sub), ...included);
+      if (stats.mutations.length > MAX_MUTATIONS) fail(`At most ${MAX_MUTATIONS} mutations`);
+      await saveStats(tx, { id: a.id, stats });
+      return m.extraRolls ? { ok: true, notices: [`ROLL ${m.extraRolls} MORE MUTATIONS (p.${m.page})`] } : { ok: true };
+    }
+
+    case "character.unmutate": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
+      const stats = CharacterStats.parse(row.stats);
+      const kept = stats.mutations.filter((x) => x.id !== a.mutationId);
+      if (kept.length === stats.mutations.length) fail(`${row.name} has no such mutation`);
+      await saveStats(tx, { id: a.id, stats: { ...stats, mutations: kept } });
+      return { ok: true };
     }
 
     case "character.requisition": {

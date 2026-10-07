@@ -222,7 +222,9 @@ export function GmApp({
                     relics={presets.relics}
                   />
                 )}
-                {tab === "PARTY" && <Party state={state} codex={codex} send={send} wargear={wargear} />}
+                {tab === "PARTY" && (
+                  <Party state={state} codex={codex} send={send} wargear={wargear} mutations={presets.mutations} />
+                )}
                 {tab === "RULES" && <RulesRef rules={rules} />}
                 {tab === "BOOKS" && <Books server={bookServer} />}
               </main>

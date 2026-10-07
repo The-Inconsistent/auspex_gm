@@ -17,12 +17,13 @@ import {
   type Codex,
   type LiveState,
   type Member,
+  type MutationTable,
   type Wargear,
 } from "@wg/shared";
 
 import { NEW_CHARACTER } from "@/components/builder/constants";
-import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
+import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
@@ -35,6 +36,7 @@ import { qrImage } from "@/lib/qr/qr";
 import { shareOrigin } from "@/lib/share-origin/share-origin";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
+import { MutationRoll } from "./components/mutation-roll/mutation-roll";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
@@ -47,13 +49,15 @@ type PartyProps = {
   codex: Codex;
   send: Send;
   wargear: Wargear[];
+  mutations: MutationTable[];
 };
 
-export function Party({ state, codex, send, wargear }: PartyProps) {
+export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
   const [reqFor, setReqFor] = useState<string | null>(null);
+  const [mutFor, setMutFor] = useState<string | null>(null); // whose MUTATIONS panel is open
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const agentFields = useFieldErrors("new-agent"); // ADD AGENT's name
@@ -421,6 +425,13 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     <button className="btn sm" onClick={() => adjCorruption(c, -1)}>
                       −1 CORRUPTION
                     </button>
+                    <button
+                      className="btn sm"
+                      aria-expanded={mutFor === c.id}
+                      onClick={() => setMutFor(mutFor === c.id ? null : c.id)}
+                    >
+                      MUTATIONS{c.stats.mutations.length ? ` (${c.stats.mutations.length})` : ""}
+                    </button>
                     <button className="btn sm danger" onClick={() => revoke(c)}>
                       REVOKE GUEST QR
                     </button>
@@ -454,6 +465,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     </select>
                   </form>
                   <CorruptionTest characters={[c]} send={send} onReport={report} />
+                  {mutFor === c.id && <MutationRoll character={c} tables={mutations} send={send} onResult={report} />}
                   <ObjectivesEditor character={c} send={send} onResult={report} />
                   {reqFor === c.id && (
                     <RequisitionForm

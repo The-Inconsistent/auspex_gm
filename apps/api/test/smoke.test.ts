@@ -947,6 +947,30 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
     ok: true,
     notices: ["RUIN IS FULL · THE +1 IS LOST (p.320)"],
   });
+
+  // A mutation (pp.287–295): snapshotted, refused twice, its mods counted, hidden from the other phone, cut off again.
+  const mutate = (mutationId: string, subId?: string) =>
+    gm.send({ type: "character.mutate", id: a.id!, mutationId, subId });
+  assert.equal((await pa.send({ type: "character.mutate", id: a.id, mutationId: "brute" })).ok, false, "GM only");
+  assert.equal((await mutate("no-such-thing")).ok, false);
+  assert.equal((await mutate("extra-appendages")).ok, false, "its own d6 table first");
+  assert.ok((await mutate("brute")).ok);
+  assert.equal((await mutate("brute")).ok, false, "a duplicate is rerolled (p.287)");
+  const mine = await pa.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 1);
+  assert.equal(mine.characters.find((c) => c.id === a.id)?.stats.mutations[0]?.mods.attributes.S, 1);
+  const theirs = await pb.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 1);
+  const unseen = theirs.characters.find((c) => c.id === a.id)?.stats.mutations[0];
+  assert.equal(unseen?.name, "Unseen", "another Agent's are unnamed");
+  assert.equal(unseen?.effect, "");
+  assert.equal(unseen?.mods.attributes.S, 1, "but count on their bars");
+  assert.deepEqual(await mutate("the-warp-made-manifest"), { ok: true, notices: ["ROLL 2 MORE MUTATIONS (p.295)"] });
+  const gmView = await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 5);
+  assert.deepEqual(
+    gmView.characters.find((c) => c.id === a.id)?.stats.mutations.map((m) => m.id),
+    ["brute", "the-warp-made-manifest", "wings", "wyrdling", "horns-spines-fangs-or-claws"],
+  );
+  assert.ok((await gm.send({ type: "character.unmutate", id: a.id, mutationId: "brute" })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 4);
 });
 
 test("table screen: a read-only seat with no character, the table's view and no book text", async (t) => {

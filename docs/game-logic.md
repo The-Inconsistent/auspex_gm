@@ -387,7 +387,7 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 | 2 | GM Round-start Seize costs 1 Ruin, same once-per-turn limit | `canSeize` (`lastSide` null → threats only), `spend()` in `turn.seize` |
 | 3 | Monstrous: free Determination, killed past Max Wounds | `threatStatus` (M → Slain); `THREAT_CLASS_RULES` chip. Determination is left to the table |
 | 4 | Withstand repeatable while Ruin lasts | not coded; a manual Ruin spend and HEAL |
-| 5 | Corruption 11 = Contaminated | `corruptionLevel` (`corruption.ts`); `CharacterStats.corruption`, changed by `character.corrupt` (a failed Test adds the gain and +1 Ruin together, and notices the Mutation Tests) |
+| 5 | Corruption 11 = Contaminated | `corruptionLevel` (`corruption.ts`); `CharacterStats.corruption`, changed by `character.corrupt` (a failed Test adds the gain and +1 Ruin together, and notices the Mutation Tests); `CharacterStats.mutations` by `character.mutate`, read through `withMutations` |
 | 6 | Passive Awareness uses Awareness | `deriveStats().passiveAwareness` |
 | 7 | Annihilation after Resilience | `pcHit` (the entered Wounds are after Resilience) |
 | 8 | "End of next Turn" = the affected character's | `combatant.expiring`, armed in `turn.start` / `turn.seize`, removed in `turn.end` |
@@ -403,7 +403,8 @@ Campaign-specific GM decisions live in the pack data, not in code; the ones the 
 
 Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / range / vision, the damage pipeline
 (§4: the GM enters the resulting Wounds or Shock), Determination, Critical Hits and Complications, Psychic powers (§8),
-Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
+the Corruption and Mutation Tests (§9: the app keeps the points, rolls on the Mutation tables and applies their
+numbers, `corruption.ts`, `mutation.ts`), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
 Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked. The live list is

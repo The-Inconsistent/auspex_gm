@@ -1,6 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { findMutation, mutationRow, severityFor, type MutationTable } from "@wg/shared";
+import {
+  CharacterStats,
+  deriveStats,
+  effectiveStrength,
+  findMutation,
+  mutationRow,
+  severityFor,
+  sheetMutation,
+  type MutationTable,
+} from "@wg/shared";
 import { mutationTables } from "./index.ts";
 
 const tables = mutationTables();
@@ -32,11 +41,33 @@ test("+10 per mutation held, past 66 the top row, which sends Subtle and Minor o
   assert.equal(at("severe", 11, 9), "the-warp-made-manifest");
 });
 
-test("a mutation or a d6 table's row is found by id; The Warp Made Manifest's inclusions exist", () => {
+test("a mutation is found by id; The Warp Made Manifest's inclusions exist", () => {
   assert.equal(findMutation(tables, "brute")?.mods.attributes.S, 1);
-  assert.equal(findMutation(tables, "visions-otherworldly")?.name, "Otherworldly");
+  assert.equal(findMutation(tables, "visions")?.sub?.rows.at(-1)?.name, "Otherworldly");
   assert.equal(findMutation(tables, "minor"), undefined, "a forward row isn't a mutation");
   const manifest = mutationRow(table("severe"), 64, 0);
   assert.ok(!("forward" in manifest) && manifest.includes.length === 3 && manifest.extraRolls === 2);
   for (const id of manifest.includes) assert.ok(findMutation(tables, id), id);
+});
+
+test("a mutation's mods reach the sheet when read, and a d6 table's row folds into its line", () => {
+  const brute = sheetMutation(findMutation(tables, "brute")!);
+  const stats = CharacterStats.parse({ attributes: { S: 3, T: 3, A: 3, I: 3, Wil: 3, Int: 3, Fel: 3 } });
+  const before = deriveStats({ stats, overrides: {}, tier: 1 });
+  const after = deriveStats({ stats: { ...stats, mutations: [brute] }, overrides: {}, tier: 1 });
+  assert.equal(after.maxWounds, before.maxWounds + 1, "+1 Toughness (Core p.290)");
+  assert.equal(effectiveStrength({ ...stats, mutations: [brute] }), 4);
+  assert.equal(stats.attributes.T, 3, "nothing is stored into the sheet");
+
+  const appendages = findMutation(tables, "extra-appendages")!;
+  const leg = sheetMutation(
+    appendages,
+    appendages.sub!.rows.find((r) => r.name === "Malformed Leg"),
+  );
+  assert.equal(leg.name, "Extra Appendages: Malformed Leg");
+  assert.equal(leg.mods.traits.speed, -1);
+  assert.match(leg.effect, /CHAOS/, "the parent's Persuasion penalty comes along");
+
+  const bile = sheetMutation(findMutation(tables, "corrosive-bile")!);
+  assert.equal(bile.weapons[0]?.damage, 8);
 });

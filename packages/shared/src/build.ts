@@ -2439,6 +2439,7 @@ export function keepPlay({
       .slice(0, 60),
     wealth: previous.wealth,
     corruption: previous.corruption, // gained in play (§9), never from the build
+    mutations: previous.mutations, // likewise (Core p.287)
     ammo: previous.ammo,
     requisitioned: previous.requisitioned,
   };
