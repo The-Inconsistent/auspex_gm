@@ -166,7 +166,8 @@ export function printCards(job: PrintJob, { state, codex, threats, wargear }: Pr
     const mob = e.asMob && e.count > 1;
     const t = prepareThreat(printed, { tier, agents, asMob: mob, profiles: e.profiles, scale: e.scale });
     const name = e.label ?? t.name;
-    if (mob) tents.push(threatTent(`${name} ×${e.count}`, t, e.marker));
+    // A Mob is one combatant named `label ?? "Name ×N"` (encounter.actions.ts `addThreat`), a GM's label taken as is.
+    if (mob) tents.push(threatTent(e.label ?? `${t.name} ×${e.count}`, t, e.marker));
     else for (let i = 0; i < e.count; i++) tents.push(threatTent(e.count > 1 ? `${name} ${i + 1}` : name, t, e.marker));
     const note = [...e.profiles.map((p) => threatProfile(p).name), ...(e.scale ? ["Scaled"] : [])].join(" · ");
     blocks.push(

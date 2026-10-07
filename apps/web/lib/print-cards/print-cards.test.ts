@@ -119,10 +119,17 @@ test("an Agent's tent carries the stats deriveStats gives the sheet", () => {
 
 test("a prepared row prints as beat.startEncounter fields it: a Mob is one tent, a count is one tent each", () => {
   const cards = printCards(
-    { encounter: [entry("boy", { count: 6, asMob: true }), entry("boy", { count: 2, label: "Grot" })] },
+    {
+      encounter: [
+        entry("boy", { count: 6, asMob: true }),
+        entry("boy", { count: 2, label: "Grot" }),
+        entry("boy", { count: 4, asMob: true, label: "Ladz" }),
+      ],
+    },
     src,
   );
-  assert.deepEqual(names(cards), ["BOY ×6", "Grot 1", "Grot 2", "BOY ×6 (mob)", "Grot ×2"]);
+  // The tracker names a labelled Mob by its label alone (encounter.actions.ts `addThreat`).
+  assert.deepEqual(names(cards), ["BOY ×6", "Grot 1", "Grot 2", "Ladz", "BOY ×6 (mob)", "Grot ×2", "Ladz ×4 (mob)"]);
 });
 
 test("a row's Profiles are applied and named in the card's note (VoA p.126)", () => {

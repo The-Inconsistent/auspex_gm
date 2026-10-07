@@ -1,5 +1,5 @@
 "use client";
-import { createContext, use, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, use, useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { PAPER_KEY, PAPERS, type Paper } from "@/lib/print-cards/constants";
 import { layoutCards, printCards, type Card, type PrintJob, type PrintSource } from "@/lib/print-cards/print-cards";
@@ -29,29 +29,36 @@ let fontsReady = false; // react-pdf keeps registered fonts per page load
 // already holds and builds a PDF in this browser. Nothing is uploaded or stored, so a print follows the screen's gates:
 // only the GM app mounts this provider. A PDF, not window.print(): its cards sit at fixed millimetres, so the sheet
 // prints the same from any device once the dialog's "100 %" is kept.
-export function PrintProvider({ source, children }: PrintProviderProps) {
+export function PrintProvider({ source: { state, codex, threats, wargear }, children }: PrintProviderProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [cards, setCards] = useState<Card[]>([]);
   const [paper, setPaper] = useState<Paper>("A4");
   const [built, setBuilt] = useState<Built>(null);
   const pages = useMemo(() => layoutCards(cards), [cards]);
   const url = useRef<string | null>(null); // the built PDF's blob URL, freed when the dialog closes or the job changes
+  // Bumped by every reset (a new job, a paper pick, CLOSE): a build that finishes after one belongs to what the dialog
+  // no longer shows, so it's dropped instead of offering the wrong cards or paper.
+  const generation = useRef(0);
 
-  const reset = () => {
+  const reset = useCallback(() => {
+    generation.current++;
     if (url.current) URL.revokeObjectURL(url.current);
     url.current = null;
     setBuilt(null);
-  };
+  }, []);
 
   // Resolved when tapped, against the state and codex of that moment.
-  const value: Print = {
-    print: (job) => {
-      reset();
-      setCards(printCards(job, source));
-      setPaper(savedPaper());
-      dialog.current?.showModal();
-    },
-  };
+  const value = useMemo<Print>(
+    () => ({
+      print: (job) => {
+        reset();
+        setCards(printCards(job, { state, codex, threats, wargear }));
+        setPaper(savedPaper());
+        dialog.current?.showModal();
+      },
+    }),
+    [reset, state, codex, threats, wargear],
+  );
 
   const pick = (p: Paper) => {
     reset();
@@ -63,16 +70,18 @@ export function PrintProvider({ source, children }: PrintProviderProps) {
 
   // The renderer (and its fonts) loads on the first build only, so the GM app's bundle doesn't carry it.
   const build = async () => {
+    const mine = generation.current;
     setBuilt("building");
     try {
       const { cardsPdf, registerFonts } = await import("@/components/print/card-sheet/card-sheet");
       if (!fontsReady) registerFonts(location.origin);
       fontsReady = true;
       const blob = await cardsPdf({ pages, paper, pictures: await picturesOf(cards) });
+      if (mine !== generation.current) return; // the job, the paper or the dialog changed while it built
       url.current = URL.createObjectURL(blob);
       setBuilt({ url: url.current });
     } catch (e) {
-      setBuilt({ error: e instanceof Error ? e.message : String(e) });
+      if (mine === generation.current) setBuilt({ error: e instanceof Error ? e.message : String(e) });
     }
   };
 
