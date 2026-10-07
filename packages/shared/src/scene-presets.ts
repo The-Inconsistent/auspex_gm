@@ -11,6 +11,7 @@ import {
   type PoolSpend,
 } from "./codex.ts";
 import { Amount } from "./creation.ts";
+import { MutationTable } from "./mutation.ts";
 import { SpaceHulkGenerator } from "./places.ts";
 import { Dice, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
@@ -370,6 +371,7 @@ export const ScenePresets = z.object({
   spaceHulk: SpaceHulkGenerator.nullable().default(null), // RR1 pp.6–11 (issue #50 step 8); likewise
   loot: z.array(LootTable).default([]), // issue #51; likewise
   relics: RelicCreator.nullable().default(null), // RR2 pp.12–19 (issue #51 step 8); likewise
+  mutations: z.array(MutationTable).default([]), // Core pp.287–295 (issue #182); likewise
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 

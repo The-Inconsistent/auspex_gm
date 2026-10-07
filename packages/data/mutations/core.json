@@ -1,0 +1,681 @@
+[
+  {
+    "severity": "subtle",
+    "name": "Subtle Mutations",
+    "source": "core",
+    "page": 288,
+    "rows": [
+      {
+        "from": 11,
+        "to": 16,
+        "id": "hint-of-red-eyes",
+        "name": "Hint Of Red Eyes",
+        "page": 288,
+        "text": "It’s subtle, and someone would have to be looking at the right time to see it — a faint glimmer of red in the iris of your eyes. The strange nature of your eyes reveals hidden things, though they are now incredibly sensitive to light. It’s common for those possessed of this mutation to wear visors to hide their eyes from observers and harsh light.",
+        "effect": "You gain +1 bonus dice to Awareness (Int) Tests. You also suffer +1 DN to any actions requiring vision or visual coordination while in areas of light (daylight or stronger) or during a round of exposure to light (flamer burst, stab-light, etc.). Visors and lenses that shade the eyes remove both the bonus and penalty."
+      },
+      {
+        "from": 21,
+        "to": 26,
+        "id": "voice-of-the-aurelian",
+        "name": "Voice Of The Aurelian",
+        "page": 288,
+        "text": "Such a melliferous voice could charm the gods or sway a world. Indeed, in times past it did. But such golden tones that drip wonder and light also reach beyond the veil, and daemons crowd to listen.",
+        "effect": "You gain +Rank bonus dice when making any social Test. However, such glibness is dangerous; any Psykers within 25 m of you (excluding you) must reroll any Wrath Dice that don’t generate a Complication on any Psychic Mastery rolls they make."
+      },
+      {
+        "from": 31,
+        "to": 33,
+        "id": "living-shadow",
+        "name": "Living Shadow",
+        "page": 288,
+        "text": "Something inside you has been twisted, but it doesn’t show anywhere on your flesh. Your shadow has a life of its own, and moves independently of your body. It does not fall naturally away from a light source, and all around it the Warp slowly bleeds into the world.",
+        "effect": "The Living Shadow opens a gateway to your soul. Any rolls to oppose a psychic power or resist its effects are made at +1 DN. However, the curious nature of this mutation makes you aware of any ambush as if you had spent a point of Glory."
+      },
+      {
+        "from": 34,
+        "to": 36,
+        "id": "gossamer-flesh",
+        "name": "Gossamer Flesh",
+        "page": 288,
+        "text": "Your mutated skin is impossibly soft and silky, with a heightened sense of receptive touch that goes beyond the sublime. Contact sensation is increased six-thousand fold, which for some is a glorious wonder and for others a true curse.",
+        "effect": "Gossamer Flesh reduces your Base Resilience and Max Shock values by 1 and imposes a +1 DN penalty to resist experiences of painful physical contact. However, it also gives a sense of touch so refined that you can read a page of writing with your fingertips alone. You gain +Double Rank bonus dice to Awareness (Int) Tests involving touch, and can attempt otherwise impossible feats.",
+        "mods": {
+          "traits": {
+            "resilience": -1,
+            "maxShock": -1
+          }
+        }
+      },
+      {
+        "from": 41,
+        "to": 43,
+        "id": "visions",
+        "name": "Visions",
+        "page": 289,
+        "text": "The Warp twists your mind and time itself. Without warning, your awareness is flooded with visions of past experiences, things yet to come, or nightmarish otherworldly horrors.",
+        "effect": "Whenever you roll a Complication on the Wrath Dice you may choose to activate the following effect. Alternatively, the GM can spend a Ruin to force this effect to activate. Roll on the Visions table below. The vision lasts for the remainder of the scene, during which time you suffer a +3 DN penalty to all other actions as you hallucinate.",
+        "sub": {
+          "name": "Visions",
+          "dice": "d6",
+          "rows": [
+            {
+              "from": 1,
+              "to": 1,
+              "id": "visions-dark-futures",
+              "name": "Dark Futures",
+              "page": 289,
+              "text": "",
+              "effect": "You see the future ahead, and it is filled with terror. When the vision ends you feel an impending sense of mortal doom, and your Wrath pool is reduced by 1 for the session."
+            },
+            {
+              "from": 2,
+              "to": 3,
+              "id": "visions-false-divination",
+              "name": "False Divination",
+              "page": 289,
+              "text": "",
+              "effect": "You have a vision of a possible future spelling catastrophe for yourself and your allies, and nothing you can do can stop this from occurring. Fate, it seems, is set. You suffer a +1 DN penalty to your next Test."
+            },
+            {
+              "from": 4,
+              "to": 5,
+              "id": "visions-true-divination",
+              "name": "True Divination",
+              "page": 289,
+              "text": "",
+              "effect": "You have a vision of a possible future spelling catastrophe for yourself and your allies. However, the skeins of fate reveal just enough that such may be averted! You gain +1 bonus dice to your next Test. The vision may be entirely false or uncannily accurate."
+            },
+            {
+              "from": 6,
+              "to": 6,
+              "id": "visions-otherworldly",
+              "name": "Otherworldly",
+              "page": 289,
+              "text": "",
+              "effect": "You experience a vision taken straight from the heart of the Warp. Each time you suffer this vision, you must make a DN 9 Corruption Test."
+            }
+          ]
+        }
+      },
+      {
+        "from": 44,
+        "to": 46,
+        "id": "echoes",
+        "name": "Echoes",
+        "page": 289,
+        "text": "You go forward, you come back. This mutation misplaces you in time, moving you forwards or backwards on the whim of the Ruinous Powers.",
+        "effect": "Whenever you roll a Complication you may choose to activate the following effect. Alternatively, the GM can spend a Ruin to force this effect to activate. For the remainder of the scene you must reroll any Wrath Dice once per Test, unless you rolled a Complication or a Wrath Critical."
+      },
+      {
+        "from": 51,
+        "to": 53,
+        "id": "blighted-soul",
+        "name": "Blighted Soul",
+        "page": 289,
+        "text": "A sickness of spirit has infected you. Like all infections it seeks to spread, to weaken the host and finally consume that which it inhabits.",
+        "effect": "Corruption and Malignancy Tests you and anyone within 10 m of you make suffer a +1 DN penalty. Your blighted form becomes a little more resistant to toxins, giving you +1 bonus dice to Tests to resist poisons."
+      },
+      {
+        "from": 54,
+        "to": 56,
+        "id": "wyrdling",
+        "name": "Wyrdling",
+        "page": 290,
+        "text": "Exposure to Corruption transforms you into a Psyker.",
+        "effect": "If you are not a Psyker, you gain the PSYKER Keyword. You also gain one Minor Psychic Power of the GM’s choice. You can now purchase the Psychic Mastery Skill whenever the GM deems it appropriate. If you are already a Psyker, you gain an additional Minor Psychic Power.",
+        "keywords": [
+          "PSYKER"
+        ],
+        "gm": "The GM picks the Minor Psychic Power."
+      },
+      {
+        "from": 61,
+        "to": 66,
+        "forward": "minor",
+        "text": "Roll on the Minor Mutations table"
+      }
+    ]
+  },
+  {
+    "severity": "minor",
+    "name": "Minor Mutations",
+    "source": "core",
+    "page": 288,
+    "rows": [
+      {
+        "from": 11,
+        "to": 16,
+        "id": "misshapen",
+        "name": "Misshapen",
+        "page": 290,
+        "text": "Your body contorts in response to Corruption as tissues change shape, growing or shrinking in unhealthy ways. Muscles, tendons, and even bones change in size.",
+        "effect": "Your constant agony decreases your maximum Shock by 1. However, your exposure to constant pain inures you to threats and mental assault, increasing your Resolve by +2.",
+        "mods": {
+          "attributes": {},
+          "skills": {},
+          "traits": {
+            "maxShock": -1,
+            "resolve": 2
+          }
+        }
+      },
+      {
+        "from": 21,
+        "to": 26,
+        "id": "grotesque",
+        "name": "Grotesque",
+        "page": 290,
+        "text": "Corruption flows through your body, altering it at a cellular level. These changes are purely cosmetic, but they mark you well. Vicious scars emerge from injuries that you have never suffered. Facial features may take on a decidedly bestial slant. Limbs may slightly change length or joints may bend in the wrong direction.",
+        "effect": "Your new appearance is unnerving to all. You receive +1 bonus dice to all Intimidation (Wil) Tests, but your grotesquery imposes +1 DN to all other social interactions with characters who do not have the CHAOS Keyword."
+      },
+      {
+        "from": 31,
+        "to": 33,
+        "id": "bestial-hide",
+        "name": "Bestial Hide",
+        "page": 290,
+        "text": "Your skin thickens and changes shape to resemble that of an animal. It may take on a thick leathery aspect, the scales of a fish, or the exoskeleton of an insect. You may choose the nature of the new appearance, but it must be markedly different from your appearance prior to the mutation.",
+        "effect": "Your thickened skin grants a +1 to Resilience. You receive +1 bonus dice to all Intimidation (Wil) Tests, but you also suffer a +2 DN penalty to all other social interactions with characters who do not have the CHAOS Keyword.",
+        "mods": {
+          "attributes": {},
+          "skills": {},
+          "traits": {
+            "resilience": 1
+          }
+        },
+        "gm": "Player chooses the new appearance (leathery, scaled, insectoid...), markedly different from before."
+      },
+      {
+        "from": 34,
+        "to": 43,
+        "id": "brute",
+        "name": "Brute",
+        "page": 290,
+        "text": "Corruption massively accelerates your muscle growth. You are brawny and burly, but the increased muscle mass is obviously inhuman in nature.",
+        "effect": "Your sudden growth grants +1 to Strength and Toughness. Most tools and devices are now too small for you to easily use. Unless you acquire modified versions, you suffer a +1 DN penalty to all Tests that involve physical manipulation of tools, including all ranged weapons.",
+        "mods": {
+          "attributes": {
+            "S": 1,
+            "T": 1
+          },
+          "skills": {},
+          "traits": {}
+        }
+      },
+      {
+        "from": 44,
+        "to": 46,
+        "id": "horns-spines-fangs-or-claws",
+        "name": "Horns, Spines, Fangs, or Claws",
+        "page": 290,
+        "text": "Exposure causes you to grow horns, spines, fangs, or claws. You may choose which of these mutations arise and the location and shape of the deformation. The new growths are an inherent part of your body. They grow back if broken or if you attempt to have them removed. You have full feeling in these growths.",
+        "effect": "You may make melee attacks with these new growths. When these growths are visible, you suffer +2 DN to all social interactions unless the target character has the CHAOS Keyword.\nHORN, SPIKE OR CLAW: Damage (S) +5, ED Rank",
+        "weapons": [
+          {
+            "name": "Horn, Spike or Claw",
+            "profile": {
+              "addStrength": true,
+              "damage": 5,
+              "ed": "Rank",
+              "range": [
+                1
+              ],
+              "traits": []
+            }
+          }
+        ],
+        "gm": "Player chooses which growths (horns, spines, fangs, claws) and their location and shape."
+      },
+      {
+        "from": 51,
+        "to": 53,
+        "id": "corrosive-miasma",
+        "name": "Corrosive Miasma",
+        "page": 291,
+        "text": "You are surrounded by a miasma of subtle acids and toxins that spill forth from pores and sweat glands. This cloud causes no direct harm to you, but it does cause increased wear on all of your wargear and other possessions. Consequently, equipment must be replaced regularly, or else becomes ragged and corroded.",
+        "effect": "Whenever you suffer a Complication, you may choose to have one item of Wargear crumble and become useless. The GM can spend a point of Ruin to choose the item of Wargear. When you make a melee attack you may Shift to give the target the Poisoned Condition with a damage of 1 Mortal Wound."
+      },
+      {
+        "from": 54,
+        "to": 56,
+        "id": "toxic-blood",
+        "name": "Toxic Blood",
+        "page": 291,
+        "text": "Corruption transforms your blood into a non-biological substance. Radioactive materials, toxic metals, or even more exotic substances may flow through your veins.",
+        "effect": "Getting any medical treatment is far more difficult and dangerous due to your unusual bodily fluids. Any Medicae (Int) Test made on you suffers a +2 DN penalty. If the Medicae (Int) Test suffers a Complication, the person administering treatment must succeed on a DN 4 Toughness Test or suffer 1 Mortal Wound when bodily fluids splash them.\nYour unusual physiology confers resistance to many biological attacks. You are immune to the Poisoned condition and disease."
+      },
+      {
+        "from": 61,
+        "to": 66,
+        "forward": "severe",
+        "text": "Reroll on the Severe Mutations table"
+      }
+    ]
+  },
+  {
+    "severity": "severe",
+    "name": "Severe Mutations",
+    "source": "core",
+    "page": 288,
+    "rows": [
+      {
+        "from": 11,
+        "to": 12,
+        "id": "extra-appendages",
+        "name": "Extra Appendages",
+        "page": 291,
+        "text": "The influence of Corruption has Warped your body; roll on the table below to determine the nature of the appendage.\nUnless you can somehow conceal the extra limb, you suffer a minimum +2 DN penalty to Persuasion (Fel) Tests when dealing with characters who do not have the CHAOS Keyword. Any of these limbs require unusual modifications to your armour and clothing.",
+        "sub": {
+          "name": "Extra Appendage",
+          "dice": "d6",
+          "rows": [
+            {
+              "from": 1,
+              "to": 1,
+              "id": "extra-appendages-head",
+              "name": "Head",
+              "page": 291,
+              "text": "A shrunken head with a face similar to yours grows on your shoulder.",
+              "effect": "Once per session, the GM may spend a point of Ruin to force you to make a Conviction Test (DN 5). If you fail, the shrunken head does whatever it can to make your life difficult, such as saying the most inconvenient thing possible, biting at a helping hand, or shouting to reveal your location."
+            },
+            {
+              "from": 2,
+              "to": 2,
+              "id": "extra-appendages-malformed-arm",
+              "name": "Malformed Arm",
+              "page": 291,
+              "text": "This arm isn’t good for anything except identifying you as a mutant."
+            },
+            {
+              "from": 3,
+              "to": 3,
+              "id": "extra-appendages-strong-arm",
+              "name": "Strong Arm",
+              "page": 291,
+              "text": "You can use this arm as well as you can use your off-hand.",
+              "effect": "You may Multi-Attack or Multi-Action using this arm, and may ignore the first +2DN penalty for these actions."
+            },
+            {
+              "from": 4,
+              "to": 4,
+              "id": "extra-appendages-malformed-leg",
+              "name": "Malformed Leg",
+              "page": 291,
+              "text": "This leg isn’t good for anything except making standard clothing and armour fit improperly.",
+              "effect": "–1 Speed.",
+              "mods": {
+                "attributes": {},
+                "skills": {},
+                "traits": {
+                  "speed": -1
+                }
+              }
+            },
+            {
+              "from": 5,
+              "to": 5,
+              "id": "extra-appendages-strong-leg",
+              "name": "Strong Leg",
+              "page": 291,
+              "text": "This leg balances you on unsteady surfaces.",
+              "effect": "You may Brace to fire a Heavy weapon as a Free Action (p.189)."
+            },
+            {
+              "from": 6,
+              "to": 6,
+              "id": "extra-appendages-prehensile-tail",
+              "name": "Prehensile Tail",
+              "page": 291,
+              "text": "A fleshy, muscular tail as strong and flexible as a human limb.",
+              "effect": "Can be used as a Strong Arm or a Strong Leg."
+            }
+          ]
+        }
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "id": "aberration",
+        "name": "Aberration",
+        "page": 292,
+        "text": "The force of Corruption transforms you, twisting your flesh in truly bestial ways to turn you into a hybrid beastman. Roll on the table below to establish which animalistic traits you gain. While the example animals are all terrestrial, you are encouraged to coin names for species from other planets that fulfil similar niches. If you and the GM wish to use another animal, we encourage you to do so using these examples as a model.\nWhen this mutation is visible you suffer a minimum +2 DN penalty to all social interactions unless the target character has the CHAOS Keyword.",
+        "sub": {
+          "name": "Aberrations",
+          "dice": "d6",
+          "rows": [
+            {
+              "from": 1,
+              "to": 1,
+              "id": "aberration-equidae-horse",
+              "name": "Equidae (Horse)",
+              "page": 292,
+              "text": "Your body is covered with equine hair, your head distends into that of an equine, and you grow a lengthy mane and tail. Your feet transform into hooves and your legs become digitigrade. You must modify any clothing or armour worn on your head or lower body to have it fit.",
+              "effect": "You gain +1 Toughness and +1 Speed.",
+              "mods": {
+                "attributes": {
+                  "T": 1
+                },
+                "skills": {},
+                "traits": {
+                  "speed": 1
+                }
+              }
+            },
+            {
+              "from": 2,
+              "to": 2,
+              "id": "aberration-testudinidae-tortoise",
+              "name": "Testudinidae (Tortoise)",
+              "page": 292,
+              "text": "You lose all body hair and your torso becomes encased in a thick shell, into which you may withdraw your head and limbs. All clothing and armour must be modified to accommodate the extreme physiological transformation.",
+              "effect": "You gain +1 Toughness and +1 Base Resilience.",
+              "mods": {
+                "attributes": {
+                  "T": 1
+                },
+                "skills": {},
+                "traits": {
+                  "resilience": 1
+                }
+              }
+            },
+            {
+              "from": 3,
+              "to": 3,
+              "id": "aberration-caprinae-goat",
+              "name": "Caprinae (Goat)",
+              "page": 292,
+              "text": "Your body is covered with coarse caprine hair, your head distends into that of a goat, and you grow horns upon your brow. Your feet transform into hooves and your legs become digitigrade. You must modify any clothing or armour worn on the head or lower body to have it fit.",
+              "effect": "You gain +1 Athletics. You may make melee attacks with your horns, treating them as if they were a knife.",
+              "mods": {
+                "attributes": {},
+                "skills": {
+                  "Athletics": 1
+                },
+                "traits": {}
+              }
+            },
+            {
+              "from": 4,
+              "to": 4,
+              "id": "aberration-carcharodon-shark",
+              "name": "Carcharodon (Shark)",
+              "page": 292,
+              "text": "You lose all body hair, and your skin becomes rough to the touch. You grow gills, which you can distend at will for aquatic respiration. Your jaws expand and your mouth fills with massive fangs.",
+              "effect": "You cannot Suffocate underwater. You may make melee attacks with your fangs, treating them as if they were a knife."
+            },
+            {
+              "from": 5,
+              "to": 5,
+              "id": "aberration-canidae-dog",
+              "name": "Canidae (Dog)",
+              "page": 292,
+              "text": "Your body is covered with fur, your head distends into that of a dog, including pointed or dropped ears. Your senses of smell and hearing improve. Your feet transform into paws and your legs become digitigrade. You must modify any clothing or armour worn on the head or lower body to have it fit.",
+              "effect": "You gain +1 Speed and +2 bonus dice to all Awareness Tests based on smell and sound.",
+              "mods": {
+                "attributes": {},
+                "skills": {},
+                "traits": {
+                  "speed": 1
+                }
+              }
+            },
+            {
+              "from": 6,
+              "to": 6,
+              "id": "aberration-aquila-eagle",
+              "name": "Aquila (Eagle)",
+              "page": 292,
+              "text": "Your body is covered in feathers, a hooked beak emerges from your face, and your ears shrink. Your vision sharpens substantially. Your feet transform into scaly, hooked talons, and your legs become digitigrade. You must modify any clothing or armour worn on the head or lower body to have it fit.",
+              "effect": "You gain +2 bonus dice to Awareness Tests based on sight. You may make melee attacks with your beak, treating it as if it was a knife."
+            }
+          ]
+        }
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "id": "corrupted-flesh",
+        "name": "Corrupted Flesh",
+        "page": 292,
+        "text": "Your flesh and organs undergo transformations such that you are no longer a single living organism. The grotesque possibilities of your mutation include: maggots crawling through your veins instead of blood; a nest of spiders dwelling within your intestines, devouring any food consumed; serpents squirming under your flesh in place of muscles; or anything else you can come up with. While many of these traits are not immediately visible, when your flesh is exposed unnatural movements may sometimes be observed shifting beneath the skin. Whenever you suffer grievous injury, these creatures are fully exposed.",
+        "effect": "You gain +2 Toughness. All Medicae (Int) Tests made on you suffer a +2 DN penalty.",
+        "mods": {
+          "attributes": {
+            "T": 2
+          },
+          "skills": {},
+          "traits": {}
+        }
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "id": "wings",
+        "name": "Wings",
+        "page": 293,
+        "text": "Enormous wings sprout from your shoulders, granting a wingspan of more than double your height. They may resemble those of a bird, a bat, an insect, or something else entirely. You can fold the wings, so that they do not extend out from the body, but they cannot be fully concealed.",
+        "effect": "All torso clothing and armour must be modified to accommodate the physiological transformation. You can Fly at double your normal Speed. These wings are inherently clumsy; make an Athletics (S) Test for any manoeuverability difficulties while aloft."
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "id": "serpentine-body",
+        "name": "Serpentine Body",
+        "page": 293,
+        "text": "Your legs fuse together, and your body from the waist down transforms into that of a snake, complete with scales. You can no longer walk without assistance, slithering along the ground instead.",
+        "effect": "Any clothing or armour worn on the lower body must be modified to accommodate the physiological transformation. You gain +2 Wounds and +1 Resilience due to your toughened lower body’s hide and musculature. You’re always considered to be Crawling, but you don’t halve your Speed when doing so. You can Run and Sprint as normal. You’re always considered Prone, but don’t suffer penalties for this status.",
+        "mods": {
+          "attributes": {},
+          "skills": {},
+          "traits": {
+            "maxWounds": 2,
+            "resilience": 1
+          }
+        }
+      },
+      {
+        "from": 25,
+        "to": 26,
+        "id": "cannibalistic-drive",
+        "name": "Cannibalistic Drive",
+        "page": 293,
+        "text": "Corruption triggers ghoulish desire. You can only receive sustenance from the flesh of sentient species. Any other food is tasteless and provides no nutritive value. You can subsist upon less food than a typical member of your species, typically only a pound per week. You also receive a newfound vigour from consuming the meat. However, if you do not partake, your mutated body begins to degrade.",
+        "effect": "You gain +2 to Toughness and Strength. You must consume one pound of flesh taken from a sentient creature each week. You need no other food or water. Every week you go without, you must make a DN 8 Conviction Test or suffer a cumulative +1 DN penalty to all actions. The penalty is eliminated as soon as you consume the appropriate flesh. If the cumulative penalty exceeds 4, you lapse into a coma until you consume the substance. Placing flesh in your mouth restores you from the coma enough that you can consume it, but you may not take any other action until the pound of flesh is devoured.",
+        "mods": {
+          "attributes": {
+            "T": 2,
+            "S": 2
+          },
+          "skills": {},
+          "traits": {}
+        }
+      },
+      {
+        "from": 31,
+        "to": 32,
+        "id": "withered",
+        "name": "Withered",
+        "page": 293,
+        "text": "A miasma of death lingers around you. Your body is severely emaciated, your breath stinks of decay, and your voice rasps like a desert wind. Your complexion takes on a deathly pallor. Your limbs appear as if they would have no strength, and might even snap if any pressure were applied to them. You appear to be firmly in death’s gasp, yet are somehow still alive, having learned to endure suffering that might shatter another’s mind.",
+        "effect": "You suffer –1 Toughness, and gain +2 Willpower.",
+        "mods": {
+          "attributes": {
+            "T": -1,
+            "Wil": 2
+          },
+          "skills": {},
+          "traits": {}
+        }
+      },
+      {
+        "from": 33,
+        "to": 34,
+        "id": "vile-alacrity",
+        "name": "Vile Alacrity",
+        "page": 293,
+        "text": "You constantly shudder and shake with irrational and unnatural movements. You move almost faster than the eye can see, leaping from place to place without seeming to have traversed the intervening distance. Your speech, face, and eyes cycle through emotional states as quickly as your body moves, leaving viewers confused as to your feelings and intent.",
+        "effect": "You gain +2 Speed and +1 bonus dice to Athletics (S) Test. Your expressions and tone cause a minimum +2 DN penalty to social interaction Tests against targets that do not have the CHAOS Keyword.",
+        "mods": {
+          "attributes": {},
+          "skills": {},
+          "traits": {
+            "speed": 2
+          }
+        }
+      },
+      {
+        "from": 35,
+        "to": 36,
+        "id": "fleshmetal",
+        "name": "Fleshmetal",
+        "page": 293,
+        "text": "The energy of Corruption fuses your body with your armour and any augmetic implants. These items change in appearance to take on a more organic form, though their function remains unchanged. When the equipment suffers damage, it heals in the same way as your body. However, in healing, the equipment acquires scars, which are organic in appearance. If your armour covers bodily orifices, new organic portals emerge so that you may continue your tortured existence.",
+        "effect": "The union of flesh and armour increases your Wounds and Shock by 2. You can no longer remove worn armour, including helmets, gauntlets, and similar components, as they are a part of your body. Your strange visage causes a minimum +2 DN penalty to social interaction Tests against targets that do not have the CHAOS Keyword.",
+        "mods": {
+          "attributes": {},
+          "skills": {},
+          "traits": {
+            "maxWounds": 2,
+            "maxShock": 2
+          }
+        }
+      },
+      {
+        "from": 41,
+        "to": 42,
+        "id": "corrosive-bile",
+        "name": "Corrosive Bile",
+        "page": 294,
+        "text": "Your bodily fluids are entirely transformed into a toxic bile. Any time you suffer a Wound, the injury sprays out an arc of poisonous and corrosive fluid. You may also choose to vomit up this nightmarish spew upon all characters within a 2-m radius. The substance violates any understanding of physiology, making medical treatment extremely difficult.",
+        "effect": "All Medicae (Int) Tests made to assist you suffer a +3 DN penalty. Any time you suffer the Bleeding condition, you spray corrosive fluids on all characters in a 2 m diameter circle. Similarly, you can make a vomit attack with a 2 m range once per scene. Either type of attack is taken as a Free Action, using your Ballistic Skill against eligible targets.",
+        "weapons": [
+          {
+            "name": "Corrosive Bile",
+            "profile": {
+              "damage": 8,
+              "ed": 1,
+              "range": [
+                2
+              ],
+              "traits": [
+                "Assault",
+                "Toxic (7)",
+                "Rending (1)",
+                "Spread"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "from": 43,
+        "to": 44,
+        "id": "corpulent",
+        "name": "Corpulent",
+        "page": 294,
+        "text": "Corruption distends your body horrifically, leaving you mutated and massively swollen. Your body mass is tripled, your height increased by about 5%, and your body more than doubles in width. Your worn clothing expands to accommodate this growth, though it does tear in places, revealing the inflamed and putrescent flesh beneath.",
+        "effect": "You gain +2 Toughness. Your added mass provides +1 bonus dice to Intimidation (Wil) Tests.",
+        "mods": {
+          "attributes": {
+            "T": 2
+          },
+          "skills": {},
+          "traits": {}
+        }
+      },
+      {
+        "from": 45,
+        "to": 46,
+        "id": "an-excess-of-eyes",
+        "name": "An Excess of Eyes",
+        "page": 294,
+        "text": "Your body is covered in numerous eyes that frequently blink and are intensely observant. In many cases, clusters of eyes may replace other orifices entirely. The eyes are fully functional, providing you with incredible awareness of your surroundings. Your grotesque appearance makes you particularly loathsome, haunting the nightmares of any who see your pitiable, eye-coated flesh.",
+        "effect": "You gain +2 Awareness and your Passive Awareness increases by 3. You gain +2 Defence. Your strange visage causes a minimum +2 DN penalty to social interaction Tests against targets that do not have the CHAOS Keyword.",
+        "mods": {
+          "attributes": {},
+          "skills": {
+            "Awareness": 2
+          },
+          "traits": {
+            "passiveAwareness": 3,
+            "defence": 2
+          }
+        }
+      },
+      {
+        "from": 51,
+        "to": 52,
+        "id": "enduring-life",
+        "name": "Enduring Life",
+        "page": 294,
+        "text": "The power of Corruption preserves your life, no matter how badly you are injured or might even wish for your existence to end. This seeming immortality comes at a terrible price, as Corruption demands its due. Your connection to unnatural horrors continues to grow, almost inevitably dooming you to transformation into a Chaos Spawn.",
+        "effect": "You cannot die. Whenever you take a Traumatic Wound you gain 1d6 Corruption points."
+      },
+      {
+        "from": 53,
+        "to": 54,
+        "id": "aquatic",
+        "name": "Aquatic",
+        "page": 294,
+        "text": "Your lungs are absorbed into your body, while functional gills form on your neck with corresponding slits. You lose the ability to breathe air. Instead, you survive through respiration of aerated water. Your fingers and toes become webbed, and you gain the ability to see clearly underwater and in dim lighting conditions. You need to wear a water circulation apparatus that delivers aerated water to your gills to function normally outside of water. Verbal communication remains possible but requires you to expel air from the digestive tract instead of the lungs.",
+        "effect": "You no longer treat water as Difficult Terrain, and so may Swim at full Speed without an Athletics Test. You no longer suffer from Suffocation (p.200) when under water. However, you cannot breathe air and begin to suffocate when your gills are not submerged in water.",
+        "gear": [
+          {
+            "name": "Water Circulation Apparatus",
+            "value": 3,
+            "rarity": "Uncommon"
+          }
+        ]
+      },
+      {
+        "from": 55,
+        "to": 56,
+        "id": "amorphous",
+        "name": "Amorphous",
+        "page": 295,
+        "text": "Your bones, cartilage, and tendons dissolve under the force of Corruption. Somehow you remain alive as a shapeless mound of flesh, granted form only through the shape of your skin. You retain all of your organs, and they continue to function as they would in a normal individual. You may extend any sense organ upon a pseudopod, just as a normal person would turn their head or lean to look more closely at an object. You can also extend pseudopods to grasp objects, but these flexible temporary limbs are not capable of supporting your weight.",
+        "effect": "You are no longer capable of wearing clothing or armour. You gain +2 Toughness due to the rearrangement of your organs. All of your movement is Crawling (p.180). You can Run and Sprint. You are always considered Prone, but don’t suffer the penalties for this status. You gain a +1 bonus dice to Intimidation (Wil) Tests, but suffer a minimum +6 DN penalty to all other social interaction Tests when dealing with characters who do not have the CHAOS Keyword.",
+        "mods": {
+          "attributes": {
+            "T": 2
+          },
+          "skills": {},
+          "traits": {}
+        }
+      },
+      {
+        "from": 61,
+        "to": 63,
+        "id": "afflicted",
+        "name": "Afflicted",
+        "page": 295,
+        "text": "Your body is shattered by the Corruption that flows through it continuously. New wounds emerge even before old ones have completely healed. These wounds weep blood and pus constantly. Your body bulges with tumours, some of which emerge at unnatural angles. You remain in a state of constant agony — yet these changes harden your mutated form, leaving you capable of surviving through ever greater injury.",
+        "effect": "You gain +3 Wounds. You gain +2 bonus dice to Intimidation (Wil) Tests, but suffer a minimum +2 DN penalty to social interaction Tests when dealing with characters who do not have the CHAOS Keyword.",
+        "mods": {
+          "attributes": {},
+          "skills": {},
+          "traits": {
+            "maxWounds": 3
+          }
+        }
+      },
+      {
+        "from": 64,
+        "to": 66,
+        "id": "the-warp-made-manifest",
+        "name": "The Warp Made Manifest",
+        "page": 295,
+        "text": "You are transformed into a daemon-like entity. You begin to recognise an inherent ability to overcome reality, impacted by the amount of Corruption that now flows through you.",
+        "effect": "You gain Wings (p.293), Wyrdling (p.290), and Horns, Spines, Fangs, or Claws (p.290). You must roll 2 additional mutations, rerolling on the Severe Mutations table if you roll The Warp Made Manifest a second time. You may substitute Willpower for any other Attribute when making any Test.",
+        "includes": [
+          "wings",
+          "wyrdling",
+          "horns-spines-fangs-or-claws"
+        ],
+        "extraRolls": 2
+      }
+    ]
+  }
+]

@@ -868,6 +868,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      plus the new level's modifier. The book doesn't say what happens when one gain crosses two levels. Entering Chaos
      Spawn gives no Mutation Test: the GM takes the character over (p.286) (`mutationDns`). *Approved by the GM,
      2026-10-07.*
+136. **The +10 per mutation held counts on every Mutation table roll** (Core p.287; GitHub issue #182). The book adds
+     10 "to the result of the roll" for each prior mutation, and doesn't say whether a roll the Subtle or Minor table's
+     top row sends on is a new roll. It is: the +10s are added again on the next table, and a result past 66 is the
+     top row, so a well-mutated Agent slides toward the Severe table and The Warp Made Manifest (`mutationRow`).
+     *Approved by the GM, 2026-10-07.*
 140. **A Faction at Advanced Creation brings what an Archetype's Faction does, and no more** (Core p.38). The book lets
      an Advanced build "choose a Faction", receive "any Faction bonuses and background options as normal" and have the
      GM help work out its Keywords. `advanced.factionId` (optional, no XP, no GM tick) grants the Keywords the Faction
