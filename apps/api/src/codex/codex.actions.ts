@@ -28,8 +28,7 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { checkThreats } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "./codex.schema.ts";
-import { codexImage } from "./image.schema.ts";
-import { sweepImages } from "./image.store.ts";
+import { hasImage, sweepImages } from "./image.store.ts";
 
 export type CodexAction = Extract<
   Action,
@@ -47,14 +46,7 @@ export type CodexAction = Extract<
 
 const codexTable = { faction, adventure, beat, location, npc, handout, item } as const;
 type RefTable =
-  | typeof faction
-  | typeof adventure
-  | typeof location
-  | typeof npc
-  | typeof handout
-  | typeof item
-  | typeof character
-  | typeof codexImage;
+  typeof faction | typeof adventure | typeof location | typeof npc | typeof handout | typeof item | typeof character;
 
 // Every id the client sends must name a row of this campaign; the FKs alone would accept another campaign's row.
 async function checkRefs(
@@ -109,8 +101,12 @@ export async function applyCodexAction(
       const data: Record<string, unknown> = { ...a.data };
       const refs = (table: RefTable, ids: unknown[], what: string) =>
         checkRefs(tx, { campaignId: cid, table, ids, what });
-      if (a.kind === "npc" || a.kind === "location" || a.kind === "handout")
-        await refs(codexImage, [(a.data as { imageId: string | null }).imageId], "Image");
+      // A picture is a nice-to-have (issue #199): one that isn't this campaign's, or is gone (swept, or removed on another
+      // tablet), is saved as no picture rather than refusing the GM's edit. Never another campaign's, either way.
+      if (a.kind === "npc" || a.kind === "location" || a.kind === "handout") {
+        const imageId = (a.data as { imageId: string | null }).imageId;
+        if (imageId && !(await hasImage(tx, cid, imageId))) data.imageId = null;
+      }
       if (a.kind === "beat") {
         const b = a.data as z.output<typeof CodexInput.beat>;
         await refs(adventure, [b.adventureId], "Adventure");

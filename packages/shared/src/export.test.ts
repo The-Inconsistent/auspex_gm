@@ -99,9 +99,21 @@ test("a file from before pictures loads with none, and a fresh start holds every
   const shown = structuredClone(file);
   shown.codex.npcs[0]!.imageRevealed = true;
   assert.equal(freshStart(shown).codex.npcs[0]!.imageRevealed, false);
+});
+
+test("a bad picture never refuses a file: it parses as none, for the importer to leave out (issue #199)", () => {
+  const good = { id: "00000000-0000-4000-8000-0000000000aa", mime: "image/webp", base64: "UklGRg==" };
+  const parsed = CampaignExport.parse({ ...file, images: [{ id: "x", mime: "image/png", base64: "" }, good] });
+  assert.deepEqual(parsed.images, [null, good]);
+  assert.deepEqual(CampaignExport.parse({ ...file, images: "not a list" }).images, []);
+  const many = Array.from({ length: 250 }, (_, i) => ({
+    ...good,
+    id: `00000000-0000-4000-8000-${String(i).padStart(12, "0")}`,
+  }));
   assert.equal(
-    CampaignExport.safeParse({ ...file, images: [{ id: "x", mime: "image/png", base64: "" }] }).success,
-    false,
+    CampaignExport.parse({ ...file, images: many }).images.length,
+    250,
+    "past the cap: the store drops and counts",
   );
 });
 

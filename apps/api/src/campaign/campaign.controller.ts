@@ -128,7 +128,8 @@ export class CampaignController {
     const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
-    const file = await exportCampaign(ctx.campaignId);
+    // EXPORT WITHOUT PICTURES (?pictures=0): a small file, for a campaign whose pictures outgrow IMPORT GAME (issue #199).
+    const file = await exportCampaign(ctx.campaignId, { pictures: req.query.pictures !== "0" });
     const slug =
       file.campaign.name
         .toLowerCase()
@@ -171,6 +172,7 @@ export class CampaignController {
     // Ids are never reused, so a phone keeps the picture; `private` keeps it out of shared caches.
     res.setHeader("content-type", row.mime);
     res.setHeader("cache-control", "private, max-age=31536000, immutable");
+    res.setHeader("x-content-type-options", "nosniff"); // a tapped thumbnail opens it as a page of its own
     res.send(row.bytes);
   }
 

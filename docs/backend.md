@@ -83,8 +83,8 @@ text.
 | `GET /api/campaigns/:id/npc-presets` | Seat, GM only | none | `200 NpcPreset[]`: the printed NPCs for CODEX › NPCS' ADD FROM BOOK (#47), the creation catalogue's patrons (cite only) and then `npc-presets/*.json`, a transcribed NPC replacing the patron of the same id; without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/places` | Seat, GM only | none | `200 PlaceSummary[]`: the books' places for CODEX › LOCATIONS' ADD FROM BOOK (#50), in file order with parents first: `id`, `name`, `parentId`, `source`, `page`, no printed text | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/flavour` | Seat, GM only | none | `200 FlavourTable[]`: the creation catalogue's name lists and the Eye Colour, Hair Colour and Features tables (Core pp.27–33) for CODEX › NPCS' ROLL NAME and ROLL LOOK (#48); without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
-| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 100 MB (its pictures ride in it as base64), parsed only once the session is a verified creator's | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a place nested inside itself, a handout audience naming an Agent not in the file, an item with an unknown `wargearId`, two holders, a holder once given, or a picture that isn't WebP or JPEG or goes over the caps |
-| `GET /api/campaigns/:id/export` | Seat, GM only (an admin without a seat counts) | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`), with every picture as base64 | `400` bad id. `401` no seat. `403` player |
+| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 100 MB (its pictures ride in it as base64), parsed only once the session is a verified creator's | `201 { campaignId, droppedPictures }`: a new campaign, the caller as GM, and how many of the file's pictures were left out (unreadable, or past the caps; a picture never refuses a file). `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a place nested inside itself, a handout audience naming an Agent not in the file, an item with an unknown `wargearId`, two holders, or a holder once given |
+| `GET /api/campaigns/:id/export` | Seat, GM only (an admin without a seat counts) | `?pictures=0` leaves the pictures out (EXPORT WITHOUT PICTURES) | `200 CampaignExport` as an attachment (`<name>.auspex.json`), with every picture as base64 | `400` bad id. `401` no seat. `403` player |
 | `POST /api/campaigns/:id/images` | Seat, GM only | raw `image/webp` or `image/jpeg` bytes, at most 1 MB (issue #199; the browser shrinks first) | `200 { id }`: a stored picture, for `codex.save` to put on an NPC, place or handout as `imageId` | `400` bad id, bytes that aren't the type they claim, or over a cap (200 pictures, 100 MB per campaign). `401` no seat. `403` player. `413` over 1 MB |
 | `GET /api/campaigns/:id/images/:imageId` | Seat: the GM any of the campaign's; a player only one `toPlayerCodex` leaves on an entry their phone has | none | `200` the bytes, `Cache-Control: private, max-age=31536000, immutable` (ids are never reused) | `400` bad id. `401` no seat. `404` anything else, the table screen included, so an id gives nothing away |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
@@ -157,11 +157,14 @@ counters, sessions and reveal times. It writes every row directly, inside `creat
 - each row's `createdAt` is its place in the file (one transaction shares one `now()`, and lists load in `createdAt`
   order)
 - pictures (issue #199) go in first, through `putImage`, so the bytes are sniffed and the caps hold as for an upload;
-  each NPC, place and handout then names its picture's new id
+  each NPC, place and handout then names its picture's new id. A picture is a nice-to-have, so it never refuses the
+  file: a mangled entry parses as null (`CampaignExport.images`), a repeated one counts once, and one that fails a
+  check is left out with its entries imported pictureless; the reply counts them (`droppedPictures`)
 - the 100 MB JSON parser is mounted on this route only, after its rate limit and a verified creator's session (so no
   one else can make the api parse 100 MB); every other route keeps Express's 100 kB. Next's proxy buffer
   (`proxyClientMaxBodySize` in `next.config.ts`) and Cloudflare's free plan stop at 100 MB too, which is about 75 MB of
-  pictures, so a campaign near its 100 MB picture cap won't import (a `ponytail:` in `main.ts`)
+  pictures, so a campaign near its 100 MB picture cap won't import; EXPORT WITHOUT PICTURES is the way out, and the
+  lobby says so before it uploads (a `ponytail:` in `main.ts`)
 - builds are stored as exported, since a GM can already set any sheet with `character.update`
 
 `fresh` (`freshStart`) keeps the sheets, builds and XP, because a build's XP ledger is spent against `xp`. It resets
@@ -170,7 +173,8 @@ back to `planned`, and the kind of game and limits are cleared, since the new ta
 
 **Codex pictures** (issue #199, `codex/image.store.ts`). An upload is REST, not an action: a picture is too big for a
 socket frame and the 120-a-minute action limit. The upload returns an id, and the entry gets it through the normal
-`codex.save`, which checks the id is this campaign's (`checkRefs`). `image.store.ts` is the only code that reads or writes
+`codex.save`. An id that isn't one of this campaign's pictures (another's, or one swept or removed meanwhile) is saved
+as no picture rather than refusing the edit (`hasImage`): a picture never blocks the GM. `image.store.ts` is the only code that reads or writes
 `codex_image.bytes`. Callers hold only ids, so an S3 store can replace its functions without touching them. What it does:
 - `sniffMime` checks the first bytes against the claimed type (JPEG `FF D8 FF`, WebP `RIFF…WEBP`).
 - `putImage` checks the caps (200 pictures, 100 MB per campaign). It runs outside the action queue, so two uploads at

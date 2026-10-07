@@ -99,9 +99,15 @@ export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: Setu
             EXPORT
           </a>
           {pictures > 0 && (
-            <span className="dim">
-              Includes {pictures} {pictures === 1 ? "picture" : "pictures"}
-            </span>
+            <>
+              <span className="dim">
+                Includes {pictures} {pictures === 1 ? "picture" : "pictures"}
+              </span>
+              {/* A small file, for when the pictures make one too big to import (over 100 MB). */}
+              <a className="btn sm" href={`/api/campaigns/${state.campaign.id}/export?pictures=0`} download>
+                WITHOUT PICTURES
+              </a>
+            </>
           )}
         </div>
         <i className="dim">Typing your own still works.</i>

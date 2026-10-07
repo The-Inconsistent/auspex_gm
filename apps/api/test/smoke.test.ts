@@ -3436,6 +3436,7 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
   const back = await get(at(imageId), gmAuth);
   assert.equal(back.status, 200);
   assert.equal(back.headers.get("content-type"), "image/webp");
+  assert.equal(back.headers.get("x-content-type-options"), "nosniff");
   assert.deepEqual(Buffer.from(await back.arrayBuffer()), WEBP);
 
   // A guest player: no uploads, and no picture until both reveals are on.
@@ -3453,11 +3454,11 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
     campaignId: string;
   };
   const foreign = (await (await upload(other.campaignId, WEBP, otherGm)).json()) as { id: string };
-  assert.deepEqual(
-    await s.send({ type: "codex.save", kind: "npc", data: { name: "Spy", imageId: foreign.id } }),
-    { ok: false, error: "Image not found" },
-    "another campaign's picture",
-  );
+  // A picture never blocks a save: another campaign's (or a gone one) saves as no picture.
+  const spy = await s.send({ type: "codex.save", kind: "npc", data: { name: "Spy", imageId: foreign.id } });
+  assert.ok(spy.ok);
+  await eventually(() => s.codex()?.npcs.some((n) => n.name === "Spy") ?? false, "the Spy saved");
+  assert.equal(s.codex()?.npcs.find((n) => n.name === "Spy")?.imageId, null, "without another campaign's picture");
   assert.equal((await get(at(foreign.id), gmAuth)).status, 404, "nor served through this one");
 
   const magos = await s.send({ type: "codex.save", kind: "npc", data: { name: "Magos", imageId } });
@@ -3473,9 +3474,11 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
   // The export carries the bytes, and an import gives the picture a new id the NPC follows. Over REST: no new socket.
   const file = (await (await get(`/campaigns/${s.campaignId}/export`, gmAuth)).json()) as CampaignExport;
   assert.deepEqual(
-    file.images.map((p) => [p.id, p.mime, p.base64]),
+    file.images.map((p) => [p?.id, p?.mime, p?.base64]),
     [[imageId, "image/webp", WEBP.toString("base64")]],
   );
+  const light = (await (await get(`/campaigns/${s.campaignId}/export?pictures=0`, gmAuth)).json()) as CampaignExport;
+  assert.deepEqual(light.images, [], "EXPORT WITHOUT PICTURES");
   // The big import body is parsed only for a verified creator: a stranger's malformed JSON is a 401, never parsed.
   const stranger = await fetch(`${API}/api/campaigns/import`, {
     method: "POST",
@@ -3483,8 +3486,21 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
     body: "{ not json",
   });
   assert.equal(stranger.status, 401);
-  const forged = { ...file, images: [{ ...file.images[0]!, base64: Buffer.from("not a picture").toString("base64") }] };
-  assert.equal((await post("/campaigns/import", { file: forged }, gmAuth)).status, 400, "the importer sniffs too");
+  // A picture that fails the importer's sniff is left out: the campaign still imports, and says how many it dropped.
+  const forged = {
+    ...file,
+    images: [{ id: imageId, mime: "image/webp", base64: Buffer.from("no").toString("base64") }],
+  };
+  const lossy = await post("/campaigns/import", { file: forged }, gmAuth);
+  assert.equal(lossy.status, 201, "a bad picture doesn't refuse the file");
+  const { campaignId: lossyId, droppedPictures } = (await lossy.json()) as {
+    campaignId: string;
+    droppedPictures: number;
+  };
+  assert.equal(droppedPictures, 1);
+  const lost = (await (await get(`/campaigns/${lossyId}/export`, gmAuth)).json()) as CampaignExport;
+  assert.deepEqual([lost.images, lost.codex.npcs.find((n) => n.name === "Magos")?.imageId], [[], null]);
+
   const imported = await post("/campaigns/import", { file }, gmAuth);
   assert.equal(imported.status, 201);
   const { campaignId: copyId } = (await imported.json()) as { campaignId: string };
@@ -3492,8 +3508,5 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
   const [picture] = copy.images;
   assert.ok(picture && picture.id !== imageId);
   assert.equal(picture.base64, WEBP.toString("base64"));
-  assert.deepEqual(
-    copy.codex.npcs.map((n) => n.imageId),
-    [picture.id],
-  );
+  assert.equal(copy.codex.npcs.find((n) => n.name === "Magos")?.imageId, picture.id);
 });

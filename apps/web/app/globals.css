@@ -1293,15 +1293,25 @@ button.row.now:nth-of-type(even) {
   object-fit: contain;
   object-position: left;
 }
-/* A codex picture (issue #199, components/ui/codex-picture): whole, never cropped, framed like a pasted-in print. Held
-   back from players, it's dimmed on the GM's screen; the PICTURE HELD BACK toggle beside it says so in words. */
+/* A codex picture (issue #199, components/ui/codex-picture): a small thumbnail, whole and never cropped, framed like a
+   pasted-in print, that opens full size. It stays out of the text's way; a handout's is part of the prop, so larger.
+   Held back from players, it's dimmed on the GM's screen; the PICTURE HELD BACK toggle beside it says so in words. */
 .codex-picture {
   display: block;
-  max-width: 100%;
-  max-height: 320px;
-  object-fit: contain;
+  align-self: flex-start; /* in an .item's column, keep its own width */
+  width: fit-content;
+  line-height: 0;
   border: 1px solid var(--line);
   background: var(--vellum-2);
+}
+.codex-picture img {
+  max-width: 96px;
+  max-height: 96px;
+  object-fit: contain;
+}
+.codex-picture[data-large] img {
+  max-width: 100%;
+  max-height: 240px;
 }
 .codex-picture[data-held] {
   opacity: 0.5;

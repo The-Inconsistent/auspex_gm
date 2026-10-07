@@ -12,7 +12,7 @@ import { CUSTOM_THREAT_CAP } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
 import { listImages, putImage } from "../codex/image.store.ts";
 import { db, type Tx } from "../core/db.ts";
-import { fail } from "../core/errors.ts";
+import { ActionError, fail } from "../core/errors.ts";
 import { listLibrary } from "../library/library.service.ts";
 import { loadCodex, loadState } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
@@ -49,12 +49,12 @@ export function createCampaign({
 }
 
 // EXPORT: what the GM app holds, minus the seats, the running fight and the builder drafts (a device's, not the sheet).
-export async function exportCampaign(campaignId: string): Promise<CampaignExport> {
+export async function exportCampaign(campaignId: string, { pictures = true } = {}): Promise<CampaignExport> {
   const [state, codex, stored, images] = await Promise.all([
     loadState(campaignId),
     loadCodex(campaignId),
     db.select({ id: character.id, stats: character.stats }).from(character).where(eq(character.campaignId, campaignId)),
-    listImages(db, campaignId),
+    pictures ? listImages(db, campaignId) : [],
   ]);
   if (!state) fail("Campaign not found");
   // The sheets as stored, not as the table shows them: the state's have the upgrades and weapon effects applied
@@ -128,6 +128,9 @@ export async function importCampaign({
   // A scene keeps only the picks its place lists, as codex.save does (§11.95).
   const listed = new Map(c.locations.map((l) => [l.id, new Set(l.hazardList.map((h) => h.id))]));
 
+  // Pictures are a nice-to-have (issue #199): one the file mangled parses as null, and a repeated one counts once, so
+  // neither refuses the campaign. The rest go in through the store's own checks below.
+  const pictures = [...new Map(file.images.flatMap((p) => (p ? [[p.id, p] as const] : []))).values()];
   const rows = [
     ...file.characters,
     ...c.factions,
@@ -137,7 +140,7 @@ export async function importCampaign({
     ...c.npcs,
     ...c.handouts,
     ...c.items,
-    ...file.images,
+    ...pictures,
   ];
   const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
   if (ids.size !== rows.length) fail("That file repeats an id");
@@ -152,7 +155,10 @@ export async function importCampaign({
   // An exit keeps its target only inside its own adventure, as codex.save checks.
   const adventureOf = new Map(beats.map((b) => [b.id, b.adventureId]));
 
-  return createCampaign({
+  const kept = new Set<string>(); // the file's picture ids that made it in
+  const picture = (old: string | null) => (old && kept.has(old) ? ref(old) : null);
+
+  const made = await createCampaign({
     ...file.campaign,
     owner,
     fill: async (tx, campaignId) => {
@@ -186,25 +192,36 @@ export async function importCampaign({
           })),
         );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
-      // Pictures before the entries that show them, through the store's own checks (the bytes, the caps).
-      for (const p of file.images)
-        await putImage(tx, { campaignId, mime: p.mime, bytes: Buffer.from(p.base64, "base64"), id: ids.get(p.id)! }); // mapped above
+      // Pictures before the entries that show them, through the store's own checks (the bytes, the caps). One that
+      // fails a check is left out, and its entries import without a picture; the checks fail before the insert, so the
+      // transaction carries on.
+      for (const p of pictures) {
+        const bytes = Buffer.from(p.base64, "base64");
+        try {
+          await putImage(tx, { campaignId, mime: p.mime, bytes, id: ids.get(p.id)! }); // mapped above
+          kept.add(p.id);
+        } catch (e) {
+          if (!(e instanceof ActionError)) throw e;
+        }
+      }
       // `own()` spreads the file's `imageId`, so each entry names its picture's new id explicitly.
       if (c.locations.length)
         await tx
           .insert(location)
-          .values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: ref(l.imageId) })));
+          .values(
+            c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: picture(l.imageId) })),
+          );
       if (c.npcs.length)
         await tx
           .insert(npc)
-          .values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: ref(n.imageId) })));
+          .values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: picture(n.imageId) })));
       if (c.handouts.length)
         await tx.insert(handout).values(
           c.handouts.map((h, i) => ({
             ...own(h, i),
             revealedAt: at(h.revealedAt),
             audience: refs(h.audience),
-            imageId: ref(h.imageId),
+            imageId: picture(h.imageId),
           })),
         );
       if (c.items.length)
@@ -245,6 +262,9 @@ export async function importCampaign({
         );
     },
   });
+  // What the lobby tells the GM: the pictures the file carried that didn't make it in.
+  // Unreadable ones plus those a check refused; a repeat of a kept picture lost nothing, so it isn't counted.
+  return { ...made, droppedPictures: file.images.filter((p) => !p).length + pictures.length - kept.size };
 }
 
 // A session open longer than this is one nobody closed, so the lobby stops advertising the game as running.

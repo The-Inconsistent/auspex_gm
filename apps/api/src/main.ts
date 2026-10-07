@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { NestFactory } from "@nestjs/core";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { SESSION_COOKIE, bearerOf, verifySession } from "@wg/auth/api";
-import { IMAGE_MIMES } from "@wg/shared";
+import { IMAGE_MIMES, IMPORT_MAX_BYTES } from "@wg/shared";
 import { AppModule } from "./app.module.ts";
 import { readCookie } from "./auth/auth.service.ts";
 import { runMigrations } from "./core/db.ts";
@@ -48,8 +48,8 @@ app.use(
 // Wrapped so the handler isn't named `jsonParser`: Nest skips its own global parser if it finds one by that name, and
 // every other route would lose its body.
 // ponytail: 100 MB, as Next's proxy buffer (next.config.ts) and Cloudflare's free plan allow, is about 75 MB of
-// pictures, under the 100 MB a campaign may hold; upload the pictures separately if a campaign ever outgrows that.
-const importJson = express.json({ limit: "100mb" });
+// pictures, under the 100 MB a campaign may hold: past that, EXPORT WITHOUT PICTURES; upload them separately if it bites.
+const importJson = express.json({ limit: IMPORT_MAX_BYTES });
 app.use("/api/campaigns/import", async (req: Request, res: Response, next: NextFunction) => {
   const user = await verifySession(
     bearerOf(req.headers.authorization) ?? readCookie(req.headers.cookie, SESSION_COOKIE),
