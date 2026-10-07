@@ -5,7 +5,9 @@ import {
   applyProfile,
   CharacterDetail,
   CharacterStats,
+  CodexInput,
   deriveStats,
+  mentionToken,
   Threat,
   type Character,
   type ThreatClass,
@@ -88,7 +90,7 @@ const src: PrintSource = {
     access: { members: [], invites: [], guests: [] },
     characters: [agent],
   },
-  codex: { items: [item] },
+  codex: { items: [item], npcs: [], locations: [], handouts: [] },
   threats: [threatOf("boy", "T"), threatOf("nob", "E"), threatOf("boss", "A"), threatOf("squig", "M")],
   wargear: [],
 };
@@ -152,6 +154,31 @@ test("card span follows the threat class, and unknown ids are skipped", () => {
   );
   const last = cards.at(-1);
   assert.ok(last?.kind === "item" && last.entry === undefined); // a custom item has no catalogue entry
+});
+
+test("an item card spells mentions out as every phone would see them (issue #200)", () => {
+  const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
+  const npc = { ...CodexInput.npc.parse({ name: "Magos Verrin", revealed: true }), id: id(1) };
+  // Not revealed, so no phone knows it.
+  const vault = { ...CodexInput.location.parse({ name: "The Vault" }), id: id(2) };
+  const handout = (n: number, audience: string[]) => ({
+    ...CodexInput.handout.parse({ title: `Note ${n}`, revealed: true, audience }),
+    id: id(n),
+    revealedAt: null,
+  });
+  // Revealed to every player, and revealed to one Agent only: the card goes on the table, so only the first is named.
+  const open = handout(3, []);
+  const secret = handout(4, [id(9)]);
+  const description = [
+    mentionToken({ kind: "npc", id: npc.id }),
+    mentionToken({ kind: "location", id: vault.id }),
+    mentionToken({ kind: "handout", id: open.id }),
+    mentionToken({ kind: "handout", id: secret.id }),
+  ].join(", ");
+  const codex = { items: [{ ...item, description }], npcs: [npc], locations: [vault], handouts: [open, secret] };
+  const [card] = printCards({ items: ["i1"] }, { ...src, codex });
+  assert.ok(card?.kind === "item");
+  assert.equal(card.item.description, "Magos Verrin, (unknown), Note 3, (unknown)");
 });
 
 test("layoutCards packs first fit on 3 × 3 pages without overlap", () => {

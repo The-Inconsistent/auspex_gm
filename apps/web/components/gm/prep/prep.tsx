@@ -16,6 +16,7 @@ import {
 
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
+import { Mentions } from "@/components/ui/mentions/mentions";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -250,7 +251,10 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                 </div>
                 {b.goal && (
                   <div>
-                    <span className="label accent">GOAL</span> <b>{b.goal}</b>
+                    <span className="label accent">GOAL</span>{" "}
+                    <b>
+                      <Mentions text={b.goal} self={b.id} />
+                    </b>
                   </div>
                 )}
                 {beatFields.map(([key, label, gmOnly]) =>
@@ -258,12 +262,16 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                     // Closed by default so a player glancing at the tablet doesn't read them.
                     <details key={key} className="field plate">
                       <summary className="label">{label} · TAP TO REVEAL</summary>
-                      <pre className="text">{b[key]}</pre>
+                      <pre className="text">
+                        <Mentions text={b[key]} self={b.id} />
+                      </pre>
                     </details>
                   ) : (
                     <div key={key} className="field">
                       <span className="label">{label}</span>
-                      <pre className="text">{b[key]}</pre>
+                      <pre className="text">
+                        <Mentions text={b[key]} self={b.id} />
+                      </pre>
                     </div>
                   ),
                 )}

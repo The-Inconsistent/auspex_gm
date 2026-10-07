@@ -2,6 +2,7 @@ import {
   activeCharacterIds,
   agentsInFight,
   deriveStats,
+  plainMentions,
   prepareThreat,
   threatClassAt,
   threatProfile,
@@ -57,7 +58,7 @@ export const fieldedAgentIds = (s: Pick<LiveState, "access" | "characters">): st
 
 export type PrintSource = {
   state: Pick<LiveState, "campaign" | "characters" | "access">;
-  codex: Pick<Codex, "items">;
+  codex: Pick<Codex, "items" | "npcs" | "locations" | "handouts">;
   threats: Threat[]; // the bestiary with this campaign's custom threats merged in, as every picker reads it
   wargear: Wargear[];
 };
@@ -186,9 +187,26 @@ export function printCards(job: PrintJob, { state, codex, threats, wargear }: Pr
   }
 
   const gear = new Map(wargear.map((w) => [w.id, w]));
+  // The card goes on the table, so a codex mention (issue #200) prints as every phone would show it (toPlayerCodex):
+  // the name of a revealed NPC or place, or of a revealed handout meant for every player, and "(unknown)" otherwise. A
+  // private handout's title stays with its audience.
+  const known = new Map(
+    [
+      ...codex.npcs,
+      ...codex.locations,
+      ...codex.handouts.filter((h) => !h.audience.length).map((h) => ({ ...h, name: h.title })),
+    ]
+      .filter((e) => e.revealed)
+      .map((e) => [e.id, e.name]),
+  );
   for (const id of job.items ?? []) {
-    const item = codex.items.find((x) => x.id === id);
-    if (item) blocks.push({ kind: "item", item, entry: item.wargearId ? gear.get(item.wargearId) : undefined });
+    const found = codex.items.find((x) => x.id === id);
+    if (!found) continue;
+    const item = {
+      ...found,
+      description: plainMentions({ text: found.description, nameOf: (i) => known.get(i), missing: "(unknown)" }),
+    };
+    blocks.push({ kind: "item", item, entry: item.wargearId ? gear.get(item.wargearId) : undefined });
   }
 
   return [...tents, ...blocks];
