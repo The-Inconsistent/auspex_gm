@@ -6,6 +6,7 @@ import {
   CodexInput,
   CodexSave,
   FactionStance,
+  HandoutStyle,
   type ActionInput,
   type Character,
   type Codex,
@@ -20,6 +21,8 @@ import {
 
 import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { HANDOUT_STYLE_LABEL } from "@/components/ui/handout-doc/constants";
+import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -108,6 +111,14 @@ function fieldsFor({
     case "handout":
       return [
         { key: "title", label: "TITLE", type: "text" },
+        // How it looks as a prop, on the phone and on paper (issue #204); PLAIN is the look every older one has.
+        {
+          key: "style",
+          label: "STYLE",
+          type: "select",
+          options: HandoutStyle.options.map((v): Option => [v, HANDOUT_STYLE_LABEL[v]]),
+        },
+        { key: "header", label: "HEADER (EMPTY: THE STYLE'S OWN)", type: "text" },
         { key: "body", label: "TEXT", type: "area" },
         { key: "revealed", label: "SENT TO PLAYERS", type: "bool" },
         {
@@ -353,6 +364,20 @@ export function CodexEditor({
         <div className="field plate">
           <span className="label">POWERS (rules-flow.md §11.116)</span>
           <span>{(draft.mods as { kind: string; what?: string }[]).map((m) => m.what ?? m.kind).join(" · ")}</span>
+        </div>
+      )}
+      {kind === "handout" && (
+        // What the players will get, as they'll see it (issue #204).
+        <div className="field">
+          <span className="label">PREVIEW</span>
+          <HandoutDoc
+            handout={{
+              id: row?.id,
+              body: String(draft.body ?? ""),
+              style: HandoutStyle.catch("plain").parse(draft.style),
+              header: String(draft.header ?? ""),
+            }}
+          />
         </div>
       )}
       {/* A refusal on something with no field of its own (an item's Powers) still says what. */}
