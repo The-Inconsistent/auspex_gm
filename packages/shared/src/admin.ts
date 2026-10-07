@@ -41,7 +41,15 @@ export const AdminEvent = z.object({
 });
 export type AdminEvent = z.infer<typeof AdminEvent>;
 
-// The actions POST /api/admin/campaigns/:id/action accepts: the housekeeping an admin does from outside a table.
+// What DELETE /api/admin/users/:id/seats did: each seat goes on its own, so some may stay (with the reason).
+export const RemovedSeats = z.object({
+  removed: z.number().int(),
+  failed: z.array(z.object({ campaignName: z.string(), error: z.string() })),
+});
+export type RemovedSeats = z.infer<typeof RemovedSeats>;
+
+// The actions POST /api/admin/campaigns/:id/action accepts: the housekeeping an admin does from outside a table. They
+// are also the only ones the admin log records (applyAction).
 export const ADMIN_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "session.abandon",
   "session.delete",

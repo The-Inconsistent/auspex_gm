@@ -14,14 +14,11 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import type { Request } from "express";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { ADMIN_ACTIONS, Action } from "@wg/shared";
 import { signedInUser } from "../auth/auth.service.ts";
-import { campaign } from "../campaign/campaign.schema.ts";
-import { db } from "../core/db.ts";
 import { TableGateway } from "../table/table.gateway.ts";
-import { listCampaigns, listEvents, listUsers, seatsOf } from "./admin.service.ts";
+import { adminAction, listCampaigns, listEvents, listUsers, removeSeats } from "./admin.service.ts";
 
 const Id = z.uuid();
 const UserId = z.string().min(1).max(100);
@@ -45,8 +42,7 @@ export class AdminController {
     return listUsers();
   }
 
-  // Takes the user out of every game, one member.remove each, so their sockets are kicked, the tables rebroadcast and the
-  // admin log written, as if an admin had pressed it at each table.
+  // Takes the user out of every game (admin.service, removeSeats).
   @Delete("users/:id/seats")
   @HttpCode(200)
   async removeSeats(@Param("id") id: string, @Req() req: Request) {
@@ -54,13 +50,7 @@ export class AdminController {
     const userId = UserId.safeParse(id);
     if (!userId.success) throw new BadRequestException("Not a user id");
     if (userId.data === admin.userId) throw new BadRequestException("You can't remove yourself");
-    const seats = await seatsOf(userId.data);
-    for (const { campaignId } of seats) {
-      const ctx = { campaignId, role: "gm", characterId: null, userId: admin.userId, admin: true } as const;
-      const result = await this.table.run({ ctx, action: { type: "member.remove", userId: userId.data } });
-      if (!result.ok) throw new BadRequestException(result.error);
-    }
-    return { removed: seats.length };
+    return removeSeats(this.table, { adminId: admin.userId, userId: userId.data });
   }
 
   @Get("campaigns")
@@ -79,10 +69,13 @@ export class AdminController {
     const parsed = Action.safeParse(body);
     if (!parsed.success) throw new BadRequestException(z.prettifyError(parsed.error));
     if (!ADMIN_ACTIONS.has(parsed.data.type)) throw new BadRequestException("Not an admin action");
-    const [c] = await db.select({ id: campaign.id }).from(campaign).where(eq(campaign.id, campaignId.data));
-    if (!c) throw new NotFoundException("Game not found");
-    const ctx = { campaignId: c.id, role: "gm", characterId: null, userId: admin.userId, admin: true } as const;
-    return this.table.run({ ctx, action: parsed.data });
+    const result = await adminAction(this.table, {
+      adminId: admin.userId,
+      campaignId: campaignId.data,
+      action: parsed.data,
+    });
+    if (!result) throw new NotFoundException("Game not found");
+    return result;
   }
 
   @Get("events")

@@ -72,9 +72,12 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
   2. It first calls `authorize(ctx)`, which checks the caller's role and ownership.
   3. The gateway rebroadcasts.
   Actions are serialised per campaign with an in-process queue, which assumes a single api instance.
-  The one exception is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
+  There are two exceptions. The first is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
   campaign is nobody's live state, so there is no room to broadcast to and no action to queue. It's plain REST, scoped
-  to the owner, and still re-resolves a build server-side before saving it.
+  to the owner, and still re-resolves a build server-side before saving it. The second is the **admin page's
+  housekeeping** (`POST /api/admin/campaigns/:id/action`, `docs/backend.md`): an admin outside any table sends an
+  allowlisted action over REST, and `TableGateway.run` gives it the socket path exactly (queue, transaction,
+  `authorize`, kicks, broadcast).
 - **The server decides.** Counters take deltas (`+2 Wounds`), clamped at 0 and capped where the rules cap them,
   so simultaneous taps never overwrite each other. Postgres holds all live state; the server keeps no in-memory
   game state.

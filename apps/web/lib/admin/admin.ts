@@ -1,10 +1,10 @@
-import type { ActionResult, AdminActionInput } from "@wg/shared";
+import { RemovedSeats, type ActionResult, type AdminActionInput } from "@wg/shared";
 
 const NO_SIGNAL = "No signal";
 
 // What an admin route answered, as an ActionResult. A refusal can be a 200 with { ok: false, error } (the action
-// route) or an HTTP error with Nest's { message } (a bad id, "Admins only"); both end up as the line to show. A
-// `removed` count (DELETE /users/:id/seats) becomes a notice.
+// route) or an HTTP error with Nest's { message } (a bad id, "Admins only"); both end up as the line to show. What
+// DELETE /users/:id/seats did becomes a notice, or an error naming the games it couldn't leave.
 export function toResult(body: unknown): ActionResult {
   if (typeof body !== "object" || body === null) return { ok: false, error: NO_SIGNAL };
   if ("ok" in body && body.ok === true) {
@@ -14,8 +14,15 @@ export function toResult(body: unknown): ActionResult {
   }
   if ("ok" in body && body.ok === false && "error" in body && typeof body.error === "string")
     return { ok: false, error: body.error };
-  if ("removed" in body && typeof body.removed === "number")
-    return { ok: true, notices: [`Removed from ${body.removed} ${body.removed === 1 ? "game" : "games"}`] };
+  const seats = RemovedSeats.safeParse(body);
+  if (seats.success) {
+    const { removed, failed } = seats.data;
+    const done = `Removed from ${removed} ${removed === 1 ? "game" : "games"}`;
+    if (!failed.length) return { ok: true, notices: [done] };
+    // Each seat goes on its own, so a partial removal is reported as one, with what stayed and why.
+    const kept = failed.map((f) => `${f.campaignName}: ${f.error}`).join("; ");
+    return { ok: false, error: `${done}; still seated at ${kept}` };
+  }
   if ("message" in body) {
     const m = body.message;
     return { ok: false, error: Array.isArray(m) ? m.join(", ") : typeof m === "string" ? m : NO_SIGNAL };

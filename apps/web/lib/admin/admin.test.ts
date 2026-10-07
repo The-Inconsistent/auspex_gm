@@ -20,8 +20,12 @@ describe("toResult", () => {
   });
 
   test("turns the seat removal's count into a notice", () => {
-    assert.deepEqual(toResult({ removed: 2 }), { ok: true, notices: ["Removed from 2 games"] });
-    assert.deepEqual(toResult({ removed: 1 }), { ok: true, notices: ["Removed from 1 game"] });
+    assert.deepEqual(toResult({ removed: 2, failed: [] }), { ok: true, notices: ["Removed from 2 games"] });
+    assert.deepEqual(toResult({ removed: 1, failed: [] }), { ok: true, notices: ["Removed from 1 game"] });
+    assert.deepEqual(toResult({ removed: 1, failed: [{ campaignName: "Volkus", error: "Member not found" }] }), {
+      ok: false,
+      error: "Removed from 1 game; still seated at Volkus: Member not found",
+    });
   });
 
   test("reads Nest's error body", () => {

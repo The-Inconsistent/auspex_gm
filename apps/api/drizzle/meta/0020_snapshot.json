@@ -1,5 +1,5 @@
 {
-  "id": "7c2566ef-e17e-40b8-8c2f-5b62b92f0112",
+  "id": "99d5330e-3c31-4dc2-b2ec-075b51d30901",
   "prevId": "c0b7ccd9-ca80-4410-b378-9bbedf5eaba0",
   "version": "7",
   "dialect": "postgresql",
@@ -60,7 +60,23 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "admin_event_created_at_index": {
+          "name": "admin_event_created_at_index",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

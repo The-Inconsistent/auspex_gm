@@ -1,5 +1,6 @@
 import { and, asc, count, desc, eq, isNull, sql } from "drizzle-orm";
 import { ASCENSION_XP, MAX_TIER, ascensionGroup, poolMax, rankOf, type Action, type ActionResult } from "@wg/shared";
+import { invite } from "../auth/auth.schema.ts";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
@@ -177,9 +178,14 @@ export async function applyCampaignAction(
       return { ok: true, notices: [`Deleted session ${s.number}${kept}`] };
     }
 
+    // A read-only game takes no one new, so its open invite links die with it (acceptInvite checks too).
     case "campaign.archive":
       await abandonSession(tx, cid); // nothing to close is fine here
       await tx.update(campaign).set({ archivedAt: new Date() }).where(eq(campaign.id, cid));
+      await tx
+        .update(invite)
+        .set({ revokedAt: new Date() })
+        .where(and(eq(invite.campaignId, cid), isNull(invite.revokedAt)));
       return { ok: true };
 
     case "campaign.unarchive":

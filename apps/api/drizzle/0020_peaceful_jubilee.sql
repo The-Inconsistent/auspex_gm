@@ -11,4 +11,5 @@ CREATE TABLE "admin_event" (
 --> statement-breakpoint
 ALTER TABLE "app_user" ADD COLUMN "role" text;--> statement-breakpoint
 ALTER TABLE "app_user" ADD COLUMN "last_seen_at" timestamp with time zone DEFAULT now() NOT NULL;--> statement-breakpoint
-ALTER TABLE "campaign" ADD COLUMN "archived_at" timestamp with time zone;
+ALTER TABLE "campaign" ADD COLUMN "archived_at" timestamp with time zone;--> statement-breakpoint
+CREATE INDEX "admin_event_created_at_index" ON "admin_event" USING btree ("created_at");

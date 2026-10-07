@@ -3110,9 +3110,15 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
     ok: false,
     error: "Archive the game before deleting it",
   });
+  const room = await gm.send({ type: "invite.create", mode: "room" });
+  assert.ok(room.ok);
   assert.deepEqual(await act(campaignId, { type: "campaign.archive" }), { ok: true });
   const archived = await gm.until((s) => s.campaign.archived);
   assert.equal(archived.campaign.archived, true);
+  // Nobody new joins a read-only game: archiving revokes its open invites. Taking access away still goes through.
+  assert.equal(archived.access.invites.length, 0);
+  assert.equal((await post(`/invites/${room.token}/accept`, { newCharacterName: "Late" }, member)).status, 400);
+  assert.deepEqual(await gm.send({ type: "invite.revoke", id: room.id! }), { ok: false, error: "Invite not found" });
   assert.equal((await entry()).session, null, "archiving ends the running session");
   assert.ok((await entry()).archivedAt);
   assert.deepEqual(await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 }), {
@@ -3158,7 +3164,7 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
   assert.equal((await del(`/admin/users/${adminId}/seats`, admin)).status, 400, "not your own seat");
   assert.equal((await del("/admin/users/second-gm/seats", creator)).status, 403);
   const removed = await del("/admin/users/second-gm/seats", admin);
-  assert.deepEqual(await removed.json(), { removed: 1 });
+  assert.deepEqual(await removed.json(), { removed: 1, failed: [] });
   assert.equal((await seatsOf("second-gm"))?.length, 0);
   assert.deepEqual(await act(other, { type: "campaign.delete", name: "wrong" }), {
     ok: false,

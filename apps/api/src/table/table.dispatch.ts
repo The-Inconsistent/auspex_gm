@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { PLAYER_ACTIONS, type Action, type ActionResult } from "@wg/shared";
+import { ADMIN_ACTIONS, PLAYER_ACTIONS, type Action, type ActionResult } from "@wg/shared";
 import { adminEvent } from "../admin/admin.schema.ts";
 import { applyAccessAction } from "../auth/access.actions.ts";
 import type { Ctx } from "../auth/auth.service.ts";
@@ -79,6 +79,16 @@ function authorize(ctx: Ctx, a: Action) {
     fail("Only the GM grants Wealth and Ammo");
 }
 
+// What still works at an archived game: the way out of it, and taking access away (a player leaving, a guest token or
+// invite revoked). An admin may also remove a seat (REMOVE FROM ALL GAMES reaches archived games too).
+const ARCHIVED_OPEN: ReadonlySet<Action["type"]> = new Set([
+  "campaign.unarchive",
+  "campaign.delete",
+  "seat.leave",
+  "token.revoke",
+  "invite.revoke",
+]);
+
 export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {
   authorize(ctx, action);
   // The game's name goes to the admin log below (copied, since campaign.delete removes the row), and an archived game
@@ -87,11 +97,11 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     .select({ name: campaign.name, archivedAt: campaign.archivedAt })
     .from(campaign)
     .where(eq(campaign.id, ctx.campaignId));
-  // An admin may still take a seat away (REMOVE FROM ALL GAMES reaches archived games too).
-  const open = action.type === "campaign.unarchive" || action.type === "campaign.delete";
-  if (c?.archivedAt && !open && !(ctx.admin && action.type === "member.remove")) fail("This game is archived");
+  if (c?.archivedAt && !ARCHIVED_OPEN.has(action.type) && !(ctx.admin && action.type === "member.remove"))
+    fail("This game is archived");
   const result = await dispatch(tx, { ctx, action });
-  if (ctx.admin && ctx.userId && result.ok)
+  // Only the housekeeping is logged: an admin running a table would otherwise bury it under every Wounds tap.
+  if (ctx.admin && ctx.userId && result.ok && ADMIN_ACTIONS.has(action.type))
     await tx.insert(adminEvent).values({
       actorUserId: ctx.userId,
       action: action.type,

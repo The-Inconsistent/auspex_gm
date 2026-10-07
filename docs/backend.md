@@ -43,7 +43,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | `library/` | Characters a signed-in user owns outside any campaign, and their REST (issue #14) | `library.controller.ts`: `LibraryController`. `library.service.ts`: `listLibrary`, `readLibrary`, `createLibraryCharacter`, `saveLibraryCharacter`, `deleteLibraryCharacter`. `library.schema.ts`: `libraryCharacter` |
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts, items | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the seven tables |
-| `admin/` | The admin page's reads and housekeeping (§3.2) | `admin.controller.ts`: `AdminController`. `admin.service.ts`: `listUsers`, `listCampaigns`, `listEvents`, `seatsOf`. `admin.schema.ts`: `adminEvent` |
+| `admin/` | The admin page's reads and housekeeping (§3.2) | `admin.controller.ts`: `AdminController`. `admin.service.ts`: `listUsers`, `listCampaigns`, `listEvents`, `adminAction`, `removeSeats`. `admin.schema.ts`: `adminEvent` |
 | `table/` | The socket | `table.gateway.ts`: `TableGateway` (`run`: one action with its kicks and broadcast, for the socket and the admin route). `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
 
 Rules:
@@ -167,7 +167,7 @@ caller like the library. Shapes: `packages/shared/src/admin.ts`.
 | Route | Body | Returns |
 |---|---|---|
 | `GET /api/admin/users` | none | `AdminUser[]` by name: `{ id, name, role: "creator" \| "admin" \| null, lastSeenAt, seats: { campaignId, campaignName, role }[] }` |
-| `DELETE /api/admin/users/:id/seats` | none | `200 { removed: n }`: one `member.remove` per seat through `TableGateway.run` (kicks, rebroadcast, log). `400` for the caller's own id |
+| `DELETE /api/admin/users/:id/seats` | none | `200 RemovedSeats` (`{ removed, failed: { campaignName, error }[] }`): one `member.remove` per seat through `TableGateway.run` (kicks, rebroadcast, log), each its own transaction, so a refusal at one game leaves the rest done and is listed in `failed`. `400` for the caller's own id |
 | `GET /api/admin/campaigns` | none | `AdminCampaign[]`, newest activity first: `{ id, name, tier, gms, players, session: { number, startedAt } \| null, archivedAt, lastActivity }` |
 | `POST /api/admin/campaigns/:id/action` | an `ActionInput` of `session.abandon`, `session.delete`, `member.seat`, `member.remove`, `campaign.archive`, `campaign.unarchive` or `campaign.delete` (`ADMIN_ACTIONS`) | `200 ActionResult` (a refusal is `{ ok: false, error }`, as on the socket). `400` bad body or another action, `404` no such game |
 | `GET /api/admin/events` | none | the latest 50 `AdminEvent` rows: `{ id, actorUserId, action, campaignId, campaignName, targetUserId, detail, createdAt }` |
@@ -287,10 +287,12 @@ The gateway checks the sockets in both rooms of the campaign.
 ### `applyAction` routing
 
 Around the routing, `applyAction` reads the campaign once: an **archived** game (`archived_at` set) refuses every action
-but `campaign.unarchive` and `campaign.delete` with `"This game is archived"` (an admin's `member.remove` is also let
-through, so REMOVE FROM ALL GAMES reaches archived games). Sockets still connect and receive snapshots, and
-`LiveState.campaign.archived` tells both apps. After the handler, an action applied with `ctx.admin` writes one
-`admin_event` row in the same transaction (action, campaign id and name, `targetUserId` when the action carries a
+but `campaign.unarchive`, `campaign.delete` and the ones that take access away (`seat.leave`, `token.revoke`,
+`invite.revoke`) with `"This game is archived"` (an admin's `member.remove` is also let through, so REMOVE FROM ALL
+GAMES reaches archived games). Archiving revokes the game's open invites, and `acceptInvite` refuses an archived game
+too. Sockets still connect and receive snapshots, and
+`LiveState.campaign.archived` tells both apps. After the handler, a housekeeping action (`ADMIN_ACTIONS`) applied with
+`ctx.admin` writes one `admin_event` row (an admin's Wounds taps and turn steps at a table aren't logged) in the same transaction (action, campaign id and name, `targetUserId` when the action carries a
 `userId`). The ADMIN_KEY ctx has `admin: false` and is never logged.
 
 A `switch` on `action.type` hands each action to the owning feature's `apply*Action(tx, { ctx, action })`. Each feature
@@ -311,7 +313,7 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `session.start` | GM | Every character Wrath → 2. Glory → 0. Ruin → number of characters. Closes any open session (no XP). Inserts session `number = count + 1`. Returns `id`, and a `notices` line naming the built characters with XP left to spend (`xp − xpSpent`, the first `NUDGE_NAMES` of them and then "N more", since the GM report is one line), because XP is spent between sessions (Core p.146, p.148; §11.69) | S C | p.162, p.164, p.320 |
 | `session.abandon` | GM | Ends the running session with `xp` 0: no XP, no Rank notices. `"No session in progress"` | S, C | |
 | `session.delete` | GM | Deletes the latest session, once it has ended (`"End the session in progress before deleting it"`, `"This game has no sessions"`). Its XP stays on the characters, and the ack's `notices` says so | S, C | |
-| `campaign.archive` | GM | Sets `archived_at` and ends a running session like `session.abandon`. An archived game is read-only (§5) | S, C | |
+| `campaign.archive` | GM | Sets `archived_at`, ends a running session like `session.abandon` and revokes open invites. An archived game is read-only (§5) | S, C | |
 | `campaign.unarchive` | GM | Clears `archived_at` | S | |
 | `campaign.delete` | admin, or GM once archived | `{ name }`, which must equal the game's name (`"Type the game's name to delete it"`; `"Archive the game before deleting it"` for a GM). Deletes the campaign row; everything it owns cascades. The gateway then kicks the whole room and broadcasts nothing | | |
 | `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Acks `notices`: each character that crossed a Rank (Core p.146) and, when every one of them has 100+ XP in the current Tier, that the group may Ascend (Core p.147). Fails `"No session in progress"` | S C | p.321 |

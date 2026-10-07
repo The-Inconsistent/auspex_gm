@@ -1,9 +1,11 @@
 import { desc, eq } from "drizzle-orm";
-import type { AdminCampaign, AdminEvent, AdminUser } from "@wg/shared";
+import type { Action, ActionResult, AdminCampaign, AdminEvent, AdminUser, RemovedSeats } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
+import type { Ctx } from "../auth/auth.service.ts";
 import { campaign, session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { db } from "../core/db.ts";
+import type { TableGateway } from "../table/table.gateway.ts";
 import { adminEvent } from "./admin.schema.ts";
 
 // Every user the app has seen, with the games they sit at, by name.
@@ -73,14 +75,53 @@ export async function listCampaigns(): Promise<AdminCampaign[]> {
     .sort((a, b) => b.lastActivity.localeCompare(a.lastActivity));
 }
 
-// Latest first; the log never grows past what an admin reads, so only the head is served.
+// Latest first, and only the head: the page shows the recent housekeeping, not the whole history.
+// ponytail: the table only grows, by one row per housekeeping action; prune old rows if it ever matters
 const EVENTS_SHOWN = 50;
 export async function listEvents(): Promise<AdminEvent[]> {
   const rows = await db.select().from(adminEvent).orderBy(desc(adminEvent.createdAt)).limit(EVENTS_SHOWN);
   return rows.map((r) => ({ ...r, createdAt: r.createdAt.toISOString() }));
 }
 
-// The campaigns a user sits at, for REMOVE FROM ALL GAMES.
-export async function seatsOf(userId: string) {
-  return db.select({ campaignId: membership.campaignId }).from(membership).where(eq(membership.userId, userId));
+// A Clerk admin acting as one game's GM without a seat, which is what every /api/admin write runs as.
+const adminCtx = ({ campaignId, adminId }: { campaignId: string; adminId: string }): Ctx => ({
+  campaignId,
+  role: "gm",
+  characterId: null,
+  userId: adminId,
+  admin: true,
+});
+
+// One housekeeping action at one game, through the same path as a socket action (queue, transaction, kicks,
+// broadcast). Null when there's no such game.
+export async function adminAction(
+  table: TableGateway,
+  { adminId, campaignId, action }: { adminId: string; campaignId: string; action: Action },
+): Promise<ActionResult | null> {
+  const [c] = await db.select({ id: campaign.id }).from(campaign).where(eq(campaign.id, campaignId));
+  if (!c) return null;
+  return table.run({ ctx: adminCtx({ campaignId: c.id, adminId }), action });
+}
+
+// REMOVE FROM ALL GAMES: one member.remove per seat, so each table kicks the user, rebroadcasts and logs it as if an
+// admin had pressed it there. Each seat is its own transaction, so a refusal at one game doesn't stop the rest; the
+// result says which went and which didn't rather than reporting a half-done removal as an error.
+export async function removeSeats(
+  table: TableGateway,
+  { adminId, userId }: { adminId: string; userId: string },
+): Promise<RemovedSeats> {
+  const seats = await db
+    .select({ campaignId: membership.campaignId, campaignName: campaign.name })
+    .from(membership)
+    .innerJoin(campaign, eq(campaign.id, membership.campaignId))
+    .where(eq(membership.userId, userId));
+  const failed: RemovedSeats["failed"] = [];
+  for (const { campaignId, campaignName } of seats) {
+    const result = await table.run({
+      ctx: adminCtx({ campaignId, adminId }),
+      action: { type: "member.remove", userId },
+    });
+    if (!result.ok) failed.push({ campaignName, error: result.error });
+  }
+  return { removed: seats.length - failed.length, failed };
 }
