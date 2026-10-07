@@ -114,9 +114,9 @@ export function GmApp({
     <BooksProvider books={books} requestPage={requestPage}>
       <RulesProvider rules={rules}>
         <div className="gm">
-          {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
           <header className="gm-head band torn">
-            <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
+            {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
+            <a href="/" aria-label="Back to lobby" className="btn sq">
               ◂
             </a>
             <div className="display gm-title">
@@ -126,9 +126,7 @@ export function GmApp({
               </span>
             </div>
             {state.encounter && (
-              <div className="display" style={{ fontSize: 30 }}>
-                RND {String(state.encounter.round).padStart(2, "0")}
-              </div>
+              <div className="display page-title">RND {String(state.encounter.round).padStart(2, "0")}</div>
             )}
             {Pool.options.map(pool)}
             <ThemeToggle />
