@@ -42,6 +42,7 @@ describe("toResult", () => {
 describe("stamp", () => {
   test("is the same wherever it renders", () => {
     assert.equal(stamp("2026-10-06T20:03:09.000Z"), "6 Oct 2026, 20:03 UTC");
+    assert.equal(stamp("2026-09-01T05:07:00.000Z"), "1 Sep 2026, 05:07 UTC"); // newer ICU writes "Sept"
   });
 
   test("survives a bad date", () => {

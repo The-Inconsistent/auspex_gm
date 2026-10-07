@@ -52,18 +52,14 @@ export function removeSeats(userId: string) {
   return call(`/api/admin/users/${encodeURIComponent(userId)}/seats`, { method: "DELETE" });
 }
 
-const STAMP = new Intl.DateTimeFormat("en-GB", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-  timeZone: "UTC",
-});
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const pad = (n: number) => String(n).padStart(2, "0");
 
 // A server timestamp as text. Always UTC: the page renders on the server and again in the browser, and two time zones
-// would make the two renders differ.
+// would make the two renders differ. Built by hand, not with Intl: ICU versions differ on the separator (", " or
+// " at ") and on September ("Sep" or "Sept"), so the server and a browser could still disagree.
 export function stamp(iso: string): string {
   const at = new Date(iso);
-  return Number.isNaN(at.getTime()) ? "—" : `${STAMP.format(at)} UTC`;
+  if (Number.isNaN(at.getTime())) return "—";
+  return `${at.getUTCDate()} ${MONTHS[at.getUTCMonth()]} ${at.getUTCFullYear()}, ${pad(at.getUTCHours())}:${pad(at.getUTCMinutes())} UTC`;
 }
