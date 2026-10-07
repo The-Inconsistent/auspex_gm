@@ -92,7 +92,9 @@ export function XpLedger() {
         <span>{todo.length}</span>
       </div>
       {todo.length === 0 ? (
-        <div className="dim">{r ? "Nothing left. Ready to save." : "Choose an archetype to begin."}</div>
+        <div className="dim">
+          {r ? "Nothing left. Ready to save." : "Choose an archetype, or Advanced Creation, to begin."}
+        </div>
       ) : (
         <ul className="bld-todo">
           {todo.map((t, i) => (

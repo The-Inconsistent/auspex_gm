@@ -378,9 +378,9 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
               <span>DESIGNATION</span>
               <span className="hide-sm">CLASS</span>
               <span>WOUNDS</span>
-              <span className="hide-sm">SHOCK</span>
-              <span className="hide-sm">DEF</span>
-              <span className="hide-sm">RES</span>
+              <span>SHOCK</span>
+              <span className="hide-xs">DEF</span>
+              <span className="hide-xs">RES</span>
               <span>STATUS</span>
               <span className="hide-sm">PLAYERS</span>
             </div>
@@ -404,7 +404,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                   aria-pressed={c.id === selected}
                   onClick={() => toggleSelected(c.id)}
                 >
-                  <span className={now ? "accent" : "dim"}>{stateLabel}</span>
+                  <span className={`tag ${now ? "accent" : "dim"}`}>{stateLabel}</span>
                   <span style={{ fontWeight: 700, display: "flex", gap: 8, alignItems: "center" }}>
                     {pic ? (
                       <Image src={pic} alt="" width={120} className="portrait-thumb hide-sm" />
@@ -427,7 +427,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                     )}
                     {nameOf(c)}
                   </span>
-                  <span className="hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>
+                  <span className="tag hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>
                   <span>
                     {c.kind === "threat" && c.mobCount !== null ? (
                       <span className="bar">
@@ -444,14 +444,14 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                       />
                     )}
                   </span>
-                  <span className="hide-sm">
+                  <span>
                     <Bar
                       value={c.kind === "pc" ? (ch?.shock ?? 0) : c.shock}
                       max={c.kind === "pc" ? (d?.maxShock ?? 0) : c.maxShock}
                     />
                   </span>
-                  <span className="hide-sm">{c.kind === "pc" ? d?.defence : c.stats?.defence}</span>
-                  <span className="hide-sm">{c.kind === "pc" ? d?.resilience : c.stats?.resilience.value}</span>
+                  <span className="hide-xs">{c.kind === "pc" ? d?.defence : c.stats?.defence}</span>
+                  <span className="hide-xs">{c.kind === "pc" ? d?.resilience : c.stats?.resilience.value}</span>
                   <span style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                     <StatusChips items={status} />
                     {conditionsOf(c).map((k) => (
@@ -460,7 +460,7 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
                       </span>
                     ))}
                   </span>
-                  <span className={`hide-sm ${c.kind === "threat" && c.visibility !== "stats" ? "accent" : "dim"}`}>
+                  <span className={`tag hide-sm ${c.kind === "threat" && c.visibility !== "stats" ? "accent" : "dim"}`}>
                     {VISIBILITY_LABEL[c.kind === "pc" ? "stats" : c.visibility]}
                   </span>
                 </button>

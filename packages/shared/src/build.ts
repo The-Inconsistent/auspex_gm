@@ -7,6 +7,8 @@ import {
   SKILL_XP,
   WEALTH_XP,
   WargearItem,
+  advancedBonusXp,
+  archetypeAbilityXp,
   startingXp,
   rankOf,
   treeOfLearning,
@@ -39,7 +41,15 @@ import {
   type Skill,
 } from "./state.ts";
 import type { Weapon } from "./threat.ts";
-import { Wargear, applyMods, gearLine, sheetWeapon, type UpgradeMod, type WargearWeapon } from "./wargear.ts";
+import {
+  Wargear,
+  advancedWargearProblems,
+  applyMods,
+  gearLine,
+  sheetWeapon,
+  type UpgradeMod,
+  type WargearWeapon,
+} from "./wargear.ts";
 
 // The character builder (issue #9, docs/data.md §9): a character is the choices made at creation, and its sheet is
 // derived from them by `resolveBuild`, which the web runs for a live preview and the api re-runs before it saves.
@@ -118,58 +128,75 @@ export function purchaseKey(p: Purchase): string {
   }
 }
 
-export const CharacterBuild = z.object({
-  tier: Tier, // the campaign Tier the character is made for
-  budget: z.number().int().min(0).max(1000).optional(), // a GM's custom budget ("75, or even 50 XP", Core p.20)
-  archetypeId: id,
-  speciesId: id.optional(), // when the archetype allows several
-  // What fills each [PLACEHOLDER] keyword: a sub-faction, or a name the player writes in where the keyword allows it
-  // (rules-flow.md §11.25).
-  fills: z.record(keyword, z.union([z.object({ id }), z.object({ writeIn: keyword })])).prefault({}),
-  // One row of each column by name, and which row's bonus applies: only one does (rules-flow.md §11.22).
-  background: z
-    .object({
-      tableId: id,
-      origin: z.string().min(1).optional(),
-      accomplishment: z.string().min(1).optional(),
-      goal: z.string().min(1).optional(),
-      bonus: BackgroundRow.optional(),
-    })
-    .optional(),
-  options: z.array(z.object({ groupId: id, name: z.string().min(1) })).prefault([]), // in the order taken (XP by order)
-  // Ratings bought with XP, as the rating to reach. A rating at or below what is granted buys nothing.
-  attributes: z.partialRecord(attribute, z.number().int().min(1).max(12)).prefault({}),
-  skills: z.partialRecord(skill, z.number().int().min(0).max(8)).prefault({}),
-  // `choice`: a bracketed Talent's pick ("Acute Sense (smell)", Hatred [Orks]; rules-flow.md §11.29).
-  talents: z.array(z.object({ id, choice: z.string().min(1).max(60).optional() })).prefault([]),
-  powers: z.array(id).prefault([]),
-  packages: z.array(id).prefault([]), // the Creation Ascension Package, and Advancement Packages bought at creation
-  // Languages beyond Low Gothic (Core p.31): `picks` are the free ones (one allowed by a keyword, plus any a grant
-  // gives), `bought` cost 1 XP each. A catalogue id, or a write-in name the GM approves (rules-flow.md §11.48–50).
-  languages: z
-    .object({
-      picks: z.array(z.string().min(1).max(60)).prefault([]),
-      bought: z.array(z.string().min(1).max(60)).prefault([]),
-    })
-    .prefault({}),
-  wealth: z.number().int().min(0).max(MAX_BOUGHT_WEALTH).prefault(0), // bought on top of the starting Tier (§11.51)
-  choices: z.record(z.string().min(1).max(200), BuildChoice).prefault({}),
-  advancement: Advancement,
-  // The GM's part: rulings on this character that no book makes, and ticks on what only the GM can judge.
-  gm: z
-    .object({
-      species: id.optional(), // "Rubicon Primaris makes him Primaris Astartes" (rules-flow.md §11.121)
-      keywords: z.array(keyword).prefault([]), // e.g. DEATHWATCH (rules-flow.md §11.121)
-      gear: z
-        .object({ remove: z.array(z.string().min(1)).prefault([]), add: z.array(WargearItem).prefault([]) })
-        .prefault({}),
-      approved: z.array(z.string().min(1).max(200)).prefault([]), // paths of `gm` requirements and `story` grants
-      // Trait bonuses granted by ruling, added to the build's: a pregen made before §11.22 can keep all three
-      // Background bonuses (rules-flow.md §11.22).
-      mods: Mods.prefault({}),
-    })
-    .prefault({}),
+// Advanced Character Creation (Core pp.38–39): a build with no Archetype. `factionId` is the optional Faction (p.38,
+// rules-flow.md §11.140); `abilityOf` buys one Archetype Ability the GM agrees to (§11.131); `wargear` is the kit that
+// replaces an Archetype's, as catalogue ids, limited by Tier (p.39, §11.128).
+export const AdvancedBuild = z.object({
+  factionId: id.optional(),
+  abilityOf: id.optional(),
+  wargear: z.array(id).max(60).prefault([]),
 });
+export type AdvancedBuild = z.infer<typeof AdvancedBuild>;
+
+export const CharacterBuild = z
+  .object({
+    tier: Tier, // the campaign Tier the character is made for
+    budget: z.number().int().min(0).max(1000).optional(), // a GM's custom budget ("75, or even 50 XP", Core p.20)
+    // Exactly one of `archetypeId` and `advanced` (Core p.38); the refine below holds that line.
+    archetypeId: id.optional(),
+    advanced: AdvancedBuild.optional(),
+    speciesId: id.optional(), // when the archetype allows several; an Advanced build's own pick
+    // What fills each [PLACEHOLDER] keyword: a sub-faction, or a name the player writes in where the keyword allows it
+    // (rules-flow.md §11.25).
+    fills: z.record(keyword, z.union([z.object({ id }), z.object({ writeIn: keyword })])).prefault({}),
+    // One row of each column by name, and which row's bonus applies: only one does (rules-flow.md §11.22).
+    background: z
+      .object({
+        tableId: id,
+        origin: z.string().min(1).optional(),
+        accomplishment: z.string().min(1).optional(),
+        goal: z.string().min(1).optional(),
+        bonus: BackgroundRow.optional(),
+      })
+      .optional(),
+    options: z.array(z.object({ groupId: id, name: z.string().min(1) })).prefault([]), // in the order taken (XP by order)
+    // Ratings bought with XP, as the rating to reach. A rating at or below what is granted buys nothing.
+    attributes: z.partialRecord(attribute, z.number().int().min(1).max(12)).prefault({}),
+    skills: z.partialRecord(skill, z.number().int().min(0).max(8)).prefault({}),
+    // `choice`: a bracketed Talent's pick ("Acute Sense (smell)", Hatred [Orks]; rules-flow.md §11.29).
+    talents: z.array(z.object({ id, choice: z.string().min(1).max(60).optional() })).prefault([]),
+    powers: z.array(id).prefault([]),
+    packages: z.array(id).prefault([]), // the Creation Ascension Package, and Advancement Packages bought at creation
+    // Languages beyond Low Gothic (Core p.31): `picks` are the free ones (one allowed by a keyword, plus any a grant
+    // gives), `bought` cost 1 XP each. A catalogue id, or a write-in name the GM approves (rules-flow.md §11.48–50).
+    languages: z
+      .object({
+        picks: z.array(z.string().min(1).max(60)).prefault([]),
+        bought: z.array(z.string().min(1).max(60)).prefault([]),
+      })
+      .prefault({}),
+    wealth: z.number().int().min(0).max(MAX_BOUGHT_WEALTH).prefault(0), // bought on top of the starting Tier (§11.51)
+    choices: z.record(z.string().min(1).max(200), BuildChoice).prefault({}),
+    advancement: Advancement,
+    // The GM's part: rulings on this character that no book makes, and ticks on what only the GM can judge.
+    gm: z
+      .object({
+        species: id.optional(), // "Rubicon Primaris makes him Primaris Astartes" (rules-flow.md §11.121)
+        keywords: z.array(keyword).prefault([]), // e.g. DEATHWATCH (rules-flow.md §11.121)
+        gear: z
+          .object({ remove: z.array(z.string().min(1)).prefault([]), add: z.array(WargearItem).prefault([]) })
+          .prefault({}),
+        approved: z.array(z.string().min(1).max(200)).prefault([]), // paths of `gm` requirements and `story` grants
+        // Trait bonuses granted by ruling, added to the build's: a pregen made before §11.22 can keep all three
+        // Background bonuses (rules-flow.md §11.22).
+        mods: Mods.prefault({}),
+      })
+      .prefault({}),
+  })
+  .refine((b) => (b.archetypeId === undefined) !== (b.advanced === undefined), {
+    message: "A build takes an Archetype or Advanced Creation (Core p.38), not both and not neither",
+    path: ["archetypeId"],
+  });
 export type CharacterBuild = z.infer<typeof CharacterBuild>;
 export type CharacterBuildInput = z.input<typeof CharacterBuild>;
 
@@ -228,7 +255,7 @@ export type ResolvedBuild = {
   // archetype, keywords, and the keywords a Talent or Package could still add.
   who: Who;
 };
-export type Who = { species: string[] | null; archetypeId: string; keywords: string[]; buyable: string[] };
+export type Who = { species: string[] | null; archetypeId: string | null; keywords: string[]; buyable: string[] };
 
 // Ready to save: nothing left to choose, nothing wrong, and every GM question ticked.
 export const buildReady = (r: ResolvedBuild) => r.pending.length === 0 && r.problems.length === 0;
@@ -294,6 +321,7 @@ function indexOf(c: Creation) {
   return {
     archetypes: byId(c.archetypes),
     species: byId(c.species),
+    factions: byId(c.factions),
     subFactions: byId(c["sub-factions"]),
     keywords: new Map(c.keywords.map((k) => [k.name, k])),
     backgrounds: byId(c.backgrounds),
@@ -366,7 +394,9 @@ export function resolveBuild({
   const nowTier = Math.max(tier, play?.tier ?? tier);
   // Rank 1 at creation (Core p.36), also after a Creation Ascension (p.148); then +1 per 40 XP earned (pp.146–147).
   const rank = play ? rankOf(play.xpEarned) : 1;
-  const budget = build.budget ?? startingXp(tier);
+  const advanced = build.advanced;
+  // No Archetype Ability, so the Tier × 10 bonus (Core p.38, rules-flow.md §11.127) is part of the budget.
+  const budget = (build.budget ?? startingXp(tier)) + (advanced ? advancedBonusXp(tier) : 0);
   const ledger: LedgerRow[] = [];
   const pending: PendingChoice[] = [];
   const choices: BuildChoicePrompt[] = [];
@@ -819,9 +849,9 @@ export function resolveBuild({
     effects.push({ what: describeGrant(g), cite: o.cite });
   }
 
-  // ── species and archetype ──
-  const arch = ix.archetypes.get(build.archetypeId);
-  if (!arch) {
+  // ── species and archetype (or Advanced Creation: a species and no archetype, Core p.38) ──
+  const arch = build.archetypeId === undefined ? undefined : ix.archetypes.get(build.archetypeId);
+  if (!advanced && !arch) {
     problem({ step: "archetype", severity: "error", what: `Unknown archetype ${build.archetypeId}` });
     return {
       sheet: CharacterStats.parse({}),
@@ -833,37 +863,47 @@ export function resolveBuild({
       problems,
       effects,
       advancement: null,
-      who: { species: null, archetypeId: build.archetypeId, keywords: [], buyable: [] },
+      who: { species: null, archetypeId: build.archetypeId ?? null, keywords: [], buyable: [] },
     };
   }
-  allowed(arch, "archetype");
-  const archOrigin: Origin = {
-    path: `archetype/${arch.id}`,
+  const originOf = (a: Archetype): Origin => ({
+    path: `archetype/${a.id}`,
     step: "archetype",
-    cite: cite(arch),
+    cite: cite(a),
     tiersAscended: 0,
     granted: true,
-  };
-  if (arch.tier > tier)
-    problem({
+  });
+  if (arch) {
+    allowed(arch, "archetype");
+    if (arch.tier > tier)
+      problem({
+        step: "archetype",
+        severity: "error",
+        what: `${arch.name} is Tier ${arch.tier}, above the campaign's Tier ${tier}`,
+        cite: "Core p.21",
+      });
+    ledger.push({
+      what: `${arch.name} (archetype, with its species)`,
+      xp: arch.xp,
+      cite: cite(arch),
       step: "archetype",
-      severity: "error",
-      what: `${arch.name} is Tier ${arch.tier}, above the campaign's Tier ${tier}`,
-      cite: "Core p.21",
     });
-  ledger.push({ what: `${arch.name} (archetype, with its species)`, xp: arch.xp, cite: cite(arch), step: "archetype" });
+  }
 
   const speciesId =
-    build.gm.species ?? build.speciesId ?? (arch.speciesIds.length === 1 ? arch.speciesIds[0] : undefined);
+    build.gm.species ?? build.speciesId ?? (arch && arch.speciesIds.length === 1 ? arch.speciesIds[0] : undefined);
   if (!speciesId)
     ask({
-      path: `archetype/${arch.id}/species`,
+      path: arch ? `archetype/${arch.id}/species` : "advanced/species",
       step: "archetype",
       what: "Choose a species",
       choose: 1,
-      options: arch.speciesIds.map((x) => ix.species.get(x)?.name ?? x),
+      options: arch
+        ? arch.speciesIds.map((x) => ix.species.get(x)?.name ?? x)
+        : catalogue.creation.species.filter((x) => catalogue.homebrew || official(x.source)).map((x) => x.name),
+      cite: arch ? undefined : "Core p.38",
     });
-  else if (!build.gm.species && !arch.speciesIds.includes(speciesId))
+  else if (arch && !build.gm.species && !arch.speciesIds.includes(speciesId))
     problem({
       step: "archetype",
       severity: "error",
@@ -872,11 +912,21 @@ export function resolveBuild({
     });
   const species = speciesId ? ix.species.get(speciesId) : undefined;
   if (speciesId && !species) problem({ step: "archetype", severity: "error", what: `Unknown species ${speciesId}` });
+  // Advanced Creation pays the species' own XP (Core p.38 → the Species entry, p.26); an archetype's cost has it inside.
+  if (advanced && species)
+    ledger.push({
+      what: `${species.name} (species)`,
+      xp: species.xp,
+      cite: `${cite(species)}, Core p.38`,
+      step: "archetype",
+    });
 
   // The archetype's printed ratings already include the species' (Core p.29); what it doesn't print, the species gives.
-  for (const a of ATTRIBUTES) s.base.attributes[a] = arch.attributes[a] ?? species?.attributes[a] ?? 1;
+  // Advanced Creation starts every Attribute at 1 and every Skill at 0 (Core p.39), and the species' own ratings, which
+  // its XP paid for, stand (rules-flow.md §11.126).
+  for (const a of ATTRIBUTES) s.base.attributes[a] = arch?.attributes[a] ?? species?.attributes[a] ?? 1;
   for (const k of Object.keys(SKILLS) as Skill[]) {
-    const v = arch.skills[k] ?? species?.skills[k];
+    const v = arch?.skills[k] ?? species?.skills[k];
     if (v) s.base.skills[k] = v;
   }
   if (species) {
@@ -889,20 +939,114 @@ export function resolveBuild({
       granted: true,
     };
     ownRules(species.abilities).forEach((r) => addRule(r, so));
-    species.grants.forEach((g, i) => grant(g, { ...so, path: `${so.path}/${i}` }));
+    // Species Keywords are Advanced Creation's (Core p.38, rules-flow.md §11.141): an archetype prints its own, so its
+    // species' Keyword grants (a Human's any 2, an Astartes' IMPERIUM or CHAOS, an Aeldari's ANHRATHE or ASURYANI)
+    // are skipped for it. The fixed ones stand beside a Faction, and the choices are asked only without one (§11.142).
+    if (advanced) species.keywords.forEach(addKeyword);
+    const asksKeywords = !!advanced && !advanced.factionId;
+    species.grants.forEach((g, i) => {
+      if (keywordsOnly(g) && !asksKeywords) return; // `i` stays the grant's index, so answers keep their paths
+      grant(g, { ...so, path: `${so.path}/${i}` });
+    });
   }
-  arch.keywords.forEach(addKeyword);
-  ownRules(arch.abilities).forEach((r) => addRule(r, archOrigin));
-  arch.grants.forEach((g, i) => grant(g, { ...archOrigin, path: `${archOrigin.path}/${i}` }));
-  arch.wargear.forEach((g, i) => grant(g, { ...archOrigin, path: `${archOrigin.path}/wargear/${i}` }));
-  if (arch.influence) s.mods.influence = (s.mods.influence ?? 0) + arch.influence;
-  deferred.push({ reqs: arch.requires, what: arch.name, origin: archOrigin, severity: "error" });
+  if (arch) {
+    const origin = originOf(arch);
+    arch.keywords.forEach(addKeyword);
+    ownRules(arch.abilities).forEach((r) => addRule(r, origin));
+    arch.grants.forEach((g, i) => grant(g, { ...origin, path: `${origin.path}/${i}` }));
+    arch.wargear.forEach((g, i) => grant(g, { ...origin, path: `${origin.path}/wargear/${i}` }));
+    if (arch.influence) s.mods.influence = (s.mods.influence ?? 0) + arch.influence;
+    deferred.push({ reqs: arch.requires, what: arch.name, origin, severity: "error" });
+  }
+  if (advanced) {
+    const ao: Origin = { path: "advanced", step: "archetype", cite: "Core p.38", tiersAscended: 0, granted: true };
+    // The optional Faction (Core p.38): the Keywords its record names; its Background tables and option groups are the
+    // FACTION step's, offered by `factionId` as an archetype's are by its own (§11.140).
+    if (advanced.factionId) {
+      const faction = ix.factions.get(advanced.factionId);
+      if (!faction)
+        problem({
+          step: "archetype",
+          severity: "error",
+          what: `Unknown faction ${advanced.factionId}`,
+          cite: ao.cite,
+        });
+      else if (allowed(faction, "archetype")) {
+        faction.keywords.forEach(addKeyword);
+        effects.push({
+          what: `${faction.name} Faction${faction.keywords.length ? `: ${faction.keywords.join(", ")}` : ""}`,
+          cite: cite(faction),
+        });
+      }
+    }
+    // A bought Archetype Ability brings the ability alone: no Keywords, kit or Influence (§11.131). The GM must agree.
+    if (advanced.abilityOf) {
+      const from = ix.archetypes.get(advanced.abilityOf);
+      if (!from)
+        problem({
+          step: "archetype",
+          severity: "error",
+          what: `Unknown archetype ${advanced.abilityOf}`,
+          cite: ao.cite,
+        });
+      else if (allowed(from, "archetype")) {
+        const path = `advanced/ability/${from.id}`;
+        ledger.push({
+          what: `${from.name} Archetype Ability`,
+          xp: archetypeAbilityXp(from.tier),
+          cite: `Core p.38, ${cite(from)}`,
+          step: "archetype",
+        });
+        problem({
+          step: "archetype",
+          severity: "gm",
+          path,
+          what: `Archetype Ability of ${from.name}: the GM agrees`,
+          cite: "Core p.38",
+        });
+        ownRules(from.abilities).forEach((r) => addRule(r, { ...ao, path, cite: cite(from) }));
+      }
+    }
+    // The kit that replaces an Archetype's (Core p.39). Common clothing and a trinket come with it, and the sheet has no
+    // line for either.
+    const kit = advanced.wargear.map((w) => ({ id: w, w: catalogue.wargear.get(w) }));
+    for (const { id: wid, w } of kit) {
+      if (!w) problem({ step: "archetype", severity: "error", what: `Unknown wargear ${wid}`, cite: "Core p.39" });
+      // An upgrade is fitted to a weapon or armour, not carried as a piece of the kit (Core p.227).
+      else if (w.kind === "upgrade")
+        problem({
+          step: "archetype",
+          severity: "error",
+          what: `${w.name} is an upgrade, not Wargear`,
+          cite: "Core p.39",
+        });
+      else if (allowed(w, "archetype"))
+        addItem(
+          { name: w.name, qty: 1, wargearId: w.id, scope: "character" },
+          { ...ao, path: `advanced/wargear/${w.id}` },
+        );
+    }
+    for (const p of advancedWargearProblems(
+      kit.flatMap((k) => (k.w ? [k.w] : [])),
+      tier,
+    ))
+      problem({
+        step: "archetype",
+        severity: p.gm ? "gm" : "error",
+        path: p.gm ? `advanced/wargear/${norm(p.what)}`.slice(0, 200) : undefined,
+        what: p.what,
+        cite: "Core p.39",
+      });
+    effects.push({ what: "Common clothing and one trinket from the Trinkets Table (Core p.247)", cite: "Core p.39" });
+  }
 
   // ── packages: one Creation Ascension Package when the archetype's Tier is below the campaign's (Core p.148), and any
   // Advancement Packages bought at creation ──
-  const tiersAscended = Math.max(0, tier - arch.tier);
+  // An Advanced character has no Archetype Tier to ascend from: an Ascension Package bought at creation is the GM's to
+  // allow (Core p.38, rules-flow.md §11.132), one at most.
+  const tiersAscended = arch ? Math.max(0, tier - arch.tier) : 0;
   const ascensions = build.packages.filter((p) => ix.packages.get(p)?.kind === "ascension");
-  if (tiersAscended > 0 && ascensions.length === 0)
+  if (arch && tiersAscended > 0 && ascensions.length === 0)
     ask({
       path: "ascension",
       step: "ascension",
@@ -912,14 +1056,16 @@ export function resolveBuild({
       of: "Ascension Packages",
       cite: "Core p.148",
     });
-  if (ascensions.length > (tiersAscended > 0 ? 1 : 0))
+  if (ascensions.length > (tiersAscended > 0 || advanced ? 1 : 0))
     problem({
       step: "ascension",
       severity: "error",
       what: tiersAscended
         ? "Creation Ascension takes one Ascension Package"
-        : `${arch.name} is already Tier ${tier}: no Creation Ascension`,
-      cite: "Core p.148",
+        : arch
+          ? `${arch.name} is already Tier ${tier}: no Creation Ascension`
+          : "Advanced Creation takes one Ascension Package",
+      cite: advanced ? "Core p.38" : "Core p.148",
     });
   const packageNames: string[] = [];
   for (const pid of build.packages) {
@@ -934,9 +1080,18 @@ export function resolveBuild({
       path: `package/${p.id}`,
       step,
       cite: cite(p),
-      tiersAscended: p.kind === "ascension" ? tiersAscended : 0,
+      // An Advanced build's Ascension Package counts as one Tier Ascended for its "per Tier" grants (§11.132).
+      tiersAscended: p.kind === "ascension" ? (advanced ? 1 : tiersAscended) : 0,
       granted: true,
     };
+    if (advanced && p.kind === "ascension")
+      problem({
+        step,
+        severity: "gm",
+        path: `advanced/${po.path}`,
+        what: `${p.name}: the GM agrees to an Ascension Package at Advanced Creation`,
+        cite: "Core p.38",
+      });
     ledger.push({
       what: `${p.name} (${p.kind} package)`,
       xp: price(p.xp, { path: po.path, step, what: p.name }),
@@ -963,7 +1118,7 @@ export function resolveBuild({
       what: p.name,
       origin: po,
       severity: "error",
-      tier: p.kind === "ascension" ? arch.tier : tier,
+      tier: p.kind === "ascension" ? (arch?.tier ?? tier) : tier,
     });
     if (p.becomesArchetypeId)
       effects.push({
@@ -1080,11 +1235,14 @@ export function resolveBuild({
           what: `Archetype Ascension needs Rank 3; ${play?.xpEarned ?? 0} XP earned is Rank ${rank}`,
           cite: "Core pp.146, 155",
         });
-      if (to.factionId !== arch.factionId)
+      // An Advanced character has no Archetype, so no Faction to stay in (§11.133).
+      if (!arch || to.factionId !== arch.factionId)
         problem({
           step: "ascension",
           severity: "error",
-          what: `${to.name} is not an Archetype of ${arch.name}'s Faction`,
+          what: arch
+            ? `${to.name} is not an Archetype of ${arch.name}'s Faction`
+            : `${to.name}: an Advanced character has no Archetype to ascend from`,
           cite: "Core p.155",
         });
       // The Tier of one of the group's Ascensions since creation, which is the one this takes (Core p.155).
@@ -1275,6 +1433,14 @@ export function resolveBuild({
       granted: true,
     };
     const replace = (to: string) => {
+      // "Any 2 Keywords" (Core p.38) are two different ones (§11.133); a repeat would be listed once.
+      if (k === "[ANY 2]" && s.keywords.includes(to))
+        problem({
+          step: "faction",
+          severity: "error",
+          what: `${k} repeats ${to}: a Human's two Keywords differ`,
+          cite: "Core p.38",
+        });
       filled.add(k);
       s.keywords = s.keywords.map((x) => (x === k ? to : x));
     };
@@ -1619,7 +1785,7 @@ export function resolveBuild({
       ...ratings(),
       keywords: new Set([...s.keywords, ...filled]),
       species: species ? [species.id, ...species.countsAs] : [],
-      archetypeId: (ascendedTo ?? arch!).id, // after an Archetype Ascension, the Archetype the character is now
+      archetypeId: (ascendedTo ?? arch)?.id ?? null, // after an Archetype Ascension, the Archetype the character is now
       subFactionIds: new Set(s.subFactionIds),
       talents: new Set(s.talents.keys()),
       talentCategories: [...s.talents.keys()].map((t) => ix.talents.get(t)?.category ?? "talent"),
@@ -1750,7 +1916,7 @@ export function resolveBuild({
   });
   const sheet = CharacterStats.parse({
     species: species?.name ?? "",
-    archetype: [arch.name, ...packageNames].join(" + ").slice(0, 100),
+    archetype: [arch?.name ?? "Advanced", ...packageNames].join(" + ").slice(0, 100),
     keywords: s.keywords.slice(0, 20),
     attributes,
     skills: Object.fromEntries(Object.entries(skills).filter(([, v]) => v > 0)),
@@ -1792,7 +1958,7 @@ export type BuildCtx = {
   skills: Partial<Record<Skill, number>>;
   keywords: Set<string>;
   species: string[]; // the species and what it counts as (rules-flow.md §11.18)
-  archetypeId: string;
+  archetypeId: string | null; // null: Advanced Creation, no Archetype (Core p.38)
   subFactionIds: Set<string>; // the sub-faction and its founders (successorOf)
   talents: Set<string>;
   talentCategories: string[];
@@ -1832,9 +1998,9 @@ export function meets(r: Requirement, c: BuildCtx): true | string | { gm: string
     case "notSpecies":
       return !r.anyOf.some((x) => c.species.includes(x)) || `not for species ${r.anyOf.join(" or ")}`;
     case "archetype":
-      return r.anyOf.includes(c.archetypeId) || `needs archetype ${r.anyOf.join(" or ")}`;
+      return (c.archetypeId !== null && r.anyOf.includes(c.archetypeId)) || `needs archetype ${r.anyOf.join(" or ")}`;
     case "notArchetype":
-      return !r.anyOf.includes(c.archetypeId) || `not for archetype ${r.anyOf.join(" or ")}`;
+      return c.archetypeId === null || !r.anyOf.includes(c.archetypeId) || `not for archetype ${r.anyOf.join(" or ")}`;
     case "memorableInjuries":
       // No Memorable Injury is taken at creation yet (Core p.33, optional): the builder counts none.
       return r.min === undefined || r.min <= 0 || `needs ${r.min} Memorable Injur${r.min === 1 ? "y" : "ies"}`;
@@ -1944,9 +2110,9 @@ export function outOfReach(reqs: readonly Requirement[] | undefined, who: Who): 
       case "notSpecies":
         return !!species && r.anyOf.some((x) => species.includes(x));
       case "archetype":
-        return !r.anyOf.includes(who.archetypeId);
+        return who.archetypeId === null || !r.anyOf.includes(who.archetypeId);
       case "notArchetype":
-        return r.anyOf.includes(who.archetypeId);
+        return who.archetypeId !== null && r.anyOf.includes(who.archetypeId);
       case "keyword":
         return !r.anyOf.some((k) => keywords.has(k) || buyable.has(k));
       case "notKeyword":
@@ -2124,6 +2290,14 @@ export function label(g: Grant): string {
   if ("pick" in g) return `${amount(g.pick)} of ${describeFilter(g.wargearOf)}`;
   return describeGrant(g);
 }
+
+// A grant whose only content is Keywords: one or several, or a choice between such options. Core p.38 puts a Species'
+// Keywords under Advanced Creation, so these are the species grants an archetype build skips (rules-flow.md §11.141).
+const keywordsOnly = (g: Grant): boolean =>
+  "keyword" in g ||
+  "keywords" in g ||
+  ("all" in g && g.all.every(keywordsOnly)) ||
+  ("choose" in g && "from" in g && g.from.every(keywordsOnly));
 
 function describeGrant(g: Grant): string {
   if ("weaponTrait" in g) return `A weapon gains ${g.weaponTrait}`;

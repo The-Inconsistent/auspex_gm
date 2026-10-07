@@ -1,89 +1,9 @@
 {
-  "id": "99d5330e-3c31-4dc2-b2ec-075b51d30901",
+  "id": "61952703-4fa9-474a-8941-b441d92fd24a",
   "prevId": "c0b7ccd9-ca80-4410-b378-9bbedf5eaba0",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.admin_event": {
-      "name": "admin_event",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "actor_user_id": {
-          "name": "actor_user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "action": {
-          "name": "action",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "campaign_id": {
-          "name": "campaign_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "campaign_name": {
-          "name": "campaign_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "target_user_id": {
-          "name": "target_user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "detail": {
-          "name": "detail",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "admin_event_created_at_index": {
-          "name": "admin_event_created_at_index",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.access_token": {
       "name": "access_token",
       "schema": "",
@@ -176,19 +96,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_seen_at": {
-          "name": "last_seen_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
@@ -501,12 +408,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
-        },
-        "archived_at": {
-          "name": "archived_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -1932,6 +1833,85 @@
           "tableTo": "app_user",
           "columnsFrom": [
             "owner_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.spend_request": {
+      "name": "spend_request",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "campaign_id": {
+          "name": "campaign_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "character_id": {
+          "name": "character_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "spend_request_campaign_id_campaign_id_fk": {
+          "name": "spend_request_campaign_id_campaign_id_fk",
+          "tableFrom": "spend_request",
+          "tableTo": "campaign",
+          "columnsFrom": [
+            "campaign_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "spend_request_character_id_character_id_fk": {
+          "name": "spend_request_character_id_character_id_fk",
+          "tableFrom": "spend_request",
+          "tableTo": "character",
+          "columnsFrom": [
+            "character_id"
           ],
           "columnsTo": [
             "id"

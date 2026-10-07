@@ -37,7 +37,7 @@ import { TierStep } from "./components/tier-step/tier-step";
 import { XpBar } from "./components/xp-bar/xp-bar";
 import { XpLedger } from "./components/xp-ledger/xp-ledger";
 import { AUTOSAVE_MS, draftKey, libraryDraftKey, type BuilderStep } from "./constants";
-import { draftOf, mergeOverrides, pickDraft, type DraftStart } from "./utils";
+import { draftOf, mergeOverrides, pickDraft, startedBuild, type DraftStart } from "./utils";
 
 // The GM's overrides as the builder opened on them and as they are now; `mergeOverrides` saves only the difference.
 type OverrideEdit = { base: Overrides; edited: Overrides };
@@ -167,14 +167,15 @@ function TableBench({
       sheet: character?.stats ?? null,
       // The build, then the GM's overrides when they changed: they're on the character, not in the build.
       save: async (draft, edit) => {
-        const { name, detail, archetypeId, savedAt: _, builtAt: __, ...rest } = draft;
-        if (!archetypeId) return "Choose an archetype first";
+        const { name, detail } = draft;
+        const build = startedBuild(draft);
+        if (!build) return "Choose an archetype first";
         const r = await send({
           type: "character.build",
           id: characterId ?? created.current ?? undefined,
           name: name.trim() || undefined,
           detail,
-          build: { ...rest, archetypeId },
+          build,
         });
         if (!r.ok) return r.error;
         if (r.id) created.current = r.id;
@@ -301,9 +302,10 @@ export function LibraryBuilder({ entry, payload, rules }: LibraryBuilderProps) {
       overrides: null, // no GM here
       sheet: null,
       save: async (draft) => {
-        const { name, detail, archetypeId, savedAt: _, builtAt: __, ...rest } = draft;
-        if (!archetypeId) return "Choose an archetype first";
-        return put({ name: name.trim(), detail, build: { ...rest, archetypeId }, draft: null });
+        const { name, detail } = draft;
+        const build = startedBuild(draft);
+        if (!build) return "Choose an archetype first";
+        return put({ name: name.trim(), detail, build, draft: null });
       },
       saveDetails: null, // the library saves the name and detail as you go
       sendDraft: null, // bring it into a campaign from that campaign's builder instead (issue #14 step 4)
@@ -360,7 +362,7 @@ function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
   // reads that on the server and passes it in: deciding it here from `window` would render one screen in the prerender
   // and another after hydration, and `useSearchParams` would push the whole builder out of the prerender.
   const [step, setStep] = useState<BuilderStep>(
-    (made && initialStep) || (locked ? "advance" : draft.archetypeId ? "customise" : "tier"),
+    (made && initialStep) || (locked ? "advance" : startedBuild(draft) ? "customise" : "tier"),
   );
 
   const [error, setError] = useState<string | null>(null);
@@ -385,10 +387,10 @@ function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
 
   // The live sheet: every change re-resolves the whole build, so a later choice that breaks an earlier one shows up.
   const resolved = useMemo((): ResolvedBuild | null => {
-    if (!draft.archetypeId) return null;
-    const { name: _, detail: __, savedAt: ___, builtAt: ____, archetypeId, ...rest } = draft;
+    const build = startedBuild(draft);
+    if (!build) return null;
     try {
-      const r = resolveBuild({ catalogue, build: { ...rest, archetypeId }, play: play ?? undefined });
+      const r = resolveBuild({ catalogue, build, play: play ?? undefined });
       // The sheet is stored with the printed profile and the upgrade ids; the preview shows them applied, as the table
       // will (Core p.227). Only the build is sent to the server, which re-resolves it, so this is display alone.
       // Then the standing weapon effects, at the Rank this build reaches (rules-flow.md §11.68).
@@ -494,9 +496,9 @@ function Workshop({ bench, payload, onSaved, initialStep }: WorkshopProps) {
   return (
     <BuilderContext.Provider value={value}>
       <div className="bld">
-        {bench.banner && <div className="badge-offline">{bench.banner}</div>}
         <header className="band torn bld-head">
-          <a href={bench.backHref} aria-label={bench.backLabel} className="display" style={{ fontSize: 30 }}>
+          {bench.banner && <div className="badge-offline">{bench.banner}</div>}
+          <a href={bench.backHref} aria-label={bench.backLabel} className="btn sq">
             ◂
           </a>
           <div className="display gm-title">

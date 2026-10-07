@@ -35,13 +35,8 @@ export function ObjectivesEditor({ character: c, send, onResult }: ObjectivesEdi
       <span className="label">OBJECTIVES (only {c.name.toUpperCase()}&apos;S PLAYER SEES THEM)</span>
       {c.objectives.map((o, i) => (
         <div key={i} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <label style={{ flex: 1, display: "flex", gap: 10, alignItems: "center", minWidth: 0 }}>
-            <input
-              type="checkbox"
-              style={{ width: 24, height: 24, accentColor: "var(--red)", flexShrink: 0 }}
-              checked={o.done}
-              onChange={() => toggleDone(i)}
-            />
+          <label className="check" style={{ flex: 1, minWidth: 0 }}>
+            <input type="checkbox" checked={o.done} onChange={() => toggleDone(i)} />
             <span style={{ textDecoration: o.done ? "line-through" : undefined }}>{o.text}</span>
           </label>
           <button

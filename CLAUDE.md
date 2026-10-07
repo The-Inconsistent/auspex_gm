@@ -284,5 +284,4 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Not built yet
 
-- Advanced Creation (Core pp.38–39)
 - Server-side undo history (client undo is inverse deltas)

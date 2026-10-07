@@ -4,11 +4,20 @@ import { ownCharacter } from "../character/character.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { accessToken, appUser, invite, membership } from "./auth.schema.ts";
-import { hash, newSecret, type Ctx } from "./auth.service.ts";
+import { hash, issueScreenToken, newSecret, type Ctx } from "./auth.service.ts";
 
 export type AccessAction = Extract<
   Action,
-  { type: "invite.create" | "invite.revoke" | "member.remove" | "member.seat" | "seat.leave" }
+  {
+    type:
+      | "invite.create"
+      | "invite.revoke"
+      | "member.remove"
+      | "member.seat"
+      | "seat.leave"
+      | "screen.issue"
+      | "screen.revoke";
+  }
 >;
 
 // GM-only (not in PLAYER_ACTIONS): invite links and removing a signed-in member. seat.leave is the player's own, and
@@ -72,6 +81,17 @@ export async function applyAccessAction(
         });
       return { ok: true };
     }
+
+    case "screen.issue":
+      return { ok: true, token: await issueScreenToken(tx, { campaignId: cid }) };
+
+    case "screen.revoke":
+      await tx
+        .update(accessToken)
+        .set({ revokedAt: new Date() })
+        .where(and(eq(accessToken.campaignId, cid), eq(accessToken.role, "screen"), isNull(accessToken.revokedAt)));
+      return { ok: true };
+
     case "seat.leave": {
       // No kick: the phone navigates away on the ack, and a kick would drop the socket before the ack reaches it.
       if (ctx.role !== "player" || !ctx.characterId) fail("Only a seated player can leave");

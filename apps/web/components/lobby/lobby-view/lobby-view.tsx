@@ -148,18 +148,8 @@ export function LobbyView({ lobby }: LobbyViewProps) {
 
   return (
     <main className="pad stack" style={{ maxWidth: 760, margin: "0 auto" }}>
-      <header
-        className="band torn"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: 12,
-          padding: "14px 16px",
-          marginBottom: 12,
-        }}
-      >
-        <div className="display" style={{ fontSize: 30, flex: 1 }}>
+      <header className="band torn bld-head" style={{ marginBottom: 12 }}>
+        <div className="display page-title" style={{ flex: 1 }}>
           AUSPEX <span className="dim">· LOBBY</span>
         </div>
         {lobby.admin && (

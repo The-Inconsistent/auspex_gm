@@ -40,6 +40,7 @@ const s: LiveState = {
     homebrew: false,
     archived: false,
   },
+  spendRequests: [],
   access: { members: [], invites: [], guests: [] },
   characters: [
     {

@@ -10,6 +10,7 @@ import { applyCodexAction } from "../codex/codex.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { applyEncounterAction } from "../encounter/encounter.actions.ts";
+import { applySpendAction } from "../spend/spend.actions.ts";
 import { applyThreatAction } from "../threat/threat.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
@@ -18,6 +19,8 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
   if (a.type === "campaign.delete") return { state: false, codex: false };
   // Archiving ends a running session, so the session list changes too.
   if (a.type === "campaign.archive") return { state: true, codex: true };
+  // A table screen token is no part of either snapshot (players never see access).
+  if (a.type === "screen.issue" || a.type === "screen.revoke") return { state: false, codex: false };
   // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
   if (
     a.type === "codex.save" ||
@@ -45,9 +48,11 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
 }
 
 // Sockets to disconnect after this action: a removed member, or whoever plays a revoked/deleted character.
-export type Kick = { userId: string } | { characterId: string; guestsOnly: boolean } | { all: true };
+export type Kick =
+  { userId: string } | { characterId: string; guestsOnly: boolean } | { screens: true } | { all: true };
 export function kicks(a: Action): Kick | null {
   if (a.type === "token.revoke") return { characterId: a.characterId, guestsOnly: true }; // members keep their seat
+  if (a.type === "screen.revoke") return { screens: true };
   if (a.type === "character.delete") return { characterId: a.id, guestsOnly: false };
   if (a.type === "member.remove") return { userId: a.userId };
   if (a.type === "campaign.delete") return { all: true };
@@ -57,6 +62,7 @@ export function kicks(a: Action): Kick | null {
 function authorize(ctx: Ctx, a: Action) {
   if (a.type === "member.seat" && !ctx.admin) fail("Admin only");
   if (ctx.role === "gm") return;
+  if (ctx.role === "screen") fail("The table screen is read-only");
   if (!PLAYER_ACTIONS.has(a.type)) fail("GM only");
   if (
     (a.type === "character.update" ||
@@ -68,6 +74,7 @@ function authorize(ctx: Ctx, a: Action) {
     a.id !== ctx.characterId
   )
     fail("Not your character");
+  if (a.type === "spend.request" && a.characterId !== ctx.characterId) fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.build" && a.keepSheet) fail("GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
@@ -79,14 +86,15 @@ function authorize(ctx: Ctx, a: Action) {
     fail("Only the GM grants Wealth and Ammo");
 }
 
-// What still works at an archived game: the way out of it, and taking access away (a player leaving, a guest token or
-// invite revoked). An admin may also remove a seat (REMOVE FROM ALL GAMES reaches archived games too).
+// What still works at an archived game: the way out of it, and taking access away (a player leaving, a guest token,
+// invite or table screen revoked). An admin may also remove a seat (REMOVE FROM ALL GAMES reaches archived games too).
 const ARCHIVED_OPEN: ReadonlySet<Action["type"]> = new Set([
   "campaign.unarchive",
   "campaign.delete",
   "seat.leave",
   "token.revoke",
   "invite.revoke",
+  "screen.revoke",
 ]);
 
 export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {
@@ -125,6 +133,11 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "campaign.unarchive":
     case "campaign.delete":
       return applyCampaignAction(tx, { ctx, action });
+
+    case "spend.request":
+    case "spend.cancel":
+    case "spend.resolve":
+      return applySpendAction(tx, { ctx, action });
 
     case "character.create":
     case "character.update":
@@ -177,6 +190,8 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "member.remove":
     case "member.seat":
     case "seat.leave":
+    case "screen.issue":
+    case "screen.revoke":
       return applyAccessAction(tx, { ctx, action });
   }
 }

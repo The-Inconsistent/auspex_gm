@@ -42,6 +42,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | `character/` | Characters and guest tokens; the creation catalogue every builder resolves against | `character.actions.ts`: `CharacterAction`, `applyCharacterAction`, `ownCharacter`. `character.schema.ts`: `character`. `creation.service.ts`: `buildCatalogue`, `creationPayload`, `buildRefusal` (why a resolved build can't be saved, in the words both `character.build` and the library use) |
 | `library/` | Characters a signed-in user owns outside any campaign, and their REST (issue #14) | `library.controller.ts`: `LibraryController`. `library.service.ts`: `listLibrary`, `readLibrary`, `createLibraryCharacter`, `saveLibraryCharacter`, `deleteLibraryCharacter`. `library.schema.ts`: `libraryCharacter` |
 | `encounter/` | Encounters, turns, combatants, starting a beat's fight | `encounter.actions.ts`: `EncounterAction`, `applyEncounterAction`. `encounter.schema.ts`: `encounter`, `combatant` |
+| `spend/` | Players' spend requests, answered by the GM (rules-flow §11.122) | `spend.actions.ts`: `SpendAction`, `applySpendAction`. `spend.clear.ts`: `clearSpendRequests`. `spend.schema.ts`: `spendRequest` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts, items | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the seven tables |
 | `admin/` | The admin page's reads and housekeeping (§3.2) | `admin.controller.ts`: `AdminController`. `admin.service.ts`: `listUsers`, `listCampaigns`, `listEvents`, `adminAction`, `removeSeats`. `admin.schema.ts`: `adminEvent` |
 | `table/` | The socket | `table.gateway.ts`: `TableGateway` (`run`: one action with its kicks and broadcast, for the socket and the admin route). `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
@@ -281,6 +282,7 @@ Wounds, Shock, Wrath, Glory, Respite, Conditions, raw `stats` and granting Wealt
 | `character.delete` | `{ characterId: a.id, guestsOnly: false }` | every socket playing it. Its tokens and invites are cascade-deleted; a member's `character_id` is set null |
 | `member.remove` | `{ userId }` | every socket of that user at this table |
 | `campaign.delete` | `{ all: true }` | every socket at the game, a moment (200 ms) after the ack, so the sender's own ack still arrives |
+| `screen.revoke` | `{ screens: true }` | every table screen socket at this table |
 
 The gateway checks the sockets in both rooms of the campaign.
 
@@ -332,6 +334,8 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `character.delete` | GM | Delete. Cascades to tokens and combatant rows. Kicks the player | S | |
 | `token.issue` | GM | New guest token (the GUEST QR) for a character in this campaign. Returns `token` (plaintext, once) | S | |
 | `token.revoke` | GM | Stamp `revokedAt` on all of the character's live guest tokens. Kicks guest sockets only | S | |
+| `screen.issue` | GM | New table screen token (the SCREEN QR): role `screen`, no character, read-only. Returns `token` (plaintext, once). Touches neither snapshot | — | |
+| `screen.revoke` | GM | Stamp `revokedAt` on every live screen token of this campaign. Kicks the screens | — | |
 | `invite.create` | GM | New invite: `mode` `"room"` (no `characterId`) or `"character"` (needs one in this campaign, `maxUses` 1). `allowGuests` defaults to true, `hours` 1–720 (default 12). Returns `id` and the code in `token` (plaintext, once) | S | |
 | `invite.revoke` | GM | Stamp `revokedAt` on one live invite. Anyone already seated keeps their seat | S | |
 | `member.remove` | GM | Delete a user's `membership` here. Refuses yourself (`"You can't remove yourself"`). Kicks that user | S | |
