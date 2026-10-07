@@ -1117,6 +1117,7 @@ dialog.picker {
   gap: 0;
   border: 1px solid var(--line);
   margin-bottom: 10px;
+  min-width: min-content; /* the border and .tbar wrap the rows' column floors if anything ever scrolls */
 }
 
 .tracker {
@@ -1128,6 +1129,7 @@ dialog.picker {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  container: tracker / inline-size; /* the row picks its columns from the width it actually gets (below) */
   padding: 10px 16px;
   gap: 6px;
   overflow: auto;
@@ -1144,8 +1146,8 @@ dialog.picker {
 .row {
   display: grid;
   grid-template-columns:
-    76px minmax(130px, 1.5fr) 52px minmax(104px, 1fr) minmax(84px, 0.8fr) 34px 34px minmax(92px, 1fr)
-    64px;
+    80px minmax(150px, 2fr) 88px minmax(96px, 1fr) minmax(80px, 0.8fr) 34px 34px minmax(84px, 1fr)
+    72px;
   gap: 8px;
   align-items: center;
   min-height: 48px;
@@ -1161,6 +1163,10 @@ dialog.picker {
 } /* grid cells default to min-content width; let bars shrink, never spill */
 button.row:nth-of-type(even) {
   background: var(--vellum-2);
+}
+/* STATE, CLASS and PLAYERS are labels, not numbers: smaller type keeps ADVERSARY, AMBUSHED and HIDDEN whole. */
+.row .tag {
+  font-size: 14px;
 }
 .row.head {
   min-height: 30px;
@@ -1251,6 +1257,7 @@ button.row.now:nth-of-type(even) {
 }
 .cmd input {
   flex: 1;
+  align-self: stretch; /* the whole 52px bar is the tap target, not a 24px line of text */
   border: 0;
   outline: 0;
   background: transparent;
@@ -1261,6 +1268,22 @@ button.row.now:nth-of-type(even) {
   outline: 2px solid var(--red);
   outline-offset: 2px;
 } /* the input's own outline is off; ring the bar */
+
+/* The full nine-column row needs ~800px (its floors, gaps, padding and border). Beside the rail and a 300px side panel
+   that takes ~1245px, so tablets in landscape put the side panel (stat block, vox log) under the table instead. */
+@media (max-width: 1260px) {
+  .tracker {
+    display: block;
+    height: auto;
+  }
+  .tracker-main {
+    overflow: visible;
+  }
+  .tracker-side {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
 
 @media (max-width: 900px) {
   /* Narrow screens: one scrolling page instead of fixed-height panes. */
@@ -1307,25 +1330,52 @@ button.row.now:nth-of-type(even) {
     width: 40px;
     min-height: 40px;
   }
-  .tracker {
-    display: block;
-    height: auto;
-  }
-  .tracker-main {
-    overflow: visible;
-  }
-  .tracker-side {
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
+}
+
+/* Narrower than the full row: drop CLASS, PLAYERS and the portraits; SHOCK, DEF and RES stay. */
+@container tracker (max-width: 801px) {
   .row {
-    /* no floors: at 390px the four columns must fit ~316px; tracks clip their cells before the number */
-    grid-template-columns: 60px minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-columns: 80px minmax(120px, 2fr) minmax(96px, 1fr) minmax(80px, 0.8fr) 34px 34px minmax(84px, 1fr);
   }
   .row.head {
     letter-spacing: 0.02em;
   }
   .row .hide-sm {
+    display: none;
+  }
+}
+/* Phones: DEF and RES go too, the harm tracks give way to their numbers, and SHOCK sits under WOUNDS in one column
+   (cells by position: 1 state, 2 name, 4 wounds, 5 shock, 8 status), so four columns fit ~310px at 390px. */
+@container tracker (max-width: 599px) {
+  .row {
+    grid-template-columns: 68px minmax(0, 1.3fr) minmax(0, 0.8fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      "state name wounds status"
+      "state name shock status";
+    column-gap: 6px;
+    row-gap: 0;
+    padding-block: 4px;
+  }
+  .row > :nth-child(1) {
+    grid-area: state;
+  }
+  .row > :nth-child(2) {
+    grid-area: name;
+  }
+  .row > :nth-child(4) {
+    grid-area: wounds;
+  }
+  .row > :nth-child(5) {
+    grid-area: shock;
+  }
+  .row > :nth-child(8) {
+    grid-area: status;
+  }
+  .row .tag {
+    font-size: 12px;
+  }
+  .row .hide-xs,
+  .row .track {
     display: none;
   }
 }
