@@ -1245,3 +1245,24 @@ test("an Advanced Faction must exist, and a homebrew one needs homebrew (§11.14
   assert.ok(run(apoc).problems.some((p) => p.severity === "error" && p.what.includes("homebrew")));
   assert.ok(!run(apoc, true).problems.some((p) => p.severity === "error"));
 });
+
+test("a Background's Corruption bonus is counted on the sheet; a rolled amount stays an effect (Core p.86)", () => {
+  const havoc = (bonus: "origin" | "accomplishment") =>
+    run(
+      {
+        tier: 3,
+        archetypeId: "havoc",
+        background: {
+          tableId: "chaos",
+          origin: "Born Evil",
+          accomplishment: "Revolting",
+          goal: "Champion",
+          bonus,
+        },
+      },
+      true,
+    );
+  const born = havoc("origin");
+  assert.equal(born.sheet.corruption - havoc("accomplishment").sheet.corruption, 1);
+  assert.ok(!born.effects.some((e) => e.what === "Corruption +1"));
+});

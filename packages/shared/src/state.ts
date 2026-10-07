@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CHAOS_SPAWN_AT, corruptionLevel } from "./corruption.ts";
 import { RequisitionSlot } from "./requisition.ts";
 import { SpendRequest } from "./spend.ts";
 import { Threat, ThreatClass, Weapon } from "./threat.ts";
@@ -452,7 +453,7 @@ export function isOut(s: LiveState, c: Combatant): boolean {
   if (c.kind === "threat") return threatStatus(c).includes("Slain");
   const ch = s.characters.find((x) => x.id === c.characterId);
   return ch
-    ? pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })).includes("Dead")
+    ? isGone(pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })))
     : false;
 }
 
@@ -485,12 +486,17 @@ export function canSeize(s: LiveState, side: Side): boolean {
 // Automatic states from damage (pp.193-196, p.324).
 export function pcStatus(c: Character, d: DerivedStats): string[] {
   const out: string[] = [];
+  // Chaos Spawn: the character is lost and the GM takes it over (Core p.286). It needn't be Dead to be gone.
+  if (corruptionLevel(c.stats.corruption).chaosSpawn) out.push("Lost");
   if (c.annihilated || c.traumatic > d.maxTraumatic) out.push("Dead");
   else if (c.wounds > d.maxWounds) out.push("Dying");
   else if (c.wounds > 0) out.push("Wounded");
   if (c.shock > d.maxShock) out.push("Exhausted");
   return out;
 }
+
+// Out of the game for good: Dead, or Lost to Chaos (p.286).
+export const isGone = (status: string[]) => status.includes("Dead") || status.includes("Lost");
 
 // The campaign's Tier can't go past the last one (Core p.20).
 export const MAX_TIER = TIERS[TIERS.length - 1]!;
@@ -503,7 +509,7 @@ export const ASCENSION_XP = 100;
 // and PARTY offers from the same answer.
 export function ascensionGroup(characters: Character[], tier: number, award = 0) {
   const group = characters.filter(
-    (c) => !pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead"),
+    (c) => !isGone(pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier }))),
   );
   return { group, short: group.filter((c) => c.xp + award - c.xpAtAscension < ASCENSION_XP) };
 }
@@ -586,6 +592,8 @@ const unseen = (m: SheetMutation, i: number): SheetMutation => ({
   weapons: [],
 });
 
+const lostAt = (points: number) => (corruptionLevel(points).chaosSpawn ? CHAOS_SPAWN_AT : 0);
+
 // What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
 // invite links (each one is a way in), nor another Agent's objectives, Corruption or mutations, nor the GM's Ruin (docs/rules-flow.md
 // §11.58).
@@ -595,7 +603,12 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
   characters: s.characters.map((c) =>
     c.id === characterId
       ? c
-      : { ...c, objectives: [], stats: { ...c.stats, corruption: 0, mutations: c.stats.mutations.map(unseen) } },
+      : {
+          ...c,
+          objectives: [],
+          // The points stay the GM's; being Lost (p.286) is plain to the table, so it still shows.
+          stats: { ...c.stats, corruption: lostAt(c.stats.corruption), mutations: c.stats.mutations.map(unseen) },
+        },
   ),
   access: { members: s.access.members, invites: [], guests: [] },
   encounter: s.encounter && {

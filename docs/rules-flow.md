@@ -208,6 +208,11 @@ that table + 10 per mutation held (§11.136); Subtle and Minor 61+ send the roll
 the mutated part removes its effect, not the Corruption. The GM adds one in PARTY › MUTATIONS (`character.mutate`); its
 always-on numbers reach the sheet (`withMutations`), the rest is its printed Effect.
 
+At 26+ the Agent is **Lost** (a status beside Dying and Dead, `pcStatus`): out of the fight and of the Ascension; the
+GM runs the Chaos Spawn at the table (pp.286, 352). Corruption from creation (a Chaos Background's bonus, p.86, or a
+fixed grant) starts the count; a rolled amount ("1d3 Corruption") is left to the table, and a rebuild keeps play's
+change on top of what the build gives.
+
 ## 10. What the app does with all this
 
 **Tracks and enforces (server):** pools with caps; session start/reset; alternating turns with Seize
@@ -219,7 +224,7 @@ vs Tier + 1; personal Ruin; Respite reset.
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
 rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
 
-**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY and a scene's prepared Corruption Test), level and Test modifier on the sheet (the GM and that Agent's player only), a failed Test's gain and +1 Ruin in one action (§11.134), Mutation Test DNs as notices (§11.135). Not coded: the Wrath spend and Wrath Critical that lower the DN (p.286), the Mutation tables (pp.287–295), creation grants of Corruption.
+**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY and a scene's prepared Corruption Test), level and Test modifier on the sheet (the GM and that Agent's player only), a failed Test's gain and +1 Ruin in one action (§11.134), Mutation Test DNs as notices (§11.135). The Wrath spend and Wrath Critical lower the DN (p.286); the Mutation tables (pp.287–295) are `mutation.ts` and `packages/data/mutations`; creation grants of a fixed amount start the count. Not coded: a rolled Corruption grant ("1d3"), a Corruption loss, and a mutation's bonus dice and DN penalties, which stay the table's.
 
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.

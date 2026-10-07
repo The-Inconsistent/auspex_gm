@@ -1096,7 +1096,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   await gm.until((s) => charOf(s, hero.id!).traumatic === d.maxTraumatic + 1);
   assert.deepEqual(await gm.send({ type: "character.respite", id: hero.id }), {
     ok: false,
-    error: "A Dead character can't Respite (p.193)",
+    error: "A Dead or Lost character can't Respite (pp.193, 286)",
   });
   assert.ok((await gm.send({ type: "character.respite", id: c.id })).ok);
 

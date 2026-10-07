@@ -19,7 +19,7 @@ import {
   type Amount as AmountSchema,
   type Archetype,
   type BackgroundTable,
-  type Scaled,
+  Scaled,
   type SubFaction,
   type WargearFilter,
   type RankAmount,
@@ -237,7 +237,7 @@ export type ChoicePick =
 export type BuildChoicePrompt = PendingChoice & { pick: ChoicePick; answer: BuildChoice };
 // "error" blocks saving; "gm" needs the GM's tick (its path in `gm.approved`) before it does.
 export type BuildProblem = { step: BuildStep; what: string; cite?: string; severity: "error" | "gm"; path?: string };
-// What the build gives that a sheet has no field for: Faith, Corruption, followers, bonus dice in a situation…
+// What the build gives that a sheet has no field for: Faith, rolled Corruption, followers, bonus dice in a situation…
 export type BuildEffect = { what: string; cite?: string };
 
 export type ResolvedBuild = {
@@ -363,6 +363,7 @@ type Sheet = {
   only: Set<string> | null;
   mods: Record<string, number>;
   wealth: number;
+  corruption: number; // what the build gives (Core p.86); play adds the rest
   gear: GearItem[];
   weapons: { name: string; weapon: WargearWeapon }[];
   // Standing weapon effects held (rules-flow.md §11.68), with the record's path, so a `granted` one finds its weapon
@@ -443,6 +444,7 @@ export function resolveBuild({
     only: null,
     mods: {},
     wealth: tier, // starting Wealth = Tier (Core p.38)
+    corruption: 0,
     gear: [],
     weapons: [],
     weaponEffects: [],
@@ -845,6 +847,11 @@ export function resolveBuild({
       return void s.xpDiscounts.disciplines.push({ id: disc, multiplier: d.multiplier });
     }
     if ("story" in g) return problem({ step: o.step, severity: "gm", path: o.path, what: g.story, cite: o.cite });
+    // Corruption the build gives (Core p.286) is counted. A rolled amount ("1d3 Corruption") is the table's to roll, and
+    // a loss ("Lose 2 Corruption per Tier Ascended", IoE p.59) the GM's to take, so both stay listed.
+    const fixedCorruption = "corruption" in g ? Scaled.safeParse(g.corruption) : null;
+    const gained = fixedCorruption?.success ? scaled(fixedCorruption.data, o) : 0;
+    if (gained > 0) return void (s.corruption += gained);
     // Everything else happens in play, not on the sheet: list it so the builder shows it.
     effects.push({ what: describeGrant(g), cite: o.cite });
   }
@@ -1354,7 +1361,7 @@ export function resolveBuild({
             deferred.push({ reqs: r.requires, what: `${capital(row)} ${r.name}`, origin: to, severity: "error" });
           if (bg.bonus === row) {
             if (r.bonus === "wealth") s.wealth += 1;
-            else if (r.bonus === "corruption") effects.push({ what: "Corruption +1", cite: to.cite });
+            else if (r.bonus === "corruption") s.corruption += 1;
             else if (r.bonus) s.mods[r.bonus] = (s.mods[r.bonus] ?? 0) + 1;
             r.grants?.forEach((g, i) => grant(g, { ...to, path: `${to.path}/${row}/${i}` }));
           }
@@ -1932,6 +1939,7 @@ export function resolveBuild({
     gear: gear.slice(0, 60).map((g) => g.slice(0, 200)),
     weaponEffects: weaponEffects.length ? weaponEffects.slice(0, 60) : undefined,
     wealth: s.wealth,
+    corruption: s.corruption,
   });
   const advancement = play ? { budget: earned, spent: advanceSpent, rank, tier: nowTier } : null;
   const self = {
@@ -2438,7 +2446,8 @@ export function keepPlay({
       .filter((g, i, all) => all.indexOf(g) === i)
       .slice(0, 60),
     wealth: previous.wealth,
-    corruption: previous.corruption, // gained in play (§9), never from the build
+    // Gained in play (§9) on top of what the build gives (a Background's +1, Core p.86), so a build change moves it.
+    corruption: Math.max(0, previous.corruption + next.corruption - before.corruption),
     mutations: previous.mutations, // likewise (Core p.287)
     ammo: previous.ammo,
     requisitioned: previous.requisitioned,

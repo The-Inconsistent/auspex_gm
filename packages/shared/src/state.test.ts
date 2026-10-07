@@ -15,6 +15,7 @@ import {
   requisitionYield,
   canAct,
   canSeize,
+  ascensionGroup,
   deriveStats,
   exhaustedShock,
   isExhausted,
@@ -657,4 +658,23 @@ test("toPlayerView: every phone sees every pending spend request (rules-flow §1
   const s = { ...table(enc([])), spendRequests };
   assert.deepEqual(toPlayerView(s, "a").spendRequests, spendRequests);
   assert.deepEqual(toPlayerView(s, null).spendRequests, spendRequests);
+});
+
+test("Chaos Spawn: an Agent at 26 Corruption is Lost, out of the fight and of the Ascension (Core p.286)", () => {
+  const lost = char({ id: "lost", stats: CharacterStats.parse({ corruption: 26 }) });
+  const fine = char({ id: "fine", stats: CharacterStats.parse({ corruption: 25 }) });
+  const status = (c: Character) => pcStatus(c, deriveStats({ stats: c.stats, overrides: {}, tier: 1 }));
+  assert.deepEqual(status(lost), ["Lost"]);
+  assert.deepEqual(status(fine), []);
+  assert.deepEqual(
+    ascensionGroup([lost, fine], 1).group.map((c) => c.id),
+    ["fine"],
+  );
+  // Another phone doesn't get the points, but sees who is Lost.
+  const seen = toPlayerView({ ...table(null as never, [lost, fine]), encounter: null }, null).characters;
+  assert.deepEqual(seen.map(status), [["Lost"], []]);
+  assert.deepEqual(
+    seen.map((c) => c.stats.corruption),
+    [26, 0],
+  );
 });
