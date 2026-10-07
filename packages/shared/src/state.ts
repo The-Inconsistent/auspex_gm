@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { RequisitionSlot } from "./requisition.ts";
+import { SpendRequest } from "./spend.ts";
 import { Threat, ThreatClass, Weapon } from "./threat.ts";
 import { WargearFilter, WeaponMod } from "./weapon-effect.ts";
 
@@ -378,6 +379,9 @@ export const LiveState = z.object({
       upNext: Side.nullable().optional(),
     })
     .nullable(),
+  // Spends the players have asked for and the GM hasn't answered, oldest first (rules-flow.md §11.123). Every phone
+  // sees them all: Glory is the party's pool and p.165 has the group agree on it.
+  spendRequests: z.array(SpendRequest),
   // guests: characters a live guest QR token points at (no account, so not in members).
   access: z.object({ members: z.array(Member), invites: z.array(Invite), guests: z.array(z.string()) }),
 });

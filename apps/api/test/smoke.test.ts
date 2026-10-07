@@ -3036,3 +3036,68 @@ test("custom threats: saved, used, refused and never sent to a player", async (t
     error: 'Unknown threat "custom-warped-ogryn-2"',
   });
 });
+
+test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §11.122–124)", async (t) => {
+  const gm = await newCampaign("Spend requests", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    const p = connect({ auth: { token: issued.token } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  assert.ok((await gm.send({ type: "session.start" })).ok); // Wrath 2 each, Glory 0
+  const charOf = (s: LiveState, id: string) => s.characters.find((c) => c.id === id)!;
+
+  // Only for your own Agent, only one of each kind; answering is the GM's.
+  assert.equal((await pa.send({ type: "spend.request", characterId: b.id, kind: "reroll" })).ok, false);
+  const reroll = await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" });
+  assert.ok(reroll.ok && reroll.id);
+  assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" })).ok, false);
+  assert.equal((await pa.send({ type: "spend.resolve", id: reroll.id, accept: true })).ok, false, "GM only");
+  assert.equal((await pb.send({ type: "spend.cancel", id: reroll.id })).ok, false, "not B's request");
+  await pb.until((s) => s.spendRequests.some((r) => r.id === reroll.id)); // every phone sees it (p.165)
+
+  assert.ok((await gm.send({ type: "spend.resolve", id: reroll.id, accept: true })).ok);
+  await gm.until((s) => charOf(s, a.id!).wrath === 1 && s.spendRequests.length === 0);
+
+  // A spend the pool can't pay is refused and stays pending; DENY drops it with nothing spent.
+  const dice = await pa.send({ type: "spend.request", characterId: a.id, kind: "gloryDice", amount: 2 });
+  assert.ok(dice.ok && dice.id);
+  assert.equal((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok, false, "Glory is 0");
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 3 })).ok);
+  assert.ok((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok);
+  await gm.until((s) => s.campaign.glory === 1 && s.spendRequests.length === 0);
+
+  // Restore Shock with no Shock to restore would waste the Wrath (§11.122).
+  const shock = await pa.send({ type: "spend.request", characterId: a.id, kind: "restoreShock" });
+  assert.ok(shock.ok && shock.id);
+  assert.equal((await gm.send({ type: "spend.resolve", id: shock.id, accept: true })).ok, false);
+  assert.ok((await gm.send({ type: "character.adjust", id: a.id, shock: 1 })).ok);
+  assert.ok((await gm.send({ type: "spend.resolve", id: shock.id, accept: true })).ok);
+  await gm.until((s) => charOf(s, a.id!).wrath === 0 && charOf(s, a.id!).shock === 0);
+
+  // Seize needs a fight; a new fight clears the old one's Seize requests.
+  assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok, false);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  assert.ok((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+
+  // The asker cancels; session.end clears whatever is left.
+  const damage = await pa.send({ type: "spend.request", characterId: a.id, kind: "gloryDamage" });
+  assert.ok(damage.ok && damage.id);
+  assert.ok((await pa.send({ type: "spend.cancel", id: damage.id })).ok);
+  assert.ok((await pb.send({ type: "spend.request", characterId: b.id, kind: "reroll" })).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "session.end", xp: 0 })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+});

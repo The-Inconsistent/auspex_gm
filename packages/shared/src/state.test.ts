@@ -114,6 +114,7 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
   },
   characters,
   encounter: e,
+  spendRequests: [],
   access: noAccess,
 });
 
@@ -142,6 +143,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       ],
       { lastSide: "agents" },
     ),
+    spendRequests: [],
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -624,4 +626,14 @@ test("phones get no items: an Agent sees one as a line on their sheet once it's 
     customThreats: [],
   };
   assert.deepEqual(toPlayerCodex(codex, "a").items, []);
+});
+
+test("toPlayerView: every phone sees every pending spend request (rules-flow §11.123)", () => {
+  const spendRequests = [
+    { id: "r1", characterId: "a", kind: "reroll" as const, amount: 1, createdAt: "2026-01-01T00:00:00.000Z" },
+    { id: "r2", characterId: "b", kind: "gloryDice" as const, amount: 2, createdAt: "2026-01-01T00:00:01.000Z" },
+  ];
+  const s = { ...table(enc([])), spendRequests };
+  assert.deepEqual(toPlayerView(s, "a").spendRequests, spendRequests);
+  assert.deepEqual(toPlayerView(s, null).spendRequests, spendRequests);
 });

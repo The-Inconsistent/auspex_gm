@@ -7,6 +7,7 @@ import { applyCodexAction } from "../codex/codex.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { applyEncounterAction } from "../encounter/encounter.actions.ts";
+import { applySpendAction } from "../spend/spend.actions.ts";
 import { applyThreatAction } from "../threat/threat.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
@@ -63,6 +64,7 @@ function authorize(ctx: Ctx, a: Action) {
     a.id !== ctx.characterId
   )
     fail("Not your character");
+  if (a.type === "spend.request" && a.characterId !== ctx.characterId) fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.build" && a.keepSheet) fail("GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
@@ -83,6 +85,11 @@ export async function applyAction(tx: Tx, { ctx, action }: { ctx: Ctx; action: A
     case "session.start":
     case "session.end":
       return applyCampaignAction(tx, { ctx, action });
+
+    case "spend.request":
+    case "spend.cancel":
+    case "spend.resolve":
+      return applySpendAction(tx, { ctx, action });
 
     case "character.create":
     case "character.update":

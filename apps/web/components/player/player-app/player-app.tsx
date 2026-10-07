@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
+import { RequestSpend } from "@/components/player/request-spend/request-spend";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
@@ -91,6 +92,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
           </div>
           <div className="pl-body">
             {myTurn && <TurnActions />}
+            {tab === "SHEET" && <RequestSpend state={state} characterId={characterId} send={send} />}
             {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
             {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
             {tab === "INTEL" && <Intel codex={codex} state={state} />}

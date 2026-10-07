@@ -21,6 +21,7 @@ import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
 import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
+import { spendRequest } from "../spend/spend.schema.ts";
 import { loadCustomThreats } from "../threat/threat.service.ts";
 
 // Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
@@ -145,6 +146,12 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
     .from(accessToken)
     .where(and(eq(accessToken.campaignId, campaignId), isNull(accessToken.revokedAt)));
 
+  const spends = await conn
+    .select()
+    .from(spendRequest)
+    .where(eq(spendRequest.campaignId, campaignId))
+    .orderBy(asc(spendRequest.createdAt));
+
   return {
     campaign: {
       id: c.id,
@@ -194,6 +201,13 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
           ),
         }
       : null,
+    spendRequests: spends.map(({ id, characterId, kind, amount, createdAt }) => ({
+      id,
+      characterId,
+      kind,
+      amount,
+      createdAt: createdAt.toISOString(),
+    })),
     access: {
       members,
       invites: invites.map((i) => ({

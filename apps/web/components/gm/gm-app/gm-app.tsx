@@ -23,6 +23,7 @@ import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
 import { Setup } from "@/components/gm/setup/setup";
+import { SpendRequests } from "@/components/gm/spend-requests/spend-requests";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { Refusal } from "@/components/ui/refusal/refusal";
@@ -146,6 +147,7 @@ export function GmApp({
               </button>
             ))}
           </nav>
+          <SpendRequests state={state} send={send} />
           <main className="gm-body">
             {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} />}
             {tab === "SETUP" && (
