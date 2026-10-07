@@ -2,7 +2,7 @@ import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, gt, inArray, isNotNull, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, scenePresets, threats, wargear } from "@wg/data";
-import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, wouldCycle } from "@wg/shared";
+import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, remapMentions, wouldCycle } from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -142,6 +142,9 @@ export async function importCampaign({
   const ref = (old: string | null) => (old && ids.get(old)) || null;
   const refs = (old: string[]) => old.flatMap((o) => ids.get(o) ?? []);
   const at = (iso: string | null) => (iso ? new Date(iso) : null);
+  // A codex mention carries a row id (issue #200), so every text that may hold one follows the same map.
+  const remapText = <T extends object>(r: T): T =>
+    Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === "string" ? remapMentions(v, ids) : v])) as T;
   // An exit keeps its target only inside its own adventure, as codex.save checks.
   const adventureOf = new Map(beats.map((b) => [b.id, b.adventureId]));
 
@@ -153,7 +156,7 @@ export async function importCampaign({
       // the file as its own millisecond. The id is in the map because every row went into it above.
       const t0 = Date.now();
       const own = <T extends { id: string }>(r: T, i: number) => ({
-        ...r,
+        ...remapText(r),
         id: ids.get(r.id)!,
         campaignId,
         createdAt: new Date(t0 + i),
@@ -219,7 +222,7 @@ export async function importCampaign({
       if (c.sessions.length)
         await tx.insert(session).values(
           c.sessions.map(({ id: _, startedAt, endedAt, ...s }) => ({
-            ...s,
+            ...remapText(s),
             campaignId,
             startedAt: new Date(startedAt),
             endedAt: at(endedAt),
