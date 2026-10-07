@@ -10,6 +10,11 @@ import { UpgradeMod } from "./weapon-effect.ts";
 const text = (max = 5000) => z.string().max(max);
 const id = z.uuid();
 
+// How a handout looks as a prop (issue #204), on the phone and on paper. Not a rule: the GM's own text in a frame.
+// `plain` is today's slate, so a handout saved before this keeps its look.
+export const HandoutStyle = z.enum(["plain", "slate", "form", "vox", "decree"]);
+export type HandoutStyle = z.infer<typeof HandoutStyle>;
+
 // Attitude (optional rule, p.168): DN modifier for social Tests with this NPC.
 export const Attitude = z.enum(["hostile", "uncooperative", "neutral", "friendly", "helpful"]);
 export type Attitude = z.infer<typeof Attitude>;
@@ -257,6 +262,8 @@ export const CodexInput = {
   handout: z.object({
     title: text(200),
     body: text(20000).default(""),
+    style: HandoutStyle.default("plain"),
+    header: text(120).default(""), // the banner or reference line; empty prints the style's own
     revealed: z.boolean().default(false),
     audience: z.array(id).max(20).default([]), // character ids it's revealed to; empty = every player
   }),

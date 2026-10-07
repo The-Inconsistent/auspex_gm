@@ -193,6 +193,8 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
     id,
     title: id,
     body: "",
+    style: "plain",
+    header: "",
     revealed: true,
     audience: [],
     revealedAt: null,
@@ -235,15 +237,24 @@ test("the table screen's view (viewer null) carries no Agent's private data", ()
     locations: [],
     npcs: [],
     handouts: [
-      { id: "h", title: "private", body: "", revealed: true, audience: ["a"], revealedAt: null },
-      { id: "p", title: "public", body: "", revealed: true, audience: [], revealedAt: null },
+      {
+        id: "h",
+        title: "private",
+        body: "",
+        style: "plain",
+        header: "",
+        revealed: true,
+        audience: ["a"],
+        revealedAt: null,
+      },
+      { id: "p", title: "public", body: "", style: "vox", header: "", revealed: true, audience: [], revealedAt: null },
     ],
     items: [],
     sessions: [],
   };
   assert.deepEqual(
-    toPlayerCodex(codex, null).handouts.map((h) => h.title),
-    ["public"],
+    toPlayerCodex(codex, null).handouts.map((h) => [h.title, h.style]),
+    [["public", "vox"]], // the style is player-facing: the phone draws the prop (issue #204)
   );
 });
 
