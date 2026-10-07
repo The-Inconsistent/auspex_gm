@@ -2,10 +2,9 @@ import { StyleSheet } from "@react-pdf/renderer";
 
 import { TOKENS } from "@/lib/tokens/tokens";
 
-// Ink on white paper: the vellum fill would cost a cartridge a sheet. Crimson marks rubrics only, as on screen.
-export const DISPLAY = "Cinzel";
-export const SERIF = "Crimson Pro";
+import { DISPLAY, SERIF } from "../fonts";
 
+// Ink on white paper: the vellum fill would cost a cartridge a sheet. Crimson marks rubrics only, as on screen.
 export const s = StyleSheet.create({
   card: { position: "absolute", borderWidth: 0.4, borderColor: TOKENS.line, overflow: "hidden" },
   pad: { padding: "3mm" },

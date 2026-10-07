@@ -376,6 +376,12 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                   >
                     PRINT CARDS
                   </button>
+                  {/* The scene's handouts as printed props, one to a page (#204). */}
+                  {b.handoutIds.length > 0 && (
+                    <button className="btn sm" onClick={() => print({ handouts: b.handoutIds })}>
+                      PRINT HANDOUTS
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

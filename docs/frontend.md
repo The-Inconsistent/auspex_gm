@@ -559,7 +559,8 @@ The tests are in `lib/command/command.test.ts`.
   - SET ACTIVE, shown when there is no prepared encounter, sets the status to active.
   - DONE and SKIP set the status to done or skipped.
   - PRINT CARDS (§5.1) prints tents for the fielded Agents (`fieldedAgentIds`) and every prepared combatant, a Threat
-    card per encounter row, and the scene's items.
+    card per encounter row, and the scene's items. PRINT HANDOUTS, shown when the scene has handouts, prints them as
+    props, one to a page (issue #204).
   - Each status change is a `codex.save { kind: "beat" }` with `stripBeat(b)`: the beat without `id` and `order`,
     which the server owns.
 - **`BeatEditor`** has these fields:
@@ -625,7 +626,8 @@ The tests are in `lib/command/command.test.ts`.
   players get the entry the moment it's revealed.
 - **HANDOUTS are props** (issue #204). The editor has STYLE (`HandoutStyle`: PLAIN, DATA-SLATE, ADMINISTRATUM
   FORM, VOX TRANSCRIPT, DECREE) and HEADER (one line; empty prints the style's own, `DEFAULT_HEADER`), and a PREVIEW
-  of the draft as `HandoutDoc` draws it. An opened handout row shows the same prop instead of its plain text.
+  of the draft as `HandoutDoc` draws it. An opened handout row shows the same prop instead of its plain text. A
+  `PrintPick` tick on each row and PRINT N print the ticked ones (§5.1).
 - **LOCATIONS is a tree** (issue #50). `placeTree` nests each place under its `parentId`, and the rows indent with a
   dotted rule (`.place-branch`). A place with places inside gets an "N INSIDE" button that folds them, counting
   everything below it, and EXPAND ALL and COLLAPSE ALL appear once anything nests. A loop saved before the guard shows
@@ -810,7 +812,7 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `weapon-line/weapon-line.tsx` `WeaponLine` | `weapon`, `strength?` | `weaponProfile` (§`lib/`), then each trait as a `RuleLink`. Used by the sheet's ARMAMENT, the tracker's selected character and `StatBlock` (ability and option weapons) |
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
-| `print-dialog/print-dialog.tsx` `PrintProvider`, `usePrint()` | `source` (`{ state, codex, threats, wargear }`), `children` | Printed cards (issue #203, §5.1). Wraps `GmApp` only, so a print follows the screen's gates. `usePrint().print(job)` resolves a `PrintJob` of ids (`printCards`) and opens a modal `dialog.rule-dialog`: the card and sheet count, PAPER A4 / LETTER (remembered in `localStorage` under `PAPER_KEY`), BUILD PDF, then DOWNLOAD PDF and OPEN as plain links (iPad Safari blocks a window opened after an `await`), and the "print at 100 %" hint. `utils.ts` `picturesOf` redraws each tent's WebP portrait as a PNG data URL (react-pdf embeds PNG and JPEG only). The blob URL is freed on close |
+| `print-dialog/print-dialog.tsx` `PrintProvider`, `usePrint()` | `source` (`{ state, codex, threats, wargear }`), `children` | Printed cards and handouts (issues #203, #204, §5.1). Wraps `GmApp` only, so a print follows the screen's gates. `usePrint().print(job)` resolves a `PrintJob` of ids (`printCards`, or `printHandouts` for a job with `handouts`) and opens a modal `dialog.rule-dialog`: the count, the kind's PAPER choices (cards A4 / LETTER under `PAPER_KEY`, handouts A5 / A4 / LETTER under `HANDOUT_PAPER_KEY`, in `localStorage`), BUILD PDF, then DOWNLOAD PDF and OPEN as plain links (iPad Safari blocks a window opened after an `await`), and the "print at 100 %" hint. `utils.ts` `picturesOf` redraws each tent's WebP portrait as a PNG data URL (react-pdf embeds PNG and JPEG only). The blob URL is freed on close |
 | `handout-doc/handout-doc.tsx` `HandoutDoc` | `handout` (`{ id?, body, style, header }`) | A handout as its prop (issue #204), on the phone, in CODEX and in the editor's preview. `plain` is the bare `pre.text.slate` every handout had before; the other four are `.handout-doc[data-style]` frames in `globals.css`: data-slate (bezel, scanlines, a centred banner), form (reference line, a dashed stamp box, ruled lines), vox (static strips, `voxLines` stamps in a column only as wide as the longest and absent when no line has one), decree (Cinzel heading, a drawn wax seal, a signature line). The frames set the `--paper*` palette on themselves, so they stay paper in vigil. The body goes through `Mentions`. `constants.ts` holds `HANDOUT_STYLE_LABEL`, `DEFAULT_HEADER` and `headerOf`, shared with the printed page |
 | `print-pick/print-pick.tsx` `PrintPick` | `name`, `on`, `onToggle` | A row's tick for PRINT N on CODEX › THREATS and ITEMS (§5.1): a square / ticked-square button with `aria-pressed`, which doesn't open the `<summary>` it sits in |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
@@ -854,10 +856,21 @@ bundle doesn't carry them.
 - **The sheet.** `layoutCards` places cards first fit on a centred 3 × 3 grid (189 × 264 mm fits A4 and Letter), so
   a card never splits across pages. `components/print/card-sheet` draws it: `TentCard` (the players' half printed
   upside down, a dashed fold), `ThreatCard` (the stat block in printed order), `ItemCard`. Ink on white with grey cut
-  lines; Cinzel and Crimson Pro are embedded from `public/fonts` (static WOFF from Fontsource, SIL OFL, licences
-  beside them), since react-pdf can't use the variable fonts `next/font` serves.
-- **Adding a kind** (#204–#206): a `Card` variant and its branch in `printCards`, a component under
-  `card-sheet/components`, and a `PrintJob` field for its ids.
+  lines. The faces come from `components/print/fonts.ts` (`registerFonts`, `DISPLAY`, `SERIF`, `MONO`): Cinzel and
+  Crimson Pro as static WOFF from Fontsource, IBM Plex Mono as IBM's own WOFF (`@ibm/plex-mono`; fontkit can't read
+  Fontsource's subset of it), all SIL OFL with the licences beside them in `public/fonts`. react-pdf can't use the
+  variable fonts `next/font` serves.
+- **Handouts** (issue #204) are the second kind of print. A job with `handouts` resolves through `printHandouts` to
+  `HandoutPage`s, with mentions spelled out as the table may know them (`tableText`, the same rule as item cards).
+  `components/print/handout-sheet` draws one handout to a page at A5 (the default), A4 or Letter (`HANDOUT_PAPERS`,
+  remembered under `HANDOUT_PAPER_KEY`): the frame `HandoutDoc` draws on the phone, repeated on every page a long one
+  runs to (`fixed`), with the header from `headerOf` and vox stamps from `voxLines`. Two A5 handouts share an A4 sheet
+  through the printer's "2 pages per sheet", as the dialog says.
+- **The dialog** keeps the kind (`Doc`) and takes its title, papers, remembered pick, hint and file name from `KINDS`;
+  a build lazy-imports `fonts` and that kind's sheet only.
+- **Adding a kind** (#205, #206): a `Card` variant and its branch in `printCards` for something that prints as a card;
+  for a page-shaped print, a `Doc` kind with its `KINDS` entry, a resolver beside `printHandouts` and a sheet under
+  `components/print`. Either way, a `PrintJob` field for its ids.
 
 ---
 

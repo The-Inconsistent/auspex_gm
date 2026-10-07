@@ -22,7 +22,14 @@ type EncounterEntry = Codex["adventures"][number]["beats"][number]["encounter"][
 type Item = Codex["items"][number];
 
 // What a PRINT button asks for, by id: the GM app resolves it against what it already holds (issue #203).
-export type PrintJob = { agents?: string[]; encounter?: EncounterEntry[]; threats?: string[]; items?: string[] };
+// A job with `handouts` prints handout pages (issue #204); every other field prints cards.
+export type PrintJob = {
+  agents?: string[];
+  encounter?: EncounterEntry[];
+  threats?: string[];
+  items?: string[];
+  handouts?: string[];
+};
 
 // The six numbers a tent card's GM side shows (Decision 2 on #203). Null prints as "–", as the stat block does.
 export type TentStats = {
@@ -55,6 +62,22 @@ export const fieldedAgentIds = (s: Pick<LiveState, "access" | "characters">): st
   const seated = activeCharacterIds(s.access);
   return s.characters.filter((c) => seated.size === 0 || seated.has(c.id)).map((c) => c.id);
 };
+
+// A printed sheet goes on the table, so a codex mention (issue #200) prints as every phone would show it
+// (toPlayerCodex): the name of a revealed NPC or place, or of a revealed handout meant for every player, and
+// "(unknown)" otherwise. A private handout's title stays with its audience.
+function tableText(codex: Pick<Codex, "npcs" | "locations" | "handouts">) {
+  const known = new Map(
+    [
+      ...codex.npcs,
+      ...codex.locations,
+      ...codex.handouts.filter((h) => !h.audience.length).map((h) => ({ ...h, name: h.title })),
+    ]
+      .filter((e) => e.revealed)
+      .map((e) => [e.id, e.name]),
+  );
+  return (text: string) => plainMentions({ text, nameOf: (i) => known.get(i), missing: "(unknown)" });
+}
 
 export type PrintSource = {
   state: Pick<LiveState, "campaign" | "characters" | "access">;
@@ -187,25 +210,11 @@ export function printCards(job: PrintJob, { state, codex, threats, wargear }: Pr
   }
 
   const gear = new Map(wargear.map((w) => [w.id, w]));
-  // The card goes on the table, so a codex mention (issue #200) prints as every phone would show it (toPlayerCodex):
-  // the name of a revealed NPC or place, or of a revealed handout meant for every player, and "(unknown)" otherwise. A
-  // private handout's title stays with its audience.
-  const known = new Map(
-    [
-      ...codex.npcs,
-      ...codex.locations,
-      ...codex.handouts.filter((h) => !h.audience.length).map((h) => ({ ...h, name: h.title })),
-    ]
-      .filter((e) => e.revealed)
-      .map((e) => [e.id, e.name]),
-  );
+  const atTable = tableText(codex);
   for (const id of job.items ?? []) {
     const found = codex.items.find((x) => x.id === id);
     if (!found) continue;
-    const item = {
-      ...found,
-      description: plainMentions({ text: found.description, nameOf: (i) => known.get(i), missing: "(unknown)" }),
-    };
+    const item = { ...found, description: atTable(found.description) };
     blocks.push({ kind: "item", item, entry: item.wargearId ? gear.get(item.wargearId) : undefined });
   }
 
@@ -244,4 +253,16 @@ export function layoutCards(cards: Card[]): Placed[][] {
     spot.page.cards.push({ card, col: spot.col, row: spot.row, span });
   }
   return pages.map((p) => p.cards);
+}
+
+// A handout as its printed page (issue #204): its frame, header and text, the text's mentions spelled out.
+export type HandoutPage = Pick<Codex["handouts"][number], "id" | "title" | "body" | "style" | "header">;
+
+// The handouts a job names, in its order, each one page; an id the codex no longer holds is skipped.
+export function printHandouts(job: PrintJob, codex: PrintSource["codex"]): HandoutPage[] {
+  const atTable = tableText(codex);
+  return (job.handouts ?? []).flatMap((id) => {
+    const h = codex.handouts.find((x) => x.id === id);
+    return h ? [{ id: h.id, title: h.title, body: atTable(h.body), style: h.style, header: h.header }] : [];
+  });
 }

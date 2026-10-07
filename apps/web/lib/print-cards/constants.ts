@@ -13,3 +13,9 @@ export const PAPER_MM: Record<Paper, { w: number; h: number }> = {
   A4: { w: 210, h: 297 },
   LETTER: { w: 215.9, h: 279.4 },
 };
+
+// Handouts print one to a page (issue #204): A5 by default, so two share an A4 sheet through the printer's "2 pages per
+// sheet", or a whole A4 or Letter page. Remembered apart from the cards' paper.
+export const HANDOUT_PAPERS = ["A5", "A4", "LETTER"] as const;
+export type HandoutPaper = (typeof HANDOUT_PAPERS)[number];
+export const HANDOUT_PAPER_KEY = "auspex.print.handout-paper";

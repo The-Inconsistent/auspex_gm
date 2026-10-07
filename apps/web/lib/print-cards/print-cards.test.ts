@@ -13,7 +13,7 @@ import {
   type ThreatClass,
 } from "@wg/shared";
 
-import { layoutCards, printCards, type Card, type PrintSource } from "./print-cards.ts";
+import { layoutCards, printCards, printHandouts, type Card, type PrintSource } from "./print-cards.ts";
 
 // Placeholder stat blocks, not printed profiles: the numbers are filler so the checks read plainly.
 const threatOf = (id: string, cls: ThreatClass): Threat =>
@@ -179,6 +179,27 @@ test("an item card spells mentions out as every phone would see them (issue #200
   const [card] = printCards({ items: ["i1"] }, { ...src, codex });
   assert.ok(card?.kind === "item");
   assert.equal(card.item.description, "Magos Verrin, (unknown), Note 3, (unknown)");
+});
+
+test("printHandouts keeps the job's order, skips a lost id, and spells mentions out for the table (issue #204)", () => {
+  const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
+  const npc = { ...CodexInput.npc.parse({ name: "Magos Verrin", revealed: true }), id: id(1) };
+  const handout = (n: number, data: Record<string, unknown>) => ({
+    ...CodexInput.handout.parse({ title: `Note ${n}`, ...data }),
+    id: id(n),
+    revealedAt: null,
+  });
+  const vox = handout(2, {
+    style: "vox",
+    header: "CH 7",
+    body: `[03:12] ${mentionToken({ kind: "npc", id: npc.id })}`,
+  });
+  const plain = handout(3, { body: "Kill the Orks." });
+  const codex = { items: [], npcs: [npc], locations: [], handouts: [vox, plain] };
+  assert.deepEqual(printHandouts({ handouts: [plain.id, id(99), vox.id] }, codex), [
+    { id: plain.id, title: "Note 3", body: "Kill the Orks.", style: "plain", header: "" },
+    { id: vox.id, title: "Note 2", body: "[03:12] Magos Verrin", style: "vox", header: "CH 7" },
+  ]);
 });
 
 test("layoutCards packs first fit on 3 × 3 pages without overlap", () => {
