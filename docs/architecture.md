@@ -112,6 +112,7 @@ Three kinds of caller reach a table:
 | --- | --- | --- |
 | Signed-in user | Clerk session token: the `__session` cookie, or a Bearer header from server-side Next | a `membership` row: `gm` or `player`, plus a character |
 | Guest | a per-character player token (`access_token`) in the httpOnly `wg_token` cookie | player only |
+| Table screen | a `screen` token (`access_token`, no character) in the same cookie, from PARTY's SCREEN QR | `screen`: read-only |
 | Script or test | `ADMIN_KEY` | `POST /api/campaigns` with `ownerUserId`, and a GM socket with `auth: { adminKey, campaignId }` |
 
 There are no GM links: the GM is always a signed-in member. A Clerk user with `publicMetadata.role = "creator"` (set by
@@ -132,6 +133,9 @@ socket handshake { campaignId } + cookies ──▶ middleware resolves ctx befo
 - The DB stores only SHA-256 hashes of guest tokens and invite codes, so a lost one is replaced, not recovered.
 - `member.remove` deletes a seat and **disconnects** that user. `token.revoke` revokes a character's guest tokens and
   disconnects only guest sockets; a member playing that character keeps their seat.
+- A table screen (a TV in the middle of the table) gets the players' view for no Agent (`toPlayerView(state, null)`),
+  so no one's objectives or private handouts. `authorize()` refuses all its actions, and `/rules`, `/creation` and
+  `book:request` refuse it. `screen.revoke` revokes every screen token and disconnects the screens.
 - Players never receive invite codes or the invite list (`toPlayerView` clears `access.invites`).
 - Clerk needs internet at the table, for sign-in and for the session refresh about every 60 s. A guest on a QR token
   depends only on the api.

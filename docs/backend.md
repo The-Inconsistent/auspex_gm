@@ -260,6 +260,7 @@ Wounds, Shock, Wrath, Glory, Respite, Conditions, raw `stats` and granting Wealt
 | `token.revoke` | `{ characterId, guestsOnly: true }` | guest sockets (`userId` null) playing that character. A member playing it keeps their seat |
 | `character.delete` | `{ characterId: a.id, guestsOnly: false }` | every socket playing it. Its tokens and invites are cascade-deleted; a member's `character_id` is set null |
 | `member.remove` | `{ userId }` | every socket of that user at this table |
+| `screen.revoke` | `{ screens: true }` | every table screen socket at this table |
 
 The gateway checks the sockets in both rooms of the campaign.
 
@@ -297,6 +298,8 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `character.delete` | GM | Delete. Cascades to tokens and combatant rows. Kicks the player | S | |
 | `token.issue` | GM | New guest token (the GUEST QR) for a character in this campaign. Returns `token` (plaintext, once) | S | |
 | `token.revoke` | GM | Stamp `revokedAt` on all of the character's live guest tokens. Kicks guest sockets only | S | |
+| `screen.issue` | GM | New table screen token (the SCREEN QR): role `screen`, no character, read-only. Returns `token` (plaintext, once). Touches neither snapshot | — | |
+| `screen.revoke` | GM | Stamp `revokedAt` on every live screen token of this campaign. Kicks the screens | — | |
 | `invite.create` | GM | New invite: `mode` `"room"` (no `characterId`) or `"character"` (needs one in this campaign, `maxUses` 1). `allowGuests` defaults to true, `hours` 1–720 (default 12). Returns `id` and the code in `token` (plaintext, once) | S | |
 | `invite.revoke` | GM | Stamp `revokedAt` on one live invite. Anyone already seated keeps their seat | S | |
 | `member.remove` | GM | Delete a user's `membership` here. Refuses yourself (`"You can't remove yourself"`). Kicks that user | S | |
