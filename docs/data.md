@@ -1006,7 +1006,7 @@ test `packages/data/build.test.ts` rebuilds the pregen fixtures. Nothing serves 
 are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
 file, loaded by `creationCatalogue()` in `index.ts`.
 
-**Status (2026-10-05).** All nine books are transcribed and verified against the page images: 114 keywords, 27
+**Status (2026-10-05).** All nine books are transcribed and verified against the page images: 114 keywords (plus the house `[ANY 2]`, rules-flow.md §11.133), 27
 factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 213 archetypes, 414 talents, 37
 packages, 41 disciplines, 291 powers, 16 Patrons, 27 Frameworks (58 in all with the Patrons' options, issue #45), 5 languages and 27 flavour tables, with every reference resolving.
 What is left is outside the catalogue: 67 starting-wargear items the Wargear catalogue doesn't link yet, waiting on

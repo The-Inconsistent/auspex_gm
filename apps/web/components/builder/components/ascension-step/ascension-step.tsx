@@ -8,15 +8,17 @@ import { citeLabel, rulesText, titleOf } from "../../utils";
 import { StepChoices } from "../step-choices/step-choices";
 
 // Ascension, at creation and in play, on one screen because the book's step is the same one (Core p.148).
-// - Creation Ascension (rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension Package.
+// - Creation Ascension (rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension Package; an
+//   Advanced build (Core p.38) may take one if the GM agrees (§11.132).
 // - In play (§11.55): each time the group Ascends, the character takes one Ascension Package, or goes through
 //   Archetype Ascension (Core p.155, §11.67) once.
 // What is required, priced and allowed is `resolveBuild`'s: this screen offers the choices and shows what it says.
 export function AscensionStep() {
   const { draft, lookups, tier, go, ascending } = useBuilder();
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  if (!arch) return <p>Choose an archetype first.</p>;
-  const atCreation = arch.tier < tier;
+  // An Advanced build has no Archetype, so no Archetype Ascension (§11.133), but its one optional package (§11.132).
+  if (!arch && !draft.advanced) return <p>Choose an archetype first.</p>;
+  const atCreation = !!draft.advanced || (!!arch && arch.tier < tier);
 
   return (
     <div className="stack">
@@ -24,7 +26,7 @@ export function AscensionStep() {
       <StepChoices step="ascension" />
       {ascending && <PlayAscension arch={arch} />}
       {atCreation && <CreationAscension arch={arch} />}
-      {!ascending && !atCreation && (
+      {!ascending && !atCreation && arch && (
         <p className="dim">
           Nothing to Ascend: {arch.name} is Tier {arch.tier}, the same as this build, and the group hasn&apos;t Ascended
           since (Core p.148).
@@ -40,7 +42,7 @@ export function AscensionStep() {
 }
 
 // The group's Ascension, spent from the XP earned in play: one Ascension Package, or Archetype Ascension.
-function PlayAscension({ arch }: { arch: Archetype }) {
+function PlayAscension({ arch }: { arch?: Archetype }) {
   const { draft, update, lookups, tier, play, resolved } = useBuilder();
   const now = play?.tier ?? tier; // the Tier Ascended to: "× the new Tier" is priced at it (§11.55)
   const waived = play?.packageWaived === true; // the GM waived this Ascension's package (Core p.148 step 2)
@@ -55,7 +57,7 @@ function PlayAscension({ arch }: { arch: Archetype }) {
     .sort((a, b) => a.name.localeCompare(b.name));
   // "An Archetype of their Faction" is the same `factionId` (§11.67), at a Tier Ascended to (Core p.155).
   const archetypes = [...lookups.archetypes.values()]
-    .filter((a) => a.factionId === arch.factionId && a.tier > tier && a.tier <= now && a.id !== arch.id)
+    .filter((a) => !!arch && a.factionId === arch.factionId && a.tier > tier && a.tier <= now && a.id !== arch.id)
     .sort((a, b) => a.name.localeCompare(b.name));
 
   // One Ascension Package each time the group Ascended (Core p.148), less the one an Archetype Ascension takes: a pick
@@ -87,7 +89,7 @@ function PlayAscension({ arch }: { arch: Archetype }) {
     <div className="stack">
       <div className="panel pad stack">
         <b>
-          The group has Ascended to Tier {now}; {arch.name} was made at Tier {tier}.
+          The group has Ascended to Tier {now}; {arch?.name ?? "this Advanced character"} was made at Tier {tier}.
         </b>
         <span>
           Take <b>one</b> Ascension Package each time the group Ascends (Core p.148, {citeLabel("rules-flow.md §11.55")}
@@ -120,48 +122,52 @@ function PlayAscension({ arch }: { arch: Archetype }) {
         />
       </section>
 
-      <section className="stack">
-        <div className="tbar">
-          <span>ARCHETYPE ASCENSION</span>
-          <span>Core p.155</span>
-        </div>
-        <div className="dim">
-          Instead of a package: an Archetype of the same Faction ({titleOf(arch.factionId)},{" "}
-          {citeLabel("rules-flow.md §11.67")}) at a Tier the group Ascended to. It needs Rank 3 (this character is Rank{" "}
-          {rank}) and the GM&apos;s agreement, and XP is spent until the Attributes and Skills equal or exceed the new
-          Archetype&apos;s; it grants that Archetype&apos;s abilities, Wargear and Influence, and none of its Attribute
-          or Skill bonuses.
-        </div>
-        {archetypes.length === 0 ? (
-          <div className="dim">
-            No Archetype at Tier {tier + 1}–{now} in the catalogue names {titleOf(arch.factionId)}, so there is no
-            Archetype Ascension to take.
+      {arch && (
+        <section className="stack">
+          <div className="tbar">
+            <span>ARCHETYPE ASCENSION</span>
+            <span>Core p.155</span>
           </div>
-        ) : (
-          <RecordList
-            label="Search archetypes to ascend into"
-            searchable
-            items={archetypes.map((a) => ({
-              id: a.id,
-              label: a.name,
-              meta: `Tier ${a.tier} · ${sourceCite(a)}`,
-              detail: rulesText({
-                requires: a.requires,
-                effect: a.abilities.map((r) => `${r.name}. ${r.text}`).join("\n\n"),
-              }),
-            }))}
-            selected={ascended ? [ascended] : []}
-            onPick={pickArchetype}
-          />
-        )}
-      </section>
+          <div className="dim">
+            Instead of a package: an Archetype of the same Faction ({titleOf(arch.factionId)},{" "}
+            {citeLabel("rules-flow.md §11.67")}) at a Tier the group Ascended to. It needs Rank 3 (this character is
+            Rank {rank}) and the GM&apos;s agreement, and XP is spent until the Attributes and Skills equal or exceed
+            the new Archetype&apos;s; it grants that Archetype&apos;s abilities, Wargear and Influence, and none of its
+            Attribute or Skill bonuses.
+          </div>
+          {archetypes.length === 0 ? (
+            <div className="dim">
+              No Archetype at Tier {tier + 1}–{now} in the catalogue names {titleOf(arch.factionId)}, so there is no
+              Archetype Ascension to take.
+            </div>
+          ) : (
+            <RecordList
+              label="Search archetypes to ascend into"
+              searchable
+              items={archetypes.map((a) => ({
+                id: a.id,
+                label: a.name,
+                meta: `Tier ${a.tier} · ${sourceCite(a)}`,
+                detail: rulesText({
+                  requires: a.requires,
+                  effect: a.abilities.map((r) => `${r.name}. ${r.text}`).join("\n\n"),
+                }),
+              }))}
+              selected={ascended ? [ascended] : []}
+              onPick={pickArchetype}
+            />
+          )}
+        </section>
+      )}
     </div>
   );
 }
 
 // Creation Ascension (Core p.148, rules-flow.md §11.54): an archetype below the campaign's Tier takes one Ascension
-// Package, then the rest of the XP is spent as usual. The character still starts at Rank 1.
-function CreationAscension({ arch }: { arch: Archetype }) {
+// Package, then the rest of the XP is spent as usual. The character still starts at Rank 1. An Advanced build (no
+// `arch`) takes at most one, and only if the GM agrees (Core p.38, §11.132): requirements are met and "× the new Tier"
+// is priced at the campaign's Tier, which is what `resolveBuild` does.
+function CreationAscension({ arch }: { arch?: Archetype }) {
   const { draft, update, lookups, tier, resolved } = useBuilder();
   const chosen = (draft.packages ?? []).filter((id) => lookups.packages.get(id)?.kind === "ascension");
   const ascensions = [...lookups.packages.values()].filter(
@@ -179,12 +185,21 @@ function CreationAscension({ arch }: { arch: Archetype }) {
     <div className="stack">
       <div className="tbar">
         <span>CREATION ASCENSION</span>
-        <span>Core p.148</span>
+        <span>{arch ? "Core p.148" : "Core p.38"}</span>
       </div>
-      <p>
-        {arch.name} is Tier {arch.tier}; the campaign is Tier {tier}. Take <b>one</b> Ascension Package; its
-        requirements are met at Tier {arch.tier}, and a price “× the new Tier” is × {tier}.
-      </p>
+      {arch ? (
+        <p>
+          {arch.name} is Tier {arch.tier}; the campaign is Tier {tier}. Take <b>one</b> Ascension Package; its
+          requirements are met at Tier {arch.tier}, and a price “× the new Tier” is × {tier}.
+        </p>
+      ) : (
+        <p>
+          Advanced Creation (Core p.38): <b>one</b> Ascension Package if the GM agrees (
+          {citeLabel("rules-flow.md §11.132")}
+          ). It has no Archetype Tier to ascend from, so its requirements are met at Tier {tier} and a price “× the new
+          Tier” is × {tier}. Taking none is allowed.
+        </p>
+      )}
       <RecordList
         label="Search creation ascension packages"
         searchable

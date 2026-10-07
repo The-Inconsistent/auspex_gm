@@ -388,3 +388,46 @@ export function withUpgrades<T extends { weapons: Weapon[]; armour?: SheetArmour
     }),
   };
 }
+
+// Advanced Creation's Wargear (Core p.39): in place of an Archetype's kit, any number of items within a limit that
+// grows with the Tier. Every reading below is a house decision, rules-flow.md §11.128–130.
+export const ADVANCED_WARGEAR = {
+  1: { total: 15, max: 7, rare: 0, veryRare: 0 },
+  2: { total: 20, max: 9, rare: 2, veryRare: 0 },
+  3: { total: 25, max: 10, rare: 2, veryRare: 1 },
+  4: { total: 30, max: null, rare: 2, veryRare: 2 },
+} as const;
+export type AdvancedWargearProblem = { what: string; gm?: boolean };
+
+// What breaks the Tier's limits: Total Value strictly under the printed number, no item over the Max. Value, and the
+// Rarity allowance (§11.129). The table stops at Tier 4, so a higher Tier is checked against Tier 4's row and the GM
+// is asked to agree (§11.130). An item with no printed Value or Rarity can't be counted: the GM's call.
+export function advancedWargearProblems(
+  items: readonly Pick<Wargear, "name" | "value" | "rarity">[],
+  tier: number,
+): AdvancedWargearProblem[] {
+  const row = ADVANCED_WARGEAR[Math.min(4, Math.max(1, tier)) as 1 | 2 | 3 | 4];
+  const out: AdvancedWargearProblem[] = [];
+  if (tier > 4)
+    out.push({ what: `Advanced Creation's Wargear table stops at Tier 4; Tier ${tier} uses its Tier 4 row`, gm: true });
+  let total = 0;
+  let rare = 0;
+  let veryRare = 0;
+  for (const w of items) {
+    if (w.value === null || w.rarity === null) {
+      out.push({ what: `${w.name} has no printed ${w.value === null ? "Value" : "Rarity"}`, gm: true });
+      continue;
+    }
+    total += w.value;
+    if (row.max !== null && w.value > row.max)
+      out.push({ what: `${w.name} is Value ${w.value}, over the Tier ${Math.min(tier, 4)} maximum of ${row.max}` });
+    if (w.rarity === "Rare") rare++;
+    else if (w.rarity === "Very Rare") veryRare++;
+    else if (w.rarity === "Unique") out.push({ what: `${w.name} is Unique: no Tier takes one` });
+  }
+  if (total >= row.total) out.push({ what: `Total Value ${total} must be under ${row.total}` });
+  if (rare > row.rare) out.push({ what: `${rare} Rare pieces; Tier ${Math.min(tier, 4)} allows ${row.rare}` });
+  if (veryRare > row.veryRare)
+    out.push({ what: `${veryRare} Very Rare pieces; Tier ${Math.min(tier, 4)} allows ${row.veryRare}` });
+  return out;
+}

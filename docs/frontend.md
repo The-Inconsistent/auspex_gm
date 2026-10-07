@@ -132,8 +132,8 @@ name, gist and text, a kind filter, one `<details>` per entry: the gist on the c
 The character builder (issue #9). `<characterId>` is `new` (`NEW_CHARACTER`) for a character not made yet, GM only; a
 player may open only their own. The page checks the seat, fetches `/api/campaigns/:id/creation` (parsed with
 `CreationPayload`) and renders `Builder` (`components/builder/`):
-- **Draft:** the choices so far (`Draft`: a `CharacterBuildInput` with the archetype optional, plus the name and
-  `savedAt`), kept in `localStorage` per table and character (`draftKey`). It starts from the newer of that and the
+- **Draft:** the choices so far (`Draft`: a `CharacterBuildInput`, which names neither `archetypeId` nor `advanced`
+  until one is chosen, plus the name and `savedAt`), kept in `localStorage` per table and character (`draftKey`). It starts from the newer of that and the
   draft sent to the table (`character.draft`, `Character.draft`), else the saved `character.build`, else blank. A
   table's draft records the save it was opened on (`Draft.builtAt`, from `Character.builtAt`); once the character has
   been built again since, from another device or by a script (the issue #18 and #27 migrations), the draft is stale and
@@ -145,9 +145,11 @@ player may open only their own. The page checks the seat, fetches `/api/campaign
   `outOfReach`). `BuilderContext`
   (`useBuilder()`) carries the draft, the result and the catalogue lookups.
 - **Screens** (`StepNav`, one tab per Core p.17 step, "N LEFT" per tab): TIER (budget; the GM's HOMEBREW switch, which
-  reloads the page), ARCHETYPE, CUSTOMISE (ratings, USE SUGGESTIONS, Talents, powers for a PSYKER, Advancement
-  Packages), FACTION (placeholder fills, Background and its one bonus, option groups), ASCENSION (only below the
-  campaign's Tier), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
+  reloads the page), ARCHETYPE (or ADVANCED CREATION, Core pp.38–39: a species, an Archetype Ability the GM agrees to
+  and the Wargear kit, §11.126–132, each list without the homebrew books unless allowed), CUSTOMISE (ratings, USE SUGGESTIONS, Talents, powers for a PSYKER, Advancement
+  Packages), FACTION (placeholder fills, Background and its one bonus, option groups; an Advanced build picks its optional
+  Faction here, §11.140, and a placeholder no record fills, `[ANY]`, takes a write-in the GM ticks), ASCENSION (below
+  the campaign's Tier, and always for an Advanced build, whose one package is the GM's, §11.132), DETAIL (name, languages, Wealth), REVIEW (the sheet as the play sheet will show it; for the GM, the
   ticks and this character's rulings: species, keywords, gear swaps). Grant choices render as `ChoiceCard`s.
   The Talent, power and package lists leave out what `outOfReach` says no purchase can open (a species, archetype or
   keyword nothing buyable gives); a power or package already taken stays, so it can be untaken.

@@ -1,9 +1,11 @@
 "use client";
 import { BACKGROUND_ROWS, sourceCite, type BackgroundRow, type BackgroundTable, type Bonus } from "@wg/shared";
 
+import { RecordList } from "@/components/ui/record-list/record-list";
+
 import { useBuilder } from "../../builder-context";
 import { BONUS_LABELS } from "../../constants";
-import { citeLabel, titleOf } from "../../utils";
+import { citeLabel, offered, titleOf } from "../../utils";
 import { StepChoices } from "../step-choices/step-choices";
 
 const ROW_LABELS: Record<BackgroundRow, string> = {
@@ -13,25 +15,27 @@ const ROW_LABELS: Record<BackgroundRow, string> = {
 };
 
 // Know your Faction (Core pp.26–30): what fills each [PLACEHOLDER], the Background (three rows, one bonus,
-// rules-flow.md §11.22), and the option groups the species or faction offers.
+// rules-flow.md §11.22), and the option groups the species or faction offers. An Advanced build picks its Faction here,
+// or none (Core p.38, §11.140), and gets from it what an archetype gets from its own.
 export function FactionStep() {
-  const { draft, update, resolved: r, lookups, tier, go } = useBuilder();
+  const { draft, update, resolved: r, lookups, tier, go, homebrew } = useBuilder();
   const arch = draft.archetypeId ? lookups.archetypes.get(draft.archetypeId) : undefined;
-  if (!arch || !r) return <p>Choose an archetype first.</p>;
+  if ((!arch && !draft.advanced) || !r) return <p>Choose an archetype first.</p>;
 
   const keywordByName = new Map([...lookups.keywords.values()].map((k) => [k.name, k]));
   const fills = draft.fills ?? {};
   const placeholders = [...new Set([...r.sheet.keywords.filter((k) => k.startsWith("[")), ...Object.keys(fills)])];
-  const speciesId = draft.gm?.species ?? draft.speciesId ?? arch.speciesIds[0];
+  const speciesId = draft.gm?.species ?? draft.speciesId ?? arch?.speciesIds[0];
+  const factionId = arch?.factionId ?? draft.advanced?.factionId;
   const subFactionIds = Object.values(fills).flatMap((f) => ("id" in f ? [f.id] : []));
   const owns = (o: BackgroundTable["owner"]) =>
-    ("factionId" in o && o.factionId === arch.factionId) ||
+    ("factionId" in o && o.factionId === factionId) ||
     ("speciesId" in o && o.speciesId === speciesId) ||
     ("speciesIds" in o && !!speciesId && o.speciesIds.includes(speciesId)) ||
     ("subFactionId" in o && subFactionIds.includes(o.subFactionId));
   // A Corsair takes the Background of their former faction (rules-flow.md §11.60); an Objectives-only table (Anhrathe)
   // has nothing to choose.
-  const from = lookups.factions.get(arch.factionId)?.backgroundsFrom ?? [];
+  const from = (factionId ? lookups.factions.get(factionId)?.backgroundsFrom : undefined) ?? [];
   const tables = [...lookups.backgrounds.values()].filter(
     (t) =>
       (owns(t.owner) || ("factionId" in t.owner && from.includes(t.owner.factionId))) &&
@@ -41,6 +45,7 @@ export function FactionStep() {
   const bg = draft.background;
   const table = bg ? lookups.backgrounds.get(bg.tableId) : undefined;
   const onSheet = new Set(r.sheet.abilities.map((a) => a.name)); // traits a Primaris ignores aren't on it
+  const ascension = !!draft.advanced || (!!arch && arch.tier < tier); // `stepsFor`: Advanced always has one (§11.132)
   const bonusOf = (b: Bonus | undefined) => (b ? `+1 ${BONUS_LABELS[b]}` : "its grant");
 
   // Fills a placeholder with a sub-faction, or a written-in name where the keyword allows one (§11.25).
@@ -58,6 +63,30 @@ export function FactionStep() {
   const setBonus = (row: BackgroundRow) =>
     update((d) => (d.background ? { ...d, background: { ...d.background, bonus: row } } : d));
 
+  // The Advanced build's Faction, or none. Its Background table, the fills of its placeholder Keywords (a [REGIMENT]),
+  // any [ANY] picks and the options taken from its groups or its sub-factions' were for the other, so they go: the list
+  // would no longer show them to untoggle, and they'd still cost XP.
+  const pickFaction = (id: string | undefined) =>
+    update((d) => {
+      if (!d.advanced || d.advanced.factionId === id) return d; // the same Faction again keeps its picks
+      const was = d.advanced.factionId;
+      const placeholders = new Set(was ? (lookups.factions.get(was)?.keywords ?? []) : []);
+      const drop = ([k]: [string, unknown]) => placeholders.has(k) || (!!id && k.startsWith("[ANY"));
+      const fills = Object.entries(d.fills ?? {});
+      const gone = new Set(fills.filter(drop).flatMap(([, f]) => ("id" in f ? [f.id] : [])));
+      const stale = (groupId: string) => {
+        const o = lookups["option-groups"].get(groupId)?.owner;
+        return !!o && (("factionId" in o && o.factionId === was) || ("subFactionId" in o && gone.has(o.subFactionId)));
+      };
+      return {
+        ...d,
+        background: undefined,
+        fills: Object.fromEntries(fills.filter((e) => !drop(e))),
+        options: (d.options ?? []).filter((o) => !stale(o.groupId)),
+        advanced: { ...d.advanced, factionId: id },
+      };
+    });
+
   // Takes an option from a group, or gives it back.
   const toggleOption = (groupId: string, name: string) =>
     update((d) => {
@@ -73,13 +102,43 @@ export function FactionStep() {
     <div className="stack">
       <div className="rule">KNOW YOUR FACTION</div>
       <div className="dim">
-        {titleOf(arch.factionId)} · {lookups.species.get(speciesId ?? "")?.name ?? "no species yet"}
+        {arch ? titleOf(arch.factionId) : (lookups.factions.get(factionId ?? "")?.name ?? "Advanced Creation")} ·{" "}
+        {lookups.species.get(speciesId ?? "")?.name ?? "no species yet"}
       </div>
+
+      {draft.advanced && (
+        <fieldset className="panel pad stack">
+          <legend className="label">FACTION (OPTIONAL) · Core p.38 · {citeLabel("rules-flow.md §11.140")}</legend>
+          <div className="dim">
+            A Faction brings its Keywords, its Background tables and its option groups, as an Archetype&apos;s Faction
+            does; the Species&apos; own Keywords stay. With none, the Species&apos; Keyword choices are asked instead.
+            Any other Keyword is the GM&apos;s to add.
+          </div>
+          <button className="btn sm" aria-pressed={!factionId} onClick={() => pickFaction(undefined)}>
+            {factionId ? "NO FACTION" : "✓ NO FACTION"}
+          </button>
+          <RecordList
+            label="Search factions"
+            searchable
+            items={offered({ list: lookups.factions.values(), taken: factionId ? [factionId] : [], homebrew })
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((f) => ({
+                id: f.id,
+                label: f.name,
+                meta: `${f.keywords.join(", ") || "no Keyword printed"} · ${sourceCite(f)}`,
+              }))}
+            selected={factionId ? [factionId] : []}
+            onPick={(id) => pickFaction(id === factionId ? undefined : id)}
+          />
+        </fieldset>
+      )}
 
       {placeholders.map((k) => {
         const kw = keywordByName.get(k);
         const current = fills[k];
         const options = [...lookups["sub-factions"].values()].filter((s) => s.type === kw?.placeholder);
+        // A placeholder no record fills ([ANY]) is a write-in the GM ticks (§11.25), so it must be reachable.
+        const writeIn = kw?.writeIn || options.length === 0;
         return (
           <fieldset key={k} className="panel pad stack">
             <legend className="label">
@@ -100,11 +159,11 @@ export function FactionStep() {
                 );
               })}
             </div>
-            {kw?.writeIn && (
+            {writeIn && (
               <input
                 className="input"
                 aria-label={`${k}: write in your own`}
-                placeholder="Or write in your own (GM approves)"
+                placeholder={options.length ? "Or write in your own (GM approves)" : "Write in a Keyword (GM approves)"}
                 value={current && "writeIn" in current ? current.writeIn : ""}
                 onChange={(e) => {
                   const v = e.target.value.toUpperCase().replace(/[^A-Z0-9' -]/g, "");
@@ -215,8 +274,8 @@ export function FactionStep() {
 
       <StepChoices step="faction" />
       <div>
-        <button className="btn primary" onClick={() => go(arch.tier < tier ? "ascension" : "detail")}>
-          NEXT: {arch.tier < tier ? "ASCENSION" : "DETAIL"}
+        <button className="btn primary" onClick={() => go(ascension ? "ascension" : "detail")}>
+          NEXT: {ascension ? "ASCENSION" : "DETAIL"}
         </button>
       </div>
     </div>

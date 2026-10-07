@@ -825,6 +825,57 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      cancel. Ruin is not asked for: it stays the GM's (§11.58).
 124. **Requests clear at session start and end** (p.162, p.164). `session.start` resets Wrath and Glory and `session.end`
      closes the session, so a request made against the old pools would be answered against new ones.
+126. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
+     Skill at 0, but p.38 charges the Species' XP "as in Know Your Faction" for its benefits, and an Adeptus Astartes'
+     160 XP is its Attributes and Skills. The species' printed ratings stand, everything else starts at 1 and 0, and
+     XP buys from there (the Human has none, so the p.39 example prices from scratch). *Approved by the GM, 2026-10-06.*
+127. **The Advanced bonus is budget, and stays when an Archetype Ability is bought** (Core p.38). Tier × 10 is added to
+     the budget (a GM's custom budget plus it), so the ledger shows only what is spent; the p.39 example spends 100 of
+     110. The book lists buying an Archetype Ability as a separate option and prices it itself, so the bonus is not
+     given back. *Approved by the GM, 2026-10-06.*
+128. **Advanced Wargear: Total Value is strictly under the limit, Max. Value is inclusive** (Core p.39). The text says
+     Total Value "less than" the number (Tier 1: at most 14), and a "Max. Value" column reads as a ceiling an item may
+     equal (Tier 1: an item of 7 is fine). Each copy counts. `advancedWargearProblems` in `wargear.ts`.
+     *Approved by the GM, 2026-10-06.*
+129. **Advanced Wargear Rarity accumulates and refuses Unique** (Core p.39). Common and Uncommon are always allowed. The
+     Rarity column is read as adding allowances: Tier 2 up to two Rare, Tier 3 the same plus one Very Rare, Tier 4 the
+     same plus two Very Rare. A Unique item fits no Tier. *Approved by the GM, 2026-10-06.*
+130. **Advanced Wargear at Tier 5 and above, and unpriced items** (Core p.39). The table stops at Tier 4, so a higher
+     Tier is checked against the Tier 4 row and the GM must agree. An item with no printed Value or Rarity can't be
+     counted and needs the GM. Common clothing and the trinket (Trinkets Table, p.247) are a note, not sheet lines.
+     *Approved by the GM, 2026-10-06.*
+131. **A bought Archetype Ability brings the ability only** (Core p.38). It costs the Archetype's Tier × 10, needs the
+     GM's tick (`advanced/ability/<archetype>`) and adds that Archetype's abilities, not its Keywords, kit, Influence,
+     ratings or requirements. *Approved by the GM, 2026-10-06.*
+132. **An Ascension Package at Advanced Creation is the GM's** (Core p.38). There is no Archetype Tier to ascend from, so
+     the build takes at most one Ascension Package, asks for the GM's tick, prices "× the new Tier" at the campaign
+     Tier, meets the package's requirements at that Tier, and counts as one Tier Ascended for its "per Tier" grants. The
+     ASCENSION screen lists the packages the build may take (`outOfReach`), at most one, for every Advanced build.
+     *Approved by the GM, 2026-10-06.*
+133. **An Advanced character has no Archetype for requirements or Archetype Ascension** (Core pp.38, 155). A requirement
+     of kind `archetype` fails and `notArchetype` passes. Archetype Ascension needs "an Archetype of their Faction", so
+     an Advanced character can't take it. Species Keywords stand in for the Archetype's. A Human's "any 2" are two fills,
+     `[ANY]` and `[ANY 2]` (a house keyword record, because a build lists a Keyword once), and the second must differ
+     from the first. Like every `[ANY]`, each is a write-in the GM ticks (§11.25). *Approved by the GM, 2026-10-06.*
+140. **A Faction at Advanced Creation brings what an Archetype's Faction does, and no more** (Core p.38). The book lets
+     an Advanced build "choose a Faction", receive "any Faction bonuses and background options as normal" and have the
+     GM help work out its Keywords. `advanced.factionId` (optional, no XP, no GM tick) grants the Keywords the Faction
+     record names (`Faction.keywords`: ORK, ASURYANI…) and offers its Background tables and option groups on the FACTION
+     step, as an Archetype's Faction does. A Faction's own `rules` don't reach the sheet for an Archetype either
+     (docs/data.md §9, Assassinorum Conditioning), so they don't here. A Keyword the record doesn't name, a [CHAPTER] or
+     [REGIMENT] for example, is a fill the Faction's Archetypes carry and a Faction alone does not, so it is the GM's,
+     through `gm.keywords`. *Proposed; awaiting the GM.*
+141. **Species Keyword grants belong to Advanced Creation** (Core p.38; GitHub issue #189). The page puts a Species'
+     Keywords under Advanced Creation ("If you don't select a Faction you will still gain Keywords based on your
+     Species"). An Archetype prints its own, so an archetype build skips its species' grants whose only content is
+     Keywords: a Human's two `[ANY]`, an Adeptus Astartes' IMPERIUM or CHAOS, an Aeldari's ANHRATHE or ASURYANI
+     (`keywordsOnly` in `build.ts`). Every other species grant stays (the PSYKER Discipline choices). An Imperial
+     Guardsman is no longer asked for an `[ANY]`, nor a Corsair for ANHRATHE or ASURYANI. *Proposed; awaiting the GM.*
+142. **A Faction doesn't replace the Species' fixed Keywords, only its choices** (Core p.38). The page says Species
+     Keywords are gained when no Faction is picked, which doesn't say whether a Faction removes them. The Species'
+     fixed Keywords (ADEPTUS ASTARTES, ORK, [CHAPTER], [CLAN]…) always stand; its Keyword choices (a Human's any 2,
+     IMPERIUM or CHAOS, ANHRATHE or ASURYANI) are asked only when no Faction is picked, the Faction's Keywords taking
+     their place. *Proposed; awaiting the GM.*
 
 ---
 
@@ -854,6 +905,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Ascension Package count | done | One Ascension Package per Ascension (Core p.148, §11.55), one Ascension per Tier since creation: `build.ts` fills them in the order bought, prices "× the new Tier" at each one's own Tier, and refuses a package past the last |
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
 | Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
+| Advanced Creation | done | `advanced` in `CharacterBuild` (no `archetypeId`): a species and its Keywords (a Human's two `[ANY]`, an Astartes' IMPERIUM or CHAOS, asked only without a Faction), an optional Faction (its Keywords, Background tables and option groups), Tier × 10 bonus, a bought Archetype Ability, Wargear by Tier, one Ascension Package the GM allows (Core pp.38–39, §11.126–136). The builder has a panel on the ARCHETYPE step, a Faction picker on FACTION and the Creation Ascension list on ASCENSION. Left out: the optional Extra Wargear swap (p.39), a `// ponytail:` in the panel; the GM swaps through `gm.gear`. Species Keyword grants no longer reach archetype builds (§11.141) |
 | Wargear upgrades on a weapon | done | All 64 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
 | Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |
