@@ -12,6 +12,8 @@ import {
   type Wargear,
 } from "@wg/shared";
 
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
+import { PrintPick, togglePick } from "@/components/ui/print-pick/print-pick";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { cloneDraft, draftOf, type ThreatDraft } from "@/components/ui/threat-builder/constants";
 import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
@@ -35,6 +37,9 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
   const [editing, setEditing] = useState<{ slug: string | null; draft: ThreatDraft } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const full = customThreats.length >= CUSTOM_THREAT_CAP;
+  const { print } = usePrint();
+  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set()); // ticked for PRINT N (#203)
+  const toPrint = customThreats.filter((t) => picked.has(t.id)).map((t) => t.id); // a deleted one drops out
 
   const start = (draft: ThreatDraft, slug: string | null = null) => {
     setError(null);
@@ -69,6 +74,11 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
           {customThreats.length} / {CUSTOM_THREAT_CAP}
           {full ? " · full" : ""}
         </span>
+        {toPrint.length > 0 && (
+          <button className="btn sm" onClick={() => print({ threats: toPrint })}>
+            PRINT {toPrint.length}
+          </button>
+        )}
       </div>
       {error && <div className="red">! {error}</div>}
       {customThreats.length === 0 && (
@@ -77,8 +87,13 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
       <div className="list">
         {customThreats.map((t) => (
           <details key={t.id} className="item">
-            <summary>
-              <b>{threatLabel(t)}</b>
+            <summary className="item-head">
+              <b style={{ flex: 1 }}>{threatLabel(t)}</b>
+              <PrintPick
+                name={threatLabel(t)}
+                on={picked.has(t.id)}
+                onToggle={() => setPicked((p) => togglePick(p, t.id))}
+              />
             </summary>
             <div className="stack">
               <StatBlock t={t} tier={tier} />
