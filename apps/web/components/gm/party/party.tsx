@@ -22,6 +22,7 @@ import {
 import { NEW_CHARACTER } from "@/components/builder/constants";
 import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
@@ -254,11 +255,11 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
               <label className="label" htmlFor="recap">
                 RECAP (players see this)
               </label>
-              <textarea
+              <MentionField
                 id="recap"
-                className="input"
+                multiline
                 value={recap}
-                onChange={(e) => setRecap(e.target.value)}
+                onChange={setRecap}
                 placeholder="Previously in Wrath & Glory…"
               />
             </div>

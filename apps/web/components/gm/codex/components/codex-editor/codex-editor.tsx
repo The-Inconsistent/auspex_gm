@@ -20,6 +20,7 @@ import {
 
 import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { placeOptions } from "@/lib/places/places";
@@ -240,12 +241,12 @@ export function CodexEditor({
             />
           )}
           {f.type === "area" && (
-            <textarea
+            <MentionField
               id={`f-${f.key}`}
               {...fieldErrors.marks(f.key)}
-              className="input"
+              multiline
               value={String(draft[f.key] ?? "")}
-              onChange={(e) => setField(f.key, e.target.value)}
+              onChange={(v) => setField(f.key, v)}
             />
           )}
           {f.type === "keywords" && (
