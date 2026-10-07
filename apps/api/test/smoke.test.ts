@@ -3469,4 +3469,31 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
   assert.equal(await seen(), 404, "revealed, with the picture held back");
   assert.ok((await save({ revealed: true, imageRevealed: true })).ok);
   assert.equal(await seen(), 200);
+
+  // The export carries the bytes, and an import gives the picture a new id the NPC follows. Over REST: no new socket.
+  const file = (await (await get(`/campaigns/${s.campaignId}/export`, gmAuth)).json()) as CampaignExport;
+  assert.deepEqual(
+    file.images.map((p) => [p.id, p.mime, p.base64]),
+    [[imageId, "image/webp", WEBP.toString("base64")]],
+  );
+  // The big import body is parsed only for a verified creator: a stranger's malformed JSON is a 401, never parsed.
+  const stranger = await fetch(`${API}/api/campaigns/import`, {
+    method: "POST",
+    headers: { "content-type": "application/json", ...bearer("not-a-session") },
+    body: "{ not json",
+  });
+  assert.equal(stranger.status, 401);
+  const forged = { ...file, images: [{ ...file.images[0]!, base64: Buffer.from("not a picture").toString("base64") }] };
+  assert.equal((await post("/campaigns/import", { file: forged }, gmAuth)).status, 400, "the importer sniffs too");
+  const imported = await post("/campaigns/import", { file }, gmAuth);
+  assert.equal(imported.status, 201);
+  const { campaignId: copyId } = (await imported.json()) as { campaignId: string };
+  const copy = (await (await get(`/campaigns/${copyId}/export`, gmAuth)).json()) as CampaignExport;
+  const [picture] = copy.images;
+  assert.ok(picture && picture.id !== imageId);
+  assert.equal(picture.base64, WEBP.toString("base64"));
+  assert.deepEqual(
+    copy.codex.npcs.map((n) => n.imageId),
+    [picture.id],
+  );
 });

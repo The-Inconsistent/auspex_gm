@@ -10,6 +10,7 @@ import { checkHazards, checkHolder, checkWargear } from "../codex/codex.actions.
 import { customThreat } from "../threat/threat.schema.ts";
 import { CUSTOM_THREAT_CAP } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
+import { listImages, putImage } from "../codex/image.store.ts";
 import { db, type Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { listLibrary } from "../library/library.service.ts";
@@ -49,10 +50,11 @@ export function createCampaign({
 
 // EXPORT: what the GM app holds, minus the seats, the running fight and the builder drafts (a device's, not the sheet).
 export async function exportCampaign(campaignId: string): Promise<CampaignExport> {
-  const [state, codex, stored] = await Promise.all([
+  const [state, codex, stored, images] = await Promise.all([
     loadState(campaignId),
     loadCodex(campaignId),
     db.select({ id: character.id, stats: character.stats }).from(character).where(eq(character.campaignId, campaignId)),
+    listImages(db, campaignId),
   ]);
   if (!state) fail("Campaign not found");
   // The sheets as stored, not as the table shows them: the state's have the upgrades and weapon effects applied
@@ -71,6 +73,7 @@ export async function exportCampaign(campaignId: string): Promise<CampaignExport
       build: build as CampaignExport["characters"][number]["build"],
     })),
     codex,
+    images: images.map((p) => ({ id: p.id, mime: p.mime, base64: p.bytes.toString("base64") })),
   };
 }
 
@@ -134,6 +137,7 @@ export async function importCampaign({
     ...c.npcs,
     ...c.handouts,
     ...c.items,
+    ...file.images,
   ];
   const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
   if (ids.size !== rows.length) fail("That file repeats an id");
@@ -182,16 +186,27 @@ export async function importCampaign({
           })),
         );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
+      // Pictures before the entries that show them, through the store's own checks (the bytes, the caps).
+      for (const p of file.images)
+        await putImage(tx, { campaignId, mime: p.mime, bytes: Buffer.from(p.base64, "base64"), id: ids.get(p.id)! }); // mapped above
+      // `own()` spreads the file's `imageId`, so each entry names its picture's new id explicitly.
       if (c.locations.length)
-        await tx.insert(location).values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId) })));
-      if (c.npcs.length)
-        await tx.insert(npc).values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId) })));
-      if (c.handouts.length)
         await tx
-          .insert(handout)
-          .values(
-            c.handouts.map((h, i) => ({ ...own(h, i), revealedAt: at(h.revealedAt), audience: refs(h.audience) })),
-          );
+          .insert(location)
+          .values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: ref(l.imageId) })));
+      if (c.npcs.length)
+        await tx
+          .insert(npc)
+          .values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: ref(n.imageId) })));
+      if (c.handouts.length)
+        await tx.insert(handout).values(
+          c.handouts.map((h, i) => ({
+            ...own(h, i),
+            revealedAt: at(h.revealedAt),
+            audience: refs(h.audience),
+            imageId: ref(h.imageId),
+          })),
+        );
       if (c.items.length)
         await tx.insert(item).values(
           c.items.map((it, i) => ({

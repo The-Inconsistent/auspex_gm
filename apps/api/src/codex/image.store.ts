@@ -46,6 +46,13 @@ export async function getImage(db: Db, campaignId: string, id: string) {
   return row ?? null;
 }
 
+// Every picture of a campaign, for EXPORT.
+export const listImages = (db: Db, campaignId: string) =>
+  db
+    .select({ id: codexImage.id, mime: codexImage.mime, bytes: codexImage.bytes })
+    .from(codexImage)
+    .where(eq(codexImage.campaignId, campaignId));
+
 // Drops the pictures no NPC, place or handout points at. A day's grace keeps an upload whose SAVE hasn't come yet, even
 // from an editor left open through a long prep: the editor's SAVE refuses a picture that's gone ("Image not found").
 export async function sweepImages(tx: Tx, campaignId: string) {
