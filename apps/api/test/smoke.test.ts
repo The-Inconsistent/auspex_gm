@@ -39,6 +39,7 @@ import {
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
+  mentionToken,
   presetFaction,
   presetNpc,
   presetLine,
@@ -2405,7 +2406,13 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const orders = await gm.send({
     type: "codex.save",
     kind: "handout",
-    data: { title: "Orders", revealed: true, audience: [kael.id] },
+    // A codex mention (issue #200) carries the Hive's id, so the import has to remap it with the row.
+    data: {
+      title: "Orders",
+      revealed: true,
+      audience: [kael.id],
+      body: `Report to ${mentionToken({ kind: "location", id: hive.id })}.`,
+    },
   });
   const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Descent" } });
   assert.ok(spire.ok && orders.ok && orders.id && adv.ok && adv.id);
@@ -2603,6 +2610,11 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
     "rows keep the file's order",
   );
   const newHive = locs.find((l) => l.name === "Hive")!;
+  assert.equal(
+    h?.body,
+    `Report to ${mentionToken({ kind: "location", id: newHive.id })}.`,
+    "a mention follows its row",
+  );
   assert.equal(locs.find((l) => l.name === "Spire")?.parentId, newHive.id);
   const b = whole.codex.adventures[0]?.beats[0];
   assert.equal(b?.locationId, locs.find((l) => l.name === "Spire")?.id);
