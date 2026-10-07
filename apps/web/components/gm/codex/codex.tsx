@@ -25,8 +25,11 @@ import {
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
+import { PrintPick } from "@/components/ui/print-pick/print-pick";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
+import { toggleIn } from "@/lib/toggle-set/toggle-set";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
 import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
@@ -110,6 +113,9 @@ export function CodexView({
   const npcById = useMemo(() => new Map(codex.npcs.map((n) => [n.id, n])), [codex.npcs]);
   const itemById = useMemo(() => new Map(codex.items.map((i) => [i.id, i])), [codex.items]);
   const catalogue = useMemo(() => new Map(wargear.map((w) => [w.id, w])), [wargear]);
+  const { print } = usePrint();
+  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set()); // items ticked for PRINT N (#203)
+  const itemsToPrint = codex.items.filter((i) => picked.has(i.id)).map((i) => i.id); // a deleted one drops out
 
   // Sub-tab: switch lists and close any open editor.
   const pickKind = (k: SubTab) => {
@@ -169,6 +175,9 @@ export function CodexView({
             <span onClick={(e) => e.preventDefault()}>
               <ItemGive item={item} characters={characters} send={send} onError={setError} />
             </span>
+          )}
+          {item && (
+            <PrintPick name={titleOf(r)} on={picked.has(r.id)} onToggle={() => setPicked((p) => toggleIn(p, r.id))} />
           )}
           {"revealed" in r && (
             <button
@@ -276,6 +285,15 @@ export function CodexView({
               </button>
               {kind === "item" && (
                 <span className="dim" style={{ float: "right" }}>
+                  {itemsToPrint.length > 0 && (
+                    <button
+                      className="btn sm"
+                      style={{ marginRight: 10 }}
+                      onClick={() => print({ items: itemsToPrint })}
+                    >
+                      PRINT {itemsToPrint.length}
+                    </button>
+                  )}
                   {codex.items.length} ITEMS · {codex.items.filter((i) => i.givenTo).length} GIVEN
                 </span>
               )}
