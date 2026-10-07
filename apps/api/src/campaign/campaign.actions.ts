@@ -76,16 +76,22 @@ async function abandonSession(tx: Tx, campaignId: string) {
 }
 
 // A pool changed by a delta, floored at 0 and capped at poolMax (overflow lost, p.320). Shared by `pool.adjust` and
-// whatever else moves a pool, e.g. a failed Corruption Test's +1 Ruin.
+// whatever else moves a pool, e.g. a failed Corruption Test's +1 Ruin. Returns how far it actually moved.
 export async function adjustPool(
   tx: Tx,
   { campaignId, pool, delta }: { campaignId: string; pool: Pool; delta: number },
 ) {
   const cap = poolMax(pool, await playerCount(tx, campaignId));
-  await tx
+  const [{ before } = { before: 0 }] = await tx
+    .select({ before: campaign[pool] })
+    .from(campaign)
+    .where(eq(campaign.id, campaignId));
+  const [{ after } = { after: 0 }] = await tx
     .update(campaign)
     .set({ [pool]: sql`least(${cap}, ${bump(campaign[pool], delta)})` })
-    .where(eq(campaign.id, campaignId));
+    .where(eq(campaign.id, campaignId))
+    .returning({ after: campaign[pool] });
+  return after - before;
 }
 
 export async function playerCount(tx: Tx, campaignId: string) {

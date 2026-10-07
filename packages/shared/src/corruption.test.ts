@@ -42,6 +42,15 @@ test("the Test DN is the source DN plus the current level's modifier", () => {
   assert.equal(corruptionTestDn({ source: 5, points: 21 }), 9);
 });
 
+test("a Wrath Critical takes 2 off the DN, a spent Wrath 1 but never below 1 (p.286)", () => {
+  assert.equal(corruptionTestDn({ source: 5, points: 0, wrathCritical: true }), 3);
+  assert.equal(corruptionTestDn({ source: 5, points: 6, spentWrath: true }), 5);
+  assert.equal(corruptionTestDn({ source: 1, points: 0, spentWrath: true }), 1);
+  assert.equal(corruptionTestDn({ source: 1, points: 0, wrathCritical: true }), -1);
+  assert.equal(corruptionTestDn({ source: 3, points: 0, wrathCritical: true, spentWrath: true }), 1);
+  assert.equal(corruptionTestDn({ source: 3, points: 6, wrathCritical: true, spentWrath: true }), 1);
+});
+
 test("a rebuild keeps the Corruption gained in play", () => {
   const previous = CharacterStats.parse({ corruption: 12 });
   assert.equal(keepPlay({ previous, next: CharacterStats.parse({}) }).corruption, 12);
@@ -55,4 +64,5 @@ test("character.corrupt takes a delta or a failed Test at a printed source DN, n
   assert.equal(ok({}), false);
   assert.equal(ok({ delta: 1, test: { source: 3, icons: 1 } }), false);
   assert.equal(ok({ test: { source: 4, icons: 1 } }), false, "4 is not a printed Corruption DN (p.285)");
+  assert.equal(ok({ test: { source: 3, icons: 0, wrathCritical: true, spentWrath: true } }), true);
 });

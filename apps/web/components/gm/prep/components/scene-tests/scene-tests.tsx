@@ -1,12 +1,12 @@
 "use client";
 import { isCorruptionDn, type ActionResult, type BeatTest, type Character } from "@wg/shared";
 
+import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { TEST_RULES } from "../../constants";
 import { dnLabel, ruinOnFailure, testTitle } from "../../utils";
-import { CorruptionFailed } from "./components/corruption-failed/corruption-failed";
 
 type SceneTestsProps = {
   tests: BeatTest[];
@@ -66,7 +66,7 @@ export function SceneTests({ tests, characters, send, onReport }: SceneTestsProp
                 </div>
               )}
               {t.kind === "corruption" && isCorruptionDn(t.dn) && characters.length > 0 && (
-                <CorruptionFailed source={t.dn} characters={characters} send={send} onReport={onReport} />
+                <CorruptionTest source={t.dn} characters={characters} send={send} onReport={onReport} />
               )}
             </div>
           </details>

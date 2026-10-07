@@ -20,9 +20,23 @@ export function corruptionLevel(points: number): CorruptionLevel {
   return { level: Math.max(0, level), name: l.name, modifier: l.modifier, chaosSpawn: l.name === "Chaos Spawn" };
 }
 
-// The Corruption Test's DN: the source's DN plus the level modifier of the Agent's current Corruption (Core p.286).
-export const corruptionTestDn = ({ source, points }: { source: number; points: number }) =>
-  source + corruptionLevel(points).modifier;
+// The Corruption Test's DN: the source's DN plus the level modifier of the Agent's current Corruption (Core p.286). A
+// Wrath Critical takes 2 off, with no floor printed, so a DN it drops to 0 is a pass; a spent Wrath takes 1 off but
+// "can't reduce the DN below 1" (p.286).
+export function corruptionTestDn({
+  source,
+  points,
+  wrathCritical = false,
+  spentWrath = false,
+}: {
+  source: number;
+  points: number;
+  wrathCritical?: boolean;
+  spentWrath?: boolean;
+}) {
+  const dn = source + corruptionLevel(points).modifier - (wrathCritical ? 2 : 0);
+  return spentWrath && dn > 1 ? dn - 1 : dn;
+}
 
 // A failed Corruption Test gains DN − Icons, doubled on a Complication (Core p.286). `dn` is the Test DN, level
 // modifier included (rules-flow.md §11.134).

@@ -861,10 +861,13 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      from the first. Like every `[ANY]`, each is a write-in the GM ticks (§11.25). *Approved by the GM, 2026-10-06.*
 134. **A failed Corruption Test gains the Test's DN, level modifier included, minus the Icons** (Core p.286). The book
      says "the DN of the Test" and that the Corruption Level "can increase the DN of the Test", but never names which DN
-     the gain uses (`corruptionGain`, `character.corrupt`).
+     the gain uses (`corruptionGain`, `character.corrupt`). A Wrath Critical takes 2 off it with no floor printed, so a
+     DN it drops below 1 is a pass; a spent Wrath takes 1 off, "can't reduce the DN below 1", and comes out of the
+     Agent's Wrath in the same tap (`corruptionTestDn`). *Approved by the GM, 2026-10-07.*
 135. **One Mutation Test per Corruption Level entered** (Core p.287: "Whenever your Corruption Level increases"), at DN 3
      plus the new level's modifier. The book doesn't say what happens when one gain crosses two levels. Entering Chaos
-     Spawn gives no Mutation Test: the GM takes the character over (p.286) (`mutationDns`).
+     Spawn gives no Mutation Test: the GM takes the character over (p.286) (`mutationDns`). *Approved by the GM,
+     2026-10-07.*
 140. **A Faction at Advanced Creation brings what an Archetype's Faction does, and no more** (Core p.38). The book lets
      an Advanced build "choose a Faction", receive "any Faction bonuses and background options as normal" and have the
      GM help work out its Keywords. `advanced.factionId` (optional, no XP, no GM tick) grants the Keywords the Faction
