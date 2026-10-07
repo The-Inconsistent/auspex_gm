@@ -9,6 +9,7 @@ export * from "./corruption.ts";
 export * from "./roll-table.ts";
 export * from "./flavour.ts";
 export * from "./scene-presets.ts";
+export * from "./mutation.ts";
 export * from "./faction-presets.ts";
 export * from "./npc-presets.ts";
 export * from "./places.ts";

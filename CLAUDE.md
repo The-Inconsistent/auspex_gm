@@ -190,10 +190,11 @@ apps/web/lib/                command (tracker command line), blocks, weapon-line
 apps/web/public/fonts/       Cinzel, Crimson Pro and IBM Plex Mono static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,
-                             mention.ts (codex mention tokens, auto-link, the import remap)
+                             mention.ts (codex mention tokens, auto-link, the import remap), corruption.ts (levels, the Test DN,
+                             gain, Mutation Test DNs), mutation.ts (Mutation tables, severity, the d66 lookup)
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
-packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
+packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, mutations/*.json, packs/<name>/, validate.ts, index.ts (loaders),
                              creation.test.ts (the pregen fixtures resolve in the creation catalogue)
 aspire-apphost/     apphost.mts: optional Aspire TypeScript AppHost (Postgres → api → web, with a dashboard)
 ```

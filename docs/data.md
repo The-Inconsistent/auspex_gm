@@ -777,6 +777,13 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
   where it names an enemy, §11.116), Oddities (p.19, d6) and the Enemy Keyword Table (p.18, 4d6). The p.12 worked
   example contradicts the grid; the grid is copied as printed (§11.117). The six named relics (pp.20–31) are catalogue
   entries in `wargear/rr2-relics.json`, listed by `loot/redacted-records-2.json`.
+- `../mutations/<source>.json` (`MutationTable[]` in `packages/shared/src/mutation.ts`, GitHub issue #182): the
+  Subtle, Minor and Severe Mutation tables, Core pp.287–295, served on `/scene-presets` as `mutations`. Each row keeps
+  its flavour (`text`) and Effect (`effect`) verbatim; `mods` holds only the always-on numbers (Brute's +1 Strength
+  and Toughness), which reach the sheet; bonus dice and DN penalties stay in `effect`. Visions, Extra Appendage and
+  Aberrations are d6 `sub` tables. The top row of Subtle and Minor sends the roll on (`forward`); The Warp Made
+  Manifest lists the mutations it `includes` and its `extraRolls`. `validate` checks the rows each table prints
+  (`EXPECTED_MUTATIONS`), unique ids and the inclusions; `mutationRow` and `findMutation` read them.
 - `hazards/<source>.json` (`HazardTable[]`, one file per book, GitHub issue #49): the books' hazards, for a place's
   hazard list. A place's entry points at a row by `id`, as an encounter points at a threat, so the text stays here.
   - A table is `{ id, name, source, page, dice, gm?, rows, gaps, overlaps }`. `dice` is null for a list to pick from
@@ -984,7 +991,7 @@ notes a hulk can get (five origins) fit 5,000. Kept as printed: the Objective ta
 | Copyrighted | Where |
 |---|---|
 | The book PDFs | `books/`, gitignored (`*.pdf`); never commit them |
-| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/**/*.json`, `packages/data/places/*.json`, and any rule text in packs and characters |
+| Stat blocks and ability or rules text | `packages/data/threats/*.json`, `packages/data/wargear/*.json`, `packages/data/creation/**/*.json`, `packages/data/rules/*.json`, `packages/data/scene-presets/**/*.json`, `packages/data/mutations/*.json`, `packages/data/places/*.json`, and any rule text in packs and characters |
 
 - Keep the repo **private**.
 - Never serve book content without an access token. `GET /api/campaigns/:id/threats`, `/wargear` and `/scene-presets` return 401 unless

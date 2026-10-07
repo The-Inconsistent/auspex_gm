@@ -10,6 +10,7 @@ import {
   HazardTable,
   HULK_HAZARDS,
   LootTable,
+  MutationTable,
   RelicCreator,
   NpcPreset,
   Pack,
@@ -82,6 +83,12 @@ export const loot: ReadonlyMap<string, { table: LootTable; row: LootRow }> = new
 );
 export const relics: RelicCreator = RelicCreator.parse(json(new URL(RELICS_FILE, presetsDir)));
 export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
+// mutations/<source>.json: the Mutation tables (Core pp.287–295, issue #182), GM-only like the scene presets, and the
+// rows character.mutate looks up.
+const mutationsDir = new URL("./mutations/", import.meta.url);
+export const mutationFiles = () => jsonFiles(mutationsDir);
+export const mutationTables = (): MutationTable[] =>
+  mutationFiles().flatMap((f) => MutationTable.array().parse(json(new URL(f, mutationsDir))));
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
@@ -90,6 +97,7 @@ export const scenePresets = (): ScenePresets => ({
   spaceHulk,
   loot: lootTables(),
   relics,
+  mutations: mutationTables(),
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the
