@@ -558,6 +558,8 @@ The tests are in `lib/command/command.test.ts`.
     `onRun`.
   - SET ACTIVE, shown when there is no prepared encounter, sets the status to active.
   - DONE and SKIP set the status to done or skipped.
+  - PRINT CARDS (§5.1) prints tents for the fielded Agents (`fieldedAgentIds`) and every prepared combatant, a Threat
+    card per encounter row, and the scene's items.
   - Each status change is a `codex.save { kind: "beat" }` with `stripBeat(b)`: the beat without `id` and `order`,
     which the server owns.
 - **`BeatEditor`** has these fields:
@@ -737,6 +739,7 @@ with `qrcode`, using `TOKENS.ink` modules on `TOKENS.vellum`, and shows it full-
 underneath. The code is returned only once, so a closed dialog can't be reopened; make a new one.
 
 - **ADD AGENT** sends `character.create { name }`.
+- **PRINT TENTS**, beside ACTIVE AGENTS and IN RESERVE, prints a tent card for each Agent in that group (§5.1).
 
 ---
 
@@ -801,6 +804,7 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `weapon-line/weapon-line.tsx` `WeaponLine` | `weapon`, `strength?` | `weaponProfile` (§`lib/`), then each trait as a `RuleLink`. Used by the sheet's ARMAMENT, the tracker's selected character and `StatBlock` (ability and option weapons) |
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
+| `print-dialog/print-dialog.tsx` `PrintProvider`, `usePrint()` | `source` (`{ state, codex, threats, wargear }`), `children` | Printed cards (issue #203, §5.1). Wraps `GmApp` only, so a print follows the screen's gates. `usePrint().print(job)` resolves a `PrintJob` of ids (`printCards`) and opens a modal `dialog.rule-dialog`: the card and sheet count, PAPER A4 / LETTER (remembered in `localStorage` under `PAPER_KEY`), BUILD PDF, then DOWNLOAD PDF and OPEN as plain links (iPad Safari blocks a window opened after an `await`), and the "print at 100 %" hint. `utils.ts` `picturesOf` redraws each tent's WebP portrait as a PNG data URL (react-pdf embeds PNG and JPEG only). The blob URL is freed on close |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
 
 ### `lib/`
@@ -812,9 +816,38 @@ with `bun test lib`.
 |---|---|---|
 | `blocks/blocks.ts` | `blocks({ value, max })`, `MAX_CELLS` (10) | `{ filled, cells }` for a track scaled to at most 10 cells (drawn by `components/ui/track`). Any damage fills at least one cell, anything short of max leaves at least one empty, and overflow stays full |
 | `weapon-line/weapon-line.ts` | `weaponProfile({ weapon, strength? })`, `weaponLine(…)` | `weaponProfile` is the one-line profile without traits: `dmg +ED ED · AP · R short/med/long · S salvo`. `addStrength` melee prints `S+X`, or a number when `strength` is given. A `salvo: null` prints `–`, and an absent salvo is omitted. `weaponLine` appends `· traits` as plain text, for places with no `RulesProvider`; inside one, use the `WeaponLine` component |
-| `tokens/tokens.ts` | `TOKENS` (`bg`, `fg`) | Raw colours for places CSS variables can't reach: the QR canvas, the viewport `themeColor` and the manifest. It mirrors `:root`, so change both together |
+| `tokens/tokens.ts` | `TOKENS` | Raw colours for places CSS variables can't reach: the QR canvas, the viewport `themeColor`, the manifest and the printed PDF cards (ink, rubric red, cut-line grey, the marker colours). It mirrors `:root`, so change both together |
+| `print-cards/print-cards.ts` | `printCards(job, source)`, `layoutCards(cards)`, `fitThreat`, `cardHeight`, `fieldedAgentIds`, `PrintJob`, `Card` | What a print holds and where each card goes (§5.1). `constants.ts` holds the poker size, the 3 × 3 grid and the paper sizes |
 | `threat-filter/threat-filter.ts` | `filterThreats(bestiary, facets, tier)`, `ThreatFacets` | The bestiary narrowed for the `ThreatPicker`: the query folds away case and punctuation on both sides (so "tau" finds "T'au") and matches the name or any keyword, and the class facet is the one printed at that Tier (`threatClassAt`, Core p.323) |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
+
+### 5.1 Printed cards (issue #203)
+
+The GM prints fold-over tent cards, Threat cards and item cards for the table. It is a **PDF built in the GM's
+browser** with `@react-pdf/renderer`, not `window.print()`: each card sits at fixed millimetres, so a sheet prints the
+same from any device at 100 %. The renderer and its fonts load on the first BUILD PDF only (`import()`), so the GM
+bundle doesn't carry them.
+
+- **The job.** A button calls `usePrint().print({ agents?, encounter?, threats?, items? })` with ids only.
+  `printCards` (`lib/print-cards`) resolves them against the GM app's state, codex, bestiary + customs and wargear:
+  - an Agent → a tent from `deriveStats`;
+  - a prepared encounter row → what `beat.startEncounter` will field: `prepareThreat` with its Profiles and scaling,
+    one tent per combatant under the tracker's label (`Ork Boy 1`, `Ork Boy ×6` for a Mob), and one Threat card per
+    row with the Profiles named in its footer;
+  - a threat id → its Threat card, unprepared; an item id → its item card (`description`, never `gmNotes`, plus the
+    catalogue entry with a relic's mods applied).
+- **Card sizes.** Tents and items are one poker card (63 × 88 mm). A Threat card starts at its class's size (Troop 1,
+  Elite 2 wide, Adversary or Monstrous Creature 2 × 2) and takes the next size up, at most the whole sheet, until its
+  text fits at 6 pt or more. `cardHeight` predicts the height from the text length, a fit to react-pdf's own layout
+  of the bestiary; refit it if `threat-card.tsx` changes. Text that overflows a fixed-height react-pdf box isn't
+  clipped cleanly, the paragraphs squeeze into each other, which is why the card is sized and not shrunk.
+- **The sheet.** `layoutCards` places cards first fit on a centred 3 × 3 grid (189 × 264 mm fits A4 and Letter), so
+  a card never splits across pages. `components/print/card-sheet` draws it: `TentCard` (the players' half printed
+  upside down, a dashed fold), `ThreatCard` (the stat block in printed order), `ItemCard`. Ink on white with grey cut
+  lines; Cinzel and Crimson Pro are embedded from `public/fonts` (static WOFF from Fontsource, SIL OFL, licences
+  beside them), since react-pdf can't use the variable fonts `next/font` serves.
+- **Adding a kind** (#204–#206): a `Card` variant and its branch in `printCards`, a component under
+  `card-sheet/components`, and a `PrintJob` field for its ids.
 
 ---
 

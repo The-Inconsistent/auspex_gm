@@ -22,6 +22,7 @@ import {
 import { NEW_CHARACTER } from "@/components/builder/constants";
 import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
@@ -53,6 +54,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const agentFields = useFieldErrors("new-agent"); // ADD AGENT's name
+  const { print } = usePrint();
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
   const open = codex.sessions.find((s) => !s.endedAt);
@@ -326,8 +328,16 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       <div id="agents" className="list">
         {groups.map(([title, list]) => (
           <Fragment key={title}>
-            <div className="rule">
-              {title} ({list.length})
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <div className="rule" style={{ flex: 1 }}>
+                {title} ({list.length})
+              </div>
+              {/* Fold-over name cards to stand behind each Agent's miniature (#203). */}
+              {list.length > 0 && (
+                <button className="btn sm" onClick={() => print({ agents: list.map((c) => c.id) })}>
+                  PRINT TENTS
+                </button>
+              )}
             </div>
             {list.map((c) => {
               const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });

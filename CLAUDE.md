@@ -42,7 +42,9 @@ in `docs/rules-flow.md` §11. Add new ones there, not silently in code.
   character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
   **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
-  the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`).
+  the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`). Printed cards follow the
+  screen's gates: only `GmApp` mounts the print dialog, and the GM's own browser builds the PDF from what it already
+  holds; nothing is uploaded or stored (`docs/frontend.md` §5.1).
 
 ## Stack
 
@@ -52,7 +54,7 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 
 | Part | Tech |
 |---|---|
-| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode`, `lucide-react` |
+| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode`, `lucide-react`, `@react-pdf/renderer` (printed cards, loaded on first use) |
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |
@@ -175,11 +177,14 @@ apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-pro
                              to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
-                             CODEX › THREATS or a scene)
+                             CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed-cards PDF)
+apps/web/components/print/   card-sheet (the react-pdf Document: tent, Threat and item cards on a 3 × 3 poker grid)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
-                             share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image)
+                             share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image),
+                             print-cards (what a print holds, card sizes, the sheet layout)
+apps/web/public/fonts/       Cinzel + Crimson Pro static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),

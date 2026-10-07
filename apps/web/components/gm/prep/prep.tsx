@@ -16,8 +16,10 @@ import {
 
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
+import { fieldedAgentIds } from "@/lib/print-cards/print-cards";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
 import { SceneHazards } from "./components/scene-hazards/scene-hazards";
@@ -58,6 +60,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
   // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for
   // and whose number scales a Threat (Core p.326, §11.106).
   const agents = agentsInFight(state);
+  const { print } = usePrint();
   // Names for the ENCOUNTER line, so a scene card reads "Ork Boy" and not "ork-boy".
   const threatNames = useMemo(() => new Map(bestiary.map((t) => [t.id, t.name])), [bestiary]);
 
@@ -357,6 +360,13 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                   </button>
                   <button className="btn sm" onClick={() => setStatus(b, "skipped")}>
                     SKIP
+                  </button>
+                  {/* Tents for the Agents and every prepared combatant, Threat cards, and the scene's items (#203). */}
+                  <button
+                    className="btn sm"
+                    onClick={() => print({ agents: fieldedAgentIds(state), encounter: b.encounter, items: b.itemIds })}
+                  >
+                    PRINT CARDS
                   </button>
                 </div>
               </div>
