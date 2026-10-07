@@ -68,7 +68,7 @@ export function FactionStep() {
   // would no longer show them to untoggle, and they'd still cost XP.
   const pickFaction = (id: string | undefined) =>
     update((d) => {
-      if (!d.advanced) return d;
+      if (!d.advanced || d.advanced.factionId === id) return d; // the same Faction again keeps its picks
       const was = d.advanced.factionId;
       const placeholders = new Set(was ? (lookups.factions.get(was)?.keywords ?? []) : []);
       const drop = ([k]: [string, unknown]) => placeholders.has(k) || (!!id && k.startsWith("[ANY"));
