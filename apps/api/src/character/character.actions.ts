@@ -452,17 +452,27 @@ export async function applyCharacterAction(
       const stats = CharacterStats.parse(row.stats);
       const before = stats.corruption;
       let gain = a.delta ?? 0; // the schema guarantees a delta or a test
+      const notices: string[] = [];
       if (a.test) {
-        const dn = corruptionTestDn({ source: a.test.source, points: before });
+        const dn = corruptionTestDn({ ...a.test, points: before });
         if (a.test.icons >= dn)
           fail(`${row.name} rolled ${a.test.icons} Icons against DN ${dn}: that Test passed (Core p.286)`);
+        if (a.test.spentWrath) {
+          if (row.wrath < 1) fail(`${row.name} has no Wrath to spend (Core p.286)`);
+          await tx
+            .update(character)
+            .set({ wrath: bump(character.wrath, -1) })
+            .where(eq(character.id, row.id));
+        }
         gain = corruptionGain({ dn, icons: a.test.icons, complication: a.test.complication });
       }
       stats.corruption = Math.max(0, before + gain);
       await saveStats(tx, { id: a.id, stats });
-      if (a.test) await adjustPool(tx, { campaignId: cid, pool: "ruin", delta: 1 }); // p.286, p.320
+      // p.286; the pool's cap swallows what's over it (p.320), which the GM should know.
+      if (a.test && (await adjustPool(tx, { campaignId: cid, pool: "ruin", delta: 1 })) <= 0)
+        notices.push("RUIN IS FULL · THE +1 IS LOST (p.320)");
       // The Mutation Tests (and the end of the character) are rolled at the table, so the GM is told what they are.
-      const notices = mutationDns(before, stats.corruption).map((dn) => `MUTATION TEST · DN ${dn}`);
+      notices.push(...mutationDns(before, stats.corruption).map((dn) => `MUTATION TEST · DN ${dn}`));
       if (corruptionLevel(stats.corruption).chaosSpawn && !corruptionLevel(before).chaosSpawn)
         notices.push("CHAOS SPAWN · THE GM TAKES THE AGENT OVER (pp.286, 352)");
       return notices.length ? { ok: true, notices } : { ok: true };

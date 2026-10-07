@@ -903,6 +903,52 @@ test("private notes: a handout's audience and an Agent's objectives reach only t
   await eventually(() => gm.codex()?.handouts.find((h) => h.title === "For A")?.revealed === false, "hidden again");
 });
 
+test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the GM and that Agent only", async (t) => {
+  const gm = await newCampaign("Corruption", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    // Their own IP: the suite is near the per-IP connect limit.
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.18.2.1" } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  assert.ok((await gm.send({ type: "session.start" })).ok); // Wrath 2, Ruin 2 (two players)
+  const corrupt = (test: NonNullable<Extract<ActionInput, { type: "character.corrupt" }>["test"]>) => ({
+    type: "character.corrupt" as const,
+    id: a.id!,
+    test,
+  });
+
+  assert.equal((await pa.send({ type: "character.corrupt", id: a.id, delta: -1 })).ok, false, "GM only");
+  assert.equal((await gm.send(corrupt({ source: 3, icons: 3 }))).ok, false, "a passed Test is refused");
+  // DN 3 − 1 for the spent Wrath, 1 Icon: +1 Corruption, +1 Ruin, −1 Wrath (Core p.286).
+  assert.deepEqual(await gm.send(corrupt({ source: 3, icons: 1, spentWrath: true })), { ok: true });
+  const s = await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.corruption === 1);
+  assert.equal(s.campaign.ruin, 3);
+  assert.equal(s.characters.find((c) => c.id === a.id)?.wrath, 1);
+  await pa.until((s) => s.characters.find((c) => c.id === a.id)?.stats.corruption === 1);
+  const seen = await pb.until((s) => s.characters.find((c) => c.id === a.id)?.wrath === 1);
+  assert.equal(seen.characters.find((c) => c.id === a.id)?.stats.corruption, 0, "another Agent's is blanked");
+
+  // Into Tarnished: a Mutation Test at DN 3 + 1 (p.287). Ruin at its cap of 4 swallows the next +1 (p.320).
+  assert.deepEqual(await gm.send({ type: "character.corrupt", id: a.id, delta: 5 }), {
+    ok: true,
+    notices: ["MUTATION TEST · DN 4"],
+  });
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "ruin", delta: 5 })).ok);
+  assert.deepEqual(await gm.send(corrupt({ source: 1, icons: 0 })), {
+    ok: true,
+    notices: ["RUIN IS FULL · THE +1 IS LOST (p.320)"],
+  });
+});
+
 test("table screen: a read-only seat with no character, the table's view and no book text", async (t) => {
   const gm = await newCampaign("Table screen", 2);
   t.after(() => gm.socket.close());

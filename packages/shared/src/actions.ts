@@ -143,6 +143,8 @@ export const Action = z.union([
             source: z.literal(CORRUPTION_DNS),
             icons: z.number().int().min(0).max(MAX_ICONS),
             complication: z.boolean().default(false),
+            wrathCritical: z.boolean().default(false), // DN −2 (p.286)
+            spentWrath: z.boolean().default(false), // DN −1, and the Agent's Wrath pays for it (p.286)
           })
           .optional(),
       })

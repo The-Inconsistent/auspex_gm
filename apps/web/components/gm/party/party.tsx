@@ -21,6 +21,7 @@ import {
 } from "@wg/shared";
 
 import { NEW_CHARACTER } from "@/components/builder/constants";
+import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { MentionField } from "@/components/ui/mention-field/mention-field";
@@ -36,7 +37,6 @@ import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
-import { CorruptionForm } from "./components/corruption-form/corruption-form";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { RoomInvite } from "./components/room-invite/room-invite";
 import { SessionHistory } from "./components/session-history/session-history";
@@ -179,7 +179,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
     );
 
-  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is CorruptionForm.
+  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is CorruptionTest.
   const adjCorruption = async (c: Character, delta: number) =>
     report(
       await send({ type: "character.corrupt", id: c.id, delta }),
@@ -453,7 +453,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                       ))}
                     </select>
                   </form>
-                  <CorruptionForm character={c} send={send} onResult={report} />
+                  <CorruptionTest characters={[c]} send={send} onReport={report} />
                   <ObjectivesEditor character={c} send={send} onResult={report} />
                   {reqFor === c.id && (
                     <RequisitionForm
