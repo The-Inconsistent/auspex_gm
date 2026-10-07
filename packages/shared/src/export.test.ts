@@ -93,6 +93,18 @@ test("a file from before handout styles loads them plain, with no header (issue 
   assert.deepEqual([h!.style, h!.header], ["plain", ""]);
 });
 
+test("a file from before pictures loads with none, and a fresh start holds every picture back (issue #199)", () => {
+  assert.deepEqual(file.images, []);
+  assert.deepEqual([file.codex.npcs[0]!.imageId, file.codex.npcs[0]!.imageRevealed], [null, false]);
+  const shown = structuredClone(file);
+  shown.codex.npcs[0]!.imageRevealed = true;
+  assert.equal(freshStart(shown).codex.npcs[0]!.imageRevealed, false);
+  assert.equal(
+    CampaignExport.safeParse({ ...file, images: [{ id: "x", mime: "image/png", base64: "" }] }).success,
+    false,
+  );
+});
+
 test("a file from before place hazards still loads (issue #49)", () => {
   const old = structuredClone(file) as unknown as {
     codex: { adventures: { beats: { hazards?: unknown }[] }[]; locations: { hazardList?: unknown }[] };

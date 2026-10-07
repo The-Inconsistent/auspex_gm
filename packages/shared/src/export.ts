@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput } from "./codex.ts";
+import { CodexInput, IMAGE_CAP, ImageMime } from "./codex.ts";
 import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
 import { CharacterDetail, CharacterStats, Objectives, Overrides, TableLines, Tier } from "./state.ts";
 
@@ -83,6 +83,12 @@ export const CampaignExport = z.object({
     // Defaulted, so a file written before they existed still imports.
     customThreats: z.array(CustomThreat).max(CUSTOM_THREAT_CAP).default([]),
   }),
+  // The codex pictures (issue #199), so a file is a whole backup: NPCs, places and handouts name them by `imageId`, which
+  // the importer remaps with the rest. Files from before pictures have none.
+  images: z
+    .array(z.object({ id, mime: ImageMime, base64: z.base64().max(1_400_000) })) // a 1 MB picture is about 1.34 MB of base64
+    .max(IMAGE_CAP)
+    .default([]),
 });
 export type CampaignExport = z.infer<typeof CampaignExport>;
 
@@ -116,9 +122,9 @@ export function freshStart(e: CampaignExport): CampaignExport {
           hazards: b.hazards.map((h) => ({ ...h, spotted: false })),
         })),
       })),
-      locations: c.locations.map((l) => ({ ...l, revealed: false })),
-      npcs: c.npcs.map((n) => ({ ...n, revealed: false })),
-      handouts: c.handouts.map((h) => ({ ...h, revealed: false, revealedAt: null })),
+      locations: c.locations.map((l) => ({ ...l, revealed: false, imageRevealed: false })),
+      npcs: c.npcs.map((n) => ({ ...n, revealed: false, imageRevealed: false })),
+      handouts: c.handouts.map((h) => ({ ...h, revealed: false, imageRevealed: false, revealedAt: null })),
       sessions: [],
     },
   };

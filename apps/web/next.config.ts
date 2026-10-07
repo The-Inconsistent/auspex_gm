@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
   ...(devOrigins?.length ? { allowedDevOrigins: devOrigins } : {}),
   output: "standalone",
   skipTrailingSlashRedirect: true, // socket.io's path is "/socket.io/"; Next's slash-stripping 308 would break it
+  // With a proxy.ts, Next buffers every request body (its matcher skipping /api changes nothing), cut at 10 MB by
+  // default. IMPORT GAME carries a campaign's pictures as base64 (issue #199), so a backup runs past that.
+  // ponytail: global, so any route may make Next hold up to 100 MB (Cloudflare's free-plan ceiling) for a request;
+  // upload the pictures separately if that's ever a problem.
+  experimental: { proxyClientMaxBodySize: "100mb" },
   async rewrites() {
     return [
       { source: "/api/:path*", destination: `${api}/api/:path*` },
