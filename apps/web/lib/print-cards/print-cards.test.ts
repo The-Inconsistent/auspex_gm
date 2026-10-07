@@ -83,6 +83,7 @@ const src: PrintSource = {
       kind: [],
       limits: [],
       homebrew: false,
+      archived: false,
     },
     access: { members: [], invites: [], guests: [] },
     characters: [agent],
