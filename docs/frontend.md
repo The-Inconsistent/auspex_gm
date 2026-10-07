@@ -805,7 +805,7 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
 | `print-dialog/print-dialog.tsx` `PrintProvider`, `usePrint()` | `source` (`{ state, codex, threats, wargear }`), `children` | Printed cards (issue #203, §5.1). Wraps `GmApp` only, so a print follows the screen's gates. `usePrint().print(job)` resolves a `PrintJob` of ids (`printCards`) and opens a modal `dialog.rule-dialog`: the card and sheet count, PAPER A4 / LETTER (remembered in `localStorage` under `PAPER_KEY`), BUILD PDF, then DOWNLOAD PDF and OPEN as plain links (iPad Safari blocks a window opened after an `await`), and the "print at 100 %" hint. `utils.ts` `picturesOf` redraws each tent's WebP portrait as a PNG data URL (react-pdf embeds PNG and JPEG only). The blob URL is freed on close |
-| `print-pick/print-pick.tsx` `PrintPick`, `togglePick` | `name`, `on`, `onToggle` | A row's tick for PRINT N on CODEX › THREATS and ITEMS (§5.1): a square / ticked-square button with `aria-pressed`, which doesn't open the `<summary>` it sits in |
+| `print-pick/print-pick.tsx` `PrintPick` | `name`, `on`, `onToggle` | A row's tick for PRINT N on CODEX › THREATS and ITEMS (§5.1): a square / ticked-square button with `aria-pressed`, which doesn't open the `<summary>` it sits in |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
 
 ### `lib/`
@@ -821,6 +821,7 @@ with `bun test lib`.
 | `print-cards/print-cards.ts` | `printCards(job, source)`, `layoutCards(cards)`, `fitThreat`, `cardHeight`, `fieldedAgentIds`, `PrintJob`, `Card` | What a print holds and where each card goes (§5.1). `constants.ts` holds the poker size, the 3 × 3 grid and the paper sizes |
 | `threat-filter/threat-filter.ts` | `filterThreats(bestiary, facets, tier)`, `ThreatFacets` | The bestiary narrowed for the `ThreatPicker`: the query folds away case and punctuation on both sides (so "tau" finds "T'au") and matches the name or any keyword, and the class facet is the one printed at that Tier (`threatClassAt`, Core p.323) |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
+| `toggle-set/toggle-set.ts` | `toggleIn(set, id)` | A new set with `id` added or removed, for picked-row state (CODEX's PRINT N ticks) |
 
 ### 5.1 Printed cards (issue #203)
 

@@ -26,9 +26,10 @@ import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
-import { PrintPick, togglePick } from "@/components/ui/print-pick/print-pick";
+import { PrintPick } from "@/components/ui/print-pick/print-pick";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
+import { toggleIn } from "@/lib/toggle-set/toggle-set";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
 import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
@@ -176,7 +177,7 @@ export function CodexView({
             </span>
           )}
           {item && (
-            <PrintPick name={titleOf(r)} on={picked.has(r.id)} onToggle={() => setPicked((p) => togglePick(p, r.id))} />
+            <PrintPick name={titleOf(r)} on={picked.has(r.id)} onToggle={() => setPicked((p) => toggleIn(p, r.id))} />
           )}
           {"revealed" in r && (
             <button

@@ -13,12 +13,13 @@ import {
 } from "@wg/shared";
 
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
-import { PrintPick, togglePick } from "@/components/ui/print-pick/print-pick";
+import { PrintPick } from "@/components/ui/print-pick/print-pick";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { cloneDraft, draftOf, type ThreatDraft } from "@/components/ui/threat-builder/constants";
 import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
 import { ThreatStarts } from "@/components/ui/threat-starts/threat-starts";
 import type { Send } from "@/hooks/use-table/use-table";
+import { toggleIn } from "@/lib/toggle-set/toggle-set";
 
 type ThreatEditorProps = {
   customThreats: Threat[];
@@ -92,7 +93,7 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
               <PrintPick
                 name={threatLabel(t)}
                 on={picked.has(t.id)}
-                onToggle={() => setPicked((p) => togglePick(p, t.id))}
+                onToggle={() => setPicked((p) => toggleIn(p, t.id))}
               />
             </summary>
             <div className="stack">
