@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-// Rolled book tables for the GM's prep (GitHub issue #39). The app rolls on a book table in prep only; a Test at the
-// table stays physical dice (rules-flow.md §7). Rows hold inclusive ranges of printed results, so a d66 row 16–24
+// Rolled book tables (GitHub issues #39, #182). The app rolls on a book table, in prep or a Mutation table at the
+// table; a Test stays physical dice (rules-flow.md §7). Rows hold inclusive ranges of printed results, so a d66 row 16–24
 // covers 16 and 21–24: 17 to 20 aren't d66 results.
 
 export const Dice = z.enum(["d3", "d6", "2d6", "4d6", "d66"]);

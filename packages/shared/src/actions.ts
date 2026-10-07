@@ -149,6 +149,11 @@ export const Action = z.union([
           .optional(),
       })
       .refine((a) => (a.delta === undefined) !== (a.test === undefined), "Send a delta or a failed Test, not both"),
+    // GM only: a mutation from the book tables (Core pp.287–295), by its row id and, for one with its own d6 table
+    // (Extra Appendages, Aberration), that row's id; the server snapshots the line. `character.unmutate` removes one:
+    // the mutated part cut off, which leaves the Corruption as it is (p.287).
+    z.object({ type: z.literal("character.mutate"), id, mutationId: slug, subId: slug.optional() }),
+    z.object({ type: z.literal("character.unmutate"), id, mutationId: slug }),
     // GM only: a codex item handed to an Agent, which uses their Wargear Test for the session (rules-flow.md §11.112),
     // and taken back again (§11.114). The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),

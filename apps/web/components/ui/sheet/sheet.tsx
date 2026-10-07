@@ -11,6 +11,7 @@ import {
   poolMax,
   rankOf,
   skillTotal,
+  withMutations,
   type ActionInput,
   type Character,
   type CharacterDetail,
@@ -52,6 +53,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
   const toSpend = Math.max(0, me.xp - me.xpSpent);
   const rank = rankOf(me.xp);
   const corruption = corruptionLevel(s.corruption);
+  const shown = withMutations(s); // Attributes and Skills as the mutations change them (Core pp.288–295)
   // Where XP is spent: the builder's ADVANCE screen for a character already made (Core pp.146–151), the builder from the
   // top for one that isn't. LEVEL UP and the button at the foot of the sheet are the same trip, so they share this.
   const buildHref = table
@@ -279,6 +281,21 @@ export function Sheet({ me, tier, table }: SheetProps) {
             ? "CHAOS SPAWN · THE GM TAKES THIS AGENT OVER (p.286)"
             : `${corruption.name.toUpperCase()} · +${corruption.modifier} TO CORRUPTION TEST DNs (p.286)`}
         </div>
+        {/* Mutations (Core pp.287–295): what changes a number is already counted on this sheet; the rest is the GM's. */}
+        {s.mutations.map((m) => (
+          <div key={m.id} className="stack" style={{ gap: 2 }}>
+            <b>
+              {m.name.toUpperCase()}{" "}
+              <span className="dim">
+                (<PageCite cite={`Core p.${m.page}`} />)
+              </span>
+            </b>
+            <div style={{ whiteSpace: "pre-line" }}>{m.effect}</div>
+            {m.weapons.map((w) => (
+              <WeaponLine key={w.name} weapon={w} strength={effectiveStrength(s)} />
+            ))}
+          </div>
+        ))}
       </div>
 
       <div className="stack" style={{ gap: 4 }}>
@@ -296,7 +313,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
                 {ATTRIBUTE_NAMES[a].toUpperCase()}
               </span>
               <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
-                {s.attributes[a]}
+                {shown.attributes[a]}
               </span>
               <span style={{ width: 64 }} />
             </div>
@@ -305,11 +322,11 @@ export function Sheet({ me, tier, table }: SheetProps) {
               .map((k) => (
                 <div
                   key={k}
-                  className={s.skills[k] ? undefined : "dim"}
+                  className={shown.skills[k] ? undefined : "dim"}
                   style={{ display: "flex", alignItems: "baseline", paddingLeft: 16 }}
                 >
                   <span style={{ flex: 1 }}>{k}</span>
-                  <span style={{ width: 64, textAlign: "right" }}>{s.skills[k] ?? 0}</span>
+                  <span style={{ width: 64, textAlign: "right" }}>{shown.skills[k] ?? 0}</span>
                   <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
                     {skillTotal(s, k)}
                   </span>

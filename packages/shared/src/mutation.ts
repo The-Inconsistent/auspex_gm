@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Rarity } from "./requisition.ts";
 import { rowsFor, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
-import { ATTRIBUTES, Mods, SKILLS, type Skill } from "./state.ts";
+import { MutationMods, type SheetMutation } from "./state.ts";
 import { WargearWeapon } from "./wargear.ts";
 
 // Mutations (Core pp.287–295, issue #182): a failed Mutation Test rolls a d6 for severity, then a d66 on that
@@ -11,17 +11,6 @@ import { WargearWeapon } from "./wargear.ts";
 export const SEVERITIES = ["subtle", "minor", "severe"] as const;
 export const Severity = z.enum(SEVERITIES);
 export type Severity = z.infer<typeof Severity>;
-
-// What a mutation always changes on the sheet, as printed ("–1 Toughness", "reduces your Max Shock by 1"). Situational
-// bonus dice and DN penalties ("+1 DN to Tests in daylight") stay in `effect` for the table.
-export const MutationMods = z.object({
-  attributes: z.partialRecord(z.enum(ATTRIBUTES), z.number().int().min(-5).max(5)).default({}),
-  skills: z
-    .partialRecord(z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]), z.number().int().min(-5).max(5))
-    .default({}),
-  traits: Mods.default({}),
-});
-export type MutationMods = z.infer<typeof MutationMods>;
 
 const slug = z.string().regex(/^[a-z0-9-]+$/);
 
@@ -96,13 +85,35 @@ export function mutationRow(table: MutationTable, d66: number, held: number): Mu
   return rowsFor(table.rows, n)[0] ?? table.rows.at(-1)!; // validate checks every d66 result has a row
 }
 
-// A mutation by id, a d6 table's row included, for character.mutate.
-export function findMutation(tables: MutationTable[], id: string) {
-  for (const t of tables)
-    for (const row of t.rows) {
-      if ("forward" in row) continue;
-      if (row.id === id) return row;
-      const sub = row.sub?.rows.find((r) => r.id === id);
-      if (sub) return sub;
-    }
+type Entry = z.infer<typeof MutationEntry>;
+
+// A mutation as it lands on the sheet: a d6 table's row folds into its parent's line (Extra Appendage: Strong Arm),
+// with both mods. Rows whose rules sit in the flavour (Extra Appendages' Persuasion penalty) keep that text.
+export function sheetMutation(row: Entry, sub?: Entry): SheetMutation {
+  const sum = <K extends string>(a: Partial<Record<K, number>>, b: Partial<Record<K, number>> = {}) => {
+    const out = { ...a };
+    for (const [k, v] of Object.entries(b) as [K, number][]) out[k] = (out[k] ?? 0) + v;
+    return out;
+  };
+  return {
+    id: row.id,
+    name: sub ? `${row.name}: ${sub.name}` : row.name,
+    page: row.page,
+    effect: [row.effect || row.text, sub && (sub.effect || sub.text)].filter(Boolean).join("\n\n"),
+    mods: {
+      attributes: sum(row.mods.attributes, sub?.mods.attributes),
+      skills: sum(row.mods.skills, sub?.mods.skills),
+      traits: sum(row.mods.traits, sub?.mods.traits),
+    },
+    weapons: [...row.weapons, ...(sub?.weapons ?? [])].map(({ name, profile }) => ({
+      name,
+      ...profile,
+      range: profile.range ?? [1],
+    })),
+  };
 }
+
+// A printed mutation by id (not a d6 table's row, nor a row that sends the roll on), for character.mutate.
+export type Mutation = Extract<MutationRow, { includes: string[] }>;
+export const findMutation = (tables: MutationTable[], id: string): Mutation | undefined =>
+  tables.flatMap((t) => t.rows).find((r): r is Mutation => !("forward" in r) && r.id === id);

@@ -100,7 +100,7 @@ export function CorruptionTest({ source: fixed, characters, send, onReport }: Co
           ))}
         </select>
       )}
-      <span className="dim">
+      <span className="dim" hidden={fixed === undefined && testDn === source}>
         DN {source}
         {modifier > 0 && ` +${modifier}`}
         {wrathCritical && " −2"}

@@ -146,6 +146,8 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "character.adjust":
     case "character.supply":
     case "character.corrupt":
+    case "character.mutate":
+    case "character.unmutate":
     case "character.requisition":
     case "character.fitUpgrade":
     case "character.removeUpgrade":

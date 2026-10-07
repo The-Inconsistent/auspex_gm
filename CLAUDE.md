@@ -1,8 +1,9 @@
 # Auspex: Wrath & Glory table companion
 
 A companion app for **in-person** games of *Warhammer 40,000: Wrath & Glory* (Cubicle 7). The group plays with
-real miniatures and terrain, so there are **no maps, dice or chat**. (One exception: in prep, the GM may let the app roll on
-a book table, such as a travel event; Tests at the table stay physical dice, `packages/shared/src/roll-table.ts`.) The app covers:
+real miniatures and terrain, so there are **no maps, dice or chat**. (One exception: the GM may let the app roll on a book
+table, such as a travel event in prep or a Mutation table after a failed Mutation Test; Tests stay physical dice,
+`packages/shared/src/roll-table.ts`.) The app covers:
 
 - **GM (tablet):** live combat tracker, campaign prep (adventures → scenes; the UI says SCENE, code keeps `beat`), codex (NPCs, locations, handouts,
   factions), party and session management.
