@@ -32,6 +32,7 @@ import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
 import { HazardList } from "../hazard-list/hazard-list";
 import { HolderField } from "../holder-field/holder-field";
+import { ImageField } from "../image-field/image-field";
 import { KeywordPicker } from "../keyword-picker/keyword-picker";
 import { NpcRoller } from "../npc-roller/npc-roller";
 import { StatSourceField } from "../stat-source-field/stat-source-field";
@@ -57,6 +58,11 @@ type CodexEditorProps = {
 
 const upperOptions = (values: readonly string[]): Option[] => values.map((v) => [v, v.toUpperCase()]);
 const NONE: Option = ["", "—"];
+// An NPC's, place's or handout's picture (issue #199), and its own reveal: revealing the entry doesn't show it.
+const PICTURE: Field[] = [
+  { key: "imageId", label: "PICTURE", type: "image" },
+  { key: "imageRevealed", label: "PICTURE SHOWN TO PLAYERS", type: "bool" },
+];
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
 function fieldsFor({
@@ -92,6 +98,7 @@ function fieldsFor({
         { key: "gmNotes", label: "GM NOTES", type: "area" },
         { key: "secrets", label: "SECRETS", type: "area" },
         { key: "revealed", label: "REVEALED TO PLAYERS", type: "bool" },
+        ...PICTURE,
       ];
     case "location":
       return [
@@ -107,6 +114,7 @@ function fieldsFor({
         { key: "hazards", label: "HAZARDS · YOUR NOTES", type: "area" },
         { key: "gmNotes", label: "GM NOTES", type: "area" },
         { key: "revealed", label: "REVEALED TO PLAYERS", type: "bool" },
+        ...PICTURE,
       ];
     case "handout":
       return [
@@ -127,6 +135,7 @@ function fieldsFor({
           type: "picks",
           options: characters.map((c): Option => [c.id, c.name]),
         },
+        ...PICTURE,
       ];
     case "faction":
       return [
@@ -182,7 +191,7 @@ export function CodexEditor({
   const [armed, setArmed] = useState<number | null>(null); // DELETE's first tap, at that many places inside
 
   const setField = (key: string, value: unknown) => {
-    setDraft({ ...draft, [key]: value });
+    setDraft((d) => ({ ...d, [key]: value })); // functional: an upload may land after other edits
     fieldErrors.clear(key);
   };
 
@@ -233,7 +242,7 @@ export function CodexEditor({
             <span className="label" id={`f-${f.key}`}>
               {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
             </span>
-          ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" ? (
+          ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" || f.type === "image" ? (
             <span className="label" id={`f-${f.key}`}>
               {f.label}
             </span>
@@ -306,6 +315,15 @@ export function CodexEditor({
               onChange={(v) => setDraft({ ...draft, ...v })}
             />
           )}
+          {f.type === "image" && (
+            <ImageField
+              id={`f-${f.key}`}
+              value={(draft[f.key] as string | null | undefined) ?? null}
+              alt={String(draft.name ?? draft.title ?? "")}
+              onChange={(v) => setField(f.key, v)}
+              onError={setError}
+            />
+          )}
           {f.type === "bool" && (
             <input
               id={`f-${f.key}`}
@@ -376,6 +394,9 @@ export function CodexEditor({
               body: String(draft.body ?? ""),
               style: HandoutStyle.catch("plain").parse(draft.style),
               header: String(draft.header ?? ""),
+              title: String(draft.title ?? ""),
+              imageId: (draft.imageId as string | null | undefined) ?? null,
+              imageRevealed: Boolean(draft.imageRevealed),
             }}
           />
         </div>

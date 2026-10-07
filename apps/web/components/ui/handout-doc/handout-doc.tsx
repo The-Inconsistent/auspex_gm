@@ -1,25 +1,42 @@
 import type { HandoutStyle } from "@wg/shared";
 
+import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
 import { Mentions } from "@/components/ui/mentions/mentions";
 import { voxLines } from "@/lib/vox-lines/vox-lines";
 
 import { headerOf } from "./constants";
 
 // `id` is the handout's own, so its text doesn't link to itself (Mentions, issue #200); a draft has none yet.
-type HandoutDocProps = { handout: { id?: string; body: string; style: HandoutStyle; header: string } };
+type HandoutDocProps = {
+  handout: {
+    id?: string;
+    body: string;
+    style: HandoutStyle;
+    header: string;
+    title?: string;
+    imageId?: string | null; // its picture (issue #199); a phone gets none while it's held back (toPlayerCodex)
+    imageRevealed?: boolean;
+  };
+};
 
 // A handout drawn as its prop (issue #204): the player's phone, the GM's preview and the editor share it, and the
 // printed page (components/print/handout-sheet) draws the same frames. Original CSS and SVG, no Games Workshop marks.
 // `plain` is the cogitator slate every handout had before styles, so an older one looks as it did.
 export function HandoutDoc({ handout }: HandoutDocProps) {
-  const { id, body, style } = handout;
+  const { id, body, style, imageId } = handout;
   const head = headerOf(handout);
   const lines = style === "vox" ? voxLines(body) : [];
+  const picture = imageId && (
+    <CodexPicture imageId={imageId} alt={handout.title ?? head} held={!handout.imageRevealed} />
+  );
   if (style === "plain")
     return (
-      <pre className="text slate">
-        <Mentions text={body} self={id} />
-      </pre>
+      <>
+        {picture}
+        <pre className="text slate">
+          <Mentions text={body} self={id} />
+        </pre>
+      </>
     );
   return (
     <div className="handout-doc" data-style={style}>
@@ -31,6 +48,7 @@ export function HandoutDoc({ handout }: HandoutDocProps) {
       ) : (
         <div className="hd-head">{head}</div>
       )}
+      {picture}
       {style === "vox" ? (
         <>
           <div className="hd-noise" aria-hidden="true" />

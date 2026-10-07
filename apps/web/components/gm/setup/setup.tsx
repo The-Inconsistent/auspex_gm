@@ -31,6 +31,11 @@ export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: Setu
   const [patron, setPatron] = useState(state.campaign.patron);
   const [table, setTable] = useState({ kind: state.campaign.kind, limits: state.campaign.limits });
 
+  // The file carries every picture (issue #199), so EXPORT says how many: a big file is no surprise.
+  const pictures = new Set(
+    [...codex.npcs, ...codex.locations, ...codex.handouts].flatMap((e) => (e.imageId ? [e.imageId] : [])),
+  ).size;
+
   const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
 
   // Framework SAVE.
@@ -93,6 +98,11 @@ export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: Setu
           <a className="btn" href={`/api/campaigns/${state.campaign.id}/export`} download>
             EXPORT
           </a>
+          {pictures > 0 && (
+            <span className="dim">
+              Includes {pictures} {pictures === 1 ? "picture" : "pictures"}
+            </span>
+          )}
         </div>
         <i className="dim">Typing your own still works.</i>
       </section>

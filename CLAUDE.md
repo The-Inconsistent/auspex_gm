@@ -149,7 +149,9 @@ apps/api/src/
   library/     library.controller.ts (REST: creation, rules, library CRUD for a signed-in user),
                library.service.ts, library.schema.ts (library_character: characters outside any campaign)
   encounter/   encounter.actions.ts (encounters, turns, combatants, beat.startEncounter), encounter.schema.ts
-  codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts
+  codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts,
+               image.schema.ts (codex_image: GM-uploaded pictures, issue #199), image.store.ts (the only code that
+               touches their bytes: sniff, caps, sweep; swap for S3 here)
   threat/      threat.schema.ts (custom_threat: the GM's own stat blocks), threat.actions.ts (threat.save/delete),
                threat.service.ts (loadThreats: bestiary + this campaign's customs, checkThreats)
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
@@ -180,14 +182,16 @@ apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-pro
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
                              CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed cards and handouts PDF), print-pick (a row's tick for PRINT N),
-                             handout-doc (a handout drawn as its prop: plain, slate, form, vox, decree; issue #204)
+                             handout-doc (a handout drawn as its prop: plain, slate, form, vox, decree; issue #204),
+                             codex-picture (PictureProvider + CodexPicture: an NPC, place or handout picture; issue #199)
 apps/web/components/print/   card-sheet (the react-pdf Document: tent, Threat and item cards on a 3 × 3 poker grid),
                              handout-sheet (handouts as printed props, one to a page), fonts.ts (registerFonts)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image),
-                             print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps)
+                             print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps),
+                             codex-image (shrink a picture in the browser, upload it, its seat-gated URL)
 apps/web/public/fonts/       Cinzel, Crimson Pro and IBM Plex Mono static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,
