@@ -207,6 +207,8 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
     revealed: true,
     audience: [],
     revealedAt: null,
+    imageId: null,
+    imageRevealed: false,
     ...o,
   });
   const codex: Codex = {
@@ -255,8 +257,21 @@ test("the table screen's view (viewer null) carries no Agent's private data", ()
         revealed: true,
         audience: ["a"],
         revealedAt: null,
+        imageId: null,
+        imageRevealed: false,
       },
-      { id: "p", title: "public", body: "", style: "vox", header: "", revealed: true, audience: [], revealedAt: null },
+      {
+        id: "p",
+        title: "public",
+        body: "",
+        style: "vox",
+        header: "",
+        revealed: true,
+        audience: [],
+        revealedAt: null,
+        imageId: null,
+        imageRevealed: false,
+      },
     ],
     items: [],
     sessions: [],
@@ -494,6 +509,8 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         attitude: "uncooperative",
         statSource: { kind: "quick", tier: 4 },
         revealed: true,
+        imageId: null,
+        imageRevealed: false,
       },
       {
         id: "n2",
@@ -506,6 +523,8 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         attitude: "neutral",
         statSource: { kind: "none" },
         revealed: false,
+        imageId: null,
+        imageRevealed: false,
       },
     ],
     handouts: [],
@@ -544,6 +563,36 @@ test("a revealed place reaches phones without its hazards, notes or list (issue 
     null,
   ).locations;
   assert.deepEqual([p!.name, p!.hazards, p!.hazardList], ["Shaft", "", []]);
+});
+
+test("a revealed entry's picture reaches phones only once it's shown too (issue #199)", () => {
+  const imageId = "00000000-0000-4000-8000-0000000000aa";
+  const npc = (imageRevealed: boolean) => ({
+    id: "00000000-0000-4000-8000-000000000001",
+    ...CodexInput.npc.parse({ name: "Magos", revealed: true, imageId, imageRevealed }),
+  });
+  const handout = (imageRevealed: boolean) => ({
+    id: "00000000-0000-4000-8000-000000000002",
+    revealedAt: null,
+    ...CodexInput.handout.parse({ title: "Pict", revealed: true, imageId, imageRevealed }),
+  });
+  const view = (shown: boolean) =>
+    toPlayerCodex(
+      {
+        factions: [],
+        adventures: [],
+        locations: [],
+        npcs: [npc(shown)],
+        handouts: [handout(shown)],
+        items: [],
+        sessions: [],
+        customThreats: [],
+      },
+      null,
+    );
+  assert.deepEqual([view(false).npcs[0]!.imageId, view(false).handouts[0]!.imageId], [null, null]);
+  assert.deepEqual([view(true).npcs[0]!.imageId, view(true).handouts[0]!.imageId], [imageId, imageId]);
+  assert.equal(CodexInput.location.parse({ name: "Shaft" }).imageId, null, "no picture by default");
 });
 
 test("adjustAmmo: per type, clamped at 0, −1 on an empty type removes it (p.229)", () => {

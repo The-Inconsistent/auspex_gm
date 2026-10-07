@@ -7,6 +7,7 @@ import {
   Headers,
   HttpCode,
   Inject,
+  NotFoundException,
   Param,
   Post,
   Req,
@@ -16,7 +17,7 @@ import {
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { places } from "@wg/data";
-import { CampaignExport, CreateGame, freshStart, placeSummary } from "@wg/shared";
+import { CampaignExport, CreateGame, freshStart, placeSummary, toPlayerCodex, type Codex } from "@wg/shared";
 import { COOKIE, readCookie, resolveCtx, resolveGuest, signedInUser } from "../auth/auth.service.ts";
 import { acceptInvite, previewInvite } from "../auth/invite.service.ts";
 import { db } from "../core/db.ts";
@@ -29,7 +30,9 @@ import {
   frameworkCatalogue,
   npcPresets,
 } from "../character/creation.service.ts";
+import { getImage, putImage } from "../codex/image.store.ts";
 import { TableGateway } from "../table/table.gateway.ts";
+import { loadCodex } from "../table/table.state.ts";
 import {
   campaignHomebrew,
   createCampaign,
@@ -133,6 +136,42 @@ export class CampaignController {
         .replace(/^-|-$/g, "") || "campaign";
     res.setHeader("content-disposition", `attachment; filename="${slug}.auspex.json"`);
     return file;
+  }
+
+  // A picture for an NPC, place or handout (issue #199): raw WebP or JPEG bytes the GM's browser already shrank
+  // (main.ts mounts the 1 MB raw parser). Only the id comes back; `codex.save` then puts it on the entry.
+  @Post("campaigns/:id/images")
+  @HttpCode(200)
+  async uploadImage(@Param("id") id: string, @Req() req: Request) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    if (!Buffer.isBuffer(req.body)) throw new BadRequestException("Send a WebP or JPEG picture");
+    const bytes = req.body;
+    const mime = (req.headers["content-type"] ?? "").split(";", 1)[0]?.trim().toLowerCase() ?? ""; // no parameters
+    return refusing(async () => ({
+      id: await db.transaction((tx) => putImage(tx, { campaignId: ctx.campaignId, mime, bytes })),
+    }));
+  }
+
+  // A picture reaches a seat that may see an entry showing it: the GM any of the campaign's, a player only one their
+  // phone's codex carries (`toPlayerCodex` drops hidden entries and held-back pictures). Anything else is a 404, so an
+  // id gives nothing away. The TV shows no codex.
+  @Get("campaigns/:id/images/:imageId")
+  async image(@Param("id") id: string, @Param("imageId") imageId: string, @Req() req: Request, @Res() res: Response) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    const want = parse(CampaignId, imageId);
+    const shown = (c: Codex) => [...c.npcs, ...c.locations, ...c.handouts].some((e) => e.imageId === want);
+    const may =
+      ctx.role === "gm" ||
+      (ctx.role === "player" && shown(toPlayerCodex(await loadCodex(ctx.campaignId), ctx.characterId)));
+    const row = may ? await getImage(db, ctx.campaignId, want) : null;
+    if (!row) throw new NotFoundException();
+    // Ids are never reused, so a phone keeps the picture; `private` keeps it out of shared caches.
+    res.setHeader("content-type", row.mime);
+    res.setHeader("cache-control", "private, max-age=31536000, immutable");
+    res.send(row.bytes);
   }
 
   @Get("lobby")

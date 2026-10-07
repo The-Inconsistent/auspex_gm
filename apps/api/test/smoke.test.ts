@@ -3404,3 +3404,69 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.ok((await gm.send({ type: "session.end", xp: 0 })).ok);
   await gm.until((s) => s.spendRequests.length === 0);
 });
+
+// The smallest file the sniffer takes: a RIFF header with WEBP at offset 8. The api checks the bytes, not the picture.
+const WEBP = Buffer.concat([Buffer.from("RIFF\x10\x00\x00\x00WEBPVP8 ", "latin1"), Buffer.alloc(16)]);
+const upload = (campaignId: string, body: Buffer, headers: Record<string, string>, mime = "image/webp") =>
+  fetch(`${API}/api/campaigns/${campaignId}/images`, {
+    method: "POST",
+    headers: { "content-type": mime, ...headers },
+    body: new Uint8Array(body),
+  });
+
+test("a codex picture: the GM uploads it, a player sees it once the entry and its picture are shown (#199)", async (t) => {
+  // Its own IP: the suite is near the per-IP connect limit.
+  const gmClerk = clerk("gm-pictures", "creator");
+  const gmAuth = bearer(gmClerk);
+  const { campaignId } = (await (await post("/campaigns", { name: "Pictures", tier: 2 }, gmAuth)).json()) as {
+    campaignId: string;
+  };
+  const s = {
+    campaignId,
+    ...connect({ auth: { campaignId, clerkToken: gmClerk }, headers: { "cf-connecting-ip": "10.19.9.1" } }),
+  };
+  t.after(() => s.socket.close());
+  await s.until((st) => st.campaign.name === "Pictures");
+  const at = (imageId: string) => `/campaigns/${s.campaignId}/images/${imageId}`;
+  assert.equal((await upload(s.campaignId, WEBP, gmAuth, "image/jpeg")).status, 400, "the bytes must match the type");
+  assert.equal((await upload(s.campaignId, Buffer.alloc(2_000_000), gmAuth)).status, 413, "over the 1 MB limit");
+  const up = await upload(s.campaignId, WEBP, gmAuth);
+  assert.equal(up.status, 200);
+  const { id: imageId } = (await up.json()) as { id: string };
+  const back = await get(at(imageId), gmAuth);
+  assert.equal(back.status, 200);
+  assert.equal(back.headers.get("content-type"), "image/webp");
+  assert.deepEqual(Buffer.from(await back.arrayBuffer()), WEBP);
+
+  // A guest player: no uploads, and no picture until both reveals are on.
+  const hero = await s.send({ type: "character.create", name: "Hero" });
+  assert.ok(hero.ok && hero.id);
+  const issued = await s.send({ type: "token.issue", characterId: hero.id });
+  assert.ok(issued.ok && issued.token);
+  const guest = { cookie: `wg_token=${issued.token}` };
+  assert.equal((await upload(s.campaignId, WEBP, guest)).status, 403);
+  const seen = async () => (await get(at(imageId), guest)).status;
+
+  // Another campaign over REST only: the suite is near the socket connect rate limit.
+  const otherGm = bearer(clerk("gm-pictures-elsewhere", "creator"));
+  const other = (await (await post("/campaigns", { name: "Elsewhere", tier: 2 }, otherGm)).json()) as {
+    campaignId: string;
+  };
+  const foreign = (await (await upload(other.campaignId, WEBP, otherGm)).json()) as { id: string };
+  assert.deepEqual(
+    await s.send({ type: "codex.save", kind: "npc", data: { name: "Spy", imageId: foreign.id } }),
+    { ok: false, error: "Image not found" },
+    "another campaign's picture",
+  );
+  assert.equal((await get(at(foreign.id), gmAuth)).status, 404, "nor served through this one");
+
+  const magos = await s.send({ type: "codex.save", kind: "npc", data: { name: "Magos", imageId } });
+  assert.ok(magos.ok && magos.id);
+  assert.equal(await seen(), 404, "a hidden NPC's picture");
+  const save = (data: object) =>
+    s.send({ type: "codex.save", kind: "npc", id: magos.id, data: { name: "Magos", imageId, ...data } });
+  assert.ok((await save({ revealed: true })).ok);
+  assert.equal(await seen(), 404, "revealed, with the picture held back");
+  assert.ok((await save({ revealed: true, imageRevealed: true })).ok);
+  assert.equal(await seen(), 200);
+});

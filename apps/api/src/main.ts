@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { NestFactory } from "@nestjs/core";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { SESSION_COOKIE, bearerOf } from "@wg/auth/api";
+import { IMAGE_MIMES } from "@wg/shared";
 import { AppModule } from "./app.module.ts";
 import { readCookie } from "./auth/auth.service.ts";
 import { runMigrations } from "./core/db.ts";
@@ -46,5 +47,16 @@ app.use(
 // it finds one by that name, and every other route would lose its body.
 const importJson = express.json({ limit: "2mb" });
 app.use("/api/campaigns/import", (req: Request, res: Response, next: NextFunction) => importJson(req, res, next));
+
+// A codex picture (issue #199) is raw bytes, not JSON: the browser shrinks it to well under the 1 MB cap first. Uploads
+// get their own window per caller, after which only that route parses a raw body.
+const IMAGES = "/api/campaigns/:id/images";
+const allowImages = limiter({ max: 20, windowMs: 60_000 });
+app.use(IMAGES, (req: Request, res: Response, next: NextFunction) => {
+  if (req.method !== "POST" || allowImages(libraryKey(req))) return next();
+  res.status(429).json({ message: "Too many uploads. Wait a minute." });
+});
+const imageRaw = express.raw({ type: [...IMAGE_MIMES], limit: "1mb" });
+app.use(IMAGES, (req: Request, res: Response, next: NextFunction) => imageRaw(req, res, next));
 
 await app.listen(Number(process.env.PORT ?? 4000));

@@ -5,8 +5,15 @@ import type { AdventureStatus, Attitude, BeatStatus, BeatType, FactionStance, Ha
 import { owned } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { body } from "../core/sql.ts";
+import { codexImage } from "./image.schema.ts";
 
 // Campaign content (docs/campaign-model.md). Editable fields are validated by CodexInput in @wg/shared.
+// A picture on an NPC, place or handout (issue #199): the upload's id, and whether players may see it yet.
+const picture = () => ({
+  imageId: uuid().references(() => codexImage.id, { onDelete: "set null" }),
+  imageRevealed: boolean().notNull().default(false),
+});
+
 const ids = () =>
   uuid()
     .array()
@@ -67,6 +74,7 @@ export const location = pgTable("location", {
   hazards: body(),
   hazardList: jsonb().$type<unknown[]>().notNull().default([]), // LocationHazard[]
   revealed: boolean().notNull().default(false),
+  ...picture(),
 });
 
 export const npc = pgTable("npc", {
@@ -80,6 +88,7 @@ export const npc = pgTable("npc", {
   attitude: text().$type<z.infer<typeof Attitude>>().notNull().default("neutral"),
   statSource: jsonb().$type<unknown>().notNull().default({ kind: "none" }),
   revealed: boolean().notNull().default(false),
+  ...picture(),
 });
 
 export const handout = pgTable("handout", {
@@ -91,6 +100,7 @@ export const handout = pgTable("handout", {
   revealed: boolean().notNull().default(false),
   revealedAt: timestamp({ withTimezone: true }),
   audience: ids(), // character ids; empty = every player. No FK in a uuid array: character.delete clears them.
+  ...picture(),
 });
 
 // Something the Agents can find (issue #51). `wargearId` names a catalogue entry (JSON data, so no FK); `givenTo` is
