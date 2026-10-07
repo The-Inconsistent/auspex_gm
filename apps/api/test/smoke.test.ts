@@ -624,11 +624,22 @@ test("GM and player share a table", async (t) => {
   const orders = await gm.send({
     type: "codex.save",
     kind: "handout",
-    data: { title: "Orders", body: "Kill the Orks.", revealed: true },
+    data: {
+      title: "Orders",
+      body: "Kill the Orks.",
+      style: "decree",
+      header: "BY ORDER OF THE LORD MILITANT",
+      revealed: true,
+    },
   });
   assert.ok(secret.ok && known.ok && orders.ok, "handouts can be created already revealed");
   await new Promise((r) => setTimeout(r, 200));
   assert.equal(gm.codex()?.npcs.length, 2);
+  // A handout's frame reaches the phone that draws it (issue #204).
+  assert.deepEqual(
+    player.codex()?.handouts.map((h) => [h.title, h.style, h.header]),
+    [["Orders", "decree", "BY ORDER OF THE LORD MILITANT"]],
+  );
   assert.deepEqual(
     player.codex()?.npcs.map((n) => [n.name, n.gmNotes]),
     [["Inquisitor Hale", ""]],

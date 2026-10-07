@@ -88,6 +88,11 @@ test("a file from before scene goals, exits and Tests still loads (issues #38, #
   assert.deepEqual([b!.goal, b!.exits, b!.tests], ["", [], []]);
 });
 
+test("a file from before handout styles loads them plain, with no header (issue #204)", () => {
+  const [h] = file.codex.handouts;
+  assert.deepEqual([h!.style, h!.header], ["plain", ""]);
+});
+
 test("a file from before place hazards still loads (issue #49)", () => {
   const old = structuredClone(file) as unknown as {
     codex: { adventures: { beats: { hazards?: unknown }[] }[]; locations: { hazardList?: unknown }[] };

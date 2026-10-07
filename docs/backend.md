@@ -398,7 +398,7 @@ Campaign-owned rows share `owned()` from `campaign.schema.ts` (`id`, `campaign_i
 | `beat` | Scenes of an adventure | `adventure_id`, `order`, `title`, `type`, `status`, `read_aloud`, `gm_notes`, `outcome`, `location_id`, `npc_ids uuid[]`, `handout_ids uuid[]`, `item_ids uuid[]` | campaign cascade. adventure **cascade**. location **set null**. The id arrays have no FK |
 | `location` | Places, nestable | `parent_id`, `name`, `description`, `gm_notes`, `hazards`, `hazard_list`, `revealed` | campaign cascade. `parent_id` → location **set null** |
 | `npc` | NPCs | `faction_id`, `name`, `role`, `description`, `gm_notes`, `secrets`, `attitude`, `revealed` | campaign cascade. faction **set null** |
-| `handout` | Player handouts | `title`, `body`, `revealed`, `revealed_at` | campaign cascade |
+| `handout` | Player handouts | `title`, `body`, `style` (default `plain`, issue #204), `header`, `revealed`, `revealed_at`, `audience uuid[]` | campaign cascade |
 | `item` | What the Agents can find (issue #51) | `name`, `wargear_id`, `description`, `gm_notes`, `location_id`, `npc_id`, `mods jsonb`, `given_to` | campaign cascade. location, NPC and character **set null** |
 
 Text-set columns (`role`, `side`, `kind`, `marker`, `threat_class`, `stance`, `status`, `type`, `attitude`) are `text` typed

@@ -155,6 +155,13 @@
       "when": 1791367458959,
       "tag": "0021_petite_jackpot",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1791387442298,
+      "tag": "0022_bizarre_proteus",
+      "breakpoints": true
     }
   ]
 }

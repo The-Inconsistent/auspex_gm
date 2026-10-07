@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { boolean, integer, jsonb, pgTable, text, timestamp, uuid, type AnyPgColumn } from "drizzle-orm/pg-core";
 import type { z } from "zod";
-import type { AdventureStatus, Attitude, BeatStatus, BeatType, FactionStance } from "@wg/shared";
+import type { AdventureStatus, Attitude, BeatStatus, BeatType, FactionStance, HandoutStyle } from "@wg/shared";
 import { owned } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { body } from "../core/sql.ts";
@@ -86,6 +86,8 @@ export const handout = pgTable("handout", {
   ...owned(),
   title: text().notNull(),
   body: body(),
+  style: text().$type<z.infer<typeof HandoutStyle>>().notNull().default("plain"), // issue #204
+  header: text().notNull().default(""),
   revealed: boolean().notNull().default(false),
   revealedAt: timestamp({ withTimezone: true }),
   audience: ids(), // character ids; empty = every player. No FK in a uuid array: character.delete clears them.
