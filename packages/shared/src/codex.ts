@@ -15,6 +15,18 @@ const id = z.uuid();
 export const HandoutStyle = z.enum(["plain", "slate", "form", "vox", "decree"]);
 export type HandoutStyle = z.infer<typeof HandoutStyle>;
 
+// A GM-uploaded picture on an NPC, place or handout (issue #199). The entry holds only its id; the bytes are served by
+// `GET /api/campaigns/:id/images/:imageId` to a seat that may see the entry. `imageRevealed` is a second reveal, so the
+// GM can show the entry and hold back its picture. The browser shrinks a picture before upload, so the byte cap is a
+// safety net.
+export const IMAGE_MIMES = ["image/webp", "image/jpeg"] as const;
+export const ImageMime = z.enum(IMAGE_MIMES);
+export type ImageMime = z.infer<typeof ImageMime>;
+export const IMAGE_MAX_BYTES = 1_000_000;
+export const IMAGE_CAP = 200; // per campaign
+export const IMAGE_CAMPAIGN_BYTES = 100_000_000;
+const picture = { imageId: id.nullable().default(null), imageRevealed: z.boolean().default(false) };
+
 // Attitude (optional rule, p.168): DN modifier for social Tests with this NPC.
 export const Attitude = z.enum(["hostile", "uncooperative", "neutral", "friendly", "helpful"]);
 export type Attitude = z.infer<typeof Attitude>;
@@ -247,6 +259,7 @@ export const CodexInput = {
     hazards: text().default(""), // the GM's free-text notes, kept beside the list (issue #49)
     hazardList: z.array(LocationHazard).max(MAX_HAZARDS).default([]),
     revealed: z.boolean().default(false),
+    ...picture,
   }),
   npc: z.object({
     name: text(200),
@@ -258,6 +271,7 @@ export const CodexInput = {
     attitude: Attitude.default("neutral"),
     statSource: StatSource.default({ kind: "none" }),
     revealed: z.boolean().default(false),
+    ...picture,
   }),
   handout: z.object({
     title: text(200),
@@ -266,6 +280,7 @@ export const CodexInput = {
     header: text(120).default(""), // the banner or reference line; empty prints the style's own
     revealed: z.boolean().default(false),
     audience: z.array(id).max(20).default([]), // character ids it's revealed to; empty = every player
+    ...picture,
   }),
   // Something the Agents can find (GitHub issue #51): where it lies or who carries it, at most one of the two (checked by
   // `codex.save` and the import, not here: `.omit()` throws on a refined object, and the pack omits both). Who it was
@@ -319,8 +334,11 @@ export type Codex = {
 
 // What one player's phone gets (null: a player without a character): revealed NPCs, locations and handouts, without GM
 // notes or secrets, plus session recaps. A handout with an audience reaches only those Agents' players. Ids that point
-// at something hidden (factions, an unrevealed parent location, the rest of an audience) are cleared too.
+// at something hidden (factions, an unrevealed parent location, the rest of an audience) are cleared too, and so is a
+// held-back picture's id: the image route serves a player only the ids left here.
 export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
+  const pictured = <T extends { imageId: string | null; imageRevealed: boolean }>(e: T): T =>
+    e.imageRevealed ? e : { ...e, imageId: null };
   const shownLocations = new Set(c.locations.filter((l) => l.revealed).map((l) => l.id));
   return {
     factions: [],
@@ -328,7 +346,7 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
     locations: c.locations
       .filter((l) => l.revealed)
       .map((l) => ({
-        ...l,
+        ...pictured(l),
         gmNotes: "",
         hazards: "",
         hazardList: [],
@@ -337,10 +355,10 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
     npcs: c.npcs
       .filter((n) => n.revealed)
       // Attitude stays: the table may see how an NPC regards them (rules-flow §11.89).
-      .map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
+      .map((n) => ({ ...pictured(n), gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
-      .map((h) => ({ ...h, audience: h.audience.length && characterId ? [characterId] : [] })),
+      .map((h) => ({ ...pictured(h), audience: h.audience.length && characterId ? [characterId] : [] })),
     // An Agent sees a found item as a line on their sheet once it's given; a found object's text goes in a handout.
     items: [],
     sessions: c.sessions,

@@ -6,6 +6,7 @@ import * as authSchema from "../auth/auth.schema.ts";
 import * as campaignSchema from "../campaign/campaign.schema.ts";
 import * as characterSchema from "../character/character.schema.ts";
 import * as codexSchema from "../codex/codex.schema.ts";
+import * as imageSchema from "../codex/image.schema.ts";
 import * as encounterSchema from "../encounter/encounter.schema.ts";
 import * as librarySchema from "../library/library.schema.ts";
 import * as spendSchema from "../spend/spend.schema.ts";
@@ -19,6 +20,7 @@ const schema = {
   ...campaignSchema,
   ...characterSchema,
   ...codexSchema,
+  ...imageSchema,
   ...encounterSchema,
   ...librarySchema,
   ...spendSchema,
