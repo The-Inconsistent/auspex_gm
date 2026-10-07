@@ -1,4 +1,4 @@
-import { Document, Font, Page, pdf, View } from "@react-pdf/renderer";
+import { Document, Page, pdf, View } from "@react-pdf/renderer";
 
 import { CARD_COLS, CARD_H_MM, CARD_ROWS, CARD_W_MM, PAPER_MM, type Paper } from "@/lib/print-cards/constants";
 import type { Card, Placed } from "@/lib/print-cards/print-cards";
@@ -6,30 +6,9 @@ import type { Card, Placed } from "@/lib/print-cards/print-cards";
 import { ItemCard } from "./components/item-card/item-card";
 import { TentCard } from "./components/tent-card/tent-card";
 import { ThreatCard } from "./components/threat-card/threat-card";
-import { DISPLAY, s, SERIF } from "./styles";
+import { s } from "./styles";
 
 type CardSheetProps = { pages: Placed[][]; paper: Paper; pictures: Map<Card, string> };
-
-// The app's own faces, embedded, so the sheet prints the same from any device. Static instances: react-pdf can't use
-// the variable fonts next/font serves (react-pdf.org/fonts). `base` is the origin in the browser, a file path in a test.
-export function registerFonts(base: string) {
-  Font.register({
-    family: DISPLAY,
-    fonts: [
-      { src: `${base}/fonts/cinzel-latin-400-normal.woff` },
-      { src: `${base}/fonts/cinzel-latin-700-normal.woff`, fontWeight: 700 },
-    ],
-  });
-  Font.register({
-    family: SERIF,
-    fonts: [
-      { src: `${base}/fonts/crimson-pro-latin-400-normal.woff` },
-      { src: `${base}/fonts/crimson-pro-latin-700-normal.woff`, fontWeight: 700 },
-      { src: `${base}/fonts/crimson-pro-latin-400-italic.woff`, fontStyle: "italic" },
-    ],
-  });
-  Font.registerHyphenationCallback((word) => [word]); // names and rules terms stay whole
-}
 
 // Poker cards at true size on a centred 3 × 3 grid (issue #203). Each card sits at absolute mm, so the printer's own
 // scaling is the only thing that can move it: the dialog says to print at 100 %.

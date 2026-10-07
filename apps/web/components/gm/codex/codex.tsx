@@ -116,8 +116,10 @@ export function CodexView({
   const itemById = useMemo(() => new Map(codex.items.map((i) => [i.id, i])), [codex.items]);
   const catalogue = useMemo(() => new Map(wargear.map((w) => [w.id, w])), [wargear]);
   const { print } = usePrint();
-  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set()); // items ticked for PRINT N (#203)
-  const itemsToPrint = codex.items.filter((i) => picked.has(i.id)).map((i) => i.id); // a deleted one drops out
+  // Items (#203) and handouts (#204) ticked for PRINT N; ids are unique across kinds, and a deleted one drops out.
+  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set());
+  const itemsToPrint = codex.items.filter((i) => picked.has(i.id)).map((i) => i.id);
+  const handoutsToPrint = codex.handouts.filter((h) => picked.has(h.id)).map((h) => h.id);
 
   // Sub-tab: switch lists and close any open editor.
   const pickKind = (k: SubTab) => {
@@ -179,7 +181,7 @@ export function CodexView({
               <ItemGive item={item} characters={characters} send={send} onError={setError} />
             </span>
           )}
-          {item && (
+          {(item || handout) && (
             <PrintPick name={titleOf(r)} on={picked.has(r.id)} onToggle={() => setPicked((p) => toggleIn(p, r.id))} />
           )}
           {"revealed" in r && (
@@ -304,6 +306,15 @@ export function CodexView({
                   )}
                   {codex.items.length} ITEMS · {codex.items.filter((i) => i.givenTo).length} GIVEN
                 </span>
+              )}
+              {kind === "handout" && handoutsToPrint.length > 0 && (
+                <button
+                  className="btn sm"
+                  style={{ float: "right" }}
+                  onClick={() => print({ handouts: handoutsToPrint })}
+                >
+                  PRINT {handoutsToPrint.length}
+                </button>
               )}
             </div>
             {kind === "location" && nests && (
