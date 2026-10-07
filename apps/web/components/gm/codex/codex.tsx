@@ -23,6 +23,7 @@ import {
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
@@ -127,16 +128,20 @@ export function CodexView({
     setEditing(null);
   };
 
-  // REVEALED / HIDDEN chip: flips whether players see the entry.
-  const toggleRevealed = async (r: Row) => {
+  // Saves the whole entry with one flag changed.
+  const saveWith = async (r: Row, change: Partial<Row>) => {
     const result = await send({
       type: "codex.save",
       kind,
       id: r.id,
-      data: { ...stripId(r), revealed: !r.revealed },
+      data: { ...stripId(r), ...change },
     } as ActionInput);
     setError(result.ok ? null : result.error);
   };
+  // REVEALED / HIDDEN chip: flips whether players see the entry.
+  const toggleRevealed = (r: Row) => saveWith(r, { revealed: !r.revealed });
+  // PICTURE SHOWN / HELD BACK (issue #199): flips whether players see its picture, a reveal of its own.
+  const togglePicture = (r: Row) => saveWith(r, { imageRevealed: !r.imageRevealed });
 
   // LOCATIONS is a tree (issue #50): a place's "N INSIDE" button folds the places inside it.
   const [folded, setFolded] = useState<ReadonlySet<string>>(new Set());
@@ -197,6 +202,21 @@ export function CodexView({
             EDIT
           </button>
         </summary>
+        {typeof r.imageId === "string" && (
+          // A handout's picture is drawn inside its prop, below; the toggle sits here for all three kinds.
+          <div className="field">
+            {!handout && <CodexPicture imageId={r.imageId} alt={titleOf(r)} held={!r.imageRevealed} />}
+            <span>
+              <button
+                className="btn sm"
+                style={{ color: r.imageRevealed ? "var(--ink)" : "var(--red)" }}
+                onClick={() => togglePicture(r)}
+              >
+                {r.imageRevealed ? "PICTURE SHOWN" : "PICTURE HELD BACK"}
+              </button>
+            </span>
+          </div>
+        )}
         {kind === "faction" && factionById.get(r.id) && (
           <FactionCard faction={factionById.get(r.id)!} npcs={codex.npcs} />
         )}

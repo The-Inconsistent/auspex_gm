@@ -23,7 +23,8 @@ and the bestiary.
    (`/api/join`, `/api/guest`, `/api/invites`), and 120/min **per caller** on the library routes (`/api/library`,
    `/api/creation`, `/api/rules`, `/api/frameworks`, `/api/campaigns/import`), keyed by a hash of their session token and falling back to the IP when there is
    none — a whole table building together sits behind one NAT, and the builder autosaves, so one shared bucket would cut
-   them off. Over either, a `429`.
+   them off. Over either, a `429`. Picture uploads (`POST /api/campaigns/:id/images`) get a third window, 20/min per
+   caller, keyed the same way.
 5. `enableShutdownHooks()`, then listen on `PORT` (default 4000).
 
 `@wg/data` loads and zod-parses every threat JSON at import time, so a malformed file fails at startup ([data.md](data.md)).
@@ -82,8 +83,10 @@ text.
 | `GET /api/campaigns/:id/npc-presets` | Seat, GM only | none | `200 NpcPreset[]`: the printed NPCs for CODEX › NPCS' ADD FROM BOOK (#47), the creation catalogue's patrons (cite only) and then `npc-presets/*.json`, a transcribed NPC replacing the patron of the same id; without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/places` | Seat, GM only | none | `200 PlaceSummary[]`: the books' places for CODEX › LOCATIONS' ADD FROM BOOK (#50), in file order with parents first: `id`, `name`, `parentId`, `source`, `page`, no printed text | `400` bad id. `401` no seat. `403` player |
 | `GET /api/campaigns/:id/flavour` | Seat, GM only | none | `200 FlavourTable[]`: the creation catalogue's name lists and the Eye Colour, Hair Colour and Features tables (Core pp.27–33) for CODEX › NPCS' ROLL NAME and ROLL LOOK (#48); without the homebrew books unless the campaign allows them | `400` bad id. `401` no seat. `403` player |
-| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 2 MB | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a place nested inside itself, a handout audience naming an Agent not in the file, an item with an unknown `wargearId`, two holders, or a holder once given |
-| `GET /api/campaigns/:id/export` | Seat, GM only (an admin without a seat counts) | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`) | `400` bad id. `401` no seat. `403` player |
+| `POST /api/campaigns/import` | Clerk with the creator role | `{ file: CampaignExport, fresh?: boolean }` (`packages/shared/src/export.ts`), up to 100 MB (its pictures ride in it as base64), parsed only once the session is a verified creator's | `201 { campaignId }`: a new campaign, the caller as GM. `fresh` runs `freshStart` first | `401`. `403` not a creator. `400` bad file, unknown threat id, a repeated id, a place nested inside itself, a handout audience naming an Agent not in the file, an item with an unknown `wargearId`, two holders, a holder once given, or a picture that isn't WebP or JPEG or goes over the caps |
+| `GET /api/campaigns/:id/export` | Seat, GM only (an admin without a seat counts) | none | `200 CampaignExport` as an attachment (`<name>.auspex.json`), with every picture as base64 | `400` bad id. `401` no seat. `403` player |
+| `POST /api/campaigns/:id/images` | Seat, GM only | raw `image/webp` or `image/jpeg` bytes, at most 1 MB (issue #199; the browser shrinks first) | `200 { id }`: a stored picture, for `codex.save` to put on an NPC, place or handout as `imageId` | `400` bad id, bytes that aren't the type they claim, or over a cap (200 pictures, 100 MB per campaign). `401` no seat. `403` player. `413` over 1 MB |
+| `GET /api/campaigns/:id/images/:imageId` | Seat: the GM any of the campaign's; a player only one `toPlayerCodex` leaves on an entry their phone has | none | `200` the bytes, `Cache-Control: private, max-age=31536000, immutable` (ids are never reused) | `400` bad id. `401` no seat. `404` anything else, the table screen included, so an id gives nothing away |
 | `GET /api/campaigns/:id/rules` | Seat, any role | none | `200 RuleEntry[]`, the rules reference | `400` bad id. `401` no seat |
 | `GET /api/campaigns/:id/creation` | Seat, any role | none | `200 CreationPayload`: the creation catalogue and the Wargear catalogue, without the homebrew books unless `campaign.homebrew`. Built and gzipped once per setting (about 220 KB, 440 KB with homebrew); `ETag` for a `304` | `400` bad id. `401` no seat |
 | `GET /api/creation?homebrew=0\|1` | Clerk | none | `200 CreationPayload`, the same body and `ETag` as the campaign route, but the caller picks the books, because no campaign decides for them — so an account with no seat can read the homebrew books that a seated player at an official-only table can't | `401` |
@@ -153,12 +156,28 @@ counters, sessions and reveal times. It writes every row directly, inside `creat
   dropped reader would leak a private handout
 - each row's `createdAt` is its place in the file (one transaction shares one `now()`, and lists load in `createdAt`
   order)
-- the 2 MB JSON parser is mounted on this route only, after its rate limit; every other route keeps Express's 100 kB
+- pictures (issue #199) go in first, through `putImage`, so the bytes are sniffed and the caps hold as for an upload;
+  each NPC, place and handout then names its picture's new id
+- the 100 MB JSON parser is mounted on this route only, after its rate limit and a verified creator's session (so no
+  one else can make the api parse 100 MB); every other route keeps Express's 100 kB. Next's proxy buffer
+  (`proxyClientMaxBodySize` in `next.config.ts`) and Cloudflare's free plan stop at 100 MB too, which is about 75 MB of
+  pictures, so a campaign near its 100 MB picture cap won't import (a `ponytail:` in `main.ts`)
 - builds are stored as exported, since a GM can already set any sheet with `character.update`
 
 `fresh` (`freshStart`) keeps the sheets, builds and XP, because a build's XP ledger is spent against `xp`. It resets
-the rest: sessions are dropped, the pools emptied, every reveal undone, every Agent rested, adventures and beats go
+the rest: sessions are dropped, the pools emptied, every reveal undone (pictures included), every Agent rested, adventures and beats go
 back to `planned`, and the kind of game and limits are cleared, since the new table agrees its own (rules-flow §11.79).
+
+**Codex pictures** (issue #199, `codex/image.store.ts`). An upload is REST, not an action: a picture is too big for a
+socket frame and the 120-a-minute action limit. The upload returns an id, and the entry gets it through the normal
+`codex.save`, which checks the id is this campaign's (`checkRefs`). `image.store.ts` is the only code that reads or writes
+`codex_image.bytes`. Callers hold only ids, so an S3 store can replace its functions without touching them. What it does:
+- `sniffMime` checks the first bytes against the claimed type (JPEG `FF D8 FF`, WebP `RIFF…WEBP`).
+- `putImage` checks the caps (200 pictures, 100 MB per campaign). It runs outside the action queue, so two uploads at
+  once can pass a cap by one (a `ponytail:`).
+- `sweepImages` runs at the start of every `codex.save` and `codex.delete`. It drops the pictures no NPC, place or
+  handout points at, once they're a day old, so an upload whose SAVE hasn't come yet survives a long prep.
+- The api never resizes. The GM's browser shrinks a picture to 1024 px on the long side first (`apps/web/lib/codex-image`).
 
 ### 3.2 Admin REST (`admin/`)
 
@@ -396,9 +415,10 @@ Campaign-owned rows share `owned()` from `campaign.schema.ts` (`id`, `campaign_i
 | `faction` (`codex.schema.ts`) | Factions | `name`, `keywords text[]`, `stance`, `notes`, `secrets` | campaign cascade |
 | `adventure` | Adventures | `title`, `premise`, `status` | campaign cascade |
 | `beat` | Scenes of an adventure | `adventure_id`, `order`, `title`, `type`, `status`, `read_aloud`, `gm_notes`, `outcome`, `location_id`, `npc_ids uuid[]`, `handout_ids uuid[]`, `item_ids uuid[]` | campaign cascade. adventure **cascade**. location **set null**. The id arrays have no FK |
-| `location` | Places, nestable | `parent_id`, `name`, `description`, `gm_notes`, `hazards`, `hazard_list`, `revealed` | campaign cascade. `parent_id` → location **set null** |
-| `npc` | NPCs | `faction_id`, `name`, `role`, `description`, `gm_notes`, `secrets`, `attitude`, `revealed` | campaign cascade. faction **set null** |
-| `handout` | Player handouts | `title`, `body`, `style` (default `plain`, issue #204), `header`, `revealed`, `revealed_at`, `audience uuid[]` | campaign cascade |
+| `location` | Places, nestable | `parent_id`, `name`, `description`, `gm_notes`, `hazards`, `hazard_list`, `revealed`, `image_id`, `image_revealed` | campaign cascade. `parent_id` → location **set null**. `image_id` → codex_image **set null** |
+| `npc` | NPCs | `faction_id`, `name`, `role`, `description`, `gm_notes`, `secrets`, `attitude`, `revealed`, `image_id`, `image_revealed` | campaign cascade. faction **set null**. `image_id` → codex_image **set null** |
+| `handout` | Player handouts | `title`, `body`, `style` (default `plain`, issue #204), `header`, `revealed`, `revealed_at`, `audience uuid[]`, `image_id`, `image_revealed` | campaign cascade. `image_id` → codex_image **set null** |
+| `codex_image` (`codex/image.schema.ts`) | A GM-uploaded picture (issue #199) | `mime` (`image/webp` or `image/jpeg`), `bytes bytea` | campaign cascade |
 | `item` | What the Agents can find (issue #51) | `name`, `wargear_id`, `description`, `gm_notes`, `location_id`, `npc_id`, `mods jsonb`, `given_to` | campaign cascade. location, NPC and character **set null** |
 
 Text-set columns (`role`, `side`, `kind`, `marker`, `threat_class`, `stance`, `status`, `type`, `attitude`) are `text` typed
@@ -447,7 +467,7 @@ are by `number`.
 | Function | Hides from players | Keeps |
 |---|---|---|
 | `toPlayerView` (`state.ts`) | `access.invites` → `[]`. `encounter.upNext` ← `sideUpNext` of the full state; `currentId` → `UNSEEN_ID` while a hidden threat acts. Threat combatants with `visibility: "hidden"` are dropped; with `"bars"`: `stats` → null, `threatId` → `""`, `personalRuin` → 0. Every other character's `objectives` → `[]` | Everything else, including `access.members`, threat label, class, Wounds, Shock, `maxWounds` / `maxShock`, conditions, and every character's full sheet |
-| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Every item (players see one only as a line on their sheet once it's given). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`, `hazardList` (→ `[]`). NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed. A handout whose `audience` is set and excludes the viewer; `audience` → the viewer's own id only | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
+| `toPlayerCodex` (`codex.ts`) | All factions and all adventures (so all beats). Every item (players see one only as a line on their sheet once it's given). Unrevealed locations, NPCs and handouts. Location `gmNotes`, `hazards`, `hazardList` (→ `[]`). NPC `gmNotes`, `secrets`, `statSource` (→ `{ kind: "none" }`), `factionId` (→ null). A location's `parentId` (→ null) unless the parent is revealed. A handout whose `audience` is set and excludes the viewer; `audience` → the viewer's own id only. A picture not yet shown (`imageRevealed` false): `imageId` → null, which is what the image route checks | Revealed locations, NPCs and handouts otherwise whole. All sessions with recaps |
 
 Both take the viewer's `characterId`; the gateway emits one view per character. A new field is visible to players unless one of these functions drops it. Decide when you add it.
 

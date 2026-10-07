@@ -26,6 +26,8 @@ export const IMAGE_MAX_BYTES = 1_000_000;
 export const IMAGE_CAP = 200; // per campaign
 export const IMAGE_CAMPAIGN_BYTES = 100_000_000;
 const picture = { imageId: id.nullable().default(null), imageRevealed: z.boolean().default(false) };
+// What the upload route answers: the stored picture's id, or the api's refusal.
+export const ImageUploadReply = z.union([z.object({ id }), z.object({ message: z.string() })]);
 
 // Attitude (optional rule, p.168): DN modifier for social Tests with this NPC.
 export const Attitude = z.enum(["hostile", "uncooperative", "neutral", "friendly", "helpful"]);

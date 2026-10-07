@@ -2,6 +2,7 @@
 import type { Attitude } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
 
 import { KIND_LABEL, PEEK_FIELDS, PEEK_GM_ONLY } from "../../constants";
 import { Mentions } from "../../mentions";
@@ -20,6 +21,8 @@ export function Peek({ entry }: PeekProps) {
       </div>
       <b>{name.toUpperCase()}</b>
       {kind === "npc" && <AttitudeChip attitude={row.attitude as Attitude} />}
+      {/* A phone's snapshot has no id for a held-back picture (issue #199); the GM's shows it dimmed. */}
+      {typeof row.imageId === "string" && <CodexPicture imageId={row.imageId} alt={name} held={!row.imageRevealed} />}
       {PEEK_FIELDS[kind].map(([key, label]) => {
         const text = row[key];
         if (typeof text !== "string" || !text) return null;

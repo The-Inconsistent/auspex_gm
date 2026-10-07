@@ -20,20 +20,25 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │               hazards[] (picks from its location's list, each spotted or not), outcome
  ├─ Location     name, parentId (planet → site → chamber; never a loop, `wouldCycle`), description, gmNotes,
  │               hazards (free-text notes), hazardList[] (book rows from Threat Assessment, the Core
- │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed
- ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
- │               gmNotes, secrets, revealed
+ │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed, picture
+ ├─ NPC          name, factionId, role, statSource, attitude (core p.168),
+ │               gmNotes, secrets, revealed, picture
  ├─ Item         name, wargearId? (a catalogue entry, else a custom item), description, gmNotes,
  │               locationId | npcId (where it lies or who carries it, one or neither), mods[] (a relic's
  │               Powers, rules-flow §11.116), givenTo (server-owned: the Agent GIVE handed it to; issue #51)
- ├─ Handout      title, body (text), style (plain | slate | form | vox | decree), header, image?, revealedAt,
- │               audience (all | characterIds)
+ ├─ Handout      title, body (text), style (plain | slate | form | vox | decree), header, revealedAt,
+ │               audience (all | characterIds), picture
  └─ Session      number, date, recap ("Previously in…", core p.317), beatIds played,
                  objectives rolled (core p.43), xpAwarded (8/10/12, core p.321), notes
 ```
 
 - **The UI says SCENE.** The GM reads SCENE everywhere; code, actions (`beat.reorder`, `beat.startEncounter`), the
   `beat` table, packs and export files keep `beat`.
+- **Pictures** (issue #199): an NPC, place or handout can carry one picture the GM uploads, as `imageId`, and
+  `imageRevealed`, its own reveal. Revealing the entry doesn't show the picture: the GM can introduce a face by name
+  first, then hold up the portrait (PICTURE SHOWN). A phone gets the id only when both are on, and the api serves the
+  bytes only for an id that phone has (`docs/backend.md`, Codex pictures). The export carries the pictures as base64.
+  These are pictures, not maps: nothing on them is interactive.
 - **Beat types**: briefing, travel, investigation, social, combat, revelation, rest. The type only picks an icon and
   a checklist. There is no workflow engine: beats are an ordered list the GM can reorder, skip or add to mid-session.
 - **Goal and exits** (issue #38): `goal` is what the Agents are after. Each exit is `{label, beatId}`: "if they side with

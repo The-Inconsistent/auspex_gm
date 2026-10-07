@@ -10,6 +10,7 @@ export const FIELD_TYPES = {
   hazardList: { empty: [] }, // a place's hazards: book rows by id, or the GM's own (issue #49)
   wargearName: { empty: "" }, // an item's NAME, which searches the catalogue and sets `wargearId` (issue #51)
   holder: { empty: null }, // an item's place (`locationId`) or NPC (`npcId`), one or the other
+  image: { empty: null }, // an uploaded picture's id (issue #199)
 } as const;
 export type FieldType = keyof typeof FIELD_TYPES;
 

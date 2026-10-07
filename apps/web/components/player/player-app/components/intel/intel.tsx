@@ -1,6 +1,7 @@
 import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { Mentions } from "@/components/ui/mentions/mentions";
 
@@ -48,6 +49,8 @@ export function Intel({ codex, state }: IntelProps) {
         <div key={n.id} className="item">
           <b>{n.name.toUpperCase()}</b> <AttitudeChip attitude={n.attitude} />
           {n.role && <span className="dim">{n.role}</span>}
+          {/* Only once the GM shows it: toPlayerCodex drops a held-back picture's id (issue #199). */}
+          {n.imageId && <CodexPicture imageId={n.imageId} alt={n.name} />}
           {n.description && (
             <pre className="text">
               <Mentions text={n.description} self={n.id} />
@@ -60,6 +63,7 @@ export function Intel({ codex, state }: IntelProps) {
       {flatTree(placeTree(codex.locations)).map(({ row: l, depth }) => (
         <div key={l.id} className="item" style={{ marginLeft: depth * 18 }}>
           <b>{l.name.toUpperCase()}</b>
+          {l.imageId && <CodexPicture imageId={l.imageId} alt={l.name} />}
           {l.description && (
             <pre className="text">
               <Mentions text={l.description} self={l.id} />

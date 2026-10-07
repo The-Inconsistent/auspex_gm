@@ -624,6 +624,12 @@ The tests are in `lib/command/command.test.ts`.
 - **List:** each entry shows its name or title and an EDIT button. Kinds that have a `revealed` field (every kind
   except factions) also get a REVEALED / HIDDEN button. It flips `revealed` with a `codex.save` of the whole entry;
   players get the entry the moment it's revealed.
+- **PICTURES** (issue #199). NPCs, places and handouts have a PICTURE field (`ImageField`) and PICTURE SHOWN TO
+  PLAYERS. ADD PICTURE opens the file picker. The pick is shrunk in the browser (`shrink`, `lib/codex-image`: at most
+  1024 px on the long side, WebP, or JPEG where Safari can't encode WebP) and uploaded at once. SAVE then puts the id
+  on the entry, and REMOVE clears it. An opened row shows the picture, dimmed while held back, with a PICTURE SHOWN /
+  PICTURE HELD BACK toggle that flips `imageRevealed` the way REVEALED flips `revealed`. A handout draws its picture
+  inside the prop.
 - **HANDOUTS are props** (issue #204). The editor has STYLE (`HandoutStyle`: PLAIN, DATA-SLATE, ADMINISTRATUM
   FORM, VOX TRANSCRIPT, DECREE) and HEADER (one line; empty prints the style's own, `DEFAULT_HEADER`), and a PREVIEW
   of the draft as `HandoutDoc` draws it. An opened handout row shows the same prop instead of its plain text. A
@@ -705,7 +711,8 @@ caller, or a 401 or 403 (not an admin), to `/`. `AdminView` has two tabs, USERS 
   AGENTS and SESSION) and scrolls to its panel.
 - **Framework panel:** patron, framework, Framework Bonus, and the kind of game and limits (`TableTalk`), saved
   together with `campaign.update`; START FROM A FRAMEWORK opens `FrameworkPicker`. Players see all of it on INTEL.
-- **EXPORT:** the whole campaign as a file, for a backup or the lobby's IMPORT GAME.
+- **EXPORT:** the whole campaign as a file, for a backup or the lobby's IMPORT GAME. It carries the pictures, so
+  "Includes N pictures" sits beside it once the codex has any.
 - **ARCHIVE:** shelves the game, or deletes an archived one (§3.4b).
 
 ### 3.5 PARTY: session, table access, kill team
@@ -764,7 +771,7 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 |---|---|---|---|
 | SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions, read-only (each name opens its rule); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour, each with its `UpgradeRow` at a table (fit and remove, `host` weapon or armour) and the notes a fitted upgrade leaves to the GM; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type) | Spending their own Wealth and Ammo (−1, `character.supply`; × on an empty type removes it). Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
 | FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
-| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented) | Nothing |
+| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented), each with its picture once the GM shows it (issue #199) | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:
@@ -813,7 +820,8 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
 | `print-dialog/print-dialog.tsx` `PrintProvider`, `usePrint()` | `source` (`{ state, codex, threats, wargear }`), `children` | Printed cards and handouts (issues #203, #204, §5.1). Wraps `GmApp` only, so a print follows the screen's gates. `usePrint().print(job)` resolves a `PrintJob` of ids (`printCards`, or `printHandouts` for a job with `handouts`) and opens a modal `dialog.rule-dialog`: the count, the kind's PAPER choices (cards A4 / LETTER under `PAPER_KEY`, handouts A5 / A4 / LETTER under `HANDOUT_PAPER_KEY`, in `localStorage`), BUILD PDF, then DOWNLOAD PDF and OPEN as plain links (iPad Safari blocks a window opened after an `await`), and the "print at 100 %" hint. `utils.ts` `picturesOf` redraws each tent's WebP portrait as a PNG data URL (react-pdf embeds PNG and JPEG only). The blob URL is freed on close |
-| `handout-doc/handout-doc.tsx` `HandoutDoc` | `handout` (`{ id?, body, style, header }`) | A handout as its prop (issue #204), on the phone, in CODEX and in the editor's preview. `plain` is the bare `pre.text.slate` every handout had before; the other four are `.handout-doc[data-style]` frames in `globals.css`: data-slate (bezel, scanlines, a centred banner), form (reference line, a dashed stamp box, ruled lines), vox (static strips, `voxLines` stamps in a column only as wide as the longest and absent when no line has one), decree (Cinzel heading, a drawn wax seal, a signature line). The frames set the `--paper*` palette on themselves, so they stay paper in vigil. The body goes through `Mentions`. `constants.ts` holds `HANDOUT_STYLE_LABEL`, `DEFAULT_HEADER` and `headerOf`, shared with the printed page |
+| `codex-picture/codex-picture.tsx` `PictureProvider`, `usePictureCampaign()`, `CodexPicture` | `campaignId`; `imageId`, `alt`, `held?` | A codex picture (issue #199). `PictureProvider` wraps `GmApp` and `PlayerApp` with the campaign whose pictures it serves. `CodexPicture` is a plain `img.codex-picture` (whole, framed, at most 320 px tall), not `next/image`: the api gates the bytes per seat, and the optimiser would fetch without the viewer's cookies. `held` dims it on the GM's screen |
+| `handout-doc/handout-doc.tsx` `HandoutDoc` | `handout` (`{ id?, body, style, header, title?, imageId?, imageRevealed? }`) | A handout as its prop (issue #204), on the phone, in CODEX and in the editor's preview. Its picture (issue #199) sits under the header. `plain` is the bare `pre.text.slate` every handout had before; the other four are `.handout-doc[data-style]` frames in `globals.css`: data-slate (bezel, scanlines, a centred banner), form (reference line, a dashed stamp box, ruled lines), vox (static strips, `voxLines` stamps in a column only as wide as the longest and absent when no line has one), decree (Cinzel heading, a drawn wax seal, a signature line). The frames set the `--paper*` palette on themselves, so they stay paper in vigil. The body goes through `Mentions`. `constants.ts` holds `HANDOUT_STYLE_LABEL`, `DEFAULT_HEADER` and `headerOf`, shared with the printed page |
 | `print-pick/print-pick.tsx` `PrintPick` | `name`, `on`, `onToggle` | A row's tick for PRINT N on CODEX › THREATS and ITEMS (§5.1): a square / ticked-square button with `aria-pressed`, which doesn't open the `<summary>` it sits in |
 | `refusal/refusal.tsx` `Refusal` | `error: string \| null`, `onDismiss` | A `role="alert"` banner fixed to the bottom, showing `! <error>` with an OK button. Renders nothing when `error` is `null` |
 
@@ -831,6 +839,7 @@ with `bun test lib`.
 | `threat-filter/threat-filter.ts` | `filterThreats(bestiary, facets, tier)`, `ThreatFacets` | The bestiary narrowed for the `ThreatPicker`: the query folds away case and punctuation on both sides (so "tau" finds "T'au") and matches the name or any keyword, and the class facet is the one printed at that Tier (`threatClassAt`, Core p.323) |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
 | `vox-lines/vox-lines.ts` | `voxLines(body)`, `VoxLine` | A vox transcript's lines: one starting with a bracketed stamp of up to 24 characters (`[03:12] text`) splits it off; every other line stays as written (issue #204, Decision 3) |
+| `codex-image/codex-image.ts` | `fit`, `shrink`, `uploadImage`, `imageSrc` | A codex picture on its way up (issue #199). `fit` is the drawn size (at most 1024 px on the long side, never enlarged). `shrink` draws it on a canvas as WebP 0.85, or JPEG on vellum where `toBlob` can't make WebP. `uploadImage` posts the bytes and returns `{ id }` or `{ error }`. `imageSrc` is the seat-gated URL |
 | `toggle-set/toggle-set.ts` | `toggleIn(set, id)` | A new set with `id` added or removed, for picked-row state (CODEX's PRINT N ticks) |
 
 ### 5.1 Printed cards (issue #203)
