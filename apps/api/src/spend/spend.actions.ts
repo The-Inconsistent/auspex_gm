@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import {
   MAX_PENDING_SPENDS,
   deriveStats,
+  isGone,
   pcStatus,
   rankOf,
   restoreShockAmount,
@@ -110,7 +111,7 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
       const tier = await campaignTier(tx, cid);
       const c = toCharacter(row);
       const status = pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier }));
-      if (status.includes("Dying") || status.includes("Dead")) fail(`${row.name} is not conscious (p.196)`);
+      if (status.includes("Dying") || isGone(status)) fail(`${row.name} is not conscious (p.196)`);
       if (row.shock <= 0) fail(`${row.name} has no Shock to restore`); // the Wrath would buy nothing
       await applyCharacterAction(tx, {
         ctx,

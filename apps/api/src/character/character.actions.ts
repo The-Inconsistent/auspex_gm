@@ -19,6 +19,7 @@ import {
   deriveStats,
   gearLine,
   pcHit,
+  isGone,
   pcStatus,
   requisitionOutcome,
   requisitionSlot,
@@ -88,7 +89,7 @@ async function healthOf(tx: Tx, { campaignId, row }: { campaignId: string; row: 
   };
   const derived = deriveStats({ stats: c.stats, overrides: c.overrides, tier: await campaignTier(tx, campaignId) });
   const status = pcStatus(c, derived);
-  return { c, derived, dying: status.includes("Dying"), dead: status.includes("Dead") };
+  return { c, derived, dying: status.includes("Dying"), dead: isGone(status) };
 }
 
 // The GM's part of a saved build, or none. A build saved under an older schema just loses it.
@@ -367,7 +368,7 @@ export async function applyCharacterAction(
                 ...r.sheet,
                 ammo: old.ammo,
                 requisitioned: old.requisitioned,
-                corruption: old.corruption,
+                corruption: old.corruption + r.sheet.corruption, // a first build adds what it gives (p.86)
                 mutations: old.mutations,
               };
       // What advancement spent of the XP earned in play (§11.55), so the sheet and PARTY can show what's left without
@@ -713,7 +714,7 @@ export async function applyCharacterAction(
         campaignId: cid,
         row: await ownCharacter(tx, { campaignId: cid, id: a.id }),
       });
-      if (dead) fail("A Dead character can't Respite (p.193)");
+      if (dead) fail("A Dead or Lost character can't Respite (pp.193, 286)");
       if (dying) fail("A Dying character can't benefit from a Respite (p.197)");
       await tx.update(character).set({ wounds: 0, shock: 0, wrath: 2 }).where(eq(character.id, a.id));
       return { ok: true };

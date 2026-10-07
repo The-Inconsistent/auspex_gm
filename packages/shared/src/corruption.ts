@@ -11,6 +11,8 @@ const LEVELS = [
   { name: "Chaos Spawn", from: 26, modifier: 0 },
 ] as const;
 
+export const CHAOS_SPAWN_AT = LEVELS.at(-1)!.from;
+
 export type CorruptionLevel = { level: number; name: string; modifier: number; chaosSpawn: boolean };
 
 export function corruptionLevel(points: number): CorruptionLevel {

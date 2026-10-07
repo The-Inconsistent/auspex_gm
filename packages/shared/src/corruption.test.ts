@@ -53,7 +53,10 @@ test("a Wrath Critical takes 2 off the DN, a spent Wrath 1 but never below 1 (p.
 
 test("a rebuild keeps the Corruption gained in play", () => {
   const previous = CharacterStats.parse({ corruption: 12 });
-  assert.equal(keepPlay({ previous, next: CharacterStats.parse({}) }).corruption, 12);
+  const built = (corruption: number) => CharacterStats.parse({ corruption });
+  assert.equal(keepPlay({ previous, next: built(0), before: built(0) }).corruption, 12);
+  assert.equal(keepPlay({ previous, next: built(1), before: built(0) }).corruption, 13, "a Background's +1 joins it");
+  assert.equal(keepPlay({ previous, next: built(0), before: built(1) }).corruption, 11);
 });
 
 test("character.corrupt takes a delta or a failed Test at a printed source DN, not both or neither", () => {
