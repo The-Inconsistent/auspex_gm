@@ -63,20 +63,29 @@ export function FactionStep() {
   const setBonus = (row: BackgroundRow) =>
     update((d) => (d.background ? { ...d, background: { ...d.background, bonus: row } } : d));
 
-  // The Advanced build's Faction, or none. Its Background table and any [ANY] picks were for the other, so they go.
+  // The Advanced build's Faction, or none. Its Background table, the fills of its placeholder Keywords (a [REGIMENT]),
+  // any [ANY] picks and the options taken from its groups or its sub-factions' were for the other, so they go: the list
+  // would no longer show them to untoggle, and they'd still cost XP.
   const pickFaction = (id: string | undefined) =>
-    update((d) =>
-      d.advanced
-        ? {
-            ...d,
-            background: undefined,
-            fills: id
-              ? Object.fromEntries(Object.entries(d.fills ?? {}).filter(([k]) => !k.startsWith("[ANY")))
-              : d.fills,
-            advanced: { ...d.advanced, factionId: id },
-          }
-        : d,
-    );
+    update((d) => {
+      if (!d.advanced) return d;
+      const was = d.advanced.factionId;
+      const placeholders = new Set(was ? (lookups.factions.get(was)?.keywords ?? []) : []);
+      const drop = ([k]: [string, unknown]) => placeholders.has(k) || (!!id && k.startsWith("[ANY"));
+      const fills = Object.entries(d.fills ?? {});
+      const gone = new Set(fills.filter(drop).flatMap(([, f]) => ("id" in f ? [f.id] : [])));
+      const stale = (groupId: string) => {
+        const o = lookups["option-groups"].get(groupId)?.owner;
+        return !!o && (("factionId" in o && o.factionId === was) || ("subFactionId" in o && gone.has(o.subFactionId)));
+      };
+      return {
+        ...d,
+        background: undefined,
+        fills: Object.fromEntries(fills.filter((e) => !drop(e))),
+        options: (d.options ?? []).filter((o) => !stale(o.groupId)),
+        advanced: { ...d.advanced, factionId: id },
+      };
+    });
 
   // Takes an option from a group, or gives it back.
   const toggleOption = (groupId: string, name: string) =>
@@ -111,7 +120,7 @@ export function FactionStep() {
           <RecordList
             label="Search factions"
             searchable
-            items={offered(lookups.factions.values(), factionId ? [factionId] : [], homebrew)
+            items={offered({ list: lookups.factions.values(), taken: factionId ? [factionId] : [], homebrew })
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((f) => ({
                 id: f.id,

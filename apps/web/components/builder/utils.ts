@@ -44,11 +44,15 @@ export function stepsFor({
 // What the builder may offer from a catalogue list: the homebrew books are the GM's switch for the whole campaign, and
 // `resolveBuild` refuses their records (build.ts `allowed`) when it's off. Whatever is already `taken` stays listed, so
 // it can be given back.
-export const offered = <T extends { id: string; source: Source }>(
-  list: Iterable<T>,
-  taken: readonly string[],
-  homebrew: boolean,
-) => [...list].filter((r) => taken.includes(r.id) || homebrew || SOURCES[r.source].official);
+export const offered = <T extends { id: string; source: Source }>({
+  list,
+  taken,
+  homebrew,
+}: {
+  list: Iterable<T>;
+  taken: readonly string[];
+  homebrew: boolean;
+}) => [...list].filter((r) => taken.includes(r.id) || homebrew || SOURCES[r.source].official);
 
 // The screen a link asked for. Anything that doesn't name one is ignored, so a stale or hand-typed link just opens the
 // builder where it would have opened anyway. The page reads it on the server (`searchParams`) and passes it in, so the

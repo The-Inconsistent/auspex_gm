@@ -108,7 +108,7 @@ function AdvancedPanel() {
   // Only entries with a printed Value and Rarity can be counted against the table (p.39).
   // ponytail: Core p.39's optional EXTRA WARGEAR sidebar (swap a piece for one of equal or lesser Value and Rarity that
   // shares a Keyword) is left out; the GM swaps through `gm.gear`. Add a swap check when a table asks for the rule.
-  const kit = offered(catalogue.wargear.values(), wargear, homebrew)
+  const kit = offered({ list: catalogue.wargear.values(), taken: wargear, homebrew })
     .filter((w) => w.value !== null && w.rarity !== null && w.kind !== "upgrade")
     .sort((a, b) => a.name.localeCompare(b.name));
   return (
@@ -116,16 +116,18 @@ function AdvancedPanel() {
       <fieldset className="panel pad stack">
         <legend className="label">SPECIES · Core p.38 · +{advancedBonusXp(tier)} XP, no Archetype Ability</legend>
         <div className="keys" role="group" aria-label="Species">
-          {offered(lookups.species.values(), draft.speciesId ? [draft.speciesId] : [], homebrew).map((s) => (
-            <button
-              key={s.id}
-              className={`btn sm ${draft.speciesId === s.id ? "primary" : ""}`}
-              aria-pressed={draft.speciesId === s.id}
-              onClick={() => update((d) => ({ ...d, speciesId: s.id }))}
-            >
-              {s.name} · {s.xp} XP
-            </button>
-          ))}
+          {offered({ list: lookups.species.values(), taken: draft.speciesId ? [draft.speciesId] : [], homebrew }).map(
+            (s) => (
+              <button
+                key={s.id}
+                className={`btn sm ${draft.speciesId === s.id ? "primary" : ""}`}
+                aria-pressed={draft.speciesId === s.id}
+                onClick={() => update((d) => ({ ...d, speciesId: s.id }))}
+              >
+                {s.name} · {s.xp} XP
+              </button>
+            ),
+          )}
         </div>
       </fieldset>
       <fieldset className="panel pad stack">
@@ -133,7 +135,11 @@ function AdvancedPanel() {
         <RecordList
           label="Search archetypes for an ability"
           searchable
-          items={offered(lookups.archetypes.values(), advanced.abilityOf ? [advanced.abilityOf] : [], homebrew)
+          items={offered({
+            list: lookups.archetypes.values(),
+            taken: advanced.abilityOf ? [advanced.abilityOf] : [],
+            homebrew,
+          })
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((a) => ({
               id: a.id,
