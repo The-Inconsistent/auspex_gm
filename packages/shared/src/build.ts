@@ -2438,6 +2438,7 @@ export function keepPlay({
       .filter((g, i, all) => all.indexOf(g) === i)
       .slice(0, 60),
     wealth: previous.wealth,
+    corruption: previous.corruption, // gained in play (§9), never from the build
     ammo: previous.ammo,
     requisitioned: previous.requisitioned,
   };

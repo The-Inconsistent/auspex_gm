@@ -183,6 +183,8 @@ export const CharacterStats = z.object({
   // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
   // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),
+  // Corruption points (Core p.286), changed by `character.corrupt`; the level and its Test modifier are `corruptionLevel`.
+  corruption: z.number().int().min(0).default(0),
   ammo: z
     .record(z.string().min(1).max(60), z.number().int().min(0).max(99))
     .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`)
@@ -531,11 +533,14 @@ export const UNSEEN_ID = "unseen";
 const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
 
 // What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
-// invite links (each one is a way in), nor another Agent's objectives, nor the GM's Ruin (docs/rules-flow.md §11.58).
+// invite links (each one is a way in), nor another Agent's objectives or Corruption, nor the GM's Ruin (docs/rules-flow.md
+// §11.58).
 export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
   campaign: { ...s.campaign, ruin: 0 },
-  characters: s.characters.map((c) => (c.id === characterId ? c : { ...c, objectives: [] })),
+  characters: s.characters.map((c) =>
+    c.id === characterId ? c : { ...c, objectives: [], stats: { ...c.stats, corruption: 0 } },
+  ),
   access: { members: s.access.members, invites: [], guests: [] },
   encounter: s.encounter && {
     ...s.encounter,

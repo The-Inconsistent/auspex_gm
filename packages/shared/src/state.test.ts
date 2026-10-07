@@ -182,6 +182,14 @@ test("toPlayerView: each player gets only their own Agent's objectives", () => {
   assert.deepEqual(objectives(null), [[], []], "a player without a character sees none");
 });
 
+test("toPlayerView: each player sees only their own Agent's Corruption", () => {
+  const stats = CharacterStats.parse({ corruption: 7 });
+  const s = table(enc([]), [char({ id: "a", stats }), char({ id: "b", stats })]);
+  const corruption = (viewer: string | null) => toPlayerView(s, viewer).characters.map((c) => c.stats.corruption);
+  assert.deepEqual(corruption("a"), [7, 0]);
+  assert.deepEqual(corruption(null), [0, 0], "a player without a character sees none");
+});
+
 test("toPlayerView: the GM's Ruin isn't sent", () => {
   const s = table(enc([]), []);
   s.campaign.ruin = 3;

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { CORRUPTION_DNS } from "./dn.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
 import { MAX_SPEND_AMOUNT, SpendKind } from "./spend.ts";
@@ -29,6 +30,8 @@ const slug = z
   .max(MAX_SLUG)
   .regex(/^[a-z0-9-]+$/);
 const delta = z.number().int().min(-100).max(100);
+// Most Icons a Test roll can be typed as (an app cap on a hand-entered count, not a rule).
+export const MAX_ICONS = 60;
 const conditions = z.array(z.string().max(60)).max(30);
 // A builder draft is a few KB; this is room for every choice twice over, and a cap on what a socket can store.
 export const MAX_DRAFT_CHARS = 64_000;
@@ -127,6 +130,23 @@ export const Action = z.union([
       wealth: delta.optional(),
       ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
     }),
+    // GM only: Corruption (Core pp.285–286, §9). `delta` is a plain change (a Corrupting weapon, a GM fix); `test` is a
+    // failed Corruption Test, sent with its SOURCE DN (p.285): the server adds the level modifier from the stored
+    // Corruption, works out the gain and adds the GM's +1 Ruin in the same transaction.
+    z
+      .object({
+        type: z.literal("character.corrupt"),
+        id,
+        delta: delta.optional(),
+        test: z
+          .object({
+            source: z.literal(CORRUPTION_DNS),
+            icons: z.number().int().min(0).max(MAX_ICONS),
+            complication: z.boolean().default(false),
+          })
+          .optional(),
+      })
+      .refine((a) => (a.delta === undefined) !== (a.test === undefined), "Send a delta or a failed Test, not both"),
     // GM only: a codex item handed to an Agent, which uses their Wargear Test for the session (rules-flow.md §11.112),
     // and taken back again (§11.114). The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),
@@ -141,7 +161,7 @@ export const Action = z.union([
       value: z.number().int().min(0).max(20),
       rarity: Rarity,
       keywords: z.array(z.string().trim().min(1).max(60)).max(12), // the item's
-      icons: z.number().int().min(0).max(60),
+      icons: z.number().int().min(0).max(MAX_ICONS),
       spend: z.number().int().min(0).max(50).default(0),
       complication: z.boolean().default(false),
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)

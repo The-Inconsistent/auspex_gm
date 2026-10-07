@@ -212,6 +212,8 @@ vs Tier + 1; personal Ruin; Respite reset.
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
 rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
 
+**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY and a scene's prepared Corruption Test), level and Test modifier on the sheet (the GM and that Agent's player only), a failed Test's gain and +1 Ruin in one action (§11.134), Mutation Test DNs as notices (§11.135). Not coded: the Wrath spend and Wrath Critical that lower the DN (p.286), the Mutation tables (pp.287–295), creation grants of Corruption.
+
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.
 
@@ -857,6 +859,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      an Advanced character can't take it. Species Keywords stand in for the Archetype's. A Human's "any 2" are two fills,
      `[ANY]` and `[ANY 2]` (a house keyword record, because a build lists a Keyword once), and the second must differ
      from the first. Like every `[ANY]`, each is a write-in the GM ticks (§11.25). *Approved by the GM, 2026-10-06.*
+134. **A failed Corruption Test gains the Test's DN, level modifier included, minus the Icons** (Core p.286). The book
+     says "the DN of the Test" and that the Corruption Level "can increase the DN of the Test", but never names which DN
+     the gain uses (`corruptionGain`, `character.corrupt`).
+135. **One Mutation Test per Corruption Level entered** (Core p.287: "Whenever your Corruption Level increases"), at DN 3
+     plus the new level's modifier. The book doesn't say what happens when one gain crosses two levels. Entering Chaos
+     Spawn gives no Mutation Test: the GM takes the character over (p.286) (`mutationDns`).
 140. **A Faction at Advanced Creation brings what an Archetype's Faction does, and no more** (Core p.38). The book lets
      an Advanced build "choose a Faction", receive "any Faction bonuses and background options as normal" and have the
      GM help work out its Keywords. `advanced.factionId` (optional, no XP, no GM tick) grants the Keywords the Faction

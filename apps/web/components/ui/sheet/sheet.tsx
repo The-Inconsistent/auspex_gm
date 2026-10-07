@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   ATTRIBUTES,
   SKILLS,
+  corruptionLevel,
   deriveStats,
   effectiveStrength,
   pcStatus,
@@ -50,6 +51,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
   // 40 XP earned, at most 3). The server keeps `xpSpent` from the last saved build, so no catalogue is needed to show it.
   const toSpend = Math.max(0, me.xp - me.xpSpent);
   const rank = rankOf(me.xp);
+  const corruption = corruptionLevel(s.corruption);
   // Where XP is spent: the builder's ADVANCE screen for a character already made (Core pp.146–151), the builder from the
   // top for one that isn't. LEVEL UP and the button at the foot of the sheet are the same trip, so they share this.
   const buildHref = table
@@ -265,6 +267,17 @@ export function Sheet({ me, tier, table }: SheetProps) {
         <div className="dim" style={{ fontSize: 12 }}>
           AMMO: 1 per Reload (p.185), each type fits its own weapons (p.229). WEALTH: 1 per Icon on an Influence Test
           (p.206). The GM grants both.
+        </div>
+      </div>
+
+      {/* Corruption (Core p.286): the level and what it adds to the DN of the next Corruption Test. The GM changes it. */}
+      <div className="stack" style={{ gap: 6 }}>
+        <div className="rule">CORRUPTION</div>
+        <SupplyRow label="Corruption" value={s.corruption} />
+        <div className="dim" style={{ fontSize: 12 }}>
+          {corruption.chaosSpawn
+            ? "CHAOS SPAWN · THE GM TAKES THIS AGENT OVER (p.286)"
+            : `${corruption.name.toUpperCase()} · +${corruption.modifier} TO CORRUPTION TEST DNs (p.286)`}
         </div>
       </div>
 

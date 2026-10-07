@@ -8,6 +8,7 @@ import {
   CharacterName,
   CONDITIONS,
   CharacterStats,
+  corruptionLevel,
   deriveStats,
   pcStatus,
   rankOf,
@@ -35,6 +36,7 @@ import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
+import { CorruptionForm } from "./components/corruption-form/corruption-form";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { RoomInvite } from "./components/room-invite/room-invite";
 import { SessionHistory } from "./components/session-history/session-history";
@@ -175,6 +177,13 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
     report(
       await send({ type: "character.supply", id: c.id, wealth }),
       `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
+    );
+
+  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is CorruptionForm.
+  const adjCorruption = async (c: Character, delta: number) =>
+    report(
+      await send({ type: "character.corrupt", id: c.id, delta }),
+      `${c.name.toUpperCase()} CORRUPTION ${delta > 0 ? "+" : ""}${delta}`,
     );
 
   // ±1 AMMO: loot or an award of one type (§11.57), starting the type if it's new; −1 takes back a slip, and at 0
@@ -372,6 +381,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
                   </div>
                   <div className="dim">
+                    CORRUPTION {c.stats.corruption} · {corruptionLevel(c.stats.corruption).name.toUpperCase()}
+                  </div>
+                  <div className="dim">
                     WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}
                     {d.resilience}
                   </div>
@@ -402,6 +414,12 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     </button>
                     <button className="btn sm" onClick={() => adjWealth(c, -1)}>
                       −1 WEALTH
+                    </button>
+                    <button className="btn sm" onClick={() => adjCorruption(c, 1)}>
+                      +1 CORRUPTION
+                    </button>
+                    <button className="btn sm" onClick={() => adjCorruption(c, -1)}>
+                      −1 CORRUPTION
                     </button>
                     <button className="btn sm danger" onClick={() => revoke(c)}>
                       REVOKE GUEST QR
@@ -435,6 +453,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                       ))}
                     </select>
                   </form>
+                  <CorruptionForm character={c} send={send} onResult={report} />
                   <ObjectivesEditor character={c} send={send} onResult={report} />
                   {reqFor === c.id && (
                     <RequisitionForm
