@@ -23,6 +23,7 @@ import {
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
@@ -149,6 +150,7 @@ export function CodexView({
   const entry = (r: Row, node?: PlaceNode<Place>) => {
     const npc = kind === "npc" ? npcById.get(r.id) : undefined;
     const item = kind === "item" ? itemById.get(r.id) : undefined;
+    const handout = kind === "handout" ? codex.handouts.find((h) => h.id === r.id) : undefined;
     const holder = item && holderOf(item, { codex, characters });
     const open = !folded.has(r.id);
     return (
@@ -217,6 +219,7 @@ export function CodexView({
             </div>
           ) : null,
         )}
+        {handout && <HandoutDoc handout={handout} />}
         {item && <ItemCard item={item} entry={item.wargearId ? catalogue.get(item.wargearId) : undefined} />}
         {npc && (
           <NpcCard

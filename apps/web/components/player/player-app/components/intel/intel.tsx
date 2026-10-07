@@ -1,6 +1,7 @@
 import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { Mentions } from "@/components/ui/mentions/mentions";
 
 type IntelProps = { codex: Codex; state: LiveState };
@@ -39,9 +40,7 @@ export function Intel({ codex, state }: IntelProps) {
             {/* toPlayerCodex leaves the viewer alone in a private handout's audience. */}
             {h.audience.length > 0 && " · FOR YOUR EYES ONLY"}
           </span>
-          <pre className="text slate">
-            <Mentions text={h.body} self={h.id} />
-          </pre>
+          <HandoutDoc handout={h} />
         </div>
       ))}
       <div className="rule">KNOWN PERSONS</div>
