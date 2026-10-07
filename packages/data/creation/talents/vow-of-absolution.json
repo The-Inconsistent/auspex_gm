@@ -66,7 +66,7 @@
     "name": "Bolter Discipline",
     "source": "vow-of-absolution",
     "page": 45,
-    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Also RR1 p.62 (10 XP, ADEPTUS ASTARTES, same text).",
     "xp": 20,
     "requires": [
       {
@@ -260,7 +260,7 @@
     "name": "Chainsaw Warrior",
     "source": "vow-of-absolution",
     "page": 46,
-    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed \"Requirements: None\"; the chapter rule still adds ADEPTUS ASTARTES.",
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Printed \"Requirements: None\"; the chapter rule still adds ADEPTUS ASTARTES. Also RR1 p.62 (10 XP, \"Requirements: None\", same text).",
     "xp": 10,
     "requires": [
       {
@@ -298,7 +298,7 @@
     "name": "Built Tough",
     "source": "vow-of-absolution",
     "page": 46,
-    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion.",
+    "note": "The ADEPTUS ASTARTES and not-CHAOS requirements apply to every Talent in this chapter (\"Talents of the Astartes\", p.45); CHAOS may take them at the GM's discretion. Print error: VoA prints Born Survivor's text and Survival 2+ under this heading. RR1 p.62 prints Built Tough itself (10 XP, Strength 3+ and Toughness 3+: the Heavy rating of weapons you use is halved, rounding down); kept as VoA prints it, pending a ruling (GitHub issue #24).",
     "xp": 10,
     "requires": [
       {

@@ -8,7 +8,7 @@ export function SupplyRow({ label, value, onMinus, onPlus, removable = false }: 
     <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
       <span style={{ flex: 1 }}>{label.toUpperCase()}</span>
       {onMinus && (
-        <button className="btn sm" aria-label={remove ? `Remove ${label}` : `Decrease ${label}`} onClick={onMinus}>
+        <button className="btn sq" aria-label={remove ? `Remove ${label}` : `Decrease ${label}`} onClick={onMinus}>
           {remove ? "×" : "−"}
         </button>
       )}
@@ -16,7 +16,7 @@ export function SupplyRow({ label, value, onMinus, onPlus, removable = false }: 
         {value}
       </span>
       {onPlus && (
-        <button className="btn sm" aria-label={`Increase ${label}`} onClick={onPlus}>
+        <button className="btn sq" aria-label={`Increase ${label}`} onClick={onPlus}>
           +
         </button>
       )}

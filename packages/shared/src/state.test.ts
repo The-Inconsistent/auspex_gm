@@ -114,6 +114,7 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
   },
   characters,
   encounter: e,
+  spendRequests: [],
   access: noAccess,
 });
 
@@ -142,6 +143,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       ],
       { lastSide: "agents" },
     ),
+    spendRequests: [],
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -209,6 +211,38 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
   assert.deepEqual(titles("b"), ["public"]);
   assert.deepEqual(titles(null), ["public"]);
   assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
+});
+
+test("the table screen's view (viewer null) carries no Agent's private data", () => {
+  const goal = [{ text: "Recover the relic", done: false }];
+  const s = table(enc([threat("h", { visibility: "hidden" }), threat("t"), pc("p")]), [
+    char({ id: "a", objectives: goal }),
+  ]);
+  s.campaign.ruin = 3;
+  const v = toPlayerView(s, null);
+  assert.deepEqual(
+    v.characters.map((c) => c.objectives),
+    [[]],
+  );
+  assert.equal(v.campaign.ruin, 0);
+  assert.equal(v.encounter!.combatants.length, 2, "the hidden threat isn't sent");
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [
+      { id: "h", title: "private", body: "", revealed: true, audience: ["a"], revealedAt: null },
+      { id: "p", title: "public", body: "", revealed: true, audience: [], revealedAt: null },
+    ],
+    items: [],
+    sessions: [],
+  };
+  assert.deepEqual(
+    toPlayerCodex(codex, null).handouts.map((h) => h.title),
+    ["public"],
+  );
 });
 
 test("toPlayerView: a hidden threat's Turn still shows as due", () => {
@@ -592,4 +626,14 @@ test("phones get no items: an Agent sees one as a line on their sheet once it's 
     customThreats: [],
   };
   assert.deepEqual(toPlayerCodex(codex, "a").items, []);
+});
+
+test("toPlayerView: every phone sees every pending spend request (rules-flow §11.123)", () => {
+  const spendRequests = [
+    { id: "r1", characterId: "a", kind: "reroll" as const, amount: 1, createdAt: "2026-01-01T00:00:00.000Z" },
+    { id: "r2", characterId: "b", kind: "gloryDice" as const, amount: 2, createdAt: "2026-01-01T00:00:01.000Z" },
+  ];
+  const s = { ...table(enc([])), spendRequests };
+  assert.deepEqual(toPlayerView(s, "a").spendRequests, spendRequests);
+  assert.deepEqual(toPlayerView(s, null).spendRequests, spendRequests);
 });

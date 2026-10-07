@@ -97,7 +97,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
   return (
     <>
       <div>
-        <div className="display" style={{ fontSize: 30, lineHeight: 1.05 }}>
+        <div className="display page-title" style={{ lineHeight: 1.05 }}>
           {me.name.toUpperCase()}
         </div>
         <i className="dim">{[s.archetype, s.species, `Tier ${tier}`].filter(Boolean).join(" · ")}</i>

@@ -45,48 +45,50 @@ export function SetupPanel({ steps, onTab }: SetupPanelProps) {
         </button>
       </div>
       {!folded && (
-        <table className="setup">
-          <thead>
-            <tr>
-              <th aria-label="Done" />
-              <th>STEP</th>
-              <th>BOOK</th>
-              <th>NOW</th>
-              <th>GO TO</th>
-            </tr>
-          </thead>
-          <tbody>
-            {steps.map((s) => {
-              const isNext = s === next;
-              return (
-                <tr key={s.key} className={isNext ? "next" : ""}>
-                  <td>
-                    <span
-                      className={`setup-tick ${s.done ? "on" : ""}`}
-                      role="img"
-                      aria-label={s.done ? "Done" : "Not done"}
-                    />
-                  </td>
-                  <td>
-                    <div className="setup-step">
-                      <span className="dim">{String(s.n).padStart(2, "0")}</span> <b>{s.title}</b>
-                      {isOptional(s) && <span className="chip">OPTIONAL</span>}
-                      {isNext && <span className="chip bad">NEXT</span>}
-                    </div>
-                    <div>{s.hint}</div>
-                  </td>
-                  <td className="setup-cite">{s.cite}</td>
-                  <td className="label">{s.now}</td>
-                  <td>
-                    <button className={`btn sm ${isNext ? "primary" : ""}`} onClick={() => goTo(s)}>
-                      {SETUP_GO_TO[s.key].label}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="setup-scroll">
+          <table className="setup">
+            <thead>
+              <tr>
+                <th aria-label="Done" />
+                <th>STEP</th>
+                <th>BOOK</th>
+                <th>NOW</th>
+                <th>GO TO</th>
+              </tr>
+            </thead>
+            <tbody>
+              {steps.map((s) => {
+                const isNext = s === next;
+                return (
+                  <tr key={s.key} className={isNext ? "next" : ""}>
+                    <td>
+                      <span
+                        className={`setup-tick ${s.done ? "on" : ""}`}
+                        role="img"
+                        aria-label={s.done ? "Done" : "Not done"}
+                      />
+                    </td>
+                    <td>
+                      <div className="setup-step">
+                        <span className="dim">{String(s.n).padStart(2, "0")}</span> <b>{s.title}</b>
+                        {isOptional(s) && <span className="chip">OPTIONAL</span>}
+                        {isNext && <span className="chip bad">NEXT</span>}
+                      </div>
+                      <div>{s.hint}</div>
+                    </td>
+                    <td className="setup-cite">{s.cite}</td>
+                    <td className="label">{s.now}</td>
+                    <td>
+                      <button className={`btn sm ${isNext ? "primary" : ""}`} onClick={() => goTo(s)}>
+                        {SETUP_GO_TO[s.key].label}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );

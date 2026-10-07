@@ -136,8 +136,8 @@ The tracker and codex lists are small (tens of rows), so no virtualisation is ne
 ### Loading and connection states
 
 - **Before the first snapshot:** render a full-screen status line ("SYNCING…").
-- **While disconnected:** keep the last state on screen and show the fixed "NO SIGNAL" badge. Never blank the screen on
-  reconnect.
+- **While disconnected:** keep the last state on screen and show the "NO SIGNAL" badge as the first row of the header
+  band (`.badge-offline`, in flow so it never covers the header's buttons). Never blank the screen on reconnect.
 
 ## UI & Accessibility
 

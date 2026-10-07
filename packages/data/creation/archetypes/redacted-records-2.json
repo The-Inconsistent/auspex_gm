@@ -1,0 +1,1143 @@
+[
+  {
+    "id": "novitiate-militant",
+    "name": "Novitiate Militant",
+    "source": "redacted-records-2",
+    "page": 34,
+    "factionId": "adepta-sororitas",
+    "tier": 1,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 24,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "T": 3,
+      "Wil": 3
+    },
+    "skills": {
+      "Ballistic Skill": 1,
+      "Scholar": 1,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Impetuous Fervour",
+        "text": "When you Charge you reduce the Multi-Attack penalty by 2."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Novitiate Armour",
+          "wargearId": "rr2-novitiate-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Vestments",
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Autopistol",
+          "wargearId": "autopistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Novitiate Melee Weapon",
+          "wargearId": "rr2-novitiate-melee-weapon"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 2,
+        "T": 4,
+        "A": 3,
+        "I": 2,
+        "Wil": 4,
+        "Int": 2,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 1,
+        "Awareness": 1,
+        "Ballistic Skill": 2,
+        "Weapon Skill": 1
+      },
+      "talentIds": [
+        "castigate-the-witch",
+        "righteous-suffering",
+        "verse-of-holy-piety"
+      ],
+      "xp": {
+        "attributes": 46,
+        "skills": 10
+      }
+    },
+    "note": "No Influence printed. Wargear prints \"Novitiate Armour and Vestments\" (split: rr2-novitiate-armour, and Vestments as Core Clothing, like Sororitas Vestments elsewhere) and \"a copy of Rule of the Sororitas\". Suggested talents are RR2 Faith Talents (pp.68–70); Righteous Suffering is cited \"page 70\" but headed on p.69. Also Apocrypha p.92 as \"Sister Novitiate\" (homebrew, marked there as having an official version, so not kept: 22 XP, S 2 T 2 A 2 Wil 2, BS 2, a different Impetuous Fervour). XP as printed; ratings + (Tier − 1) × 10 = 26."
+  },
+  {
+    "id": "celestian-sacresant",
+    "name": "Celestian Sacresant",
+    "source": "redacted-records-2",
+    "page": 35,
+    "factionId": "adepta-sororitas",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 142,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 3,
+      "A": 3,
+      "I": 4,
+      "Wil": 5,
+      "Int": 3
+    },
+    "skills": {
+      "Athletics": 1,
+      "Awareness": 2,
+      "Ballistic Skill": 3,
+      "Scholar": 1,
+      "Weapon Skill": 4
+    },
+    "abilities": [
+      {
+        "name": "Keeper of the Faith",
+        "text": "You have 1 Faith. Once per Round, you may spend 1 point of Faith, Wrath, or Glory to move up to your Speed and increase your Defence by +1 until the start of your next Turn. You can use this movement to interpose yourself between an attack and its target, making you the target.",
+        "grants": [
+          {
+            "faith": 1
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sacresant Shield",
+          "wargearId": "rr2-sacresant-shield"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Hallowed Mace",
+          "wargearId": "rr2-hallowed-mace"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chaplet Ecclesiasticus",
+          "wargearId": "chaplet-ecclesiasticus"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 5,
+        "A": 4,
+        "I": 5,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 2
+      },
+      "skills": {
+        "Athletics": 1,
+        "Awareness": 2,
+        "Ballistic Skill": 5,
+        "Insight": 1,
+        "Investigation": 1,
+        "Leadership": 1,
+        "Scholar": 2,
+        "Survival": 1,
+        "Weapon Skill": 6
+      },
+      "talentIds": [
+        "no-escape",
+        "shield-bash",
+        "shield-of-aversion",
+        "unshakable-vengeance"
+      ],
+      "xp": {
+        "attributes": 79,
+        "skills": 52
+      }
+    },
+    "note": "No Influence printed. Suggested Talents print \"No Escape (page 65,\" with the closing parenthesis missing. No Escape and Shield Bash are RR2 talents (pp.65–66); Shield of Aversion and Unshakable Vengeance RR2 Faith Talents (p.70). XP as printed; ratings + (Tier − 1) × 10 = 157."
+  },
+  {
+    "id": "sister-dogmata",
+    "name": "Sister Dogmata",
+    "source": "redacted-records-2",
+    "page": 36,
+    "factionId": "adepta-sororitas",
+    "tier": 4,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 236,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 4,
+      "A": 3,
+      "I": 5,
+      "Wil": 6,
+      "Fel": 3
+    },
+    "skills": {
+      "Awareness": 3,
+      "Ballistic Skill": 2,
+      "Insight": 3,
+      "Intimidation": 2,
+      "Leadership": 3,
+      "Scholar": 2,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Faith Talents",
+        "text": "You have the Bolstering Purity and Consecrated Light Faith Talents (Wrath & Glory Rulebook, pages 142–143).",
+        "grants": [
+          {
+            "talent": "bolstering-purity"
+          },
+          {
+            "talent": "consecrated-light"
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Bolt Pistol",
+          "wargearId": "bolt-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mace of the Righteous",
+          "wargearId": "rr2-mace-of-the-righteous"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chaplet Ecclesiasticus",
+          "wargearId": "chaplet-ecclesiasticus"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 5,
+        "A": 3,
+        "I": 6,
+        "Wil": 7,
+        "Int": 3,
+        "Fel": 4
+      },
+      "skills": {
+        "Awareness": 4,
+        "Insight": 4,
+        "Intimidation": 3,
+        "Leadership": 3,
+        "Scholar": 3,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "deliverance-from-the-daemonic",
+        "hand-of-the-emperor",
+        "sacred-radiance",
+        "in-his-name"
+      ],
+      "xp": {
+        "attributes": 90,
+        "skills": 44
+      }
+    },
+    "note": "No Influence printed. The ABILITY prints no name; \"Faith Talents\" is ours. It grants no Faith (unlike the Celestian Sacresant and Palatine). Suggested In His Name is Core p.143 (in-his-name); the others are RR2 Faith Talents (pp.68–69)."
+  },
+  {
+    "id": "palatine",
+    "name": "Palatine",
+    "source": "redacted-records-2",
+    "page": 37,
+    "factionId": "adepta-sororitas",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 167,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MINISTORUM",
+      "ADEPTA SORORITAS",
+      "[ORDER]"
+    ],
+    "attributes": {
+      "S": 3,
+      "T": 4,
+      "A": 4,
+      "I": 4,
+      "Wil": 5
+    },
+    "skills": {
+      "Ballistic Skill": 3,
+      "Leadership": 3,
+      "Scholar": 3,
+      "Weapon Skill": 3
+    },
+    "abilities": [
+      {
+        "name": "Fury of the Righteous",
+        "text": "You have 1 Faith.\nYou can spend 1 Faith at any time to activate Fury of the Righteous until the start of your next Turn. While Fury of the Righteous is active, any allies with the ADEPTUS MINISTORUM Keyword within 6m of you gain +Rank bonus dice to melee attack Tests.",
+        "grants": [
+          {
+            "faith": 1
+          }
+        ]
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Rosarius",
+          "wargearId": "rosarius"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Sororitas Power Armour",
+          "wargearId": "sororitas-power-armour"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Chaplet Ecclesiasticus",
+          "wargearId": "chaplet-ecclesiasticus"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Rule of the Sororitas",
+          "wargearId": "rule-of-the-sororitas"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Power Sword",
+          "wargearId": "power-sword"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Frag Grenade",
+          "qty": 3,
+          "wargearId": "frag-grenade"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Krak Grenade",
+          "qty": 3,
+          "wargearId": "krak-grenade"
+        }
+      },
+      {
+        "choose": 1,
+        "from": [
+          {
+            "wargear": {
+              "name": "Bolt Pistol",
+              "wargearId": "bolt-pistol"
+            }
+          },
+          {
+            "wargear": {
+              "name": "Plasma Pistol",
+              "wargearId": "plasma-pistol"
+            }
+          }
+        ]
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 4,
+        "I": 4,
+        "Wil": 5,
+        "Int": 3,
+        "Fel": 4
+      },
+      "skills": {
+        "Athletics": 2,
+        "Awareness": 2,
+        "Ballistic Skill": 4,
+        "Insight": 2,
+        "Intimidation": 2,
+        "Investigation": 2,
+        "Leadership": 4,
+        "Persuasion": 2,
+        "Scholar": 3,
+        "Weapon Skill": 4
+      },
+      "talentIds": [
+        "castigate-the-witch",
+        "deliverance-from-the-daemonic",
+        "hand-of-the-emperor",
+        "verse-of-holy-piety"
+      ],
+      "xp": {
+        "attributes": 30,
+        "skills": 60
+      }
+    },
+    "note": "No Influence printed. Print error: ATTRIBUTES prints \"Intellect\" with no rating; left out. The Suggested Attributes XP (30) is exactly Int 3 + Fel 4 above the printed ratings, consistent with Int at 1. Suggested talents are RR2 Faith Talents (pp.68–70). XP as printed; ratings + (Tier − 1) × 10 = 173."
+  },
+  {
+    "id": "corpuscarius-electro-priest",
+    "name": "Corpuscarii Electro-Priest",
+    "source": "redacted-records-2",
+    "page": 48,
+    "note": "RR2 prints a base ELECTRO-PRIEST block (XP 62) and two option blocks (+10 XP each; \"Electro-Priest Schism: You are either a Corpuscarii Electro-Priest or a Fulgrite Electro-Priest. Choose from the options below.\"); this record is the base plus the Corpuscarii option, XP 62 + 10 = 72. XP as printed (base + option); ratings + (Tier − 1) × 10 = 62, the base block's printed XP. No Influence or Suggested Talents printed. KEYWORDS print only IMPERIUM, ADEPTUS MECHANICUS (no [FORGE WORLD]). Replaces Apocrypha's Corpuscarius Electro-Priest (Apocrypha p.110), a different homebrew build of the same archetype; same id kept. Robes linked to Clothing, as Core's Ministorum Robes.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 72,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "attributes": {
+      "T": 3,
+      "Wil": 3,
+      "Int": 4
+    },
+    "skills": {
+      "Scholar": 2,
+      "Tech": 2
+    },
+    "abilities": [
+      {
+        "name": "Voltagheist Field",
+        "text": "You can roll Determination against Mortal Wounds. Whenever you inflict a Wrath Critical, you can choose to activate a Voltagheist Burst, inflicting Mortal Wounds equal to your Rank on everyone within 5m that doesn’t have this ability."
+      },
+      {
+        "name": "Omnissiah's Tears",
+        "text": "You are immune to the Blinded Condition."
+      },
+      {
+        "name": "Omnissian Proliferation",
+        "text": "You can sacrifice half of your Maximum Shock to fully restore electrical power to technology of Huge or smaller Size. At the Gamemaster’s discretion, this ability can also be used to repair weaponry, recharge ammo packs, or be used for Tech Interaction Attacks."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Corpuscarii Robes",
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "bundle": [
+          {
+            "name": "Electrostatic Gauntlets",
+            "wargearId": "rr2-electrostatic-gauntlets"
+          },
+          {
+            "name": "Electrostatic Gauntlets (ranged)",
+            "wargearId": "rr2-electrostatic-gauntlets-ranged"
+          }
+        ]
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 4,
+        "A": 4,
+        "I": 3,
+        "Wil": 3,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 2,
+        "Ballistic Skill": 2,
+        "Scholar": 3,
+        "Tech": 3,
+        "Weapon Skill": 2
+      },
+      "talentIds": [],
+      "xp": {
+        "attributes": 50,
+        "skills": 30
+      }
+    }
+  },
+  {
+    "id": "fulgurite-electro-priest",
+    "name": "Fulgrite Electro-Priest",
+    "source": "redacted-records-2",
+    "page": 48,
+    "note": "RR2 prints a base ELECTRO-PRIEST block (XP 62) and two option blocks (+10 XP each; \"Electro-Priest Schism: You are either a Corpuscarii Electro-Priest or a Fulgrite Electro-Priest. Choose from the options below.\"); this record is the base plus the Fulgrite option, XP 62 + 10 = 72. XP as printed (base + option); ratings + (Tier − 1) × 10 = 62, the base block's printed XP. No Influence or Suggested Talents printed. KEYWORDS print only IMPERIUM, ADEPTUS MECHANICUS (no [FORGE WORLD]). Replaces Apocrypha's Fulgurite Electro-Priest (Apocrypha p.113), a different homebrew build of the same archetype; same id kept. \"Fulgrite\" as printed on p.48 (three times); the wargear text on p.61 spells it Fulgurite. Robes linked to Clothing, as Core's Ministorum Robes.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 72,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS"
+    ],
+    "attributes": {
+      "T": 3,
+      "Wil": 3,
+      "Int": 4
+    },
+    "skills": {
+      "Scholar": 2,
+      "Tech": 2
+    },
+    "abilities": [
+      {
+        "name": "Voltagheist Field",
+        "text": "You can roll Determination against Mortal Wounds. Whenever you inflict a Wrath Critical, you can choose to activate a Voltagheist Burst, inflicting Mortal Wounds equal to your Rank on everyone within 5m that doesn’t have this ability."
+      },
+      {
+        "name": "Omnissiah's Tears",
+        "text": "You are immune to the Blinded Condition."
+      },
+      {
+        "name": "Syphoned Vigour",
+        "text": "Whenever you deal one or more Wounds with your Electroleech Stave, you may recover an amount of Shock equal to the number of Wounds you dealt."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Fulgrite Robes",
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Electroleech Stave",
+          "wargearId": "rr2-electroleech-stave"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 4,
+        "A": 2,
+        "I": 4,
+        "Wil": 3,
+        "Int": 4,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 2,
+        "Scholar": 3,
+        "Tech": 3,
+        "Weapon Skill": 2
+      },
+      "talentIds": [],
+      "xp": {
+        "attributes": 54,
+        "skills": 24
+      }
+    }
+  },
+  {
+    "id": "pteraxii-skystalker",
+    "name": "Pteraxii Skystalker",
+    "source": "redacted-records-2",
+    "page": 49,
+    "note": "RR2 prints a base PTERAXII block (XP 102) and two option blocks (+10 XP each; \"Skyborne Specialist: You are either a Pteraxii Skystalker or a Pteraxii Sterylizor. Choose from the options below.\"); this record is the base plus the Skystalker option, XP 102 + 10 = 112. XP as printed (base + option); ratings + (Tier − 1) × 10 = 102, the base block's printed XP. No Influence or Suggested Talents printed. Pteraxii Flight Pack has no catalogue entry (RR2 prints no profile for it).",
+    "factionId": "adeptus-mechanicus",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 112,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 3,
+      "A": 5
+    },
+    "skills": {
+      "Ballistic Skill": 1,
+      "Pilot": 2,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Heavily Augmented",
+        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls."
+      },
+      {
+        "name": "Fleeting Barrage",
+        "text": "When you Fall Back, you can make a ranged attack as a Free Action."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Pteraxii Flight Pack"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Pteraxii Talons",
+          "wargearId": "rr2-pteraxii-talons"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Flechette Carbine",
+          "wargearId": "rr2-flechette-carbine"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skitarii Auto-cuirass",
+          "wargearId": "skitarii-auto-cuirass"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 5,
+        "T": 4,
+        "A": 6,
+        "I": 3,
+        "Wil": 2,
+        "Int": 3,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 1,
+        "Ballistic Skill": 3,
+        "Medicae": 1,
+        "Pilot": 3,
+        "Tech": 2,
+        "Weapon Skill": 1
+      },
+      "talentIds": [],
+      "xp": {
+        "attributes": 54,
+        "skills": 24
+      }
+    }
+  },
+  {
+    "id": "pteraxii-sterylizor",
+    "name": "Pteraxii Sterylizor",
+    "source": "redacted-records-2",
+    "page": 49,
+    "note": "RR2 prints a base PTERAXII block (XP 102) and two option blocks (+10 XP each; \"Skyborne Specialist: You are either a Pteraxii Skystalker or a Pteraxii Sterylizor. Choose from the options below.\"); this record is the base plus the Sterylizor option, XP 102 + 10 = 112. XP as printed (base + option); ratings + (Tier − 1) × 10 = 102, the base block's printed XP. No Influence or Suggested Talents printed. Pteraxii Flight Pack has no catalogue entry (RR2 prints no profile for it).",
+    "factionId": "adeptus-mechanicus",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 112,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "S": 5,
+      "T": 3,
+      "A": 5
+    },
+    "skills": {
+      "Ballistic Skill": 1,
+      "Pilot": 2,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Heavily Augmented",
+        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls."
+      },
+      {
+        "name": "Darting Hunter",
+        "text": "When you Fall Back, you can Charge as a Free Action."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Pteraxii Flight Pack"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Pteraxii Talons",
+          "wargearId": "rr2-pteraxii-talons"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Phosphor Torch",
+          "wargearId": "rr2-phosphor-torch"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skitarii Auto-cuirass",
+          "wargearId": "skitarii-auto-cuirass"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 5,
+        "T": 4,
+        "A": 5,
+        "I": 4,
+        "Wil": 3,
+        "Int": 3,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 1,
+        "Ballistic Skill": 2,
+        "Medicae": 1,
+        "Pilot": 3,
+        "Tech": 2,
+        "Weapon Skill": 3
+      },
+      "talentIds": [],
+      "xp": {
+        "attributes": 50,
+        "skills": 28
+      }
+    }
+  },
+  {
+    "id": "serberys-raider",
+    "name": "Serberys Raider",
+    "source": "redacted-records-2",
+    "page": 50,
+    "note": "RR2 prints a base SERBERYS block (XP 91) and two option blocks (+30 XP each; \"Serberys Specialist: You are either a Serberys Raider or a Serberys Sulphurhound. Choose from the options below.\"); this record is the base plus the Raider option, XP 91 + 30 = 121. XP as printed (base + option); ratings + (Tier − 1) × 10 = 91, the base block's printed XP. No Influence or Suggested Talents printed. The printed \"Raider Cyber-beast\" is the follower rr2-raider-cybercanid (p.54); kind companion is a transcription call (it is the rider's mount). Cavalry Sabre printed \"Cavalry Sabre (Sword)\".",
+    "factionId": "adeptus-mechanicus",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 121,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "T": 5,
+      "A": 4
+    },
+    "skills": {
+      "Awareness": 1,
+      "Ballistic Skill": 3,
+      "Pilot": 2,
+      "Survival": 1,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Heavily Augmented",
+        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls."
+      },
+      {
+        "name": "Eye of Serberys",
+        "text": "You have the Deadshot Talent (Wrath & Glory Rulebook, page 131).",
+        "grants": [
+          {
+            "talent": "deadshot"
+          }
+        ]
+      },
+      {
+        "name": "Skirmisher",
+        "text": "If you are not surprised at the start of combat you may immediately Move or command your mount to Move."
+      }
+    ],
+    "wargear": [
+      {
+        "followers": 1,
+        "kind": "companion",
+        "threatId": "rr2-raider-cybercanid"
+      },
+      {
+        "wargear": {
+          "name": "Galvanic Carbine",
+          "wargearId": "rr2-galvanic-carbine"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Cavalry Sabre (Sword)",
+          "wargearId": "rr2-cavalry-sabre"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skitarii Auto-cuirass",
+          "wargearId": "skitarii-auto-cuirass"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 5,
+        "A": 6,
+        "I": 3,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 2,
+        "Ballistic Skill": 4,
+        "Pilot": 2,
+        "Survival": 1,
+        "Tech": 1,
+        "Weapon Skill": 1
+      },
+      "talentIds": [],
+      "xp": {
+        "attributes": 63,
+        "skills": 14
+      }
+    }
+  },
+  {
+    "id": "serberys-sulphurhound",
+    "name": "Serberys Sulphurhound",
+    "source": "redacted-records-2",
+    "page": 50,
+    "note": "RR2 prints a base SERBERYS block (XP 91) and two option blocks (+30 XP each; \"Serberys Specialist: You are either a Serberys Raider or a Serberys Sulphurhound. Choose from the options below.\"); this record is the base plus the Sulphurhound option, XP 91 + 30 = 121. XP as printed (base + option); ratings + (Tier − 1) × 10 = 91, the base block's printed XP. No Influence or Suggested Talents printed. The printed \"Sulphurhound Cyber-beast\" is the follower rr2-sulphurhound-cybercanid (p.54); kind companion is a transcription call (it is the rider's mount). The option block is headed \"SERBERYS SULPHURHOUNDS\" (plural); the Serberys Specialist text says \"Serberys Sulphurhound\".",
+    "factionId": "adeptus-mechanicus",
+    "tier": 2,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 121,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "SKITARII",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "T": 5,
+      "A": 4
+    },
+    "skills": {
+      "Awareness": 1,
+      "Ballistic Skill": 3,
+      "Pilot": 2,
+      "Survival": 1,
+      "Tech": 1,
+      "Weapon Skill": 1
+    },
+    "abilities": [
+      {
+        "name": "Heavily Augmented",
+        "text": "Your body has been redesigned to withstand the rigours of war. You do not bleed (making you immune to the Bleeding Condition) and gain +Rank bonus dice to Determination rolls."
+      },
+      {
+        "name": "Pistoleer",
+        "text": "You have the Dual Wield Talent (Wrath & Glory Rulebook, page 133).",
+        "grants": [
+          {
+            "talent": "dual-wield"
+          }
+        ]
+      },
+      {
+        "name": "Rad-saturated",
+        "text": "Whenever an individual enters Engagement with you or starts their Turn Engaged with you they must make a Toughness Test with a DN equal to your Rank x2. If they fail, they are Hindered until the start of their next Turn."
+      }
+    ],
+    "wargear": [
+      {
+        "followers": 1,
+        "kind": "companion",
+        "threatId": "rr2-sulphurhound-cybercanid"
+      },
+      {
+        "wargear": {
+          "name": "Phosphor Pistol",
+          "wargearId": "rr2-phosphor-pistol",
+          "qty": 2
+        }
+      },
+      {
+        "wargear": {
+          "name": "Skitarii Auto-cuirass",
+          "wargearId": "skitarii-auto-cuirass"
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 3,
+        "T": 5,
+        "A": 5,
+        "I": 4,
+        "Wil": 2,
+        "Int": 2,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 1,
+        "Ballistic Skill": 4,
+        "Pilot": 3,
+        "Survival": 1,
+        "Tech": 1,
+        "Weapon Skill": 3
+      },
+      "talentIds": [],
+      "xp": {
+        "attributes": 53,
+        "skills": 24
+      }
+    }
+  },
+  {
+    "id": "cybernetica-datasmith",
+    "name": "Cybernetica Datasmith",
+    "source": "redacted-records-2",
+    "page": 51,
+    "note": "No Influence printed. Wargear prints \"a Comb i Tool\", read as Combi-Tool; Datasmith Robes linked to Clothing, as Core's Ministorum Robes. Grants no Kastelan Robot. Suggested talents Reclamator and Signal Booster are RR2 p.71.",
+    "factionId": "adeptus-mechanicus",
+    "tier": 3,
+    "speciesIds": [
+      "human"
+    ],
+    "xp": 101,
+    "keywords": [
+      "IMPERIUM",
+      "ADEPTUS MECHANICUS",
+      "CULT MECHANICUS",
+      "LEGIO CYBERNETICA",
+      "[FORGE WORLD]"
+    ],
+    "attributes": {
+      "T": 4,
+      "Int": 5
+    },
+    "skills": {
+      "Scholar": 2,
+      "Tech": 4
+    },
+    "abilities": [
+      {
+        "name": "Reprogrammer",
+        "text": "The DN of any Tech Test you make with a target that has the ROBOT Keyword is halved. Additionally, you can attempt a Tech Test to repair a target with the ROBOT Keyword, restoring their Wounds as though you were making a Medicae Test (Wrath & Glory Rulebook, page 124)."
+      }
+    ],
+    "wargear": [
+      {
+        "wargear": {
+          "name": "Refractor Field",
+          "wargearId": "refractor-field"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Power Fist",
+          "wargearId": "power-fist"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Gamma Pistol",
+          "wargearId": "rr2-gamma-pistol"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Datasmith Robes",
+          "wargearId": "clothing"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Comb i Tool",
+          "wargearId": "combi-tool"
+        }
+      },
+      {
+        "wargear": {
+          "name": "Mind Impulse Unit",
+          "wargearId": "mind-impulse-unit"
+        }
+      },
+      {
+        "pick": 1,
+        "wargearOf": {
+          "kinds": [
+            "augmetic"
+          ],
+          "categories": [
+            "Augmetic Enhancements"
+          ]
+        }
+      }
+    ],
+    "suggested": {
+      "attributes": {
+        "S": 4,
+        "T": 4,
+        "A": 3,
+        "I": 3,
+        "Wil": 4,
+        "Int": 7,
+        "Fel": 1
+      },
+      "skills": {
+        "Awareness": 3,
+        "Ballistic Skill": 2,
+        "Investigation": 3,
+        "Leadership": 2,
+        "Pilot": 1,
+        "Scholar": 4,
+        "Tech": 5,
+        "Weapon Skill": 2
+      },
+      "talentIds": [
+        "binary-chatter",
+        "jargon",
+        "reclamator",
+        "signal-booster"
+      ],
+      "xp": {
+        "attributes": 105,
+        "skills": 68
+      }
+    }
+  }
+]

@@ -23,6 +23,7 @@ import { Party } from "@/components/gm/party/party";
 import { Prep } from "@/components/gm/prep/prep";
 import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
 import { Setup } from "@/components/gm/setup/setup";
+import { SpendRequests } from "@/components/gm/spend-requests/spend-requests";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { Refusal } from "@/components/ui/refusal/refusal";
@@ -114,9 +115,9 @@ export function GmApp({
     <BooksProvider books={books} requestPage={requestPage}>
       <RulesProvider rules={rules}>
         <div className="gm">
-          {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
           <header className="gm-head band torn">
-            <a href="/" aria-label="Lobby" className="display" style={{ fontSize: 30, textDecoration: "none" }}>
+            {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
+            <a href="/" aria-label="Back to lobby" className="btn sq">
               ◂
             </a>
             <div className="display gm-title">
@@ -126,9 +127,7 @@ export function GmApp({
               </span>
             </div>
             {state.encounter && (
-              <div className="display" style={{ fontSize: 30 }}>
-                RND {String(state.encounter.round).padStart(2, "0")}
-              </div>
+              <div className="display page-title">RND {String(state.encounter.round).padStart(2, "0")}</div>
             )}
             {Pool.options.map(pool)}
             <ThemeToggle />
@@ -148,6 +147,7 @@ export function GmApp({
               </button>
             ))}
           </nav>
+          <SpendRequests state={state} send={send} />
           <main className="gm-body">
             {tab === "TRACK" && <Tracker state={state} send={send} bestiary={allThreats} />}
             {tab === "SETUP" && (

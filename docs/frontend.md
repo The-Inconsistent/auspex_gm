@@ -787,8 +787,8 @@ with `bun test lib`.
 | Surface | Where | Looks like | Clears |
 |---|---|---|---|
 | Status screen | the `/`, `/c/<id>` and `/invite/<code>` pages, the apps before their first snapshot | A full-screen message (§1) | On navigation or reload |
-| Offline badge `.badge-offline` | `GmApp` (`NO SIGNAL · RECONNECTING`), `PlayerApp` (`NO SIGNAL`) | A red badge fixed top-right while `!online`; the last state stays on screen | On reconnect |
-| `Refusal` banner | `GmApp` (header pools), `CodexView` (the reveal toggle), `Sheet` (every player action) | A red alert bar fixed to the bottom, `! <error>`, with an OK button | On OK, or on the next success |
+| Offline badge `.badge-offline` | `GmApp` and `CampaignSetup` (`NO SIGNAL · RECONNECTING`), `PlayerApp` (`NO SIGNAL`) | A red full-width row at the top of the header band while `!online`, in flow so it never covers the header's buttons; the last state stays on screen | On reconnect |
+| `Refusal` banner | `GmApp` (header pools), `CodexView` (the reveal toggle), `Sheet` (every player action) | A red alert bar fixed to the bottom, above the page's own bottom bar (`--bar-h`: the player tabs, the builder's XP bar) and the home indicator, `! <error>`, with an OK button | On OK, or on the next success |
 | Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
 | Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
 | Inline editor error | `BeatEditor`, `CodexEditor`, `ThreatBuilder` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
@@ -842,23 +842,30 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 | `--field` | Input background |
 | `--stain-a`, `--stain-b`, `--vignette` | The page-ground texture |
 | `--overlay` | Near-opaque backdrop for `.overlay` (the QR dialog) |
+| `--hi-light`, `--shade-28`, `--shade-35`, `--shade-40`, `--shade-50` | Bevel highlight and black shades for button bevels, tab dividers, the rail's inner shadow and the refusal bar's drop shadow; the same in both themes |
+| `--bone-line`, `--bone-wash` | Bone at 22% and 8%: the pool frames and the inner ring of a button on a band, a band button's hover |
+| `--ink-shadow`, `--ink-shadow-soft` | The lifted shadow under an `.item` card |
+| `--bar-h` | Set per shell (`.pl` 52px, `.bld` 64px under 900px, else 0): the height of the page's fixed or sticky bottom bar, which `.refusal` sits above |
 | `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches, always in an ink frame. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
 | `--side-agents`, `--side-threats` | Blue and orange outlines on the player FIGHT cards (Agents, Threats). Orange, not crimson, so a threat never reads as "now" |
 | `--serif`, `--display`, `--mono` | Font stacks |
 | `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--red-fill)`, `--clerk-color-background: var(--vellum)`, `--clerk-font-family: var(--serif)`, `--clerk-border-radius: 2px`…) |
 
 **Class vocabulary:**
-- Text: `.sr-only` (read by screen readers, not drawn), `.display`, `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
+- Text: `.sr-only` (read by screen readers, not drawn), `.display`, `.page-title` (the 30px page and round title), `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
   `.label`, `.rule` (a section head; the double rule is drawn by `::after`), `.kw` (keywords in crimson small caps).
-- Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px)
-  and `.sq` (44px square); `.input`; `.field`.
+- Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px),
+  `.sq` (44px square; every "◂" back link) and `.sq.sm` (the dense 32px square, the builder's −/+ steppers); `.input`;
+  `.field`; `.check` (a checkbox or radio label with a 44px hit area) and `.check-box` (a lone checkbox padded to 44px).
+  Native file inputs get a `.btn`-style `::file-selector-button`.
 - Chips: `.chip`, with `.warn` and `.bad`; `.now-chip` (the tracker's "▶ X ACTING").
 - Tabs: `.tabs` / `.tab`, an iron strip; `[aria-selected="true"]` is crimson with a bright top stroke. `.tabs.rail` is
   the GM's right-edge chapter rail (the open tab on a torn crimson stroke, `data-n` numerals behind the rest; a top
   strip under 900px). `.tabs.sub` is an underlined in-screen strip (codex kinds, rule kinds) that scrolls sideways
   when it doesn't fit.
 - Bands: `.band` (iron, bone text; `.btn`, `.dim` and `.label` inside it switch to their on-iron colours) and
-  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, `.pl-banner` and the lobby header.
+  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, `.pl-banner` (the player banner, wrapping at 390px) and `.bld-head` (the builder, NEW CAMPAIGN,
+  set-up and lobby headers).
 - Book furniture: `.sb*` (the stat block: `.sb-title`, `.sb-grid`, `.sb-head` with `.cur` for the campaign Tier,
   `.sb-v`, `.sb-shade`, `.sb-band`, `.sb-body`), `.tbar` (a crimson table title bar; `.iron` for Threats), `.plate`
   (riveted plate: GM-only content, e.g. the codex editor's GM notes, secrets and hazards), `.handout` (a sealed
@@ -867,7 +874,8 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 - Layout: `.panel`, `.item` (`.now` for the acting card on FIGHT), `.item-head` (a card's full-width header row, 44px
   tall), `.list` (`.table` for a bordered, gap-less table), `.stack`, `.cols`, `.keys`, `.pad`, `.center`, `.overlay`,
   `dialog.picker` (a wide modal, framed like `dialog.legend` and `dialog.sheet`, with `.tp-facets` and `.tp-row` for
-  the threat picker's facets and rows), `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono).
+  the threat picker's facets and rows), `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono),
+  `.setup-scroll` (a wide table that scrolls inside itself on a phone).
 - Shells: `.gm*` for the GM, `.tracker*`, `.turn-strip` and `.row*` for the tracker, `.cmd` for the command bar,
   `.pl*`, `.vitals`, `.vital` and `.traits` for the player app.
 
@@ -875,12 +883,16 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 - **GM:** tablet-first. `.gm` is a full-height grid: the header band and the scrolling body on the left, the
   112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel.
 - **`@media (max-width: 900px)`** is the only breakpoint:
-  - The GM shell becomes one scrolling page instead of fixed-height panes, and the rail becomes a top tab strip.
-  - The title takes a full line.
-  - The pool controls shrink to 40px.
+  - The GM shell becomes one scrolling page instead of fixed-height panes, and the rail becomes a top tab strip that
+    scrolls sideways inside itself and sticks to the top, like the player's bottom strip.
+  - Header titles keep a row with the back button while there is room, then wrap.
+  - The pool controls stay 44px.
   - The tracker stacks, with the side panel below the list.
   - `.row` drops to 4 columns with no minimum widths, so a row fits a 390px phone, and `.hide-sm` cells are hidden.
-- **Player:** phone-first single column. `.vitals` is 2 columns. `.cols` wraps at `minmax(280px, 1fr)`.
+- **Player:** phone-first single column, capped at 720px and centred on bigger screens (the banner and tabs stay full
+  width). `.vitals` is 2 columns. `.cols` wraps at `minmax(280px, 1fr)`.
+- **Safe areas:** `viewport-fit=cover` (`app/layout.tsx`). `body` pads the left and right insets once; headers add
+  the top inset, and fixed bars (`.refusal`, `.bld-xpbar`) and the player's sticky tabs add their own.
 - **Grid cells** get `min-width: 0` (`.row > *`) so bars shrink instead of spilling into the next column.
 
 ---

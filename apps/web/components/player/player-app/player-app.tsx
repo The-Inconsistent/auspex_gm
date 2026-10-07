@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
+import { RequestSpend } from "@/components/player/request-spend/request-spend";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
@@ -67,24 +68,22 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
     <BooksProvider books={books} requestPage={requestPage}>
       <RulesProvider rules={rules}>
         <div className="pl">
-          {!online && <div className="badge-offline">NO SIGNAL</div>}
-          <div
-            className={`pl-banner band torn ${myTurn ? "up" : ""}`}
-            style={{ display: "flex", alignItems: "center", gap: 10 }}
-          >
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="label">{state.campaign.name.toUpperCase()}</div>
-              <div className="display" style={{ fontSize: 21, lineHeight: 1.15 }}>
-                {banner}
-              </div>
-            </div>
+          <div className={`pl-banner band torn ${myTurn ? "up" : ""}`}>
+            {/* In the banner, not fixed over it, so it never covers LEAVE or the account button. */}
+            {!online && <div className="badge-offline">NO SIGNAL</div>}
             {/* Signed-in players also get the lobby and account menu. LEAVE gives up the seat: the Agent goes back to
             reserve and the room QR offers it again; /leave then forgets a guest's cookie. */}
-            <ThemeToggle />
             <Show when="signed-in">
-              <a href="/" aria-label="Lobby">
+              <a href="/" className="btn sq" aria-label="Back to lobby">
                 ◂
               </a>
+            </Show>
+            <div className="pl-banner-text">
+              <div className="label">{state.campaign.name.toUpperCase()}</div>
+              <div className="display">{banner}</div>
+            </div>
+            <ThemeToggle />
+            <Show when="signed-in">
               <UserButton />
             </Show>
             <button className="btn sm" onClick={leave}>
@@ -93,12 +92,13 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
           </div>
           <div className="pl-body">
             {myTurn && <TurnActions />}
+            {tab === "SHEET" && <RequestSpend state={state} characterId={characterId} send={send} />}
             {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
             {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
             {tab === "INTEL" && <Intel codex={codex} state={state} />}
             {tab === "RULES" && <RulesRef rules={rules} />}
           </div>
-          <nav className="tabs" role="tablist" style={{ position: "sticky", bottom: 0 }}>
+          <nav className="tabs pl-tabs" role="tablist">
             {PLAYER_TABS.map((t) => (
               <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
                 {t}

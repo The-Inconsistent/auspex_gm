@@ -232,11 +232,12 @@ export class CampaignController {
     return flavourTables(await campaignHomebrew(campaignId));
   }
 
-  // Rules reference (book text) for any seat at this table, GM or player.
+  // Rules reference (book text) for any seat at this table, GM or player (not the table screen).
   @Get("campaigns/:id/rules")
   async rules(@Param("id") id: string, @Req() req: Request) {
     const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
+    if (ctx.role === "screen") throw new ForbiddenException(); // the TV shows no book text
     return listRules({ gm: ctx.role === "gm" });
   }
 
@@ -247,6 +248,7 @@ export class CampaignController {
     const campaignId = parse(CampaignId, id);
     const ctx = await resolveCtx({ campaignId, headers: headersOf(req) });
     if (!ctx) throw new UnauthorizedException();
+    if (ctx.role === "screen") throw new ForbiddenException(); // the TV shows no book text
     sendCached({ req, res, payload: creationPayload(await campaignHomebrew(campaignId)) });
   }
 

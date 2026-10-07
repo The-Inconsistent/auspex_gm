@@ -518,14 +518,20 @@ campaign behind. An unknown `threatId` in a beat is only caught by validate or b
 The Core Wargear chapter (printed pp.211–247), Vow of Absolution's Call to Arms (pp.59–75) and the Forsaken System
 Player's Guide armoury (pp.120–128) and Inheritance of Embers' Armoury (pp.77–99), plus the homebrew Legacy of the
 Necrontyr's Vaults of the Tomb Lords (PDF pp.10–13) and An Abundance of Apocrypha's Chapter IV (printed pp.326–482),
-and the relics of Threat Assessment: Daemons & Heretics, one JSON array per section, for the GM's requisition form. 1,242
+and the relics of Threat Assessment: Daemons & Heretics, one JSON array per section, for the GM's requisition form. 1,271
 entries:
 - Core (219): `melee` (33, pp.211–213), `ranged` (44, pp.217–219), `ranged-xenos-grenades` (21, pp.220–221, 226),
   `upgrades-ammo` (26, pp.227–230), `armour` (28, p.233), `equipment` (41, pp.236–241), `augmetics` (26, pp.243–247).
-- Redacted Records 2 (6, ids prefixed `rr2-`): `rr2-relics`: the six Relics of Renown (pp.20–31), for an item's NAME
+- Redacted Records 2 (35, ids prefixed `rr2-`): `rr2-relics`: the six Relics of Renown (pp.20–31), for an item's NAME
   and FROM LOOT TABLE (issue #51). None prints a Value; only the Tainted Blade prints a Rarity (Unique). The Rosarius
   of Saint Agatha and the Unwilling Orb are a Core Rosarius and Psychic Focus with additions, so their `effect` holds
-  only the additions.
+  only the additions. `rr2-ecclesiarchy` (13, pp.43–45) and `rr2-mechanicus` (16, pp.61–63), the starting wargear of
+  its archetypes (issue #24). Rarity is printed as a number, read as FSPG's (§11.44), each `note` keeping it. The
+  Vindictor and the Electrostatic Gauntlets print a melee and a ranged row, so two entries each. The Storm Bolter's
+  italic *Mastercrafted* is Core's upgrade (p.228), quoted in `effect`, not a trait. Kept as printed: the FLAME keyword
+  (Core: FIRE), the Phosphor Blast Carbine's 8/18/27, Sulphur Breath's Salvo 0. Its Taser Goad and Flechette Blaster
+  reprint FSPG's exactly, so they have no entries; the `fspg-` notes cite RR2. Same-named Apocrypha items
+  (Anointed Halberd, Vindictor, Phosphor weapons…) have different profiles and are kept, each `note` naming the other.
 - Bloody Gates (7, ids prefixed `bg-`): `bg-mission-equipment` (pp.6, 13, 21, 24, issue #51). Its printed numeric Rarity
   is read as the requisition DN (§11.119). The Grapnel Launcher, Smoke Grenades and Frag Bomb differ from the other
   books' items of that name, so each keeps its own entry with a `note`.
@@ -1000,10 +1006,10 @@ test `packages/data/build.test.ts` rebuilds the pregen fixtures. Nothing serves 
 are in `packages/shared/src/creation.ts`; the data is `packages/data/creation/<type>/<source>.json`, one array per
 file, loaded by `creationCatalogue()` in `index.ts`.
 
-**Status (2026-10-01).** All seven books are transcribed and verified against the page images: 113 keywords (plus the house `[ANY 2]`, rules-flow.md §11.133), 27
-factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 205 archetypes, 336 talents, 32
+**Status (2026-10-05).** All nine books are transcribed and verified against the page images: 114 keywords (plus the house `[ANY 2]`, rules-flow.md §11.133), 27
+factions, 136 sub-factions, 22 species, 31 background tables, 5 option groups, 213 archetypes, 414 talents, 37
 packages, 41 disciplines, 291 powers, 16 Patrons, 27 Frameworks (58 in all with the Patrons' options, issue #45), 5 languages and 27 flavour tables, with every reference resolving.
-What is left is outside the catalogue: 55 starting-wargear items the Wargear catalogue doesn't link yet, waiting on
+What is left is outside the catalogue: 67 starting-wargear items the Wargear catalogue doesn't link yet, waiting on
 rulings, and vehicles (see the Wargear catalogue).
 
 | Type | Record | Holds |
@@ -1102,6 +1108,25 @@ species, archetype and packages (at the XP in the fixture's build), talents, and
   one does, the older one's apply (IoE's Runes of Battle takes Core p.271's PSYKER + AELDARI).
 - **One record per thing means per category** (and per discipline, for powers). An Apocrypha Exarch Power named Evade is not the Evade talent: they
   get different ids (`evade-exarch`), and dedup compares category and name.
+- **Redacted Records 1 and 2 (GitHub issue #24):** RR1's New Talents A–I (pp.60–66) and RR2's Talents J–Z, Faith and
+  Adeptus Mechanicus Talents (pp.64–71), RR2's eight archetypes (pp.34–37, 48–51) and Ascension Packages (pp.73–75).
+  - Both chapters open with "with your GM's permission", which is no requirement. RR2's "suitable for members of…"
+    section lines (pp.68, 71) are read the same way; its Faith Talents take Core p.142's Limits of Faith (IMPERIUM, not
+    CHAOS), as Core's do.
+  - A name both books print for **different** Talents keeps both, the later-ranked one named with its book: Battle-Psyker
+    (RR1) beside IoE's Aeldari Battle Psyker, Escape Artist (RR1) beside Core p.133's. Apocrypha's Rogue Psyker suggests
+    `battle-psyker-rr1`. RR1's Blademaster is `blademaster-rr1`, so Apocrypha's Exarch Power keeps `blademaster` and saved builds keep it.
+  - RR1's Bolter Discipline and Chainsaw Warrior reprint VoA's (which wins); the VoA `note`s cite them. RR1's Assault and
+    Devastator Doctrine are Talents (no Scout requirement, not Primaris), separate from VoA's Advancement Packages of the
+    same ids.
+  - Dedicate the Kill's "Faith 1+" is one Faith Talent owned (§11.30).
+  - Electro-Priest, Pteraxii and Serberys print a base block and two option blocks, each with its own XP: each base +
+    option is one record (`corpuscarius-electro-priest`, `fulgurite-electro-priest`, `pteraxii-skystalker`,
+    `pteraxii-sterylizor`, `serberys-raider`, `serberys-sulphurhound`), its XP the sum, "XP as printed" in the note.
+    The Cyber-beasts are `companion` followers (`rr2-raider-cybercanid`, `rr2-sulphurhound-cybercanid`).
+  - RR2 replaces Apocrypha's Sister Novitiate (by Novitiate Militant) and its Corpuscarius and Fulgurite Electro-Priests;
+    the Apocrypha notes that cited RR1 or RR2 talents now link them.
+  - LEGIO CYBERNETICA (the Datasmith's keyword) is a keyword record with no printed definition.
 - **Daemons & Heretics (Psychic Diabolus, pp.113–125):**
   - Its Prayers to the Dark Gods are `prayer` talents that need only CHAOS (p.114: "Any Agent with the CHAOS Keyword can
     purchase…"). Each prints "You gain +1 Corruption." in its Effect, which is a purchase grant, as on Core's Betrayer.
@@ -1166,8 +1191,8 @@ species, archetype and packages (at the XP in the fixture's build), talents, and
   Lexmechanic prints "SKILLS: 3" with no Skill names (FSPG p.117); Corsair Prince's keywords read "AELDARI, ASURYANI,
   [CRAFTWORLD]" (IoE p.56; ANHRATHE, [COTERIE] meant?); Venenum Assassin prints TEMPLUM VANUS (Apocrypha); the Corsair
   "Shuriken Rifle or Shuriken Pistol and Void Sabre" is read as (Rifle or Pistol) and Sabre (IoE pp.52–55).
-- Apocrypha suggests talents from "RR1" and "RR2" (Redacted Records and Redacted Records 2); they are listed in notes only
-  until those books are transcribed (GitHub issue #24).
+- Built Tough: VoA p.46 (which wins) prints Born Survivor's text and Survival 2+ under the heading; RR1 p.62 prints the
+  real Talent (S 3+, T 3+, Heavy rating halved). Kept as VoA prints it, with a `note`, pending a ruling (issue #24).
 - Magisterial House "+Rank to Wealth" (Apocrypha p.53) is read as a one-off grant at creation.
 - The Primaris Chaplain's and Dark Apostle's "+Rank Resolve to you and allies" is read as an aura, not `mods`.
 - Indomitable Belief's +Rank Resilience aura includes its owner (`mods`); Lobotomised Efficiency's "no longer add Tier
