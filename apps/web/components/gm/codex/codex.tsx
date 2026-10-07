@@ -24,6 +24,7 @@ import {
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
+import { Mentions } from "@/components/ui/mentions/mentions";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { PrintPick } from "@/components/ui/print-pick/print-pick";
@@ -204,10 +205,14 @@ export function CodexView({
                   <span>
                     <PageCite cite={citeOf(String(r[key]))!.cite} />
                   </span>
-                  <pre className="text">{citeOf(String(r[key]))!.rest}</pre>
+                  <pre className="text">
+                    <Mentions text={citeOf(String(r[key]))!.rest} self={r.id} />
+                  </pre>
                 </>
               ) : (
-                <pre className="text">{String(r[key])}</pre>
+                <pre className="text">
+                  <Mentions text={String(r[key])} self={r.id} />
+                </pre>
               )}
             </div>
           ) : null,

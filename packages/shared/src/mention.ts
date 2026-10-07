@@ -8,7 +8,6 @@ export type MentionKind = z.infer<typeof MentionKind>;
 
 export type MentionPart = { text: string } | { kind: MentionKind; id: string };
 export type MentionName = { kind: MentionKind; id: string; name: string };
-export type NamePart = { text: string } | MentionName;
 
 const TOKEN = new RegExp(`@\\[(${MentionKind.options.join("|")}):([0-9a-f-]{36})\\]`, "g");
 
@@ -35,6 +34,18 @@ export const remapMentions = (text: string, ids: ReadonlyMap<string, string>) =>
     return to ? mentionToken({ kind, id: to }) : token;
   });
 
+// A text with its tokens spelled out, where there is no link to tap (a printed card): `nameOf` gives a name only for an
+// entry the reader may know of, and anything else reads as `missing`.
+export const plainMentions = ({
+  text,
+  nameOf,
+  missing,
+}: {
+  text: string;
+  nameOf: (id: string) => string | undefined;
+  missing: string;
+}) => text.replace(TOKEN, (_token, _kind: MentionKind, id: string) => nameOf(id) ?? missing);
+
 // Shorter names are left alone: a two-letter name would link half the prose.
 const MIN_NAME = 3;
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -42,14 +53,16 @@ const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 // Auto-link: plain text that spells an entry's full name, case and all, as a whole word. Longest name first, so
 // "Magos Verrin" wins over "Verrin"; on a shared name the first entry listed wins. Built once per codex; `self` keeps
 // an entry from linking itself in its own text.
-export function nameLinker(names: readonly MentionName[]): (args: { text: string; self?: string }) => NamePart[] {
-  const byName = new Map<string, MentionName>();
+export function nameLinker<T extends MentionName>(
+  names: readonly T[],
+): (args: { text: string; self?: string }) => ({ text: string } | T)[] {
+  const byName = new Map<string, T>();
   for (const n of names) if (n.name.length >= MIN_NAME && !byName.has(n.name)) byName.set(n.name, n);
   if (!byName.size) return ({ text }) => (text ? [{ text }] : []);
   const alts = [...byName.keys()].sort((a, b) => b.length - a.length).map(escape);
   const re = new RegExp(`(?<![\\p{L}\\p{N}])(?:${alts.join("|")})(?![\\p{L}\\p{N}])`, "gu");
   return ({ text, self }) => {
-    const parts: NamePart[] = [];
+    const parts: ({ text: string } | T)[] = [];
     let at = 0;
     for (const m of text.matchAll(re)) {
       const hit = byName.get(m[0])!;

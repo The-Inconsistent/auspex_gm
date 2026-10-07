@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { insertMention, mentionQuery, mentionToken, nameLinker, parseMentions, remapMentions } from "./index.ts";
+import {
+  insertMention,
+  mentionQuery,
+  mentionToken,
+  nameLinker,
+  parseMentions,
+  plainMentions,
+  remapMentions,
+} from "./index.ts";
 
 const A = "00000000-0000-4000-8000-000000000001";
 const B = "00000000-0000-4000-8000-000000000002";
@@ -63,4 +71,10 @@ test("insertMention replaces the typed query and puts the caret after the token"
   const r = insertMention({ text: "see @ver now", start: 4, caret: 8, token });
   assert.equal(r.text, `see ${token} now`);
   assert.equal(r.caret, 4 + token.length);
+});
+
+test("plainMentions spells a token out, or the placeholder", () => {
+  const text = `${mentionToken({ kind: "npc", id: A })} and ${mentionToken({ kind: "npc", id: B })}`;
+  const nameOf = (id: string) => (id === A ? "Verrin" : undefined);
+  assert.equal(plainMentions({ text, nameOf, missing: "(unknown)" }), "Verrin and (unknown)");
 });

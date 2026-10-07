@@ -7,6 +7,7 @@ import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 import { RequestSpend } from "@/components/player/request-spend/request-spend";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
+import { MentionsProvider } from "@/components/ui/mentions/mentions-provider";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Sheet } from "@/components/ui/sheet/sheet";
@@ -68,46 +69,48 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   return (
     <BooksProvider books={books} requestPage={requestPage}>
       <RulesProvider rules={rules}>
-        <div className="pl">
-          <div className={`pl-banner band torn ${myTurn ? "up" : ""}`}>
-            {/* In the banner, not fixed over it, so it never covers LEAVE or the account button. */}
-            {!online && <div className="badge-offline">NO SIGNAL</div>}
-            {/* Signed-in players also get the lobby and account menu. LEAVE gives up the seat: the Agent goes back to
+        <MentionsProvider codex={codex} missing="(unknown)">
+          <div className="pl">
+            <div className={`pl-banner band torn ${myTurn ? "up" : ""}`}>
+              {/* In the banner, not fixed over it, so it never covers LEAVE or the account button. */}
+              {!online && <div className="badge-offline">NO SIGNAL</div>}
+              {/* Signed-in players also get the lobby and account menu. LEAVE gives up the seat: the Agent goes back to
             reserve and the room QR offers it again; /leave then forgets a guest's cookie. */}
-            <Show when="signed-in">
-              <a href="/" className="btn sq" aria-label="Back to lobby">
-                ◂
-              </a>
-            </Show>
-            <div className="pl-banner-text">
-              <div className="label">{state.campaign.name.toUpperCase()}</div>
-              <div className="display">{banner}</div>
-            </div>
-            <ThemeToggle />
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
-            <button className="btn sm" onClick={leave}>
-              LEAVE
-            </button>
-          </div>
-          <div className="pl-body">
-            {state.campaign.archived && <ArchivedBanner text="THE GM HAS CLOSED THIS GAME. NOTHING CAN CHANGE." />}
-            {myTurn && <TurnActions />}
-            {tab === "SHEET" && <RequestSpend state={state} characterId={characterId} send={send} />}
-            {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
-            {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
-            {tab === "INTEL" && <Intel codex={codex} state={state} />}
-            {tab === "RULES" && <RulesRef rules={rules} />}
-          </div>
-          <nav className="tabs pl-tabs" role="tablist">
-            {PLAYER_TABS.map((t) => (
-              <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-                {t}
+              <Show when="signed-in">
+                <a href="/" className="btn sq" aria-label="Back to lobby">
+                  ◂
+                </a>
+              </Show>
+              <div className="pl-banner-text">
+                <div className="label">{state.campaign.name.toUpperCase()}</div>
+                <div className="display">{banner}</div>
+              </div>
+              <ThemeToggle />
+              <Show when="signed-in">
+                <UserButton />
+              </Show>
+              <button className="btn sm" onClick={leave}>
+                LEAVE
               </button>
-            ))}
-          </nav>
-        </div>
+            </div>
+            <div className="pl-body">
+              {state.campaign.archived && <ArchivedBanner text="THE GM HAS CLOSED THIS GAME. NOTHING CAN CHANGE." />}
+              {myTurn && <TurnActions />}
+              {tab === "SHEET" && <RequestSpend state={state} characterId={characterId} send={send} />}
+              {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
+              {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
+              {tab === "INTEL" && <Intel codex={codex} state={state} />}
+              {tab === "RULES" && <RulesRef rules={rules} />}
+            </div>
+            <nav className="tabs pl-tabs" role="tablist">
+              {PLAYER_TABS.map((t) => (
+                <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+                  {t}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </MentionsProvider>
       </RulesProvider>
     </BooksProvider>
   );

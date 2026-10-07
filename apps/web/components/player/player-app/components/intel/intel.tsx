@@ -1,6 +1,7 @@
 import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { Mentions } from "@/components/ui/mentions/mentions";
 
 type IntelProps = { codex: Codex; state: LiveState };
 
@@ -24,7 +25,9 @@ export function Intel({ codex, state }: IntelProps) {
       {last && (
         <div className="stack" style={{ gap: 4 }}>
           <div className="rule">PREVIOUSLY (SESSION {last.number})</div>
-          <pre className="text">{last.recap}</pre>
+          <pre className="text">
+            <Mentions text={last.recap} />
+          </pre>
         </div>
       )}
       <div className="rule">HANDOUTS</div>
@@ -36,7 +39,9 @@ export function Intel({ codex, state }: IntelProps) {
             {/* toPlayerCodex leaves the viewer alone in a private handout's audience. */}
             {h.audience.length > 0 && " · FOR YOUR EYES ONLY"}
           </span>
-          <pre className="text slate">{h.body}</pre>
+          <pre className="text slate">
+            <Mentions text={h.body} self={h.id} />
+          </pre>
         </div>
       ))}
       <div className="rule">KNOWN PERSONS</div>
@@ -44,7 +49,11 @@ export function Intel({ codex, state }: IntelProps) {
         <div key={n.id} className="item">
           <b>{n.name.toUpperCase()}</b> <AttitudeChip attitude={n.attitude} />
           {n.role && <span className="dim">{n.role}</span>}
-          {n.description && <pre className="text">{n.description}</pre>}
+          {n.description && (
+            <pre className="text">
+              <Mentions text={n.description} self={n.id} />
+            </pre>
+          )}
         </div>
       ))}
       <div className="rule">KNOWN LOCATIONS</div>
@@ -52,7 +61,11 @@ export function Intel({ codex, state }: IntelProps) {
       {flatTree(placeTree(codex.locations)).map(({ row: l, depth }) => (
         <div key={l.id} className="item" style={{ marginLeft: depth * 18 }}>
           <b>{l.name.toUpperCase()}</b>
-          {l.description && <pre className="text">{l.description}</pre>}
+          {l.description && (
+            <pre className="text">
+              <Mentions text={l.description} self={l.id} />
+            </pre>
+          )}
         </div>
       ))}
     </>
