@@ -4371,7 +4371,7 @@
     "name": "Adamus Assassin",
     "source": "apocrypha",
     "page": 192,
-    "note": "No INFLUENCE printed. Suggested talents printed in Redacted Records, now linked: Blademaster (RR1 p.61), which is not the Apocrypha Exarch Power of that name (blademaster-exarch).",
+    "note": "No INFLUENCE printed. Suggested talents printed in Redacted Records, now linked: Blademaster (RR1 p.61), which is not the Apocrypha Exarch Power of that name (blademaster): blademaster-rr1.",
     "factionId": "officio-assassinorum",
     "tier": 5,
     "speciesIds": [
@@ -4458,7 +4458,7 @@
       "talentIds": [
         "eliminator",
         "silent",
-        "blademaster"
+        "blademaster-rr1"
       ],
       "powerIds": [],
       "xp": {

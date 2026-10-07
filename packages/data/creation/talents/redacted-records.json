@@ -222,12 +222,12 @@
     "effect": "You wield your powers with unstoppable force, compelling your victims to submit to your will.\n\nWhen you successfully use a psychic power that forces targets to take a Test to resist its effects, the DN of that Test is increased by +Rank."
   },
   {
-    "id": "blademaster",
+    "id": "blademaster-rr1",
     "name": "Blademaster",
     "source": "redacted-records",
     "page": 61,
     "category": "talent",
-    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Not the Apocrypha Exarch Power Blademaster (`blademaster`, category exarch, p.247): a different category, so a separate record. Defence is a character Trait while wielding, so it is a gm weapon note.",
+    "note": "New Talents, A-I (p.60): \"You can use these Talents, with your GM's permission, along with character options from any other Wrath & Glory supplements.\" Not the Apocrypha Exarch Power Blademaster (`blademaster`, category exarch, p.247): a different category, so a separate record, with the book in its id so builds that saved `blademaster` keep the Exarch Power. Defence is a character Trait while wielding, so it is a gm weapon note.",
     "xp": 10,
     "requires": [
       {
@@ -800,7 +800,7 @@
           {
             "kind": "ap",
             "delta": {
-              "perRank": 1
+              "perRank": -1
             }
           }
         ]

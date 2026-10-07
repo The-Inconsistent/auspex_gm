@@ -1115,7 +1115,7 @@ species, archetype and packages (at the XP in the fixture's build), talents, and
     CHAOS), as Core's do.
   - A name both books print for **different** Talents keeps both, the later-ranked one named with its book: Battle-Psyker
     (RR1) beside IoE's Aeldari Battle Psyker, Escape Artist (RR1) beside Core p.133's. Apocrypha's Rogue Psyker suggests
-    `battle-psyker-rr1`. RR1's Blademaster takes `blademaster`, Apocrypha's Exarch Power becomes `blademaster-exarch`.
+    `battle-psyker-rr1`. RR1's Blademaster is `blademaster-rr1`, so Apocrypha's Exarch Power keeps `blademaster` and saved builds keep it.
   - RR1's Bolter Discipline and Chainsaw Warrior reprint VoA's (which wins); the VoA `note`s cite them. RR1's Assault and
     Devastator Doctrine are Talents (no Scout requirement, not Primaris), separate from VoA's Advancement Packages of the
     same ids.
