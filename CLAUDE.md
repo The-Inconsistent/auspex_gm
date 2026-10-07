@@ -174,7 +174,8 @@ apps/web/components/player/  player-app (sheet, fight, intel)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
-                             to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
+                             to read its rule), mentions + mention-field (codex @mentions: tap-to-peek links, the @ list in
+                             a text field; issue #200), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
                              CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed-cards PDF), print-pick (a row's tick for PRINT N)
@@ -186,7 +187,8 @@ apps/web/lib/                command (tracker command line), blocks, weapon-line
                              print-cards (what a print holds, card sizes, the sheet layout)
 apps/web/public/fonts/       Cinzel + Crimson Pro static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
-                             profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
+                             profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,
+                             mention.ts (codex mention tokens, auto-link, the import remap)
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),

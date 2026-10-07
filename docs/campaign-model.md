@@ -96,6 +96,35 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
   (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.
 
+## Mentions
+
+A codex text can name another entry (GitHub issue #200). The GM's rulings of 2026-10-07 are below.
+
+- **Token.** Typing `@` in a codex text opens a list of entries; picking one writes `@[npc:<id>]`. The kinds are
+  `npc`, `location`, `handout`, `faction`, `item` and `scene`. The token holds only the id, so a rename never breaks it
+  and the link always shows the entry's live name.
+- **Where it works.** These fields take a mention:
+  - a scene's GOAL, READ ALOUD, GM NOTES and OUTCOME;
+  - every long text in CODEX's editor;
+  - the END SESSION recap.
+
+  Each shows as a link wherever it's read: PREP, CODEX, the player's INTEL, and inside a peek.
+- **Auto-link.** Plain text that spells an entry's full name also becomes a link. The match is exact and
+  case-sensitive, a whole word, and the longest name wins. Names under 3 characters are skipped, and an entry
+  never links itself.
+- **The peek.** Tapping a link opens a dialog with that entry's text, the same fields its CODEX row shows.
+- **What a phone sees.** A phone resolves only entries in its own `toPlayerCodex` snapshot: revealed NPCs and
+  locations, and the handouts it may read. A mention of anything else shows `(unknown)`, never a name.
+  - Scenes, factions and items never reach a phone.
+  - Being mentioned never reveals an entry.
+  - On the GM's tablet, a deleted entry shows `(removed)`, and an unrevealed one is marked `(HIDDEN)`, so the GM knows
+    the table can't follow it yet.
+- **Printed item cards** (#203) have no link to tap and go on the table, so a mention prints as every phone would see
+  it. A revealed NPC or place, or a revealed handout meant for every player, prints its name. Anything else prints
+  `(unknown)`, including a private handout, whose title stays with its audience (`plainMentions`).
+- **IMPORT GAME** gives every row a new id, so it remaps the ids inside tokens through the same map (`remapMentions`).
+  A token pointing outside the file is kept, and shows as the placeholder.
+
 ## Building a campaign
 
 The Core Rulebook has no adventure-writing procedure; it sends the GM to the GM's guide on Cubicle 7's website
