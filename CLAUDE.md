@@ -176,7 +176,7 @@ apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab w
 apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel), test-call (CALL A TEST
                              and the tally, issue #191), spend-requests (kebab-case folders, children under
                              components/)
-apps/web/components/player/  player-app (sheet, fight, intel)
+apps/web/components/player/  player-app (sheet, fight, intel), request-spend, test-prompt (a called Test: pool, PASSED / FAILED; #191)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
