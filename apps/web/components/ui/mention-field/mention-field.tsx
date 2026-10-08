@@ -5,7 +5,7 @@ import { insertMention, mentionQuery, mentionToken } from "@wg/shared";
 
 import { KIND_LABEL } from "@/components/ui/mentions/constants";
 import { useMentions, type MentionEntry } from "@/components/ui/mentions/mentions-provider";
-import { fold } from "@/lib/threat-filter/threat-filter";
+import { fold } from "@/lib/fold/fold";
 
 import { PICK_LIMIT } from "./constants";
 
