@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CHAOS_SPAWN_AT, corruptionLevel } from "./corruption.ts";
+import { MAX_ICONS } from "./dn.ts";
 import { RequisitionSlot } from "./requisition.ts";
 import { SpendRequest } from "./spend.ts";
 import { Threat, ThreatClass, Weapon } from "./threat.ts";
@@ -399,6 +400,44 @@ export const CampaignSetup = z.object({
   limits: TableLines,
 });
 
+// The kinds of Test a scene plans or the GM calls (codex.ts TestKind, issue #39). Here so a live call can name one
+// without state.ts importing codex.ts, which imports it.
+export const TEST_KINDS = ["skill", "attribute", "opposed", "influence", "resolve", "corruption"] as const;
+
+// A Test the GM calls at the table (issue #191): what it rolls and its DN, nothing of the GM's plan for it. The
+// action checks it as a BeatTest; this is what is kept.
+export const CalledTest = z.object({
+  kind: z.enum(TEST_KINDS),
+  skill: z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]).nullable(),
+  attribute: z.enum(ATTRIBUTES).nullable(),
+  dn: z.number().int().min(1).max(20).nullable(),
+});
+export type CalledTest = z.infer<typeof CalledTest>;
+
+// One Agent's result, as their phone (or the GM) reported it. The dice stay on the table (rules-flow.md §7); a failed
+// Corruption Test also brings its roll, for the gain the GM may then apply (Core p.286).
+export const TestReport = z.object({
+  passed: z.boolean(),
+  icons: z.number().int().min(0).max(MAX_ICONS).optional(),
+  complication: z.boolean().optional(),
+  wrathCritical: z.boolean().optional(),
+  spentWrath: z.boolean().optional(),
+});
+export type TestReport = z.infer<typeof TestReport>;
+
+// The open call, one per campaign (rules-flow.md §11.143): who is asked, and what each reported. `fear` marks a Resolve
+// Test against Fear (Core p.199), whose failure earns the GM 1 Ruin (p.320); `hideDn` keeps the DN off the phones.
+export const TestCall = z.object({
+  id: z.string(),
+  test: CalledTest,
+  fear: z.boolean(),
+  hideDn: z.boolean(),
+  who: z.array(z.string()).min(1),
+  reports: z.record(z.string(), TestReport),
+  createdAt: z.string(), // ISO
+});
+export type TestCall = z.infer<typeof TestCall>;
+
 export const LiveState = z.object({
   campaign: z.object({
     id: z.string(),
@@ -430,6 +469,9 @@ export const LiveState = z.object({
   // Spends the players have asked for and the GM hasn't answered, oldest first (rules-flow.md §11.123). Every phone
   // sees them all: Glory is the party's pool and p.165 has the group agree on it.
   spendRequests: z.array(SpendRequest),
+  // The Test the GM called and the results so far (issue #191). A phone gets it only if its Agent is asked, with only
+  // its own result.
+  testCall: TestCall.nullable(),
   // guests: characters a live guest QR token points at (no account, so not in members).
   access: z.object({ members: z.array(Member), invites: z.array(Invite), guests: z.array(z.string()) }),
 });
@@ -592,6 +634,9 @@ const unseen = (m: SheetMutation, i: number): SheetMutation => ({
   weapons: [],
 });
 
+// One key of a record, or none.
+const pick = <T>(r: Record<string, T>, key: string): Record<string, T> => (key in r ? { [key]: r[key]! } : {});
+
 const lostAt = (points: number) => (corruptionLevel(points).chaosSpawn ? CHAOS_SPAWN_AT : 0);
 
 // What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
@@ -611,6 +656,15 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
         },
   ),
   access: { members: s.access.members, invites: [], guests: [] },
+  testCall:
+    s.testCall && characterId && s.testCall.who.includes(characterId)
+      ? {
+          ...s.testCall,
+          // HIDE DN keeps it off the wire, not only off the screen (§11.147).
+          test: s.testCall.hideDn ? { ...s.testCall.test, dn: null } : s.testCall.test,
+          reports: pick(s.testCall.reports, characterId),
+        }
+      : null,
   encounter: s.encounter && {
     ...s.encounter,
     upNext: sideUpNext(s),

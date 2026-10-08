@@ -904,6 +904,22 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      fixed Keywords (ADEPTUS ASTARTES, ORK, [CHAPTER], [CLAN]…) always stand; its Keyword choices (a Human's any 2,
      IMPERIUM or CHAOS, ANHRATHE or ASURYANI) are asked only when no Faction is picked, the Faction's Keywords taking
      their place. *Proposed; awaiting the GM.*
+143. **One called Test at a time** (GitHub issue #191). The GM calls a Test from PREP or the strip, and a new call
+     replaces the open one; CLOSE, or a session's start or end, ends it. The dice stay physical (§7): the phone shows
+     the pool and the reminders, and the player reports PASSED or FAILED. Only what the Test rolls reaches the phones,
+     never the GM's purpose, Shifts or outcomes. *Approved by the GM, 2026-10-08.*
+144. **Only the Agents called report, each for themselves** (issue #191). A second report overwrites the first, so a
+     mis-tap is fixable, and the GM may set a result from the tally for a phone that's out. A phone sees the call only
+     if its Agent is named, and only its own result. *Approved by the GM, 2026-10-08.*
+145. **A failed called Test offers the GM its Ruin or Corruption; nothing is applied on its own** (Core pp.286, 320).
+     A failed Fear or Corruption Test shows +1 RUIN, and a failed Corruption Test GAIN n CORRUPTION
+     (`character.corrupt`, which brings its own +1 Ruin, §11.134), each one GM tap, as a scene's Ruin lines are (§11.78).
+     *Approved by the GM, 2026-10-08.*
+146. **A Fear Test is a Resolve Test with a FEAR mark** (Core p.199: "you roll your Resolve against a DN dictated by the
+     source of Fear"). The mark is what offers the +1 Ruin of p.320, which lists Fear and not Terror.
+     *Approved by the GM, 2026-10-08.*
+147. **The DN shows on the phones unless the GM hides it** (issue #191). A Corruption Test's DN on each phone includes
+     that Agent's Corruption Level modifier (p.286). *Approved by the GM, 2026-10-08.*
 
 ---
 

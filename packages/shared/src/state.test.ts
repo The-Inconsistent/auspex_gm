@@ -16,6 +16,11 @@ import {
   canAct,
   canSeize,
   ascensionGroup,
+  callDn,
+  reportProblem,
+  testPool,
+  type CalledTest,
+  type TestCall,
   deriveStats,
   exhaustedShock,
   isExhausted,
@@ -117,6 +122,7 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
   characters,
   encounter: e,
   spendRequests: [],
+  testCall: null,
   access: noAccess,
 });
 
@@ -147,6 +153,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       { lastSide: "agents" },
     ),
     spendRequests: [],
+    testCall: null,
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -726,4 +733,50 @@ test("Chaos Spawn: an Agent at 26 Corruption is Lost, out of the fight and of th
     seen.map((c) => c.stats.corruption),
     [26, 0],
   );
+});
+
+// ── A called Test (issue #191) ──
+
+test("a called Test's pool is the Agent's own: Skill + Attribute, an Attribute, or a trait (Core pp.158–170, 285)", () => {
+  const a = char({
+    stats: CharacterStats.parse({
+      attributes: { S: 3, T: 3, A: 3, I: 3, Wil: 4, Int: 2, Fel: 3 },
+      skills: { Awareness: 2 },
+      corruption: 6,
+    }),
+  });
+  const t = (o: Partial<CalledTest>): CalledTest => ({ kind: "skill", skill: null, attribute: null, dn: 3, ...o });
+  assert.equal(testPool({ character: a, test: t({ skill: "Awareness" }), tier: 1 }), 4);
+  assert.equal(testPool({ character: a, test: t({ kind: "attribute", attribute: "Wil" }), tier: 1 }), 4);
+  assert.equal(testPool({ character: a, test: t({ kind: "resolve" }), tier: 1 }), 3, "Resolve = Willpower − 1");
+  assert.equal(testPool({ character: a, test: t({ kind: "corruption" }), tier: 1 }), 4, "Conviction = Willpower");
+  assert.equal(callDn(t({ kind: "corruption", dn: 3 }), a), 4, "Tarnished adds 1 (p.286)");
+  assert.equal(callDn(t({ skill: "Awareness", dn: 3 }), a), 3);
+  assert.equal(
+    reportProblem(t({ skill: "Awareness" }), { passed: false, icons: 1 }),
+    "Only a failed Corruption Test reports its roll",
+  );
+  assert.equal(reportProblem(t({ kind: "corruption" }), { passed: false, icons: 1, complication: true }), null);
+  assert.ok(reportProblem(t({ kind: "corruption" }), { passed: true, icons: 3 }));
+});
+
+test("a phone sees the call only if its Agent is asked, with only its own result", () => {
+  const call: TestCall = {
+    id: "call",
+    test: { kind: "skill", skill: "Awareness", attribute: null, dn: 3 },
+    fear: false,
+    hideDn: false,
+    who: ["a", "b"],
+    reports: { a: { passed: true }, b: { passed: false } },
+    createdAt: "",
+  };
+  const s = {
+    ...table(null as never, [char({ id: "a" }), char({ id: "b" }), char({ id: "c" })]),
+    encounter: null,
+    testCall: call,
+  };
+  assert.deepEqual(toPlayerView(s, "a").testCall?.reports, { a: { passed: true } });
+  assert.equal(toPlayerView(s, "c").testCall, null, "an Agent not asked");
+  assert.equal(toPlayerView(s, null).testCall, null, "the table screen");
+  assert.equal(toPlayerView({ ...s, testCall: { ...call, hideDn: true } }, "a").testCall?.test.dn, null, "HIDE DN");
 });

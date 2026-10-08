@@ -13,3 +13,6 @@ export const DN_TABLE = [
 export const CORRUPTION_DNS = [1, 3, 5, 7, 9] as const;
 export type CorruptionDn = (typeof CORRUPTION_DNS)[number];
 export const isCorruptionDn = (dn: number | null): dn is CorruptionDn => CORRUPTION_DNS.some((d) => d === dn);
+
+// Most Icons a Test roll can be typed as (an app cap on a hand-entered count, not a rule).
+export const MAX_ICONS = 60;

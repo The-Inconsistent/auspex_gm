@@ -1,12 +1,20 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { sourceName, BeatTest, presetScene, rowsFor, threatCite, type EventTable, type ThreatSource } from "@wg/shared";
+import {
+  sourceName,
+  BeatTest,
+  presetScene,
+  rowsFor,
+  threatCite,
+  type EventTable,
+  type ThreatSource,
+  dnLabel,
+  testTitle,
+} from "@wg/shared";
 
 import { TableRoll } from "@/components/ui/table-roll/table-roll";
 import type { Send } from "@/hooks/use-table/use-table";
-
-import { dnLabel, testTitle } from "../../utils";
 
 type ScenePickerProps = { adventureId: string; tables: EventTable[]; send: Send; onDone: (msg: string) => void };
 

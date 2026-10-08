@@ -16,6 +16,7 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
 import { clearSpendRequests } from "../spend/spend.clear.ts";
+import { clearTestCall } from "../test-call/test-call.clear.ts";
 import { toCharacter } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
 
@@ -136,6 +137,7 @@ export async function applyCampaignAction(
       const before = await charactersOf(tx, cid);
       await tx.update(character).set({ wrath: 2 }).where(eq(character.campaignId, cid));
       await clearSpendRequests(tx, { campaignId: cid }); // asked against the pools this just reset
+      await clearTestCall(tx, cid); // a Test called last session is over (§11.143)
       await tx.update(campaign).set({ glory: 0, ruin: players }).where(eq(campaign.id, cid));
       await tx
         .update(session)
@@ -168,6 +170,7 @@ export async function applyCampaignAction(
       // Read before the award, because what the GM wants to know is what this session's XP crossed.
       const before = await charactersOf(tx, cid);
       await clearSpendRequests(tx, { campaignId: cid }); // the session the pools were spent in is over
+      await clearTestCall(tx, cid);
       await tx.update(session).set({ endedAt: new Date(), recap: a.recap, xp: a.xp }).where(eq(session.id, s.id));
       await tx
         .update(character)

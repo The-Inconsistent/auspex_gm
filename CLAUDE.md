@@ -152,6 +152,8 @@ apps/api/src/
   codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts,
                image.schema.ts (codex_image: GM-uploaded pictures, issue #199), image.store.ts (the only code that
                touches their bytes: sniff, caps, sweep; swap for S3 here)
+  test-call/   test-call.schema.ts (test_call: the Test the GM called, one per campaign), test-call.actions.ts
+               (test.call/report/close; a player reports for their own Agent), test-call.clear.ts (session start/end)
   threat/      threat.schema.ts (custom_threat: the GM's own stat blocks), threat.actions.ts (threat.save/delete),
                threat.service.ts (loadThreats: bestiary + this campaign's customs, checkThreats)
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
@@ -196,7 +198,7 @@ apps/web/public/fonts/       Cinzel, Crimson Pro and IBM Plex Mono static WOFF (
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,
                              mention.ts (codex mention tokens, auto-link, the import remap), corruption.ts (levels, the Test DN,
-                             gain, Mutation Test DNs), mutation.ts (Mutation tables, severity, the d66 lookup)
+                             gain, Mutation Test DNs), mutation.ts (Mutation tables, severity, the d66 lookup), test-call.ts (a called Test: its pool, DN, labels)
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
 packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, mutations/*.json, packs/<name>/, validate.ts, index.ts (loaders),

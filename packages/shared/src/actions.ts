@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput, MAX_HAZARDS } from "./codex.ts";
-import { CORRUPTION_DNS } from "./dn.ts";
+import { BeatTest, CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { CORRUPTION_DNS, MAX_ICONS, isCorruptionDn } from "./dn.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
 import { MAX_SPEND_AMOUNT, SpendKind } from "./spend.ts";
@@ -22,6 +22,8 @@ import {
 } from "./state.ts";
 
 const id = z.uuid();
+// ponytail: app limit on who one call names; a table this big needs no more.
+const MAX_CALLED = 30;
 const rowId = z.string().regex(/^[a-z0-9-]+$/); // a row of the server's book data
 // A custom threat's slug (issue #43): made server-side by `threatSlug`, and the client only ever echoes one back.
 const slug = z
@@ -30,8 +32,6 @@ const slug = z
   .max(MAX_SLUG)
   .regex(/^[a-z0-9-]+$/);
 const delta = z.number().int().min(-100).max(100);
-// Most Icons a Test roll can be typed as (an app cap on a hand-entered count, not a rule).
-export const MAX_ICONS = 60;
 const conditions = z.array(z.string().max(60)).max(30);
 // A builder draft is a few KB; this is room for every choice twice over, and a cap on what a socket can store.
 export const MAX_DRAFT_CHARS = 64_000;
@@ -69,6 +69,34 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("spend.cancel"), id }),
     z.object({ type: z.literal("spend.resolve"), id, accept: z.boolean() }),
+
+    // A Test the GM calls at the table (issue #191). The GM calls and closes; a named Agent reports their own result,
+    // and the GM may set one for a phone that's out (rules-flow.md §11.143–144). Fear is a Resolve Test (Core p.199).
+    z
+      .object({
+        type: z.literal("test.call"),
+        test: BeatTest,
+        who: z.array(id).min(1).max(MAX_CALLED),
+        fear: z.boolean().default(false),
+        hideDn: z.boolean().default(false),
+      })
+      .refine((a) => !a.fear || a.test.kind === "resolve", "A Fear Test is a Resolve Test (Core p.199)")
+      .refine(
+        (a) => a.test.kind !== "corruption" || isCorruptionDn(a.test.dn),
+        "A Corruption Test takes a DN of 1, 3, 5, 7 or 9 (Core p.285)",
+      ),
+    z.object({
+      type: z.literal("test.report"),
+      callId: id,
+      characterId: id,
+      passed: z.boolean(),
+      // A failed Corruption Test's roll (p.286); refused on any other report.
+      icons: z.number().int().min(0).max(MAX_ICONS).optional(),
+      complication: z.boolean().optional(),
+      wrathCritical: z.boolean().optional(),
+      spentWrath: z.boolean().optional(),
+    }),
+    z.object({ type: z.literal("test.close") }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     z.object({ type: z.literal("session.start") }),
@@ -375,6 +403,8 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   // Asking for a spend, and taking the ask back, are the player's; answering it is the GM's (§11.122).
   "spend.request",
   "spend.cancel",
+  // Reporting a called Test's result is the player's, for their own Agent (issue #191, §11.144).
+  "test.report",
 ]);
 
 // `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry

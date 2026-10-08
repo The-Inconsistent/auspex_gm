@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ATTRIBUTES, Marker, Pool, SKILLS, Visibility, type Skill } from "./state.ts";
+import { ATTRIBUTES, Marker, Pool, SKILLS, TEST_KINDS, Visibility, type Skill } from "./state.ts";
 import type { Threat } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeMod } from "./weapon-effect.ts";
@@ -110,7 +110,7 @@ export const MAX_EXITS = 10; // ponytail: app limit, not a rule; raise it if a s
 // SKILLS, Core pp.158-161), an Attribute alone (p.170), or a trait: Influence (p.169), Resolve for Fear and Terror
 // (p.170, pp.199-200), Conviction for Corruption (pp.170, 285). An Opposed Test has no DN: most Icons wins (p.170).
 // Any other Test may have no DN yet: the GM sets it at the table (p.160, rules-flow.md §11.75).
-export const TestKind = z.enum(["skill", "attribute", "opposed", "influence", "resolve", "corruption"]);
+export const TestKind = z.enum(TEST_KINDS);
 export type TestKind = z.infer<typeof TestKind>;
 // What each kind rolls: a Skill, an Attribute, either one (Opposed), or a trait the app doesn't name.
 export const TEST_POOL = {

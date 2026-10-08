@@ -1,11 +1,9 @@
 "use client";
-import type { Threat } from "@wg/shared";
+import { dnLabel, testTitle, type Threat } from "@wg/shared";
 
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import type { HazardView } from "@/lib/hazards/hazards";
-
-import { dnLabel, testTitle } from "../../utils";
 
 type HazardChipsProps = { view: HazardView; bestiary: Threat[]; tier: number };
 

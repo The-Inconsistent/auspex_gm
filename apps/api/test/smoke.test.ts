@@ -113,11 +113,15 @@ async function eventually(check: () => boolean, what: string) {
 }
 
 // A new campaign created by a signed-in creator, and that GM's socket.
-async function newCampaign(name: string, tier: number) {
+// `ip`: a socket from another address, for a test that would push the suite past the per-IP connect limit.
+async function newCampaign(name: string, tier: number, ip?: string) {
   const gmClerk = clerk(`gm-${name}`, "creator");
   const res = await post("/campaigns", { name, tier }, bearer(gmClerk));
   const { campaignId } = (await res.json()) as { campaignId: string };
-  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
+  const gm = connect({
+    auth: { campaignId, clerkToken: gmClerk },
+    headers: ip ? { "cf-connecting-ip": ip } : undefined,
+  });
   await gm.until((s) => s.campaign.name === name);
   return { ...gm, campaignId, gmClerk };
 }
@@ -904,7 +908,7 @@ test("private notes: a handout's audience and an Agent's objectives reach only t
 });
 
 test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the GM and that Agent only", async (t) => {
-  const gm = await newCampaign("Corruption", 2);
+  const gm = await newCampaign("Corruption", 2, "10.18.2.1");
   t.after(() => gm.socket.close());
   const a = await gm.send({ type: "character.create", name: "A" });
   const b = await gm.send({ type: "character.create", name: "B" });
@@ -971,6 +975,75 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
   );
   assert.ok((await gm.send({ type: "character.unmutate", id: a.id, mutationId: "brute" })).ok);
   await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 4);
+});
+
+test("a called Test: named phones report their own, others don't see it, a session clears it (issue #191)", async (t) => {
+  const gm = await newCampaign("Test call", 2, "10.19.1.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    // Their own IP: the suite is near the per-IP connect limit.
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.19.1.1" } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  const awareness = { kind: "skill" as const, skill: "Awareness" as const, dn: 3, purpose: "GM's plan" };
+
+  assert.equal((await pa.send({ type: "test.call", test: awareness, who: [a.id] })).ok, false, "GM only");
+  assert.equal(
+    (await gm.send({ type: "test.call", test: { kind: "skill", skill: "Awareness", dn: 3 }, who: [a.id], fear: true }))
+      .ok,
+    false,
+    "Fear is a Resolve Test (Core p.199)",
+  );
+  const call = await gm.send({ type: "test.call", test: awareness, who: [a.id] });
+  assert.ok(call.ok && call.id);
+  const mine = await pa.until((s) => s.testCall?.id === call.id);
+  assert.equal((mine.testCall?.test as { purpose?: string }).purpose, undefined, "none of the GM's plan is kept");
+  assert.equal((await pb.until((s) => s.characters.length === 2)).testCall, null, "B isn't asked");
+
+  const report = (p: typeof pa, characterId: string, passed: boolean) =>
+    p.send({ type: "test.report", callId: call.id!, characterId, passed });
+  assert.equal((await report(pb, b.id, false)).ok, false, "B isn't asked");
+  assert.equal((await report(pb, a.id, false)).ok, false, "nor reports for A");
+  assert.equal(
+    (await pa.send({ type: "test.report", callId: call.id, characterId: a.id, passed: false, icons: 1 })).ok,
+    false,
+    "only a failed Corruption Test brings its roll",
+  );
+  assert.ok((await report(pa, a.id, false)).ok);
+  assert.ok((await report(pa, a.id, true)).ok, "a second tap overwrites");
+  await gm.until((s) => s.testCall?.reports[a.id!]?.passed === true);
+  assert.ok((await report(gm, a.id, false)).ok, "the GM sets a result for a phone that's out");
+  await gm.until((s) => s.testCall?.reports[a.id!]?.passed === false);
+
+  assert.equal((await pa.send({ type: "test.close" })).ok, false, "closing is the GM's");
+
+  // HIDE DN keeps it off the wire; a Corruption Test takes a printed DN and a roll that fails it (Core pp.285–286).
+  const corruption = { kind: "corruption" as const, dn: 3 };
+  assert.equal(
+    (await gm.send({ type: "test.call", test: { ...corruption, dn: 4 }, who: [a.id] })).ok,
+    false,
+    "4 isn't a Corruption DN",
+  );
+  const hidden = await gm.send({ type: "test.call", test: corruption, who: [a.id], hideDn: true });
+  assert.ok(hidden.ok && hidden.id);
+  const seen = await pa.until((s) => s.testCall?.id === hidden.id);
+  assert.equal(seen.testCall?.test.dn, null, "the phone never gets a hidden DN");
+  const failed = (icons: number) =>
+    pa.send({ type: "test.report", callId: hidden.id!, characterId: a.id!, passed: false, icons });
+  assert.equal((await failed(3)).ok, false, "3 Icons pass DN 3");
+  assert.ok((await failed(1)).ok);
+
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  await gm.until((s) => s.testCall === null);
+  assert.equal((await report(pa, a.id, true)).ok, false, "the call is closed");
 });
 
 test("table screen: a read-only seat with no character, the table's view and no book text", async (t) => {

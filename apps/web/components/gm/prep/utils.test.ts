@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-import { BeatTest } from "@wg/shared";
+import { BeatTest, dnLabel, testTitle } from "@wg/shared";
 
-import { dnLabel, ruinOnFailure, savedPools, testTitle } from "./utils.ts";
+import { ruinOnFailure, savedPools } from "./utils.ts";
 
 describe("scene Test labels", () => {
   test("a Test is named by what it rolls", () => {
