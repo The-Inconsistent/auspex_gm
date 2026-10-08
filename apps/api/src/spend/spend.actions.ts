@@ -49,7 +49,8 @@ export async function applySpendAction(
   const cid = ctx.campaignId;
   switch (a.type) {
     case "spend.request": {
-      await ownCharacter(tx, { campaignId: cid, id: a.characterId });
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
+      const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds have an amount to keep
       if (a.kind === "seize" && !(await activeEncounterId(tx, cid))) fail("No fight to Seize the Initiative in");
       const mine = await tx
         .select({ kind: spendRequest.kind })
@@ -57,13 +58,15 @@ export async function applySpendAction(
         .where(and(eq(spendRequest.campaignId, cid), eq(spendRequest.characterId, a.characterId)));
       if (mine.some((r) => r.kind === a.kind)) fail("Already asked for that: wait for the GM or cancel it");
       if (mine.length >= MAX_PENDING_SPENDS) fail(`At most ${MAX_PENDING_SPENDS} requests at once`);
+      // Asking needs the pool to cover it now (§11.122); ACCEPT checks again, since the pool may move in between.
+      await canPay(tx, { campaignId: cid, row, cost: spendCost(a.kind, amount) });
       const [r] = await tx
         .insert(spendRequest)
         .values({
           campaignId: cid,
           characterId: a.characterId,
           kind: a.kind,
-          amount: spendTakesAmount(a.kind) ? a.amount : 1, // only the Glory kinds have an amount to keep
+          amount,
         })
         .returning({ id: spendRequest.id });
       return { ok: true, id: r!.id }; // the row was just inserted
@@ -88,6 +91,22 @@ export async function applySpendAction(
   }
 }
 
+// A refusal unless the Agent's Wrath and the party's Glory cover `cost`.
+async function canPay(
+  tx: Tx,
+  {
+    campaignId,
+    row,
+    cost,
+  }: { campaignId: string; row: { name: string; wrath: number }; cost: ReturnType<typeof spendCost> },
+) {
+  if (cost.wrath > row.wrath) fail(`${row.name} has no Wrath to spend (p.164)`);
+  if (cost.glory > 0) {
+    const [c] = await tx.select({ glory: campaign.glory }).from(campaign).where(eq(campaign.id, campaignId));
+    if (cost.glory > (c?.glory ?? 0)) fail(`Not enough Glory: ${c?.glory ?? 0} left, ${cost.glory} asked (p.165)`);
+  }
+}
+
 async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof spendRequest.$inferSelect }) {
   const cid = ctx.campaignId;
   const cost = spendCost(r.kind, r.amount);
@@ -95,11 +114,7 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
 
   // pool.adjust and character.adjust clamp at 0, which would let a spend the pool can't pay go through for less, so
   // affordability is checked here. (turn.seize has its own check in encounter.actions' spend().)
-  if (cost.wrath > row.wrath) fail(`${row.name} has no Wrath to spend (p.164)`);
-  if (cost.glory > 0) {
-    const [c] = await tx.select({ glory: campaign.glory }).from(campaign).where(eq(campaign.id, cid));
-    if (cost.glory > (c?.glory ?? 0)) fail(`Not enough Glory: ${c?.glory ?? 0} left, ${cost.glory} asked (p.165)`);
-  }
+  await canPay(tx, { campaignId: cid, row, cost });
 
   switch (r.kind) {
     case "reroll":

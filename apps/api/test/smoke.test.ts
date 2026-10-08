@@ -3510,12 +3510,19 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.ok((await gm.send({ type: "spend.resolve", id: reroll.id, accept: true })).ok);
   await gm.until((s) => charOf(s, a.id!).wrath === 1 && s.spendRequests.length === 0);
 
-  // A spend the pool can't pay is refused and stays pending; DENY drops it with nothing spent.
-  const dice = await pa.send({ type: "spend.request", characterId: a.id, kind: "gloryDice", amount: 2 });
+  // Asking needs the Glory now, at most what the party holds; ACCEPT checks again, and a refusal stays pending.
+  const glory = (delta: number) => gm.send({ type: "pool.adjust", pool: "glory", delta });
+  const askDice = { type: "spend.request", characterId: a.id, kind: "gloryDice", amount: 2 } as const;
+  assert.equal((await pa.send(askDice)).ok, false, "Glory is 0");
+  assert.ok((await glory(3)).ok);
+  const dice = await pa.send(askDice);
   assert.ok(dice.ok && dice.id);
-  assert.equal((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok, false, "Glory is 0");
+  const over = { type: "spend.request", characterId: a.id, kind: "gloryDamage", amount: 4 } as const;
+  assert.equal((await pa.send(over)).ok, false, "more than the party holds");
+  assert.ok((await glory(-2)).ok);
+  assert.equal((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok, false, "Glory is 1");
   await gm.until((s) => s.spendRequests.length === 1);
-  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 3 })).ok);
+  assert.ok((await glory(2)).ok);
   assert.ok((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok);
   await gm.until((s) => s.campaign.glory === 1 && s.spendRequests.length === 0);
 
@@ -3526,6 +3533,7 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.ok((await gm.send({ type: "character.adjust", id: a.id, shock: 1 })).ok);
   assert.ok((await gm.send({ type: "spend.resolve", id: shock.id, accept: true })).ok);
   await gm.until((s) => charOf(s, a.id!).wrath === 0 && charOf(s, a.id!).shock === 0);
+  assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" })).ok, false, "no Wrath");
 
   // Seize needs a fight; a new fight clears the old one's Seize requests.
   assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok, false);
