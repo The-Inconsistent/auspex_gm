@@ -1491,6 +1491,10 @@ button.row.now:nth-of-type(even) {
     top: 0;
     z-index: 6;
   }
+  /* A peek's GO TO scrolls a row to the top (issue #198): clear the sticky rail. */
+  [id^="entry-"] {
+    scroll-margin-top: 60px;
+  }
   .tabs.rail .tab {
     flex: none;
     padding: 0 18px;

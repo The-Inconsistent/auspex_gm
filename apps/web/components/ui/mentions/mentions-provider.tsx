@@ -19,12 +19,17 @@ type Mentions = {
 
 const MentionsContext = createContext<Mentions | null>(null);
 
-type MentionsProviderProps = { codex: Codex; missing: string; children: ReactNode };
+type MentionsProviderProps = {
+  codex: Codex;
+  missing: string;
+  onGoTo?: (entry: MentionEntry) => void; // the GM's GO TO under a peek (issue #198): the entry's own row
+  children: ReactNode;
+};
 
 // Codex mentions (issue #200, docs/campaign-model.md §Mentions) over the snapshot this seat holds: the GM's whole codex,
 // or a phone's toPlayerCodex, so a phone can only link what it's already been shown. One dialog peeks at an entry over
 // the current screen, as RulesProvider does for a rule.
-export function MentionsProvider({ codex, missing, children }: MentionsProviderProps) {
+export function MentionsProvider({ codex, missing, onGoTo, children }: MentionsProviderProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   // Only the key: the peek reads the entry from the live snapshot, so an edit on another screen shows up in it.
   const [shown, setShown] = useState<{ kind: MentionKind; id: string } | null>(null);
@@ -72,6 +77,13 @@ export function MentionsProvider({ codex, missing, children }: MentionsProviderP
   );
   const entry = shown && byId.get(`${shown.kind}:${shown.id}`);
 
+  // GO TO: close the peek and leave for the entry's row.
+  const handleGoTo = () => {
+    if (!entry || !onGoTo) return;
+    dialog.current?.close();
+    onGoTo(entry);
+  };
+
   return (
     <MentionsContext value={value}>
       {children}
@@ -83,8 +95,13 @@ export function MentionsProvider({ codex, missing, children }: MentionsProviderP
       >
         <div className="stack pad">
           {entry ? <Peek key={`${entry.kind}:${entry.id}`} entry={entry} /> : <p className="dim">{missing}</p>}
-          <form method="dialog">
+          <form method="dialog" className="keys" style={{ paddingTop: 0 }}>
             <button className="btn primary">CLOSE</button>
+            {entry && onGoTo && (
+              <button type="button" className="btn" onClick={handleGoTo}>
+                GO TO
+              </button>
+            )}
           </form>
         </div>
       </dialog>

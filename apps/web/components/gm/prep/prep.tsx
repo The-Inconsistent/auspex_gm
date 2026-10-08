@@ -48,10 +48,14 @@ type PrepProps = {
   presets: ScenePresets;
   wargear: Wargear[]; // for a scene's + NEW CUSTOM THREAT
   onRun: () => void;
+  initialSceneId?: string; // a peek's GO TO (issue #198): open on the adventure holding it
 };
 
-export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: PrepProps) {
-  const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
+export function Prep({ state, codex, send, bestiary, presets, wargear, onRun, initialSceneId }: PrepProps) {
+  const [advId, setAdvId] = useState<string | null>(
+    () =>
+      codex.adventures.find((a) => a.beats.some((b) => b.id === initialSceneId))?.id ?? codex.adventures[0]?.id ?? null,
+  );
   const seated = activeCharacterIds(state.access); // whose phones a called Test reaches (issue #191)
   // The scene editor (a scene, or "new"), or the book-table picker ("table").
   const [editing, setEditing] = useState<Beat | "new" | "table" | null>(null);
@@ -305,7 +309,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
           <div className="rule">{adv.title.toUpperCase()} · SCENES</div>
           <div className="list">
             {adv.beats.map((b, i) => (
-              <div key={b.id} className="item">
+              <div key={b.id} id={`entry-${b.id}`} className="item">
                 <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                   <span className="dim">{sceneNumber(i)}</span>
                   <b style={{ flex: 1 }}>{b.title.toUpperCase()}</b>
