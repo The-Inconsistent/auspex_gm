@@ -152,39 +152,7 @@
           "kind": "mortal",
           "amount": 1
         }
-      ],
-      "glory": {
-        "each": [
-          {
-            "kind": "mortal",
-            "amount": 1
-          }
-        ],
-        "choose": [
-          {
-            "label": "No extra effect",
-            "apply": []
-          },
-          {
-            "label": "Prone",
-            "apply": [
-              {
-                "kind": "condition",
-                "condition": "Prone"
-              }
-            ]
-          },
-          {
-            "label": "2 Shock",
-            "apply": [
-              {
-                "kind": "shock",
-                "amount": 2
-              }
-            ]
-          }
-        ]
-      }
+      ]
     },
     {
       "from": 46,
@@ -320,25 +288,7 @@
           "kind": "wounds",
           "dice": "1d6"
         }
-      ],
-      "glory": {
-        "each": [],
-        "choose": [
-          {
-            "label": "Another target within 10 m",
-            "apply": []
-          },
-          {
-            "label": "+1 Wound to all targets",
-            "apply": [
-              {
-                "kind": "wounds",
-                "amount": 1
-              }
-            ]
-          }
-        ]
-      }
+      ]
     },
     {
       "from": 66,

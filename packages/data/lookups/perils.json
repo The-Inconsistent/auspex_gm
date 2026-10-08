@@ -210,6 +210,10 @@
         {
           "kind": "corruption",
           "dice": "1d3+1"
+        },
+        {
+          "kind": "mutation",
+          "severity": "minor"
         }
       ]
     },

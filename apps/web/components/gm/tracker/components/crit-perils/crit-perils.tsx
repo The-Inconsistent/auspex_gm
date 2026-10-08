@@ -2,17 +2,24 @@
 import { useEffect, useRef, useState } from "react";
 
 import {
-  applyActions,
   diceNeeded,
+  diceRange,
   isD66,
   lookup,
   perilsRow,
+  planApply,
+  type Character,
   type CritRow,
   type Lookups,
   type LookupApply,
   type LookupTarget,
+  type MutationTable,
   type PerilsRow,
+  type Severity,
 } from "@wg/shared";
+
+import { MutationRoll } from "@/components/gm/party/components/mutation-roll/mutation-roll";
+import type { Send } from "@/hooks/use-table/use-table";
 
 import type { Run } from "../../types";
 
@@ -24,28 +31,38 @@ type CritPerilsProps = {
   // The selected combatant as the lookup acts on it (character id for an Agent, combatant id for a Threat), or null.
   target: (LookupTarget & { name: string }) | null;
   run: Run;
+  send: Send; // for the Mutation roll a Perils row asks for (p.288)
+  mutations: MutationTable[];
+  character?: Character; // the selected Agent, whom that roll is for
   glory: number; // the campaign's Glory pool, the most a Glorious Critical can spend (p.197)
   request?: PerilsRequest;
 };
 
-type Table = "criticalHits" | "perils";
+type Table = keyof Lookups;
 const TITLE: Record<Table, string> = { criticalHits: "CRITICAL HIT", perils: "PERILS" };
 
 const KIND = { wounds: "Wounds", shock: "Shock", mortal: "Mortal Wounds", corruption: "Corruption" } as const;
 const printed = (a: LookupApply) =>
-  a.kind === "condition" ? a.condition : `${"amount" in a ? a.amount : a.dice} ${KIND[a.kind]}`;
+  a.kind === "condition"
+    ? a.condition
+    : a.kind === "mutation"
+      ? `roll on the ${a.severity} Mutations table`
+      : `${"amount" in a ? a.amount : a.dice} ${KIND[a.kind]}`;
 const printedAll = (list: LookupApply[]) => list.map(printed).join(" · ");
 
 // CRIT / PERILS: the GM types the d66 rolled at the table; the app shows the printed row and applies only its
 // mechanical part to the selected combatant through the existing actions. It never rolls (§11.125). A Glorious
-// Critical spends Glory from the pool first (p.197), one step per Glory with a pick when the row offers a choice (§11.156).
-export function CritPerils({ lookups, target, run, glory, request }: CritPerilsProps) {
+// Critical spends Glory from the pool last (p.197), one step per Glory on a single-effect row (§11.156).
+export function CritPerils({ lookups, target, run, send, mutations, character, glory, request }: CritPerilsProps) {
   const [table, setTable] = useState<Table>("criticalHits");
   const [d66, setD66] = useState("");
   const [ones, setOnes] = useState("0");
   const [typed, setTyped] = useState<Record<number, string>>({});
   const [spent, setSpent] = useState(0);
-  const [picks, setPicks] = useState<number[]>([]);
+  const [beat, setBeat] = useState(true); // a Critical Hit beats the target's Resilience (p.197)
+  const [notices, setNotices] = useState<string[]>([]);
+  const [refused, setRefused] = useState<string | null>(null);
+  const [mutate, setMutate] = useState<{ id: string; severity: Severity } | null>(null);
   const [seenKey, setSeenKey] = useState(request?.key);
   const d66Ref = useRef<HTMLInputElement>(null);
 
@@ -54,7 +71,17 @@ export function CritPerils({ lookups, target, run, glory, request }: CritPerilsP
     set(v);
     setTyped({});
     setSpent(0);
-    setPicks([]);
+    setNotices([]);
+    setRefused(null);
+    setMutate(null);
+  };
+
+  // After a step lands the whole entry goes, so the next APPLY can't send that step again.
+  const clearEntry = () => {
+    setD66("");
+    setTyped({});
+    setSpent(0);
+    setBeat(true);
   };
 
   // A request from elsewhere switches to PERILS with its extra 1s, adjusted during render rather than in an effect.
@@ -65,7 +92,9 @@ export function CritPerils({ lookups, target, run, glory, request }: CritPerilsP
     setD66("");
     setTyped({});
     setSpent(0);
-    setPicks([]);
+    setNotices([]);
+    setRefused(null);
+    setMutate(null);
   }
   useEffect(() => {
     if (request) d66Ref.current?.focus();
@@ -87,41 +116,66 @@ export function CritPerils({ lookups, target, run, glory, request }: CritPerilsP
   const capped = table === "perils" && valid && result > top && top > 0;
   const need = row ? diceNeeded(row) : [];
   const amounts = need.map((_, i) => Number(typed[i]));
-  const ready = need.every((_, i) => Number.isInteger(amounts[i]) && amounts[i]! > 0);
+  const inRange = (i: number) => {
+    const { min, max } = diceRange(need[i]!);
+    return Number.isInteger(amounts[i]) && amounts[i]! >= min && amounts[i]! <= max;
+  };
   const crit = row && "glorious" in row ? (row as CritRow) : undefined;
+  const resilience = table === "criticalHits"; // only a Critical Hit has a Resilience to beat
+  const hitOnly = resilience && !beat;
   const g = crit?.glory;
   const maxSpend = Math.max(0, glory);
+  const filled = hitOnly || need.every((_, i) => inRange(i));
+  const plan =
+    row && target
+      ? planApply({ row, target, typed: amounts, glory: g ? { spent } : undefined, beatResilience: !hitOnly })
+      : null;
+  const mutation = !hitOnly ? row?.apply.find((a) => a.kind === "mutation") : undefined;
 
-  const setSpend = (n: number) => {
-    const next = Math.min(maxSpend, Math.max(0, n));
-    setSpent(next);
-    setPicks((p) => Array.from({ length: next }, (_, i) => p[i] ?? 0));
-  };
+  const setSpend = (n: number) => setSpent(Math.min(maxSpend, Math.max(0, n)));
 
+  // Stops at the first refusal and says why; steps that landed stay, and the entry is already cleared by then.
   const handleApply = async () => {
-    if (!row || !target) return;
-    const steps = applyActions({
-      row,
-      target,
-      typed: amounts,
-      glory: g ? { spent, picks: Array.from({ length: spent }, (_, i) => picks[i] ?? 0) } : undefined,
-    });
-    for (const a of steps)
-      if (!(await run(a, `${target.name.toUpperCase()} ${TITLE[table]} ${result}: ${row.name.toUpperCase()}`)).ok)
+    if (!row || !target || !plan) return;
+    const text = `${target.name.toUpperCase()} ${TITLE[table]} ${result}: ${row.name.toUpperCase()}`;
+    const got: string[] = [];
+    let landed = false;
+    setRefused(null);
+    for (const a of plan.actions) {
+      const r = await run(a, text);
+      if (!r.ok) {
+        setRefused(r.error);
+        setNotices(got);
         return;
-    setSpent(0);
-    setPicks([]);
+      }
+      got.push(...(r.notices ?? []));
+      if (!landed) {
+        landed = true;
+        clearEntry();
+      }
+    }
+    setNotices(got);
+    if (mutation?.kind === "mutation" && target.kind === "pc")
+      setMutate({ id: target.id, severity: mutation.severity });
+    if (!landed) clearEntry();
   };
 
   return (
     <div className="stack" style={{ gap: 6 }}>
       <div className="rule">CRIT / PERILS</div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {(Object.keys(TITLE) as Table[]).map((t) => (
-          <button key={t} className="btn sm" aria-pressed={t === table} onClick={() => pick(setTable, t)}>
-            {TITLE[t]}
-          </button>
-        ))}
+        <div role="group" aria-label="Lookup table" style={{ display: "flex", gap: 6 }}>
+          {(Object.keys(TITLE) as Table[]).map((t) => (
+            <button
+              key={t}
+              className={`btn sm${t === table ? " primary" : ""}`}
+              aria-pressed={t === table}
+              onClick={() => pick(setTable, t)}
+            >
+              {TITLE[t]}
+            </button>
+          ))}
+        </div>
         <input
           className="input"
           style={{ width: 80 }}
@@ -134,6 +188,11 @@ export function CritPerils({ lookups, target, run, glory, request }: CritPerilsP
           value={d66}
           onChange={(e) => pick(setD66, e.target.value.replace(/\D/g, ""))}
         />
+        {resilience && (
+          <button className="btn sm" aria-pressed={beat} onClick={() => setBeat(!beat)}>
+            BEAT RESILIENCE: {beat ? "YES" : "NO"}
+          </button>
+        )}
         {table === "perils" && (
           <input
             className="input"
@@ -162,7 +221,8 @@ export function CritPerils({ lookups, target, run, glory, request }: CritPerilsP
               <span className="label">GLORIOUS</span> {crit.glorious}
             </div>
           )}
-          {g && (
+          {hitOnly && <div className="dim">Didn&apos;t beat Resilience: 1 Wound, no other effects (p.197).</div>}
+          {g && !hitOnly && (
             <div className="stack" style={{ gap: 6 }}>
               <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
                 <span className="label">GLORY SPENT</span>
@@ -193,50 +253,64 @@ export function CritPerils({ lookups, target, run, glory, request }: CritPerilsP
                     .join(" · ")}
                 </div>
               )}
-              {g.choose &&
-                Array.from({ length: spent }, (_, i) => (
-                  <select
-                    key={i}
-                    className="input"
-                    aria-label={`Glory ${i + 1} effect`}
-                    value={picks[i] ?? 0}
-                    onChange={(e) => setPicks((p) => p.map((v, j) => (j === i ? Number(e.target.value) : v)))}
-                  >
-                    {g.choose!.map((o, k) => (
-                      <option key={k} value={k}>
-                        {`GLORY ${i + 1}: ${o.label}${o.apply.length ? ` (${printedAll(o.apply)})` : ""}`}
-                      </option>
-                    ))}
-                  </select>
-                ))}
             </div>
           )}
-          {row.apply.length > 0 && <div className="dim">APPLIES: {printedAll(row.apply)}</div>}
-          {target?.kind === "threat" && row.apply.some((a) => a.kind === "corruption") && (
+          {row.apply.length > 0 && !hitOnly && <div className="dim">APPLIES: {printedAll(row.apply)}</div>}
+          {target?.kind === "threat" && !hitOnly && row.apply.some((a) => a.kind === "corruption") && (
             <div className="dim">Threats have no Corruption; APPLY skips it.</div>
           )}
-          {need.map((dice, i) => (
-            <input
-              key={i}
-              className="input"
-              style={{ width: 140 }}
-              inputMode="numeric"
-              aria-label={`Rolled ${dice}`}
-              placeholder={`ROLLED ${dice.toUpperCase()}`}
-              value={typed[i] ?? ""}
-              onChange={(e) => setTyped({ ...typed, [i]: e.target.value.replace(/\D/g, "") })}
-            />
-          ))}
+          {!hitOnly &&
+            plan?.notes.map((n) => (
+              <div key={n} className="dim">
+                {n}
+              </div>
+            ))}
+          {!hitOnly &&
+            need.map((dice, i) => {
+              const { min, max } = diceRange(dice);
+              const bad = typed[i] !== undefined && typed[i] !== "" && !inRange(i);
+              return (
+                <div key={i} className="stack" style={{ gap: 2 }}>
+                  <input
+                    className="input"
+                    style={{ width: 140 }}
+                    inputMode="numeric"
+                    aria-label={`Rolled ${dice}`}
+                    aria-invalid={bad}
+                    placeholder={`ROLLED ${dice.toUpperCase()}`}
+                    value={typed[i] ?? ""}
+                    onChange={(e) => setTyped({ ...typed, [i]: e.target.value.replace(/\D/g, "") })}
+                  />
+                  {bad && (
+                    <div className="red">
+                      {dice} rolls {min}–{max}.
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           <div>
             <button
               className="btn primary"
-              disabled={!target || !ready || (row.apply.length === 0 && spent === 0)}
+              disabled={!target || !filled || (!hitOnly && row.apply.length === 0 && spent === 0)}
               onClick={handleApply}
             >
               APPLY{target ? ` → ${target.name.toUpperCase()}` : " (SELECT A COMBATANT)"}
             </button>
           </div>
         </div>
+      )}
+      {refused && <div className="red">! {refused}</div>}
+      {notices.length > 0 && <div className="dim">{notices.join(" · ")}</div>}
+      {mutate && character?.id === mutate.id && (
+        <MutationRoll
+          key={`${mutate.id}-${mutate.severity}`}
+          character={character}
+          tables={mutations}
+          send={send}
+          startAt={mutate.severity}
+          onResult={(r, ok) => (r.ok ? setNotices([ok, ...(r.notices ?? [])]) : setRefused(r.error))}
+        />
       )}
     </div>
   );

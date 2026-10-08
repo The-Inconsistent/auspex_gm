@@ -203,7 +203,13 @@ export function GmApp({
                     </ArchivedBanner>
                   )}
                   {tab === "TRACK" && (
-                    <Tracker state={state} send={send} bestiary={allThreats} lookups={presets.lookups} />
+                    <Tracker
+                      state={state}
+                      send={send}
+                      bestiary={allThreats}
+                      lookups={presets.lookups}
+                      mutations={presets.mutations}
+                    />
                   )}
                   {tab === "SETUP" && (
                     <Setup

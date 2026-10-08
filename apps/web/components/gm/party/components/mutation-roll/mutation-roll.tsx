@@ -18,14 +18,15 @@ type MutationRollProps = {
   tables: MutationTable[];
   send: Send;
   onResult: (r: ActionResult, ok: string) => void;
+  startAt?: Severity; // a table the book names ("roll on the Minor Mutations table", p.288): skips the severity d6
 };
 
 // After a failed Mutation Test (Core p.287): the severity d6, the d66 on that table with +10 per mutation held, on to the
 // next table where the top row says so (§11.136), the mutation's own d6 table if it has one, then ADD. ROLL or I ROLLED
 // at every step; the Mutation Test itself stays physical dice. CUT OFF removes one: Corruption stays (p.287).
-export function MutationRoll({ character: c, tables, send, onResult }: MutationRollProps) {
+export function MutationRoll({ character: c, tables, send, onResult, startAt }: MutationRollProps) {
   const [severity, setSeverity] = useState<number | null>(null);
-  const [on, setOn] = useState<Severity | null>(null); // the table rolled on now
+  const [on, setOn] = useState<Severity | null>(startAt ?? null); // the table rolled on now
   const [d66, setD66] = useState<number | null>(null);
   const [subRoll, setSubRoll] = useState<number | null>(null);
   const held = c.stats.mutations;
@@ -59,7 +60,7 @@ export function MutationRoll({ character: c, tables, send, onResult }: MutationR
     if (!r.ok) return;
     // A fresh roll from the severity, for the next one (The Warp Made Manifest's "roll 2 additional mutations").
     setSeverity(null);
-    setOn(null);
+    setOn(startAt ?? null);
     setD66(null);
   };
 
@@ -79,9 +80,13 @@ export function MutationRoll({ character: c, tables, send, onResult }: MutationR
           </button>
         </div>
       ))}
-      <span className="label">SEVERITY (1–2 SUBTLE · 3–4 MINOR · 5–6 SEVERE, p.287)</span>
-      {/* Keyed on the count held, so an ADD clears the typed roll for the next one. */}
-      <TableRoll key={held.length} dice="d6" rolled={severity} hits={1} noun="severity" onLand={handleSeverity} />
+      {!startAt && (
+        <>
+          <span className="label">SEVERITY (1–2 SUBTLE · 3–4 MINOR · 5–6 SEVERE, p.287)</span>
+          {/* Keyed on the count held, so an ADD clears the typed roll for the next one. */}
+          <TableRoll key={held.length} dice="d6" rolled={severity} hits={1} noun="severity" onLand={handleSeverity} />
+        </>
+      )}
       {table && (
         <>
           <span className="label">

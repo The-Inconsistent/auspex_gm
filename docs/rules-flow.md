@@ -848,7 +848,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Conditions through `character.adjust` / `combatant.adjust` and `character.update` / `combatant.update`, so the
      damage rules still run. It never rolls, narration stays at the table, a dice amount ("1d3+1") is rolled by the
      GM and typed in as the total, and a Glorious Criticals line ("+1 Wound for every Glory you spend", p.197) is
-     applied by the Glory stepper (§11.156). APPLY carries only what a row puts on its one target with no Test; area
+     applied by the Glory stepper on a single-effect row (§11.156). APPLY carries only what a row puts on its one target with no Test; area
      effects, effects behind a Test and durations stay with the GM. Perils prints rows up to 105–106 (pp.263–264); a
      total above 106 reads the top row (§11.155). The tables are GM-only book data in `packages/data/lookups/`, served
      inside `/scene-presets`. *Proposed; awaiting the GM.*
@@ -953,10 +953,18 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      rule otherwise. *Proposed; awaiting the GM.*
 155. **A Perils total above 106 reads the top row,** Psychic Overload (Core p.263 prints rows up to 105–106 and says
      71–106 come only from extra 1s; it doesn't say what a higher total does). *Proposed; awaiting the GM.*
-156. **CRIT / PERILS applies Mortal Wounds as Wounds** (they ignore Resilience, p.193, and the app counts Wounds after
-     it), **Corruption only on an Agent** through `character.corrupt` (so the Mutation prompts still run), and
-     **Glorious Criticals by spending Glory from the pool first** (p.197), one step per Glory; area effects, effects
-     behind a Test and durations stay with the GM. *Proposed; awaiting the GM.*
+156. **CRIT / PERILS applies a row's mechanical part, as ruled on GitHub issue #183** (Core pp.193, 197, 287, 323–324).
+     A Critical Hit that doesn't beat the target's Resilience inflicts 1 Wound and no other effects (p.197): the
+     panel's BEAT RESILIENCE toggle (default yes) sends exactly that. Mortal Wounds are applied as Wounds (they ignore
+     Resilience, p.193, and the app counts Wounds after it). The Glory stepper appears only on rows whose Glorious
+     Critical is a single effect; a row that offers a choice shows its printed text alone and the GM applies it. Glory is
+     spent from the pool last, after every other step has landed. Corruption goes to the psyker through
+     `character.corrupt` (Agents only), so the Mutation prompts run, and the Mutation roll a row prints (Perils 93–94,
+     "roll on the Minor Mutations table", p.288) opens the Minor table in the panel. What the server would refuse is
+     dropped before sending and said on the panel: a Monstrous Creature is immune to Fear, Pinned and Staggered
+     (p.323) and a Threat with no Shock never suffers it (p.324). Repeated Conditions stack (p.197): "Hindered (1)" on
+     "Hindered" is "Hindered (2)"; an unrated Condition isn't listed twice. A typed dice total must lie within its dice.
+     Area effects, effects behind a Test and durations stay with the GM. *Ruled on GitHub issue #183.*
 
 ---
 
@@ -999,4 +1007,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
 | Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
-| Critical Hit and Perils lookup | done | `lookups.ts` (`perilsResult`, `perilsRow`, `lookup`, `applyActions`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125, §11.154–156). Left to the GM: area effects, durations |
+| Critical Hit and Perils lookup | done | `lookups.ts` (`perilsResult`, `perilsRow`, `lookup`, `applyActions`, `planApply`, `addCondition`, `diceRange`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125, §11.154–156). Left to the GM: area effects, durations |
