@@ -8,6 +8,7 @@ import {
   CharacterName,
   CONDITIONS,
   CharacterStats,
+  corruptionLevel,
   deriveStats,
   pcStatus,
   rankOf,
@@ -16,11 +17,16 @@ import {
   type Codex,
   type LiveState,
   type Member,
+  type MutationTable,
   type Wargear,
 } from "@wg/shared";
 
 import { NEW_CHARACTER } from "@/components/builder/constants";
+import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
+import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { MentionField } from "@/components/ui/mention-field/mention-field";
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
@@ -30,10 +36,12 @@ import { qrImage } from "@/lib/qr/qr";
 import { shareOrigin } from "@/lib/share-origin/share-origin";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
+import { MutationRoll } from "./components/mutation-roll/mutation-roll";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
 import { RoomInvite } from "./components/room-invite/room-invite";
+import { SessionHistory } from "./components/session-history/session-history";
 import { CHARACTER_INVITE_HOURS, DEFAULT_XP, XP_AWARDS } from "./constants";
 
 type PartyProps = {
@@ -41,16 +49,19 @@ type PartyProps = {
   codex: Codex;
   send: Send;
   wargear: Wargear[];
+  mutations: MutationTable[];
 };
 
-export function Party({ state, codex, send, wargear }: PartyProps) {
+export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
   const [name, setName] = useState("");
   const [qr, setQr] = useState<JoinQr | null>(null);
   const [importFor, setImportFor] = useState<string | null>(null);
   const [reqFor, setReqFor] = useState<string | null>(null);
+  const [mutFor, setMutFor] = useState<string | null>(null); // whose MUTATIONS panel is open
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const agentFields = useFieldErrors("new-agent"); // ADD AGENT's name
+  const { print } = usePrint();
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
   const open = codex.sessions.find((s) => !s.endedAt);
@@ -69,6 +80,10 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const report = (r: ActionResult, ok: string) =>
     setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`);
 
+  // DELETE LAST SESSION's line: the server's notice says what it removed and that the XP stays.
+  const sessionReport = (r: ActionResult, ok: string) =>
+    setMsg(r.ok ? (r.notices?.length ? r.notices.join(" · ") : ok) : `! ${r.error}`);
+
   // Renders a join URL as a full-screen QR code.
   const showCode = async ({ title, url }: { title: string; url: string }) => {
     try {
@@ -84,6 +99,16 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
     if (!r.ok || !r.token) return report(r, "");
     await showCode({ title: c.name, url: `${shareOrigin(window.location)}/join/${r.token}` });
   };
+
+  // TABLE SCREEN: a read-only guest seat for the TV in the middle of the table; its browser keeps the token in a cookie.
+  const showScreenQr = async () => {
+    const r = await send({ type: "screen.issue" });
+    if (!r.ok || !r.token) return report(r, "");
+    await showCode({ title: "Table screen", url: `${shareOrigin(window.location)}/join/${r.token}` });
+  };
+
+  // REVOKE SCREENS: every table screen token dies and the TVs disconnect.
+  const revokeScreens = async () => report(await send({ type: "screen.revoke" }), "TABLE SCREENS REVOKED");
 
   // INVITE: a single-use link for one character; the player signs in (or joins as a guest) and takes that seat.
   const inviteCharacter = async (c: Character) => {
@@ -141,6 +166,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
   const endSession = async () =>
     report(await send({ type: "session.end", xp, recap }), `SESSION ENDED · +${xp} XP EACH`);
 
+  // END SESSION WITHOUT XP: closes a session that was never played or left open; no XP, no Rank notices, pools as they are.
+  const abandonSession = async () => report(await send({ type: "session.abandon" }), "SESSION ENDED · NO XP");
+
   // START SESSION: resets the pools per the rules.
   const startSession = async () => report(await send({ type: "session.start" }), "SESSION STARTED · POOLS RESET");
 
@@ -153,6 +181,13 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
     report(
       await send({ type: "character.supply", id: c.id, wealth }),
       `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
+    );
+
+  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is CorruptionTest.
+  const adjCorruption = async (c: Character, delta: number) =>
+    report(
+      await send({ type: "character.corrupt", id: c.id, delta }),
+      `${c.name.toUpperCase()} CORRUPTION ${delta > 0 ? "+" : ""}${delta}`,
     );
 
   // ±1 AMMO: loot or an award of one type (§11.57), starting the type if it's new; −1 takes back a slip, and at 0
@@ -233,18 +268,23 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
               <label className="label" htmlFor="recap">
                 RECAP (players see this)
               </label>
-              <textarea
+              <MentionField
                 id="recap"
-                className="input"
+                multiline
                 value={recap}
-                onChange={(e) => setRecap(e.target.value)}
+                onChange={setRecap}
                 placeholder="Previously in Wrath & Glory…"
               />
             </div>
-            <div>
+            <div className="keys" style={{ alignItems: "center", paddingTop: 0 }}>
               <button className="btn primary" onClick={endSession}>
                 END SESSION
               </button>
+              <ConfirmAction
+                label="END SESSION WITHOUT XP"
+                prompt="End this session with no XP and no recap?"
+                onConfirm={abandonSession}
+              />
             </div>
           </>
         ) : (
@@ -260,6 +300,7 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
             </div>
           </>
         )}
+        <SessionHistory sessions={codex.sessions} send={send} onResult={sessionReport} />
       </div>
 
       <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
@@ -301,8 +342,16 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
       <div id="agents" className="list">
         {groups.map(([title, list]) => (
           <Fragment key={title}>
-            <div className="rule">
-              {title} ({list.length})
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <div className="rule" style={{ flex: 1 }}>
+                {title} ({list.length})
+              </div>
+              {/* Fold-over name cards to stand behind each Agent's miniature (#203). */}
+              {list.length > 0 && (
+                <button className="btn sm" onClick={() => print({ agents: list.map((c) => c.id) })}>
+                  PRINT TENTS
+                </button>
+              )}
             </div>
             {list.map((c) => {
               const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });
@@ -336,6 +385,9 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
                   </div>
                   <div className="dim">
+                    CORRUPTION {c.stats.corruption} · {corruptionLevel(c.stats.corruption).name.toUpperCase()}
+                  </div>
+                  <div className="dim">
                     WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}
                     {d.resilience}
                   </div>
@@ -366,6 +418,19 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                     </button>
                     <button className="btn sm" onClick={() => adjWealth(c, -1)}>
                       −1 WEALTH
+                    </button>
+                    <button className="btn sm" onClick={() => adjCorruption(c, 1)}>
+                      +1 CORRUPTION
+                    </button>
+                    <button className="btn sm" onClick={() => adjCorruption(c, -1)}>
+                      −1 CORRUPTION
+                    </button>
+                    <button
+                      className="btn sm"
+                      aria-expanded={mutFor === c.id}
+                      onClick={() => setMutFor(mutFor === c.id ? null : c.id)}
+                    >
+                      MUTATIONS{c.stats.mutations.length ? ` (${c.stats.mutations.length})` : ""}
                     </button>
                     <button className="btn sm danger" onClick={() => revoke(c)}>
                       REVOKE GUEST QR
@@ -399,6 +464,8 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
                       ))}
                     </select>
                   </form>
+                  <CorruptionTest characters={[c]} send={send} onReport={report} />
+                  {mutFor === c.id && <MutationRoll character={c} tables={mutations} send={send} onResult={report} />}
                   <ObjectivesEditor character={c} send={send} onResult={report} />
                   {reqFor === c.id && (
                     <RequisitionForm
@@ -441,6 +508,15 @@ export function Party({ state, codex, send, wargear }: PartyProps) {
           <option key={t} value={t} />
         ))}
       </datalist>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <span className="label">TABLE SCREEN</span>
+        <button className="btn sm" onClick={showScreenQr}>
+          SCREEN QR
+        </button>
+        <button className="btn sm danger" onClick={revokeScreens}>
+          REVOKE SCREENS
+        </button>
+      </div>
       <form style={{ display: "flex", gap: 8 }} onSubmit={handleAddCharacter}>
         <input
           id="new-agent"

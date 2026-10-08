@@ -13,6 +13,7 @@ export const campaign = pgTable("campaign", {
   kind: conditions(), // the kind of game the table agreed on (Core p.316, rules-flow §11.79)
   limits: conditions(), // what the table leaves out (Core p.316)
   homebrew: boolean().notNull().default(false), // the character builder may use the homebrew books (issue #9)
+  archivedAt: timestamp({ withTimezone: true }), // read-only until unarchived (campaign.archive)
   createdAt: createdAt(),
 });
 
@@ -31,5 +32,6 @@ export const session = pgTable("session", {
   startedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   endedAt: timestamp({ withTimezone: true }),
   recap: body(),
+  notes: body(), // the GM's own, never sent to a phone (issue #195)
   xp: integer().notNull().default(0),
 });

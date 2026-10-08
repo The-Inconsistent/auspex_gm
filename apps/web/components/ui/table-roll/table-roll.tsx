@@ -11,8 +11,8 @@ type TableRollProps = {
   onLand: (result: number) => void;
 };
 
-// ROLL ON A BOOK TABLE (issues #39, #49): ROLL (the app rolls on a book table in prep only; a Test stays physical dice,
-// rules-flow.md §7), or I ROLLED with what the GM rolled. The caller finds the row(s) and shows them; a new table remounts
+// ROLL ON A BOOK TABLE (issues #39, #49, #182): ROLL (the app rolls on a book table, in prep or a Mutation table at the
+// table; a Test stays physical dice, rules-flow.md §7), or I ROLLED with what the GM rolled. The caller finds the row(s) and shows them; a new table remounts
 // this with a new key, which clears the typed number.
 export function TableRoll({ dice, rolled, hits, noun, onLand }: TableRollProps) {
   const [typed, setTyped] = useState("");

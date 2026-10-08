@@ -158,7 +158,8 @@ Feedback is concise, actionable, and ranked by priority.
 
 ### Frontend (`apps/web`)
 - [ ] No `any`. Closed sets come from `@wg/shared` or an `as const` object. No inline unions.
-- [ ] Mutations only through `send(action)`. No Server Actions or REST for game state.
+- [ ] Mutations only through `send(action)`. No Server Actions or REST for game state (the two exceptions: the
+      character library, and the admin page's allowlisted housekeeping through `TableGateway.run`; CLAUDE.md).
 - [ ] `useEffect` only for external systems (socket, wake lock, device APIs), each with a comment.
 - [ ] Request-time or identity work happens on the server (Server Component or route handler); `params` are awaited.
 - [ ] Named handlers for anything beyond a one-statement setter.
@@ -197,7 +198,8 @@ Feedback is concise, actionable, and ranked by priority.
 - ❌ **Logic in a controller or the gateway** instead of `*.actions.ts` / `*.service.ts`.
 - ❌ **A layer-based backend structure.**
 - ❌ **New `useEffect` for data fetching,** or any `useEffect` without an external-system justification.
-- ❌ **Server Actions or REST for game mutations.**
+- ❌ **Server Actions or REST for game mutations** (outside the two exceptions in CLAUDE.md: the character library,
+  and `/api/admin` housekeeping, which must go through `TableGateway.run`).
 - ❌ **A breaking snapshot or `Action` change** without updating both web and api and the smoke test.
 - ❌ **Unhandled promise rejections** or swallowed errors.
 - ❌ **A schema change without a migration.**

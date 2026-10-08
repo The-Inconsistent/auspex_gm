@@ -13,26 +13,33 @@ text, notes and handouts. Build order: combat tracker plus this campaign core fi
 Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sheet p.374),
  │           patron, kind[] and limits[] (core p.316, rules-flow §11.79), party keywords
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
- ├─ Adventure    title, premise, status (planned | running | done)
+ ├─ Adventure    title, premise, status (planned | running | done | failed), shown + brief (the mission log, #196)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
  │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[],
  │               hazards[] (picks from its location's list, each spotted or not), outcome
  ├─ Location     name, parentId (planet → site → chamber; never a loop, `wouldCycle`), description, gmNotes,
  │               hazards (free-text notes), hazardList[] (book rows from Threat Assessment, the Core
- │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed
- ├─ NPC          name, factionId, role, portrait?, statSource, attitude (core p.168),
- │               gmNotes, secrets, revealed
+ │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed, picture
+ ├─ NPC          name, factionId, role, statSource, attitude (core p.168),
+ │               gmNotes, secrets, revealed, picture
  ├─ Item         name, wargearId? (a catalogue entry, else a custom item), description, gmNotes,
  │               locationId | npcId (where it lies or who carries it, one or neither), mods[] (a relic's
  │               Powers, rules-flow §11.116), givenTo (server-owned: the Agent GIVE handed it to; issue #51)
- ├─ Handout      title, body (text), image?, revealedAt, audience (all | characterIds)
- └─ Session      number, date, recap ("Previously in…", core p.317), beatIds played,
-                 objectives rolled (core p.43), xpAwarded (8/10/12, core p.321), notes
+ ├─ Handout      title, body (text), style (plain | slate | form | vox | decree), header, revealedAt,
+ │               audience (all | characterIds), picture
+ └─ Session      number, date, recap ("Previously in…", core p.317), notes (the GM's own), xp (8/10/12,
+                 core p.321); the journal is PARTY › SESSIONS (issue #195). Not built yet: beatIds played,
+                 objectives rolled (core p.43)
 ```
 
 - **The UI says SCENE.** The GM reads SCENE everywhere; code, actions (`beat.reorder`, `beat.startEncounter`), the
   `beat` table, packs and export files keep `beat`.
+- **Pictures** (issue #199): an NPC, place or handout can carry one picture the GM uploads, as `imageId`, and
+  `imageRevealed`, its own reveal. Revealing the entry doesn't show the picture: the GM can introduce a face by name
+  first, then hold up the portrait (PICTURE SHOWN). A phone gets the id only when both are on, and the api serves the
+  bytes only for an id that phone has (`docs/backend.md`, Codex pictures). The export carries the pictures as base64.
+  These are pictures, not maps: nothing on them is interactive.
 - **Beat types**: briefing, travel, investigation, social, combat, revelation, rest. The type only picks an icon and
   a checklist. There is no workflow engine: beats are an ordered list the GM can reorder, skip or add to mid-session.
 - **Goal and exits** (issue #38): `goal` is what the Agents are after. Each exit is `{label, beatId}`: "if they side with
@@ -92,9 +99,42 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
 - **Items** (issue #51): what the Agents can find, never sent to phones (`toPlayerCodex` → `items: []`). A scene
   lists them (`beat.itemIds`); GIVE TO (`character.giveItem`) builds the sheet line from the catalogue and spends the
   Agent's Wargear Test for the session (§11.112), TAKE BACK (`character.takeItem`) undoes it (§11.114).
+- **Handout style** (issue #204): how the handout looks as a prop, on the phone and on paper. `plain` (the default,
+  and what every older handout reads as) is the cogitator slate; `slate`, `form`, `vox` and `decree` are frames drawn in
+  CSS and in the printed PDF. `header` is one short banner or reference line; empty shows the style's own. Both are
+  player-facing text, so the player codex carries them. Not a rule.
 - **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those
   Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
   (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.
+
+## Mentions
+
+A codex text can name another entry (GitHub issue #200). The GM's rulings of 2026-10-07 are below.
+
+- **Token.** Typing `@` in a codex text opens a list of entries; picking one writes `@[npc:<id>]`. The kinds are
+  `npc`, `location`, `handout`, `faction`, `item` and `scene`. The token holds only the id, so a rename never breaks it
+  and the link always shows the entry's live name.
+- **Where it works.** These fields take a mention:
+  - a scene's GOAL, READ ALOUD, GM NOTES and OUTCOME;
+  - every long text in CODEX's editor;
+  - the END SESSION recap.
+
+  Each shows as a link wherever it's read: PREP, CODEX, the player's INTEL, and inside a peek.
+- **Auto-link.** Plain text that spells an entry's full name also becomes a link. The match is exact and
+  case-sensitive, a whole word, and the longest name wins. Names under 3 characters are skipped, and an entry
+  never links itself.
+- **The peek.** Tapping a link opens a dialog with that entry's text, the same fields its CODEX row shows.
+- **What a phone sees.** A phone resolves only entries in its own `toPlayerCodex` snapshot: revealed NPCs and
+  locations, and the handouts it may read. A mention of anything else shows `(unknown)`, never a name.
+  - Scenes, factions and items never reach a phone.
+  - Being mentioned never reveals an entry.
+  - On the GM's tablet, a deleted entry shows `(removed)`, and an unrevealed one is marked `(HIDDEN)`, so the GM knows
+    the table can't follow it yet.
+- **Printed item cards** (#203) have no link to tap and go on the table, so a mention prints as every phone would see
+  it. A revealed NPC or place, or a revealed handout meant for every player, prints its name. Anything else prints
+  `(unknown)`, including a private handout, whose title stays with its audience (`plainMentions`).
+- **IMPORT GAME** gives every row a new id, so it remaps the ids inside tokens through the same map (`remapMentions`).
+  A token pointing outside the file is kept, and shows as the placeholder.
 
 ## Building a campaign
 
@@ -127,7 +167,7 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 
 **Player phone**
 - Play sheet, a handout inbox with new-item badges, known NPCs and locations, party framework and Glory, and the
-  latest session recap.
+  every session's recap, newest first (issue #195).
 
 ## Content packs
 

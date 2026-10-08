@@ -4,12 +4,14 @@ import { useState } from "react";
 import {
   ATTRIBUTES,
   SKILLS,
+  corruptionLevel,
   deriveStats,
   effectiveStrength,
   pcStatus,
   poolMax,
   rankOf,
   skillTotal,
+  withMutations,
   type ActionInput,
   type Character,
   type CharacterDetail,
@@ -28,6 +30,7 @@ import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
+import { PendingSpends, RequestSpend } from "./components/request-spend/request-spend";
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { UpgradeRow } from "./components/upgrade-row/upgrade-row";
 import { Vital } from "./components/vital/vital";
@@ -38,18 +41,23 @@ export type SheetProps = {
   me: Character;
   tier: LiveState["campaign"]["tier"];
   table?: { state: LiveState; send: Send };
+  // The player's own phone: SPEND buttons in the WRATH and PARTY GLORY cards (§11.122). The GM's tablet has its own panel.
+  requests?: boolean;
 };
 
-export function Sheet({ me, tier, table }: SheetProps) {
+export function Sheet({ me, tier, table, requests = false }: SheetProps) {
   const s = me.stats;
   const d = deriveStats({ stats: s, overrides: me.overrides, tier });
   const [error, setError] = useState<string | null>(null);
   const [detail, setDetail] = useState<Partial<CharacterDetail> | null>(null); // the text being edited, or null
   const { get } = useRules();
+  const asker = requests ? table : undefined;
   // What the XP looks like from here: earned in play, what advancement hasn't spent yet, and Rank (Core p.146, +1 per
   // 40 XP earned, at most 3). The server keeps `xpSpent` from the last saved build, so no catalogue is needed to show it.
   const toSpend = Math.max(0, me.xp - me.xpSpent);
   const rank = rankOf(me.xp);
+  const corruption = corruptionLevel(s.corruption);
+  const shown = withMutations(s); // Attributes and Skills as the mutations change them (Core pp.288–295)
   // Where XP is spent: the builder's ADVANCE screen for a character already made (Core pp.146–151), the builder from the
   // top for one that isn't. LEVEL UP and the button at the foot of the sheet are the same trip, so they share this.
   const buildHref = table
@@ -97,7 +105,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
   return (
     <>
       <div>
-        <div className="display" style={{ fontSize: 30, lineHeight: 1.05 }}>
+        <div className="display page-title" style={{ lineHeight: 1.05 }}>
           {me.name.toUpperCase()}
         </div>
         <i className="dim">{[s.archetype, s.species, `Tier ${tier}`].filter(Boolean).join(" · ")}</i>
@@ -160,15 +168,20 @@ export function Sheet({ me, tier, table }: SheetProps) {
       <div className="vitals">
         <Vital label={SHEET_COUNTERS.wounds.label} value={me.wounds} max={d.maxWounds} remaining danger />
         <Vital label={SHEET_COUNTERS.shock.label} value={me.shock} max={d.maxShock} remaining />
-        <Vital label={SHEET_COUNTERS.wrath.label} value={me.wrath} max={null} />
+        <Vital label={SHEET_COUNTERS.wrath.label} value={me.wrath} max={null}>
+          {asker && <RequestSpend pool="wrath" characterId={me.id} {...asker} />}
+        </Vital>
         {table && (
           <Vital
             label="PARTY GLORY"
             value={table.state.campaign.glory}
             max={poolMax("glory", table.state.characters.length)}
-          />
+          >
+            {asker && <RequestSpend pool="glory" characterId={me.id} {...asker} />}
+          </Vital>
         )}
       </div>
+      {asker && <PendingSpends characterId={me.id} {...asker} />}
       <div className="dim" style={{ fontSize: 12 }}>
         WRATH: reroll failed dice · narrative declaration · restore {"Rank + Tier"} Shock (p.164).
       </div>
@@ -268,6 +281,32 @@ export function Sheet({ me, tier, table }: SheetProps) {
         </div>
       </div>
 
+      {/* Corruption (Core p.286): the level and what it adds to the DN of the next Corruption Test. The GM changes it. */}
+      <div className="stack" style={{ gap: 6 }}>
+        <div className="rule">CORRUPTION</div>
+        <SupplyRow label="Corruption" value={s.corruption} />
+        <div className="dim" style={{ fontSize: 12 }}>
+          {corruption.chaosSpawn
+            ? "CHAOS SPAWN · THE GM TAKES THIS AGENT OVER (p.286)"
+            : `${corruption.name.toUpperCase()} · +${corruption.modifier} TO CORRUPTION TEST DNs (p.286)`}
+        </div>
+        {/* Mutations (Core pp.287–295): what changes a number is already counted on this sheet; the rest is the GM's. */}
+        {s.mutations.map((m) => (
+          <div key={m.id} className="stack" style={{ gap: 2 }}>
+            <b>
+              {m.name.toUpperCase()}{" "}
+              <span className="dim">
+                (<PageCite cite={`Core p.${m.page}`} />)
+              </span>
+            </b>
+            <div style={{ whiteSpace: "pre-line" }}>{m.effect}</div>
+            {m.weapons.map((w) => (
+              <WeaponLine key={w.name} weapon={w} strength={effectiveStrength(s)} />
+            ))}
+          </div>
+        ))}
+      </div>
+
       <div className="stack" style={{ gap: 4 }}>
         <div className="rule">ATTRIBUTES AND SKILLS</div>
         <div className="label" style={{ display: "flex" }}>
@@ -283,7 +322,7 @@ export function Sheet({ me, tier, table }: SheetProps) {
                 {ATTRIBUTE_NAMES[a].toUpperCase()}
               </span>
               <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
-                {s.attributes[a]}
+                {shown.attributes[a]}
               </span>
               <span style={{ width: 64 }} />
             </div>
@@ -292,11 +331,11 @@ export function Sheet({ me, tier, table }: SheetProps) {
               .map((k) => (
                 <div
                   key={k}
-                  className={s.skills[k] ? undefined : "dim"}
+                  className={shown.skills[k] ? undefined : "dim"}
                   style={{ display: "flex", alignItems: "baseline", paddingLeft: 16 }}
                 >
                   <span style={{ flex: 1 }}>{k}</span>
-                  <span style={{ width: 64, textAlign: "right" }}>{s.skills[k] ?? 0}</span>
+                  <span style={{ width: 64, textAlign: "right" }}>{shown.skills[k] ?? 0}</span>
                   <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
                     {skillTotal(s, k)}
                   </span>

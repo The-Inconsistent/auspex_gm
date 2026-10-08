@@ -28,6 +28,7 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { checkThreats } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "./codex.schema.ts";
+import { hasImage, sweepImages } from "./image.store.ts";
 
 export type CodexAction = Extract<
   Action,
@@ -90,6 +91,8 @@ export async function applyCodexAction(
   { ctx, action: a }: { ctx: Ctx; action: CodexAction },
 ): Promise<ActionResult> {
   const cid = ctx.campaignId;
+  // A picture nothing points at any more goes with the next save or delete (issue #199).
+  if (a.type === "codex.save" || a.type === "codex.delete") await sweepImages(tx, cid);
 
   switch (a.type) {
     case "codex.save": {
@@ -98,6 +101,12 @@ export async function applyCodexAction(
       const data: Record<string, unknown> = { ...a.data };
       const refs = (table: RefTable, ids: unknown[], what: string) =>
         checkRefs(tx, { campaignId: cid, table, ids, what });
+      // A picture is a nice-to-have (issue #199): one that isn't this campaign's, or is gone (swept, or removed on another
+      // tablet), is saved as no picture rather than refusing the GM's edit. Never another campaign's, either way.
+      if (a.kind === "npc" || a.kind === "location" || a.kind === "handout") {
+        const imageId = (a.data as { imageId: string | null }).imageId;
+        if (imageId && !(await hasImage(tx, cid, imageId))) data.imageId = null;
+      }
       if (a.kind === "beat") {
         const b = a.data as z.output<typeof CodexInput.beat>;
         await refs(adventure, [b.adventureId], "Adventure");
@@ -180,6 +189,11 @@ export async function applyCodexAction(
             JSON.stringify(i.mods) !== JSON.stringify(given?.mods);
           if (given?.givenTo && moved) fail(`${given.name} is with an Agent now: take it back first`);
         }
+      }
+      // A phone never shows a bare title in the mission log (rules-flow.md §11.150).
+      if (a.kind === "adventure") {
+        const m = a.data as z.output<typeof CodexInput.adventure>;
+        if (m.shown && !m.brief.trim()) fail(`Write a brief before showing ${m.title || "the mission"} to the party`);
       }
       if (a.kind === "handout")
         await refs(character, (a.data as z.output<typeof CodexInput.handout>).audience, "Audience character");

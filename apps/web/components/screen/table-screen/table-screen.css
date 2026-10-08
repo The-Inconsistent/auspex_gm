@@ -1,0 +1,87 @@
+/* The table screen (components/screen/table-screen): large type for a TV across the table. Scoped under .ts so the
+   shared bars and chips grow here without touching the phone and tablet layouts. */
+.ts {
+  min-height: 100dvh;
+  padding: clamp(16px, 2.5vw, 48px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.5vw, 40px);
+  background: var(--vellum);
+  color: var(--ink);
+  font-size: clamp(18px, 1.8vw, 36px);
+}
+.ts-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2vw;
+  flex-wrap: wrap;
+}
+.ts-side {
+  font-size: clamp(36px, 7vw, 140px);
+  line-height: 1;
+}
+.ts-side.threats {
+  color: var(--red);
+}
+.ts-facts {
+  display: flex;
+  gap: clamp(20px, 4vw, 80px);
+}
+.ts-fact {
+  text-align: center;
+}
+.ts-fact .label {
+  font-size: clamp(14px, 1.4vw, 28px);
+}
+.ts-num {
+  font-size: clamp(36px, 6vw, 120px);
+  line-height: 1;
+}
+.ts-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(16px, 2.5vw, 40px);
+  align-items: start;
+}
+.ts-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.4vw, 24px);
+}
+.ts-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  padding: 0.5em 0.7em;
+  border-left: 0.3em solid var(--ink-2);
+  background: var(--vellum-2);
+}
+.ts-row.threats {
+  border-left-color: var(--red);
+}
+.ts-row.now {
+  outline: 0.12em solid var(--red);
+}
+.ts-row.done {
+  opacity: 0.55;
+}
+.ts-name {
+  font-size: 1.3em;
+}
+.ts .bar {
+  font-size: 1em;
+  gap: 0.6em;
+}
+.ts .track {
+  width: clamp(120px, 14vw, 320px);
+  height: clamp(14px, 1.6vw, 32px);
+}
+.ts-bars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1.5em;
+}
+.ts .chip {
+  font-size: 0.65em;
+}

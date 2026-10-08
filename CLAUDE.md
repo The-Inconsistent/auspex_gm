@@ -1,8 +1,9 @@
 # Auspex: Wrath & Glory table companion
 
 A companion app for **in-person** games of *Warhammer 40,000: Wrath & Glory* (Cubicle 7). The group plays with
-real miniatures and terrain, so there are **no maps, dice or chat**. (One exception: in prep, the GM may let the app roll on
-a book table, such as a travel event; Tests at the table stay physical dice, `packages/shared/src/roll-table.ts`.) The app covers:
+real miniatures and terrain, so there are **no maps, dice or chat**. (One exception: the GM may let the app roll on a book
+table, such as a travel event in prep or a Mutation table after a failed Mutation Test; Tests stay physical dice,
+`packages/shared/src/roll-table.ts`.) The app covers:
 
 - **GM (tablet):** live combat tracker, campaign prep (adventures → scenes; the UI says SCENE, code keeps `beat`), codex (NPCs, locations, handouts,
   factions), party and session management.
@@ -42,7 +43,9 @@ in `docs/rules-flow.md` §11. Add new ones there, not silently in code.
   character library, need a signed-in Clerk user. That gate holds only because Clerk's **Access mode** is
   **Invite-only** (`docs/development.md` §Clerk): never switch it to Open without a membership check on those two).
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
-  the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`).
+  the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`). Printed cards follow the
+  screen's gates: only `GmApp` mounts the print dialog, and the GM's own browser builds the PDF from what it already
+  holds; nothing is uploaded or stored (`docs/frontend.md` §5.1).
 
 ## Stack
 
@@ -52,7 +55,7 @@ find the Bun workspaces. `typecheck`, `test` and `validate` stay plain root scri
 
 | Part | Tech |
 |---|---|
-| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode`, `lucide-react` |
+| `apps/web` | Next.js 16 (App Router), React 19, socket.io-client, `qrcode`, `lucide-react`, `@react-pdf/renderer` (printed cards, loaded on first use) |
 | `apps/api` | NestJS 12 on Bun, run from source with no build step (Bun handles decorators). Socket.IO gateway, Drizzle ORM, Postgres 17 |
 | `packages/shared` | zod 4 schemas and pure rules functions, imported as TypeScript source by web and api |
 | `packages/auth` | the only Clerk dependency (`@clerk/backend`, `@clerk/nextjs`), as TypeScript source: `@wg/auth/api` (Bun api), `@wg/auth/next` (Next server, proxy), `@wg/auth/react` (provider, Clerk components) |
@@ -72,9 +75,12 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
   2. It first calls `authorize(ctx)`, which checks the caller's role and ownership.
   3. The gateway rebroadcasts.
   Actions are serialised per campaign with an in-process queue, which assumes a single api instance.
-  The one exception is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
+  There are two exceptions. The first is the **character library** (`/api/library`, `docs/backend.md` §3.1): a character outside any
   campaign is nobody's live state, so there is no room to broadcast to and no action to queue. It's plain REST, scoped
-  to the owner, and still re-resolves a build server-side before saving it.
+  to the owner, and still re-resolves a build server-side before saving it. The second is the **admin page's
+  housekeeping** (`POST /api/admin/campaigns/:id/action`, `docs/backend.md`): an admin outside any table sends an
+  allowlisted action over REST, and `TableGateway.run` gives it the socket path exactly (queue, transaction,
+  `authorize`, kicks, broadcast).
 - **The server decides.** Counters take deltas (`+2 Wounds`), clamped at 0 and capped where the rules cap them,
   so simultaneous taps never overwrite each other. Postgres holds all live state; the server keeps no in-memory
   game state.
@@ -88,7 +94,8 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
 - **Access: Clerk accounts, plus guest QR tokens.**
   - Signed-in Clerk users hold a seat through `membership` (gm or player, plus a character). The GM is always a
     member; there are no GM links. Clerk `publicMetadata.role = "creator"` (set by hand in the Dashboard) lets a user
-    start games in the lobby. The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
+    start games in the lobby; `"admin"` is a creator who also reaches `/admin` and acts as GM at every game without a seat
+    (`Ctx.admin`, logged in `admin_event`). The api verifies session tokens locally (`CLERK_JWT_KEY`, `authorizedParties` from
     `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `packages/auth/src/api.ts`).
   - Guests hold a per-character player token (`access_token`) in the httpOnly `wg_token` cookie, from a GUEST QR
     (`/join/<token>`) or a guest-friendly invite.
@@ -134,6 +141,7 @@ apps/api/src/
   auth/        auth.schema.ts (access_token, app_user, membership, invite),
                auth.service.ts (guest tokens, cookie, Ctx, resolveCtx), invite.service.ts (preview, accept),
                access.actions.ts (invite.create/revoke, member.remove)
+  admin/       admin.controller.ts (REST /api/admin: users, games, one housekeeping action, events), admin.service.ts, admin.schema.ts (admin_event)
   campaign/    campaign.controller.ts (REST: campaigns, lobby, me, threats, join, guest, invites), campaign.service.ts,
                campaign.actions.ts (campaign, pools, sessions), campaign.schema.ts
   character/   character.actions.ts (characters, guest tokens), character.schema.ts,
@@ -141,7 +149,11 @@ apps/api/src/
   library/     library.controller.ts (REST: creation, rules, library CRUD for a signed-in user),
                library.service.ts, library.schema.ts (library_character: characters outside any campaign)
   encounter/   encounter.actions.ts (encounters, turns, combatants, beat.startEncounter), encounter.schema.ts
-  codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts
+  codex/       codex.actions.ts (codex save/delete, beat order), codex.schema.ts,
+               image.schema.ts (codex_image: GM-uploaded pictures, issue #199), image.store.ts (the only code that
+               touches their bytes: sniff, caps, sweep; swap for S3 here)
+  test-call/   test-call.schema.ts (test_call: the Test the GM called, one per campaign), test-call.actions.ts
+               (test.call/report/close; a player reports for their own Agent), test-call.clear.ts (session start/end)
   threat/      threat.schema.ts (custom_threat: the GM's own stat blocks), threat.actions.ts (threat.save/delete),
                threat.service.ts (loadThreats: bestiary + this campaign's customs, checkThreats)
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
@@ -160,25 +172,37 @@ apps/web/components/lobby/   lobby-view (your games, CREATE NEW CAMPAIGN, import
 apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: tier, premise, name (table is ui/table-talk)
 apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
 apps/web/components/invite/  invite-accept
-apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel; kebab-case folders, children under
+apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab with game-card, events-log; lib/admin has its calls)
+apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel), test-call (CALL A TEST
+                             and the tally, issue #191), spend-requests (kebab-case folders, children under
                              components/)
-apps/web/components/player/  player-app (sheet, fight, intel)
+apps/web/components/player/  player-app (sheet, fight, intel), test-prompt (a called Test: pool, PASSED / FAILED; #191)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
-                             to read its rule), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
+                             to read its rule), mentions + mention-field (codex @mentions: tap-to-peek links, the @ list in
+                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), weapon-line, sheet (with upgrade-row, request-spend: the phone's SPEND buttons), bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
-                             CODEX › THREATS or a scene)
+                             CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed cards and handouts PDF), print-pick (a row's tick for PRINT N),
+                             handout-doc (a handout drawn as its prop: plain, slate, form, vox, decree; issue #204),
+                             codex-picture (PictureProvider + CodexPicture: an NPC, place or handout picture; issue #199)
+apps/web/components/print/   card-sheet (the react-pdf Document: tent, Threat and item cards on a 3 × 3 poker grid),
+                             handout-sheet (handouts as printed props, one to a page), fonts.ts (registerFonts)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
-                             share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image)
+                             share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image),
+                             print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps),
+                             codex-image (shrink a picture in the browser, upload it, its seat-gated URL)
+apps/web/public/fonts/       Cinzel, Crimson Pro and IBM Plex Mono static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
-                             profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts
+                             profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,
+                             mention.ts (codex mention tokens, auto-link, the import remap), corruption.ts (levels, the Test DN,
+                             gain, Mutation Test DNs), mutation.ts (Mutation tables, severity, the d66 lookup), test-call.ts (a called Test: its pool, DN, labels)
 packages/auth/               type.d.ts (Clerk public metadata + session claims), src/api.ts (verifySession, test tokens),
                              src/next.ts (authMiddleware, sessionToken), src/react.tsx (AuthProvider, Clerk components)
-packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, packs/<name>/, validate.ts, index.ts (loaders),
+packages/data/               threats/*.json, wargear/*.json, rules/*.json, creation/<type>/<source>.json, mutations/*.json, packs/<name>/, validate.ts, index.ts (loaders),
                              creation.test.ts (the pregen fixtures resolve in the creation catalogue)
 aspire-apphost/     apphost.mts: optional Aspire TypeScript AppHost (Postgres → api → web, with a dashboard)
 ```
@@ -278,5 +302,4 @@ These are binding; follow them when writing code and use them when reviewing:
 
 ## Not built yet
 
-- Advanced Creation (Core pp.38–39)
 - Server-side undo history (client undo is inverse deltas)

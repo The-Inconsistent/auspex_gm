@@ -1,16 +1,41 @@
-import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
-import { ASCENSION_XP, MAX_TIER, ascensionGroup, poolMax, rankOf, type Action, type ActionResult } from "@wg/shared";
+import { and, asc, count, desc, eq, isNull, sql } from "drizzle-orm";
+import {
+  ASCENSION_XP,
+  MAX_TIER,
+  ascensionGroup,
+  poolMax,
+  rankOf,
+  type Action,
+  type ActionResult,
+  type Pool,
+} from "@wg/shared";
+import { invite } from "../auth/auth.schema.ts";
 import type { Ctx } from "../auth/auth.service.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
+import { clearSpendRequests } from "../spend/spend.clear.ts";
+import { clearTestCall } from "../test-call/test-call.clear.ts";
 import { toCharacter } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
 
 export type CampaignAction = Extract<
   Action,
-  { type: "campaign.update" | "campaign.ascend" | "pool.adjust" | "session.start" | "session.end" }
+  {
+    type:
+      | "campaign.update"
+      | "campaign.ascend"
+      | "pool.adjust"
+      | "session.start"
+      | "session.end"
+      | "session.edit"
+      | "session.abandon"
+      | "session.delete"
+      | "campaign.archive"
+      | "campaign.unarchive"
+      | "campaign.delete";
+  }
 >;
 
 // Every character in table order, for the Ascension rules (ascensionGroup).
@@ -42,7 +67,36 @@ export async function campaignRules(tx: Tx, campaignId: string) {
   return c!; // ctx.campaignId comes from a valid token, so the campaign exists
 }
 
-async function playerCount(tx: Tx, campaignId: string) {
+// Closes the running session without awarding anything. False when none was running.
+async function abandonSession(tx: Tx, campaignId: string) {
+  const closed = await tx
+    .update(session)
+    .set({ endedAt: new Date(), xp: 0 })
+    .where(and(eq(session.campaignId, campaignId), isNull(session.endedAt)))
+    .returning({ id: session.id });
+  return closed.length > 0;
+}
+
+// A pool changed by a delta, floored at 0 and capped at poolMax (overflow lost, p.320). Shared by `pool.adjust` and
+// whatever else moves a pool, e.g. a failed Corruption Test's +1 Ruin. Returns how far it actually moved.
+export async function adjustPool(
+  tx: Tx,
+  { campaignId, pool, delta }: { campaignId: string; pool: Pool; delta: number },
+) {
+  const cap = poolMax(pool, await playerCount(tx, campaignId));
+  const [{ before } = { before: 0 }] = await tx
+    .select({ before: campaign[pool] })
+    .from(campaign)
+    .where(eq(campaign.id, campaignId));
+  const [{ after } = { after: 0 }] = await tx
+    .update(campaign)
+    .set({ [pool]: sql`least(${cap}, ${bump(campaign[pool], delta)})` })
+    .where(eq(campaign.id, campaignId))
+    .returning({ after: campaign[pool] });
+  return after - before;
+}
+
+export async function playerCount(tx: Tx, campaignId: string) {
   const [{ n } = { n: 0 }] = await tx
     .select({ n: count() })
     .from(character)
@@ -73,11 +127,7 @@ export async function applyCampaignAction(
     }
 
     case "pool.adjust": {
-      const cap = poolMax(a.pool, await playerCount(tx, cid));
-      await tx
-        .update(campaign)
-        .set({ [a.pool]: sql`least(${cap}, ${bump(campaign[a.pool], a.delta)})` })
-        .where(eq(campaign.id, cid));
+      await adjustPool(tx, { campaignId: cid, pool: a.pool, delta: a.delta });
       return { ok: true };
     }
 
@@ -87,6 +137,8 @@ export async function applyCampaignAction(
       // Read before the resets, so the notice below counts the XP as the last session left it.
       const before = await charactersOf(tx, cid);
       await tx.update(character).set({ wrath: 2 }).where(eq(character.campaignId, cid));
+      await clearSpendRequests(tx, { campaignId: cid }); // asked against the pools this just reset
+      await clearTestCall(tx, cid); // a Test called last session is over (§11.143)
       await tx.update(campaign).set({ glory: 0, ruin: players }).where(eq(campaign.id, cid));
       await tx
         .update(session)
@@ -118,6 +170,8 @@ export async function applyCampaignAction(
       if (!s) fail("No session in progress");
       // Read before the award, because what the GM wants to know is what this session's XP crossed.
       const before = await charactersOf(tx, cid);
+      await clearSpendRequests(tx, { campaignId: cid }); // the session the pools were spent in is over
+      await clearTestCall(tx, cid);
       await tx.update(session).set({ endedAt: new Date(), recap: a.recap, xp: a.xp }).where(eq(session.id, s.id));
       await tx
         .update(character)
@@ -134,6 +188,65 @@ export async function applyCampaignAction(
         ...(ready ? [`Everyone has earned ${ASCENSION_XP} XP in Tier ${tier}: the group may Ascend (Core p.147)`] : []),
       ];
       return notices.length ? { ok: true, notices } : { ok: true };
+    }
+
+    // Any session of this campaign, open or ended (issue #195); only the fields sent change.
+    case "session.edit": {
+      const [s] = await tx
+        .select({ endedAt: session.endedAt })
+        .from(session)
+        .where(and(eq(session.id, a.sessionId), eq(session.campaignId, cid)));
+      if (!s) fail("Session not found");
+      if (a.recap !== undefined && !s.endedAt) fail("A running session's recap is written at END SESSION");
+      const { type, sessionId, ...patch } = a;
+      if (Object.keys(patch).length) await tx.update(session).set(patch).where(eq(session.id, sessionId));
+      return { ok: true };
+    }
+
+    // For a session that was never played or got left open: no XP, no Rank notices, pools untouched.
+    case "session.abandon":
+      return (await abandonSession(tx, cid)) ? { ok: true } : fail("No session in progress");
+
+    // Only the latest, so session.start's numbering (count + 1) stays unbroken, and only once it has ended.
+    case "session.delete": {
+      const [s] = await tx
+        .select()
+        .from(session)
+        .where(eq(session.campaignId, cid))
+        .orderBy(desc(session.number))
+        .limit(1);
+      if (!s) fail("This game has no sessions");
+      if (!s.endedAt) fail("End the session in progress before deleting it");
+      await tx.delete(session).where(eq(session.id, s.id));
+      const kept = s.xp > 0 ? `; the ${s.xp} XP it awarded stays on the characters` : "";
+      return { ok: true, notices: [`Deleted session ${s.number}${kept}`] };
+    }
+
+    // A read-only game takes no one new, so its open invite links die with it (acceptInvite checks too).
+    case "campaign.archive":
+      await abandonSession(tx, cid); // nothing to close is fine here
+      await tx.update(campaign).set({ archivedAt: new Date() }).where(eq(campaign.id, cid));
+      await tx
+        .update(invite)
+        .set({ revokedAt: new Date() })
+        .where(and(eq(invite.campaignId, cid), isNull(invite.revokedAt)));
+      return { ok: true };
+
+    case "campaign.unarchive":
+      await tx.update(campaign).set({ archivedAt: null }).where(eq(campaign.id, cid));
+      return { ok: true };
+
+    // Everything the campaign owns cascades. The gateway then kicks the whole room (kicks) and broadcasts nothing.
+    case "campaign.delete": {
+      const [c] = await tx
+        .select({ name: campaign.name, archivedAt: campaign.archivedAt })
+        .from(campaign)
+        .where(eq(campaign.id, cid));
+      if (!c) fail("Campaign not found");
+      if (!ctx.admin && !c.archivedAt) fail("Archive the game before deleting it");
+      if (a.name !== c.name) fail("Type the game's name to delete it");
+      await tx.delete(campaign).where(eq(campaign.id, cid));
+      return { ok: true };
     }
 
     // The group Ascends together (Core pp.147–148, §11.66): one Tier for the whole campaign, never one character.

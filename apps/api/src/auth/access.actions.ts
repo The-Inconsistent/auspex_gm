@@ -3,15 +3,25 @@ import type { Action, ActionResult } from "@wg/shared";
 import { ownCharacter } from "../character/character.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
-import { accessToken, invite, membership } from "./auth.schema.ts";
-import { hash, newSecret, type Ctx } from "./auth.service.ts";
+import { accessToken, appUser, invite, membership } from "./auth.schema.ts";
+import { hash, issueScreenToken, newSecret, type Ctx } from "./auth.service.ts";
 
 export type AccessAction = Extract<
   Action,
-  { type: "invite.create" | "invite.revoke" | "member.remove" | "seat.leave" }
+  {
+    type:
+      | "invite.create"
+      | "invite.revoke"
+      | "member.remove"
+      | "member.seat"
+      | "seat.leave"
+      | "screen.issue"
+      | "screen.revoke";
+  }
 >;
 
-// GM-only (not in PLAYER_ACTIONS): invite links and removing a signed-in member. seat.leave is the player's own.
+// GM-only (not in PLAYER_ACTIONS): invite links and removing a signed-in member. seat.leave is the player's own, and
+// member.seat is an admin's (authorize).
 export async function applyAccessAction(
   tx: Tx,
   { ctx, action: a }: { ctx: Ctx; action: AccessAction },
@@ -57,6 +67,31 @@ export async function applyAccessAction(
         .returning({ id: membership.id });
       return r.length ? { ok: true } : fail("Member not found");
     }
+    case "member.seat": {
+      // Only a user the app has seen: the id is a Clerk user id, and a typo mustn't seat nobody.
+      const [u] = await tx.select({ id: appUser.id }).from(appUser).where(eq(appUser.id, a.userId));
+      if (!u) fail("User not found");
+      // A player's seat becomes the GM's; their Agent goes back to reserve.
+      await tx
+        .insert(membership)
+        .values({ campaignId: cid, userId: a.userId, role: "gm" })
+        .onConflictDoUpdate({
+          target: [membership.campaignId, membership.userId],
+          set: { role: "gm", characterId: null },
+        });
+      return { ok: true };
+    }
+
+    case "screen.issue":
+      return { ok: true, token: await issueScreenToken(tx, { campaignId: cid }) };
+
+    case "screen.revoke":
+      await tx
+        .update(accessToken)
+        .set({ revokedAt: new Date() })
+        .where(and(eq(accessToken.campaignId, cid), eq(accessToken.role, "screen"), isNull(accessToken.revokedAt)));
+      return { ok: true };
+
     case "seat.leave": {
       // No kick: the phone navigates away on the ack, and a kick would drop the socket before the ack reaches it.
       if (ctx.role !== "player" || !ctx.characterId) fail("Only a seated player can leave");

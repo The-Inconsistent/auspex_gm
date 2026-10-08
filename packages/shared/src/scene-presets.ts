@@ -12,6 +12,7 @@ import {
 } from "./codex.ts";
 import { Amount } from "./creation.ts";
 import { Lookups } from "./lookups.ts";
+import { MutationTable } from "./mutation.ts";
 import { SpaceHulkGenerator } from "./places.ts";
 import { Dice, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
@@ -372,6 +373,7 @@ export const ScenePresets = z.object({
   loot: z.array(LootTable).default([]), // issue #51; likewise
   relics: RelicCreator.nullable().default(null), // RR2 pp.12–19 (issue #51 step 8); likewise
   lookups: Lookups.nullable().default(null), // Critical Hit and Perils tables (§11.125); likewise
+  mutations: z.array(MutationTable).default([]), // Core pp.287–295 (issue #182); likewise
 });
 export type ScenePresets = z.infer<typeof ScenePresets>;
 

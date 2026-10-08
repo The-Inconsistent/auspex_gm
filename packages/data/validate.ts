@@ -40,6 +40,7 @@ import {
   tableProblems,
   SpaceHulkGenerator,
   LootTable,
+  MutationTable,
   RelicCreator,
   wargearMatches,
 } from "@wg/shared";
@@ -51,6 +52,7 @@ import {
   LOOKUP_FILES,
   lookups,
   lootFiles,
+  mutationFiles,
   npcPresetFiles,
   packNames,
   placeFiles,
@@ -983,6 +985,49 @@ for (const file of placeFiles()) {
   console.log(
     `places/${file}: ${r.data.length} places (${r.data.filter((p) => !p.parent).length} top level, ${r.data.filter((p) => p.stats.length).length} with a stat line, ${r.data.reduce((n, p) => n + p.hooks.length, 0)} hooks)`,
   );
+}
+
+// Mutation tables (mutations/<source>.json, issue #182): the rows each table prints (the top "61+" row included), ids
+// unique across tables and their d6 tables, and every mutation The Warp Made Manifest includes exists.
+const EXPECTED_MUTATIONS: Record<string, number> = { subtle: 9, minor: 8, severe: 17 }; // Core p.288
+{
+  const ids = new Set<string>();
+  const includes: string[] = [];
+  for (const file of mutationFiles()) {
+    const problem = (message: string) => {
+      failed = true;
+      console.error(`✖ mutations/${file}: ${message}`);
+    };
+    const r = MutationTable.array().safeParse(
+      JSON.parse(readFileSync(new URL(`./mutations/${file}`, import.meta.url), "utf8")),
+    );
+    if (!r.success) {
+      problem(z.prettifyError(r.error));
+      continue;
+    }
+    for (const t of r.data) {
+      if (t.source !== file.replace(/\.json$/, "")) problem(`${t.name}: source "${t.source}" isn't the file name`);
+      const want = EXPECTED_MUTATIONS[t.severity];
+      if (t.source === "core" && t.rows.length !== want)
+        problem(`${t.name}: ${t.rows.length} rows, Core prints ${want}`);
+      const top = t.rows.at(-1);
+      if (t.severity !== "severe" && !(top && "forward" in top))
+        problem(`${t.name}: the top row should send the roll on`);
+      for (const row of t.rows) {
+        if ("forward" in row) continue;
+        includes.push(...row.includes);
+        for (const id of [row.id, ...(row.sub?.rows.map((x) => x.id) ?? [])]) {
+          if (ids.has(id)) problem(`duplicate id "${id}"`);
+          ids.add(id);
+        }
+      }
+    }
+    console.log(`mutations/${file}: ${r.data.map((t) => `${t.severity} ${t.rows.length}`).join(", ")}`);
+  }
+  for (const id of includes.filter((id) => !ids.has(id))) {
+    failed = true;
+    console.error(`✖ mutations: an included mutation "${id}" doesn't exist`);
+  }
 }
 
 // Trait names the app can't link to a rule (the web's RuleLink leaves them as plain text). A warning, not a failure:

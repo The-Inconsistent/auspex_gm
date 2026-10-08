@@ -1,5 +1,3 @@
-import type { TestKind } from "@wg/shared";
-
 // The rules entries a scene's Tests point to (packages/data/rules/tests.json), with the label PREP shows.
 export const TEST_RULES = [
   ["test-dn", "DN TABLE"],
@@ -15,11 +13,5 @@ export const POOL_RULES = [
   ["character-combat-complications", "COMBAT COMPLICATIONS"],
 ] as const;
 
-export const TEST_KIND_LABELS: Record<TestKind, string> = {
-  skill: "SKILL",
-  attribute: "ATTRIBUTE",
-  opposed: "OPPOSED",
-  influence: "INFLUENCE",
-  resolve: "RESOLVE (FEAR, TERROR)",
-  corruption: "CORRUPTION",
-};
+// An adventure's status as PREP labels it; `running` reads ACTIVE (issue #196). A phone says OFFERED for `planned`.
+export const ADVENTURE_STATUS = { planned: "PLANNED", running: "ACTIVE", done: "DONE", failed: "FAILED" } as const;

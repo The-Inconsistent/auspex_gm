@@ -18,7 +18,7 @@ export const CODEX_KINDS = {
       ["gmNotes", "GM NOTES"],
     ],
   },
-  handout: { collection: "handouts", read: [["body", "TEXT"]] },
+  handout: { collection: "handouts", read: [] }, // its TEXT shows as the prop (HandoutDoc, issue #204)
   faction: {
     collection: "factions",
     read: [

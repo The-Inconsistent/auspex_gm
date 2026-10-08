@@ -14,10 +14,10 @@ import type {
 
 import type { BuilderStep } from "./constants";
 
-// A build still being made: no archetype yet is allowed, and the name and detail travel with it until it's saved.
-// `savedAt` (ms) picks the newer of this device's draft and the one sent to the table.
-export type Draft = Omit<CharacterBuildInput, "archetypeId"> & {
-  archetypeId?: string;
+// A build still being made: neither `archetypeId` nor `advanced` yet means nothing chosen (see `startedBuild`), and the
+// name and detail travel with it until it's saved. `savedAt` (ms) picks the newer of this device's draft and the one
+// sent to the table.
+export type Draft = CharacterBuildInput & {
   name: string;
   detail?: Partial<CharacterDetail>;
   savedAt?: number;

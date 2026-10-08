@@ -1,8 +1,10 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { BeatTest, CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { CORRUPTION_DNS, MAX_ICONS, isCorruptionDn } from "./dn.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
+import { MAX_SPEND_AMOUNT, SpendKind } from "./spend.ts";
 import { CustomThreatData, MAX_SLUG } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
@@ -20,6 +22,14 @@ import {
 } from "./state.ts";
 
 const id = z.uuid();
+
+// What session.edit may change (issue #195); PARTY › SESSIONS checks its draft with it before SAVE.
+export const SessionJournal = z.object({
+  recap: z.string().max(10000).optional(),
+  notes: z.string().max(10000).optional(),
+});
+// ponytail: app limit on who one call names; a table this big needs no more.
+const MAX_CALLED = 30;
 const rowId = z.string().regex(/^[a-z0-9-]+$/); // a row of the server's book data
 // A custom threat's slug (issue #43): made server-side by `threatSlug`, and the client only ever echoes one back.
 const slug = z
@@ -55,6 +65,44 @@ export const Action = z.union([
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
+    // A player asks for a spend, the GM answers (rules-flow.md §11.122). `amount` only counts for the Glory kinds.
+    // Accepting runs pool.adjust, character.adjust or turn.seize, so their refusals are the answer.
+    z.object({
+      type: z.literal("spend.request"),
+      characterId: id,
+      kind: SpendKind,
+      amount: z.number().int().min(1).max(MAX_SPEND_AMOUNT).default(1),
+    }),
+    z.object({ type: z.literal("spend.cancel"), id }),
+    z.object({ type: z.literal("spend.resolve"), id, accept: z.boolean() }),
+
+    // A Test the GM calls at the table (issue #191). The GM calls and closes; a named Agent reports their own result,
+    // and the GM may set one for a phone that's out (rules-flow.md §11.143–144). Fear is a Resolve Test (Core p.199).
+    z
+      .object({
+        type: z.literal("test.call"),
+        test: BeatTest,
+        who: z.array(id).min(1).max(MAX_CALLED),
+        fear: z.boolean().default(false),
+        hideDn: z.boolean().default(false),
+      })
+      .refine((a) => !a.fear || a.test.kind === "resolve", "A Fear Test is a Resolve Test (Core p.199)")
+      .refine(
+        (a) => a.test.kind !== "corruption" || isCorruptionDn(a.test.dn),
+        "A Corruption Test takes a DN of 1, 3, 5, 7 or 9 (Core p.285)",
+      ),
+    z.object({
+      type: z.literal("test.report"),
+      callId: id,
+      characterId: id,
+      passed: z.boolean(),
+      // A failed Corruption Test's roll (p.286); refused on any other report.
+      icons: z.number().int().min(0).max(MAX_ICONS).optional(),
+      complication: z.boolean().optional(),
+      wrathCritical: z.boolean().optional(),
+      spentWrath: z.boolean().optional(),
+    }),
+    z.object({ type: z.literal("test.close") }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     z.object({ type: z.literal("session.start") }),
@@ -63,6 +111,19 @@ export const Action = z.union([
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
+    // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs. No XP: it was paid out
+    // at session.end (p.321, §11.152). A running session's recap is written at session.end (§11.153).
+    SessionJournal.extend({ type: z.literal("session.edit"), sessionId: id }),
+    // Ends the running session with no XP and no Rank notices (a session that was never played, or left open overnight).
+    z.object({ type: z.literal("session.abandon") }),
+    // Deletes the latest session once it has ended. The XP it awarded stays on the characters.
+    z.object({ type: z.literal("session.delete") }),
+    // An archived game is read-only (applyAction refuses everything but unarchive and delete). Archiving also ends a
+    // running session, as session.abandon does. Delete needs the game's exact name; it's an admin's, or the GM's once
+    // the game is archived, and removes the campaign with everything it owns.
+    z.object({ type: z.literal("campaign.archive") }),
+    z.object({ type: z.literal("campaign.unarchive") }),
+    z.object({ type: z.literal("campaign.delete"), name: z.string().max(100) }),
     // The group Ascends: the campaign's Tier goes up by one, for everyone at once (Core pp.147–148, §11.66).
     // `experience`: every character must have earned 100 XP in the current Tier. `milestone`: the GM's call, which
     // first gives every character 100 XP (Core p.148 step 1) and may waive the Ascension Package (step 2).
@@ -106,6 +167,30 @@ export const Action = z.union([
       wealth: delta.optional(),
       ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
     }),
+    // GM only: Corruption (Core pp.285–286, §9). `delta` is a plain change (a Corrupting weapon, a GM fix); `test` is a
+    // failed Corruption Test, sent with its SOURCE DN (p.285): the server adds the level modifier from the stored
+    // Corruption, works out the gain and adds the GM's +1 Ruin in the same transaction.
+    z
+      .object({
+        type: z.literal("character.corrupt"),
+        id,
+        delta: delta.optional(),
+        test: z
+          .object({
+            source: z.literal(CORRUPTION_DNS),
+            icons: z.number().int().min(0).max(MAX_ICONS),
+            complication: z.boolean().default(false),
+            wrathCritical: z.boolean().default(false), // DN −2 (p.286)
+            spentWrath: z.boolean().default(false), // DN −1, and the Agent's Wrath pays for it (p.286)
+          })
+          .optional(),
+      })
+      .refine((a) => (a.delta === undefined) !== (a.test === undefined), "Send a delta or a failed Test, not both"),
+    // GM only: a mutation from the book tables (Core pp.287–295), by its row id and, for one with its own d6 table
+    // (Extra Appendages, Aberration), that row's id; the server snapshots the line. `character.unmutate` removes one:
+    // the mutated part cut off, which leaves the Corruption as it is (p.287).
+    z.object({ type: z.literal("character.mutate"), id, mutationId: slug, subId: slug.optional() }),
+    z.object({ type: z.literal("character.unmutate"), id, mutationId: slug }),
     // GM only: a codex item handed to an Agent, which uses their Wargear Test for the session (rules-flow.md §11.112),
     // and taken back again (§11.114). The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),
@@ -120,7 +205,7 @@ export const Action = z.union([
       value: z.number().int().min(0).max(20),
       rarity: Rarity,
       keywords: z.array(z.string().trim().min(1).max(60)).max(12), // the item's
-      icons: z.number().int().min(0).max(60),
+      icons: z.number().int().min(0).max(MAX_ICONS),
       spend: z.number().int().min(0).max(50).default(0),
       complication: z.boolean().default(false),
       loadedWith: z.string().trim().min(1).max(60).optional(), // a ranged weapon arrives loaded, plus 1 Ammo (p.205)
@@ -182,6 +267,9 @@ export const Action = z.union([
 
     z.object({ type: z.literal("token.issue"), characterId: id }),
     z.object({ type: z.literal("token.revoke"), characterId: id }),
+    // The table screen: a read-only guest seat for a TV. The token comes back once, in `token`; revoking drops them all.
+    z.object({ type: z.literal("screen.issue") }),
+    z.object({ type: z.literal("screen.revoke") }),
 
     // Invite links for signed-in players (and guests, if allowed). The code comes back once, in `token`.
     z.object({
@@ -193,6 +281,8 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("invite.revoke"), id }),
     z.object({ type: z.literal("member.remove"), userId: z.string().min(1).max(100) }),
+    // Admin only: seats a known user as this table's GM (a new seat, or an existing one turned into the GM's).
+    z.object({ type: z.literal("member.seat"), userId: z.string().min(1).max(100) }),
     // A player gives up their seat: the Agent goes back to reserve and the room QR offers it again.
     z.object({ type: z.literal("seat.leave") }),
 
@@ -319,6 +409,11 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "character.fitUpgrade",
   "character.removeUpgrade",
   "seat.leave",
+  // Asking for a spend, and taking the ask back, are the player's; answering it is the GM's (§11.122).
+  "spend.request",
+  "spend.cancel",
+  // Reporting a called Test's result is the player's, for their own Agent (issue #191, §11.144).
+  "test.report",
 ]);
 
 // `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry

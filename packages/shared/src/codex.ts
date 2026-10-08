@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ATTRIBUTES, Marker, Pool, SKILLS, Visibility, type Skill } from "./state.ts";
+import { ATTRIBUTES, Marker, Pool, SKILLS, TEST_KINDS, Visibility, type Skill } from "./state.ts";
 import type { Threat } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeMod } from "./weapon-effect.ts";
@@ -9,6 +9,25 @@ import { UpgradeMod } from "./weapon-effect.ts";
 
 const text = (max = 5000) => z.string().max(max);
 const id = z.uuid();
+
+// How a handout looks as a prop (issue #204), on the phone and on paper. Not a rule: the GM's own text in a frame.
+// `plain` is today's slate, so a handout saved before this keeps its look.
+export const HandoutStyle = z.enum(["plain", "slate", "form", "vox", "decree"]);
+export type HandoutStyle = z.infer<typeof HandoutStyle>;
+
+// A GM-uploaded picture on an NPC, place or handout (issue #199). The entry holds only its id; the bytes are served by
+// `GET /api/campaigns/:id/images/:imageId` to a seat that may see the entry. `imageRevealed` is a second reveal, so the
+// GM can show the entry and hold back its picture. The browser shrinks a picture before upload, so the byte cap is a
+// safety net.
+export const IMAGE_MIMES = ["image/webp", "image/jpeg"] as const;
+export const ImageMime = z.enum(IMAGE_MIMES);
+export type ImageMime = z.infer<typeof ImageMime>;
+export const IMAGE_MAX_BYTES = 1_000_000;
+export const IMAGE_CAP = 200; // per campaign
+export const IMAGE_CAMPAIGN_BYTES = 100_000_000;
+const picture = { imageId: id.nullable().default(null), imageRevealed: z.boolean().default(false) };
+// What the upload route answers: the stored picture's id, or the api's refusal.
+export const ImageUploadReply = z.union([z.object({ id }), z.object({ message: z.string() })]);
 
 // Attitude (optional rule, p.168): DN modifier for social Tests with this NPC.
 export const Attitude = z.enum(["hostile", "uncooperative", "neutral", "friendly", "helpful"]);
@@ -91,7 +110,7 @@ export const MAX_EXITS = 10; // ponytail: app limit, not a rule; raise it if a s
 // SKILLS, Core pp.158-161), an Attribute alone (p.170), or a trait: Influence (p.169), Resolve for Fear and Terror
 // (p.170, pp.199-200), Conviction for Corruption (pp.170, 285). An Opposed Test has no DN: most Icons wins (p.170).
 // Any other Test may have no DN yet: the GM sets it at the table (p.160, rules-flow.md §11.75).
-export const TestKind = z.enum(["skill", "attribute", "opposed", "influence", "resolve", "corruption"]);
+export const TestKind = z.enum(TEST_KINDS);
 export type TestKind = z.infer<typeof TestKind>;
 // What each kind rolls: a Skill, an Attribute, either one (Opposed), or a trait the app doesn't name.
 export const TEST_POOL = {
@@ -185,7 +204,9 @@ export type LocationHazard = z.infer<typeof LocationHazard>;
 export const BeatHazard = z.object({ id, spotted: z.boolean().default(false) });
 export type BeatHazard = z.infer<typeof BeatHazard>;
 
-export const AdventureStatus = z.enum(["planned", "running", "done"]);
+// `failed` and `shown` make the adventure the party's mission log (issue #196, rules-flow.md §11.148–150).
+export const AdventureStatus = z.enum(["planned", "running", "done", "failed"]);
+export type AdventureStatus = z.infer<typeof AdventureStatus>;
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 export type FactionStance = z.infer<typeof FactionStance>;
 export const MAX_FACTION_KEYWORDS = 20;
@@ -205,6 +226,8 @@ export const CodexInput = {
     title: text(200),
     premise: text().default(""),
     status: AdventureStatus.default("planned"),
+    shown: z.boolean().default(false), // the party has been given this mission
+    brief: text(300).default(""), // what the phones show of it; the premise stays the GM's
   }),
   beat: z.object({
     adventureId: id,
@@ -242,6 +265,7 @@ export const CodexInput = {
     hazards: text().default(""), // the GM's free-text notes, kept beside the list (issue #49)
     hazardList: z.array(LocationHazard).max(MAX_HAZARDS).default([]),
     revealed: z.boolean().default(false),
+    ...picture,
   }),
   npc: z.object({
     name: text(200),
@@ -253,12 +277,16 @@ export const CodexInput = {
     attitude: Attitude.default("neutral"),
     statSource: StatSource.default({ kind: "none" }),
     revealed: z.boolean().default(false),
+    ...picture,
   }),
   handout: z.object({
     title: text(200),
     body: text(20000).default(""),
+    style: HandoutStyle.default("plain"),
+    header: text(120).default(""), // the banner or reference line; empty prints the style's own
     revealed: z.boolean().default(false),
     audience: z.array(id).max(20).default([]), // character ids it's revealed to; empty = every player
+    ...picture,
   }),
   // Something the Agents can find (GitHub issue #51): where it lies or who carries it, at most one of the two (checked by
   // `codex.save` and the import, not here: `.omit()` throws on a refined object, and the pack omits both). Who it was
@@ -304,7 +332,15 @@ export type Codex = {
   npcs: Row<"npc">[];
   handouts: (Row<"handout"> & { revealedAt: string | null })[];
   items: (Row<"item"> & { givenTo: string | null })[];
-  sessions: { id: string; number: number; startedAt: string; endedAt: string | null; recap: string; xp: number }[];
+  sessions: {
+    id: string;
+    number: number;
+    startedAt: string;
+    endedAt: string | null;
+    recap: string;
+    notes: string; // the GM's own (issue #195): toPlayerCodex blanks it
+    xp: number;
+  }[];
   // Stat blocks the GM wrote or cloned for this table (issue #43). Book text, so GM sockets only: `toPlayerCodex`
   // sends none, and the GM's app merges them into the bestiary every picker already reads.
   customThreats: Threat[];
@@ -312,16 +348,20 @@ export type Codex = {
 
 // What one player's phone gets (null: a player without a character): revealed NPCs, locations and handouts, without GM
 // notes or secrets, plus session recaps. A handout with an audience reaches only those Agents' players. Ids that point
-// at something hidden (factions, an unrevealed parent location, the rest of an audience) are cleared too.
+// at something hidden (factions, an unrevealed parent location, the rest of an audience) are cleared too, and so is a
+// held-back picture's id: the image route serves a player only the ids left here.
 export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
+  const pictured = <T extends { imageId: string | null; imageRevealed: boolean }>(e: T): T =>
+    e.imageRevealed ? e : { ...e, imageId: null };
   const shownLocations = new Set(c.locations.filter((l) => l.revealed).map((l) => l.id));
   return {
     factions: [],
-    adventures: [],
+    // A shown mission's title, brief and status; its premise and scenes stay with the GM.
+    adventures: c.adventures.filter((a) => a.shown).map((a) => ({ ...a, premise: "", beats: [] })),
     locations: c.locations
       .filter((l) => l.revealed)
       .map((l) => ({
-        ...l,
+        ...pictured(l),
         gmNotes: "",
         hazards: "",
         hazardList: [],
@@ -330,13 +370,13 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
     npcs: c.npcs
       .filter((n) => n.revealed)
       // Attitude stays: the table may see how an NPC regards them (rules-flow §11.89).
-      .map((n) => ({ ...n, gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
+      .map((n) => ({ ...pictured(n), gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
-      .map((h) => ({ ...h, audience: h.audience.length && characterId ? [characterId] : [] })),
+      .map((h) => ({ ...pictured(h), audience: h.audience.length && characterId ? [characterId] : [] })),
     // An Agent sees a found item as a line on their sheet once it's given; a found object's text goes in a handout.
     items: [],
-    sessions: c.sessions,
+    sessions: c.sessions.map((s) => ({ ...s, notes: "" })), // every recap, for a player who missed one (§11.151)
     customThreats: [], // a custom threat is a stat block: players never receive one
   };
 }

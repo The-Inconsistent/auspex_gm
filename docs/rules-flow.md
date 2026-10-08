@@ -184,7 +184,8 @@ ties to the initiator (p.170). Round up always (p.159).
 A scene can list the Tests it expects (`BeatTest`, GitHub issue #39): the kind (Skill, Attribute, Opposed, Influence,
 Resolve, Corruption, pp.169–170), its Skill or Attribute, the DN (`DN_TABLE`, p.161; `CORRUPTION_DNS`, p.285), who
 rolls (§11.73), the Shifts the GM has ready (pp.165–166) and both outcomes (Fail Forward, p.319). It is the GM's plan
-for the scene: the app never rolls a Test.
+for the scene: the app never rolls a Test. It may roll on a book table instead: an event table in prep, or the
+Mutation tables after a failed Mutation Test (pp.287–288, GitHub issue #182), with I ROLLED beside ROLL.
 
 ## 8. Psychic powers (pp.257–267)
 
@@ -199,7 +200,18 @@ Potency Shifts; uses your Combat Action.
 Corruption Test: Conviction vs source DN + level modifier. Fail → GM +1 Ruin, gain DN − Icons (×2 on a
 Complication). Levels: 0–5 Pure (+0), 6–10 Tarnished (+1) [HOUSE: 11 belongs to Contaminated], 11–15 Contaminated
 (+2), 16–20 Tainted (+3), 21–25 Defiled (+4), 26+ Chaos Spawn (character lost). Each level increase → Mutation Test
-(Conviction vs DN 3 + level modifier; may choose to fail).
+(Conviction vs DN 3 + level modifier; may choose to fail). A Wrath Critical takes 2 off a Corruption Test's DN, a spent
+Wrath 1, never below 1 (§11.134).
+
+Mutations (pp.287–295): a failed Mutation Test rolls d6 for severity (1–2 Subtle, 3–4 Minor, 5–6 Severe), then d66 on
+that table + 10 per mutation held (§11.136); Subtle and Minor 61+ send the roll on. A held mutation is rerolled. Removing
+the mutated part removes its effect, not the Corruption. The GM adds one in PARTY › MUTATIONS (`character.mutate`); its
+always-on numbers reach the sheet (`withMutations`), the rest is its printed Effect.
+
+At 26+ the Agent is **Lost** (a status beside Dying and Dead, `pcStatus`): out of the fight and of the Ascension; the
+GM runs the Chaos Spawn at the table (pp.286, 352). Corruption from creation (a Chaos Background's bonus, p.86, or a
+fixed grant) starts the count; a rolled amount ("1d3 Corruption") is left to the table, and a rebuild keeps play's
+change on top of what the build gives.
 
 ## 10. What the app does with all this
 
@@ -211,6 +223,8 @@ vs Tier + 1; personal Ruin; Respite reset.
 **Shows (UI):** derived traits; auto states (Wounded, Dying, Exhausted, Slain); turn-boundary reminders
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
 rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
+
+**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY and a scene's prepared Corruption Test), level and Test modifier on the sheet (the GM and that Agent's player only), a failed Test's gain and +1 Ruin in one action (§11.134), Mutation Test DNs as notices (§11.135). The Wrath spend and Wrath Critical lower the DN (p.286); the Mutation tables (pp.287–295) are `mutation.ts` and `packages/data/mutations`; creation grants of a fixed amount start the count. Not coded: a rolled Corruption grant ("1d3"), a Corruption loss, and a mutation's bonus dice and DN penalties, which stay the table's.
 
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.
@@ -798,7 +812,6 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 119. **Bloody Gates prints Rarity as a number** (BG pp.6, 13, 21, 24; GitHub issue #51). Its mission equipment reads
      "Rarity: 2" where the Core Rulebook names a Rarity. The number is read as the DN it adds to a requisition (Core
      p.206): 0 Common, 1 Uncommon, 2 Rare, 3 Very Rare, 4 Unique. *Proposed; awaiting the GM.*
-
 120. **Kommando stand-ins are Core's Kommando with one wargear swap** (Core p.355; house variants, `kommando-breacha-boy`,
      `kommando-slasha-boy`, `kommando-snipa-boy`). `combatant.addThreat` has no per-combatant weapon swap, so each swap
      is its own threat file: the Kommando copied exactly, with one change and a `note`. The Choppa becomes a Power Klaw
@@ -813,7 +826,22 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      gives an Agent its keyword by ruling, for Influence with the faction it works for. A Primaris marine whose
      archetype page lists "Adeptus Astartes" (VoA pp.32, 33, 37) or who comes by Rubicon Primaris (VoA p.43) takes the
      Primaris Astartes species the same way (Core p.29; see §11.18).
-
+122. **Spend requests are a convenience; the GM's ACCEPT is the spend** (p.164, p.165, p.177; spike 4). A player can ask,
+     from their phone, for a Wrath Reroll or Restore Shock, Glory dice or damage, or a Seize (`spend.request`): SPEND
+     WRATH in the sheet's WRATH card, SPEND GLORY in its PARTY GLORY card. Asking needs the pool to cover the spend at
+     that moment (the Agent's Wrath, or the party's Glory for the amount asked), so a phone never asks for Glory the
+     party doesn't have; each request is checked against the whole pool, not what the other pending ones would leave.
+     Nothing moves until the GM taps ACCEPT, which runs the same `character.adjust`, `pool.adjust` or `turn.seize` as the
+     tablet in one transaction and checks the pool again (the pools clamp at 0, and they may have moved since the ask),
+     so a spend the pool can no longer pay or a Seize the turn rules refuse fails and the request stays pending for the
+     GM to DENY. Restore Shock recovers Rank + Tier Shock and only for a conscious Agent with Shock to restore (p.164,
+     p.196), so the Wrath is never spent for nothing. An Agent has at most three pending, and at most one of each kind.
+     A Seize request needs a fight, and ending the fight or starting another clears them.
+123. **Pending spend requests are visible to the whole table** (p.165). Glory is the party's pool and p.165 has the group
+     agree on how it is spent, so every phone lists every pending request, read-only for the others; only the asker may
+     cancel. Ruin is not asked for: it stays the GM's (§11.58).
+124. **Requests clear at session start and end** (p.162, p.164). `session.start` resets Wrath and Glory and `session.end`
+     closes the session, so a request made against the old pools would be answered against new ones.
 125. **CRIT / PERILS looks up the printed row and applies only its mechanical part** (Core p.198 Critical Hit table,
      pp.197–198 Glorious Criticals, §5, §8). The GM rolls the d66 at the table (and counts the extra Wrath Dice
      showing 1 for Perils, +10 each) and types it; the app shows the row and, on APPLY, sends the Wounds, Shock and
@@ -824,7 +852,102 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Wounds, Corruption, area effects, durations and the Glory choices stay with the GM. Perils prints rows up to
      105–106 (pp.263–264); a total above 106 has no printed row, so the app shows none and the GM rules. The tables are
      GM-only book data in `packages/data/lookups/`, served inside `/scene-presets`. *Proposed; awaiting the GM.*
-
+126. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
+     Skill at 0, but p.38 charges the Species' XP "as in Know Your Faction" for its benefits, and an Adeptus Astartes'
+     160 XP is its Attributes and Skills. The species' printed ratings stand, everything else starts at 1 and 0, and
+     XP buys from there (the Human has none, so the p.39 example prices from scratch). *Approved by the GM, 2026-10-06.*
+127. **The Advanced bonus is budget, and stays when an Archetype Ability is bought** (Core p.38). Tier × 10 is added to
+     the budget (a GM's custom budget plus it), so the ledger shows only what is spent; the p.39 example spends 100 of
+     110. The book lists buying an Archetype Ability as a separate option and prices it itself, so the bonus is not
+     given back. *Approved by the GM, 2026-10-06.*
+128. **Advanced Wargear: Total Value is strictly under the limit, Max. Value is inclusive** (Core p.39). The text says
+     Total Value "less than" the number (Tier 1: at most 14), and a "Max. Value" column reads as a ceiling an item may
+     equal (Tier 1: an item of 7 is fine). Each copy counts. `advancedWargearProblems` in `wargear.ts`.
+     *Approved by the GM, 2026-10-06.*
+129. **Advanced Wargear Rarity accumulates and refuses Unique** (Core p.39). Common and Uncommon are always allowed. The
+     Rarity column is read as adding allowances: Tier 2 up to two Rare, Tier 3 the same plus one Very Rare, Tier 4 the
+     same plus two Very Rare. A Unique item fits no Tier. *Approved by the GM, 2026-10-06.*
+130. **Advanced Wargear at Tier 5 and above, and unpriced items** (Core p.39). The table stops at Tier 4, so a higher
+     Tier is checked against the Tier 4 row and the GM must agree. An item with no printed Value or Rarity can't be
+     counted and needs the GM. Common clothing and the trinket (Trinkets Table, p.247) are a note, not sheet lines.
+     *Approved by the GM, 2026-10-06.*
+131. **A bought Archetype Ability brings the ability only** (Core p.38). It costs the Archetype's Tier × 10, needs the
+     GM's tick (`advanced/ability/<archetype>`) and adds that Archetype's abilities, not its Keywords, kit, Influence,
+     ratings or requirements. *Approved by the GM, 2026-10-06.*
+132. **An Ascension Package at Advanced Creation is the GM's** (Core p.38). There is no Archetype Tier to ascend from, so
+     the build takes at most one Ascension Package, asks for the GM's tick, prices "× the new Tier" at the campaign
+     Tier, meets the package's requirements at that Tier, and counts as one Tier Ascended for its "per Tier" grants. The
+     ASCENSION screen lists the packages the build may take (`outOfReach`), at most one, for every Advanced build.
+     *Approved by the GM, 2026-10-06.*
+133. **An Advanced character has no Archetype for requirements or Archetype Ascension** (Core pp.38, 155). A requirement
+     of kind `archetype` fails and `notArchetype` passes. Archetype Ascension needs "an Archetype of their Faction", so
+     an Advanced character can't take it. Species Keywords stand in for the Archetype's. A Human's "any 2" are two fills,
+     `[ANY]` and `[ANY 2]` (a house keyword record, because a build lists a Keyword once), and the second must differ
+     from the first. Like every `[ANY]`, each is a write-in the GM ticks (§11.25). *Approved by the GM, 2026-10-06.*
+134. **A failed Corruption Test gains the Test's DN, level modifier included, minus the Icons** (Core p.286). The book
+     says "the DN of the Test" and that the Corruption Level "can increase the DN of the Test", but never names which DN
+     the gain uses (`corruptionGain`, `character.corrupt`). A Wrath Critical takes 2 off it with no floor printed, so a
+     DN it drops below 1 is a pass; a spent Wrath takes 1 off, "can't reduce the DN below 1", and comes out of the
+     Agent's Wrath in the same tap (`corruptionTestDn`). *Approved by the GM, 2026-10-07.*
+135. **One Mutation Test per Corruption Level entered** (Core p.287: "Whenever your Corruption Level increases"), at DN 3
+     plus the new level's modifier. The book doesn't say what happens when one gain crosses two levels. Entering Chaos
+     Spawn gives no Mutation Test: the GM takes the character over (p.286) (`mutationDns`). *Approved by the GM,
+     2026-10-07.*
+136. **The +10 per mutation held counts on every Mutation table roll** (Core p.287; GitHub issue #182). The book adds
+     10 "to the result of the roll" for each prior mutation, and doesn't say whether a roll the Subtle or Minor table's
+     top row sends on is a new roll. It is: the +10s are added again on the next table, and a result past 66 is the
+     top row, so a well-mutated Agent slides toward the Severe table and The Warp Made Manifest (`mutationRow`).
+     *Approved by the GM, 2026-10-07.*
+140. **A Faction at Advanced Creation brings what an Archetype's Faction does, and no more** (Core p.38). The book lets
+     an Advanced build "choose a Faction", receive "any Faction bonuses and background options as normal" and have the
+     GM help work out its Keywords. `advanced.factionId` (optional, no XP, no GM tick) grants the Keywords the Faction
+     record names (`Faction.keywords`: ORK, ASURYANI…) and offers its Background tables and option groups on the FACTION
+     step, as an Archetype's Faction does. A Faction's own `rules` don't reach the sheet for an Archetype either
+     (docs/data.md §9, Assassinorum Conditioning), so they don't here. A Keyword the record doesn't name, a [CHAPTER] or
+     [REGIMENT] for example, is a fill the Faction's Archetypes carry and a Faction alone does not, so it is the GM's,
+     through `gm.keywords`. *Proposed; awaiting the GM.*
+141. **Species Keyword grants belong to Advanced Creation** (Core p.38; GitHub issue #189). The page puts a Species'
+     Keywords under Advanced Creation ("If you don't select a Faction you will still gain Keywords based on your
+     Species"). An Archetype prints its own, so an archetype build skips its species' grants whose only content is
+     Keywords: a Human's two `[ANY]`, an Adeptus Astartes' IMPERIUM or CHAOS, an Aeldari's ANHRATHE or ASURYANI
+     (`keywordsOnly` in `build.ts`). Every other species grant stays (the PSYKER Discipline choices). An Imperial
+     Guardsman is no longer asked for an `[ANY]`, nor a Corsair for ANHRATHE or ASURYANI. *Proposed; awaiting the GM.*
+142. **A Faction doesn't replace the Species' fixed Keywords, only its choices** (Core p.38). The page says Species
+     Keywords are gained when no Faction is picked, which doesn't say whether a Faction removes them. The Species'
+     fixed Keywords (ADEPTUS ASTARTES, ORK, [CHAPTER], [CLAN]…) always stand; its Keyword choices (a Human's any 2,
+     IMPERIUM or CHAOS, ANHRATHE or ASURYANI) are asked only when no Faction is picked, the Faction's Keywords taking
+     their place. *Proposed; awaiting the GM.*
+143. **One called Test at a time** (GitHub issue #191). The GM calls a Test from PREP or the strip, and a new call
+     replaces the open one; CLOSE, or a session's start or end, ends it. The dice stay physical (§7): the phone shows
+     the pool and the reminders, and the player reports PASSED or FAILED. Only what the Test rolls reaches the phones,
+     never the GM's purpose, Shifts or outcomes. *Approved by the GM, 2026-10-08.*
+144. **Only the Agents called report, each for themselves** (issue #191). A second report overwrites the first, so a
+     mis-tap is fixable, and the GM may set a result from the tally for a phone that's out. A phone sees the call only
+     if its Agent is named, and only its own result. *Approved by the GM, 2026-10-08.*
+145. **A failed called Test offers the GM its Ruin or Corruption; nothing is applied on its own** (Core pp.286, 320).
+     A failed Fear or Corruption Test shows +1 RUIN, and a failed Corruption Test GAIN n CORRUPTION
+     (`character.corrupt`, which brings its own +1 Ruin, §11.134), each one GM tap, as a scene's Ruin lines are (§11.78).
+     *Approved by the GM, 2026-10-08.*
+146. **A Fear Test is a Resolve Test with a FEAR mark** (Core p.199: "you roll your Resolve against a DN dictated by the
+     source of Fear"). The mark is what offers the +1 Ruin of p.320, which lists Fear and not Terror.
+     *Approved by the GM, 2026-10-08.*
+147. **The DN shows on the phones unless the GM hides it** (issue #191). A Corruption Test's DN on each phone includes
+     that Agent's Corruption Level modifier (p.286). *Approved by the GM, 2026-10-08.*
+148. **The mission log is the adventure's own status, plus FAILED** (GitHub issue #196). No book rule: the per-Agent
+     Objective (Core p.30, its Wrath at p.164) stays the private one. An adventure the GM marks SHOWN reaches the phones
+     with its title, brief and status (PLANNED, ACTIVE, DONE, FAILED); its premise and scenes never do. One status
+     serves PREP and the log. *Approved by the GM, 2026-10-08.*
+149. **A shown mission that is still planned reads OFFERED on the phones** (issue #196), so the GM can announce a job
+     before it starts. *Approved by the GM, 2026-10-08.*
+150. **SHOWN needs a brief** (issue #196). `codex.save` refuses a shown adventure with an empty brief, so a phone never
+     lists a bare title. A failed mission isn't tied to the recap. *Approved by the GM, 2026-10-08.*
+151. **Every seat reads every recap** (GitHub issue #195). Core p.317 asks only for a short "Previously in Wrath &
+     Glory…"; the app keeps each session's, so a player who missed a game can catch up. INTEL opens the latest and
+     folds the rest. A session's notes are the GM's own and never reach a phone. *Approved by the GM, 2026-10-08.*
+152. **A session's XP isn't edited afterwards** (issue #195). It was paid to every character at the session's end
+     (Core p.321), so `session.edit` changes only the recap and the notes. *Approved by the GM, 2026-10-08.*
+153. **A running session's recap is written at END SESSION** (issue #195). Its notes are edited as the game runs;
+     `session.edit` refuses its recap, so END never overwrites one typed elsewhere. *Approved by the GM, 2026-10-08.*
 
 ---
 
@@ -854,6 +977,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Ascension Package count | done | One Ascension Package per Ascension (Core p.148, §11.55), one Ascension per Tier since creation: `build.ts` fills them in the order bought, prices "× the new Tier" at each one's own Tier, and refuses a package past the last |
 | Ascension in play | done | `campaign.ascend` raises the Tier for everyone (Experience needs every character at 100+ XP in the Tier; Milestone is the GM's and awards 100 each, optionally waiving the package), tracked by `character.xpAtAscension`; the builder's ASCENSION step offers the package or Archetype Ascension (Core pp.147–148, 155; §11.66, §11.67) |
 | Archetype Ascension | done | `advancement.archetypeAscension` in `resolveBuild`: Rank 3, the same `factionId`, a Tier the group Ascended to, and the ratings matched, granting the new Archetype's abilities, Keywords, Wargear and Influence but none of its ratings, tested against Core p.155's Scout → Tactical Marine (§11.67) |
+| Advanced Creation | done | `advanced` in `CharacterBuild` (no `archetypeId`): a species and its Keywords (a Human's two `[ANY]`, an Astartes' IMPERIUM or CHAOS, asked only without a Faction), an optional Faction (its Keywords, Background tables and option groups), Tier × 10 bonus, a bought Archetype Ability, Wargear by Tier, one Ascension Package the GM allows (Core pp.38–39, §11.126–136). The builder has a panel on the ARCHETYPE step, a Faction picker on FACTION and the Creation Ascension list on ASCENSION. Left out: the optional Extra Wargear swap (p.39), a `// ponytail:` in the panel; the GM swaps through `gm.gear`. Species Keyword grants no longer reach archetype builds (§11.141) |
 | Wargear upgrades on a weapon | done | All 64 catalogue upgrades carry `slot`, `fits` and `mods`. `character.fitUpgrade` / `removeUpgrade` check the fit, three at most and one per slot; a requisition can hand one straight to a weapon (`fitTo`). The sheet stores the printed profile plus the ids and `withUpgrades` derives what is shown, so nothing double-applies (Core pp.227–228; §11.63–§11.65) |
 | Standing weapon effects | done | 47 Talents, abilities, packages and traits carry `weapons` (28 change numbers, 19 are notes only) (Bolter Discipline's Rapid Fire, a Doctrine's AP, Trademark Weapon's ED…); re-roll and dice effects are cited notes. `resolveBuild` stores them on the sheet and `withWeaponEffects` applies them on read at the Rank the XP earned gives, so a session's XP shows with no rebuild (§11.68, issue #27). Gaps: unarmed strikes, faction rules, weapons outside the catalogue (docs/data.md) |
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |

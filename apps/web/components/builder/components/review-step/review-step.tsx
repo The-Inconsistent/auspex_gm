@@ -154,7 +154,10 @@ export function ReviewStep({ onSave, onSaveDetails, sheet }: ReviewStepProps) {
             </div>
           ))}
         </div>
-        <div className="sb-band">GEAR · WEALTH {s.wealth}</div>
+        <div className="sb-band">
+          GEAR · WEALTH {s.wealth}
+          {s.corruption > 0 && ` · CORRUPTION ${s.corruption}`}
+        </div>
         <div className="sb-body">{s.gear.join(" · ") || "–"}</div>
         {r.effects.length > 0 && (
           <>

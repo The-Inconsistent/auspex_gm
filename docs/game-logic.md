@@ -120,6 +120,7 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 |---|---|---|
 | `session.start` | every character Wrath = 2; Glory = 0; Ruin = players; closes any open `session` row and opens session n + 1 | p.162, p.164, p.320 |
 | `session.end` | stores `xp` (0–100) and `recap` on the open session; adds `xp` to **every** character's `xp`; fails if none is open. Pools are left alone (the next `session.start` resets them) | p.321 |
+| `session.edit` | changes the `recap` and/or `notes` of any session of this campaign; refuses a running session's recap. Never `xp`, already paid out | p.321, §11.152–153 |
 | `character.respite` | Wounds = 0, Shock = 0, Wrath = 2. Refused while Dead or Dying (`pcStatus` server-side, via `healthOf()`) | p.193, pp.196–197 |
 
 - "Unless continuing mid-action" (p.162) is the GM's call: just don't press START SESSION.
@@ -352,11 +353,12 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 | threat combatant, `visibility: "hidden"` | nothing: left out of `combatants` | all |
 | threat combatant, `visibility: "bars"` | label, marker, class, mob count, Wounds / Shock and their maxima, Conditions, turn flags | `stats` → null, `threatId` → `""`, `personalRuin` → 0 |
 | threat combatant, `visibility: "stats"` | all of the above plus `stats` | — |
-| `Codex.factions`, `Codex.adventures` (with beats) | nothing (empty arrays) | all |
+| `Codex.factions` | nothing (an empty array) | all |
+| `Codex.adventures` | `shown` ones only (the mission log, issue #196, §11.148–150) | `premise` blanked, `beats` emptied |
 | `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked, `hazardList` emptied; `parentId` → null unless the parent is revealed, so the phone nests the rest with `placeTree` (§11.97) |
 | `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none`; `factionId` → null; `attitude` kept (rules-flow §11.89) |
 | `Codex.handouts` | revealed ones only | — |
-| `Codex.sessions` | all, with recaps | — |
+| `Codex.sessions` | all, with recaps | `notes` blanked (the GM's own, §11.151) |
 
 - **Threat visibility** (rules-flow §11.56): the tracker's PLAYERS picker sends `combatant.update { visibility }`. New
   threats start at `bars` unless `combatant.addThreat` or the `EncounterEntry` says `hidden` (or `stats`). The `threatId` is withheld, but
@@ -387,7 +389,7 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 | 2 | GM Round-start Seize costs 1 Ruin, same once-per-turn limit | `canSeize` (`lastSide` null → threats only), `spend()` in `turn.seize` |
 | 3 | Monstrous: free Determination, killed past Max Wounds | `threatStatus` (M → Slain); `THREAT_CLASS_RULES` chip. Determination is left to the table |
 | 4 | Withstand repeatable while Ruin lasts | not coded; a manual Ruin spend and HEAL |
-| 5 | Corruption 11 = Contaminated | not coded (Corruption isn't tracked) |
+| 5 | Corruption 11 = Contaminated | `corruptionLevel` (`corruption.ts`); `CharacterStats.corruption`, changed by `character.corrupt` (a failed Test adds the gain and +1 Ruin together, and notices the Mutation Tests); `CharacterStats.mutations` by `character.mutate`, read through `withMutations` |
 | 6 | Passive Awareness uses Awareness | `deriveStats().passiveAwareness` |
 | 7 | Annihilation after Resilience | `pcHit` (the entered Wounds are after Resilience) |
 | 8 | "End of next Turn" = the affected character's | `combatant.expiring`, armed in `turn.start` / `turn.seize`, removed in `turn.end` |
@@ -403,7 +405,8 @@ Campaign-specific GM decisions live in the pack data, not in code; the ones the 
 
 Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / range / vision, the damage pipeline
 (§4: the GM enters the resulting Wounds or Shock), Determination, Critical Hits and Complications, Psychic powers (§8),
-Corruption and Mutation (§9), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
+the Corruption and Mutation Tests (§9: the app keeps the points, rolls on the Mutation tables and applies their
+numbers, `corruption.ts`, `mutation.ts`), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
 Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked. The live list is

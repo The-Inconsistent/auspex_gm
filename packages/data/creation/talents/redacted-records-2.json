@@ -1,0 +1,776 @@
+[
+  {
+    "id": "journeyman-craftsworker",
+    "name": "Journeyman Craftsworker",
+    "source": "redacted-records-2",
+    "page": 64,
+    "note": "The trade is an open choice (\"etc.\"), so no `options`; the book doesn't say the Talent can be taken more than once. Printed across both columns of p.64.",
+    "xp": 10,
+    "effect": "You previously held a position as a practitioner of a particular primitive craft, or have picked up such a pursuit in your meagre downtime.\n\nChoose a type of trade appropriate for the 41st Millennium that does not involve the creation of Wargear — carpentry, cartography, jewellery, masonry, painting, sculpture etc. You excel at this craft.\n\nIf an enthusiast of the craft witnesses your creations, you gain +Rank bonus dice to social Skills targeting them for the rest of the scene.\n\nIf you ever undertake a Skill Test to determine the success of the crafting itself — rolling Stealth (A) to conceal a recording device in a necklace, for example — you gain +Double Rank bonus dice on the Test.\n\nIf you have a chance to practise your trade during a Regroup, you reduce your Shock by your Rank."
+  },
+  {
+    "id": "lightning-reflexes",
+    "name": "Lightning Reflexes",
+    "source": "redacted-records-2",
+    "page": 64,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "A",
+        "min": 4
+      }
+    ],
+    "effect": "You blindside enemies by leaping on opportunities the second they become available.\n\nOnce per combat, your character can Seize The Initiative (Wrath & Glory Rulebook, page 177) without spending Glory.\n\nAdditionally, once per combat, when the GM spends 1 Ruin to Seize The Initiative, you can spend 1 Glory to cancel the effect. The Ruin is still spent. You can only use this option if you have not yet taken your Turn, and must now take your Turn immediately."
+  },
+  {
+    "id": "longshot",
+    "name": "Longshot",
+    "source": "redacted-records-2",
+    "page": 65,
+    "note": "The range change applies only from a static firing position, so it stays in the effect, not `weapons`.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Ballistic Skill",
+        "min": 2
+      }
+    ],
+    "effect": "Whilst most battles of the 41st Millennium are fought up close, you prefer to wage war from the other end of a rifle scope, as far from the enemy as possible.\n\nIf you spend a Full Round Action setting up a static firing position, the Long Range of your ranged weapons are tripled for as long as you remain in that spot. Weapons with the Sniper (X) Trait instead increase their Long Range to one kilometre."
+  },
+  {
+    "id": "manual-labourer",
+    "name": "Manual Labourer",
+    "source": "redacted-records-2",
+    "page": 65,
+    "note": "The labour is an open choice (\"etc.\"), so no `options`. \"—-\" copied as printed.",
+    "xp": 10,
+    "effect": "Your background is replete with long hours of exhausting toil, and the lessons learned from those work-gangs are not easily forgotten.\n\nChoose a type of occupational labour appropriate for the 41st Millennium — construction, forge labour, mining, agri-farming, etc. You are an expert in this work.\n\nYou gain +Rank bonus dice to all social Skill Tests targeting individuals from the same background.\n\nIf you ever undertake a skill Test to determine the success of these labours —- rolling Athletics (S) to dig a trench that provides full cover in combat, for example — you gain +Double Rank bonus dice on the Test."
+  },
+  {
+    "id": "mendacious",
+    "name": "Mendacious",
+    "source": "redacted-records-2",
+    "page": 65,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Deception",
+        "min": 2
+      }
+    ],
+    "effect": "By confusing your enemy you can set them up for a devastating attack when they least expect it.\n\nWhen you make a successful Deception Interaction Attack to inflict the Vulnerable Condition (Wrath & Glory Rulebook, page 190), your target reduces their Defence by 2 instead of 1. Shifts can be spent to further reduce the Defence of your target by 2, instead of 1."
+  },
+  {
+    "id": "no-escape",
+    "name": "No Escape",
+    "source": "redacted-records-2",
+    "page": 65,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "I",
+        "min": 5
+      }
+    ],
+    "effect": "You are extremely skilled at blocking enemies from getting past or away from you. Enemies Engaged with you cannot use the Fall Back Combat Action. Additionally, you gain +Rank bonus dice on Reflexive Attack Tests (Wrath & Glory Rulebook, page 184)."
+  },
+  {
+    "id": "old-reliable",
+    "name": "Old Reliable",
+    "source": "redacted-records-2",
+    "page": 65,
+    "note": "An in-play effect on Wrath Die results, not a profile change, so no `weapons`.",
+    "xp": 10,
+    "effect": "From the standard-issue rifle of the Imperial infantryman, to the Godhammer lascannons of Astartes Land Raiders, the enduring ubiquity of laser weaponry is a testament to their rugged dependability. You know just how to kindle the Machine Spirits of las-weaponry to the pinnacle of reliable, efficient destruction.\n\nWhen you use a weapon with the LAS Keyword and the Reliable Trait, rolling a 1 on the Wrath Die does not trigger a Complication. This effect does not apply when you are Dying.\n\nAdditionally, whenever you use an effect that would expend Las Ammo, roll a Wrath Die. If you roll an Exalted Icon, you do not expend that Las Ammo."
+  },
+  {
+    "id": "perplexingly-persuasive",
+    "name": "Perplexingly Persuasive",
+    "source": "redacted-records-2",
+    "page": 66,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Persuasion",
+        "min": 4
+      }
+    ],
+    "effect": "Your words are so convincing that even enemies are inclined to listen, pulling their punches as they wonder if they are on the right side.\n\nWhen you succeed on an Interaction Attack using Persuasion to inflict the Hindered Condition (Wrath & Glory Rulebook, page 190), your target suffers a DN penalty of 2 instead of 1. Any Shifts can be spent to increase the DN penalty of your target by 2, instead of 1.\n\nAt the Gamemaster's discretion, this Talent only works on targets that understand the language you speak, and particularly hardened foes may require an Opposed Test against their Insight (Fel)."
+  },
+  {
+    "id": "rumoursmith",
+    "name": "Rumoursmith",
+    "source": "redacted-records-2",
+    "page": 66,
+    "xp": 10,
+    "effect": "You're vigilant to local gossip, a bountiful source of both reliable and wildly inaccurate intelligence.\n\nYou gain +Rank bonus dice to Cunning (Fel) Tests to hear the word on the street.\n\nAny Shifts you generate on this Test can be spent to insert a new rumour into circulation. The rumour does not have to be true, but is widely believed as such, and cannot be traced back to you."
+  },
+  {
+    "id": "trapmaster",
+    "name": "Trapmaster",
+    "source": "redacted-records-2",
+    "page": 66,
+    "note": "The trap profile (a table on p.66, checked against the page image) is kept in the effect as one line: a trap is set in play, not a weapon the character carries. Printed across both columns of p.66.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 3
+      }
+    ],
+    "effect": "When you have time to prepare for combat you can transform the battlefield into a deathtrap.\n\nDuring a Regroup, you can Test Survival (Wil) to set a trap around your current location instead of removing Wounds. The DN is usually 3, but may increase depending on the availability of tools and materials. Success constructs a single trap.\n\nWhen you engage in combat around this location, you may use a Reflexive Action when an enemy moves to reveal that they have stumbled into your trap.\n\nOn a successful DN 3 Survival (Wil) or Tech (Int) attack Test, the trap is activated, and inflicts damage per the profile below. If targeting a Mob, additional Icons hit additional Troops as normal. A trap can only be activated once.\n\nDamage 7 | ED 2 | AP - | Traits: Blast (6), Brutal, Inflict (Prone)\n\nShifts on the Test to create the trap can be spent to:\n• Increase the ED by +Rank.\n• Incorporate a grenade you already have into the trap, replacing the weapon profile above with the profile of the grenade (ignoring Range).\n• Add one of the following Traits: Inflict (Bleeding), Inflict (Blinded), Inflict (On Fire), Inflict (Poisoned 3), Inflict (Restrained), Silent. This option may be chosen more than once, selecting a different Trait each time.\n\nProviding detail about the trap you craft may affect what Keywords it has, and possibly expand the range of available Traits you can spend Shifts on."
+  },
+  {
+    "id": "shadow-haunter",
+    "name": "Shadow Haunter",
+    "source": "redacted-records-2",
+    "page": 66,
+    "note": "\"reduced by -1\" copied as printed (read: reduced by 1).",
+    "xp": 5,
+    "effect": "You have excellent night vision, navigating darkness almost as easily as daylight. All DN penalties due to darkness are reduced by -1."
+  },
+  {
+    "id": "shield-bash",
+    "name": "Shield Bash",
+    "source": "redacted-records-2",
+    "page": 66,
+    "note": "The profile (a table on p.66, checked against the page image) is kept in the effect: its Damage is S + the shield's AR and its AP depends on the shield, which a `weapon` grant can't express, and it needs a Shield the character carries.",
+    "xp": 10,
+    "effect": "You know how to use your shield as more than a mere defensive tool, but as a slab of heavy metal you can slam into enemies to knock them off balance.\n\nIf you are carrying armour with the Shield Trait, you can use it as a melee weapon with the following profile:\n\nDamage (S) +AR | ED 1 | AP 0* | Traits: Inflict (Hindered**)\n\n*AP is 0, unless the shield has the Power Field Trait, in which case the AP is equal to the shield's AR.\n**On a successful melee attack Test, Shifts can be spent to increase the DN penalty of the Condition by 1 per Shift."
+  },
+  {
+    "id": "shrewd-investments",
+    "name": "Shrewd Investments",
+    "source": "redacted-records-2",
+    "page": 67,
+    "xp": 10,
+    "effect": "You are careful with how you spend your coin, always getting the best deal on any merchandise.\n\nWhen you spend Wealth as part of a Requisition Test, roll a number of dice equal to the Wealth spent. You regain Wealth equal to the number of Exalted Icons rolled, up to the amount of Wealth spent on the Test."
+  },
+  {
+    "id": "sphere-of-influence",
+    "name": "Sphere Of Influence",
+    "source": "redacted-records-2",
+    "page": 67,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "Fel",
+        "min": 4
+      },
+      {
+        "kind": "influence",
+        "min": 2
+      }
+    ],
+    "effect": "Your privileged position affords you access to a myriad of contacts that may be able to aid you.\n\nAt any time, you may spend 1 Glory to nominate a Faction Keyword (Wrath & Glory Rulebook, pages 375–377). Subject to the GM's approval, you may detail a junior member of the Faction in your approximate vicinity. The individual does not work for you, but you have a somewhat positive professional relationship, and you know how to contact them.\n\nYour contacts may help you, if it is not too great an inconvenience, or they are provided a sufficiently powerful incentive. In addition, roll a Wrath die. On an Exalted Icon, they owe you a favour. On a Complication, you already owe them a favour."
+  },
+  {
+    "id": "statue-still",
+    "name": "Statue Still",
+    "source": "redacted-records-2",
+    "page": 67,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Stealth",
+        "min": 2
+      }
+    ],
+    "effect": "You have trained to control your biology, slowing your metabolism and remain perfectly motionless, to better blend in with your background.\n\nYou gain +Rank to your Stealth Score whenever you are perfectly still. You lose this benefit when moving silently. While using this ability, you can only whisper or use vox, potentially allowing you to Help allies. As soon as you undertake any other action, the bonus is subtracted from your Stealth Score and can't be restored until you generate a new Stealth Score."
+  },
+  {
+    "id": "survivalist",
+    "name": "Survivalist",
+    "source": "redacted-records-2",
+    "page": 67,
+    "note": "The +Rank Passive Awareness applies only against BEAST creatures, so it stays in the effect, not `mods`.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Survival",
+        "min": 3
+      }
+    ],
+    "effect": "Whether metaphorically or literally, you are at home in nature. You gain +Rank to your Passive Awareness when detecting the presence of creatures with the BEAST Keyword. You can survive by eating practically anything, and never have to worry about suffering starvation while in the wilderness. You never lose your sense of direction, unless afflicted by mind-altering effects such as Psychic Powers. You always know how to find the nearest shelter to protect yourself from environmental hazards.\n\nWhile you can easily fend for yourself this way, you must take Survival (Wil) Tests to find food and shelter for other Agents less proficient in wilderness survival."
+  },
+  {
+    "id": "telecryptographer",
+    "name": "Telecryptographer",
+    "source": "redacted-records-2",
+    "page": 67,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Scholar",
+        "min": 2
+      },
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 2
+      }
+    ],
+    "effect": "You are a student of informational warfare, as fluent at intercepting enemy communications as guarding your own.\n\nYou gain +Double Rank bonus dice on Tests to jam, intercept or decode enemy vox traffic (or the equivalent).\n\nIf any of your allies are equipped with a vox unit, you can spend a Respite to encrypt their communications to prevent unauthorised access. Enemies can only intercept the vox traffic by succeeding in an Opposed Tech (Int) Test against you, and you gain +Double Rank bonus dice on that Test."
+  },
+  {
+    "id": "trip-attack",
+    "name": "Trip Attack",
+    "source": "redacted-records-2",
+    "page": 67,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Athletics",
+        "min": 2
+      }
+    ],
+    "effect": "You employ throws and leg sweeps to keep your enemy on the ground and at your mercy.\n\nWhen you succeed on an Interaction Attack using Athletics (Wrath & Glory Rulebook, page 190), your enemy gains the Prone Condition, in addition to other effects. Prone enemies Engaged with you can only remove the Condition on their turn by spending a Combat Action. Allies may still help them stand with a Simple Action."
+  },
+  {
+    "id": "unbreakable-guard",
+    "name": "Unbreakable Guard",
+    "source": "redacted-records-2",
+    "page": 68,
+    "xp": 10,
+    "effect": "Whether stalling for time, acting as a distraction, or blocking an enemy advance, you are almost untouchable when dedicated to defence.\n\nWhen you benefit from a Full Defence (Wrath & Glory Rulebook, page 187), your Defence is further increased by +Rank."
+  },
+  {
+    "id": "whatever-the-cost",
+    "name": "Whatever The Cost",
+    "source": "redacted-records-2",
+    "page": 68,
+    "xp": 10,
+    "effect": "You don't hesitate to pay whatever it takes to get what you want, an uncommon generosity that endears you to your suppliers.\n\nYou gain 2 Icons for every point of Wealth you spend on Requisition Tests, instead of the usual 1. However, if you roll a Complication on a Requisition Test you lose 2 Wealth instead of the usual 1."
+  },
+  {
+    "id": "white-hot-death",
+    "name": "White-Hot Death",
+    "source": "redacted-records-2",
+    "page": 68,
+    "note": "Only when firing with Supercharge, so it stays in the effect, not `weapons`.",
+    "xp": 10,
+    "effect": "You are one of the few daredevil warriors who has lived long enough to master plasma weaponry.\n\nWhen you fire a weapon using Supercharge (Wrath & Glory Rulebook, page 210) you add an additional +Rank ED."
+  },
+  {
+    "id": "wild-attack",
+    "name": "Wild Attack",
+    "source": "redacted-records-2",
+    "page": 68,
+    "xp": 10,
+    "effect": "What you lack in self-control and martial discipline, you make up for in sheer unpredictability.\n\nWhenever you make an All-Out Attack you gain +Rank bonus dice. Additionally, you can choose to sacrifice Shock equal to your Rank. The All-Out Attack gains +ED equal to the amount of Shock sacrificed."
+  },
+  {
+    "id": "wings-of-fire",
+    "name": "Wings Of Fire",
+    "source": "redacted-records-2",
+    "page": 68,
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "attribute",
+        "attribute": "A",
+        "min": 5
+      }
+    ],
+    "effect": "You fly with such confidence that jump packs are like extensions of your own body. You ignore the first Complication per scene related to moving by Jump Pack (Wrath & Glory Rulebook, page 237)."
+  },
+  {
+    "id": "aegis-of-the-emperor",
+    "name": "Aegis of the Emperor",
+    "source": "redacted-records-2",
+    "page": 68,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "It is said that among the oldest invocations of the Emperor’s strength are the three words, ‘The Emperor Protects.’ By repeating this phrase, or one very like it, you steel the will of the faithful against the blasphemous sorcery of the Emperor’s enemies.\n\nYou gain +1 Faith. As an Action you may target a Human within 5m. Your target cannot be targeted by Psychic Powers for 1 hour. You can target yourself.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "castigate-the-witch",
+    "name": "Castigate the Witch",
+    "source": "redacted-records-2",
+    "page": 68,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "When foul psykers fail, your righteous castigation causes anguish to their heretical form.\n\nYou gain +1 Faith. When a Psychic Power targeting you fails to have an effect, you may spend 1 Faith as a Reflexive Action. The psyker who targeted you immediately suffers 2+Double Rank Shock.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "deliverance-from-the-daemonic",
+    "name": "Deliverance from the Daemonic",
+    "source": "redacted-records-2",
+    "page": 68,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them. Effect continues on p.69.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "To the most unrepentantly wicked souls, the Holy Truth of the Emperor is anathema.\n\nYou gain +1 Faith. As a Combat Action, you may spend 1 Faith to target a CHAOS enemy within hearing range with an Opposed Willpower Test.\n\nIf you succeed, the enemy suffers 1d3 +Rank Mortal Wounds. DAEMON Threats can’t roll Determination to reduce this damage.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "hand-of-the-emperor",
+    "name": "Hand of the Emperor",
+    "source": "redacted-records-2",
+    "page": 69,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them. Printed heading \"Hand Of The Emperor\".",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Those chosen as vessels for the Emperor are burdened with glorious purpose, invigorated to enact his will wherever it is needed.\n\nYou gain +1 Faith. You may spend 1 Faith as a Reflexive Action to double the Speed of an IMPERIUM character for 1 round. This character must be in hearing range.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "martyrs-rites",
+    "name": "Martyr's Rites",
+    "source": "redacted-records-2",
+    "page": 69,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "attribute",
+        "attribute": "Wil",
+        "min": 3
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "To one who has already resigned themselves to death, the battlefield holds no fear.\n\nYou gain +1 Faith. As a Simple Action, you may spend 1 Faith to recite last rites. Select one IMPERIUM character within hearing range. The target removes the Prone Condition if they have it. For the next 24 hours, the target doesn’t suffer the Prone Condition when they are Dying, aren’t restricted on Actions they can perform while Dying, or subject to the Exhausted Condition. The effect of those Conditions on Shock, Wounds, and Traumatic Injuries still apply as normal.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "sacred-radiance",
+    "name": "Sacred Radiance",
+    "source": "redacted-records-2",
+    "page": 69,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You are a living embodiment of the maxim that faith is a light that shines brightest in the dark.\n\nYou gain +1 Faith. As a Simple Action, you may spend 1 Faith to emit divine light. You cast this light as most people cast a shadow — whatever you look upon becomes fully illuminated for you and your allies, negating all vision penalties.\n\nThis light is physically painful to behold for the enemies of the Emperor. For CHAOS or DAEMON characters, any Tests against you increase their DN by 1. If a Complication is rolled on a Test against you, the attacker gains the Blinded Condition.\n\nIn combat, the effects of Sacred Radiance apply for 1 Round. Outside of combat, the effects persist for the rest of the scene, or until you choose to extinguish the light.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "righteous-suffering",
+    "name": "Righteous Suffering",
+    "source": "redacted-records-2",
+    "page": 69,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS",
+          "ADEPTUS MINISTORUM"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You embrace suffering, performing constant penance, sharing in the Emperor’s past agonies to better embody His righteous vengeance.\n\nYou gain +1 Faith. Once per Turn, whenever you suffer one or more Wounds, roll a Wrath Die. If you roll an Exalted Icon, you gain +1 Wrath Point.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "shield-of-aversion",
+    "name": "Shield of Aversion",
+    "source": "redacted-records-2",
+    "page": 70,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "Your faith is a bulwark, so pure that it slows and restrains your enemies’ weapons.\n\nYou gain +1 Faith. As a Simple Action, you may spend 1 Faith to activate your Shield of Aversion. For the remainder of the encounter, the AP value of any attack that targets you or an ally within 10m is reduced by Double your Rank.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "unshakable-vengeance",
+    "name": "Unshakable Vengeance",
+    "source": "redacted-records-2",
+    "page": 70,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You wield the sacred Bolter as a beneficent gift from the Emperor Himself, your faith a conduit for His revenge against the enemies of the glorious Imperium.\n\nYou gain +1 Faith. Whenever you suffer one or more Wounds, you may spend 1 Faith as a Reflexive Action to immediately make a Bolter attack against the target that dealt you damage, and may reroll all dice that do not result in Icons on the attack Tests as though you had spent a point of Wrath.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "verse-of-holy-piety",
+    "name": "Verse of Holy Piety",
+    "source": "redacted-records-2",
+    "page": 70,
+    "category": "faith",
+    "note": "Faith Talent (\"Faith Talents\", RR2 p.68: \"suitable for members of the Adeptus Ministorum, expanding on the Faith Talents detailed in the core rulebook\", Core pp.142–144). The IMPERIUM and not-CHAOS requirements apply to every Faith Talent (\"Limits of Faith\", Core p.142), as on Core's Faith Talents; RR2 does not restate them. \"Fellowship (Deception)\" as printed.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTA SORORITAS"
+        ]
+      },
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "IMPERIUM"
+        ]
+      },
+      {
+        "kind": "notKeyword",
+        "anyOf": [
+          "CHAOS"
+        ]
+      }
+    ],
+    "effect": "You intone a verse that seems to imbue the air itself with a measure of the Emperor’s righteous presence, forcing the faithful to speak truthfully.\n\nYou gain +1 Faith. As a Simple Action you may spend 1 Faith to utter the verse of holy piety. Any character with the IMPERIUM Keyword hearing the verse automatically fails any Fellowship (Deception) Tests and suffers Shock damage equal to double your Rank.",
+    "grants": [
+      {
+        "faith": 1
+      }
+    ]
+  },
+  {
+    "id": "rad-saturated",
+    "name": "Rad-Saturated",
+    "source": "redacted-records-2",
+    "page": 71,
+    "note": "Adeptus Mechanicus Talents (RR2 p.71): \"suitable for members of the Adeptus Mechanicus\", printed as a suggestion, not a requirement; only the printed Requirements are structured. Requirements printed \"ADEPTUS MECHANICUS\" without the word Keyword; read as the Keyword.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "You have exposed yourself to semi-lethal quantities of radiation, sacrificing the length of your life to better serve as the Omnissiah’s deadly assailant.\n\nWhenever a creature enters Engagement with you or starts a Turn Engaged with you they make a Toughness Test with a DN equal to your Rank x2. If they fail, they are Hindered until the start of their next Turn."
+  },
+  {
+    "id": "reclamator",
+    "name": "Reclamator",
+    "source": "redacted-records-2",
+    "page": 71,
+    "note": "Adeptus Mechanicus Talents (RR2 p.71): \"suitable for members of the Adeptus Mechanicus\", printed as a suggestion, not a requirement; only the printed Requirements are structured. No ADEPTUS MECHANICUS requirement is printed, and the text expects characters without it to take it.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 2
+      }
+    ],
+    "effect": "You have access to a reliable supply of broken or damaged technology, and can re-assemble it yourself at half the cost.\n\nWhen you requisition Wargear you can choose to reduce the Value by Double Rank to a minimum of 1 (Rarity is unaffected). However, if you do so, the item cannot be used until you repair it. By default, this requires 8 hours of work and a successful Tech (Int) Test, with a DN equal to the Wargear’s original Value + Rarity. Shifts can be used to halve the repair time.\n\nIf you do not have the ADEPTUS MECHANICUS, this activity is considered illegal, a violation of both Lex Imperialis and the Treaty of Mars."
+  },
+  {
+    "id": "rite-of-the-voltagheist",
+    "name": "Rite of the Voltagheist",
+    "source": "redacted-records-2",
+    "page": 71,
+    "note": "Adeptus Mechanicus Talents (RR2 p.71): \"suitable for members of the Adeptus Mechanicus\", printed as a suggestion, not a requirement; only the printed Requirements are structured. \"electoo\" as printed.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "Either the Corpuscarri or the Fulgrite Electro-Priesthoods have implanted electoo circuitry into your body, channelling the motive force that flows through you to protect you from enemies of the Omnissiah.\n\nWhen you are hit by a melee attack, or a Complication is rolled on an attack Test that targets you, your attacker suffers Shock damage equal to your Rank. In addition, your attacker must pass a DN3 Toughness Test or be Restrained for one Round, and be knocked Prone on a Complication."
+  },
+  {
+    "id": "rite-of-shroudpsalm",
+    "name": "Rite of Shroudpsalm",
+    "source": "redacted-records-2",
+    "page": 71,
+    "note": "Adeptus Mechanicus Talents (RR2 p.71): \"suitable for members of the Adeptus Mechanicus\", printed as a suggestion, not a requirement; only the printed Requirements are structured.",
+    "xp": 20,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      }
+    ],
+    "effect": "You are implanted with noospheric negators, electromagnetic disruptors, and stealth screen projectors, all designed to interfere with enemy surveillance equipment.\n\nYou may activate or deactivate this Talent as a Free Action. While the Talent is active, you do not register on auspices, pict-thieves, monoscopes, or other forms of scanning or recording equipment. Anyone attempting to identify your presence uses their own unmodified Awareness (Int), without any bonuses from Wargear."
+  },
+  {
+    "id": "signal-booster",
+    "name": "Signal Booster",
+    "source": "redacted-records-2",
+    "page": 71,
+    "note": "Adeptus Mechanicus Talents (RR2 p.71): \"suitable for members of the Adeptus Mechanicus\", printed as a suggestion, not a requirement; only the printed Requirements are structured.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 2
+      }
+    ],
+    "effect": "You are equipped to interact with machines at a greater distance, manipulating their spirits to startle and demoralise your foes. The range at which you can make Interaction Attacks using Tech is increased to 5 times your Intellect attribute in metres (Wrath & Glory Rulebook, page 190).\n\nAny Shifts can be spent to increase the Defence or DN penalty of your target by 2, instead of 1."
+  },
+  {
+    "id": "techno-animist",
+    "name": "Techno-animist",
+    "source": "redacted-records-2",
+    "page": 71,
+    "note": "Adeptus Mechanicus Talents (RR2 p.71): \"suitable for members of the Adeptus Mechanicus\", printed as a suggestion, not a requirement; only the printed Requirements are structured.",
+    "xp": 10,
+    "requires": [
+      {
+        "kind": "keyword",
+        "anyOf": [
+          "ADEPTUS MECHANICUS"
+        ]
+      },
+      {
+        "kind": "skill",
+        "skill": "Tech",
+        "min": 3
+      }
+    ],
+    "effect": "Your skill in repairing augmetics and cyber-implants can restore servitors and the techno-faithful to functionality. You can use Tech (Int) instead of Medicae (Int) to remove Wounds, Shock, and Conditions from targets with the ADEPTUS MECHANICUS Keyword (Wrath & Glory Rulebook, page 124)."
+  }
+]

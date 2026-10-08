@@ -11,6 +11,7 @@ import {
   HULK_HAZARDS,
   Lookups,
   LootTable,
+  MutationTable,
   RelicCreator,
   NpcPreset,
   Pack,
@@ -91,6 +92,12 @@ export const lookups = (): Lookups =>
     criticalHits: json(new URL(`./lookups/${LOOKUP_FILES.criticalHits}`, import.meta.url)),
     perils: json(new URL(`./lookups/${LOOKUP_FILES.perils}`, import.meta.url)),
   });
+// mutations/<source>.json: the Mutation tables (Core pp.287–295, issue #182), GM-only like the scene presets, and the
+// rows character.mutate looks up.
+const mutationsDir = new URL("./mutations/", import.meta.url);
+export const mutationFiles = () => jsonFiles(mutationsDir);
+export const mutationTables = (): MutationTable[] =>
+  mutationFiles().flatMap((f) => MutationTable.array().parse(json(new URL(f, mutationsDir))));
 export const scenePresets = (): ScenePresets => ({
   skillDns: SkillDn.array().parse(json(new URL(SKILL_DNS_FILE, presetsDir))),
   tables: eventTableFiles().flatMap((f) => EventTable.array().parse(json(new URL(f, presetsDir)))),
@@ -100,6 +107,7 @@ export const scenePresets = (): ScenePresets => ({
   loot: lootTables(),
   relics,
   lookups: lookups(),
+  mutations: mutationTables(),
 });
 
 // faction-presets/<source>.json: GM-only printed factions for CODEX › FACTIONS' ADD FROM BOOK (issue #46), besides the

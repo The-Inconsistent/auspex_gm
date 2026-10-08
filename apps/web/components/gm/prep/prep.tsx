@@ -2,6 +2,8 @@
 import { useMemo, useState, type FormEvent } from "react";
 
 import {
+  activeCharacterIds,
+  AdventureStatus,
   agentsInFight,
   CodexSave,
   threatProfile,
@@ -16,14 +18,18 @@ import {
 
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
+import { Mentions } from "@/components/ui/mentions/mentions";
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
+import { fieldedAgentIds } from "@/lib/print-cards/print-cards";
 
 import { BeatEditor } from "./components/beat-editor/beat-editor";
 import { SceneHazards } from "./components/scene-hazards/scene-hazards";
 import { ScenePicker } from "./components/scene-picker/scene-picker";
 import { ScenePools } from "./components/scene-pools/scene-pools";
 import { SceneTests } from "./components/scene-tests/scene-tests";
+import { ADVENTURE_STATUS } from "./constants";
 import type { Beat } from "./types";
 import { sceneNumber, stripBeat } from "./utils";
 
@@ -42,14 +48,19 @@ type PrepProps = {
   presets: ScenePresets;
   wargear: Wargear[]; // for a scene's + NEW CUSTOM THREAT
   onRun: () => void;
+  initialSceneId?: string; // a peek's GO TO (issue #198): open on the adventure holding it
 };
 
-export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: PrepProps) {
-  const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
+export function Prep({ state, codex, send, bestiary, presets, wargear, onRun, initialSceneId }: PrepProps) {
+  const [advId, setAdvId] = useState<string | null>(
+    () =>
+      codex.adventures.find((a) => a.beats.some((b) => b.id === initialSceneId))?.id ?? codex.adventures[0]?.id ?? null,
+  );
+  const seated = activeCharacterIds(state.access); // whose phones a called Test reaches (issue #191)
   // The scene editor (a scene, or "new"), or the book-table picker ("table").
   const [editing, setEditing] = useState<Beat | "new" | "table" | null>(null);
   const [title, setTitle] = useState("");
-  const [advDraft, setAdvDraft] = useState<{ title: string; premise: string } | null>(null); // adventure being edited
+  const [advDraft, setAdvDraft] = useState<{ title: string; premise: string; brief: string } | null>(null); // adventure being edited
   const [msg, setMsg] = useState<string | null>(null);
   const newFields = useFieldErrors("adv-new"); // the new adventure's title
   const advFields = useFieldErrors("adv-"); // the open adventure's
@@ -58,6 +69,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
   // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for
   // and whose number scales a Threat (Core p.326, §11.106).
   const agents = agentsInFight(state);
+  const { print } = usePrint();
   // Names for the ENCOUNTER line, so a scene card reads "Ork Boy" and not "ork-boy".
   const threatNames = useMemo(() => new Map(bestiary.map((t) => [t.id, t.name])), [bestiary]);
 
@@ -90,7 +102,8 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
     return to ? `${sceneNumber(i)} · ${to.title.toUpperCase()}` : null;
   };
 
-  const report = (r: ActionResult, ok: string) => setMsg(r.ok ? ok : `! ${r.error}`);
+  const report = (r: ActionResult, ok: string) =>
+    setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`); // notices: a Mutation Test owed
 
   // ↑ / ↓: swaps a beat with its neighbour and saves the new order.
   const move = async ({ index, dir }: { index: number; dir: -1 | 1 }) => {
@@ -127,20 +140,34 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
     setTitle("");
   };
 
-  // SAVE on the adventure: keeps its status (codex.save would reset it to the default) and closes the editor.
+  // SAVE on the adventure: keeps its status and SHOWN (codex.save would reset them to the defaults) and closes the editor.
   const saveAdventure = async () => {
     if (!adv || !advDraft) return;
-    const data = advFields.check(CodexSave.adventure, { ...advDraft, status: adv.status });
+    const data = advFields.check(CodexSave.adventure, { ...advDraft, status: adv.status, shown: adv.shown });
     if (!data) return;
     const r = await send({ type: "codex.save", kind: "adventure", id: adv.id, data });
     report(r, "ADVENTURE SAVED");
     if (r.ok) setAdvDraft(null);
   };
 
-  // EDIT on the adventure: its title and premise, with no marks left from an earlier SAVE.
-  const editAdventure = (a: { title: string; premise: string }) => {
+  // EDIT on the adventure: its title, brief and premise, with no marks left from an earlier SAVE.
+  const editAdventure = (a: { title: string; premise: string; brief: string }) => {
     advFields.reset();
-    setAdvDraft({ title: a.title, premise: a.premise });
+    setAdvDraft({ title: a.title, premise: a.premise, brief: a.brief });
+  };
+
+  // The status picker and SHOWN / HIDDEN: save the adventure with one field changed (the mission log, issue #196).
+  const saveAdventureWith = async (patch: { status: AdventureStatus } | { shown: boolean }, ok: string) => {
+    if (!adv) return;
+    const { id, beats: _, ...row } = adv;
+    report(await send({ type: "codex.save", kind: "adventure", id, data: { ...row, ...patch } }), ok);
+  };
+
+  // The status picker: PLANNED, ACTIVE, DONE or FAILED.
+  const pickStatus = (value: string) => {
+    if (!adv) return;
+    const status = AdventureStatus.parse(value);
+    saveAdventureWith({ status }, `${adv.title.toUpperCase()} → ${ADVENTURE_STATUS[status]}`);
   };
 
   // RUN SCENE: puts the beat's prepared encounter live and jumps to the tracker.
@@ -157,6 +184,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
         {codex.adventures.map((a) => (
           <button key={a.id} className={`btn ${a.id === advId ? "primary" : ""}`} onClick={() => pickAdventure(a.id)}>
             {a.title.toUpperCase()}
+            {a.shown && " · SHOWN"}
           </button>
         ))}
         <form style={{ display: "flex", gap: 6 }} onSubmit={handleCreateAdventure}>
@@ -200,6 +228,21 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                 <FieldError {...advFields.reason("title")} />
               </div>
               <div className="field">
+                <label className="label" htmlFor="adv-brief">
+                  BRIEF (THE PARTY SEES THIS ONCE SHOWN)
+                </label>
+                <input
+                  id="adv-brief"
+                  className="input"
+                  maxLength={300}
+                  placeholder="Find out who sold the Sanctorum's seals"
+                  value={advDraft.brief}
+                  onChange={(e) => setAdvDraft({ ...advDraft, brief: e.target.value })}
+                  {...advFields.marks("brief")}
+                />
+                <FieldError {...advFields.reason("brief")} />
+              </div>
+              <div className="field">
                 <label className="label" htmlFor="adv-premise">
                   PREMISE / GM NOTES
                 </label>
@@ -221,6 +264,11 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
             </div>
           ) : (
             <>
+              {adv.brief && (
+                <div>
+                  <span className="label accent">BRIEF</span> {adv.brief}
+                </div>
+              )}
               {/* The premise holds the hidden truth, so it stays closed like the beats' GM notes. */}
               {adv.premise && (
                 <details className="field plate">
@@ -228,9 +276,32 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                   <pre className="text">{adv.premise}</pre>
                 </details>
               )}
-              <div>
+              <div className="keys">
                 <button className="btn sm" onClick={() => editAdventure(adv)}>
                   EDIT ADVENTURE
+                </button>
+                <select
+                  className="input"
+                  aria-label="Mission status"
+                  style={{ width: "auto" }}
+                  value={adv.status}
+                  onChange={(e) => pickStatus(e.target.value)}
+                >
+                  {AdventureStatus.options.map((s) => (
+                    <option key={s} value={s}>
+                      {ADVENTURE_STATUS[s]}
+                    </option>
+                  ))}
+                </select>
+                {/* Whether the party has this mission in INTEL's MISSION LOG; it needs a brief first (§11.150). */}
+                <button
+                  className="btn sm"
+                  style={{ color: adv.shown ? "var(--ink)" : "var(--red)" }}
+                  onClick={() =>
+                    saveAdventureWith({ shown: !adv.shown }, adv.shown ? "HIDDEN FROM THE PARTY" : "SHOWN TO THE PARTY")
+                  }
+                >
+                  {adv.shown ? "SHOWN TO THE PARTY" : "HIDDEN FROM THE PARTY"}
                 </button>
               </div>
             </>
@@ -238,7 +309,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
           <div className="rule">{adv.title.toUpperCase()} · SCENES</div>
           <div className="list">
             {adv.beats.map((b, i) => (
-              <div key={b.id} className="item">
+              <div key={b.id} id={`entry-${b.id}`} className="item">
                 <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                   <span className="dim">{sceneNumber(i)}</span>
                   <b style={{ flex: 1 }}>{b.title.toUpperCase()}</b>
@@ -247,7 +318,10 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                 </div>
                 {b.goal && (
                   <div>
-                    <span className="label accent">GOAL</span> <b>{b.goal}</b>
+                    <span className="label accent">GOAL</span>{" "}
+                    <b>
+                      <Mentions text={b.goal} self={b.id} />
+                    </b>
                   </div>
                 )}
                 {beatFields.map(([key, label, gmOnly]) =>
@@ -255,12 +329,16 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                     // Closed by default so a player glancing at the tablet doesn't read them.
                     <details key={key} className="field plate">
                       <summary className="label">{label} · TAP TO REVEAL</summary>
-                      <pre className="text">{b[key]}</pre>
+                      <pre className="text">
+                        <Mentions text={b[key]} self={b.id} />
+                      </pre>
                     </details>
                   ) : (
                     <div key={key} className="field">
                       <span className="label">{label}</span>
-                      <pre className="text">{b[key]}</pre>
+                      <pre className="text">
+                        <Mentions text={b[key]} self={b.id} />
+                      </pre>
                     </div>
                   ),
                 )}
@@ -318,7 +396,15 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                       })}
                   </div>
                 )}
-                {b.tests.length > 0 && <SceneTests tests={b.tests} />}
+                {b.tests.length > 0 && (
+                  <SceneTests
+                    tests={b.tests}
+                    characters={state.characters}
+                    agents={state.characters.filter((c) => seated.has(c.id))}
+                    send={send}
+                    onReport={report}
+                  />
+                )}
                 {b.ruin.length + b.glory.length + b.spends.length > 0 && (
                   <ScenePools beat={b} pools={state.campaign} players={players} send={send} onReport={report} />
                 )}
@@ -358,6 +444,19 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                   <button className="btn sm" onClick={() => setStatus(b, "skipped")}>
                     SKIP
                   </button>
+                  {/* Tents for the Agents and every prepared combatant, Threat cards, and the scene's items (#203). */}
+                  <button
+                    className="btn sm"
+                    onClick={() => print({ agents: fieldedAgentIds(state), encounter: b.encounter, items: b.itemIds })}
+                  >
+                    PRINT CARDS
+                  </button>
+                  {/* The scene's handouts as printed props, one to a page (#204). */}
+                  {b.handoutIds.length > 0 && (
+                    <button className="btn sm" onClick={() => print({ handouts: b.handoutIds })}>
+                      PRINT HANDOUTS
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

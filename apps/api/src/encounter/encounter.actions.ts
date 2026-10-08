@@ -33,6 +33,7 @@ import { beat } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
+import { clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
@@ -149,6 +150,7 @@ async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string
 
 async function startEncounter(tx: Tx, campaignId: string) {
   await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, campaignId));
+  await clearSpendRequests(tx, { campaignId, kind: "seize" }); // asked against the fight this one replaces
   const [e] = await tx.insert(encounter).values({ campaignId }).returning({ id: encounter.id });
   return e!.id; // the row was just inserted
 }
@@ -174,6 +176,7 @@ export async function applyEncounterAction(
 
     case "encounter.end":
       await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, cid));
+      await clearSpendRequests(tx, { campaignId: cid, kind: "seize" }); // there is no fight left to Seize in
       return { ok: true };
 
     case "encounter.newRound": {

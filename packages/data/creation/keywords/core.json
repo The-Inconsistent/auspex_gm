@@ -8,6 +8,14 @@
     "placeholder": "any"
   },
   {
+    "id": "any-2",
+    "name": "[ANY 2]",
+    "source": "core",
+    "page": 38,
+    "text": "House device (docs/rules-flow.md §11.133): a second [ANY] for a Human's two Keywords at Advanced Creation (p.38), because a build lists a Keyword once. It is filled as [ANY] is (a write-in the GM ticks, §11.25), with a Keyword other than the first pick.",
+    "placeholder": "any"
+  },
+  {
     "id": "psyker",
     "name": "PSYKER",
     "source": "core",

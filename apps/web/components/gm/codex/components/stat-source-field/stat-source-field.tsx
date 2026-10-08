@@ -46,14 +46,8 @@ export function StatSourceField({ id, value, bestiary, tier, onChange }: StatSou
   return (
     <div className="stack" role="radiogroup" aria-labelledby={id} style={{ gap: 8 }}>
       {KINDS.map(([k, label, hint]) => (
-        <label key={k} className="keys" style={{ alignItems: "center", paddingTop: 0 }}>
-          <input
-            type="radio"
-            name={id}
-            checked={kind === k}
-            onChange={() => pickKind(k)}
-            style={{ width: 20, height: 20, accentColor: "var(--red)" }}
-          />
+        <label key={k} className="check">
+          <input type="radio" name={id} checked={kind === k} onChange={() => pickKind(k)} />
           <b>{label}</b> <span className="dim">{hint}</span>
         </label>
       ))}

@@ -4,20 +4,21 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 
 import { UserButton } from "@wg/auth/react";
-import { LIBRARY_CAP, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
+import { IMPORT_MAX_BYTES, LIBRARY_CAP, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
 
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 
 type LobbyViewProps = { lobby: Lobby };
 
 // One game card. Members open the table; others only see that it's running (joining needs an invite).
-function GameCard({ game }: { game: LobbyGame }) {
+function GameCard({ game, archived = false }: { game: LobbyGame; archived?: boolean }) {
   const line = `T${game.tier} · GM ${game.gm.toUpperCase()} · ${game.players} AGENTS${game.session ? ` · SESSION ${game.session} LIVE` : ""}`;
   return (
     <div className="item">
       <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
         <b style={{ flex: 1 }}>{game.name.toUpperCase()}</b>
         {game.role && <span className="chip">{game.role === "gm" ? "GM" : "PLAYER"}</span>}
+        {archived && <span className="chip warn">ARCHIVED</span>}
         {game.role && (
           <Link className="btn sm primary" href={`/c/${game.id}`}>
             OPEN
@@ -76,7 +77,9 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const [libraryError, setLibraryError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
   const [fresh, setFresh] = useState(false);
+  const [showArchived, setShowArchived] = useState(false); // the ARCHIVED fold, closed until asked
   const [importError, setImportError] = useState<string | null>(null);
+  const [imported, setImported] = useState<{ campaignId: string; dropped: number } | null>(null); // pictures left out
   const others = lobby.running.filter((g) => !g.role);
   const full = lobby.characters.length >= LIBRARY_CAP;
   // The tapped button pulses (aria-busy, globals.css) from the tap until the next page is up, and a second tap is
@@ -124,8 +127,12 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const handleImport = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setImportError(null);
+    setImported(null);
     const picked = new FormData(e.currentTarget).get("file");
     if (!(picked instanceof File) || !picked.size) return setImportError("Pick an exported .json file.");
+    // Past this, the upload would only be cut off on the way (issue #199); the game's text still fits without its pictures.
+    if (picked.size > IMPORT_MAX_BYTES)
+      return setImportError("That file is over 100 MB, more than IMPORT GAME takes. Export it again WITHOUT PICTURES.");
     run("import", async () => {
       let file: unknown;
       try {
@@ -138,21 +145,29 @@ export function LobbyView({ lobby }: LobbyViewProps) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ file, fresh }),
       }).catch(() => null);
-      const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
+      const body = (await res?.json().catch(() => null)) as {
+        campaignId?: string;
+        droppedPictures?: number;
+        message?: string;
+      } | null;
       if (!res?.ok || !body?.campaignId) return setImportError(body?.message ?? "No signal");
+      // A picture left out doesn't stop the game: say so here, since opening it would hide the note.
+      if (body.droppedPictures) return setImported({ campaignId: body.campaignId, dropped: body.droppedPictures });
       go(`/c/${body.campaignId}`);
     });
   };
 
   return (
     <main className="pad stack" style={{ maxWidth: 760, margin: "0 auto" }}>
-      <header
-        className="band torn"
-        style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", marginBottom: 12 }}
-      >
-        <div className="display" style={{ fontSize: 30, flex: 1 }}>
+      <header className="band torn bld-head" style={{ marginBottom: 12 }}>
+        <div className="display page-title" style={{ flex: 1 }}>
           AUSPEX <span className="dim">· LOBBY</span>
         </div>
+        {lobby.admin && (
+          <Link className="btn sm" href="/admin">
+            ADMIN
+          </Link>
+        )}
         <ThemeToggle />
         <UserButton />
       </header>
@@ -206,6 +221,18 @@ export function LobbyView({ lobby }: LobbyViewProps) {
               ! {importError}
             </div>
           )}
+          {/* Pictures are a nice-to-have (issue #199): the game came in, only these didn't. */}
+          {imported && (
+            <div className="stack" role="status" style={{ gap: 8 }}>
+              <span>
+                Imported. {imported.dropped} {imported.dropped === 1 ? "picture" : "pictures"} in that file
+                couldn&apos;t be read and were left out.
+              </span>
+              <Link className="btn primary" href={`/c/${imported.campaignId}`}>
+                OPEN GAME
+              </Link>
+            </div>
+          )}
           <div>
             <button className="btn primary" aria-busy={isBusy("import")}>
               IMPORT AS GM
@@ -252,6 +279,30 @@ export function LobbyView({ lobby }: LobbyViewProps) {
               <GameCard key={g.id} game={g} />
             ))}
           </div>
+        </>
+      )}
+
+      {/* Archived games are read-only; they stay out of YOUR GAMES until unarchived (in SETUP, or by an admin). */}
+      {lobby.archived.length > 0 && (
+        <>
+          <div className="rule">ARCHIVED · {lobby.archived.length}</div>
+          <div>
+            <button
+              className="btn sm"
+              aria-expanded={showArchived}
+              aria-controls="archived-games"
+              onClick={() => setShowArchived(!showArchived)}
+            >
+              {showArchived ? "HIDE ARCHIVED GAMES" : "SHOW ARCHIVED GAMES"}
+            </button>
+          </div>
+          {showArchived && (
+            <div id="archived-games" className="list">
+              {lobby.archived.map((g) => (
+                <GameCard key={g.id} game={g} archived />
+              ))}
+            </div>
+          )}
         </>
       )}
     </main>

@@ -23,10 +23,17 @@ import {
 } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
+import { CodexSearch } from "@/components/ui/codex-search/codex-search";
+import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
+import { Mentions } from "@/components/ui/mentions/mentions";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
+import { usePrint } from "@/components/ui/print-dialog/print-dialog";
+import { PrintPick } from "@/components/ui/print-pick/print-pick";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
+import { toggleIn } from "@/lib/toggle-set/toggle-set";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
 import { GM_ONLY_FIELDS } from "./components/codex-editor/constants";
@@ -102,6 +109,7 @@ export function CodexView({
   relics,
 }: CodexViewProps) {
   const [sub, setSub] = useState<SubTab>(initialKind);
+  const [query, setQuery] = useState(""); // the codex search (issue #198): its hits replace the sub-tab's list
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const kind: CodexKind = sub === "threats" ? "npc" : sub;
@@ -110,23 +118,33 @@ export function CodexView({
   const npcById = useMemo(() => new Map(codex.npcs.map((n) => [n.id, n])), [codex.npcs]);
   const itemById = useMemo(() => new Map(codex.items.map((i) => [i.id, i])), [codex.items]);
   const catalogue = useMemo(() => new Map(wargear.map((w) => [w.id, w])), [wargear]);
+  const { print } = usePrint();
+  // Items (#203) and handouts (#204) ticked for PRINT N; ids are unique across kinds, and a deleted one drops out.
+  const [picked, setPicked] = useState<ReadonlySet<string>>(new Set());
+  const itemsToPrint = codex.items.filter((i) => picked.has(i.id)).map((i) => i.id);
+  const handoutsToPrint = codex.handouts.filter((h) => picked.has(h.id)).map((h) => h.id);
 
-  // Sub-tab: switch lists and close any open editor.
+  // Sub-tab: switch lists, close any open editor and clear the search.
   const pickKind = (k: SubTab) => {
     setSub(k);
     setEditing(null);
+    setQuery("");
   };
 
-  // REVEALED / HIDDEN chip: flips whether players see the entry.
-  const toggleRevealed = async (r: Row) => {
+  // Saves the whole entry with one flag changed.
+  const saveWith = async (r: Row, change: Partial<Row>) => {
     const result = await send({
       type: "codex.save",
       kind,
       id: r.id,
-      data: { ...stripId(r), revealed: !r.revealed },
+      data: { ...stripId(r), ...change },
     } as ActionInput);
     setError(result.ok ? null : result.error);
   };
+  // REVEALED / HIDDEN chip: flips whether players see the entry.
+  const toggleRevealed = (r: Row) => saveWith(r, { revealed: !r.revealed });
+  // PICTURE SHOWN / HELD BACK (issue #199): flips whether players see its picture, a reveal of its own.
+  const togglePicture = (r: Row) => saveWith(r, { imageRevealed: !r.imageRevealed });
 
   // LOCATIONS is a tree (issue #50): a place's "N INSIDE" button folds the places inside it.
   const [folded, setFolded] = useState<ReadonlySet<string>>(new Set());
@@ -142,10 +160,11 @@ export function CodexView({
   const entry = (r: Row, node?: PlaceNode<Place>) => {
     const npc = kind === "npc" ? npcById.get(r.id) : undefined;
     const item = kind === "item" ? itemById.get(r.id) : undefined;
+    const handout = kind === "handout" ? codex.handouts.find((h) => h.id === r.id) : undefined;
     const holder = item && holderOf(item, { codex, characters });
     const open = !folded.has(r.id);
     return (
-      <details key={r.id} className="item">
+      <details key={r.id} id={`entry-${r.id}`} className="item">
         <summary className="item-head">
           <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
           {node && node.inside > 0 && (
@@ -170,6 +189,9 @@ export function CodexView({
               <ItemGive item={item} characters={characters} send={send} onError={setError} />
             </span>
           )}
+          {(item || handout) && (
+            <PrintPick name={titleOf(r)} on={picked.has(r.id)} onToggle={() => setPicked((p) => toggleIn(p, r.id))} />
+          )}
           {"revealed" in r && (
             <button
               className="btn sm"
@@ -183,6 +205,21 @@ export function CodexView({
             EDIT
           </button>
         </summary>
+        {typeof r.imageId === "string" && (
+          // A handout's picture is drawn inside its prop, below; the toggle sits here for all three kinds.
+          <div className="field">
+            {!handout && <CodexPicture imageId={r.imageId} alt={titleOf(r)} held={!r.imageRevealed} />}
+            <span>
+              <button
+                className="btn sm"
+                style={{ color: r.imageRevealed ? "var(--ink)" : "var(--red)" }}
+                onClick={() => togglePicture(r)}
+              >
+                {r.imageRevealed ? "PICTURE SHOWN" : "PICTURE HELD BACK"}
+              </button>
+            </span>
+          </div>
+        )}
         {kind === "faction" && factionById.get(r.id) && (
           <FactionCard faction={factionById.get(r.id)!} npcs={codex.npcs} />
         )}
@@ -195,14 +232,19 @@ export function CodexView({
                   <span>
                     <PageCite cite={citeOf(String(r[key]))!.cite} />
                   </span>
-                  <pre className="text">{citeOf(String(r[key]))!.rest}</pre>
+                  <pre className="text">
+                    <Mentions text={citeOf(String(r[key]))!.rest} self={r.id} />
+                  </pre>
                 </>
               ) : (
-                <pre className="text">{String(r[key])}</pre>
+                <pre className="text">
+                  <Mentions text={String(r[key])} self={r.id} />
+                </pre>
               )}
             </div>
           ) : null,
         )}
+        {handout && <HandoutDoc handout={handout} />}
         {item && <ItemCard item={item} entry={item.wargearId ? catalogue.get(item.wargearId) : undefined} />}
         {npc && (
           <NpcCard
@@ -243,7 +285,9 @@ export function CodexView({
         </button>
       </nav>
       <div className="pad stack">
-        {sub === "threats" ? (
+        {/* Over the lists only: hiding an open editor (THREATS keeps its own) would drop its draft. */}
+        {sub !== "threats" && !editing && <CodexSearch query={query} onQuery={setQuery} />}
+        {query.trim() ? null : sub === "threats" ? (
           <ThreatEditor
             customThreats={codex.customThreats}
             bestiary={bestiary}
@@ -276,8 +320,26 @@ export function CodexView({
               </button>
               {kind === "item" && (
                 <span className="dim" style={{ float: "right" }}>
+                  {itemsToPrint.length > 0 && (
+                    <button
+                      className="btn sm"
+                      style={{ marginRight: 10 }}
+                      onClick={() => print({ items: itemsToPrint })}
+                    >
+                      PRINT {itemsToPrint.length}
+                    </button>
+                  )}
                   {codex.items.length} ITEMS · {codex.items.filter((i) => i.givenTo).length} GIVEN
                 </span>
+              )}
+              {kind === "handout" && handoutsToPrint.length > 0 && (
+                <button
+                  className="btn sm"
+                  style={{ float: "right" }}
+                  onClick={() => print({ handouts: handoutsToPrint })}
+                >
+                  PRINT {handoutsToPrint.length}
+                </button>
               )}
             </div>
             {kind === "location" && nests && (

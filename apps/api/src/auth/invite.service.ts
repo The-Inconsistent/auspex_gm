@@ -104,6 +104,9 @@ export async function acceptInvite(
   const b = parsed.data;
   const inv = await liveInvite(tx, code);
   const campaignId = inv.campaignId;
+  // Archiving revokes open invites; this covers a link made by a script or a race with the archive.
+  const [c] = await tx.select({ archivedAt: campaign.archivedAt }).from(campaign).where(eq(campaign.id, campaignId));
+  if (c?.archivedAt) fail("This game is archived");
   if (b.asGuest && !inv.allowGuests) fail("This invite needs an account. Sign in first");
   if (!b.asGuest && !user) fail("Sign in first, or join as a guest");
   if (!b.asGuest && user) {

@@ -13,7 +13,7 @@ import {
 } from "@wg/shared";
 
 import type { Send } from "@/hooks/use-table/use-table";
-import { fold } from "@/lib/threat-filter/threat-filter";
+import { fold } from "@/lib/fold/fold";
 
 type NpcPickerProps = {
   presets: NpcPreset[];

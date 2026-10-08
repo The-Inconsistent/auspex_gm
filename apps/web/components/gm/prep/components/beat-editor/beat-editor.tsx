@@ -18,6 +18,7 @@ import {
 } from "@wg/shared";
 
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { RUIN_ACTIONS_TABLE, type ThreatDraft } from "@/components/ui/threat-builder/constants";
 import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
@@ -182,8 +183,9 @@ export function BeatEditor({
         <label className="label" htmlFor={`b-${key}`}>
           {label}
         </label>
-        {area ? (
-          <textarea
+        {/* Every scene text but its title can mention a codex entry (issue #200). */}
+        {key === "title" ? (
+          <input
             id={`b-${key}`}
             {...fieldErrors.marks(key)}
             className="input"
@@ -191,12 +193,12 @@ export function BeatEditor({
             onChange={(e) => setB({ ...b, [key]: e.target.value })}
           />
         ) : (
-          <input
+          <MentionField
             id={`b-${key}`}
             {...fieldErrors.marks(key)}
-            className="input"
+            multiline={area}
             value={b[key]}
-            onChange={(e) => setB({ ...b, [key]: e.target.value })}
+            onChange={(v) => setB({ ...b, [key]: v })}
           />
         )}
         <FieldError {...fieldErrors.reason(key)} />

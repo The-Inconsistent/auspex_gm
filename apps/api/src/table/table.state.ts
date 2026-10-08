@@ -21,6 +21,8 @@ import { character } from "../character/character.schema.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
 import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
+import { spendRequest } from "../spend/spend.schema.ts";
+import { testCall } from "../test-call/test-call.schema.ts";
 import { loadCustomThreats } from "../threat/threat.service.ts";
 
 // Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
@@ -145,6 +147,13 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
     .from(accessToken)
     .where(and(eq(accessToken.campaignId, campaignId), isNull(accessToken.revokedAt)));
 
+  const spends = await conn
+    .select()
+    .from(spendRequest)
+    .where(eq(spendRequest.campaignId, campaignId))
+    .orderBy(asc(spendRequest.createdAt));
+  const [call] = await conn.select().from(testCall).where(eq(testCall.campaignId, campaignId));
+
   return {
     campaign: {
       id: c.id,
@@ -158,6 +167,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       kind: c.kind,
       limits: c.limits,
       homebrew: c.homebrew,
+      archived: c.archivedAt !== null,
     },
     characters: chars.map(toCharacter),
     encounter: enc
@@ -192,6 +202,24 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
                   stats: r.statSnapshot,
                 },
           ),
+        }
+      : null,
+    spendRequests: spends.map(({ id, characterId, kind, amount, createdAt }) => ({
+      id,
+      characterId,
+      kind,
+      amount,
+      createdAt: createdAt.toISOString(),
+    })),
+    testCall: call
+      ? {
+          id: call.id,
+          test: call.test,
+          fear: call.fear,
+          hideDn: call.hideDn,
+          who: call.who,
+          reports: call.reports,
+          createdAt: call.createdAt.toISOString(),
         }
       : null,
     access: {
@@ -268,6 +296,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
       startedAt: s.startedAt.toISOString(),
       endedAt: s.endedAt?.toISOString() ?? null,
       recap: s.recap,
+      notes: s.notes,
       xp: s.xp,
     })),
   };

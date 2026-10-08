@@ -1,12 +1,33 @@
+"use client";
+import { useState } from "react";
+
 import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
+import { CodexSearch } from "@/components/ui/codex-search/codex-search";
+import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
+import { Mentions } from "@/components/ui/mentions/mentions";
+
+import { MISSION_GROUPS } from "./constants";
 
 type IntelProps = { codex: Codex; state: LiveState };
 
-export function Intel({ codex, state }: IntelProps) {
+// The codex search (issue #198) over what this phone was shown; its hits replace the page below.
+export function Intel(props: IntelProps) {
+  const [query, setQuery] = useState("");
+  return (
+    <>
+      <CodexSearch query={query} onQuery={setQuery} />
+      {!query.trim() && <IntelPage {...props} />}
+    </>
+  );
+}
+
+function IntelPage({ codex, state }: IntelProps) {
   const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
-  const last = [...codex.sessions].reverse().find((s) => s.recap);
+  // Every recap, newest first (issue #195, §11.151): the latest open, the rest folded for a player catching up.
+  const [last, ...older] = codex.sessions.filter((s) => s.recap).reverse();
   const { framework, frameworkBonus, patron, kind, limits } = state.campaign;
   return (
     <>
@@ -21,10 +42,39 @@ export function Intel({ codex, state }: IntelProps) {
           {limits.length > 0 && <div className="dim">LEAVE OUT: {limits.join(" · ")}</div>}
         </div>
       )}
+      {/* The adventures the GM has shown the party (toPlayerCodex sends only those; issue #196, §11.148–150). */}
+      {codex.adventures.length > 0 && (
+        <div className="stack" style={{ gap: 4 }}>
+          <div className="rule">MISSION LOG</div>
+          {MISSION_GROUPS.map(([status, label]) =>
+            codex.adventures
+              .filter((a) => a.status === status)
+              .map((a) => (
+                <div key={a.id}>
+                  <span className={`chip ${status === "running" ? "warn" : ""}`}>{label}</span>{" "}
+                  <b>{a.title.toUpperCase()}</b>
+                  {a.brief && <div className="dim">{a.brief}</div>}
+                </div>
+              )),
+          )}
+        </div>
+      )}
       {last && (
         <div className="stack" style={{ gap: 4 }}>
           <div className="rule">PREVIOUSLY (SESSION {last.number})</div>
-          <pre className="text">{last.recap}</pre>
+          <pre className="text">
+            <Mentions text={last.recap} />
+          </pre>
+          {older.map((s) => (
+            <details key={s.id}>
+              <summary className="label">
+                SESSION {s.number} · {new Date(s.startedAt).toLocaleDateString()}
+              </summary>
+              <pre className="text">
+                <Mentions text={s.recap} />
+              </pre>
+            </details>
+          ))}
         </div>
       )}
       <div className="rule">HANDOUTS</div>
@@ -36,7 +86,7 @@ export function Intel({ codex, state }: IntelProps) {
             {/* toPlayerCodex leaves the viewer alone in a private handout's audience. */}
             {h.audience.length > 0 && " · FOR YOUR EYES ONLY"}
           </span>
-          <pre className="text slate">{h.body}</pre>
+          <HandoutDoc handout={h} />
         </div>
       ))}
       <div className="rule">KNOWN PERSONS</div>
@@ -44,7 +94,13 @@ export function Intel({ codex, state }: IntelProps) {
         <div key={n.id} className="item">
           <b>{n.name.toUpperCase()}</b> <AttitudeChip attitude={n.attitude} />
           {n.role && <span className="dim">{n.role}</span>}
-          {n.description && <pre className="text">{n.description}</pre>}
+          {/* Only once the GM shows it: toPlayerCodex drops a held-back picture's id (issue #199). */}
+          {n.imageId && <CodexPicture imageId={n.imageId} alt={n.name} />}
+          {n.description && (
+            <pre className="text">
+              <Mentions text={n.description} self={n.id} />
+            </pre>
+          )}
         </div>
       ))}
       <div className="rule">KNOWN LOCATIONS</div>
@@ -52,7 +108,12 @@ export function Intel({ codex, state }: IntelProps) {
       {flatTree(placeTree(codex.locations)).map(({ row: l, depth }) => (
         <div key={l.id} className="item" style={{ marginLeft: depth * 18 }}>
           <b>{l.name.toUpperCase()}</b>
-          {l.description && <pre className="text">{l.description}</pre>}
+          {l.imageId && <CodexPicture imageId={l.imageId} alt={l.name} />}
+          {l.description && (
+            <pre className="text">
+              <Mentions text={l.description} self={l.id} />
+            </pre>
+          )}
         </div>
       ))}
     </>

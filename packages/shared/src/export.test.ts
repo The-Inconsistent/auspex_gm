@@ -88,6 +88,35 @@ test("a file from before scene goals, exits and Tests still loads (issues #38, #
   assert.deepEqual([b!.goal, b!.exits, b!.tests], ["", [], []]);
 });
 
+test("a file from before handout styles loads them plain, with no header (issue #204)", () => {
+  const [h] = file.codex.handouts;
+  assert.deepEqual([h!.style, h!.header], ["plain", ""]);
+});
+
+test("a file from before pictures loads with none, and a fresh start holds every picture back (issue #199)", () => {
+  assert.deepEqual(file.images, []);
+  assert.deepEqual([file.codex.npcs[0]!.imageId, file.codex.npcs[0]!.imageRevealed], [null, false]);
+  const shown = structuredClone(file);
+  shown.codex.npcs[0]!.imageRevealed = true;
+  assert.equal(freshStart(shown).codex.npcs[0]!.imageRevealed, false);
+});
+
+test("a bad picture never refuses a file: it parses as none, for the importer to leave out (issue #199)", () => {
+  const good = { id: "00000000-0000-4000-8000-0000000000aa", mime: "image/webp", base64: "UklGRg==" };
+  const parsed = CampaignExport.parse({ ...file, images: [{ id: "x", mime: "image/png", base64: "" }, good] });
+  assert.deepEqual(parsed.images, [null, good]);
+  assert.deepEqual(CampaignExport.parse({ ...file, images: "not a list" }).images, []);
+  const many = Array.from({ length: 250 }, (_, i) => ({
+    ...good,
+    id: `00000000-0000-4000-8000-${String(i).padStart(12, "0")}`,
+  }));
+  assert.equal(
+    CampaignExport.parse({ ...file, images: many }).images.length,
+    250,
+    "past the cap: the store drops and counts",
+  );
+});
+
 test("a file from before place hazards still loads (issue #49)", () => {
   const old = structuredClone(file) as unknown as {
     codex: { adventures: { beats: { hazards?: unknown }[] }[]; locations: { hazardList?: unknown }[] };

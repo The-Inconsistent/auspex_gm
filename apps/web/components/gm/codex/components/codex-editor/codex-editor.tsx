@@ -6,6 +6,7 @@ import {
   CodexInput,
   CodexSave,
   FactionStance,
+  HandoutStyle,
   type ActionInput,
   type Character,
   type Codex,
@@ -20,6 +21,9 @@ import {
 
 import { attitudeLabel } from "@/components/ui/attitude-chip/attitude-chip";
 import { FieldError } from "@/components/ui/field-error/field-error";
+import { HANDOUT_STYLE_LABEL } from "@/components/ui/handout-doc/constants";
+import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
+import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { placeOptions } from "@/lib/places/places";
@@ -28,6 +32,7 @@ import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
 import { HazardList } from "../hazard-list/hazard-list";
 import { HolderField } from "../holder-field/holder-field";
+import { ImageField } from "../image-field/image-field";
 import { KeywordPicker } from "../keyword-picker/keyword-picker";
 import { NpcRoller } from "../npc-roller/npc-roller";
 import { StatSourceField } from "../stat-source-field/stat-source-field";
@@ -53,6 +58,12 @@ type CodexEditorProps = {
 
 const upperOptions = (values: readonly string[]): Option[] => values.map((v) => [v, v.toUpperCase()]);
 const NONE: Option = ["", "—"];
+// An NPC's, place's or handout's picture (issue #199), and its own reveal: revealing the entry doesn't show it.
+const PICTURE: Field[] = [
+  { key: "imageId", label: "PICTURE", type: "image" },
+  { key: "imageRevealed", label: "PICTURE SHOWN TO PLAYERS", type: "bool" },
+];
+const PICTURE_KEYS: ReadonlySet<string> = new Set(PICTURE.map((f) => f.key)); // drawn in the folded PICTURE section
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
 function fieldsFor({
@@ -88,6 +99,7 @@ function fieldsFor({
         { key: "gmNotes", label: "GM NOTES", type: "area" },
         { key: "secrets", label: "SECRETS", type: "area" },
         { key: "revealed", label: "REVEALED TO PLAYERS", type: "bool" },
+        ...PICTURE,
       ];
     case "location":
       return [
@@ -103,10 +115,19 @@ function fieldsFor({
         { key: "hazards", label: "HAZARDS · YOUR NOTES", type: "area" },
         { key: "gmNotes", label: "GM NOTES", type: "area" },
         { key: "revealed", label: "REVEALED TO PLAYERS", type: "bool" },
+        ...PICTURE,
       ];
     case "handout":
       return [
         { key: "title", label: "TITLE", type: "text" },
+        // How it looks as a prop, on the phone and on paper (issue #204); PLAIN is the look every older one has.
+        {
+          key: "style",
+          label: "STYLE",
+          type: "select",
+          options: HandoutStyle.options.map((v): Option => [v, HANDOUT_STYLE_LABEL[v]]),
+        },
+        { key: "header", label: "HEADER (EMPTY: THE STYLE'S OWN)", type: "text" },
         { key: "body", label: "TEXT", type: "area" },
         { key: "revealed", label: "SENT TO PLAYERS", type: "bool" },
         {
@@ -115,6 +136,7 @@ function fieldsFor({
           type: "picks",
           options: characters.map((c): Option => [c.id, c.name]),
         },
+        ...PICTURE,
       ];
     case "faction":
       return [
@@ -170,7 +192,7 @@ export function CodexEditor({
   const [armed, setArmed] = useState<number | null>(null); // DELETE's first tap, at that many places inside
 
   const setField = (key: string, value: unknown) => {
-    setDraft({ ...draft, [key]: value });
+    setDraft((d) => ({ ...d, [key]: value })); // functional: an upload may land after other edits
     fieldErrors.clear(key);
   };
 
@@ -204,6 +226,142 @@ export function CodexEditor({
     onDone();
   };
 
+  // One field of the form: its label, its input, and the reason a refused SAVE gives for it.
+  const fieldRow = (f: Field) => (
+    <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
+      {f.type === "picks" ? (
+        // None picked means every player (toPlayerCodex); say so, since an empty group reads as "nobody".
+        <span className="label" id={`f-${f.key}`}>
+          {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
+        </span>
+      ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" || f.type === "image" ? (
+        <span className="label" id={`f-${f.key}`}>
+          {f.label}
+        </span>
+      ) : (
+        <label className="label" htmlFor={`f-${f.key}`}>
+          {f.label}
+        </label>
+      )}
+      {f.type === "text" && (
+        <input
+          id={`f-${f.key}`}
+          {...fieldErrors.marks(f.key)}
+          className="input"
+          value={String(draft[f.key] ?? "")}
+          onChange={(e) => setField(f.key, e.target.value)}
+        />
+      )}
+      {f.type === "area" && (
+        <MentionField
+          id={`f-${f.key}`}
+          {...fieldErrors.marks(f.key)}
+          multiline
+          value={String(draft[f.key] ?? "")}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "keywords" && (
+        <KeywordPicker
+          id={`f-${f.key}`}
+          value={draft[f.key] as string[]}
+          suggestions={keywords}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "statSource" && (
+        <StatSourceField
+          id={`f-${f.key}`}
+          value={draft[f.key] as StatSource}
+          bestiary={bestiary}
+          tier={tier}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "hazardList" && (
+        <HazardList
+          id={`f-${f.key}`}
+          value={draft[f.key] as LocationHazard[]}
+          tables={hazards}
+          bestiary={bestiary}
+          tier={tier}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "wargearName" && (
+        <WargearName
+          id={`f-${f.key}`}
+          marks={fieldErrors.marks("name")}
+          name={String(draft.name ?? "")}
+          wargearId={(draft.wargearId as string | null | undefined) ?? null}
+          catalogue={wargear}
+          onChange={(v) => setDraft({ ...draft, ...v })}
+        />
+      )}
+      {f.type === "holder" && (
+        <HolderField
+          id={`f-${f.key}`}
+          locationId={(draft.locationId as string | null | undefined) ?? null}
+          npcId={(draft.npcId as string | null | undefined) ?? null}
+          codex={codex}
+          onChange={(v) => setDraft({ ...draft, ...v })}
+        />
+      )}
+      {f.type === "image" && (
+        <ImageField
+          id={`f-${f.key}`}
+          value={(draft[f.key] as string | null | undefined) ?? null}
+          alt={String(draft.name ?? draft.title ?? "")}
+          onChange={(v) => setField(f.key, v)}
+          onError={setError}
+        />
+      )}
+      {f.type === "bool" && (
+        <input
+          id={`f-${f.key}`}
+          type="checkbox"
+          className="check-box"
+          checked={Boolean(draft[f.key])}
+          onChange={(e) => setField(f.key, e.target.checked)}
+        />
+      )}
+      {f.type === "picks" && (
+        <div className="keys" role="group" aria-labelledby={`f-${f.key}`} style={{ paddingTop: 0 }}>
+          {f.options?.map(([v, l]) => {
+            const picked = (draft[f.key] as string[]).includes(v);
+            return (
+              <button
+                key={v}
+                className={`btn sm ${picked ? "primary" : ""}`}
+                aria-pressed={picked}
+                onClick={() => setField(f.key, toggled(draft[f.key] as string[], v))}
+              >
+                {l}
+              </button>
+            );
+          })}
+          {!f.options?.length && <span className="dim">Add Agents in PARTY.</span>}
+        </div>
+      )}
+      {f.type === "select" && (
+        <select
+          id={`f-${f.key}`}
+          {...fieldErrors.marks(f.key)}
+          className="input"
+          value={String(draft[f.key] ?? "")}
+          onChange={(e) => setField(f.key, e.target.value)}
+        >
+          {f.options?.map(([v, l]) => (
+            <option key={v} value={v}>
+              {l}
+            </option>
+          ))}
+        </select>
+      )}
+      <FieldError {...fieldErrors.reason(f.key)} />
+    </div>
+  );
+
   return (
     <div className="panel pad stack">
       {kind === "npc" && flavour.length > 0 && (
@@ -214,131 +372,14 @@ export function CodexEditor({
           <NpcRoller id="f-roll" tables={flavour} onName={(name) => setField("name", name)} onLook={appendLook} />
         </div>
       )}
-      {fields.map((f) => (
-        <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
-          {f.type === "picks" ? (
-            // None picked means every player (toPlayerCodex); say so, since an empty group reads as "nobody".
-            <span className="label" id={`f-${f.key}`}>
-              {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
-            </span>
-          ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" ? (
-            <span className="label" id={`f-${f.key}`}>
-              {f.label}
-            </span>
-          ) : (
-            <label className="label" htmlFor={`f-${f.key}`}>
-              {f.label}
-            </label>
-          )}
-          {f.type === "text" && (
-            <input
-              id={`f-${f.key}`}
-              {...fieldErrors.marks(f.key)}
-              className="input"
-              value={String(draft[f.key] ?? "")}
-              onChange={(e) => setField(f.key, e.target.value)}
-            />
-          )}
-          {f.type === "area" && (
-            <textarea
-              id={`f-${f.key}`}
-              {...fieldErrors.marks(f.key)}
-              className="input"
-              value={String(draft[f.key] ?? "")}
-              onChange={(e) => setField(f.key, e.target.value)}
-            />
-          )}
-          {f.type === "keywords" && (
-            <KeywordPicker
-              id={`f-${f.key}`}
-              value={draft[f.key] as string[]}
-              suggestions={keywords}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "statSource" && (
-            <StatSourceField
-              id={`f-${f.key}`}
-              value={draft[f.key] as StatSource}
-              bestiary={bestiary}
-              tier={tier}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "hazardList" && (
-            <HazardList
-              id={`f-${f.key}`}
-              value={draft[f.key] as LocationHazard[]}
-              tables={hazards}
-              bestiary={bestiary}
-              tier={tier}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "wargearName" && (
-            <WargearName
-              id={`f-${f.key}`}
-              marks={fieldErrors.marks("name")}
-              name={String(draft.name ?? "")}
-              wargearId={(draft.wargearId as string | null | undefined) ?? null}
-              catalogue={wargear}
-              onChange={(v) => setDraft({ ...draft, ...v })}
-            />
-          )}
-          {f.type === "holder" && (
-            <HolderField
-              id={`f-${f.key}`}
-              locationId={(draft.locationId as string | null | undefined) ?? null}
-              npcId={(draft.npcId as string | null | undefined) ?? null}
-              codex={codex}
-              onChange={(v) => setDraft({ ...draft, ...v })}
-            />
-          )}
-          {f.type === "bool" && (
-            <input
-              id={`f-${f.key}`}
-              type="checkbox"
-              style={{ width: 24, height: 24, accentColor: "var(--red)" }}
-              checked={Boolean(draft[f.key])}
-              onChange={(e) => setField(f.key, e.target.checked)}
-            />
-          )}
-          {f.type === "picks" && (
-            <div className="keys" role="group" aria-labelledby={`f-${f.key}`} style={{ paddingTop: 0 }}>
-              {f.options?.map(([v, l]) => {
-                const picked = (draft[f.key] as string[]).includes(v);
-                return (
-                  <button
-                    key={v}
-                    className={`btn sm ${picked ? "primary" : ""}`}
-                    aria-pressed={picked}
-                    onClick={() => setField(f.key, toggled(draft[f.key] as string[], v))}
-                  >
-                    {l}
-                  </button>
-                );
-              })}
-              {!f.options?.length && <span className="dim">Add Agents in PARTY.</span>}
-            </div>
-          )}
-          {f.type === "select" && (
-            <select
-              id={`f-${f.key}`}
-              {...fieldErrors.marks(f.key)}
-              className="input"
-              value={String(draft[f.key] ?? "")}
-              onChange={(e) => setField(f.key, e.target.value)}
-            >
-              {f.options?.map(([v, l]) => (
-                <option key={v} value={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          )}
-          <FieldError {...fieldErrors.reason(f.key)} />
-        </div>
-      ))}
+      {fields.filter((f) => !PICTURE_KEYS.has(f.key)).map(fieldRow)}
+      {/* Optional, so folded away at the end: open from the start when the entry has one, and a REMOVE doesn't snap it shut (issue #199). */}
+      {fields.some((f) => PICTURE_KEYS.has(f.key)) && (
+        <details className="field" open={Boolean(row?.imageId)}>
+          <summary className="label">PICTURE (OPTIONAL)</summary>
+          {fields.filter((f) => PICTURE_KEYS.has(f.key)).map(fieldRow)}
+        </details>
+      )}
       {kind === "item" && (
         <div className="field">
           <span className="label">GIVEN TO</span>
@@ -352,6 +393,23 @@ export function CodexEditor({
         <div className="field plate">
           <span className="label">POWERS (rules-flow.md §11.116)</span>
           <span>{(draft.mods as { kind: string; what?: string }[]).map((m) => m.what ?? m.kind).join(" · ")}</span>
+        </div>
+      )}
+      {kind === "handout" && (
+        // What the players will get, as they'll see it (issue #204).
+        <div className="field">
+          <span className="label">PREVIEW</span>
+          <HandoutDoc
+            handout={{
+              id: row?.id,
+              body: String(draft.body ?? ""),
+              style: HandoutStyle.catch("plain").parse(draft.style),
+              header: String(draft.header ?? ""),
+              title: String(draft.title ?? ""),
+              imageId: (draft.imageId as string | null | undefined) ?? null,
+              imageRevealed: Boolean(draft.imageRevealed),
+            }}
+          />
         </div>
       )}
       {/* A refusal on something with no field of its own (an item's Powers) still says what. */}

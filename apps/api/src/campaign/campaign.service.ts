@@ -1,8 +1,8 @@
 import { randomUUID, timingSafeEqual } from "node:crypto";
-import { and, count, eq, inArray, isNull } from "drizzle-orm";
+import { and, count, eq, gt, inArray, isNotNull, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, scenePresets, threats, wargear } from "@wg/data";
-import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, wouldCycle } from "@wg/shared";
+import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, remapMentions, wouldCycle } from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -10,8 +10,9 @@ import { checkHazards, checkHolder, checkWargear } from "../codex/codex.actions.
 import { customThreat } from "../threat/threat.schema.ts";
 import { CUSTOM_THREAT_CAP } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "../codex/codex.schema.ts";
+import { listImages, putImage } from "../codex/image.store.ts";
 import { db, type Tx } from "../core/db.ts";
-import { fail } from "../core/errors.ts";
+import { ActionError, fail } from "../core/errors.ts";
 import { listLibrary } from "../library/library.service.ts";
 import { loadCodex, loadState } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
@@ -48,17 +49,18 @@ export function createCampaign({
 }
 
 // EXPORT: what the GM app holds, minus the seats, the running fight and the builder drafts (a device's, not the sheet).
-export async function exportCampaign(campaignId: string): Promise<CampaignExport> {
-  const [state, codex, stored] = await Promise.all([
+export async function exportCampaign(campaignId: string, { pictures = true } = {}): Promise<CampaignExport> {
+  const [state, codex, stored, images] = await Promise.all([
     loadState(campaignId),
     loadCodex(campaignId),
     db.select({ id: character.id, stats: character.stats }).from(character).where(eq(character.campaignId, campaignId)),
+    pictures ? listImages(db, campaignId) : [],
   ]);
   if (!state) fail("Campaign not found");
   // The sheets as stored, not as the table shows them: the state's have the upgrades and weapon effects applied
   // (withUpgrades, withWeaponEffects), and an import would store those and apply them again on read.
   const statsOf = new Map(stored.map((r) => [r.id, CharacterStats.parse(r.stats)]));
-  const { id: _, ...camp } = state.campaign;
+  const { id: _, archived: _archived, ...camp } = state.campaign; // an import starts a live game
   return {
     format: "auspex-campaign",
     version: 1,
@@ -71,6 +73,7 @@ export async function exportCampaign(campaignId: string): Promise<CampaignExport
       build: build as CampaignExport["characters"][number]["build"],
     })),
     codex,
+    images: images.map((p) => ({ id: p.id, mime: p.mime, base64: p.bytes.toString("base64") })),
   };
 }
 
@@ -125,6 +128,9 @@ export async function importCampaign({
   // A scene keeps only the picks its place lists, as codex.save does (§11.95).
   const listed = new Map(c.locations.map((l) => [l.id, new Set(l.hazardList.map((h) => h.id))]));
 
+  // Pictures are a nice-to-have (issue #199): one the file mangled parses as null, and a repeated one counts once, so
+  // neither refuses the campaign. The rest go in through the store's own checks below.
+  const pictures = [...new Map(file.images.flatMap((p) => (p ? [[p.id, p] as const] : []))).values()];
   const rows = [
     ...file.characters,
     ...c.factions,
@@ -134,6 +140,7 @@ export async function importCampaign({
     ...c.npcs,
     ...c.handouts,
     ...c.items,
+    ...pictures,
   ];
   const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
   if (ids.size !== rows.length) fail("That file repeats an id");
@@ -142,10 +149,16 @@ export async function importCampaign({
   const ref = (old: string | null) => (old && ids.get(old)) || null;
   const refs = (old: string[]) => old.flatMap((o) => ids.get(o) ?? []);
   const at = (iso: string | null) => (iso ? new Date(iso) : null);
+  // A codex mention carries a row id (issue #200), so every text that may hold one follows the same map.
+  const remapText = <T extends object>(r: T): T =>
+    Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === "string" ? remapMentions(v, ids) : v])) as T;
   // An exit keeps its target only inside its own adventure, as codex.save checks.
   const adventureOf = new Map(beats.map((b) => [b.id, b.adventureId]));
 
-  return createCampaign({
+  const kept = new Set<string>(); // the file's picture ids that made it in
+  const picture = (old: string | null) => (old && kept.has(old) ? ref(old) : null);
+
+  const made = await createCampaign({
     ...file.campaign,
     owner,
     fill: async (tx, campaignId) => {
@@ -153,7 +166,7 @@ export async function importCampaign({
       // the file as its own millisecond. The id is in the map because every row went into it above.
       const t0 = Date.now();
       const own = <T extends { id: string }>(r: T, i: number) => ({
-        ...r,
+        ...remapText(r),
         id: ids.get(r.id)!,
         campaignId,
         createdAt: new Date(t0 + i),
@@ -179,16 +192,38 @@ export async function importCampaign({
           })),
         );
       if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
+      // Pictures before the entries that show them, through the store's own checks (the bytes, the caps). One that
+      // fails a check is left out, and its entries import without a picture; the checks fail before the insert, so the
+      // transaction carries on.
+      for (const p of pictures) {
+        const bytes = Buffer.from(p.base64, "base64");
+        try {
+          await putImage(tx, { campaignId, mime: p.mime, bytes, id: ids.get(p.id)! }); // mapped above
+          kept.add(p.id);
+        } catch (e) {
+          if (!(e instanceof ActionError)) throw e;
+        }
+      }
+      // `own()` spreads the file's `imageId`, so each entry names its picture's new id explicitly.
       if (c.locations.length)
-        await tx.insert(location).values(c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId) })));
-      if (c.npcs.length)
-        await tx.insert(npc).values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId) })));
-      if (c.handouts.length)
         await tx
-          .insert(handout)
+          .insert(location)
           .values(
-            c.handouts.map((h, i) => ({ ...own(h, i), revealedAt: at(h.revealedAt), audience: refs(h.audience) })),
+            c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: picture(l.imageId) })),
           );
+      if (c.npcs.length)
+        await tx
+          .insert(npc)
+          .values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: picture(n.imageId) })));
+      if (c.handouts.length)
+        await tx.insert(handout).values(
+          c.handouts.map((h, i) => ({
+            ...own(h, i),
+            revealedAt: at(h.revealedAt),
+            audience: refs(h.audience),
+            imageId: picture(h.imageId),
+          })),
+        );
       if (c.items.length)
         await tx.insert(item).values(
           c.items.map((it, i) => ({
@@ -199,7 +234,10 @@ export async function importCampaign({
           })),
         );
       if (c.adventures.length)
-        await tx.insert(adventure).values(c.adventures.map(({ beats: _, ...a }, i) => own(a, i)));
+        // A hand-edited file's mission shown without a brief comes in hidden, as codex.save would refuse it (§11.150).
+        await tx
+          .insert(adventure)
+          .values(c.adventures.map(({ beats: _, ...a }, i) => own({ ...a, shown: a.shown && !!a.brief.trim() }, i)));
       if (beats.length)
         await tx.insert(beat).values(
           beats.map((b, i) => ({
@@ -219,7 +257,7 @@ export async function importCampaign({
       if (c.sessions.length)
         await tx.insert(session).values(
           c.sessions.map(({ id: _, startedAt, endedAt, ...s }) => ({
-            ...s,
+            ...remapText(s),
             campaignId,
             startedAt: new Date(startedAt),
             endedAt: at(endedAt),
@@ -227,9 +265,16 @@ export async function importCampaign({
         );
     },
   });
+  // What the lobby tells the GM: the pictures the file carried that didn't make it in.
+  // Unreadable ones plus those a check refused; a repeat of a kept picture lost nothing, so it isn't counted.
+  return { ...made, droppedPictures: file.images.filter((p) => !p).length + pictures.length - kept.size };
 }
 
+// A session open longer than this is one nobody closed, so the lobby stops advertising the game as running.
+const STALE_SESSION_HOURS = 18;
+
 // The lobby: the caller's games, and every game with a session in progress (as cards only; opening one needs a seat).
+// Archived games are only listed, apart, for their own members.
 export async function lobby(user: AuthUser): Promise<Lobby> {
   // `characters` is their own library (issue #14): it belongs to no game, so it's listed whether or not they have a
   // seat anywhere.
@@ -238,15 +283,21 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
       .select({ campaignId: membership.campaignId, role: membership.role })
       .from(membership)
       .where(eq(membership.userId, user.userId)),
-    db.select({ campaignId: session.campaignId, number: session.number }).from(session).where(isNull(session.endedAt)),
+    db
+      .select({ campaignId: session.campaignId, number: session.number })
+      .from(session)
+      .where(
+        and(isNull(session.endedAt), gt(session.startedAt, new Date(Date.now() - STALE_SESSION_HOURS * 3600_000))),
+      ),
     listLibrary(user.userId),
   ]);
   const ids = [...new Set([...mine, ...running].map((r) => r.campaignId))];
-  if (!ids.length) return { canCreate: user.creator, mine: [], running: [], characters };
+  if (!ids.length)
+    return { canCreate: user.creator, admin: user.admin, mine: [], running: [], archived: [], characters };
 
   const [camps, gms, players] = await Promise.all([
     db
-      .select({ id: campaign.id, name: campaign.name, tier: campaign.tier })
+      .select({ id: campaign.id, name: campaign.name, tier: campaign.tier, archived: isNotNull(campaign.archivedAt) })
       .from(campaign)
       .where(inArray(campaign.id, ids)),
     db
@@ -261,11 +312,14 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
       .groupBy(character.campaignId),
   ]);
   const roleOf = new Map<string, Role>(mine.map((m) => [m.campaignId, m.role]));
+  const archivedIds = new Set(camps.filter((c) => c.archived).map((c) => c.id));
   const card = (id: string): LobbyGame | null => {
     const c = camps.find((x) => x.id === id);
     if (!c) return null;
     return {
-      ...c,
+      id: c.id,
+      name: c.name,
+      tier: c.tier,
       gm:
         gms
           .filter((g) => g.campaignId === id)
@@ -276,9 +330,19 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
       role: roleOf.get(id) ?? null,
     };
   };
-  const cards = (list: { campaignId: string }[]) =>
-    list.map((r) => card(r.campaignId)).filter((g): g is LobbyGame => !!g);
-  return { canCreate: user.creator, mine: cards(mine), running: cards(running), characters };
+  const cards = (list: { campaignId: string }[], archived: boolean) =>
+    list
+      .filter((r) => archivedIds.has(r.campaignId) === archived)
+      .map((r) => card(r.campaignId))
+      .filter((g): g is LobbyGame => !!g);
+  return {
+    canCreate: user.creator,
+    admin: user.admin,
+    mine: cards(mine, false),
+    running: cards(running, false),
+    archived: cards(mine, true),
+    characters,
+  };
 }
 
 // Whether the campaign's character builder may use the homebrew books (a REST read, outside any action).

@@ -11,7 +11,7 @@ How the pieces fit together. For the internals of each part, see [backend.md](ba
 | GM on a tablet, players on phones | Mobile-first web app, no install. Screens stay awake (Wake Lock) |
 | Several people tap at the same time | The server decides. Counters change by **delta**, never by overwriting a value |
 | Players must not see what the GM hides | The server redacts every snapshot sent to players. The client never receives hidden data |
-| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token); the builder's catalogue outside a table needs a Clerk account, and Clerk is Invite-only. The repo is private |
+| Book content is copyrighted | No public pages. A table needs a seat (a Clerk account or a guest token); the builder's catalogue outside a table needs a Clerk account, and Clerk is Invite-only. The repo is private. Printed cards follow the screen's gates: the GM's browser builds the PDF from what `GmApp` already holds, and nothing is uploaded or stored |
 | Rules must match the books | Rules live in one tested package, and each one cites its page |
 
 ## Shape
@@ -81,8 +81,8 @@ Keeping them separate means a Wounds tap doesn't resend every NPC. A reconnectin
 connect, so there's no resync logic. Each snapshot is a few KB.
 
 Each campaign has two rooms: `c:<id>:gm` gets snapshots as-is, and `c:<id>:players` gets them through `toPlayerView` /
-`toPlayerCodex`. Those functions drop hidden threats, bars-only threat stats, GM notes, secrets, factions, adventures and hidden
-entries. What's hidden is listed in [game-logic.md](game-logic.md). Both take the viewer's `characterId`, so the gateway
+`toPlayerCodex`. Those functions drop hidden threats, bars-only threat stats, GM notes, secrets, factions, adventures not shown to the party
+(and every adventure's premise and scenes) and hidden entries. What's hidden is listed in [game-logic.md](game-logic.md). Both take the viewer's `characterId`, so the gateway
 emits to each player socket, computing one view per character: a handout's `audience` and an Agent's `objectives`
 reach only their own player.
 
@@ -112,17 +112,20 @@ Three kinds of caller reach a table:
 | --- | --- | --- |
 | Signed-in user | Clerk session token: the `__session` cookie, or a Bearer header from server-side Next | a `membership` row: `gm` or `player`, plus a character |
 | Guest | a per-character player token (`access_token`) in the httpOnly `wg_token` cookie | player only |
+| Table screen | a `screen` token (`access_token`, no character) in the same cookie, from PARTY's SCREEN QR | `screen`: read-only |
 | Script or test | `ADMIN_KEY` | `POST /api/campaigns` with `ownerUserId`, and a GM socket with `auth: { adminKey, campaignId }` |
 
 There are no GM links: the GM is always a signed-in member. A Clerk user with `publicMetadata.role = "creator"` (set by
-hand in the Clerk Dashboard) can start a game in the lobby and is seated as its GM.
+hand in the Clerk Dashboard) can start a game in the lobby and is seated as its GM. `role = "admin"` is a creator who also
+reaches `/admin` and, at any game without a seat of their own, acts as its GM (`Ctx.admin`; PARTY doesn't list them, and
+what they do is logged in `admin_event`). Roles are only ever changed in Clerk, never in the app.
 
 ```text
 creator ──POST /api/campaigns──▶ campaign + membership (gm) ──▶ /c/<id>
 GM: invite.create ──▶ code (shown once) ──▶ QR / link  /invite/<code>
 /invite/<code> ──POST /api/invites/:code/accept──▶ membership (signed in) | guest token + Set-Cookie wg_token
 GM: token.issue ──▶ guest token ──▶ QR code  /join/<token> ──POST /api/join──▶ Set-Cookie wg_token ──303──▶ /c/<id>
-/c/<id> (Server Component) ──GET /api/campaigns/:id/me──▶ { campaignId, role, characterId, userId } ──▶ GM app | player app
+/c/<id> (Server Component) ──GET /api/campaigns/:id/me──▶ { campaignId, role, characterId, userId, admin } ──▶ GM app | player app
 socket handshake { campaignId } + cookies ──▶ middleware resolves ctx before the connection is accepted
 ```
 
@@ -130,8 +133,11 @@ socket handshake { campaignId } + cookies ──▶ middleware resolves ctx befo
   `azp` claim against `WEB_ORIGIN`. The user's name and creator role come from custom session-token claims (see
   [development.md](development.md#clerk)).
 - The DB stores only SHA-256 hashes of guest tokens and invite codes, so a lost one is replaced, not recovered.
-- `member.remove` deletes a seat and **disconnects** that user. `token.revoke` revokes a character's guest tokens and
+- `member.remove` deletes a seat and **disconnects** that user. `campaign.delete` disconnects everyone at the game. `token.revoke` revokes a character's guest tokens and
   disconnects only guest sockets; a member playing that character keeps their seat.
+- A table screen (a TV in the middle of the table) gets the players' view for no Agent (`toPlayerView(state, null)`),
+  so no one's objectives or private handouts. `authorize()` refuses all its actions, and `/rules`, `/creation` and
+  `book:request` refuse it. `screen.revoke` revokes every screen token and disconnects the screens.
 - Players never receive invite codes or the invite list (`toPlayerView` clears `access.invites`).
 - Clerk needs internet at the table, for sign-in and for the session refresh about every 60 s. A guest on a QR token
   depends only on the api.

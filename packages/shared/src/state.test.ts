@@ -15,6 +15,12 @@ import {
   requisitionYield,
   canAct,
   canSeize,
+  ascensionGroup,
+  callDn,
+  reportProblem,
+  testPool,
+  type CalledTest,
+  type TestCall,
   deriveStats,
   exhaustedShock,
   isExhausted,
@@ -111,9 +117,12 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
     kind: [],
     limits: [],
     homebrew: false,
+    archived: false,
   },
   characters,
   encounter: e,
+  spendRequests: [],
+  testCall: null,
   access: noAccess,
 });
 
@@ -131,6 +140,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       kind: ["investigative"],
       limits: ["body horror"],
       homebrew: false,
+      archived: false,
     },
     characters: [],
     encounter: enc(
@@ -142,6 +152,8 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
       ],
       { lastSide: "agents" },
     ),
+    spendRequests: [],
+    testCall: null,
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -178,6 +190,14 @@ test("toPlayerView: each player gets only their own Agent's objectives", () => {
   assert.deepEqual(objectives(null), [[], []], "a player without a character sees none");
 });
 
+test("toPlayerView: each player sees only their own Agent's Corruption", () => {
+  const stats = CharacterStats.parse({ corruption: 7 });
+  const s = table(enc([]), [char({ id: "a", stats }), char({ id: "b", stats })]);
+  const corruption = (viewer: string | null) => toPlayerView(s, viewer).characters.map((c) => c.stats.corruption);
+  assert.deepEqual(corruption("a"), [7, 0]);
+  assert.deepEqual(corruption(null), [0, 0], "a player without a character sees none");
+});
+
 test("toPlayerView: the GM's Ruin isn't sent", () => {
   const s = table(enc([]), []);
   s.campaign.ruin = 3;
@@ -189,9 +209,13 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
     id,
     title: id,
     body: "",
+    style: "plain",
+    header: "",
     revealed: true,
     audience: [],
     revealedAt: null,
+    imageId: null,
+    imageRevealed: false,
     ...o,
   });
   const codex: Codex = {
@@ -209,6 +233,123 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
   assert.deepEqual(titles("b"), ["public"]);
   assert.deepEqual(titles(null), ["public"]);
   assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
+});
+
+test("toPlayerCodex: every session's recap, never the GM's notes (issue #195)", () => {
+  const s = (n: number, recap: string): Codex["sessions"][number] => ({
+    id: `s${n}`,
+    number: n,
+    startedAt: "2026-10-01T18:00:00Z",
+    endedAt: "2026-10-01T22:00:00Z",
+    recap,
+    notes: "The Prior is the traitor",
+    xp: 10,
+  });
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [],
+    items: [],
+    sessions: [s(1, "Landfall"), s(2, "The vault")],
+  };
+  const sent = toPlayerCodex(codex, null).sessions;
+  assert.deepEqual(
+    sent.map((x) => [x.recap, x.notes]),
+    [
+      ["Landfall", ""],
+      ["The vault", ""],
+    ],
+  );
+});
+
+test("toPlayerCodex: a shown mission without its premise or scenes, a hidden one not at all (issue #196)", () => {
+  const a = (id: string, shown: boolean): Codex["adventures"][number] => ({
+    id,
+    title: id,
+    premise: "The seals were sold by the Prior",
+    status: "running",
+    shown,
+    brief: "Find who sold the seals",
+    beats: [{ ...CodexInput.beat.parse({ adventureId: crypto.randomUUID(), title: "Vault" }), id: "b", order: 0 }],
+  });
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [a("shown", true), a("hidden", false)],
+    locations: [],
+    npcs: [],
+    handouts: [],
+    items: [],
+    sessions: [],
+  };
+  assert.deepEqual(toPlayerCodex(codex, "a").adventures, [
+    {
+      id: "shown",
+      title: "shown",
+      premise: "",
+      status: "running",
+      shown: true,
+      brief: "Find who sold the seals",
+      beats: [],
+    },
+  ]);
+});
+
+test("the table screen's view (viewer null) carries no Agent's private data", () => {
+  const goal = [{ text: "Recover the relic", done: false }];
+  const s = table(enc([threat("h", { visibility: "hidden" }), threat("t"), pc("p")]), [
+    char({ id: "a", objectives: goal }),
+  ]);
+  s.campaign.ruin = 3;
+  const v = toPlayerView(s, null);
+  assert.deepEqual(
+    v.characters.map((c) => c.objectives),
+    [[]],
+  );
+  assert.equal(v.campaign.ruin, 0);
+  assert.equal(v.encounter!.combatants.length, 2, "the hidden threat isn't sent");
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [
+      {
+        id: "h",
+        title: "private",
+        body: "",
+        style: "plain",
+        header: "",
+        revealed: true,
+        audience: ["a"],
+        revealedAt: null,
+        imageId: null,
+        imageRevealed: false,
+      },
+      {
+        id: "p",
+        title: "public",
+        body: "",
+        style: "vox",
+        header: "",
+        revealed: true,
+        audience: [],
+        revealedAt: null,
+        imageId: null,
+        imageRevealed: false,
+      },
+    ],
+    items: [],
+    sessions: [],
+  };
+  assert.deepEqual(
+    toPlayerCodex(codex, null).handouts.map((h) => [h.title, h.style]),
+    [["public", "vox"]], // the style is player-facing: the phone draws the prop (issue #204)
+  );
 });
 
 test("toPlayerView: a hidden threat's Turn still shows as due", () => {
@@ -438,6 +579,8 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         attitude: "uncooperative",
         statSource: { kind: "quick", tier: 4 },
         revealed: true,
+        imageId: null,
+        imageRevealed: false,
       },
       {
         id: "n2",
@@ -450,6 +593,8 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         attitude: "neutral",
         statSource: { kind: "none" },
         revealed: false,
+        imageId: null,
+        imageRevealed: false,
       },
     ],
     handouts: [],
@@ -488,6 +633,36 @@ test("a revealed place reaches phones without its hazards, notes or list (issue 
     null,
   ).locations;
   assert.deepEqual([p!.name, p!.hazards, p!.hazardList], ["Shaft", "", []]);
+});
+
+test("a revealed entry's picture reaches phones only once it's shown too (issue #199)", () => {
+  const imageId = "00000000-0000-4000-8000-0000000000aa";
+  const npc = (imageRevealed: boolean) => ({
+    id: "00000000-0000-4000-8000-000000000001",
+    ...CodexInput.npc.parse({ name: "Magos", revealed: true, imageId, imageRevealed }),
+  });
+  const handout = (imageRevealed: boolean) => ({
+    id: "00000000-0000-4000-8000-000000000002",
+    revealedAt: null,
+    ...CodexInput.handout.parse({ title: "Pict", revealed: true, imageId, imageRevealed }),
+  });
+  const view = (shown: boolean) =>
+    toPlayerCodex(
+      {
+        factions: [],
+        adventures: [],
+        locations: [],
+        npcs: [npc(shown)],
+        handouts: [handout(shown)],
+        items: [],
+        sessions: [],
+        customThreats: [],
+      },
+      null,
+    );
+  assert.deepEqual([view(false).npcs[0]!.imageId, view(false).handouts[0]!.imageId], [null, null]);
+  assert.deepEqual([view(true).npcs[0]!.imageId, view(true).handouts[0]!.imageId], [imageId, imageId]);
+  assert.equal(CodexInput.location.parse({ name: "Shaft" }).imageId, null, "no picture by default");
 });
 
 test("adjustAmmo: per type, clamped at 0, −1 on an empty type removes it (p.229)", () => {
@@ -592,4 +767,79 @@ test("phones get no items: an Agent sees one as a line on their sheet once it's 
     customThreats: [],
   };
   assert.deepEqual(toPlayerCodex(codex, "a").items, []);
+});
+
+test("toPlayerView: every phone sees every pending spend request (rules-flow §11.123)", () => {
+  const spendRequests = [
+    { id: "r1", characterId: "a", kind: "reroll" as const, amount: 1, createdAt: "2026-01-01T00:00:00.000Z" },
+    { id: "r2", characterId: "b", kind: "gloryDice" as const, amount: 2, createdAt: "2026-01-01T00:00:01.000Z" },
+  ];
+  const s = { ...table(enc([])), spendRequests };
+  assert.deepEqual(toPlayerView(s, "a").spendRequests, spendRequests);
+  assert.deepEqual(toPlayerView(s, null).spendRequests, spendRequests);
+});
+
+test("Chaos Spawn: an Agent at 26 Corruption is Lost, out of the fight and of the Ascension (Core p.286)", () => {
+  const lost = char({ id: "lost", stats: CharacterStats.parse({ corruption: 26 }) });
+  const fine = char({ id: "fine", stats: CharacterStats.parse({ corruption: 25 }) });
+  const status = (c: Character) => pcStatus(c, deriveStats({ stats: c.stats, overrides: {}, tier: 1 }));
+  assert.deepEqual(status(lost), ["Lost"]);
+  assert.deepEqual(status(fine), []);
+  assert.deepEqual(
+    ascensionGroup([lost, fine], 1).group.map((c) => c.id),
+    ["fine"],
+  );
+  // Another phone doesn't get the points, but sees who is Lost.
+  const seen = toPlayerView({ ...table(null as never, [lost, fine]), encounter: null }, null).characters;
+  assert.deepEqual(seen.map(status), [["Lost"], []]);
+  assert.deepEqual(
+    seen.map((c) => c.stats.corruption),
+    [26, 0],
+  );
+});
+
+// ── A called Test (issue #191) ──
+
+test("a called Test's pool is the Agent's own: Skill + Attribute, an Attribute, or a trait (Core pp.158–170, 285)", () => {
+  const a = char({
+    stats: CharacterStats.parse({
+      attributes: { S: 3, T: 3, A: 3, I: 3, Wil: 4, Int: 2, Fel: 3 },
+      skills: { Awareness: 2 },
+      corruption: 6,
+    }),
+  });
+  const t = (o: Partial<CalledTest>): CalledTest => ({ kind: "skill", skill: null, attribute: null, dn: 3, ...o });
+  assert.equal(testPool({ character: a, test: t({ skill: "Awareness" }), tier: 1 }), 4);
+  assert.equal(testPool({ character: a, test: t({ kind: "attribute", attribute: "Wil" }), tier: 1 }), 4);
+  assert.equal(testPool({ character: a, test: t({ kind: "resolve" }), tier: 1 }), 3, "Resolve = Willpower − 1");
+  assert.equal(testPool({ character: a, test: t({ kind: "corruption" }), tier: 1 }), 4, "Conviction = Willpower");
+  assert.equal(callDn(t({ kind: "corruption", dn: 3 }), a), 4, "Tarnished adds 1 (p.286)");
+  assert.equal(callDn(t({ skill: "Awareness", dn: 3 }), a), 3);
+  assert.equal(
+    reportProblem(t({ skill: "Awareness" }), { passed: false, icons: 1 }),
+    "Only a failed Corruption Test reports its roll",
+  );
+  assert.equal(reportProblem(t({ kind: "corruption" }), { passed: false, icons: 1, complication: true }), null);
+  assert.ok(reportProblem(t({ kind: "corruption" }), { passed: true, icons: 3 }));
+});
+
+test("a phone sees the call only if its Agent is asked, with only its own result", () => {
+  const call: TestCall = {
+    id: "call",
+    test: { kind: "skill", skill: "Awareness", attribute: null, dn: 3 },
+    fear: false,
+    hideDn: false,
+    who: ["a", "b"],
+    reports: { a: { passed: true }, b: { passed: false } },
+    createdAt: "",
+  };
+  const s = {
+    ...table(null as never, [char({ id: "a" }), char({ id: "b" }), char({ id: "c" })]),
+    encounter: null,
+    testCall: call,
+  };
+  assert.deepEqual(toPlayerView(s, "a").testCall?.reports, { a: { passed: true } });
+  assert.equal(toPlayerView(s, "c").testCall, null, "an Agent not asked");
+  assert.equal(toPlayerView(s, null).testCall, null, "the table screen");
+  assert.equal(toPlayerView({ ...s, testCall: { ...call, hideDn: true } }, "a").testCall?.test.dn, null, "HIDE DN");
 });

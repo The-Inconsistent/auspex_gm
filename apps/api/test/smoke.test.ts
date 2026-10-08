@@ -18,12 +18,16 @@ import {
   poolMax,
   type ActionInput,
   type ActionResult,
+  type AdminCampaign,
+  type AdminEvent,
+  type AdminUser,
   type BookAvailable,
   type BookPage,
   type BookReply,
   type CampaignExport,
   type Character,
   type Codex,
+  type Me,
   type CreationPayload,
   type FactionPresets,
   type FlavourTable,
@@ -35,6 +39,7 @@ import {
   type LibraryEntry,
   type LiveState,
   type RuleEntry,
+  mentionToken,
   presetFaction,
   presetNpc,
   presetLine,
@@ -47,7 +52,7 @@ import {
 const API = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}`;
 
 // A test-only Clerk session token (packages/auth/src/api.ts) and the headers that carry one.
-const clerk = (userId: string, role: "creator" | "member" = "member") =>
+const clerk = (userId: string, role: "creator" | "member" | "admin" = "member") =>
   testSessionToken({ secret: process.env.CLERK_TEST_SECRET ?? "", userId, role });
 const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
 const get = (path: string, headers: Record<string, string> = {}) => fetch(`${API}/api${path}`, { headers });
@@ -108,11 +113,15 @@ async function eventually(check: () => boolean, what: string) {
 }
 
 // A new campaign created by a signed-in creator, and that GM's socket.
-async function newCampaign(name: string, tier: number) {
+// `ip`: a socket from another address, for a test that would push the suite past the per-IP connect limit.
+async function newCampaign(name: string, tier: number, ip?: string) {
   const gmClerk = clerk(`gm-${name}`, "creator");
   const res = await post("/campaigns", { name, tier }, bearer(gmClerk));
   const { campaignId } = (await res.json()) as { campaignId: string };
-  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
+  const gm = connect({
+    auth: { campaignId, clerkToken: gmClerk },
+    headers: ip ? { "cf-connecting-ip": ip } : undefined,
+  });
   await gm.until((s) => s.campaign.name === name);
   return { ...gm, campaignId, gmClerk };
 }
@@ -619,11 +628,22 @@ test("GM and player share a table", async (t) => {
   const orders = await gm.send({
     type: "codex.save",
     kind: "handout",
-    data: { title: "Orders", body: "Kill the Orks.", revealed: true },
+    data: {
+      title: "Orders",
+      body: "Kill the Orks.",
+      style: "decree",
+      header: "BY ORDER OF THE LORD MILITANT",
+      revealed: true,
+    },
   });
   assert.ok(secret.ok && known.ok && orders.ok, "handouts can be created already revealed");
   await new Promise((r) => setTimeout(r, 200));
   assert.equal(gm.codex()?.npcs.length, 2);
+  // A handout's frame reaches the phone that draws it (issue #204).
+  assert.deepEqual(
+    player.codex()?.handouts.map((h) => [h.title, h.style, h.header]),
+    [["Orders", "decree", "BY ORDER OF THE LORD MILITANT"]],
+  );
   assert.deepEqual(
     player.codex()?.npcs.map((n) => [n.name, n.gmNotes]),
     [["Inquisitor Hale", ""]],
@@ -887,6 +907,266 @@ test("private notes: a handout's audience and an Agent's objectives reach only t
   await eventually(() => gm.codex()?.handouts.find((h) => h.title === "For A")?.revealed === false, "hidden again");
 });
 
+test("the session journal: recaps fixed later, the GM's notes never on a phone (issue #195)", async (t) => {
+  const gm = await newCampaign("Session journal", 1);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 1);
+
+  const started = await gm.send({ type: "session.start" });
+  assert.ok(started.ok && started.id);
+  const sessionId = started.id;
+  const edit = (data: { recap?: string; notes?: string }, by: Pick<typeof gm, "send"> = gm) =>
+    by.send({ type: "session.edit", sessionId, ...data });
+  assert.ok((await edit({ notes: "Ork ambush at the ford" })).ok, "notes while the session runs");
+  assert.equal((await edit({ recap: "Too early" })).ok, false, "a running session's recap waits for END (§11.153)");
+  assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumpd." })).ok);
+  assert.ok((await edit({ recap: "Boyz krumped." })).ok, "a typo fixed after the session");
+  assert.equal((await edit({ notes: "mine" }, p)).ok, false, "GM only");
+  assert.equal(
+    (await gm.send({ type: "session.edit", sessionId: crypto.randomUUID(), notes: "x" })).ok,
+    false,
+    "another campaign's or no session",
+  );
+  await eventually(() => gm.codex()?.sessions[0]?.recap === "Boyz krumped.", "the GM's codex has the fix");
+  assert.equal(gm.codex()!.sessions[0]!.notes, "Ork ambush at the ford", "END kept the notes");
+  await eventually(() => p.codex()?.sessions[0]?.recap === "Boyz krumped.", "the phone has the fix");
+  assert.equal(p.codex()!.sessions[0]!.notes, "", "notes stay with the GM");
+  assert.equal(gm.codex()!.sessions[0]!.xp, 10, "XP isn't editable (§11.152)");
+});
+
+test("the mission log: a shown adventure reaches phones with its brief, never its premise or scenes (issue #196)", async (t) => {
+  const gm = await newCampaign("Mission log", 1);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 1);
+
+  const save = (id: string | undefined, data: Record<string, unknown>) =>
+    gm.send({
+      type: "codex.save",
+      kind: "adventure",
+      id,
+      data: { title: "Seals", premise: "The Prior sold them", ...data },
+    });
+  const made = await save(undefined, {});
+  assert.ok(made.ok && made.id);
+  assert.equal((await save(made.id, { shown: true })).ok, false, "SHOWN needs a brief (rules-flow §11.150)");
+  assert.equal((await p.send({ type: "codex.save", kind: "adventure", data: { title: "Mine" } })).ok, false, "GM only");
+  assert.ok((await save(made.id, { shown: true, brief: "Find who sold the seals", status: "failed" })).ok);
+  assert.ok((await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: made.id, title: "Vault" } })).ok);
+  await eventually(() => p.codex()?.adventures.length === 1, "the shown mission reaches the phone");
+  const [m] = p.codex()!.adventures;
+  assert.deepEqual(
+    [m!.title, m!.brief, m!.status, m!.premise, m!.beats],
+    ["Seals", "Find who sold the seals", "failed", "", []],
+  );
+  assert.ok((await save(made.id, { brief: "Find who sold the seals" })).ok);
+  await eventually(() => p.codex()?.adventures.length === 0, "hidden again");
+});
+
+test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the GM and that Agent only", async (t) => {
+  const gm = await newCampaign("Corruption", 2, "10.18.2.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    // Their own IP: the suite is near the per-IP connect limit.
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.18.2.1" } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  assert.ok((await gm.send({ type: "session.start" })).ok); // Wrath 2, Ruin 2 (two players)
+  const corrupt = (test: NonNullable<Extract<ActionInput, { type: "character.corrupt" }>["test"]>) => ({
+    type: "character.corrupt" as const,
+    id: a.id!,
+    test,
+  });
+
+  assert.equal((await pa.send({ type: "character.corrupt", id: a.id, delta: -1 })).ok, false, "GM only");
+  assert.equal((await gm.send(corrupt({ source: 3, icons: 3 }))).ok, false, "a passed Test is refused");
+  // DN 3 − 1 for the spent Wrath, 1 Icon: +1 Corruption, +1 Ruin, −1 Wrath (Core p.286).
+  assert.deepEqual(await gm.send(corrupt({ source: 3, icons: 1, spentWrath: true })), { ok: true });
+  const s = await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.corruption === 1);
+  assert.equal(s.campaign.ruin, 3);
+  assert.equal(s.characters.find((c) => c.id === a.id)?.wrath, 1);
+  await pa.until((s) => s.characters.find((c) => c.id === a.id)?.stats.corruption === 1);
+  const seen = await pb.until((s) => s.characters.find((c) => c.id === a.id)?.wrath === 1);
+  assert.equal(seen.characters.find((c) => c.id === a.id)?.stats.corruption, 0, "another Agent's is blanked");
+
+  // Into Tarnished: a Mutation Test at DN 3 + 1 (p.287). Ruin at its cap of 4 swallows the next +1 (p.320).
+  assert.deepEqual(await gm.send({ type: "character.corrupt", id: a.id, delta: 5 }), {
+    ok: true,
+    notices: ["MUTATION TEST · DN 4"],
+  });
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "ruin", delta: 5 })).ok);
+  assert.deepEqual(await gm.send(corrupt({ source: 1, icons: 0 })), {
+    ok: true,
+    notices: ["RUIN IS FULL · THE +1 IS LOST (p.320)"],
+  });
+
+  // A mutation (pp.287–295): snapshotted, refused twice, its mods counted, hidden from the other phone, cut off again.
+  const mutate = (mutationId: string, subId?: string) =>
+    gm.send({ type: "character.mutate", id: a.id!, mutationId, subId });
+  assert.equal((await pa.send({ type: "character.mutate", id: a.id, mutationId: "brute" })).ok, false, "GM only");
+  assert.equal((await mutate("no-such-thing")).ok, false);
+  assert.equal((await mutate("extra-appendages")).ok, false, "its own d6 table first");
+  assert.ok((await mutate("brute")).ok);
+  assert.equal((await mutate("brute")).ok, false, "a duplicate is rerolled (p.287)");
+  const mine = await pa.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 1);
+  assert.equal(mine.characters.find((c) => c.id === a.id)?.stats.mutations[0]?.mods.attributes.S, 1);
+  const theirs = await pb.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 1);
+  const unseen = theirs.characters.find((c) => c.id === a.id)?.stats.mutations[0];
+  assert.equal(unseen?.name, "Unseen", "another Agent's are unnamed");
+  assert.equal(unseen?.effect, "");
+  assert.equal(unseen?.mods.attributes.S, 1, "but count on their bars");
+  assert.deepEqual(await mutate("the-warp-made-manifest"), { ok: true, notices: ["ROLL 2 MORE MUTATIONS (p.295)"] });
+  const gmView = await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 5);
+  assert.deepEqual(
+    gmView.characters.find((c) => c.id === a.id)?.stats.mutations.map((m) => m.id),
+    ["brute", "the-warp-made-manifest", "wings", "wyrdling", "horns-spines-fangs-or-claws"],
+  );
+  assert.ok((await gm.send({ type: "character.unmutate", id: a.id, mutationId: "brute" })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 4);
+});
+
+test("a called Test: named phones report their own, others don't see it, a session clears it (issue #191)", async (t) => {
+  const gm = await newCampaign("Test call", 2, "10.19.1.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    // Their own IP: the suite is near the per-IP connect limit.
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.19.1.1" } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  const awareness = { kind: "skill" as const, skill: "Awareness" as const, dn: 3, purpose: "GM's plan" };
+
+  assert.equal((await pa.send({ type: "test.call", test: awareness, who: [a.id] })).ok, false, "GM only");
+  assert.equal(
+    (await gm.send({ type: "test.call", test: { kind: "skill", skill: "Awareness", dn: 3 }, who: [a.id], fear: true }))
+      .ok,
+    false,
+    "Fear is a Resolve Test (Core p.199)",
+  );
+  const call = await gm.send({ type: "test.call", test: awareness, who: [a.id] });
+  assert.ok(call.ok && call.id);
+  const mine = await pa.until((s) => s.testCall?.id === call.id);
+  assert.equal((mine.testCall?.test as { purpose?: string }).purpose, undefined, "none of the GM's plan is kept");
+  assert.equal((await pb.until((s) => s.characters.length === 2)).testCall, null, "B isn't asked");
+
+  const report = (p: typeof pa, characterId: string, passed: boolean) =>
+    p.send({ type: "test.report", callId: call.id!, characterId, passed });
+  assert.equal((await report(pb, b.id, false)).ok, false, "B isn't asked");
+  assert.equal((await report(pb, a.id, false)).ok, false, "nor reports for A");
+  assert.equal(
+    (await pa.send({ type: "test.report", callId: call.id, characterId: a.id, passed: false, icons: 1 })).ok,
+    false,
+    "only a failed Corruption Test brings its roll",
+  );
+  assert.ok((await report(pa, a.id, false)).ok);
+  assert.ok((await report(pa, a.id, true)).ok, "a second tap overwrites");
+  await gm.until((s) => s.testCall?.reports[a.id!]?.passed === true);
+  assert.ok((await report(gm, a.id, false)).ok, "the GM sets a result for a phone that's out");
+  await gm.until((s) => s.testCall?.reports[a.id!]?.passed === false);
+
+  assert.equal((await pa.send({ type: "test.close" })).ok, false, "closing is the GM's");
+
+  // HIDE DN keeps it off the wire; a Corruption Test takes a printed DN and a roll that fails it (Core pp.285–286).
+  const corruption = { kind: "corruption" as const, dn: 3 };
+  assert.equal(
+    (await gm.send({ type: "test.call", test: { ...corruption, dn: 4 }, who: [a.id] })).ok,
+    false,
+    "4 isn't a Corruption DN",
+  );
+  const hidden = await gm.send({ type: "test.call", test: corruption, who: [a.id], hideDn: true });
+  assert.ok(hidden.ok && hidden.id);
+  const seen = await pa.until((s) => s.testCall?.id === hidden.id);
+  assert.equal(seen.testCall?.test.dn, null, "the phone never gets a hidden DN");
+  const failed = (icons: number) =>
+    pa.send({ type: "test.report", callId: hidden.id!, characterId: a.id!, passed: false, icons });
+  assert.equal((await failed(3)).ok, false, "3 Icons pass DN 3");
+  assert.ok((await failed(1)).ok);
+
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  await gm.until((s) => s.testCall === null);
+  assert.equal((await report(pa, a.id, true)).ok, false, "the call is closed");
+});
+
+test("table screen: a read-only seat with no character, the table's view and no book text", async (t) => {
+  const gm = await newCampaign("Table screen", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A", objectives: [{ text: "Find the relic" }] });
+  assert.ok(a.ok && a.id);
+  assert.ok(
+    (await gm.send({ type: "codex.save", kind: "handout", data: { title: "For A", revealed: true, audience: [a.id] } }))
+      .ok,
+  );
+  assert.ok(
+    (await gm.send({ type: "codex.save", kind: "handout", data: { title: "For all", revealed: true, audience: [] } }))
+      .ok,
+  );
+
+  const issued = await gm.send({ type: "screen.issue" });
+  assert.ok(issued.ok && issued.token);
+  const join = await post("/join", { token: issued.token });
+  assert.equal(join.status, 200);
+  assert.deepEqual(await join.json(), {
+    campaignId: gm.campaignId,
+    role: "screen",
+    characterId: null,
+    userId: null,
+    admin: false,
+  });
+  const cookie = { cookie: `wg_token=${issued.token}` };
+  assert.equal(
+    ((await (await get(`/campaigns/${gm.campaignId}/me`, cookie)).json()) as { role: string }).role,
+    "screen",
+  );
+  assert.equal((await get(`/campaigns/${gm.campaignId}/rules`, cookie)).status, 403, "no book text on the TV");
+  assert.equal((await get(`/campaigns/${gm.campaignId}/creation`, cookie)).status, 403);
+
+  const screen = connect({ auth: { token: issued.token } });
+  t.after(() => screen.socket.close());
+  const s = await screen.until((v) => v.characters.length === 1);
+  assert.deepEqual(s.characters[0]!.objectives, [], "no Agent's objectives");
+  assert.equal(s.campaign.ruin, 0, "Ruin is the GM's");
+  await eventually(() => (screen.codex()?.handouts.length ?? 0) > 0, "the screen gets its codex");
+  assert.deepEqual(
+    screen.codex()!.handouts.map((h) => h.title),
+    ["For all"],
+    "no private handout",
+  );
+  const refused = await screen.send({ type: "pool.adjust", pool: "glory", delta: 1 });
+  assert.ok(!refused.ok && refused.error === "The table screen is read-only");
+
+  // REVOKE SCREENS kicks the TV and kills its link.
+  const kicked = new Promise((r) => screen.socket.on("disconnect", r));
+  assert.ok((await gm.send({ type: "screen.revoke" })).ok);
+  await kicked;
+  assert.equal((await post("/join", { token: issued.token })).status, 401);
+});
+
 test("a malformed login cookie is refused, not fatal", async () => {
   const bad = { cookie: "wg_token=%; __session=%" }; // decodeURIComponent throws on these
   assert.equal((await get("/guest", bad)).status, 401);
@@ -956,7 +1236,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   await gm.until((s) => charOf(s, hero.id!).traumatic === d.maxTraumatic + 1);
   assert.deepEqual(await gm.send({ type: "character.respite", id: hero.id }), {
     ok: false,
-    error: "A Dead character can't Respite (p.193)",
+    error: "A Dead or Lost character can't Respite (pp.193, 286)",
   });
   assert.ok((await gm.send({ type: "character.respite", id: c.id })).ok);
 
@@ -2347,7 +2627,13 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
   const orders = await gm.send({
     type: "codex.save",
     kind: "handout",
-    data: { title: "Orders", revealed: true, audience: [kael.id] },
+    // A codex mention (issue #200) carries the Hive's id, so the import has to remap it with the row.
+    data: {
+      title: "Orders",
+      revealed: true,
+      audience: [kael.id],
+      body: `Report to ${mentionToken({ kind: "location", id: hive.id })}.`,
+    },
   });
   const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Descent" } });
   assert.ok(spire.ok && orders.ok && orders.id && adv.ok && adv.id);
@@ -2545,6 +2831,11 @@ test("export and import: a campaign file becomes a new campaign, whole or as a f
     "rows keep the file's order",
   );
   const newHive = locs.find((l) => l.name === "Hive")!;
+  assert.equal(
+    h?.body,
+    `Report to ${mentionToken({ kind: "location", id: newHive.id })}.`,
+    "a mention follows its row",
+  );
   assert.equal(locs.find((l) => l.name === "Spire")?.parentId, newHive.id);
   const b = whole.codex.adventures[0]?.beats[0];
   assert.equal(b?.locationId, locs.find((l) => l.name === "Spire")?.id);
@@ -2987,4 +3278,383 @@ test("custom threats: saved, used, refused and never sent to a player", async (t
     ok: false,
     error: 'Unknown threat "custom-warped-ogryn-2"',
   });
+});
+
+test("admin: acts as GM without a seat, housekeeping over REST, archive and delete", async (t) => {
+  const admin = bearer(clerk("root-admin", "admin"));
+  const creator = bearer(clerk("admin-gm", "creator"));
+  const member = bearer(clerk("admin-member"));
+  const adminId = "root-admin";
+  const act = async (id: string, action: ActionInput) =>
+    (await (await post(`/admin/campaigns/${id}/action`, action, admin)).json()) as ActionResult;
+  const gmGame = async (name: string) => {
+    const created = await post("/campaigns", { name, tier: 2 }, creator);
+    return ((await created.json()) as { campaignId: string }).campaignId;
+  };
+  const gmClerk = clerk("admin-gm", "creator");
+  const campaignId = await gmGame("Admin Table");
+  await get("/lobby", bearer(clerk("second-gm"))); // a user the app has seen, for member.seat
+
+  // No seat, no membership row: the admin is the GM here and PARTY doesn't list them. Not even a member gets in.
+  const me = (await (await get(`/campaigns/${campaignId}/me`, admin)).json()) as Me;
+  assert.deepEqual([me.role, me.admin, me.userId, me.characterId], ["gm", true, adminId, null]);
+  assert.equal((await get(`/campaigns/${campaignId}/me`, member)).status, 401);
+  assert.equal((await get(`/campaigns/${campaignId}/threats`, admin)).status, 200, "GM-only content, as GM");
+  assert.equal((await get(`/campaigns/${campaignId}/me`, creator).then((r) => r.json())).admin, false);
+  assert.equal((await get(`/campaigns/${crypto.randomUUID()}/me`, admin)).status, 401, "no such game, no seat");
+
+  // The admin routes are for admins only.
+  for (const path of ["/admin/users", "/admin/campaigns", "/admin/events"]) {
+    assert.equal((await get(path)).status, 401, path);
+    assert.equal((await get(path, member)).status, 403, path);
+    assert.equal((await get(path, creator)).status, 403, `${path}: a creator isn't an admin`);
+    assert.equal((await get(path, admin)).status, 200, path);
+  }
+  assert.equal((await post(`/admin/campaigns/${campaignId}/action`, { type: "session.abandon" }, member)).status, 403);
+  const lobbies = async (h: Record<string, string>) => (await (await get("/lobby", h)).json()) as Lobby;
+  assert.deepEqual(
+    [(await lobbies(admin)).admin, (await lobbies(creator)).admin, (await lobbies(admin)).canCreate],
+    [true, false, true],
+  );
+
+  const users = (await (await get("/admin/users", admin)).json()) as AdminUser[];
+  const gmUser = users.find((u) => u.id === "admin-gm");
+  assert.equal(gmUser?.role, "creator");
+  assert.deepEqual(
+    gmUser?.seats.filter((x) => x.campaignId === campaignId).map((x) => x.role),
+    ["gm"],
+  );
+  assert.equal(users.find((u) => u.id === adminId)?.role, "admin");
+  assert.ok(!users.find((u) => u.id === adminId)?.seats.length, "the admin has no seat anywhere");
+  // Refreshed at most hourly, so a user seen by an earlier run can be that stale.
+  assert.ok(Date.now() - new Date(gmUser!.lastSeenAt).getTime() < 3_700_000);
+  assert.deepEqual(
+    users.map((u) => u.name),
+    [...users.map((u) => u.name)].sort((a, b) => a.localeCompare(b)),
+  );
+
+  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
+  t.after(() => gm.socket.close());
+  await gm.until((s) => s.campaign.name === "Admin Table");
+  const hero = await gm.send({ type: "character.create", name: "Hero" });
+  assert.ok(hero.ok && hero.id);
+  const campaigns = async () => (await (await get("/admin/campaigns", admin)).json()) as AdminCampaign[];
+  const entry = async () => (await campaigns()).find((c) => c.id === campaignId)!;
+
+  // session.abandon: ends the running session with no XP.
+  assert.deepEqual(await act(campaignId, { type: "session.abandon" }), { ok: false, error: "No session in progress" });
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  const running = await entry();
+  assert.deepEqual(
+    [running.session?.number, running.players, running.gms, running.archivedAt],
+    [1, 1, ["admin-gm"], null],
+  );
+  assert.ok(Date.now() - new Date(running.lastActivity).getTime() < 60_000);
+  assert.equal((await campaigns())[0]?.id, campaignId, "newest activity first");
+  assert.ok(
+    (await lobbies(member)).running.some((g) => g.id === campaignId),
+    "a running game is a card for anyone signed in",
+  );
+  assert.deepEqual(await act(campaignId, { type: "session.abandon" }), { ok: true });
+  assert.equal((await entry()).session, null);
+  await eventually(() => gm.codex()?.sessions[0]?.endedAt != null, "the session closed");
+  assert.equal(gm.codex()?.sessions[0]?.xp, 0);
+  assert.equal((await gm.until((s) => s.characters.length === 1)).characters[0]?.xp, 0, "no XP awarded");
+
+  // session.delete: the latest, ended session only; its XP stays.
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.deepEqual(await act(campaignId, { type: "session.delete" }), {
+    ok: false,
+    error: "End the session in progress before deleting it",
+  });
+  assert.ok((await gm.send({ type: "session.end", xp: 5 })).ok);
+  const deleted = await act(campaignId, { type: "session.delete" });
+  assert.ok(deleted.ok && deleted.notices?.[0]?.includes("5 XP"), JSON.stringify(deleted));
+  await eventually(() => gm.codex()?.sessions.length === 1, "only session 1 is left");
+  assert.equal(
+    (await gm.until((s) => s.characters.length === 1)).characters[0]?.xp,
+    5,
+    "the XP stays on the character",
+  );
+  assert.ok((await gm.send({ type: "session.start" })).ok, "numbering carries on from the one that is left");
+  assert.equal((await entry()).session?.number, 2);
+
+  // member.seat: admin only, an existing user only; an existing seat turns into the GM's.
+  assert.deepEqual(await gm.send({ type: "member.seat", userId: "second-gm" }), { ok: false, error: "Admin only" });
+  assert.deepEqual(await act(campaignId, { type: "member.seat", userId: "nobody-here" }), {
+    ok: false,
+    error: "User not found",
+  });
+  assert.deepEqual(await act(campaignId, { type: "member.seat", userId: "second-gm" }), { ok: true });
+  const seated = await gm.until((s) => s.access.members.some((m) => m.userId === "second-gm"));
+  assert.equal(seated.access.members.find((m) => m.userId === "second-gm")?.role, "gm");
+  assert.ok(!seated.access.members.some((m) => m.userId === adminId), "PARTY doesn't list the admin");
+  assert.deepEqual(await act(campaignId, { type: "member.remove", userId: "second-gm" }), { ok: true });
+  await gm.until((s) => !s.access.members.some((m) => m.userId === "second-gm"));
+
+  // ARCHIVE: read-only, hidden from `mine` and `running`, listed apart; the way out still works.
+  assert.deepEqual(await gm.send({ type: "campaign.delete", name: "Admin Table" }), {
+    ok: false,
+    error: "Archive the game before deleting it",
+  });
+  const room = await gm.send({ type: "invite.create", mode: "room" });
+  assert.ok(room.ok);
+  assert.deepEqual(await act(campaignId, { type: "campaign.archive" }), { ok: true });
+  const archived = await gm.until((s) => s.campaign.archived);
+  assert.equal(archived.campaign.archived, true);
+  // Nobody new joins a read-only game: archiving revokes its open invites. Taking access away still goes through.
+  assert.equal(archived.access.invites.length, 0);
+  assert.equal((await post(`/invites/${room.token}/accept`, { newCharacterName: "Late" }, member)).status, 400);
+  assert.deepEqual(await gm.send({ type: "invite.revoke", id: room.id! }), { ok: false, error: "Invite not found" });
+  assert.equal((await entry()).session, null, "archiving ends the running session");
+  assert.ok((await entry()).archivedAt);
+  assert.deepEqual(await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 }), {
+    ok: false,
+    error: "This game is archived",
+  });
+  assert.equal(
+    (await post(`/admin/campaigns/${campaignId}/action`, { type: "pool.adjust", pool: "glory", delta: 1 }, admin))
+      .status,
+    400,
+    "only the housekeeping actions go through the admin route",
+  );
+  const lobbyOfGm = await lobbies(creator);
+  assert.ok(!lobbyOfGm.mine.some((g) => g.id === campaignId) && !lobbyOfGm.running.some((g) => g.id === campaignId));
+  assert.ok(lobbyOfGm.archived.some((g) => g.id === campaignId));
+  const file = (await (await get(`/campaigns/${campaignId}/export`, admin)).json()) as CampaignExport;
+  assert.equal(file.campaign.name, "Admin Table", "an admin exports without a seat");
+  assert.ok(!("archived" in file.campaign), "and an import starts a live game");
+
+  assert.deepEqual(await act(campaignId, { type: "campaign.unarchive" }), { ok: true });
+  await gm.until((s) => !s.campaign.archived);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 })).ok, "writable again");
+  assert.ok((await lobbies(creator)).mine.some((g) => g.id === campaignId));
+
+  // DELETE: the exact name, and a GM's own only once archived; everyone at the table is kicked.
+  assert.ok((await gm.send({ type: "campaign.archive" })).ok, "a GM archives their own game");
+  const gone = new Promise<string>((resolve) => gm.socket.on("disconnect", resolve));
+  assert.deepEqual(await gm.send({ type: "campaign.delete", name: "admin table" }), {
+    ok: false,
+    error: "Type the game's name to delete it",
+  });
+  assert.deepEqual(await gm.send({ type: "campaign.delete", name: "Admin Table" }), { ok: true });
+  assert.match(await gone, /disconnect/, "the room is kicked");
+  assert.equal((await get(`/campaigns/${campaignId}/me`, admin)).status, 401);
+  assert.ok(!(await campaigns()).some((c) => c.id === campaignId));
+
+  // An admin deletes a game that isn't archived; REMOVE FROM ALL GAMES takes a user out of every game.
+  const other = await gmGame("Admin Table B");
+  assert.deepEqual(await act(other, { type: "member.seat", userId: "second-gm" }), { ok: true });
+  const seatsOf = async (id: string) =>
+    ((await (await get("/admin/users", admin)).json()) as AdminUser[]).find((u) => u.id === id)?.seats;
+  assert.equal((await seatsOf("second-gm"))?.length, 1);
+  assert.equal((await del(`/admin/users/${adminId}/seats`, admin)).status, 400, "not your own seat");
+  assert.equal((await del("/admin/users/second-gm/seats", creator)).status, 403);
+  const removed = await del("/admin/users/second-gm/seats", admin);
+  assert.deepEqual(await removed.json(), { removed: 1, failed: [] });
+  assert.equal((await seatsOf("second-gm"))?.length, 0);
+  assert.deepEqual(await act(other, { type: "campaign.delete", name: "wrong" }), {
+    ok: false,
+    error: "Type the game's name to delete it",
+  });
+  assert.deepEqual(await act(other, { type: "campaign.delete", name: "Admin Table B" }), { ok: true });
+  assert.equal((await post(`/admin/campaigns/${other}/action`, { type: "campaign.archive" }, admin)).status, 404);
+
+  // Every action an admin applied is in the log, which outlives the games it names.
+  const events = (await (await get("/admin/events", admin)).json()) as AdminEvent[];
+  const mine = (id: string) => events.filter((e) => e.campaignId === id).map((e) => e.action);
+  assert.ok(events.length <= 50);
+  assert.deepEqual(mine(campaignId).reverse(), [
+    "session.abandon",
+    "session.delete",
+    "member.seat",
+    "member.remove",
+    "campaign.archive",
+    "campaign.unarchive",
+  ]);
+  assert.deepEqual(mine(other).reverse(), ["member.seat", "member.remove", "campaign.delete"]);
+  const seat = events.find((e) => e.campaignId === other && e.action === "member.seat");
+  assert.deepEqual(
+    [seat?.targetUserId, seat?.campaignName, seat?.actorUserId],
+    ["second-gm", "Admin Table B", adminId],
+  );
+});
+
+test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §11.122–124)", async (t) => {
+  const gm = await newCampaign("Spend requests", 2);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    const p = connect({ auth: { token: issued.token } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  assert.ok((await gm.send({ type: "session.start" })).ok); // Wrath 2 each, Glory 0
+  const charOf = (s: LiveState, id: string) => s.characters.find((c) => c.id === id)!;
+
+  // Only for your own Agent, only one of each kind; answering is the GM's.
+  assert.equal((await pa.send({ type: "spend.request", characterId: b.id, kind: "reroll" })).ok, false);
+  const reroll = await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" });
+  assert.ok(reroll.ok && reroll.id);
+  assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" })).ok, false);
+  assert.equal((await pa.send({ type: "spend.resolve", id: reroll.id, accept: true })).ok, false, "GM only");
+  assert.equal((await pb.send({ type: "spend.cancel", id: reroll.id })).ok, false, "not B's request");
+  await pb.until((s) => s.spendRequests.some((r) => r.id === reroll.id)); // every phone sees it (p.165)
+
+  assert.ok((await gm.send({ type: "spend.resolve", id: reroll.id, accept: true })).ok);
+  await gm.until((s) => charOf(s, a.id!).wrath === 1 && s.spendRequests.length === 0);
+
+  // Asking needs the Glory now, at most what the party holds; ACCEPT checks again, and a refusal stays pending.
+  const glory = (delta: number) => gm.send({ type: "pool.adjust", pool: "glory", delta });
+  const askDice = { type: "spend.request", characterId: a.id, kind: "gloryDice", amount: 2 } as const;
+  assert.equal((await pa.send(askDice)).ok, false, "Glory is 0");
+  assert.ok((await glory(3)).ok);
+  const dice = await pa.send(askDice);
+  assert.ok(dice.ok && dice.id);
+  const over = { type: "spend.request", characterId: a.id, kind: "gloryDamage", amount: 4 } as const;
+  assert.equal((await pa.send(over)).ok, false, "more than the party holds");
+  assert.ok((await glory(-2)).ok);
+  assert.equal((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok, false, "Glory is 1");
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await glory(2)).ok);
+  assert.ok((await gm.send({ type: "spend.resolve", id: dice.id, accept: true })).ok);
+  await gm.until((s) => s.campaign.glory === 1 && s.spendRequests.length === 0);
+
+  // Restore Shock with no Shock to restore would waste the Wrath (§11.122).
+  const shock = await pa.send({ type: "spend.request", characterId: a.id, kind: "restoreShock" });
+  assert.ok(shock.ok && shock.id);
+  assert.equal((await gm.send({ type: "spend.resolve", id: shock.id, accept: true })).ok, false);
+  assert.ok((await gm.send({ type: "character.adjust", id: a.id, shock: 1 })).ok);
+  assert.ok((await gm.send({ type: "spend.resolve", id: shock.id, accept: true })).ok);
+  await gm.until((s) => charOf(s, a.id!).wrath === 0 && charOf(s, a.id!).shock === 0);
+  assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" })).ok, false, "no Wrath");
+
+  // Seize needs a fight; a new fight clears the old one's Seize requests.
+  assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok, false);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  assert.ok((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+
+  // The asker cancels; session.end clears whatever is left.
+  const damage = await pa.send({ type: "spend.request", characterId: a.id, kind: "gloryDamage" });
+  assert.ok(damage.ok && damage.id);
+  assert.ok((await pa.send({ type: "spend.cancel", id: damage.id })).ok);
+  assert.ok((await pb.send({ type: "spend.request", characterId: b.id, kind: "reroll" })).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "session.end", xp: 0 })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+});
+
+// The smallest file the sniffer takes: a RIFF header with WEBP at offset 8. The api checks the bytes, not the picture.
+const WEBP = Buffer.concat([Buffer.from("RIFF\x10\x00\x00\x00WEBPVP8 ", "latin1"), Buffer.alloc(16)]);
+const upload = (campaignId: string, body: Buffer, headers: Record<string, string>, mime = "image/webp") =>
+  fetch(`${API}/api/campaigns/${campaignId}/images`, {
+    method: "POST",
+    headers: { "content-type": mime, ...headers },
+    body: new Uint8Array(body),
+  });
+
+test("a codex picture: the GM uploads it, a player sees it once the entry and its picture are shown (#199)", async (t) => {
+  // Its own IP: the suite is near the per-IP connect limit.
+  const gmClerk = clerk("gm-pictures", "creator");
+  const gmAuth = bearer(gmClerk);
+  const { campaignId } = (await (await post("/campaigns", { name: "Pictures", tier: 2 }, gmAuth)).json()) as {
+    campaignId: string;
+  };
+  const s = {
+    campaignId,
+    ...connect({ auth: { campaignId, clerkToken: gmClerk }, headers: { "cf-connecting-ip": "10.19.9.1" } }),
+  };
+  t.after(() => s.socket.close());
+  await s.until((st) => st.campaign.name === "Pictures");
+  const at = (imageId: string) => `/campaigns/${s.campaignId}/images/${imageId}`;
+  assert.equal((await upload(s.campaignId, WEBP, gmAuth, "image/jpeg")).status, 400, "the bytes must match the type");
+  assert.equal((await upload(s.campaignId, Buffer.alloc(2_000_000), gmAuth)).status, 413, "over the 1 MB limit");
+  const up = await upload(s.campaignId, WEBP, gmAuth);
+  assert.equal(up.status, 200);
+  const { id: imageId } = (await up.json()) as { id: string };
+  const back = await get(at(imageId), gmAuth);
+  assert.equal(back.status, 200);
+  assert.equal(back.headers.get("content-type"), "image/webp");
+  assert.equal(back.headers.get("x-content-type-options"), "nosniff");
+  assert.deepEqual(Buffer.from(await back.arrayBuffer()), WEBP);
+
+  // A guest player: no uploads, and no picture until both reveals are on.
+  const hero = await s.send({ type: "character.create", name: "Hero" });
+  assert.ok(hero.ok && hero.id);
+  const issued = await s.send({ type: "token.issue", characterId: hero.id });
+  assert.ok(issued.ok && issued.token);
+  const guest = { cookie: `wg_token=${issued.token}` };
+  assert.equal((await upload(s.campaignId, WEBP, guest)).status, 403);
+  const seen = async () => (await get(at(imageId), guest)).status;
+
+  // Another campaign over REST only: the suite is near the socket connect rate limit.
+  const otherGm = bearer(clerk("gm-pictures-elsewhere", "creator"));
+  const other = (await (await post("/campaigns", { name: "Elsewhere", tier: 2 }, otherGm)).json()) as {
+    campaignId: string;
+  };
+  const foreign = (await (await upload(other.campaignId, WEBP, otherGm)).json()) as { id: string };
+  // A picture never blocks a save: another campaign's (or a gone one) saves as no picture.
+  const spy = await s.send({ type: "codex.save", kind: "npc", data: { name: "Spy", imageId: foreign.id } });
+  assert.ok(spy.ok);
+  await eventually(() => s.codex()?.npcs.some((n) => n.name === "Spy") ?? false, "the Spy saved");
+  assert.equal(s.codex()?.npcs.find((n) => n.name === "Spy")?.imageId, null, "without another campaign's picture");
+  assert.equal((await get(at(foreign.id), gmAuth)).status, 404, "nor served through this one");
+
+  const magos = await s.send({ type: "codex.save", kind: "npc", data: { name: "Magos", imageId } });
+  assert.ok(magos.ok && magos.id);
+  assert.equal(await seen(), 404, "a hidden NPC's picture");
+  const save = (data: object) =>
+    s.send({ type: "codex.save", kind: "npc", id: magos.id, data: { name: "Magos", imageId, ...data } });
+  assert.ok((await save({ revealed: true })).ok);
+  assert.equal(await seen(), 404, "revealed, with the picture held back");
+  assert.ok((await save({ revealed: true, imageRevealed: true })).ok);
+  assert.equal(await seen(), 200);
+
+  // The export carries the bytes, and an import gives the picture a new id the NPC follows. Over REST: no new socket.
+  const file = (await (await get(`/campaigns/${s.campaignId}/export`, gmAuth)).json()) as CampaignExport;
+  assert.deepEqual(
+    file.images.map((p) => [p?.id, p?.mime, p?.base64]),
+    [[imageId, "image/webp", WEBP.toString("base64")]],
+  );
+  const light = (await (await get(`/campaigns/${s.campaignId}/export?pictures=0`, gmAuth)).json()) as CampaignExport;
+  assert.deepEqual(light.images, [], "EXPORT WITHOUT PICTURES");
+  // The big import body is parsed only for a verified creator: a stranger's malformed JSON is a 401, never parsed.
+  const stranger = await fetch(`${API}/api/campaigns/import`, {
+    method: "POST",
+    headers: { "content-type": "application/json", ...bearer("not-a-session") },
+    body: "{ not json",
+  });
+  assert.equal(stranger.status, 401);
+  // A picture that fails the importer's sniff is left out: the campaign still imports, and says how many it dropped.
+  const forged = {
+    ...file,
+    images: [{ id: imageId, mime: "image/webp", base64: Buffer.from("no").toString("base64") }],
+  };
+  const lossy = await post("/campaigns/import", { file: forged }, gmAuth);
+  assert.equal(lossy.status, 201, "a bad picture doesn't refuse the file");
+  const { campaignId: lossyId, droppedPictures } = (await lossy.json()) as {
+    campaignId: string;
+    droppedPictures: number;
+  };
+  assert.equal(droppedPictures, 1);
+  const lost = (await (await get(`/campaigns/${lossyId}/export`, gmAuth)).json()) as CampaignExport;
+  assert.deepEqual([lost.images, lost.codex.npcs.find((n) => n.name === "Magos")?.imageId], [[], null]);
+
+  const imported = await post("/campaigns/import", { file }, gmAuth);
+  assert.equal(imported.status, 201);
+  const { campaignId: copyId } = (await imported.json()) as { campaignId: string };
+  const copy = (await (await get(`/campaigns/${copyId}/export`, gmAuth)).json()) as CampaignExport;
+  const [picture] = copy.images;
+  assert.ok(picture && picture.id !== imageId);
+  assert.equal(picture.base64, WEBP.toString("base64"));
+  assert.equal(copy.codex.npcs.find((n) => n.name === "Magos")?.imageId, picture.id);
 });

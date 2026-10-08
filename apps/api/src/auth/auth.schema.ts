@@ -1,5 +1,5 @@
 import { boolean, integer, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
-import type { InviteMode, Role } from "@wg/shared";
+import type { AppRole, InviteMode, Role } from "@wg/shared";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { createdAt } from "../core/sql.ts";
@@ -17,10 +17,13 @@ export const accessToken = pgTable("access_token", {
   createdAt: createdAt(),
 });
 
-// Clerk users we've seen, keyed by the Clerk user id; the name is refreshed from the session token on each sign-in.
+// Clerk users we've seen, keyed by the Clerk user id; the name and role are refreshed from the session token on each
+// sign-in. The role is a display copy for the admin page (Clerk stays the source), null for an ordinary user.
 export const appUser = pgTable("app_user", {
   id: text().primaryKey(),
   name: text().notNull(),
+  role: text().$type<AppRole>(),
+  lastSeenAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 

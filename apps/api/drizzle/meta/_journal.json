@@ -141,6 +141,55 @@
       "when": 1791034599792,
       "tag": "0019_sturdy_trish_tilby",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1791314306831,
+      "tag": "0020_nebulous_adam_warlock",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1791367458959,
+      "tag": "0021_petite_jackpot",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1791387442298,
+      "tag": "0022_bizarre_proteus",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1791390511842,
+      "tag": "0023_perpetual_redwing",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1791435329523,
+      "tag": "0024_melodic_pestilence",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1791443298289,
+      "tag": "0025_concerned_luminals",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1791445243018,
+      "tag": "0026_oval_scarecrow",
+      "breakpoints": true
     }
   ]
 }

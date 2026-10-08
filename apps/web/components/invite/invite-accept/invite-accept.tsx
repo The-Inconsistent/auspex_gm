@@ -46,9 +46,7 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
     <RulesProvider rules={[]}>
       <main className="center pad">
         <div className="panel pad stack" style={{ maxWidth: 480, width: "100%" }}>
-          <div className="display" style={{ fontSize: 30 }}>
-            JOIN {p.campaignName.toUpperCase()}
-          </div>
+          <div className="display page-title">JOIN {p.campaignName.toUpperCase()}</div>
           {p.member && (
             <a className="btn primary" href={`/c/${p.campaignId}`}>
               YOU&apos;RE SEATED · OPEN TABLE

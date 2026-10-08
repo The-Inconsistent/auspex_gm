@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput } from "./codex.ts";
+import { CodexInput, ImageMime } from "./codex.ts";
 import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
 import { CharacterDetail, CharacterStats, Objectives, Overrides, TableLines, Tier } from "./state.ts";
 
@@ -75,6 +75,7 @@ export const CampaignExport = z.object({
           startedAt: z.string().max(40),
           endedAt: z.string().max(40).nullable(),
           recap: z.string().max(10000),
+          notes: z.string().max(10000).default(""), // files from before issue #195 have none
           xp: count,
         }),
       )
@@ -83,8 +84,24 @@ export const CampaignExport = z.object({
     // Defaulted, so a file written before they existed still imports.
     customThreats: z.array(CustomThreat).max(CUSTOM_THREAT_CAP).default([]),
   }),
+  // The codex pictures (issue #199), so a file is a whole backup: NPCs, places and handouts name them by `imageId`, which
+  // the importer remaps with the rest. A picture is a nice-to-have, so a bad one never refuses the file: it parses as
+  // null, and the importer leaves it out and counts it. No length cap here: the body limit bounds the list, and the
+  // store's caps (200, 100 MB) drop and count the rest, where a capped list would lose every picture without a word.
+  // Files from before pictures, or with no list at all, have none.
+  images: z
+    .array(
+      z
+        .object({ id, mime: ImageMime, base64: z.base64().max(1_400_000) }) // a 1 MB picture is about 1.34 MB of base64
+        .nullable()
+        .catch(null),
+    )
+    .catch([]),
 });
 export type CampaignExport = z.infer<typeof CampaignExport>;
+
+// The biggest file IMPORT GAME takes: the api's parser, Next's proxy buffer and Cloudflare's free plan all stop here.
+export const IMPORT_MAX_BYTES = 100 * 1024 * 1024;
 
 // The same campaign for a new group: no sessions, empty pools, nothing revealed, every Agent rested, and no kind of game
 // or limits, which the new table agrees for itself (Core p.316, rules-flow §11.79). Sheets, builds and XP stay, since a
@@ -109,6 +126,7 @@ export function freshStart(e: CampaignExport): CampaignExport {
       adventures: c.adventures.map((a) => ({
         ...a,
         status: "planned",
+        shown: false,
         beats: a.beats.map((b) => ({
           ...b,
           status: "planned",
@@ -116,9 +134,9 @@ export function freshStart(e: CampaignExport): CampaignExport {
           hazards: b.hazards.map((h) => ({ ...h, spotted: false })),
         })),
       })),
-      locations: c.locations.map((l) => ({ ...l, revealed: false })),
-      npcs: c.npcs.map((n) => ({ ...n, revealed: false })),
-      handouts: c.handouts.map((h) => ({ ...h, revealed: false, revealedAt: null })),
+      locations: c.locations.map((l) => ({ ...l, revealed: false, imageRevealed: false })),
+      npcs: c.npcs.map((n) => ({ ...n, revealed: false, imageRevealed: false })),
+      handouts: c.handouts.map((h) => ({ ...h, revealed: false, imageRevealed: false, revealedAt: null })),
       sessions: [],
     },
   };

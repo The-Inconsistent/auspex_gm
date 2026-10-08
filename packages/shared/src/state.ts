@@ -1,5 +1,8 @@
 import { z } from "zod";
+import { CHAOS_SPAWN_AT, corruptionLevel } from "./corruption.ts";
+import { MAX_ICONS } from "./dn.ts";
 import { RequisitionSlot } from "./requisition.ts";
+import { SpendRequest } from "./spend.ts";
 import { Threat, ThreatClass, Weapon } from "./threat.ts";
 import { WargearFilter, WeaponMod } from "./weapon-effect.ts";
 
@@ -7,7 +10,8 @@ import { WargearFilter, WeaponMod } from "./weapon-effect.ts";
 
 export const TIERS = [1, 2, 3, 4, 5] as const; // the campaign Tiers that Tier accepts
 export const Tier = z.number().int().min(1).max(5);
-export const Role = z.enum(["gm", "player"]);
+// "screen" is only ever a guest token (the table TV, read-only), never a membership.
+export const Role = z.enum(["gm", "player", "screen"]);
 export type Role = z.infer<typeof Role>;
 
 // Who the caller is at one table (GET /api/campaigns/:id/me). userId is the Clerk user; null for a guest (QR token).
@@ -16,6 +20,7 @@ export const Me = z.object({
   role: Role,
   characterId: z.string().nullable(),
   userId: z.string().nullable(),
+  admin: z.boolean(), // a Clerk admin acting as GM without a seat (docs/architecture.md, "Access")
 });
 export type Me = z.infer<typeof Me>;
 
@@ -122,6 +127,32 @@ export const Mods = z
   })
   .partial();
 
+const SheetWeapon = Weapon.extend({ addStrength: z.boolean().default(false) });
+
+// What a mutation always changes on the sheet, as printed ("–1 Toughness", "reduces your Max Shock by 1"; Core
+// pp.288–295). Situational bonus dice and DN penalties stay in the mutation's text for the table.
+export const MutationMods = z.object({
+  attributes: z.partialRecord(z.enum(ATTRIBUTES), z.number().int().min(-5).max(5)).default({}),
+  skills: z
+    .partialRecord(z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]), z.number().int().min(-5).max(5))
+    .default({}),
+  traits: Mods.default({}),
+});
+export type MutationMods = z.infer<typeof MutationMods>;
+
+// A mutation on the sheet (character.mutate): snapshotted from the book data like a Threat joining a fight, so a later
+// data fix doesn't change an Agent. A d6 table's row (Extra Appendage: Strong Arm) is folded into its line.
+export const SheetMutation = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/), // the book row's, so a duplicate is refused (p.287)
+  name: z.string().min(1).max(200),
+  page: z.number().int().positive(),
+  effect: z.string().max(6000).default(""),
+  mods: MutationMods,
+  weapons: z.array(SheetWeapon).max(4).default([]), // Horn, Spike or Claw; Corrosive Bile
+});
+export type SheetMutation = z.infer<typeof SheetMutation>;
+export const MAX_MUTATIONS = 20;
+
 // The Ammo table, Core p.229. Special rounds (Kraken Bolt, Dragonfire Bolt…) are typed in by name.
 export const AMMO_TYPES = ["Projectile", "Las", "Flame", "Bolt", "Plasma", "Melta", "Shuriken"] as const;
 export const MAX_AMMO_TYPES = 12;
@@ -169,10 +200,7 @@ export const CharacterStats = z.object({
   mods: Mods.default({}),
   abilities: z.array(rule).max(30).default([]), // archetype, species, chapter traits
   talents: z.array(rule).max(30).default([]),
-  weapons: z
-    .array(Weapon.extend({ addStrength: z.boolean().default(false) }))
-    .max(20)
-    .default([]), // melee "S+X"
+  weapons: z.array(SheetWeapon).max(20).default([]), // melee "S+X"
   gear: z.array(z.string().max(200)).max(60).default([]),
   // The standing weapon effects the build gives (rules-flow.md §11.68), applied when the sheet is read
   // (`withWeaponEffects`), because their Rank amounts follow the XP earned. Absent on a hand-made sheet.
@@ -180,6 +208,10 @@ export const CharacterStats = z.object({
   // Live counters, changed by `character.supply`. Wealth starts at Tier (p.206). Ammo counts per type, because each
   // type only reloads its own weapons (p.229), e.g. { "Bolt": 2, "Kraken Bolt": 1 }.
   wealth: z.number().int().min(0).default(0),
+  // Corruption points (Core p.286), changed by `character.corrupt`; the level and its Test modifier are `corruptionLevel`.
+  corruption: z.number().int().min(0).default(0),
+  // Mutations held (Core pp.287–295), GM only like Corruption; their mods reach the sheet through `withMutations`.
+  mutations: z.array(SheetMutation).max(MAX_MUTATIONS).default([]),
   ammo: z
     .record(z.string().min(1).max(60), z.number().int().min(0).max(99))
     .refine((a) => Object.keys(a).length <= MAX_AMMO_TYPES, `At most ${MAX_AMMO_TYPES} ammo types`)
@@ -200,8 +232,25 @@ export function adjustAmmo(ammo: Record<string, number>, { kind, delta }: { kind
   return { ...ammo, [kind]: Math.max(0, have + delta) };
 }
 
-export const skillTotal = (s: CharacterStats, skill: Skill) => (s.skills[skill] ?? 0) + s.attributes[SKILLS[skill]];
-export const effectiveStrength = (s: CharacterStats) => s.attributes.S + s.armour.powered; // Powered (X), p.232
+// The sheet with its mutations' mods added (Core pp.288–295). Added when read, never stored, so cutting off a mutated
+// part (p.287) or a rebuild has nothing to undo.
+export function withMutations(s: CharacterStats): CharacterStats {
+  if (!s.mutations.length) return s;
+  const attributes = { ...s.attributes };
+  const skills = { ...s.skills };
+  const mods = { ...s.mods };
+  for (const { mods: m } of s.mutations) {
+    for (const [k, v] of Object.entries(m.attributes) as [Attribute, number][]) attributes[k] += v;
+    for (const [k, v] of Object.entries(m.skills) as [Skill, number][]) skills[k] = (skills[k] ?? 0) + v;
+    for (const [k, v] of Object.entries(m.traits) as [keyof z.infer<typeof Mods>, number][])
+      mods[k] = (mods[k] ?? 0) + v;
+  }
+  return { ...s, attributes, skills, mods };
+}
+
+const rawSkillTotal = (s: CharacterStats, skill: Skill) => (s.skills[skill] ?? 0) + s.attributes[SKILLS[skill]];
+export const skillTotal = (s: CharacterStats, skill: Skill) => rawSkillTotal(withMutations(s), skill);
+export const effectiveStrength = (s: CharacterStats) => withMutations(s).attributes.S + s.armour.powered; // Powered (X), p.232
 
 // Traits, pp.36-37 and the sheet (p.372). All Traits have a minimum of 1 (p.36).
 export function deriveStats({
@@ -213,6 +262,7 @@ export function deriveStats({
   overrides: Overrides;
   tier: number;
 }) {
+  s = withMutations(s);
   const a = s.attributes,
     m = s.mods;
   const base = {
@@ -231,7 +281,7 @@ export function deriveStats({
   ) as typeof base;
   return {
     ...out,
-    passiveAwareness: Math.max(1, Math.ceil(skillTotal(s, "Awareness") / 2) + (m.passiveAwareness ?? 0)),
+    passiveAwareness: Math.max(1, Math.ceil(rawSkillTotal(s, "Awareness") / 2) + (m.passiveAwareness ?? 0)),
     maxTraumatic: tier + 1 + (m.maxTraumatic ?? 0),
   };
 }
@@ -350,6 +400,44 @@ export const CampaignSetup = z.object({
   limits: TableLines,
 });
 
+// The kinds of Test a scene plans or the GM calls (codex.ts TestKind, issue #39). Here so a live call can name one
+// without state.ts importing codex.ts, which imports it.
+export const TEST_KINDS = ["skill", "attribute", "opposed", "influence", "resolve", "corruption"] as const;
+
+// A Test the GM calls at the table (issue #191): what it rolls and its DN, nothing of the GM's plan for it. The
+// action checks it as a BeatTest; this is what is kept.
+export const CalledTest = z.object({
+  kind: z.enum(TEST_KINDS),
+  skill: z.enum(Object.keys(SKILLS) as [Skill, ...Skill[]]).nullable(),
+  attribute: z.enum(ATTRIBUTES).nullable(),
+  dn: z.number().int().min(1).max(20).nullable(),
+});
+export type CalledTest = z.infer<typeof CalledTest>;
+
+// One Agent's result, as their phone (or the GM) reported it. The dice stay on the table (rules-flow.md §7); a failed
+// Corruption Test also brings its roll, for the gain the GM may then apply (Core p.286).
+export const TestReport = z.object({
+  passed: z.boolean(),
+  icons: z.number().int().min(0).max(MAX_ICONS).optional(),
+  complication: z.boolean().optional(),
+  wrathCritical: z.boolean().optional(),
+  spentWrath: z.boolean().optional(),
+});
+export type TestReport = z.infer<typeof TestReport>;
+
+// The open call, one per campaign (rules-flow.md §11.143): who is asked, and what each reported. `fear` marks a Resolve
+// Test against Fear (Core p.199), whose failure earns the GM 1 Ruin (p.320); `hideDn` keeps the DN off the phones.
+export const TestCall = z.object({
+  id: z.string(),
+  test: CalledTest,
+  fear: z.boolean(),
+  hideDn: z.boolean(),
+  who: z.array(z.string()).min(1),
+  reports: z.record(z.string(), TestReport),
+  createdAt: z.string(), // ISO
+});
+export type TestCall = z.infer<typeof TestCall>;
+
 export const LiveState = z.object({
   campaign: z.object({
     id: z.string(),
@@ -363,6 +451,7 @@ export const LiveState = z.object({
     kind: z.array(z.string()),
     limits: z.array(z.string()),
     homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
+    archived: z.boolean(), // read-only: every action but unarchive and delete is refused (campaign.archive)
   }),
   characters: z.array(Character),
   encounter: z
@@ -377,6 +466,12 @@ export const LiveState = z.object({
       upNext: Side.nullable().optional(),
     })
     .nullable(),
+  // Spends the players have asked for and the GM hasn't answered, oldest first (rules-flow.md §11.123). Every phone
+  // sees them all: Glory is the party's pool and p.165 has the group agree on it.
+  spendRequests: z.array(SpendRequest),
+  // The Test the GM called and the results so far (issue #191). A phone gets it only if its Agent is asked, with only
+  // its own result.
+  testCall: TestCall.nullable(),
   // guests: characters a live guest QR token points at (no account, so not in members).
   access: z.object({ members: z.array(Member), invites: z.array(Invite), guests: z.array(z.string()) }),
 });
@@ -400,7 +495,7 @@ export function isOut(s: LiveState, c: Combatant): boolean {
   if (c.kind === "threat") return threatStatus(c).includes("Slain");
   const ch = s.characters.find((x) => x.id === c.characterId);
   return ch
-    ? pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })).includes("Dead")
+    ? isGone(pcStatus(ch, deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: s.campaign.tier })))
     : false;
 }
 
@@ -433,12 +528,17 @@ export function canSeize(s: LiveState, side: Side): boolean {
 // Automatic states from damage (pp.193-196, p.324).
 export function pcStatus(c: Character, d: DerivedStats): string[] {
   const out: string[] = [];
+  // Chaos Spawn: the character is lost and the GM takes it over (Core p.286). It needn't be Dead to be gone.
+  if (corruptionLevel(c.stats.corruption).chaosSpawn) out.push("Lost");
   if (c.annihilated || c.traumatic > d.maxTraumatic) out.push("Dead");
   else if (c.wounds > d.maxWounds) out.push("Dying");
   else if (c.wounds > 0) out.push("Wounded");
   if (c.shock > d.maxShock) out.push("Exhausted");
   return out;
 }
+
+// Out of the game for good: Dead, or Lost to Chaos (p.286).
+export const isGone = (status: string[]) => status.includes("Dead") || status.includes("Lost");
 
 // The campaign's Tier can't go past the last one (Core p.20).
 export const MAX_TIER = TIERS[TIERS.length - 1]!;
@@ -451,7 +551,7 @@ export const ASCENSION_XP = 100;
 // and PARTY offers from the same answer.
 export function ascensionGroup(characters: Character[], tier: number, award = 0) {
   const group = characters.filter(
-    (c) => !pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier })).includes("Dead"),
+    (c) => !isGone(pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier }))),
   );
   return { group, short: group.filter((c) => c.xp + award - c.xpAtAscension < ASCENSION_XP) };
 }
@@ -523,13 +623,48 @@ export function threatStatus(c: ThreatCombatant): string[] {
 export const UNSEEN_ID = "unseen";
 const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
 
+// Another Agent's mutation as a phone gets it: what it does to the numbers, so its bars match the GM's, but not which
+// mutation it is.
+const unseen = (m: SheetMutation, i: number): SheetMutation => ({
+  id: `unseen-${i}`,
+  name: "Unseen",
+  page: 1,
+  effect: "",
+  mods: m.mods,
+  weapons: [],
+});
+
+// One key of a record, or none.
+const pick = <T>(r: Record<string, T>, key: string): Record<string, T> => (key in r ? { [key]: r[key]! } : {});
+
+const lostAt = (points: number) => (corruptionLevel(points).chaosSpawn ? CHAOS_SPAWN_AT : 0);
+
 // What one player's phone gets (null: a player without a character). Players see who's at the table but not the GM's
-// invite links (each one is a way in), nor another Agent's objectives, nor the GM's Ruin (docs/rules-flow.md §11.58).
+// invite links (each one is a way in), nor another Agent's objectives, Corruption or mutations, nor the GM's Ruin (docs/rules-flow.md
+// §11.58).
 export const toPlayerView = (s: LiveState, characterId: string | null): LiveState => ({
   ...s,
   campaign: { ...s.campaign, ruin: 0 },
-  characters: s.characters.map((c) => (c.id === characterId ? c : { ...c, objectives: [] })),
+  characters: s.characters.map((c) =>
+    c.id === characterId
+      ? c
+      : {
+          ...c,
+          objectives: [],
+          // The points stay the GM's; being Lost (p.286) is plain to the table, so it still shows.
+          stats: { ...c.stats, corruption: lostAt(c.stats.corruption), mutations: c.stats.mutations.map(unseen) },
+        },
+  ),
   access: { members: s.access.members, invites: [], guests: [] },
+  testCall:
+    s.testCall && characterId && s.testCall.who.includes(characterId)
+      ? {
+          ...s.testCall,
+          // HIDE DN keeps it off the wire, not only off the screen (§11.147).
+          test: s.testCall.hideDn ? { ...s.testCall.test, dn: null } : s.testCall.test,
+          reports: pick(s.testCall.reports, characterId),
+        }
+      : null,
   encounter: s.encounter && {
     ...s.encounter,
     upNext: sideUpNext(s),

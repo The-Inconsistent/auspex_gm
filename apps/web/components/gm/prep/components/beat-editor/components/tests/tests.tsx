@@ -10,11 +10,14 @@ import {
   MAX_TESTS,
   SKILLS,
   SOCIAL_SKILLS,
+  TEST_KIND_LABELS,
   TEST_POOL,
   TestKind,
   TestWho,
+  dnLabel,
   retypeTest,
   sourceCite,
+  testTitle,
   type BeatTest,
   type Skill,
   type SkillDn,
@@ -23,8 +26,6 @@ import {
 import { NumberInput } from "@/components/ui/number-input/number-input";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 
-import { TEST_KIND_LABELS } from "../../../../constants";
-import { dnLabel, testTitle } from "../../../../utils";
 import { ATTITUDE_SHIFT, FAIL_FORWARD, GLORY_SHIFT, NEW_TEST, SHIFT_USES, skillPenalty } from "./constants";
 
 type TestsProps = { tests: BeatTest[]; skillDns: SkillDn[]; onChange: (tests: BeatTest[]) => void };
