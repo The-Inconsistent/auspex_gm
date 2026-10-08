@@ -598,10 +598,17 @@ const EXPECTED_HULK = { origin: 5, occupants: 10, objectives: 5, rooms: 21 } as 
               .filter((n) => n <= 106 && lookup(table, n).length !== 1)
               .map((n) => `${n} lands on ${lookup(table, n).length} rows`),
           ];
-    for (const row of table.rows)
-      for (const a of row.apply)
+    for (const row of table.rows) {
+      const g = "glory" in row ? (row as CritRow).glory : undefined;
+      const applies = [
+        ...row.apply,
+        ...(g ? [...g.each, ...(g.first ?? []), ...(g.choose ?? []).flatMap((o) => o.apply)] : []),
+      ];
+      for (const a of applies)
         if (a.kind === "condition" && !conditions.has(a.condition.replace(/ \(\d+\)$/, "")))
           problems.push(`${row.name}: unknown Condition "${a.condition}"`);
+      if (g?.choose?.some((o) => !o.label.trim())) problems.push(`${row.name}: a Glory choice has no label`);
+    }
     for (const message of problems) {
       failed = true;
       console.error(`✖ ${file}: ${message}`);

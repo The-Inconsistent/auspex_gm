@@ -626,6 +626,7 @@ export function Tracker({ state, send, bestiary, lookups = null }: TrackerProps)
         <CritPerils
           lookups={lookups}
           run={run}
+          glory={state.campaign.glory}
           target={
             sel && {
               kind: sel.kind === "pc" ? "pc" : "threat",

@@ -8,15 +8,35 @@ import { Source } from "./source.ts";
 // mechanical part is applied, through the existing damage and Condition actions. GM-only book data, served inside
 // /scene-presets (docs/data.md, Copyright).
 
-// What a row does to the target, besides narration. `amount` is printed; `dice` ("1d3") is rolled at the table and the
-// GM types the result. Conditions are named as in CONDITIONS (state.ts). A Condition the target already holds isn't added again;
-// ponytail: no stacking ("Hindered (2)"), add it if a transcribed row needs it.
+// What a row does to the target, besides narration. `amount` is printed; `dice` ("1d3", "1d3+1") is rolled at the table and
+// the GM types the result. Conditions are named as in CONDITIONS (state.ts). A Condition the target already holds isn't
+// added again; ponytail: no stacking ("Hindered (2)"), add it if a transcribed row needs it.
+// `mortal` is Mortal Wounds (Core p.193) and `corruption` is Corruption (an Agent only; Threats have none).
+const Dice = z
+  .string()
+  .trim()
+  .max(20)
+  .regex(/^\d+d\d+(\+\d+)?$/, "dice such as 1d3 or 1d3+1");
+const Amount = z.number().int().positive().max(100);
 export const LookupApply = z.union([
-  z.object({ kind: z.enum(["wounds", "shock"]), amount: z.number().int().positive().max(100) }),
-  z.object({ kind: z.enum(["wounds", "shock"]), dice: z.string().trim().min(1).max(20) }),
+  z.object({ kind: z.enum(["wounds", "shock", "mortal", "corruption"]), amount: Amount }),
+  z.object({ kind: z.enum(["wounds", "shock", "mortal", "corruption"]), dice: Dice }),
   z.object({ kind: z.literal("condition"), condition: z.string().trim().min(1).max(60) }),
 ]);
 export type LookupApply = z.infer<typeof LookupApply>;
+
+// Glorious Criticals (Core p.197: spend Glory to improve a Critical Hit, and sometimes there is more than one effect to
+// choose from). `each` applies once per Glory spent, `first` once if at least 1 is spent, and `choose` is a pick of one
+// option per Glory spent, applied in addition to `each`.
+export const CritGlory = z.object({
+  each: z.array(LookupApply).max(6).default([]),
+  first: z.array(LookupApply).max(6).optional(),
+  choose: z
+    .array(z.object({ label: z.string().trim().min(1).max(60), apply: z.array(LookupApply).max(6) }))
+    .max(6)
+    .optional(),
+});
+export type CritGlory = z.infer<typeof CritGlory>;
 
 const row = {
   name: z.string().min(1).max(100),
@@ -25,12 +45,13 @@ const row = {
 };
 
 // Critical Hit (Core p.198, d66). A Critical Hit is a hit with a Wrath Die of 6 (§5). `glorious` is the Glorious
-// Criticals column (Core pp.197–198): its text, with the Glory price as printed. The app shows it and spends nothing.
+// Criticals column (Core pp.197–198) as printed; `glory` is its structured reading, which applyActions spends and applies.
 export const CritRow = z.object({
   from: z.number().int().min(11).max(66),
   to: z.number().int().min(11).max(66),
   ...row,
   glorious: z.string().min(1).max(2000).optional(),
+  glory: CritGlory.optional(),
 });
 export type CritRow = z.infer<typeof CritRow>;
 
@@ -88,36 +109,75 @@ export type LookupTarget =
   | { kind: "pc"; id: string; conditions: string[] } // the character's id
   | { kind: "threat"; id: string; conditions: string[] }; // the combatant's id
 
+// A Perils total above the table's highest printed `to` reads the top row (house decision §11.155: Core p.263 prints
+// rows up to 105–106 and doesn't say what a higher total does). `result` stays the real total. An open-ended table
+// has no top, so nothing is capped.
+export function perilsRow(
+  table: PerilsTable,
+  d66: number,
+  extraOnes: number,
+): { result: number; row: PerilsRow | null } {
+  const result = perilsResult(d66, extraOnes);
+  const top = table.rows.reduce<PerilsRow | null>(
+    (best, r) => (r.to !== null && (!best || (best.to ?? 0) < r.to) ? r : best),
+    null,
+  );
+  const capped = top !== null && top.to !== null && result > top.to && table.rows.every((r) => r.to !== null);
+  return { result, row: capped ? top : (lookup(table, result)[0] ?? null) };
+}
+
 // The dice amounts a row needs typed in, one per `dice` item in order; the GM rolls them at the table.
 export const diceNeeded = (row: { apply: LookupApply[] }): string[] =>
   row.apply.flatMap((a) => ("dice" in a ? [a.dice] : []));
 
-// The actions that apply a row's mechanical part to the target: Wounds and Shock as positive deltas (the damage rules
-// run server-side), Conditions added to the ones held. `typed` lists the dice results in order; a missing or
-// non-positive one skips that item. Nothing is returned for a row with nothing to apply.
+// The actions that apply a row's mechanical part to the target, in this order, so the first refusal stops the rest:
+// the Glory spend (not having it refuses everything), Conditions, Wounds and Shock, then Corruption. Wounds and Shock
+// are positive deltas (the damage rules run server-side). Mortal Wounds are plain Wounds: they ignore Resilience (Core
+// p.193) and the app's Wounds are counted after it. Corruption goes through character.corrupt for an Agent (so the
+// Mutation prompts run) and is skipped for a Threat. Glory (p.197): `spent` points, `picks` one option index per Glory
+// when the row has `choose`. `typed` lists the row's dice results in order; a missing or non-positive one skips that
+// item, and a Glory effect never rolls dice. Nothing is returned for a row with nothing to apply.
 export function applyActions({
   row,
   target,
   typed = [],
+  glory,
 }: {
-  row: { apply: LookupApply[] };
+  row: { apply: LookupApply[]; glory?: CritGlory };
   target: LookupTarget;
   typed?: number[];
+  glory?: { spent: number; picks?: number[] };
 }): ActionInput[] {
   let t = 0;
   const hit: { wounds?: number; shock?: number } = {};
+  let corruption = 0;
   const conditions = [...target.conditions];
-  for (const a of row.apply) {
+  const take = (a: LookupApply, n: number | undefined) => {
     if (a.kind === "condition") {
       if (!conditions.includes(a.condition)) conditions.push(a.condition);
-      continue;
+    } else if (n && n > 0) {
+      if (a.kind === "corruption") corruption += n;
+      else {
+        const k = a.kind === "mortal" ? "wounds" : a.kind;
+        hit[k] = (hit[k] ?? 0) + n;
+      }
     }
-    const n = "amount" in a ? a.amount : typed[t++];
-    if (n && n > 0) hit[a.kind] = (hit[a.kind] ?? 0) + n;
+  };
+  for (const a of row.apply) take(a, "amount" in a ? a.amount : "dice" in a ? typed[t++] : undefined);
+  const spent = row.glory ? Math.max(0, Math.trunc(glory?.spent ?? 0)) : 0;
+  if (row.glory && spent > 0) {
+    const g = row.glory;
+    const amountOf = (a: LookupApply) => ("amount" in a ? a.amount : undefined);
+    for (const a of g.first ?? []) take(a, amountOf(a));
+    for (let i = 0; i < spent; i++) {
+      for (const a of g.each) take(a, amountOf(a));
+      for (const a of g.choose?.[glory?.picks?.[i] ?? -1]?.apply ?? []) take(a, amountOf(a));
+    }
   }
-  // Conditions go first: a hit can add one on its own (an automatic Prone), and a later update from the list read
-  // before the hit would drop it.
+  // Conditions go before damage: a hit can add one on its own (an automatic Prone), and a later update from the list
+  // read before the hit would drop it.
   const out: ActionInput[] = [];
+  if (spent > 0) out.push({ type: "pool.adjust", pool: "glory", delta: -spent });
   if (conditions.length > target.conditions.length)
     out.push(
       target.kind === "pc"
@@ -130,5 +190,6 @@ export function applyActions({
         ? { type: "character.adjust", id: target.id, ...hit }
         : { type: "combatant.adjust", id: target.id, ...hit },
     );
+  if (corruption > 0 && target.kind === "pc") out.push({ type: "character.corrupt", id: target.id, delta: corruption });
   return out;
 }

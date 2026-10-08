@@ -206,6 +206,10 @@
         {
           "kind": "shock",
           "dice": "1d6"
+        },
+        {
+          "kind": "corruption",
+          "dice": "1d3+1"
         }
       ]
     },
@@ -235,7 +239,16 @@
       "to": 106,
       "name": "Psychic Overload",
       "text": "Streaming Warp energy bursts from your eyes and mouth, flashing in all directions and penetrating all living creatures surrounding you. You suffer 2d6 Mortal Wounds and gain 1d3 points of Corruption. All other creatures within 10 m suffer 1d3 Mortal Wounds and must make a successful DN 7 Toughness Test or are Blinded.",
-      "apply": []
+      "apply": [
+        {
+          "kind": "mortal",
+          "dice": "2d6"
+        },
+        {
+          "kind": "corruption",
+          "dice": "1d3"
+        }
+      ]
     }
   ]
 }

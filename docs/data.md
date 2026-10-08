@@ -849,9 +849,9 @@ GM-only book data for building scenes (GitHub issues #39, #40 and #49), served b
 The Critical Hit table (Core p.198, 14 rows) and Perils of the Warp (Core pp.263–264, 30 rows, 11 to 106), d66 tables
 the GM reads mid-fight (rules-flow.md §11.125). Each file is `{ source, page, dice: "d66", rows }`; a row has
 `from`/`to` (a `to` of `null` would be open-ended; neither printed table needs it), `name`, verbatim `text` (the flavour
-sentence and its "Effect:"), an optional `apply` list (`wounds`/`shock` with `amount` or `dice` such as `1d3+1`, or a
+sentence and its "Effect:"), an optional `apply` list (`wounds`/`shock`/`mortal`/`corruption` with `amount` or `dice` such as `1d3+1` (`^\d+d\d+(\+\d+)?$`); `mortal` is applied as Wounds, `corruption` only to an Agent; or a
 `condition` named as in `CONDITIONS`, `state.ts`, with its printed rating: `Vulnerable (2)`) and, for crits,
-`glorious` (everything after "Glory:", skull bullets as "•"). Perils names are printed in capitals and title-cased here.
+`glorious` (everything after "Glory:", skull bullets as "•") and its structured reading `glory` `{ each, first?, choose? }`: `each` applies once per Glory spent, `first` once if any is spent, `choose` is `{ label, apply }[]`, one pick per Glory in addition to `each` (the tracker spends the Glory from the pool first). Perils names are printed in capitals and title-cased here.
 Kept as printed: Unspeakable Carnage's "strewn are across", Murderous Onslaught's "+1 Wound" Glory line beside its Mortal
 Wounds, Perils 21–22's "Vulnerable [2]", 31–32's "chorus or low laughter", 63–64's missing "Tests", 103–104's "item ,".
 Served GM-only as `lookups` on `/scene-presets`; `validate` checks that crits cover the d66 and Perils covers every
