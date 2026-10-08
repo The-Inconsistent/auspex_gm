@@ -173,7 +173,8 @@ apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: 
 apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
 apps/web/components/invite/  invite-accept
 apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab with game-card, events-log; lib/admin has its calls)
-apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel; kebab-case folders, children under
+apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel), test-call (CALL A TEST
+                             and the tally, issue #191), spend-requests (kebab-case folders, children under
                              components/)
 apps/web/components/player/  player-app (sheet, fight, intel)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a

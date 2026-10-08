@@ -25,6 +25,7 @@ import { Prep } from "@/components/gm/prep/prep";
 import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
 import { Setup } from "@/components/gm/setup/setup";
 import { SpendRequests } from "@/components/gm/spend-requests/spend-requests";
+import { TestCall } from "@/components/gm/test-call/test-call";
 import { Tracker } from "@/components/gm/tracker/tracker";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
@@ -173,6 +174,7 @@ export function GmApp({
                   ))}
                 </nav>
                 <SpendRequests state={state} send={send} />
+                <TestCall state={state} send={send} />
                 <main className="gm-body">
                   {state.campaign.archived && (
                     <ArchivedBanner text="READ ONLY. UNARCHIVE IT IN SETUP TO PLAY ON.">
