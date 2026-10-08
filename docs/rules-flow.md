@@ -842,6 +842,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      cancel. Ruin is not asked for: it stays the GM's (§11.58).
 124. **Requests clear at session start and end** (p.162, p.164). `session.start` resets Wrath and Glory and `session.end`
      closes the session, so a request made against the old pools would be answered against new ones.
+125. **CRIT / PERILS looks up the printed row and applies only its mechanical part** (Core p.198 Critical Hit table,
+     pp.197–198 Glorious Criticals, §5, §8). The GM rolls the d66 at the table (and counts the extra Wrath Dice
+     showing 1 for Perils, +10 each) and types it; the app shows the row and, on APPLY, sends the Wounds, Shock and
+     Conditions through `character.adjust` / `combatant.adjust` and `character.update` / `combatant.update`, so the
+     damage rules still run. It never rolls, narration stays at the table, a dice amount ("1d3+1") is rolled by the
+     GM and typed in as the total, and a Glorious Criticals line ("+1 Wound for every Glory you spend", p.197) is
+     applied by the Glory stepper on a single-effect row (§11.156). APPLY carries only what a row puts on its one target with no Test; area
+     effects, effects behind a Test and durations stay with the GM. Perils prints rows up to 105–106 (pp.263–264); a
+     total above 106 reads the top row (§11.155). The tables are GM-only book data in `packages/data/lookups/`, served
+     inside `/scene-presets`. *Proposed; awaiting the GM.*
 126. **Advanced Creation keeps the species' own ratings** (Core pp.38–39). p.39 starts every Attribute at 1 and every
      Skill at 0, but p.38 charges the Species' XP "as in Know Your Faction" for its benefits, and an Adeptus Astartes'
      160 XP is its Attributes and Skills. The species' printed ratings stand, everything else starts at 1 and 0, and
@@ -938,6 +948,23 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (Core p.321), so `session.edit` changes only the recap and the notes. *Approved by the GM, 2026-10-08.*
 153. **A running session's recap is written at END SESSION** (issue #195). Its notes are edited as the game runs;
      `session.edit` refuses its recap, so END never overwrites one typed elsewhere. *Approved by the GM, 2026-10-08.*
+154. **Murderous Onslaught's Glory line is read as printed** (Core p.198): the effect is 1d3 + 1 Mortal Wounds, but each
+     Glory adds +1 Wound, not +1 Mortal Wound like its neighbours. Copied as printed; possible misprint, the GM may
+     rule otherwise. *Proposed; awaiting the GM.*
+155. **A Perils total above 106 reads the top row,** Psychic Overload (Core p.263 prints rows up to 105–106 and says
+     71–106 come only from extra 1s; it doesn't say what a higher total does). *Proposed; awaiting the GM.*
+156. **CRIT / PERILS applies a row's mechanical part, as ruled on GitHub issue #183** (Core pp.193, 197, 287, 323–324).
+     A Critical Hit that doesn't beat the target's Resilience inflicts 1 Wound and no other effects (p.197): the
+     panel's BEAT RESILIENCE toggle (default yes) sends exactly that. Mortal Wounds are applied as Wounds (they ignore
+     Resilience, p.193, and the app counts Wounds after it). The Glory stepper appears only on rows whose Glorious
+     Critical is a single effect; a row that offers a choice shows its printed text alone and the GM applies it. Glory is
+     spent from the pool last, after every other step has landed. Corruption goes to the psyker through
+     `character.corrupt` (Agents only), so the Mutation prompts run, and the Mutation roll a row prints (Perils 93–94,
+     "roll on the Minor Mutations table", p.288) opens the Minor table in the panel. What the server would refuse is
+     dropped before sending and said on the panel: a Monstrous Creature is immune to Fear, Pinned and Staggered
+     (p.323) and a Threat with no Shock never suffers it (p.324). Repeated Conditions stack (p.197): "Hindered (1)" on
+     "Hindered" is "Hindered (2)"; an unrated Condition isn't listed twice. A typed dice total must lie within its dice.
+     Area effects, effects behind a Test and durations stay with the GM. *Ruled on GitHub issue #183.*
 
 ---
 
@@ -980,3 +1007,4 @@ Implementation details: [game-logic.md](game-logic.md).
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
 | Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
+| Critical Hit and Perils lookup | done | `lookups.ts` (`perilsResult`, `perilsRow`, `lookup`, `applyActions`, `planApply`, `addCondition`, `diceRange`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125, §11.154–156). Left to the GM: area effects, durations |

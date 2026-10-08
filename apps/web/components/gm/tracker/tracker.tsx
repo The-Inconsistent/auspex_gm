@@ -16,6 +16,7 @@ import {
   exhaustedShock,
   isExhausted,
   isTimed,
+  type Lookups,
   pcHit,
   pcStatus,
   roundEndReminders,
@@ -26,6 +27,7 @@ import {
   type Character,
   type Combatant,
   type LiveState,
+  type MutationTable,
   type Threat,
   type Visibility,
 } from "@wg/shared";
@@ -43,10 +45,17 @@ import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterF
 import { combatantPortrait } from "@/lib/portraits/portraits";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
+import { CritPerils } from "./components/crit-perils/crit-perils";
 import { AMOUNTS, LOG_LIMIT } from "./constants";
 import type { LogEntry, Run } from "./types";
 
-type TrackerProps = { state: LiveState; send: Send; bestiary: Threat[] };
+type TrackerProps = {
+  state: LiveState;
+  send: Send;
+  bestiary: Threat[];
+  lookups?: Lookups | null;
+  mutations?: MutationTable[];
+};
 
 // What a tap will do, read against the state at tap time with the same rules the api runs, because some taps don't do
 // what their delta says: Shock while Exhausted is Mortal Wounds (p.199), a Wound on a Dying PC is a Traumatic Injury
@@ -142,7 +151,7 @@ const conditionsAction = (c: Combatant, conditions: string[]): ActionInput =>
     ? { type: "character.update", id: c.characterId, conditions }
     : { type: "combatant.update", id: c.id, conditions };
 
-export function Tracker({ state, send, bestiary }: TrackerProps) {
+export function Tracker({ state, send, bestiary, lookups = null, mutations = [] }: TrackerProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [amountFor, setAmountFor] = useState<CounterAction | null>(null);
   const [cmd, setCmd] = useState("");
@@ -621,6 +630,27 @@ export function Tracker({ state, send, bestiary }: TrackerProps) {
             ))}
           </div>
         )}
+        <CritPerils
+          lookups={lookups}
+          run={run}
+          send={send}
+          mutations={mutations}
+          character={selChar}
+          glory={state.campaign.glory}
+          target={
+            sel &&
+            (sel.kind === "pc"
+              ? { kind: "pc", id: sel.characterId, conditions: conditionsOf(sel), name: nameOf(sel) }
+              : {
+                  kind: "threat",
+                  id: sel.id,
+                  conditions: conditionsOf(sel),
+                  threatClass: sel.threatClass,
+                  maxShock: sel.maxShock,
+                  name: nameOf(sel),
+                })
+          }
+        />
         <div className="rule">VOX LOG</div>
         {log.length === 0 && <div className="dim">No transmissions.</div>}
         {log.map((l) => (

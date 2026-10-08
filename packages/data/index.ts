@@ -9,6 +9,7 @@ import {
   type LootRow,
   HazardTable,
   HULK_HAZARDS,
+  Lookups,
   LootTable,
   MutationTable,
   RelicCreator,
@@ -83,6 +84,14 @@ export const loot: ReadonlyMap<string, { table: LootTable; row: LootRow }> = new
 );
 export const relics: RelicCreator = RelicCreator.parse(json(new URL(RELICS_FILE, presetsDir)));
 export const spaceHulk: SpaceHulkGenerator = SpaceHulkGenerator.parse(json(new URL(SPACE_HULK_FILE, presetsDir)));
+// lookups/: the Critical Hit table (Core p.198) and Perils of the Warp, d66 tables the GM reads mid-fight. Served inside
+// scenePresets (GM-only); an empty `rows` is a table not transcribed yet.
+export const LOOKUP_FILES = { criticalHits: "critical-hits.json", perils: "perils.json" } as const;
+export const lookups = (): Lookups =>
+  Lookups.parse({
+    criticalHits: json(new URL(`./lookups/${LOOKUP_FILES.criticalHits}`, import.meta.url)),
+    perils: json(new URL(`./lookups/${LOOKUP_FILES.perils}`, import.meta.url)),
+  });
 // mutations/<source>.json: the Mutation tables (Core pp.287–295, issue #182), GM-only like the scene presets, and the
 // rows character.mutate looks up.
 const mutationsDir = new URL("./mutations/", import.meta.url);
@@ -97,6 +106,7 @@ export const scenePresets = (): ScenePresets => ({
   spaceHulk,
   loot: lootTables(),
   relics,
+  lookups: lookups(),
   mutations: mutationTables(),
 });
 
