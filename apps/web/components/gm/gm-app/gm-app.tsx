@@ -30,7 +30,7 @@ import { Tracker } from "@/components/gm/tracker/tracker";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { PictureProvider } from "@/components/ui/codex-picture/codex-picture";
-import { MentionsProvider } from "@/components/ui/mentions/mentions-provider";
+import { MentionsProvider, type MentionEntry } from "@/components/ui/mentions/mentions-provider";
 import { PrintProvider } from "@/components/ui/print-dialog/print-dialog";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
@@ -78,6 +78,8 @@ export function GmApp({
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>(initialTab);
   const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when SETUP sends it there
+  const [sceneId, setSceneId] = useState<string>(); // the scene PREP opens on, after a peek's GO TO
+  const [visit, setVisit] = useState(0); // bumped by GO TO, so the target tab remounts on the entry
   const [poolError, setPoolError] = useState<string | null>(null);
   const [deleted, setDeleted] = useState(false); // DELETE GAME went through: the server drops the room next
   // The books' stat blocks plus the ones the GM wrote (issue #43), by name. Every picker, the NPC stat source and the
@@ -94,7 +96,24 @@ export function GmApp({
   // SETUP's GO TO: opens a tab, and CODEX on the step's kind.
   const openTab = ({ tab: t, kind }: TabTarget) => {
     setCodexKind(kind);
+    setSceneId(undefined);
     setTab(t);
+  };
+
+  // A peek's GO TO (issue #198): the entry's tab, remounted on it (CODEX on its kind with the search cleared and the
+  // places unfolded, PREP on the scene's adventure), then its row opened and scrolled to once it's drawn. Like a tab
+  // tap, it leaves whatever was open there (an editor, PRINT ticks): showing the row means closing the editor.
+  const goTo = ({ kind, id }: MentionEntry) => {
+    if (kind === "scene") {
+      openTab({ tab: "PREP" });
+      setSceneId(id);
+    } else openTab({ tab: "CODEX", kind });
+    setVisit((v) => v + 1);
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`entry-${id}`);
+      if (el instanceof HTMLDetailsElement) el.open = true;
+      el?.scrollIntoView({ behavior: "smooth", block: "start" }); // start: a long row's title stays on screen
+    });
   };
 
   // DELETE GAME's ack: the server kicks the whole room a moment later, our socket included. That disconnect is
@@ -134,7 +153,7 @@ export function GmApp({
       <RulesProvider rules={rules}>
         <PrintProvider source={{ state, codex, threats: allThreats, wargear }}>
           <PictureProvider campaignId={campaignId}>
-            <MentionsProvider codex={codex} missing="(removed)">
+            <MentionsProvider codex={codex} missing="(removed)" onGoTo={goTo}>
               <div className="gm">
                 <header className="gm-head band torn">
                   {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
@@ -196,6 +215,8 @@ export function GmApp({
                   )}
                   {tab === "PREP" && (
                     <Prep
+                      key={visit}
+                      initialSceneId={sceneId}
                       state={state}
                       codex={codex}
                       send={send}
@@ -207,6 +228,7 @@ export function GmApp({
                   )}
                   {tab === "CODEX" && (
                     <CodexView
+                      key={visit}
                       codex={codex}
                       characters={state.characters}
                       send={send}

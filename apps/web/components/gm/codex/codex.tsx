@@ -164,7 +164,7 @@ export function CodexView({
     const holder = item && holderOf(item, { codex, characters });
     const open = !folded.has(r.id);
     return (
-      <details key={r.id} className="item">
+      <details key={r.id} id={`entry-${r.id}`} className="item">
         <summary className="item-head">
           <b style={{ flex: 1 }}>{titleOf(r).toUpperCase()}</b>
           {node && node.inside > 0 && (
