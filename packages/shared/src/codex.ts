@@ -332,7 +332,15 @@ export type Codex = {
   npcs: Row<"npc">[];
   handouts: (Row<"handout"> & { revealedAt: string | null })[];
   items: (Row<"item"> & { givenTo: string | null })[];
-  sessions: { id: string; number: number; startedAt: string; endedAt: string | null; recap: string; xp: number }[];
+  sessions: {
+    id: string;
+    number: number;
+    startedAt: string;
+    endedAt: string | null;
+    recap: string;
+    notes: string; // the GM's own (issue #195): toPlayerCodex blanks it
+    xp: number;
+  }[];
   // Stat blocks the GM wrote or cloned for this table (issue #43). Book text, so GM sockets only: `toPlayerCodex`
   // sends none, and the GM's app merges them into the bestiary every picker already reads.
   customThreats: Threat[];
@@ -368,7 +376,7 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
       .map((h) => ({ ...pictured(h), audience: h.audience.length && characterId ? [characterId] : [] })),
     // An Agent sees a found item as a line on their sheet once it's given; a found object's text goes in a handout.
     items: [],
-    sessions: c.sessions,
+    sessions: c.sessions.map((s) => ({ ...s, notes: "" })), // every recap, for a player who missed one (§11.151)
     customThreats: [], // a custom threat is a stat block: players never receive one
   };
 }

@@ -907,6 +907,39 @@ test("private notes: a handout's audience and an Agent's objectives reach only t
   await eventually(() => gm.codex()?.handouts.find((h) => h.title === "For A")?.revealed === false, "hidden again");
 });
 
+test("the session journal: recaps fixed later, the GM's notes never on a phone (issue #195)", async (t) => {
+  const gm = await newCampaign("Session journal", 1);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 1);
+
+  const started = await gm.send({ type: "session.start" });
+  assert.ok(started.ok && started.id);
+  const sessionId = started.id;
+  const edit = (data: { recap?: string; notes?: string }, by: Pick<typeof gm, "send"> = gm) =>
+    by.send({ type: "session.edit", sessionId, ...data });
+  assert.ok((await edit({ notes: "Ork ambush at the ford" })).ok, "notes while the session runs");
+  assert.equal((await edit({ recap: "Too early" })).ok, false, "a running session's recap waits for END (§11.153)");
+  assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumpd." })).ok);
+  assert.ok((await edit({ recap: "Boyz krumped." })).ok, "a typo fixed after the session");
+  assert.equal((await edit({ notes: "mine" }, p)).ok, false, "GM only");
+  assert.equal(
+    (await gm.send({ type: "session.edit", sessionId: crypto.randomUUID(), notes: "x" })).ok,
+    false,
+    "another campaign's or no session",
+  );
+  await eventually(() => gm.codex()?.sessions[0]?.recap === "Boyz krumped.", "the GM's codex has the fix");
+  assert.equal(gm.codex()!.sessions[0]!.notes, "Ork ambush at the ford", "END kept the notes");
+  await eventually(() => p.codex()?.sessions[0]?.recap === "Boyz krumped.", "the phone has the fix");
+  assert.equal(p.codex()!.sessions[0]!.notes, "", "notes stay with the GM");
+  assert.equal(gm.codex()!.sessions[0]!.xp, 10, "XP isn't editable (§11.152)");
+});
+
 test("the mission log: a shown adventure reaches phones with its brief, never its premise or scenes (issue #196)", async (t) => {
   const gm = await newCampaign("Mission log", 1);
   t.after(() => gm.socket.close());

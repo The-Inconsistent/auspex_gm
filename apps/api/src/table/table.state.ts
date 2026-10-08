@@ -296,6 +296,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
       startedAt: s.startedAt.toISOString(),
       endedAt: s.endedAt?.toISOString() ?? null,
       recap: s.recap,
+      notes: s.notes,
       xp: s.xp,
     })),
   };

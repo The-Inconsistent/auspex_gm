@@ -120,6 +120,7 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
 |---|---|---|
 | `session.start` | every character Wrath = 2; Glory = 0; Ruin = players; closes any open `session` row and opens session n + 1 | p.162, p.164, p.320 |
 | `session.end` | stores `xp` (0–100) and `recap` on the open session; adds `xp` to **every** character's `xp`; fails if none is open. Pools are left alone (the next `session.start` resets them) | p.321 |
+| `session.edit` | changes the `recap` and/or `notes` of any session of this campaign; refuses a running session's recap. Never `xp`, already paid out | p.321, §11.152–153 |
 | `character.respite` | Wounds = 0, Shock = 0, Wrath = 2. Refused while Dead or Dying (`pcStatus` server-side, via `healthOf()`) | p.193, pp.196–197 |
 
 - "Unless continuing mid-action" (p.162) is the GM's call: just don't press START SESSION.
@@ -357,7 +358,7 @@ The gateway sends the GM room the raw snapshots and the players room `toPlayerVi
 | `Codex.locations` | revealed ones only | `gmNotes`, `hazards` blanked, `hazardList` emptied; `parentId` → null unless the parent is revealed, so the phone nests the rest with `placeTree` (§11.97) |
 | `Codex.npcs` | revealed ones only | `gmNotes`, `secrets` blanked; `statSource` → `none`; `factionId` → null; `attitude` kept (rules-flow §11.89) |
 | `Codex.handouts` | revealed ones only | — |
-| `Codex.sessions` | all, with recaps | — |
+| `Codex.sessions` | all, with recaps | `notes` blanked (the GM's own, §11.151) |
 
 - **Threat visibility** (rules-flow §11.56): the tracker's PLAYERS picker sends `combatant.update { visibility }`. New
   threats start at `bars` unless `combatant.addThreat` or the `EncounterEntry` says `hidden` (or `stats`). The `threatId` is withheld, but

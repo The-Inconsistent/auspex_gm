@@ -105,6 +105,14 @@ export const Action = z.union([
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
+    // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs. No XP: it was paid out
+    // at session.end (p.321, §11.152). A running session's recap is written at session.end (§11.153).
+    z.object({
+      type: z.literal("session.edit"),
+      sessionId: id,
+      recap: z.string().max(10000).optional(),
+      notes: z.string().max(10000).optional(),
+    }),
     // Ends the running session with no XP and no Rank notices (a session that was never played, or left open overnight).
     z.object({ type: z.literal("session.abandon") }),
     // Deletes the latest session once it has ended. The XP it awarded stays on the characters.

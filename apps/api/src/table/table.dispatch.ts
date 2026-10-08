@@ -32,7 +32,8 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "threat.save" ||
     a.type === "threat.delete" ||
     a.type === "codex.addLoot" ||
-    a.type === "codex.addRelic"
+    a.type === "codex.addRelic" ||
+    a.type === "session.edit" // a recap or the GM's notes: no pool or sheet moves
   )
     return { state: false, codex: true };
   // character.delete drops the Agent from handout audiences (character.actions) and leaves their items loose; giving and
@@ -129,6 +130,7 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "pool.adjust":
     case "session.start":
     case "session.end":
+    case "session.edit":
     case "session.abandon":
     case "session.delete":
     case "campaign.archive":

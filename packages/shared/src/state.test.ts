@@ -235,6 +235,36 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
   assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
 });
 
+test("toPlayerCodex: every session's recap, never the GM's notes (issue #195)", () => {
+  const s = (n: number, recap: string): Codex["sessions"][number] => ({
+    id: `s${n}`,
+    number: n,
+    startedAt: "2026-10-01T18:00:00Z",
+    endedAt: "2026-10-01T22:00:00Z",
+    recap,
+    notes: "The Prior is the traitor",
+    xp: 10,
+  });
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [],
+    items: [],
+    sessions: [s(1, "Landfall"), s(2, "The vault")],
+  };
+  const sent = toPlayerCodex(codex, null).sessions;
+  assert.deepEqual(
+    sent.map((x) => [x.recap, x.notes]),
+    [
+      ["Landfall", ""],
+      ["The vault", ""],
+    ],
+  );
+});
+
 test("toPlayerCodex: a shown mission without its premise or scenes, a hidden one not at all (issue #196)", () => {
   const a = (id: string, shown: boolean): Codex["adventures"][number] => ({
     id,

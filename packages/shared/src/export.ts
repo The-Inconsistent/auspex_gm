@@ -75,6 +75,7 @@ export const CampaignExport = z.object({
           startedAt: z.string().max(40),
           endedAt: z.string().max(40).nullable(),
           recap: z.string().max(10000),
+          notes: z.string().max(10000).default(""), // files from before issue #195 have none
           xp: count,
         }),
       )
