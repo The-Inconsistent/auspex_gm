@@ -2,6 +2,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 
 import {
+  activeCharacterIds,
   agentsInFight,
   CodexSave,
   threatProfile,
@@ -49,6 +50,7 @@ type PrepProps = {
 
 export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: PrepProps) {
   const [advId, setAdvId] = useState<string | null>(codex.adventures[0]?.id ?? null);
+  const seated = activeCharacterIds(state.access); // whose phones a called Test reaches (issue #191)
   // The scene editor (a scene, or "new"), or the book-table picker ("table").
   const [editing, setEditing] = useState<Beat | "new" | "table" | null>(null);
   const [title, setTitle] = useState("");
@@ -331,7 +333,13 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                   </div>
                 )}
                 {b.tests.length > 0 && (
-                  <SceneTests tests={b.tests} characters={state.characters} send={send} onReport={report} />
+                  <SceneTests
+                    tests={b.tests}
+                    characters={state.characters}
+                    agents={state.characters.filter((c) => seated.has(c.id))}
+                    send={send}
+                    onReport={report}
+                  />
                 )}
                 {b.ruin.length + b.glory.length + b.spends.length > 0 && (
                   <ScenePools beat={b} pools={state.campaign} players={players} send={send} onReport={report} />

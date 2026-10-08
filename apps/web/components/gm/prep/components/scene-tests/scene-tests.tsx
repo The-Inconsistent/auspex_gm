@@ -7,17 +7,19 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { TEST_RULES } from "../../constants";
 import { ruinOnFailure } from "../../utils";
+import { CallTest } from "./components/call-test/call-test";
 
 type SceneTestsProps = {
   tests: BeatTest[];
   characters: Character[];
+  agents: Character[]; // those holding a seat, for CALL
   send: Send;
   onReport: (r: ActionResult, ok: string) => void;
 };
 
 // A scene's Tests on its PREP card (issue #39): one line each, opening to its purpose, Shift ladder and outcomes. The
 // dice stay on the table; this is what the GM has ready.
-export function SceneTests({ tests, characters, send, onReport }: SceneTestsProps) {
+export function SceneTests({ tests, characters, agents, send, onReport }: SceneTestsProps) {
   return (
     <div className="field">
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
@@ -45,6 +47,7 @@ export function SceneTests({ tests, characters, send, onReport }: SceneTestsProp
               {ruin && <span className="chip warn">{ruin}</span>}
             </summary>
             <div className="stack" style={{ gap: 4, padding: "6px 0 6px 18px" }}>
+              <CallTest test={t} agents={agents} send={send} onReport={onReport} />
               {t.purpose && (
                 <div>
                   <span className="label">PURPOSE</span> <i>{t.purpose}</i>
