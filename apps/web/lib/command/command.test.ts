@@ -41,6 +41,7 @@ const s: LiveState = {
     archived: false,
   },
   spendRequests: [],
+  testCall: null,
   access: { members: [], invites: [], guests: [] },
   characters: [
     {

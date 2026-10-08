@@ -169,6 +169,13 @@
       "when": 1791390511842,
       "tag": "0023_perpetual_redwing",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1791435329523,
+      "tag": "0024_melodic_pestilence",
+      "breakpoints": true
     }
   ]
 }

@@ -1,12 +1,12 @@
 "use client";
-import { isCorruptionDn, type ActionResult, type BeatTest, type Character } from "@wg/shared";
+import { dnLabel, isCorruptionDn, testTitle, type ActionResult, type BeatTest, type Character } from "@wg/shared";
 
 import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { TEST_RULES } from "../../constants";
-import { dnLabel, ruinOnFailure, testTitle } from "../../utils";
+import { ruinOnFailure } from "../../utils";
 
 type SceneTestsProps = {
   tests: BeatTest[];

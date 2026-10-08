@@ -11,6 +11,7 @@ import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { applyEncounterAction } from "../encounter/encounter.actions.ts";
 import { applySpendAction } from "../spend/spend.actions.ts";
+import { applyTestCallAction } from "../test-call/test-call.actions.ts";
 import { applyThreatAction } from "../threat/threat.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
@@ -74,7 +75,8 @@ function authorize(ctx: Ctx, a: Action) {
     a.id !== ctx.characterId
   )
     fail("Not your character");
-  if (a.type === "spend.request" && a.characterId !== ctx.characterId) fail("Not your character");
+  if ((a.type === "spend.request" || a.type === "test.report") && a.characterId !== ctx.characterId)
+    fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.build" && a.keepSheet) fail("GM only");
   if (a.type === "character.update" && a.annihilated !== undefined) fail("GM only");
@@ -138,6 +140,11 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "spend.cancel":
     case "spend.resolve":
       return applySpendAction(tx, { ctx, action });
+
+    case "test.call":
+    case "test.report":
+    case "test.close":
+      return applyTestCallAction(tx, { ctx, action });
 
     case "character.create":
     case "character.update":

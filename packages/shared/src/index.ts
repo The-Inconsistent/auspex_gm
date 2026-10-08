@@ -3,6 +3,7 @@ export * from "./threat.ts";
 export * from "./threat-scale.ts";
 export * from "./state.ts";
 export * from "./spend.ts";
+export * from "./test-call.ts";
 export * from "./codex.ts";
 export * from "./dn.ts";
 export * from "./corruption.ts";
