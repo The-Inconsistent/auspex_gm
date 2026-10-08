@@ -775,6 +775,11 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 - **Vibration:** when it becomes the player's turn, `navigator.vibrate(TURN_VIBRATION)` buzzes once. This is a
   `useEffect` on `myTurn`, with a ref so it fires only on the change.
 - **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL) sit in a sticky bar at the bottom.
+- **A called Test** (`components/player/test-prompt/test-prompt.tsx`, issue #191), over every tab while the GM's call
+  names this Agent: the Test and its DN (unless hidden; a Corruption DN with this Agent's level modifier), YOUR POOL
+  from `testPool`, the Icon, Wrath Die and Wrath reroll reminders as `RuleIdLink`s (and Fear's or Corruption's cost),
+  then PASSED / FAILED (`test.report`; the pressed one is what the GM has, and a re-tap changes it). FAILED on a
+  Corruption Test first asks for ICONS ROLLED, COMPLICATION, WRATH CRITICAL and SPENT 1 WRATH.
 
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
