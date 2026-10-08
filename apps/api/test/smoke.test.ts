@@ -907,6 +907,40 @@ test("private notes: a handout's audience and an Agent's objectives reach only t
   await eventually(() => gm.codex()?.handouts.find((h) => h.title === "For A")?.revealed === false, "hidden again");
 });
 
+test("the mission log: a shown adventure reaches phones with its brief, never its premise or scenes (issue #196)", async (t) => {
+  const gm = await newCampaign("Mission log", 1);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 1);
+
+  const save = (id: string | undefined, data: Record<string, unknown>) =>
+    gm.send({
+      type: "codex.save",
+      kind: "adventure",
+      id,
+      data: { title: "Seals", premise: "The Prior sold them", ...data },
+    });
+  const made = await save(undefined, {});
+  assert.ok(made.ok && made.id);
+  assert.equal((await save(made.id, { shown: true })).ok, false, "SHOWN needs a brief (rules-flow §11.150)");
+  assert.equal((await p.send({ type: "codex.save", kind: "adventure", data: { title: "Mine" } })).ok, false, "GM only");
+  assert.ok((await save(made.id, { shown: true, brief: "Find who sold the seals", status: "failed" })).ok);
+  assert.ok((await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: made.id, title: "Vault" } })).ok);
+  await eventually(() => p.codex()?.adventures.length === 1, "the shown mission reaches the phone");
+  const [m] = p.codex()!.adventures;
+  assert.deepEqual(
+    [m!.title, m!.brief, m!.status, m!.premise, m!.beats],
+    ["Seals", "Find who sold the seals", "failed", "", []],
+  );
+  assert.ok((await save(made.id, { brief: "Find who sold the seals" })).ok);
+  await eventually(() => p.codex()?.adventures.length === 0, "hidden again");
+});
+
 test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the GM and that Agent only", async (t) => {
   const gm = await newCampaign("Corruption", 2, "10.18.2.1");
   t.after(() => gm.socket.close());

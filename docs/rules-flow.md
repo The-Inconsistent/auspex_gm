@@ -920,6 +920,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      *Approved by the GM, 2026-10-08.*
 147. **The DN shows on the phones unless the GM hides it** (issue #191). A Corruption Test's DN on each phone includes
      that Agent's Corruption Level modifier (p.286). *Approved by the GM, 2026-10-08.*
+148. **The mission log is the adventure's own status, plus FAILED** (GitHub issue #196). No book rule: the per-Agent
+     Objective (Core p.30, its Wrath at p.164) stays the private one. An adventure the GM marks SHOWN reaches the phones
+     with its title, brief and status (PLANNED, ACTIVE, DONE, FAILED); its premise and scenes never do. One status
+     serves PREP and the log. *Approved by the GM, 2026-10-08.*
+149. **A shown mission that is still planned reads OFFERED on the phones** (issue #196), so the GM can announce a job
+     before it starts. *Approved by the GM, 2026-10-08.*
+150. **SHOWN needs a brief** (issue #196). `codex.save` refuses a shown adventure with an empty brief, so a phone never
+     lists a bare title. A failed mission isn't tied to the recap. *Approved by the GM, 2026-10-08.*
 
 ---
 

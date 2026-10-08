@@ -37,6 +37,8 @@ export const adventure = pgTable("adventure", {
   title: text().notNull(),
   premise: body(),
   status: text().$type<z.infer<typeof AdventureStatus>>().notNull().default("planned"),
+  shown: boolean().notNull().default(false),
+  brief: body(),
 });
 
 export const beat = pgTable("beat", {

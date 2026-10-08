@@ -416,7 +416,7 @@ The entry shapes reuse `CodexInput` from `packages/shared/src/codex.ts`. The ser
 | `threats[]` | `Threat` without `id`, `source` and `page` (what `threat.save` takes), at most 100 | The pack's own stat blocks (issue #43). `seed.ts` saves them before the NPCs and beats, which name one as `custom-<slug>` where the slug comes from the name |
 | `npcs[]` | `CodexInput.npc`, with `faction?: key` in place of `factionId` | `name`, `role`, `description`, `gmNotes`, `secrets`, `attitude` (`hostile` … `helpful`, Core p.168), `statSource`, `revealed` |
 | `handouts[]` | `CodexInput.handout` + `key` | `title`, `body` (≤ 20000), `revealed` |
-| `adventures[]` | `CodexInput.adventure` + `key` + `beats[]` | `title`, `premise`, `status` (`planned`/`running`/`done`) |
+| `adventures[]` | `CodexInput.adventure` + `key` + `beats[]` | `title`, `premise`, `status` (`planned`/`running`/`done`/`failed`), `shown`, `brief` (≤ 300; required to be shown, §11.150) |
 | `adventures[].beats[]` | `CodexInput.beat` with `location?: key`, `npcs: key[]`, `handouts: key[]` in place of the id fields | `title`, `type`, `status`, `readAloud`, `gmNotes`, `outcome`, `encounter[]`, `hazards[]` (picks by the entry `id` in its location's `hazardList`; one that isn't there is dropped on save). Beats have no key; their order is their array order |
 | `characters[]` | `{ name (1–100), stats: CharacterStats, detail?, objectives?, build?: CharacterBuild }` | Filled from `characters/*.json` by the loader; don't put it in `pack.json`. `stats` is the sheet as printed; `build` is how it was made, so the builder opens it filled in (`packages/data/build.test.ts` checks one against the other) |
 

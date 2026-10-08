@@ -799,7 +799,8 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
   `encounter.upNext`, since `sideUpNext` on the filtered combatants would miss the hidden threat's Turn.
 - A `bars` threat's `stats` is `null`, its `threatId` is `""` and its `personalRuin` is 0. Its bars, mob count and
   Conditions still come through.
-- Factions and adventures (with their beats) are never sent.
+- Factions are never sent. Adventures arrive only once `shown` (the mission log, issue #196), with their title, brief
+  and status: never their premise or scenes.
 - NPCs, locations and handouts are sent only once `revealed`. Even then, GM notes, secrets, hazards and an NPC's
   stat source are blanked, an NPC's `factionId` is null, and so is a location's `parentId` unless the parent is
   revealed.
