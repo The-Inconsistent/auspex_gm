@@ -22,6 +22,12 @@ import {
 } from "./state.ts";
 
 const id = z.uuid();
+
+// What session.edit may change (issue #195); PARTY › SESSIONS checks its draft with it before SAVE.
+export const SessionJournal = z.object({
+  recap: z.string().max(10000).optional(),
+  notes: z.string().max(10000).optional(),
+});
 // ponytail: app limit on who one call names; a table this big needs no more.
 const MAX_CALLED = 30;
 const rowId = z.string().regex(/^[a-z0-9-]+$/); // a row of the server's book data
@@ -107,12 +113,7 @@ export const Action = z.union([
     }),
     // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs. No XP: it was paid out
     // at session.end (p.321, §11.152). A running session's recap is written at session.end (§11.153).
-    z.object({
-      type: z.literal("session.edit"),
-      sessionId: id,
-      recap: z.string().max(10000).optional(),
-      notes: z.string().max(10000).optional(),
-    }),
+    SessionJournal.extend({ type: z.literal("session.edit"), sessionId: id }),
     // Ends the running session with no XP and no Rank notices (a session that was never played, or left open overnight).
     z.object({ type: z.literal("session.abandon") }),
     // Deletes the latest session once it has ended. The XP it awarded stays on the characters.

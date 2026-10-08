@@ -696,8 +696,9 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   and `router.push("/")`, which closes the socket before the server kicks the room (about 200 ms later), so the
   disconnect never shows as NO SIGNAL.
 - **PARTY › SESSION:** END SESSION WITHOUT XP (`session.abandon`, confirmed) sits beside END SESSION, and
-  `session-history` lists the latest sessions with DELETE LAST SESSION (`session.delete`, confirmed; the server's notice,
-  that the XP it awarded stays, is shown).
+  `session-history` is the session journal (issue #195): every session, newest first, each with EDIT for its RECAP (once
+  ended) and the GM's NOTES (`session.edit`, checked with `SessionJournal`; notes closed on a plate), and DELETE LAST
+  SESSION (`session.delete`, confirmed; the server's notice, that the XP it awarded stays, is shown).
 - **ADMIN chip** in the GM header when `me.admin` (`GmApp`'s `admin` prop, from `/api/campaigns/:id/me`): a Clerk admin
   acting as GM at a table where they hold no seat.
 - `ui/confirm-action` is the app's confirm for these: the button turns into the question with CONFIRM and CANCEL.
@@ -790,7 +791,7 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 |---|---|---|---|
 | SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions, read-only (each name opens its rule); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour, each with its `UpgradeRow` at a table (fit and remove, `host` weapon or armour) and the notes a fitted upgrade leaves to the GM; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type) | Spending their own Wealth and Ammo (−1, `character.supply`; × on an empty type removes it). Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
 | FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
-| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (the latest session that has a recap), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented), each with its picture once the GM shows it (issue #199) | Nothing |
+| INTEL | `components/intel/intel.tsx` | MISSION (framework and patron), PREVIOUSLY (every session with a recap, newest first: the latest open, older ones folded in a `<details>`; issue #195), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented), each with its picture once the GM shows it (issue #199) | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:

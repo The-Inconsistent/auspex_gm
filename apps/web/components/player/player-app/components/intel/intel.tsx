@@ -11,7 +11,8 @@ type IntelProps = { codex: Codex; state: LiveState };
 
 export function Intel({ codex, state }: IntelProps) {
   const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
-  const last = [...codex.sessions].reverse().find((s) => s.recap);
+  // Every recap, newest first (issue #195, §11.151): the latest open, the rest folded for a player catching up.
+  const [last, ...older] = codex.sessions.filter((s) => s.recap).reverse();
   const { framework, frameworkBonus, patron, kind, limits } = state.campaign;
   return (
     <>
@@ -49,6 +50,16 @@ export function Intel({ codex, state }: IntelProps) {
           <pre className="text">
             <Mentions text={last.recap} />
           </pre>
+          {older.map((s) => (
+            <details key={s.id}>
+              <summary className="label">
+                SESSION {s.number} · {new Date(s.startedAt).toLocaleDateString()}
+              </summary>
+              <pre className="text">
+                <Mentions text={s.recap} />
+              </pre>
+            </details>
+          ))}
         </div>
       )}
       <div className="rule">HANDOUTS</div>
