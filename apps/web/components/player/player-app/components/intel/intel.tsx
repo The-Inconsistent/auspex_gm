@@ -5,6 +5,8 @@ import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { Mentions } from "@/components/ui/mentions/mentions";
 
+import { MISSION_GROUPS } from "./constants";
+
 type IntelProps = { codex: Codex; state: LiveState };
 
 export function Intel({ codex, state }: IntelProps) {
@@ -22,6 +24,23 @@ export function Intel({ codex, state }: IntelProps) {
           {/* What the whole table agreed (Core p.316, rules-flow §11.79), so nobody has to remember it. */}
           {kind.length > 0 && <div className="dim">KIND OF GAME: {kind.join(" · ")}</div>}
           {limits.length > 0 && <div className="dim">LEAVE OUT: {limits.join(" · ")}</div>}
+        </div>
+      )}
+      {/* The adventures the GM has shown the party (toPlayerCodex sends only those; issue #196, §11.148–150). */}
+      {codex.adventures.length > 0 && (
+        <div className="stack" style={{ gap: 4 }}>
+          <div className="rule">MISSION LOG</div>
+          {MISSION_GROUPS.map(([status, label]) =>
+            codex.adventures
+              .filter((a) => a.status === status)
+              .map((a) => (
+                <div key={a.id}>
+                  <span className={`chip ${status === "running" ? "warn" : ""}`}>{label}</span>{" "}
+                  <b>{a.title.toUpperCase()}</b>
+                  {a.brief && <div className="dim">{a.brief}</div>}
+                </div>
+              )),
+          )}
         </div>
       )}
       {last && (

@@ -206,6 +206,7 @@ export type BeatHazard = z.infer<typeof BeatHazard>;
 
 // `failed` and `shown` make the adventure the party's mission log (issue #196, rules-flow.md §11.148–150).
 export const AdventureStatus = z.enum(["planned", "running", "done", "failed"]);
+export type AdventureStatus = z.infer<typeof AdventureStatus>;
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 export type FactionStance = z.infer<typeof FactionStance>;
 export const MAX_FACTION_KEYWORDS = 20;

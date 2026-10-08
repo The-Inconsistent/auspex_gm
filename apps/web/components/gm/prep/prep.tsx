@@ -3,6 +3,7 @@ import { useMemo, useState, type FormEvent } from "react";
 
 import {
   activeCharacterIds,
+  AdventureStatus,
   agentsInFight,
   CodexSave,
   threatProfile,
@@ -28,6 +29,7 @@ import { SceneHazards } from "./components/scene-hazards/scene-hazards";
 import { ScenePicker } from "./components/scene-picker/scene-picker";
 import { ScenePools } from "./components/scene-pools/scene-pools";
 import { SceneTests } from "./components/scene-tests/scene-tests";
+import { ADVENTURE_STATUS } from "./constants";
 import type { Beat } from "./types";
 import { sceneNumber, stripBeat } from "./utils";
 
@@ -54,7 +56,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
   // The scene editor (a scene, or "new"), or the book-table picker ("table").
   const [editing, setEditing] = useState<Beat | "new" | "table" | null>(null);
   const [title, setTitle] = useState("");
-  const [advDraft, setAdvDraft] = useState<{ title: string; premise: string } | null>(null); // adventure being edited
+  const [advDraft, setAdvDraft] = useState<{ title: string; premise: string; brief: string } | null>(null); // adventure being edited
   const [msg, setMsg] = useState<string | null>(null);
   const newFields = useFieldErrors("adv-new"); // the new adventure's title
   const advFields = useFieldErrors("adv-"); // the open adventure's
@@ -134,20 +136,34 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
     setTitle("");
   };
 
-  // SAVE on the adventure: keeps its status (codex.save would reset it to the default) and closes the editor.
+  // SAVE on the adventure: keeps its status and SHOWN (codex.save would reset them to the defaults) and closes the editor.
   const saveAdventure = async () => {
     if (!adv || !advDraft) return;
-    const data = advFields.check(CodexSave.adventure, { ...advDraft, status: adv.status });
+    const data = advFields.check(CodexSave.adventure, { ...advDraft, status: adv.status, shown: adv.shown });
     if (!data) return;
     const r = await send({ type: "codex.save", kind: "adventure", id: adv.id, data });
     report(r, "ADVENTURE SAVED");
     if (r.ok) setAdvDraft(null);
   };
 
-  // EDIT on the adventure: its title and premise, with no marks left from an earlier SAVE.
-  const editAdventure = (a: { title: string; premise: string }) => {
+  // EDIT on the adventure: its title, brief and premise, with no marks left from an earlier SAVE.
+  const editAdventure = (a: { title: string; premise: string; brief: string }) => {
     advFields.reset();
-    setAdvDraft({ title: a.title, premise: a.premise });
+    setAdvDraft({ title: a.title, premise: a.premise, brief: a.brief });
+  };
+
+  // The status picker and SHOWN / HIDDEN: save the adventure with one field changed (the mission log, issue #196).
+  const saveAdventureWith = async (patch: { status: AdventureStatus } | { shown: boolean }, ok: string) => {
+    if (!adv) return;
+    const { id, beats: _, ...row } = adv;
+    report(await send({ type: "codex.save", kind: "adventure", id, data: { ...row, ...patch } }), ok);
+  };
+
+  // The status picker: PLANNED, ACTIVE, DONE or FAILED.
+  const pickStatus = (value: string) => {
+    if (!adv) return;
+    const status = AdventureStatus.parse(value);
+    saveAdventureWith({ status }, `${adv.title.toUpperCase()} → ${ADVENTURE_STATUS[status]}`);
   };
 
   // RUN SCENE: puts the beat's prepared encounter live and jumps to the tracker.
@@ -164,6 +180,7 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
         {codex.adventures.map((a) => (
           <button key={a.id} className={`btn ${a.id === advId ? "primary" : ""}`} onClick={() => pickAdventure(a.id)}>
             {a.title.toUpperCase()}
+            {a.shown && " · SHOWN"}
           </button>
         ))}
         <form style={{ display: "flex", gap: 6 }} onSubmit={handleCreateAdventure}>
@@ -207,6 +224,21 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                 <FieldError {...advFields.reason("title")} />
               </div>
               <div className="field">
+                <label className="label" htmlFor="adv-brief">
+                  BRIEF (THE PARTY SEES THIS ONCE SHOWN)
+                </label>
+                <input
+                  id="adv-brief"
+                  className="input"
+                  maxLength={300}
+                  placeholder="Find out who sold the Sanctorum's seals"
+                  value={advDraft.brief}
+                  onChange={(e) => setAdvDraft({ ...advDraft, brief: e.target.value })}
+                  {...advFields.marks("brief")}
+                />
+                <FieldError {...advFields.reason("brief")} />
+              </div>
+              <div className="field">
                 <label className="label" htmlFor="adv-premise">
                   PREMISE / GM NOTES
                 </label>
@@ -228,6 +260,11 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
             </div>
           ) : (
             <>
+              {adv.brief && (
+                <div>
+                  <span className="label accent">BRIEF</span> {adv.brief}
+                </div>
+              )}
               {/* The premise holds the hidden truth, so it stays closed like the beats' GM notes. */}
               {adv.premise && (
                 <details className="field plate">
@@ -235,9 +272,32 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun }: 
                   <pre className="text">{adv.premise}</pre>
                 </details>
               )}
-              <div>
+              <div className="keys">
                 <button className="btn sm" onClick={() => editAdventure(adv)}>
                   EDIT ADVENTURE
+                </button>
+                <select
+                  className="input"
+                  aria-label="Mission status"
+                  style={{ width: "auto" }}
+                  value={adv.status}
+                  onChange={(e) => pickStatus(e.target.value)}
+                >
+                  {AdventureStatus.options.map((s) => (
+                    <option key={s} value={s}>
+                      {ADVENTURE_STATUS[s]}
+                    </option>
+                  ))}
+                </select>
+                {/* Whether the party has this mission in INTEL's MISSION LOG; it needs a brief first (§11.150). */}
+                <button
+                  className="btn sm"
+                  style={{ color: adv.shown ? "var(--ink)" : "var(--red)" }}
+                  onClick={() =>
+                    saveAdventureWith({ shown: !adv.shown }, adv.shown ? "HIDDEN FROM THE PARTY" : "SHOWN TO THE PARTY")
+                  }
+                >
+                  {adv.shown ? "SHOWN TO THE PARTY" : "HIDDEN FROM THE PARTY"}
                 </button>
               </div>
             </>
