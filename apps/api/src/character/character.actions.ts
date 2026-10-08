@@ -1,8 +1,10 @@
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import {
+  BLIGHTED_SOUL,
   CharacterBuild,
   CharacterDetail,
   CharacterStats,
+  ENDURING_LIFE,
   Objectives,
   Overrides,
   adjustAmmo,
@@ -19,6 +21,7 @@ import {
   keepSheetWeapons,
   deriveStats,
   gearLine,
+  hasMutation,
   pcHit,
   isGone,
   pcStatus,
@@ -440,18 +443,24 @@ export async function applyCharacterAction(
       // Writing counters read from the row is safe: the gateway runs one action per campaign at a time.
       const { c, derived } = await healthOf(tx, { campaignId: cid, row });
       const hit = pcHit({ c, d: derived, hit: a });
+      const traumatic = Math.max(0, hit.traumatic + (a.traumatic ?? 0));
       await tx
         .update(character)
         .set({
           wounds: hit.wounds,
           shock: hit.shock,
-          traumatic: Math.max(0, hit.traumatic + (a.traumatic ?? 0)),
+          traumatic,
           annihilated: hit.annihilated,
           wrath,
           conditions: hit.prone && !c.conditions.includes("Prone") ? [...c.conditions, "Prone"] : undefined,
         })
         .where(eq(character.id, a.id));
-      return { ok: true };
+      // Enduring Life: 1d6 Corruption per Traumatic Wound taken (p.294). The dice stay physical, so the GM is told how
+      // many to roll and adds the total with ±CORRUPTION.
+      const gained = hasMutation(c.stats, ENDURING_LIFE) ? Math.max(0, traumatic - c.traumatic) : 0;
+      return gained
+        ? { ok: true, notices: Array.from({ length: gained }, () => "ENDURING LIFE · ROLL 1d6 CORRUPTION (p.294)") }
+        : { ok: true };
     }
 
     case "character.supply": {
@@ -481,7 +490,8 @@ export async function applyCharacterAction(
       let gain = a.delta ?? 0; // the schema guarantees a delta or a test
       const notices: string[] = [];
       if (a.test) {
-        const dn = corruptionTestDn({ ...a.test, points: before });
+        const blighted = hasMutation(stats, BLIGHTED_SOUL); // +1 DN to the Agent's own Test (p.289, §11.183)
+        const dn = corruptionTestDn({ ...a.test, points: before, blighted });
         if (a.test.icons >= dn)
           fail(`${row.name} rolled ${a.test.icons} Icons against DN ${dn}: that Test passed (Core p.286)`);
         if (a.test.spentWrath) {

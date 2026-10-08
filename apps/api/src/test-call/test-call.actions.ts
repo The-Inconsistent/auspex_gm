@@ -1,5 +1,13 @@
 import { and, eq, inArray } from "drizzle-orm";
-import { CharacterStats, corruptionTestDn, reportProblem, type Action, type ActionResult } from "@wg/shared";
+import {
+  BLIGHTED_SOUL,
+  CharacterStats,
+  corruptionTestDn,
+  hasMutation,
+  reportProblem,
+  type Action,
+  type ActionResult,
+} from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { ownCharacter } from "../character/character.actions.ts";
 import { character } from "../character/character.schema.ts";
@@ -48,7 +56,8 @@ export async function applyTestCallAction(
       // A failed Corruption Test's roll has to be one the GM's GAIN can take (character.corrupt, Core p.286).
       if (call.test.kind === "corruption" && !report.passed && call.test.dn !== null) {
         const stats = CharacterStats.parse(row.stats);
-        const dn = corruptionTestDn({ source: call.test.dn, points: stats.corruption, ...report });
+        const blighted = hasMutation(stats, BLIGHTED_SOUL);
+        const dn = corruptionTestDn({ source: call.test.dn, points: stats.corruption, blighted, ...report });
         if ((report.icons ?? 0) >= dn) fail(`${report.icons} Icons against DN ${dn} pass that Test (Core p.286)`);
         if (report.spentWrath && row.wrath < 1) fail(`${row.name} has no Wrath to spend (p.286)`);
       }

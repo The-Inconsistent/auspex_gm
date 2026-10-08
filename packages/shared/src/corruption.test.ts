@@ -3,7 +3,14 @@ import assert from "node:assert/strict";
 import { keepPlay } from "./build.ts";
 import { Action } from "./actions.ts";
 import { CharacterStats } from "./state.ts";
-import { corruptionGain, corruptionTestDn, corruptionLevel, mutationDns } from "./corruption.ts";
+import {
+  BLIGHTED_SOUL,
+  corruptionGain,
+  corruptionTestDn,
+  corruptionLevel,
+  hasMutation,
+  mutationDns,
+} from "./corruption.ts";
 
 test("levels follow p.286, with 11 Contaminated (house rule §11.5)", () => {
   const at = (n: number) => corruptionLevel(n).name;
@@ -68,4 +75,22 @@ test("character.corrupt takes a delta or a failed Test at a printed source DN, n
   assert.equal(ok({ delta: 1, test: { source: 3, icons: 1 } }), false);
   assert.equal(ok({ test: { source: 4, icons: 1 } }), false, "4 is not a printed Corruption DN (p.285)");
   assert.equal(ok({ test: { source: 3, icons: 0, wrathCritical: true, spentWrath: true } }), true);
+});
+
+test("Blighted Soul adds 1 to the Agent's own Corruption Test DN, and so to the gain (p.289, §11.183)", () => {
+  assert.equal(corruptionTestDn({ source: 3, points: 0, blighted: true }), 4);
+  assert.equal(corruptionTestDn({ source: 3, points: 6, blighted: true }), 5, "with the level modifier");
+  assert.equal(corruptionTestDn({ source: 3, points: 6, blighted: false }), 4);
+  assert.equal(corruptionTestDn({ source: 5, points: 0, wrathCritical: true, blighted: true }), 4);
+  assert.equal(corruptionTestDn({ source: 1, points: 0, spentWrath: true, blighted: true }), 1, "the +1 then −1");
+  assert.equal(corruptionTestDn({ source: 3, points: 0, spentWrath: true, blighted: true }), 3);
+  const dn = corruptionTestDn({ source: 3, points: 0, blighted: true });
+  assert.equal(corruptionGain({ dn, icons: 1, complication: false }), 3, "DN 4 − 1 Icon");
+  const held = CharacterStats.parse({
+    mutations: [
+      { id: BLIGHTED_SOUL, name: "Blighted Soul", page: 289, mods: { attributes: {}, skills: {}, traits: {} } },
+    ],
+  });
+  assert.equal(hasMutation(held, BLIGHTED_SOUL), true);
+  assert.equal(hasMutation(CharacterStats.parse({}), BLIGHTED_SOUL), false);
 });

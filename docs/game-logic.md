@@ -143,7 +143,10 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
   is the builder's (`rankOf` in `resolveBuild`), for Rank requirements and "+Rank" grants when XP is spent.
 
 **Traumatic Injuries** (p.193–194): `character.traumatic`; only the GM adjusts it directly (+TRAUMATIC button in the
-tracker side panel). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1, plus any mod).
+tracker side panel). With Enduring Life (p.294), each Traumatic Injury `character.adjust` adds returns a notice to roll
+1d6 Corruption (§11.184; the tracker logs it). `pcStatus` marks the character Dead when `traumatic > maxTraumatic` (Tier + 1, plus any mod). With Enduring
+Life (p.294) it never does, and each Traumatic Injury `character.adjust` adds returns a notice to roll 1d6 Corruption
+(§11.184; the tracker logs it).
 
 **One hit in `character.adjust`** (`pcHit` in `state.ts`, pp.193–199). `healthOf()` reads the row, `pcHit` returns the
 counters after the hit, and the api writes them (safe: one action per campaign at a time). In order:
@@ -152,7 +155,7 @@ counters after the hit, and the api writes them (safe: one action per campaign a
    Condition), positive Shock becomes Mortal Wounds (`exhaustedShock`), which ignore Resilience (p.193). The hit that
    takes Shock past max stays Shock.
 2. **Annihilation** (p.194, house §11.7): Wounds > 2 × Max Wounds in the one hit → `annihilated = true`, counters
-   untouched; `pcStatus` says Dead. The GM clears it with `character.update { annihilated: false }` (RESTORE).
+   untouched; `pcStatus` says Dead (an Agent with Enduring Life takes it as an ordinary hit, §11.184). The GM clears it with `character.update { annihilated: false }` (RESTORE).
 3. **Dying** (p.193): a positive Wounds delta adds **1** Traumatic Injury instead of Wounds, whatever its size (house
    §11.11); a negative one sets Wounds to `min(maxWounds, wounds + delta)`, so any healing ends Dying.
 4. Otherwise Wounds move by the delta (floor 0); crossing into Dying adds `Prone` if it's missing.
@@ -337,7 +340,7 @@ when the block has `personalRuin`. It's separate from the GM's Ruin pool.
 
 | Status | Condition in code | Page |
 |---|---|---|
-| Dead | `annihilated`, or `traumatic > maxTraumatic` (Tier + 1) | p.193–194 |
+| Dead | `annihilated`, or `traumatic > maxTraumatic` (Tier + 1); never with Enduring Life (§11.184) | p.193–194 |
 | Dying | else `wounds > maxWounds` | p.193 |
 | Wounded | else `wounds > 0` | p.193 |
 | Exhausted | `shock > maxShock` (independent, can show with any of the above) | p.196, p.199 |
@@ -436,7 +439,7 @@ Campaign-specific GM decisions live in the pack data, not in code; the ones the 
 Per [rules-flow.md](rules-flow.md) §10: all dice and Tests (§7), DNs, cover / range / vision, the damage pipeline
 (§4: the GM enters the resulting Wounds or Shock), Determination, Critical Hits and Complications, Psychic powers (§8),
 the Corruption and Mutation Tests (§9: the app keeps the points, rolls on the Mutation tables and applies their
-numbers, `corruption.ts`, `mutation.ts`), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
+numbers, `corruption.ts`, `mutation.ts`; Blighted Soul's +1 DN is in `corruptionTestDn`, §11.183), Fear / Terror, Hold actions, Multi-Action, Battlecry, the optional "I Wanna Roll!"
 order, when an encounter ends, and an Adversary's Dying-vs-dead call.
 
 Known gaps against the spec: Pinned doesn't expire because the attacker isn't tracked. The live list is

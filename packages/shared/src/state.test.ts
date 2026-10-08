@@ -562,6 +562,27 @@ test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries",
   assert.deepEqual(pcStatus(c({ shock: 5 }), d), ["Exhausted"]);
 });
 
+test("Enduring Life: never Dead, not by Traumatic Injuries nor by Annihilation (p.294, §11.184)", () => {
+  const stats = CharacterStats.parse({
+    attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 },
+    mutations: [
+      { id: "enduring-life", name: "Enduring Life", page: 294, mods: { attributes: {}, skills: {}, traits: {} } },
+    ],
+  });
+  const d = deriveStats({ stats, overrides: {}, tier: 1 }); // Max Wounds 6, Max Traumatic 2
+  const c = (o: Partial<Character>) => char({ stats, ...o });
+  assert.deepEqual(pcStatus(c({ wounds: 7, traumatic: 3 }), d), ["Dying"], "over the limit is still Dying");
+  assert.deepEqual(pcStatus(c({ wounds: 2, traumatic: 5, annihilated: true }), d), ["Wounded"]);
+  assert.deepEqual(pcStatus(c({ traumatic: 3 }), d), []);
+  assert.deepEqual(pcStatus(char({ wounds: 7, traumatic: 3 }), d), ["Dead"], "without it, Dead as before");
+  assert.deepEqual(
+    pcHit({ c: c({}), d, hit: { wounds: 13 } }),
+    { wounds: 13, shock: 0, traumatic: 0, prone: true, annihilated: false },
+    "more than double Max Wounds is an ordinary hit",
+  );
+  assert.equal(pcHit({ c: char({}), d, hit: { wounds: 13 } }).annihilated, true, "without it, Annihilation");
+});
+
 test("pcHit: Exhausted Shock → Mortal Wounds, Dying → Traumatic Injury, Annihilation (pp.193-199)", () => {
   // Tier 1, T 4, Wil 3: Max Wounds 6, Max Shock 4.
   const d = deriveStats({

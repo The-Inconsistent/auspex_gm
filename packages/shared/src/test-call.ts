@@ -1,4 +1,4 @@
-import { corruptionTestDn } from "./corruption.ts";
+import { BLIGHTED_SOUL, corruptionTestDn, hasMutation } from "./corruption.ts";
 import { DN_TABLE } from "./dn.ts";
 import {
   ATTRIBUTE_NAMES,
@@ -51,9 +51,12 @@ export function testPool({ character: c, test: t, tier }: { character: Character
   return t.kind === "influence" ? d.influence : t.kind === "resolve" ? d.resolve : d.conviction;
 }
 
-// The DN this Agent rolls against: a Corruption Test adds their Corruption Level's modifier (p.286).
+// The DN this Agent rolls against: a Corruption Test adds their Corruption Level's modifier (p.286), and 1 more for
+// Blighted Soul (p.289, §11.183).
 export const callDn = (t: CalledTest, c: Character) =>
-  t.kind === "corruption" && t.dn !== null ? corruptionTestDn({ source: t.dn, points: c.stats.corruption }) : t.dn;
+  t.kind === "corruption" && t.dn !== null
+    ? corruptionTestDn({ source: t.dn, points: c.stats.corruption, blighted: hasMutation(c.stats, BLIGHTED_SOUL) })
+    : t.dn;
 
 // What's wrong with a report for this Test: the roll comes only with a failed Corruption Test (p.286).
 export function reportProblem(t: CalledTest, r: TestReport): string | null {
