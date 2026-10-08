@@ -13,7 +13,7 @@ text, notes and handouts. Build order: combat tracker plus this campaign core fi
 Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sheet p.374),
  │           patron, kind[] and limits[] (core p.316, rules-flow §11.79), party keywords
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
- ├─ Adventure    title, premise, status (planned | running | done)
+ ├─ Adventure    title, premise, status (planned | running | done | failed), shown + brief (the mission log, #196)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
  │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[],

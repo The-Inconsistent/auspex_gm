@@ -235,6 +235,39 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
   assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
 });
 
+test("toPlayerCodex: a shown mission without its premise or scenes, a hidden one not at all (issue #196)", () => {
+  const a = (id: string, shown: boolean): Codex["adventures"][number] => ({
+    id,
+    title: id,
+    premise: "The seals were sold by the Prior",
+    status: "running",
+    shown,
+    brief: "Find who sold the seals",
+    beats: [{ ...CodexInput.beat.parse({ adventureId: crypto.randomUUID(), title: "Vault" }), id: "b", order: 0 }],
+  });
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [a("shown", true), a("hidden", false)],
+    locations: [],
+    npcs: [],
+    handouts: [],
+    items: [],
+    sessions: [],
+  };
+  assert.deepEqual(toPlayerCodex(codex, "a").adventures, [
+    {
+      id: "shown",
+      title: "shown",
+      premise: "",
+      status: "running",
+      shown: true,
+      brief: "Find who sold the seals",
+      beats: [],
+    },
+  ]);
+});
+
 test("the table screen's view (viewer null) carries no Agent's private data", () => {
   const goal = [{ text: "Recover the relic", done: false }];
   const s = table(enc([threat("h", { visibility: "hidden" }), threat("t"), pc("p")]), [

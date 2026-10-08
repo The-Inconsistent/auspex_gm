@@ -125,6 +125,7 @@ export function freshStart(e: CampaignExport): CampaignExport {
       adventures: c.adventures.map((a) => ({
         ...a,
         status: "planned",
+        shown: false,
         beats: a.beats.map((b) => ({
           ...b,
           status: "planned",

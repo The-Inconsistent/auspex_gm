@@ -234,7 +234,10 @@ export async function importCampaign({
           })),
         );
       if (c.adventures.length)
-        await tx.insert(adventure).values(c.adventures.map(({ beats: _, ...a }, i) => own(a, i)));
+        // A hand-edited file's mission shown without a brief comes in hidden, as codex.save would refuse it (§11.150).
+        await tx
+          .insert(adventure)
+          .values(c.adventures.map(({ beats: _, ...a }, i) => own({ ...a, shown: a.shown && !!a.brief.trim() }, i)));
       if (beats.length)
         await tx.insert(beat).values(
           beats.map((b, i) => ({

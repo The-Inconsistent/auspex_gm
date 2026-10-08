@@ -190,6 +190,11 @@ export async function applyCodexAction(
           if (given?.givenTo && moved) fail(`${given.name} is with an Agent now: take it back first`);
         }
       }
+      // A phone never shows a bare title in the mission log (rules-flow.md §11.150).
+      if (a.kind === "adventure") {
+        const m = a.data as z.output<typeof CodexInput.adventure>;
+        if (m.shown && !m.brief.trim()) fail(`Write a brief before showing ${m.title || "the mission"} to the party`);
+      }
       if (a.kind === "handout")
         await refs(character, (a.data as z.output<typeof CodexInput.handout>).audience, "Audience character");
       // First reveal stamps the time; later saves keep it (only an UPDATE can read the old value).

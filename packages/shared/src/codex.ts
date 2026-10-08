@@ -204,7 +204,8 @@ export type LocationHazard = z.infer<typeof LocationHazard>;
 export const BeatHazard = z.object({ id, spotted: z.boolean().default(false) });
 export type BeatHazard = z.infer<typeof BeatHazard>;
 
-export const AdventureStatus = z.enum(["planned", "running", "done"]);
+// `failed` and `shown` make the adventure the party's mission log (issue #196, rules-flow.md §11.148–150).
+export const AdventureStatus = z.enum(["planned", "running", "done", "failed"]);
 export const FactionStance = z.enum(["ally", "neutral", "rival", "enemy"]);
 export type FactionStance = z.infer<typeof FactionStance>;
 export const MAX_FACTION_KEYWORDS = 20;
@@ -224,6 +225,8 @@ export const CodexInput = {
     title: text(200),
     premise: text().default(""),
     status: AdventureStatus.default("planned"),
+    shown: z.boolean().default(false), // the party has been given this mission
+    brief: text(300).default(""), // what the phones show of it; the premise stays the GM's
   }),
   beat: z.object({
     adventureId: id,
@@ -344,7 +347,8 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
   const shownLocations = new Set(c.locations.filter((l) => l.revealed).map((l) => l.id));
   return {
     factions: [],
-    adventures: [],
+    // A shown mission's title, brief and status; its premise and scenes stay with the GM.
+    adventures: c.adventures.filter((a) => a.shown).map((a) => ({ ...a, premise: "", beats: [] })),
     locations: c.locations
       .filter((l) => l.revealed)
       .map((l) => ({
