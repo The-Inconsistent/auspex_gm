@@ -12,3 +12,6 @@ export const POOL_RULES = [
   ["character-complications", "COMPLICATIONS"],
   ["character-combat-complications", "COMBAT COMPLICATIONS"],
 ] as const;
+
+// An adventure's status as PREP labels it; `running` reads ACTIVE (issue #196). A phone says OFFERED for `planned`.
+export const ADVENTURE_STATUS = { planned: "PLANNED", running: "ACTIVE", done: "DONE", failed: "FAILED" } as const;
