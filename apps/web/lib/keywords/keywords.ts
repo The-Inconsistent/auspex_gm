@@ -1,6 +1,6 @@
 import type { FactionKeyword, FactionStance } from "@wg/shared";
 
-import { fold } from "@/lib/threat-filter/threat-filter";
+import { fold } from "@/lib/fold/fold";
 
 export type KeywordMatches = { matches: FactionKeyword[]; writeIn: string | null; enter: string | null };
 

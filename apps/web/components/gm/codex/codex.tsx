@@ -24,6 +24,7 @@ import {
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
+import { CodexSearch } from "@/components/ui/codex-search/codex-search";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
@@ -108,6 +109,7 @@ export function CodexView({
   relics,
 }: CodexViewProps) {
   const [sub, setSub] = useState<SubTab>(initialKind);
+  const [query, setQuery] = useState(""); // the codex search (issue #198): its hits replace the sub-tab's list
   const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const kind: CodexKind = sub === "threats" ? "npc" : sub;
@@ -122,10 +124,11 @@ export function CodexView({
   const itemsToPrint = codex.items.filter((i) => picked.has(i.id)).map((i) => i.id);
   const handoutsToPrint = codex.handouts.filter((h) => picked.has(h.id)).map((h) => h.id);
 
-  // Sub-tab: switch lists and close any open editor.
+  // Sub-tab: switch lists, close any open editor and clear the search.
   const pickKind = (k: SubTab) => {
     setSub(k);
     setEditing(null);
+    setQuery("");
   };
 
   // Saves the whole entry with one flag changed.
@@ -282,7 +285,9 @@ export function CodexView({
         </button>
       </nav>
       <div className="pad stack">
-        {sub === "threats" ? (
+        {/* Over the lists only: hiding an open editor (THREATS keeps its own) would drop its draft. */}
+        {sub !== "threats" && !editing && <CodexSearch query={query} onQuery={setQuery} />}
+        {query.trim() ? null : sub === "threats" ? (
           <ThreatEditor
             customThreats={codex.customThreats}
             bestiary={bestiary}

@@ -1,7 +1,11 @@
+"use client";
+import { useState } from "react";
+
 import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
 import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
+import { CodexSearch } from "@/components/ui/codex-search/codex-search";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { Mentions } from "@/components/ui/mentions/mentions";
 
@@ -9,7 +13,18 @@ import { MISSION_GROUPS } from "./constants";
 
 type IntelProps = { codex: Codex; state: LiveState };
 
-export function Intel({ codex, state }: IntelProps) {
+// The codex search (issue #198) over what this phone was shown; its hits replace the page below.
+export function Intel(props: IntelProps) {
+  const [query, setQuery] = useState("");
+  return (
+    <>
+      <CodexSearch query={query} onQuery={setQuery} />
+      {!query.trim() && <IntelPage {...props} />}
+    </>
+  );
+}
+
+function IntelPage({ codex, state }: IntelProps) {
   const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
   // Every recap, newest first (issue #195, §11.151): the latest open, the rest folded for a player catching up.
   const [last, ...older] = codex.sessions.filter((s) => s.recap).reverse();
