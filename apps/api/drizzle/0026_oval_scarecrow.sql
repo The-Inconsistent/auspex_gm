@@ -1,0 +1,1 @@
+ALTER TABLE "session" ADD COLUMN "notes" text DEFAULT '' NOT NULL;

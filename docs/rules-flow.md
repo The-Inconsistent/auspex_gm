@@ -928,6 +928,13 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      before it starts. *Approved by the GM, 2026-10-08.*
 150. **SHOWN needs a brief** (issue #196). `codex.save` refuses a shown adventure with an empty brief, so a phone never
      lists a bare title. A failed mission isn't tied to the recap. *Approved by the GM, 2026-10-08.*
+151. **Every seat reads every recap** (GitHub issue #195). Core p.317 asks only for a short "Previously in Wrath &
+     Glory…"; the app keeps each session's, so a player who missed a game can catch up. INTEL opens the latest and
+     folds the rest. A session's notes are the GM's own and never reach a phone. *Approved by the GM, 2026-10-08.*
+152. **A session's XP isn't edited afterwards** (issue #195). It was paid to every character at the session's end
+     (Core p.321), so `session.edit` changes only the recap and the notes. *Approved by the GM, 2026-10-08.*
+153. **A running session's recap is written at END SESSION** (issue #195). Its notes are edited as the game runs;
+     `session.edit` refuses its recap, so END never overwrites one typed elsewhere. *Approved by the GM, 2026-10-08.*
 
 ---
 

@@ -32,5 +32,6 @@ export const session = pgTable("session", {
   startedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   endedAt: timestamp({ withTimezone: true }),
   recap: body(),
+  notes: body(), // the GM's own, never sent to a phone (issue #195)
   xp: integer().notNull().default(0),
 });

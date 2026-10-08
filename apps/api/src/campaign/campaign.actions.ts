@@ -29,6 +29,7 @@ export type CampaignAction = Extract<
       | "pool.adjust"
       | "session.start"
       | "session.end"
+      | "session.edit"
       | "session.abandon"
       | "session.delete"
       | "campaign.archive"
@@ -187,6 +188,19 @@ export async function applyCampaignAction(
         ...(ready ? [`Everyone has earned ${ASCENSION_XP} XP in Tier ${tier}: the group may Ascend (Core p.147)`] : []),
       ];
       return notices.length ? { ok: true, notices } : { ok: true };
+    }
+
+    // Any session of this campaign, open or ended (issue #195); only the fields sent change.
+    case "session.edit": {
+      const [s] = await tx
+        .select({ endedAt: session.endedAt })
+        .from(session)
+        .where(and(eq(session.id, a.sessionId), eq(session.campaignId, cid)));
+      if (!s) fail("Session not found");
+      if (a.recap !== undefined && !s.endedAt) fail("A running session's recap is written at END SESSION");
+      const { type, sessionId, ...patch } = a;
+      if (Object.keys(patch).length) await tx.update(session).set(patch).where(eq(session.id, sessionId));
+      return { ok: true };
     }
 
     // For a session that was never played or got left open: no XP, no Rank notices, pools untouched.

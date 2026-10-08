@@ -28,8 +28,9 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │               Powers, rules-flow §11.116), givenTo (server-owned: the Agent GIVE handed it to; issue #51)
  ├─ Handout      title, body (text), style (plain | slate | form | vox | decree), header, revealedAt,
  │               audience (all | characterIds), picture
- └─ Session      number, date, recap ("Previously in…", core p.317), beatIds played,
-                 objectives rolled (core p.43), xpAwarded (8/10/12, core p.321), notes
+ └─ Session      number, date, recap ("Previously in…", core p.317), notes (the GM's own), xp (8/10/12,
+                 core p.321); the journal is PARTY › SESSIONS (issue #195). Not built yet: beatIds played,
+                 objectives rolled (core p.43)
 ```
 
 - **The UI says SCENE.** The GM reads SCENE everywhere; code, actions (`beat.reorder`, `beat.startEncounter`), the
@@ -166,7 +167,7 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 
 **Player phone**
 - Play sheet, a handout inbox with new-item badges, known NPCs and locations, party framework and Glory, and the
-  latest session recap.
+  every session's recap, newest first (issue #195).
 
 ## Content packs
 
