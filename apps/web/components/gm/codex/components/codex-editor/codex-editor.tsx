@@ -63,6 +63,7 @@ const PICTURE: Field[] = [
   { key: "imageId", label: "PICTURE", type: "image" },
   { key: "imageRevealed", label: "PICTURE SHOWN TO PLAYERS", type: "bool" },
 ];
+const PICTURE_KEYS: ReadonlySet<string> = new Set(PICTURE.map((f) => f.key)); // drawn in the folded PICTURE section
 const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
 function fieldsFor({
@@ -225,6 +226,142 @@ export function CodexEditor({
     onDone();
   };
 
+  // One field of the form: its label, its input, and the reason a refused SAVE gives for it.
+  const fieldRow = (f: Field) => (
+    <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
+      {f.type === "picks" ? (
+        // None picked means every player (toPlayerCodex); say so, since an empty group reads as "nobody".
+        <span className="label" id={`f-${f.key}`}>
+          {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
+        </span>
+      ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" || f.type === "image" ? (
+        <span className="label" id={`f-${f.key}`}>
+          {f.label}
+        </span>
+      ) : (
+        <label className="label" htmlFor={`f-${f.key}`}>
+          {f.label}
+        </label>
+      )}
+      {f.type === "text" && (
+        <input
+          id={`f-${f.key}`}
+          {...fieldErrors.marks(f.key)}
+          className="input"
+          value={String(draft[f.key] ?? "")}
+          onChange={(e) => setField(f.key, e.target.value)}
+        />
+      )}
+      {f.type === "area" && (
+        <MentionField
+          id={`f-${f.key}`}
+          {...fieldErrors.marks(f.key)}
+          multiline
+          value={String(draft[f.key] ?? "")}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "keywords" && (
+        <KeywordPicker
+          id={`f-${f.key}`}
+          value={draft[f.key] as string[]}
+          suggestions={keywords}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "statSource" && (
+        <StatSourceField
+          id={`f-${f.key}`}
+          value={draft[f.key] as StatSource}
+          bestiary={bestiary}
+          tier={tier}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "hazardList" && (
+        <HazardList
+          id={`f-${f.key}`}
+          value={draft[f.key] as LocationHazard[]}
+          tables={hazards}
+          bestiary={bestiary}
+          tier={tier}
+          onChange={(v) => setField(f.key, v)}
+        />
+      )}
+      {f.type === "wargearName" && (
+        <WargearName
+          id={`f-${f.key}`}
+          marks={fieldErrors.marks("name")}
+          name={String(draft.name ?? "")}
+          wargearId={(draft.wargearId as string | null | undefined) ?? null}
+          catalogue={wargear}
+          onChange={(v) => setDraft({ ...draft, ...v })}
+        />
+      )}
+      {f.type === "holder" && (
+        <HolderField
+          id={`f-${f.key}`}
+          locationId={(draft.locationId as string | null | undefined) ?? null}
+          npcId={(draft.npcId as string | null | undefined) ?? null}
+          codex={codex}
+          onChange={(v) => setDraft({ ...draft, ...v })}
+        />
+      )}
+      {f.type === "image" && (
+        <ImageField
+          id={`f-${f.key}`}
+          value={(draft[f.key] as string | null | undefined) ?? null}
+          alt={String(draft.name ?? draft.title ?? "")}
+          onChange={(v) => setField(f.key, v)}
+          onError={setError}
+        />
+      )}
+      {f.type === "bool" && (
+        <input
+          id={`f-${f.key}`}
+          type="checkbox"
+          className="check-box"
+          checked={Boolean(draft[f.key])}
+          onChange={(e) => setField(f.key, e.target.checked)}
+        />
+      )}
+      {f.type === "picks" && (
+        <div className="keys" role="group" aria-labelledby={`f-${f.key}`} style={{ paddingTop: 0 }}>
+          {f.options?.map(([v, l]) => {
+            const picked = (draft[f.key] as string[]).includes(v);
+            return (
+              <button
+                key={v}
+                className={`btn sm ${picked ? "primary" : ""}`}
+                aria-pressed={picked}
+                onClick={() => setField(f.key, toggled(draft[f.key] as string[], v))}
+              >
+                {l}
+              </button>
+            );
+          })}
+          {!f.options?.length && <span className="dim">Add Agents in PARTY.</span>}
+        </div>
+      )}
+      {f.type === "select" && (
+        <select
+          id={`f-${f.key}`}
+          {...fieldErrors.marks(f.key)}
+          className="input"
+          value={String(draft[f.key] ?? "")}
+          onChange={(e) => setField(f.key, e.target.value)}
+        >
+          {f.options?.map(([v, l]) => (
+            <option key={v} value={v}>
+              {l}
+            </option>
+          ))}
+        </select>
+      )}
+      <FieldError {...fieldErrors.reason(f.key)} />
+    </div>
+  );
+
   return (
     <div className="panel pad stack">
       {kind === "npc" && flavour.length > 0 && (
@@ -235,140 +372,14 @@ export function CodexEditor({
           <NpcRoller id="f-roll" tables={flavour} onName={(name) => setField("name", name)} onLook={appendLook} />
         </div>
       )}
-      {fields.map((f) => (
-        <div key={f.key} className={GM_ONLY_FIELDS.has(f.key) ? "field plate" : "field"}>
-          {f.type === "picks" ? (
-            // None picked means every player (toPlayerCodex); say so, since an empty group reads as "nobody".
-            <span className="label" id={`f-${f.key}`}>
-              {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
-            </span>
-          ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" || f.type === "image" ? (
-            <span className="label" id={`f-${f.key}`}>
-              {f.label}
-            </span>
-          ) : (
-            <label className="label" htmlFor={`f-${f.key}`}>
-              {f.label}
-            </label>
-          )}
-          {f.type === "text" && (
-            <input
-              id={`f-${f.key}`}
-              {...fieldErrors.marks(f.key)}
-              className="input"
-              value={String(draft[f.key] ?? "")}
-              onChange={(e) => setField(f.key, e.target.value)}
-            />
-          )}
-          {f.type === "area" && (
-            <MentionField
-              id={`f-${f.key}`}
-              {...fieldErrors.marks(f.key)}
-              multiline
-              value={String(draft[f.key] ?? "")}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "keywords" && (
-            <KeywordPicker
-              id={`f-${f.key}`}
-              value={draft[f.key] as string[]}
-              suggestions={keywords}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "statSource" && (
-            <StatSourceField
-              id={`f-${f.key}`}
-              value={draft[f.key] as StatSource}
-              bestiary={bestiary}
-              tier={tier}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "hazardList" && (
-            <HazardList
-              id={`f-${f.key}`}
-              value={draft[f.key] as LocationHazard[]}
-              tables={hazards}
-              bestiary={bestiary}
-              tier={tier}
-              onChange={(v) => setField(f.key, v)}
-            />
-          )}
-          {f.type === "wargearName" && (
-            <WargearName
-              id={`f-${f.key}`}
-              marks={fieldErrors.marks("name")}
-              name={String(draft.name ?? "")}
-              wargearId={(draft.wargearId as string | null | undefined) ?? null}
-              catalogue={wargear}
-              onChange={(v) => setDraft({ ...draft, ...v })}
-            />
-          )}
-          {f.type === "holder" && (
-            <HolderField
-              id={`f-${f.key}`}
-              locationId={(draft.locationId as string | null | undefined) ?? null}
-              npcId={(draft.npcId as string | null | undefined) ?? null}
-              codex={codex}
-              onChange={(v) => setDraft({ ...draft, ...v })}
-            />
-          )}
-          {f.type === "image" && (
-            <ImageField
-              id={`f-${f.key}`}
-              value={(draft[f.key] as string | null | undefined) ?? null}
-              alt={String(draft.name ?? draft.title ?? "")}
-              onChange={(v) => setField(f.key, v)}
-              onError={setError}
-            />
-          )}
-          {f.type === "bool" && (
-            <input
-              id={`f-${f.key}`}
-              type="checkbox"
-              className="check-box"
-              checked={Boolean(draft[f.key])}
-              onChange={(e) => setField(f.key, e.target.checked)}
-            />
-          )}
-          {f.type === "picks" && (
-            <div className="keys" role="group" aria-labelledby={`f-${f.key}`} style={{ paddingTop: 0 }}>
-              {f.options?.map(([v, l]) => {
-                const picked = (draft[f.key] as string[]).includes(v);
-                return (
-                  <button
-                    key={v}
-                    className={`btn sm ${picked ? "primary" : ""}`}
-                    aria-pressed={picked}
-                    onClick={() => setField(f.key, toggled(draft[f.key] as string[], v))}
-                  >
-                    {l}
-                  </button>
-                );
-              })}
-              {!f.options?.length && <span className="dim">Add Agents in PARTY.</span>}
-            </div>
-          )}
-          {f.type === "select" && (
-            <select
-              id={`f-${f.key}`}
-              {...fieldErrors.marks(f.key)}
-              className="input"
-              value={String(draft[f.key] ?? "")}
-              onChange={(e) => setField(f.key, e.target.value)}
-            >
-              {f.options?.map(([v, l]) => (
-                <option key={v} value={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          )}
-          <FieldError {...fieldErrors.reason(f.key)} />
-        </div>
-      ))}
+      {fields.filter((f) => !PICTURE_KEYS.has(f.key)).map(fieldRow)}
+      {/* Optional, so folded away at the end: open from the start when the entry has one, and a REMOVE doesn't snap it shut (issue #199). */}
+      {fields.some((f) => PICTURE_KEYS.has(f.key)) && (
+        <details className="field" open={Boolean(row?.imageId)}>
+          <summary className="label">PICTURE (OPTIONAL)</summary>
+          {fields.filter((f) => PICTURE_KEYS.has(f.key)).map(fieldRow)}
+        </details>
+      )}
       {kind === "item" && (
         <div className="field">
           <span className="label">GIVEN TO</span>

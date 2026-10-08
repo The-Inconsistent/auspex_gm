@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 
 import { UserButton } from "@wg/auth/react";
-import { LIBRARY_CAP, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
+import { IMPORT_MAX_BYTES, LIBRARY_CAP, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
 
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 
@@ -79,6 +79,7 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const [fresh, setFresh] = useState(false);
   const [showArchived, setShowArchived] = useState(false); // the ARCHIVED fold, closed until asked
   const [importError, setImportError] = useState<string | null>(null);
+  const [imported, setImported] = useState<{ campaignId: string; dropped: number } | null>(null); // pictures left out
   const others = lobby.running.filter((g) => !g.role);
   const full = lobby.characters.length >= LIBRARY_CAP;
   // The tapped button pulses (aria-busy, globals.css) from the tap until the next page is up, and a second tap is
@@ -126,8 +127,12 @@ export function LobbyView({ lobby }: LobbyViewProps) {
   const handleImport = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setImportError(null);
+    setImported(null);
     const picked = new FormData(e.currentTarget).get("file");
     if (!(picked instanceof File) || !picked.size) return setImportError("Pick an exported .json file.");
+    // Past this, the upload would only be cut off on the way (issue #199); the game's text still fits without its pictures.
+    if (picked.size > IMPORT_MAX_BYTES)
+      return setImportError("That file is over 100 MB, more than IMPORT GAME takes. Export it again WITHOUT PICTURES.");
     run("import", async () => {
       let file: unknown;
       try {
@@ -140,8 +145,14 @@ export function LobbyView({ lobby }: LobbyViewProps) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ file, fresh }),
       }).catch(() => null);
-      const body = (await res?.json().catch(() => null)) as { campaignId?: string; message?: string } | null;
+      const body = (await res?.json().catch(() => null)) as {
+        campaignId?: string;
+        droppedPictures?: number;
+        message?: string;
+      } | null;
       if (!res?.ok || !body?.campaignId) return setImportError(body?.message ?? "No signal");
+      // A picture left out doesn't stop the game: say so here, since opening it would hide the note.
+      if (body.droppedPictures) return setImported({ campaignId: body.campaignId, dropped: body.droppedPictures });
       go(`/c/${body.campaignId}`);
     });
   };
@@ -208,6 +219,18 @@ export function LobbyView({ lobby }: LobbyViewProps) {
           {importError && (
             <div id="import-file-error" className="red" role="alert">
               ! {importError}
+            </div>
+          )}
+          {/* Pictures are a nice-to-have (issue #199): the game came in, only these didn't. */}
+          {imported && (
+            <div className="stack" role="status" style={{ gap: 8 }}>
+              <span>
+                Imported. {imported.dropped} {imported.dropped === 1 ? "picture" : "pictures"} in that file
+                couldn&apos;t be read and were left out.
+              </span>
+              <Link className="btn primary" href={`/c/${imported.campaignId}`}>
+                OPEN GAME
+              </Link>
             </div>
           )}
           <div>

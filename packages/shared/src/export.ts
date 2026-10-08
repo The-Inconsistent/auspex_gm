@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { CodexInput, IMAGE_CAP, ImageMime } from "./codex.ts";
+import { CodexInput, ImageMime } from "./codex.ts";
 import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
 import { CharacterDetail, CharacterStats, Objectives, Overrides, TableLines, Tier } from "./state.ts";
 
@@ -84,13 +84,23 @@ export const CampaignExport = z.object({
     customThreats: z.array(CustomThreat).max(CUSTOM_THREAT_CAP).default([]),
   }),
   // The codex pictures (issue #199), so a file is a whole backup: NPCs, places and handouts name them by `imageId`, which
-  // the importer remaps with the rest. Files from before pictures have none.
+  // the importer remaps with the rest. A picture is a nice-to-have, so a bad one never refuses the file: it parses as
+  // null, and the importer leaves it out and counts it. No length cap here: the body limit bounds the list, and the
+  // store's caps (200, 100 MB) drop and count the rest, where a capped list would lose every picture without a word.
+  // Files from before pictures, or with no list at all, have none.
   images: z
-    .array(z.object({ id, mime: ImageMime, base64: z.base64().max(1_400_000) })) // a 1 MB picture is about 1.34 MB of base64
-    .max(IMAGE_CAP)
-    .default([]),
+    .array(
+      z
+        .object({ id, mime: ImageMime, base64: z.base64().max(1_400_000) }) // a 1 MB picture is about 1.34 MB of base64
+        .nullable()
+        .catch(null),
+    )
+    .catch([]),
 });
 export type CampaignExport = z.infer<typeof CampaignExport>;
+
+// The biggest file IMPORT GAME takes: the api's parser, Next's proxy buffer and Cloudflare's free plan all stop here.
+export const IMPORT_MAX_BYTES = 100 * 1024 * 1024;
 
 // The same campaign for a new group: no sessions, empty pools, nothing revealed, every Agent rested, and no kind of game
 // or limits, which the new table agrees for itself (Core p.316, rules-flow §11.79). Sheets, builds and XP stay, since a

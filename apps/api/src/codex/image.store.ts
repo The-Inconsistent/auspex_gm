@@ -38,6 +38,15 @@ export async function putImage(
   return row!.id; // the row was just inserted
 }
 
+// Whether a picture of this campaign exists, without reading its bytes.
+export async function hasImage(db: Db, campaignId: string, id: string) {
+  const [row] = await db
+    .select({ id: codexImage.id })
+    .from(codexImage)
+    .where(and(eq(codexImage.id, id), eq(codexImage.campaignId, campaignId)));
+  return !!row;
+}
+
 export async function getImage(db: Db, campaignId: string, id: string) {
   const [row] = await db
     .select({ mime: codexImage.mime, bytes: codexImage.bytes })

@@ -27,7 +27,7 @@ export function HandoutDoc({ handout }: HandoutDocProps) {
   const head = headerOf(handout);
   const lines = style === "vox" ? voxLines(body) : [];
   const picture = imageId && (
-    <CodexPicture imageId={imageId} alt={handout.title ?? head} held={!handout.imageRevealed} />
+    <CodexPicture imageId={imageId} alt={handout.title ?? head} held={!handout.imageRevealed} large />
   );
   if (style === "plain")
     return (
