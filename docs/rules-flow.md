@@ -827,13 +827,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      archetype page lists "Adeptus Astartes" (VoA pp.32, 33, 37) or who comes by Rubicon Primaris (VoA p.43) takes the
      Primaris Astartes species the same way (Core p.29; see §11.18).
 122. **Spend requests are a convenience; the GM's ACCEPT is the spend** (p.164, p.165, p.177; spike 4). A player can ask,
-     from their phone, for a Wrath Reroll or Restore Shock, Glory dice or damage, or a Seize (`spend.request`). Nothing
-     moves until the GM taps ACCEPT, which runs the same `character.adjust`, `pool.adjust` or `turn.seize` as the tablet
-     in one transaction, so a spend the pool can't pay (the pools clamp at 0, so `spend.resolve` checks it first) or a
-     Seize the turn rules refuse fails and the request stays pending for the GM to DENY. Restore Shock recovers Rank +
-     Tier Shock and only for a conscious Agent with Shock to restore (p.164, p.196), so the Wrath is never spent for
-     nothing. An Agent has at most three pending, and at most one of each kind. A Seize request needs a fight, and ending
-     the fight or starting another clears them.
+     from their phone, for a Wrath Reroll or Restore Shock, Glory dice or damage, or a Seize (`spend.request`): SPEND
+     WRATH in the sheet's WRATH card, SPEND GLORY in its PARTY GLORY card. Asking needs the pool to cover the spend at
+     that moment (the Agent's Wrath, or the party's Glory for the amount asked), so a phone never asks for Glory the
+     party doesn't have; each request is checked against the whole pool, not what the other pending ones would leave.
+     Nothing moves until the GM taps ACCEPT, which runs the same `character.adjust`, `pool.adjust` or `turn.seize` as the
+     tablet in one transaction and checks the pool again (the pools clamp at 0, and they may have moved since the ask),
+     so a spend the pool can no longer pay or a Seize the turn rules refuse fails and the request stays pending for the
+     GM to DENY. Restore Shock recovers Rank + Tier Shock and only for a conscious Agent with Shock to restore (p.164,
+     p.196), so the Wrath is never spent for nothing. An Agent has at most three pending, and at most one of each kind.
+     A Seize request needs a fight, and ending the fight or starting another clears them.
 123. **Pending spend requests are visible to the whole table** (p.165). Glory is the party's pool and p.165 has the group
      agree on how it is spent, so every phone lists every pending request, read-only for the others; only the asker may
      cancel. Ruin is not asked for: it stays the GM's (§11.58).

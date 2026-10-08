@@ -867,6 +867,7 @@ textarea.input {
   inset: -6px;
 }
 dialog.legend,
+dialog.spend,
 dialog.sheet,
 dialog.picker {
   width: min(560px, calc(100vw - 32px));
@@ -883,11 +884,13 @@ dialog.picker {
   letter-spacing: normal;
 }
 dialog.legend::backdrop,
+dialog.spend::backdrop,
 dialog.sheet::backdrop,
 dialog.picker::backdrop {
   background: var(--overlay);
 }
 dialog.legend .sb-title,
+dialog.spend .sb-title,
 dialog.sheet .sb-title,
 dialog.picker .sb-title {
   position: sticky;
@@ -896,6 +899,7 @@ dialog.picker .sb-title {
   align-items: center;
 }
 dialog.legend .sb-title .btn,
+dialog.spend .sb-title .btn,
 dialog.sheet .sb-title .btn,
 dialog.picker .sb-title .btn {
   border-color: var(--bone-2);

@@ -30,6 +30,7 @@ import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
+import { PendingSpends, RequestSpend } from "./components/request-spend/request-spend";
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { UpgradeRow } from "./components/upgrade-row/upgrade-row";
 import { Vital } from "./components/vital/vital";
@@ -40,14 +41,17 @@ export type SheetProps = {
   me: Character;
   tier: LiveState["campaign"]["tier"];
   table?: { state: LiveState; send: Send };
+  // The player's own phone: SPEND buttons in the WRATH and PARTY GLORY cards (§11.122). The GM's tablet has its own panel.
+  requests?: boolean;
 };
 
-export function Sheet({ me, tier, table }: SheetProps) {
+export function Sheet({ me, tier, table, requests = false }: SheetProps) {
   const s = me.stats;
   const d = deriveStats({ stats: s, overrides: me.overrides, tier });
   const [error, setError] = useState<string | null>(null);
   const [detail, setDetail] = useState<Partial<CharacterDetail> | null>(null); // the text being edited, or null
   const { get } = useRules();
+  const asker = requests ? table : undefined;
   // What the XP looks like from here: earned in play, what advancement hasn't spent yet, and Rank (Core p.146, +1 per
   // 40 XP earned, at most 3). The server keeps `xpSpent` from the last saved build, so no catalogue is needed to show it.
   const toSpend = Math.max(0, me.xp - me.xpSpent);
@@ -164,15 +168,20 @@ export function Sheet({ me, tier, table }: SheetProps) {
       <div className="vitals">
         <Vital label={SHEET_COUNTERS.wounds.label} value={me.wounds} max={d.maxWounds} remaining danger />
         <Vital label={SHEET_COUNTERS.shock.label} value={me.shock} max={d.maxShock} remaining />
-        <Vital label={SHEET_COUNTERS.wrath.label} value={me.wrath} max={null} />
+        <Vital label={SHEET_COUNTERS.wrath.label} value={me.wrath} max={null}>
+          {asker && <RequestSpend pool="wrath" characterId={me.id} {...asker} />}
+        </Vital>
         {table && (
           <Vital
             label="PARTY GLORY"
             value={table.state.campaign.glory}
             max={poolMax("glory", table.state.characters.length)}
-          />
+          >
+            {asker && <RequestSpend pool="glory" characterId={me.id} {...asker} />}
+          </Vital>
         )}
       </div>
+      {asker && <PendingSpends characterId={me.id} {...asker} />}
       <div className="dim" style={{ fontSize: 12 }}>
         WRATH: reroll failed dice · narrative declaration · restore {"Rank + Tier"} Shock (p.164).
       </div>

@@ -176,12 +176,12 @@ apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab w
 apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel), test-call (CALL A TEST
                              and the tally, issue #191), spend-requests (kebab-case folders, children under
                              components/)
-apps/web/components/player/  player-app (sheet, fight, intel), request-spend, test-prompt (a called Test: pool, PASSED / FAILED; #191)
+apps/web/components/player/  player-app (sheet, fight, intel), test-prompt (a called Test: pool, PASSED / FAILED; #191)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), mentions + mention-field (codex @mentions: tap-to-peek links, the @ list in
-                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), weapon-line, sheet (with upgrade-row), bar, stat-block, status-chips,
+                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), weapon-line, sheet (with upgrade-row, request-spend: the phone's SPEND buttons), bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
                              CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed cards and handouts PDF), print-pick (a row's tick for PRINT N),
