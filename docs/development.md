@@ -148,7 +148,7 @@ Run these from the repo root unless noted.
 | Command | What it does |
 | --- | --- |
 | `bun run typecheck` | `tsc` for shared, api and web. Must pass before a commit |
-| `bun run test` | Unit tests (`bun test packages apps/web`): rules functions, command parser, libs |
+| `bun run test` | Unit tests (`bun test packages apps/web apps/api/src`): rules functions, command parser, libs, the api's few pure helpers (`table.pause.test.ts`) |
 | `bun run validate` | Every threat and pack against its schema, plus bestiary progress |
 | `bun run test:smoke` | End-to-end GM, player, guest and invite sessions over Socket.IO. Needs `dev:db`, and `dev:api` running with `CLERK_TEST_SECRET` set |
 | `bun run dev` | The whole stack: Turborepo runs the root `dev:db` task (Postgres, waits until healthy), then every workspace's `dev` in parallel (api and web). Ctrl-C stops the api and web; Postgres keeps running |

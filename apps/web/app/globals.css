@@ -2286,6 +2286,57 @@ pre.text.bld-rules {
   margin: 0;
 }
 
+/* The pause card on the GM tablet (issue #194): the GM header's first row, so it's on every tab, filled crimson so it
+   reads from across the table. The words carry it, not the colour. */
+.pause-banner {
+  flex: 1 0 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 12px 16px;
+  background: var(--red-fill);
+  border-block: 2px solid var(--red-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.pause-banner > span {
+  flex: 1;
+  min-width: 0;
+}
+/* The phone's side, rows of the player banner (which wraps): what PAUSE did, and the table's limits. */
+.pause-told {
+  flex: 1 0 100%;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+/* Empty, the live region stays in the page (so the next message is announced) but takes no room. */
+.pause-told:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.table-limits {
+  flex: 1 0 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  font-size: 15px;
+}
+.table-limits-text {
+  flex: 1;
+  min-width: 0;
+}
+
 /* ConfirmAction: the question and its two buttons, in one wrapping row. */
 .confirm {
   display: inline-flex;

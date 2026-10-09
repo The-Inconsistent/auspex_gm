@@ -10,6 +10,7 @@ import type {
   BookReply,
   Codex,
   LiveState,
+  PauseSignal,
   ThreatSource,
 } from "@wg/shared";
 
@@ -33,6 +34,8 @@ export function useTable(campaignId: string) {
   const [online, setOnline] = useState(false);
   // Books a GM tablet is serving right now (book:available); a cite in one of them opens its page.
   const [books, setBooks] = useState<ThreatSource[]>([]);
+  // GM only: when a phone last asked the table to pause (pause:signal), until DISMISS. Never stored: a reload clears it.
+  const [pauseAt, setPauseAt] = useState<string | null>(null);
   // GM only: what this tab serves, re-announced on every reconnect (the server forgets it with the old socket).
   const serving = useRef<{ sources: ThreatSource[]; render: RenderPage } | null>(null);
 
@@ -59,6 +62,7 @@ export function useTable(campaignId: string) {
     s.on("state", setState);
     s.on("codex", setCodex);
     s.on("book:available", (a: BookAvailable) => setBooks(a.sources));
+    s.on("pause:signal", (p: PauseSignal) => setPauseAt(p.at));
     s.on("book:request", async (p: BookPage, ack: (r: BookReply) => void) => {
       const render = serving.current?.render;
       if (!render) return ack({ ok: false, error: "The GM isn't serving that book." });
@@ -140,7 +144,17 @@ export function useTable(campaignId: string) {
     socket.current?.emit("book:serving", { sources: next?.sources ?? [] });
   }, []);
 
-  return { state, codex, online, send, books, requestPage, serveBooks };
+  // Player: the pause card, sent with no body and no ack (the server says nothing back, so a dropped tap can't be told
+  // from a relayed one). False when there's no signal to send it on.
+  const signalPause = useCallback(() => {
+    const s = socket.current;
+    if (!s?.connected) return false;
+    s.emit("pause:signal");
+    return true;
+  }, []);
+  const dismissPause = useCallback(() => setPauseAt(null), []);
+
+  return { state, codex, online, send, books, requestPage, serveBooks, pauseAt, dismissPause, signalPause };
 }
 
 async function emit(s: Socket | null, a: ActionInput): Promise<ActionResult> {

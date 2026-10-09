@@ -965,6 +965,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (p.323) and a Threat with no Shock never suffers it (p.324). Repeated Conditions stack (p.197): "Hindered (1)" on
      "Hindered" is "Hindered (2)"; an unrated Condition isn't listed twice. A typed dice total must lie within its dice.
      Area effects, effects behind a Test and durations stay with the GM. *Ruled on GitHub issue #183.*
+157. **The pause card: an anonymous stop signal from a phone** (GitHub issue #194). Core p.316 asks the table to agree
+     how to handle or bypass content and to create a safe space, but prints no tool or procedure: the card is a house
+     addition, after the X-Card. Any player's phone (member or guest; never the GM or the table screen) has a PAUSE
+     button on every tab. One tap, with no confirmation, buzzes the GM's tablet with a banner, "someone asked to stop",
+     that stays on every tab until DISMISS; the GM stops the scene and checks in with the table, and resumes it there
+     (there is no resume signal). The signal carries no name, no count and no log, and it's never stored, so a reload
+     clears the banner. It is a prompt to pause, not a guarantee of secrecy: at a quiet table of three, the GM may guess
+     who tapped. One tap per phone per 10 s and 6 a minute per table, beyond which taps are dropped silently. Beside
+     PAUSE, TABLE LIMITS shows the kind of game and the limits (§11.79) read-only, open by itself during the table's
+     first session and hidden when both are empty. *Proposed; awaiting the GM.*
 
 ---
 

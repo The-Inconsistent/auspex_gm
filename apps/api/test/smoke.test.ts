@@ -32,6 +32,7 @@ import {
   type FactionPresets,
   type FlavourTable,
   type NpcPreset,
+  type PauseSignal,
   type HulkRow,
   type PlaceSummary,
   type FrameworkCatalogue,
@@ -1950,6 +1951,45 @@ test("book pages: a GM tablet serves one page, relayed back to the player who as
   gm.socket.close();
   await eventually(() => available?.length === 0, "a GM leaving stops serving");
   assert.equal((await ask(113)).ok, false);
+});
+
+test("the pause card: a player's tap reaches the GM room with no name, and nobody else (issue #194)", async (t) => {
+  // Its own address: four more sockets would push the suite past the per-IP connect limit.
+  const ip = { "cf-connecting-ip": "203.0.113.194" };
+  const gm = await newCampaign("Pause", 2, ip["cf-connecting-ip"]);
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const tokenA = await gm.send({ type: "token.issue", characterId: a.id });
+  const tokenB = await gm.send({ type: "token.issue", characterId: b.id });
+  const screenToken = await gm.send({ type: "screen.issue" });
+  assert.ok(tokenA.ok && tokenA.token && tokenB.ok && tokenB.token && screenToken.ok && screenToken.token);
+  const pa = connect({ auth: { token: tokenA.token }, headers: ip });
+  const pb = connect({ auth: { token: tokenB.token }, headers: ip });
+  const screen = connect({ auth: { token: screenToken.token }, headers: ip });
+  t.after(() => (pa.socket.close(), pb.socket.close(), screen.socket.close()));
+  await Promise.all([pa.until(() => true), pb.until(() => true), screen.until(() => true)]);
+
+  const heard: { gm: PauseSignal[]; pb: unknown[]; screen: unknown[] } = { gm: [], pb: [], screen: [] };
+  gm.socket.on("pause:signal", (p: PauseSignal) => heard.gm.push(p));
+  pb.socket.on("pause:signal", (p: unknown) => heard.pb.push(p));
+  screen.socket.on("pause:signal", (p: unknown) => heard.screen.push(p));
+
+  // The GM and the table screen can't send one.
+  gm.socket.emit("pause:signal");
+  screen.socket.emit("pause:signal");
+  pa.socket.emit("pause:signal");
+  await eventually(() => heard.gm.length === 1, "the GM hears A's tap");
+  assert.deepEqual(Object.keys(heard.gm[0]!), ["at"], "only when, never who");
+
+  // A again inside its window is dropped; B is heard.
+  pa.socket.emit("pause:signal");
+  pb.socket.emit("pause:signal");
+  await eventually(() => heard.gm.length === 2, "the GM hears B's tap");
+  await new Promise((r) => setTimeout(r, 200));
+  assert.equal(heard.gm.length, 2, "A's second tap went nowhere");
+  assert.deepEqual([heard.pb, heard.screen], [[], []], "players and the screen never hear it");
 });
 
 test("the guest door is rate limited per caller IP", async () => {

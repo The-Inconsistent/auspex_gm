@@ -104,6 +104,23 @@ player ◀── ack { ok, image: JPEG } ◀── gateway ◀── GM tablet r
 - `book:request` is limited to 30 per minute per socket, and a page is capped at `MAX_PAGE_BYTES`.
 - Cites are parsed from the text the sheet stores (`parseCite`). The UI is `PageCite` inside `BooksProvider`.
 
+## The pause card, a phone's anonymous stop signal
+
+A player's phone can ask the table to stop without saying who (issue #194, rules-flow §11.157). It's the other socket
+event outside the action path. An action would put the sender's `ctx` into the queue and `applyAction`, the one place
+that must never know it, and the card changes no game state anyway:
+
+```text
+player ── pause:signal (no body, no ack) ──▶ gateway: pauseRelay (table.pause.ts) ──▶ pause:signal { at } to the GM room
+```
+
+- Only a `player` seat (member or guest) sends one. The GM's own sockets and the table screen are ignored.
+- The payload is `{ at }`, nothing else: no socket, user or character id. Nothing is stored and nothing is logged.
+- One per socket per 10 s and 6 per minute per campaign (`PAUSE_WINDOW_MS`, `PAUSE_TABLE_MAX`). An over-limit tap is
+  dropped silently, and there is no ack at all, so the sender can't tell a dropped tap from a relayed one by timing.
+- The players room never hears it. The GM tablet shows `PauseBanner` until DISMISS; a reload clears it.
+- Honest limit: the server can't make it more anonymous than the room. At a table of three, the GM may guess.
+
 ## Access: accounts and guests
 
 Three kinds of caller reach a table:

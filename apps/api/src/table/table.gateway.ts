@@ -31,6 +31,7 @@ import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
 import { clientIp, limiter } from "../core/rate-limit.ts";
 import { applyAction, kicks, touches, type Kick } from "./table.dispatch.ts";
+import { pauseRelay } from "./table.pause.ts";
 import { loadCodex, loadState } from "./table.state.ts";
 
 const rooms = (campaignId: string) => ({ gm: `c:${campaignId}:gm`, players: `c:${campaignId}:players` });
@@ -50,6 +51,8 @@ const allowConnect = limiter({ max: 60, windowMs: 60_000 });
 const allowAction = limiter({ max: 120, windowMs: 60_000 });
 // A player flipping through cited pages; each one costs the GM's tablet a render.
 const allowPage = limiter({ max: 30, windowMs: 60_000 });
+// The pause card: one per phone per 10 s and 6 a minute per table (table.pause.ts).
+const allowPause = pauseRelay();
 const PAGE_TIMEOUT_MS = 15_000;
 const KICK_GRACE_MS = 200;
 
@@ -155,6 +158,16 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     // image as an ArrayBuffer (BookReply).
     const ack = BookAck.safeParse(reply);
     return ack.success ? ack.data : { ok: false, error: "The GM's tablet couldn't render it." };
+  }
+
+  // The pause card (issue #194): a player's phone asks the table to stop, anonymously. Not an action, so it never
+  // reaches the queue or applyAction with the sender's ctx: the GM room hears only when, never who, and nothing is
+  // stored or logged. No ack either, so a dropped tap looks the same as a relayed one.
+  @SubscribeMessage("pause:signal")
+  onPause(@ConnectedSocket() socket: Socket) {
+    const seat = socket.data as Seat;
+    const signal = allowPause({ role: seat.role, campaignId: seat.campaignId, socketId: socket.id });
+    if (signal) this.server.to(rooms(seat.campaignId).gm).emit("pause:signal", signal);
   }
 
   @SubscribeMessage("action")
