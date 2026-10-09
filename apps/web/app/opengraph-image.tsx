@@ -15,7 +15,7 @@ const [display, serif] = await Promise.all([
   readFile(join(process.cwd(), "assets/CrimsonPro-Italic.woff")),
 ]);
 
-const C = { vellum: "#f2ecdf", ink: "#1f1a16", ink3: "#665b4e", red: "#8a1c1c", iron: "#2a2522", line: "#b7a785" };
+const C = { vellum: "#e7e5e0", ink: "#1c1b1a", ink3: "#5c5953", red: "#8b2a2a", iron: "#1b1b1d", line: "#a9a69f" };
 
 export default function Image() {
   return new ImageResponse(

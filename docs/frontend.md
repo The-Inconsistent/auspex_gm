@@ -926,14 +926,17 @@ The error text is either the server's `ActionError` message or one of the two cl
 
 ## 7. Styling
 
-The look is the "Imperial Manuscript", after the print design of the Wrath & Glory books: a vellum page with faint
-stains and a vignette (the `radial-gradient`s on `body`), crimson Cinzel section heads over a double rule, iron bands
-with bone text for headers and tabs, riveted-plate framing for GM-only content, and flat panels and tables so numbers
-read at arm's length. None of it uses book art: everything is CSS, plus one SVG mask (the torn band edge). Mock-ups and
-the design language: canvas `LRBEbp8GhgBAFeDk4pohVy`. Everything is plain CSS in `app/globals.css`, using short
+The look is the "Imperial Manuscript", after the print design of the Wrath & Glory books: a cold grey page with
+grain, mottle and a smudged vignette (SVG noise tiles `--grain` and `--mottle`, plus the `radial-gradient`s on `body`),
+crimson Cinzel section heads beside the books' quill rule (a serrated bar ending in a feather), black iron bands with a
+dry-brush torn edge and bone text for headers and tabs, stat blocks as printed (a spiked crest, a crimson title bar,
+charcoal bands with ragged ends), the sealed plate (the books' Optional Rule box: spiked crest bar and winged skull) for
+GM-only content, and flat panels and tables so numbers read at arm's length. Warmth comes only from crimson and brass. None
+of it uses book art: everything is CSS, plus inline SVG masks and noise. The token names keep "vellum" from the first,
+warmer pass. Mock-ups and the design language: canvas `LRBEbp8GhgBAFeDk4pohVy`. Everything is plain CSS in `app/globals.css`, using short
 utility and component classes plus inline `style` for one-offs.
 
-**Themes.** `:root` is **vellum** (day). **Vigil** (night: charred page, bone ink, ember red) re-maps the same tokens
+**Themes.** `:root` is **vellum** (day). **Vigil** (night: soot page, bone ink, ember red) re-maps the same tokens
 under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
 `ThemeToggle` (`components/ui/theme-toggle/`) stores the choice per device in `localStorage` (`THEME_KEY`), and
 `THEME_SCRIPT`, inlined in `<head>` by `app/layout.tsx`, applies it before first paint (`<html suppressHydrationWarning>`).
@@ -964,7 +967,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 | `--bone`, `--bone-2` | Text on iron and on crimson fills; secondary text on iron |
 | `--brass` | Glory only |
 | `--field` | Input background |
-| `--stain-a`, `--stain-b`, `--vignette` | The page-ground texture |
+| `--grain`, `--mottle`, `--stain-a`, `--stain-b`, `--vignette` | The page-ground texture: SVG noise tiles (dark specks by day, pale by night), faint stains, the smudged edge |
 | `--overlay` | Near-opaque backdrop for `.overlay` (the QR dialog) |
 | `--hi-light`, `--shade-28`, `--shade-35`, `--shade-40`, `--shade-50` | Bevel highlight and black shades for button bevels, tab dividers, the rail's inner shadow and the refusal bar's drop shadow; the same in both themes |
 | `--bone-line`, `--bone-wash` | Bone at 22% and 8%: the pool frames and the inner ring of a button on a band, a band button's hover |
@@ -992,7 +995,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
   set-up and lobby headers).
 - Book furniture: `.sb*` (the stat block: `.sb-title`, `.sb-grid`, `.sb-head` with `.cur` for the campaign Tier,
   `.sb-v`, `.sb-shade`, `.sb-band`, `.sb-body`), `.tbar` (a crimson table title bar; `.iron` for Threats), `.plate`
-  (riveted plate: GM-only content, e.g. the codex editor's GM notes, secrets and hazards), `.handout` (a sealed
+  (sealed plate: GM-only content, e.g. the codex editor's GM notes, secrets and hazards), `.handout` (a sealed
   slip), `.track` (framed wound/shock cells, `.harm` or `.ink`; `components/ui/track`), `.seal` (a pool as a wax seal;
   `components/ui/seal`).
 - Layout: `.panel`, `.item` (`.now` for the acting card on FIGHT), `.item-head` (a card's full-width header row, 44px

@@ -10,8 +10,8 @@ table, such as a travel event in prep or a Mutation table after a failed Mutatio
 - **Players (phones):** live play sheet, the fight as the GM allows them to see it, handouts, known NPCs and
   locations, session recaps.
 
-Everything syncs live. UI style is the "Imperial Manuscript", after the books' print design: vellum, crimson ink and iron
-bands (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a night "vigil" theme (`docs/frontend.md` §7).
+Everything syncs live. UI style is the "Imperial Manuscript", after the books' print design: a cold grey page, crimson ink and charcoal
+iron (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a night "vigil" theme (`docs/frontend.md` §7).
 
 ## Rules come from the books, never from memory
 
