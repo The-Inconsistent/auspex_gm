@@ -1007,7 +1007,7 @@ a closed dialog can't be reopened; make a new one.
   - `▶ RND nn · YOUR TURN`: the band turns crimson and a big `YOUR TURN` sits under it
   - `RND nn · <NAME> ACTING` or `<SIDE> PICK`, with `· YOU: DONE` added once the player has acted
 
-  The lobby link and the account button (signed in only) and a `⋮` menu (a native `popover`: theme, LEAVE) sit on it.
+  The lobby link and the account button (signed in only) and a `⋮` menu (a native `popover`: theme, turn sound, LEAVE) sit on it.
 - **Vitals strip** (`components/vitals-strip/`), under the band on every tab: what's left of Wounds and Shock, Wrath and
   the party's Glory (each a `RequestSpend` trigger, §11.122), `pcStatus` chips and the Conditions (each opens its rule).
   Each counter's label opens its rule too (`STRIP_RULES`: Wounds and Shock Core p.37, Wrath and Glory p.164), standing in
@@ -1015,8 +1015,21 @@ a closed dialog can't be reopened; make a new one.
   Tapping the name opens SHEET. Under it, on every tab, the pending spend requests (`PendingSpends`: yours with
   CANCEL, the others' read-only, §11.123), since a spend can be asked from the strip or FIGHT. Once the page scrolls past a marker 160 px down (`.pl-fold-mark`, an
   IntersectionObserver on a callback ref) it folds to one mono line.
-- **Vibration:** when it becomes the player's turn, `navigator.vibrate(TURN_VIBRATION)` buzzes once. This is a
-  `useEffect` on `myTurn`, with a ref so it fires only on the change.
+- **Turn alert** (`player-app/hooks/use-turn-alert/`, issue #207): when it becomes the player's turn (`myTurn`, not
+  their side's PICK), three cues, each gated on its own capability or preference:
+  - **Flash, always:** `.turn-flash`, YOUR TURN in crimson over the whole screen for `TURN_FLASH_MS` (1.2 s), then a
+    fade; `pointer-events: none`, ended early by any tap, one flash per turn (under WCAG 2.3.1's three a second). It is
+    an `aria-live="assertive"` region, so a screen reader says "Your turn". Under `prefers-reduced-motion` there is no
+    overlay: the header gets a static bone border for the same time instead.
+  - **Vibration, Android only:** `navigator.vibrate(TURN_VIBRATION)` buzzes once. iOS Safari has no Vibration API, which
+    is why the flash exists.
+  - **Tone, opt-in:** the speaker button in the `⋮` menu turns SOUND on for this device (`localStorage`
+    `wg-turn-sound`, default off, read and written in try/catch). A two-note `OscillatorNode` tone (about 250 ms, quiet)
+    plays from one page-wide `AudioContext`, which iOS keeps suspended until a tap resumes it (any `pointerup` in the
+    player app, or the toggle itself). Still suspended at turn time, or muted by the ringer switch: no tone, the flash
+    still shows.
+
+  The cues fire from one `useEffect` on `myTurn`; the flash's on/off is worked out during render.
 - **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL, RULES) sit in a sticky bar at the bottom, each with a Lucide icon. The
   open tab is in the address (`?tab=fight`, `TAB_PARAM`), set with `history.replaceState` so a refresh keeps it without
   a server round trip. FIGHT carries a lit square while a fight is on; INTEL a count of what's new.
@@ -1325,7 +1338,7 @@ This section summarises the binding rules. The full text is in
   - Rules numbers (derived traits, pool caps, death states) come from `@wg/shared` and are never computed in the
     UI.
 - **`useEffect` only for external systems.** Each one is commented with the system it syncs: the socket, the wake
-  lock, `navigator.vibrate`, the book page relay, timers and focus, document listeners and the native `<dialog>` (the
+  lock, the turn alert (`navigator.vibrate`, the tone), the book page relay, timers and focus, document listeners and the native `<dialog>` (the
   header popovers, the delta pad, PARTY's sheets), and `localStorage` for INTEL's NEW marks.
 
   There's no client-side read. The browser `fetch` calls are REST writes: NEW CAMPAIGN's CREATE, the lobby's IMPORT

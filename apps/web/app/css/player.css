@@ -295,6 +295,50 @@
   font-weight: 700;
 }
 
+/* The turn alert (issue #207): YOUR TURN in crimson ink over the whole screen for TURN_FLASH_MS, then a fade. It never
+   takes a tap. Always in the tree as the live region; empty and invisible until .on. */
+.turn-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--overlay);
+  color: var(--red);
+  font-family: var(--display);
+  font-size: 44px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+/* One flash and one fade per turn: well under WCAG 2.3.1's three flashes a second. */
+.turn-flash.on {
+  animation: turn-flash 1200ms ease-out forwards;
+}
+@keyframes turn-flash {
+  0% {
+    opacity: 0;
+  }
+  12%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* Reduced motion: no overlay (it stays transparent, still announced), the header gets a static border instead. */
+@media (prefers-reduced-motion: reduce) {
+  .turn-flash.on {
+    animation: none;
+  }
+  .pl-head.alert {
+    box-shadow: inset 0 0 0 4px var(--bone);
+  }
+}
 .pl-body {
   position: relative;
   padding: 24px 16px 16px;
