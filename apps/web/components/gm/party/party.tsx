@@ -12,6 +12,7 @@ import {
   deriveStats,
   pcStatus,
   rankOf,
+  SessionTitle,
   type ActionResult,
   type Character,
   type Codex,
@@ -37,6 +38,7 @@ import { shareOrigin } from "@/lib/share-origin/share-origin";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { MutationRoll } from "./components/mutation-roll/mutation-roll";
+import { NextSession } from "./components/next-session/next-session";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
@@ -61,9 +63,11 @@ export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
   const [json, setJson] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const agentFields = useFieldErrors("new-agent"); // ADD AGENT's name
+  const sessionFields = useFieldErrors("start-title"); // START SESSION's title
   const { print } = usePrint();
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
+  const [title, setTitle] = useState(""); // the next session's name, sent with START SESSION (issue #175)
   const open = codex.sessions.find((s) => !s.endedAt);
   const { members, invites } = state.access;
   const seatOf = (characterId: string) => members.find((m) => m.characterId === characterId);
@@ -170,7 +174,13 @@ export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
   const abandonSession = async () => report(await send({ type: "session.abandon" }), "SESSION ENDED · NO XP");
 
   // START SESSION: resets the pools per the rules.
-  const startSession = async () => report(await send({ type: "session.start" }), "SESSION STARTED · POOLS RESET");
+  const startSession = async () => {
+    const named = sessionFields.check(SessionTitle, title);
+    if (named === null) return;
+    const r = await send({ type: "session.start", title: named });
+    report(r, "SESSION STARTED · POOLS RESET");
+    if (r.ok) setTitle("");
+  };
 
   // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
   const respite = async (c: Character) =>
@@ -238,7 +248,7 @@ export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
         <div className="rule">SESSION</div>
         {open ? (
           <>
-            <div>SESSION {open.number} IN PROGRESS</div>
+            <div>{[`SESSION ${open.number}`, open.title.toUpperCase(), "IN PROGRESS"].filter(Boolean).join(" · ")}</div>
             <div className="field">
               <label className="label" htmlFor="xp">
                 XP EACH (8 / 10 / 12, p.321)
@@ -293,13 +303,30 @@ export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
               Starting a session resets per the rules (p.162): every Wrath → 2, Glory → 0, Ruin →{" "}
               {state.characters.length} (players).
             </div>
-            <div>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <input
+                id="start-title"
+                className="input"
+                aria-label="Session title"
+                style={{ flex: 1, minWidth: 160 }}
+                placeholder="TITLE (optional)"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                {...sessionFields.marks()}
+              />
               <button className="btn primary" onClick={startSession}>
                 START SESSION {codex.sessions.length + 1}
               </button>
             </div>
+            <FieldError {...sessionFields.reason()} />
           </>
         )}
+        <NextSession
+          key={`${state.campaign.nextSessionAt}|${state.campaign.nextSessionPlace}`}
+          campaign={state.campaign}
+          send={send}
+          onResult={report}
+        />
         <SessionHistory sessions={codex.sessions} send={send} onResult={sessionReport} />
       </div>
 

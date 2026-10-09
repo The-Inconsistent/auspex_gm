@@ -8,6 +8,7 @@ import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
 import { CodexSearch } from "@/components/ui/codex-search/codex-search";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { Mentions } from "@/components/ui/mentions/mentions";
+import { nextSessionLine } from "@/lib/next-session/next-session";
 
 import { MISSION_GROUPS } from "./constants";
 
@@ -28,9 +29,21 @@ function IntelPage({ codex, state }: IntelProps) {
   const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
   // Every recap, newest first (issue #195, §11.151): the latest open, the rest folded for a player catching up.
   const [last, ...older] = codex.sessions.filter((s) => s.recap).reverse();
-  const { framework, frameworkBonus, patron, kind, limits } = state.campaign;
+  const { framework, frameworkBonus, patron, kind, limits, nextSessionAt, nextSessionPlace } = state.campaign;
   return (
     <>
+      {/* When the table meets next (issue #197), in this phone's own time zone; the .ics carries it to a calendar. */}
+      {nextSessionAt && (
+        <div className="stack" style={{ gap: 4 }}>
+          <div className="rule">NEXT SESSION</div>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+            <b style={{ flex: 1 }}>{nextSessionLine(nextSessionAt, nextSessionPlace)}</b>
+            <a className="btn sm" href={`/api/campaigns/${state.campaign.id}/next.ics`} download>
+              ADD TO CALENDAR
+            </a>
+          </div>
+        </div>
+      )}
       {(framework || kind.length > 0 || limits.length > 0) && (
         <div className="stack" style={{ gap: 4 }}>
           <div className="rule">MISSION</div>
@@ -61,14 +74,18 @@ function IntelPage({ codex, state }: IntelProps) {
       )}
       {last && (
         <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">PREVIOUSLY (SESSION {last.number})</div>
+          <div className="rule">
+            PREVIOUSLY (SESSION {last.number}
+            {last.title && ` · ${last.title.toUpperCase()}`})
+          </div>
           <pre className="text">
             <Mentions text={last.recap} />
           </pre>
           {older.map((s) => (
             <details key={s.id}>
               <summary className="label">
-                SESSION {s.number} · {new Date(s.startedAt).toLocaleDateString()}
+                SESSION {s.number}
+                {s.title && ` · ${s.title.toUpperCase()}`} · {new Date(s.startedAt).toLocaleDateString()}
               </summary>
               <pre className="text">
                 <Mentions text={s.recap} />

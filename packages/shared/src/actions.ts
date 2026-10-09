@@ -9,6 +9,7 @@ import { CustomThreatData, MAX_SLUG } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
 import {
+  CampaignName,
   CampaignSetup,
   CharacterDetail,
   CharacterStats,
@@ -23,8 +24,14 @@ import {
 
 const id = z.uuid();
 
+// Where the next session meets (issue #197): "Mike's flat". PARTY › SESSION checks it before SAVE.
+export const NextSessionPlace = z.string().trim().max(200);
+// A session's own name (issue #175), shown beside its number: "SESSION 3 · THE BLACK SHIP".
+export const MAX_SESSION_TITLE = 100;
+export const SessionTitle = z.string().trim().max(MAX_SESSION_TITLE);
 // What session.edit may change (issue #195); PARTY › SESSIONS checks its draft with it before SAVE.
 export const SessionJournal = z.object({
+  title: SessionTitle.optional(),
   recap: z.string().max(10000).optional(),
   notes: z.string().max(10000).optional(),
 });
@@ -59,10 +66,13 @@ export const Action = z.union([
   z.discriminatedUnion("type", [
     z.object({
       type: z.literal("campaign.update"),
-      name: z.string().min(1).max(100).optional(),
+      name: CampaignName.optional(), // a rename (issue #175)
       tier: Tier.optional(),
       ...CampaignSetup.partial().shape,
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
+      // The next session (issue #197). The GM's browser sends its local time as UTC; a past date is a fix, so it's taken.
+      nextSessionAt: z.iso.datetime({ offset: true }).nullable().optional(),
+      nextSessionPlace: NextSessionPlace.optional(),
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
     // A player asks for a spend, the GM answers (rules-flow.md §11.122). `amount` only counts for the Glory kinds.
@@ -105,14 +115,16 @@ export const Action = z.union([
     z.object({ type: z.literal("test.close") }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
-    z.object({ type: z.literal("session.start") }),
+    // `title` names the new session up front (issue #175); session.edit can change it later.
+    z.object({ type: z.literal("session.start"), title: SessionTitle.default("") }),
     z.object({
       type: z.literal("session.end"),
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
-    // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs. No XP: it was paid out
-    // at session.end (p.321, §11.152). A running session's recap is written at session.end (§11.153).
+    // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs, name the session
+    // (issue #175). No XP: it was paid out at session.end (p.321, §11.152). A running session's recap is written at
+    // session.end (§11.153).
     SessionJournal.extend({ type: z.literal("session.edit"), sessionId: id }),
     // Ends the running session with no XP and no Rank notices (a session that was never played, or left open overnight).
     z.object({ type: z.literal("session.abandon") }),

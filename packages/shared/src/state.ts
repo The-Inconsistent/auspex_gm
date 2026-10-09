@@ -391,6 +391,8 @@ export const sideOf = (c: Combatant): Side => sideOfKind(c.kind);
 export const MAX_TABLE_LINES = 12;
 export const MAX_TABLE_LINE = 60;
 export const TableLines = z.array(z.string().trim().min(1).max(MAX_TABLE_LINE)).max(MAX_TABLE_LINES);
+// A campaign's name: NEW CAMPAIGN gives it, SETUP › NAME renames it (issue #175).
+export const CampaignName = z.string().trim().min(1).max(100);
 // What the GM settles about the campaign itself (Core pp.18–19, 316): NEW CAMPAIGN sends it at creation, PARTY patches it.
 export const CampaignSetup = z.object({
   framework: z.string().max(5000),
@@ -452,6 +454,9 @@ export const LiveState = z.object({
     limits: z.array(z.string()),
     homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
     archived: z.boolean(), // read-only: every action but unarchive and delete is refused (campaign.archive)
+    // When and where the table meets next (issue #197): set in PARTY › SESSION, shown on INTEL and the lobby card.
+    nextSessionAt: z.string().nullable(), // ISO, UTC; session.start clears it
+    nextSessionPlace: z.string(),
   }),
   characters: z.array(Character),
   encounter: z

@@ -13,6 +13,9 @@ export const campaign = pgTable("campaign", {
   kind: conditions(), // the kind of game the table agreed on (Core p.316, rules-flow §11.79)
   limits: conditions(), // what the table leaves out (Core p.316)
   homebrew: boolean().notNull().default(false), // the character builder may use the homebrew books (issue #9)
+  // When and where the table meets next (issue #197); session.start clears the date, the place stays for next time.
+  nextSessionAt: timestamp({ withTimezone: true }),
+  nextSessionPlace: text().notNull().default(""),
   archivedAt: timestamp({ withTimezone: true }), // read-only until unarchived (campaign.archive)
   createdAt: createdAt(),
 });
@@ -29,6 +32,7 @@ export const owned = () => ({
 export const session = pgTable("session", {
   ...owned(),
   number: integer().notNull(),
+  title: text().notNull().default(""), // the GM's name for it (issue #175)
   startedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   endedAt: timestamp({ withTimezone: true }),
   recap: body(),

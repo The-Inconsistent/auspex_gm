@@ -2,7 +2,15 @@ import { randomUUID, timingSafeEqual } from "node:crypto";
 import { and, count, eq, gt, inArray, isNotNull, isNull } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { rulesList, scenePresets, threats, wargear } from "@wg/data";
-import { CharacterStats, CUSTOM_PREFIX, isCustomThreatId, MAX_SLUG, remapMentions, wouldCycle } from "@wg/shared";
+import {
+  CharacterStats,
+  CUSTOM_PREFIX,
+  isCustomThreatId,
+  MAX_SLUG,
+  remapMentions,
+  toIcs,
+  wouldCycle,
+} from "@wg/shared";
 import type { CampaignExport, Lobby, LobbyGame, Role, RuleEntry, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { appUser, membership } from "../auth/auth.schema.ts";
 import { character } from "../character/character.schema.ts";
@@ -160,6 +168,7 @@ export async function importCampaign({
 
   const made = await createCampaign({
     ...file.campaign,
+    nextSessionAt: at(file.campaign.nextSessionAt),
     owner,
     fill: async (tx, campaignId) => {
       // Lists load in createdAt order, and now() is the same for the whole transaction, so each row gets its place in
@@ -297,7 +306,13 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
 
   const [camps, gms, players] = await Promise.all([
     db
-      .select({ id: campaign.id, name: campaign.name, tier: campaign.tier, archived: isNotNull(campaign.archivedAt) })
+      .select({
+        id: campaign.id,
+        name: campaign.name,
+        tier: campaign.tier,
+        archived: isNotNull(campaign.archivedAt),
+        nextSessionAt: campaign.nextSessionAt,
+      })
       .from(campaign)
       .where(inArray(campaign.id, ids)),
     db
@@ -316,6 +331,7 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
   const card = (id: string): LobbyGame | null => {
     const c = camps.find((x) => x.id === id);
     if (!c) return null;
+    const role = roleOf.get(id) ?? null;
     return {
       id: c.id,
       name: c.name,
@@ -327,7 +343,9 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
           .join(", ") || "—",
       players: players.find((p) => p.campaignId === id)?.n ?? 0,
       session: running.find((r) => r.campaignId === id)?.number ?? null,
-      role: roleOf.get(id) ?? null,
+      role,
+      // Not secret, but a stranger's card has no use for it (issue #197 decision 4).
+      nextSessionAt: role ? (c.nextSessionAt?.toISOString() ?? null) : null,
     };
   };
   const cards = (list: { campaignId: string }[], archived: boolean) =>
@@ -349,6 +367,23 @@ export async function lobby(user: AuthUser): Promise<Lobby> {
 export async function campaignHomebrew(campaignId: string) {
   const [c] = await db.select({ homebrew: campaign.homebrew }).from(campaign).where(eq(campaign.id, campaignId));
   return c?.homebrew ?? false;
+}
+
+// The next session as a calendar file (issue #197), or null when the GM has set no date. Its number is the one START
+// SESSION will give it (session.start counts + 1). The UID follows the date, so a moved session is a new event.
+export async function nextSessionIcs(campaignId: string) {
+  const [c] = await db
+    .select({ name: campaign.name, at: campaign.nextSessionAt, place: campaign.nextSessionPlace })
+    .from(campaign)
+    .where(eq(campaign.id, campaignId));
+  if (!c?.at) return null;
+  const [{ n } = { n: 0 }] = await db.select({ n: count() }).from(session).where(eq(session.campaignId, campaignId));
+  return toIcs({
+    uid: `${campaignId}-${c.at.getTime() / 1000}@auspex`,
+    start: c.at,
+    summary: `${c.name} · Session ${n + 1}`,
+    location: c.place,
+  });
 }
 
 export const listThreats = (): Threat[] => [...threats.values()];

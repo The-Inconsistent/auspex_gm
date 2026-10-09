@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 
-import type { ActionResult, Codex, FrameworkCatalogue, LiveState } from "@wg/shared";
+import { CampaignName, type ActionResult, type Codex, type FrameworkCatalogue, type LiveState } from "@wg/shared";
 
+import { FieldError } from "@/components/ui/field-error/field-error";
 import { TableTalk } from "@/components/ui/table-talk/table-talk";
+import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 import { setupSteps } from "@/lib/setup/setup";
 
@@ -22,7 +24,8 @@ type SetupProps = {
 };
 
 // SETUP: the Core Rulebook's campaign set-up checklist, then the campaign's own answers, the ones NEW CAMPAIGN asked
-// first (the Framework, its Bonus, the patron, the kind of game and the limits), the campaign as a file, and ARCHIVE.
+// first (its name, the Framework, its Bonus, the patron, the kind of game and the limits), the campaign as a file, and
+// ARCHIVE.
 export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: SetupProps) {
   const [picking, setPicking] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -30,6 +33,8 @@ export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: Setu
   const [frameworkBonus, setFrameworkBonus] = useState(state.campaign.frameworkBonus);
   const [patron, setPatron] = useState(state.campaign.patron);
   const [table, setTable] = useState({ kind: state.campaign.kind, limits: state.campaign.limits });
+  const [name, setName] = useState(state.campaign.name);
+  const nameFields = useFieldErrors("campaign-name");
 
   // The file carries every picture (issue #199), so EXPORT says how many: a big file is no surprise.
   const pictures = new Set(
@@ -41,6 +46,13 @@ export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: Setu
   // Framework SAVE.
   const saveFramework = async () =>
     report(await send({ type: "campaign.update", framework, frameworkBonus, patron, ...table }), "FRAMEWORK SAVED");
+
+  // RENAME (issue #175): every seat's header follows the state broadcast. DELETE asks for the new name from then on.
+  const rename = async () => {
+    const named = nameFields.check(CampaignName, name);
+    if (named === null) return;
+    report(await send({ type: "campaign.update", name: named }), `RENAMED ${named.toUpperCase()}`);
+  };
 
   // START FROM A FRAMEWORK › USE: the picked names go into the form, saved only by SAVE.
   const fillFramework = (picked: { patron: string; framework: string }) => {
@@ -55,6 +67,24 @@ export function Setup({ state, codex, send, frameworks, onTab, onDeleted }: Setu
       {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
 
       <SetupPanel steps={setupSteps({ campaign: state.campaign, codex, characters: state.characters })} onTab={onTab} />
+
+      <section className="panel pad stack">
+        <div className="rule">NAME</div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <input
+            id="campaign-name"
+            className="input"
+            aria-label="Campaign name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            {...nameFields.marks()}
+          />
+          <button className="btn" onClick={rename} disabled={name.trim() === state.campaign.name}>
+            RENAME
+          </button>
+        </div>
+        <FieldError {...nameFields.reason()} />
+      </section>
 
       <section className="panel pad stack">
         <div className="rule">FRAMEWORK (p.18)</div>

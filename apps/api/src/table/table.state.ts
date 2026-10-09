@@ -168,6 +168,8 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       limits: c.limits,
       homebrew: c.homebrew,
       archived: c.archivedAt !== null,
+      nextSessionAt: c.nextSessionAt?.toISOString() ?? null,
+      nextSessionPlace: c.nextSessionPlace,
     },
     characters: chars.map(toCharacter),
     encounter: enc
@@ -293,6 +295,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
     sessions: sessions.map((s) => ({
       id: s.id,
       number: s.number,
+      title: s.title,
       startedAt: s.startedAt.toISOString(),
       endedAt: s.endedAt?.toISOString() ?? null,
       recap: s.recap,

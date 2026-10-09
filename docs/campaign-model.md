@@ -11,7 +11,8 @@ text, notes and handouts. Build order: combat tracker plus this campaign core fi
 
 ```
 Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sheet p.374),
- │           patron, kind[] and limits[] (core p.316, rules-flow §11.79), party keywords
+ │           patron, kind[] and limits[] (core p.316, rules-flow §11.79), party keywords,
+ │           nextSessionAt + nextSessionPlace (issue #197: UTC, cleared by session.start; INTEL and next.ics)
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
  ├─ Adventure    title, premise, status (planned | running | done | failed), shown + brief (the mission log, #196)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
@@ -28,7 +29,7 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │               Powers, rules-flow §11.116), givenTo (server-owned: the Agent GIVE handed it to; issue #51)
  ├─ Handout      title, body (text), style (plain | slate | form | vox | decree), header, revealedAt,
  │               audience (all | characterIds), picture
- └─ Session      number, date, recap ("Previously in…", core p.317), notes (the GM's own), xp (8/10/12,
+ └─ Session      number, title (issue #175), date, recap ("Previously in…", core p.317), notes (the GM's own), xp (8/10/12,
                  core p.321); the journal is PARTY › SESSIONS (issue #195). Not built yet: beatIds played,
                  objectives rolled (core p.43)
 ```

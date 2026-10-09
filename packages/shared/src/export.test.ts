@@ -88,6 +88,24 @@ test("a file from before scene goals, exits and Tests still loads (issues #38, #
   assert.deepEqual([b!.goal, b!.exits, b!.tests], ["", [], []]);
 });
 
+test("a file from before session titles loads them untitled (issue #175)", () => {
+  assert.equal(file.codex.sessions[0]!.title, "");
+});
+
+test("a file from before the next session has none, and a fresh start drops it (issue #197)", () => {
+  assert.deepEqual([file.campaign.nextSessionAt, file.campaign.nextSessionPlace], [null, ""]);
+  const set = {
+    ...file,
+    campaign: { ...file.campaign, nextSessionAt: "2026-10-12T16:00:00.000Z", nextSessionPlace: "Hall" },
+  };
+  assert.equal(CampaignExport.parse(set).campaign.nextSessionAt, "2026-10-12T16:00:00.000Z");
+  assert.equal(
+    CampaignExport.parse({ ...set, campaign: { ...set.campaign, nextSessionAt: "soon" } }).campaign.nextSessionAt,
+    null,
+  );
+  assert.deepEqual([freshStart(set).campaign.nextSessionAt, freshStart(set).campaign.nextSessionPlace], [null, ""]);
+});
+
 test("a file from before handout styles loads them plain, with no header (issue #204)", () => {
   const [h] = file.codex.handouts;
   assert.deepEqual([h!.style, h!.header], ["plain", ""]);
