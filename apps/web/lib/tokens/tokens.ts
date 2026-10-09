@@ -1,12 +1,12 @@
 // Raw colours for places CSS variables can't reach (QR canvas, viewport meta, web manifest, the printed PDF cards).
-// Mirrors the vellum set in app/globals.css; change both together.
+// Mirrors the day (vellum) set in app/globals.css; change both together.
 export const TOKENS = {
-  vellum: "#f2ecdf",
-  ink: "#1f1a16",
-  ink3: "#665b4e",
-  line: "#b7a785",
-  red: "#8a1c1c",
-  iron: "#2a2522",
+  vellum: "#e7e5e0",
+  ink: "#1c1b1a",
+  ink3: "#5c5953",
+  line: "#a9a69f",
+  red: "#8b2a2a",
+  iron: "#1b1b1d",
   marker: {
     red: "#ff6b5e",
     amber: "#ffc266",
