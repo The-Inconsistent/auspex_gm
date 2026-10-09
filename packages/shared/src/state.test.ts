@@ -125,6 +125,9 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
   encounter: e,
   spendRequests: [],
   testCall: null,
+  clocks: [],
+  countdown: null,
+  serverNow: 0,
   access: noAccess,
 });
 
@@ -158,6 +161,9 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
     ),
     spendRequests: [],
     testCall: null,
+    clocks: [],
+    countdown: null,
+    serverNow: 0,
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -183,6 +189,20 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
   );
   // The table agreed on them together, so every phone shows them under MISSION (rules-flow §11.79).
   assert.deepEqual(toPlayerView(s, null).campaign.limits, ["body horror"]);
+});
+
+test("toPlayerView: a hidden clock or countdown is the GM's, a visible one is everyone's (issue #210)", () => {
+  const clock = { id: "k", name: "Hive guard", segments: 6 as const, filled: 3, visible: true };
+  const s: LiveState = {
+    ...table(enc([])),
+    clocks: [clock, { ...clock, id: "h", name: "The ritual", visible: false }],
+    countdown: { label: "Airlock", endsAt: 1000, visible: false },
+  };
+  assert.deepEqual(toPlayerView(s, "a").clocks, [clock]);
+  assert.deepEqual(toPlayerView(s, null).clocks, [clock], "the table screen too");
+  assert.equal(toPlayerView(s, "a").countdown, null);
+  const shown = { ...s, countdown: { label: "Airlock", endsAt: 1000, visible: true } };
+  assert.deepEqual(toPlayerView(shown, "a").countdown, shown.countdown);
 });
 
 test("toPlayerView: each player gets only their own Agent's objectives", () => {

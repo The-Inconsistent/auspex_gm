@@ -965,6 +965,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (p.323) and a Threat with no Shock never suffers it (p.324). Repeated Conditions stack (p.197): "Hindered (1)" on
      "Hindered" is "Hindered (2)"; an unrated Condition isn't listed twice. A typed dice total must lie within its dice.
      Area effects, effects behind a Test and durations stay with the GM. *Ruled on GitHub issue #183.*
+157. **Clocks and the countdown are table furniture, not a rule** (GitHub issue #210): the books have none. A clock fills
+     when the GM taps it and a countdown reaches 00:00, and neither does anything; what follows is the GM's call.
 
 ---
 

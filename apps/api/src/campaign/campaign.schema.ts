@@ -1,4 +1,5 @@
-import { boolean, integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import type { Clock, Countdown } from "@wg/shared";
 import { body, conditions, createdAt } from "../core/sql.ts";
 
 export const campaign = pgTable("campaign", {
@@ -16,6 +17,10 @@ export const campaign = pgTable("campaign", {
   // When and where the table meets next (issue #197); session.start clears the date, the place stays for next time.
   nextSessionAt: timestamp({ withTimezone: true }),
   nextSessionPlace: text().notNull().default(""),
+  // The GM's clocks and one countdown (issue #210): table furniture with no lifecycle of its own, so a list here rather
+  // than a table. The clock actions keep it to MAX_CLOCKS.
+  clocks: jsonb().$type<Clock[]>().notNull().default([]),
+  countdown: jsonb().$type<Countdown>(),
   archivedAt: timestamp({ withTimezone: true }), // read-only until unarchived (campaign.archive)
   createdAt: createdAt(),
 });

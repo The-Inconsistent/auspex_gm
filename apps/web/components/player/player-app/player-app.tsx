@@ -7,6 +7,7 @@ import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 import { TestPrompt } from "@/components/player/test-prompt/test-prompt";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
+import { ClockStrip } from "@/components/ui/clock-strip/clock-strip";
 import { PictureProvider } from "@/components/ui/codex-picture/codex-picture";
 import { MentionsProvider } from "@/components/ui/mentions/mentions-provider";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
@@ -96,6 +97,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 </button>
               </div>
               <div className="pl-body">
+                <ClockStrip state={state} />
                 {state.campaign.archived && <ArchivedBanner text="THE GM HAS CLOSED THIS GAME. NOTHING CAN CHANGE." />}
                 {myTurn && <TurnActions />}
                 {state.testCall && (

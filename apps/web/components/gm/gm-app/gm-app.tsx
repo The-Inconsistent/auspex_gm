@@ -18,6 +18,7 @@ import {
 } from "@wg/shared";
 
 import { Books } from "@/components/gm/books/books";
+import { Clocks } from "@/components/gm/clocks/clocks";
 import { CodexView } from "@/components/gm/codex/codex";
 import type { CodexKind } from "@/components/gm/codex/constants";
 import { Party } from "@/components/gm/party/party";
@@ -202,6 +203,7 @@ export function GmApp({
                       </button>
                     </ArchivedBanner>
                   )}
+                  {(tab === "TRACK" || tab === "PREP") && <Clocks state={state} send={send} />}
                   {tab === "TRACK" && (
                     <Tracker
                       state={state}

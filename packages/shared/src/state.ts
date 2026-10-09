@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Clock, Countdown } from "./clock.ts";
 import { CHAOS_SPAWN_AT, corruptionLevel } from "./corruption.ts";
 import { MAX_ICONS } from "./dn.ts";
 import { RequisitionSlot } from "./requisition.ts";
@@ -477,6 +478,12 @@ export const LiveState = z.object({
   // The Test the GM called and the results so far (issue #191). A phone gets it only if its Agent is asked, with only
   // its own result.
   testCall: TestCall.nullable(),
+  // The GM's clocks and countdown (issue #210). A phone gets only the visible ones (toPlayerView).
+  clocks: z.array(Clock),
+  countdown: Countdown.nullable(),
+  // The server's clock when this snapshot was made (epoch ms), so a phone whose own clock is off still counts the
+  // countdown down right.
+  serverNow: z.number().int(),
   // guests: characters a live guest QR token points at (no account, so not in members).
   access: z.object({ members: z.array(Member), invites: z.array(Invite), guests: z.array(z.string()) }),
 });
@@ -670,6 +677,9 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
           reports: pick(s.testCall.reports, characterId),
         }
       : null,
+  // A hidden clock or countdown is the GM's, like a hidden Threat: not sent at all (issue #210).
+  clocks: s.clocks.filter((c) => c.visible),
+  countdown: s.countdown?.visible ? s.countdown : null,
   encounter: s.encounter && {
     ...s.encounter,
     upNext: sideUpNext(s),

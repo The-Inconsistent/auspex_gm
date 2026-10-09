@@ -44,6 +44,9 @@ const s: LiveState = {
   },
   spendRequests: [],
   testCall: null,
+  clocks: [],
+  countdown: null,
+  serverNow: 0,
   access: { members: [], invites: [], guests: [] },
   characters: [
     {

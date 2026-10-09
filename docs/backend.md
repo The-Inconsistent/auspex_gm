@@ -342,6 +342,11 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `session.delete` | GM | Deletes the latest session, once it has ended (`"End the session in progress before deleting it"`, `"This game has no sessions"`). Its XP stays on the characters, and the ack's `notices` says so | S, C | |
 | `campaign.archive` | GM | Sets `archived_at`, ends a running session like `session.abandon` and revokes open invites. An archived game is read-only (§5) | S, C | |
 | `campaign.unarchive` | GM | Clears `archived_at` | S | |
+| `clock.save` | GM | A clock (issue #210): `{ id?, name, segments, visible }`, `name` trimmed 1–40, `segments` 4, 6 or 8, `visible` false by default (a new clock starts hidden). Without `id` it adds an empty clock, at most `MAX_CLOCKS` (6); with one it edits that clock, keeping `filled` inside the new pie. Stored in `campaign.clocks` (jsonb). `"Clock not found"` | S | |
+| `clock.tick` | GM | `{ id, delta }`: `filled` moves by delta, clamped to `[0, segments]` against what the last tick left (`tickClock`). A full clock does nothing (§11.157) | S | |
+| `clock.delete` | GM | Removes the clock | S | |
+| `countdown.set` | GM | `{ label, seconds, visible }`: the one countdown ends at now + seconds on the server's clock (`campaign.countdown`, `endsAt` in epoch ms; ≤ 3 h). Restarts a running one. Nothing happens at zero | S | |
+| `countdown.clear` | GM | Removes the countdown | S | |
 | `campaign.delete` | admin, or GM once archived | `{ name }`, which must equal the game's name (`"Type the game's name to delete it"`; `"Archive the game before deleting it"` for a GM). Deletes the campaign row; everything it owns cascades. The gateway then kicks the whole room and broadcasts nothing | | |
 | `session.end` | GM | Open session gets `endedAt`, `recap`, `xp`. Every character `xp += xp`. Acks `notices`: each character that crossed a Rank (Core p.146) and, when every one of them has 100+ XP in the current Tier, that the group may Ascend (Core p.147). Fails `"No session in progress"` | S C | p.321 |
 | `session.edit` | GM | `{ sessionId, title?, recap?, notes? }` (`title` trimmed, ≤ 100, issue #175) on any session of this campaign, open or ended (`"Session not found"`). A running session's recap is refused (`"A running session's recap is written at END SESSION"`, §11.153). No `xp` (§11.152) | C | p.317, p.321 |

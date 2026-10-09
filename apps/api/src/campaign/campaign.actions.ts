@@ -1,10 +1,14 @@
+import { randomUUID } from "node:crypto";
 import { and, asc, count, desc, eq, isNull, sql } from "drizzle-orm";
 import {
   ASCENSION_XP,
+  Clock,
+  MAX_CLOCKS,
   MAX_TIER,
   ascensionGroup,
   poolMax,
   rankOf,
+  tickClock,
   type Action,
   type ActionResult,
   type Pool,
@@ -34,7 +38,12 @@ export type CampaignAction = Extract<
       | "session.delete"
       | "campaign.archive"
       | "campaign.unarchive"
-      | "campaign.delete";
+      | "campaign.delete"
+      | "clock.save"
+      | "clock.tick"
+      | "clock.delete"
+      | "countdown.set"
+      | "countdown.clear";
   }
 >;
 
@@ -95,6 +104,25 @@ export async function adjustPool(
     .returning({ after: campaign[pool] });
   return after - before;
 }
+
+// The campaign's clocks, locked for this transaction: each clock action rewrites the whole list, so a second writer
+// (REST, a script) waits instead of overwriting it. The gateway's queue already serialises the socket path.
+async function clocksOf(tx: Tx, campaignId: string) {
+  const [c] = await tx
+    .select({ clocks: campaign.clocks })
+    .from(campaign)
+    .where(eq(campaign.id, campaignId))
+    .for("update");
+  return Clock.array()
+    .catch([])
+    .parse(c?.clocks ?? []);
+}
+
+const setClocks = (tx: Tx, { campaignId, clocks }: { campaignId: string; clocks: Clock[] }) =>
+  tx.update(campaign).set({ clocks }).where(eq(campaign.id, campaignId));
+
+// A clock of this campaign, or a refusal: the id comes from the client.
+const clockIn = (clocks: Clock[], id: string) => clocks.find((c) => c.id === id) ?? fail("Clock not found");
 
 export async function playerCount(tx: Tx, campaignId: string) {
   const [{ n } = { n: 0 }] = await tx
@@ -253,6 +281,51 @@ export async function applyCampaignAction(
       await tx.delete(campaign).where(eq(campaign.id, cid));
       return { ok: true };
     }
+
+    // Clocks (issue #210): the GM's pacing, never a rule, so nothing here reads one. A new clock starts empty; changing
+    // a clock's size keeps what is filled, inside the new pie.
+    case "clock.save": {
+      const clocks = await clocksOf(tx, cid);
+      const fields = { name: a.name, segments: a.segments, visible: a.visible };
+      if (a.id) {
+        const old = clockIn(clocks, a.id);
+        const next = tickClock({ clock: { ...old, ...fields }, delta: 0 });
+        await setClocks(tx, { campaignId: cid, clocks: clocks.map((c) => (c.id === old.id ? next : c)) });
+        return { ok: true, id: old.id };
+      }
+      if (clocks.length >= MAX_CLOCKS) fail(`At most ${MAX_CLOCKS} clocks; delete one first`);
+      const id = randomUUID();
+      await setClocks(tx, { campaignId: cid, clocks: [...clocks, { id, ...fields, filled: 0 }] });
+      return { ok: true, id };
+    }
+
+    // Each tick lands on what the last one left, inside the pie, so two taps together add up. Full does nothing.
+    case "clock.tick": {
+      const clocks = await clocksOf(tx, cid);
+      const old = clockIn(clocks, a.id);
+      const next = tickClock({ clock: old, delta: a.delta });
+      await setClocks(tx, { campaignId: cid, clocks: clocks.map((c) => (c.id === old.id ? next : c)) });
+      return { ok: true };
+    }
+
+    case "clock.delete": {
+      const clocks = await clocksOf(tx, cid);
+      const old = clockIn(clocks, a.id);
+      await setClocks(tx, { campaignId: cid, clocks: clocks.filter((c) => c.id !== old.id) });
+      return { ok: true };
+    }
+
+    // The moment it ends, on the server's clock; the phones count down to it. Nothing happens at zero.
+    case "countdown.set":
+      await tx
+        .update(campaign)
+        .set({ countdown: { label: a.label, endsAt: Date.now() + a.seconds * 1000, visible: a.visible } })
+        .where(eq(campaign.id, cid));
+      return { ok: true };
+
+    case "countdown.clear":
+      await tx.update(campaign).set({ countdown: null }).where(eq(campaign.id, cid));
+      return { ok: true };
 
     // The group Ascends together (Core pp.147–148, §11.66): one Tier for the whole campaign, never one character.
     case "campaign.ascend": {
