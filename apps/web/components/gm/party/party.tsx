@@ -37,6 +37,7 @@ import { shareOrigin } from "@/lib/share-origin/share-origin";
 
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
 import { MutationRoll } from "./components/mutation-roll/mutation-roll";
+import { NextSession } from "./components/next-session/next-session";
 import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
 import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
 import { RequisitionForm } from "./components/requisition-form/requisition-form";
@@ -300,6 +301,12 @@ export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
             </div>
           </>
         )}
+        <NextSession
+          key={`${state.campaign.nextSessionAt}|${state.campaign.nextSessionPlace}`}
+          campaign={state.campaign}
+          send={send}
+          onResult={report}
+        />
         <SessionHistory sessions={codex.sessions} send={send} onResult={sessionReport} />
       </div>
 

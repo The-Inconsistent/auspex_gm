@@ -26,6 +26,9 @@ export const CampaignExport = z.object({
     kind: TableLines.default([]), // files from before the NEW CAMPAIGN flow have none
     limits: TableLines.default([]),
     homebrew: z.boolean(),
+    // Files from before issue #197 have no next session. A date that doesn't parse is dropped, not the file.
+    nextSessionAt: z.iso.datetime({ offset: true }).nullable().catch(null),
+    nextSessionPlace: z.string().max(200).default(""),
   }),
   characters: z
     .array(
@@ -104,14 +107,14 @@ export type CampaignExport = z.infer<typeof CampaignExport>;
 // The biggest file IMPORT GAME takes: the api's parser, Next's proxy buffer and Cloudflare's free plan all stop here.
 export const IMPORT_MAX_BYTES = 100 * 1024 * 1024;
 
-// The same campaign for a new group: no sessions, empty pools, nothing revealed, every Agent rested, and no kind of game
-// or limits, which the new table agrees for itself (Core p.316, rules-flow §11.79). Sheets, builds and XP stay, since a
+// The same campaign for a new group: no sessions and no date for the next, empty pools, nothing revealed, every Agent
+// rested, and no kind of game or limits, which the new table agrees for itself (Core p.316, rules-flow §11.79). Sheets, builds and XP stay, since a
 // build's XP ledger is spent against `xp`. Given items stay given, because the sheets keep their gear.
 export function freshStart(e: CampaignExport): CampaignExport {
   const { codex: c } = e;
   return {
     ...e,
-    campaign: { ...e.campaign, glory: 0, ruin: 0, kind: [], limits: [] },
+    campaign: { ...e.campaign, glory: 0, ruin: 0, kind: [], limits: [], nextSessionAt: null, nextSessionPlace: "" },
     characters: e.characters.map((ch) => ({
       ...ch,
       wounds: 0,

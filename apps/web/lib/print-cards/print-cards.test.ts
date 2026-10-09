@@ -86,6 +86,8 @@ const src: PrintSource = {
       limits: [],
       homebrew: false,
       archived: false,
+      nextSessionAt: null,
+      nextSessionPlace: "",
     },
     access: { members: [], invites: [], guests: [] },
     characters: [agent],

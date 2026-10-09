@@ -943,6 +943,46 @@ test("the session journal: recaps fixed later, the GM's notes never on a phone (
   assert.equal(gm.codex()!.sessions[0]!.xp, 10, "XP isn't editable (§11.152)");
 });
 
+test("the next session: a date for every seat, an .ics, cleared when it starts (issue #197)", async (t) => {
+  const gm = await newCampaign("Next session", 1, "10.19.7.1"); // its own address, under the per-IP connect limit
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const cookie = { cookie: `wg_token=${issued.token}` };
+  const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.19.7.1" } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 1);
+  const ics = `/campaigns/${gm.campaignId}/next.ics`;
+
+  assert.equal((await get(ics, cookie)).status, 404, "no date yet");
+  assert.equal((await get(ics)).status, 401, "a seat only");
+  assert.equal((await p.send({ type: "campaign.update", nextSessionAt: "2026-10-12T16:00:00Z" })).ok, false, "GM only");
+  assert.equal((await gm.send({ type: "campaign.update", nextSessionAt: "Saturday" })).ok, false);
+  const at = "2026-10-12T16:00:00.000Z";
+  assert.ok((await gm.send({ type: "campaign.update", nextSessionAt: at, nextSessionPlace: " Mike's flat " })).ok);
+  const s = await p.until((s) => s.campaign.nextSessionAt !== null);
+  assert.deepEqual([s.campaign.nextSessionAt, s.campaign.nextSessionPlace], [at, "Mike's flat"]);
+
+  const res = await get(ics, cookie);
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get("content-type") ?? "", /^text\/calendar/);
+  const body = await res.text();
+  assert.ok(body.includes("DTSTART:20261012T160000Z\r\n"));
+  assert.ok(body.includes("SUMMARY:Next session · Session 1\r\n"), "the session START will open");
+  assert.ok(body.includes("LOCATION:Mike's flat\r\n"));
+
+  const lobby = async (token: string) =>
+    ((await (await get("/lobby", bearer(token))).json()) as Lobby).mine.find((g) => g.id === gm.campaignId);
+  assert.equal((await lobby(gm.gmClerk))?.nextSessionAt, at, "on a member's card");
+
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  const started = await p.until((s) => s.campaign.nextSessionAt === null);
+  assert.equal(started.campaign.nextSessionPlace, "Mike's flat", "START clears the date, the place stays");
+  assert.equal((await get(ics, cookie)).status, 404);
+});
+
 test("the mission log: a shown adventure reaches phones with its brief, never its premise or scenes (issue #196)", async (t) => {
   const gm = await newCampaign("Mission log", 1);
   t.after(() => gm.socket.close());

@@ -12,6 +12,7 @@ export const LobbyGame = z.object({
   players: z.number().int(),
   session: z.number().int().nullable(), // number of the session in progress; null when none is running
   role: Role.nullable(), // the caller's role there; null when they aren't a member
+  nextSessionAt: z.string().nullable(), // ISO; members' cards only (issue #197 decision 4), null for anyone else
 });
 export type LobbyGame = z.infer<typeof LobbyGame>;
 

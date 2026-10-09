@@ -454,6 +454,9 @@ export const LiveState = z.object({
     limits: z.array(z.string()),
     homebrew: z.boolean(), // the character builder may use the homebrew books (issue #9 decision 1)
     archived: z.boolean(), // read-only: every action but unarchive and delete is refused (campaign.archive)
+    // When and where the table meets next (issue #197): set in PARTY › SESSION, shown on INTEL and the lobby card.
+    nextSessionAt: z.string().nullable(), // ISO, UTC; session.start clears it
+    nextSessionPlace: z.string(),
   }),
   characters: z.array(Character),
   encounter: z

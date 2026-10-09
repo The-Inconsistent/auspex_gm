@@ -44,6 +44,7 @@ import {
   listThreats,
   listWargear,
   lobby,
+  nextSessionIcs,
 } from "./campaign.service.ts";
 
 const Join = z.object({ token: z.string().min(1).max(200) });
@@ -271,6 +272,20 @@ export class CampaignController {
     if (!ctx) throw new UnauthorizedException();
     if (ctx.role !== "gm") throw new ForbiddenException();
     return flavourTables(await campaignHomebrew(campaignId));
+  }
+
+  // ADD TO CALENDAR (issue #197): the next session as an .ics, for any seat. No book text, and cheap, so the per-seat
+  // gate is the only limit. 404 until the GM sets a date.
+  @Get("campaigns/:id/next.ics")
+  async nextIcs(@Param("id") id: string, @Req() req: Request, @Res() res: Response) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    const ics = await nextSessionIcs(ctx.campaignId);
+    if (!ics) throw new NotFoundException("No next session is set");
+    res.setHeader("content-type", "text/calendar; charset=utf-8");
+    res.setHeader("content-disposition", 'attachment; filename="next-session.ics"');
+    res.setHeader("cache-control", "private, no-cache"); // the GM may move it
+    res.send(ics);
   }
 
   // Rules reference (book text) for any seat at this table, GM or player (not the table screen).

@@ -1,14 +1,28 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition, type FormEvent } from "react";
+import { useState, useSyncExternalStore, useTransition, type FormEvent } from "react";
 
 import { UserButton } from "@wg/auth/react";
 import { IMPORT_MAX_BYTES, LIBRARY_CAP, type LibraryCharacter, type Lobby, type LobbyGame } from "@wg/shared";
 
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
+import { nextSessionLine } from "@/lib/next-session/next-session";
 
 type LobbyViewProps = { lobby: Lobby };
+
+const noSubscribe = () => () => {};
+
+// A member's card's next session (issue #197 decision 4: the server sends null to anyone else). In the viewer's own time
+// zone, so only once in the browser: the lobby is rendered on the server first, whose zone isn't theirs.
+function NextSessionLine({ at }: { at: string }) {
+  const browser = useSyncExternalStore(
+    noSubscribe,
+    () => true,
+    () => false,
+  );
+  return browser ? <div className="dim">NEXT SESSION {nextSessionLine(at).toUpperCase()}</div> : null;
+}
 
 // One game card. Members open the table; others only see that it's running (joining needs an invite).
 function GameCard({ game, archived = false }: { game: LobbyGame; archived?: boolean }) {
@@ -26,6 +40,7 @@ function GameCard({ game, archived = false }: { game: LobbyGame; archived?: bool
         )}
       </div>
       <div className="dim">{line}</div>
+      {game.nextSessionAt && <NextSessionLine at={game.nextSessionAt} />}
     </div>
   );
 }

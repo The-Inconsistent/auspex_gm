@@ -24,6 +24,8 @@ import {
 
 const id = z.uuid();
 
+// Where the next session meets (issue #197): "Mike's flat". PARTY › SESSION checks it before SAVE.
+export const NextSessionPlace = z.string().trim().max(200);
 // A session's own name (issue #175), shown beside its number: "SESSION 3 · THE BLACK SHIP".
 export const MAX_SESSION_TITLE = 100;
 // What session.edit may change (issue #195); PARTY › SESSIONS checks its draft with it before SAVE.
@@ -67,6 +69,9 @@ export const Action = z.union([
       tier: Tier.optional(),
       ...CampaignSetup.partial().shape,
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
+      // The next session (issue #197). The GM's browser sends its local time as UTC; a past date is a fix, so it's taken.
+      nextSessionAt: z.iso.datetime({ offset: true }).nullable().optional(),
+      nextSessionPlace: NextSessionPlace.optional(),
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
     // A player asks for a spend, the GM answers (rules-flow.md §11.122). `amount` only counts for the Glory kinds.

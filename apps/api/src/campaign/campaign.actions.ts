@@ -111,7 +111,11 @@ export async function applyCampaignAction(
   const cid = ctx.campaignId;
   switch (a.type) {
     case "campaign.update": {
-      const { type, ...patch } = a;
+      const { type, nextSessionAt, ...rest } = a;
+      const patch = {
+        ...rest,
+        ...(nextSessionAt !== undefined && { nextSessionAt: nextSessionAt === null ? null : new Date(nextSessionAt) }),
+      };
       const raised = patch.tier !== undefined && patch.tier > (await campaignTier(tx, cid));
       await tx.update(campaign).set(patch).where(eq(campaign.id, cid));
       // Raising the Tier by hand (a script, a fix-up) is still an Ascension as far as the rules are concerned, so the
@@ -131,7 +135,8 @@ export async function applyCampaignAction(
       return { ok: true };
     }
 
-    // Wrath 2 each, Glory 0, Ruin = players (p.162, p.164, p.320); the previous session is closed.
+    // Wrath 2 each, Glory 0, Ruin = players (p.162, p.164, p.320); the previous session is closed. The date the GM set
+    // for this session has come, so it goes (issue #197 decision 3); the place stays for the next one.
     case "session.start": {
       const players = await playerCount(tx, cid);
       // Read before the resets, so the notice below counts the XP as the last session left it.
@@ -139,7 +144,7 @@ export async function applyCampaignAction(
       await tx.update(character).set({ wrath: 2 }).where(eq(character.campaignId, cid));
       await clearSpendRequests(tx, { campaignId: cid }); // asked against the pools this just reset
       await clearTestCall(tx, cid); // a Test called last session is over (§11.143)
-      await tx.update(campaign).set({ glory: 0, ruin: players }).where(eq(campaign.id, cid));
+      await tx.update(campaign).set({ glory: 0, ruin: players, nextSessionAt: null }).where(eq(campaign.id, cid));
       await tx
         .update(session)
         .set({ endedAt: new Date() })

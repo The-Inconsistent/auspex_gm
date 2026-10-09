@@ -39,6 +39,8 @@ const s: LiveState = {
     limits: [],
     homebrew: false,
     archived: false,
+    nextSessionAt: null,
+    nextSessionPlace: "",
   },
   spendRequests: [],
   testCall: null,

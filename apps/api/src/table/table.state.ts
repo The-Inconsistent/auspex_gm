@@ -168,6 +168,8 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
       limits: c.limits,
       homebrew: c.homebrew,
       archived: c.archivedAt !== null,
+      nextSessionAt: c.nextSessionAt?.toISOString() ?? null,
+      nextSessionPlace: c.nextSessionPlace,
     },
     characters: chars.map(toCharacter),
     encounter: enc
