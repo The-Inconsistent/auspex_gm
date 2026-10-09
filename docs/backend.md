@@ -47,7 +47,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | `test-call/` | The Test the GM calls at the table, and the results the phones report (rules-flow §11.143–147, issue #191) | `test-call.actions.ts`: `TestCallAction`, `applyTestCallAction`. `test-call.clear.ts`: `clearTestCall`. `test-call.schema.ts`: `testCall` (one row per campaign) |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts, items | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the seven tables |
 | `admin/` | The admin page's reads and housekeeping (§3.2) | `admin.controller.ts`: `AdminController`. `admin.service.ts`: `listUsers`, `listCampaigns`, `listEvents`, `adminAction`, `removeSeats`. `admin.schema.ts`: `adminEvent` |
-| `table/` | The socket | `table.gateway.ts`: `TableGateway` (`run`: one action with its kicks and broadcast, for the socket and the admin route). `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
+| `table/` | The socket | `table.gateway.ts`: `TableGateway` (`run`: one action with its kicks and broadcast, for the socket and the admin route). `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex`. `table.pause.ts`: `pauseRelay`, the pause card's rules (who may send, the limits, the payload) |
 
 Rules:
 
@@ -625,7 +625,8 @@ It covers:
 - **Import** (§3.1): a library build saved into a Tier 4 campaign through plain `character.build`, the campaign copy
   unchanged by later library edits, and a Tier 2 campaign refusing it ("This campaign is Tier 2; build for Tier 2").
 
-Pure rules functions are unit-tested in `packages/shared` (`bun run test`), see [game-logic.md](game-logic.md).
+Pure rules functions are unit-tested in `packages/shared` (`bun run test`), see [game-logic.md](game-logic.md). So is the
+odd pure piece of the api with no Nest or DB import, such as the pause card's rules (`table/table.pause.test.ts`).
 
 ## 13. How-to
 

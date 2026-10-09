@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
+import { PauseCard } from "@/components/player/pause-card/pause-card";
 import { TestPrompt } from "@/components/player/test-prompt/test-prompt";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
@@ -24,7 +25,7 @@ import { PLAYER_TABS, TURN_VIBRATION, type PlayerTab } from "./constants";
 type PlayerAppProps = { campaignId: string; characterId: string; rules: RuleEntry[] };
 
 export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
-  const { state, codex, online, send, books, requestPage } = useTable(campaignId);
+  const { state, codex, online, send, books, requestPage, signalPause } = useTable(campaignId);
 
   const [tab, setTab] = useState<PlayerTab>("SHEET");
   const me = state?.characters.find((c) => c.id === characterId);
@@ -94,6 +95,12 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 <button className="btn sm" onClick={leave}>
                   LEAVE
                 </button>
+                <PauseCard
+                  kind={state.campaign.kind}
+                  limits={state.campaign.limits}
+                  firstSession={codex.sessions.length <= 1}
+                  signal={signalPause}
+                />
               </div>
               <div className="pl-body">
                 {state.campaign.archived && <ArchivedBanner text="THE GM HAS CLOSED THIS GAME. NOTHING CAN CHANGE." />}

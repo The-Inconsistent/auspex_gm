@@ -21,6 +21,7 @@ import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
 import type { CodexKind } from "@/components/gm/codex/constants";
 import { Party } from "@/components/gm/party/party";
+import { PauseBanner } from "@/components/gm/pause-banner/pause-banner";
 import { Prep } from "@/components/gm/prep/prep";
 import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
 import { Setup } from "@/components/gm/setup/setup";
@@ -74,7 +75,7 @@ export function GmApp({
   initialTab = "TRACK",
 }: GmAppProps) {
   const router = useRouter();
-  const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
+  const { state, codex, online, send, books, requestPage, serveBooks, pauseAt, dismissPause } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [tab, setTab] = useState<GmTab>(initialTab);
   const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when SETUP sends it there
@@ -156,6 +157,8 @@ export function GmApp({
             <MentionsProvider codex={codex} missing="(removed)" onGoTo={goTo}>
               <div className="gm">
                 <header className="gm-head band torn">
+                  {/* First row of the header, so it's on top of every tab and never covers a control. */}
+                  <PauseBanner at={pauseAt} onDismiss={dismissPause} />
                   {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}
                   <a href="/" aria-label="Back to lobby" className="btn sq">
                     ◂

@@ -25,6 +25,7 @@ export * from "./creation.ts";
 export * from "./build.ts";
 export * from "./library.ts";
 export * from "./book.ts";
+export * from "./pause.ts";
 export * from "./export.ts";
 export * from "./calendar.ts";
 export * from "./admin.ts";
