@@ -918,13 +918,15 @@ test("the session journal: recaps fixed later, the GM's notes never on a phone (
   t.after(() => p.socket.close());
   await p.until((s) => s.characters.length === 1);
 
-  const started = await gm.send({ type: "session.start" });
+  assert.equal((await gm.send({ type: "session.start", title: "x".repeat(101) })).ok, false, "a title is short");
+  const started = await gm.send({ type: "session.start", title: " The Ford " });
   assert.ok(started.ok && started.id);
   const sessionId = started.id;
+  await eventually(() => gm.codex()?.sessions[0]?.title === "The Ford", "named at START (issue #175)");
   const edit = (data: { title?: string; recap?: string; notes?: string }, by: Pick<typeof gm, "send"> = gm) =>
     by.send({ type: "session.edit", sessionId, ...data });
   assert.ok((await edit({ notes: "Ork ambush at the ford" })).ok, "notes while the session runs");
-  assert.ok((await edit({ title: " The Ford " })).ok, "a running session is named (issue #175)");
+  assert.ok((await edit({ title: " The Ford " })).ok, "a running session is renamed (issue #175)");
   assert.equal((await edit({ title: "x".repeat(101) })).ok, false, "a title is short");
   assert.equal((await edit({ recap: "Too early" })).ok, false, "a running session's recap waits for END (§11.153)");
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumpd." })).ok);

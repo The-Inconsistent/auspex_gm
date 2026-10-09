@@ -152,7 +152,7 @@ export async function applyCampaignAction(
       const [{ n } = { n: 0 }] = await tx.select({ n: count() }).from(session).where(eq(session.campaignId, cid));
       const [s] = await tx
         .insert(session)
-        .values({ campaignId: cid, number: n + 1 })
+        .values({ campaignId: cid, number: n + 1, title: a.title })
         .returning({ id: session.id });
       // XP is spent between sessions (Core p.146; p.148 step 4 for a Milestone Ascension, which hands out XP nobody has
       // to spend), and what's left is on the player's phone, not the GM's tablet. One line for the whole party, because

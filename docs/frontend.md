@@ -700,7 +700,8 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   PARTY keys it on the stored date and place, so a change from elsewhere (START SESSION clears the date) resets the form.
   Members' lobby cards show the date too, drawn only in the browser (`useSyncExternalStore`), since the server's zone
   isn't the viewer's.
-- **PARTY › SESSION:** END SESSION WITHOUT XP (`session.abandon`, confirmed) sits beside END SESSION, and
+- **PARTY › SESSION:** an optional TITLE beside START SESSION names the session as it starts (`session.start { title }`,
+  checked with `SessionTitle`, issue #175). END SESSION WITHOUT XP (`session.abandon`, confirmed) sits beside END SESSION, and
   `session-history` is the session journal (issue #195): every session, newest first, each with EDIT for its TITLE (issue #175, shown as
   `SESSION 3 · THE FORD` here, in the running session's line and on INTEL), its RECAP (once ended) and the GM's NOTES (`session.edit`, checked with `SessionJournal`; notes closed on a plate), and DELETE LAST
   SESSION (`session.delete`, confirmed; the server's notice, that the XP it awarded stays, is shown).

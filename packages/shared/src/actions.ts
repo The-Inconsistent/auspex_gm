@@ -28,9 +28,10 @@ const id = z.uuid();
 export const NextSessionPlace = z.string().trim().max(200);
 // A session's own name (issue #175), shown beside its number: "SESSION 3 · THE BLACK SHIP".
 export const MAX_SESSION_TITLE = 100;
+export const SessionTitle = z.string().trim().max(MAX_SESSION_TITLE);
 // What session.edit may change (issue #195); PARTY › SESSIONS checks its draft with it before SAVE.
 export const SessionJournal = z.object({
-  title: z.string().trim().max(MAX_SESSION_TITLE).optional(),
+  title: SessionTitle.optional(),
   recap: z.string().max(10000).optional(),
   notes: z.string().max(10000).optional(),
 });
@@ -114,7 +115,8 @@ export const Action = z.union([
     z.object({ type: z.literal("test.close") }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
-    z.object({ type: z.literal("session.start") }),
+    // `title` names the new session up front (issue #175); session.edit can change it later.
+    z.object({ type: z.literal("session.start"), title: SessionTitle.default("") }),
     z.object({
       type: z.literal("session.end"),
       xp: z.number().int().min(0).max(100),
