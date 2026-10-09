@@ -9,6 +9,7 @@ import { CustomThreatData, MAX_SLUG } from "./threat.ts";
 import { Profiles } from "./threat-scale.ts";
 import { UpgradeHost } from "./wargear.ts";
 import {
+  CampaignName,
   CampaignSetup,
   CharacterDetail,
   CharacterStats,
@@ -23,8 +24,11 @@ import {
 
 const id = z.uuid();
 
+// A session's own name (issue #175), shown beside its number: "SESSION 3 · THE BLACK SHIP".
+export const MAX_SESSION_TITLE = 100;
 // What session.edit may change (issue #195); PARTY › SESSIONS checks its draft with it before SAVE.
 export const SessionJournal = z.object({
+  title: z.string().trim().max(MAX_SESSION_TITLE).optional(),
   recap: z.string().max(10000).optional(),
   notes: z.string().max(10000).optional(),
 });
@@ -59,7 +63,7 @@ export const Action = z.union([
   z.discriminatedUnion("type", [
     z.object({
       type: z.literal("campaign.update"),
-      name: z.string().min(1).max(100).optional(),
+      name: CampaignName.optional(), // a rename (issue #175)
       tier: Tier.optional(),
       ...CampaignSetup.partial().shape,
       homebrew: z.boolean().optional(), // the character builder may use Apocrypha and Necrontyr (issue #9 decision 1)
@@ -111,8 +115,9 @@ export const Action = z.union([
       xp: z.number().int().min(0).max(100),
       recap: z.string().max(10000).default(""),
     }),
-    // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs. No XP: it was paid out
-    // at session.end (p.321, §11.152). A running session's recap is written at session.end (§11.153).
+    // The session journal (issue #195): fix a recap after the fact, keep notes as the game runs, name the session
+    // (issue #175). No XP: it was paid out at session.end (p.321, §11.152). A running session's recap is written at
+    // session.end (§11.153).
     SessionJournal.extend({ type: z.literal("session.edit"), sessionId: id }),
     // Ends the running session with no XP and no Rank notices (a session that was never played, or left open overnight).
     z.object({ type: z.literal("session.abandon") }),

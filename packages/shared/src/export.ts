@@ -72,6 +72,7 @@ export const CampaignExport = z.object({
         z.object({
           id,
           number: count,
+          title: z.string().max(100).default(""), // files from before issue #175 have none
           startedAt: z.string().max(40),
           endedAt: z.string().max(40).nullable(),
           recap: z.string().max(10000),

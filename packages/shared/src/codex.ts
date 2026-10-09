@@ -335,6 +335,7 @@ export type Codex = {
   sessions: {
     id: string;
     number: number;
+    title: string; // the GM's name for it, "" for none (issue #175)
     startedAt: string;
     endedAt: string | null;
     recap: string;

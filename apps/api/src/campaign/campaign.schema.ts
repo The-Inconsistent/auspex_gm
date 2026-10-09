@@ -29,6 +29,7 @@ export const owned = () => ({
 export const session = pgTable("session", {
   ...owned(),
   number: integer().notNull(),
+  title: text().notNull().default(""), // the GM's name for it (issue #175)
   startedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   endedAt: timestamp({ withTimezone: true }),
   recap: body(),

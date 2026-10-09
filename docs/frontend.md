@@ -696,8 +696,8 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   and `router.push("/")`, which closes the socket before the server kicks the room (about 200 ms later), so the
   disconnect never shows as NO SIGNAL.
 - **PARTY › SESSION:** END SESSION WITHOUT XP (`session.abandon`, confirmed) sits beside END SESSION, and
-  `session-history` is the session journal (issue #195): every session, newest first, each with EDIT for its RECAP (once
-  ended) and the GM's NOTES (`session.edit`, checked with `SessionJournal`; notes closed on a plate), and DELETE LAST
+  `session-history` is the session journal (issue #195): every session, newest first, each with EDIT for its TITLE (issue #175, shown as
+  `SESSION 3 · THE FORD` here, in the running session's line and on INTEL), its RECAP (once ended) and the GM's NOTES (`session.edit`, checked with `SessionJournal`; notes closed on a plate), and DELETE LAST
   SESSION (`session.delete`, confirmed; the server's notice, that the XP it awarded stays, is shown).
 - **ADMIN chip** in the GM header when `me.admin` (`GmApp`'s `admin` prop, from `/api/campaigns/:id/me`): a Clerk admin
   acting as GM at a table where they hold no seat.
@@ -723,6 +723,8 @@ caller, or a 401 or 403 (not an admin), to `/`. `AdminView` has two tabs, USERS 
 - **SETUP checklist** (`SetupPanel`): the Core Rulebook's eleven set-up steps, each ticked from the campaign
   (`lib/setup`, nothing stored). GO TO opens the tab a step is done in (CODEX on the right kind, PARTY for ASCEND,
   AGENTS and SESSION) and scrolls to its panel.
+- **NAME panel:** the campaign's name, RENAME sends `campaign.update { name }` (checked with `CampaignName`, issue
+  #175). Every seat's header follows the state broadcast; DELETE FOREVER then asks for the new name.
 - **Framework panel:** patron, framework, Framework Bonus, and the kind of game and limits (`TableTalk`), saved
   together with `campaign.update`; START FROM A FRAMEWORK opens `FrameworkPicker`. Players see all of it on INTEL.
 - **EXPORT:** the whole campaign as a file, for a backup or the lobby's IMPORT GAME. It carries the pictures, so

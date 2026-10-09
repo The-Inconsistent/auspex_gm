@@ -61,14 +61,18 @@ function IntelPage({ codex, state }: IntelProps) {
       )}
       {last && (
         <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">PREVIOUSLY (SESSION {last.number})</div>
+          <div className="rule">
+            PREVIOUSLY (SESSION {last.number}
+            {last.title && ` · ${last.title.toUpperCase()}`})
+          </div>
           <pre className="text">
             <Mentions text={last.recap} />
           </pre>
           {older.map((s) => (
             <details key={s.id}>
               <summary className="label">
-                SESSION {s.number} · {new Date(s.startedAt).toLocaleDateString()}
+                SESSION {s.number}
+                {s.title && ` · ${s.title.toUpperCase()}`} · {new Date(s.startedAt).toLocaleDateString()}
               </summary>
               <pre className="text">
                 <Mentions text={s.recap} />

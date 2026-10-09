@@ -238,7 +238,7 @@ export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
         <div className="rule">SESSION</div>
         {open ? (
           <>
-            <div>SESSION {open.number} IN PROGRESS</div>
+            <div>{[`SESSION ${open.number}`, open.title.toUpperCase(), "IN PROGRESS"].filter(Boolean).join(" · ")}</div>
             <div className="field">
               <label className="label" htmlFor="xp">
                 XP EACH (8 / 10 / 12, p.321)

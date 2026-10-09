@@ -13,31 +13,32 @@ import type { Send } from "@/hooks/use-table/use-table";
 type Session = Codex["sessions"][number];
 type SessionHistoryProps = { sessions: Codex["sessions"]; send: Send; onResult: (r: ActionResult, ok: string) => void };
 
-// PARTY › SESSION, below the controls: the session journal (issue #195), newest first. EDIT fixes an ended session's
-// recap and keeps the GM's notes, a running one's included (its recap is written at END SESSION, §11.153); XP was paid
-// out and stays (§11.152). DELETE LAST SESSION is for one that was never played or ended by mistake: only the latest
+// PARTY › SESSION, below the controls: the session journal (issue #195), newest first. EDIT names a session (issue
+// #175), fixes an ended session's recap and keeps the GM's notes, a running one's included (its recap is written at END
+// SESSION, §11.153); XP was paid out and stays (§11.152). DELETE LAST SESSION is for one that was never played or ended by mistake: only the latest
 // can go (the numbering stays unbroken), and only once it has ended. The XP it awarded stays on the characters.
 export function SessionHistory({ sessions, send, onResult }: SessionHistoryProps) {
   const [editing, setEditing] = useState<string | null>(null);
   // What the editor opened with, and the edits. SAVE sends only what changed since: a running session's editor left
   // open through END SESSION must not blank the recap END just wrote, nor undo another tablet's edit.
-  const [opened, setOpened] = useState({ recap: "", notes: "", ended: false });
-  const [draft, setDraft] = useState({ recap: "", notes: "" });
+  const [opened, setOpened] = useState({ title: "", recap: "", notes: "", ended: false });
+  const [draft, setDraft] = useState({ title: "", recap: "", notes: "" });
   const fields = useFieldErrors("session-");
   const latest = sessions.at(-1);
   if (!latest) return null;
 
-  // EDIT: one session's recap and notes, with no marks left from an earlier SAVE.
+  // EDIT: one session's title, recap and notes, with no marks left from an earlier SAVE.
   const edit = (s: Session) => {
     fields.reset();
-    setOpened({ recap: s.recap, notes: s.notes, ended: !!s.endedAt });
-    setDraft({ recap: s.recap, notes: s.notes });
+    setOpened({ title: s.title, recap: s.recap, notes: s.notes, ended: !!s.endedAt });
+    setDraft({ title: s.title, recap: s.recap, notes: s.notes });
     setEditing(s.id);
   };
 
   // SAVE: the fields edited since EDIT; the recap only if the session had ended by then.
   const save = async (s: Session) => {
     const data = fields.check(SessionJournal, {
+      ...(draft.title !== opened.title && { title: draft.title }),
       ...(opened.ended && draft.recap !== opened.recap && { recap: draft.recap }),
       ...(draft.notes !== opened.notes && { notes: draft.notes }),
     });
@@ -63,6 +64,7 @@ export function SessionHistory({ sessions, send, onResult }: SessionHistoryProps
             <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
               <b style={{ flex: 1 }}>
                 SESSION {s.number}
+                {s.title && ` · ${s.title.toUpperCase()}`}
                 {s.endedAt ? "" : " · IN PROGRESS"}
               </b>
               <span className="dim">
@@ -77,6 +79,20 @@ export function SessionHistory({ sessions, send, onResult }: SessionHistoryProps
             </div>
             {editing === s.id ? (
               <div className="stack">
+                <div className="field">
+                  <label className="label" htmlFor="session-title">
+                    TITLE
+                  </label>
+                  <input
+                    id="session-title"
+                    className="input"
+                    value={draft.title}
+                    onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                    placeholder="The Black Ship"
+                    {...fields.marks("title")}
+                  />
+                  <FieldError {...fields.reason("title")} />
+                </div>
                 {opened.ended && (
                   <div className="field">
                     <label className="label" htmlFor="session-recap">

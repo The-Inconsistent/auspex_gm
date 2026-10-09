@@ -293,6 +293,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
     sessions: sessions.map((s) => ({
       id: s.id,
       number: s.number,
+      title: s.title,
       startedAt: s.startedAt.toISOString(),
       endedAt: s.endedAt?.toISOString() ?? null,
       recap: s.recap,

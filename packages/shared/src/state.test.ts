@@ -239,6 +239,7 @@ test("toPlayerCodex: every session's recap, never the GM's notes (issue #195)", 
   const s = (n: number, recap: string): Codex["sessions"][number] => ({
     id: `s${n}`,
     number: n,
+    title: "",
     startedAt: "2026-10-01T18:00:00Z",
     endedAt: "2026-10-01T22:00:00Z",
     recap,

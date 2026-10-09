@@ -28,7 +28,7 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │               Powers, rules-flow §11.116), givenTo (server-owned: the Agent GIVE handed it to; issue #51)
  ├─ Handout      title, body (text), style (plain | slate | form | vox | decree), header, revealedAt,
  │               audience (all | characterIds), picture
- └─ Session      number, date, recap ("Previously in…", core p.317), notes (the GM's own), xp (8/10/12,
+ └─ Session      number, title (issue #175), date, recap ("Previously in…", core p.317), notes (the GM's own), xp (8/10/12,
                  core p.321); the journal is PARTY › SESSIONS (issue #195). Not built yet: beatIds played,
                  objectives rolled (core p.43)
 ```

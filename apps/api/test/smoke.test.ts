@@ -921,9 +921,11 @@ test("the session journal: recaps fixed later, the GM's notes never on a phone (
   const started = await gm.send({ type: "session.start" });
   assert.ok(started.ok && started.id);
   const sessionId = started.id;
-  const edit = (data: { recap?: string; notes?: string }, by: Pick<typeof gm, "send"> = gm) =>
+  const edit = (data: { title?: string; recap?: string; notes?: string }, by: Pick<typeof gm, "send"> = gm) =>
     by.send({ type: "session.edit", sessionId, ...data });
   assert.ok((await edit({ notes: "Ork ambush at the ford" })).ok, "notes while the session runs");
+  assert.ok((await edit({ title: " The Ford " })).ok, "a running session is named (issue #175)");
+  assert.equal((await edit({ title: "x".repeat(101) })).ok, false, "a title is short");
   assert.equal((await edit({ recap: "Too early" })).ok, false, "a running session's recap waits for END (§11.153)");
   assert.ok((await gm.send({ type: "session.end", xp: 10, recap: "Boyz krumpd." })).ok);
   assert.ok((await edit({ recap: "Boyz krumped." })).ok, "a typo fixed after the session");
@@ -937,6 +939,7 @@ test("the session journal: recaps fixed later, the GM's notes never on a phone (
   assert.equal(gm.codex()!.sessions[0]!.notes, "Ork ambush at the ford", "END kept the notes");
   await eventually(() => p.codex()?.sessions[0]?.recap === "Boyz krumped.", "the phone has the fix");
   assert.equal(p.codex()!.sessions[0]!.notes, "", "notes stay with the GM");
+  assert.equal(p.codex()!.sessions[0]!.title, "The Ford", "trimmed, and every seat reads it");
   assert.equal(gm.codex()!.sessions[0]!.xp, 10, "XP isn't editable (§11.152)");
 });
 
@@ -1207,6 +1210,10 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   // A table line is short, and there are at most 12 (rules-flow §11.79).
   assert.equal((await gm.send({ type: "campaign.update", limits: ["x".repeat(61)] })).ok, false);
   assert.equal((await gm.send({ type: "campaign.update", kind: Array(13).fill("x") })).ok, false);
+  // SETUP › NAME (issue #175): trimmed, and never blank.
+  assert.ok((await gm.send({ type: "campaign.update", name: " Edge Renamed " })).ok);
+  await gm.until((s) => s.campaign.name === "Edge Renamed");
+  assert.equal((await gm.send({ type: "campaign.update", name: "   " })).ok, false);
 
   const hero = await gm.send({ type: "character.create", name: "Hero" });
   const b = await gm.send({ type: "character.create", name: "B" });

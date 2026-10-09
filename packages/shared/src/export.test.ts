@@ -88,6 +88,10 @@ test("a file from before scene goals, exits and Tests still loads (issues #38, #
   assert.deepEqual([b!.goal, b!.exits, b!.tests], ["", [], []]);
 });
 
+test("a file from before session titles loads them untitled (issue #175)", () => {
+  assert.equal(file.codex.sessions[0]!.title, "");
+});
+
 test("a file from before handout styles loads them plain, with no header (issue #204)", () => {
   const [h] = file.codex.handouts;
   assert.deepEqual([h!.style, h!.header], ["plain", ""]);
