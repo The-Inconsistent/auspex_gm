@@ -26,6 +26,7 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 | Doc | Contents |
 | --- | --- |
 | [spikes/universal-rpg-platform.md](spikes/universal-rpg-platform.md) | InconsisTable design proposal (Vietnamese): a system-agnostic core for any RPG, ruleset engine, admin, GM and player features |
+| [spikes/inconsistable-p0-plan.md](spikes/inconsistable-p0-plan.md) | InconsisTable P0 plan (Vietnamese): the new repo's skeleton, what to copy from this repo, acceptance criteria |
 
 ## Rules for these docs
 
