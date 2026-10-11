@@ -18,10 +18,10 @@
 | D3 | **Ruleset là một hybrid 3 tầng:** (1) **manifest JSON** khai báo, (2) **registry "mechanic primitives"** viết bằng TS do platform duy trì, manifest chỉ *chọn và tham số hoá*, (3) **script sandbox** (QuickJS-WASM), chỉ thêm khi thật sự cần. | Manifest giúp cộng đồng và GM tự viết luật mà không cần deploy. Primitive giữ cơ chế khó (Wrath die, Seize, rút bài Savage Worlds) ở dạng code có test. Bài học từ Foundry: core sở hữu cơ chế, hệ luật chỉ cấu hình. |
 | D4 | **Ba tầng tách bạch: Ruleset (luật), Content Pack (dữ liệu: quái, đồ, phép), World/Setting (bối cảnh, giao diện, từ vựng).** | Cùng luật 5e có thể chơi fantasy, steampunk hay Thế chiến II. Cùng bối cảnh 40k có thể chơi W&G hay một homebrew d20. |
 | D5 | **Phiên bản bất biến, campaign "pin" phiên bản.** Encounter snapshot cả stat block lẫn phiên bản ruleset. Homebrew = fork bằng overlay. | Sửa luật không làm hỏng trận đang chơi hay nhân vật cũ. |
-| D6 | **Quyền xem khai báo trên từng field** (`public / party / owner / gm`) thay cho `toPlayerView` viết tay. | Hệ luật mới tự có bộ lọc người chơi đúng, không ai phải sửa code lọc. |
-| D7 | **Ưu tiên chơi trực tiếp (in-person first):** xúc xắc thật là mặc định. App chỉ ghi kết quả, chỉ tự gieo khi GM bật (bảng ngẫu nhiên, gieo hộ). Bản đồ/VTT là phần mở rộng sau. | Đó là điểm khác biệt so với Roll20 hay Foundry (§1.6). |
+| D6 | **Quyền xem hai tầng:** visibility khai báo trên field (`public / party / owner / gm`, mặc định `gm`) cộng hàm view của ruleset cho những biến đổi mà visibility không diễn tả được (W&G: Corruption, mutation "Unseen", threat ẩn). | Hệ luật đơn giản chỉ cần khai báo; W&G port nguyên bộ lọc hiện có (§5.5). |
+| D7 | **Ưu tiên chơi trực tiếp (in-person first):** xúc xắc thật là mặc định. App chỉ ghi kết quả, chỉ tự gieo bảng ngẫu nhiên; gieo hộ Test là tuỳ chọn theo ruleset, `wng` không bật (§4.3). Bản đồ/VTT là phần mở rộng sau. | Đó là điểm khác biệt so với Roll20 hay Foundry (§1.6). |
 | D8 | **Bản quyền theo lớp nội dung:** SRD 5.1/5.2 (CC-BY-4.0), ORC, CC-BY được chia sẻ công khai. Sách có bản quyền chỉ là **nội dung riêng** của người dùng, gói trong campaign của họ. | Mở rộng nguyên tắc copyright đang có trong `CLAUDE.md`. |
-| D9 | **Phân quyền 3 lớp:** platform role (`user / moderator / admin`), campaign role theo từng phòng (`owner / gm / cogm / player / spectator`), và ownership theo tài nguyên. Admin toàn quyền, có audit. | Một người vừa chơi ở phòng người khác vừa quản lý phòng và nhân vật của mình (§3.6). |
+| D9 | **Phân quyền 3 lớp:** platform role trong Clerk (`user / creator / moderator / admin`), ghế theo từng phòng (`gm / cogm / player`, token `player / screen`), và sở hữu theo tài nguyên (chủ phòng là `campaign.owner_user_id`). Admin toàn quyền khi mở phòng với quyền admin. | Một người vừa chơi ở phòng người khác vừa quản lý phòng và nhân vật của mình (§3.6). |
 | D10 | **Postgres bản ổn định mới nhất (18.x, lên 19 sau 19.1); JSONB chỉ cho tài liệu lưu nguyên khối.** Giá trị field, resource, condition do ruleset khai báo được lưu thành hàng có kiểu. | Delta là một câu `UPDATE` nguyên tử, có khoá ngoại và ràng buộc; thêm hệ luật mới không cần migration (§5.4). |
 
 ---
@@ -41,7 +41,8 @@ Vai trò gắn với **từng campaign**, không gắn với tài khoản: một
 | **Player** | Giữ một hoặc nhiều nhân vật: nhân vật chính, tuỳ tùng, sidekick, funnel 4 nhân vật kiểu DCC. | Có (một nhân vật/ghế) |
 | **Guest** | Vào bằng QR, không cần tài khoản, giữ một nhân vật (pregen, nhân vật mượn) trong một hay nhiều buổi. | Có (`access_token`) |
 | **Moderator** | Xử lý nội dung bị report; không xem secret của campaign. | **Mới** |
-| **Spectator / Screen** | Màn hình TV/chiếu chỉ đọc, hoặc người xem stream. Không bao giờ thấy secret. | Có một phần (screen mode) |
+| **Screen (TV)** | Màn hình chung chỉ đọc qua token, thấy view `party` (thanh máu Agents). Không bao giờ thấy secret. | Có (`docs/spikes/table-screen.md`) |
+| **Spectator (stream)** | Người xem từ xa, chỉ thấy dữ liệu `public`. | **Mới** [Sau] |
 
 ### 1.2 Các "hộp chứa" (containers)
 
@@ -103,8 +104,9 @@ travel (supplies, kiệt sức), clock tiến độ kiểu Blades.
 ### 2.1 Những gì giữ nguyên (đã trung lập)
 
 - **Đường mutation duy nhất:** `TableGateway.onAction` → `Action.safeParse` → `serial(campaignId)` → `db.transaction`
-  → `applyAction` (`authorize` → `dispatch`) → `kicks` → `broadcast(touches)`. REST cũng đi đường này
-  (`TableGateway.run`), ví dụ admin housekeeping và invite accept.
+  → `applyAction` (`authorize` → `dispatch`) → `kicks` → `broadcast(touches)`. REST vào cùng hàng đợi qua hai cửa:
+  `TableGateway.run` (admin housekeeping: parse, `authorize`, `kicks`, broadcast) và `TableGateway.mutate` (invite
+  accept: hàng đợi và broadcast state, không có `Action`).
 - **Hai snapshot** `LiveState` / `Codex`, room `c:<id>:gm` và `c:<id>:players`, view lọc theo từng `characterId`.
 - **Access:** `membership`, guest `access_token` (SHA-256), `invite` (room / character, hết hạn, `maxUses`),
   `Ctx { campaignId, role, characterId, userId, admin }`, Clerk cô lập trong `packages/auth`.
@@ -127,7 +129,11 @@ travel (supplies, kiệt sức), clock tiến độ kiểu Blades.
 | Corruption / Mutation | `corruption.ts`, `mutation.ts` | resource + roll table + effects |
 | Tạo nhân vật, XP ledger | `build.ts` (~2500 dòng), `creation/*.json` | `creation[]` (các bước) + `progression` + primitive `build.ledger` |
 | Wargear, requisition | `wargear.ts`, `requisition.ts` | entity `item` + primitive `economy.requisition` |
-| Nguồn sách, cite | `source.ts` `SOURCES` | `sources[]` trong manifest + content pack |
+| Nguồn sách, cite | `source.ts` `SOURCES` | `sources[]` trong manifest + `cite` trên mọi entry luật |
+| Sát thương và trạng thái chết | `pcHit` (Annihilation khi quá 2× Max Wounds, Wound khi đang Dying thành Traumatic, Shock khi Exhausted thành Wounds, Dying thêm Prone), mob mất thành viên, `pcStatus`/`threatStatus` đọc `wounds > maxWounds` | primitive `health.hit`: track sát thương **không bị chặn trên**, op đọc và ghi trong lock (§5.4) |
+| Combatant W&G | `mobStart` (nhắc Resolve DN 3, trần hồi máu), `personalRuin`, `expiring` (hết ở cuối lượt kế của chính nhân vật), `threatClass` | cột `mob_start`, `threat_class`; `personalRuin` là `actor_resource`; condition hết hạn `ownTurnEnd` |
+| Bộ lọc người chơi | `toPlayerView`/`toPlayerCodex` **biến đổi** dữ liệu: Corruption thành 0 hay `CHAOS_SPAWN_AT` khi Lost, mutation "Unseen", `UNSEEN_ID`, Ruin gửi 0, `audience` thành `[self]` | primitive `view.wng`, port nguyên code hiện có (§5.5) |
+| Field W&G trong codex | `beat.ruin/glory/spends/tests`, `item.mods`, `test_call.test` (jsonb, zod) | ruleset khai báo; lưu theo chính sách JSONB §5.4 |
 
 > **Kiểm chứng tính tương đương (parity test):** W&G trở thành **manifest đầu tiên** (`wng@1.0.0`). Mọi test hiện có
 > trong `packages/shared` phải chạy qua engine chung mà vẫn xanh. Đây là điều kiện để coi việc tách lõi là thành công.
@@ -143,12 +149,12 @@ Ký hiệu: **[MVP]** = bản đầu, **[Sau]** = giai đoạn sau. **[Có]** = 
 | Mục | Chức năng |
 |---|---|
 | **Dashboard** | [MVP] số user, phòng đang chạy, session live, lỗi, dung lượng. [Sau] biểu đồ dùng theo ruleset |
-| **Users** | [Có] danh sách, vai trò, xoá ghế. [MVP] khoá/mở tài khoản, đổi plan, xem campaign của user. [Sau] impersonate chỉ đọc (ghi audit), export/xoá dữ liệu (GDPR) |
-| **Rooms / Campaigns** | [Có] danh sách game, housekeeping action. [MVP] lọc theo ruleset, chủ phòng, hoạt động gần nhất; **chuyển quyền chủ phòng** khi GM rời; archive/restore; force-end session bị treo |
-| **Characters** | [MVP] tìm nhân vật theo user/campaign, khôi phục nhân vật đã xoá (soft delete), xem nhân vật lỗi migrate |
+| **Users** | [Có] danh sách, vai trò, xoá ghế. [MVP] khoá/mở tài khoản, đổi plan, xem campaign của user. [MVP] export/xoá dữ liệu (GDPR), bắt buộc trước khi mở đăng ký công khai; xoá thì ẩn danh nhân vật `retired` và id người dùng trong log. [Sau] impersonate chỉ đọc: một chế độ `Ctx` riêng chỉ có quyền đọc, ghi audit |
+| **Rooms / Campaigns** | [Có] danh sách game, housekeeping action. [MVP] lọc theo ruleset, chủ phòng, hoạt động gần nhất; **chuyển quyền chủ phòng** (người nhận chấp nhận) và phòng mất chủ; archive/unarchive; force-end session bị treo |
+| **Characters** | [MVP] tìm nhân vật theo user/campaign, xem nhân vật lỗi migrate. Không có soft delete: #178 đã loại vì giữ mãi nội dung có bản quyền và dữ liệu người chơi |
 | **Rulesets & Packs** | [MVP] duyệt ruleset/pack công khai (license phải là SRD/ORC/CC-BY), feature flag theo ruleset. [Sau] kho cộng đồng, CI kiểm tra lại mọi manifest khi lên phiên bản core |
 | **Moderation** | [MVP] nút "report" trên nội dung chia sẻ (handout, ảnh, trang campaign công khai), hàng đợi xử lý, gỡ nội dung. [Sau] quét ảnh tự động, quy trình DMCA |
-| **Audit log** | [Có] `admin_event`. [MVP] mở rộng: đổi role, chuyển chủ phòng, gỡ nội dung, phát token guest |
+| **Audit log** | [Có] `admin_event` cho 7 action housekeeping (`ADMIN_ACTIONS`). [MVP] thêm: admin mở phòng không ghế, chuyển chủ phòng, gỡ nội dung, khoá tài khoản |
 | **Quotas & Plans** | [MVP] giới hạn số campaign/user, người chơi/phòng, dung lượng upload. [Sau] gói trả phí (thường chỉ GM trả, người chơi miễn phí) |
 | **Hệ thống** | [Sau] status page, backup/restore theo campaign, telemetry |
 
@@ -168,7 +174,7 @@ Ký hiệu: **[MVP]** = bản đầu, **[Sau]** = giai đoạn sau. **[Có]** = 
 | 2. **Bối cảnh** | Chọn World (hoặc tạo mới): fantasy, 40k, WW2, cyberpunk... Theme giao diện, từ vựng (Agent/Threat hay Party/Monster) | Theme hiện tại "Imperial Manuscript" trở thành theme của World 40k |
 | 3. **Quy mô và mức khởi đầu** | Cấp/tier khởi đầu, cách tạo chỉ số (point buy / array / roll), nguồn sách được phép | Lấy từ `manifest.options` |
 | 4. **Table talk / Session Zero** | Thể loại, tông (u tối, hài, kinh dị), Lines & Veils, bật X-Card, kỳ vọng | Có sẵn `kind[]`, `limits[]`; tổng quát hoá |
-| 5. **House rules** | Bật/tắt variant rules của ruleset (flanking, encumbrance...), viết house rule kèm patch | Lưu `campaign.houseRules[]`, áp như overlay (§4.5) |
+| 5. **House rules** | Bật/tắt variant rules của ruleset (flanking, encumbrance...), viết house rule kèm patch | Lưu bảng `house_rule`, áp như overlay (§4.5) |
 | 6. **Party** | Slot nhân vật, pregen, QR phòng, link mời theo nhân vật, cho phép guest | [Có] RoomInvite; giữ nguyên |
 | 7. **Lịch** | Ngày giờ buổi đầu, địa điểm, nhắc lịch | [Có] `.ics` |
 | 8. **Adventure đầu tiên** | Trống, từ template, hoặc từ pack (one-shot) | Pack load qua action thường như `seed.ts` |
@@ -182,7 +188,7 @@ Mỗi bước đều bỏ qua được. **"Quick game":** chọn ruleset → QR 
 | **SETUP** | Checklist sẵn sàng, đổi ruleset option, house rules, safety, export | Nâng phiên bản ruleset có dry-run diff |
 | **PREP** | Adventure → scene; scene gắn NPC, location, handout, test dự kiến, encounter dự kiến; encounter builder từ bestiary với **ngân sách độ khó** do ruleset định nghĩa (5e: XP budget; W&G: threat budget) | Checklist prep kiểu "Lazy DM", generator ngẫu nhiên, sơ đồ scene kéo thả |
 | **LIVE (TRACK)** | Bắt đầu/kết thúc session (reset resource theo `resetOn`, điểm danh), scene đang diễn ra, nút reveal; **Gọi Test** theo dice mechanic của ruleset; duyệt **request** của người chơi (tiêu pool, reaction) | Log dòng thời gian, đồng hồ nhịp, theo dõi spotlight ("người chơi B lâu chưa được hành động") |
-| **Combat tracker** | Initiative theo strategy của ruleset; delta máu/resource; condition có thời hạn tự hết; reminder đầu/cuối lượt; ẩn combatant; mob; command line [Có]; undo phía client [Có] | Legendary/lair action, reaction, undo phía server (event log) |
+| **Combat tracker** | Initiative theo strategy của ruleset; delta máu/resource; condition có thời hạn tự hết; reminder đầu/cuối lượt; ẩn combatant; mob; command line [Có]; **undo phía server**: đảo delta `after − before` đã ghi ở `session_event` (P1) | Legendary/lair action, reaction |
 | **Bestiary / Threat** | Tìm, thêm N con tự đánh số, snapshot; threat builder custom [Có] | Scale/template, quick mook |
 | **Secret / Reveal** | Hiển thị theo từng entry: ẩn / đã reveal / reveal cho từng nhân vật; "chỉ thanh máu" [Có] | Reveal một phần (biết tên, chưa biết stat), secret khám phá theo từng nhân vật |
 | **Clocks** | Clock 4/6/8 ô, đếm ngược, track Doom/Threat | Clock liên kết (lượt faction) |
@@ -200,11 +206,11 @@ Mỗi bước đều bỏ qua được. **"Quick game":** chọn ruleset → QR 
 |---|---|---|
 | **Vào phòng** | QR/link → chọn hoặc nhận nhân vật; guest không cần tài khoản; tự kết nối lại [Có] | Phòng chờ duyệt, nhiều nhân vật, spectate |
 | **Builder** | Các bước tạo nhân vật theo `manifest.creation`, kiểm tra hợp lệ, XP/point ledger; **lối thoát nhập tay** | Import D&D Beyond / Pathbuilder JSON, wizard lên cấp |
-| **SHEET** | Render từ `layout` của ruleset (phone-first); resource có nút ±; số dẫn xuất chạm vào thấy cách tính ("vì sao Defence = 5?") kèm cite | Chế độ offline |
+| **SHEET** | Render từ `layout` của ruleset (phone-first); nút ± chỉ trên resource có `editableBy: owner`/`ownerSpendOnly`, còn lại xin qua request; số dẫn xuất chạm vào thấy cách tính ("vì sao Defence = 5?") kèm cite | Chế độ offline |
 | **Resource / Phép** | Slot, điểm, prepared/known, metacurrency (Inspiration, Fate, Glory) | Thẻ phép (concentration, thành phần) |
 | **Inventory** | Đồ, số lượng, đang trang bị, tiền | Encumbrance, attunement, kho party có log |
 | **FIGHT** | Trận đấu theo mức GM cho thấy; banner "đến lượt bạn" + rung [Có] | |
-| **Test được gọi** | Nhận prompt, xem pool/DC, gieo **xúc xắc thật**, báo kết quả [Có, tổng quát hoá theo mechanic] | Gieo số (GM bật), ghi log |
+| **Test được gọi** | Nhận prompt, xem pool/DC, gieo **xúc xắc thật**, báo kết quả [Có, tổng quát hoá theo mechanic] | Gieo số (GM bật), chỉ ở ruleset cho phép; `wng` giữ báo PASSED/FAILED (rules-flow §11.143) |
 | **Request** | Xin tiêu pool, dùng reaction; GM duyệt [Có `spend_request`] | Xin tiêu XP, hành động downtime |
 | **INTEL** | NPC, location, faction đã biết; handout; quest; recap; buổi tới [Có] | Bản đồ quan hệ, bảng tin đồn |
 | **Ghi chú** | Ghi chú riêng (chỉ chủ nhân vật thấy) | Nhật ký party chung |
@@ -218,112 +224,155 @@ Mỗi bước đều bỏ qua được. **"Quick game":** chọn ruleset → QR 
 **Yêu cầu:**
 - Một tài khoản vừa là người chơi ở phòng của người khác, vừa quản lý các phòng và nhân vật do chính mình tạo.
 - Admin có toàn quyền.
-- Auspex đã có nền móng cho việc này: role theo `membership`, `Ctx.admin`, `PLAYER_ACTIONS`, `authorize()`. Phần này
-  biến nó thành một hệ phân quyền tường minh.
+- Auspex đã có nền móng: role theo `membership`, token cho guest và màn hình TV, `Ctx.admin`, `PLAYER_ACTIONS`,
+  `authorize()`. Phần này biến nó thành một hệ phân quyền tường minh, và ghi rõ chỗ nào đảo một quyết định đã có.
 
-**Ba lớp, xét theo thứ tự:**
+**Ba lớp:**
 
 ```
-1. Platform role (toàn hệ thống)   app_user.platformRole: user | moderator | admin
-2. Campaign role (theo từng phòng) membership.role: owner | gm | cogm | player | spectator  (+ guest qua token)
-3. Ownership (theo từng tài nguyên) ownerUserId trên campaign, character, library_character, world, ruleset, pack
+1. Platform role (toàn hệ thống)  Clerk publicMetadata.role: user | creator | moderator | admin
+2. Ghế trong phòng (theo campaign) membership.role: gm | cogm | player   hoặc   access_token.role: player | screen
+3. Sở hữu (theo tài nguyên)       campaign.owner_user_id; owner_user_id trên library_character, world, ruleset, pack
 ```
 
-Vì role nằm trên `membership` chứ không nằm trên tài khoản, cùng một người có thể là `owner` ở phòng A, `player` ở
+Vì ghế nằm trên `membership` chứ không nằm trên tài khoản, cùng một người có thể là chủ phòng ở phòng A, `player` ở
 phòng B và `cogm` ở phòng C. `Ctx` được resolve theo `campaignId` của socket, như `resolveCtx` đang làm.
 
-**Platform role**
+**Platform role: Clerk vẫn là nguồn sự thật.** Issue #178 và PR #222 đã quyết "roles stay in Clerk", và
+`docs/architecture.md` ghi "roles are only ever changed in Clerk". Thiết kế giữ quyết định đó:
+- `app_user.role` vẫn chỉ là bản hiển thị. Api chỉ đọc role từ session token đã verify, không bao giờ từ client.
+- Thêm giá trị `moderator` vào `publicMetadata.role`.
+- Đổi role trong app (nút ở Admin Console gọi Clerk Backend API qua `@wg/auth`) là một **thay đổi quyết định #178**,
+  cần chủ sản phẩm đồng ý (§8).
+- Webhook `user.updated` của Clerk ngắt mọi socket của user đó trên mọi node (room `user:<id>` qua Redis adapter).
+  Socket kết nối lại với role mới, không phải chờ token làm mới (~60 s).
+- Khoá tài khoản là cột `app_user.status`, đọc ở mỗi lần connect socket và mỗi request REST.
 
 | Role | Quyền |
 |---|---|
-| `user` (mặc định) | Tạo campaign (trong quota của gói), nhận lời mời, sở hữu nhân vật library, world, ruleset/pack homebrew của mình |
-| `moderator` | Hàng đợi report, gỡ nội dung đã chia sẻ, khoá tạm tài khoản. Không xem secret hay ghi chú GM của campaign |
-| `admin` | **Toàn quyền:** mọi quyền của mọi role ở mọi campaign, Admin Console, đổi platform role, chuyển chủ phòng, xoá cứng. Mọi hành động của admin trong một campaign đều ghi `admin_event`, như hiện nay |
+| `user` | Nhận lời mời, chơi, sở hữu nhân vật library, world, ruleset/pack homebrew của mình. Tạo campaign trong quota của gói |
+| `creator` | [Có] Như `user`. Ở platform mở thì mọi user đều tạo được phòng, nên role này chỉ còn ý nghĩa nếu quota cần |
+| `moderator` | Hàng đợi report, gỡ nội dung đã chia sẻ, khoá tạm tài khoản `user`/`creator`. Không khoá được moderator hay admin. Không vào được campaign |
+| `admin` | **Toàn quyền**, theo hai cách bên dưới |
 
-**Campaign role**
+**Admin toàn quyền nhưng phải chủ động.** Giữ đúng cách `resolveCtx` làm hôm nay:
+- **Admin có ghế ở một bàn** (đang chơi ở phòng bạn bè) nhận quyền **của ghế đó**. Không tự thấy secret của GM.
+- **Admin mở phòng với quyền admin** (OPEN AS ADMIN trên Admin Console, không ghế): `Ctx.seat.kind = "admin"`, có mọi
+  quyền trong phòng đó.
+- Như hôm nay, chỉ 7 action housekeeping (`ADMIN_ACTIONS`) ghi `admin_event`; lượt chạm Wounds của admin không ghi.
+  Thêm một dòng `admin_event` khi admin mở phòng không có ghế.
+- Hiện cho GM thấy dòng "Admin đã truy cập" sẽ đảo quyết định đã ghim ở #178 (admin vô hình trong PARTY), nên đây là
+  câu hỏi mở (§8), chưa phải thiết kế.
+- `member.seat` (gán ghế cho một user) vẫn chỉ dành cho admin.
 
-| Role | Ai | Quyền chính |
+**Chủ phòng là một cột, không phải một role.** Issue #178 ghi "there is no owner": GM nào cũng archive được, và chỉ
+xoá được game đã archive sau khi gõ tên. Yêu cầu mới ("người dùng quản lý các phòng do mình tạo") cần một chủ phòng,
+nên thiết kế **đảo một phần quyết định đó**:
+- `campaign.owner_user_id` là nguồn duy nhất. Chủ phòng luôn có một ghế `gm`. `membership.role` không có giá trị
+  `owner`, nên không thể có hai chủ phòng.
+- Chỉ chủ phòng (hoặc admin): xoá phòng, chuyển chủ phòng, bổ nhiệm và gỡ `gm`/`cogm`, đổi ruleset.
+- Giữ nguyên: GM nào cũng archive và unarchive được. Xoá vẫn phải archive trước rồi gõ tên.
+- Chuyển chủ phòng tạo một lời mời `ownership_transfer`; người nhận phải chấp nhận.
+- Chủ phòng không thể bị gỡ, chỉ chuyển quyền. Tài khoản chủ phòng bị xoá thì `owner_user_id` thành `null`
+  (`ON DELETE SET NULL`), và phòng vào hàng đợi để admin giao chủ mới hoặc archive.
+- Không có soft delete. #178 đã loại nó vì nó giữ mãi nội dung có bản quyền và dữ liệu người chơi.
+
+**Ghế trong phòng**
+
+| Ghế | Ai | Quyền chính |
 |---|---|---|
-| `owner` | Người tạo phòng (đúng một người) | Mọi quyền của `gm`, cộng: xoá/archive phòng, chuyển quyền chủ phòng, đổi ruleset, bổ nhiệm và gỡ `gm`/`cogm` |
-| `gm` | GM đầy đủ (đồng GM) | Toàn bộ chuẩn bị nội dung, chạy session và combat, reveal, mời và gỡ player, sửa mọi sheet |
-| `cogm` | GM phụ có `scopes[]` | Chỉ những scope được giao: `combat`, `codex`, `codex.secrets`, `party`, `session` |
-| `player` | Người chơi có ghế | Sheet của nhân vật mình, request, ghi chú riêng, xem những gì đã reveal cho mình |
-| `spectator` | TV hoặc người xem | Chỉ đọc dữ liệu `public` |
-| guest | `access_token` theo nhân vật | Như `player` cho đúng một nhân vật; không có library, không có workspace |
+| `gm` | GM đầy đủ; chủ phòng là một `gm` | Chuẩn bị nội dung, chạy session và combat, reveal, mời và gỡ `player`, sửa mọi sheet, archive |
+| `cogm` | GM phụ có `scopes[]` | Chỉ những scope được giao: `combat`, `codex`, `codex.secrets`, `party`, `session`. Không tự đổi scope của mình |
+| `player` | Người chơi có tài khoản | Nhân vật của ghế mình (một hoặc nhiều, `membership_character`), request, ghi chú riêng, X-Card |
+| token `player` | Guest qua QR | Như `player` cho nhân vật gắn với token [Có] |
+| token `screen` | Màn hình TV | Chỉ đọc view `party` [Có]: thanh máu Agents hiện trên TV; không có `/rules`, `/creation`, `book:*` (`docs/spikes/table-screen.md`) |
 
-**Permission là dữ liệu.** Mỗi permission có dạng `tài nguyên:hành động[:phạm vi]`, và role ánh xạ tới một tập
-permission bằng một hằng zod trong `core-schema`:
+**Permission là dữ liệu.** Mỗi permission có dạng `tài nguyên:hành động[:own]`, định nghĩa một lần bằng `z.enum` trong
+`core-schema`. Ghế ánh xạ tới tập permission bằng bảng hằng.
 
 ```ts
-export const PERMISSIONS = [
-  "campaign:read", "campaign:update", "campaign:delete", "campaign:transfer",
-  "member:invite", "member:remove", "member:promote",
+export const Permission = z.enum([
+  "campaign:update", "campaign:archive", "campaign:delete", "campaign:transfer", "campaign:ruleset",
+  "member:invite", "member:remove", "member:appoint", "member:seat",
   "session:run", "encounter:run", "test:call",
   "codex:read", "codex:write", "codex:read_secret", "codex:reveal",
-  "character:read:any", "character:edit:own", "character:edit:any", "character:create",
+  "character:edit:any", "character:edit:own", "character:create",
   "request:send", "request:resolve", "safety:signal",
-  "ruleset:fork", "ruleset:publish", "pack:approve", "report:resolve", "admin:console",
-] as const;
+]);
+export const OWNER_ONLY = new Set<Permission>(["campaign:delete", "campaign:transfer", "campaign:ruleset", "member:appoint"]);
 
-// Quyền hiệu lực của một người trong một phòng (thuần, có test)
-can(ctx, perm, resource?) =
-     ctx.platformRole === "admin"                       // toàn quyền, có ghi audit
-  || PLATFORM_GRANTS[ctx.platformRole].has(perm)
-  || CAMPAIGN_GRANTS[ctx.role].has(perm) && scopeAllows(ctx.scopes, perm)
-  || OWNER_GRANTS.has(perm) && isOwner(ctx.userId, resource)  // ":own"
+// Thuần, có test; chạy ở web để ẩn nút, nhưng chỉ kết quả ở api có giá trị.
+export function canInCampaign({ ctx, perm, target }: { ctx: Ctx; perm: Permission; target?: Target }): boolean {
+  if (ctx.seat.kind === "admin") return true;                       // OPEN AS ADMIN, không ghế
+  if (perm === "member:seat") return false;                         // chỉ admin
+  if (OWNER_ONLY.has(perm)) return ctx.userId !== null && ctx.userId === ctx.campaignOwnerId;
+  if (perm.endsWith(":own")) {                                      // ":own" luôn cần target và một ghế đang sống
+    return target?.actorId !== undefined && OWN_GRANTS[ctx.seat.role].has(perm)
+      && ctx.seat.characterIds.includes(target.actorId);           // so theo ghế, không theo userId
+  }
+  if (!SEAT_GRANTS[ctx.seat.role].has(perm)) return false;
+  return ctx.seat.role !== "cogm" || COGM_SCOPES_FOR[perm].some((s) => ctx.seat.scopes.includes(s));
+}
 ```
 
-- Mỗi core action khai báo permission nó cần. Mỗi op của primitive cũng khai báo (`who` ở §5.3 trở thành
-  `perm`). `authorize()` chỉ còn gọi `can()`, và `PLAYER_ACTIONS` viết tay biến mất.
-- Kiểm tra field: `character:edit:own` chỉ cho sửa những field có `editableBy: owner` trong manifest. Override của
-  GM, XP, và pool `gm` cần `character:edit:any`. Hiện `authorize()` phải tự chặn các field GM-only trong action mà
-  player được gửi; cách này thay cho việc chặn thủ công đó.
-- `can()` chạy cả ở web (để ẩn nút) lẫn api (để quyết định). Chỉ kết quả ở api có giá trị.
+- **"Của mình" tính theo ghế.** Guest không có `userId` nhưng token của họ mang `characterIds`. Người đã rời phòng
+  không còn ghế nên không còn `:own`. Pregen chưa ai nhận không thuộc về ai.
+- **Thao tác lên thành viên xét cả người bị tác động.** `member:remove` chỉ gỡ được ghế thấp hơn mình (`gm` gỡ
+  `player`; chỉ chủ phòng gỡ `gm`/`cogm`). Lời mời mang role không cao hơn quyền của người mời.
+- **`authorize()` = state guard + `can()` + validator của op.**
+  - **State guard**, giữ như hiện nay: game đã archive thì chỉ còn `ARCHIVED_OPEN`.
+  - **`can()`** xét permission như trên.
+  - **Validator của op** lo những luật không phải quyền:
+    - chiều của delta: `character.supply` cho người chơi tiêu Wealth, Ammo nhưng không tự cộng, p.206, §11.57;
+    - nhân vật phải thuộc ghế: `spend.request`, `test.report`.
+- **Quyền trên field:** `character:edit:own` chỉ sửa được field và resource có `editableBy: owner` (hoặc
+  `ownerSpendOnly`: chỉ được giảm) trong manifest. Như hôm nay, phần lớn counter của người chơi đi qua `request` để
+  GM duyệt.
+- **Codex ghi theo patch.** `codex.save` hôm nay ghi đè cả document, và zod mặc định `secrets`/`gmNotes` là `""`. Nếu
+  giữ cách đó, một `cogm` không có `codex.secrets` sẽ xoá trắng secret mỗi lần lưu. Vì vậy server giữ nguyên mọi field
+  mà người gửi không được đọc.
 
 **Ownership: nhân vật thuộc về ai**
 
-- `library_character.ownerUserId`: nhân vật ngoài campaign, chỉ chủ sở hữu sửa được.
-- Khi đưa vào một campaign, app tạo một **bản sao** có `ownerUserId` (người chơi) và `campaignId`. Người chơi sửa theo
-  `:own`; GM sửa theo `:any`.
-- Khi người chơi rời phòng (`member.remove` hay tự rời), nhân vật **ở lại** campaign với trạng thái
-  `retired`, vì GM còn cần. Chủ sở hữu luôn xuất được một bản sao về library của mình.
-- Campaign chỉ có đúng một `owner`. Muốn rời phòng mình đã tạo thì phải chuyển quyền trước. Owner bị xoá tài khoản →
-  admin chuyển quyền hoặc archive phòng.
+- `library_character.owner_user_id`: nhân vật ngoài campaign, chỉ chủ sở hữu sửa.
+- Đưa vào campaign tạo một **bản sao** (`character.owner_user_id` = người chơi) gắn vào ghế qua `membership_character`.
+- Khi người chơi rời phòng, nhân vật **ở lại** với trạng thái `retired`, vì GM còn cần.
+  - Người chơi xuất được một bản sao về library qua REST riêng.
+  - Bản sao chỉ chứa những gì view người chơi thấy, không có override hay objective của GM. Pack được tham chiếu
+    bằng khoá chứ không chép nội dung.
 
-**Workspace nhìn từ quyền** (§3.2): truy vấn `membership` của user rồi nhóm theo role. Ví dụ: "Tôi làm GM" (owner/gm/cogm), "Tôi đang
-chơi" (player, kèm nhân vật), "Nhân vật của tôi" (library cộng các bản trong campaign mà mình sở hữu), "Homebrew của
-tôi" (world, ruleset, pack có `ownerUserId` là mình).
+**Workspace nhìn từ quyền** (§3.2): truy vấn `membership` của user rồi nhóm lại.
+- "Phòng của tôi": `campaign.owner_user_id` là mình.
+- "Tôi làm GM": `gm`/`cogm`.
+- "Tôi đang chơi": `player`, kèm nhân vật.
+- "Nhân vật của tôi": library cộng các bản trong campaign mà mình sở hữu.
+- "Homebrew của tôi": world, ruleset, pack.
 
-**Admin toàn quyền nhưng để lại dấu vết**
+**Ma trận rút gọn** (✔ = có quyền, `own` = nhân vật của ghế mình, `scope` = khi được giao scope đó)
 
-- Admin không cần ghế: `Ctx.admin` như hiện nay. Admin Console đi qua `TableGateway.run` để giữ nguyên pipeline.
-- Mỗi lần admin vào một campaign mà không có ghế, app ghi `admin_event`. GM thấy dòng "Admin đã truy cập" trong log
-  của phòng, để minh bạch.
-- Chỉ admin mới đổi được platform role, và hệ thống luôn giữ ít nhất một admin.
-- Platform role đọc từ DB (`app_user.platformRole`) chứ không chỉ từ Clerk `publicMetadata`. Đổi role có hiệu lực
-  ngay, không phải chờ token làm mới.
-
-**Ma trận rút gọn** (✔ = có quyền, `own` = chỉ của mình, `scope` = khi được giao scope đó)
-
-| Hành động | owner | gm | cogm | player | spectator | moderator* | admin |
+| Hành động | chủ phòng | gm | cogm | player | screen | moderator | admin (OPEN AS ADMIN) |
 |---|---|---|---|---|---|---|---|
-| Xoá / chuyển phòng | ✔ | | | | | | ✔ |
-| Đổi ruleset, house rules | ✔ | ✔ | | | | | ✔ |
-| Mời / gỡ người chơi | ✔ | ✔ | scope `party` | | | | ✔ |
+| Xoá phòng (đã archive, gõ tên) | ✔ | | | | | | ✔ |
+| Chuyển chủ phòng (người nhận chấp nhận) | ✔ | | | | | | ✔ |
+| Bổ nhiệm / gỡ `gm`, `cogm`; đổi ruleset | ✔ | | | | | | ✔ |
+| Archive / unarchive; house rules, option | ✔ | ✔ | | | | | ✔ |
+| Mời / gỡ `player` | ✔ | ✔ | scope `party` | | | | ✔ |
+| Gán ghế cho user (`member.seat`) | | | | | | | ✔ |
 | Chạy session, combat | ✔ | ✔ | scope `session`/`combat` | | | | ✔ |
-| Sửa codex | ✔ | ✔ | scope `codex` | | | | ✔ |
+| Sửa codex (patch) | ✔ | ✔ | scope `codex` | | | | ✔ |
 | Đọc secret, ghi chú GM | ✔ | ✔ | scope `codex.secrets` | | | | ✔ |
-| Sửa sheet nhân vật | ✔ | ✔ | scope `party` | `own` | | | ✔ |
+| Sửa sheet | ✔ | ✔ | scope `party` | `own`, theo `editableBy` | | | ✔ |
 | Gửi request, X-Card | | | | ✔ | | | |
-| Xem dữ liệu đã reveal | ✔ | ✔ | ✔ | ✔ (theo `codex_reveal`) | `public` | | ✔ |
+| Xem | tất cả | tất cả | theo scope | view người chơi | view `party` | | tất cả |
 | Gỡ nội dung bị report | | | | | | ✔ | ✔ |
 
-\* moderator không có quyền trong campaign; chỉ thao tác trên nội dung bị report.
-
-**Dữ liệu:** `app_user.platformRole`; `membership.role` + `scopes` (mảng enum) + `membership_character`; cột `ownerUserId` trên mọi tài nguyên sở
-hữu được; `campaign.ownerUserId` (unique theo campaign). Đổi role hay scope đi qua action `member.promote` để vào hàng
-đợi, transaction và broadcast như mọi thay đổi khác. Giảm quyền thì kick socket để client kết nối lại với `Ctx` mới,
-như `member.remove` hiện nay.
+**Dữ liệu:**
+- `membership.role enum[gm|cogm|player]` + `scopes` (mảng enum `CogmScope`).
+- `membership_character(membership_id, actor_id)`, thay cột đơn `membership.character_id`.
+- `access_token.role enum[player|screen]` + `actor_id`.
+- `campaign.owner_user_id`; `ownership_transfer(campaign_id, to_user_id, expires_at)`.
+- Bổ nhiệm và gỡ đi qua action `member.appoint` (hàng đợi, transaction, broadcast). Giảm quyền thì ngắt socket của
+  user đó trong phòng, như `member.remove` hiện nay.
 
 ---
 
@@ -355,8 +404,9 @@ flowchart LR
 | Primitive | ✔ | ✘ (gửi PR) | ✘ |
 | Script | ✔ | phải được duyệt | chỉ trong campaign của mình |
 
-Script **không bao giờ ghi state trực tiếp.** Nó trả về một patch, và patch đó đi qua đúng pipeline zod → clamp →
-transaction như mọi action.
+Script **không bao giờ ghi state trực tiếp.** Nó trả về một patch, và patch đó đi qua đúng pipeline như mọi action:
+zod → kiểm tra **từng delta** với `targets` của op và `editableBy` của field theo `Ctx` của người gọi → clamp →
+transaction. Hook chạy với `Ctx` của người gọi, không bao giờ với quyền "hệ thống".
 
 ### 4.2 Phác thảo manifest (zod)
 
@@ -383,13 +433,18 @@ export const Ruleset = z.object({
   migrations: z.array(Migration).default([]),
 });
 
+const Cite = z.string().max(40);                       // nguồn + trang in: "Core p.164"
+export const ResourceScope = z.enum(["entity", "party", "gm", "campaign"]); // một lần; bảng resource_pool dùng lại
+export const EditableBy = z.enum(["gm", "owner", "ownerSpendOnly"]);
+
 const Resource = z.object({
-  id: Id, label: z.string(),
-  scope: z.enum(["entity", "party", "gm", "campaign"]),
+  id: Id, label: z.string(), cite: Cite.optional(),
+  scope: ResourceScope,
   min: Expr.default("0"), max: Expr.optional(),         // "derived.maxWounds"
-  resetOn: z.array(z.object({ event: z.enum(["sessionStart", "sessionEnd", "encounterEnd", "shortRest", "longRest"]),
-                              to: Expr })).default([]),
-  visibility: Visibility.default("owner"),
+  capped: z.boolean().default(true),                    // false: track sát thương được vượt max (W&G Wounds, Shock)
+  resetOn: z.array(z.object({ event: ResetEvent, to: Expr })).default([]),
+  visibility: Visibility.default("gm"),                 // không khai báo = chỉ GM thấy (fail-closed)
+  editableBy: EditableBy.default("gm"),
 });
 
 const Effect = z.object({                              // kiểu ActiveEffects, nhưng thứ tự rõ ràng
@@ -398,6 +453,9 @@ const Effect = z.object({                              // kiểu ActiveEffects, 
   when: Expr.optional(),
 });
 ```
+
+Mọi entry luật (resource, condition, test, initiative, effect, option) có `cite`. Validator từ chối entry thiếu
+`cite`, trừ ruleset homebrew. Đây là quy tắc "luật trong code phải cite trang in" của CLAUDE.md, áp cho manifest.
 
 **Ví dụ: cùng một engine, ba hệ luật**
 
@@ -409,14 +467,21 @@ const Effect = z.object({                              // kiểu ActiveEffects, 
   "resources": [{ "id": "hp", "scope": "entity", "max": "derived.maxHp", "resetOn": [{ "event": "longRest", "to": "max" }] },
                 { "id": "inspiration", "scope": "entity", "max": "1" }] }
 
-// Wrath & Glory: pool d6, Icon, Wrath die, initiative xen kẽ + Seize
+// Wrath & Glory: pool d6, Icon, Wrath die, initiative xen kẽ + Seize. Đây là đích của parity test, khớp poolMax và canSeize
 { "tests": { "skill": { "kind": "poolSuccesses", "die": 6, "pool": "attr[skill.attr] + skill.rank",
                         "faces": { "4": 1, "5": 1, "6": 2 }, "special": [{ "id": "wrath", "count": "1",
                         "faces": { "1": "complication", "6": "critical" } }], "target": "ctx.dn", "shift": { "face": 6 } } },
-  "initiative": { "strategy": "alternatingSides", "firstSide": "players", "ambush": true,
-                  "seize": { "cost": [{ "resource": "glory", "amount": 1 }], "oncePerTurn": true } },
-  "resources": [{ "id": "glory", "scope": "party", "max": "6", "resetOn": [{ "event": "sessionStart", "to": "0" }] },
-                { "id": "ruin", "scope": "gm", "resetOn": [{ "event": "sessionStart", "to": "count(players)" }] }] }
+  "initiative": { "strategy": "alternatingSides", "firstSide": "players", "cite": "Core p.176-177",
+                  "seize": { "costBySide": { "players": "glory", "threats": "ruin" },  // bên vừa đi trả 1
+                             "holdsUntilOtherSideActs": true, "gmAtRoundStart": true },
+                  "ambush": { "skipRound": 1, "awareCostBySide": { "players": "glory", "threats": "ruin" }, "cite": "Core p.177" } },
+  "resources": [
+    { "id": "glory", "scope": "party", "max": "max(6, party.characters + 2)", "cite": "Core p.164",
+      "resetOn": [{ "event": "sessionStart", "to": "0" }] },
+    { "id": "ruin", "scope": "gm", "max": "max(1, party.characters * 2)", "cite": "Core p.320",
+      "resetOn": [{ "event": "sessionStart", "to": "party.characters" }] },
+    { "id": "wrath", "scope": "entity", "cite": "Core p.162", "resetOn": [{ "event": "sessionStart", "to": "2" }] },
+    { "id": "wounds", "scope": "entity", "capped": false, "max": "derived.maxWounds" } ] }
 
 // Call of Cthulhu 7e: d100 roll-under, Sanity
 { "tests": { "skill": { "kind": "rollUnder", "dice": "1d100", "target": "skill.value",
@@ -435,8 +500,12 @@ const Effect = z.object({                              // kiểu ActiveEffects, 
     khai báo trong manifest.
   - Chạy giống hệt ở web (xem trước) và api (quyết định). Server luôn là bên quyết định.
 - **Xúc xắc:** dùng ngữ pháp riêng, nhỏ: `NdX`, `+/-`, `kh/kl`, `!` (explode), `>=T` (đếm thành công), `d66`, `dF`.
-  - Khi app gieo: gieo ở server bằng `crypto.getRandomValues`, lưu `roll_event { notation, faces[], result, by }`.
+  - Khi app gieo: gieo ở server bằng `crypto.getRandomValues`, ghi `session_event` loại `roll`
+    (`{ notation, faces[], result }`). `roll()` của `roll-table.ts` chuyển lên server, giữ tham số `d6` để test.
   - Khi người chơi gieo xúc xắc thật: kết quả được gắn cờ `reported`.
+- **Test vẫn gieo xúc xắc thật với W&G.** CLAUDE.md chỉ cho app gieo bảng của sách, và rules-flow §11.143 (#191) quyết
+  "the dice stay physical". `wng` giữ cách báo PASSED/FAILED. Cho app gieo Test là một tuỳ chọn theo ruleset; bật nó
+  cần một house decision riêng và mở rộng ngoại lệ trong CLAUDE.md.
 
 ### 4.4 Thứ tự áp effect (bài học từ Foundry)
 
@@ -448,7 +517,16 @@ const Effect = z.object({                              // kiểu ActiveEffects, 
 - `ruleset_version` là **bất biến** (`id`, `version`, `hash`, `manifest jsonb`). Sửa lỗi = phát hành phiên bản mới.
 - Campaign pin `ruleset@version`. Mỗi actor ghi `ruleset_version_id`. Encounter snapshot stat block và phiên bản
   (như `statSnapshot` hiện tại).
-- Op migration chạy thành SQL trên các hàng giá trị (§5.4): `rename` = `UPDATE actor_field SET field_id = …`.
+- Op migration chạy thành SQL trên các hàng giá trị (§5.4), **luôn giới hạn theo (campaign, phiên bản nguồn)**, và đổi
+  `actor.ruleset_version_id` trong cùng transaction:
+  ```sql
+  UPDATE actor_field af SET field_id = $to
+    FROM actor a
+   WHERE a.id = af.actor_id AND a.campaign_id = $campaign AND a.ruleset_version_id = $from
+     AND af.field_id = $old;
+  ```
+  Field id lấy từ manifest đã compile, luôn truyền làm tham số. Từ chối nâng cấp khi có encounter đang chạy. Nhân vật
+  library nhập vào campaign ở phiên bản mới chạy cùng chuỗi migration.
 - **Migration khai báo** trong manifest mới (`rename`, `default`, `mapEnum`, `drop` có `archive`). GM bấm nâng cấp, xem
   dry-run diff, rồi mới áp. Không bao giờ tự động.
 - **Homebrew = fork:** `extends: dnd5e-srd@2.0.0` + overlay theo `id` (không theo vị trí mảng). Khi bản gốc lên
@@ -466,6 +544,24 @@ const Effect = z.object({                              // kiểu ActiveEffects, 
   chỉ GM; `/rules` theo ghế). Trang sách vẫn chỉ đến người chơi qua relay trực tiếp từ PDF của GM (`book:*`), không
   lưu gì.
 - **Hiển thị theo từng entry:** stat block `gm` không bao giờ rời room GM.
+- **Membership không đủ để mở pack riêng tư.** Ở platform mở, ai cũng tự tạo được campaign để có membership. Vì vậy:
+  - Bảng `pack_grant(pack_id, user_id, granted_by)` cấp quyền theo người.
+  - Gắn pack riêng tư vào campaign, fork, clone campaign hay export đều cần grant của **người gọi**.
+  - Pack riêng tư của platform (sách W&G) do admin cấp cho từng user.
+  - Người chơi có ghế chỉ thấy entry qua view đã lọc của bàn.
+- **License tự khai** (`srd|orc|cc-by`) không tự đưa pack lên danh mục công khai; cần `pack:approve`.
+- **Cổng theo route:**
+
+  | Route | Cổng |
+  |---|---|
+  | `/api/campaigns/:id/threats`, `/wargear`, `/scene-presets`, `/flavour`… | Ghế GM của campaign (như nay) |
+  | `/api/campaigns/:id/rules`, `/creation` | Ghế trong campaign; entry `gm` chỉ tới ghế GM (như nay) |
+  | `/api/rules`, `/api/creation` (library, không ghế) | User có `pack_grant` cho pack đó, hoặc pack công khai. Thay cho Clerk Invite-only (`ponytail:` ở `library.controller.ts`) |
+  | `/api/frameworks` (NEW CAMPAIGN) | User trong quota; chỉ nội dung từ pack mà user có grant |
+
+- **Repo:** repo này giữ private (CLAUDE.md). Lịch sử git của nó đã chứa nội dung `packages/data` và ảnh portrait có
+  bản quyền, nên repo công khai (nếu có) phải là repo mới hoặc lịch sử đã lọc (`git filter-repo`), không có dữ liệu
+  W&G, portrait hay `books/`.
 
 ### 4.7 World / Setting: "bất cứ thế giới nào người chơi nghĩ ra"
 
@@ -538,28 +634,57 @@ Hiện tại `Action` là một union đóng. Đề xuất chia hai lớp:
      zod schema mà primitive đăng ký.
 
 ```ts
-// Hợp đồng của một primitive (packages/rules-engine)
-interface Primitive<P, S> {
-  id: string;                         // "initiative.alternatingSides"
-  params: z.ZodType<P>;               // tham số từ manifest
-  ops: Record<string, {
-    input: z.ZodType;                 // payload của turn.op / rule.op
-    who: "gm" | "owner" | "player";   // authorize() đọc từ đây, thay PLAYER_ACTIONS viết tay
-    apply(ctx: RuleCtx<P, S>, input): Delta[];   // THUẦN: chỉ đề xuất delta
-    touches: "state" | "codex" | "both";
-  }>;
+// Hợp đồng của một primitive (packages/rules-engine). Tập đóng định nghĩa một lần trong core-schema.
+export const Touches = z.enum(["state", "codex", "both"]);
+
+interface PrimitiveOp<P, S, I> {
+  input: z.ZodType<I>;                                  // payload của turn.op / rule.op
+  perm: Permission;                                     // can() xét trước khi apply (§3.6)
+  targets: DeltaTarget[];                               // những path op được phép ghi
+  validate?(args: { ctx: RuleCtx<P, S>; input: I }): ActionError | null;  // luật không phải quyền
+  apply(args: { ctx: RuleCtx<P, S>; input: I }): Delta[];                 // thuần: chỉ đề xuất delta
+  touches: Touches;
+  kicks?(args: { input: I }): Kick | null;
 }
+interface Primitive<P, S> { id: string; params: z.ZodType<P>; ops: Record<string, PrimitiveOp<P, S, unknown>> }
 ```
+
+Pipeline cho một ruleset action:
+1. parse
+2. state guard (`ARCHIVED_OPEN`)
+3. `can(perm)`
+4. `validate`
+5. `apply`
+6. kiểm tra mọi delta nằm trong `targets` và theo `editableBy`
+7. ghi trong transaction
+8. `kicks`, broadcast
 
 `authorize`, `touches`, `kicks` không còn đọc tên action viết tay: **core** khai báo cho core action, **primitive**
 khai báo cho ruleset action. Khi thêm hệ luật mới không phải sửa `dispatch`.
+
+**Mỗi thay đổi đi đường nào.** CLAUDE.md chỉ cho hai ngoại lệ ngoài socket action: library và admin housekeeping.
+Platform thêm các loại sau, và danh sách ngoại lệ trong CLAUDE.md phải cập nhật khi xây:
+
+| Loại | Ví dụ | Đường đi |
+|---|---|---|
+| Trong một campaign | Mọi thao tác ở bàn, admin housekeeping, invite accept | `TableGateway.run` / `mutate`, hàng đợi theo campaign |
+| Thuộc một chủ sở hữu, ngoài campaign | Library, ruleset/pack/world của tôi, publish pack | REST; mỗi ghi có ràng buộc unique hoặc `UPDATE … WHERE revision = $expected` |
+| Lan sang nhiều campaign | Sửa lore cấp World | Xếp hàng theo `world_id`, commit, rồi rebroadcast `codex` tới mọi campaign có `world_id` đó |
 
 ### 5.4 Mô hình dữ liệu (Postgres)
 
 **Phiên bản.** Chạy bản Postgres ổn định mới nhất. Tại thời điểm viết đó là **18.x** (repo hiện dùng 17). Postgres 19
 dự kiến GA ngày 29/10/2026; nâng lên 19 sau bản vá đầu tiên (19.1), vì `pg_upgrade` và image Docker cần thời gian
-ổn định. Image ghim theo minor (`postgres:18.x`) chứ không dùng tag `latest`, để deploy có thể lặp lại. Các tính năng
-của bản 18 mà thiết kế dùng:
+ổn định. Image ghim theo minor (`postgres:18.x`) chứ không dùng tag `latest`, để deploy có thể lặp lại.
+
+**Ràng buộc deploy.** Prod hiện chạy **Postgres 16** trong cluster dùng chung `green-orange-postgres-1`; dev chạy 17
+(`docs/deploy.md`).
+- Các tính năng của bản 18 bên dưới không chạy được trên prod hiện tại.
+- Không nâng cluster dùng chung, vì các stack khác và cron `pg_dump` hằng đêm phụ thuộc vào nó.
+- Platform cần một instance Postgres 18 riêng. Dựng instance đó là bước đầu của P1; trước đó code không dùng SQL chỉ có
+  ở bản 18.
+
+Các tính năng của bản 18 mà thiết kế dùng:
 - `uuidv7()` làm khoá chính: id theo thời gian, index B-tree liền mạch hơn `gen_random_uuid()`.
 - `UPDATE … RETURNING OLD.value, NEW.value`: mỗi delta trả về cả giá trị trước và sau, ghi thẳng vào `session_event`.
   Đây là nền cho undo phía server mà không cần đọc trước.
@@ -575,16 +700,18 @@ cộng trừ delta, ràng buộc khoá ngoại hay unique thì là cột hoặc 
 | `combatant.stat_snapshot` | Bản chụp bất biến khi threat vào trận |
 | `session_event.payload` | Log chỉ ghi thêm (append-only), đọc theo `session_id` và thời gian |
 | `world.theme`, `house_rule.patch` | Cấu hình trình bày và overlay, đọc nguyên khối |
+| `library_character.draft` [Có] | Bản nháp autosave qua REST (tới 120 lần/phút), chưa có hình dạng theo field; ghi nguyên khối nên nguyên tử. Build xong mới thành hàng |
+| Document nhỏ của codex [Có]: `beat.encounter`, `beat.exits`, `beat.tests`, `beat.hazards`, `location.hazard_list`, `npc.stat_source`, `custom_threat.data` | Có zod, có giới hạn, `codex.save` ghi nguyên khối. Giữ nguyên. Field riêng W&G (`beat.ruin/glory/spends`, `item.mods`, `test_call.test`) chuyển theo §2.2 |
 
-Ngoài danh sách này, không dùng JSONB. Mảng id (`uuid[]`) cũng thay bằng bảng nối có khoá ngoại: bây giờ
-`audience` và `npcIds` không có FK nên `codex.delete` phải tự dọn.
+Ngoài danh sách này, không dùng JSONB. Mảng id (`uuid[]`) cũng thay bằng bảng nối có khoá ngoại. Hiện các mảng này
+được dọn bằng tay: `npcIds`/`handoutIds`/`itemIds` do `codex.delete`, `audience` do `character.delete`.
 
 **Ý tưởng chính: field do ruleset khai báo được lưu thành hàng có kiểu, không lưu thành document.** Manifest quyết
 định *có những* field, resource, condition nào. Database lưu *giá trị* của chúng thành hàng, khoá bằng
 `(actor_id, field_id)`. Như vậy:
 - Delta trên counter là một câu `UPDATE` nguyên tử trên một hàng, đúng tinh thần `bump()` hiện tại.
 - Thêm một hệ luật mới không cần migration schema.
-- Đổi tên field khi migrate ruleset là `UPDATE actor_field SET field_id = 'willpower' WHERE field_id = 'wp'`.
+- Đổi tên field khi migrate ruleset là một `UPDATE` trên hàng của đúng campaign và đúng phiên bản nguồn (§4.5).
 
 **Actor là bảng cha.** Nhân vật, NPC có stat và threat trong trận đều là `actor`. Bảng giá trị, resource và condition
 trỏ vào `actor_id`. PC vào combat thì combatant trỏ đúng actor của nhân vật, nên trúng đòn là trừ vào cùng một hàng
@@ -596,48 +723,60 @@ character        (actor_id PK FK→actor, owner_user_id FK, name, status enum[ac
 actor_field      (actor_id FK, field_id text, ordinal int, int_value int, text_value text, ref_key text,
                   PK(actor_id, field_id, ordinal), CHECK đúng một cột value khác null)
 actor_resource   (actor_id FK, resource_id text, value int NOT NULL, max_override int, PK(actor_id, resource_id))
-actor_condition  (id, actor_id FK, condition_id text, stacks int, expires_round int, source text)
+actor_condition  (id, actor_id FK, condition_id text, stacks int, source text,
+                  expires_on enum[ownTurnEnd|roundEnd|encounterEnd|manual], expires_after int)
 actor_choice     (actor_id FK, step_id text, ordinal int, option_key text, PK(...))   -- lựa chọn khi tạo nhân vật
 item_instance    (id, campaign_id FK, pack_key text, name, qty int, holder_actor_id FK null, location_id FK null,
                   equipped bool)
 ```
 
-Đổi một counter, kèm giá trị cũ để ghi log:
+Đổi một resource có trần (Glory, slot phép), kèm giá trị cũ để ghi log:
 
 ```sql
-UPDATE actor_resource
-   SET value = LEAST(GREATEST(value + $delta, $min), $max)   -- min/max do engine eval từ manifest
- WHERE actor_id = $actor AND resource_id = $res
-RETURNING OLD.value AS before, NEW.value AS after;            -- Postgres 18
+INSERT INTO actor_resource AS r (actor_id, resource_id, value)
+VALUES ($actor, $res, $first)                     -- hàng chưa có: engine tính sẵn giá trị đầu đã cộng delta
+ON CONFLICT (actor_id, resource_id) DO UPDATE
+   SET value = LEAST(GREATEST(r.value + $delta, $min),
+                     GREATEST(COALESCE(r.max_override, $max), $min))   -- max không bao giờ nhỏ hơn min
+RETURNING OLD.value AS before, NEW.value AS after;                     -- Postgres 18; OLD là null khi vừa INSERT
 ```
+
+- **Track sát thương không đi qua câu này.** Wounds, Shock và HP mất (`capped: false`) dùng `health.hit`: đọc và ghi
+  trong lock, được vượt max.
+  - Lý do: W&G đọc `wounds > maxWounds` để biết Dying hay Slain (`pcStatus`, `threatStatus`).
+  - `pcHit` xử lý Annihilation, Traumatic, và Shock khi Exhausted.
+  - `bump()` hiện tại chỉ chặn dưới ở 0.
+- **Undo** áp delta ngược `after − before`, không `SET value = before`, để không đè delta đến sau.
 
 **Bảng chính**
 
 | Bảng | Cột chính | Ghi chú |
 |---|---|---|
-| `app_user` | id (Clerk), name, platform_role enum, plan, status, last_seen_at | [Có] + role, plan, status |
+| `app_user` | id (Clerk), name, role (bản hiển thị từ Clerk), status, plan, last_seen_at | [Có] + status, plan. Role đọc từ token Clerk (§3.6); `status` đọc ở mỗi lần connect và REST |
 | `world` | id, owner_user_id, name, visibility, theme jsonb | `world_term(world_id, term_id, label)` cho từ vựng |
 | `ruleset` / `ruleset_version` | slug, owner_user_id, visibility, license / version, hash, extends_version_id, manifest jsonb | Bất biến |
 | `pack` / `pack_version` / `pack_entry` | entry: key, type, name, level int, tags text[], visibility, content_hash, body jsonb | Index `(pack_version_id, type)`, `pg_trgm` trên `name`; không index GIN trên `body` |
-| `campaign` | id, owner_user_id, world_id, ruleset_version_id, name, x_card_enabled, archived_at | Bỏ `glory/ruin/tier`; không còn `settings` jsonb |
+| `campaign` | id, owner_user_id (`ON DELETE SET NULL`), world_id, ruleset_version_id, name, kind text[], limits text[], next_session_at, next_session_place, x_card_enabled, state_version bigint, archived_at | Bỏ `glory/ruin/tier`. `framework`, `frameworkBonus`, `patron` (W&G) sang `campaign_option`; `homebrew` (cổng sách) sang `campaign_pack` |
 | `campaign_option` | campaign_id, option_id, value text | Variant rule và field cấp campaign (W&G `tier`) |
 | `house_rule` | id, campaign_id, text, patch jsonb null | Có `patch` thì engine áp làm overlay |
 | `safety_entry` | campaign_id, kind enum[line\|veil], text | Lines & Veils |
 | `campaign_pack` | campaign_id, pack_version_id | |
-| `membership` | campaign_id, user_id, role enum, scopes enum[] | Unique (campaign_id, user_id) [Có] |
-| `membership_character` | membership_id, actor_id | Thay `characterIds uuid[]`; có FK |
-| `invite`, `access_token` | [Có] | Giữ nguyên |
-| `library_character` + `library_field/resource/choice` | Cùng cấu trúc với actor, nhưng thuộc user | [Có], chuẩn hoá theo cùng mẫu |
-| `resource_pool` | campaign_id, scope enum[party\|gm], resource_id, value | Thay `campaign.glory/ruin` |
+| `membership` | campaign_id, user_id, role enum[gm\|cogm\|player], scopes enum[] | Unique (campaign_id, user_id) [Có]. Chủ phòng nằm ở `campaign.owner_user_id` |
+| `membership_character` | membership_id, actor_id | Thay cột đơn `membership.character_id`; một ghế giữ nhiều nhân vật |
+| `access_token` | token_hash, campaign_id, role enum[player\|screen], actor_id, revoked_at | [Có]. Guest và màn hình TV vẫn là token, không phải membership (`docs/spikes/table-screen.md`) |
+| `invite` | [Có] + role tối đa của lời mời | |
+| `ownership_transfer` | campaign_id, to_user_id, expires_at | Chuyển chủ phòng chờ người nhận chấp nhận |
+| `library_character` (draft jsonb) + `library_field/resource/choice` | Nháp là document; nhân vật đã build lưu thành hàng như actor | [Có] |
+| `resource_pool` | campaign_id, scope `ResourceScope` (party, gm, campaign), resource_id, value | Thay `campaign.glory/ruin` |
 | `clock` | id, campaign_id, label, segments, filled, visibility | |
-| `encounter` | id, campaign_id, round, active, current_combatant_id, turn_side, seized_side | Cột chung cho mọi strategy; strategy lạ thêm `encounter_counter(encounter_id, key, value int)` |
-| `combatant` | id, encounter_id, actor_id, side, ord, initiative_score, acted, ambushed, visibility, marker, mob_count, stat_snapshot jsonb | |
+| `encounter` | id, campaign_id, round, active, current_combatant_id, turn_side, seized_side | Cột của các strategy đang có (`ranked`, `alternatingSides`, `popcorn`). `ponytail:` strategy có state riêng (deck của `cardDraw`) tự đăng ký bảng của nó khi primitive đó được viết, ví dụ `encounter_card(encounter_id, ord, card, pile)` |
+| `combatant` | id, encounter_id, actor_id, side, ord, initiative_score, acted, ambushed, visibility, marker, threat_class, mob_count, mob_start, stat_snapshot jsonb | `personalRuin` là `actor_resource` của threat |
 | `test_call` / `test_call_target` / `test_report` | mechanic_id, skill_id, target int, hide_target / character_id / outcome enum, value int | Thay `reports jsonb` |
 | `request` | id, campaign_id, actor_id, kind, resource_id, amount, status | Tổng quát hoá `spend_request` |
-| `session_event` | id uuidv7, campaign_id, session_id, type, at, payload jsonb | Log: recap, audit, undo |
-| `codex_entry` | id, campaign_id, kind enum, title, revealed, created_at | Bảng cha của mọi entry codex |
+| `session_event` | id uuidv7, campaign_id, session_id, type, at, payload jsonb | Log: recap, audit, undo, kết quả gieo |
+| `codex_entry` | id, campaign_id, kind enum, title, visibility enum[gm\|party\|public], audience_mode enum[all\|listed], created_at | Bảng cha của mọi entry codex. `party` = đã reveal; `public` = được lên TV/stream |
 | `npc`, `location`, `faction`, `handout`, `quest`, `lore`, `scene`, `adventure` | entry_id PK FK→codex_entry + cột riêng | [Có], mỗi loại giữ bảng riêng |
-| `codex_reveal` | entry_id FK, actor_id FK | Reveal cho riêng từng nhân vật; thay `audience uuid[]` |
+| `codex_reveal` | entry_id FK, actor_id FK | Danh sách người đọc khi `audience_mode = listed`; thay `audience uuid[]`. Xoá nhân vật cuối cùng trong danh sách thì entry về `gm` trong cùng transaction, không bao giờ rơi về "mọi người" |
 | `codex_link` | from_entry_id FK, to_entry_id FK, kind | Thay `npcIds/handoutIds uuid[]` của scene; @mention backlink |
 | `image` | id, campaign_id, storage_key, mime, size | `bytea` chuyển sang object storage |
 | `safety_signal` | campaign_id, kind, at (không lưu người gửi) | Ẩn danh |
@@ -648,15 +787,35 @@ thay đổi; client không cần biết dữ liệu nằm ở hàng hay ở docu
 
 ### 5.5 Lọc dữ liệu theo người xem
 
-`toViewerView(snapshot, viewer)` của `rules-engine` đọc `visibility` trên field, resource, entry codex, combatant:
+`toViewerView(snapshot, viewer)` có hai tầng.
 
-- `gm`: chỉ room GM (stat quái, secret, ghi chú GM).
-- `owner`: chỉ chủ nhân vật và GM (objective cá nhân, corruption).
-- `party`: mọi ghế trong campaign.
-- `public`: cả màn hình TV và spectator.
+**1. Visibility khai báo.** Field nào không khai báo thì là `gm` (fail-closed).
 
-Với combatant giữ 3 mức `hidden / bars / stats` [Có]. Codex thêm bảng `codex_reveal` để reveal cho riêng từng nhân vật.
-Bộ lọc vẫn chạy ở server, mỗi `characterId` một lần như `broadcast` hiện nay.
+| Mức | Ai thấy |
+|---|---|
+| `gm` | Ghế GM (và cogm theo scope) |
+| `owner` | Ghế giữ nhân vật đó, và GM |
+| `party` | Mọi ghế người chơi **và màn hình TV** (token `screen` thấy như `toPlayerView(state, null)` hôm nay: thanh máu Agents hiện trên TV) |
+| `public` | Người xem stream [Sau]; chung một room và chỉ serialize một lần |
+
+**2. Hàm view của ruleset** (`view.<ruleset>`, primitive TS). Tầng này *biến đổi* dữ liệu chứ không chỉ ẩn. Với W&G:
+- Corruption của người khác thành 0, hoặc `CHAOS_SPAWN_AT` khi người đó đã Lost, vì Lost là công khai (p.286).
+- Mutation thành "Unseen" nhưng giữ `mods`, nên thanh chỉ số vẫn khớp.
+- `currentId` thành `UNSEEN_ID` khi threat ẩn đang đi lượt.
+- Ruin gửi 0.
+- Threat chỉ hiện thanh máu thì mất `threatId` và `personalRuin`.
+- `audience` thành `[self]`.
+- Parent bị ẩn và ảnh còn giữ lại thì bị xoá id.
+
+`view.wng` port nguyên `toPlayerView`/`toPlayerCodex` (rules-flow §11.56, §11.58, §11.147); parity test bao cả phần
+này.
+
+**Không để lộ qua đường khác:**
+- **Derived:** mỗi giá trị derived mang visibility chặt nhất trong các input của nó. Khai báo lỏng hơn là lỗi load.
+  Màn Breakdown lọc theo từng nguồn.
+- **Manifest gửi xuống client** là bản đã lọc: không có text từ nguồn private, không có entry `gm`.
+- **DN bị ẩn:** bậc thành công tính ở server.
+- **Nhiều nhân vật một ghế:** socket giữ `characterIds`; view là hợp của các nhân vật đó.
 
 ### 5.6 Realtime và mở rộng ngang
 
@@ -670,8 +829,9 @@ tenant cần thay:
 | Rate limit trong process | Redis (sliding window) |
 | Gửi toàn bộ snapshot mỗi action | Giữ full snapshot khi connect. Sau đó gửi **patch có số phiên bản** (`stateVersion`, JSON Patch theo từng view); client lệch phiên bản thì xin full. Tách room theo nhân vật |
 | `loadCodex` 9 query mỗi lần | Chỉ nạp lại phần `touches` chỉ định (theo loại entry) + cache theo version |
-| Ảnh `bytea` | S3/R2, URL ký có hạn, vẫn gate theo ghế |
-| Clerk Invite-only để gate `/rules`, `/creation` | Gate theo **license của pack** + membership; mở đăng ký công khai được |
+| Ảnh `bytea` | S3/R2, URL ký có hạn (≤ 5 phút, cấp lại theo snapshot), vẫn gate theo ghế |
+| Một node nên broadcast đúng thứ tự | `campaign.state_version` tăng trong transaction và đi kèm mọi broadcast; client bỏ snapshot cũ hơn bản đang có. Advisory lock nhả lúc commit, nên hai node có thể gửi lệch thứ tự |
+| Clerk Invite-only để gate `/rules`, `/creation` | Giữ Invite-only cho tới khi có `pack_grant` và cổng theo route (§4.6). Chỉ sau đó mới mở đăng ký |
 
 ### 5.7 Bảo mật và vận hành
 
@@ -695,8 +855,8 @@ sequenceDiagram
   participant API
   participant DB
   GM->>Web: NEW CAMPAIGN (wizard §3.3)
-  Web->>API: POST /api/campaigns {rulesetVersionId, worldId, settings}
-  API->>DB: campaign + membership(gm) + campaign_pack
+  Web->>API: POST /api/campaigns {rulesetVersionId, worldId, options}
+  API->>DB: campaign(owner) + membership(gm) + campaign_pack
   GM->>Web: PARTY → QR phòng
   Web->>API: action invite.create {mode: room, ttl: 12h}
   actor P as Player
@@ -730,7 +890,8 @@ sequenceDiagram
 1. GM: `test.call { mechanicId: "skill", params: { skill: "stealth", dc: 15 }, who: [charA, charB] }`.
 2. Phone của A, B: prompt hiện pool/modifier đã tính sẵn từ manifest (5e: `d20 + 5`; W&G: `7 dice + Wrath die`; CoC:
    `≤ 45`).
-3. Người chơi gieo thật rồi chạm **PASSED / FAILED** (hoặc nhập số; engine tính bậc thành công).
+3. Người chơi gieo thật rồi chạm **PASSED / FAILED**. Ruleset nào khai báo bậc thành công thì người chơi nhập số và
+   server tính bậc, vì DN có thể đang bị ẩn.
 4. GM thấy bảng tổng hợp và đóng Test. Kết quả vào `session_event`.
 
 ### 6.4 Kết thúc buổi
@@ -745,14 +906,14 @@ Wizard: điểm danh → thưởng XP/milestone (`progression`) → chia loot �
 | Giai đoạn | Mục tiêu | Tiêu chí xong |
 |---|---|---|
 | **P0: Tách engine** | Dựng `rules-engine` (manifest zod, CEL, primitives) từ code `packages/shared` hiện có; viết `wng.ruleset.json` | Mọi test hiện tại xanh khi chạy qua engine (parity) |
-| **P1: Schema chung** | Postgres 18; `actor` + `actor_field/resource/condition`, `resource_pool`, `ruleset_version`, pin phiên bản; action `res.adjust / turn.op / test.*` | Một bàn W&G chơi trọn buổi không khác gì bây giờ |
+| **P1: Schema chung** | Instance Postgres 18 riêng; `actor` + `actor_field/resource/condition`, `resource_pool`, `ruleset_version`, pin phiên bản; action `res.adjust / health.hit / turn.op / test.*`; undo phía server từ `session_event`; phân quyền §3.6 | Một bàn W&G chơi trọn buổi không khác gì bây giờ |
 | **P2: Hệ luật thứ hai** | `dnd5e-srd` (SRD 5.2, CC-BY) + pack SRD; sheet renderer từ `layout`; builder chung | Bàn 5e chơi một one-shot SRD từ tạo nhân vật đến hết buổi |
-| **P3: Workspace + Wizard + World** | Hub người dùng, wizard 8 bước, theme/terms theo World, house rules overlay, safety tools | Người mới tạo game và mời bàn trong dưới 5 phút |
-| **P4: Platform** | Admin console mở rộng (moderation, quotas, chuyển chủ phòng), Redis adapter, advisory lock, S3, patch broadcast | Chạy 2+ instance api; load test 100 bàn đồng thời |
+| **P3: Workspace + Wizard + World** | Hub người dùng, wizard 8 bước, theme/terms theo World, house rules overlay, safety tools, export/xoá dữ liệu (GDPR) | Người mới tạo game và mời bàn trong dưới 5 phút |
+| **P4: Platform** | Admin console mở rộng (moderation, quotas, chuyển chủ phòng), Redis adapter, advisory lock, `state_version`, S3, `pack_grant`, patch broadcast; chỉ sau đó mới mở đăng ký Clerk | Chạy 2+ instance api; load test 100 bàn đồng thời |
 | **P5: Hệ sinh thái** | Fork/homebrew editor, kho cộng đồng, script sandbox, PF2e ORC, PbtA, CoC-lite, Freeform | Một GM tự viết homebrew mà không cần deploy |
 
-**Chiến lược bản quyền khi phát triển:** repo công khai (nếu sau này có) chỉ chứa ruleset tự viết và SRD/ORC. Nội dung
-W&G tiếp tục là pack private của deployment hiện tại.
+**Chiến lược bản quyền khi phát triển:** repo này giữ private. Repo công khai (nếu có) là repo mới hoặc lịch sử đã lọc,
+chỉ chứa ruleset tự viết và SRD/ORC (§4.6). Nội dung W&G tiếp tục là pack private của deployment hiện tại.
 
 ---
 
@@ -765,9 +926,12 @@ W&G tiếp tục là pack private của deployment hiện tại.
 3. **Hiệu năng:** full snapshot với campaign lớn. Patch broadcast ở P4; đo trước khi làm.
 4. **Pháp lý:** chính sách fan content của GW/Cubicle 7/WotC thường cấm tool thu phí tái hiện nội dung luật. Nếu
    thương mại hoá, chỉ dùng SRD/ORC hoặc xin license. *Cần hỏi ý kiến pháp lý trước khi mở công khai.*
-5. **Clerk ở chế độ Open:** chỉ được bật sau khi mọi gate nội dung chuyển sang theo license và membership (§5.6).
+5. **Clerk ở chế độ Open:** chỉ bật sau khi có `pack_grant`, cổng theo route (§4.6) và export/xoá dữ liệu.
 6. **Câu hỏi cho chủ sản phẩm:**
    - Có cần chế độ online (bản đồ, VTT nhẹ) không, hay giữ thuần in-person?
    - Mô hình thu phí: chỉ GM trả, hay miễn phí hoàn toàn?
    - Hệ luật thứ hai ưu tiên là gì: 5e SRD (đông người chơi nhất) hay PbtA (đơn giản nhất để kiểm chứng engine)?
-   - Co-GM và nhiều nhân vật mỗi người chơi có cần ở MVP không?
+   - Co-GM và nhiều nhân vật mỗi người chơi: mô hình dữ liệu đã hỗ trợ (§3.6); UI có cần ở MVP không?
+   - Có cho đổi platform role ngay trong Admin Console không? Việc này đảo quyết định #178 ("roles stay in Clerk").
+   - GM có được thấy dòng "Admin đã truy cập" không? Việc này đảo quyết định đã ghim ở #178 (admin vô hình).
+   - Có giữ khái niệm chủ phòng (§3.6) không? Nó đảo một phần quyết định "there is no owner" của #178.
