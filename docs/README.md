@@ -21,6 +21,12 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 | [rules-flow.md](rules-flow.md) | The game flow as the core rulebook defines it. It's the spec, with house decisions (§11) and gap status (§12) |
 | [campaign-model.md](campaign-model.md) | The campaign and codex model: adventures, beats, NPCs, locations, handouts, factions |
 
+## Proposals (spikes)
+
+| Doc | Contents |
+| --- | --- |
+| [spikes/universal-rpg-platform.md](spikes/universal-rpg-platform.md) | Design proposal (Vietnamese): a system-agnostic core for any RPG, ruleset engine, admin, GM and player features |
+
 ## Rules for these docs
 
 - Game rules cite the **printed** page, and never paste book text: it's copyrighted.
