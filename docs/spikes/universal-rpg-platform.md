@@ -17,7 +17,7 @@ ruleset và World Warhammer 40k: Wrath & Glory bên trong platform.
 - Có chủ phòng (`campaign.owner_user_id`, §3.6).
 - Platform role ở Clerk và chỉ đổi trong Clerk Dashboard (giữ #178).
 - Postgres 18.
-- **Repo mới** `inconsistable`, private. Chép những phần lõi trung lập từ auspex_gm sang, không chuyển dữ liệu (chưa có
+- **Repo mới** `The-Inconsistent/InconsisTable`, private. Scope package npm phải viết thường: `@inconsistable/*`. Chép những phần lõi trung lập từ auspex_gm sang, không chuyển dữ liệu (chưa có
   dữ liệu cần giữ). auspex_gm vẫn chạy cho bàn W&G cho tới khi W&G được port sang.
 - **5e SRD** (SRD 5.2, CC-BY-4.0) là hệ luật **đầu tiên** của InconsisTable. W&G (Auspex) port sau thành pack riêng tư,
   dùng bộ test của auspex_gm làm chuẩn đối chiếu.
@@ -1024,7 +1024,7 @@ Wizard: điểm danh → thưởng XP/milestone (`progression`) → chia loot �
 
 | Giai đoạn | Mục tiêu | Tiêu chí xong |
 |---|---|---|
-| **P0: Khung repo mới** | Repo `inconsistable`: chép pipeline action, `@inconsistable/auth` (Clerk), access và invite, codex, lobby từ auspex_gm; Postgres 18; `rules-engine` với các primitive 5e cần (`dice.sumVsTarget`, `initiative.ranked`, `health.tracks` + death save, slot); phân quyền §3.6 | Test của pipeline, `can()` và engine xanh; một phòng trống mời được người chơi qua QR |
+| **P0: Khung repo mới** | Repo `InconsisTable`: chép pipeline action, `@inconsistable/auth` (Clerk), access và invite, codex, lobby từ auspex_gm; Postgres 18; `rules-engine` với các primitive 5e cần (`dice.sumVsTarget`, `initiative.ranked`, `health.tracks` + death save, slot); phân quyền §3.6 | Test của pipeline, `can()` và engine xanh; một phòng trống mời được người chơi qua QR |
 | **P1: 5e SRD chơi được** | Manifest `dnd5e-srd` + pack SRD 5.2 (attribution CC-BY); actor và các bảng giá trị; builder; sheet render từ `layout`; combat tracker; gọi Test; undo phía server | Một bàn chơi one-shot SRD từ tạo nhân vật tới hết buổi |
 | **P2: Workspace, wizard, World, bản đồ** | Hub người dùng, wizard 8 bước, theme và từ vựng theo World, house rules, safety tools, bản đồ §3.8, nhiều nhân vật và co-GM §3.7 | Người mới tạo game và mời bàn trong dưới 5 phút |
 | **P3: Platform** | Admin console (moderation, quota, chuyển chủ phòng), Redis adapter, advisory lock, `state_version`, S3, `pack_grant`, export/xoá dữ liệu; chỉ sau đó mới mở đăng ký Clerk | Chạy 2+ instance api; load test 100 bàn |
