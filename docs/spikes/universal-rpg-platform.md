@@ -17,6 +17,12 @@ ruleset và World Warhammer 40k: Wrath & Glory bên trong platform.
 - Có chủ phòng (`campaign.owner_user_id`, §3.6).
 - Platform role ở Clerk và chỉ đổi trong Clerk Dashboard (giữ #178).
 - Postgres 18.
+- **Repo mới** `inconsistable`, private. Chép những phần lõi trung lập từ auspex_gm sang, không chuyển dữ liệu (chưa có
+  dữ liệu cần giữ). auspex_gm vẫn chạy cho bàn W&G cho tới khi W&G được port sang.
+- **5e SRD** (SRD 5.2, CC-BY-4.0) là hệ luật **đầu tiên** của InconsisTable. W&G (Auspex) port sau thành pack riêng tư,
+  dùng bộ test của auspex_gm làm chuẩn đối chiếu.
+- **Chưa thu phí.**
+- **Có bản đồ**, nhưng là bản đồ hỗ trợ trí nhớ cho bàn thật (§3.8), không phải bàn ảo để chơi từ xa.
 
 ## 0. Tóm tắt các quyết định chính
 
@@ -382,6 +388,82 @@ export function canInCampaign({ ctx, perm, target }: { ctx: Ctx; perm: Permissio
 - Bổ nhiệm và gỡ đi qua action `member.appoint` (hàng đợi, transaction, broadcast). Giảm quyền thì ngắt socket của
   user đó trong phòng, như `member.remove` hiện nay.
 
+### 3.7 Nhiều nhân vật một người chơi, và co-GM: giao diện
+
+**Khi nào một người chơi giữ nhiều nhân vật:**
+- Pet, familiar, ngựa, người hầu, lính đánh thuê đi kèm nhân vật chính.
+- "Funnel": mỗi người cầm 3–4 nhân vật cấp 0, ai sống sót thì thành nhân vật chính.
+- Thiếu người: một người chơi cầm luôn nhân vật của bạn vắng mặt.
+- GM tự cầm một nhân vật đi cùng nhóm (GM-PC).
+
+**Điện thoại người chơi:** dải avatar trên cùng để chuyển nhân vật. Companion nằm gọn dưới nhân vật chủ.
+
+```
+┌──────────────────────────────┐
+│ (Lyra)  [Cú Pip]  (Bran*)    │  ← chạm để đổi; * = nhân vật đang tới lượt
+├──────────────────────────────┤
+│ LYRA · Wizard 3   HP 14/18   │
+│ Slot ●●○  ○○                 │
+│ └ Cú Pip (familiar) HP 1/1   │  ← companion gắn với Lyra, mở rộng được
+├──────────────────────────────┤
+│ ⚔ ĐẾN LƯỢT: BRAN             │  ← banner luôn ghi tên nhân vật
+│ GM gọi Test: Stealth DC 15   │
+│   cho: Lyra, Bran            │  ← mỗi nhân vật báo kết quả riêng
+├──────────────────────────────┤
+│ SHEET   FIGHT   MAP   INTEL  │
+└──────────────────────────────┘
+```
+
+**Tablet GM:** PARTY nhóm theo người chơi, mỗi người một hàng.
+
+```
+┌ PARTY ───────────────────────────────────────────┐
+│ Minh   Lyra (Wizard 3) ▸ Cú Pip     Bran (Fighter 2) │
+│ Hà     Thorin (Cleric 3)                          │
+│ Guest  Kael (pregen)                     [QR]     │
+└───────────────────────────────────────────────────┘
+```
+
+**Co-GM:** dùng chính app GM, nhưng chỉ hiện các tab mà scope cho phép. Ví dụ ở bàn đông người:
+- **GM chính** (tablet) giữ cốt truyện: PREP, CODEX, reveal, gọi Test.
+- **Co-GM** (laptop), scope `combat`: chỉ thấy TRACK, chạy initiative và máu quái.
+
+```
+GM chính  [TRACK] [PREP] [CODEX] [PARTY] [MAP] [RULES]
+Co-GM     [TRACK]                         [MAP] [RULES]     scope: combat
+          ─ "Hà đang sửa: Goblin Boss" ─                    ← dấu hiệu ai đang thao tác
+```
+
+- Chủ phòng giao scope ở PARTY › CO-GM bằng các ô tick: `combat`, `codex`, `codex.secrets`, `party`, `session`.
+- Hai người sửa cùng lúc không đè nhau: mỗi thay đổi là một delta hoặc patch theo field (§3.6).
+- App hiện ai đang mở mục nào.
+
+### 3.8 Bản đồ (hỗ trợ trí nhớ, không phải bàn ảo)
+
+Bàn vẫn dùng miniature và terrain thật. Bản đồ trong app giúp mọi người **nhớ và nhận ra**:
+- Mình đang ở đâu, đã đi qua đâu.
+- Địa điểm nào liên quan tới NPC hay quest nào.
+
+App không di chuyển token, không chia lưới chiến đấu.
+
+| Chức năng | Mức |
+|---|---|
+| GM tải ảnh bản đồ (thế giới, vùng, thành phố, dungeon), lồng nhau: chạm một địa điểm thì mở bản đồ con | [MVP] |
+| Ghim (pin) trên bản đồ, nối với entry codex (location, NPC, quest). Pin chỉ hiện với người chơi khi entry đã reveal | [MVP] |
+| Sương mù (fog): GM tô vùng đã khám phá; người chơi chỉ thấy phần đã mở | [MVP] |
+| Dấu "nhóm đang ở đây" và đường đã đi | [MVP] |
+| Bản đồ hiện trên TV (token `screen`), GM đổi bản đồ đang chiếu | [MVP] |
+| Người chơi ghim ghi chú riêng lên bản đồ ("chỗ này có bẫy") | [Sau] |
+| Bản đồ chiến đấu có token nhân vật cho bàn không có miniature | [Sau], tuỳ chọn |
+
+Dữ liệu (không JSONB):
+- `map(id, campaign_id, image_id, name, kind enum[world|region|site|battle], parent_map_id, party_x, party_y)`
+- `map_pin(id, map_id, x, y, codex_entry_id null, label, visibility)`
+- `map_reveal(id, map_id, shape enum[rect|circle|polygon], points int[])`
+- `map_note(id, map_id, actor_id, x, y, text)`
+
+Toạ độ chuẩn hoá theo kích thước ảnh, nên ảnh đổi độ phân giải vẫn khớp.
+
 ---
 
 ## 4. Ruleset Engine: chơi được mọi thể loại
@@ -721,12 +803,41 @@ Ngoài danh sách này, không dùng JSONB. Mảng id (`uuid[]`) cũng thay bằ
 - Thêm một hệ luật mới không cần migration schema.
 - Đổi tên field khi migrate ruleset là một `UPDATE` trên hàng của đúng campaign và đúng phiên bản nguồn (§4.5).
 
-**Actor là bảng cha.** Nhân vật, NPC có stat và threat trong trận đều là `actor`. Bảng giá trị, resource và condition
+**Actor là bảng cha, và có loại.** Mọi thứ có chỉ số trên bàn đều là một `actor`. Bảng giá trị, resource và condition
 trỏ vào `actor_id`. PC vào combat thì combatant trỏ đúng actor của nhân vật, nên trúng đòn là trừ vào cùng một hàng
 (giống auspex hiện nay: Wounds của PC nằm trên `character`).
 
+Mỗi actor có **hai lớp loại**:
+- **`kind`:** loại cố định của core. Nó quyết định ai điều khiển, actor có thuộc nhóm không, và sống bao lâu. Code
+  core chỉ rẽ nhánh theo cột này.
+- **`entity_type`:** loại do ruleset khai báo. Nó quyết định actor có những field nào. Ví dụ 5e: `creature`,
+  `vehicle`; W&G: `agent`, `threat`.
+
+| `kind` | Là gì | Ai điều khiển | Sống bao lâu | Ví dụ |
+|---|---|---|---|---|
+| `pc` | Nhân vật chính của người chơi | Ghế người chơi | Cả campaign; có XP, lên cấp | Lyra, Wizard 3 |
+| `companion` | Nhân vật phụ đi theo một PC (`subtype` do ruleset khai) | Ghế người chơi, hoặc GM nếu GM giữ | Theo PC chủ; có thể tạm thời | familiar, thú cưng, ngựa, hireling, sinh vật triệu hồi |
+| `npc` | Nhân vật có tên, gắn với một entry codex | GM | Cả campaign | chủ quán, kẻ phản diện, GM-PC |
+| `creature` | Quái và kẻ địch tạo từ bestiary cho một trận | GM | Thường hết khi trận kết thúc | 3 goblin, 1 owlbear |
+| `group` | Một khối nhiều thành viên đếm chung (`member_count`) | GM | Theo trận | mob W&G, swarm 5e, trung đội trong game chiến tranh |
+| `vehicle` | Phương tiện có chỗ cho tổ lái | Người lái (ghế), hoặc GM | Cả campaign | thuyền, xe ngựa, xe tăng, phi thuyền |
+| `hazard` | Bẫy và nguy hiểm môi trường có chỉ số hoặc lượt | GM | Theo cảnh | bẫy tên, dung nham, cánh cửa phá được |
+
+- **Quan hệ giữa các actor** nằm ở bảng nối `actor_link(actor_id, related_actor_id, kind enum[companionOf|crewOf|summonedBy|memberOf])`.
+  Ví dụ: familiar `companionOf` Lyra; Bran `crewOf` con thuyền.
+- **Bestiary là khuôn, actor là bản thể.** Mục "Goblin" trong pack là khuôn. Thêm 3 goblin vào trận tạo 3 actor
+  `creature`, mỗi con một bộ HP riêng, và stat block được snapshot.
+- **NPC có thể không có chỉ số.** Một NPC chỉ để nói chuyện vẫn là entry codex. Khi GM cần đánh nhau với họ thì mới
+  tạo actor `npc` gắn vào entry đó.
+- **Vòng đời:**
+  - `status enum[active|retired|dead|dismissed]`.
+  - `temporary bool`: actor tạm thời (quái chưa được giữ lại, sinh vật triệu hồi) bị dọn khi trận kết thúc, trừ khi GM giữ.
+
 ```
-actor            (id uuidv7 PK, campaign_id FK, kind enum[pc|npc|threat|retainer], ruleset_version_id FK)
+actor            (id uuidv7 PK, campaign_id FK, kind enum[pc|companion|npc|creature|group|vehicle|hazard],
+                  entity_type text, subtype text, ruleset_version_id FK, status enum, temporary bool,
+                  codex_entry_id FK null, member_count int null)
+actor_link       (actor_id FK, related_actor_id FK, kind enum[companionOf|crewOf|summonedBy|memberOf])
 character        (actor_id PK FK→actor, owner_user_id FK, name, status enum[active|retired], built_at)
 actor_field      (actor_id FK, field_id text, ordinal int, int_value int, text_value text, ref_key text,
                   PK(actor_id, field_id, ordinal), CHECK đúng một cột value khác null)
@@ -913,12 +1024,12 @@ Wizard: điểm danh → thưởng XP/milestone (`progression`) → chia loot �
 
 | Giai đoạn | Mục tiêu | Tiêu chí xong |
 |---|---|---|
-| **P0: Tách engine** | Dựng `rules-engine` (manifest zod, CEL, primitives) từ code `packages/shared` hiện có; viết `wng.ruleset.json` | Mọi test hiện tại xanh khi chạy qua engine (parity) |
-| **P1: Schema chung** | Instance Postgres 18 riêng; `actor` + `actor_field/resource/condition`, `resource_pool`, `ruleset_version`, pin phiên bản; action `res.adjust / health.hit / turn.op / test.*`; undo phía server từ `session_event`; phân quyền §3.6 | Một bàn W&G chơi trọn buổi không khác gì bây giờ |
-| **P2: Hệ luật thứ hai** | `dnd5e-srd` (SRD 5.2, CC-BY) + pack SRD; sheet renderer từ `layout`; builder chung | Bàn 5e chơi một one-shot SRD từ tạo nhân vật đến hết buổi |
-| **P3: Workspace + Wizard + World** | Hub người dùng, wizard 8 bước, theme/terms theo World, house rules overlay, safety tools, export/xoá dữ liệu (GDPR) | Người mới tạo game và mời bàn trong dưới 5 phút |
-| **P4: Platform** | Admin console mở rộng (moderation, quotas, chuyển chủ phòng), Redis adapter, advisory lock, `state_version`, S3, `pack_grant`, patch broadcast; chỉ sau đó mới mở đăng ký Clerk | Chạy 2+ instance api; load test 100 bàn đồng thời |
-| **P5: Hệ sinh thái** | Fork/homebrew editor, kho cộng đồng, script sandbox, PF2e ORC, PbtA, CoC-lite, Freeform | Một GM tự viết homebrew mà không cần deploy |
+| **P0: Khung repo mới** | Repo `inconsistable`: chép pipeline action, `@inconsistable/auth` (Clerk), access và invite, codex, lobby từ auspex_gm; Postgres 18; `rules-engine` với các primitive 5e cần (`dice.sumVsTarget`, `initiative.ranked`, `health.tracks` + death save, slot); phân quyền §3.6 | Test của pipeline, `can()` và engine xanh; một phòng trống mời được người chơi qua QR |
+| **P1: 5e SRD chơi được** | Manifest `dnd5e-srd` + pack SRD 5.2 (attribution CC-BY); actor và các bảng giá trị; builder; sheet render từ `layout`; combat tracker; gọi Test; undo phía server | Một bàn chơi one-shot SRD từ tạo nhân vật tới hết buổi |
+| **P2: Workspace, wizard, World, bản đồ** | Hub người dùng, wizard 8 bước, theme và từ vựng theo World, house rules, safety tools, bản đồ §3.8, nhiều nhân vật và co-GM §3.7 | Người mới tạo game và mời bàn trong dưới 5 phút |
+| **P3: Platform** | Admin console (moderation, quota, chuyển chủ phòng), Redis adapter, advisory lock, `state_version`, S3, `pack_grant`, export/xoá dữ liệu; chỉ sau đó mới mở đăng ký Clerk | Chạy 2+ instance api; load test 100 bàn |
+| **P4: Port W&G (Auspex)** | Manifest `wng` + pack riêng tư, `view.wng`, `health.hit` kiểu W&G, `initiative.alternatingSides`; test của auspex_gm là chuẩn đối chiếu | Mọi test luật của auspex_gm có bản tương ứng xanh; bàn W&G chuyển sang |
+| **P5: Hệ sinh thái** | Editor homebrew, kho cộng đồng, script sandbox, PF2e ORC, PbtA, CoC-lite, Freeform | Một GM tự viết homebrew mà không cần deploy |
 
 **Chiến lược bản quyền khi phát triển:** repo này giữ private. Repo công khai (nếu có) là repo mới hoặc lịch sử đã lọc,
 chỉ chứa ruleset tự viết và SRD/ORC (§4.6). Nội dung W&G tiếp tục là pack private của deployment hiện tại.
@@ -929,15 +1040,13 @@ chỉ chứa ruleset tự viết và SRD/ORC (§4.6). Nội dung W&G tiếp tụ
 
 1. **Manifest phình thành ngôn ngữ dở (inner-platform).** Giảm thiểu: mọi cơ chế mới đi qua primitive registry có
    test và zod params, không chấp nhận "magic string".
-2. **Parity W&G tốn công:** `build.ts` dài ~2500 dòng. Phương án: `build.ledger` là primitive TS riêng cho hệ mua bằng
-   XP; manifest chỉ khai báo catalogue và chi phí.
+2. **Port W&G tốn công (P4):** `build.ts` dài ~2500 dòng. Phương án: `build.ledger` là primitive TS riêng cho hệ mua bằng
+   XP; manifest chỉ khai báo catalogue và chi phí. Engine nên được thiết kế với cả 5e lẫn W&G trong đầu ngay từ P0, dù
+   W&G port sau, để không phải đập lại primitive.
 3. **Hiệu năng:** full snapshot với campaign lớn. Patch broadcast ở P4; đo trước khi làm.
 4. **Pháp lý:** chính sách fan content của GW/Cubicle 7/WotC thường cấm tool thu phí tái hiện nội dung luật. Nếu
    thương mại hoá, chỉ dùng SRD/ORC hoặc xin license. *Cần hỏi ý kiến pháp lý trước khi mở công khai.*
 5. **Clerk ở chế độ Open:** chỉ bật sau khi có `pack_grant`, cổng theo route (§4.6) và export/xoá dữ liệu.
 6. **Câu hỏi cho chủ sản phẩm:**
-   - Có cần chế độ online (bản đồ, VTT nhẹ) không, hay giữ thuần in-person?
-   - Mô hình thu phí: chỉ GM trả, hay miễn phí hoàn toàn?
-   - Hệ luật thứ hai ưu tiên là gì: 5e SRD (đông người chơi nhất) hay PbtA (đơn giản nhất để kiểm chứng engine)?
-   - Co-GM và nhiều nhân vật mỗi người chơi: mô hình dữ liệu đã hỗ trợ (§3.6); UI có cần ở MVP không?
+   - Co-GM và nhiều nhân vật mỗi người chơi (§3.7): làm ở P2 hay sớm hơn?
    - GM có được thấy dòng "Admin đã truy cập" không? Việc này đảo quyết định đã ghim ở #178 (admin vô hình).
