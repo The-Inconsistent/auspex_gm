@@ -1,4 +1,4 @@
-# Auspex Universal: thiết kế lõi cho mọi hệ RPG
+# InconsisTable: thiết kế lõi cho mọi hệ RPG
 
 > **Trạng thái:** đề xuất (spike), chưa có code. Tài liệu này dựng trên kiến trúc hiện tại của auspex_gm
 > (`docs/architecture.md`) và mở rộng nó từ một app cho *Wrath & Glory* thành nền tảng cho **mọi** RPG bàn:
@@ -8,6 +8,15 @@
 > Thuật ngữ kỹ thuật giữ nguyên tiếng Anh. "GM" dùng chung cho GM / DM / Keeper / MC.
 
 ---
+
+**Tên:** platform tên là **InconsisTable** (org The-Inconsistent + *table*). **Auspex** được giữ làm tên của
+ruleset và World Warhammer 40k: Wrath & Glory bên trong platform.
+
+**Đã chốt (2026-10-11):**
+- Tên InconsisTable.
+- Có chủ phòng (`campaign.owner_user_id`, §3.6).
+- Platform role ở Clerk và chỉ đổi trong Clerk Dashboard (giữ #178).
+- Postgres 18.
 
 ## 0. Tóm tắt các quyết định chính
 
@@ -22,7 +31,7 @@
 | D7 | **Ưu tiên chơi trực tiếp (in-person first):** xúc xắc thật là mặc định. App chỉ ghi kết quả, chỉ tự gieo bảng ngẫu nhiên; gieo hộ Test là tuỳ chọn theo ruleset, `wng` không bật (§4.3). Bản đồ/VTT là phần mở rộng sau. | Đó là điểm khác biệt so với Roll20 hay Foundry (§1.6). |
 | D8 | **Bản quyền theo lớp nội dung:** SRD 5.1/5.2 (CC-BY-4.0), ORC, CC-BY được chia sẻ công khai. Sách có bản quyền chỉ là **nội dung riêng** của người dùng, gói trong campaign của họ. | Mở rộng nguyên tắc copyright đang có trong `CLAUDE.md`. |
 | D9 | **Phân quyền 3 lớp:** platform role trong Clerk (`user / creator / moderator / admin`), ghế theo từng phòng (`gm / cogm / player`, token `player / screen`), và sở hữu theo tài nguyên (chủ phòng là `campaign.owner_user_id`). Admin toàn quyền khi mở phòng với quyền admin. | Một người vừa chơi ở phòng người khác vừa quản lý phòng và nhân vật của mình (§3.6). |
-| D10 | **Postgres bản ổn định mới nhất (18.x, lên 19 sau 19.1); JSONB chỉ cho tài liệu lưu nguyên khối.** Giá trị field, resource, condition do ruleset khai báo được lưu thành hàng có kiểu. | Delta là một câu `UPDATE` nguyên tử, có khoá ngoại và ràng buộc; thêm hệ luật mới không cần migration (§5.4). |
+| D10 | **Postgres 18 (ghim theo minor); JSONB chỉ cho tài liệu lưu nguyên khối.** Giá trị field, resource, condition do ruleset khai báo được lưu thành hàng có kiểu. | Delta là một câu `UPDATE` nguyên tử, có khoá ngoại và ràng buộc; thêm hệ luật mới không cần migration (§5.4). |
 
 ---
 
@@ -81,7 +90,7 @@ Workspace (tài khoản)
 Progression (XP theo buổi, milestone, advance), chia loot, quỹ party, downtime, nghỉ ngơi (short/long rest, refocus),
 travel (supplies, kiệt sức), clock tiến độ kiểu Blades.
 
-### 1.6 Điểm đau của GM với các tool hiện có (cơ hội cho Auspex)
+### 1.6 Điểm đau của GM với các tool hiện có (cơ hội cho InconsisTable)
 
 1. **VTT mặc định chơi online, lấy bản đồ làm trung tâm.** Khi chơi trực tiếp, laptop thành bức tường giữa GM và người
    chơi.
@@ -242,8 +251,7 @@ phòng B và `cogm` ở phòng C. `Ctx` được resolve theo `campaignId` của
 `docs/architecture.md` ghi "roles are only ever changed in Clerk". Thiết kế giữ quyết định đó:
 - `app_user.role` vẫn chỉ là bản hiển thị. Api chỉ đọc role từ session token đã verify, không bao giờ từ client.
 - Thêm giá trị `moderator` vào `publicMetadata.role`.
-- Đổi role trong app (nút ở Admin Console gọi Clerk Backend API qua `@wg/auth`) là một **thay đổi quyết định #178**,
-  cần chủ sản phẩm đồng ý (§8).
+- **Đã chốt:** role chỉ đổi trong Clerk Dashboard. Admin Console chỉ hiển thị role, không có nút đổi.
 - Webhook `user.updated` của Clerk ngắt mọi socket của user đó trên mọi node (room `user:<id>` qua Redis adapter).
   Socket kết nối lại với role mới, không phải chờ token làm mới (~60 s).
 - Khoá tài khoản là cột `app_user.status`, đọc ở mỗi lần connect socket và mỗi request REST.
@@ -265,9 +273,9 @@ phòng B và `cogm` ở phòng C. `Ctx` được resolve theo `campaignId` của
   câu hỏi mở (§8), chưa phải thiết kế.
 - `member.seat` (gán ghế cho một user) vẫn chỉ dành cho admin.
 
-**Chủ phòng là một cột, không phải một role.** Issue #178 ghi "there is no owner": GM nào cũng archive được, và chỉ
-xoá được game đã archive sau khi gõ tên. Yêu cầu mới ("người dùng quản lý các phòng do mình tạo") cần một chủ phòng,
-nên thiết kế **đảo một phần quyết định đó**:
+**Chủ phòng là một cột, không phải một role (đã chốt 2026-10-11).** Issue #178 ghi "there is no owner": GM nào cũng
+archive được, và chỉ xoá được game đã archive sau khi gõ tên. Yêu cầu mới ("người dùng quản lý các phòng do mình
+tạo") cần một chủ phòng, nên thiết kế **đảo một phần quyết định đó**:
 - `campaign.owner_user_id` là nguồn duy nhất. Chủ phòng luôn có một ghế `gm`. `membership.role` không có giá trị
   `owner`, nên không thể có hai chủ phòng.
 - Chỉ chủ phòng (hoặc admin): xoá phòng, chuyển chủ phòng, bổ nhiệm và gỡ `gm`/`cogm`, đổi ruleset.
@@ -673,9 +681,9 @@ Platform thêm các loại sau, và danh sách ngoại lệ trong CLAUDE.md ph�
 
 ### 5.4 Mô hình dữ liệu (Postgres)
 
-**Phiên bản.** Chạy bản Postgres ổn định mới nhất. Tại thời điểm viết đó là **18.x** (repo hiện dùng 17). Postgres 19
-dự kiến GA ngày 29/10/2026; nâng lên 19 sau bản vá đầu tiên (19.1), vì `pg_upgrade` và image Docker cần thời gian
-ổn định. Image ghim theo minor (`postgres:18.x`) chứ không dùng tag `latest`, để deploy có thể lặp lại.
+**Phiên bản (đã chốt): Postgres 18** cho cả dev và prod (repo hiện dùng 17). Image ghim theo minor
+(`postgres:18.x`) chứ không dùng tag `latest`, để deploy có thể lặp lại. Postgres 19 (GA dự kiến 29/10/2026) không
+nằm trong kế hoạch này; khi muốn nâng thì đó là một quyết định riêng.
 
 **Ràng buộc deploy.** Prod hiện chạy **Postgres 16** trong cluster dùng chung `green-orange-postgres-1`; dev chạy 17
 (`docs/deploy.md`).
@@ -932,6 +940,4 @@ chỉ chứa ruleset tự viết và SRD/ORC (§4.6). Nội dung W&G tiếp tụ
    - Mô hình thu phí: chỉ GM trả, hay miễn phí hoàn toàn?
    - Hệ luật thứ hai ưu tiên là gì: 5e SRD (đông người chơi nhất) hay PbtA (đơn giản nhất để kiểm chứng engine)?
    - Co-GM và nhiều nhân vật mỗi người chơi: mô hình dữ liệu đã hỗ trợ (§3.6); UI có cần ở MVP không?
-   - Có cho đổi platform role ngay trong Admin Console không? Việc này đảo quyết định #178 ("roles stay in Clerk").
    - GM có được thấy dòng "Admin đã truy cập" không? Việc này đảo quyết định đã ghim ở #178 (admin vô hình).
-   - Có giữ khái niệm chủ phòng (§3.6) không? Nó đảo một phần quyết định "there is no owner" của #178.

@@ -25,7 +25,7 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 
 | Doc | Contents |
 | --- | --- |
-| [spikes/universal-rpg-platform.md](spikes/universal-rpg-platform.md) | Design proposal (Vietnamese): a system-agnostic core for any RPG, ruleset engine, admin, GM and player features |
+| [spikes/universal-rpg-platform.md](spikes/universal-rpg-platform.md) | InconsisTable design proposal (Vietnamese): a system-agnostic core for any RPG, ruleset engine, admin, GM and player features |
 
 ## Rules for these docs
 
