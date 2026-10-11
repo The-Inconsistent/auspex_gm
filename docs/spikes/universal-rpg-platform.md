@@ -22,6 +22,8 @@ ruleset và World Warhammer 40k: Wrath & Glory bên trong platform.
 - **5e SRD** (SRD 5.2, CC-BY-4.0) là hệ luật **đầu tiên** của InconsisTable. W&G (Auspex) port sau thành pack riêng tư,
   dùng bộ test của auspex_gm làm chuẩn đối chiếu.
 - **Chưa thu phí.**
+- **Platform không cung cấp nội dung có bản quyền.** Mọi ruleset và nội dung (quái, đồ, phép, luật) do người dùng tự
+  nhập. Platform chỉ cung cấp engine, công cụ nhập và kiểm tra. Chính sách lưu trữ ở §4.6.
 - **Có bản đồ**, nhưng là bản đồ hỗ trợ trí nhớ cho bàn thật (§3.8), không phải bàn ảo để chơi từ xa.
 
 ## 0. Tóm tắt các quyết định chính
@@ -168,7 +170,7 @@ Ký hiệu: **[MVP]** = bản đầu, **[Sau]** = giai đoạn sau. **[Có]** = 
 | **Rooms / Campaigns** | [Có] danh sách game, housekeeping action. [MVP] lọc theo ruleset, chủ phòng, hoạt động gần nhất; **chuyển quyền chủ phòng** (người nhận chấp nhận) và phòng mất chủ; archive/unarchive; force-end session bị treo |
 | **Characters** | [MVP] tìm nhân vật theo user/campaign, xem nhân vật lỗi migrate. Không có soft delete: #178 đã loại vì giữ mãi nội dung có bản quyền và dữ liệu người chơi |
 | **Rulesets & Packs** | [MVP] duyệt ruleset/pack công khai (license phải là SRD/ORC/CC-BY), feature flag theo ruleset. [Sau] kho cộng đồng, CI kiểm tra lại mọi manifest khi lên phiên bản core |
-| **Moderation** | [MVP] nút "report" trên nội dung chia sẻ (handout, ảnh, trang campaign công khai), hàng đợi xử lý, gỡ nội dung. [Sau] quét ảnh tự động, quy trình DMCA |
+| **Moderation** | [MVP] nút "report" trên nội dung chia sẻ (handout, ảnh, trang campaign công khai), hàng đợi xử lý, gỡ nội dung. [MVP, trước khi mở đăng ký] quy trình gỡ theo yêu cầu của chủ bản quyền (notice and takedown), chính sách với người vi phạm nhiều lần, điều khoản sử dụng. [Sau] quét ảnh tự động |
 | **Audit log** | [Có] `admin_event` cho 7 action housekeeping (`ADMIN_ACTIONS`). [MVP] thêm: admin mở phòng không ghế, chuyển chủ phòng, gỡ nội dung, khoá tài khoản |
 | **Quotas & Plans** | [MVP] giới hạn số campaign/user, người chơi/phòng, dung lượng upload. [Sau] gói trả phí (thường chỉ GM trả, người chơi miễn phí) |
 | **Hệ thống** | [Sau] status page, backup/restore theo campaign, telemetry |
@@ -627,8 +629,10 @@ Mọi entry luật (resource, condition, test, initiative, effect, option) có `
 ### 4.6 Content pack và bản quyền
 
 - **Pack** = `{ id, version, ruleset: range, license, attribution, visibility, entries[] }`. Key có namespace `pack:key`.
-- **Công khai:** chỉ `srd | orc | cc-by`, attribution hiện trong UI. Kho mặc định gồm 5e SRD 5.2 (CC-BY-4.0), PF2e
-  ORC (trừ Reserved Material) và các ruleset tự viết.
+- **Platform không đi kèm nội dung (đã chốt 2026-10-11).** Mọi ruleset và pack do người dùng nhập: dán JSON, tải file,
+  hoặc nhập qua form như threat builder. 5e SRD cũng được nhập như mọi pack khác.
+- **Công khai:** chỉ pack có license `srd | orc | cc-by` hoặc do chính người dùng sáng tác, sau khi qua `pack:approve`.
+  Attribution hiện trong UI.
 - **Riêng tư:** nội dung sách có bản quyền (W&G, CoC...) là pack thuộc user hoặc campaign, không liệt kê, không share
   link công khai, không phục vụ cho người không có ghế. Đây là tổng quát hoá các gate hiện có (`/threats`, `/wargear`
   chỉ GM; `/rules` theo ghế). Trang sách vẫn chỉ đến người chơi qua relay trực tiếp từ PDF của GM (`book:*`), không
@@ -637,7 +641,9 @@ Mọi entry luật (resource, condition, test, initiative, effect, option) có `
 - **Membership không đủ để mở pack riêng tư.** Ở platform mở, ai cũng tự tạo được campaign để có membership. Vì vậy:
   - Bảng `pack_grant(pack_id, user_id, granted_by)` cấp quyền theo người.
   - Gắn pack riêng tư vào campaign, fork, clone campaign hay export đều cần grant của **người gọi**.
-  - Pack riêng tư của platform (sách W&G) do admin cấp cho từng user.
+  - Pack có license `private` (chép từ sách có bản quyền) **chỉ dùng được trong campaign mà chủ pack làm GM**. Người
+    chơi thấy qua view của bàn. Chủ pack không cấp được grant cho user khác, vì như vậy là phân phối nội dung của người
+    khác.
   - Người chơi có ghế chỉ thấy entry qua view đã lọc của bàn.
 - **License tự khai** (`srd|orc|cc-by`) không tự đưa pack lên danh mục công khai; cần `pack:approve`.
 - **Cổng theo route:**
@@ -1025,7 +1031,7 @@ Wizard: điểm danh → thưởng XP/milestone (`progression`) → chia loot �
 | Giai đoạn | Mục tiêu | Tiêu chí xong |
 |---|---|---|
 | **P0: Khung repo mới** | Repo `InconsisTable`: chép pipeline action, `@inconsistable/auth` (Clerk), access và invite, codex, lobby từ auspex_gm; Postgres 18; `rules-engine` với các primitive 5e cần (`dice.sumVsTarget`, `initiative.ranked`, `health.tracks` + death save, slot); phân quyền §3.6 | Test của pipeline, `can()` và engine xanh; một phòng trống mời được người chơi qua QR |
-| **P1: 5e SRD chơi được** | Manifest `dnd5e-srd` + pack SRD 5.2 (attribution CC-BY); actor và các bảng giá trị; builder; sheet render từ `layout`; combat tracker; gọi Test; undo phía server | Một bàn chơi one-shot SRD từ tạo nhân vật tới hết buổi |
+| **P1: 5e SRD chơi được** | Công cụ nhập ruleset và pack (file, JSON, form) có kiểm tra, mặc định riêng tư; nhập manifest `dnd5e-srd` + pack SRD 5.2 qua chính công cụ đó; actor và các bảng giá trị; builder; sheet render từ `layout`; combat tracker; gọi Test; undo phía server | Một bàn chơi one-shot SRD từ tạo nhân vật tới hết buổi |
 | **P2: Workspace, wizard, World, bản đồ** | Hub người dùng, wizard 8 bước, theme và từ vựng theo World, house rules, safety tools, bản đồ §3.8, nhiều nhân vật và co-GM §3.7 | Người mới tạo game và mời bàn trong dưới 5 phút |
 | **P3: Platform** | Admin console (moderation, quota, chuyển chủ phòng), Redis adapter, advisory lock, `state_version`, S3, `pack_grant`, export/xoá dữ liệu; chỉ sau đó mới mở đăng ký Clerk | Chạy 2+ instance api; load test 100 bàn |
 | **P4: Port W&G (Auspex)** | Manifest `wng` + pack riêng tư, `view.wng`, `health.hit` kiểu W&G, `initiative.alternatingSides`; test của auspex_gm là chuẩn đối chiếu | Mọi test luật của auspex_gm có bản tương ứng xanh; bàn W&G chuyển sang |
