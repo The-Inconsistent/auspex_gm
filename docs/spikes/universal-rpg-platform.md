@@ -21,6 +21,8 @@
 | D6 | **Quyền xem khai báo trên từng field** (`public / party / owner / gm`) thay cho `toPlayerView` viết tay. | Hệ luật mới tự có bộ lọc người chơi đúng, không ai phải sửa code lọc. |
 | D7 | **Ưu tiên chơi trực tiếp (in-person first):** xúc xắc thật là mặc định. App chỉ ghi kết quả, chỉ tự gieo khi GM bật (bảng ngẫu nhiên, gieo hộ). Bản đồ/VTT là phần mở rộng sau. | Đó là điểm khác biệt so với Roll20 hay Foundry (§1.6). |
 | D8 | **Bản quyền theo lớp nội dung:** SRD 5.1/5.2 (CC-BY-4.0), ORC, CC-BY được chia sẻ công khai. Sách có bản quyền chỉ là **nội dung riêng** của người dùng, gói trong campaign của họ. | Mở rộng nguyên tắc copyright đang có trong `CLAUDE.md`. |
+| D9 | **Phân quyền 3 lớp:** platform role (`user / moderator / admin`), campaign role theo từng phòng (`owner / gm / cogm / player / spectator`), và ownership theo tài nguyên. Admin toàn quyền, có audit. | Một người vừa chơi ở phòng người khác vừa quản lý phòng và nhân vật của mình (§3.6). |
+| D10 | **Postgres bản ổn định mới nhất (18.x, lên 19 sau 19.1); JSONB chỉ cho tài liệu lưu nguyên khối.** Giá trị field, resource, condition do ruleset khai báo được lưu thành hàng có kiểu. | Delta là một câu `UPDATE` nguyên tử, có khoá ngoại và ràng buộc; thêm hệ luật mới không cần migration (§5.4). |
 
 ---
 
@@ -38,6 +40,7 @@ Vai trò gắn với **từng campaign**, không gắn với tài khoản: một
 | **Co-GM** | GM phụ, có quyền giới hạn theo scope: chỉ chạy combat, hoặc sửa codex nhưng không xem secret. | **Mới** |
 | **Player** | Giữ một hoặc nhiều nhân vật: nhân vật chính, tuỳ tùng, sidekick, funnel 4 nhân vật kiểu DCC. | Có (một nhân vật/ghế) |
 | **Guest** | Vào bằng QR, không cần tài khoản, giữ một nhân vật (pregen, nhân vật mượn) trong một hay nhiều buổi. | Có (`access_token`) |
+| **Moderator** | Xử lý nội dung bị report; không xem secret của campaign. | **Mới** |
 | **Spectator / Screen** | Màn hình TV/chiếu chỉ đọc, hoặc người xem stream. Không bao giờ thấy secret. | Có một phần (screen mode) |
 
 ### 1.2 Các "hộp chứa" (containers)
@@ -210,6 +213,120 @@ Mỗi bước đều bỏ qua được. **"Quick game":** chọn ruleset → QR 
 
 ---
 
+### 3.6 Phân quyền (RBAC + ownership)
+
+**Yêu cầu:**
+- Một tài khoản vừa là người chơi ở phòng của người khác, vừa quản lý các phòng và nhân vật do chính mình tạo.
+- Admin có toàn quyền.
+- Auspex đã có nền móng cho việc này: role theo `membership`, `Ctx.admin`, `PLAYER_ACTIONS`, `authorize()`. Phần này
+  biến nó thành một hệ phân quyền tường minh.
+
+**Ba lớp, xét theo thứ tự:**
+
+```
+1. Platform role (toàn hệ thống)   app_user.platformRole: user | moderator | admin
+2. Campaign role (theo từng phòng) membership.role: owner | gm | cogm | player | spectator  (+ guest qua token)
+3. Ownership (theo từng tài nguyên) ownerUserId trên campaign, character, library_character, world, ruleset, pack
+```
+
+Vì role nằm trên `membership` chứ không nằm trên tài khoản, cùng một người có thể là `owner` ở phòng A, `player` ở
+phòng B và `cogm` ở phòng C. `Ctx` được resolve theo `campaignId` của socket, như `resolveCtx` đang làm.
+
+**Platform role**
+
+| Role | Quyền |
+|---|---|
+| `user` (mặc định) | Tạo campaign (trong quota của gói), nhận lời mời, sở hữu nhân vật library, world, ruleset/pack homebrew của mình |
+| `moderator` | Hàng đợi report, gỡ nội dung đã chia sẻ, khoá tạm tài khoản. Không xem secret hay ghi chú GM của campaign |
+| `admin` | **Toàn quyền:** mọi quyền của mọi role ở mọi campaign, Admin Console, đổi platform role, chuyển chủ phòng, xoá cứng. Mọi hành động của admin trong một campaign đều ghi `admin_event`, như hiện nay |
+
+**Campaign role**
+
+| Role | Ai | Quyền chính |
+|---|---|---|
+| `owner` | Người tạo phòng (đúng một người) | Mọi quyền của `gm`, cộng: xoá/archive phòng, chuyển quyền chủ phòng, đổi ruleset, bổ nhiệm và gỡ `gm`/`cogm` |
+| `gm` | GM đầy đủ (đồng GM) | Toàn bộ chuẩn bị nội dung, chạy session và combat, reveal, mời và gỡ player, sửa mọi sheet |
+| `cogm` | GM phụ có `scopes[]` | Chỉ những scope được giao: `combat`, `codex`, `codex.secrets`, `party`, `session` |
+| `player` | Người chơi có ghế | Sheet của nhân vật mình, request, ghi chú riêng, xem những gì đã reveal cho mình |
+| `spectator` | TV hoặc người xem | Chỉ đọc dữ liệu `public` |
+| guest | `access_token` theo nhân vật | Như `player` cho đúng một nhân vật; không có library, không có workspace |
+
+**Permission là dữ liệu.** Mỗi permission có dạng `tài nguyên:hành động[:phạm vi]`, và role ánh xạ tới một tập
+permission bằng một hằng zod trong `core-schema`:
+
+```ts
+export const PERMISSIONS = [
+  "campaign:read", "campaign:update", "campaign:delete", "campaign:transfer",
+  "member:invite", "member:remove", "member:promote",
+  "session:run", "encounter:run", "test:call",
+  "codex:read", "codex:write", "codex:read_secret", "codex:reveal",
+  "character:read:any", "character:edit:own", "character:edit:any", "character:create",
+  "request:send", "request:resolve", "safety:signal",
+  "ruleset:fork", "ruleset:publish", "pack:approve", "report:resolve", "admin:console",
+] as const;
+
+// Quyền hiệu lực của một người trong một phòng (thuần, có test)
+can(ctx, perm, resource?) =
+     ctx.platformRole === "admin"                       // toàn quyền, có ghi audit
+  || PLATFORM_GRANTS[ctx.platformRole].has(perm)
+  || CAMPAIGN_GRANTS[ctx.role].has(perm) && scopeAllows(ctx.scopes, perm)
+  || OWNER_GRANTS.has(perm) && isOwner(ctx.userId, resource)  // ":own"
+```
+
+- Mỗi core action khai báo permission nó cần. Mỗi op của primitive cũng khai báo (`who` ở §5.3 trở thành
+  `perm`). `authorize()` chỉ còn gọi `can()`, và `PLAYER_ACTIONS` viết tay biến mất.
+- Kiểm tra field: `character:edit:own` chỉ cho sửa những field có `editableBy: owner` trong manifest. Override của
+  GM, XP, và pool `gm` cần `character:edit:any`. Hiện `authorize()` phải tự chặn các field GM-only trong action mà
+  player được gửi; cách này thay cho việc chặn thủ công đó.
+- `can()` chạy cả ở web (để ẩn nút) lẫn api (để quyết định). Chỉ kết quả ở api có giá trị.
+
+**Ownership: nhân vật thuộc về ai**
+
+- `library_character.ownerUserId`: nhân vật ngoài campaign, chỉ chủ sở hữu sửa được.
+- Khi đưa vào một campaign, app tạo một **bản sao** có `ownerUserId` (người chơi) và `campaignId`. Người chơi sửa theo
+  `:own`; GM sửa theo `:any`.
+- Khi người chơi rời phòng (`member.remove` hay tự rời), nhân vật **ở lại** campaign với trạng thái
+  `retired`, vì GM còn cần. Chủ sở hữu luôn xuất được một bản sao về library của mình.
+- Campaign chỉ có đúng một `owner`. Muốn rời phòng mình đã tạo thì phải chuyển quyền trước. Owner bị xoá tài khoản →
+  admin chuyển quyền hoặc archive phòng.
+
+**Workspace nhìn từ quyền** (§3.2): truy vấn `membership` của user rồi nhóm theo role. Ví dụ: "Tôi làm GM" (owner/gm/cogm), "Tôi đang
+chơi" (player, kèm nhân vật), "Nhân vật của tôi" (library cộng các bản trong campaign mà mình sở hữu), "Homebrew của
+tôi" (world, ruleset, pack có `ownerUserId` là mình).
+
+**Admin toàn quyền nhưng để lại dấu vết**
+
+- Admin không cần ghế: `Ctx.admin` như hiện nay. Admin Console đi qua `TableGateway.run` để giữ nguyên pipeline.
+- Mỗi lần admin vào một campaign mà không có ghế, app ghi `admin_event`. GM thấy dòng "Admin đã truy cập" trong log
+  của phòng, để minh bạch.
+- Chỉ admin mới đổi được platform role, và hệ thống luôn giữ ít nhất một admin.
+- Platform role đọc từ DB (`app_user.platformRole`) chứ không chỉ từ Clerk `publicMetadata`. Đổi role có hiệu lực
+  ngay, không phải chờ token làm mới.
+
+**Ma trận rút gọn** (✔ = có quyền, `own` = chỉ của mình, `scope` = khi được giao scope đó)
+
+| Hành động | owner | gm | cogm | player | spectator | moderator* | admin |
+|---|---|---|---|---|---|---|---|
+| Xoá / chuyển phòng | ✔ | | | | | | ✔ |
+| Đổi ruleset, house rules | ✔ | ✔ | | | | | ✔ |
+| Mời / gỡ người chơi | ✔ | ✔ | scope `party` | | | | ✔ |
+| Chạy session, combat | ✔ | ✔ | scope `session`/`combat` | | | | ✔ |
+| Sửa codex | ✔ | ✔ | scope `codex` | | | | ✔ |
+| Đọc secret, ghi chú GM | ✔ | ✔ | scope `codex.secrets` | | | | ✔ |
+| Sửa sheet nhân vật | ✔ | ✔ | scope `party` | `own` | | | ✔ |
+| Gửi request, X-Card | | | | ✔ | | | |
+| Xem dữ liệu đã reveal | ✔ | ✔ | ✔ | ✔ (theo `codex_reveal`) | `public` | | ✔ |
+| Gỡ nội dung bị report | | | | | | ✔ | ✔ |
+
+\* moderator không có quyền trong campaign; chỉ thao tác trên nội dung bị report.
+
+**Dữ liệu:** `app_user.platformRole`; `membership.role` + `scopes` (mảng enum) + `membership_character`; cột `ownerUserId` trên mọi tài nguyên sở
+hữu được; `campaign.ownerUserId` (unique theo campaign). Đổi role hay scope đi qua action `member.promote` để vào hàng
+đợi, transaction và broadcast như mọi thay đổi khác. Giảm quyền thì kick socket để client kết nối lại với `Ctx` mới,
+như `member.remove` hiện nay.
+
+---
+
 ## 4. Ruleset Engine: chơi được mọi thể loại
 
 ### 4.1 Mô hình 3 tầng
@@ -329,13 +446,14 @@ const Effect = z.object({                              // kiểu ActiveEffects, 
 ### 4.5 Phiên bản, migrate, fork, house rules
 
 - `ruleset_version` là **bất biến** (`id`, `version`, `hash`, `manifest jsonb`). Sửa lỗi = phát hành phiên bản mới.
-- Campaign pin `ruleset@version`. Mỗi character lưu `{ rulesetVersion, data }`. Encounter snapshot stat block và
-  phiên bản (như `statSnapshot` hiện tại).
+- Campaign pin `ruleset@version`. Mỗi actor ghi `ruleset_version_id`. Encounter snapshot stat block và phiên bản
+  (như `statSnapshot` hiện tại).
+- Op migration chạy thành SQL trên các hàng giá trị (§5.4): `rename` = `UPDATE actor_field SET field_id = …`.
 - **Migration khai báo** trong manifest mới (`rename`, `default`, `mapEnum`, `drop` có `archive`). GM bấm nâng cấp, xem
   dry-run diff, rồi mới áp. Không bao giờ tự động.
 - **Homebrew = fork:** `extends: dnd5e-srd@2.0.0` + overlay theo `id` (không theo vị trí mảng). Khi bản gốc lên
   phiên bản: hiện diff 3 chiều, GM tự rebase.
-- **House rules:** `campaign.houseRules[] = { id, text, patch? }`. Có `patch` thì engine áp như overlay; chỉ có `text`
+- **House rules:** bảng `house_rule { id, text, patch? }`. Có `patch` thì engine áp như overlay; chỉ có `text`
   thì là ghi chú cho bàn. Thay cho `rules-flow.md` §11 ở cấp platform. Repo auspex vẫn giữ §11 cho luật W&G của nó.
 
 ### 4.6 Content pack và bản quyền
@@ -382,7 +500,7 @@ flowchart TB
     REST[REST: workspace, library, packs, admin]
   end
   API1 & API2 --- REDIS[(Redis: socket.io adapter, rate limit, presence)]
-  API1 & API2 --- PG[(Postgres 17: state, JSONB, advisory locks)]
+  API1 & API2 --- PG[(Postgres 18: state, advisory locks)]
   API1 & API2 --- S3[(Object storage: ảnh, export, pack)]
   AUTH[Clerk] -. verify JWT local .- API1
 ```
@@ -438,32 +556,95 @@ khai báo cho ruleset action. Khi thêm hệ luật mới không phải sửa `d
 
 ### 5.4 Mô hình dữ liệu (Postgres)
 
-Nguyên tắc: **cột có kiểu cho core, JSONB cho dữ liệu ruleset.** Index GIN cho truy vấn pack và codex.
+**Phiên bản.** Chạy bản Postgres ổn định mới nhất. Tại thời điểm viết đó là **18.x** (repo hiện dùng 17). Postgres 19
+dự kiến GA ngày 29/10/2026; nâng lên 19 sau bản vá đầu tiên (19.1), vì `pg_upgrade` và image Docker cần thời gian
+ổn định. Image ghim theo minor (`postgres:18.x`) chứ không dùng tag `latest`, để deploy có thể lặp lại. Các tính năng
+của bản 18 mà thiết kế dùng:
+- `uuidv7()` làm khoá chính: id theo thời gian, index B-tree liền mạch hơn `gen_random_uuid()`.
+- `UPDATE … RETURNING OLD.value, NEW.value`: mỗi delta trả về cả giá trị trước và sau, ghi thẳng vào `session_event`.
+  Đây là nền cho undo phía server mà không cần đọc trước.
+- Skip scan trên index B-tree nhiều cột (`(campaign_id, kind, …)`), virtual generated column, async I/O.
+
+**Chính sách JSONB.** Chỉ dùng JSONB cho **tài liệu đọc/ghi nguyên khối, truy vấn bằng khoá**. Mọi thứ cần lọc, join,
+cộng trừ delta, ràng buộc khoá ngoại hay unique thì là cột hoặc bảng.
+
+| Được dùng JSONB | Lý do |
+|---|---|
+| `ruleset_version.manifest` | Tài liệu bất biến, đọc một lần rồi compile và cache theo `hash` |
+| `pack_entry.body` | Stat block, nội dung luật: hiển thị nguyên khối. Tìm kiếm dùng các cột có kiểu đi kèm |
+| `combatant.stat_snapshot` | Bản chụp bất biến khi threat vào trận |
+| `session_event.payload` | Log chỉ ghi thêm (append-only), đọc theo `session_id` và thời gian |
+| `world.theme`, `house_rule.patch` | Cấu hình trình bày và overlay, đọc nguyên khối |
+
+Ngoài danh sách này, không dùng JSONB. Mảng id (`uuid[]`) cũng thay bằng bảng nối có khoá ngoại: bây giờ
+`audience` và `npcIds` không có FK nên `codex.delete` phải tự dọn.
+
+**Ý tưởng chính: field do ruleset khai báo được lưu thành hàng có kiểu, không lưu thành document.** Manifest quyết
+định *có những* field, resource, condition nào. Database lưu *giá trị* của chúng thành hàng, khoá bằng
+`(actor_id, field_id)`. Như vậy:
+- Delta trên counter là một câu `UPDATE` nguyên tử trên một hàng, đúng tinh thần `bump()` hiện tại.
+- Thêm một hệ luật mới không cần migration schema.
+- Đổi tên field khi migrate ruleset là `UPDATE actor_field SET field_id = 'willpower' WHERE field_id = 'wp'`.
+
+**Actor là bảng cha.** Nhân vật, NPC có stat và threat trong trận đều là `actor`. Bảng giá trị, resource và condition
+trỏ vào `actor_id`. PC vào combat thì combatant trỏ đúng actor của nhân vật, nên trúng đòn là trừ vào cùng một hàng
+(giống auspex hiện nay: Wounds của PC nằm trên `character`).
+
+```
+actor            (id uuidv7 PK, campaign_id FK, kind enum[pc|npc|threat|retainer], ruleset_version_id FK)
+character        (actor_id PK FK→actor, owner_user_id FK, name, status enum[active|retired], built_at)
+actor_field      (actor_id FK, field_id text, ordinal int, int_value int, text_value text, ref_key text,
+                  PK(actor_id, field_id, ordinal), CHECK đúng một cột value khác null)
+actor_resource   (actor_id FK, resource_id text, value int NOT NULL, max_override int, PK(actor_id, resource_id))
+actor_condition  (id, actor_id FK, condition_id text, stacks int, expires_round int, source text)
+actor_choice     (actor_id FK, step_id text, ordinal int, option_key text, PK(...))   -- lựa chọn khi tạo nhân vật
+item_instance    (id, campaign_id FK, pack_key text, name, qty int, holder_actor_id FK null, location_id FK null,
+                  equipped bool)
+```
+
+Đổi một counter, kèm giá trị cũ để ghi log:
+
+```sql
+UPDATE actor_resource
+   SET value = LEAST(GREATEST(value + $delta, $min), $max)   -- min/max do engine eval từ manifest
+ WHERE actor_id = $actor AND resource_id = $res
+RETURNING OLD.value AS before, NEW.value AS after;            -- Postgres 18
+```
+
+**Bảng chính**
 
 | Bảng | Cột chính | Ghi chú |
 |---|---|---|
-| `app_user` | id (Clerk), name, plan, status, lastSeenAt | [Có] + plan/status |
-| `world` | id, ownerId, name, theme jsonb, terms jsonb, visibility | **Mới** |
-| `ruleset` | id, ownerId, slug, visibility, license | **Mới** |
-| `ruleset_version` | rulesetId, version, hash, manifest jsonb, extendsVersionId, compiledAt | **Mới**, bất biến |
-| `pack` / `pack_version` / `pack_entry` | entry: packVersionId, key, type, data jsonb, visibility, contentHash | Thay `packages/data` tĩnh; pack sách W&G thành pack private |
-| `campaign` | id, ownerId, worldId, rulesetVersionId, name, settings jsonb (options, tier...), houseRules jsonb, safety jsonb, archivedAt | Bỏ cột `glory/ruin/tier` |
-| `campaign_pack` | campaignId, packVersionId | Pack đang bật |
-| `membership` | campaignId, userId, role (`gm`/`cogm`/`player`/`spectator`), scopes text[], characterIds uuid[] | [Có] + co-GM, nhiều nhân vật |
+| `app_user` | id (Clerk), name, platform_role enum, plan, status, last_seen_at | [Có] + role, plan, status |
+| `world` | id, owner_user_id, name, visibility, theme jsonb | `world_term(world_id, term_id, label)` cho từ vựng |
+| `ruleset` / `ruleset_version` | slug, owner_user_id, visibility, license / version, hash, extends_version_id, manifest jsonb | Bất biến |
+| `pack` / `pack_version` / `pack_entry` | entry: key, type, name, level int, tags text[], visibility, content_hash, body jsonb | Index `(pack_version_id, type)`, `pg_trgm` trên `name`; không index GIN trên `body` |
+| `campaign` | id, owner_user_id, world_id, ruleset_version_id, name, x_card_enabled, archived_at | Bỏ `glory/ruin/tier`; không còn `settings` jsonb |
+| `campaign_option` | campaign_id, option_id, value text | Variant rule và field cấp campaign (W&G `tier`) |
+| `house_rule` | id, campaign_id, text, patch jsonb null | Có `patch` thì engine áp làm overlay |
+| `safety_entry` | campaign_id, kind enum[line\|veil], text | Lines & Veils |
+| `campaign_pack` | campaign_id, pack_version_id | |
+| `membership` | campaign_id, user_id, role enum, scopes enum[] | Unique (campaign_id, user_id) [Có] |
+| `membership_character` | membership_id, actor_id | Thay `characterIds uuid[]`; có FK |
 | `invite`, `access_token` | [Có] | Giữ nguyên |
-| `character` | id, campaignId, ownerUserId, kind (`pc`/`npc`/`retainer`), name, rulesetVersion, data jsonb, resources jsonb, conditions jsonb, build jsonb, archived jsonb | Thay ~15 cột W&G |
-| `library_character` | [Có] + rulesetVersionId | |
-| `resource_pool` | campaignId, scope (`party`/`gm`), resourceId, value | Thay `campaign.glory/ruin` |
-| `clock` | campaignId, label, segments, filled, visibility, linkedTo | **Mới** |
-| `encounter` | campaignId, round, active, rulesetVersion, initiativeState jsonb | `lastSide/seizedSide` nằm trong jsonb |
-| `combatant` | encounterId, kind, characterId, statSnapshot jsonb, data jsonb, resources jsonb, conditions jsonb, visibility, order | |
-| `test_call` | campaignId, mechanicId, params jsonb, who, reports jsonb | [Có], tổng quát hoá |
-| `request` | campaignId, characterId, kind, payload jsonb, status | Tổng quát hoá `spend_request` |
-| `roll_event` / `session_event` | campaignId, sessionId, type, payload jsonb, at | **Mới**: log để recap, audit, undo phía server sau này |
-| Codex: `adventure`, `scene`, `npc`, `location`, `faction`, `item`, `handout`, `quest`, `lore` | [Có] + `quest`, `lore`; `npc.statSource` trỏ `pack:key` | Thêm `knownBy uuid[]` cho reveal theo nhân vật |
-| `image` → object storage | campaignId, key S3, mime, size | Thay `bytea` (điểm swap `image.store.ts`) |
-| `safety_signal` | campaignId, kind, at (không lưu ai gửi) | **Mới**, ẩn danh |
+| `library_character` + `library_field/resource/choice` | Cùng cấu trúc với actor, nhưng thuộc user | [Có], chuẩn hoá theo cùng mẫu |
+| `resource_pool` | campaign_id, scope enum[party\|gm], resource_id, value | Thay `campaign.glory/ruin` |
+| `clock` | id, campaign_id, label, segments, filled, visibility | |
+| `encounter` | id, campaign_id, round, active, current_combatant_id, turn_side, seized_side | Cột chung cho mọi strategy; strategy lạ thêm `encounter_counter(encounter_id, key, value int)` |
+| `combatant` | id, encounter_id, actor_id, side, ord, initiative_score, acted, ambushed, visibility, marker, mob_count, stat_snapshot jsonb | |
+| `test_call` / `test_call_target` / `test_report` | mechanic_id, skill_id, target int, hide_target / character_id / outcome enum, value int | Thay `reports jsonb` |
+| `request` | id, campaign_id, actor_id, kind, resource_id, amount, status | Tổng quát hoá `spend_request` |
+| `session_event` | id uuidv7, campaign_id, session_id, type, at, payload jsonb | Log: recap, audit, undo |
+| `codex_entry` | id, campaign_id, kind enum, title, revealed, created_at | Bảng cha của mọi entry codex |
+| `npc`, `location`, `faction`, `handout`, `quest`, `lore`, `scene`, `adventure` | entry_id PK FK→codex_entry + cột riêng | [Có], mỗi loại giữ bảng riêng |
+| `codex_reveal` | entry_id FK, actor_id FK | Reveal cho riêng từng nhân vật; thay `audience uuid[]` |
+| `codex_link` | from_entry_id FK, to_entry_id FK, kind | Thay `npcIds/handoutIds uuid[]` của scene; @mention backlink |
+| `image` | id, campaign_id, storage_key, mime, size | `bytea` chuyển sang object storage |
+| `safety_signal` | campaign_id, kind, at (không lưu người gửi) | Ẩn danh |
 | `admin_event`, `report` | [Có] + moderation | |
+
+**Snapshot cho client không đổi.** Server vẫn dựng `LiveState` và `Codex` thành object như hiện nay. Chỉ cách lưu là
+thay đổi; client không cần biết dữ liệu nằm ở hàng hay ở document.
 
 ### 5.5 Lọc dữ liệu theo người xem
 
@@ -474,7 +655,7 @@ Nguyên tắc: **cột có kiểu cho core, JSONB cho dữ liệu ruleset.** Ind
 - `party`: mọi ghế trong campaign.
 - `public`: cả màn hình TV và spectator.
 
-Với combatant giữ 3 mức `hidden / bars / stats` [Có]. Codex thêm `knownBy` để reveal cho riêng từng nhân vật.
+Với combatant giữ 3 mức `hidden / bars / stats` [Có]. Codex thêm bảng `codex_reveal` để reveal cho riêng từng nhân vật.
 Bộ lọc vẫn chạy ở server, mỗi `characterId` một lần như `broadcast` hiện nay.
 
 ### 5.6 Realtime và mở rộng ngang
@@ -564,7 +745,7 @@ Wizard: điểm danh → thưởng XP/milestone (`progression`) → chia loot �
 | Giai đoạn | Mục tiêu | Tiêu chí xong |
 |---|---|---|
 | **P0: Tách engine** | Dựng `rules-engine` (manifest zod, CEL, primitives) từ code `packages/shared` hiện có; viết `wng.ruleset.json` | Mọi test hiện tại xanh khi chạy qua engine (parity) |
-| **P1: Schema chung** | `character.data/resources` JSONB, `resource_pool`, `encounter.initiativeState`, `ruleset_version`, pin phiên bản; action `res.adjust / turn.op / test.*` | Một bàn W&G chơi trọn buổi không khác gì bây giờ |
+| **P1: Schema chung** | Postgres 18; `actor` + `actor_field/resource/condition`, `resource_pool`, `ruleset_version`, pin phiên bản; action `res.adjust / turn.op / test.*` | Một bàn W&G chơi trọn buổi không khác gì bây giờ |
 | **P2: Hệ luật thứ hai** | `dnd5e-srd` (SRD 5.2, CC-BY) + pack SRD; sheet renderer từ `layout`; builder chung | Bàn 5e chơi một one-shot SRD từ tạo nhân vật đến hết buổi |
 | **P3: Workspace + Wizard + World** | Hub người dùng, wizard 8 bước, theme/terms theo World, house rules overlay, safety tools | Người mới tạo game và mời bàn trong dưới 5 phút |
 | **P4: Platform** | Admin console mở rộng (moderation, quotas, chuyển chủ phòng), Redis adapter, advisory lock, S3, patch broadcast | Chạy 2+ instance api; load test 100 bàn đồng thời |
