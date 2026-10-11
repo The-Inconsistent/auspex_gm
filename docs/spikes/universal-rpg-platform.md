@@ -26,6 +26,38 @@ ruleset và World Warhammer 40k: Wrath & Glory bên trong platform.
   nhập. Platform chỉ cung cấp engine, công cụ nhập và kiểm tra. Chính sách lưu trữ ở §4.6.
 - **Có bản đồ**, nhưng là bản đồ hỗ trợ trí nhớ cho bàn thật (§3.8), không phải bàn ảo để chơi từ xa.
 
+## Tinh thần mang từ Auspex (bắt buộc)
+
+InconsisTable giữ nguyên cách Auspex đối xử với luật và với sách. Đây là quy tắc ràng buộc, sẽ nằm trong `CLAUDE.md`
+của repo mới và trong review checklist.
+
+1. **Luật đến từ sách, không đến từ trí nhớ.**
+   - Mọi entry luật trong manifest (resource, condition, test, initiative, effect, option) có `cite` trỏ tới trang in.
+     Validator từ chối entry thiếu cite, trừ ruleset homebrew.
+   - Chỗ sách mơ hồ thì quyết định được ghi lại, không giấu trong code. Với ruleset: một file "house decisions" như
+     `rules-flow.md` §11 của Auspex. Với từng bàn: bảng `house_rule`.
+2. **Không chép nguyên văn sách.**
+   - Lưu con số và cơ chế, kèm số trang. Chữ mô tả là tóm tắt bằng lời của người nhập.
+   - Công cụ nhập nhắc điều này ngay tại ô nhập, và cảnh báo khi một đoạn mô tả trong pack `private` quá dài.
+3. **Sách không bao giờ lên server.**
+   - PDF của GM nằm trên máy GM.
+   - Khi người chơi cần xem một trang, tablet GM render đúng trang được chạm, rồi api chuyển tiếp mà không lưu gì
+     (sự kiện `book:*`, như Auspex hiện nay).
+   - Thẻ in cũng được dựng ngay trong trình duyệt của GM từ những gì GM đang có, không upload.
+4. **Nội dung chỉ đến những người đang có ghế.**
+   - Không có gì từ pack được phục vụ cho người không có ghế.
+   - Entry `gm` chỉ đến ghế GM.
+   - Pack `private` không chia sẻ được ra ngoài phòng của chủ pack.
+5. **Xúc xắc là xúc xắc thật.** App ghi kết quả và chỉ tự gieo bảng ngẫu nhiên. Gieo hộ Test là tuỳ chọn theo ruleset
+   và cần một house decision.
+6. **Server quyết định.**
+   - Một đường mutation duy nhất.
+   - Counter nhận delta và được clamp ở server.
+   - Người chơi chỉ thấy những gì view của bàn cho phép.
+7. **Làm tắt thì ghi rõ:** `// ponytail: <giới hạn>, <hướng nâng cấp>`.
+8. **Phục vụ bàn thật.** Giao diện đọc được ở khoảng cách một cánh tay, không có chat, điện thoại không kéo người chơi
+   ra khỏi bàn. Mỗi World có bộ nhận diện chăm chút như "Imperial Manuscript" của Auspex.
+
 ## 0. Tóm tắt các quyết định chính
 
 | # | Quyết định | Lý do |

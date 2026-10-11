@@ -39,6 +39,7 @@ Không chép lịch sử git. Không chép `packages/data`, `books/`, ảnh port
 | `apps/api/src/codex/` | như cũ | Chỉ cấu trúc; thêm bảng cha `codex_entry` + `codex_reveal`; codex ghi theo patch |
 | `apps/api/src/admin/` | như cũ | Giữ `ADMIN_ACTIONS` và OPEN AS ADMIN |
 | `apps/api/test/smoke.test.ts` | như cũ | Viết lại cho các luồng ở mục "Xong khi" |
+| Relay trang sách: sự kiện `book:*` ở gateway, `books-provider` ở web; dựng thẻ in trong trình duyệt (`print-dialog`, `components/print`, chỉ phần khung) | như cũ | Không gắn với sách W&G: GM chọn PDF trên máy mình, map theo `sources[]` của ruleset |
 | `apps/web`: `proxy.ts`, `server-api.ts`, `layout.tsx`, `hooks/use-table`, `lib/share-origin`, `lib/qr`, lobby, invite, `join/[token]`, `c/[campaignId]` | như cũ | App GM và người chơi chỉ có khung tab, chưa có sheet |
 | `apps/web/components/ui`: `bar`, `confirm-action`, `field-error`, `number-input`, `refusal`, `record-list`, `theme-toggle`, `codex-search`, `mentions`, `mention-field` | như cũ | Bỏ các component gắn W&G (`corruption-test`, `threat-*`, `stat-block` kiểu W&G…) |
 | `docker-compose.yml` | như cũ | `postgres:18.x`, cổng dev riêng |
@@ -83,8 +84,18 @@ Theme "Imperial Manuscript" **không** chép làm mặc định. P0 dùng một 
 - Migration Drizzle tạo từ đầu, không cần tương thích dữ liệu cũ.
 
 **`CLAUDE.md` và `docs/` của repo mới**
-- Viết lại từ auspex_gm, giữ các quy ước: luật trong code cite trang in, quyết định mơ hồ ghi vào một file "house
-  decisions", `ponytail:` cho chỗ cố ý làm tắt.
+- Viết lại từ auspex_gm và chép nguyên 8 quy tắc "Tinh thần mang từ Auspex" (`universal-rpg-platform.md`, đầu tài
+  liệu) thành quy tắc bắt buộc. Tóm tắt các quy tắc đó:
+  - luật cite trang in, không từ trí nhớ;
+  - quyết định mơ hồ ghi vào file "house decisions";
+  - không chép nguyên văn sách;
+  - PDF không lên server, trang sách chỉ relay;
+  - nội dung chỉ đến ghế;
+  - xúc xắc thật;
+  - server quyết định;
+  - `ponytail:`.
+- Review checklist (`.claude/code-review.md`) và lệnh `/review` chép sang. Các mục "block merge" về sách và luật giữ
+  nguyên.
 - Thêm chính sách JSONB (§5.4) và bảng "mỗi thay đổi đi đường nào" (§5.3).
 
 **CI (GitHub Actions)**
