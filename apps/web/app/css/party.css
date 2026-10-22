@@ -1,0 +1,188 @@
+/* party: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
+
+/* The SESSION band: state, title field, NEXT SESSION and the one primary, on one row that wraps on a phone. */
+.party-band {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+}
+.party-band-state {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.party-band-title {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.party-quiet {
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+
+/* The roster: a head row (rule + toolbar), then Agent cards in a grid. */
+.party-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+.party-head .rule {
+  flex: 1 1 200px;
+}
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 10px;
+}
+.party-fold > summary {
+  cursor: pointer;
+  min-height: 44px;
+  list-style: none;
+}
+.party-fold > .party-grid,
+.party-fold > .stack {
+  margin-top: 8px;
+}
+
+/* An Agent card: ONE button; everything in it is a span. */
+.party-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.party-card:hover {
+  border-color: var(--ink-2);
+}
+.party-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.party-card-head,
+.party-card-stats,
+.party-card-chips,
+.party-card-tracks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+.party-card-head b {
+  flex: 1 1 auto;
+  font-family: var(--display);
+  letter-spacing: 0.06em;
+}
+.party-vital {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.party-card-chips {
+  gap: 6px;
+}
+
+/* A side sheet or a centred box: the browser's modal <dialog> (components/party-dialog). */
+dialog.party-dlg {
+  width: min(640px, calc(100vw - 32px));
+  max-height: 85dvh;
+  padding: 0;
+  border: 1px solid var(--iron-2);
+  background: var(--vellum);
+  color: var(--ink);
+  overflow: auto;
+  font-family: var(--serif);
+  font-size: 15px;
+}
+dialog.party-dlg::backdrop {
+  background: var(--shade-35);
+}
+dialog.party-dlg.side {
+  margin: 0 0 0 auto;
+  width: min(560px, 100vw);
+  height: 100dvh;
+  max-height: 100dvh;
+}
+dialog.party-dlg .sb-title {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  align-items: center;
+}
+dialog.party-dlg .sb-title .btn {
+  border-color: var(--bone-2);
+  box-shadow: none;
+  color: var(--bone);
+}
+.party-dlg-body {
+  padding: 12px 14px 24px;
+}
+
+/* The dossier's tapped values and their pad. */
+.party-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.party-tap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.party-tap-btn {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 112px;
+  padding-block: 6px;
+}
+.party-num {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.party-pad {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+}
+.party-chip-btn {
+  min-height: 44px;
+  padding: 0 12px;
+  background: transparent;
+  cursor: pointer;
+}
+.tabs.sub .tab {
+  padding: 0 4px;
+}
+
+/* IN RESERVE folds: the books' crimson ▸, as other folds in the app. */
+.party-fold > summary::before {
+  content: "▸";
+}
+.party-fold[open] > summary::before {
+  content: "▾";
+}

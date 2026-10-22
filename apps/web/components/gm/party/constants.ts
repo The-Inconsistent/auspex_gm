@@ -29,3 +29,11 @@ export const REQUISITION_KINDS = {
   ammo: "AMMO",
   grenade: "GRENADES / MISSILES",
 } as const satisfies Record<RequisitionKind, string>;
+
+// A report line (what an action did, or "! why it was refused"). `id` counts up, so a dialog can tell a line sent
+// since it opened from one left over.
+export type PartyMsg = { text: string; id: number };
+
+// The dossier's four tabs (a tab's label carries a value, so the label itself is built in the dossier).
+export const DOSSIER_TABS = ["status", "gear", "advance", "seat"] as const;
+export type DossierTab = (typeof DOSSIER_TABS)[number];
