@@ -1,0 +1,1 @@
+- [GM app map](gm-app-map.md) — where redaction/reveal/status code lives and surprises (toPlayerCodex in shared, beat status unused, shell band)

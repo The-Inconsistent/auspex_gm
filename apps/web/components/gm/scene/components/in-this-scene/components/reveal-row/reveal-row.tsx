@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 type RevealRowProps = {
   name: string;
   shown: boolean;
-  only?: string; // a private handout: whose phones it reaches
+  only?: string; // a private handout: the names of the Agents whose phones it reaches
   onPeek: () => void;
   onToggle?: () => void; // not with `children`
 };
@@ -25,7 +25,12 @@ export function RevealRow({
       <button type="button" className="scene-peek" aria-label={`Peek: ${name}`} onClick={onPeek}>
         {name}
       </button>
-      {only && <span className="chip warn">{only}</span>}
+      {only && (
+        <span className="chip warn reach" title={`${only} only`}>
+          <Lock size={12} strokeWidth={2.4} aria-hidden="true" />
+          <span className="reach-names">{only}</span>&nbsp;ONLY
+        </span>
+      )}
       <span className="scene-leader" aria-hidden="true" />
       {children ?? (
         <button

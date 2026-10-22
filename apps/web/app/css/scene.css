@@ -327,6 +327,7 @@
 }
 .scene-peek {
   min-width: 0;
+  overflow-wrap: anywhere; /* a word wider than its room breaks instead of running under the chip */
   min-height: 44px;
   padding: 0;
   border: 0;

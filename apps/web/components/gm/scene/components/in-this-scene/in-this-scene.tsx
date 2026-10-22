@@ -102,7 +102,7 @@ export function InThisScene({ codex, characters, beat, fightLive, onStartFight, 
                 key={h.id}
                 name={h.title}
                 shown={h.revealed}
-                only={h.audience.length ? `${names(h.audience) || "PRIVATE"} ONLY` : undefined}
+                only={h.audience.length ? names(h.audience) || "PRIVATE" : undefined}
                 onPeek={() => peek("handout", h.id)}
                 onToggle={() => reveal(h.id, !h.revealed)}
               />

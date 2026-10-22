@@ -1,4 +1,5 @@
 "use client";
+import { Check, Eye, Lock } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import {
@@ -7,6 +8,7 @@ import {
   type BeatStatus,
   type Codex,
   type LiveState,
+  type MentionKind,
   type ScenePresets,
   type Threat,
 } from "@wg/shared";
@@ -18,6 +20,7 @@ import { SceneTests } from "@/components/gm/prep/components/scene-tests/scene-te
 import { sceneNumber, stripBeat } from "@/components/gm/prep/utils";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
+import { useMentions } from "@/components/ui/mentions/mentions-provider";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import type { Send } from "@/hooks/use-table/use-table";
 import { fieldedAgentIds } from "@/lib/print-cards/print-cards";
@@ -64,6 +67,7 @@ export function ScenePage({
   onError,
 }: ScenePageProps) {
   const { print } = usePrint();
+  const { get, open } = useMentions();
   const beat = adv.beats[index]!; // the caller picks index from adv.beats
   const order = adv.beats.map((b) => b.id);
   const prev = adv.beats[index - 1];
@@ -87,14 +91,28 @@ export function ScenePage({
     onReport(r, "ON ENTRY SAVED");
   };
 
-  const onEntry = ({ id, name, revealed }: { id: string; name: string; revealed: boolean }) => (
-    <span className="story-entry-wrap">
-      <span className="chip">{revealed ? "REVEALED" : "HIDDEN"}</span>
+  // A name opens the same peek a mention does, so the GM can reread what a handout says.
+  const peek = (kind: MentionKind, id: string) => {
+    const entry = get(kind, id);
+    if (entry) open(entry);
+  };
+
+  // One line per pick, as the design's: the name, a private handout's reach, a dotted leader, then the ON ENTRY box.
+  const entryRow = ({ kind, id, name, chip }: { kind: MentionKind; id: string; name: string; chip?: ReactNode }) => (
+    <div key={id} className="story-pick">
+      <button type="button" className="story-peek" aria-label={`Peek: ${name}`} onClick={() => peek(kind, id)}>
+        {name}
+      </button>
+      {chip}
+      <span className="story-leader" aria-hidden="true" />
       <label className="story-entry">
         <input type="checkbox" checked={beat.onEntry.includes(id)} disabled={saving} onChange={() => toggleEntry(id)} />
+        <span className="story-entry-box" aria-hidden="true">
+          <Check size={12} strokeWidth={3.6} />
+        </span>
         ON ENTRY<span className="sr-only"> {name}</span>
       </label>
-    </span>
+    </div>
   );
 
   // A part that has nothing yet still shows, with its pencil, so it can be started from the page.
@@ -221,51 +239,46 @@ export function ScenePage({
             name: "place",
             section: "place",
             empty: "NO PLACE YET",
-            children: place && (
-              <div className="story-line">
-                <b>{place.name}</b>
-                {onEntry({ id: place.id, name: place.name, revealed: place.revealed })}
-              </div>
-            ),
+            children: place && entryRow({ kind: "location", id: place.id, name: place.name }),
           })}
           {part({
-            label: "CAST",
+            label: npcs.length ? `CAST · ${npcs.length}` : "CAST",
             name: "cast",
             section: "cast",
             empty: "NO ONE YET",
-            children: npcs.length > 0 && (
-              <>
-                {npcs.map((n) => (
-                  <div key={n.id} className="story-line">
-                    <b>{n.name}</b>
-                    {n.role && <span className="dim">{n.role}</span>}
-                    {onEntry({ id: n.id, name: n.name, revealed: n.revealed })}
-                  </div>
-                ))}
-              </>
-            ),
+            children: npcs.length > 0 && <>{npcs.map((n) => entryRow({ kind: "npc", id: n.id, name: n.name }))}</>,
           })}
           {part({
-            label: "HANDOUTS",
+            label: handouts.length ? `HANDOUTS · ${handouts.length}` : "HANDOUTS",
             name: "handouts",
             section: "cast",
             empty: "NONE YET",
             children: handouts.length > 0 && (
               <>
-                {handouts.map((h) => (
-                  <div key={h.id} className="story-line">
-                    <b>{h.title}</b>
-                    {h.audience.length > 0 && (
-                      <span className="chip">PRIVATE · {h.audience.map(agentName).join(", ")}</span>
-                    )}
-                    {onEntry({ id: h.id, name: h.title, revealed: h.revealed })}
-                  </div>
-                ))}
+                {handouts.map((h) => {
+                  const only = h.audience.map(agentName).join(", ").toUpperCase();
+                  return entryRow({
+                    kind: "handout",
+                    id: h.id,
+                    name: h.title,
+                    chip: h.audience.length ? (
+                      <span className="chip warn reach" title={`${only} only`}>
+                        <Lock size={12} strokeWidth={2.4} aria-hidden="true" />
+                        <span className="reach-names">{only}</span>&nbsp;ONLY
+                      </span>
+                    ) : (
+                      <span className="chip reach">
+                        <Eye size={12} strokeWidth={2.2} aria-hidden="true" />
+                        ALL
+                      </span>
+                    ),
+                  });
+                })}
               </>
             ),
           })}
           {part({
-            label: "ITEMS",
+            label: items.length ? `ITEMS · ${items.length}` : "ITEMS",
             name: "items",
             section: "cast",
             empty: "NONE YET",

@@ -703,6 +703,18 @@ textarea.input {
   color: var(--ink-2);
   white-space: nowrap;
 }
+/* A handout's reach (SCENE, STORY): its names shorten with an ellipsis before the row's name or toggle loses room. */
+.chip.reach {
+  gap: 5px;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 45%;
+}
+.chip.reach > .reach-names {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .chip.warn {
   border-color: var(--red);
   color: var(--red);
